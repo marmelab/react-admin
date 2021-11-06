@@ -1,4 +1,4 @@
-import { ReactElement, ElementType } from 'react';
+import { ReactElement, ReactNode, ElementType } from 'react';
 import {
     Identifier,
     Exporter,
@@ -57,11 +57,12 @@ export interface CreateProps extends ResourceComponentProps {
     title?: string | ReactElement;
 }
 
-export interface ShowProps extends ResourceComponentPropsWithId {
+export interface ShowProps {
     actions?: ReactElement | false;
-    classes?: any;
+    children: ReactNode;
     className?: string;
     component?: ElementType;
+    resource?: string;
     title?: string | ReactElement;
 }
 

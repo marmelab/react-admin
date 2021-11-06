@@ -23,8 +23,9 @@ import { ShowView } from './ShowView';
  * The <Show> component accepts the following props:
  *
  * - actions
- * - aside
+ * - className
  * - component
+ * - resource
  * - title
  *
  * @example
@@ -33,8 +34,8 @@ import { ShowView } from './ShowView';
  * import * as React from "react";
  * import { Show, SimpleShowLayout, TextField } from 'react-admin';
  *
- * export const PostShow = (props) => (
- *     <Show {...props}>
+ * export const PostShow = () => (
+ *     <Show>
  *         <SimpleShowLayout>
  *             <TextField source="title" />
  *         </SimpleShowLayout>
@@ -54,14 +55,12 @@ import { ShowView } from './ShowView';
  * );
  * export default App;
  */
-export const Show = (
-    props: ShowProps & { children: ReactNode; resource?: string }
-): ReactElement => {
+export const Show = (props: ShowProps): ReactElement => {
     useCheckMinimumRequiredProps('Show', ['children'], props);
     const controllerProps = useShowController(props);
     const body = (
         <ShowContextProvider value={controllerProps}>
-            <ShowView {...props} {...controllerProps} />
+            <ShowView {...props} />
         </ShowContextProvider>
     );
     return props.resource ? (
@@ -77,13 +76,8 @@ export const Show = (
 Show.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     children: PropTypes.node,
-    classes: PropTypes.object,
     className: PropTypes.string,
-    hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasList: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    id: PropTypes.any.isRequired,
+    component: PropTypes.elementType,
     resource: PropTypes.string,
     title: PropTypes.node,
 };

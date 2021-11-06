@@ -9,7 +9,7 @@ import { useMemo } from 'react';
  * Hook which returns the definition of the requested resource
  */
 export const useResourceDefinition = (
-    props: UseResourceDefinitionOptions
+    props?: UseResourceDefinitionOptions
 ): ResourceDefinition => {
     const resource = useResourceContext(props);
     const resources = useSelector(getResources);

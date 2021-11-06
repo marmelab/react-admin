@@ -8,11 +8,6 @@ import { CRUD_GET_ONE } from '../../actions';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 
 export interface ShowProps {
-    basePath?: string;
-    hasCreate?: boolean;
-    hasEdit?: boolean;
-    hasShow?: boolean;
-    hasList?: boolean;
     id?: Identifier;
     onFailure?: OnFailure;
     resource?: string;
@@ -27,10 +22,6 @@ export interface ShowControllerProps<RecordType extends Record = Record> {
     error?: any;
     loading: boolean;
     loaded: boolean;
-    hasCreate?: boolean;
-    hasEdit?: boolean;
-    hasList?: boolean;
-    hasShow?: boolean;
     resource: string;
     record?: RecordType;
     refetch: Refetch;
@@ -62,14 +53,7 @@ export interface ShowControllerProps<RecordType extends Record = Record> {
 export const useShowController = <RecordType extends Record = Record>(
     props: ShowProps
 ): ShowControllerProps<RecordType> => {
-    const {
-        hasCreate,
-        hasEdit,
-        hasList,
-        hasShow,
-        id: propsId,
-        onFailure,
-    } = props;
+    const { id: propsId, onFailure } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
     const notify = useNotify();
@@ -105,10 +89,6 @@ export const useShowController = <RecordType extends Record = Record>(
         resource,
         record,
         refetch,
-        hasCreate,
-        hasEdit,
-        hasList,
-        hasShow,
         version,
     };
 };

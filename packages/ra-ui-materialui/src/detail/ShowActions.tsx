@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { Record, useResourceDefinition, useShowContext } from 'ra-core';
+import { Record, useResourceDefinition, useRecordContext } from 'ra-core';
 
 import { EditButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
@@ -39,34 +39,25 @@ const sanitizeRestProps = ({
  *         </Show>
  *     );
  */
-export const ShowActions = ({ className, ...rest }: ShowActionsProps) => {
-    const { record } = useShowContext(rest);
-    const { hasEdit } = useResourceDefinition(rest);
+export const ShowActions = (props: ShowActionsProps) => {
+    const { record } = useRecordContext(props);
+    const { hasEdit } = useResourceDefinition();
+    if (!hasEdit) {
+        return null;
+    }
     return (
-        <TopToolbar className={className} {...sanitizeRestProps(rest)}>
-            {hasEdit && <EditButton record={record} />}
+        <TopToolbar className={props.className}>
+            <EditButton record={record} />
         </TopToolbar>
     );
 };
 
 export interface ShowActionsProps {
-    basePath?: string;
     className?: string;
-    data?: Record;
-    hasCreate?: boolean;
-    hasEdit?: boolean;
-    hasShow?: boolean;
-    hasList?: boolean;
-    resource?: string;
+    record?: Record;
 }
 
 ShowActions.propTypes = {
-    basePath: PropTypes.string,
     className: PropTypes.string,
-    data: PropTypes.object,
-    hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    hasList: PropTypes.bool,
-    resource: PropTypes.string,
+    record: PropTypes.any,
 };
