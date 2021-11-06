@@ -117,6 +117,8 @@ const StyledFormControl = styled(FormControl, { name: PREFIX })(
     ({ theme }) => ({
         [`& .${LabeledClasses.label}`]: {
             position: 'relative',
+            marginLeft: -14,
+            maxWidth: 'fit-content',
         },
 
         [`& .${LabeledClasses.value}`]: {
@@ -128,6 +130,7 @@ const StyledFormControl = styled(FormControl, { name: PREFIX })(
             verticalAlign: 'middle',
             background: 'none',
             margin: 0, // Reset for Safari
+            marginTop: -12,
             display: 'block',
             width: '100%',
         },

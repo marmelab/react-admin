@@ -2,7 +2,8 @@ import * as React from 'react';
 import { isValidElement, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
-import { Tab as MuiTab, TabProps as MuiTabProps } from '@mui/material';
+import { Tab as MuiTab, TabProps as MuiTabProps, Stack } from '@mui/material';
+import { ResponsiveStyleValue } from '@mui/system';
 import { useTranslate, Record } from 'ra-core';
 import classnames from 'classnames';
 
@@ -61,6 +62,7 @@ export const Tab = ({
     label,
     record,
     resource,
+    spacing = 1,
     syncWithLocation = true,
     value,
     ...rest
@@ -85,7 +87,7 @@ export const Tab = ({
     );
 
     const renderContent = () => (
-        <span className={contentClassName}>
+        <Stack className={contentClassName} spacing={spacing}>
             {React.Children.map(children, field =>
                 field && isValidElement<any>(field) ? (
                     <div
@@ -118,7 +120,7 @@ export const Tab = ({
                     </div>
                 ) : null
             )}
-        </span>
+        </Stack>
     );
 
     return context === 'header' ? renderHeader() : renderContent();
@@ -132,6 +134,7 @@ Tab.propTypes = {
     icon: PropTypes.element,
     label: PropTypes.string.isRequired,
     path: PropTypes.string,
+    spacing: PropTypes.any,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
@@ -146,6 +149,7 @@ export interface TabProps extends Omit<MuiTabProps, 'children'> {
     path?: string;
     record?: Record;
     resource?: string;
+    spacing?: ResponsiveStyleValue<number | string>;
     syncWithLocation?: boolean;
     value?: string | number;
 }
