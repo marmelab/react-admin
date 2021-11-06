@@ -1,5 +1,99 @@
 # Upgrade to 4.0
 
+## No More Prop Injection In Page Components
+
+Page components (`<List>`, `<Show>`, etc.) used to expect to receive props (route parameters, permission, resource name). These components don't receive any props anymore by default. 
+
+```diff
+-const PostShow = (props) => (
++const PostShow = () => (
+-   <Show >
++   <Show {...props}>
+        <SimpleShowLayout>
+            <TextField source="title" />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+If you need to access the permissions previously passed as props, you need to call the `usePermissions` hook instead.
+
+```diff
++const { usePermissions } from 'react-admin';
+
+-const PostShow = ({ permissions, ...props }) => {
++const PostShow = () => {
++   const permissions = usePermissions();
+    return (
+-       <Show >
++       <Show {...props}>
+            <SimpleShowLayout>
+                <TextField source="title" />
+                {permissions === 'admin' &&
+                    <NumberField source="nb_views" />
+                }
+            </SimpleShowLayout>
+        </Show>
+    );
+};
+```
+
+If you need to access the `hasList` and other flags related to resource configuration, use the `useResourceConfiguration` hook instead.
+
+```diff
++const { useResourceDefinition } from 'react-admin';
+
+-const PostShow = ({ haEdit, ...props }) => {
++const PostShow = () => {
++   const { hasEdit } = useResourceDefinition();
+    return (
+        <Show actions={hasEdit ? <ShowActions /> : null}>
+            <SimpleShowLayout>
+                <TextField source="title" />
+            </SimpleShowLayout>
+        </Show>
+    );
+};
+```
+
+If you need to access a route parameter, use react-router's `useParams` hook instead.
+
+```diff
++const { useParams } from 'react-router-dom';
+
+-const PostShow = ({ id, ...props }) => {
++const PostShow = () => {
++   const { id } = useParams();
+    return (
+        <Show title={`Post #${id}`}>
+            <SimpleShowLayout>
+                <TextField source="title" />
+            </SimpleShowLayout>
+        </Show>
+    );
+};
+```
+
+## `<Card>` Is Now Rendered By Inner Components
+
+The page components (`<List>`, `<Show>`, etc.) used to render a `<Card>` around their child. It's now the responsibility of the child to render the `<Card>` itself. If you only use react-admin components, you don't need to change anything. But if you use custom layout components, you need to wrap them inside a `<Card>`.
+
+```diff
++import { Card } from '@mui/material';
+
+const MyShowLayout = () => {
+    const record useRecordContext();
+    return (
++       <Card>
+            <Stack>
+                <TextField source="title" />
+                <TextField source="author" />
+            </Stack>
++       </Card>
+    );
+}
+```
+
 ## Redux-Saga Was Removed
 
 The use of sagas has been deprecated for a while. React-admin v4 doesn't support them anymore. That means that the Redux actions don't include meta parameters anymore to trigger sagas, the Redux store doesn't include the saga middleware, and the saga-based side effects were removed.
