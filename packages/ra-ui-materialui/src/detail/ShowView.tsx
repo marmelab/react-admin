@@ -77,9 +77,11 @@ export const ShowClasses = {
     main: `${PREFIX}-main`,
 };
 
-const Root = styled('div', { name: PREFIX })({
-    [`&.${ShowClasses.root}`]: {},
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${ShowClasses.root}`]: {
+        paddingTop: theme.spacing(2),
+    },
     [`& .${ShowClasses.main}`]: {
         display: 'flex',
     },
-});
+}));

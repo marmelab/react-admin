@@ -1,7 +1,13 @@
 import * as React from 'react';
-import { Children, isValidElement, cloneElement, ReactNode } from 'react';
+import {
+    Children,
+    isValidElement,
+    cloneElement,
+    ReactNode,
+    ElementType,
+} from 'react';
 import { styled } from '@mui/material/styles';
-import { Card } from '@mui/material';
+import { Card, Stack } from '@mui/material';
 import { ResponsiveStyleValue } from '@mui/system';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -44,55 +50,55 @@ import { Labeled } from '../input';
 export const SimpleShowLayout = ({
     className,
     children,
+    component: Component = Root,
     record,
     resource,
     spacing = 1,
     version,
     ...rest
 }: SimpleShowLayoutProps) => (
-    <StyledStack
-        spacing={spacing}
-        className={className}
-        key={version}
-        {...sanitizeRestProps(rest)}
-    >
-        {Children.map(children, field =>
-            field && isValidElement<any>(field) ? (
-                <div
-                    key={field.props.source}
-                    className={classnames(
-                        `ra-field ra-field-${field.props.source}`,
-                        field.props.className
-                    )}
-                >
-                    {field.props.addLabel ? (
-                        <Labeled
-                            record={record}
-                            resource={resource}
-                            label={field.props.label}
-                            source={field.props.source}
-                            disabled={false}
-                            fullWidth={field.props.fullWidth}
-                        >
-                            {field}
-                        </Labeled>
-                    ) : typeof field.type === 'string' ? (
-                        field
-                    ) : (
-                        cloneElement(field, {
-                            record,
-                            resource,
-                        })
-                    )}
-                </div>
-            ) : null
-        )}
-    </StyledStack>
+    <Component className={className} key={version} {...sanitizeRestProps(rest)}>
+        <Stack spacing={spacing} className={SimpleShowLayoutClasses.stack}>
+            {Children.map(children, field =>
+                field && isValidElement<any>(field) ? (
+                    <div
+                        key={field.props.source}
+                        className={classnames(
+                            `ra-field ra-field-${field.props.source}`,
+                            SimpleShowLayoutClasses.row,
+                            field.props.className
+                        )}
+                    >
+                        {field.props.addLabel ? (
+                            <Labeled
+                                record={record}
+                                resource={resource}
+                                label={field.props.label}
+                                source={field.props.source}
+                                disabled={false}
+                                fullWidth={field.props.fullWidth}
+                            >
+                                {field}
+                            </Labeled>
+                        ) : typeof field.type === 'string' ? (
+                            field
+                        ) : (
+                            cloneElement(field, {
+                                record,
+                                resource,
+                            })
+                        )}
+                    </div>
+                ) : null
+            )}
+        </Stack>
+    </Component>
 );
 
 export interface SimpleShowLayoutProps {
     className?: string;
     children: ReactNode;
+    component?: ElementType;
     record?: Record;
     resource?: string;
     spacing?: ResponsiveStyleValue<number | string>;
@@ -110,9 +116,16 @@ SimpleShowLayout.propTypes = {
 
 const PREFIX = 'RaSimpleShowLayout';
 
-const StyledStack = styled(Card, { name: PREFIX })(({ theme }) => ({
+export const SimpleShowLayoutClasses = {
+    stack: `${PREFIX}-stack`,
+    row: `${PREFIX}-row`,
+};
+
+const Root = styled(Card, { name: PREFIX })(({ theme }) => ({
     flex: 1,
     padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
+    [`& .${SimpleShowLayoutClasses.stack}`]: {},
+    [`& .${SimpleShowLayoutClasses.row}`]: {},
 }));
 
 const sanitizeRestProps = ({

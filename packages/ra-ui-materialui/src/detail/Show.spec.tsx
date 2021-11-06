@@ -9,10 +9,16 @@ import { TestContext, renderWithRedux } from 'ra-test';
 import { createMemoryHistory } from 'history';
 import { Route } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
+import { Default, Actions, Basic, Component } from './Show.stories';
 
 import { Show } from './Show';
 
 describe('<Show />', () => {
+    beforeEach(async () => {
+        // Why is this required? No idea, but without is the tests are flaky
+        await new Promise(res => setTimeout(res, 100));
+    });
+
     it('should fetch dataProvider.getOne based on history and ResourceContext', async () => {
         const dataProvider = {
             getOne: (resource, params) => {
@@ -56,8 +62,6 @@ describe('<Show />', () => {
     });
 
     it('should fetch dataProvider.getOne based on id and resource props', async () => {
-        // Why is this required? No idea, but without is the tests are flaky
-        await new Promise(res => setTimeout(res, 100));
         const dataProvider = {
             getOne: (resource, params) =>
                 resource === 'books' && params.id === '123'
@@ -102,5 +106,25 @@ describe('<Show />', () => {
             { admin: { resources: { books: { props: {}, data: {} } } } }
         );
         await waitFor(() => expect(onFailure).toHaveBeenCalled());
+    });
+
+    it('should display an edit button by default when there is an Edit view', () => {
+        render(<Default />);
+        expect(screen.getByText('Edit')).toBeDefined();
+    });
+
+    it('should allow to display custom actions with the actions prop', () => {
+        render(<Actions />);
+        expect(screen.getByText('Actions')).toBeDefined();
+    });
+
+    it('should display a default title based on resource and id', async () => {
+        render(<Basic />);
+        await waitFor(() => expect(screen.getByText('Book #1')).toBeDefined());
+    });
+
+    it('should allow to override the root component', () => {
+        render(<Component />);
+        expect(screen.getByTestId('custom-component')).toBeDefined();
     });
 });
