@@ -81,6 +81,43 @@ export const PostEdit = (props) => (
 );
 ```
 
+## Removed The `aside` Prop From `<Show>`
+
+To add a sidebar to a `<Show>` component, you can no longer use the `<Show aside>` prop. But `<Show>` has evolved to accept many children, and render a `<div style={{ display: 'flex" }}>`. So adding a sidebar becomes more natural:
+
+```diff
+export const PostShow = () => (
+-    <Show aside={<PostShowAside />}>
++    <Show>
+        <SimpleShowLayout>
+            <TextField source="title" />
+        </SimpleShowLayout>
++       <PostShowAside />
+    </Show>
+);
+```
+
+If you want more control over the relative widths of the two children, use layout components like material-ui's `<Grid>`:
+
+```jsx
+ import { Grid } from '@mui/material';
+
+export const PostShow = () => (
+    <Show>
+        <Grid container>
+            <Grid item xs={8}>
+                <SimpleShowLayout>
+                    <TextField source="title" />
+                </SimpleShowLayout>
+            </Grid>
+            <Grid item xs={4}>
+               <PostShowAside />
+            </Grid>
+        </Grid>
+    </Show>
+);
+```
+
 # Upgrade to 3.0
 
 We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.
