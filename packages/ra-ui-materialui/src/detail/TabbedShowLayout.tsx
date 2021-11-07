@@ -9,6 +9,7 @@ import {
     useState,
 } from 'react';
 import PropTypes from 'prop-types';
+import { ResponsiveStyleValue, SxProps } from '@mui/system';
 import { styled } from '@mui/material/styles';
 import { Card, Divider } from '@mui/material';
 import { Route } from 'react-router-dom';
@@ -69,6 +70,8 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
         basePath,
         children,
         className,
+        spacing,
+        divider,
         syncWithLocation = true,
         tabs = DefaultTabs,
         value,
@@ -76,7 +79,6 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
         ...rest
     } = props;
     const match = useRouteMatch();
-    const resource = useResourceContext(props);
     const record = useRecordContext(props);
     const nonNullChildren = Children.toArray(children).filter(
         child => child !== null
@@ -121,18 +123,16 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
                                 render={() =>
                                     cloneElement(tab, {
                                         context: 'content',
-                                        resource,
-                                        record,
-                                        basePath,
+                                        spacing,
+                                        divider,
                                     })
                                 }
                             />
                         ) : tabValue === index ? (
                             cloneElement(tab, {
                                 context: 'content',
-                                resource,
-                                record,
-                                basePath,
+                                spacing,
+                                divider,
                             })
                         ) : null
                     ) : null
@@ -144,11 +144,12 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
 
 export interface TabbedShowLayoutProps {
     basePath?: string;
-    className?: string;
-
     children: ReactNode;
+    className?: string;
+    divider?: ReactNode;
     record?: Record;
-    resource?: string;
+    spacing?: ResponsiveStyleValue<number | string>;
+    sx?: SxProps;
     syncWithLocation?: boolean;
     tabs?: ReactElement;
     value?: any;
@@ -162,7 +163,6 @@ TabbedShowLayout.propTypes = {
     location: PropTypes.object,
     match: PropTypes.object,
     record: PropTypes.object,
-    resource: PropTypes.string,
     syncWithLocation: PropTypes.bool,
     tabs: PropTypes.element,
     value: PropTypes.number,
