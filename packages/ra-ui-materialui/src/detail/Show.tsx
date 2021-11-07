@@ -78,4 +78,5 @@ Show.propTypes = {
     component: PropTypes.elementType,
     resource: PropTypes.string,
     title: PropTypes.node,
+    sx: PropTypes.any,
 };
