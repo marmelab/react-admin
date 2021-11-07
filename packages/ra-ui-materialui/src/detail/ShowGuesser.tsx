@@ -36,8 +36,8 @@ const ShowViewGuesser = props => {
 
 export const ${inflection.capitalize(
                         inflection.singularize(resource)
-                    )}Show = props => (
-    <Show {...props}>
+                    )}Show = () => (
+    <Show>
 ${inferredChild.getRepresentation()}
     </Show>
 );`
