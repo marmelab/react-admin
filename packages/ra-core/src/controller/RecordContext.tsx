@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createContext, ReactNode, useContext } from 'react';
+import { createContext, ReactNode, ReactElement, useContext } from 'react';
 import { Record } from '../types';
 
 /**
@@ -107,6 +107,6 @@ export const WithRecord = <RecordType extends Record>({
 };
 
 export interface WithRecordProps<RecordType extends Record> {
-    render: (record: RecordType) => ReactNode;
+    render: (record: RecordType) => ReactElement;
     label?: string;
 }

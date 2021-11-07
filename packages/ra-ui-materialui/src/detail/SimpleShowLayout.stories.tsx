@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { Divider as MuiDivider } from '@mui/material';
-import { RecordContextProvider, ResourceContext } from 'ra-core';
+import {
+    RecordContextProvider,
+    ResourceContext,
+    useRecordContext,
+    WithRecord,
+} from 'ra-core';
+import { Labeled } from '../input/Labeled';
 import { TextField, NumberField } from '../field';
 import { SimpleShowLayout } from './SimpleShowLayout';
 
@@ -29,13 +35,31 @@ export const Basic = () => (
     </ResourceContext.Provider>
 );
 
+const BookTitle = () => {
+    const record = useRecordContext();
+    return record ? <span>{record.title}</span> : null;
+};
+
+export const CustomChild = () => (
+    <ResourceContext.Provider value="books">
+        <RecordContextProvider value={record}>
+            <SimpleShowLayout>
+                <BookTitle />
+                <WithRecord render={record => <span>{record.author}</span>} />
+            </SimpleShowLayout>
+        </RecordContextProvider>
+    </ResourceContext.Provider>
+);
+
 export const CustomLabel = () => (
     <ResourceContext.Provider value="books">
         <RecordContextProvider value={record}>
             <SimpleShowLayout>
                 <TextField label="Identifier" source="id" />
                 <TextField source="title" />
-                <TextField source="author" />
+                <Labeled label="Author name">
+                    <TextField source="author" />
+                </Labeled>
                 <TextField label={false} source="summary" />
                 <NumberField source="year" />
             </SimpleShowLayout>

@@ -4,7 +4,7 @@ import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import { FieldTitle } from 'ra-core';
+import { FieldTitle, useResourceContext } from 'ra-core';
 
 /**
  * Use any component as read-only Input, labeled just like other Inputs.
@@ -32,10 +32,11 @@ export const Labeled = (props: LabeledProps) => {
         label,
         margin = 'dense',
         meta,
-        resource,
         source,
         ...rest
     } = props;
+
+    const resource = useResourceContext(props);
 
     if (!label && !source) {
         // @ts-ignore
@@ -74,6 +75,8 @@ export const Labeled = (props: LabeledProps) => {
         </StyledFormControl>
     );
 };
+
+Labeled.displayName = 'Labeled';
 
 Labeled.propTypes = {
     children: PropTypes.element,

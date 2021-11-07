@@ -1,17 +1,11 @@
 import * as React from 'react';
-import {
-    Children,
-    isValidElement,
-    cloneElement,
-    ReactNode,
-    ElementType,
-} from 'react';
+import { Children, isValidElement, ReactNode, ElementType } from 'react';
 import { styled } from '@mui/material/styles';
 import { Card, Stack } from '@mui/material';
 import { ResponsiveStyleValue, SxProps } from '@mui/system';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Record, useRecordContext, useResourceContext } from 'ra-core';
+import { Record, useRecordContext } from 'ra-core';
 
 import { Labeled } from '../input';
 
@@ -62,7 +56,6 @@ export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
         spacing = 1,
         ...rest
     } = props;
-    const resource = useResourceContext(props);
     const record = useRecordContext(props);
     if (!record) {
         return null;
@@ -84,24 +77,19 @@ export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
                                 field.props.className
                             )}
                         >
-                            {field.props.addLabel ? (
+                            {field.props.label !== false &&
+                            typeof field.type !== 'string' &&
+                            // @ts-ignore
+                            field.type?.displayName !== 'Labeled' &&
+                            (field.props.source || field.props.label) ? (
                                 <Labeled
-                                    record={record}
-                                    resource={resource}
                                     label={field.props.label}
                                     source={field.props.source}
-                                    disabled={false}
-                                    fullWidth={field.props.fullWidth}
                                 >
                                     {field}
                                 </Labeled>
-                            ) : typeof field.type === 'string' ? (
-                                field
                             ) : (
-                                cloneElement(field, {
-                                    record,
-                                    resource,
-                                })
+                                field
                             )}
                         </div>
                     ) : null
@@ -117,7 +105,6 @@ export interface SimpleShowLayoutProps {
     component?: ElementType;
     divider?: ReactNode;
     record?: Record;
-    resource?: string;
     spacing?: ResponsiveStyleValue<number | string>;
     sx?: SxProps;
 }
@@ -127,7 +114,6 @@ SimpleShowLayout.propTypes = {
     children: PropTypes.node,
     component: PropTypes.elementType,
     record: PropTypes.object,
-    resource: PropTypes.string,
     spacing: PropTypes.any,
     sx: PropTypes.any,
 };
@@ -143,7 +129,9 @@ const Root = styled(Card, { name: PREFIX })(({ theme }) => ({
     flex: 1,
     padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
     [`& .${SimpleShowLayoutClasses.stack}`]: {},
-    [`& .${SimpleShowLayoutClasses.row}`]: {},
+    [`& .${SimpleShowLayoutClasses.row}`]: {
+        display: 'inline',
+    },
 }));
 
 const sanitizeRestProps = ({

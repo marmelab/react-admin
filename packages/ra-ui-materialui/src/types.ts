@@ -1,4 +1,5 @@
 import { ReactElement, ReactNode, ElementType } from 'react';
+import { SxProps } from '@mui/system';
 import {
     Identifier,
     Exporter,
@@ -67,6 +68,7 @@ export interface ShowProps {
     onFailure?: OnFailure;
     resource?: string;
     title?: string | ReactElement;
+    sx?: SxProps;
 }
 
 export interface BulkActionProps {
