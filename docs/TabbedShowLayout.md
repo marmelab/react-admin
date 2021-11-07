@@ -52,15 +52,17 @@ export const PostShow = () => (
 ```
 {% endraw %}
 
-Here are all the props accepted by the `<TabbedShowLayout>` component:
+## Props
 
-* `className` is passed to the root component
-* [`children`](#tabs) are components rendering a tab
-* [`component`](#root-component)
-* [`divider`](#divider)
-* [`spacing`](#spacing)
-* [`syncWithLocation`](#sync-tabs-with-location)
-* [`tabs`](#custom-tab-component)
+* [`children`](#tabs): components rendering a tab
+* `className`: passed to the root component
+* [`component`](#root-component): overrides the root component
+* [`divider`](#divider): optional element to render between each field
+* [`record`](#controlled-mode): can be injected when outside a RecordContext 
+* [`spacing`](#spacing): optional integer to set the spacing between the fields
+* [`sx`](#css-api): Override the styles
+* [`syncWithLocation`](#sync-tabs-with-location): optional boolean to disable storing the active tab in the url
+* [`tabs`](#custom-tab-component): custom Tabs component
 
 Additional props are passed to the root component (`<Card>`).
 
@@ -235,7 +237,9 @@ By default, `<TabbedShowLayout>` view renders the main content area inside a mat
 const PostShow = () => (
     <Show>
         <TabbedShowLayout component="div">
-            <TextField source="title" />
+            <Tab label="main">
+                <TextField source="title" />
+            </Tab>
         </TabbedShowLayout>
     </Show>
 );
@@ -264,6 +268,24 @@ const ScrollableTabbedShowLayout = props => (
 
 export default ScrollableTabbedShowLayout;
 ```
+
+## Controlled Mode
+
+By default, `<TabbedShowLayout>` reads the record from the `ResourceContext`. But by passing a `record` prop, you can render the component outside of a `ResourceContext`.
+
+{% raw %}
+```jsx
+const StaticPostShow = () => (
+    <TabbedShowLayout record={{ id: 123, title: 'Hello world' }}>
+        <Tab label="main">
+            <TextField source="title" />
+        </Tab>
+    </TabbedShowLayout>
+);
+```
+{% endraw %}
+
+When passed a `record`, `<TabbedShowLayout>` creates a `RecordContext` with the given record.
 
 ## CSS API
 

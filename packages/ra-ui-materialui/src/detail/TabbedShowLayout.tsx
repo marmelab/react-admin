@@ -15,7 +15,12 @@ import { styled } from '@mui/material/styles';
 import { Card, Divider } from '@mui/material';
 import { Route } from 'react-router-dom';
 import { useRouteMatch } from 'react-router-dom';
-import { escapePath, Record, useRecordContext } from 'ra-core';
+import {
+    escapePath,
+    Record,
+    useRecordContext,
+    OptionalRecordContextProvider,
+} from 'ra-core';
 
 import {
     TabbedShowLayoutTabs,
@@ -101,50 +106,52 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
         return null;
     }
     return (
-        <Component className={className} {...sanitizeRestProps(rest)}>
-            {cloneElement(
-                tabs,
-                {
-                    syncWithLocation,
-                    onChange: handleTabChange,
-                    value: tabValue,
-                },
-                nonNullChildren
-            )}
-
-            <Divider />
-            <div className={TabbedShowLayoutClasses.content}>
-                {Children.map(nonNullChildren, (tab, index) =>
-                    tab && isValidElement(tab) ? (
-                        syncWithLocation ? (
-                            <Route
-                                exact
-                                path={escapePath(
-                                    getShowLayoutTabFullPath(
-                                        tab,
-                                        index,
-                                        match.url
-                                    )
-                                )}
-                                render={() =>
-                                    cloneElement(tab, {
-                                        context: 'content',
-                                        spacing,
-                                        divider,
-                                    })
-                                }
-                            />
-                        ) : tabValue === index ? (
-                            cloneElement(tab, {
-                                context: 'content',
-                                spacing,
-                                divider,
-                            })
-                        ) : null
-                    ) : null
+        <OptionalRecordContextProvider value={props.record}>
+            <Component className={className} {...sanitizeRestProps(rest)}>
+                {cloneElement(
+                    tabs,
+                    {
+                        syncWithLocation,
+                        onChange: handleTabChange,
+                        value: tabValue,
+                    },
+                    nonNullChildren
                 )}
-            </div>
-        </Component>
+
+                <Divider />
+                <div className={TabbedShowLayoutClasses.content}>
+                    {Children.map(nonNullChildren, (tab, index) =>
+                        tab && isValidElement(tab) ? (
+                            syncWithLocation ? (
+                                <Route
+                                    exact
+                                    path={escapePath(
+                                        getShowLayoutTabFullPath(
+                                            tab,
+                                            index,
+                                            match.url
+                                        )
+                                    )}
+                                    render={() =>
+                                        cloneElement(tab, {
+                                            context: 'content',
+                                            spacing,
+                                            divider,
+                                        })
+                                    }
+                                />
+                            ) : tabValue === index ? (
+                                cloneElement(tab, {
+                                    context: 'content',
+                                    spacing,
+                                    divider,
+                                })
+                            ) : null
+                        ) : null
+                    )}
+                </div>
+            </Component>
+        </OptionalRecordContextProvider>
     );
 };
 

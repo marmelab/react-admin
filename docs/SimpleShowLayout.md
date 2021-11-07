@@ -23,13 +23,15 @@ const PostShow = () => (
 );
 ```
 
-Here are all the props accepted by the `<SimpleShowLayout>` component:
+## Props
 
-* `className` is passed to the root component
-* [`children`](#fields) are components rendering a record field
-* [`component`](#root-component)
-* [`divider`](#divider)
-* [`spacing`](#spacing)
+* [`children`](#fields): components rendering a record field
+* `className`: passed to the root component
+* [`component`](#root-component): overrides the root component
+* [`divider`](#divider): optional element to render between each field
+* [`record`](#controlled-mode): can be injected when outside a RecordContext 
+* [`spacing`](#spacing): optional integer to set the spacing between the fields
+* [`sx`](#css-api): Override the styles
 
 Additional props are passed to the root component (`<Card>`).
 
@@ -168,6 +170,22 @@ const PostShow = () => (
     </Show>
 );
 ```
+
+## Controlled Mode
+
+By default, `<SimpleShowLayout>` reads the record from the `ResourceContext`. But by passing a `record` prop, you can render the component outside of a `ResourceContext`.
+
+{% raw %}
+```jsx
+const StaticPostShow = () => (
+    <SimpleShowLayout record={{ id: 123, title: 'Hello world' }}>
+        <TextField source="title" />
+    </SimpleShowLayout>
+);
+```
+{% endraw %}
+
+When passed a `record`, `<SimpleShowLayout>` creates a `RecordContext` with the given record.
 
 ## CSS API
 

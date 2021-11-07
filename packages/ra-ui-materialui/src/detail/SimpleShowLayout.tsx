@@ -5,7 +5,11 @@ import { Card, Stack } from '@mui/material';
 import { ResponsiveStyleValue, SxProps } from '@mui/system';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Record, useRecordContext } from 'ra-core';
+import {
+    Record,
+    useRecordContext,
+    OptionalRecordContextProvider,
+} from 'ra-core';
 
 import { Labeled } from '../input';
 
@@ -64,41 +68,43 @@ export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
         return null;
     }
     return (
-        <Component className={className} {...sanitizeRestProps(rest)}>
-            <Stack
-                spacing={spacing}
-                divider={divider}
-                className={SimpleShowLayoutClasses.stack}
-            >
-                {Children.map(children, field =>
-                    field && isValidElement<any>(field) ? (
-                        <div
-                            key={field.props.source}
-                            className={classnames(
-                                `ra-field ra-field-${field.props.source}`,
-                                SimpleShowLayoutClasses.row,
-                                field.props.className
-                            )}
-                        >
-                            {field.props.label !== false &&
-                            typeof field.type !== 'string' &&
-                            // @ts-ignore
-                            field.type?.displayName !== 'Labeled' &&
-                            (field.props.source || field.props.label) ? (
-                                <Labeled
-                                    label={field.props.label}
-                                    source={field.props.source}
-                                >
-                                    {field}
-                                </Labeled>
-                            ) : (
-                                field
-                            )}
-                        </div>
-                    ) : null
-                )}
-            </Stack>
-        </Component>
+        <OptionalRecordContextProvider value={props.record}>
+            <Component className={className} {...sanitizeRestProps(rest)}>
+                <Stack
+                    spacing={spacing}
+                    divider={divider}
+                    className={SimpleShowLayoutClasses.stack}
+                >
+                    {Children.map(children, field =>
+                        field && isValidElement<any>(field) ? (
+                            <div
+                                key={field.props.source}
+                                className={classnames(
+                                    `ra-field ra-field-${field.props.source}`,
+                                    SimpleShowLayoutClasses.row,
+                                    field.props.className
+                                )}
+                            >
+                                {field.props.label !== false &&
+                                typeof field.type !== 'string' &&
+                                // @ts-ignore
+                                field.type?.displayName !== 'Labeled' &&
+                                (field.props.source || field.props.label) ? (
+                                    <Labeled
+                                        label={field.props.label}
+                                        source={field.props.source}
+                                    >
+                                        {field}
+                                    </Labeled>
+                                ) : (
+                                    field
+                                )}
+                            </div>
+                        ) : null
+                    )}
+                </Stack>
+            </Component>
+        </OptionalRecordContextProvider>
     );
 };
 

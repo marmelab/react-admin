@@ -57,7 +57,7 @@ const App = () => (
 ```
 {% endraw %}
 
-Here are all the props accepted by the `<ShowBase>` component:
+## Props
 
 * [`children`](#layout) is the component that actually renders something
 * [`onFailure`](#failure-side-effects)

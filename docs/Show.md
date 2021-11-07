@@ -53,14 +53,15 @@ That's enough to display the post show view:
 
 ![post show view](./img/post-show.png)
 
-Here are all the props accepted by the `<Show>` component:
+## Props
 
-* [`actions`](#actions)
-* `className` is passed to the root component
-* [`children`](#layout) is the component that renders the record fields
-* [`component`](#root-component)
+* [`actions`](#actions): override the actions toolbar with a custom component
+* `className`: passed to the root component
+* [`children`](#layout): the component that renders the record fields
+* [`component`](#root-component): overrides the root component
 * [`emptyWhileLoading`](#loading-state)
 * [`onFailure`](#failure-side-effects)
+* [`sx`](#css-api): Override the styles
 * [`title`](#page-title)
 
 ## Layout
