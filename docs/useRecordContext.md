@@ -5,7 +5,7 @@ title: "useRecordContext"
 
 # `useRecordContext`
 
-`useRecordContext` grabs the current record. It's available anywhere react-admin manimulates a record, e.g. in a Show page, in a Datagrid row, or in a Reference Field.
+`useRecordContext` grabs the current record. It's available anywhere react-admin manipulates a record, e.g. in a Show page, in a Datagrid row, or in a Reference Field.
 
 ## Usage
 
@@ -81,10 +81,11 @@ const RecordFetcher = ({ id, resource, children }) => {
 
 ## Fallback Mode
 
-Some react-admin components accept an optional record prop. Thes ecomponents can be used both inside a `RecordContext`, and with a custom record prop - without creating a custom record context.
+Some react-admin components accept an optional record prop. These components can be used both inside a `RecordContext`, and with a custom record prop - without creating a custom record context.
 
 You can do the same: just accept a `record` component prop, and pass the props as parameter to the hook. If the record is undefined, `useRecordContext` will return the record from the context. If it is defined, `useRecordContext` will return the record from the props.
 
+{% raw %}
 ```jsx
 const BookAuthor = (props) => {
     const record = useRecordContext(props);
@@ -95,6 +96,7 @@ const BookAuthor = (props) => {
 // you can now pass a custom record
 <BookAuthor record={{ id: 123, author: 'Leo Tolstoy' }}>
 ```
+{% endraw %}
 
 ## See Also
 

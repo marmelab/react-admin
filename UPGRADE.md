@@ -2,7 +2,7 @@
 
 ## No More Prop Injection In Page Components
 
-Page components (`<List>`, `<Show>`, etc.) used to expect to receive props (route parameters, permission, resource name). These components don't receive any props anymore by default. 
+Page components (`<List>`, `<Show>`, etc.) used to expect to receive props (route parameters, permission, resource name). These components don't receive any props anymore by default. They use hooks to get the props they need from contexts or route state.  
 
 ```diff
 -const PostShow = (props) => (
