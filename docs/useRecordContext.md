@@ -106,4 +106,4 @@ const BookAuthor = (props) => {
 
 * [`useRecordContext`]
 
-[`useRecordContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/useRecordContext.tsx
+[`useRecordContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/record/useRecordContext.tsx

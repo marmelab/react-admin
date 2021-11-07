@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 import { Record } from '../../types';
-import { RecordContextProvider } from '../RecordContext';
+import { RecordContextProvider } from '../record/RecordContext';
 import { EditContext } from './EditContext';
 import { EditControllerProps } from './useEditController';
 import { SaveContextProvider, usePickSaveContext } from './SaveContext';

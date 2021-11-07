@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { Record } from '../types';
+import { Record } from '../../types';
 import { useRecordContext } from './useRecordContext';
 
 /**

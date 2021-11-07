@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import { Record } from '../../types';
-import { RecordContextProvider } from '../RecordContext';
+import { RecordContextProvider } from '../record/RecordContext';
 import { ShowContext } from './ShowContext';
 import { ShowControllerResult } from './useShowController';
 

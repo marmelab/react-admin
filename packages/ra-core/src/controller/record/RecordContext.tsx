@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createContext, ReactNode } from 'react';
-import { Record } from '../types';
+import { Record } from '../../types';
 
 /**
  * Context to store a record.

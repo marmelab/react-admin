@@ -44,4 +44,4 @@ As soon as there is a record available, react-admin puts it in a `RecordContext`
 
 * [`WithRecord`]
 
-[`WithRecord`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/details/WithRecord.tsx
+[`WithRecord`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/record/WithRecord.tsx
