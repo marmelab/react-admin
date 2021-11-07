@@ -10,7 +10,7 @@ import { Location, History, LocationState } from 'history';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
-import { ShowProps } from './controller/details/useShowController';
+import { ShowControllerProps } from './controller/show/useShowController';
 
 /**
  * data types
@@ -470,7 +470,7 @@ export interface ResourceProps {
     list?: ComponentType<ResourceComponentProps>;
     create?: ComponentType<ResourceComponentProps>;
     edit?: ComponentType<ResourceComponentPropsWithId>;
-    show?: ComponentType<ShowProps>;
+    show?: ComponentType<ShowControllerProps>;
     icon?: ComponentType<any>;
     options?: object;
 }

@@ -61,6 +61,7 @@ export {
 
 export * from './button';
 export * from './details';
+export * from './show';
 export * from './field';
 export * from './input';
 export * from './RecordContext';

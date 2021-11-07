@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import { useShowController, ShowProps } from './useShowController';
+import { useShowController, ShowControllerProps } from './useShowController';
 import { ShowContextProvider } from './ShowContextProvider';
 
 /**
@@ -35,7 +35,7 @@ import { ShowContextProvider } from './ShowContextProvider';
 export const ShowBase = ({
     children,
     ...props
-}: ShowProps & { children: ReactElement }) => (
+}: { children: ReactElement } & ShowControllerProps) => (
     <ShowContextProvider value={useShowController(props)}>
         {children}
     </ShowContextProvider>

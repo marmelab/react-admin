@@ -114,5 +114,5 @@ The default `onFailure` function is:
 * [`<ShowBase>`]
 * [`<Show>`]
 
-[`<ShowBase>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/details/ShowBase.tsx
+[`<ShowBase>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/show/ShowBase.tsx
 [`<Show>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/Show.tsx

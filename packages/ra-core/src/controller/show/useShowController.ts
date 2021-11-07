@@ -7,13 +7,13 @@ import { useNotify, useRedirect, useRefresh } from '../../sideEffect';
 import { CRUD_GET_ONE } from '../../actions';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 
-export interface ShowProps {
+export interface ShowControllerProps {
     id?: Identifier;
     onFailure?: OnFailure;
     resource?: string;
 }
 
-export interface ShowControllerProps<RecordType extends Record = Record> {
+export interface ShowControllerResult<RecordType extends Record = Record> {
     defaultTitle: string;
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
@@ -60,8 +60,8 @@ export interface ShowControllerProps<RecordType extends Record = Record> {
  * };
  */
 export const useShowController = <RecordType extends Record = Record>(
-    props: ShowProps
-): ShowControllerProps<RecordType> => {
+    props: ShowControllerProps
+): ShowControllerResult<RecordType> => {
     const { id: propsId, onFailure } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();

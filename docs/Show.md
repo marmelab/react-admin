@@ -357,5 +357,5 @@ For more details about permissions, check out the [authProvider documentation](.
 [`<WithRecord>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/WithRecord.tsx
 [`useRecordContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/useRecordContext.ts
 [`useResourceContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/core/useResourceContext.ts
-[`useShowContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/details/useShowContext.tsx
-[`useShowController`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/details/useShowControllerts)]
+[`useShowContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/show/useShowContext.tsx
+[`useShowController`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/show/useShowControllerts)]

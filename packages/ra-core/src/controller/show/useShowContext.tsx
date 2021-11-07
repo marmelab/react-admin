@@ -3,7 +3,7 @@ import defaults from 'lodash/defaults';
 
 import { Record } from '../../types';
 import { ShowContext } from './ShowContext';
-import { ShowControllerProps } from './useShowController';
+import { ShowControllerResult } from './useShowController';
 
 /**
  * Hook to read the show controller props from the ShowContext.
@@ -15,19 +15,19 @@ import { ShowControllerProps } from './useShowController';
  *
  * The given props will take precedence over context values.
  *
- * @typedef {Object} ShowControllerProps
+ * @typedef {Object} ShowControllerResult
  *
- * @returns {ShowControllerProps} create controller props
+ * @returns {ShowControllerResult} create controller props
  *
  * @see useShowController for how it is filled
  *
  */
 export const useShowContext = <RecordType extends Record = Record>(
-    props?: Partial<ShowControllerProps<RecordType>>
-): Partial<ShowControllerProps<RecordType>> => {
+    props?: Partial<ShowControllerResult<RecordType>>
+): Partial<ShowControllerResult<RecordType>> => {
     // Can't find a way to specify the RecordType when ShowContext is declared
     // @ts-ignore
-    const context = useContext<ShowControllerProps<RecordType>>(ShowContext);
+    const context = useContext<ShowControllerResult<RecordType>>(ShowContext);
 
     // Props take precedence over the context
     return useMemo(
@@ -46,7 +46,7 @@ export const useShowContext = <RecordType extends Record = Record>(
  *
  * @param {Object} props props passed to the useShowContext hook
  *
- * @returns {ShowControllerProps} show controller props
+ * @returns {ShowControllerResult} show controller props
  */
 const extractShowContextProps = ({
     basePath,
