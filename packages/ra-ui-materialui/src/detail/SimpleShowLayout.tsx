@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { styled } from '@mui/material/styles';
 import { Card, Stack } from '@mui/material';
-import { ResponsiveStyleValue } from '@mui/system';
+import { ResponsiveStyleValue, SxProps } from '@mui/system';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Record, useRecordContext, useResourceContext } from 'ra-core';
@@ -46,12 +46,19 @@ import { Labeled } from '../input';
  *         </Admin>
  *     );
  *     export default App;
+ *
+ * @param {SimpleShowLayoutProps} props
+ * @param {string} props.className A className to apply to the page content.
+ * @param {ElementType} props.component The component to use as root component (div by default).
+ * @param {ReactNode} props.divider An optional divider btween each field, passed to `<Stack>`.
+ * @param {number} props.spacing The spacing to use between each field, passed to `<Stack>`. Defaults to 1.
  */
 export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
     const {
         className,
         children,
         component: Component = Root,
+        divider,
         spacing = 1,
         ...rest
     } = props;
@@ -62,7 +69,11 @@ export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
     }
     return (
         <Component className={className} {...sanitizeRestProps(rest)}>
-            <Stack spacing={spacing} className={SimpleShowLayoutClasses.stack}>
+            <Stack
+                spacing={spacing}
+                divider={divider}
+                className={SimpleShowLayoutClasses.stack}
+            >
                 {Children.map(children, field =>
                     field && isValidElement<any>(field) ? (
                         <div
@@ -104,9 +115,11 @@ export interface SimpleShowLayoutProps {
     className?: string;
     children: ReactNode;
     component?: ElementType;
+    divider?: ReactNode;
     record?: Record;
     resource?: string;
     spacing?: ResponsiveStyleValue<number | string>;
+    sx?: SxProps;
 }
 
 SimpleShowLayout.propTypes = {
@@ -116,6 +129,7 @@ SimpleShowLayout.propTypes = {
     record: PropTypes.object,
     resource: PropTypes.string,
     spacing: PropTypes.any,
+    sx: PropTypes.any,
 };
 
 const PREFIX = 'RaSimpleShowLayout';

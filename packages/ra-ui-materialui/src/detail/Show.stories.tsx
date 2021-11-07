@@ -113,6 +113,23 @@ export const Component = () => (
     </Admin>
 );
 
+const PostShowWithStyles = () => (
+    <Show
+        sx={{
+            padding: 2,
+            border: '1px solid #333',
+        }}
+    >
+        <BookTitle />
+    </Show>
+);
+
+export const SX = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="books" show={PostShowWithStyles} />
+    </Admin>
+);
+
 const DefaultPostShow = () => (
     <Show>
         <SimpleShowLayout>
