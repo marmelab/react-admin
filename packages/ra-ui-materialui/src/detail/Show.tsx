@@ -18,14 +18,6 @@ import { ShowView } from './ShowView';
  * `<Show>` is not responsible for rendering the actual page -
  * that's the job of its child component (usually `<SimpleShowLayout>`).
  *
- * The <Show> component accepts the following props:
- *
- * - actions
- * - className
- * - component
- * - resource
- * - title
- *
  * @example
  *
  * // in src/posts.js
@@ -52,6 +44,18 @@ import { ShowView } from './ShowView';
  *     </Admin>
  * );
  * export default App;
+ *
+ * @param {ShowProps} props
+ * @param {ReactElement|false} props.actions An element to display above the page content, or false to disable actions.
+ * @param {string} props.className A className to apply to the page content.
+ * @param {ElementType} props.component The component to use as root component (div by default).
+ * @param {boolean} props.emptyWhileLoading Do not display the page content while loading the initial data.
+ * @param {string} props.id The id of the resource to display (grabbed from the route params if not defined).
+ * @param {function} props.onFailure A callback to handle the case where the record couldn't be loaded (redirects to the List view by default).
+ * @param {string} props.resource The resource to fetch from the data provider (grabbed from the ResourceContext if not defined).
+ * @param {ElementType|string} props.title The title of the page. Defaults to `#{resource} #${id}`.
+ *
+ * @see ShowView for the actual rendering
  */
 export const Show = ({
     id,
@@ -70,6 +74,7 @@ Show.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
+    emptyWhileLoading: PropTypes.bool,
     component: PropTypes.elementType,
     resource: PropTypes.string,
     title: PropTypes.node,

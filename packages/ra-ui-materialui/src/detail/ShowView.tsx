@@ -16,13 +16,14 @@ export const ShowView = (props: ShowViewProps) => {
         children,
         className,
         component: Content = 'div',
+        emptyWhileLoading = false,
         title,
         ...rest
     } = props;
 
     const { defaultTitle, record, version } = useShowContext(props);
 
-    if (!children) {
+    if (!children || (!record && emptyWhileLoading)) {
         return null;
     }
     return (
@@ -37,7 +38,7 @@ export const ShowView = (props: ShowViewProps) => {
                 defaultTitle={defaultTitle}
             />
             {actions !== false && actions}
-            <Content className={ShowClasses.main}>{record && children}</Content>
+            <Content className={ShowClasses.main}>{children}</Content>
         </Root>
     );
 };
@@ -48,6 +49,7 @@ ShowView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     children: PropTypes.node,
     className: PropTypes.string,
+    emptyWhileLoading: PropTypes.bool,
     title: PropTypes.any,
 };
 

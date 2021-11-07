@@ -11,7 +11,7 @@ import { Card, Stack } from '@mui/material';
 import { ResponsiveStyleValue } from '@mui/system';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Record } from 'ra-core';
+import { Record, useRecordContext, useResourceContext } from 'ra-core';
 
 import { Labeled } from '../input';
 
@@ -26,8 +26,8 @@ import { Labeled } from '../input';
  *     import * as React from "react";
  *     import { Show, SimpleShowLayout, TextField } from 'react-admin';
  *
- *     export const PostShow = (props) => (
- *         <Show {...props}>
+ *     export const PostShow = () => (
+ *         <Show>
  *             <SimpleShowLayout>
  *                 <TextField source="title" />
  *             </SimpleShowLayout>
@@ -47,53 +47,58 @@ import { Labeled } from '../input';
  *     );
  *     export default App;
  */
-export const SimpleShowLayout = ({
-    className,
-    children,
-    component: Component = Root,
-    record,
-    resource,
-    spacing = 1,
-    version,
-    ...rest
-}: SimpleShowLayoutProps) => (
-    <Component className={className} key={version} {...sanitizeRestProps(rest)}>
-        <Stack spacing={spacing} className={SimpleShowLayoutClasses.stack}>
-            {Children.map(children, field =>
-                field && isValidElement<any>(field) ? (
-                    <div
-                        key={field.props.source}
-                        className={classnames(
-                            `ra-field ra-field-${field.props.source}`,
-                            SimpleShowLayoutClasses.row,
-                            field.props.className
-                        )}
-                    >
-                        {field.props.addLabel ? (
-                            <Labeled
-                                record={record}
-                                resource={resource}
-                                label={field.props.label}
-                                source={field.props.source}
-                                disabled={false}
-                                fullWidth={field.props.fullWidth}
-                            >
-                                {field}
-                            </Labeled>
-                        ) : typeof field.type === 'string' ? (
-                            field
-                        ) : (
-                            cloneElement(field, {
-                                record,
-                                resource,
-                            })
-                        )}
-                    </div>
-                ) : null
-            )}
-        </Stack>
-    </Component>
-);
+export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
+    const {
+        className,
+        children,
+        component: Component = Root,
+        spacing = 1,
+        ...rest
+    } = props;
+    const resource = useResourceContext(props);
+    const record = useRecordContext(props);
+    if (!record) {
+        return null;
+    }
+    return (
+        <Component className={className} {...sanitizeRestProps(rest)}>
+            <Stack spacing={spacing} className={SimpleShowLayoutClasses.stack}>
+                {Children.map(children, field =>
+                    field && isValidElement<any>(field) ? (
+                        <div
+                            key={field.props.source}
+                            className={classnames(
+                                `ra-field ra-field-${field.props.source}`,
+                                SimpleShowLayoutClasses.row,
+                                field.props.className
+                            )}
+                        >
+                            {field.props.addLabel ? (
+                                <Labeled
+                                    record={record}
+                                    resource={resource}
+                                    label={field.props.label}
+                                    source={field.props.source}
+                                    disabled={false}
+                                    fullWidth={field.props.fullWidth}
+                                >
+                                    {field}
+                                </Labeled>
+                            ) : typeof field.type === 'string' ? (
+                                field
+                            ) : (
+                                cloneElement(field, {
+                                    record,
+                                    resource,
+                                })
+                            )}
+                        </div>
+                    ) : null
+                )}
+            </Stack>
+        </Component>
+    );
+};
 
 export interface SimpleShowLayoutProps {
     className?: string;
@@ -102,16 +107,15 @@ export interface SimpleShowLayoutProps {
     record?: Record;
     resource?: string;
     spacing?: ResponsiveStyleValue<number | string>;
-    version?: number;
 }
 
 SimpleShowLayout.propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
+    component: PropTypes.elementType,
     record: PropTypes.object,
     resource: PropTypes.string,
     spacing: PropTypes.any,
-    version: PropTypes.number,
 };
 
 const PREFIX = 'RaSimpleShowLayout';

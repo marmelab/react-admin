@@ -13,7 +13,12 @@ import { styled } from '@mui/material/styles';
 import { Card, Divider } from '@mui/material';
 import { Route } from 'react-router-dom';
 import { useRouteMatch } from 'react-router-dom';
-import { escapePath, Record } from 'ra-core';
+import {
+    escapePath,
+    Record,
+    useRecordContext,
+    useResourceContext,
+} from 'ra-core';
 
 import {
     TabbedShowLayoutTabs,
@@ -64,8 +69,6 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
         basePath,
         children,
         className,
-        record,
-        resource,
         syncWithLocation = true,
         tabs = DefaultTabs,
         value,
@@ -73,7 +76,8 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
         ...rest
     } = props;
     const match = useRouteMatch();
-
+    const resource = useResourceContext(props);
+    const record = useRecordContext(props);
     const nonNullChildren = Children.toArray(children).filter(
         child => child !== null
     );
@@ -85,6 +89,9 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
         }
     };
 
+    if (!record) {
+        return null;
+    }
     return (
         <Root className={className} key={version} {...sanitizeRestProps(rest)}>
             {cloneElement(
