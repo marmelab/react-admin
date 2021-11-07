@@ -38,7 +38,11 @@ export const fieldPropTypes = {
     sortBy: PropTypes.string,
     sortByOrder: PropTypes.oneOf<SortOrder>(['ASC', 'DESC']),
     source: PropTypes.string,
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    label: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.element,
+        PropTypes.bool,
+    ]),
     sortable: PropTypes.bool,
     className: PropTypes.string,
     cellClassName: PropTypes.string,
