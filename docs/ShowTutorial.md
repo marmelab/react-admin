@@ -1,15 +1,21 @@
 ---
 layout: default
-title: "Understanding The Show View"
+title: "The Show Page"
 ---
 
-## From A Manual Show View To React-Admin Components
+# The Show Page
+
+The Show view displays the details of a single record. 
+
+![post show view](./img/show-view.png)
+
+## Building A Show View By Hand
 
 The Show view is the simplest view in an admin: it displays a single record. You've probably developed it a dozen times, and in fact you don't need react-admin to build, say, a book show view:
 
 ```jsx
 import { useParams } from 'react-router-dom';
-import { useGetOne, Title } from 'react-admin';
+import { useGetOne, useRedirect, Title } from 'react-admin';
 import { Card, Stack, Typography } from '@mui/material';
 
 /**
@@ -17,9 +23,11 @@ import { Card, Stack, Typography } from '@mui/material';
  */
 const BookShow = () => {
     const { id } = useParams(); // this component is rendered in the /books/:id path
-    const { data, loading, error } = useGetOne('books', id);
+    const redirect = useRedirect();
+    const { data, loading } = useGetOne('books', id, {
+        onFailure: () => redirect('/books') // redirect to the list if the book is not found
+    });
     if (loading) { return <Loading />; }
-    if (error) { return <Error />; }
     return (
         <div>
             <Title title="Book Show"/>
@@ -44,18 +52,22 @@ You can pass this `BookShow` component as the `show` prop of the `<Resource name
 
 This example uses the `useGetOne` hook instead of `fetch` because `useGetOne` already contains the authentication and request state logic. But you could totally write a Show view with `fetch`.
 
+## `<Labeled>` Displays Fields With Labels
+
 When you build Show views like the one above, you have to repeat quite a lot of code for each field. React-admin Field components can help avoid that repetition. The following example leverages the `<Labeled>`, `<TextField>`, and `<DateField>` components in tha purpose:
 
 ```jsx
 import { useParams } from 'react-router-dom';
-import { useGetOne, Title, Labeled, TextField, DateField } from 'react-admin';
+import { useGetOne, useRedirect, Title, Labeled, TextField, DateField } from 'react-admin';
 import { Card, Stack } from '@mui/material';
 
 const BookShow = () => {
     const { id } = useParams();
-    const { data, loading, error } = useGetOne('books', id);
+    const redirect = useRedirect();
+    const { data, loading } = useGetOne('books', id, {
+        onFailure: () => redirect('/books')
+    });
     if (loading) { return <Loading />; }
-    if (error) { return <Error />; }
     return (
         <div>
             <Title title="Book Show"/>
@@ -74,18 +86,22 @@ const BookShow = () => {
 };
 ```
 
-Field components require a `record` to render, but they can grab it from a `RecordContext` instead of the `record` prop. This allows to reduce even more the amount of code you need to write for each field.
+## `<RecordContext>` Exposes The `record`
+
+Field components require a `record` to render, but they can grab it from a `RecordContext` instead of the `record` prop. Creating such a context with `<RecordContextProvider>` allows to reduce even more the amount of code you need to write for each field.
 
 ```jsx
 import { useParams } from 'react-router-dom';
-import { useGetOne, RecordContextProvider, Title, Labeled, TextField, DateField } from 'react-admin';
+import { useGetOne, useRedirect, RecordContextProvider, Title, Labeled, TextField, DateField } from 'react-admin';
 import { Card, Stack } from '@mui/material';
 
 const BookShow = () => {
     const { id } = useParams();
-    const { data, loading, error } = useGetOne('books', id);
+    const redirect = useRedirect();
+    const { data, loading } = useGetOne('books', id, {
+        onFailure: () => redirect('/books')
+    });
     if (loading) { return <Loading />; }
-    if (error) { return <Error />; }
     return (
         <RecordContextProvider value={data}>
             <div>
@@ -106,17 +122,20 @@ const BookShow = () => {
 };
 ```
 
+## `<SimpleShowLayout>` Displays Fields In A Stack
+
 Displaying a stack of fields with a label in a Card is such a common task that react-admin provides a helper component for that. It's called `<SimpleShowLayout>`:
 
 ```jsx
 import { useParams } from 'react-router-dom';
-import { useGetOne, RecordContextProvider, SimpleShowLayout, Title, TextField, DateField } from 'react-admin';
+import { useGetOne, useRedirect, RecordContextProvider, SimpleShowLayout, Title, TextField, DateField } from 'react-admin';
 
 const BookShow = () => {
     const { id } = useParams();
-    const { data, loading, error } = useGetOne('books', id);
-    if (loading) { return <Loading />; }
-    if (error) { return <Error />; }
+    const redirect = useRedirect();
+    const { data } = useGetOne('books', id, {
+        onFailure: () => redirect('/books')
+    });
     return (
         <RecordContextProvider value={data}>
             <div>
@@ -131,15 +150,17 @@ const BookShow = () => {
 };
 ```
 
+`<SimpleShowLayout>` renders nothing as long as the `data` is not loaded, so the `loaded` variable isn't needed anymore.
+
+## `useShowController`: The Controller Logic
+
 The initial logic that grabs the id from the location and fetches the record from the API is also common, and react-admin exposes the `useShowController` hook to do it: 
 
 ```jsx
 import { useShowController, SimpleShowLayout, Title, TextField, DateField } from 'react-admin';
 
 const BookShow = () => {
-    const { data, loading, error } = useShowController();
-    if (loading) { return <Loading />; }
-    if (error) { return <Error />; }
+    const { data } = useShowController();
     return (
         <RecordContextProvider value={data}>
             <div>
@@ -155,6 +176,8 @@ const BookShow = () => {
 ```
 
 Notice that `useShowController` doesn't need the 'books' resource name - it relies on the `ResourceContext`, set by the `<Resource>` component, to guess it.
+
+## `<ShowBase>`: Component Version Of The Controller
 
 As calling the Show controller and putting its result into a context is also common, react-admin provides the `<ShowBase>` component to do it. So the example can be further simplified to the following: 
 
@@ -173,6 +196,8 @@ const BookShow = () => (
     </ShowBase>
 );
 ```
+
+## `<Show>` Renders Title, Fields, And Actions
 
 `<ShowBase>` is a headless component: it renders only its children. But almost every show view needs a wrapping `<div>` and a title. That's why react-admin provides the `<Show>` component, which includes the `<ShowBase>` component, a title build from the resource name, and even an "Edit" button if the resource has an edit component:
 
@@ -197,7 +222,7 @@ And that's it! React-admin components are not magic, they are React commponents 
 
 ## Accessing the Record
 
-Using the `<Show>` component instead of calling `useGetOne` manually has one drawback: there is no longer a `data` object containing the fetched record. Instead, you have to access the record from the `<RecordContext>` using the `useRecordContext` hook. 
+Using the `<Show>` component instead of calling `useGetOne` manually has one drawback: there is no longer a `data` object containing the fetched record. Instead, you have to access the record from the `<RecordContext>` using the [`useRecordContext`] hook.
 
 The following example illustrates the usage of this hook with a custom Field component displaying stars according to the book rating:
 
@@ -223,7 +248,7 @@ const BookShow = () => (
 );
 ```
 
-Sometimes you don't want to create a new component just to be able to use the `useRecordContext` hook. In these cases, you can use the `<WithRecord>` component, which is the render prop version of the hook:
+Sometimes you don't want to create a new component just to be able to use the `useRecordContext` hook. In these cases, you can use the [`<WithRecord>`] component, which is the render prop version of the hook:
 
 ```jsx
 import { Show, SimpleShowLayout, TextField, DateField, WithRecord } from 'react-admin';
@@ -242,9 +267,9 @@ const BookShow = () => (
 );
 ```
 
-## Using a Tabbed Layout
+## Using Another Layout
 
-When a Show view has to display a lot of fields, the `<SimpleShowLayout>` component ends up in very long page that are not user-friendly. You can use the `<TabbedShowLayout>` component instead, which is a variant of the `<SimpleShowLayout>` component that displays the fields in tabs. 
+When a Show view has to display a lot of fields, the `<SimpleShowLayout>` component ends up in very long page that are not user-friendly. You can use the [`<TabbedShowLayout>`] component instead, which is a variant of the `<SimpleShowLayout>` component that displays the fields in tabs. 
 
 ```jsx
 import { Show, TabbedShowLayout, Tab, TextField, DateField, WithRecord } from 'react-admin';
@@ -273,9 +298,9 @@ const BookShow = () => (
 );
 ```
 
-## Using a Custom Layout
+## Building a Custom Layout
 
-In many cases, neither the `<SimpleShowLayout>` nor the `<TabbedShowLayout>` components are enough to display the fields you want. In these cases, pass your layout components directly as children of the `<Show>` component. As `<Show>` takes care of fetching the record and putting it in a `RecordContext`, you can use Field components directly. 
+In many cases, neither the `<SimpleShowLayout>` nor the `<TabbedShowLayout>` components are enough to display the fields you want. In these cases, pass your layout components directly as children of the [`<Show>`] component. As `<Show>` takes care of fetching the record and putting it in a [`<RecordContextProvider>`], you can use Field components directly. 
 
 For instance, to display several fields in a single line, you can use material-ui's `<Grid>` component:
 
@@ -285,7 +310,7 @@ import { Card, CardContent, Grid } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 
 const BookShow = () => (
-    <Show>
+    <Show emptyWhileLoading>
         <Card>
             <CardContent>
                 <Grid container spacing={2}>
@@ -312,6 +337,8 @@ const BookShow = () => (
 );
 ```
 
+**Tip**: With `emptyWhileLoading` turned on, the `<Show>` component doesn't render its child component until the record is available. Without this flag, the Field components would render even during the loading phase, and may break if they aren't planned to work with an empty record context. You could grab the `loaded` state from the `ShowContext` instead, but that would force you to split the `<BookShow>` component into two.  
+
 You can also split the list of fields into two stacks, and use the `<SimpleShowLayout>` in the main panel:
 
 ```jsx
@@ -319,7 +346,7 @@ import { Show, SimpleShowLayout, TextField, DateField, WithRecord } from 'react-
 import StarIcon from '@mui/icons-material/Star';
 
 const BookShow = () => (
-    <Show>
+    <Show emptyWhileLoading>
         <Grid container spacing={2}>
             <Grid item xs={12} sm={8}>
                 <SimpleShowLayout>
@@ -337,6 +364,43 @@ const BookShow = () => (
                     <Labeled label="Last rating"><DateField source="last_rated_at" /></Labeled>
                 </Stack>
             </Grid>
+        </Grid>
     </Show>
 );
 ```
+
+## Third-Party Show Components
+
+You can find components for react-admin in third-party repositories.
+
+- [ra-compact-ui](https://github.com/ValentinnDimitroff/ra-compact-ui#layouts): plugin that allows to have custom styled show layouts.
+
+## API
+
+* [`<RecordContextProvider>`]
+* [`<Show>`]
+* [`<ShowActions>`]
+* [`<ShowBase>`]
+* [`<ShowGuesser>`]
+* [`<SimpleShowLayout>`]
+* [`<Tab>`]
+* [`<TabbedShowLayout>`]
+* [`<WithRecord>`]
+* [`useRecordContext`]
+* [`useResourceContext`]
+* [`useShowContext`]
+* [`useShowController`]
+
+[`<RecordContextProvider>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/RecordContext.tsx
+[`<Show>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/Show.tsx
+[`<ShowActions>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/ShowActions.tsx
+[`<ShowBase>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/details/ShowBase.tsx
+[`<ShowGuesser>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/ShowGuesser.tsx
+[`<SimpleShowLayout>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/SimpleShowLayouttsx)
+[`<Tab>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/Tab.tsx
+[`<TabbedShowLayout>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/TabbedShowLayouttsx)
+[`<WithRecord>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/RecordContext.tsx
+[`useRecordContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/RecordContext.tsx
+[`useResourceContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/core/useResourceContext.ts
+[`useShowContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/details/useShowContext.tsx
+[`useShowController`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/details/useShowControllerts)]
