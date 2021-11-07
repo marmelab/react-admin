@@ -57,7 +57,7 @@ const PostShow = () => (
 ## API
 
 * [`useShowContext`]
-* [`useShowConttroller`]
+* [`useShowController`]
 
-[`useShowContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/details/useShowContext.ts
+[`useShowContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/details/useShowContext.tsx
 [`useShowController`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/details/useShowController.ts
