@@ -11,7 +11,7 @@ const TranslationContext = createContext<TranslationContextProps>({
     locale: 'en',
     setLocale: () => {},
     i18nProvider: {
-        translate: x => x,
+        translate: (x, options) => options?._ ?? x,
         changeLocale: () => Promise.resolve(),
         getLocale: () => 'en',
     },
