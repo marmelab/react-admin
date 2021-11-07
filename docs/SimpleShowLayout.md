@@ -189,7 +189,9 @@ To override the style of all instances of `<SimpleShowLayout>` using the [materi
 ## API
 
 * [`<SimpleShowLayout>`]
+* [`<Labeled>`]
 * [`useRecordContext`]
 
-[`<SimpleShowLayout>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/SimpleShowLayouttsx)
+[`<SimpleShowLayout>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/SimpleShowLayout.tsx
+[`<Labeled>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/input/Labeled.tsx
 [`useRecordContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/RecordContext.tsx

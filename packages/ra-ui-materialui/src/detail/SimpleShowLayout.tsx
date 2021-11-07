@@ -10,42 +10,45 @@ import { Record, useRecordContext } from 'ra-core';
 import { Labeled } from '../input';
 
 /**
- * Simple Layout for a Show view, showing fields in one column.
+ * Layout for a Show view showing fields in one column.
  *
- * Receives the current `record` from the parent `<Show>` component,
- * and passes it to its children. Children should be Field-like components.
+ * It pulls the record from the RecordContext. It renders a material-ui `<Card>`
+ * containing the record fields in a single-column layout (via material-ui's
+ * `<Stack>` component).
+ * `<SimpleShowLayout>` delegates the actual rendering of fields to its children.
+ * It wraps each field inside a `<Labeled>` component to add a label.
  *
  * @example
- *     // in src/posts.js
- *     import * as React from "react";
- *     import { Show, SimpleShowLayout, TextField } from 'react-admin';
+ * // in src/posts.js
+ * import * as React from "react";
+ * import { Show, SimpleShowLayout, TextField } from 'react-admin';
  *
- *     export const PostShow = () => (
- *         <Show>
- *             <SimpleShowLayout>
- *                 <TextField source="title" />
- *             </SimpleShowLayout>
- *         </Show>
- *     );
+ * export const PostShow = () => (
+ *     <Show>
+ *         <SimpleShowLayout>
+ *             <TextField source="title" />
+ *         </SimpleShowLayout>
+ *     </Show>
+ * );
  *
- *     // in src/App.js
- *     import * as React from "react";
- *     import { Admin, Resource } from 'react-admin';
+ * // in src/App.js
+ * import * as React from "react";
+ * import { Admin, Resource } from 'react-admin';
  *
- *     import { PostShow } from './posts';
+ * import { PostShow } from './posts';
  *
- *     const App = () => (
- *         <Admin dataProvider={...}>
- *             <Resource name="posts" show={PostShow} />
- *         </Admin>
- *     );
- *     export default App;
+ * const App = () => (
+ *     <Admin dataProvider={...}>
+ *         <Resource name="posts" show={PostShow} />
+ *     </Admin>
+ * );
  *
  * @param {SimpleShowLayoutProps} props
  * @param {string} props.className A className to apply to the page content.
  * @param {ElementType} props.component The component to use as root component (div by default).
  * @param {ReactNode} props.divider An optional divider btween each field, passed to `<Stack>`.
  * @param {number} props.spacing The spacing to use between each field, passed to `<Stack>`. Defaults to 1.
+ * @param {Object} props.sx Custom style object.
  */
 export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
     const {
@@ -100,8 +103,8 @@ export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
 };
 
 export interface SimpleShowLayoutProps {
-    className?: string;
     children: ReactNode;
+    className?: string;
     component?: ElementType;
     divider?: ReactNode;
     record?: Record;
@@ -110,8 +113,8 @@ export interface SimpleShowLayoutProps {
 }
 
 SimpleShowLayout.propTypes = {
-    className: PropTypes.string,
     children: PropTypes.node,
+    className: PropTypes.string,
     component: PropTypes.elementType,
     record: PropTypes.object,
     spacing: PropTypes.any,

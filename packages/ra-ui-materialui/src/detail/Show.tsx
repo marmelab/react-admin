@@ -53,6 +53,7 @@ import { ShowView } from './ShowView';
  * @param {string} props.id The id of the resource to display (grabbed from the route params if not defined).
  * @param {function} props.onFailure A callback to handle the case where the record couldn't be loaded (redirects to the List view by default).
  * @param {string} props.resource The resource to fetch from the data provider (grabbed from the ResourceContext if not defined).
+ * @param {Object} props.sx Custom style object.
  * @param {ElementType|string} props.title The title of the page. Defaults to `#{resource} #${id}`.
  *
  * @see ShowView for the actual rendering
