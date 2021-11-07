@@ -175,6 +175,38 @@ export const PostEdit = (props) => (
 );
 ```
 
+## `addLabel` Prop No Longer Considered For Show Labelling 
+
+`<SimpleShowLayout>` and `<TabbedShowLayout>` used to look for an `addLabel` prop to decide whether they needed to add a label or not. this relied on `defaultProps`, which will soon be removed from React. 
+
+The Show layout components now render a label for their children as soon as they have a `source` or a `label` prop. If you don't want a field to have a label in the show view, pass the `label={false}` prop.
+
+```jsx
+const PostShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            {/* this field will have a Label */}
+            <TextField source="title" />
+            {/* this one will also have a Label */}
+            <TextField label="Author name" source="author" />
+            {/* this field will not */}
+            <TextField label={false} source="title" />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+As the `addLabel` prop is now ignored in fields, you can remove it from your custom fields:
+
+```diff
+const MyCustomField = () => (
+    ... 
+);
+-MyCustomField.defaultProps = {
+-    addLabel: true
+-};
+```
+
 ## Removed The `aside` Prop From `<Show>`
 
 To add a sidebar to a `<Show>` component, you can no longer use the `<Show aside>` prop. But `<Show>` has evolved to accept many children, and render a `<div style={{ display: 'flex" }}>`. So adding a sidebar becomes more natural:
