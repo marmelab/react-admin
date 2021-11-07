@@ -1,11 +1,6 @@
 import React from 'react';
 import { useResourceContext } from 'ra-core';
-import {
-    Show as RaShow,
-    ShowProps,
-    SimpleShowLayout,
-    SimpleShowLayoutProps,
-} from 'ra-ui-materialui';
+import { Show as RaShow, ShowProps, SimpleShowLayout } from 'ra-ui-materialui';
 import {
     useResourceConfiguration,
     useResourcesConfiguration,
@@ -18,13 +13,13 @@ export const Show = (props: ShowProps) => (
     </RaShow>
 );
 
-export const ShowForm = (props: Omit<SimpleShowLayoutProps, 'children'>) => {
-    const resource = useResourceContext(props);
+export const ShowForm = () => {
+    const resource = useResourceContext();
     const [resources] = useResourcesConfiguration();
     const [resourceConfiguration] = useResourceConfiguration(resource);
 
     return (
-        <SimpleShowLayout {...props}>
+        <SimpleShowLayout>
             {resourceConfiguration.fields
                 .filter(definition => definition.views.includes('show'))
                 .map(definition =>
