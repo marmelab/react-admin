@@ -93,13 +93,13 @@ export const useShowController = <RecordType extends Record = Record>(
     });
 
     return {
-        error,
-        loading,
-        loaded,
         defaultTitle,
-        resource,
+        error,
+        loaded,
+        loading,
         record,
         refetch,
+        resource,
         version,
     };
 };

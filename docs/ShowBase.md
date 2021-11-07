@@ -8,6 +8,7 @@ title: "The ShowBase Component"
 The `<ShowBase>` component handles the headless logic of the Show page:
 
 - it calls `useShowcontroller` to fetch the record from the data provider via `dataProvider.getOne()`,
+- it computes the default page title
 - it creates a `ShowContext` and a `RecordContext`,
 - it renders its child component
 
@@ -103,6 +104,10 @@ The default `onFailure` function is:
     refresh();
 }
 ```
+
+## See Also
+
+* [`useShowController`](./useShowController.md) for a completely headless version of this component
 
 ## API
 
