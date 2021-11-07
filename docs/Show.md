@@ -5,11 +5,11 @@ title: "The Show Component"
 
 # `<Show>`
 
-The `<Show>` component handles the headless logic of the Show page:
+The `<Show>` component handles the logic of the Show page:
 
 - it calls `useShowcontroller` to fetch the record from the data provider via `dataProvider.getOne()`,
-- it creates a `ShowContext` and a `RecordContext`,
 - it computes the default page title
+- it creates a `ShowContext` and a `RecordContext`,
 - it renders the page layout with the correct title and actions
 - it renders its child component (a show layout component like `<SimpleShowLayout>`)
 
@@ -213,7 +213,7 @@ const PostShow = () => (
 );
 ```
 
-You can handle this case by calling the `useShowContext` hook to get the loading state:
+You can handle this case by calling the [`useShowContext`](./useShowContext.md) hook to get the loading state:
 
 ```jsx
 const PostTitle = () => {
@@ -263,16 +263,14 @@ const PostShow = props => (
 
 ## CSS API
 
-The `<Show>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
+The `<Show>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name   | Description                                                                                |
 | ----------- | ------------------------------------------------------------------------------------------ |
 | `root`      | Alternative to using `className`. Applied to the root element                              |
 | `main`      | Applied to the main container                                                              |
-| `noActions` | Applied to the main container when `actions` prop is `false`                               |
-| `card`      | Applied to the child component inside the main container (Material UI's `Card` by default) |
 
-To override the style of all instances of `<Show>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaShow` key.
+To override the style of all instances of `<Show>` using the [material-ui style overrides](https://mui.com/customization/theme-components/), use the `RaShow` key.
 
 ## Displaying Fields Depending On User Permissions
 
@@ -338,3 +336,26 @@ export const UserShow = () => {
 {% endraw %}
 
 For more details about permissions, check out the [authProvider documentation](./Authentication.md#authorization).
+
+## API
+
+* [`<Show>`]
+* [`<ShowActions>`]
+* [`<SimpleShowLayout>`]
+* [`<Tab>`]
+* [`<TabbedShowLayout>`]
+* [`useRecordContext`]
+* [`useResourceContext`]
+* [`useShowContext`]
+* [`useShowController`]
+
+[`<Show>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/Show.tsx
+[`<ShowActions>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/ShowActions.tsx
+[`<SimpleShowLayout>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/SimpleShowLayouttsx)
+[`<Tab>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/Tab.tsx
+[`<TabbedShowLayout>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/TabbedShowLayouttsx)
+[`<WithRecord>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/RecordContext.tsx
+[`useRecordContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/RecordContext.tsx
+[`useResourceContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/core/useResourceContext.ts
+[`useShowContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/details/useShowContext.tsx
+[`useShowController`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/details/useShowControllerts)]
