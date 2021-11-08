@@ -1,7 +1,7 @@
 export default (url, initialField = 'title') => ({
     elements: {
         body: 'body',
-        field: name => `.ra-field-${name} > div > div > span`,
+        field: name => `.ra-field-${name} > div > span`,
         fields: `.ra-field`,
         snackbar: 'div[role="alertdialog"]',
         tabs: `.show-tab`,
