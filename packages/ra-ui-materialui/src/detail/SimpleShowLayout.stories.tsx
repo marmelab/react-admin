@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Divider as MuiDivider } from '@mui/material';
+import { Grid, Divider as MuiDivider } from '@mui/material';
 import {
     RecordContextProvider,
     ResourceContext,
     useRecordContext,
     WithRecord,
 } from 'ra-core';
-import { Labeled } from '../input/Labeled';
+import { FieldWithLabel } from './FieldWithLabel';
 import { TextField, NumberField } from '../field';
 import { SimpleShowLayout } from './SimpleShowLayout';
 
@@ -57,9 +57,9 @@ export const CustomLabel = () => (
             <SimpleShowLayout>
                 <TextField label="Identifier" source="id" />
                 <TextField source="title" />
-                <Labeled label="Author name">
+                <FieldWithLabel label="Author name">
                     <TextField source="author" />
-                </Labeled>
+                </FieldWithLabel>
                 <TextField label={false} source="summary" />
                 <NumberField source="year" />
             </SimpleShowLayout>
@@ -111,6 +111,28 @@ export const SX = () => (
                 <TextField source="summary" />
                 <NumberField source="year" />
             </SimpleShowLayout>
+        </RecordContextProvider>
+    </ResourceContext.Provider>
+);
+
+export const SeveralColumns = () => (
+    <ResourceContext.Provider value="books">
+        <RecordContextProvider value={record}>
+            <Grid container spacing={2}>
+                <Grid item xs={6}>
+                    <SimpleShowLayout component="div">
+                        <TextField source="id" />
+                        <TextField source="title" />
+                    </SimpleShowLayout>
+                </Grid>
+                <Grid item xs={6}>
+                    <SimpleShowLayout component="div">
+                        <TextField source="author" />
+                        <TextField source="summary" />
+                        <NumberField source="year" />
+                    </SimpleShowLayout>
+                </Grid>
+            </Grid>
         </RecordContextProvider>
     </ResourceContext.Provider>
 );

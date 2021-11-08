@@ -5,6 +5,7 @@ export * from './Edit';
 export * from './EditActions';
 export * from './EditGuesser';
 export * from './EditView';
+export * from './FieldWithLabel';
 export * from './Show';
 export * from './ShowActions';
 export * from './ShowGuesser';

@@ -7,7 +7,7 @@ import { ResponsiveStyleValue } from '@mui/system';
 import { useTranslate, Record } from 'ra-core';
 import classnames from 'classnames';
 
-import { Labeled } from '../input/Labeled';
+import { FieldWithLabel } from './FieldWithLabel';
 
 /**
  * Tab element for the SimpleShowLayout.
@@ -90,29 +90,17 @@ export const Tab = ({
         <Stack className={contentClassName} spacing={spacing} divider={divider}>
             {React.Children.map(children, field =>
                 field && isValidElement<any>(field) ? (
-                    <div
+                    <FieldWithLabel
                         key={field.props.source}
                         className={classnames(
                             'ra-field',
-                            `ra-field-${field.props.source}`,
+                            field.props.source &&
+                                `ra-field-${field.props.source}`,
                             field.props.className
                         )}
                     >
-                        {field.props.label !== false &&
-                        typeof field.type !== 'string' &&
-                        // @ts-ignore
-                        field.type?.displayName !== 'Labeled' &&
-                        (field.props.source || field.props.label) ? (
-                            <Labeled
-                                label={field.props.label}
-                                source={field.props.source}
-                            >
-                                {field}
-                            </Labeled>
-                        ) : (
-                            field
-                        )}
-                    </div>
+                        {field}
+                    </FieldWithLabel>
                 ) : null
             )}
         </Stack>
