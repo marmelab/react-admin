@@ -1,53 +1,35 @@
 import * as React from 'react';
-import { cloneElement, Children, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import { Card } from '@mui/material';
 import classnames from 'classnames';
-import {
-    ShowControllerProps,
-    useResourceDefinition,
-    useShowContext,
-} from 'ra-core';
+import { useShowContext } from 'ra-core';
 
-import { ShowActions as DefaultActions } from './ShowActions';
-import { TitleForRecord } from '../layout';
 import { ShowProps } from '../types';
+import { ShowActions } from './ShowActions';
+import { TitleForRecord } from '../layout';
+
+const defaultActions = <ShowActions />;
 
 export const ShowView = (props: ShowViewProps) => {
     const {
-        actions,
-        aside,
+        actions = defaultActions,
         children,
         className,
-        component: Content = Card,
+        component: Content = 'div',
+        emptyWhileLoading = false,
         title,
         ...rest
     } = props;
 
-    const {
-        basePath,
-        defaultTitle,
-        hasList,
-        record,
-        resource,
-        version,
-    } = useShowContext(props);
-    const { hasEdit } = useResourceDefinition(props);
+    const { defaultTitle, record, version } = useShowContext(props);
 
-    const finalActions =
-        typeof actions === 'undefined' && hasEdit ? (
-            <DefaultActions />
-        ) : (
-            actions
-        );
-
-    if (!children) {
+    if (!children || (!record && emptyWhileLoading)) {
         return null;
     }
     return (
         <Root
             className={classnames('show-page', ShowClasses.root, className)}
+            key={version}
             {...sanitizeRestProps(rest)}
         >
             <TitleForRecord
@@ -55,63 +37,20 @@ export const ShowView = (props: ShowViewProps) => {
                 record={record}
                 defaultTitle={defaultTitle}
             />
-            {finalActions &&
-                cloneElement(finalActions, {
-                    basePath,
-                    data: record,
-                    hasList,
-                    hasEdit,
-                    resource,
-                    //  Ensure we don't override any user provided props
-                    ...finalActions.props,
-                })}
-            <div
-                className={classnames(ShowClasses.main, {
-                    [ShowClasses.noActions]: !finalActions,
-                })}
-            >
-                <Content className={ShowClasses.card}>
-                    {record &&
-                        cloneElement(Children.only(children), {
-                            resource,
-                            basePath,
-                            record,
-                            version,
-                        })}
-                </Content>
-                {aside &&
-                    cloneElement(aside, {
-                        resource,
-                        basePath,
-                        record,
-                        version,
-                    })}
-            </div>
+            {actions !== false && actions}
+            <Content className={ShowClasses.main}>{children}</Content>
         </Root>
     );
 };
 
-interface ShowViewProps
-    extends ShowProps,
-        Partial<Omit<ShowControllerProps, 'resource'>> {
-    children: ReactElement;
-}
+export type ShowViewProps = ShowProps;
 
 ShowView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    aside: PropTypes.element,
-    basePath: PropTypes.string,
-    children: PropTypes.element,
+    children: PropTypes.node,
     className: PropTypes.string,
-    defaultTitle: PropTypes.any,
-    hasEdit: PropTypes.bool,
-    hasList: PropTypes.bool,
-    loading: PropTypes.bool,
-    loaded: PropTypes.bool,
-    record: PropTypes.object,
-    resource: PropTypes.string,
+    emptyWhileLoading: PropTypes.bool,
     title: PropTypes.any,
-    version: PropTypes.node,
 };
 
 const sanitizeRestProps = ({
@@ -138,19 +77,13 @@ const PREFIX = 'RaShow';
 export const ShowClasses = {
     root: `${PREFIX}-root`,
     main: `${PREFIX}-main`,
-    noActions: `${PREFIX}-noActions`,
-    card: `${PREFIX}-card`,
 };
 
-const Root = styled('div', { name: PREFIX })({
-    [`&.${ShowClasses.root}`]: {},
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${ShowClasses.root}`]: {
+        paddingTop: theme.spacing(2),
+    },
     [`& .${ShowClasses.main}`]: {
         display: 'flex',
     },
-    [`& .${ShowClasses.noActions}`]: {
-        marginTop: '1em',
-    },
-    [`& .${ShowClasses.card}`]: {
-        flex: '1 1 auto',
-    },
-});
+}));

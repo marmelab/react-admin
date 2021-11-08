@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { waitFor, fireEvent, act } from '@testing-library/react';
-import { DataProviderContext, Record, undoableEventEmitter } from 'ra-core';
+import { DataProviderContext, undoableEventEmitter } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 
 import { Edit } from './Edit';

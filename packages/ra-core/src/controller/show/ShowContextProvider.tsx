@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import { Record } from '../../types';
-import { RecordContextProvider } from '../RecordContext';
+import { RecordContextProvider } from '../record/RecordContext';
 import { ShowContext } from './ShowContext';
-import { ShowControllerProps } from './useShowController';
+import { ShowControllerResult } from './useShowController';
 
 /**
  * Create a Show Context.
@@ -31,7 +31,7 @@ export const ShowContextProvider = ({
     value,
 }: {
     children: ReactElement;
-    value: ShowControllerProps;
+    value: ShowControllerResult;
 }) => (
     <ShowContext.Provider value={value}>
         <RecordContextProvider<Partial<Record>> value={value && value.record}>

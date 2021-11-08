@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ReactNode } from 'react';
 
 import { Record } from '../../types';
-import { RecordContextProvider } from '../RecordContext';
+import { RecordContextProvider } from '../record/RecordContext';
 import { CreateContext } from './CreateContext';
 import { CreateControllerProps } from './useCreateController';
 import { SaveContextProvider, usePickSaveContext } from './SaveContext';

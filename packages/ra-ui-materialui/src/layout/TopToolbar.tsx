@@ -31,8 +31,7 @@ const StyledToolbar = styled(Toolbar, { name: PREFIX })(({ theme }) => ({
     [`&.${TopToolbarClasses.root}`]: {
         display: 'flex',
         justifyContent: 'flex-end',
-        alignItems: 'flex-start',
-        paddingTop: theme.spacing(3),
+        alignItems: 'center',
         paddingBottom: theme.spacing(1),
         minHeight: theme.spacing(5),
         [theme.breakpoints.up('xs')]: {

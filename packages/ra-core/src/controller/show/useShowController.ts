@@ -1,5 +1,5 @@
+import { useParams } from 'react-router-dom';
 import useVersion from '../useVersion';
-import { useCheckMinimumRequiredProps } from '../checkMinimumRequiredProps';
 import { Record, Identifier, OnFailure } from '../../types';
 import { useGetOne, Refetch } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
@@ -7,20 +7,13 @@ import { useNotify, useRedirect, useRefresh } from '../../sideEffect';
 import { CRUD_GET_ONE } from '../../actions';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 
-export interface ShowProps {
-    basePath?: string;
-    hasCreate?: boolean;
-    hasEdit?: boolean;
-    hasShow?: boolean;
-    hasList?: boolean;
+export interface ShowControllerProps {
     id?: Identifier;
     onFailure?: OnFailure;
     resource?: string;
-    [key: string]: any;
 }
 
-export interface ShowControllerProps<RecordType extends Record = Record> {
-    basePath?: string;
+export interface ShowControllerResult<RecordType extends Record = Record> {
     defaultTitle: string;
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
@@ -28,10 +21,6 @@ export interface ShowControllerProps<RecordType extends Record = Record> {
     error?: any;
     loading: boolean;
     loaded: boolean;
-    hasCreate?: boolean;
-    hasEdit?: boolean;
-    hasList?: boolean;
-    hasShow?: boolean;
     resource: string;
     record?: RecordType;
     refetch: Refetch;
@@ -39,7 +28,12 @@ export interface ShowControllerProps<RecordType extends Record = Record> {
 }
 
 /**
- * Prepare data for the Show view
+ * Prepare data for the Show view.
+ *
+ * useShowController does a few things:
+ * - it grabs the id from the URL and the resource name from the ResourceContext,
+ * - it fetches the record via useGetOne,
+ * - it prepares the page title.
  *
  * @param {Object} props The props passed to the Show component.
  *
@@ -50,39 +44,43 @@ export interface ShowControllerProps<RecordType extends Record = Record> {
  * import { useShowController } from 'react-admin';
  * import ShowView from './ShowView';
  *
- * const MyShow = props => {
- *     const controllerProps = useShowController(props);
- *     return <ShowView {...controllerProps} {...props} />;
- * }
+ * const MyShow = () => {
+ *     const controllerProps = useShowController();
+ *     return <ShowView {...controllerProps} />;
+ * };
+ *
+ * @example // useShowController can also take its parameters from props
+ *
+ * import { useShowController } from 'react-admin';
+ * import ShowView from './ShowView';
+ *
+ * const MyShow = () => {
+ *     const controllerProps = useShowController({ resource: 'posts', id: 1234 });
+ *     return <ShowView {...controllerProps} />;
+ * };
  */
 export const useShowController = <RecordType extends Record = Record>(
-    props: ShowProps
-): ShowControllerProps<RecordType> => {
-    useCheckMinimumRequiredProps('Show', ['basePath', 'resource'], props);
-    const {
-        basePath,
-        hasCreate,
-        hasEdit,
-        hasList,
-        hasShow,
-        id,
-        onFailure,
-    } = props;
+    props: ShowControllerProps
+): ShowControllerResult<RecordType> => {
+    const { id: propsId, onFailure } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
     const version = useVersion();
+    const { id } = useParams<{ id?: string }>();
     const { data: record, error, loading, loaded, refetch } = useGetOne<
         RecordType
-    >(resource, id, {
+    >(resource, propsId || id, {
         action: CRUD_GET_ONE,
         onFailure:
             onFailure ??
             (() => {
-                notify('ra.notification.item_doesnt_exist', 'warning');
-                redirect('list', basePath);
+                notify('ra.notification.item_doesnt_exist', {
+                    type: 'warning',
+                });
+                redirect('list', resource);
                 refresh();
             }),
     });
@@ -95,18 +93,13 @@ export const useShowController = <RecordType extends Record = Record>(
     });
 
     return {
-        error,
-        loading,
-        loaded,
         defaultTitle,
-        resource,
-        basePath,
+        error,
+        loaded,
+        loading,
         record,
         refetch,
-        hasCreate,
-        hasEdit,
-        hasList,
-        hasShow,
+        resource,
         version,
     };
 };

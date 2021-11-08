@@ -97,13 +97,7 @@ const ResourceRoutes = (props: ResourceProps) => {
                             render={routeProps => (
                                 <WithPermissions
                                     component={show}
-                                    basePath={basePath}
-                                    id={decodeURIComponent(
-                                        (routeProps.match as ResourceMatch)
-                                            .params.id
-                                    )}
                                     {...routeProps}
-                                    {...resourceData}
                                 />
                             )}
                         />

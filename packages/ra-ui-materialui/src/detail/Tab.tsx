@@ -58,10 +58,10 @@ export const Tab = ({
     contentClassName,
     context,
     className,
+    divider,
     icon,
     label,
     record,
-    resource,
     spacing = 1,
     syncWithLocation = true,
     value,
@@ -87,7 +87,7 @@ export const Tab = ({
     );
 
     const renderContent = () => (
-        <Stack className={contentClassName} spacing={spacing}>
+        <Stack className={contentClassName} spacing={spacing} divider={divider}>
             {React.Children.map(children, field =>
                 field && isValidElement<any>(field) ? (
                     <div
@@ -98,24 +98,19 @@ export const Tab = ({
                             field.props.className
                         )}
                     >
-                        {field.props.addLabel ? (
+                        {field.props.label !== false &&
+                        typeof field.type !== 'string' &&
+                        // @ts-ignore
+                        field.type?.displayName !== 'Labeled' &&
+                        (field.props.source || field.props.label) ? (
                             <Labeled
                                 label={field.props.label}
                                 source={field.props.source}
-                                basePath={basePath}
-                                record={record}
-                                resource={resource}
                             >
                                 {field}
                             </Labeled>
-                        ) : typeof field.type === 'string' ? (
-                            field
                         ) : (
-                            React.cloneElement(field, {
-                                basePath,
-                                record,
-                                resource,
-                            })
+                            field
                         )}
                     </div>
                 ) : null
@@ -144,11 +139,11 @@ export interface TabProps extends Omit<MuiTabProps, 'children'> {
     contentClassName?: string;
     context?: 'header' | 'content';
     className?: string;
+    divider?: ReactNode;
     icon?: ReactElement;
     label: string;
     path?: string;
     record?: Record;
-    resource?: string;
     spacing?: ResponsiveStyleValue<number | string>;
     syncWithLocation?: boolean;
     value?: string | number;

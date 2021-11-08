@@ -20,7 +20,6 @@ import { Button, ButtonProps } from './Button';
  */
 export const EditButton = (props: EditButtonProps) => {
     const {
-        basePath = '',
         icon = defaultIcon,
         label = 'ra.action.edit',
         record,
@@ -34,11 +33,11 @@ export const EditButton = (props: EditButtonProps) => {
             to={useMemo(
                 () => ({
                     pathname: record
-                        ? linkToRecord(basePath || `/${resource}`, record.id)
+                        ? linkToRecord(`/${resource}`, record.id)
                         : '',
                     state: { _scrollToTop: scrollToTop },
                 }),
-                [basePath, record, resource, scrollToTop]
+                [record, resource, scrollToTop]
             )}
             label={label}
             onClick={stopPropagation}

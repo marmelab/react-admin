@@ -2,10 +2,9 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import inflection from 'inflection';
 import {
-    useShowController,
+    ShowBase,
     InferredElement,
     getElementsFromRecords,
-    ShowContextProvider,
     useResourceContext,
     useShowContext,
 } from 'ra-core';
@@ -37,8 +36,8 @@ const ShowViewGuesser = props => {
 
 export const ${inflection.capitalize(
                         inflection.singularize(resource)
-                    )}Show = props => (
-    <Show {...props}>
+                    )}Show = () => (
+    <Show>
 ${inferredChild.getRepresentation()}
     </Show>
 );`
@@ -52,13 +51,10 @@ ${inferredChild.getRepresentation()}
 
 ShowViewGuesser.propTypes = ShowView.propTypes;
 
-export const ShowGuesser = (props: ShowProps) => {
-    const controllerProps = useShowController(props);
-    return (
-        <ShowContextProvider value={controllerProps}>
-            <ShowViewGuesser {...props} {...controllerProps} />
-        </ShowContextProvider>
-    );
-};
+export const ShowGuesser = ({ id, onFailure, ...rest }: ShowProps) => (
+    <ShowBase id={id} onFailure={onFailure}>
+        <ShowViewGuesser {...rest} />
+    </ShowBase>
+);
 
 export default ShowGuesser;

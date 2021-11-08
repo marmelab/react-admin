@@ -1,5 +1,99 @@
 # Upgrade to 4.0
 
+## No More Prop Injection In Page Components
+
+Page components (`<List>`, `<Show>`, etc.) used to expect to receive props (route parameters, permissions, resource name). These components don't receive any props anymore by default. They use hooks to get the props they need from contexts or route state.  
+
+```diff
+-const PostShow = (props) => (
++const PostShow = () => (
+-   <Show>
++   <Show {...props}>
+        <SimpleShowLayout>
+            <TextField source="title" />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+If you need to access the permissions previously passed as props, you need to call the `usePermissions` hook instead.
+
+```diff
++const { usePermissions } from 'react-admin';
+
+-const PostShow = ({ permissions, ...props }) => {
++const PostShow = () => {
++   const permissions = usePermissions();
+    return (
+-       <Show>
++       <Show {...props}>
+            <SimpleShowLayout>
+                <TextField source="title" />
+                {permissions === 'admin' &&
+                    <NumberField source="nb_views" />
+                }
+            </SimpleShowLayout>
+        </Show>
+    );
+};
+```
+
+If you need to access the `hasList` and other flags related to resource configuration, use the `useResourceConfiguration` hook instead.
+
+```diff
++const { useResourceDefinition } from 'react-admin';
+
+-const PostShow = ({ hasEdit, ...props }) => {
++const PostShow = () => {
++   const { hasEdit } = useResourceDefinition();
+    return (
+        <Show actions={hasEdit ? <ShowActions /> : null}>
+            <SimpleShowLayout>
+                <TextField source="title" />
+            </SimpleShowLayout>
+        </Show>
+    );
+};
+```
+
+If you need to access a route parameter, use react-router's `useParams` hook instead.
+
+```diff
++const { useParams } from 'react-router-dom';
+
+-const PostShow = ({ id, ...props }) => {
++const PostShow = () => {
++   const { id } = useParams();
+    return (
+        <Show title={`Post #${id}`}>
+            <SimpleShowLayout>
+                <TextField source="title" />
+            </SimpleShowLayout>
+        </Show>
+    );
+};
+```
+
+## `<Card>` Is Now Rendered By Inner Components
+
+The page components (`<List>`, `<Show>`, etc.) used to render a `<Card>` around their child. It's now the responsibility of the child to render the `<Card>` itself. If you only use react-admin components, you don't need to change anything. But if you use custom layout components, you need to wrap them inside a `<Card>`.
+
+```diff
++import { Card } from '@mui/material';
+
+const MyShowLayout = () => {
+    const record useRecordContext();
+    return (
++       <Card>
+            <Stack>
+                <TextField source="title" />
+                <TextField source="author" />
+            </Stack>
++       </Card>
+    );
+}
+```
+
 ## Redux-Saga Was Removed
 
 The use of sagas has been deprecated for a while. React-admin v4 doesn't support them anymore. That means that the Redux actions don't include meta parameters anymore to trigger sagas, the Redux store doesn't include the saga middleware, and the saga-based side effects were removed.
@@ -78,6 +172,75 @@ export const PostEdit = (props) => (
             <TextInput source="title" />
         </SimpleForm>
     </Edit>
+);
+```
+
+## `addLabel` Prop No Longer Considered For Show Labelling 
+
+`<SimpleShowLayout>` and `<TabbedShowLayout>` used to look for an `addLabel` prop to decide whether they needed to add a label or not. this relied on `defaultProps`, which will soon be removed from React. 
+
+The Show layout components now render a label for their children as soon as they have a `source` or a `label` prop. If you don't want a field to have a label in the show view, pass the `label={false}` prop.
+
+```jsx
+const PostShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            {/* this field will have a Label */}
+            <TextField source="title" />
+            {/* this one will also have a Label */}
+            <TextField label="Author name" source="author" />
+            {/* this field will not */}
+            <TextField label={false} source="title" />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+As the `addLabel` prop is now ignored in fields, you can remove it from your custom fields:
+
+```diff
+const MyCustomField = () => (
+    ... 
+);
+-MyCustomField.defaultProps = {
+-    addLabel: true
+-};
+```
+
+## Removed The `aside` Prop From `<Show>`
+
+To add a sidebar to a `<Show>` component, you can no longer use the `<Show aside>` prop. But `<Show>` has evolved to accept many children, and render a `<div style={{ display: 'flex" }}>`. So adding a sidebar becomes more natural:
+
+```diff
+export const PostShow = () => (
+-    <Show aside={<PostShowAside />}>
++    <Show>
+        <SimpleShowLayout>
+            <TextField source="title" />
+        </SimpleShowLayout>
++       <PostShowAside />
+    </Show>
+);
+```
+
+If you want more control over the relative widths of the two children, use layout components like material-ui's `<Grid>`:
+
+```jsx
+ import { Grid } from '@mui/material';
+
+export const PostShow = () => (
+    <Show>
+        <Grid container>
+            <Grid item xs={8}>
+                <SimpleShowLayout>
+                    <TextField source="title" />
+                </SimpleShowLayout>
+            </Grid>
+            <Grid item xs={4}>
+               <PostShowAside />
+            </Grid>
+        </Grid>
+    </Show>
 );
 ```
 

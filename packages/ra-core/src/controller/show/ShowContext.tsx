@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { ShowControllerProps } from './useShowController';
+import { ShowControllerResult } from './useShowController';
 
 /**
  * Context to store the result of the useShowController() hook.
@@ -19,8 +19,7 @@ import { ShowControllerProps } from './useShowController';
  *     );
  * };
  */
-export const ShowContext = createContext<ShowControllerProps>({
-    basePath: null,
+export const ShowContext = createContext<ShowControllerResult>({
     record: null,
     defaultTitle: null,
     loaded: null,

@@ -1,4 +1,5 @@
-import { ReactElement, ElementType } from 'react';
+import { ReactElement, ReactNode, ElementType } from 'react';
+import { SxProps } from '@mui/system';
 import {
     Identifier,
     Exporter,
@@ -57,13 +58,17 @@ export interface CreateProps extends ResourceComponentProps {
     title?: string | ReactElement;
 }
 
-export interface ShowProps extends ResourceComponentPropsWithId {
+export interface ShowProps {
     actions?: ReactElement | false;
-    aside?: ReactElement;
-    classes?: any;
+    children: ReactNode;
     className?: string;
     component?: ElementType;
+    emptyWhileLoading?: boolean;
+    id?: Identifier;
+    onFailure?: OnFailure;
+    resource?: string;
     title?: string | ReactElement;
+    sx?: SxProps;
 }
 
 export interface BulkActionProps {

@@ -1,44 +1,6 @@
-import * as React from 'react';
-import { createContext, ReactNode, useContext } from 'react';
-import { Record } from '../types';
-
-/**
- * Context to store the current record.
- *
- * Use the useRecordContext() hook to read the context. That's what the Edit and Show components do in react-admin.
- *
- * @example
- *
- * import { useEditController, EditContext } from 'ra-core';
- *
- * const Edit = props => {
- *     const { record } = useEditController(props);
- *     return (
- *         <RecordContextProvider value={record}>
- *             ...
- *         </RecordContextProvider>
- *     );
- * };
- */
-export const RecordContext = createContext<Record | Omit<Record, 'id'>>(
-    undefined
-);
-
-export const RecordContextProvider = <
-    RecordType extends Record | Omit<Record, 'id'> = Record
->({
-    children,
-    value,
-}: RecordContextOptions<RecordType>) => (
-    <RecordContext.Provider value={value}>{children}</RecordContext.Provider>
-);
-
-RecordContext.displayName = 'RecordContext';
-
-export interface RecordContextOptions<RecordType> {
-    children: ReactNode;
-    value?: RecordType;
-}
+import { useContext } from 'react';
+import { Record } from '../../types';
+import { RecordContext } from './RecordContext';
 
 /**
  * Hook to read the record from a RecordContext.
