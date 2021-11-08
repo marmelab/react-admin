@@ -2,12 +2,12 @@
 
 ## No More Prop Injection In Page Components
 
-Page components (`<List>`, `<Show>`, etc.) used to expect to receive props (route parameters, permission, resource name). These components don't receive any props anymore by default. They use hooks to get the props they need from contexts or route state.  
+Page components (`<List>`, `<Show>`, etc.) used to expect to receive props (route parameters, permissions, resource name). These components don't receive any props anymore by default. They use hooks to get the props they need from contexts or route state.  
 
 ```diff
 -const PostShow = (props) => (
 +const PostShow = () => (
--   <Show >
+-   <Show>
 +   <Show {...props}>
         <SimpleShowLayout>
             <TextField source="title" />
@@ -25,7 +25,7 @@ If you need to access the permissions previously passed as props, you need to ca
 +const PostShow = () => {
 +   const permissions = usePermissions();
     return (
--       <Show >
+-       <Show>
 +       <Show {...props}>
             <SimpleShowLayout>
                 <TextField source="title" />
@@ -43,7 +43,7 @@ If you need to access the `hasList` and other flags related to resource configur
 ```diff
 +const { useResourceDefinition } from 'react-admin';
 
--const PostShow = ({ haEdit, ...props }) => {
+-const PostShow = ({ hasEdit, ...props }) => {
 +const PostShow = () => {
 +   const { hasEdit } = useResourceDefinition();
     return (
