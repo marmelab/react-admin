@@ -9,7 +9,7 @@ The `<SimpleShowLayout>` pulls the `record` from the `RecordContext`. It renders
 
 ## Usage
 
-Use `<SimpleShowLayout>` as descendent of a `<Show>` component (or any component creating a `<RecordContext>`), and st the fields to be displayed as children:
+Use `<SimpleShowLayout>` as descendent of a `<Show>` component (or any component creating a `<RecordContext>`), and set the fields to be displayed as children:
 
 ```jsx
 const PostShow = () => (
@@ -66,6 +66,7 @@ const PostShow = () => (
     <Show>
         <SimpleShowLayout>
             <TextField label="My Custom Title" source="title" />
+            <TextField label="my.custom.translationKey" source="description" />
         </SimpleShowLayout>
     </Show>
 );
@@ -158,7 +159,7 @@ const PostShow = () => (
 
 ## Root Component
 
-By default, `<SimpleShowLayout>` view renders the main content area inside a material-ui `<Card>`. You can override the main area container by passing a `component` prop:
+By default, the `<SimpleShowLayout>` view renders the main content area inside a material-ui `<Card>`. You can override the main area container by passing a `component` prop:
 
 ```jsx
 // use a div as root component

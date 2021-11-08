@@ -57,7 +57,7 @@ That's enough to display the post show view:
 
 * [`actions`](#actions): override the actions toolbar with a custom component
 * `className`: passed to the root component
-* [`children`](#layout): the component that renders the record fields
+* [`children`](#layout): the components that render the record fields
 * [`component`](#root-component): overrides the root component
 * [`emptyWhileLoading`](#loading-state)
 * [`onFailure`](#failure-side-effects)
@@ -66,9 +66,9 @@ That's enough to display the post show view:
 
 ## Layout
 
-`<Show>` doesn't render any field by default - it delegates this to its child. Show layout components grab the `record` from the `RecordContext` and render them on screen.
+`<Show>` doesn't render any field by default - it delegates this to its children. Show layout components grab the `record` from the `RecordContext` and render them on screen.
 
-React-admin provides 2 show layout coponents:
+React-admin provides 2 show layout components:
 
 - [`<SimpleShowLayout>`](./SimpleShowLayout.md) displays fields with a label in a single column
 - [`<TabbedShowLayout>`](./TabbedShowLayout.md) displays a list of tabs, each tab rendering a stack of fields with a label
@@ -92,7 +92,7 @@ export const PostShow = () => (
 );
 ```
 
-You can also pass React elements as child, so as to build a custom layout. Chec [Building a custom Show Layout](./ShowTutorial.md#building-a-custom-layout) for more details.
+You can also pass React elements as children, so as to build a custom layout. Check [Building a custom Show Layout](./ShowTutorial.md#building-a-custom-layout) for more details.
 
 ## Page Title
 
@@ -152,7 +152,7 @@ export const PostShow = () => (
 
 ## Failure Side Effects
 
-By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and  refreshes the page.
+By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and refreshes the page.
 
 You can override this behavior and pass custom side effects by providing a function as `onFailure` prop:
 
@@ -275,7 +275,7 @@ To override the style of all instances of `<Show>` using the [material-ui style 
 
 ## Displaying Fields Depending On User Permissions
 
-If you to display some fields only to users with specific permissions, use the `usePermissions` hook and JSX conditions to show/hide fields.
+If you want to display some fields only to users with specific permissions, use the `usePermissions` hook and JSX conditions to show or hide fields.
 
 Here's an example inside a `Show` view with a `SimpleShowLayout` and a custom `actions` component:
 

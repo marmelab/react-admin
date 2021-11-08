@@ -5,7 +5,7 @@ title: "useShowController"
 
 # `useShowController`
 
-`useShowController` is the hook that whandles all the controller logic for Show views. It's used by `<Show>` and `<ShowBase>`.
+`useShowController` is the hook that handles all the controller logic for Show views. It's used by `<Show>` and `<ShowBase>`.
 
 This hook takes care of three things:
 
@@ -58,9 +58,9 @@ Here are all the props accepted by the `useShowcontroller` hook:
 
 ## Failure Side Effects
 
-By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and  refreshes the page.
+By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and refreshes the page.
 
-You can override this behavior and pass custom side effects by providing a function as `onFailure` prop:
+You can override this behavior and pass custom side effects by providing a function as the `onFailure` prop:
 
 ```jsx
 import * as React from 'react';

@@ -54,7 +54,7 @@ This example uses the `useGetOne` hook instead of `fetch` because `useGetOne` al
 
 ## `<Labeled>` Displays Fields With Labels
 
-When you build Show views like the one above, you have to repeat quite a lot of code for each field. React-admin Field components can help avoid that repetition. The following example leverages the `<Labeled>`, `<TextField>`, and `<DateField>` components in tha purpose:
+When you build Show views like the one above, you have to repeat quite a lot of code for each field. React-admin Field components can help avoid that repetition. The following example leverages the `<Labeled>`, `<TextField>`, and `<DateField>` components for that purpose:
 
 ```jsx
 import { useParams } from 'react-router-dom';
@@ -150,7 +150,7 @@ const BookShow = () => {
 };
 ```
 
-`<SimpleShowLayout>` renders nothing as long as the `data` is not loaded, so the `loaded` variable isn't needed anymore.
+`<SimpleShowLayout>` renders nothing as long as the `data` is not loaded (`record` is `undefined`), so the `loaded` variable isn't needed anymore.
 
 ## `useShowController`: The Controller Logic
 
@@ -269,7 +269,7 @@ const BookShow = () => (
 
 ## Using Another Layout
 
-When a Show view has to display a lot of fields, the `<SimpleShowLayout>` component ends up in very long page that are not user-friendly. You can use [the `<TabbedShowLayout>` component](./TabbedShowLayout.md) instead, which is a variant of the `<SimpleShowLayout>` component that displays the fields in tabs. 
+When a Show view has to display a lot of fields, the `<SimpleShowLayout>` component ends up in very long page that is not user-friendly. You can use [the `<TabbedShowLayout>` component](./TabbedShowLayout.md) instead, which is a variant of the `<SimpleShowLayout>` component that displays the fields in tabs. 
 
 ```jsx
 import { Show, TabbedShowLayout, Tab, TextField, DateField, WithRecord } from 'react-admin';

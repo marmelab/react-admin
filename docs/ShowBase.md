@@ -59,7 +59,7 @@ const App = () => (
 
 ## Props
 
-* [`children`](#layout) is the component that actually renders something
+* [`children`](#layout) the components that actually render something
 * [`onFailure`](#failure-side-effects)
 
 ## Failure Side Effects
