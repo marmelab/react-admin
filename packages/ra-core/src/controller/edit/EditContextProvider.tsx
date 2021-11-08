@@ -4,7 +4,7 @@ import { Record } from '../../types';
 import { RecordContextProvider } from '../record/RecordContext';
 import { EditContext } from './EditContext';
 import { EditControllerProps } from './useEditController';
-import { SaveContextProvider, usePickSaveContext } from './SaveContext';
+import { SaveContextProvider, usePickSaveContext } from '../SaveContext';
 
 /**
  * Create an Edit Context.

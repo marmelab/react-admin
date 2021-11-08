@@ -85,7 +85,7 @@ Edit.propTypes = {
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
     hasList: PropTypes.bool,
-    id: PropTypes.any.isRequired,
+    id: PropTypes.any,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     onSuccess: PropTypes.func,
     onFailure: PropTypes.func,
