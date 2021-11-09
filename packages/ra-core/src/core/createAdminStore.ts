@@ -3,6 +3,7 @@ import { routerMiddleware } from 'connected-react-router';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
 import { History } from 'history';
+import { merge } from 'lodash';
 
 import {
     AuthProvider,
@@ -11,6 +12,7 @@ import {
     InitialState,
 } from '../types';
 import createAppReducer from '../reducer';
+import { defaultState as uiDefaultState } from '../reducer/admin/ui';
 import { adminSaga } from '../sideEffect';
 import { CLEAR_STATE } from '../actions/clearActions';
 
@@ -75,9 +77,14 @@ export default ({
             })) ||
         compose;
 
+    const finalInitialState = merge(
+        { admin: { ui: uiDefaultState } },
+        typeof initialState === 'function' ? initialState() : initialState
+    );
+
     const store = createStore(
         resettableAppReducer,
-        typeof initialState === 'function' ? initialState() : initialState,
+        finalInitialState,
         composeEnhancers(
             applyMiddleware(sagaMiddleware, routerMiddleware(history))
         )

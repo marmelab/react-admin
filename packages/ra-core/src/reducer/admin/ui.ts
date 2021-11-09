@@ -42,7 +42,7 @@ const isDesktop = (): boolean =>
         ? window.matchMedia('(min-width:960px)').matches
         : false;
 
-const defaultState: UIState = {
+export const defaultState: UIState = {
     automaticRefreshEnabled: true,
     sidebarOpen: isDesktop(),
     optimistic: false,
@@ -76,7 +76,7 @@ const uiReducer: Reducer<UIState> = (
         case STOP_OPTIMISTIC_MODE:
             return { ...previousState, optimistic: false };
         default:
-            return { ...defaultState, ...previousState };
+            return previousState;
     }
 };
 

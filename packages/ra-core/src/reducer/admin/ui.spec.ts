@@ -88,12 +88,4 @@ describe('ui reducer', () => {
             viewVersion: 1,
         }).toEqual(reducer(undefined, refreshView()));
     });
-    it('should allow overriding initial state on @@INIT', () => {
-        expect({
-            automaticRefreshEnabled: true,
-            optimistic: false,
-            sidebarOpen: true,
-            viewVersion: 0,
-        }).toEqual(reducer({ sidebarOpen: true }, { type: '@@INIT' }));
-    });
 });
