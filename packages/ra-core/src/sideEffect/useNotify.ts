@@ -52,11 +52,9 @@ const useNotify = () => {
                         }
                     )
                 );
-            } else if (type) {
+            } else {
                 const { type: messageType, ...options } = type;
                 dispatch(showNotification(message, messageType, options));
-            } else {
-                dispatch(showNotification(message));
             }
         },
         [dispatch]
