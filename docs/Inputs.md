@@ -12,8 +12,8 @@ An `Input` component displays an input, or a dropdown list, a list of radio butt
 import * as React from "react";
 import { Edit, SimpleForm, ReferenceInput, SelectInput, TextInput, required } from 'react-admin';
 
-export const PostEdit = (props) => (
-    <Edit title={<PostTitle />} {...props}>
+export const PostEdit = () => (
+    <Edit title={<PostTitle />}>
         <SimpleForm>
             <TextInput disabled source="id" />
             <ReferenceInput label="User" source="userId" reference="users" validate={[required()]}>
@@ -331,8 +331,8 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 import { Edit, SimpleForm, TextInput } from 'react-admin';
 import { MarkdownInput } from '@react-admin/ra-markdown';
 
-const PostEdit = props => (
-    <Edit {...props}>
+const PostEdit = () => (
+    <Edit>
         <SimpleForm>
             <TextInput source="title" />
             <MarkdownInput source="description" />
@@ -473,8 +473,8 @@ import { Edit, SimpleForm, TextInput } from 'react-admin';
 +import { withStyles } from '@material-ui/core/styles';
 
 -const PostEdit = props => (
-+const PostEdit = withStyles({ card: { overflow: 'initial' } })(props => (
-   <Edit {...props}>
++const PostEdit = withStyles({ card: { overflow: 'initial' } })(() => (
+   <Edit>
        <SimpleForm>
             // ...
        </SimpleForm>
@@ -2295,8 +2295,8 @@ const ArtistEditForm = props => {
     return <SimpleForm {...props} save={save} />;
 };
 
-const ArtistEdit = props => (
-    <Edit {...props}>
+const ArtistEdit = () => (
+    <Edit>
         <ArtistEditForm>
             <TextInput disabled source="id" />
             <TextInput source="first_name" />
@@ -2500,8 +2500,8 @@ const CityInput = props => {
     );
 };
 
-const OrderEdit = props => (
-    <Edit {...props}>
+const OrderEdit = () => (
+    <Edit>
         <SimpleForm>
             <SelectInput source="country" choices={toChoices(countries)} />
             <CityInput source="cities" />
@@ -2518,8 +2518,8 @@ Alternatively, you can use the react-admin `<FormDataConsumer>` component, which
 import * as React from 'react';
 import { Edit, SimpleForm, SelectInput, FormDataConsumer } from 'react-admin';
 
-const OrderEdit = props => (
-    <Edit {...props}>
+const OrderEdit = () => (
+    <Edit>
         <SimpleForm>
             <SelectInput source="country" choices={toChoices(countries)} />
             <FormDataConsumer>
@@ -2550,8 +2550,8 @@ And here is an example usage for `getSource` inside `<ArrayInput>`:
 ```jsx
 import { FormDataConsumer } from 'react-admin';
 
-const PostEdit = (props) => (
-    <Edit {...props}>
+const PostEdit = () => (
+    <Edit>
         <SimpleForm>
             <ArrayInput source="authors">
                 <SimpleFormIterator>
@@ -2588,8 +2588,8 @@ For such cases, you can use the approach described above, using the `<FormDataCo
 ```jsx
 import { FormDataConsumer } from 'react-admin';
 
- const PostEdit = (props) => (
-     <Edit {...props}>
+ const PostEdit = () => (
+     <Edit>
          <SimpleForm>
              <BooleanInput source="hasEmail" />
              <FormDataConsumer>
@@ -2608,8 +2608,8 @@ import { FormDataConsumer } from 'react-admin';
 ```jsx
 import { FormDataConsumer } from 'react-admin';
 
- const PostEdit = (props) => (
-     <Edit {...props}>
+ const PostEdit = () => (
+     <Edit>
          <SimpleForm>
              <BooleanInput source="hasEmail" />
              <FormDataConsumer subscription={{ values: true }}>
@@ -2644,8 +2644,8 @@ const LatLngInput = () => (
 export default LatLngInput;
 
 // in ItemEdit.js
-const ItemEdit = (props) => (
-    <Edit {...props}>
+const ItemEdit = () => (
+    <Edit>
         <SimpleForm>
             <LatLngInput />
         </SimpleForm>
@@ -2837,8 +2837,8 @@ export default SexInput;
 const parse = value => {/* ... */};
 const format = value => {/* ... */};
 
-const PersonEdit = props => (
-    <Edit {...props}>
+const PersonEdit = () => (
+    <Edit>
         <SimpleForm>
             <SexInput
                 source="sex"

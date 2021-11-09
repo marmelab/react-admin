@@ -678,7 +678,7 @@ notify('Element deleted', {
 import * as React from 'react';
 import { useNotify, Edit, SimpleForm } from 'react-admin';
 
-const PostEdit = props => {
+const PostEdit = () => {
     const notify = useNotify();
 
     const onSuccess = () => {
@@ -686,7 +686,7 @@ const PostEdit = props => {
     };
 
     return (
-        <Edit undoable onSuccess={onSuccess} {...props}>
+        <Edit undoable onSuccess={onSuccess}>
             <SimpleForm>
                 ...
             </SimpleForm>
