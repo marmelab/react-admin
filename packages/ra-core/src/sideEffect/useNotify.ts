@@ -37,7 +37,7 @@ const useNotify = () => {
         ) => {
             if (typeof type === 'string' || !type) {
                 warning(
-                    true,
+                    typeof type === 'string',
                     'This way of calling useNotify callback is deprecated. Please use the new syntax passing notify("[Your message]", { ...restOfArguments })'
                 );
                 dispatch(
