@@ -35,7 +35,7 @@ const useNotify = () => {
             autoHideDuration?: number,
             multiLine?: boolean
         ) => {
-            if (typeof type === 'string' || !type) {
+            if (typeof type === 'string') {
                 warning(
                     typeof type === 'string',
                     'This way of calling useNotify callback is deprecated. Please use the new syntax passing notify("[Your message]", { ...restOfArguments })'
