@@ -87,7 +87,6 @@ const DateInput = ({
     const { id, input, isRequired, meta } = useInput({
         defaultValue,
         format,
-        formatOnBlur: true,
         initialValue,
         name,
         onBlur,
