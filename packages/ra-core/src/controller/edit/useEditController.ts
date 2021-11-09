@@ -66,7 +66,8 @@ export const useEditController = <RecordType extends Record = Record>(
     const redirect = useRedirect();
     const refresh = useRefresh();
     const version = useVersion();
-    const { id } = useParams<{ id?: string }>();
+    const { id: routeId } = useParams<{ id?: string }>();
+    const id = propsId || decodeURIComponent(routeId);
 
     if (process.env.NODE_ENV !== 'production' && successMessage) {
         console.log(
@@ -85,7 +86,7 @@ export const useEditController = <RecordType extends Record = Record>(
 
     const { data: record, error, loading, loaded, refetch } = useGetOne<
         RecordType
-    >(resource, propsId || id, {
+    >(resource, id, {
         action: CRUD_GET_ONE,
         onFailure: () => {
             notify('ra.notification.item_doesnt_exist', { type: 'warning' });
@@ -97,13 +98,13 @@ export const useEditController = <RecordType extends Record = Record>(
     const getResourceLabel = useGetResourceLabel();
     const defaultTitle = translate('ra.page.edit', {
         name: getResourceLabel(resource, 1),
-        id: propsId || id,
+        id,
         record,
     });
 
     const [update, { loading: saving }] = useUpdate(
         resource,
-        propsId || id,
+        id,
         {}, // set by the caller
         record
     );
