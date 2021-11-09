@@ -30,7 +30,9 @@ const BookShow = () => (
 
 ## Label
 
-`<FieldWithLabel>` uses the humanized `source`, and renders it above the field value. So for the previous example, the label would be `"Title"`.
+`<FieldWithLabel>` uses the humanized `source`, and renders it above the field value. So for the previous example, the label would be `"Title"`. 
+
+`<FieldWithLabel>` uses the i18n layer, so you can translate the label. The message key for a label is `resources.{resource}.fields.{source}` (e.g. `resources.books.fields.title` for the element above). Check [the Translation chapter](./Translation.md) for more information.
 
 `<FieldWithLabel>` can also use an explicit `label` prop: 
 
