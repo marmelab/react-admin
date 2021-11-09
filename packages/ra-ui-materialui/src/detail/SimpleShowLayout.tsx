@@ -10,8 +10,7 @@ import {
     useRecordContext,
     OptionalRecordContextProvider,
 } from 'ra-core';
-
-import { Labeled } from '../input';
+import { FieldWithLabel } from './FieldWithLabel';
 
 /**
  * Layout for a Show view showing fields in one column.
@@ -77,29 +76,18 @@ export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
                 >
                     {Children.map(children, field =>
                         field && isValidElement<any>(field) ? (
-                            <div
+                            <FieldWithLabel
                                 key={field.props.source}
                                 className={classnames(
-                                    `ra-field ra-field-${field.props.source}`,
+                                    'ra-field',
+                                    field.props.source &&
+                                        `ra-field-${field.props.source}`,
                                     SimpleShowLayoutClasses.row,
                                     field.props.className
                                 )}
                             >
-                                {field.props.label !== false &&
-                                typeof field.type !== 'string' &&
-                                // @ts-ignore
-                                field.type?.displayName !== 'Labeled' &&
-                                (field.props.source || field.props.label) ? (
-                                    <Labeled
-                                        label={field.props.label}
-                                        source={field.props.source}
-                                    >
-                                        {field}
-                                    </Labeled>
-                                ) : (
-                                    field
-                                )}
-                            </div>
+                                {field}
+                            </FieldWithLabel>
                         ) : null
                     )}
                 </Stack>

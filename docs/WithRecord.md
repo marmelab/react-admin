@@ -17,7 +17,7 @@ import { Show, SimpleShowLayout, WithRecord } from 'react-admin';
 const BookShow = () => (
    <Show>
       <SimpleShowLayout>
-         <WithRecord render={record => <span>{record.author}</span>} />
+         <WithRecord label="author" render={record => <span>{record.author}</span>} />
      </SimpleShowLayout>
   </Show>
 );

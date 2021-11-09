@@ -5,7 +5,7 @@ title: "TabbedShowLayout"
 
 # `<TabbedShowLayout>`
 
-The `<TabbedShowLayout>` pulls the `record` from the `RecordContext`. It renders a material-ui `<Card>` containing a set of `<Tabs>`, each of which contains a list of record fields in a single-column layout (via material-ui's `<Stack>` component). `<TabbedShowLayout>` delegates the actual rendering of fields to its children, which should be `<Tab>` components. `<Tab>`  wraps each field inside a `<Labeled>` component to add a label.
+The `<TabbedShowLayout>` pulls the `record` from the `RecordContext`. It renders a material-ui `<Card>` containing a set of `<Tabs>`, each of which contains a list of record fields in a single-column layout (via material-ui's `<Stack>` component). `<TabbedShowLayout>` delegates the actual rendering of fields to its children, which should be `<Tab>` components. `<Tab>`  wraps each field inside a `<FieldWithLabel>` component to add a label.
 
 Switching tabs will update the current url. By default, it uses the tabs indexes and the first tab will be displayed at the root url. You can customize the path by providing a `path` prop to each `Tab` component. If you'd like the first one to act as an index page, just omit the `path` prop.
 
@@ -102,7 +102,7 @@ export const PostShow = () => (
 
 ## Tab Fields
 
-`<Tab>` renders each child inside a `<Labeled>` component. This component uses the humanized source as label by default. You can customize it by passing a `label` prop to the fields:
+`<Tab>` renders each child inside a `<FieldWithLabel>` component. This component uses the humanized source as label by default. You can customize it by passing a `label` prop to the fields:
 
 ```jsx
 const PostShow = () => (
@@ -116,7 +116,7 @@ const PostShow = () => (
 );
 ```
 
-You can disable the `<Labeled>` decoration by passing setting `label={false}` on a field:
+You can disable the `<FieldWithLabel>` decoration by passing setting `label={false}` on a field:
 
 ```jsx
 const PostShow = () => (
@@ -312,10 +312,10 @@ To style the tabs, the `<Tab>` component accepts two props:
 
 * [`<TabbedShowLayout>`]
 * [`<Tab>`]
-* [`<Labeled>`]
+* [`<FieldWithLabel>`]
 * [`useRecordContext`]
 
-[`<Labeled>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/input/Labeled.tsx
+[`<FieldWithLabel>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/FieldWithLabel.tsx
 [`<TabbedShowLayout>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/TabbedShowLayout.tsx
 [`<Tab>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/Tab.tsx
 [`useRecordContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/useRecordContext.ts
