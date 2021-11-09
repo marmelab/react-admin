@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 import { Record } from '../../types';
-import { RecordContextProvider } from '../record/RecordContext';
-import { EditContext } from './EditContext';
-import { EditControllerProps } from './useEditController';
+import { RecordContextProvider } from '../record';
 import { SaveContextProvider, usePickSaveContext } from '../SaveContext';
+import { EditContext } from './EditContext';
+import { EditControllerResult } from './useEditController';
 
 /**
  * Create an Edit Context.
@@ -34,7 +34,7 @@ export const EditContextProvider = ({
     value,
 }: {
     children: ReactNode;
-    value: EditControllerProps;
+    value: EditControllerResult;
 }) => (
     <EditContext.Provider value={value}>
         <SaveContextProvider value={usePickSaveContext(value)}>

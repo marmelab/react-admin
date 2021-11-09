@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { EditControllerProps } from './useEditController';
+import { EditControllerResult } from './useEditController';
 
 /**
  * Context to store the result of the useEditController() hook.
@@ -19,8 +19,7 @@ import { EditControllerProps } from './useEditController';
  *     );
  * };
  */
-export const EditContext = createContext<EditControllerProps>({
-    basePath: null,
+export const EditContext = createContext<EditControllerResult>({
     record: null,
     defaultTitle: null,
     loaded: null,
