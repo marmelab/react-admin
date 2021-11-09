@@ -2,7 +2,6 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import {
     Edit,
-    EditProps,
     ReferenceInput,
     SimpleForm,
     TextInput,
@@ -34,13 +33,9 @@ const StyledEdit = styled(Edit)({
     },
 });
 
-export const CompanyEdit = (props: EditProps) => {
+export const CompanyEdit = () => {
     return (
-        <StyledEdit
-            {...props}
-            aside={<CompanyAside link="show" />}
-            actions={false}
-        >
+        <StyledEdit aside={<CompanyAside link="show" />} actions={false}>
             <SimpleForm component={CustomLayout} redirect="show">
                 <TextInput source="name" validate={required()} fullWidth />
                 <SelectInput

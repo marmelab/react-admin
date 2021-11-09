@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
     Datagrid,
     Edit,
-    EditProps,
     EditButton,
     FieldProps,
     NumberField,
@@ -27,8 +26,8 @@ const CategoryTitle = (props: FieldProps<Category>) => {
     ) : null;
 };
 
-const CategoryEdit = (props: EditProps) => (
-    <Edit title={<CategoryTitle />} {...props}>
+const CategoryEdit = () => (
+    <Edit title={<CategoryTitle />}>
         <SimpleForm>
             <TextInput source="name" />
             <ReferenceManyField

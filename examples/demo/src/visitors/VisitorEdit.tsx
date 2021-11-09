@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
     DateInput,
     Edit,
-    EditProps,
     NullableBooleanInput,
     TextInput,
     PasswordInput,
@@ -21,14 +20,9 @@ import SegmentsInput from './SegmentsInput';
 import { validatePasswords } from './VisitorCreate';
 import { Customer } from '../types';
 
-const VisitorEdit = (props: EditProps) => {
+const VisitorEdit = () => {
     return (
-        <Edit
-            title={<VisitorTitle />}
-            aside={<Aside />}
-            component="div"
-            {...props}
-        >
+        <Edit title={<VisitorTitle />} aside={<Aside />} component="div">
             <VisitorForm />
         </Edit>
     );
