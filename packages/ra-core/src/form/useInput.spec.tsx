@@ -2,10 +2,11 @@ import * as React from 'react';
 import { FunctionComponent, ReactElement } from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { Form, useFormState } from 'react-final-form';
+import { renderWithRedux } from 'ra-test';
+
 import FormWithRedirect from './FormWithRedirect';
 import useInput, { InputProps } from './useInput';
 import { required } from './validate';
-import { renderWithRedux } from '../../../ra-test/esm';
 
 const Input: FunctionComponent<
     { children: (props: any) => ReactElement } & InputProps
