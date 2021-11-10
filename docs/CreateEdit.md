@@ -40,8 +40,8 @@ import * as React from "react";
 import { Create, Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton, required } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
 
-export const PostCreate = (props) => (
-    <Create {...props}>
+export const PostCreate = () => (
+    <Create>
         <SimpleForm>
             <TextInput source="title" />
             <TextInput source="teaser" options={{ multiLine: true }} />
@@ -808,8 +808,8 @@ Here are all the props you can set on the `<SimpleForm>` component:
 * [`sanitizeEmptyValues`](#setting-empty-values-to-null)
 
 ```jsx
-export const PostCreate = (props) => (
-    <Create {...props}>
+export const PostCreate = () => (
+    <Create>
         <SimpleForm>
             <TextInput source="title" />
             <RichTextInput source="body" />
@@ -843,8 +843,8 @@ const BodyField = ({ record }) => (
     </Identifier>
 );
 
-const PostEdit = (props) => (
-    <Create {...props}>
+const PostEdit = () => (
+    <Create>
         <SimpleForm>
             <IdentifierField addLabel label="Identifier" /> {/* SimpleForm will add a label */}
             <TextField source="title" /> {/* SimpleForm will add a label, too (TextField has addLabel:true in defaultProps) */}
@@ -996,8 +996,8 @@ const BodyField = ({ record }) => (
     </Identifier>
 );
 
-const PostEdit = props => (
-    <Create {...props}>
+const PostEdit = () => (
+    <Create>
         <TabbedForm>
             <FormTab label="main">
                 <IdentifierField addLabel label="Identifier" /> {/* FormTab will add a label */}
@@ -1104,8 +1104,8 @@ import * as React from 'react';
 import { Create, TextInput, required } from 'react-admin';
 import { WizardForm, WizardFormStep } from '@react-admin/ra-form-layout';
 
-const PostCreate = props => (
-    <Create {...props}>
+const PostCreate = () => (
+    <Create>
         <WizardForm>
             <WizardFormStep label="First step">
                 <TextInput source="title" validate={required()} />
@@ -1175,8 +1175,8 @@ The value of the form `initialValues` prop is an object, or a function returning
 
 ```jsx
 const postDefaultValue = () => ({ id: uuid(), created_at: new Date(), nb_views: 0 });
-export const PostCreate = (props) => (
-    <Create {...props}>
+export const PostCreate = () => (
+    <Create>
         <SimpleForm initialValues={postDefaultValue}>
             <TextInput source="title" />
             <RichTextInput source="body" />
@@ -1193,8 +1193,8 @@ export const PostCreate = (props) => (
 Alternatively, you can specify a `defaultValue` prop directly in `<Input>` components. React-admin will merge the input default values with the form default value (input > form):
 
 ```jsx
-export const PostCreate = (props) => (
-    <Create {...props}>
+export const PostCreate = () => (
+    <Create>
         <SimpleForm>
             <TextInput source="title" />
             <RichTextInput source="body" />
@@ -1235,8 +1235,8 @@ const validateUserCreation = (values) => {
     return errors
 };
 
-export const UserCreate = (props) => (
-    <Create {...props}>
+export const UserCreate = () => (
+    <Create>
         <SimpleForm validate={validateUserCreation}>
             <TextInput label="First Name" source="firstName" />
             <TextInput label="Age" source="age" />
@@ -1284,8 +1284,8 @@ const validateAge = [number(), minValue(18)];
 const validateZipCode = regex(/^\d{5}$/, 'Must be a valid Zip Code');
 const validateGender = choices(['m', 'f', 'nc'], 'Please choose one of the values');
 
-export const UserCreate = (props) => (
-    <Create {...props}>
+export const UserCreate = () => (
+    <Create>
         <SimpleForm>
             <TextInput label="First Name" source="firstName" validate={validateFirstName} />
             <TextInput label="Email" source="email" validate={validateEmail} />
@@ -1336,8 +1336,8 @@ const ageValidation = (value, allValues) => {
 const validateFirstName = [required(), maxLength(15)];
 const validateAge = [required(), number(), ageValidation];
 
-export const UserCreate = (props) => (
-    <Create {...props}>
+export const UserCreate = () => (
+    <Create>
         <SimpleForm>
             <TextInput label="First Name" source="firstName" validate={validateFirstName} />
             <TextInput label="Age" source="age" validate={validateAge}/>
@@ -1448,8 +1448,8 @@ const validateUserCreation = async (values) => {
     return errors
 };
 
-export const UserCreate = (props) => (
-    <Create {...props}>
+export const UserCreate = () => (
+    <Create>
         <SimpleForm validate={validateUserCreation}>
             <TextInput label="First Name" source="firstName" />
             <TextInput label="Email" source="email" />
@@ -1480,8 +1480,8 @@ const validateEmailUnicity = async (value) => {
 
 const emailValidators = [required(), validateEmailUnicity];
 
-export const UserCreate = (props) => (
-    <Create {...props}>
+export const UserCreate = () => (
+    <Create>
         <SimpleForm validate={validateUserCreation}>
             ...
             <TextInput label="Email" source="email" validate={emailValidators} />
@@ -1503,7 +1503,7 @@ import * as React from 'react';
 import { useCallback } from 'react';
 import { Create, SimpleForm, TextInput, useMutation } from 'react-admin';
 
-export const UserCreate = (props) => {
+export const UserCreate = () => {
     const [mutate] = useMutation();
     const save = useCallback(
         async (values) => {
@@ -1523,7 +1523,7 @@ export const UserCreate = (props) => {
     );
 
     return (
-        <Create {...props}>
+        <Create>
             <SimpleForm save={save}>
                 <TextInput label="First Name" source="firstName" />
                 <TextInput label="Age" source="age" />
@@ -1882,8 +1882,8 @@ export const UserEdit = () => (
 You may want to customize the styles of Input components by wrapping them inside a container with a custom style. Unfortunately, this doesn't work:
 
 ```jsx
-export const PostCreate = props => (
-    <Create {...props}>
+export const PostCreate = () => (
+    <Create>
         <SimpleForm>
             {/* this does not work */}
             <div className="special-input">
@@ -1908,8 +1908,8 @@ const MyTextInput = props => (
         <TextInput {...props} />
     </div>
 )
-export const PostCreate = (props) => (
-    <Create {...props}>
+export const PostCreate = () => (
+    <Create>
         <SimpleForm>
             {/* this works */}
             <MyTextInput source="title" />
@@ -2156,17 +2156,21 @@ const UserCreateToolbar = ({ permissions, ...props }) =>
             />}
     </Toolbar>;
 
-export const UserCreate = ({ permissions, ...props }) =>
-    <Create {...props}>
-        <SimpleForm
-            toolbar={<UserCreateToolbar permissions={permissions} />}
-            initialValues={{ role: 'user' }}
-        >
-            <TextInput source="name" validate={[required()]} />
-            {permissions === 'admin' &&
-                <TextInput source="role" validate={[required()]} />}
-        </SimpleForm>
-    </Create>;
+export const UserCreate = () => {
+    const { permissions } = useGetPermissions();
+    return (
+        <Create>
+            <SimpleForm
+                toolbar={<UserCreateToolbar permissions={permissions} />}
+                initialValues={{ role: 'user' }}
+            >
+                <TextInput source="name" validate={[required()]} />
+                {permissions === 'admin' &&
+                    <TextInput source="role" validate={[required()]} />}
+            </SimpleForm>
+        </Create>;
+    );
+}
 ```
 {% endraw %}
 
@@ -2265,8 +2269,8 @@ const PostCreateToolbar = props => (
     </Toolbar>
 );
 
-const PostCreate = (props) => (
-    <Create {...props}>
+const PostCreate = () => (
+    <Create>
         <SimpleForm toolbar={<PostCreateToolbar />}>
             // ...
         </SimpleForm>
