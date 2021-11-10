@@ -449,22 +449,26 @@ export default {
 
 ### Getting User Permissions In CRUD Pages
 
-By default, react-admin calls `authProvider.getPermissions()` for each resource route, and passes the permissions to the `list`, `edit`, `create`, and `show` view components. So the `<List>`, `<Edit>`, `<Create>` and `<Show>` components all receive a `permissions` prop containing what `authProvider.getPermissions()` returned.
+If you need to check the permissions in any of the default react-admin views, you can use the `usePermissions` hook:
 
 Here is an example of a `Create` view with a conditional Input based on permissions:
 
 {% raw %}
 ```jsx
-export const UserCreate = ({ permissions, ...props }) =>
-    <Create {...props}>
-        <SimpleForm
-            defaultValue={{ role: 'user' }}
-        >
-            <TextInput source="name" validate={[required()]} />
-            {permissions === 'admin' &&
-                <TextInput source="role" validate={[required()]} />}
-        </SimpleForm>
-    </Create>;
+export const UserCreate = () => {
+    const { permissions } = usePermissions();
+    return (
+        <Create>
+            <SimpleForm
+                defaultValue={{ role: 'user' }}
+            >
+                <TextInput source="name" validate={[required()]} />
+                {permissions === 'admin' &&
+                    <TextInput source="role" validate={[required()]} />}
+            </SimpleForm>
+        </Create>;
+    )
+}
 ```
 {% endraw %}
 
@@ -1042,22 +1046,26 @@ Note that the function returns an array of React elements. This is required to a
 
 ### Restricting Access to Fields and Inputs
 
-You might want to display some fields or inputs only to users with specific permissions. By default, react-admin calls the `authProvider` for permissions for each resource routes, and passes them to the `list`, `edit`, `create`, and `show` components.
+You might want to display some fields or inputs only to users with specific permissions. You can use the `usePermissions` hook for that.
 
 Here is an example of a `Create` view with a conditional Input based on permissions:
 
 {% raw %}
 ```jsx
-export const UserCreate = ({ permissions, ...props }) =>
-    <Create {...props}>
-        <SimpleForm
-            defaultValue={{ role: 'user' }}
-        >
-            <TextInput source="name" validate={[required()]} />
-            {permissions === 'admin' &&
-                <TextInput source="role" validate={[required()]} />}
-        </SimpleForm>
-    </Create>;
+export const UserCreate = () => {
+    const { permissions } = usePermissions();
+    return (
+        <Create>
+            <SimpleForm
+                defaultValue={{ role: 'user' }}
+            >
+                <TextInput source="name" validate={[required()]} />
+                {permissions === 'admin' &&
+                    <TextInput source="role" validate={[required()]} />}
+            </SimpleForm>
+        </Create>;
+    );
+}
 ```
 {% endraw %}
 

@@ -60,7 +60,7 @@ export {
 };
 
 export * from './button';
-export * from './details';
+export * from './create';
 export * from './edit';
 export * from './field';
 export * from './input';

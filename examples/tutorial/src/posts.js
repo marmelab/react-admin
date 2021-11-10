@@ -56,8 +56,8 @@ export const PostEdit = () => (
     </Edit>
 );
 
-export const PostCreate = props => (
-    <Create {...props}>
+export const PostCreate = () => (
+    <Create>
         <SimpleForm>
             <ReferenceInput label="User" source="userId" reference="users">
                 <SelectInput optionText="name" />

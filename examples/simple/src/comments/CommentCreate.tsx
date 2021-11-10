@@ -13,8 +13,8 @@ import PostReferenceInput from './PostReferenceInput';
 const now = new Date();
 const defaultSort = { field: 'title', order: 'ASC' };
 
-const CommentCreate = props => (
-    <Create {...props}>
+const CommentCreate = () => (
+    <Create>
         <SimpleForm redirect={false}>
             <PostReferenceInput
                 source="post_id"

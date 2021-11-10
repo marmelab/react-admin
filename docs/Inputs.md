@@ -685,13 +685,13 @@ Use the `onCreate` prop when you only require users to provide a simple string a
 ```js
 import { AutocompleteInput, Create, SimpleForm, TextInput } from 'react-admin';
 
-const PostCreate = (props) => {
+const PostCreate = () => {
     const categories = [
         { name: 'Tech', id: 'tech' },
         { name: 'Lifestyle', id: 'lifestyle' },
     ];
     return (
-        <Create {...props}>
+        <Create>
             <SimpleForm>
                 <TextInput source="title" />
                 <AutocompleteInput
@@ -734,9 +734,9 @@ import {
     TextField,
 } from '@material-ui/core';
 
-const PostCreate = (props) => {
+const PostCreate = () => {
     return (
-        <Create {...props}>
+        <Create>
             <SimpleForm>
                 <TextInput source="title" />
                 <ReferenceInput source="category_id" reference="categories">
@@ -1071,13 +1071,13 @@ Use the `onCreate` prop when you only require users to provide a simple string a
 ```js
 import { SelectInput, Create, SimpleForm, TextInput } from 'react-admin';
 
-const PostCreate = (props) => {
+const PostCreate = () => {
     const categories = [
         { name: 'Tech', id: 'tech' },
         { name: 'Lifestyle', id: 'lifestyle' },
     ];
     return (
-        <Create {...props}>
+        <Create>
             <SimpleForm>
                 <TextInput source="title" />
                 <SelectInput
@@ -1120,9 +1120,9 @@ import {
     TextField,
 } from '@material-ui/core';
 
-const PostCreate = (props) => {
+const PostCreate = () => {
     return (
-        <Create {...props}>
+        <Create>
             <SimpleForm>
                 <TextInput source="title" />
                 <ReferenceInput source="category_id" reference="categories">
@@ -1464,13 +1464,13 @@ Use the `onCreate` prop when you only require users to provide a simple string a
 ```js
 import { AutocompleteArrayInput, Create, SimpleForm, TextInput } from 'react-admin';
 
-const PostCreate = (props) => {
+const PostCreate = () => {
     const tags = [
         { name: 'Tech', id: 'tech' },
         { name: 'Lifestyle', id: 'lifestyle' },
     ];
     return (
-        <Create {...props}>
+        <Create>
             <SimpleForm>
                 <TextInput source="title" />
                 <AutocompleteArrayInput
@@ -1513,9 +1513,9 @@ import {
     TextField,
 } from '@material-ui/core';
 
-const PostCreate = (props) => {
+const PostCreate = () => {
     return (
-        <Create {...props}>
+        <Create>
             <SimpleForm>
                 <TextInput source="title" />
                 <ReferenceArrayInput source="tags" reference="tags">
@@ -1825,8 +1825,8 @@ import {
     TextInput,
 } from 'react-admin';
 
-export const PostCreate = props => (
-    <Create {...props}>
+export const PostCreate = () => (
+    <Create>
         <SimpleForm>
             <TextInput source="title" />
             <TextInput multiline source="body" />
@@ -1856,13 +1856,13 @@ Use the `onCreate` prop when you only require users to provide a simple string a
 ```js
 import { SelectArrayInput, Create, SimpleForm, TextInput } from 'react-admin';
 
-const PostCreate = (props) => {
+const PostCreate = () => {
     const tags = [
         { name: 'Tech', id: 'tech' },
         { name: 'Lifestyle', id: 'lifestyle' },
     ];
     return (
-        <Create {...props}>
+        <Create>
             <SimpleForm>
                 <TextInput source="title" />
                 <SelectArrayInput
@@ -1905,9 +1905,9 @@ import {
     TextField,
 } from '@material-ui/core';
 
-const PostCreate = (props) => {
+const PostCreate = () => {
     return (
-        <Create {...props}>
+        <Create>
             <SimpleForm>
                 <TextInput source="title" />
                 <ReferenceArrayInput source="tags" reference="tags">
