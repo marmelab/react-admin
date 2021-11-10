@@ -19,6 +19,7 @@ import {
     required,
     FileInput,
     FileField,
+    usePermissions,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import { FormSpy } from 'react-final-form';
 
@@ -57,18 +58,18 @@ const backlinksDefaultValue = [
         url: 'http://google.com',
     },
 ];
-const PostCreate = ({ permissions, ...props }) => {
+const PostCreate = () => {
     const initialValues = useMemo(
         () => ({
             average_note: 0,
         }),
         []
     );
-
+    const { permissions } = usePermissions();
     const dateDefaultValue = useMemo(() => new Date(), []);
 
     return (
-        <Create {...props}>
+        <Create>
             <SimpleForm
                 toolbar={<PostCreateToolbar />}
                 initialValues={initialValues}
