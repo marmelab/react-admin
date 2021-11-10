@@ -1,7 +1,7 @@
 import { useCallback, MutableRefObject } from 'react';
+import { useParams } from 'react-router-dom';
 
 import useVersion from '../useVersion';
-import { useCheckMinimumRequiredProps } from '../checkMinimumRequiredProps';
 import {
     Record,
     Identifier,
@@ -18,6 +18,7 @@ import {
 import { useGetOne, useUpdate, Refetch } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { CRUD_GET_ONE, CRUD_UPDATE } from '../../actions';
+import { useResourceContext, useGetResourceLabel } from '../../core';
 import {
     SetOnSuccess,
     SetOnFailure,
@@ -25,62 +26,14 @@ import {
     SetTransformData,
     useSaveModifiers,
 } from '../saveModifiers';
-import { useResourceContext, useGetResourceLabel } from '../../core';
-
-export interface EditProps {
-    basePath?: string;
-    hasCreate?: boolean;
-    hasEdit?: boolean;
-    hasShow?: boolean;
-    hasList?: boolean;
-    id?: Identifier;
-    resource?: string;
-    mutationMode?: MutationMode;
-    onSuccess?: OnSuccess;
-    onFailure?: OnFailure;
-    transform?: TransformData;
-    [key: string]: any;
-}
-
-export interface EditControllerProps<RecordType extends Record = Record> {
-    basePath?: string;
-    // Necessary for actions (EditActions) which expect a data prop containing the record
-    // @deprecated - to be removed in 4.0d
-    data?: RecordType;
-    error?: any;
-    defaultTitle: string;
-    hasCreate?: boolean;
-    hasEdit?: boolean;
-    hasShow?: boolean;
-    hasList?: boolean;
-    loading: boolean;
-    loaded: boolean;
-    onSuccessRef: MutableRefObject<OnSuccess>;
-    onFailureRef: MutableRefObject<OnFailure>;
-    transformRef: MutableRefObject<TransformData>;
-    save: (
-        data: Partial<Record>,
-        redirect?: RedirectionSideEffect,
-        callbacks?: {
-            onSuccess?: OnSuccess;
-            onFailure?: OnFailure;
-            transform?: TransformData;
-        }
-    ) => void;
-    saving: boolean;
-    setOnSuccess: SetOnSuccess;
-    setOnFailure: SetOnFailure;
-    setTransform: SetTransformData;
-    successMessage?: string;
-    record?: RecordType;
-    refetch: Refetch;
-    redirect: RedirectionSideEffect;
-    resource: string;
-    version: number;
-}
 
 /**
- * Prepare data for the Edit view
+ * Prepare data for the Edit view.
+ *
+ * useEditController does a few things:
+ * - it grabs the id from the URL and the resource name from the ResourceContext,
+ * - it fetches the record via useGetOne,
+ * - it prepares the page title.
  *
  * @param {Object} props The props passed to the Edit component.
  *
@@ -91,22 +44,16 @@ export interface EditControllerProps<RecordType extends Record = Record> {
  * import { useEditController } from 'react-admin';
  * import EditView from './EditView';
  *
- * const MyEdit = props => {
- *     const controllerProps = useEditController(props);
+ * const MyEdit = () => {
+ *     const controllerProps = useEditController({ resource: 'posts', id: 123 });
  *     return <EditView {...controllerProps} {...props} />;
  * }
  */
 export const useEditController = <RecordType extends Record = Record>(
-    props: EditProps
-): EditControllerProps<RecordType> => {
-    useCheckMinimumRequiredProps('Edit', ['basePath', 'resource'], props);
+    props: EditControllerProps
+): EditControllerResult<RecordType> => {
     const {
-        basePath,
-        hasCreate,
-        hasEdit,
-        hasList,
-        hasShow,
-        id,
+        id: propsId,
         successMessage,
         onSuccess,
         onFailure,
@@ -119,6 +66,8 @@ export const useEditController = <RecordType extends Record = Record>(
     const redirect = useRedirect();
     const refresh = useRefresh();
     const version = useVersion();
+    const { id: routeId } = useParams<{ id?: string }>();
+    const id = propsId || decodeURIComponent(routeId);
 
     if (process.env.NODE_ENV !== 'production' && successMessage) {
         console.log(
@@ -141,7 +90,7 @@ export const useEditController = <RecordType extends Record = Record>(
         action: CRUD_GET_ONE,
         onFailure: () => {
             notify('ra.notification.item_doesnt_exist', { type: 'warning' });
-            redirect('list', basePath);
+            redirect('list', `/${resource}`);
             refresh();
         },
     });
@@ -197,7 +146,12 @@ export const useEditController = <RecordType extends Record = Record>(
                                           undoable: mutationMode === 'undoable',
                                       }
                                   );
-                                  redirect(redirectTo, basePath, data.id, data);
+                                  redirect(
+                                      redirectTo,
+                                      `/${resource}`,
+                                      data.id,
+                                      data
+                                  );
                               },
                         onFailure: onFailureFromSave
                             ? onFailureFromSave
@@ -240,36 +194,73 @@ export const useEditController = <RecordType extends Record = Record>(
             notify,
             successMessage,
             redirect,
-            basePath,
             refresh,
+            resource,
             mutationMode,
         ]
     );
 
     return {
-        error,
-        loading,
-        loaded,
-        saving,
         defaultTitle,
-        hasCreate,
-        hasEdit,
-        hasList,
-        hasShow,
-        onSuccessRef,
+        error,
+        loaded,
+        loading,
         onFailureRef,
-        transformRef,
-        save,
-        setOnSuccess,
-        setOnFailure,
-        setTransform,
-        refetch,
-        resource,
-        basePath,
+        onSuccessRef,
         record,
         redirect: DefaultRedirect,
+        refetch,
+        resource,
+        save,
+        saving,
+        setOnFailure,
+        setOnSuccess,
+        setTransform,
+        transformRef,
         version,
     };
 };
+
+export interface EditControllerProps {
+    id?: Identifier;
+    resource?: string;
+    mutationMode?: MutationMode;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
+    transform?: TransformData;
+    [key: string]: any;
+}
+
+export interface EditControllerResult<RecordType extends Record = Record> {
+    // Necessary for actions (EditActions) which expect a data prop containing the record
+    // @deprecated - to be removed in 4.0d
+    data?: RecordType;
+    error?: any;
+    defaultTitle: string;
+    loading: boolean;
+    loaded: boolean;
+    onSuccessRef: MutableRefObject<OnSuccess>;
+    onFailureRef: MutableRefObject<OnFailure>;
+    transformRef: MutableRefObject<TransformData>;
+    save: (
+        data: Partial<Record>,
+        redirect?: RedirectionSideEffect,
+        callbacks?: {
+            onSuccess?: OnSuccess;
+            onFailure?: OnFailure;
+            transform?: TransformData;
+        }
+    ) => void;
+    saving: boolean;
+    setOnSuccess: SetOnSuccess;
+    setOnFailure: SetOnFailure;
+    setTransform: SetTransformData;
+    successMessage?: string;
+    record?: RecordType;
+    refetch: Refetch;
+    redirect: RedirectionSideEffect;
+    resource: string;
+    version: number;
+}
 
 const DefaultRedirect = 'list';

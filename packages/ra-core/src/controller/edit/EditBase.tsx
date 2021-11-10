@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { useEditController, EditProps } from './useEditController';
+import { useEditController, EditControllerProps } from './useEditController';
 import { EditContextProvider } from './EditContextProvider';
 
 /**
@@ -14,8 +14,8 @@ import { EditContextProvider } from './EditContextProvider';
  *
  * @example // Custom edit layout
  *
- * const PostEdit = props => (
- *     <EditBase {...props}>
+ * const PostEdit = () => (
+ *     <EditBase resource="posts">
  *         <Grid container>
  *             <Grid item xs={8}>
  *                 <SimpleForm>
@@ -35,7 +35,7 @@ import { EditContextProvider } from './EditContextProvider';
 export const EditBase = ({
     children,
     ...props
-}: EditProps & { children: ReactNode }) => (
+}: EditControllerProps & { children: ReactNode }) => (
     <EditContextProvider value={useEditController(props)}>
         {children}
     </EditContextProvider>

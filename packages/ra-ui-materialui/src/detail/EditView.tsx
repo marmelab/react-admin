@@ -8,6 +8,7 @@ import {
     EditControllerProps,
     ComponentPropType,
     useEditContext,
+    useResourceDefinition,
 } from 'ra-core';
 
 import { EditActions as DefaultActions } from './EditActions';
@@ -26,11 +27,9 @@ export const EditView = (props: EditViewProps) => {
         ...rest
     } = props;
 
+    const { hasList, hasShow } = useResourceDefinition();
     const {
-        basePath,
         defaultTitle,
-        hasList,
-        hasShow,
         record,
         redirect,
         resource,
@@ -60,7 +59,6 @@ export const EditView = (props: EditViewProps) => {
             />
             {finalActions &&
                 cloneElement(finalActions, {
-                    basePath,
                     data: record,
                     hasShow,
                     hasList,
@@ -76,7 +74,6 @@ export const EditView = (props: EditViewProps) => {
                 <Content className={EditClasses.card}>
                     {record ? (
                         cloneElement(Children.only(children), {
-                            basePath,
                             record,
                             redirect:
                                 typeof children.props.redirect === 'undefined'
@@ -97,7 +94,6 @@ export const EditView = (props: EditViewProps) => {
                 </Content>
                 {aside &&
                     React.cloneElement(aside, {
-                        basePath,
                         record,
                         resource,
                         version,
@@ -121,7 +117,6 @@ interface EditViewProps
 EditView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     aside: PropTypes.element,
-    basePath: PropTypes.string,
     children: PropTypes.element,
     className: PropTypes.string,
     component: ComponentPropType,
@@ -143,7 +138,6 @@ EditView.propTypes = {
 };
 
 const sanitizeRestProps = ({
-    basePath = null,
     defaultTitle = null,
     hasCreate = null,
     hasEdit = null,

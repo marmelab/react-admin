@@ -3,7 +3,7 @@ import defaults from 'lodash/defaults';
 
 import { Record } from '../../types';
 import { EditContext } from './EditContext';
-import { EditControllerProps } from './useEditController';
+import { EditControllerResult } from './useEditController';
 
 /**
  * Hook to read the edit controller props from the CreateContext.
@@ -17,17 +17,17 @@ import { EditControllerProps } from './useEditController';
  *
  * @typedef {Object} EditControllerProps
  *
- * @returns {EditControllerProps} edit controller props
+ * @returns {EditControllerResult} edit controller props
  *
  * @see useEditController for how it is filled
  *
  */
 export const useEditContext = <RecordType extends Record = Record>(
-    props?: Partial<EditControllerProps<RecordType>>
-): Partial<EditControllerProps<RecordType>> => {
+    props?: Partial<EditControllerResult<RecordType>>
+): Partial<EditControllerResult<RecordType>> => {
     // Can't find a way to specify the RecordType when EditContext is declared
     // @ts-ignore
-    const context = useContext<EditControllerProps<RecordType>>(EditContext);
+    const context = useContext<EditControllerResult<RecordType>>(EditContext);
 
     // Props take precedence over the context
     return useMemo(
@@ -46,10 +46,9 @@ export const useEditContext = <RecordType extends Record = Record>(
  *
  * @param {Object} props props passed to the useEditContext hook
  *
- * @returns {EditControllerProps} edit controller props
+ * @returns {EditControllerResult} edit controller props
  */
 const extractEditContextProps = ({
-    basePath,
     data,
     record,
     defaultTitle,
@@ -68,7 +67,6 @@ const extractEditContextProps = ({
     successMessage,
     version,
 }: any) => ({
-    basePath,
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
     data: record || data,

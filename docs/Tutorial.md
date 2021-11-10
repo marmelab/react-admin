@@ -488,8 +488,8 @@ export const PostList = props => (
   { /* ... */ }
 );
 
-export const PostEdit = props => (
-    <Edit {...props}>
+export const PostEdit = () => (
+    <Edit>
         <SimpleForm>
             <ReferenceInput source="userId" reference="users">
                 <SelectInput optionText="id" />
@@ -506,8 +506,8 @@ You can now adjust the `PostEdit` component to disable the edition of the primar
 
 ```diff
 // in src/posts.js
-export const PostEdit = props => (
-    <Edit {...props}>
+export const PostEdit = () => (
+    <Edit>
         <SimpleForm>
 +           <TextInput disabled source="id" />
             <ReferenceInput source="userId" reference="users">
@@ -614,13 +614,14 @@ The post editing page has a slight problem: it uses the post id as main title (t
 
 ```diff
 // in src/posts.js
-+const PostTitle = ({ record }) => {
++const PostTitle = () => {
++    const record = useRecordContext();
 +    return <span>Post {record ? `"${record.title}"` : ''}</span>;
 +};
 
-export const PostEdit = props => (
--   <Edit {...props}>
-+   <Edit title={<PostTitle />} {...props}>
+export const PostEdit = () => (
+-   <Edit>
++   <Edit title={<PostTitle />}>
         // ...
     </Edit>
 );

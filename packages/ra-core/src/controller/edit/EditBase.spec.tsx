@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import expect from 'expect';
 import { cleanup } from '@testing-library/react';
 import { EditBase } from './EditBase';
-import { useSaveContext } from './SaveContext';
+import { useSaveContext } from '../SaveContext';
 import { DataProviderContext } from '../../dataProvider';
 import { DataProvider } from '../../types';
 import { renderWithRedux } from 'ra-test';

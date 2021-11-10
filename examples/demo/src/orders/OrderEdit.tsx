@@ -4,7 +4,6 @@ import {
     BooleanInput,
     DateField,
     Edit,
-    EditProps,
     FormWithRedirect,
     Labeled,
     ReferenceField,
@@ -226,8 +225,8 @@ const OrderForm = (props: any) => {
         />
     );
 };
-const OrderEdit = (props: EditProps) => (
-    <StyledEdit title={<OrderTitle />} {...props} component="div">
+const OrderEdit = () => (
+    <StyledEdit title={<OrderTitle />} component="div">
         <OrderForm />
     </StyledEdit>
 );

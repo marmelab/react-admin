@@ -2,9 +2,9 @@ import * as React from 'react';
 import { createContext, MutableRefObject, useContext, useMemo } from 'react';
 import pick from 'lodash/pick';
 
-import { RedirectionSideEffect } from '../../sideEffect';
-import { Record, OnFailure, OnSuccess } from '../../types';
-import { SideEffectContextValue, TransformData } from '../saveModifiers';
+import { RedirectionSideEffect } from '../sideEffect';
+import { Record, OnFailure, OnSuccess } from '../types';
+import { SideEffectContextValue, TransformData } from './saveModifiers';
 
 interface SaveContextValue extends SideEffectContextValue {
     onFailureRef?: MutableRefObject<OnFailure>;

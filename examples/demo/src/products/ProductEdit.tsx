@@ -4,7 +4,6 @@ import {
     DateField,
     Edit,
     EditButton,
-    EditProps,
     FormTab,
     NumberInput,
     Pagination,
@@ -66,8 +65,8 @@ const StyledEdit = styled(Edit)({
     },
 });
 
-const ProductEdit = (props: EditProps) => (
-    <StyledEdit {...props} title={<ProductTitle />}>
+const ProductEdit = () => (
+    <StyledEdit title={<ProductTitle />}>
         <TabbedForm>
             <FormTab
                 label="resources.products.tabs.image"

@@ -1065,8 +1065,8 @@ This also works inside an `Edit` view with a `TabbedForm`, and you can even hide
 
 {% raw %}
 ```jsx
-export const UserEdit = ({ permissions, ...props }) =>
-    <Edit title={<UserTitle />} {...props}>
+export const UserEdit = ({ permissions }) =>
+    <Edit title={<UserTitle />}>
         <TabbedForm defaultValue={{ role: 'user' }}>
             <FormTab label="user.form.summary">
                 {permissions === 'admin' && <TextInput disabled source="id" />}

@@ -1,11 +1,11 @@
 /* eslint react/jsx-key: off */
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { Edit, SimpleForm, TextInput, required } from 'react-admin';
+import { Edit, Identifier, SimpleForm, TextInput, required } from 'react-admin';
 
-const UserEditEmbedded = props => (
+const UserEditEmbedded = ({ id }: { id?: Identifier }) => (
     /* Passing " " as title disables the custom title */
-    <Edit title=" " {...props}>
+    <Edit title=" " id={id}>
         <SimpleForm initialValues={{ role: 'user' }}>
             <TextInput
                 source="name"

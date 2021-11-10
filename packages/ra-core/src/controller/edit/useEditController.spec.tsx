@@ -1,20 +1,16 @@
 import * as React from 'react';
 import expect from 'expect';
 import { act, waitFor } from '@testing-library/react';
+import { renderWithRedux } from 'ra-test';
+import { MemoryRouter, Route } from 'react-router';
 
 import { EditController } from './EditController';
-import { renderWithRedux } from 'ra-test';
 import { DataProviderContext } from '../../dataProvider';
 import { DataProvider } from '../../types';
-import { SaveContextProvider } from '../../../esm';
+import { SaveContextProvider } from '..';
 
 describe('useEditController', () => {
     const defaultProps = {
-        basePath: '',
-        hasCreate: true,
-        hasEdit: true,
-        hasList: true,
-        hasShow: true,
         id: 12,
         resource: 'posts',
         debounce: 200,
@@ -45,6 +41,36 @@ describe('useEditController', () => {
         await waitFor(() => {
             expect(getOne).toHaveBeenCalled();
             expect(queryAllByText('hello')).toHaveLength(1);
+        });
+
+        unmount();
+    });
+
+    it('should decode the id from the route params', async () => {
+        const getOne = jest
+            .fn()
+            .mockImplementationOnce(() =>
+                Promise.resolve({ data: { id: 12, title: 'hello' } })
+            );
+        const dataProvider = ({ getOne } as unknown) as DataProvider;
+        const { unmount } = renderWithRedux(
+            <MemoryRouter initialEntries={['/posts/test%3F']}>
+                <Route path="/posts/:id">
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <SaveContextProvider value={saveContextValue}>
+                            <EditController resource="posts">
+                                {({ record }) => (
+                                    <div>{record && record.title}</div>
+                                )}
+                            </EditController>
+                        </SaveContextProvider>
+                    </DataProviderContext.Provider>
+                </Route>
+            </MemoryRouter>,
+            { admin: { resources: { posts: { data: {} } } } }
+        );
+        await waitFor(() => {
+            expect(getOne).toHaveBeenCalledWith('posts', { id: 'test?' });
         });
 
         unmount();

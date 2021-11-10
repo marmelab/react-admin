@@ -16,6 +16,7 @@ import {
     TextInput,
     Toolbar,
     TopToolbar,
+    usePermissions,
 } from 'react-admin';
 
 import UserTitle from './UserTitle';
@@ -67,13 +68,13 @@ const EditActions = ({ basePath, data, hasShow }: EditActionsProps) => (
 );
 
 const UserEditForm = ({
-    permissions,
     save,
     ...props
 }: {
     permissions?: any;
     save?: any;
 }) => {
+    const { permissions } = usePermissions();
     const newSave = values =>
         new Promise((resolve, reject) => {
             if (values.name === 'test') {
@@ -119,15 +120,14 @@ const UserEditForm = ({
         </TabbedForm>
     );
 };
-const UserEdit = ({ permissions, ...props }) => {
+const UserEdit = () => {
     return (
         <StyledEdit
             title={<UserTitle />}
             aside={<Aside />}
             actions={<EditActions />}
-            {...props}
         >
-            <UserEditForm permissions={permissions} />
+            <UserEditForm />
         </StyledEdit>
     );
 };

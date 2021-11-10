@@ -5,7 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import WithPermissions from '../auth/WithPermissions';
 import { registerResource, unregisterResource } from '../actions';
-import { ResourceProps, ResourceMatch, ReduxState } from '../types';
+import { ResourceProps, ReduxState } from '../types';
 import { ResourceContextProvider } from './ResourceContextProvider';
 
 const defaultOptions = {};
@@ -92,32 +92,14 @@ const ResourceRoutes = (props: ResourceProps) => {
                         />
                     )}
                     {show && (
-                        <Route
-                            path={`${basePath}/:id/show`}
-                            render={routeProps => (
-                                <WithPermissions
-                                    component={show}
-                                    {...routeProps}
-                                />
-                            )}
-                        />
+                        <Route path={`${basePath}/:id/show`}>
+                            <WithPermissions component={show} />
+                        </Route>
                     )}
                     {edit && (
-                        <Route
-                            path={`${basePath}/:id`}
-                            render={routeProps => (
-                                <WithPermissions
-                                    component={edit}
-                                    basePath={basePath}
-                                    id={decodeURIComponent(
-                                        (routeProps.match as ResourceMatch)
-                                            .params.id
-                                    )}
-                                    {...routeProps}
-                                    {...resourceData}
-                                />
-                            )}
-                        />
+                        <Route path={`${basePath}/:id`}>
+                            <WithPermissions component={edit} />
+                        </Route>
                     )}
                     {list && (
                         <Route
