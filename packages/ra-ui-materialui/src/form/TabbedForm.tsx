@@ -17,6 +17,7 @@ import {
     OnFailure,
 } from 'ra-core';
 import get from 'lodash/get';
+import { useRouteMatch, useLocation } from 'react-router';
 
 import { ClassesOverride } from '../types';
 import { TabbedFormView, useTabbedFormViewStyles } from './TabbedFormView';
@@ -88,12 +89,19 @@ import { TabbedFormView, useTabbedFormViewStyles } from './TabbedFormView';
  *
  * @param {Props} props
  */
-export const TabbedForm = (props: TabbedFormProps) => (
-    <FormWithRedirect
-        {...props}
-        render={formProps => <TabbedFormView {...formProps} />}
-    />
-);
+export const TabbedForm = (props: TabbedFormProps) => {
+    const match = useRouteMatch();
+    const location = useLocation();
+    const formRootPathname = match ? match.url : location.pathname;
+
+    return (
+        <FormWithRedirect
+            {...props}
+            formRootPathname={formRootPathname}
+            render={formProps => <TabbedFormView {...formProps} />}
+        />
+    );
+};
 
 TabbedForm.propTypes = {
     children: PropTypes.node,
