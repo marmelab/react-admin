@@ -79,17 +79,9 @@ const ResourceRoutes = (props: ResourceProps) => {
             <ResourceContextProvider value={name}>
                 <Switch>
                     {create && (
-                        <Route
-                            path={`${basePath}/create`}
-                            render={routeProps => (
-                                <WithPermissions
-                                    component={create}
-                                    basePath={basePath}
-                                    {...routeProps}
-                                    {...resourceData}
-                                />
-                            )}
-                        />
+                        <Route path={`${basePath}/create`}>
+                            <WithPermissions component={create} />
+                        </Route>
                     )}
                     {show && (
                         <Route path={`${basePath}/:id/show`}>

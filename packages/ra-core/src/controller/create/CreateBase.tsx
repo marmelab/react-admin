@@ -1,6 +1,9 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { useCreateController, CreateProps } from './useCreateController';
+import {
+    useCreateController,
+    CreateControllerProps,
+} from './useCreateController';
 import { CreateContextProvider } from './CreateContextProvider';
 import { Record } from '../../types';
 
@@ -36,7 +39,7 @@ import { Record } from '../../types';
 export const CreateBase = <RecordType extends Record = Record>({
     children,
     ...props
-}: CreateProps<RecordType> & { children: ReactNode }) => (
+}: CreateControllerProps<RecordType> & { children: ReactNode }) => (
     <CreateContextProvider value={useCreateController(props)}>
         {children}
     </CreateContextProvider>

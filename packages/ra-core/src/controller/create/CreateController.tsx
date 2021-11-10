@@ -1,18 +1,8 @@
-import { Translate } from '../../types';
-import { useTranslate } from '../../i18n';
 import {
     useCreateController,
-    CreateProps,
     CreateControllerProps,
+    CreateControllerResult,
 } from './useCreateController';
-
-interface CreateControllerComponentProps extends CreateControllerProps {
-    translate: Translate;
-}
-
-interface Props extends CreateProps {
-    children: (params: CreateControllerComponentProps) => JSX.Element;
-}
 
 /**
  * Render prop version of the useCreateController hook
@@ -27,8 +17,12 @@ interface Props extends CreateProps {
  *     </CreateController>
  * );
  */
-export const CreateController = ({ children, ...props }: Props) => {
+export const CreateController = ({
+    children,
+    ...props
+}: {
+    children: (params: CreateControllerResult) => JSX.Element;
+} & CreateControllerProps) => {
     const controllerProps = useCreateController(props);
-    const translate = useTranslate(); // injected for backwards compatibility
-    return children({ translate, ...controllerProps });
+    return children(controllerProps);
 };

@@ -20,9 +20,7 @@ export const CreateView = (props: CreateViewProps) => {
     } = props;
 
     const {
-        basePath,
         defaultTitle,
-        hasList,
         record,
         redirect,
         resource,
@@ -43,9 +41,7 @@ export const CreateView = (props: CreateViewProps) => {
             />
             {actions &&
                 cloneElement(actions, {
-                    basePath,
                     resource,
-                    hasList,
                     //  Ensure we don't override any user provided props
                     ...actions.props,
                 })}
@@ -56,7 +52,6 @@ export const CreateView = (props: CreateViewProps) => {
             >
                 <Content className={CreateClasses.card}>
                     {cloneElement(Children.only(children), {
-                        basePath,
                         record,
                         redirect:
                             typeof children.props.redirect === 'undefined'
@@ -73,7 +68,6 @@ export const CreateView = (props: CreateViewProps) => {
                 </Content>
                 {aside &&
                     cloneElement(aside, {
-                        basePath,
                         record,
                         resource,
                         save:

@@ -4,7 +4,7 @@ import { ReactNode } from 'react';
 import { Record } from '../../types';
 import { RecordContextProvider } from '../record/RecordContext';
 import { CreateContext } from './CreateContext';
-import { CreateControllerProps } from './useCreateController';
+import { CreateControllerResult } from './useCreateController';
 import { SaveContextProvider, usePickSaveContext } from '../SaveContext';
 
 /**
@@ -35,7 +35,7 @@ export const CreateContextProvider = ({
     value,
 }: {
     children: ReactNode;
-    value: CreateControllerProps;
+    value: CreateControllerResult;
 }) => (
     <CreateContext.Provider value={value}>
         <SaveContextProvider value={usePickSaveContext(value)}>

@@ -34,17 +34,12 @@ import { Button, ButtonProps } from './Button';
  * );
  */
 export const ListButton = (props: ListButtonProps) => {
-    const {
-        basePath = '',
-        icon = defaultIcon,
-        label = 'ra.action.list',
-        ...rest
-    } = props;
-    const resource = useResourceContext();
+    const { icon = defaultIcon, label = 'ra.action.list', ...rest } = props;
+    const resource = useResourceContext(props);
     return (
         <Button
             component={Link}
-            to={basePath || `/${resource}`}
+            to={`/${resource}`}
             label={label}
             {...(rest as any)}
         >
@@ -56,7 +51,6 @@ export const ListButton = (props: ListButtonProps) => {
 const defaultIcon = <ActionList />;
 
 interface Props {
-    basePath?: string;
     icon?: ReactElement;
     label?: string;
 }
@@ -64,7 +58,6 @@ interface Props {
 export type ListButtonProps = Props & ButtonProps;
 
 ListButton.propTypes = {
-    basePath: PropTypes.string,
     icon: PropTypes.element,
     label: PropTypes.string,
 };
