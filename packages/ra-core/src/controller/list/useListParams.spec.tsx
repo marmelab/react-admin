@@ -7,11 +7,11 @@ import { createMemoryHistory } from 'history';
 import { fireEvent, waitFor } from '@testing-library/react';
 import { renderWithRedux, TestContext } from 'ra-test';
 
-import useListParams, { getQuery, getNumberOrDefault } from './useListParams';
+import { useListParams, getQuery, getNumberOrDefault } from './useListParams';
 import {
     SORT_DESC,
     SORT_ASC,
-} from '../reducer/admin/resource/list/queryReducer';
+} from '../../reducer/admin/resource/list/queryReducer';
 
 describe('useListParams', () => {
     describe('getQuery', () => {

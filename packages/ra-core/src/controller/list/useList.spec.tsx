@@ -4,8 +4,8 @@ import expect from 'expect';
 
 import { useList, UseListOptions, UseListValue } from './useList';
 import { fireEvent, render, waitFor } from '@testing-library/react';
-import ListContextProvider from './ListContextProvider';
-import useListContext from './useListContext';
+import { ListContextProvider } from './ListContextProvider';
+import { useListContext } from './useListContext';
 
 const UseList = ({
     children,

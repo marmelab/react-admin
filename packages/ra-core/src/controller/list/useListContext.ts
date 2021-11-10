@@ -1,9 +1,9 @@
 import { useContext, useMemo } from 'react';
 import defaults from 'lodash/defaults';
 
-import ListContext from './ListContext';
-import { ListControllerProps } from './useListController';
-import { Record } from '../types';
+import { ListContext } from './ListContext';
+import { ListControllerResult } from './useListController';
+import { Record } from '../../types';
 
 /**
  * Hook to read the list controller props from the ListContext.
@@ -41,7 +41,7 @@ import { Record } from '../types';
  * @prop {string}   defaultTitle the translated title based on the resource, e.g. 'Posts'
  * @prop {string}   resource the resource name, deduced from the location. e.g. 'posts'
  *
- * @returns {ListControllerProps} list controller props
+ * @returns {ListControllerResult} list controller props
  *
  * @see useListController for how it is filled
  *
@@ -93,9 +93,9 @@ import { Record } from '../types';
  *     );
  * }
  */
-const useListContext = <RecordType extends Record = Record>(
+export const useListContext = <RecordType extends Record = Record>(
     props?: any
-): ListControllerProps<RecordType> => {
+): ListControllerResult<RecordType> => {
     const context = useContext(ListContext);
     // Props take precedence over the context
     // @ts-ignore
@@ -110,14 +110,12 @@ const useListContext = <RecordType extends Record = Record>(
     );
 };
 
-export default useListContext;
-
 /**
  * Extract only the list controller props
  *
  * @param {Object} props Props passed to the useListContext hook
  *
- * @returns {ListControllerProps} List controller props
+ * @returns {ListControllerResult} List controller props
  */
 const extractListContextProps = ({
     basePath,

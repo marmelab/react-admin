@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 
-import ListPaginationContext, {
+import {
+    ListPaginationContext,
     ListPaginationContextValue,
 } from './ListPaginationContext';
 
@@ -22,7 +23,9 @@ import ListPaginationContext, {
  *
  * @see useListController for how it is filled
  */
-const useListPaginationContext = (props?: any): ListPaginationContextValue => {
+export const useListPaginationContext = (
+    props?: any
+): ListPaginationContextValue => {
     const context = useContext(ListPaginationContext);
     if (!context.setPage) {
         /**

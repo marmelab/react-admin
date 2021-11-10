@@ -1,8 +1,9 @@
 import * as React from 'react';
-import ListContext from './ListContext';
-import ListFilterContext, { usePickFilterContext } from './ListFilterContext';
-import ListSortContext, { usePickSortContext } from './ListSortContext';
-import ListPaginationContext, {
+import { ListContext } from './ListContext';
+import { ListFilterContext, usePickFilterContext } from './ListFilterContext';
+import { ListSortContext, usePickSortContext } from './ListSortContext';
+import {
+    ListPaginationContext,
     usePickPaginationContext,
 } from './ListPaginationContext';
 
@@ -33,7 +34,7 @@ import ListPaginationContext, {
  * @see ListContext
  * @see ListFilterContext
  */
-const ListContextProvider = ({ value, children }) => (
+export const ListContextProvider = ({ value, children }) => (
     <ListContext.Provider value={value}>
         <ListFilterContext.Provider value={usePickFilterContext(value)}>
             <ListSortContext.Provider value={usePickSortContext(value)}>
@@ -46,5 +47,3 @@ const ListContextProvider = ({ value, children }) => (
         </ListFilterContext.Provider>
     </ListContext.Provider>
 );
-
-export default ListContextProvider;

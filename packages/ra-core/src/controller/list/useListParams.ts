@@ -13,12 +13,12 @@ import queryReducer, {
     SET_PER_PAGE,
     SET_SORT,
     SORT_ASC,
-} from '../reducer/admin/resource/list/queryReducer';
-import { changeListParams, ListParams } from '../actions/listActions';
-import { SortPayload, ReduxState, FilterPayload } from '../types';
-import removeEmpty from '../util/removeEmpty';
+} from '../../reducer/admin/resource/list/queryReducer';
+import { changeListParams, ListParams } from '../../actions';
+import { SortPayload, ReduxState, FilterPayload } from '../../types';
+import removeEmpty from '../../util/removeEmpty';
 
-interface ListParamsOptions {
+export interface ListParamsOptions {
     resource: string;
     perPage?: number;
     sort?: SortPayload;
@@ -106,7 +106,7 @@ const defaultParams = {};
  *      setSort,
  * } = listParamsActions;
  */
-const useListParams = ({
+export const useListParams = ({
     resource,
     filterDefaultValues,
     sort = defaultSort,
@@ -378,5 +378,3 @@ export const getNumberOrDefault = (
 
     return isNaN(parsedNumber) ? defaultValue : parsedNumber;
 };
-
-export default useListParams;

@@ -25,7 +25,6 @@ import { Button, ButtonProps, sanitizeButtonRestProps } from './Button';
  */
 const CreateButton = (props: CreateButtonProps) => {
     const {
-        basePath = '',
         className,
         icon = defaultIcon,
         label = 'ra.action.create',
@@ -34,17 +33,17 @@ const CreateButton = (props: CreateButtonProps) => {
         ...rest
     } = props;
 
+    const resource = useResourceContext(props);
     const translate = useTranslate();
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('md')
     );
-    const resource = useResourceContext();
     const location = useMemo(
         () => ({
-            pathname: basePath ? `${basePath}/create` : `/${resource}/create`,
+            pathname: `/${resource}/create`,
             state: { _scrollToTop: scrollToTop },
         }),
-        [basePath, resource, scrollToTop]
+        [resource, scrollToTop]
     );
     return isSmall ? (
         <StyledFab
@@ -74,7 +73,7 @@ const CreateButton = (props: CreateButtonProps) => {
 const defaultIcon = <ContentAdd />;
 
 interface Props {
-    basePath?: string;
+    resource?: string;
     icon?: ReactElement;
     scrollToTop?: boolean;
 }
@@ -82,7 +81,7 @@ interface Props {
 export type CreateButtonProps = Props & ButtonProps;
 
 CreateButton.propTypes = {
-    basePath: PropTypes.string,
+    resource: PropTypes.string,
     className: PropTypes.string,
     icon: PropTypes.element,
     label: PropTypes.string,
@@ -109,7 +108,7 @@ const StyledFab = styled(Fab, { name: PREFIX })(({ theme }) => ({
 
 export default memo(CreateButton, (prevProps, nextProps) => {
     return (
-        prevProps.basePath === nextProps.basePath &&
+        prevProps.resource === nextProps.resource &&
         prevProps.label === nextProps.label &&
         prevProps.translate === nextProps.translate &&
         prevProps.to === nextProps.to &&

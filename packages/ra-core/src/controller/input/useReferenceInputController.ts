@@ -10,7 +10,7 @@ import {
     Identifier,
     SortPayload,
 } from '../../types';
-import { ListControllerProps } from '../useListController';
+import { ListControllerProps } from '../list';
 import useReference from '../useReference';
 import usePaginationState from '../usePaginationState';
 import { useSortState } from '..';

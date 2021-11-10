@@ -245,7 +245,7 @@ describe('List Page', () => {
             );
         });
 
-        it.only('should accept multiple expands', () => {
+        it('should accept multiple expands', () => {
             cy.contains('1-10 of 13'); // wait for data
             cy.get('[aria-label="Expand"]')
                 .eq(0)

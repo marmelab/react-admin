@@ -2,8 +2,8 @@ import * as React from 'react';
 import expect from 'expect';
 import { render } from '@testing-library/react';
 
-import ListContext from './ListContext';
-import useListContext from './useListContext';
+import { ListContext } from './ListContext';
+import { useListContext } from './useListContext';
 
 describe('useListContext', () => {
     const NaiveList = props => {

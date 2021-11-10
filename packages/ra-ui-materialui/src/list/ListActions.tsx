@@ -51,7 +51,6 @@ export const ListActions = (props: ListActionsProps) => {
         currentSort,
         displayedFilters,
         filterValues,
-        basePath,
         selectedIds,
         showFilter,
         total,
@@ -71,7 +70,7 @@ export const ListActions = (props: ListActionsProps) => {
                           context: 'button',
                       })
                     : filters && <FilterButton />}
-                {hasCreate && <CreateButton basePath={basePath} />}
+                {hasCreate && <CreateButton />}
                 {exporter !== false && (
                     <ExportButton
                         disabled={total === 0}
@@ -87,7 +86,6 @@ export const ListActions = (props: ListActionsProps) => {
 };
 
 ListActions.propTypes = {
-    basePath: PropTypes.string,
     className: PropTypes.string,
     currentSort: PropTypes.any,
     displayedFilters: PropTypes.object,

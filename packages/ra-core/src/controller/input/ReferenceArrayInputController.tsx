@@ -3,7 +3,7 @@ import debounce from 'lodash/debounce';
 
 import { Record, SortPayload, PaginationPayload } from '../../types';
 import { useReferenceArrayInputController } from './useReferenceArrayInputController';
-import { ListControllerProps } from '..';
+import { ListControllerProps } from '../list';
 
 /**
  * An Input component for fields containing a list of references to another resource.

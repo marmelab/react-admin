@@ -2,7 +2,7 @@ import * as React from 'react';
 import { render, waitFor, within } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
-import { ListContext } from 'ra-core';
+import { ListContext, ResourceContextProvider } from 'ra-core';
 
 import { SimpleList } from './SimpleList';
 import { TextField } from '../field';
@@ -19,25 +19,26 @@ const renderWithRouter = children => {
 describe('<SimpleList />', () => {
     it('should render a list of items which provide a record context', async () => {
         const { getByText } = renderWithRouter(
-            <ListContext.Provider
-                value={{
-                    loaded: true,
-                    loading: false,
-                    ids: [1, 2],
-                    data: {
-                        1: { id: 1, title: 'foo' },
-                        2: { id: 2, title: 'bar' },
-                    },
-                    total: 2,
-                    resource: 'posts',
-                    basePath: '/posts',
-                }}
-            >
-                <SimpleList
-                    primaryText={record => record.id.toString()}
-                    secondaryText={<TextField source="title" />}
-                />
-            </ListContext.Provider>
+            <ResourceContextProvider value="posts">
+                <ListContext.Provider
+                    value={{
+                        loaded: true,
+                        loading: false,
+                        ids: [1, 2],
+                        data: {
+                            1: { id: 1, title: 'foo' },
+                            2: { id: 2, title: 'bar' },
+                        },
+                        total: 2,
+                        resource: 'posts',
+                    }}
+                >
+                    <SimpleList
+                        primaryText={record => record.id.toString()}
+                        secondaryText={<TextField source="title" />}
+                    />
+                </ListContext.Provider>
+            </ResourceContextProvider>
         );
 
         await waitFor(() => {
@@ -73,26 +74,27 @@ describe('<SimpleList />', () => {
         'should render %s links for each item',
         async (_, link, expectedUrls) => {
             const { getByText } = renderWithRouter(
-                <ListContext.Provider
-                    value={{
-                        loaded: true,
-                        loading: false,
-                        ids: [1, 2],
-                        data: {
-                            1: { id: 1, title: 'foo' },
-                            2: { id: 2, title: 'bar' },
-                        },
-                        total: 2,
-                        resource: 'posts',
-                        basePath: '/posts',
-                    }}
-                >
-                    <SimpleList
-                        linkType={link}
-                        primaryText={record => record.id.toString()}
-                        secondaryText={<TextField source="title" />}
-                    />
-                </ListContext.Provider>
+                <ResourceContextProvider value="posts">
+                    <ListContext.Provider
+                        value={{
+                            loaded: true,
+                            loading: false,
+                            ids: [1, 2],
+                            data: {
+                                1: { id: 1, title: 'foo' },
+                                2: { id: 2, title: 'bar' },
+                            },
+                            total: 2,
+                            resource: 'posts',
+                        }}
+                    >
+                        <SimpleList
+                            linkType={link}
+                            primaryText={record => record.id.toString()}
+                            secondaryText={<TextField source="title" />}
+                        />
+                    </ListContext.Provider>
+                </ResourceContextProvider>
             );
 
             await waitFor(() => {
@@ -108,26 +110,27 @@ describe('<SimpleList />', () => {
 
     it('should not render links if linkType is false', async () => {
         const { getByText } = renderWithRouter(
-            <ListContext.Provider
-                value={{
-                    loaded: true,
-                    loading: false,
-                    ids: [1, 2],
-                    data: {
-                        1: { id: 1, title: 'foo' },
-                        2: { id: 2, title: 'bar' },
-                    },
-                    total: 2,
-                    resource: 'posts',
-                    basePath: '/posts',
-                }}
-            >
-                <SimpleList
-                    linkType={false}
-                    primaryText={record => record.id.toString()}
-                    secondaryText={<TextField source="title" />}
-                />
-            </ListContext.Provider>
+            <ResourceContextProvider value="posts">
+                <ListContext.Provider
+                    value={{
+                        loaded: true,
+                        loading: false,
+                        ids: [1, 2],
+                        data: {
+                            1: { id: 1, title: 'foo' },
+                            2: { id: 2, title: 'bar' },
+                        },
+                        total: 2,
+                        resource: 'posts',
+                    }}
+                >
+                    <SimpleList
+                        linkType={false}
+                        primaryText={record => record.id.toString()}
+                        secondaryText={<TextField source="title" />}
+                    />
+                </ListContext.Provider>
+            </ResourceContextProvider>
         );
 
         await waitFor(() => {

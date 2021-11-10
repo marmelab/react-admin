@@ -1,6 +1,6 @@
 import { createContext, useMemo } from 'react';
 import pick from 'lodash/pick';
-import { ListControllerProps } from './useListController';
+import { ListControllerResult } from './useListController';
 
 /**
  * Context to store the filter part of the useListController() result.
@@ -37,7 +37,7 @@ import { ListControllerProps } from './useListController';
  *     );
  * };
  */
-const ListFilterContext = createContext<ListFilterContextValue>({
+export const ListFilterContext = createContext<ListFilterContextValue>({
     displayedFilters: null,
     filterValues: null,
     hideFilter: null,
@@ -47,7 +47,7 @@ const ListFilterContext = createContext<ListFilterContextValue>({
 });
 
 export type ListFilterContextValue = Pick<
-    ListControllerProps,
+    ListControllerResult,
     | 'displayedFilters'
     | 'filterValues'
     | 'hideFilter'
@@ -57,7 +57,7 @@ export type ListFilterContextValue = Pick<
 >;
 
 export const usePickFilterContext = (
-    context: ListControllerProps
+    context: ListControllerResult
 ): ListFilterContextValue =>
     useMemo(
         () =>
@@ -80,5 +80,3 @@ export const usePickFilterContext = (
     );
 
 ListFilterContext.displayName = 'ListFilterContext';
-
-export default ListFilterContext;
