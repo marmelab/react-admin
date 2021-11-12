@@ -17,7 +17,7 @@ import {
 } from '../../sideEffect';
 import { useGetOne, useUpdate, Refetch } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
-import { CRUD_GET_ONE, CRUD_UPDATE } from '../../actions';
+import { CRUD_UPDATE } from '../../actions';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import {
     SetOnSuccess,
@@ -84,12 +84,13 @@ export const useEditController = <RecordType extends Record = Record>(
         setTransform,
     } = useSaveModifiers({ onSuccess, onFailure, transform });
 
-    const { data: record, error, loading, loaded, refetch } = useGetOne<
+    const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
         RecordType
     >(resource, id, {
-        action: CRUD_GET_ONE,
-        onFailure: () => {
-            notify('ra.notification.item_doesnt_exist', { type: 'warning' });
+        onError: () => {
+            notify('ra.notification.item_doesnt_exist', {
+                type: 'warning',
+            });
             redirect('list', `/${resource}`);
             refresh();
         },
@@ -203,8 +204,8 @@ export const useEditController = <RecordType extends Record = Record>(
     return {
         defaultTitle,
         error,
-        loaded,
-        loading,
+        isFetching,
+        isLoading,
         onFailureRef,
         onSuccessRef,
         record,
@@ -237,8 +238,8 @@ export interface EditControllerResult<RecordType extends Record = Record> {
     data?: RecordType;
     error?: any;
     defaultTitle: string;
-    loading: boolean;
-    loaded: boolean;
+    isFetching: boolean;
+    isLoading: boolean;
     onSuccessRef: MutableRefObject<OnSuccess>;
     onFailureRef: MutableRefObject<OnFailure>;
     transformRef: MutableRefObject<TransformData>;

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { forwardRef, memo } from 'react';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { Layout, AppBar, UserMenu, useLocale, useSetLocale } from 'react-admin';
 import { MenuItem, MenuItemProps, ListItemIcon } from '@mui/material';
 import Language from '@mui/icons-material/Language';
@@ -51,4 +52,12 @@ const MyUserMenu = props => (
 
 const MyAppBar = memo(props => <AppBar {...props} userMenu={<MyUserMenu />} />);
 
-export default props => <Layout {...props} appBar={MyAppBar} />;
+export default props => (
+    <>
+        <Layout {...props} appBar={MyAppBar} />
+        <ReactQueryDevtools
+            initialIsOpen={false}
+            toggleButtonProps={{ style: { width: 20, height: 30 } }}
+        />
+    </>
+);

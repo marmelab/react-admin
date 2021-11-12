@@ -65,7 +65,7 @@ export interface ShowProps {
     component?: ElementType;
     emptyWhileLoading?: boolean;
     id?: Identifier;
-    onFailure?: OnFailure;
+    onError?: OnFailure;
     resource?: string;
     title?: string | ReactElement;
     sx?: SxProps;

@@ -61,11 +61,11 @@ import { ShowView } from './ShowView';
 export const Show = ({
     id,
     resource,
-    onFailure,
+    onError,
     ...rest
 }: ShowProps): ReactElement => (
     <ResourceContextProvider value={resource}>
-        <ShowBase id={id} onFailure={onFailure}>
+        <ShowBase id={id} onError={onError}>
             <ShowView {...rest} />
         </ShowBase>
     </ResourceContextProvider>
