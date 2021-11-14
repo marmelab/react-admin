@@ -23,9 +23,9 @@ import { useShowController, RecordContextProvider, SimpleShowLayout } from 'reac
 const PostShow = () => {
     const {
         defaultTitle, // the translated title based on the resource, e.g. 'Post #123'
-        error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onFailure` side effect.
-        loaded, // boolean that is false until the record is available
-        loading, // boolean that is true on mount, and false once the record was fetched
+        error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onError` side effect.
+        isLoading, // boolean that is false until the record is available
+        isFetching, // boolean that is true on mount, and false once the record was fetched
         record, // record fetched via dataProvider.getOne() based on the id from the location
         refetch, // callback to refetch the record via dataProvider.getOne()
         resource, // the resource name, deduced from the location. e.g. 'posts'
@@ -54,13 +54,13 @@ This custom Show view has no action buttons - it's up to you to add them in pure
 
 Here are all the props accepted by the `useShowcontroller` hook:
 
-* [`onFailure`](#failure-side-effects)
+* [`onError`](#error-side-effects)
 
-## Failure Side Effects
+## Error Side Effects
 
 By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and refreshes the page.
 
-You can override this behavior and pass custom side effects by providing a function as the `onFailure` prop:
+You can override this behavior and pass custom side effects by providing a function as the `onError` prop:
 
 ```jsx
 import * as React from 'react';
@@ -71,7 +71,7 @@ const PostShow = props => {
     const refresh = useRefresh();
     const redirect = useRedirect();
 
-    const onFailure = (error) => {
+    const onError = (error) => {
         notify(`Could not load post: ${error.message}`, { type: 'warning' });
         redirect('/posts');
         refresh();
@@ -82,7 +82,7 @@ const PostShow = props => {
         error,
         loading,
         record,
-    } = useShowController({ onFailure });
+    } = useShowController({ onError });
 
     if (loading) {
         return <div>Loading...</div>;
@@ -102,9 +102,9 @@ const PostShow = props => {
 }
 ```
 
-The `onFailure` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
+The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
 
-The default `onFailure` function is:
+The default `onError` function is:
 
 ```jsx
 (error) => {

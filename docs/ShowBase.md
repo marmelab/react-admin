@@ -60,13 +60,13 @@ const App = () => (
 ## Props
 
 * [`children`](#layout) the components that actually render something
-* [`onFailure`](#failure-side-effects)
+* [`onError`](#error-side-effects)
 
-## Failure Side Effects
+## Error Side Effects
 
 By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and  refreshes the page.
 
-You can override this behavior and pass custom side effects by providing a function as `onFailure` prop:
+You can override this behavior and pass custom side effects by providing a function as `onError` prop:
 
 ```jsx
 import * as React from 'react';
@@ -77,14 +77,14 @@ const PostShow = props => {
     const refresh = useRefresh();
     const redirect = useRedirect();
 
-    const onFailure = (error) => {
+    const onError = (error) => {
         notify(`Could not load post: ${error.message}`, { type: 'warning' });
         redirect('/posts');
         refresh();
     };
 
     return (
-        <ShowBase onFailure={onFailure} {...props}>
+        <ShowBase onError={onError} {...props}>
             <SimpleShowLayout>
                 ...
             </SimpleShowLayout>
@@ -93,9 +93,9 @@ const PostShow = props => {
 }
 ```
 
-The `onFailure` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
+The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
 
-The default `onFailure` function is:
+The default `onError` function is:
 
 ```jsx
 (error) => {
