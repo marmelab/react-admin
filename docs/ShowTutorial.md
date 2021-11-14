@@ -24,10 +24,10 @@ import { Card, Stack, Typography } from '@mui/material';
 const BookShow = () => {
     const { id } = useParams(); // this component is rendered in the /books/:id path
     const redirect = useRedirect();
-    const { data, loading } = useGetOne('books', id, {
-        onFailure: () => redirect('/books') // redirect to the list if the book is not found
+    const { data, isLoading } = useGetOne('books', id, {
+        onError: () => redirect('/books') // redirect to the list if the book is not found
     });
-    if (loading) { return <Loading />; }
+    if (isLoading) { return <Loading />; }
     return (
         <div>
             <Title title="Book Show"/>
@@ -64,10 +64,10 @@ import { Card, Stack } from '@mui/material';
 const BookShow = () => {
     const { id } = useParams();
     const redirect = useRedirect();
-    const { data, loading } = useGetOne('books', id, {
-        onFailure: () => redirect('/books')
+    const { data, isLoading } = useGetOne('books', id, {
+        onError: () => redirect('/books')
     });
-    if (loading) { return <Loading />; }
+    if (isLoading) { return <Loading />; }
     return (
         <div>
             <Title title="Book Show"/>
@@ -98,10 +98,10 @@ import { Card, Stack } from '@mui/material';
 const BookShow = () => {
     const { id } = useParams();
     const redirect = useRedirect();
-    const { data, loading } = useGetOne('books', id, {
-        onFailure: () => redirect('/books')
+    const { data, isLoading } = useGetOne('books', id, {
+        onError: () => redirect('/books')
     });
-    if (loading) { return <Loading />; }
+    if (isLoading) { return <Loading />; }
     return (
         <RecordContextProvider value={data}>
             <div>
@@ -134,7 +134,7 @@ const BookShow = () => {
     const { id } = useParams();
     const redirect = useRedirect();
     const { data } = useGetOne('books', id, {
-        onFailure: () => redirect('/books')
+        onError: () => redirect('/books')
     });
     return (
         <RecordContextProvider value={data}>
@@ -150,7 +150,7 @@ const BookShow = () => {
 };
 ```
 
-`<SimpleShowLayout>` renders nothing as long as the `data` is not loaded (`record` is `undefined`), so the `loaded` variable isn't needed anymore.
+`<SimpleShowLayout>` renders nothing as long as the `data` is not loaded (`record` is `undefined`), so the `isLoading` variable isn't needed anymore.
 
 ## `useShowController`: The Controller Logic
 
@@ -337,7 +337,7 @@ const BookShow = () => (
 );
 ```
 
-**Tip**: With `emptyWhileLoading` turned on, the `<Show>` component doesn't render its child component until the record is available. Without this flag, the Field components would render even during the loading phase, and may break if they aren't planned to work with an empty record context. You could grab the `loaded` state from the `ShowContext` instead, but that would force you to split the `<BookShow>` component into two.  
+**Tip**: With `emptyWhileLoading` turned on, the `<Show>` component doesn't render its child component until the record is available. Without this flag, the Field components would render even during the loading phase, and may break if they aren't planned to work with an empty record context. You could grab the `isLoading` state from the `ShowContext` instead, but that would force you to split the `<BookShow>` component into two.  
 
 You can also split the list of fields into two stacks, and use the `<SimpleShowLayout>` in the main panel:
 

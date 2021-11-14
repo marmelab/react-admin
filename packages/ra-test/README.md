@@ -81,8 +81,8 @@ test('should render a book', async () => {
     };
 
     const Book = ({ id }) => {
-        const { data, loaded } = useGetOne('books', id);
-        return loaded ? <span>{data.title}</span> : <span>loading</span>;
+        const { data, isLoading } = useGetOne('books', id);
+        return isLoading ? <span>loading</span> : <span>{data.title}</span>;
     };
 
     render(
