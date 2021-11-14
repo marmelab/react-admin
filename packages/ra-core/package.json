@@ -67,6 +67,7 @@
         "lodash": "~4.17.5",
         "prop-types": "^15.6.1",
         "query-string": "^5.1.1",
+        "react-query": "^3.32.1",
         "reselect": "~3.0.0"
     }
 }
