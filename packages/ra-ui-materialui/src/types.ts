@@ -33,7 +33,8 @@ export interface ListProps extends ResourceComponentProps {
     title?: string | ReactElement;
 }
 
-export interface EditProps extends ResourceComponentPropsWithId {
+export interface EditProps<RecordType extends RaRecord = RaRecord>
+    extends ResourceComponentPropsWithId {
     actions?: ReactElement | false;
     aside?: ReactElement;
     classes?: any;
@@ -42,6 +43,7 @@ export interface EditProps extends ResourceComponentPropsWithId {
     mutationMode?: MutationMode;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
+    queryOptions?: UseQueryOptions<RecordType>;
     transform?: (data: RaRecord) => RaRecord | Promise<RaRecord>;
     title?: string | ReactElement;
 }
