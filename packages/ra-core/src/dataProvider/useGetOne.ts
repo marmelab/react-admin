@@ -43,7 +43,7 @@ const useGetOne = <RecordType extends Record = Record>(
 ): UseGetOneHookValue<RecordType> => {
     const dataProvider = useContext(DataProviderContext);
     return useQuery<RecordType, unknown, RecordType>(
-        [resource, 'getOne', 'id'],
+        [resource, 'getOne', id],
         () =>
             dataProvider
                 .getOne<RecordType>(resource, { id })
