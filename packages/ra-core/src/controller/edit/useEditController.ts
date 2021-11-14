@@ -94,6 +94,7 @@ export const useEditController = <RecordType extends Record = Record>(
             redirect('list', `/${resource}`);
             refresh();
         },
+        retry: false,
     });
 
     const getResourceLabel = useGetResourceLabel();
