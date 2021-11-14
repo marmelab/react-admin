@@ -93,7 +93,7 @@ describe('<Show />', () => {
         });
     });
 
-    it('should accept onError prop and call it on failure', async () => {
+    it('should accept queryOptions prop', async () => {
         jest.spyOn(console, 'error').mockImplementationOnce(() => {});
         const onError = jest.fn();
         const dataProvider = {
@@ -103,7 +103,7 @@ describe('<Show />', () => {
         renderWithRedux(
             <QueryClientProvider client={new QueryClient()}>
                 <DataProviderContext.Provider value={dataProvider}>
-                    <Show id="123" resource="books" onError={onError}>
+                    <Show id="123" resource="books" queryOptions={{ onError }}>
                         <BookName />
                     </Show>
                 </DataProviderContext.Provider>

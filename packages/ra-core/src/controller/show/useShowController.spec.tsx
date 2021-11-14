@@ -65,4 +65,34 @@ describe('useShowController', () => {
             expect(getOne).toHaveBeenCalledWith('posts', { id: 'test?' });
         });
     });
+
+    it('should accept custom query options', async () => {
+        const mock = jest.spyOn(console, 'error').mockImplementation(() => {});
+        const getOne = jest
+            .fn()
+            .mockImplementationOnce(() => Promise.reject(new Error()));
+        const onError = jest.fn();
+        const dataProvider = ({ getOne } as unknown) as DataProvider;
+        renderWithRedux(
+            <MemoryRouter initialEntries={['/posts/1']}>
+                <Route path="/posts/:id">
+                    <QueryClientProvider client={new QueryClient()}>
+                        <DataProviderContext.Provider value={dataProvider}>
+                            <ShowController
+                                resource="posts"
+                                queryOptions={{ onError }}
+                            >
+                                {() => <div />}
+                            </ShowController>
+                        </DataProviderContext.Provider>
+                    </QueryClientProvider>
+                </Route>
+            </MemoryRouter>
+        );
+        await waitFor(() => {
+            expect(getOne).toHaveBeenCalled();
+            expect(onError).toHaveBeenCalled();
+        });
+        mock.mockRestore();
+    });
 });

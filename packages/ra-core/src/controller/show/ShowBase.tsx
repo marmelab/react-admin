@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
+
+import { Record } from '../../types';
 import { useShowController, ShowControllerProps } from './useShowController';
 import { ShowContextProvider } from './ShowContextProvider';
 
@@ -32,11 +34,11 @@ import { ShowContextProvider } from './ShowContextProvider';
  *     </ShowBase>
  * );
  */
-export const ShowBase = ({
+export const ShowBase = <RecordType extends Record = Record>({
     children,
     ...props
-}: { children: ReactElement } & ShowControllerProps) => (
-    <ShowContextProvider value={useShowController(props)}>
+}: { children: ReactElement } & ShowControllerProps<RecordType>) => (
+    <ShowContextProvider value={useShowController<RecordType>(props)}>
         {children}
     </ShowContextProvider>
 );

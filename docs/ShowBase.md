@@ -60,13 +60,15 @@ const App = () => (
 ## Props
 
 * [`children`](#layout) the components that actually render something
-* [`onError`](#error-side-effects)
+* [`queryOptions`](#query-client-options): options to pass to the react-query client
 
-## Error Side Effects
+## Client Query Options
 
-By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and  refreshes the page.
+`<ShowBase>` accepts a `queryOptions` prop to pass options to the react-query client. 
 
-You can override this behavior and pass custom side effects by providing a function as `onError` prop:
+This can be useful e.g. to override the default error side effect. By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and refreshes the page.
+
+You can override this behavior and pass custom side effects by providing a custom `queryOptions` prop:
 
 ```jsx
 import * as React from 'react';
@@ -84,7 +86,7 @@ const PostShow = props => {
     };
 
     return (
-        <ShowBase onError={onError} {...props}>
+        <ShowBase queryOptions={{ onError }} {...props}>
             <SimpleShowLayout>
                 ...
             </SimpleShowLayout>

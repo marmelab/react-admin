@@ -244,6 +244,100 @@ export const PostShow = () => (
 );
 ```
 
+## Removed `loading` and `loaded` Data Provider State Variables
+
+The dataProvider hooks (`useGetOne`, etc) return the request state. The `loading` and `loaded` state variables were changed to `isLoading` and `isFetching` respectively. The meaning has changed, too:
+
+- `loading` is now `isFetching`
+- `loaded` is now `!isLoading`
+
+```diff
+const BookDetail = ({ id }) => {
+-   const { data, error, loaded } = useGetOne('books', id);
++   const { data, error, isLoading } = useGetOne('books', id);
+-   if (!loaded) {
++   if (isLoading) {
+        return <Loading />;
+    }
+    if (error) {
+        return <Error error={error} />;
+    }
+    if (!data) {
+        return null;
+    }
+    return (
+        <div>
+            <h1>{data.book.title}</h1>
+            <p>{data.book.author.name}</p>
+        </div>
+    );
+};
+```
+
+The new props are actually returned by react-query's `useQuery` hook. Check [their documentation](https://react-query.tanstack.com/reference/useQuery) for more information.
+
+## Page Components No Longer Accept `onSuccess` and `onFailure` Props
+
+Prior to 4.0, the page components (`<List>`, `<Show>`, etc.) used to accept props for success and failure side effects. They now accept a generic `queryOptions` prop, which is passed to the underlying react-query `useQuery` call. 
+
+This options object accepts `onSuccess` and `onError` fields, so you can migrate your code as follows:
+
+```diff
+const PostShow = () => {
+    const onSuccess = () => {
+        // do something
+    };
+    const onFailure = () => {
+        // do something
+    };
+    return (
+-       <Show {...props} onSuccess={onSuccess} onFailure={onFailure}>
++       <Show {...props} queryOptions={{ onSuccess: onSuccess, onError: onFailure }}>
+            <SimpleShowLayout>
+                <TextField source="title" />
+            </SimpleShowLayout>
+        </Show>
+    );
+};
+```
+
+## Unit Tests for Data Provider Dependent Components Need A QueryClientContext
+
+If you were using components dependent on the dataProvider hooks in isolation (e.g. in unit or integration tests), you now need to wrap them inside a `<QueryClientContext>` component, to let the access react-query's `QueryClient` instance.
+
+```diff
++import { QueryClientProvider, QueryClient } from 'react-query';
+
+// this component relies on dataProvider hooks
+const BookDetail = ({ id }) => {
+    const { data, error, isLoading } = useGetOne('books', id);
+    if (isLoading) {
+        return <Loading />;
+    }
+    if (error) {
+        return <Error error={error} />;
+    }
+    if (!data) {
+        return null;
+    }
+    return (
+        <div>
+            <h1>{data.book.title}</h1>
+            <p>{data.book.author.name}</p>
+        </div>
+    );
+};
+
+test('MyComponent', () => {
+    render(
++       <QueryClientProvider client={new QueryClient()}>
+            <BookDetail id={1} />
++       </QueryClientProvider>
+    );
+    // ...
+});
+```
+
 # Upgrade to 3.0
 
 We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.

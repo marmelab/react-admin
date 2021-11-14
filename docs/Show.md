@@ -60,7 +60,7 @@ That's enough to display the post show view:
 * [`children`](#layout): the components that render the record fields
 * [`component`](#root-component): overrides the root component
 * [`emptyWhileLoading`](#loading-state)
-* [`onError`](#error-side-effects)
+* [`queryOptions`](#query-client-options): options to pass to the react-query client
 * [`sx`](#css-api): Override the styles
 * [`title`](#page-title)
 
@@ -150,11 +150,13 @@ export const PostShow = () => (
 );
 ```
 
-## Error Side Effects
+## Client Query Options
 
-By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and refreshes the page.
+`<Show>` accepts a `queryOptions` prop to pass options to the react-query client. 
 
-You can override this behavior and pass custom side effects by providing a function as `onError` prop:
+This can be useful e.g. to override the default error side effect. By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and refreshes the page.
+
+You can override this behavior and pass custom side effects by providing a custom `queryOptions` prop:
 
 ```jsx
 import * as React from 'react';
@@ -172,7 +174,7 @@ const PostShow = props => {
     };
 
     return (
-        <Show onError={onError} {...props}>
+        <Show queryOptions={{ onError }} {...props}>
             <SimpleShowLayout>
                 ...
             </SimpleShowLayout>

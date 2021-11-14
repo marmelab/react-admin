@@ -1,15 +1,17 @@
 import { useParams } from 'react-router-dom';
+import { UseQueryOptions } from 'react-query';
+
 import useVersion from '../useVersion';
-import { Record, Identifier, OnFailure } from '../../types';
+import { Record, Identifier } from '../../types';
 import { useGetOne, Refetch } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { useNotify, useRedirect, useRefresh } from '../../sideEffect';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 
-export interface ShowControllerProps {
+export interface ShowControllerProps<RecordType extends Record = Record> {
     id?: Identifier;
-    onError?: OnFailure;
     resource?: string;
+    queryOptions?: UseQueryOptions<RecordType>;
 }
 
 export interface ShowControllerResult<RecordType extends Record = Record> {
@@ -59,9 +61,9 @@ export interface ShowControllerResult<RecordType extends Record = Record> {
  * };
  */
 export const useShowController = <RecordType extends Record = Record>(
-    props: ShowControllerProps
+    props: ShowControllerProps<RecordType>
 ): ShowControllerResult<RecordType> => {
-    const { id: propsId, onError } = props;
+    const { id: propsId, queryOptions = {} } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
     const notify = useNotify();
@@ -74,16 +76,15 @@ export const useShowController = <RecordType extends Record = Record>(
     const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
         RecordType
     >(resource, id, {
-        onError:
-            onError ??
-            (() => {
-                notify('ra.notification.item_doesnt_exist', {
-                    type: 'warning',
-                });
-                redirect('list', `/${resource}`);
-                refresh();
-            }),
+        onError: () => {
+            notify('ra.notification.item_doesnt_exist', {
+                type: 'warning',
+            });
+            redirect('list', `/${resource}`);
+            refresh();
+        },
         retry: false,
+        ...queryOptions,
     });
 
     const getResourceLabel = useGetResourceLabel();

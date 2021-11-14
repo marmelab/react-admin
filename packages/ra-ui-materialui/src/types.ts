@@ -12,6 +12,7 @@ import {
     OnSuccess,
     OnFailure,
 } from 'ra-core';
+import { UseQueryOptions } from 'react-query';
 
 export interface ListProps extends ResourceComponentProps {
     actions?: ReactElement | false;
@@ -58,14 +59,14 @@ export interface CreateProps extends ResourceComponentProps {
     title?: string | ReactElement;
 }
 
-export interface ShowProps {
+export interface ShowProps<RecordType extends RaRecord = RaRecord> {
     actions?: ReactElement | false;
     children: ReactNode;
     className?: string;
     component?: ElementType;
     emptyWhileLoading?: boolean;
     id?: Identifier;
-    onError?: OnFailure;
+    queryOptions?: UseQueryOptions<RecordType>;
     resource?: string;
     title?: string | ReactElement;
     sx?: SxProps;
