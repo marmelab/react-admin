@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useGetOne, DataProviderContext } from 'ra-core';
+import { QueryClientProvider, QueryClient } from 'react-query';
 
 import TestContext from './TestContext';
 
@@ -21,13 +22,11 @@ const Book = ({ id }) => {
 };
 
 export const WithDataProvider = () => (
-    <TestContext
-        enableReducers={true}
-        // FIXME: Resources must be initialized to allow dataProvider hooks to work
-        initialState={{ admin: { resources: { books: { data: {} } } } }}
-    >
-        <DataProviderContext.Provider value={dataProvider}>
-            <Book id={1} />
-        </DataProviderContext.Provider>
+    <TestContext enableReducers={true}>
+        <QueryClientProvider client={new QueryClient()}>
+            <DataProviderContext.Provider value={dataProvider}>
+                <Book id={1} />
+            </DataProviderContext.Provider>
+        </QueryClientProvider>
     </TestContext>
 );

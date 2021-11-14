@@ -9,6 +9,7 @@ import {
 } from 'ra-core';
 import { renderWithRedux, TestContext } from 'ra-test';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { QueryClientProvider, QueryClient } from 'react-query';
 
 import { SaveButton } from './SaveButton';
 import { Toolbar, SimpleForm } from '../form';
@@ -238,13 +239,15 @@ describe('<SaveButton />', () => {
             getByText,
         } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <DataProviderContext.Provider value={dataProvider}>
-                    <Edit {...defaultEditProps}>
-                        <SimpleForm toolbar={<EditToolbar />}>
-                            <TextInput source="title" />
-                        </SimpleForm>
-                    </Edit>
-                </DataProviderContext.Provider>
+                <QueryClientProvider client={new QueryClient()}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <Edit {...defaultEditProps}>
+                            <SimpleForm toolbar={<EditToolbar />}>
+                                <TextInput source="title" />
+                            </SimpleForm>
+                        </Edit>
+                    </DataProviderContext.Provider>
+                </QueryClientProvider>
             </ThemeProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -285,13 +288,15 @@ describe('<SaveButton />', () => {
             getByText,
         } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <DataProviderContext.Provider value={dataProvider}>
-                    <Edit {...defaultEditProps}>
-                        <SimpleForm toolbar={<EditToolbar />}>
-                            <TextInput source="title" />
-                        </SimpleForm>
-                    </Edit>
-                </DataProviderContext.Provider>
+                <QueryClientProvider client={new QueryClient()}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <Edit {...defaultEditProps}>
+                            <SimpleForm toolbar={<EditToolbar />}>
+                                <TextInput source="title" />
+                            </SimpleForm>
+                        </Edit>
+                    </DataProviderContext.Provider>
+                </QueryClientProvider>
             </ThemeProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -337,13 +342,15 @@ describe('<SaveButton />', () => {
             getByText,
         } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <DataProviderContext.Provider value={dataProvider}>
-                    <Edit {...defaultEditProps}>
-                        <SimpleForm toolbar={<EditToolbar />}>
-                            <TextInput source="title" />
-                        </SimpleForm>
-                    </Edit>
-                </DataProviderContext.Provider>
+                <QueryClientProvider client={new QueryClient()}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <Edit {...defaultEditProps}>
+                            <SimpleForm toolbar={<EditToolbar />}>
+                                <TextInput source="title" />
+                            </SimpleForm>
+                        </Edit>
+                    </DataProviderContext.Provider>
+                </QueryClientProvider>
             </ThemeProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -384,18 +391,20 @@ describe('<SaveButton />', () => {
         };
 
         const { queryByDisplayValue, getByLabelText } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <ThemeProvider theme={theme}>
-                    <Edit {...defaultEditProps}>
-                        <SimpleForm>
-                            <TextInput
-                                source="title"
-                                validate={validateAsync}
-                            />
-                        </SimpleForm>
-                    </Edit>
-                </ThemeProvider>
-            </DataProviderContext.Provider>,
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <ThemeProvider theme={theme}>
+                        <Edit {...defaultEditProps}>
+                            <SimpleForm>
+                                <TextInput
+                                    source="title"
+                                    validate={validateAsync}
+                                />
+                            </SimpleForm>
+                        </Edit>
+                    </ThemeProvider>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         // waitFor for the dataProvider.getOne() return
