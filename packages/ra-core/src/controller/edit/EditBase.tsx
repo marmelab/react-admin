@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
+
+import { Record } from '../../types';
 import { useEditController, EditControllerProps } from './useEditController';
 import { EditContextProvider } from './EditContextProvider';
 
@@ -32,11 +34,11 @@ import { EditContextProvider } from './EditContextProvider';
  *     </EditBase>
  * );
  */
-export const EditBase = ({
+export const EditBase = <RecordType extends Record = Record>({
     children,
     ...props
-}: EditControllerProps & { children: ReactNode }) => (
-    <EditContextProvider value={useEditController(props)}>
+}: { children: ReactNode } & EditControllerProps<RecordType>) => (
+    <EditContextProvider value={useEditController<RecordType>(props)}>
         {children}
     </EditContextProvider>
 );

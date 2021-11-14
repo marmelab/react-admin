@@ -66,7 +66,7 @@ describe('useShowController', () => {
         });
     });
 
-    it('should accept custom query options', async () => {
+    it('should accept custom client query options', async () => {
         const mock = jest.spyOn(console, 'error').mockImplementation(() => {});
         const getOne = jest
             .fn()

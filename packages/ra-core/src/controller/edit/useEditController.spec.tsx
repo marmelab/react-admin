@@ -83,6 +83,33 @@ describe('useEditController', () => {
         unmount();
     });
 
+    it('should accept custom client query options', async () => {
+        const mock = jest.spyOn(console, 'error').mockImplementation(() => {});
+        const getOne = jest
+            .fn()
+            .mockImplementationOnce(() => Promise.reject(new Error()));
+        const onError = jest.fn();
+        const dataProvider = ({ getOne } as unknown) as DataProvider;
+        renderWithRedux(
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <EditController
+                        {...defaultProps}
+                        resource="posts"
+                        queryOptions={{ onError }}
+                    >
+                        {() => <div />}
+                    </EditController>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>
+        );
+        await waitFor(() => {
+            expect(getOne).toHaveBeenCalled();
+            expect(onError).toHaveBeenCalled();
+        });
+        mock.mockRestore();
+    });
+
     it('should call the dataProvider.update() function on save', async () => {
         const update = jest
             .fn()

@@ -1,5 +1,6 @@
 import { useCallback, MutableRefObject } from 'react';
 import { useParams } from 'react-router-dom';
+import { UseQueryOptions } from 'react-query';
 
 import useVersion from '../useVersion';
 import {
@@ -50,7 +51,7 @@ import {
  * }
  */
 export const useEditController = <RecordType extends Record = Record>(
-    props: EditControllerProps
+    props: EditControllerProps<RecordType>
 ): EditControllerResult<RecordType> => {
     const {
         id: propsId,
@@ -59,6 +60,7 @@ export const useEditController = <RecordType extends Record = Record>(
         onFailure,
         mutationMode = 'undoable',
         transform,
+        queryOptions = {},
     } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
@@ -95,6 +97,7 @@ export const useEditController = <RecordType extends Record = Record>(
             refresh();
         },
         retry: false,
+        ...queryOptions,
     });
 
     const getResourceLabel = useGetResourceLabel();
@@ -223,10 +226,11 @@ export const useEditController = <RecordType extends Record = Record>(
     };
 };
 
-export interface EditControllerProps {
+export interface EditControllerProps<RecordType extends Record = Record> {
     id?: Identifier;
     resource?: string;
     mutationMode?: MutationMode;
+    queryOptions?: UseQueryOptions<RecordType>;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
     transform?: TransformData;
