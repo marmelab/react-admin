@@ -1,7 +1,6 @@
-import { useContext } from 'react';
 import { Identifier, Record } from '../types';
 import { useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
-import DataProviderContext from './DataProviderContext';
+import useDataProvider from './useDataProvider';
 
 /**
  * Call the dataProvider.getOne() method and return the resolved value
@@ -41,7 +40,7 @@ const useGetOne = <RecordType extends Record = Record>(
     id: Identifier,
     options?: UseQueryOptions<RecordType>
 ): UseGetOneHookValue<RecordType> => {
-    const dataProvider = useContext(DataProviderContext);
+    const dataProvider = useDataProvider();
     return useQuery<RecordType, unknown, RecordType>(
         [resource, 'getOne', id],
         () =>

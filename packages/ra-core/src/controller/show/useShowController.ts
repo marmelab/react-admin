@@ -83,6 +83,7 @@ export const useShowController = <RecordType extends Record = Record>(
                 redirect('list', `/${resource}`);
                 refresh();
             }),
+        retry: false,
     });
 
     const getResourceLabel = useGetResourceLabel();
