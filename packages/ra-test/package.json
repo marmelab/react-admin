@@ -58,7 +58,7 @@
         "redux": "^3.7.2 || ^4.0.3"
     },
     "dependencies": {
-        "@testing-library/react": "^11.2.3",
+        "@testing-library/react": "^12.1.2",
         "classnames": "~2.2.5",
         "lodash": "~4.17.5"
     }
