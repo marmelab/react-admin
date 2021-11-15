@@ -290,17 +290,20 @@ const mergeDefinitionAndCallTimeParameters = (
     if (!query && (!callTimeQuery || callTimeQuery instanceof Event)) {
         throw new Error('Missing query either at definition or at call time');
     }
-    if (callTimeQuery instanceof Event)
+
+    const event = callTimeQuery as Event;
+    if (callTimeQuery instanceof Event || !!event?.preventDefault)
         return {
             type: query.type,
             resource: query.resource,
             payload: query.payload,
             options: sanitizeOptions(options),
         };
-    if (query)
+
+    if (query) {
         return {
-            type: query.type || callTimeQuery.type,
-            resource: query.resource || callTimeQuery.resource,
+            type: callTimeQuery?.type || query.type,
+            resource: callTimeQuery?.resource || query.resource,
             payload: callTimeQuery
                 ? merge({}, query.payload, callTimeQuery.payload)
                 : query.payload,
@@ -312,6 +315,7 @@ const mergeDefinitionAndCallTimeParameters = (
                   )
                 : sanitizeOptions(options),
         };
+    }
     return {
         type: callTimeQuery.type,
         resource: callTimeQuery.resource,
