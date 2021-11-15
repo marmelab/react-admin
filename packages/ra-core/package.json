@@ -65,7 +65,7 @@
         "redux-saga": "^1.0.0"
     },
     "dependencies": {
-        "classnames": "~2.2.5",
+        "classnames": "~2.3.1",
         "date-fns": "^1.29.0",
         "eventemitter3": "^3.0.0",
         "inflection": "~1.13.1",
