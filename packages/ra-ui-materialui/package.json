@@ -30,7 +30,7 @@
         "@material-ui/icons": "^4.11.2",
         "@material-ui/styles": "^4.11.4",
         "@testing-library/react": "^11.2.3",
-        "@types/query-string": "5.1.0",
+        "@types/query-string": "6.3.0",
         "cross-env": "^5.2.0",
         "file-api": "~0.10.4",
         "final-form": "^4.20.2",
