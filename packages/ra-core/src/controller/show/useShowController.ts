@@ -7,26 +7,6 @@ import { useNotify, useRedirect, useRefresh } from '../../sideEffect';
 import { CRUD_GET_ONE } from '../../actions';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 
-export interface ShowControllerProps {
-    id?: Identifier;
-    onFailure?: OnFailure;
-    resource?: string;
-}
-
-export interface ShowControllerResult<RecordType extends Record = Record> {
-    defaultTitle: string;
-    // Necessary for actions (EditActions) which expect a data prop containing the record
-    // @deprecated - to be removed in 4.0d
-    data?: RecordType;
-    error?: any;
-    loading: boolean;
-    loaded: boolean;
-    resource: string;
-    record?: RecordType;
-    refetch: Refetch;
-    version: number;
-}
-
 /**
  * Prepare data for the Show view.
  *
@@ -60,7 +40,7 @@ export interface ShowControllerResult<RecordType extends Record = Record> {
  * };
  */
 export const useShowController = <RecordType extends Record = Record>(
-    props: ShowControllerProps
+    props: ShowControllerProps = {}
 ): ShowControllerResult<RecordType> => {
     const { id: propsId, onFailure } = props;
     const resource = useResourceContext(props);
@@ -105,3 +85,23 @@ export const useShowController = <RecordType extends Record = Record>(
         version,
     };
 };
+
+export interface ShowControllerProps {
+    id?: Identifier;
+    onFailure?: OnFailure;
+    resource?: string;
+}
+
+export interface ShowControllerResult<RecordType extends Record = Record> {
+    defaultTitle: string;
+    // Necessary for actions (EditActions) which expect a data prop containing the record
+    // @deprecated - to be removed in 4.0d
+    data?: RecordType;
+    error?: any;
+    loading: boolean;
+    loaded: boolean;
+    resource: string;
+    record?: RecordType;
+    refetch: Refetch;
+    version: number;
+}
