@@ -1035,12 +1035,23 @@ import Button from '@material-ui/core/Button';
 import ErrorIcon from '@material-ui/icons/Report';
 import History from '@material-ui/icons/History';
 import { Title, useTranslate } from 'react-admin';
+import { useLocation } from 'react-router';
 
 const MyError = ({
     error,
-    errorInfo,
+    resetErrorBoundary,
     ...rest
 }) => {
+    const { pathname } = useLocation();
+    const originalPathname = useRef(pathname);
+
+    // Effect that resets the error state whenever the location changes
+    useEffect(() => {
+        if (pathname !== originalPathname.current) {
+            resetErrorBoundary();
+        }
+    }, [pathname, resetErrorBoundary]);
+
     const translate = useTranslate();
     return (
         <div>

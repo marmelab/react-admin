@@ -218,7 +218,6 @@ import { createElement } from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
 import { MenuItemLink, getResources } from 'react-admin';
-import { withRouter } from 'react-router-dom';
 import LabelIcon from '@material-ui/icons/Label';
 
 const Menu = ({ onMenuClick, logout }) => {
@@ -249,7 +248,7 @@ const Menu = ({ onMenuClick, logout }) => {
     );
 }
 
-export default withRouter(Menu);
+export default Menu;
 ```
 
 **Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views. It supports a custom text and icon (which must be a material-ui `<SvgIcon>`).
