@@ -74,7 +74,9 @@ If you need to access a route parameter, use react-router's `useParams` hook ins
 };
 ```
 
-We used to inject a `syncWithLocation` prop set to `true` to the `List` components used in a `Resource`. As we removed the props injection, we also inverted this prop and renamed it `disableSyncWithLocation`. This means you now have to explicitly opt out the synchronization of the list parameters with the browser location:
+We used to inject a `syncWithLocation` prop set to `true` to the `<List>` components used in a `<Resource>`. This instructed the `<List>` to synchronize its parameters (such as pagination, sorting and filters) with the browser location.
+
+As we removed the props injection, we enabled this synchronization by default for all `<List>`, used in a `<Resource>` or not. As a consequence, we also inverted this prop and renamed it `disableSyncWithLocation`. This means you now have to explicitly opt out the synchronization of the list parameters with the browser location, for example because you have multiple `<List>` inside a dashboard:
 
 ```dif
 const MyList = () => (
