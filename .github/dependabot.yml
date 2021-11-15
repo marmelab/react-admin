@@ -18,10 +18,6 @@ updates:
     schedule: 
       interval: "daily"
   - package-ecosystem: "npm"
-    directory: "/packages/ra-data-graphcool"
-    schedule: 
-      interval: "daily"
-  - package-ecosystem: "npm"
     directory: "/packages/ra-data-graphql"
     schedule: 
       interval: "daily"
