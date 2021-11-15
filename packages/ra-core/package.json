@@ -67,7 +67,7 @@
     "dependencies": {
         "classnames": "~2.2.5",
         "date-fns": "^1.29.0",
-        "eventemitter3": "^3.0.0",
+        "eventemitter3": "^4.0.7",
         "inflection": "~1.13.1",
         "lodash": "~4.17.5",
         "prop-types": "^15.6.1",
