@@ -47,7 +47,7 @@
         "react-router-dom": "^5.1.0",
         "react-test-renderer": "~16.8.6",
         "redux": "^3.7.2 || ^4.0.3",
-        "rimraf": "^2.6.3"
+        "rimraf": "^3.0.2"
     },
     "peerDependencies": {
         "@material-ui/core": "^4.12.1",
