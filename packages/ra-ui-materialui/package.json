@@ -76,7 +76,7 @@
         "lodash": "~4.17.5",
         "prop-types": "^15.7.0",
         "query-string": "^5.1.1",
-        "react-dropzone": "^10.1.7",
+        "react-dropzone": "^11.4.2",
         "react-transition-group": "^4.4.1"
     }
 }
