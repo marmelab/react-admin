@@ -83,10 +83,7 @@ const ResourceRoutes = (props: ResourceProps) => {
                     )}
                     {list && (
                         <Route path={`${basePath}`}>
-                            <WithPermissions
-                                component={list}
-                                syncWithLocation
-                            />
+                            <WithPermissions component={list} />
                         </Route>
                     )}
                 </Switch>
