@@ -570,8 +570,8 @@ For instance, to allow cloning all the posts from the list:
 import * as React from "react";
 import { List, Datagrid, TextField, CloneButton } from 'react-admin';
 
-const PostList = props => (
-    <List {...props}>
+const PostList = () => (
+    <List>
         <Datagrid>
             <TextField source="title" />
             <CloneButton />
@@ -607,8 +607,8 @@ const CreateRelatedCommentButton = ({ record }) => (
     </Button>
 );
 
-export default PostList = props => (
-    <List {...props}>
+export default PostList = () => (
+    <List>
         <Datagrid>
             ...
             <CreateRelatedCommentButton />
@@ -1134,9 +1134,9 @@ import * as React from 'react';
 import { List, Datagrid, SimpleForm, TextField, TextInput, DateInput, required } from 'react-admin';
 import { EditDialog, CreateDialog } from '@react-admin/ra-form-layout';
 
-const CustomerList = props => (
+const CustomerList = () => (
     <>
-        <List {...props}>
+        <List>
             <Datagrid>
                 ...
             </Datagrid>

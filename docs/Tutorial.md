@@ -131,8 +131,8 @@ Let's copy this code, and create a new `UserList` component, in a new file named
 import * as React from "react";
 import { List, Datagrid, TextField, EmailField } from 'react-admin';
 
-export const UserList = props => (
-    <List {...props}>
+export const UserList = () => (
+    <List>
         <Datagrid rowClick="edit">
             <TextField source="id" />
             <TextField source="name" />
@@ -176,8 +176,8 @@ The `ListGuesser` created one column for every field in the response. That's a b
 import * as React from "react";
 import { List, Datagrid, TextField, EmailField } from 'react-admin';
 
-export const UserList = props => (
-    <List {...props}>
+export const UserList = () => (
+    <List>
         <Datagrid rowClick="edit">
             <TextField source="id" />
             <TextField source="name" />
@@ -208,8 +208,8 @@ import * as React from "react";
 -import { List, Datagrid, TextField, EmailField } from 'react-admin';
 +import { List, Datagrid, TextField, EmailField, UrlField } from 'react-admin';
 
-export const UserList = props => (
-    <List {...props}>
+export const UserList = () => (
+    <List>
         <Datagrid rowClick="edit">
             <TextField source="id" />
             <TextField source="name" />
@@ -255,8 +255,8 @@ import * as React from "react";
 +import { List, Datagrid, TextField, EmailField } from 'react-admin';
 +import MyUrlField from './MyUrlField';
 
-export const UserList = props => (
-    <List {...props}>
+export const UserList = () => (
+    <List>
         <Datagrid rowClick="edit">
             <TextField source="id" />
             <TextField source="name" />
@@ -358,8 +358,8 @@ The `ListGuesser` suggests using a `<ReferenceField>` for the `userId` field. Le
 import * as React from "react";
 import { List, Datagrid, TextField, ReferenceField } from 'react-admin';
 
-export const PostList = props => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid rowClick="edit">
             <ReferenceField source="userId" reference="users">
                 <TextField source="id" />
@@ -392,8 +392,8 @@ When displaying the posts list, the app displays the `id` of the post author as 
 
 ```diff
 // in src/posts.js
-export const PostList = props => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid rowClick="edit">
             <ReferenceField source="userId" reference="users">
 -               <TextField source="id" />
@@ -423,8 +423,8 @@ import * as React from "react";
 -import { List, Datagrid, TextField, ReferenceField } from 'react-admin';
 +import { List, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
-export const PostList = props => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
 -       <Datagrid rowClick="edit">
 +       <Datagrid>
 +           <TextField source="id" />
@@ -646,8 +646,8 @@ const postFilters = [
     </ReferenceInput>,
 ];
 
-export const PostList = (props) => (
-    <List filters={postFilters} {...props}>
+export const PostList = () => (
+    <List filters={postFilters}>
         // ...
     </List>
 );
@@ -786,8 +786,8 @@ First, you should know that you don't have to use the `<Datagrid>` component as 
 import * as React from "react";
 import { List, SimpleList } from 'react-admin';
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <SimpleList
             primaryText={record => record.title}
             secondaryText={record => `${record.views} views`}
@@ -811,10 +811,10 @@ import * as React from "react";
 import { useMediaQuery } from '@material-ui/core';
 import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
-export const PostList = (props) => {
+export const PostList = () => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
     return (
-        <List {...props}>
+        <List>
             {isSmall ? (
                 <SimpleList
                     primaryText={record => record.title}
