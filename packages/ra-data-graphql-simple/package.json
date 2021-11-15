@@ -39,12 +39,12 @@
         "ra-data-graphql": "^3.19.0"
     },
     "peerDependencies": {
-        "graphql": "^15.6.0",
+        "graphql": "^16.0.1",
         "ra-core": "^3.9.0"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "graphql": "^15.6.0",
+        "graphql": "^16.0.1",
         "rimraf": "^2.6.3"
     }
 }
