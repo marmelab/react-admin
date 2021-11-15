@@ -1,16 +1,12 @@
 import { isValidElement, ReactElement, useEffect, useMemo } from 'react';
 import { Location } from 'history';
 
-import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
-import useListParams from './useListParams';
-import useRecordSelection from './useRecordSelection';
-import useTranslate from '../i18n/useTranslate';
-import useNotify from '../sideEffect/useNotify';
-import { useGetMainList } from '../dataProvider/useGetMainList';
-import { Refetch } from '../dataProvider/useQueryWithStore';
-import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
-import { CRUD_GET_LIST } from '../actions';
-import defaultExporter from '../export/defaultExporter';
+import { useTranslate } from '../../i18n';
+import { useNotify } from '../../sideEffect';
+import { useGetMainList, Refetch } from '../../dataProvider';
+import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
+import { CRUD_GET_LIST } from '../../actions';
+import { defaultExporter } from '../../export';
 import {
     FilterPayload,
     SortPayload,
@@ -18,72 +14,14 @@ import {
     Identifier,
     Record,
     Exporter,
-} from '../types';
-import { useResourceContext, useGetResourceLabel } from '../core';
-
-export interface ListProps {
-    // the props you can change
-    filter?: FilterPayload;
-    filters?: ReactElement | ReactElement[];
-    filterDefaultValues?: object;
-    perPage?: number;
-    sort?: SortPayload;
-    exporter?: Exporter | false;
-    // the props managed by react-admin
-    basePath?: string;
-    debounce?: number;
-    hasCreate?: boolean;
-    hasEdit?: boolean;
-    hasList?: boolean;
-    hasShow?: boolean;
-    location?: Location;
-    path?: string;
-    resource?: string;
-    // Whether to synchronize the list parameters with the current location (URL search parameters)
-    // This is set to true automatically when a List is used inside a Resource component
-    syncWithLocation?: boolean;
-    [key: string]: any;
-}
-
-const defaultSort = {
-    field: 'id',
-    order: SORT_ASC,
-};
-
-export interface ListControllerProps<RecordType extends Record = Record> {
-    basePath: string;
-    currentSort: SortPayload;
-    data: RecordMap<RecordType>;
-    defaultTitle?: string;
-    displayedFilters: any;
-    error?: any;
-    exporter?: Exporter | false;
-    filter?: FilterPayload;
-    filterValues: any;
-    hasCreate?: boolean;
-    hideFilter: (filterName: string) => void;
-    ids: Identifier[];
-    loading: boolean;
-    loaded: boolean;
-    onSelect: (ids: Identifier[]) => void;
-    onToggleItem: (id: Identifier) => void;
-    onUnselectItems: () => void;
-    page: number;
-    perPage: number;
-    refetch: Refetch;
-    resource: string;
-    selectedIds: Identifier[];
-    setFilters: (
-        filters: any,
-        displayedFilters: any,
-        debounce?: boolean
-    ) => void;
-    setPage: (page: number) => void;
-    setPerPage: (page: number) => void;
-    setSort: (sort: string, order?: string) => void;
-    showFilter: (filterName: string, defaultValue: any) => void;
-    total: number;
-}
+} from '../../types';
+import {
+    useResourceContext,
+    useResourceDefinition,
+    useGetResourceLabel,
+} from '../../core';
+import useRecordSelection from '../useRecordSelection';
+import { useListParams } from './useListParams';
 
 /**
  * Prepare data for the List view
@@ -102,23 +40,20 @@ export interface ListControllerProps<RecordType extends Record = Record> {
  *     return <ListView {...controllerProps} {...props} />;
  * }
  */
-const useListController = <RecordType extends Record = Record>(
-    props: ListProps
-): ListControllerProps<RecordType> => {
-    useCheckMinimumRequiredProps('List', ['basePath'], props);
-
+export const useListController = <RecordType extends Record = Record>(
+    props: ListControllerProps = {}
+): ListControllerResult<RecordType> => {
     const {
-        basePath,
         exporter = defaultExporter,
         filterDefaultValues,
-        hasCreate,
         sort = defaultSort,
         perPage = 10,
         filter,
         debounce = 500,
-        syncWithLocation,
+        disableSyncWithLocation,
     } = props;
     const resource = useResourceContext(props);
+    const { hasCreate } = useResourceDefinition(props);
 
     if (!resource) {
         throw new Error(
@@ -140,7 +75,7 @@ const useListController = <RecordType extends Record = Record>(
         sort,
         perPage,
         debounce,
-        syncWithLocation,
+        disableSyncWithLocation,
     });
 
     const [selectedIds, selectionModifiers] = useRecordSelection(resource);
@@ -215,7 +150,6 @@ const useListController = <RecordType extends Record = Record>(
     });
 
     return {
-        basePath,
         currentSort,
         data,
         defaultTitle,
@@ -245,6 +179,64 @@ const useListController = <RecordType extends Record = Record>(
         total: total,
     };
 };
+
+export interface ListControllerProps {
+    // the props you can change
+    filter?: FilterPayload;
+    filters?: ReactElement | ReactElement[];
+    filterDefaultValues?: object;
+    perPage?: number;
+    sort?: SortPayload;
+    exporter?: Exporter | false;
+    // the props managed by react-admin
+    debounce?: number;
+    location?: Location;
+    path?: string;
+    resource?: string;
+    // Whether to disable the synchronization of the list parameters
+    // with the current location (URL search parameters)
+    disableSyncWithLocation?: boolean;
+    [key: string]: any;
+}
+
+const defaultSort = {
+    field: 'id',
+    order: SORT_ASC,
+};
+
+export interface ListControllerResult<RecordType extends Record = Record> {
+    currentSort: SortPayload;
+    data: RecordMap<RecordType>;
+    defaultTitle?: string;
+    displayedFilters: any;
+    error?: any;
+    exporter?: Exporter | false;
+    filter?: FilterPayload;
+    filterValues: any;
+    hasCreate?: boolean;
+    hideFilter: (filterName: string) => void;
+    ids: Identifier[];
+    loading: boolean;
+    loaded: boolean;
+    onSelect: (ids: Identifier[]) => void;
+    onToggleItem: (id: Identifier) => void;
+    onUnselectItems: () => void;
+    page: number;
+    perPage: number;
+    refetch: Refetch;
+    resource: string;
+    selectedIds: Identifier[];
+    setFilters: (
+        filters: any,
+        displayedFilters: any,
+        debounce?: boolean
+    ) => void;
+    setPage: (page: number) => void;
+    setPerPage: (page: number) => void;
+    setSort: (sort: string, order?: string) => void;
+    showFilter: (filterName: string, defaultValue: any) => void;
+    total: number;
+}
 
 export const injectedProps = [
     'basePath',
@@ -296,5 +288,3 @@ export const sanitizeListRestProps = props =>
     Object.keys(props)
         .filter(propName => !injectedProps.includes(propName))
         .reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
-
-export default useListController;

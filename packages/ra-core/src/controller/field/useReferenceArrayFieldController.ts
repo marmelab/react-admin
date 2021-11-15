@@ -2,10 +2,9 @@ import get from 'lodash/get';
 
 import { Record, SortPayload } from '../../types';
 import { useGetMany } from '../../dataProvider';
-import { ListControllerProps } from '../useListController';
+import { ListControllerProps, useList } from '../list';
 import { useNotify } from '../../sideEffect';
 import { useResourceContext } from '../../core';
-import { useList } from '../useList';
 
 interface Option {
     basePath?: string;

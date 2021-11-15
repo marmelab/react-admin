@@ -6,7 +6,7 @@ import { useSafeSetState, removeEmpty } from '../../util';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../sideEffect';
 import { Record, SortPayload, RecordMap } from '../../types';
-import { ListControllerProps } from '../useListController';
+import { ListControllerProps } from '../list';
 import usePaginationState from '../usePaginationState';
 import useSelectionState from '../useSelectionState';
 import useSortState from '../useSortState';

@@ -15,7 +15,6 @@ import TopToolbar from '../layout/TopToolbar';
 export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
     const { label = 'ra.action.bulk_actions', children, ...rest } = props;
     const {
-        basePath,
         filterValues,
         resource,
         selectedIds,
@@ -53,7 +52,6 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
                 {Children.map(children, child =>
                     isValidElement(child)
                         ? cloneElement(child, {
-                              basePath,
                               filterValues,
                               resource,
                               selectedIds,

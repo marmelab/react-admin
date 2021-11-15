@@ -1,6 +1,6 @@
 import { createContext, useMemo } from 'react';
 import pick from 'lodash/pick';
-import { ListControllerProps } from './useListController';
+import { ListControllerResult } from './useListController';
 
 /**
  * Context to store the sort part of the useListController() result.
@@ -34,19 +34,19 @@ import { ListControllerProps } from './useListController';
  *     );
  * };
  */
-const ListSortContext = createContext<ListSortContextValue>({
+export const ListSortContext = createContext<ListSortContextValue>({
     currentSort: null,
     setSort: null,
     resource: null,
 });
 
 export type ListSortContextValue = Pick<
-    ListControllerProps,
+    ListControllerResult,
     'currentSort' | 'setSort' | 'resource'
 >;
 
 export const usePickSortContext = (
-    context: ListControllerProps
+    context: ListControllerResult
 ): ListSortContextValue =>
     useMemo(
         () => pick(context, ['currentSort', 'setSort', 'resource']),
@@ -55,5 +55,3 @@ export const usePickSortContext = (
     );
 
 ListSortContext.displayName = 'ListSortContext';
-
-export default ListSortContext;

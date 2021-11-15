@@ -1073,19 +1073,23 @@ This also works inside an `Edit` view with a `TabbedForm`, and you can even hide
 
 {% raw %}
 ```jsx
-export const UserEdit = ({ permissions }) =>
-    <Edit title={<UserTitle />}>
-        <TabbedForm defaultValue={{ role: 'user' }}>
-            <FormTab label="user.form.summary">
-                {permissions === 'admin' && <TextInput disabled source="id" />}
-                <TextInput source="name" validate={required()} />
-            </FormTab>
-            {permissions === 'admin' &&
-                <FormTab label="user.form.security">
-                    <TextInput source="role" validate={required()} />
-                </FormTab>}
-        </TabbedForm>
-    </Edit>;
+export const UserEdit = () => {
+    const { permissions } = usePermissions();
+    return (
+        <Edit title={<UserTitle />}>
+            <TabbedForm defaultValue={{ role: 'user' }}>
+                <FormTab label="user.form.summary">
+                    {permissions === 'admin' && <TextInput disabled source="id" />}
+                    <TextInput source="name" validate={required()} />
+                </FormTab>
+                {permissions === 'admin' &&
+                    <FormTab label="user.form.security">
+                        <TextInput source="role" validate={required()} />
+                    </FormTab>}
+            </TabbedForm>
+        </Edit>;
+    );
+};
 ```
 {% endraw %}
 
@@ -1101,16 +1105,20 @@ const getUserFilters = (permissions) => ([
     permissions === 'admin' ? <TextInput source="role" /> : null,
 ].filter(filter => filter !== null));
 
-export const UserList = ({ permissions, ...props }) =>
-    <List {...props} filters={getUserFilters(permissions)}>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="name" />
-            {permissions === 'admin' && <TextField source="role" />}
-            {permissions === 'admin' && <EditButton />}
-            <ShowButton />
-        </Datagrid>
-    </List>;
+export const UserList = () => {
+    const { permissions } = usePermissions();
+    return (
+        <List filters={getUserFilters(permissions)}>
+            <Datagrid>
+                <TextField source="id" />
+                <TextField source="name" />
+                {permissions === 'admin' && <TextField source="role" />}
+                {permissions === 'admin' && <EditButton />}
+                <ShowButton />
+            </Datagrid>
+        </List>;
+    );
+};
 ```
 
 ### Restricting Access to the Dashboard

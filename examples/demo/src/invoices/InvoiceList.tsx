@@ -2,7 +2,6 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import {
     List,
-    ListProps,
     Datagrid,
     TextField,
     DateField,
@@ -35,10 +34,9 @@ const listFilters = [
     <DateInput source="date_lte" alwaysOn />,
 ];
 
-const InvoiceList = (props: ListProps) => {
+const InvoiceList = () => {
     return (
         <StyledList
-            {...props}
             filters={listFilters}
             perPage={25}
             sort={{ field: 'date', order: 'desc' }}

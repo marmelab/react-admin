@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import useListController, { ListProps } from './useListController';
-import ListContextProvider from './ListContextProvider';
+import { useListController, ListControllerProps } from './useListController';
+import { ListContextProvider } from './ListContextProvider';
 
 /**
  * Call useListController and put the value in a ListContext
@@ -37,13 +37,11 @@ import ListContextProvider from './ListContextProvider';
  *     </ListBase>
  * );
  */
-const ListBase = ({
+export const ListBase = ({
     children,
     ...props
-}: ListProps & { children: ReactNode }) => (
+}: ListControllerProps & { children: ReactNode }) => (
     <ListContextProvider value={useListController(props)}>
         {children}
     </ListContextProvider>
 );
-
-export default ListBase;

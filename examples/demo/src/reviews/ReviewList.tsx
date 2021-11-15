@@ -2,12 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Fragment, useCallback } from 'react';
 import classnames from 'classnames';
-import {
-    BulkDeleteButton,
-    List,
-    ListProps,
-    BulkActionProps,
-} from 'react-admin';
+import { BulkDeleteButton, List, BulkActionProps } from 'react-admin';
 import { Route, RouteChildrenProps, useHistory } from 'react-router-dom';
 import { Drawer, useMediaQuery, Theme } from '@mui/material';
 
@@ -57,7 +52,7 @@ const ReviewsBulkActionButtons = (props: BulkActionProps) => (
     </Fragment>
 );
 
-const ReviewList = (props: ListProps) => {
+const ReviewList = () => {
     const isXSmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('sm')
     );
@@ -80,7 +75,6 @@ const ReviewList = (props: ListProps) => {
                     return (
                         <Fragment>
                             <List
-                                {...props}
                                 className={classnames(classes.list, {
                                     [classes.listWithDrawer]: isMatch,
                                 })}
@@ -118,8 +112,6 @@ const ReviewList = (props: ListProps) => {
                                     <ReviewEdit
                                         id={(match as any).params.id}
                                         onCancel={handleClose}
-                                        resource={props.resource}
-                                        basePath={props.basePath}
                                     />
                                 ) : null}
                             </Drawer>

@@ -8,7 +8,6 @@ import {
     ReferenceArrayField,
     useRecordContext,
     useRedirect,
-    Identifier,
 } from 'react-admin';
 import { Box, Dialog, DialogContent, Typography, Divider } from '@mui/material';
 import { format } from 'date-fns';
@@ -31,7 +30,7 @@ const Root = styled('div')({
     },
 });
 
-export const DealShow = ({ open, id }: { open: boolean; id: Identifier }) => {
+export const DealShow = ({ open }: { open: boolean }) => {
     const redirect = useRedirect();
 
     const handleClose = () => {
@@ -47,7 +46,7 @@ export const DealShow = ({ open, id }: { open: boolean; id: Identifier }) => {
             classes={{ paper: classes.dialog }}
         >
             <DialogContent>
-                <ShowBase resource="deals" basePath="/deals" id={id}>
+                <ShowBase resource="deals">
                     <DealShowContent />
                 </ShowBase>
             </DialogContent>

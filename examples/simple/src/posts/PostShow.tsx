@@ -39,8 +39,8 @@ const CreateRelatedComment = ({ record }: { record?: Record }) => (
     </Button>
 );
 
-const PostShow = props => {
-    const controllerProps = useShowController(props);
+const PostShow = () => {
+    const controllerProps = useShowController();
     const locale = useLocale();
     return (
         <ShowContextProvider value={controllerProps}>

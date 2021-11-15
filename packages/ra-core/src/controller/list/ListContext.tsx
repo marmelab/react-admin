@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { ListControllerProps } from './useListController';
+import { ListControllerResult } from './useListController';
 
 /**
  * Context to store the result of the useListController() hook.
@@ -34,7 +34,7 @@ import { ListControllerProps } from './useListController';
  * @prop {Function} refetch a function for triggering a refetch of the list data
  *
  * @typedef Props
- * @prop {ListControllerProps} value
+ * @prop {ListControllerResult} value
  *
  * @param {Props}
  *
@@ -54,8 +54,7 @@ import { ListControllerProps } from './useListController';
  *     );
  * };
  */
-const ListContext = createContext<ListControllerProps>({
-    basePath: null,
+export const ListContext = createContext<ListControllerResult>({
     currentSort: null,
     data: null,
     defaultTitle: null,
@@ -83,5 +82,3 @@ const ListContext = createContext<ListControllerProps>({
 });
 
 ListContext.displayName = 'ListContext';
-
-export default ListContext;

@@ -1,6 +1,6 @@
 import { createContext, useMemo } from 'react';
 import pick from 'lodash/pick';
-import { ListControllerProps } from './useListController';
+import { ListControllerResult } from './useListController';
 
 /**
  * Context to store the pagination part of the useListController() result.
@@ -38,7 +38,7 @@ import { ListControllerProps } from './useListController';
  *     );
  * };
  */
-const ListPaginationContext = createContext<ListPaginationContextValue>({
+export const ListPaginationContext = createContext<ListPaginationContextValue>({
     loading: null,
     page: null,
     perPage: null,
@@ -51,7 +51,7 @@ const ListPaginationContext = createContext<ListPaginationContextValue>({
 ListPaginationContext.displayName = 'ListPaginationContext';
 
 export type ListPaginationContextValue = Pick<
-    ListControllerProps,
+    ListControllerResult,
     | 'loading'
     | 'page'
     | 'perPage'
@@ -62,7 +62,7 @@ export type ListPaginationContextValue = Pick<
 >;
 
 export const usePickPaginationContext = (
-    context: ListControllerProps
+    context: ListControllerResult
 ): ListPaginationContextValue =>
     useMemo(
         () =>
@@ -85,5 +85,3 @@ export const usePickPaginationContext = (
             context.total,
         ]
     );
-
-export default ListPaginationContext;

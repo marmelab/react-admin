@@ -12,7 +12,7 @@ import {
 import { CreateButton } from '../button';
 
 export const Empty = (props: EmptyProps) => {
-    const { basePath, hasCreate } = useListContext(props);
+    const { hasCreate } = useListContext(props);
     const resource = useResourceContext(props);
 
     const translate = useTranslate();
@@ -45,7 +45,7 @@ export const Empty = (props: EmptyProps) => {
             </div>
             {hasCreate && (
                 <div className={EmptyClasses.toolbar}>
-                    <CreateButton variant="contained" basePath={basePath} />
+                    <CreateButton variant="contained" />
                 </div>
             )}
         </Root>

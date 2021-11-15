@@ -2,7 +2,6 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import {
     List,
-    ListProps,
     TopToolbar,
     ExportButton,
     CreateButton,
@@ -25,11 +24,10 @@ const StyledTopToolbar = styled(TopToolbar)(({ theme }) => ({
     },
 }));
 
-export const CompanyList = (props: ListProps) => {
+export const CompanyList = () => {
     const { identity } = useGetIdentity();
     return identity ? (
         <List
-            {...props}
             actions={<CompanyListActions />}
             aside={<CompanyListFilter />}
             filterDefaultValues={{ sales_id: identity?.id }}
@@ -43,7 +41,7 @@ export const CompanyList = (props: ListProps) => {
     ) : null;
 };
 
-const CompanyListActions = (props: any) => {
+const CompanyListActions = () => {
     return (
         <StyledTopToolbar>
             <ExportButton />

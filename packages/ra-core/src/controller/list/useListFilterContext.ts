@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import ListFilterContext, { ListFilterContextValue } from './ListFilterContext';
+import { ListFilterContext, ListFilterContextValue } from './ListFilterContext';
 
 /**
  * Hook to read the list controller props from the ListContext.
@@ -20,7 +20,7 @@ import ListFilterContext, { ListFilterContextValue } from './ListFilterContext';
  *
  * @see useListController for how it is filled
  */
-const useListFilterContext = (props?: any): ListFilterContextValue => {
+export const useListFilterContext = (props?: any): ListFilterContextValue => {
     const context = useContext(ListFilterContext);
     if (!context.hideFilter) {
         /**
@@ -42,5 +42,3 @@ const useListFilterContext = (props?: any): ListFilterContextValue => {
     }
     return context;
 };
-
-export default useListFilterContext;

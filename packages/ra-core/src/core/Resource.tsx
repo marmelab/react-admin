@@ -56,18 +56,6 @@ const ResourceRoutes = (props: ResourceProps) => {
 
     const basePath = match ? match.path : '';
 
-    const resourceData = useMemo(
-        () => ({
-            resource: name,
-            options,
-            hasList: !!list,
-            hasEdit: !!edit,
-            hasShow: !!show,
-            hasCreate: !!create,
-        }),
-        [name, options, create, edit, list, show]
-    );
-
     // match tends to change even on the same route ; using memo to avoid an extra render
     return useMemo(() => {
         // if the registration hasn't finished, no need to render
@@ -94,18 +82,9 @@ const ResourceRoutes = (props: ResourceProps) => {
                         </Route>
                     )}
                     {list && (
-                        <Route
-                            path={`${basePath}`}
-                            render={routeProps => (
-                                <WithPermissions
-                                    component={list}
-                                    basePath={basePath}
-                                    {...routeProps}
-                                    {...resourceData}
-                                    syncWithLocation
-                                />
-                            )}
-                        />
+                        <Route path={`${basePath}`}>
+                            <WithPermissions component={list} />
+                        </Route>
                     )}
                 </Switch>
             </ResourceContextProvider>

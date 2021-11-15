@@ -22,8 +22,8 @@ Here is the minimal code necessary to display a list of posts using a `<Datagrid
 import * as React from "react";
 import { List, Datagrid, TextField, DateField, BooleanField } from 'react-admin';
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" />
@@ -77,8 +77,8 @@ The default title for a list view is "[resource] list" (e.g. "Posts list"). Use 
 
 ```jsx
 // in src/posts.js
-export const PostList = (props) => (
-    <List {...props} title="List of posts">
+export const PostList = () => (
+    <List title="List of posts">
         ...
     </List>
 );
@@ -113,8 +113,8 @@ const ListActions = (props) => (
     </TopToolbar>
 );
 
-export const PostList = (props) => (
-        <List {...props} actions={<ListActions/>}>
+export const PostList = () => (
+        <List actions={<ListActions/>}>
           ...
         </List>
 );
@@ -163,8 +163,8 @@ const ListActions = (props) => {
     );
 };
 
-export const PostList = (props) => (
-    <List {...props} actions={<ListActions />}>
+export const PostList = () => (
+    <List actions={<ListActions />}>
         ...
     </List>
 );
@@ -174,11 +174,14 @@ export const PostList = (props) => (
 You can also use such a custom `<ListActions>` component to omit or reorder buttons based on permissions. Just pass the `permissions` down from the `List` component:
 
 ```jsx
-export const PostList = ({ permissions, ...props }) => (
-    <List {...props} actions={<PostActions permissions={permissions} {...props} />}>
-        ...
-    </List>
-);
+export const PostList = () => {
+    const { permissions } = usePermissions();
+    return (
+        <List actions={<PostActions permissions={permissions} />}>
+            ...
+        </List>
+    );
+};
 ```
 
 ### `exporter`
@@ -217,8 +220,8 @@ const exporter = posts => {
     });
 };
 
-const PostList = props => (
-    <List {...props} exporter={exporter}>
+const PostList = () => (
+    <List exporter={exporter}>
         ...
     </List>
 )
@@ -248,8 +251,8 @@ const exporter = (records, fetchRelatedRecords) => {
     });
 };
 
-const CommentList = props => (
-    <List {...props} exporter={exporter}>
+const CommentList = () => (
+    <List exporter={exporter}>
         ...
     </List>
 )
@@ -288,8 +291,8 @@ const PostBulkActionButtons = props => (
     </Fragment>
 );
 
-export const PostList = (props) => (
-    <List {...props} bulkActionButtons={<PostBulkActionButtons />}>
+export const PostList = () => (
+    <List bulkActionButtons={<PostBulkActionButtons />}>
         ...
     </List>
 );
@@ -521,8 +524,8 @@ const postFilters = [
     <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
 ];
 
-export const PostList = (props) => (
-    <List {...props} filters={postFilters}>
+export const PostList = () => (
+    <List filters={postFilters}>
         ...
     </List>
 );
@@ -545,8 +548,8 @@ You can choose to always filter the list, without letting the user disable this 
 {% raw %}
 ```jsx
 // in src/posts.js
-export const PostList = (props) => (
-    <List {...props} filter={{ is_published: true }}>
+export const PostList = () => (
+    <List filter={{ is_published: true }}>
         ...
     </List>
 );
@@ -570,8 +573,8 @@ const postFilters = [
     <TextInput source="title" defaultValue="Hello, World!" />,
 ];
 
-export const PostList = (props) => (
-    <List {...props} filters={postFilters} filterDefaultValues={{ is_published: true }}>
+export const PostList = () => (
+    <List filters={postFilters} filterDefaultValues={{ is_published: true }}>
         ...
     </List>
 );
@@ -590,8 +593,8 @@ By default, the list paginates results by groups of 10. You can override this se
 
 ```jsx
 // in src/posts.js
-export const PostList = (props) => (
-    <List {...props} perPage={25}>
+export const PostList = () => (
+    <List perPage={25}>
         ...
     </List>
 );
@@ -604,8 +607,8 @@ Pass an object literal as the `sort` prop to determine the default `field` and `
 {% raw %}
 ```jsx
 // in src/posts.js
-export const PostList = (props) => (
-    <List {...props} sort={{ field: 'published_at', order: 'DESC' }}>
+export const PostList = () => (
+    <List sort={{ field: 'published_at', order: 'DESC' }}>
         ...
     </List>
 );
@@ -626,8 +629,8 @@ import { Pagination, List } from 'react-admin';
 
 const PostPagination = props => <Pagination rowsPerPageOptions={[10, 25, 50, 100]} {...props} />;
 
-export const PostList = (props) => (
-    <List {...props} pagination={<PostPagination />}>
+export const PostList = () => (
+    <List pagination={<PostPagination />}>
         ...
     </List>
 );
@@ -650,8 +653,8 @@ const Aside = () => (
     </div>
 );
 
-const PostList = props => (
-    <List aside={<Aside />} {...props}>
+const PostList = () => (
+    <List aside={<Aside />}>
         ...
     </List>
 );
@@ -720,8 +723,8 @@ const Empty = () => {
     );
 };
 
-const ProductList = props => (
-    <List empty={<Empty />} {...props}>
+const ProductList = () => (
+    <List empty={<Empty />}>
         ...
     </List>
 );
@@ -745,11 +748,11 @@ The `empty` component can call the `useListContext()` hook to receive the same p
 
 You can also set the `empty` props value to `false` to bypass the empty page display and render an empty list instead.
 
-```
+```jsx
 import { List } from 'react-admin';
 
-const ProductList = props => (
-    <List empty={false} {...props}>
+const ProductList = () => (
+    <List empty={false}>
         ...
     </List>
 );
@@ -763,15 +766,15 @@ Some List layouts display each record in a `<Card>`, in which case the user ends
 
 ```jsx
 // use a div as root component
-const PostList = props => (
-    <List component="div" {...props}>
+const PostList = () => (
+    <List component="div">
         ...
     </List>
 );
 
 // use a custom component as root component 
-const PostList = props => (
-    <List component={MyComponent} {...props}>
+const PostList = () => (
+    <List component={MyComponent}>
         ...
     </List>
 );
@@ -781,11 +784,9 @@ The default value for the `component` prop is `Card`.
 
 ### Synchronize With URL
 
-When a `<List>` based component (eg: `<PostList>`) is passed as a `<Resource list>`, react-admin synchronizes its parameters (sort, pagination, filters) with the query string in the URL (using `react-router` location). It does so by setting the `<List syncWithLocation>` prop by default.
+By default, react-admin synchronizes the `<List>` parameters (sort, pagination, filters) with the query string in the URL (using `react-router` location).
 
-When you use a `<List>` component anywhere else than as `<Resource list>`, `syncWithLocation` isn't enabled, and so `<List>` doesn't synchronize its parameters with the URL - the `<List>` parameters are kept in a local state, independent for each `<List>` instance. This allows to have multiple lists on a single page. The drawback is that a hit on the "back" button doesn't restore the previous list parameters.
-
-You may, however, wish to enable `syncWithLocation` on a `<List>` component that is not a `<Resource list>`. For instance, you may want to display a `<List>` of Posts in a Dashboard, and allow users to use the "back" button to undo a sort, pagination, or filter change on that list. In such cases, set the `syncWithLocation` prop to `true`:
+When you use a `<List>` component anywhere else than as `<Resource list>`, you may want to disable this synchronization to keep the parameters in a local state, independent for each `<List>` instance. This allows to have multiple lists on a single page. The drawback is that a hit on the "back" button doesn't restore the previous list parameters. To do so, pass the `disableSyncWithLocation` prop.
 
 {% raw %}
 ```jsx
@@ -793,7 +794,16 @@ const Dashboard = () => (
     <div>
         // ...
         <ResourceContextProvider value="posts">
-            <List syncWithLocation basePath="/posts" >
+            <List disableSyncWithLocation>
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => `${record.views} views`}
+                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+                />
+            </List>
+        </ResourceContextProvider>
+        <ResourceContextProvider value="comments">
+            <List disableSyncWithLocation>
                 <SimpleList
                     primaryText={record => record.title}
                     secondaryText={record => `${record.views} views`}
@@ -832,10 +842,10 @@ const useStyles = makeStyles({
     },
 });
 
-const PostList = props => {
-    const classes = useStyles(props);
+const PostList = () => {
+    const classes = useStyles();
     return (
-        <List {...props} classes={{ actions: classes.actions }}>
+        <List classes={{ actions: classes.actions }}>
             <Datagrid>
                 ...
             </Datagrid>
@@ -951,8 +961,8 @@ Elements of the `filters` array are regular inputs. That means you can build sop
 To inject the filter form in a `<List>`, use the `filters` prop:
 
 ```jsx
-export const PostList = (props) => (
-    <List {...props} filters={postFilters}>
+export const PostList = () => (
+    <List filters={postFilters}>
         ...
     </List>
 );
@@ -1251,8 +1261,8 @@ const SongFilter = props => (
 +   </FilterWithSave>
 );
 
-const SongList = props => (
-    <List {...props} filters={<SongFilter />}>
+const SongList = () => (
+    <List filters={<SongFilter />}>
         <Datagrid rowClick="edit">
             <TextField source="title" />
             <TextField source="artist" />
@@ -1288,8 +1298,8 @@ const SongFilterSidebar = () => (
     </Card>
 );
 
-const SongList = props => (
-    <List {...props} aside={<SongFilterSidebar />}>
+const SongList = () => (
+    <List aside={<SongFilterSidebar />}>
         <Datagrid>
             ...
         </Datagrid>
@@ -1447,8 +1457,8 @@ const ListActions = () => (
   </Box>
 );
 
-export const PostList = (props) => (
-    <List {...props} actions={<ListActions />}>
+export const PostList = () => (
+    <List actions={<ListActions />}>
         ...
     </List>
 );
@@ -1568,8 +1578,8 @@ It is possible to disable sorting for a specific `<Field>` by passing a `sortabl
 import * as React from "react";
 import { List, Datagrid, TextField } from 'react-admin';
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid>
             <TextField source="id" sortable={false} />
             <TextField source="title" />
@@ -1590,8 +1600,8 @@ By default, a column is sorted by the `source` property. To define another attri
 import * as React from "react";
 import { List, Datagrid, TextField } from 'react-admin';
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid>
             <ReferenceField label="Post" source="id" reference="posts" sortBy="title">
                 <TextField source="title" />
@@ -1617,8 +1627,8 @@ By default, when the user clicks on a column header, the list becomes sorted in 
 import * as React from 'react';
 import { List, Datagrid, TextField } from 'react-admin';
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid>
             <ReferenceField label="Post" source="id" reference="posts" sortByOrder="DESC">
                 <TextField source="title" />
@@ -1768,8 +1778,8 @@ Then, to use this component instead of the default `<Pagination>`, use the `<Lis
 import { List } from 'react-admin';
 import PostPagination from './PostPagination';
 
-export const PostList = (props) => (
-    <List {...props} pagination={<PostPagination />}>
+export const PostList = () => (
+    <List pagination={<PostPagination />}>
         ...
     </List>
 );
@@ -1818,8 +1828,8 @@ const PostPagination = () => {
     );
 }
 
-export const PostList = (props) => (
-    <List {...props} pagination={<PostPagination />}>
+export const PostList = () => (
+    <List pagination={<PostPagination />}>
         ...
     </List>
 );
@@ -1838,8 +1848,8 @@ export const PaginationActions = props => <RaPaginationActions {...props} color=
 
 export const Pagination = props => <RaPagination {...props} ActionsComponent={PaginationActions} />;
 
-export const UserList = props => (
-    <List {...props} pagination={<Pagination />} >
+export const UserList = () => (
+    <List pagination={<Pagination />} >
         //...
     </List>
 );
@@ -2060,8 +2070,8 @@ Additional props are passed down to [the material-ui `<Table>` element](https://
 import * as React from "react";
 import { List, Datagrid, TextField, EditButton } from 'react-admin';
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" />
@@ -2116,8 +2126,8 @@ const MyDatagridRow = ({ record, resource, id, onToggleItem, children, selected,
 const MyDatagridBody = props => <DatagridBody {...props} row={<MyDatagridRow />} />;
 const MyDatagrid = props => <Datagrid {...props} body={<MyDatagridBody />} />;
 
-const PostList = props => (
-    <List {...props}>
+const PostList = () => (
+    <List>
         <MyDatagrid>
             <TextField source="title" />
             ...
@@ -2150,8 +2160,8 @@ const DatagridHeader = ({ children }) => (
     </TableHead>
 );
 
-const PostList = props => (
-    <List {...props}>
+const PostList = () => (
+    <List>
         <Datagrid header={<DatagridHeader />}>
             {/* ... */}
         </Datagrid>
@@ -2171,8 +2181,8 @@ For instance, this allows to apply a custom background to the entire row if one 
 const postRowStyle = (record, index) => ({
     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
 });
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid rowStyle={postRowStyle}>
             ...
         </Datagrid>
@@ -2185,8 +2195,8 @@ export const PostList = (props) => (
 You can catch clicks on rows to redirect to the show or edit view by setting the `rowClick` prop:
 
 ```jsx
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid rowClick="edit">
             ...
         </Datagrid>
@@ -2228,8 +2238,8 @@ const PostPanel = ({ id, record, resource }) => (
     <div dangerouslySetInnerHTML={{ __html: record.body }} />
 );
 
-const PostList = props => (
-    <List {...props}>
+const PostList = () => (
+    <List>
         <Datagrid expand={<PostPanel />}>
             <TextField source="id" />
             <TextField source="title" />
@@ -2258,8 +2268,8 @@ const PostShow = props => (
     </Show>
 );
 
-const PostList = props => (
-    <List {...props}>
+const PostList = () => (
+    <List>
         <Datagrid expand={<PostShow />}>
             <TextField source="id" />
             <TextField source="title" />
@@ -2288,8 +2298,8 @@ const PostEdit = props => (
     </Edit>
 );
 
-const PostList = props => (
-    <List {...props}>
+const PostList = () => (
+    <List>
         <Datagrid expand={<PostEdit />}>
             <TextField source="id" />
             <TextField source="title" />
@@ -2310,8 +2320,8 @@ const PostPanel = ({ id, record, resource }) => (
     <div dangerouslySetInnerHTML={{ __html: record.body }} />
 );
 
-const PostList = props => (
-    <List {...props}>
+const PostList = () => (
+    <List>
         <Datagrid 
             expand={<PostPanel />}
             isRowExpandable={row => row.has_detail}    
@@ -2331,8 +2341,8 @@ const PostList = props => (
 You can customize which rows will show a selection checkbox using the `isRowSelectable` prop. It expects a function that will receive the record of each `<DatagridRow>` and returns a boolean expression.  For instance, this code shows a checkbox only for rows with an id greater than 300:
 
 ```jsx
-export const PostList = props => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid isRowSelectable={ record => record.id > 300 }>
             ...
         </Datagrid>
@@ -2350,8 +2360,8 @@ In such cases, you can opt-in for an optimized version of the `<Datagrid>` by se
 Be aware that you can't have dynamic children, such as those displayed or hidden by checking permissions, when using this mode.
 
 ```jsx
-const PostList = props => (
-    <List {...props}>
+const PostList = () => (
+    <List>
         <Datagrid optimized>
             <TextField source="id" />
             <TextField source="title" />
@@ -2404,10 +2414,10 @@ const useStyles = makeStyles({
     },
 });
 
-const PostList = props => {
+const PostList = () => {
     const classes = useStyles();
     return (
-        <List {...props}>
+        <List>
             <Datagrid classes={{ row: classes.row }}>
                 ...
             </Datagrid>
@@ -2435,10 +2445,10 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const PostList = props => {
+const PostList = () => {
     const classes = useStyles();
     return (
-        <List {...props}>
+        <List>
             <Datagrid>
                 <TextField source="id" />
                 <TextField source="title" />
@@ -2468,8 +2478,8 @@ const PriceField = props => {
 };
 
 // the cell class name won't be applied here because Datagrid doesn't see it in its children
-export const ProductList = (props) => (
-    <List {...props}>
+export const ProductList = () => (
+    <List>
         <Datagrid>
             <PriceField source="price" />
         </Datagrid>
@@ -2513,8 +2523,8 @@ const postRowStyle = (record, index) => ({
     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
 });
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <SimpleList
             primaryText={record => record.title}
             secondaryText={record => `${record.views} views`}
@@ -2539,8 +2549,8 @@ const postRowStyle = (record, index) => ({
     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
 });
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <SimpleList
             primaryText={<TextField source="title" />}
             secondaryText={record => `${record.views} views`}
@@ -2564,10 +2574,10 @@ import * as React from "react";
 import { useMediaQuery } from '@material-ui/core';
 import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
-export const PostList = props => {
+export const PostList = () => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
     return (
-        <List {...props}>
+        <List>
             {isSmall ? (
                 <SimpleList
                     primaryText={record => record.title}
@@ -2592,8 +2602,8 @@ export const PostList = props => {
 import * as React from "react";
 import { List, SimpleList } from 'react-admin';
 
-export const PostList = props => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <SimpleList
             primaryText={record => record.title}
             secondaryText={record => `${record.views} views`}
@@ -2662,8 +2672,8 @@ import {
 } from 'react-admin';
 import { EditableDatagrid, RowForm } from '@react-admin/ra-editable-datagrid';
 
-const ArtistList = props => (
-    <List {...props} hasCreate empty={false}>
+const ArtistList = () => (
+    <List hasCreate empty={false}>
         <EditableDatagrid
             undoable
             createForm={<ArtistForm />}
@@ -2893,8 +2903,8 @@ const CommentGrid = () => {
     );
 };
 
-export const CommentList = (props) => (
-    <List title="All comments" {...props}>
+export const CommentList = () => (
+    <List title="All comments">
         <CommentGrid />
     </List>
 );

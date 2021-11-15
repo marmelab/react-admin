@@ -157,12 +157,12 @@ ReferenceManyField.defaultProps = {
 };
 
 export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => {
-    const { basePath, children, pagination, reference, ...rest } = props;
+    const { children, pagination, reference, ...rest } = props;
+
     return (
         <>
             {cloneElement(Children.only(children), {
                 ...sanitizeFieldRestProps(rest),
-                basePath,
                 resource: reference,
             })}
             {pagination &&
@@ -173,16 +173,12 @@ export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => 
 };
 
 export interface ReferenceManyFieldViewProps
-    extends Omit<
-            ReferenceManyFieldProps,
-            'basePath' | 'resource' | 'page' | 'perPage'
-        >,
+    extends Omit<ReferenceManyFieldProps, 'resource' | 'page' | 'perPage'>,
         ListControllerProps {
     children: ReactElement;
 }
 
 ReferenceManyFieldView.propTypes = {
-    basePath: PropTypes.string.isRequired,
     children: PropTypes.element,
     className: PropTypes.string,
     currentSort: PropTypes.exact({

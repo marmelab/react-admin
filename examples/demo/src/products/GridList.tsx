@@ -84,7 +84,7 @@ const LoadingGridList = (props: DatagridProps & { nbItems?: number }) => {
 };
 
 const LoadedGridList = (props: DatagridProps) => {
-    const { ids, data, basePath } = useListContext();
+    const { ids, data } = useListContext();
     const cols = useColsForWidth();
 
     if (!ids || !data) return null;
@@ -100,7 +100,7 @@ const LoadedGridList = (props: DatagridProps) => {
                     // @ts-ignore
                     component={Link}
                     key={id}
-                    to={linkToRecord(basePath, data[id].id)}
+                    to={linkToRecord(`/products`, data[id].id)}
                 >
                     <img src={data[id].thumbnail} alt="" />
                     <ImageListItemBar

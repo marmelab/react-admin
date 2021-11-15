@@ -123,7 +123,6 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     } = props;
 
     const {
-        basePath,
         currentSort,
         data,
         ids,
@@ -241,7 +240,6 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                 {createOrCloneElement(
                     body,
                     {
-                        basePath,
                         expand,
                         rowClick,
                         data,
