@@ -26,6 +26,7 @@
         "html-loader": "~1.3.0",
         "html-webpack-plugin": "~4.3.0",
         "ignore-not-found-export-plugin": "^1.0.1",
+        "proxy-polyfill": "^0.3.0",
         "react-app-polyfill": "^1.0.4",
         "style-loader": "~1.2.1",
         "typescript": "^4.4.0",
