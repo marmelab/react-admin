@@ -10123,10 +10123,12 @@ fsevents@~2.3.1:
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.1.tgz#b209ab14c61012636c8863507edf7fb68cc54e9f"
   integrity sha512-YR47Eg4hChJGAB1O3yEAOkGO+rlzutoICGqGo9EZ4lKWokzZRSyIW1QmTzqjtw8MJdj9srP869CuWw/hyzSiBw==
 
-full-icu@~1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/full-icu/-/full-icu-1.3.1.tgz#e67fdf58523f1d1e0d9143b1542fe2024c1c8997"
-  integrity sha512-VMtK//85QJomhk3cXOCksNwOYaw1KWnYTS37GYGgyf7A3ajdBoPGhaJuJWAH2S2kq8GZeXkdKn+3Mfmgy11cVw==
+full-icu@~1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/full-icu/-/full-icu-1.4.0.tgz#c387825e3872b39a35b7f3d957650726d00d6b7f"
+  integrity sha512-pH8z7WVKJ3QR/8UoIOZupjRCYqpMFSxjPruYbPS8Ra19UGHuUEsnXP8+ny8o7KCF/AZcEkzJXAtGsveYbP17Uw==
+  dependencies:
+    yauzl "^2.10.0"
 
 function-bind@^1.1.1:
   version "1.1.1"
