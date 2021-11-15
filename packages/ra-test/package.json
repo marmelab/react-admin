@@ -59,7 +59,7 @@
     },
     "dependencies": {
         "@testing-library/react": "^11.2.3",
-        "classnames": "~2.2.5",
+        "classnames": "~2.3.1",
         "lodash": "~4.17.5"
     }
 }
