@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { EditButton, List, ListProps, useListContext } from 'react-admin';
+import { EditButton, List, useListContext } from 'react-admin';
 import inflection from 'inflection';
 import {
     Grid,
@@ -39,7 +39,7 @@ const StyledGrid = styled(Grid)({
     },
 });
 
-const CategoryGrid = (props: any) => {
+const CategoryGrid = () => {
     const { data, ids } = useListContext<Category>();
     return ids ? (
         <StyledGrid container spacing={2} className={classes.root}>
@@ -75,9 +75,8 @@ const CategoryGrid = (props: any) => {
     ) : null;
 };
 
-const CategoryList = (props: ListProps) => (
+const CategoryList = () => (
     <List
-        {...props}
         sort={{ field: 'name', order: 'ASC' }}
         perPage={20}
         pagination={false}

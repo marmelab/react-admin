@@ -8,7 +8,6 @@ import {
     FilterContext,
     InputProps,
     ListBase,
-    ListProps,
     NumberInput,
     Pagination,
     ReferenceInput,
@@ -70,14 +69,10 @@ const ListActions = ({ isSmall }: any) => (
     </TopToolbar>
 );
 
-const ProductList = (props: ListProps) => {
+const ProductList = () => {
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     return (
-        <ListBase
-            perPage={20}
-            sort={{ field: 'reference', order: 'ASC' }}
-            {...props}
-        >
+        <ListBase perPage={20} sort={{ field: 'reference', order: 'ASC' }}>
             <ProductListView isSmall={isSmall} />
         </ListBase>
     );

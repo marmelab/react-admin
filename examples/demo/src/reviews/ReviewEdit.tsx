@@ -78,7 +78,6 @@ const ReviewEdit = ({ onCancel, ...props }: Props) => {
             <EditContextProvider value={controllerProps}>
                 <SimpleForm
                     className={classes.form}
-                    basePath={controllerProps.basePath}
                     record={controllerProps.record}
                     save={controllerProps.save}
                     version={controllerProps.version}

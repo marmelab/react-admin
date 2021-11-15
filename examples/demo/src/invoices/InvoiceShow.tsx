@@ -5,7 +5,7 @@ import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import {
-    useShowController,
+    useRecordContext,
     ReferenceField,
     TextField,
     FieldProps,
@@ -39,8 +39,8 @@ const CustomerField = ({ record }: FieldProps<Customer>) =>
         </Typography>
     ) : null;
 
-const InvoiceShow = (props: any) => {
-    const { record } = useShowController<Invoice>(props);
+const InvoiceShow = () => {
+    const record = useRecordContext<Invoice>();
 
     if (!record) return null;
     return (
