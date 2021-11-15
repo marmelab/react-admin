@@ -40,7 +40,6 @@ export const HotContacts = () => {
             </Box>
             <Card>
                 <SimpleList<Contact>
-                    basePath="/contacts"
                     linkType="show"
                     ids={contactIds}
                     data={contactData}

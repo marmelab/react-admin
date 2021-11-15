@@ -55,7 +55,6 @@ export const DealsPipeline = () => {
             </Box>
             <Card>
                 <SimpleList<Deal>
-                    basePath="/deals"
                     linkType="show"
                     ids={ids}
                     data={data}
