@@ -259,6 +259,36 @@ export const PostShow = () => (
 );
 ```
 
+## Error component signature has changed
+
+The `Error` component you can provide to the `<Layout>` used to receive two props: `error` and `errorInfo`. As we now use [react-error-boundary](https://github.com/bvaughn/react-error-boundary), this component now receive the two following props:
+
+- `error`: the error object.
+- `resetErrorBoundary`: a function you can call to reset the error boundary state.
+
+It is now the `Error` component responsability to call the `resetErrorBoundary` function whenever the browser location changes:
+
+```jsx
+import { useRef } from 'react';
+import { useLocation } from 'react-router';
+
+export const Error = (props: ErrorProps) => {
+    const { error, resetErrorBoundary, ...rest } = props;
+    const { pathname } = useLocation();
+    const originalPathname = useRef(pathname);
+
+    useEffect(() => {
+        if (pathname !== originalPathname.current) {
+            resetErrorBoundary();
+        }
+    }, [pathname, resetErrorBoundary]);
+
+    return (
+        ...
+    )
+}
+```
+
 # Upgrade to 3.0
 
 We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.

@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { Fragment, HtmlHTMLAttributes, useEffect, useRef } from 'react';
+import { FallbackProps } from 'react-error-boundary';
 import { styled } from '@mui/material/styles';
-import { Fragment, HtmlHTMLAttributes, ErrorInfo } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import {
@@ -14,11 +15,20 @@ import ErrorIcon from '@mui/icons-material/Report';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import History from '@mui/icons-material/History';
 import { useTranslate } from 'ra-core';
+import { useLocation } from 'react-router';
 
 import { Title, TitlePropType } from './Title';
 
-export const Error = (props: ErrorProps): JSX.Element => {
-    const { error, errorInfo, className, title, ...rest } = props;
+export const Error = (props: ErrorProps) => {
+    const { error, resetErrorBoundary, className, title, ...rest } = props;
+    const { pathname } = useLocation();
+    const originalPathname = useRef(pathname);
+
+    useEffect(() => {
+        if (pathname !== originalPathname.current) {
+            resetErrorBoundary();
+        }
+    }, [pathname, resetErrorBoundary]);
 
     const translate = useTranslate();
 
@@ -38,17 +48,15 @@ export const Error = (props: ErrorProps): JSX.Element => {
                     <>
                         <Accordion className={ErrorClasses.panel}>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                {translate(error.toString(), {
-                                    _: error.toString(),
+                                {translate(error.message, {
+                                    _: error.message,
                                 })}
                             </AccordionSummary>
-                            {errorInfo && (
-                                <AccordionDetails
-                                    className={ErrorClasses.panelDetails}
-                                >
-                                    {errorInfo.componentStack}
-                                </AccordionDetails>
-                            )}
+                            <AccordionDetails
+                                className={ErrorClasses.panelDetails}
+                            >
+                                {error.stack}
+                            </AccordionDetails>
                         </Accordion>
 
                         <div className={ErrorClasses.advice}>
@@ -102,10 +110,10 @@ Error.propTypes = {
     title: TitlePropType,
 };
 
-export interface ErrorProps extends HtmlHTMLAttributes<HTMLDivElement> {
+export interface ErrorProps
+    extends HtmlHTMLAttributes<HTMLDivElement>,
+        FallbackProps {
     className?: string;
-    error: Error;
-    errorInfo?: ErrorInfo;
     title?: string;
 }
 
