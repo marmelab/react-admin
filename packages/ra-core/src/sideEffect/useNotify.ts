@@ -53,7 +53,7 @@ const useNotify = () => {
                     )
                 );
             } else {
-                const { type: messageType, ...options } = type;
+                const { type: messageType, ...options } = type || {};
                 dispatch(showNotification(message, messageType, options));
             }
         },
