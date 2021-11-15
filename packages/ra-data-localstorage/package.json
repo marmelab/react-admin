@@ -41,7 +41,7 @@
         "ra-data-fakerest": "^3.19.0"
     },
     "devDependencies": {
-        "cross-env": "^5.2.0",
+        "cross-env": "^7.0.3",
         "rimraf": "^2.6.3"
     },
     "peerDependencies": {
