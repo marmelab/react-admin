@@ -55,6 +55,6 @@
         "@types/prop-types": "^15.6.0",
         "ra-core": "^3.19.0",
         "ra-ui-materialui": "^3.19.0",
-        "rimraf": "^2.6.3"
+        "rimraf": "^3.0.2"
     }
 }
