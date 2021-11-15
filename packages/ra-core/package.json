@@ -72,6 +72,6 @@
         "lodash": "~4.17.5",
         "prop-types": "^15.6.1",
         "query-string": "^5.1.1",
-        "reselect": "~3.0.0"
+        "reselect": "~4.1.2"
     }
 }
