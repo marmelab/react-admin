@@ -30,7 +30,7 @@
         "@redux-saga/testing-utils": "^1.0.2",
         "@testing-library/react": "^11.2.3",
         "@types/history": "^4.7.2",
-        "@types/node-polyglot": "^0.4.31",
+        "@types/node-polyglot": "^2.4.2",
         "@types/query-string": "5.1.0",
         "@types/react-redux": "^7.1.1",
         "@types/react-router": "^5.1.0",
