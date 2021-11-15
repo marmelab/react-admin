@@ -46,7 +46,7 @@ import {
 export const useCreateController = <
     RecordType extends Omit<Record, 'id'> = Record
 >(
-    props: CreateControllerProps
+    props: CreateControllerProps = {}
 ): CreateControllerResult<RecordType> => {
     const {
         record = {},
