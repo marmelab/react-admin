@@ -41,7 +41,7 @@ import { useListParams } from './useListParams';
  * }
  */
 export const useListController = <RecordType extends Record = Record>(
-    props: ListControllerProps
+    props: ListControllerProps = {}
 ): ListControllerResult<RecordType> => {
     const {
         exporter = defaultExporter,
@@ -50,7 +50,7 @@ export const useListController = <RecordType extends Record = Record>(
         perPage = 10,
         filter,
         debounce = 500,
-        syncWithLocation,
+        disableSyncWithLocation,
     } = props;
     const resource = useResourceContext(props);
     const { hasCreate } = useResourceDefinition(props);
@@ -75,7 +75,7 @@ export const useListController = <RecordType extends Record = Record>(
         sort,
         perPage,
         debounce,
-        syncWithLocation,
+        disableSyncWithLocation,
     });
 
     const [selectedIds, selectionModifiers] = useRecordSelection(resource);
@@ -193,9 +193,9 @@ export interface ListControllerProps {
     location?: Location;
     path?: string;
     resource?: string;
-    // Whether to synchronize the list parameters with the current location (URL search parameters)
-    // This is set to true automatically when a List is used inside a Resource component
-    syncWithLocation?: boolean;
+    // Whether to disable the synchronization of the list parameters
+    // with the current location (URL search parameters)
+    disableSyncWithLocation?: boolean;
     [key: string]: any;
 }
 

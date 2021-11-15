@@ -18,45 +18,6 @@ import { changeListParams, ListParams } from '../../actions';
 import { SortPayload, ReduxState, FilterPayload } from '../../types';
 import removeEmpty from '../../util/removeEmpty';
 
-export interface ListParamsOptions {
-    resource: string;
-    perPage?: number;
-    sort?: SortPayload;
-    // default value for a filter when displayed but not yet set
-    filterDefaultValues?: FilterPayload;
-    debounce?: number;
-    // Whether to synchronize the list parameters with the current location (URL search parameters)
-    // This is set to true automatically when a List is used inside a Resource component
-    syncWithLocation?: boolean;
-}
-
-interface Parameters extends ListParams {
-    filterValues: object;
-    displayedFilters: {
-        [key: string]: boolean;
-    };
-    requestSignature: any[];
-}
-
-interface Modifiers {
-    changeParams: (action: any) => void;
-    setPage: (page: number) => void;
-    setPerPage: (pageSize: number) => void;
-    setSort: (sort: string, order?: string) => void;
-    setFilters: (filters: any, displayedFilters: any) => void;
-    hideFilter: (filterName: string) => void;
-    showFilter: (filterName: string, defaultValue: any) => void;
-}
-
-const emptyObject = {};
-
-const defaultSort = {
-    field: 'id',
-    order: SORT_ASC,
-};
-
-const defaultParams = {};
-
 /**
  * Get the list parameters (page, sort, filters) and modifiers.
  *
@@ -112,7 +73,7 @@ export const useListParams = ({
     sort = defaultSort,
     perPage = 10,
     debounce = 500,
-    syncWithLocation = false,
+    disableSyncWithLocation = false,
 }: ListParamsOptions): [Parameters, Modifiers] => {
     const dispatch = useDispatch();
     const location = useLocation();
@@ -130,22 +91,22 @@ export const useListParams = ({
     const requestSignature = [
         location.search,
         resource,
-        syncWithLocation ? params : localParams,
+        disableSyncWithLocation ? localParams : params,
         filterDefaultValues,
         JSON.stringify(sort),
         perPage,
-        syncWithLocation,
+        disableSyncWithLocation,
     ];
 
-    const queryFromLocation = syncWithLocation
-        ? parseQueryFromLocation(location)
-        : {};
+    const queryFromLocation = disableSyncWithLocation
+        ? {}
+        : parseQueryFromLocation(location);
 
     const query = useMemo(
         () =>
             getQuery({
                 queryFromLocation,
-                params: syncWithLocation ? params : localParams,
+                params: disableSyncWithLocation ? localParams : params,
                 filterDefaultValues,
                 sort,
                 perPage,
@@ -169,7 +130,10 @@ export const useListParams = ({
             tempParams.current = queryReducer(query, action);
             // schedule side effects for next tick
             setTimeout(() => {
-                if (syncWithLocation) {
+                if (disableSyncWithLocation) {
+                    setLocalParams(tempParams.current);
+                } else {
+                    // the useEffect above will apply the changes to the params in the redux state
                     history.push({
                         search: `?${stringify({
                             ...tempParams.current,
@@ -180,9 +144,6 @@ export const useListParams = ({
                         })}`,
                         state: { _scrollToTop: action.type === SET_PAGE },
                     });
-                    // the useEffect above will apply the changes to the params in the redux state
-                } else {
-                    setLocalParams(tempParams.current);
                 }
                 tempParams.current = undefined;
             }, 0);
@@ -378,3 +339,42 @@ export const getNumberOrDefault = (
 
     return isNaN(parsedNumber) ? defaultValue : parsedNumber;
 };
+
+export interface ListParamsOptions {
+    resource: string;
+    perPage?: number;
+    sort?: SortPayload;
+    // default value for a filter when displayed but not yet set
+    filterDefaultValues?: FilterPayload;
+    debounce?: number;
+    // Whether to disable the synchronization of the list parameters with
+    // the current location (URL search parameters)
+    disableSyncWithLocation?: boolean;
+}
+
+interface Parameters extends ListParams {
+    filterValues: object;
+    displayedFilters: {
+        [key: string]: boolean;
+    };
+    requestSignature: any[];
+}
+
+interface Modifiers {
+    changeParams: (action: any) => void;
+    setPage: (page: number) => void;
+    setPerPage: (pageSize: number) => void;
+    setSort: (sort: string, order?: string) => void;
+    setFilters: (filters: any, displayedFilters: any) => void;
+    hideFilter: (filterName: string) => void;
+    showFilter: (filterName: string, defaultValue: any) => void;
+}
+
+const emptyObject = {};
+
+const defaultSort = {
+    field: 'id',
+    order: SORT_ASC,
+};
+
+const defaultParams = {};
