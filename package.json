@@ -68,7 +68,7 @@
         "full-icu": "~1.4.0",
         "husky": "^2.3.0",
         "jest": "26.6.0",
-        "jest-circus": "26.6.0",
+        "jest-circus": "27.3.1",
         "jest-resolve": "26.6.0",
         "jest-watch-typeahead": "0.6.1",
         "lerna": "~2.9.1",
