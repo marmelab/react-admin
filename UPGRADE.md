@@ -272,7 +272,7 @@ It is now the `Error` component responsability to call the `resetErrorBoundary` 
 import { useRef } from 'react';
 import { useLocation } from 'react-router';
 
-export const Error = (props: ErrorProps) => {
+export const Error = (props) => {
     const { error, resetErrorBoundary, ...rest } = props;
     const { pathname } = useLocation();
     const originalPathname = useRef(pathname);
