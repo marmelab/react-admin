@@ -1,0 +1,71 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/packages/ra-core"
+    schedule: 
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/packages/ra-data-fakerest"
+    schedule: 
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/packages/ra-data-graphcool"
+    schedule: 
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/packages/ra-data-graphql"
+    schedule: 
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/packages/ra-data-graphql-simple"
+    schedule: 
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/packages/ra-data-json-server"
+    schedule: 
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/packages/ra-data-localstorage"
+    schedule: 
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/packages/ra-data-simple-rest"
+    schedule: 
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/packages/ra-i18n-polyglot"
+    schedule: 
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/packages/ra-input-rich-text"
+    schedule: 
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/packages/ra-language-english"
+    schedule: 
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/packages/ra-language-french"
+    schedule: 
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/packages/ra-no-code"
+    schedule: 
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/packages/ra-test"
+    schedule: 
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/packages/ra-ui-materialui"
+    schedule: 
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/packages/react-admin"
+    schedule: 
+      interval: "daily"
