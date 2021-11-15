@@ -42,7 +42,7 @@
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "rimraf": "^2.6.3"
+        "rimraf": "^3.0.2"
     },
     "peerDependencies": {
         "ra-core": "^3.9.0"
