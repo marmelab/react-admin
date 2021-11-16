@@ -10,7 +10,7 @@ import {
 } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Route, useRouteMatch, useLocation } from 'react-router-dom';
+import { Route, useLocation } from 'react-router-dom';
 import { Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import {
@@ -46,9 +46,8 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         validating,
         ...rest
     } = props;
-    const match = useRouteMatch();
     const location = useLocation();
-    const url = match ? match.url : location.pathname;
+    const url = location.pathname;
     const [tabValue, setTabValue] = useState(0);
 
     const handleTabChange = (event: ChangeEvent<{}>, value: any): void => {
@@ -85,7 +84,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                     }
                     const tabPath = getTabbedFormTabFullPath(tab, index, url);
                     return (
-                        <Route exact path={escapePath(tabPath)}>
+                        <Route path={escapePath(tabPath)}>
                             {routeProps =>
                                 isValidElement<any>(tab)
                                     ? React.cloneElement(tab, {

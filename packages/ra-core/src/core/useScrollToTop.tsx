@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 /**
  * Scroll the window to top when the target location contains the _scrollToTop state
@@ -23,18 +23,10 @@ import { useHistory } from 'react-router-dom';
  * );
  */
 export const useScrollToTop = () => {
-    const history = useHistory<{ _scrollToTop?: boolean }>();
-    useEffect(
-        () =>
-            history.listen((location, action) => {
-                if (
-                    action !== 'POP' &&
-                    location.state?._scrollToTop &&
-                    typeof window != 'undefined'
-                ) {
-                    window.scrollTo(0, 0);
-                }
-            }),
-        [history]
-    );
+    const location = useLocation();
+    useEffect(() => {
+        if (location.state?._scrollToTop && typeof window != 'undefined') {
+            window.scrollTo(0, 0);
+        }
+    }, [location]);
 };

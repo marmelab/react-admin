@@ -23,18 +23,18 @@ render(
             i18nProvider={i18nProvider}
             title="Example Admin"
             layout={Layout}
-            customRoutes={[
-                <RouteWithoutLayout
-                    exact
-                    path="/custom"
-                    component={props => <CustomRouteNoLayout {...props} />}
-                />,
-                <Route
-                    exact
-                    path="/custom2"
-                    component={props => <CustomRouteLayout {...props} />}
-                />,
-            ]}
+            // customRoutes={[
+            //     <RouteWithoutLayout
+            //         exact
+            //         path="/custom"
+            //         component={props => <CustomRouteNoLayout {...props} />}
+            //     />,
+            //     <Route
+            //         exact
+            //         path="/custom2"
+            //         component={props => <CustomRouteLayout {...props} />}
+            //     />,
+            // ]}
         >
             {permissions => [
                 <Resource name="posts" {...posts} />,

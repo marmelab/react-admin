@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createElement, ComponentType, useMemo, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import CoreAdminRouter from './CoreAdminRouter';
 import { Ready } from '../util';
@@ -48,7 +48,7 @@ const CoreAdminUI = (props: AdminUIProps) => {
         disableTelemetry = false,
         layout = DefaultLayout,
         loading = Noop,
-        loginPage = false,
+        loginPage: LoginPage = false,
         logout,
         menu, // deprecated, use a custom layout instead
         ready = Ready,
@@ -75,23 +75,16 @@ const CoreAdminUI = (props: AdminUIProps) => {
     }, [disableTelemetry]);
 
     return (
-        <Switch>
-            {loginPage !== false && loginPage !== true ? (
+        <Routes>
+            {LoginPage !== false && LoginPage !== true ? (
                 <Route
-                    exact
                     path="/login"
-                    render={props =>
-                        createElement(loginPage, {
-                            ...props,
-                            title,
-                            theme,
-                        })
-                    }
+                    element={<LoginPage title={title} theme={theme} />}
                 />
             ) : null}
             <Route
-                path="/"
-                render={props => (
+                path="/*"
+                element={
                     <CoreAdminRouter
                         catchAll={catchAll}
                         customRoutes={customRoutes}
@@ -103,13 +96,12 @@ const CoreAdminUI = (props: AdminUIProps) => {
                         ready={ready}
                         theme={theme}
                         title={title}
-                        {...props}
                     >
                         {children}
                     </CoreAdminRouter>
-                )}
+                }
             />
-        </Switch>
+        </Routes>
     );
 };
 

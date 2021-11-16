@@ -9,7 +9,6 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { StaticContext } from 'react-router';
 import { NavLink, NavLinkProps } from 'react-router-dom';
 import { ReduxState, setSidebarVisibility } from 'ra-core';
 import {
@@ -98,8 +97,13 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
     const renderMenuItem = () => {
         return (
             <StyledMenuItem
-                className={classnames(MenuItemLinkClasses.root, className)}
-                activeClassName={MenuItemLinkClasses.active}
+                // @ts-ignore
+                className={({ isActive }) => {
+                    console.log({ to: rest, isActive });
+                    return classnames(MenuItemLinkClasses.root, className, {
+                        [MenuItemLinkClasses.active]: isActive,
+                    });
+                }}
                 component={NavLinkRef}
                 // @ts-ignore
                 ref={ref}
@@ -131,7 +135,6 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
 interface Props {
     leftIcon?: ReactElement;
     primaryText?: ReactNode;
-    staticContext?: StaticContext;
     /**
      * @deprecated
      */
@@ -148,7 +151,6 @@ MenuItemLink.propTypes = {
     leftIcon: PropTypes.element,
     onClick: PropTypes.func,
     primaryText: PropTypes.node,
-    staticContext: PropTypes.object,
     to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
     sidebarIsOpen: PropTypes.bool,
 };
@@ -174,5 +176,5 @@ const StyledMenuItem = styled(MenuItem, { name: PREFIX })(({ theme }) => ({
 }));
 
 const NavLinkRef = forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => (
-    <NavLink innerRef={ref} {...props} />
+    <NavLink ref={ref} {...props} />
 ));

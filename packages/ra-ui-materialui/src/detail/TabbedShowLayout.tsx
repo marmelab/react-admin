@@ -14,9 +14,7 @@ import { ResponsiveStyleValue, SxProps } from '@mui/system';
 import { styled } from '@mui/material/styles';
 import { Card, Divider } from '@mui/material';
 import { Route } from 'react-router-dom';
-import { useRouteMatch } from 'react-router-dom';
 import {
-    escapePath,
     Record,
     useRecordContext,
     OptionalRecordContextProvider,
@@ -89,7 +87,6 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
         value,
         ...rest
     } = props;
-    const match = useRouteMatch();
     const record = useRecordContext(props);
     const nonNullChildren = Children.toArray(children).filter(
         child => child !== null
@@ -124,21 +121,12 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
                         tab && isValidElement(tab) ? (
                             syncWithLocation ? (
                                 <Route
-                                    exact
-                                    path={escapePath(
-                                        getShowLayoutTabFullPath(
-                                            tab,
-                                            index,
-                                            match.url
-                                        )
-                                    )}
-                                    render={() =>
-                                        cloneElement(tab, {
-                                            context: 'content',
-                                            spacing,
-                                            divider,
-                                        })
-                                    }
+                                    path={getShowLayoutTabFullPath(tab, index)}
+                                    element={cloneElement(tab, {
+                                        context: 'content',
+                                        spacing,
+                                        divider,
+                                    })}
                                 />
                             ) : tabValue === index ? (
                                 cloneElement(tab, {

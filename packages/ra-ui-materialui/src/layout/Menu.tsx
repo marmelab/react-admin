@@ -25,10 +25,8 @@ export const Menu = (props: MenuProps) => {
                     .map(resource => (
                         <MenuItemLink
                             key={resource.name}
-                            to={{
-                                pathname: `/${resource.name}`,
-                                state: { _scrollToTop: true },
-                            }}
+                            to={`/${resource.name}`}
+                            state={{ _scrollToTop: true }}
                             primaryText={getResourceLabel(resource.name, 2)}
                             leftIcon={
                                 resource.icon ? (

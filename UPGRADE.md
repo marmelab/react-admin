@@ -333,15 +333,15 @@ If you were dispatching `connected-react-router` actions to navigate, you'll now
 ```diff
 -import { useDispatch } from 'react-redux';
 -import { push } from 'connected-react-router';
-+import { useHistory } from 'react-router';
++import { useNavigate } from 'react-router';
 
 const MyComponent = () => {
 -    const dispatch = useDispatch();
-+    const history = useHistory();
++    const navigate = useNavigate();
 
     const myHandler = () => {
 -        dispatch(push('/my-url'));
-+        history.push('/my-url');
++        navigate('/my-url');
     }
 }
 

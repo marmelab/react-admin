@@ -6,7 +6,7 @@ import React, {
     ComponentType,
     ReactElement,
 } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import RoutesWithLayout from './RoutesWithLayout';
 import { useLogout, useGetPermissions, useAuthState } from '../auth';
@@ -98,7 +98,7 @@ const CoreAdminRouter = (props: AdminRouterProps) => {
     };
 
     const {
-        layout,
+        layout: Layout,
         catchAll,
         children,
         customRoutes,
@@ -121,7 +121,7 @@ const CoreAdminRouter = (props: AdminRouterProps) => {
         (Array.isArray(children) && children.length === 0)
     ) {
         return (
-            <Switch>
+            <Routes>
                 {customRoutes
                     .filter(route => route.props.noLayout)
                     .map((route, key) =>
@@ -138,10 +138,10 @@ const CoreAdminRouter = (props: AdminRouterProps) => {
                 {oneSecondHasPassed && (
                     <Route
                         key="loading"
-                        render={() => <LoadingPage theme={theme} />}
+                        element={<LoadingPage theme={theme} />}
                     />
                 )}
-            </Switch>
+            </Routes>
         );
     }
 
@@ -151,7 +151,7 @@ const CoreAdminRouter = (props: AdminRouterProps) => {
 
     return (
         <div>
-            {
+            {/* {
                 // Render every resource children outside the React Router Switch
                 // as we need all of them and not just the one rendered
                 Children.map(
@@ -164,56 +164,33 @@ const CoreAdminRouter = (props: AdminRouterProps) => {
                             intent: 'registration',
                         })
                 )
-            }
-            <Switch>
-                {customRoutes
-                    .filter(route => route.props.noLayout)
-                    .map((route, key) =>
-                        cloneElement(route, {
-                            key,
-                            render: routeProps =>
-                                renderCustomRoutesWithoutLayout(
-                                    route,
-                                    routeProps
-                                ),
-                            component: undefined,
-                        })
+            } */}
+
+            <Layout
+                dashboard={dashboard}
+                logout={logout}
+                menu={menu}
+                theme={theme}
+                title={title}
+            >
+                <RoutesWithLayout
+                    catchAll={catchAll}
+                    customRoutes={customRoutes.filter(
+                        route => !route.props.noLayout
                     )}
-                <Route
-                    path="/"
-                    render={() =>
-                        createElement(
-                            layout,
-                            {
-                                dashboard,
-                                logout,
-                                menu,
-                                theme,
-                                title,
-                            },
-                            <RoutesWithLayout
-                                catchAll={catchAll}
-                                customRoutes={customRoutes.filter(
-                                    route => !route.props.noLayout
-                                )}
-                                dashboard={dashboard}
-                                title={title}
-                            >
-                                {Children.map(
-                                    childrenToRender,
-                                    (
-                                        child: React.ReactElement<ResourceProps>
-                                    ) =>
-                                        cloneElement(child, {
-                                            key: child.props.name,
-                                            intent: 'route',
-                                        })
-                                )}
-                            </RoutesWithLayout>
-                        )
-                    }
-                />
-            </Switch>
+                    dashboard={dashboard}
+                    title={title}
+                >
+                    {Children.map(
+                        childrenToRender,
+                        (child: React.ReactElement<ResourceProps>) =>
+                            cloneElement(child, {
+                                key: child.props.name,
+                                intent: 'route',
+                            })
+                    )}
+                </RoutesWithLayout>
+            </Layout>
         </div>
     );
 };

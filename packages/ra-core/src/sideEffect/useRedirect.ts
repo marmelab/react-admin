@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { parsePath } from 'history';
 
 import { Identifier, Record } from '../types';
@@ -35,7 +35,9 @@ export type RedirectionSideEffect = string | boolean | RedirectToFunction;
  */
 const useRedirect = () => {
     const dispatch = useDispatch();
-    const history = useHistory(); // Note: history is mutable. This prevents render loops in useCallback.
+    const navigate = useNavigate();
+    // Ensure this doesn't rerender too much
+    const location = useLocation();
     return useCallback(
         (
             redirectTo: RedirectionSideEffect,
@@ -45,12 +47,17 @@ const useRedirect = () => {
             state: object = {}
         ) => {
             if (!redirectTo) {
-                if (history.location.state || history.location.search) {
-                    history.replace({
-                        ...history.location,
-                        state,
-                        search: undefined,
-                    });
+                if (location.state || location.search) {
+                    navigate(
+                        {
+                            ...location,
+                            search: undefined,
+                        },
+                        {
+                            state,
+                            replace: true,
+                        }
+                    );
                 } else {
                     dispatch(refreshView());
                 }
@@ -66,15 +73,19 @@ const useRedirect = () => {
                 // history doesn't handle that case, so we handle it by hand
                 window.location.href = redirectTo;
             } else {
-                history.push({
-                    ...parsePath(
-                        resolveRedirectTo(redirectTo, basePath, id, data)
-                    ),
-                    state: { _scrollToTop: true, ...state },
-                });
+                navigate(
+                    {
+                        ...parsePath(
+                            resolveRedirectTo(redirectTo, basePath, id, data)
+                        ),
+                    },
+                    {
+                        state: { _scrollToTop: true, ...state },
+                    }
+                );
             }
         },
-        [dispatch, history]
+        [dispatch, location, navigate]
     );
 };
 

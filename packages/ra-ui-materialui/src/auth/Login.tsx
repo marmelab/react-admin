@@ -14,8 +14,7 @@ import classnames from 'classnames';
 import { Card, Avatar } from '@mui/material';
 import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 import LockIcon from '@mui/icons-material/Lock';
-import { StaticContext } from 'react-router';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useCheckAuth, TitleComponent } from 'ra-core';
 
 import { defaultTheme } from '../defaultTheme';
@@ -64,17 +63,17 @@ const LoginContainer = props => {
     const containerRef = useRef<HTMLDivElement>();
     let backgroundImageLoaded = false;
     const checkAuth = useCheckAuth();
-    const history = useHistory();
+    const navigate = useNavigate();
     useEffect(() => {
         checkAuth({}, false)
             .then(() => {
                 // already authenticated, redirect to the home page
-                history.push('/');
+                navigate('/');
             })
             .catch(() => {
                 // not authenticated, stay on the login page
             });
-    }, [checkAuth, history]);
+    }, [checkAuth, navigate]);
 
     const updateBackgroundImage = () => {
         if (!backgroundImageLoaded && containerRef.current) {
@@ -123,7 +122,6 @@ export interface LoginProps
     classes?: object;
     className?: string;
     notification?: ComponentType;
-    staticContext?: StaticContext;
     theme?: object;
     title?: TitleComponent;
 }
@@ -169,7 +167,6 @@ Login.propTypes = {
     classes: PropTypes.object,
     className: PropTypes.string,
     theme: PropTypes.object,
-    staticContext: PropTypes.object,
 };
 
 Login.defaultProps = {

@@ -3,8 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import { clearState } from '../actions/clearActions';
-import { useHistory } from 'react-router-dom';
-import { LocationDescriptorObject } from 'history';
+import { useLocation, useNavigate, Path } from 'react-router-dom';
 
 /**
  * Get a callback for calling the authProvider.logout() method,
@@ -40,7 +39,9 @@ const useLogout = (): Logout => {
      * To avoid that, we read the location directly from history which is mutable.
      * See: https://reacttraining.com/react-router/web/api/history/history-is-mutable
      */
-    const history = useHistory();
+    const navigate = useNavigate();
+    // TODO: ensure we don't rerender too much (see previous comment)
+    const location = useLocation();
 
     const logout = useCallback(
         (
@@ -59,40 +60,48 @@ const useLogout = (): Logout => {
                 const redirectToParts = (
                     redirectToFromProvider || redirectTo
                 ).split('?');
-                const newLocation: LocationDescriptorObject = {
+                const newLocation: Partial<Path> = {
                     pathname: redirectToParts[0],
                 };
+                let newLocationOptions = {};
+
                 if (
                     redirectToCurrentLocationAfterLogin &&
-                    history.location &&
-                    history.location.pathname
+                    location &&
+                    location.pathname
                 ) {
-                    newLocation.state = {
-                        nextPathname: history.location.pathname,
-                        nextSearch: history.location.search,
+                    newLocationOptions = {
+                        state: {
+                            nextPathname: location.pathname,
+                            nextSearch: location.search,
+                        },
                     };
                 }
                 if (redirectToParts[1]) {
                     newLocation.search = redirectToParts[1];
                 }
-                history.push(newLocation);
+                navigate(newLocation, newLocationOptions);
                 return redirectToFromProvider;
             }),
-        [authProvider, history, dispatch]
+        [authProvider, dispatch, location, navigate]
     );
 
     const logoutWithoutProvider = useCallback(
         _ => {
-            history.push({
-                pathname: defaultAuthParams.loginUrl,
-                state: {
-                    nextPathname: history.location && history.location.pathname,
+            navigate(
+                {
+                    pathname: defaultAuthParams.loginUrl,
                 },
-            });
+                {
+                    state: {
+                        nextPathname: location && location.pathname,
+                    },
+                }
+            );
             dispatch(clearState());
             return Promise.resolve();
         },
-        [dispatch, history]
+        [dispatch, location, navigate]
     );
 
     return authProvider ? logout : logoutWithoutProvider;
