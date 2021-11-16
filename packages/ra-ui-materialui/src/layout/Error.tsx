@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Fragment, HtmlHTMLAttributes, useEffect, useRef } from 'react';
+import { ComponentType, ErrorInfo, Fragment, HtmlHTMLAttributes } from 'react';
 import { FallbackProps } from 'react-error-boundary';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
@@ -14,27 +14,37 @@ import {
 import ErrorIcon from '@mui/icons-material/Report';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import History from '@mui/icons-material/History';
-import { useTranslate } from 'ra-core';
-import { useLocation } from 'react-router';
-
+import { TitleComponent, useTranslate } from 'ra-core';
 import { Title, TitlePropType } from './Title';
+import { useResetErrorBoundaryOnLocationChange } from './useResetErrorBoundaryOnLocationChange';
 
-export const Error = (props: ErrorProps) => {
-    const { error, resetErrorBoundary, className, title, ...rest } = props;
-    const { pathname } = useLocation();
-    const originalPathname = useRef(pathname);
-
-    useEffect(() => {
-        if (pathname !== originalPathname.current) {
-            resetErrorBoundary();
-        }
-    }, [pathname, resetErrorBoundary]);
+export const Error = (
+    props: InternalErrorProps & {
+        errorComponent?: ComponentType<ErrorProps>;
+    }
+) => {
+    const {
+        error,
+        errorComponent: ErrorComponent,
+        errorInfo,
+        resetErrorBoundary,
+        className,
+        title,
+        ...rest
+    } = props;
 
     const translate = useTranslate();
+    useResetErrorBoundaryOnLocationChange(resetErrorBoundary);
+
+    if (ErrorComponent) {
+        return (
+            <ErrorComponent error={error} errorInfo={errorInfo} title={title} />
+        );
+    }
 
     return (
         <Fragment>
-            {title && <Title defaultTitle={title} />}
+            {title && <Title title={title} />}
             <Root
                 className={classnames(ErrorClasses.container, className)}
                 {...rest}
@@ -55,7 +65,15 @@ export const Error = (props: ErrorProps) => {
                             <AccordionDetails
                                 className={ErrorClasses.panelDetails}
                             >
-                                {error.stack}
+                                {/*
+                                    error message is repeated here to allow users to copy it. AccordionSummary doesn't support text selection.
+                                */}
+                                <p>
+                                    {translate(error.message, {
+                                        _: error.message,
+                                    })}
+                                </p>
+                                <p>{errorInfo?.componentStack}</p>
                             </AccordionDetails>
                         </Accordion>
 
@@ -110,11 +128,16 @@ Error.propTypes = {
     title: TitlePropType,
 };
 
-export interface ErrorProps
-    extends HtmlHTMLAttributes<HTMLDivElement>,
-        FallbackProps {
+interface InternalErrorProps
+    extends Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'>,
+        FallbackProps,
+        ErrorProps {
     className?: string;
-    title?: string;
+}
+
+export interface ErrorProps extends Pick<FallbackProps, 'error'> {
+    errorInfo?: ErrorInfo;
+    title?: TitleComponent;
 }
 
 const PREFIX = 'RaError';
