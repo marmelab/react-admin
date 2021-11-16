@@ -9,7 +9,7 @@ import React, {
     HtmlHTMLAttributes,
 } from 'react';
 import PropTypes from 'prop-types';
-import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
+import { ErrorBoundary } from 'react-error-boundary';
 import { useSelector } from 'react-redux';
 import classnames from 'classnames';
 import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
@@ -20,7 +20,7 @@ import { AppBar as DefaultAppBar, AppBarProps } from './AppBar';
 import { Sidebar as DefaultSidebar } from './Sidebar';
 import { Menu as DefaultMenu, MenuProps } from './Menu';
 import { Notification as DefaultNotification } from './Notification';
-import { Error as DefaultError } from './Error';
+import { Error, ErrorProps } from './Error';
 import { defaultTheme } from '../defaultTheme';
 import { SkipNavigationButton } from '../button';
 
@@ -29,9 +29,8 @@ const LayoutWithoutTheme = (props: LayoutWithoutThemeProps) => {
         appBar = DefaultAppBar,
         children,
         className,
-        error: ErrorComponent = DefaultError,
         dashboard,
-        error,
+        error: errorComponent,
         logout,
         menu = DefaultMenu,
         notification = DefaultNotification,
@@ -40,13 +39,17 @@ const LayoutWithoutTheme = (props: LayoutWithoutThemeProps) => {
         ...rest
     } = props;
 
+    const [errorInfo, setErrorInfo] = useState<ErrorInfo>(null);
     const open = useSelector<ReduxState, boolean>(
         state => state.admin.ui.sidebarOpen
     );
 
+    const handleError = (error: Error, info: ErrorInfo) => {
+        setErrorInfo(info);
+    };
+
     return (
-        // @ts-ignore
-        <ErrorBoundary FallbackComponent={ErrorComponent}>
+        <>
             <StyledLayout
                 className={classnames('layout', LayoutClasses.root, className)}
                 {...rest}
@@ -64,13 +67,29 @@ const LayoutWithoutTheme = (props: LayoutWithoutThemeProps) => {
                             id="main-content"
                             className={LayoutClasses.content}
                         >
-                            {children}
+                            <ErrorBoundary
+                                onError={handleError}
+                                fallbackRender={({
+                                    error,
+                                    resetErrorBoundary,
+                                }) => (
+                                    <Error
+                                        error={error}
+                                        errorComponent={errorComponent}
+                                        errorInfo={errorInfo}
+                                        resetErrorBoundary={resetErrorBoundary}
+                                        title={title}
+                                    />
+                                )}
+                            >
+                                {children}
+                            </ErrorBoundary>
                         </div>
                     </main>
                 </div>
             </StyledLayout>
             {createElement(notification)}
-        </ErrorBoundary>
+        </>
     );
 };
 
@@ -80,7 +99,7 @@ export interface LayoutProps
     appBar?: ComponentType<AppBarProps>;
     classes?: any;
     className?: string;
-    error?: ComponentType<FallbackProps>;
+    error?: ComponentType<ErrorProps>;
     menu?: ComponentType<MenuProps>;
     notification?: ComponentType;
     sidebar?: ComponentType<{ children: ReactNode }>;
