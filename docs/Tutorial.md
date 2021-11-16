@@ -76,7 +76,7 @@ export default App;
 
 That's enough for react-admin to render an empty app and confirm that the setup is done: 
 
-![Empty Admin](./img/tutorial_empty.png)
+[![Empty Admin](./img/tutorial_empty.png)](./img/tutorial_empty.png)
 
 The `App` component renders an `<Admin>` component, which is the root component of a react-admin application. This component expects a `dataProvider` prop - a function capable of fetching data from an API. Since there is no standard for data exchanges between computers, you will probably have to write a custom provider to connect react-admin to your own APIs - but we'll dive into Data Providers later. For now, let's take advantage of the `ra-data-json-server` data provider, which speaks the same REST dialect as JSONPlaceholder.
 
@@ -112,7 +112,7 @@ The `list={ListGuesser}` prop means that react-admin should use the `<ListGuesse
 
 The app can now display a list of users:
 
-![Users List](./img/tutorial_users_list.png)
+[![Users List](./img/tutorial_users_list.png)](./img/tutorial_users_list.png)
 
 If you look at the network tab in the browser developer tools, you'll notice that the application fetched the `https://jsonplaceholder.typicode.com/users` URL, then used the results to build the Datagrid. That's basically how react-admin works.
 
@@ -122,7 +122,7 @@ The list is already functional: you can reorder it by clicking on column headers
 
 The `<ListGuesser>` component is not meant to be used in production - it's just a way to quickly bootstrap an admin. That means you'll have to replace the `ListGuesser` component in the `users` resource by a custom React component. Fortunately, `ListGuesser` dumps the code of the list it has guessed to the console:
 
-![Guessed Users List](./img/tutorial_guessed_list.png)
+[![Guessed Users List](./img/tutorial_guessed_list.png)](./img/tutorial_guessed_list.png)
 
 Let's copy this code, and create a new `UserList` component, in a new file named `users.js`:
 
@@ -163,7 +163,7 @@ const App = () => (
 );
 ```
 
-![Users List](./img/tutorial_users_list.png)
+[![Users List](./img/tutorial_users_list.png)](./img/tutorial_users_list.png)
 
 There is no visible change in the browser - except now, the app uses a component that you can customize. 
 
@@ -192,7 +192,7 @@ export const UserList = props => (
 );
 ```
 
-![Users List](./img/tutorial_users_list_selected_columns.png)
+[![Users List](./img/tutorial_users_list_selected_columns.png)](./img/tutorial_users_list_selected_columns.png)
 
 What you've just done reflects the early stages of development with react-admin: let the guesser do the job, select only the fields you want, and start customizing types.
 
@@ -223,7 +223,7 @@ export const UserList = props => (
 );
 ```
 
-![Url Field](./img/tutorial_url_field.png)
+[![Url Field](./img/tutorial_url_field.png)](./img/tutorial_url_field.png)
 
 In react-admin, fields are simple React components. At runtime, they grab the `record` fetched from the API (e.g. `{ "id": 2, "name": "Ervin Howell", "website": "anastasia.net", ... }`) with a custom hook, and use the `source` field (e.g. `website`) to get the value they should display (e.g. "anastasia.net").
 
@@ -308,7 +308,7 @@ const MyUrlField = ({ source }) => {
 export default MyUrlField;
 ```
 
-![Custom styles](./img/tutorial_custom_styles.png)
+[![Custom styles](./img/tutorial_custom_styles.png)](./img/tutorial_custom_styles.png)
 
 In JSS, you define styles as a JavaScript object, using the JS variants of the CSS property names (e.g. `textDecoration` instead of `text-decoration`). To pass these styles to the component, use `makeStyles` to build a React hook. The hook will create new class names for these styles, and return the new class names in the `classes` object. Then, use these names in a `className` prop, as you would with a regular CSS class.
 
@@ -349,7 +349,7 @@ const App = () => (
 export default App;
 ```
 
-![Guessed Post List](./img/tutorial_guessed_post_list.png)
+[![Guessed Post List](./img/tutorial_guessed_post_list.png)](./img/tutorial_guessed_post_list.png)
 
 The `ListGuesser` suggests using a `<ReferenceField>` for the `userId` field. Let's play with this new field by creating the `PostList` component based on the code dumped by the guesser:
 
@@ -409,7 +409,7 @@ export const PostList = props => (
 
 The post list now displays the user names on each line.
 
-![Post List With User Names](./img/tutorial_list_user_name.png)
+[![Post List With User Names](./img/tutorial_list_user_name.png)](./img/tutorial_list_user_name.png)
 
 **Tip**: The `<ReferenceField>` component alone doesn't display anything. It just fetches the reference data, and passes it as a `record` to its child component (a `<TextField>` in our case). Just like the `<List>` component, all `<Reference>` components are only responsible for fetching and preparing data, and delegate rendering to their children.
 
@@ -440,7 +440,7 @@ export const PostList = props => (
 );
 ```
 
-![Post List With Less Columns](./img/tutorial_post_list_less_columns.png)
+[![Post List With Less Columns](./img/tutorial_post_list_less_columns.png)](./img/tutorial_post_list_less_columns.png)
 
 ## Adding Creation and Editing Capabilities
 
@@ -462,7 +462,7 @@ const App = () => (
 );
 ```
 
-![Post Edit Guesser](./img/tutorial_edit_guesser.gif)
+[![Post Edit Guesser](./img/tutorial_edit_guesser.gif)](./img/tutorial_edit_guesser.gif)
 
 Users can display the edit page just by clicking on the Edit button. The form rendered is already functional; it issues `PUT` requests to the REST API upon submission.
 
@@ -588,7 +588,7 @@ const App = () => (
 );
 ```
 
-![Post Creation](./img/tutorial_post_create.gif)
+[![Post Creation](./img/tutorial_post_create.gif)](./img/tutorial_post_create.gif)
 
 React-admin automatically adds a "create" button on top of the posts list to give access to the `<PostCreate>` component. And the creation form works ; it issues a `POST` request to the REST API upon submission.
 
@@ -602,7 +602,7 @@ That's because react-admin uses *optimistic rendering*. When a user edits a reco
 
 But there is an additional benefit: it also allows the "Undo" feature. Undo is already functional in the admin at that point. Try editing a record, then hit the "Undo" link in the black confirmation box before it slides out. You'll see that the app does not send the `UPDATE` query to the API, and displays the non-modified data.
 
-![Undo Post Editing](./img/tutorial_post_edit_undo.gif)
+[![Undo Post Editing](./img/tutorial_post_edit_undo.gif)](./img/tutorial_post_edit_undo.gif)
 
 Even though updates appear immediately due to Optimistic Rendering, React-admin only sends them to the server after a short delay (about 5 seconds). During this delay, the user can undo the action, and react-admin will never send the update. 
 
@@ -626,7 +626,7 @@ export const PostEdit = props => (
 );
 ```
 
-![Post Edit Title](./img/tutorial_post_title.png)
+[![Post Edit Title](./img/tutorial_post_title.png)](./img/tutorial_post_title.png)
 
 ## Adding Search And Filters To The List
 
@@ -654,7 +654,7 @@ export const PostList = (props) => (
 
 The first filter, 'q', takes advantage of a full-text functionality offered by JSONPlaceholder. It is `alwaysOn`, so it always appears on the screen. Users can add the second filter, `userId`, thanks to the "add filter" button, located on the top of the list. As it's a `<ReferenceInput>`, it's already populated with possible users. 
 
-![posts search engine](./img/filters.gif)
+[![posts search engine](./img/filters.gif)](./img/filters.gif)
 
 Filters are "search-as-you-type", meaning that when the user enters new values in the filter form, the list refreshes (via an API request) immediately.
 
@@ -677,7 +677,7 @@ const App = () => (
 );
 ```
 
-![custom menu icons](./img/custom-menu.gif)
+[![custom menu icons](./img/custom-menu.gif)](./img/custom-menu.gif)
 
 ## Using a Custom Home Page
 
@@ -707,7 +707,7 @@ const App = () => (
 );
 ```
 
-![Custom home page](./img/dashboard.png)
+[![Custom home page](./img/dashboard.png)](./img/dashboard.png)
 
 ## Adding a Login Page
 
@@ -770,7 +770,7 @@ const App = () => (
 
 Once the app reloads, it's now behind a login form that accepts everyone:
 
-![Login form](./img/login.gif)
+[![Login form](./img/login.gif)](./img/login.gif)
 
 ## Supporting Mobile Devices
 
@@ -796,7 +796,7 @@ export const PostList = (props) => (
 );
 ```
 
-![Mobile post list](./img/tutorial_mobile_post_list.gif)
+[![Mobile post list](./img/tutorial_mobile_post_list.gif)](./img/tutorial_mobile_post_list.gif)
 
 The `<SimpleList>` component uses [material-ui's `<List>` and `<ListItem>` components](https://v4.mui.com/components/lists), and expects functions as `primaryText`, `secondaryText`, and `tertiaryText` props.
 
@@ -838,7 +838,7 @@ export const PostList = (props) => {
 
 This works exactly the way you expect. The lesson here is that react-admin takes care of responsive web design for the layout, but it's your job to use `useMediaQuery()` in pages.
 
-![Responsive List](./img/responsive-list.gif)
+[![Responsive List](./img/responsive-list.gif)](./img/responsive-list.gif)
 
 ## Connecting To A Real API
 
