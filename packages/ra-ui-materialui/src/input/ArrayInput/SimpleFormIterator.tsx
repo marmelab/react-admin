@@ -158,6 +158,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                                 resource={resource}
                                 source={source}
                                 variant={variant}
+                                ref={nodeRef}
                             >
                                 {children}
                             </SimpleFormIteratorItem>
