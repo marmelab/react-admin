@@ -86,9 +86,9 @@ export const useShowController = <RecordType extends Record = Record>(
     };
 };
 
-export interface ShowControllerProps {
+export interface ShowControllerProps<RecordType extends Record = Record> {
     id?: Identifier;
-    onFailure?: OnFailure;
+    queryOptions?: UseQueryOptions<RecordType>;
     resource?: string;
 }
 
@@ -98,8 +98,8 @@ export interface ShowControllerResult<RecordType extends Record = Record> {
     // @deprecated - to be removed in 4.0d
     data?: RecordType;
     error?: any;
-    loading: boolean;
-    loaded: boolean;
+    isFetching: boolean;
+    isLoading: boolean;
     resource: string;
     record?: RecordType;
     refetch: Refetch;
