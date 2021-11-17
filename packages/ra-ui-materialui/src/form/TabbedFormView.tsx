@@ -214,7 +214,7 @@ export const TabbedFormClasses = {
 };
 
 const Root = styled('form', { name: PREFIX })(({ theme }) => ({
-    [`& .${TabbedFormClasses.errorTabButton}`]: {
+    [`& .MuiTab-root.${TabbedFormClasses.errorTabButton}`]: {
         color: theme.palette.error.main,
     },
     [`& .${TabbedFormClasses.content}`]: {
