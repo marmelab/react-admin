@@ -87,5 +87,8 @@
     ],
     "dependencies": {
         "typescript": "^4.4.0"
+    },
+    "resolutions": {
+        "yup": "0.32.11"
     }
 }
