@@ -1,6 +1,6 @@
 {
     "name": "ra-core",
-    "version": "3.19.0",
+    "version": "3.19.1",
     "description": "Core components of react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React",
     "files": [
         "*.md",
@@ -40,7 +40,7 @@
         "final-form": "^4.20.2",
         "history": "^4.7.2",
         "ignore-styles": "~5.0.1",
-        "ra-test": "^3.19.0",
+        "ra-test": "^3.19.1",
         "react": "^17.0.0",
         "react-dom": "^17.0.0",
         "react-final-form": "^6.5.2",
