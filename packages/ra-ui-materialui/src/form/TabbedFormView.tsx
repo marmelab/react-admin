@@ -10,14 +10,14 @@ import {
 } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Route, useLocation } from 'react-router-dom';
+import { matchPath, useLocation } from 'react-router-dom';
 import { Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import {
-    escapePath,
     FormWithRedirectRenderProps,
     MutationMode,
     Record,
+    useResourceContext,
 } from 'ra-core';
 import { Toolbar } from './Toolbar';
 import { TabbedFormTabs, getTabbedFormTabFullPath } from './TabbedFormTabs';
@@ -35,7 +35,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         pristine,
         record,
         redirect: defaultRedirect,
-        resource,
+        rootPath: rootPathFromProps,
         saving,
         submitOnEnter = true,
         syncWithLocation = true,
@@ -47,7 +47,8 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         ...rest
     } = props;
     const location = useLocation();
-    const url = location.pathname;
+    const resource = useResourceContext(props);
+    const rootPath = rootPathFromProps ?? getRootPath(location.pathname);
     const [tabValue, setTabValue] = useState(0);
 
     const handleTabChange = (event: ChangeEvent<{}>, value: any): void => {
@@ -65,9 +66,9 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                 tabs,
                 {
                     classes: TabbedFormClasses,
-                    url,
-                    syncWithLocation,
                     onChange: handleTabChange,
+                    syncWithLocation,
+                    url: rootPath,
                     value: tabValue,
                 },
                 children
@@ -82,30 +83,28 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                     if (!tab) {
                         return;
                     }
-                    const tabPath = getTabbedFormTabFullPath(tab, index, url);
-                    return (
-                        <Route path={escapePath(tabPath)}>
-                            {routeProps =>
-                                isValidElement<any>(tab)
-                                    ? React.cloneElement(tab, {
-                                          intent: 'content',
-                                          classes: TabbedFormClasses,
-                                          resource,
-                                          record,
-                                          basePath,
-                                          hidden: syncWithLocation
-                                              ? !routeProps.match
-                                              : tabValue !== index,
-                                          variant: tab.props.variant || variant,
-                                          margin: tab.props.margin || margin,
-                                          value: syncWithLocation
-                                              ? tabPath
-                                              : index,
-                                      })
-                                    : null
-                            }
-                        </Route>
+                    const tabPath = getTabbedFormTabFullPath(
+                        tab,
+                        index,
+                        rootPath
                     );
+                    const hidden = syncWithLocation
+                        ? !matchPath(tabPath, location.pathname)
+                        : tabValue !== index;
+
+                    return isValidElement<any>(tab)
+                        ? React.cloneElement(tab, {
+                              intent: 'content',
+                              classes: TabbedFormClasses,
+                              resource,
+                              record,
+                              basePath,
+                              hidden,
+                              variant: tab.props.variant || variant,
+                              margin: tab.props.margin || margin,
+                              value: syncWithLocation ? tabPath : index,
+                          })
+                        : null;
                 })}
             </div>
             {toolbar &&
@@ -170,6 +169,7 @@ export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
     mutationMode?: MutationMode;
     record?: Record;
     resource?: string;
+    rootPath?: string;
     syncWithLocation?: boolean;
     tabs?: ReactElement;
     toolbar?: ReactElement;
@@ -223,3 +223,18 @@ const Root = styled('form', { name: PREFIX })(({ theme }) => ({
         paddingRight: theme.spacing(2),
     },
 }));
+
+const getRootPath = (path: string) => {
+    const createMatch = matchPath(':resource/create/*', path);
+    const editMatch = matchPath(':resource/:id/*', path);
+
+    if (createMatch) {
+        return createMatch.pathnameBase;
+    }
+
+    if (editMatch) {
+        return editMatch.pathnameBase;
+    }
+
+    return null;
+};

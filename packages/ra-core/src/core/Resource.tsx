@@ -16,19 +16,19 @@ const Resource = (props: ResourceProps) => {
                 <Routes>
                     {create && (
                         <Route
-                            path="create"
+                            path="create/*"
                             element={<WithPermissions component={create} />}
                         />
                     )}
                     {show && (
                         <Route
-                            path=":id/show"
+                            path=":id/show/*"
                             element={<WithPermissions component={show} />}
                         />
                     )}
                     {edit && (
                         <Route
-                            path=":id"
+                            path=":id/*"
                             element={<WithPermissions component={edit} />}
                         />
                     )}

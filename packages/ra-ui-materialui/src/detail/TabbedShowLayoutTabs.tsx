@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Children, cloneElement, ReactElement, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import Tabs, { TabsProps } from '@mui/material/Tabs';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { TabProps } from './Tab';
 
 export const TabbedShowLayoutTabs = ({
@@ -11,11 +11,11 @@ export const TabbedShowLayoutTabs = ({
     value,
     ...rest
 }: TabbedShowLayoutTabsProps) => {
-    const location = useLocation();
+    const params = useParams();
 
-    // The location pathname will contain the page path including the current tab path
-    // so we can use it as a way to determine the current tab
-    const tabValue = location.pathname;
+    // params wil include eventual parameters from the root pathname and * for the remaining part
+    // which should match the tabs paths
+    const tabValue = params['*'];
 
     return (
         <Tabs
@@ -42,9 +42,7 @@ export const TabbedShowLayoutTabs = ({
 };
 
 export const getShowLayoutTabFullPath = (tab, index) =>
-    `${
-        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
-    }`.replace('//', '/'); // Because baseUrl can be a single / when on the first tab
+    `${tab.props.path ? `${tab.props.path}` : index > 0 ? index : ''}`;
 
 export interface TabbedShowLayoutTabsProps extends TabsProps {
     children?: ReactElement<TabProps>;
