@@ -118,7 +118,7 @@ See the [Data Providers documentation](./DataProviders.md) for details.
 
 ## Architecture: Batteries Included But Removable
 
-React-admin is designed as a library of loosely coupled React components built on top of [material-ui](https://material-ui.com/), in addition to React hooks allowing to reuse the logic with a custom UI. 
+React-admin is designed as a library of loosely coupled React components built on top of [material-ui](https://v4.mui.com/), in addition to React hooks allowing to reuse the logic with a custom UI. 
 
 You may replace one part of react-admin with your own, e.g. to use a custom Datagrid, GraphQL instead of REST, or Bootstrap instead of Material Design.
 
@@ -149,6 +149,10 @@ The [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise) <img cl
 - Prioritize your needs in the react-admin **Development Roadmap** thanks to a priority vote.
 
 [![React-admin enterprise Edition](https://marmelab.com/ra-enterprise/assets/ra-enterprise-demo.png)](https://marmelab.com/ra-enterprise/)
+
+## Carbon Footprint
+
+Working towards digital sustainability is a crucial goal for the react-admin core team (and [a formal commitment](https://marmelab.com/en/values) for our sponsor, Marmelab). We monitor the carbon footprint of example react-admin apps with [GreenFrame](greenframe.io) to avoid adding features with a high ecological footprint. This also leads us to add features that reduce this footprint (like application cache or optimistic rendering). As a consequence, react-admin is not only fast but also respectful of the environment. Apps built with react-admin usually emit less carbon than apps built with other frameworks. 
 
 ## Contributing
 

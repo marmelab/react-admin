@@ -808,7 +808,7 @@ const Dashboard = () => (
 
 ### CSS API
 
-The `List` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
+The `List` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://v4.mui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
 | Rule name              | Description                                                                              |
 | ---------------------- | ---------------------------------------------------------------------------------------- |
@@ -2057,7 +2057,7 @@ Here are all the props accepted by the component:
 * [`optimized`](#performance)
 * [`empty`](#empty)
 
-Additional props are passed down to [the material-ui `<Table>` element](https://material-ui.com/api/table/).
+Additional props are passed down to [the material-ui `<Table>` element](https://v4.mui.com/api/table/).
 
 `<Datagrid>` renders as many columns as it receives `<Field>` children. It uses the field `label` as column header (or, for fields with no `label`, the field `source`).
 
@@ -2376,7 +2376,7 @@ Passing through a component to the `empty` prop will cause the Datagrid to rende
 
 ### Datagrid CSS API
 
-The `Datagrid` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
+The `Datagrid` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://v4.mui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
 | Rule name        | Description                                                   |
 | ---------------- | ------------------------------------------------------------- |
@@ -2489,7 +2489,7 @@ For this kind of use case, you need to use a [custom datagrid body component](#b
 
 <a href="./img/simple-list.gif"><img src="./img/simple-list.gif" style="height:300px" alt="The `<SimpleList>` component"></a>
 
-For mobile devices, a `<Datagrid>` is often unusable - there is simply not enough space to display several columns. The convention in that case is to use a simple list, with only one column per row. The `<SimpleList>` component serves that purpose, leveraging [material-ui's `<List>` and `<ListItem>` components](https://material-ui.com/components/lists/). `<SimpleList>` is an **iterator** component: it gets an array of ids and a data store from the `ListContext`, and iterates over the ids to display each record.
+For mobile devices, a `<Datagrid>` is often unusable - there is simply not enough space to display several columns. The convention in that case is to use a simple list, with only one column per row. The `<SimpleList>` component serves that purpose, leveraging [material-ui's `<List>` and `<ListItem>` components](https://v4.mui.com/components/lists/). `<SimpleList>` is an **iterator** component: it gets an array of ids and a data store from the `ListContext`, and iterates over the ids to display each record.
 
 ### Properties
 
@@ -3022,4 +3022,4 @@ const CustomList = () => {
 You can find components for react-admin in third-party repositories.
 
 - [ra-customizable-datagrid](https://github.com/fizix-io/ra-customizable-datagrid): plugin that allows to hide / show columns dynamically.
-- [ra-datagrid](https://github.com/marmelab/ra-datagrid): Integration of [Material-ui's `<Datagrid>`](https://material-ui.com/components/data-grid/) into react-admin.
+- [ra-datagrid](https://github.com/marmelab/ra-datagrid): Integration of [Material-ui's `<Datagrid>`](https://v4.mui.com/components/data-grid/) into react-admin.

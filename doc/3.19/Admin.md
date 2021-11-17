@@ -68,7 +68,7 @@ The `dataProvider` is also the ideal place to add custom HTTP headers, authentic
 
 ## `authProvider`
 
-The `authProvider` prop expect an object with 5 methods, each returning a Promise, to control the authentication strategy:
+The `authProvider` prop expect an object with 6 methods, each returning a Promise, to control the authentication strategy:
 
 ```jsx
 const authProvider = {
@@ -76,6 +76,7 @@ const authProvider = {
     logout: params => Promise.resolve(),
     checkAuth: params => Promise.resolve(),
     checkError: error => Promise.resolve(),
+    getIdentity: params => Promise.resolve(),
     getPermissions: params => Promise.resolve(),
 };
 
@@ -273,7 +274,7 @@ See the [Theming documentation](./Theming.md#using-a-custom-menu) for more detai
 
 ## `theme`
 
-Material UI supports [theming](https://material-ui.com/customization/themes). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom material ui theme by using the `theme` prop:
+Material UI supports [theming](https://v4.mui.com/customization/themes). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom material ui theme by using the `theme` prop:
 
 ```jsx
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -293,7 +294,7 @@ const App = () => (
 
 ![Dark theme](./img/dark-theme.png)
 
-For more details on predefined themes and custom themes, refer to the [Material UI Customization documentation](https://material-ui.com/customization/themes/).
+For more details on predefined themes and custom themes, refer to the [Material UI Customization documentation](https://v4.mui.com/customization/themes/).
 
 ## `layout`
 

@@ -109,7 +109,7 @@ You can customize the `<Create>` and `<Edit>` components using the following pro
 
 ### CSS API
 
-The `<Create>` and `<Edit>` components accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
+The `<Create>` and `<Edit>` components accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://v4.mui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
 | Rule name   | Description                                                                                |
 | ----------- | ------------------------------------------------------------------------------------------ |
@@ -118,7 +118,7 @@ The `<Create>` and `<Edit>` components accepts the usual `className` prop, but y
 | `noActions` | Applied to the main container when `actions` prop is `false`                               |
 | `card`      | Applied to the child component inside the main container (Material UI's `Card` by default) |
 
-To override the style of all instances of `<Create>` and `<Edit>` components using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaCreate` and `RaEdit` keys respectively.
+To override the style of all instances of `<Create>` and `<Edit>` components using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaCreate` and `RaEdit` keys respectively.
 
 ### Page Title
 
@@ -1705,7 +1705,7 @@ Here are the props received by the `Toolbar` component when passed as the `toolb
 
 ### CSS API
 
-The `<Toolbar>` accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
+The `<Toolbar>` accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://v4.mui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
 | Rule name        | Description                                                                     |
 | ---------------- | ------------------------------------------------------------------------------- |
@@ -1715,7 +1715,7 @@ The `<Toolbar>` accepts the usual `className` prop, but you can override many cl
 | `mobileToolbar`  | Applied to the underlying `MuiToolbar` component when `width` prop is `xs`      |
 | `spacer`         | Applied to the div below the underlying `MuiToolbar` used as spacer             |
 
-To override the style of all instances of `<Toolbar>` components using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaToolbar` key.
+To override the style of all instances of `<Toolbar>` components using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaToolbar` key.
 
 **Tip**: Use react-admin's `<Toolbar>` component instead of material-ui's `<Toolbar>` component. The former builds upon the latter and adds support for an alternative mobile layout (and is therefore responsive).
 
@@ -1926,7 +1926,7 @@ The `<SimpleForm>` and `<TabbedForm>` layouts are quite simple. In order to bett
 
 ![custom form layout](./img/custom-form-layout.png)
  
-Here is an example of such custom form, taken from the Posters Galore demo. It uses [material-ui's `<Box>` component](https://material-ui.com/components/box/), and it's a good starting point for your custom form layouts.
+Here is an example of such custom form, taken from the Posters Galore demo. It uses [material-ui's `<Box>` component](https://v4.mui.com/components/box/), and it's a good starting point for your custom form layouts.
 
 ```jsx
 import * as React from "react";

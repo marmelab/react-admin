@@ -156,7 +156,7 @@ import { BooleanField } from 'react-admin';
 | ---------- | --------------------------- |
 | `root`     | Applied to the root element |
 
-To override the style of all instances of `<BooleanField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaBooleanField` key.
+To override the style of all instances of `<BooleanField>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaBooleanField` key.
 
 #### Usage
 
@@ -183,7 +183,7 @@ import AlarmOffIcon from '@material-ui/icons/AlarmOff';
 
 ### `<ChipField>`
 
-Displays a value inside a ["Chip"](https://material-ui.com/components/chips), which is Material UI's term for a label.
+Displays a value inside a ["Chip"](https://v4.mui.com/components/chips), which is Material UI's term for a label.
 
 #### CSS API
 
@@ -191,7 +191,7 @@ Displays a value inside a ["Chip"](https://material-ui.com/components/chips), wh
 | ---------- | -------------------------------------------------------- |
 | `chip`     | Applied to the underlying Material UI's `Chip` component |
 
-To override the style of all instances of `<ChipField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaChipField` key.
+To override the style of all instances of `<ChipField>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaChipField` key.
 
 #### Usage
 
@@ -215,7 +215,7 @@ import { ChipField, SingleFieldList, ReferenceManyField } from 'react-admin';
 </ReferenceManyField>
 ```
 
-Any additional props are passed to material-ui's `<Chip>` element. Check [The material-ui `<Chip>` documentation](https://material-ui.com/api/chip/) for details.
+Any additional props are passed to material-ui's `<Chip>` element. Check [The material-ui `<Chip>` documentation](https://v4.mui.com/api/chip/) for details.
 
 ### `<DateField>`
 
@@ -328,7 +328,7 @@ This field is also often used within the [<ImageInput />](./Inputs.md#imageinput
 | `list`     | Applied to the underlying `<ul>` component when `sourceValue` prop is an array |
 | `image`    | Applied to each underlying `<img>` component                                   |
 
-To override the style of all instances of `<ImageField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaImageField` key.
+To override the style of all instances of `<ImageField>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaImageField` key.
 
 #### Usage
 
@@ -394,7 +394,7 @@ This field is also often used within an [<FileInput />](./Inputs.md#fileinput) c
 | ---------- | --------------------------- |
 | `root`     | Applied to the root element |
 
-To override the style of all instances of `<FileField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaFileField` key.
+To override the style of all instances of `<FileField>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaFileField` key.
 
 #### Usage
 
@@ -792,7 +792,7 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 | ---------- | ----------------------------- |
 | `link`     | Applied to each child element |
 
-To override the style of all instances of `<ReferenceField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaReferenceField` key.
+To override the style of all instances of `<ReferenceField>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaReferenceField` key.
 
 #### Usage
 
@@ -1088,7 +1088,7 @@ export const PostList = (props) => (
 | ---------- | -------------------------------------------------------------------------------------- |
 | `progress` | Applied to the Material UI's `LinearProgress` component while `loaded` prop is `false` |
 
-To override the style of all instances of `<ReferenceArrayField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaReferenceArrayField` key.
+To override the style of all instances of `<ReferenceArrayField>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaReferenceArrayField` key.
 
 #### Usage
 
@@ -1266,7 +1266,7 @@ The same pattern applies to show views when you don't want to display all transl
 
 ### Styling Fields
 
-All field components accept a `className` prop, allowing you to customize their style to your liking. We advise you to use the Material UI styling solution, JSS, to generate those classes. See their [documentation](https://material-ui.com/customization/css-in-js/#api) about that.
+All field components accept a `className` prop, allowing you to customize their style to your liking. We advise you to use the Material UI styling solution, JSS, to generate those classes. See their [documentation](https://v4.mui.com/customization/css-in-js/#api) about that.
 
 ```jsx
 import { makeStyles } from '@material-ui/core/styles';

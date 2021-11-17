@@ -710,10 +710,12 @@ const DashboardButton = () => {
 };
 ```
 
-The callback takes 3 arguments:
- - the page to redirect the user to ('list', 'create', 'edit', 'show', or a custom path)
- - the current `basePath`
- - the `id` of the record to redirect to (if any)
+The callback takes 5 arguments:
+ - The page to redirect the user to ('list', 'create', 'edit', 'show', a function or a custom path)
+ - The current `basePath`
+ - The `id` of the record to redirect to (if any)
+ - A record like object to be passed to the first argument, when the first argument is a function
+ - A `state` to be set to the location
 
 Here are more examples of `useRedirect` calls: 
 
@@ -724,9 +726,17 @@ redirect('list', '/posts');
 redirect('edit', '/posts', 1);
 // redirect to the post creation page:
 redirect('create', '/posts');
+// redirect to the result of a function
+redirect((redirectTo, basePath, id, data) => { 
+    return  data.hasComments ? '/comments' : '/posts';
+}, '/posts', 1, { hasComments: true });
+// redirect to edit view with state data
+redirect('edit', '/posts', 1, {}, { record: { post_id: record.id } });
+// do not redirect (resets the record form)
+redirect(false);
 ```
 
-Note that `useRedirect` doesn't allow to redirect to pages outside the current React app. For that, you should use `document.location`.
+Note that `useRedirect` allows redirection to an absolute url outside the current React app.
 
 ### `useRefresh`
 
@@ -926,7 +936,7 @@ const ApproveButton = ({ record }) => {
 };
 ```
 
-**Tip**: When using the Data Provider hooks for regular pages (List, Edit, etc), react-admin always specifies a custom action name, related to the component asking for the data. For instance, in the `<List>` page, the action is called `CRUD_GET_LIST`. So unless you call the Data Provider hooks yourself, no `CUSTOM_FETCH` action should be dispatched.
+**Tip**: When using the Data Provider hooks for regular pages (List, Edit, etc.), react-admin always specifies a custom action name, related to the component asking for the data. For instance, in the `<List>` page, the action is called `CRUD_GET_LIST`. So unless you call the Data Provider hooks yourself, no `CUSTOM_FETCH` action should be dispatched.
 
 ## Legacy Components: `<Query>`, `<Mutation>`, and `withDataProvider`
 

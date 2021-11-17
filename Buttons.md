@@ -107,7 +107,7 @@ It also supports [all the other `<Button>` props](#button).
 | -------------- | ------------------------------------------------------------------ |
 | `floating`     | Applied to the underlying `MuiFab` component used in small screens |
 
-To override the style of all instances of `<CreateButton>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaCreateButton` key.
+To override the style of all instances of `<CreateButton>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaCreateButton` key.
 
 ### `<ListButton>`
 
@@ -267,7 +267,7 @@ This button is an internal component used by react-admin in [the Filter button/f
 | ---------- | ------------------------------------------------------------- |
 | `root`     | Alternative to using `className`. Applied to the root element |
 
-To override the style of all instances of `<FilterButton>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaFilterButton` key.
+To override the style of all instances of `<FilterButton>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaFilterButton` key.
 
 ### `<SortButton>`
 
@@ -317,7 +317,7 @@ Base component for most react-admin buttons. Responsive (displays only the icon 
 | `disabled`   | Optional | `boolean`                      | `false`   | If `true`, the button will be disabled |
 | `size`       | Optional | `'large' | 'medium' | 'small'` | `'small'` | Button size                            |
 
-Other props are passed down to [the underlying material-ui `<Button>`](https://material-ui.com/api/button/).
+Other props are passed down to [the underlying material-ui `<Button>`](https://v4.mui.com/api/button/).
 
 #### CSS API
 
@@ -330,7 +330,7 @@ Other props are passed down to [the underlying material-ui `<Button>`](https://m
 | `mediumIcon`     | Applied to the Button's `children` when `size` prop is `medium` and `alignIcon` prop is 'right' |
 | `largeIcon`      | Applied to the Button's `children` when `size` prop is `large` and `alignIcon` prop is 'right'  |
 
-To override the style of all instances of `<Button>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaButton` key.
+To override the style of all instances of `<Button>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaButton` key.
 
 ### `<RefreshButton>`
 ### `<SkipNavigationButton>`
@@ -341,7 +341,7 @@ To override the style of all instances of `<Button>` using the [material-ui styl
 | --------------------- | ----------------------------------------------- |
 | `skipToContentButton` | Applied to the underlying `MuiButton` component |
 
-To override the style of all instances of `<SkipNavigationButton>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaSkipNavigationButton` key.
+To override the style of all instances of `<SkipNavigationButton>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaSkipNavigationButton` key.
 
 ### `<MenuItemLink>`
 
@@ -355,7 +355,7 @@ The `<MenuItemLink>` component displays a menu item with a label and an icon - o
 | `primaryText` | Required | `ReactNode`          | -       | The menu content, displayed when the menu isn't minimized. |
 | `leftIcon`    | Optional | `ReactNode`          | -       | The menu icon |
 
-Additional props are passed down to [the underling material-ui `<MenuItem>` component](https://material-ui.com/api/menu-item/#menuitem-api).
+Additional props are passed down to [the underling material-ui `<MenuItem>` component](https://v4.mui.com/api/menu-item/#menuitem-api).
 
 You can create a custom menu component using the `<DashboardMenuItem>` and `<MenuItemLink>` components:
 
@@ -418,7 +418,7 @@ See [The theming documentation](./Theming.md#menuitemlink) for more details.
 | `active`  | Applied to the underlying `MuiMenuItem`'s `activeClassName` prop    |
 | `icon`    | Applied to the `ListItemIcon` component when `leftIcon` prop is set |
 
-To override the style of all instances of `<MenuItemLink>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaMenuItemLink` key.
+To override the style of all instances of `<MenuItemLink>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaMenuItemLink` key.
 
 ### `<UserMenu>`
 
@@ -437,4 +437,4 @@ To override the style of all instances of `<MenuItemLink>` using the [material-u
 | `userButton` | Applied to the underlying `MuiButton` component when `useGetIdentity().loaded` is `true` and `useGetIdentity().identity.fullName` is set |
 | `avatar`     | Applied to the underlying `MuiAvatar` component when `useGetIdentity().avatar` is `true`                                                 |
 
-To override the style of all instances of `<UserMenu>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaUserMenu` key.
+To override the style of all instances of `<UserMenu>` using the [material-ui style overrides](https://v4.mui.com/customization/globals/#css), use the `RaUserMenu` key.

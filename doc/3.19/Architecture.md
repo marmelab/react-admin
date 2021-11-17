@@ -229,7 +229,7 @@ If you don't find a particular feature in the react-admin documentation, it prob
 
 ## Principle Of Least Documentation
 
-None reads docs. It's an unfortunate fact that we have learned to live with.
+No one reads docs. It's an unfortunate fact that we have learned to live with.
 
 So when we design a new feature, we try to do it in the most intuitive way for developers. We keep the API minimal (see above). We copy the API of well-known libraries. We throw errors with helpful and explicit messages. We provide TypeScript types and JSDoc to help developers discover the API from within their IDE. We publish live examples with commented code.
 
