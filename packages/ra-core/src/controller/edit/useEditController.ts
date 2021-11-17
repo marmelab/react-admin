@@ -51,7 +51,7 @@ import {
  * }
  */
 export const useEditController = <RecordType extends Record = Record>(
-    props: EditControllerProps<RecordType>
+    props: EditControllerProps<RecordType> = {}
 ): EditControllerResult<RecordType> => {
     const {
         id: propsId,

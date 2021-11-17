@@ -10,7 +10,7 @@ import { useTranslate } from '../../i18n';
 import { getStatusForArrayInput as getDataStatus } from './referenceDataStatus';
 import { useResourceContext } from '../../core';
 import { usePaginationState, useSortState } from '..';
-import { ListControllerProps } from '../useListController';
+import { ListControllerProps } from '../list';
 import { indexById, removeEmpty, useSafeSetState } from '../../util';
 import { ReferenceArrayInputContextValue } from './ReferenceArrayInputContext';
 

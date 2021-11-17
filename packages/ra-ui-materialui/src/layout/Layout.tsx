@@ -1,107 +1,52 @@
 import React, {
-    Component,
     createElement,
     useEffect,
     useRef,
     useState,
     ErrorInfo,
-    ReactElement,
+    ReactNode,
     ComponentType,
     HtmlHTMLAttributes,
 } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { ErrorBoundary } from 'react-error-boundary';
+import { useSelector } from 'react-redux';
 import classnames from 'classnames';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 import { DeprecatedThemeOptions } from '@mui/material';
-import { ComponentPropType, CoreLayoutProps } from 'ra-core';
-import compose from 'lodash/flowRight';
+import { CoreLayoutProps, ReduxState } from 'ra-core';
 
 import { AppBar as DefaultAppBar, AppBarProps } from './AppBar';
 import { Sidebar as DefaultSidebar } from './Sidebar';
 import { Menu as DefaultMenu, MenuProps } from './Menu';
 import { Notification as DefaultNotification } from './Notification';
-import { Error as DefaultError } from './Error';
+import { Error, ErrorProps } from './Error';
 import { defaultTheme } from '../defaultTheme';
 import { SkipNavigationButton } from '../button';
 
-class LayoutWithoutTheme extends Component<
-    LayoutWithoutThemeProps,
-    LayoutState
-> {
-    state: LayoutState = { hasError: false, error: null, errorInfo: null };
-
-    constructor(props) {
-        super(props);
-        /**
-         * Reset the error state upon navigation
-         *
-         * @see https://stackoverflow.com/questions/48121750/browser-navigation-broken-by-use-of-react-error-boundaries
-         */
-        props.history.listen(() => {
-            if (this.state.hasError) {
-                this.setState({ hasError: false });
-            }
-        });
-    }
-
-    componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-        this.setState({ hasError: true, error, errorInfo });
-    }
-
-    render() {
-        return <LayoutContainer {...this.props} {...this.state} />;
-    }
-
-    static propTypes = {
-        appBar: ComponentPropType,
-        children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-        classes: PropTypes.object,
-        className: PropTypes.string,
-        dashboard: ComponentPropType,
-        error: ComponentPropType,
-        history: PropTypes.object.isRequired,
-        logout: PropTypes.element,
-        menu: ComponentPropType,
-        notification: ComponentPropType,
-        open: PropTypes.bool,
-        sidebar: ComponentPropType,
-        title: PropTypes.node.isRequired,
-    };
-
-    static defaultProps = {
-        appBar: DefaultAppBar,
-        error: DefaultError,
-        menu: DefaultMenu,
-        notification: DefaultNotification,
-        sidebar: DefaultSidebar,
-    };
-}
-
-const LayoutContainer = props => {
+const LayoutWithoutTheme = (props: LayoutWithoutThemeProps) => {
     const {
-        appBar,
+        appBar = DefaultAppBar,
         children,
         className,
-        error: ErrorComponent,
         dashboard,
-        error,
-        errorInfo,
-        hasError,
+        error: errorComponent,
         logout,
-        menu,
-        notification,
-        open,
-        sidebar,
+        menu = DefaultMenu,
+        notification = DefaultNotification,
+        sidebar = DefaultSidebar,
         title,
-        // sanitize react-router props
-        match,
-        location,
-        history,
-        staticContext,
         ...rest
     } = props;
+
+    const [errorInfo, setErrorInfo] = useState<ErrorInfo>(null);
+    const open = useSelector<ReduxState, boolean>(
+        state => state.admin.ui.sidebarOpen
+    );
+
+    const handleError = (error: Error, info: ErrorInfo) => {
+        setErrorInfo(info);
+    };
 
     return (
         <>
@@ -111,11 +56,10 @@ const LayoutContainer = props => {
             >
                 <SkipNavigationButton />
                 <div className={LayoutClasses.appFrame}>
-                    {createElement(appBar, { title, open, logout })}
+                    {createElement(appBar, { logout, open, title })}
                     <main className={LayoutClasses.contentWithSidebar}>
                         {createElement(sidebar, {
                             children: createElement(menu, {
-                                logout,
                                 hasDashboard: !!dashboard,
                             }),
                         })}
@@ -123,15 +67,23 @@ const LayoutContainer = props => {
                             id="main-content"
                             className={LayoutClasses.content}
                         >
-                            {hasError ? (
-                                <ErrorComponent
-                                    error={error}
-                                    errorInfo={errorInfo}
-                                    title={title}
-                                />
-                            ) : (
-                                children
-                            )}
+                            <ErrorBoundary
+                                onError={handleError}
+                                fallbackRender={({
+                                    error,
+                                    resetErrorBoundary,
+                                }) => (
+                                    <Error
+                                        error={error}
+                                        errorComponent={errorComponent}
+                                        errorInfo={errorInfo}
+                                        resetErrorBoundary={resetErrorBoundary}
+                                        title={title}
+                                    />
+                                )}
+                            >
+                                {children}
+                            </ErrorBoundary>
                         </div>
                     </main>
                 </div>
@@ -147,14 +99,10 @@ export interface LayoutProps
     appBar?: ComponentType<AppBarProps>;
     classes?: any;
     className?: string;
-    error?: ComponentType<{
-        error?: Error;
-        errorInfo?: ErrorInfo;
-        title?: string | ReactElement<any>;
-    }>;
+    error?: ComponentType<ErrorProps>;
     menu?: ComponentType<MenuProps>;
     notification?: ComponentType;
-    sidebar?: ComponentType<{ children: JSX.Element }>;
+    sidebar?: ComponentType<{ children: ReactNode }>;
     theme?: DeprecatedThemeOptions;
 }
 
@@ -164,23 +112,9 @@ export interface LayoutState {
     errorInfo?: ErrorInfo;
 }
 
-interface LayoutWithoutThemeProps
-    extends RouteComponentProps,
-        Omit<LayoutProps, 'theme'> {
+interface LayoutWithoutThemeProps extends Omit<LayoutProps, 'theme'> {
     open?: boolean;
 }
-
-const mapStateToProps = state => ({
-    open: state.admin.ui.sidebarOpen,
-});
-
-const EnhancedLayout = compose(
-    connect(
-        mapStateToProps,
-        {} // Avoid connect passing dispatch in props
-    ),
-    withRouter
-)(LayoutWithoutTheme);
 
 export const Layout = ({
     theme: themeOverride,
@@ -198,7 +132,7 @@ export const Layout = ({
 
     return (
         <ThemeProvider theme={theme}>
-            <EnhancedLayout {...props} />
+            <LayoutWithoutTheme {...props} />
         </ThemeProvider>
     );
 };

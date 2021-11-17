@@ -1,10 +1,8 @@
 import { useCallback, MutableRefObject } from 'react';
 // @ts-ignore
 import { parse } from 'query-string';
-import { Location } from 'history';
-import { match as Match, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
-import { useCheckMinimumRequiredProps } from '../checkMinimumRequiredProps';
 import { useCreate } from '../../dataProvider';
 import {
     useNotify,
@@ -22,60 +20,11 @@ import { useTranslate } from '../../i18n';
 import useVersion from '../useVersion';
 import { CRUD_CREATE } from '../../actions';
 import { Record, OnSuccess, OnFailure } from '../../types';
-import { useResourceContext, useGetResourceLabel } from '../../core';
-
-export interface CreateProps<RecordType extends Omit<Record, 'id'> = Record> {
-    basePath?: string;
-    hasCreate?: boolean;
-    hasEdit?: boolean;
-    hasList?: boolean;
-    hasShow?: boolean;
-    location?: Location;
-    match?: Match;
-    record?: Partial<RecordType>;
-    resource?: string;
-    onSuccess?: OnSuccess;
-    onFailure?: OnFailure;
-    transform?: TransformData;
-    successMessage?: string;
-}
-
-export interface CreateControllerProps<
-    RecordType extends Omit<Record, 'id'> = Record
-> {
-    basePath?: string;
-    // Necessary for actions (EditActions) which expect a data prop containing the record
-    // @deprecated - to be removed in 4.0d
-    data?: RecordType;
-    defaultTitle: string;
-    loading: boolean;
-    loaded: boolean;
-    hasCreate?: boolean;
-    hasEdit?: boolean;
-    hasList?: boolean;
-    hasShow?: boolean;
-    onSuccessRef: MutableRefObject<OnSuccess>;
-    onFailureRef: MutableRefObject<OnFailure>;
-    transformRef: MutableRefObject<TransformData>;
-    save: (
-        record: Partial<Record>,
-        redirect: RedirectionSideEffect,
-        callbacks?: {
-            onSuccess?: OnSuccess;
-            onFailure?: OnFailure;
-            transform?: TransformData;
-        }
-    ) => void;
-    saving: boolean;
-    setOnSuccess: SetOnSuccess;
-    setOnFailure: SetOnFailure;
-    setTransform: SetTransformData;
-    successMessage?: string;
-    record?: Partial<RecordType>;
-    redirect: RedirectionSideEffect;
-    resource: string;
-    version: number;
-}
+import {
+    useResourceContext,
+    useResourceDefinition,
+    useGetResourceLabel,
+} from '../../core';
 
 /**
  * Prepare data for the Create view
@@ -97,13 +46,9 @@ export interface CreateControllerProps<
 export const useCreateController = <
     RecordType extends Omit<Record, 'id'> = Record
 >(
-    props: CreateProps
-): CreateControllerProps<RecordType> => {
-    useCheckMinimumRequiredProps('Create', ['basePath', 'resource'], props);
+    props: CreateControllerProps = {}
+): CreateControllerResult<RecordType> => {
     const {
-        basePath,
-        hasEdit,
-        hasShow,
         record = {},
         successMessage,
         onSuccess,
@@ -112,6 +57,7 @@ export const useCreateController = <
     } = props;
 
     const resource = useResourceContext(props);
+    const { hasEdit, hasShow } = useResourceDefinition(props);
     const location = useLocation();
     const translate = useTranslate();
     const notify = useNotify();
@@ -174,7 +120,7 @@ export const useCreateController = <
                                   );
                                   redirect(
                                       redirectTo,
-                                      basePath,
+                                      `/${resource}`,
                                       newRecord.id,
                                       newRecord
                                   );
@@ -213,7 +159,7 @@ export const useCreateController = <
             notify,
             successMessage,
             redirect,
-            basePath,
+            resource,
         ]
     );
 
@@ -235,12 +181,54 @@ export const useCreateController = <
         setOnFailure,
         setTransform,
         resource,
-        basePath,
         record: recordToUse,
         redirect: getDefaultRedirectRoute(hasShow, hasEdit),
         version,
     };
 };
+
+export interface CreateControllerProps<
+    RecordType extends Omit<Record, 'id'> = Record
+> {
+    record?: Partial<RecordType>;
+    resource?: string;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
+    transform?: TransformData;
+    successMessage?: string;
+}
+
+export interface CreateControllerResult<
+    RecordType extends Omit<Record, 'id'> = Record
+> {
+    // Necessary for actions (EditActions) which expect a data prop containing the record
+    // @deprecated - to be removed in 4.0d
+    data?: RecordType;
+    defaultTitle: string;
+    loading: boolean;
+    loaded: boolean;
+    onSuccessRef: MutableRefObject<OnSuccess>;
+    onFailureRef: MutableRefObject<OnFailure>;
+    transformRef: MutableRefObject<TransformData>;
+    save: (
+        record: Partial<Record>,
+        redirect: RedirectionSideEffect,
+        callbacks?: {
+            onSuccess?: OnSuccess;
+            onFailure?: OnFailure;
+            transform?: TransformData;
+        }
+    ) => void;
+    saving: boolean;
+    setOnSuccess: SetOnSuccess;
+    setOnFailure: SetOnFailure;
+    setTransform: SetTransformData;
+    successMessage?: string;
+    record?: Partial<RecordType>;
+    redirect: RedirectionSideEffect;
+    resource: string;
+    version: number;
+}
 
 export const getRecord = ({ state, search }, record: any = {}) => {
     if (state && state.record) {

@@ -449,22 +449,26 @@ export default {
 
 ### Getting User Permissions In CRUD Pages
 
-By default, react-admin calls `authProvider.getPermissions()` for each resource route, and passes the permissions to the `list`, `edit`, `create`, and `show` view components. So the `<List>`, `<Edit>`, `<Create>` and `<Show>` components all receive a `permissions` prop containing what `authProvider.getPermissions()` returned.
+If you need to check the permissions in any of the default react-admin views, you can use the `usePermissions` hook:
 
 Here is an example of a `Create` view with a conditional Input based on permissions:
 
 {% raw %}
 ```jsx
-export const UserCreate = ({ permissions, ...props }) =>
-    <Create {...props}>
-        <SimpleForm
-            defaultValue={{ role: 'user' }}
-        >
-            <TextInput source="name" validate={[required()]} />
-            {permissions === 'admin' &&
-                <TextInput source="role" validate={[required()]} />}
-        </SimpleForm>
-    </Create>;
+export const UserCreate = () => {
+    const { permissions } = usePermissions();
+    return (
+        <Create>
+            <SimpleForm
+                defaultValue={{ role: 'user' }}
+            >
+                <TextInput source="name" validate={[required()]} />
+                {permissions === 'admin' &&
+                    <TextInput source="role" validate={[required()]} />}
+            </SimpleForm>
+        </Create>;
+    )
+}
 ```
 {% endraw %}
 
@@ -1042,22 +1046,26 @@ Note that the function returns an array of React elements. This is required to a
 
 ### Restricting Access to Fields and Inputs
 
-You might want to display some fields or inputs only to users with specific permissions. By default, react-admin calls the `authProvider` for permissions for each resource routes, and passes them to the `list`, `edit`, `create`, and `show` components.
+You might want to display some fields or inputs only to users with specific permissions. You can use the `usePermissions` hook for that.
 
 Here is an example of a `Create` view with a conditional Input based on permissions:
 
 {% raw %}
 ```jsx
-export const UserCreate = ({ permissions, ...props }) =>
-    <Create {...props}>
-        <SimpleForm
-            defaultValue={{ role: 'user' }}
-        >
-            <TextInput source="name" validate={[required()]} />
-            {permissions === 'admin' &&
-                <TextInput source="role" validate={[required()]} />}
-        </SimpleForm>
-    </Create>;
+export const UserCreate = () => {
+    const { permissions } = usePermissions();
+    return (
+        <Create>
+            <SimpleForm
+                defaultValue={{ role: 'user' }}
+            >
+                <TextInput source="name" validate={[required()]} />
+                {permissions === 'admin' &&
+                    <TextInput source="role" validate={[required()]} />}
+            </SimpleForm>
+        </Create>;
+    );
+}
 ```
 {% endraw %}
 
@@ -1065,19 +1073,23 @@ This also works inside an `Edit` view with a `TabbedForm`, and you can even hide
 
 {% raw %}
 ```jsx
-export const UserEdit = ({ permissions }) =>
-    <Edit title={<UserTitle />}>
-        <TabbedForm defaultValue={{ role: 'user' }}>
-            <FormTab label="user.form.summary">
-                {permissions === 'admin' && <TextInput disabled source="id" />}
-                <TextInput source="name" validate={required()} />
-            </FormTab>
-            {permissions === 'admin' &&
-                <FormTab label="user.form.security">
-                    <TextInput source="role" validate={required()} />
-                </FormTab>}
-        </TabbedForm>
-    </Edit>;
+export const UserEdit = () => {
+    const { permissions } = usePermissions();
+    return (
+        <Edit title={<UserTitle />}>
+            <TabbedForm defaultValue={{ role: 'user' }}>
+                <FormTab label="user.form.summary">
+                    {permissions === 'admin' && <TextInput disabled source="id" />}
+                    <TextInput source="name" validate={required()} />
+                </FormTab>
+                {permissions === 'admin' &&
+                    <FormTab label="user.form.security">
+                        <TextInput source="role" validate={required()} />
+                    </FormTab>}
+            </TabbedForm>
+        </Edit>;
+    );
+};
 ```
 {% endraw %}
 
@@ -1093,16 +1105,20 @@ const getUserFilters = (permissions) => ([
     permissions === 'admin' ? <TextInput source="role" /> : null,
 ].filter(filter => filter !== null));
 
-export const UserList = ({ permissions, ...props }) =>
-    <List {...props} filters={getUserFilters(permissions)}>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="name" />
-            {permissions === 'admin' && <TextField source="role" />}
-            {permissions === 'admin' && <EditButton />}
-            <ShowButton />
-        </Datagrid>
-    </List>;
+export const UserList = () => {
+    const { permissions } = usePermissions();
+    return (
+        <List filters={getUserFilters(permissions)}>
+            <Datagrid>
+                <TextField source="id" />
+                <TextField source="name" />
+                {permissions === 'admin' && <TextField source="role" />}
+                {permissions === 'admin' && <EditButton />}
+                <ShowButton />
+            </Datagrid>
+        </List>;
+    );
+};
 ```
 
 ### Restricting Access to the Dashboard

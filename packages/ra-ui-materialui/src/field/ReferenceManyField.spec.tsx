@@ -17,9 +17,10 @@ const theme = createTheme();
 
 describe('<ReferenceManyField />', () => {
     const defaultProps = {
-        resource: 'foo',
-        reference: 'bar',
-        basePath: 'posts',
+        // resource and reference are the same because useReferenceManyFieldController
+        // set the reference as the current resource
+        resource: 'posts',
+        reference: 'posts',
         page: 1,
         perPage: 10,
         setPage: () => null,

@@ -14,8 +14,8 @@ The most usual of all field components is `<TextField>`, and it displays one fie
 import * as React from "react";
 import { List, Datagrid, TextField } from 'react-admin';
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" />
@@ -757,8 +757,8 @@ For instance, if a `post` has one author from the `users` resource, referenced b
 import * as React from "react";
 import { List, Datagrid, ReferenceField, TextField, EditButton } from 'react-admin';
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid>
             <TextField source="id" />
             <ReferenceField label="User" source="user_id" reference="users">
@@ -877,8 +877,8 @@ For instance, here is how to show the authors of the comments related to each po
 import * as React from "react";
 import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from 'react-admin';
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" type="email" />
@@ -1048,8 +1048,8 @@ For instance, if each post contains a list of tag ids (e.g. `{ id: 1234, title: 
 import * as React from "react";
 import { List, Datagrid, ChipField, ReferenceArrayField, SingleFieldList, TextField } from 'react-admin';
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" />
@@ -1233,11 +1233,11 @@ In this case, you'll have to get the current locale through the `useLocale` hook
 
 {% raw %}
 ```jsx
-const PostList = props => {
+const PostList = () => {
     const locale = useLocale();
 
     return (
-        <List {...props}>
+        <List>
             <Datagrid>
                 <TextField source={`name.${locale}`} />
                 <ReferenceArrayField
@@ -1280,8 +1280,8 @@ const PriceField = props => {
     return <TextField className={classes.price} {...props} />;
 };
 
-export const ProductList = (props) => (
-    <List {...props}>
+export const ProductList = () => (
+    <List>
         <Datagrid>
             <PriceField source="price" />
         </Datagrid>
@@ -1309,8 +1309,8 @@ const PriceField = props => {
     return <TextField cellClassName={classes.priceCell} {...props} />;
 };
 
-export const ProductList = (props) => (
-    <List {...props}>
+export const ProductList = () => (
+    <List>
         <Datagrid>
             <PriceField source="price" />
         </Datagrid>
@@ -1337,8 +1337,8 @@ const PriceField = props => {
     return <TextField headerClassName={classes.priceHeader} {...props} />;
 }
 
-export const ProductList = (props) => (
-    <List {...props}>
+export const ProductList = () => (
+    <List>
         <Datagrid>
             <PriceField source="price" />
         </Datagrid>
@@ -1431,8 +1431,8 @@ const FullNameField = (props) => {
 
 FullNameField.defaultProps = { label: 'Name' };
 
-export const UserList = (props) => (
-    <List {...props}>
+export const UserList = () => (
+    <List>
         <Datagrid>
             <FullNameField source="lastName" />
         </Datagrid>

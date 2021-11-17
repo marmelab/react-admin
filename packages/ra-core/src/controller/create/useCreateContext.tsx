@@ -3,7 +3,7 @@ import defaults from 'lodash/defaults';
 
 import { Record } from '../../types';
 import { CreateContext } from './CreateContext';
-import { CreateControllerProps } from './useCreateController';
+import { CreateControllerResult } from './useCreateController';
 
 /**
  * Hook to read the create controller props from the CreateContext.
@@ -17,7 +17,7 @@ import { CreateControllerProps } from './useCreateController';
  *
  * @typedef {Object} CreateControllerProps
  *
- * @returns {CreateControllerProps} create controller props
+ * @returns {CreateControllerResult} create controller props
  *
  * @see useCreateController for how it is filled
  *
@@ -25,9 +25,9 @@ import { CreateControllerProps } from './useCreateController';
 export const useCreateContext = <
     RecordType extends Omit<Record, 'id'> = Omit<Record, 'id'>
 >(
-    props?: Partial<CreateControllerProps<RecordType>>
-): Partial<CreateControllerProps<RecordType>> => {
-    const context = useContext<CreateControllerProps<RecordType>>(
+    props?: Partial<CreateControllerResult<RecordType>>
+): Partial<CreateControllerResult<RecordType>> => {
+    const context = useContext<CreateControllerResult<RecordType>>(
         // Can't find a way to specify the RecordType when CreateContext is declared
         // @ts-ignore
         CreateContext
@@ -49,10 +49,9 @@ export const useCreateContext = <
  *
  * @param {Object} props props passed to the useCreateContext hook
  *
- * @returns {CreateControllerProps} create controller props
+ * @returns {CreateControllerResult} create controller props
  */
 const extractCreateContextProps = ({
-    basePath,
     record,
     defaultTitle,
     onFailureRef,
@@ -70,7 +69,6 @@ const extractCreateContextProps = ({
     successMessage,
     version,
 }: any) => ({
-    basePath,
     record,
     defaultTitle,
     onFailureRef,

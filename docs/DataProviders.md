@@ -793,9 +793,9 @@ import {
 } from 'react-admin';
 +import { RealTimeList } from '@react-admin/ra-realtime';
 
-const PostList = props => (
--   <List {...props}>
-+   <RealTimeList {...props}>
+const PostList = () => (
+-   <List>
++   <RealTimeList>
         <Datagrid>
             <TextField source="title" />
             <NumberField source="views" />

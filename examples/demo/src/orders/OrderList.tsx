@@ -11,7 +11,6 @@ import {
     Identifier,
     List,
     ListContextProvider,
-    ListProps,
     NullableBooleanInput,
     NumberField,
     ReferenceInput,
@@ -267,9 +266,8 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
     );
 };
 
-const OrderList = (props: ListProps) => (
+const OrderList = () => (
     <List
-        {...props}
         filterDefaultValues={{ status: 'ordered' }}
         sort={{ field: 'date', order: 'DESC' }}
         perPage={25}

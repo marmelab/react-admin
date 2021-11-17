@@ -11,6 +11,7 @@ import {
     SimpleList,
     TextField,
     TextInput,
+    usePermissions,
 } from 'react-admin';
 
 import Aside from './Aside';
@@ -34,34 +35,36 @@ const rowClick = memoize(permissions => (id, basePath, record) => {
         : Promise.resolve('show');
 });
 
-const UserList = ({ permissions, ...props }) => (
-    <List
-        {...props}
-        filters={getUserFilters(permissions)}
-        filterDefaultValues={{ role: 'user' }}
-        sort={{ field: 'name', order: 'ASC' }}
-        aside={<Aside />}
-        bulkActionButtons={<UserBulkActionButtons />}
-    >
-        {useMediaQuery((theme: Theme) => theme.breakpoints.down('md')) ? (
-            <SimpleList
-                primaryText={record => record.name}
-                secondaryText={record =>
-                    permissions === 'admin' ? record.role : null
-                }
-            />
-        ) : (
-            <Datagrid
-                rowClick={rowClick(permissions)}
-                expand={<UserEditEmbedded />}
-                optimized
-            >
-                <TextField source="id" />
-                <TextField source="name" />
-                {permissions === 'admin' && <TextField source="role" />}
-            </Datagrid>
-        )}
-    </List>
-);
+const UserList = () => {
+    const { permissions } = usePermissions();
+    return (
+        <List
+            filters={getUserFilters(permissions)}
+            filterDefaultValues={{ role: 'user' }}
+            sort={{ field: 'name', order: 'ASC' }}
+            aside={<Aside />}
+            bulkActionButtons={<UserBulkActionButtons />}
+        >
+            {useMediaQuery((theme: Theme) => theme.breakpoints.down('md')) ? (
+                <SimpleList
+                    primaryText={record => record.name}
+                    secondaryText={record =>
+                        permissions === 'admin' ? record.role : null
+                    }
+                />
+            ) : (
+                <Datagrid
+                    rowClick={rowClick(permissions)}
+                    expand={<UserEditEmbedded />}
+                    optimized
+                >
+                    <TextField source="id" />
+                    <TextField source="name" />
+                    {permissions === 'admin' && <TextField source="role" />}
+                </Datagrid>
+            )}
+        </List>
+    );
+};
 
 export default UserList;

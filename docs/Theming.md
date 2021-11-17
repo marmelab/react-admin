@@ -32,8 +32,8 @@ const MyEditButton = props => {
     return <EditButton className={classes.button} {...props} />;
 };
 
-export const ProductList = (props) => (
-    <List {...props}>
+export const ProductList = () => (
+    <List>
         <Datagrid>
             <TextField source="sku" />
             <TextField source="price" />
@@ -76,11 +76,11 @@ const useStyles = makeStyles({
     },
 });
 
-export const PostList = props => {
+export const PostList = () => {
     const classes = useStyles();
     return (
-        <List {...props}>
-            <Datagrid classes={classes} {...props}>
+        <List>
+            <Datagrid classes={classes}>
                 <TextField source="id" />
                 <TextField source="title" />
                 <DateField source="published_at" sortByOrder="DESC"/>
@@ -135,8 +135,8 @@ const ColoredNumberField = props => {
 // Ensure the original component defaultProps are still applied as they may be used by its parents (such as the `Show` component):
 ColoredNumberField.defaultProps = NumberField.defaultProps;
 
-export const PostList = props => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid>
             <TextField source="id" />
             ...
@@ -180,8 +180,8 @@ const ColoredNumberField = colored(NumberField);
 // Ensure the original component defaultProps are still applied as they may be used by its parents (such as the `Show` component):
 ColoredNumberField.defaultProps = NumberField.defaultProps;
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid>
             <TextField source="id" />
             ...
@@ -221,10 +221,10 @@ import * as React from 'react';
 import { useMediaQuery } from '@material-ui/core';
 import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
-export const PostList = (props) => {
+export const PostList = () => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
     return (
-        <List {...props}>
+        <List>
             {isSmall ? (
                 <SimpleList
                     primaryText={record => record.title}
@@ -1035,12 +1035,23 @@ import Button from '@material-ui/core/Button';
 import ErrorIcon from '@material-ui/icons/Report';
 import History from '@material-ui/icons/History';
 import { Title, useTranslate } from 'react-admin';
+import { useLocation } from 'react-router';
 
 const MyError = ({
     error,
-    errorInfo,
+    resetErrorBoundary,
     ...rest
 }) => {
+    const { pathname } = useLocation();
+    const originalPathname = useRef(pathname);
+
+    // Effect that resets the error state whenever the location changes
+    useEffect(() => {
+        if (pathname !== originalPathname.current) {
+            resetErrorBoundary();
+        }
+    }, [pathname, resetErrorBoundary]);
+
     const translate = useTranslate();
     return (
         <div>

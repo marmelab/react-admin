@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
     ShowBase,
-    ShowProps,
     TextField,
     ReferenceField,
     ReferenceManyField,
@@ -15,8 +14,8 @@ import { LogoField } from '../companies/LogoField';
 import { NotesIterator } from '../notes';
 import { Contact } from '../types';
 
-export const ContactShow = (props: ShowProps) => (
-    <ShowBase {...props}>
+export const ContactShow = () => (
+    <ShowBase>
         <ContactShowContent />
     </ShowBase>
 );

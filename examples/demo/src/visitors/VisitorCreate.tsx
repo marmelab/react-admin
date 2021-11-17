@@ -2,7 +2,6 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import {
     Create,
-    CreateProps,
     DateInput,
     SimpleForm,
     TextInput,
@@ -65,8 +64,8 @@ export const validatePasswords = ({
     return errors;
 };
 
-const VisitorCreate = (props: CreateProps) => (
-    <Create {...props}>
+const VisitorCreate = () => (
+    <Create>
         <StyledSimpleForm validate={validatePasswords}>
             <SectionTitle label="resources.customers.fieldGroups.identity" />
             <TextInput

@@ -1,18 +1,18 @@
 import { useCallback, useEffect, useRef } from 'react';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
-import { indexById, removeEmpty, useSafeSetState } from '../util';
+import { indexById, removeEmpty, useSafeSetState } from '../../util';
 import {
     FilterPayload,
     Identifier,
     Record,
     RecordMap,
     SortPayload,
-} from '../types';
-import usePaginationState from './usePaginationState';
-import useSortState from './useSortState';
-import useSelectionState from './useSelectionState';
-import { ListControllerProps } from '.';
+} from '../../types';
+import usePaginationState from '../usePaginationState';
+import useSortState from '../useSortState';
+import useSelectionState from '../useSelectionState';
+import { ListControllerProps } from './useListController';
 
 /**
  * Handle filtering, sorting and pagination on local data.

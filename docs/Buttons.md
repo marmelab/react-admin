@@ -176,8 +176,8 @@ const PostListActions = ({ basePath }) => (
     </TopToolbar>
 );
 
-export const PostList = (props) => (
-    <List actions={<PostListActions />} {...props}>
+export const PostList = () => (
+    <List actions={<PostListActions />}>
         ...
     </List>
 );
@@ -208,8 +208,8 @@ const PostBulkActionButtons = ({ basePath }) => (
     </Fragment>
 );
 
-export const PostList = (props) => (
-    <List {...props} bulkActionButtons={<PostBulkActionButtons />}>
+export const PostList = () => (
+    <List bulkActionButtons={<PostBulkActionButtons />}>
         ...
     </List>
 );
@@ -239,8 +239,8 @@ const PostBulkActionButtons = ({ basePath }) => (
     </Fragment>
 );
 
-export const PostList = (props) => (
-    <List {...props} bulkActionButtons={<PostBulkActionButtons />}>
+export const PostList = () => (
+    <List bulkActionButtons={<PostBulkActionButtons />}>
         ...
     </List>
 );

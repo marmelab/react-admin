@@ -203,7 +203,7 @@ CommentGrid.defaultProps = {
     ids: [],
 };
 
-const CommentMobileList = props => (
+const CommentMobileList = () => (
     <SimpleList
         primaryText={record => record.author.name}
         secondaryText={record => record.body}
@@ -214,8 +214,8 @@ const CommentMobileList = props => (
     />
 );
 
-const CommentList = props => (
-    <ListBase perPage={6} exporter={exporter} {...props}>
+const CommentList = () => (
+    <ListBase perPage={6} exporter={exporter}>
         <ListView />
     </ListBase>
 );

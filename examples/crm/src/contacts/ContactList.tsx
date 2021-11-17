@@ -3,7 +3,6 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import {
     List as RaList,
-    ListProps,
     SimpleListLoading,
     ReferenceField,
     TextField,
@@ -131,11 +130,10 @@ const ContactListActions = () => (
     </StyledTopToolbar>
 );
 
-export const ContactList = (props: ListProps) => {
+export const ContactList = () => {
     const { identity } = useGetIdentity();
     return identity ? (
         <RaList
-            {...props}
             actions={<ContactListActions />}
             aside={<ContactListFilter />}
             perPage={25}

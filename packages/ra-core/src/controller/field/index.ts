@@ -10,7 +10,7 @@ import ReferenceManyFieldController, {
 import getResourceLinkPath, { LinkToType } from './getResourceLinkPath';
 import useReferenceArrayFieldController from './useReferenceArrayFieldController';
 import useReferenceManyFieldController from './useReferenceManyFieldController';
-import { ListControllerProps } from '../useListController';
+import { ListControllerProps } from '../list';
 
 // kept for backwards compatibility
 // deprecated to be removed in 4.0

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import ListSortContext, { ListSortContextValue } from './ListSortContext';
+import { ListSortContext, ListSortContextValue } from './ListSortContext';
 
 /**
  * Hook to read the list controller props from the ListContext.
@@ -17,7 +17,7 @@ import ListSortContext, { ListSortContextValue } from './ListSortContext';
  *
  * @see useListController for how it is filled
  */
-const useListSortContext = (props?: any): ListSortContextValue => {
+export const useListSortContext = (props?: any): ListSortContextValue => {
     const context = useContext(ListSortContext);
     if (!context.setSort) {
         /**
@@ -39,5 +39,3 @@ const useListSortContext = (props?: any): ListSortContextValue => {
     }
     return context;
 };
-
-export default useListSortContext;

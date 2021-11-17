@@ -16,13 +16,14 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import {
+    Identifier,
     linkToRecord,
+    Record,
+    RecordContextProvider,
+    RecordMap,
     sanitizeListRestProps,
     useListContext,
-    Record,
-    RecordMap,
-    Identifier,
-    RecordContextProvider,
+    useResourceContext,
 } from 'ra-core';
 
 import { SimpleListLoading } from './SimpleListLoading';
@@ -78,9 +79,8 @@ export const SimpleList = <RecordType extends Record = Record>(
         rowStyle,
         ...rest
     } = props;
-    const { basePath, data, ids, loaded, total } = useListContext<RecordType>(
-        props
-    );
+    const { data, ids, loaded, total } = useListContext<RecordType>(props);
+    const resource = useResourceContext(props);
 
     if (loaded === false) {
         return (
@@ -116,7 +116,7 @@ export const SimpleList = <RecordType extends Record = Record>(
                     <ListItem>
                         <LinkOrNot
                             linkType={linkType}
-                            basePath={basePath}
+                            resource={resource}
                             id={id}
                             record={data[id]}
                             style={
@@ -221,7 +221,7 @@ export interface SimpleListProps<RecordType extends Record = Record>
     tertiaryText?: FunctionToElement<RecordType> | ReactElement;
     rowStyle?: (record: Record, index: number) => any;
     // can be injected when using the component without context
-    basePath?: string;
+    resource?: string;
     data?: RecordMap<RecordType>;
     ids?: Identifier[];
     loaded?: boolean;
@@ -234,7 +234,7 @@ const LinkOrNot = (
     const {
         classes: classesOverride,
         linkType,
-        basePath,
+        resource,
         id,
         children,
         record,
@@ -247,7 +247,7 @@ const LinkOrNot = (
         // @ts-ignore
         <ListItemButton
             component={Link}
-            to={linkToRecord(basePath, id)}
+            to={linkToRecord(`/${resource}`, id)}
             {...rest}
         >
             {children}
@@ -256,7 +256,7 @@ const LinkOrNot = (
         // @ts-ignore
         <ListItemButton
             component={Link}
-            to={`${linkToRecord(basePath, id)}/show`}
+            to={`${linkToRecord(`/${resource}`, id)}/show`}
             {...rest}
         >
             {children}
@@ -281,7 +281,7 @@ export type FunctionLinkType = (record: Record, id: Identifier) => string;
 
 export interface LinkOrNotProps {
     linkType?: string | FunctionLinkType | boolean;
-    basePath: string;
+    resource: string;
     id: Identifier;
     record: Record;
     children: ReactNode;

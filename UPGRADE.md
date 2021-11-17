@@ -74,6 +74,21 @@ If you need to access a route parameter, use react-router's `useParams` hook ins
 };
 ```
 
+We used to inject a `syncWithLocation` prop set to `true` to the `<List>` components used in a `<Resource>`. This instructed the `<List>` to synchronize its parameters (such as pagination, sorting and filters) with the browser location.
+
+As we removed the props injection, we enabled this synchronization by default for all `<List>`, used in a `<Resource>` or not. As a consequence, we also inverted this prop and renamed it `disableSyncWithLocation`. This doesn't change anything if you only used `<List>` components inside `<Resource list>`. 
+
+However, if you had multiple `<List>` components inside used a single page, or if you used `<List>` outside of a `<Resource>`, you now have to explicitly opt out the synchronization of the list parameters with the browser location:
+
+```dif
+const MyList = () => (
+-    <List>
++    <List disableSyncWithLocation>
+        // ...
+    </List>
+)
+```
+
 ## `<Card>` Is Now Rendered By Inner Components
 
 The page components (`<List>`, `<Show>`, etc.) used to render a `<Card>` around their child. It's now the responsibility of the child to render the `<Card>` itself. If you only use react-admin components, you don't need to change anything. But if you use custom layout components, you need to wrap them inside a `<Card>`.

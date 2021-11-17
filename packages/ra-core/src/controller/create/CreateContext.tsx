@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { CreateControllerProps } from './useCreateController';
+import { CreateControllerResult } from './useCreateController';
 
 /**
  * Context to store the result of the useCreateController() hook.
@@ -19,8 +19,7 @@ import { CreateControllerProps } from './useCreateController';
  *     );
  * };
  */
-export const CreateContext = createContext<CreateControllerProps>({
-    basePath: null,
+export const CreateContext = createContext<CreateControllerResult>({
     record: null,
     defaultTitle: null,
     onFailureRef: null,

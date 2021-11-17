@@ -41,7 +41,7 @@ const StyledList = styled(List)({
 });
 
 const ReviewListMobile = () => {
-    const { basePath, data, ids, loaded, total } = useListContext<Review>();
+    const { data, ids, loaded, total } = useListContext<Review>();
 
     return loaded || Number(total) > 0 ? (
         <StyledList className={classes.root}>
@@ -51,7 +51,7 @@ const ReviewListMobile = () => {
 
                 return (
                     <Link
-                        to={linkToRecord(basePath, id)}
+                        to={linkToRecord('/reviews', id)}
                         className={classes.link}
                         key={id}
                     >
@@ -61,7 +61,7 @@ const ReviewListMobile = () => {
                                     record={item}
                                     source="customer_id"
                                     reference="customers"
-                                    basePath={basePath}
+                                    basePath="/customers"
                                     link={false}
                                 >
                                     <AvatarField size="40" />
@@ -74,7 +74,7 @@ const ReviewListMobile = () => {
                                             record={item}
                                             source="customer_id"
                                             reference="customers"
-                                            basePath={basePath}
+                                            basePath="/customers"
                                             link={false}
                                         >
                                             <FunctionField
@@ -98,7 +98,7 @@ const ReviewListMobile = () => {
                                             record={item}
                                             source="product_id"
                                             reference="products"
-                                            basePath={basePath}
+                                            basePath="/products"
                                             link={false}
                                         >
                                             <TextField

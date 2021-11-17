@@ -5,7 +5,6 @@ import {
     ExportButton,
     FilterButton,
     List,
-    ListProps,
     SearchInput,
     SelectInput,
     TopToolbar,
@@ -31,12 +30,11 @@ const StyledTopToolbar = styled(TopToolbar)(({ theme }) => ({
     },
 }));
 
-export const DealList = (props: ListProps) => {
+export const DealList = () => {
     const { identity } = useGetIdentity();
     return identity ? (
         <>
             <List
-                {...props}
                 perPage={100}
                 sort={{ field: 'index', order: 'ASC' }}
                 filters={dealFilters}
@@ -51,11 +49,7 @@ export const DealList = (props: ListProps) => {
                 {({ match }) => <DealCreate open={!!match} />}
             </Route>
             <Route path="/deals/:id/show">
-                {({ match }) =>
-                    !!match ? (
-                        <DealShow open={!!match} id={match?.params?.id} />
-                    ) : null
-                }
+                {({ match }) => (!!match ? <DealShow open={!!match} /> : null)}
             </Route>
         </>
     ) : null;

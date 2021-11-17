@@ -63,7 +63,7 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
         component = Root,
         ...rest
     } = props;
-    const { ids, data, loaded, basePath } = useListContext(props);
+    const { ids, data, loaded } = useListContext(props);
     const resource = useResourceContext(props);
 
     const Component = component;
@@ -80,7 +80,7 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
             {ids.map(id => {
                 const resourceLinkPath = !linkType
                     ? false
-                    : linkToRecord(basePath, id, linkType);
+                    : linkToRecord(`/${resource}`, id, linkType);
 
                 if (resourceLinkPath) {
                     return (
@@ -94,7 +94,6 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
                                 {cloneElement(Children.only(children), {
                                     record: data[id],
                                     resource,
-                                    basePath,
                                     // Workaround to force ChipField to be clickable
                                     onClick: handleClick,
                                 })}
@@ -109,7 +108,6 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
                             key: id,
                             record: data[id],
                             resource,
-                            basePath,
                         })}
                     </RecordContextProvider>
                 );

@@ -6,7 +6,6 @@ import {
     DateField,
     DateInput,
     List,
-    ListProps,
     NullableBooleanInput,
     NumberField,
     SearchInput,
@@ -19,7 +18,6 @@ import CustomerLinkField from './CustomerLinkField';
 import ColoredNumberField from './ColoredNumberField';
 import MobileGrid from './MobileGrid';
 import VisitorListAside from './VisitorListAside';
-import { ReactElement } from 'react';
 
 const PREFIX = 'VisitorList';
 
@@ -47,14 +45,13 @@ const visitorFilters = [
     <SegmentInput />,
 ];
 
-const VisitorList = (props: ListProps): ReactElement => {
+const VisitorList = () => {
     const isXsmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('sm')
     );
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     return (
         <StyledList
-            {...props}
             filters={isSmall ? visitorFilters : undefined}
             sort={{ field: 'last_seen', order: 'DESC' }}
             perPage={25}

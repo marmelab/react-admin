@@ -5,16 +5,16 @@ import lolex from 'lolex';
 // TODO: we shouldn't import mui components in ra-core
 import { TextField } from '@mui/material';
 
-import { DataProviderContext } from '../dataProvider';
-import ListController from './ListController';
+import { DataProviderContext } from '../../dataProvider';
+import { ListController } from './ListController';
 import {
     getListControllerProps,
     sanitizeListRestProps,
 } from './useListController';
 
 import { renderWithRedux } from 'ra-test';
-import { CRUD_CHANGE_LIST_PARAMS } from '../actions';
-import { SORT_ASC } from '../reducer/admin/resource/list/queryReducer';
+import { CRUD_CHANGE_LIST_PARAMS } from '../../actions';
+import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
 
 describe('useListController', () => {
     const defaultProps = {

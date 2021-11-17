@@ -24,7 +24,7 @@ export interface ListProps extends ResourceComponentProps {
     empty?: ReactElement | false;
     exporter?: Exporter | false;
     filter?: FilterPayload;
-    filterDefaultValues?: any;
+    filterDefaultValues?: object;
     filters?: ReactElement | ReactElement[];
     pagination?: ReactElement | false;
     perPage?: number;

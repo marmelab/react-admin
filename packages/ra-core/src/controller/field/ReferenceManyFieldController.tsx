@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 
 import { Record, SortPayload } from '../../types';
 import useReferenceManyFieldController from './useReferenceManyFieldController';
-import { ListControllerProps } from '../useListController';
+import { ListControllerProps } from '../list';
 
 export interface ReferenceManyFieldControllerProps {
     basePath: string;

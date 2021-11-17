@@ -105,11 +105,10 @@ const PostPanel = ({ id, record, resource }) => (
     <div dangerouslySetInnerHTML={{ __html: record.body }} />
 );
 
-const PostList = props => {
+const PostList = () => {
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     return (
         <List
-            {...props}
             bulkActionButtons={<PostListBulkActions />}
             filters={postFilter}
             sort={{ field: 'published_at', order: 'DESC' }}
