@@ -23,16 +23,16 @@ import { useShowController, RecordContextProvider, SimpleShowLayout } from 'reac
 const PostShow = () => {
     const {
         defaultTitle, // the translated title based on the resource, e.g. 'Post #123'
-        error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onFailure` side effect.
-        loaded, // boolean that is false until the record is available
-        loading, // boolean that is true on mount, and false once the record was fetched
+        error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onError` side effect.
+        isFetching, // boolean that is true on mount, and false once the record was fetched
+        isLoading, // boolean that is false until the record is available
         record, // record fetched via dataProvider.getOne() based on the id from the location
         refetch, // callback to refetch the record via dataProvider.getOne()
         resource, // the resource name, deduced from the location. e.g. 'posts'
         version, // integer used by the refresh feature
     } = useShowController();
 
-    if (loading) {
+    if (isLoading) {
         return <div>Loading...</div>;
     }
     if (error) {
@@ -52,15 +52,19 @@ const PostShow = () => {
 
 This custom Show view has no action buttons - it's up to you to add them in pure React.
 
-Here are all the props accepted by the `useShowcontroller` hook:
+## Parameters
 
-* [`onFailure`](#failure-side-effects)
+`useShowcontroller` expects one parameters argument. It's an object with the following attributes: 
 
-## Failure Side Effects
+* [`queryOption`](#client-query-options): options to pass to the react-query client
 
-By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and refreshes the page.
+## Client Query Options
 
-You can override this behavior and pass custom side effects by providing a function as the `onFailure` prop:
+`useShowcontroller` accepts a `queryOptions` prop to pass options to the react-query client. 
+
+This can be useful e.g. to override the default error side effect. By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and refreshes the page.
+
+You can override this behavior and pass custom side effects by providing a custom `queryOptions` prop:
 
 ```jsx
 import * as React from 'react';
@@ -71,7 +75,7 @@ const PostShow = props => {
     const refresh = useRefresh();
     const redirect = useRedirect();
 
-    const onFailure = (error) => {
+    const onError = (error) => {
         notify(`Could not load post: ${error.message}`, { type: 'warning' });
         redirect('/posts');
         refresh();
@@ -80,11 +84,11 @@ const PostShow = props => {
     const {
         defaultTitle,
         error,
-        loading,
+        isLoading,
         record,
-    } = useShowController({ onFailure });
+    } = useShowController({ queryOptions: { onError } });
 
-    if (loading) {
+    if (isLoading) {
         return <div>Loading...</div>;
     }
     if (error) {
@@ -102,9 +106,9 @@ const PostShow = props => {
 }
 ```
 
-The `onFailure` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
+The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
 
-The default `onFailure` function is:
+The default `onError` function is:
 
 ```jsx
 (error) => {

@@ -9,6 +9,8 @@ import { TestContext, renderWithRedux } from 'ra-test';
 import { createMemoryHistory } from 'history';
 import { Route } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
+import { QueryClientProvider, QueryClient } from 'react-query';
+
 import { Default, Actions, Basic, Component } from './Show.stories';
 
 import { Show } from './Show';
@@ -45,13 +47,15 @@ describe('<Show />', () => {
                 }}
             >
                 <Route path="/books/:id/show">
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <ResourceContextProvider value="books">
-                            <Show>
-                                <BookName />
-                            </Show>
-                        </ResourceContextProvider>
-                    </DataProviderContext.Provider>
+                    <QueryClientProvider client={new QueryClient()}>
+                        <DataProviderContext.Provider value={dataProvider}>
+                            <ResourceContextProvider value="books">
+                                <Show>
+                                    <BookName />
+                                </Show>
+                            </ResourceContextProvider>
+                        </DataProviderContext.Provider>
+                    </QueryClientProvider>
                 </Route>
             </TestContext>
         );
@@ -75,13 +79,13 @@ describe('<Show />', () => {
             return record ? <span>{record.name}</span> : null;
         };
         renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <Show id="123" resource="books">
-                    <BookName />
-                </Show>
-            </DataProviderContext.Provider>,
-            // FIXME resource must be initialized
-            { admin: { resources: { books: { props: {}, data: {} } } } }
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <Show id="123" resource="books">
+                        <BookName />
+                    </Show>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>
         );
         expect(screen.queryByText('War and Peace')).toBeNull(); // while loading
         await waitFor(() => {
@@ -89,23 +93,23 @@ describe('<Show />', () => {
         });
     });
 
-    it('should accept onFailure prop and call it on failure', async () => {
+    it('should accept queryOptions prop', async () => {
         jest.spyOn(console, 'error').mockImplementationOnce(() => {});
-        const onFailure = jest.fn();
+        const onError = jest.fn();
         const dataProvider = {
             getOne: () => Promise.reject('error'),
         } as any;
         const BookName = () => <span>foo</span>;
         renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <Show id="123" resource="books" onFailure={onFailure}>
-                    <BookName />
-                </Show>
-            </DataProviderContext.Provider>,
-            // FIXME resource must be initialized
-            { admin: { resources: { books: { props: {}, data: {} } } } }
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <Show id="123" resource="books" queryOptions={{ onError }}>
+                        <BookName />
+                    </Show>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>
         );
-        await waitFor(() => expect(onFailure).toHaveBeenCalled());
+        await waitFor(() => expect(onError).toHaveBeenCalled());
     });
 
     it('should display an edit button by default when there is an Edit view', () => {

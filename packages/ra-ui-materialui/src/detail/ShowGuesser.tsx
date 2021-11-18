@@ -51,8 +51,8 @@ ${inferredChild.getRepresentation()}
 
 ShowViewGuesser.propTypes = ShowView.propTypes;
 
-export const ShowGuesser = ({ id, onFailure, ...rest }: ShowProps) => (
-    <ShowBase id={id} onFailure={onFailure}>
+export const ShowGuesser = ({ id, queryOptions, ...rest }: ShowProps) => (
+    <ShowBase id={id} queryOptions={queryOptions}>
         <ShowViewGuesser {...rest} />
     </ShowBase>
 );

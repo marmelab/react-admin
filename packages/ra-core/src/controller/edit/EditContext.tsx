@@ -22,8 +22,8 @@ import { EditControllerResult } from './useEditController';
 export const EditContext = createContext<EditControllerResult>({
     record: null,
     defaultTitle: null,
-    loaded: null,
-    loading: null,
+    isFetching: null,
+    isLoading: null,
     onFailureRef: null,
     onSuccessRef: null,
     transformRef: null,

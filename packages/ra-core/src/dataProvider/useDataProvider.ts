@@ -1,18 +1,13 @@
 import { useContext, useMemo } from 'react';
 import { Dispatch } from 'redux';
-import { useDispatch, useSelector, useStore } from 'react-redux';
+import { useDispatch, useStore } from 'react-redux';
 
 import DataProviderContext from './DataProviderContext';
 import defaultDataProvider from './defaultDataProvider';
 import { ReduxState, DataProvider, DataProviderProxy } from '../types';
 import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
 import { getDataProviderCallArguments } from './getDataProviderCallArguments';
-import {
-    doQuery,
-    stackCall,
-    stackOptimisticCall,
-    getRemainingStackedCalls,
-} from './performQuery';
+import { doQuery } from './performQuery';
 
 /**
  * Hook for getting a dataProvider
@@ -113,10 +108,6 @@ const useDataProvider = <
     const dataProvider = ((useContext(DataProviderContext) ||
         defaultDataProvider) as unknown) as TDataProvider;
 
-    // optimistic mode can be triggered by a previous optimistic or undoable query
-    const isOptimistic = useSelector(
-        (state: ReduxState) => state.admin.ui.optimistic
-    );
     const store = useStore<ReduxState>();
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
 
@@ -188,52 +179,13 @@ const useDataProvider = <
                         logoutIfAccessDenied,
                         allArguments,
                     };
-                    if (isOptimistic) {
-                        // When in optimistic mode, fetch calls aren't executed
-                        // right away. Instead, they are are stacked, to be
-                        // executed once the dataProvider leaves optimistic mode.
-                        // In the meantime, the admin uses data from the store.
-                        if (
-                            mutationMode === 'undoable' ||
-                            mutationMode === 'optimistic'
-                        ) {
-                            // optimistic and undoable calls are added to a
-                            // specific stack, as they must be replayed first
-                            stackOptimisticCall(params);
-                        } else {
-                            // pessimistic calls are added to the regular stack
-                            // and will be replayed last
-                            stackCall(params);
-                        }
-                        // Return a Promise that only resolves when the optimistic call was made
-                        // otherwise hooks like useQueryWithStore will return loaded = true
-                        // before the content actually reaches the Redux store.
-                        // But as we can't determine when this particular query was finished,
-                        // the Promise resolves only when *all* optimistic queries are done.
-                        return waitFor(() => getRemainingStackedCalls() === 0);
-                    } else {
-                        return doQuery(params);
-                    }
+                    return doQuery(params);
                 };
             },
         });
-    }, [dataProvider, dispatch, isOptimistic, logoutIfAccessDenied, store]);
+    }, [dataProvider, dispatch, logoutIfAccessDenied, store]);
 
     return (dataProviderProxy as unknown) as TDataProviderProxy;
 };
-
-// get a Promise that resolves after a delay in milliseconds
-const later = (delay = 100): Promise<void> =>
-    new Promise(function (resolve) {
-        setTimeout(resolve, delay);
-    });
-
-// get a Promise that resolves once a condition is satisfied
-const waitFor = (condition: () => boolean): Promise<void> =>
-    new Promise(resolve =>
-        condition()
-            ? resolve()
-            : later().then(() => waitFor(condition).then(() => resolve()))
-    );
 
 export default useDataProvider;

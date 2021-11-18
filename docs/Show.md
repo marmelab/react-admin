@@ -60,7 +60,7 @@ That's enough to display the post show view:
 * [`children`](#layout): the components that render the record fields
 * [`component`](#root-component): overrides the root component
 * [`emptyWhileLoading`](#loading-state)
-* [`onFailure`](#failure-side-effects)
+* [`queryOptions`](#query-client-options): options to pass to the react-query client
 * [`sx`](#css-api): Override the styles
 * [`title`](#page-title)
 
@@ -150,11 +150,13 @@ export const PostShow = () => (
 );
 ```
 
-## Failure Side Effects
+## Client Query Options
 
-By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and refreshes the page.
+`<Show>` accepts a `queryOptions` prop to pass options to the react-query client. 
 
-You can override this behavior and pass custom side effects by providing a function as `onFailure` prop:
+This can be useful e.g. to override the default error side effect. By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and refreshes the page.
+
+You can override this behavior and pass custom side effects by providing a custom `queryOptions` prop:
 
 ```jsx
 import * as React from 'react';
@@ -165,14 +167,14 @@ const PostShow = props => {
     const refresh = useRefresh();
     const redirect = useRedirect();
 
-    const onFailure = (error) => {
+    const onError = (error) => {
         notify(`Could not load post: ${error.message}`, { type: 'warning' });
         redirect('/posts');
         refresh();
     };
 
     return (
-        <Show onFailure={onFailure} {...props}>
+        <Show queryOptions={{ onError }} {...props}>
             <SimpleShowLayout>
                 ...
             </SimpleShowLayout>
@@ -181,9 +183,9 @@ const PostShow = props => {
 }
 ```
 
-The `onFailure` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
+The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
 
-The default `onFailure` function is:
+The default `onError` function is:
 
 ```jsx
 (error) => {
@@ -219,8 +221,8 @@ You can handle this case by calling the [`useShowContext`](./useShowContext.md) 
 ```jsx
 const PostTitle = () => {
     const record = useRecordContext();
-    const { loaded } = useShowContext();
-    if (!loaded) return null;
+    const { isLoading } = useShowContext();
+    if (!isLoading) return null;
     return <span>{record.title}</span>;
 };
 ```

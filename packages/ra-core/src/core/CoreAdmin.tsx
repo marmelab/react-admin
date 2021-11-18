@@ -100,6 +100,7 @@ const CoreAdmin = (props: AdminProps) => {
         history,
         i18nProvider,
         initialState,
+        queryClient,
         layout,
         loading,
         loginPage,
@@ -113,6 +114,7 @@ const CoreAdmin = (props: AdminProps) => {
             authProvider={authProvider}
             dataProvider={dataProvider}
             i18nProvider={i18nProvider}
+            queryClient={queryClient}
             history={history}
             customReducers={customReducers}
             initialState={initialState}

@@ -1,5 +1,6 @@
 import { useCallback, MutableRefObject } from 'react';
 import { useParams } from 'react-router-dom';
+import { UseQueryOptions } from 'react-query';
 
 import useVersion from '../useVersion';
 import {
@@ -17,7 +18,7 @@ import {
 } from '../../sideEffect';
 import { useGetOne, useUpdate, Refetch } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
-import { CRUD_GET_ONE, CRUD_UPDATE } from '../../actions';
+import { CRUD_UPDATE } from '../../actions';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import {
     SetOnSuccess,
@@ -50,7 +51,7 @@ import {
  * }
  */
 export const useEditController = <RecordType extends Record = Record>(
-    props: EditControllerProps = {}
+    props: EditControllerProps<RecordType> = {}
 ): EditControllerResult<RecordType> => {
     const {
         id: propsId,
@@ -59,6 +60,7 @@ export const useEditController = <RecordType extends Record = Record>(
         onFailure,
         mutationMode = 'undoable',
         transform,
+        queryOptions = {},
     } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
@@ -84,15 +86,18 @@ export const useEditController = <RecordType extends Record = Record>(
         setTransform,
     } = useSaveModifiers({ onSuccess, onFailure, transform });
 
-    const { data: record, error, loading, loaded, refetch } = useGetOne<
+    const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
         RecordType
     >(resource, id, {
-        action: CRUD_GET_ONE,
-        onFailure: () => {
-            notify('ra.notification.item_doesnt_exist', { type: 'warning' });
+        onError: () => {
+            notify('ra.notification.item_doesnt_exist', {
+                type: 'warning',
+            });
             redirect('list', `/${resource}`);
             refresh();
         },
+        retry: false,
+        ...queryOptions,
     });
 
     const getResourceLabel = useGetResourceLabel();
@@ -203,8 +208,8 @@ export const useEditController = <RecordType extends Record = Record>(
     return {
         defaultTitle,
         error,
-        loaded,
-        loading,
+        isFetching,
+        isLoading,
         onFailureRef,
         onSuccessRef,
         record,
@@ -221,10 +226,11 @@ export const useEditController = <RecordType extends Record = Record>(
     };
 };
 
-export interface EditControllerProps {
+export interface EditControllerProps<RecordType extends Record = Record> {
     id?: Identifier;
     resource?: string;
     mutationMode?: MutationMode;
+    queryOptions?: UseQueryOptions<RecordType>;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
     transform?: TransformData;
@@ -237,8 +243,8 @@ export interface EditControllerResult<RecordType extends Record = Record> {
     data?: RecordType;
     error?: any;
     defaultTitle: string;
-    loading: boolean;
-    loaded: boolean;
+    isFetching: boolean;
+    isLoading: boolean;
     onSuccessRef: MutableRefObject<OnSuccess>;
     onFailureRef: MutableRefObject<OnFailure>;
     transformRef: MutableRefObject<TransformData>;

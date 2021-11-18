@@ -67,12 +67,11 @@ This means that reducers will work as they will within the app.
 
 ### Testing With The Data Provider
 
-React-admin's dataProvider hooks like `useGetOne` and `useGetList` rely on the Redux store, and require that the resource they are called on is registered. That means that you can't call `useGetOne('books', id)` unless you register the `books` resource. In a normal admin, the `<Resource>` component takes care of it. But when testing components with the `TestContext` wrapper, you need to register the resource by passing an initial state for the Redux store.
-
-Besides, to make the dataProvider available to your component, you must wrap it inside a `DataProviderContext`:
+React-admin's dataProvider hooks like `useGetOne` and `useGetList` rely on react-query and the Redux store. To make the dataProvider available to your component, you must wrap it inside a `DataProviderContext` and a `QueryClientProvider`:
 
 ```jsx
 import { useGetOne, DataProviderContext } from 'react-admin';
+import { QueryClientProvider, QueryClient } from 'react-query';
 import { TestContext } from 'ra-test';
 
 test('should render a book', async () => {
@@ -81,20 +80,20 @@ test('should render a book', async () => {
     };
 
     const Book = ({ id }) => {
-        const { data, loaded } = useGetOne('books', id);
-        return loaded ? <span>{data.title}</span> : <span>loading</span>;
+        const { data, isLoading } = useGetOne('books', id);
+        return isLoading ? <span>loading</span> : <span>{data.title}</span>;
     };
 
     render(
         <TestContext
             // reducers must be enabled to use the dataProvider hooks, as they rely on Redux
             enableReducers={true}
-            // the initial state contain a 'books' resource to let book queries with the data provider hooks work
-            initialState={{ admin: { resources: { books: { data: {} } } } }}
         >
-            <DataProviderContext.Provider value={dataProvider}>
-                <Book id={1} />
-            </DataProviderContext.Provider>
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <Book id={1} />
+                </DataProviderContext.Provider>
+            </QueryClientProvider>
         </TestContext>
     );
 
@@ -181,6 +180,7 @@ Here is an example with Jest and TestingLibrary, which is testing the [`UserShow
 import * as React from "react";
 import { render } from '@testing-library/react';
 import { Tab, TextField, DataProviderContext } from 'react-admin';
+import { QueryClientProvider, QueryClient } from 'react-query';
 
 import UserShow from './UserShow';
 
@@ -201,11 +201,13 @@ describe('UserShow', () => {
                 })
             }
             const testUtils = render(
-                <DataProviderContext.Provider value={dataProvider}>
-                    <TestContext>
-                        <UserShow permissions="user" id="1" />
-                    </TestContext>
-                </DataProviderContext.Provider>
+                <QueryClientProvider client={new QueryClient()}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <TestContext>
+                            <UserShow permissions="user" id="1" />
+                        </TestContext>
+                    </DataProviderContext.Provider>
+                </QueryClientProvider>
             );
 
             expect(await testUtils.findByDisplayValue('1')).not.toBeNull();

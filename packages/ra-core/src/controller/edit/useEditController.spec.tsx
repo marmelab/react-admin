@@ -3,6 +3,7 @@ import expect from 'expect';
 import { act, waitFor } from '@testing-library/react';
 import { renderWithRedux } from 'ra-test';
 import { MemoryRouter, Route } from 'react-router';
+import { QueryClientProvider, QueryClient } from 'react-query';
 
 import { EditController } from './EditController';
 import { DataProviderContext } from '../../dataProvider';
@@ -29,13 +30,17 @@ describe('useEditController', () => {
             );
         const dataProvider = ({ getOne } as unknown) as DataProvider;
         const { queryAllByText, unmount } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <SaveContextProvider value={saveContextValue}>
-                    <EditController {...defaultProps}>
-                        {({ record }) => <div>{record && record.title}</div>}
-                    </EditController>
-                </SaveContextProvider>
-            </DataProviderContext.Provider>,
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <EditController {...defaultProps}>
+                            {({ record }) => (
+                                <div>{record && record.title}</div>
+                            )}
+                        </EditController>
+                    </SaveContextProvider>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         await waitFor(() => {
@@ -56,15 +61,17 @@ describe('useEditController', () => {
         const { unmount } = renderWithRedux(
             <MemoryRouter initialEntries={['/posts/test%3F']}>
                 <Route path="/posts/:id">
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <SaveContextProvider value={saveContextValue}>
-                            <EditController resource="posts">
-                                {({ record }) => (
-                                    <div>{record && record.title}</div>
-                                )}
-                            </EditController>
-                        </SaveContextProvider>
-                    </DataProviderContext.Provider>
+                    <QueryClientProvider client={new QueryClient()}>
+                        <DataProviderContext.Provider value={dataProvider}>
+                            <SaveContextProvider value={saveContextValue}>
+                                <EditController resource="posts">
+                                    {({ record }) => (
+                                        <div>{record && record.title}</div>
+                                    )}
+                                </EditController>
+                            </SaveContextProvider>
+                        </DataProviderContext.Provider>
+                    </QueryClientProvider>
                 </Route>
             </MemoryRouter>,
             { admin: { resources: { posts: { data: {} } } } }
@@ -76,50 +83,31 @@ describe('useEditController', () => {
         unmount();
     });
 
-    it('should dispatch a CRUD_GET_ONE action on mount', async () => {
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 13, title: 'hello' } }),
-        } as unknown) as DataProvider;
-        const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <SaveContextProvider value={saveContextValue}>
-                    <EditController {...defaultProps} id={13}>
-                        {({ record }) => <div>{record && record.title}</div>}
+    it('should accept custom client query options', async () => {
+        const mock = jest.spyOn(console, 'error').mockImplementation(() => {});
+        const getOne = jest
+            .fn()
+            .mockImplementationOnce(() => Promise.reject(new Error()));
+        const onError = jest.fn();
+        const dataProvider = ({ getOne } as unknown) as DataProvider;
+        renderWithRedux(
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <EditController
+                        {...defaultProps}
+                        resource="posts"
+                        queryOptions={{ onError }}
+                    >
+                        {() => <div />}
                     </EditController>
-                </SaveContextProvider>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+                </DataProviderContext.Provider>
+            </QueryClientProvider>
         );
-
         await waitFor(() => {
-            const crudGetOneAction = dispatch.mock.calls[0][0];
-            expect(crudGetOneAction.type).toEqual('RA/CRUD_GET_ONE');
-            expect(crudGetOneAction.payload).toEqual({ id: 13 });
-            expect(crudGetOneAction.meta.resource).toEqual('posts');
+            expect(getOne).toHaveBeenCalled();
+            expect(onError).toHaveBeenCalled();
         });
-    });
-
-    it('should grab the record from the store based on the id', () => {
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12, title: 'world' } }),
-        } as unknown) as DataProvider;
-        const { queryAllByText } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <SaveContextProvider value={saveContextValue}>
-                    <EditController {...defaultProps}>
-                        {({ record }) => <div>{record && record.title}</div>}
-                    </EditController>
-                </SaveContextProvider>
-            </DataProviderContext.Provider>,
-            {
-                admin: {
-                    resources: {
-                        posts: { data: { 12: { id: 12, title: 'hello' } } },
-                    },
-                },
-            }
-        );
-        expect(queryAllByText('hello')).toHaveLength(1);
+        mock.mockRestore();
     });
 
     it('should call the dataProvider.update() function on save', async () => {
@@ -134,19 +122,21 @@ describe('useEditController', () => {
         } as unknown) as DataProvider;
         let saveCallback;
         renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <SaveContextProvider value={saveContextValue}>
-                    <EditController
-                        {...defaultProps}
-                        mutationMode="pessimistic"
-                    >
-                        {({ save }) => {
-                            saveCallback = save;
-                            return null;
-                        }}
-                    </EditController>
-                </SaveContextProvider>
-            </DataProviderContext.Provider>,
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <EditController
+                            {...defaultProps}
+                            mutationMode="pessimistic"
+                        >
+                            {({ save }) => {
+                                saveCallback = save;
+                                return null;
+                            }}
+                        </EditController>
+                    </SaveContextProvider>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         await act(async () => saveCallback({ foo: 'bar' }));
@@ -165,16 +155,18 @@ describe('useEditController', () => {
         } as unknown) as DataProvider;
         let saveCallback;
         const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <SaveContextProvider value={saveContextValue}>
-                    <EditController {...defaultProps}>
-                        {({ save }) => {
-                            saveCallback = save;
-                            return null;
-                        }}
-                    </EditController>
-                </SaveContextProvider>
-            </DataProviderContext.Provider>,
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <EditController {...defaultProps}>
+                            {({ save }) => {
+                                saveCallback = save;
+                                return null;
+                            }}
+                        </EditController>
+                    </SaveContextProvider>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         await act(async () => saveCallback({ foo: 'bar' }));
@@ -199,19 +191,21 @@ describe('useEditController', () => {
                 Promise.resolve({ data: { id, ...previousData, ...data } }),
         } as unknown) as DataProvider;
         const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <SaveContextProvider value={saveContextValue}>
-                    <EditController
-                        {...defaultProps}
-                        mutationMode="pessimistic"
-                    >
-                        {({ save }) => {
-                            saveCallback = save;
-                            return null;
-                        }}
-                    </EditController>
-                </SaveContextProvider>
-            </DataProviderContext.Provider>,
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <EditController
+                            {...defaultProps}
+                            mutationMode="pessimistic"
+                        >
+                            {({ save }) => {
+                                saveCallback = save;
+                                return null;
+                            }}
+                        </EditController>
+                    </SaveContextProvider>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         await act(async () => saveCallback({ foo: 'bar' }));
@@ -245,20 +239,22 @@ describe('useEditController', () => {
         } as unknown) as DataProvider;
         const onSuccess = jest.fn();
         const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <SaveContextProvider value={saveContextValue}>
-                    <EditController
-                        {...defaultProps}
-                        mutationMode="pessimistic"
-                        onSuccess={onSuccess}
-                    >
-                        {({ save }) => {
-                            saveCallback = save;
-                            return null;
-                        }}
-                    </EditController>
-                </SaveContextProvider>
-            </DataProviderContext.Provider>,
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <EditController
+                            {...defaultProps}
+                            mutationMode="pessimistic"
+                            onSuccess={onSuccess}
+                        >
+                            {({ save }) => {
+                                saveCallback = save;
+                                return null;
+                            }}
+                        </EditController>
+                    </SaveContextProvider>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         await act(async () => saveCallback({ foo: 'bar' }));
@@ -279,20 +275,22 @@ describe('useEditController', () => {
         const onSuccess = jest.fn();
         const onSuccessSave = jest.fn();
         const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <SaveContextProvider value={saveContextValue}>
-                    <EditController
-                        {...defaultProps}
-                        mutationMode="pessimistic"
-                        onSuccess={onSuccess}
-                    >
-                        {({ save }) => {
-                            saveCallback = save;
-                            return null;
-                        }}
-                    </EditController>
-                </SaveContextProvider>
-            </DataProviderContext.Provider>,
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <EditController
+                            {...defaultProps}
+                            mutationMode="pessimistic"
+                            onSuccess={onSuccess}
+                        >
+                            {({ save }) => {
+                                saveCallback = save;
+                                return null;
+                            }}
+                        </EditController>
+                    </SaveContextProvider>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         await act(async () =>
@@ -317,20 +315,22 @@ describe('useEditController', () => {
         } as unknown) as DataProvider;
         const onFailure = jest.fn();
         const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <SaveContextProvider value={saveContextValue}>
-                    <EditController
-                        {...defaultProps}
-                        mutationMode="pessimistic"
-                        onFailure={onFailure}
-                    >
-                        {({ save }) => {
-                            saveCallback = save;
-                            return null;
-                        }}
-                    </EditController>
-                </SaveContextProvider>
-            </DataProviderContext.Provider>,
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <EditController
+                            {...defaultProps}
+                            mutationMode="pessimistic"
+                            onFailure={onFailure}
+                        >
+                            {({ save }) => {
+                                saveCallback = save;
+                                return null;
+                            }}
+                        </EditController>
+                    </SaveContextProvider>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         await act(async () => saveCallback({ foo: 'bar' }));
@@ -351,20 +351,22 @@ describe('useEditController', () => {
         const onFailure = jest.fn();
         const onFailureSave = jest.fn();
         const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <SaveContextProvider value={saveContextValue}>
-                    <EditController
-                        {...defaultProps}
-                        mutationMode="pessimistic"
-                        onFailure={onFailure}
-                    >
-                        {({ save }) => {
-                            saveCallback = save;
-                            return null;
-                        }}
-                    </EditController>
-                </SaveContextProvider>
-            </DataProviderContext.Provider>,
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <EditController
+                            {...defaultProps}
+                            mutationMode="pessimistic"
+                            onFailure={onFailure}
+                        >
+                            {({ save }) => {
+                                saveCallback = save;
+                                return null;
+                            }}
+                        </EditController>
+                    </SaveContextProvider>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         await act(async () =>
@@ -396,20 +398,22 @@ describe('useEditController', () => {
             transformed: true,
         }));
         renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <SaveContextProvider value={saveContextValue}>
-                    <EditController
-                        {...defaultProps}
-                        mutationMode="pessimistic"
-                        transform={transform}
-                    >
-                        {({ save }) => {
-                            saveCallback = save;
-                            return null;
-                        }}
-                    </EditController>
-                </SaveContextProvider>
-            </DataProviderContext.Provider>,
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <EditController
+                            {...defaultProps}
+                            mutationMode="pessimistic"
+                            transform={transform}
+                        >
+                            {({ save }) => {
+                                saveCallback = save;
+                                return null;
+                            }}
+                        </EditController>
+                    </SaveContextProvider>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         await act(async () => saveCallback({ foo: 'bar' }));
@@ -440,20 +444,22 @@ describe('useEditController', () => {
             transformed: true,
         }));
         renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <SaveContextProvider value={saveContextValue}>
-                    <EditController
-                        {...defaultProps}
-                        mutationMode="pessimistic"
-                        transform={transform}
-                    >
-                        {({ save }) => {
-                            saveCallback = save;
-                            return null;
-                        }}
-                    </EditController>
-                </SaveContextProvider>
-            </DataProviderContext.Provider>,
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <EditController
+                            {...defaultProps}
+                            mutationMode="pessimistic"
+                            transform={transform}
+                        >
+                            {({ save }) => {
+                                saveCallback = save;
+                                return null;
+                            }}
+                        </EditController>
+                    </SaveContextProvider>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         await act(async () =>

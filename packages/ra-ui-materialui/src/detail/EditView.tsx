@@ -138,6 +138,7 @@ EditView.propTypes = {
 };
 
 const sanitizeRestProps = ({
+    basePath = null,
     defaultTitle = null,
     hasCreate = null,
     hasEdit = null,
@@ -145,8 +146,8 @@ const sanitizeRestProps = ({
     hasShow = null,
     history = null,
     id = null,
-    loaded = null,
-    loading = null,
+    isFetching = null,
+    isLoading = null,
     location = null,
     match = null,
     onFailure = null,

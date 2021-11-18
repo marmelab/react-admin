@@ -22,8 +22,8 @@ import { ShowControllerResult } from './useShowController';
 export const ShowContext = createContext<ShowControllerResult>({
     record: null,
     defaultTitle: null,
-    loaded: null,
-    loading: null,
+    isFetching: null,
+    isLoading: null,
     refetch: null,
     resource: null,
     version: null,

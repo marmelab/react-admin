@@ -6,6 +6,7 @@ import {
 } from 'react-router-dom';
 import { DeprecatedThemeOptions } from '@mui/material';
 import { StaticContext } from 'react-router';
+import { QueryClient } from 'react-query';
 import { Location, History, LocationState } from 'history';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
@@ -494,6 +495,7 @@ export interface AdminProps {
     loginPage?: LoginComponent | boolean;
     logoutButton?: ComponentType;
     menu?: ComponentType;
+    queryClient?: QueryClient;
     ready?: ComponentType;
     theme?: DeprecatedThemeOptions;
     title?: TitleComponent;

@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import expect from 'expect';
 import { cleanup } from '@testing-library/react';
+import { QueryClientProvider, QueryClient } from 'react-query';
+
 import { EditBase } from './EditBase';
 import { useSaveContext } from '../SaveContext';
 import { DataProviderContext } from '../../dataProvider';
@@ -40,16 +42,17 @@ describe('EditBase', () => {
             return null;
         };
         renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <EditBase
-                    {...defaultProps}
-                    mutationMode="pessimistic"
-                    onSuccess={onSuccess}
-                >
-                    <Child />
-                </EditBase>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <EditBase
+                        {...defaultProps}
+                        mutationMode="pessimistic"
+                        onSuccess={onSuccess}
+                    >
+                        <Child />
+                    </EditBase>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>
         );
 
         expect(onSuccess).toHaveBeenCalledWith('test');
@@ -83,19 +86,20 @@ describe('EditBase', () => {
             return <button aria-label="save" onClick={handleClick} />;
         };
         const { getByLabelText } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <EditBase
-                    {...defaultProps}
-                    mutationMode="pessimistic"
-                    onSuccess={onSuccess}
-                >
-                    <>
-                        <SetOnSuccess />
-                        <Child />
-                    </>
-                </EditBase>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <EditBase
+                        {...defaultProps}
+                        mutationMode="pessimistic"
+                        onSuccess={onSuccess}
+                    >
+                        <>
+                            <SetOnSuccess />
+                            <Child />
+                        </>
+                    </EditBase>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>
         );
 
         getByLabelText('save').click();
@@ -121,16 +125,17 @@ describe('EditBase', () => {
             return null;
         };
         renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <EditBase
-                    {...defaultProps}
-                    mutationMode="pessimistic"
-                    onFailure={onFailure}
-                >
-                    <Child />
-                </EditBase>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <EditBase
+                        {...defaultProps}
+                        mutationMode="pessimistic"
+                        onFailure={onFailure}
+                    >
+                        <Child />
+                    </EditBase>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>
         );
 
         expect(onFailure).toHaveBeenCalledWith({ message: 'test' });
@@ -164,19 +169,20 @@ describe('EditBase', () => {
             return <button aria-label="save" onClick={handleClick} />;
         };
         const { getByLabelText } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <EditBase
-                    {...defaultProps}
-                    mutationMode="pessimistic"
-                    onFailure={onFailure}
-                >
-                    <>
-                        <SetOnSuccess />
-                        <Child />
-                    </>
-                </EditBase>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <EditBase
+                        {...defaultProps}
+                        mutationMode="pessimistic"
+                        onFailure={onFailure}
+                    >
+                        <>
+                            <SetOnSuccess />
+                            <Child />
+                        </>
+                    </EditBase>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>
         );
 
         getByLabelText('save').click();
@@ -202,16 +208,17 @@ describe('EditBase', () => {
             return null;
         };
         renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <EditBase
-                    {...defaultProps}
-                    mutationMode="pessimistic"
-                    transform={transform}
-                >
-                    <Child />
-                </EditBase>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <EditBase
+                        {...defaultProps}
+                        mutationMode="pessimistic"
+                        transform={transform}
+                    >
+                        <Child />
+                    </EditBase>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>
         );
 
         expect(transform).toHaveBeenCalledWith({ message: 'test' });
@@ -245,19 +252,20 @@ describe('EditBase', () => {
             return <button aria-label="save" onClick={handleClick} />;
         };
         const { getByLabelText } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <EditBase
-                    {...defaultProps}
-                    mutationMode="pessimistic"
-                    transform={transform}
-                >
-                    <>
-                        <SetOnSuccess />
-                        <Child />
-                    </>
-                </EditBase>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <EditBase
+                        {...defaultProps}
+                        mutationMode="pessimistic"
+                        transform={transform}
+                    >
+                        <>
+                            <SetOnSuccess />
+                            <Child />
+                        </>
+                    </EditBase>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>
         );
 
         getByLabelText('save').click();

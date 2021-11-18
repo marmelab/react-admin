@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { ShowBase, ResourceContextProvider } from 'ra-core';
+import { ShowBase, ResourceContextProvider, Record } from 'ra-core';
 
 import { ShowProps } from '../types';
 import { ShowView } from './ShowView';
@@ -51,21 +51,21 @@ import { ShowView } from './ShowView';
  * @param {ElementType} props.component The component to use as root component (div by default).
  * @param {boolean} props.emptyWhileLoading Do not display the page content while loading the initial data.
  * @param {string} props.id The id of the resource to display (grabbed from the route params if not defined).
- * @param {function} props.onFailure A callback to handle the case where the record couldn't be loaded (redirects to the List view by default).
+ * @param {Object} props.queryClient Options to pass to the react-query useQuery hook.
  * @param {string} props.resource The resource to fetch from the data provider (grabbed from the ResourceContext if not defined).
  * @param {Object} props.sx Custom style object.
  * @param {ElementType|string} props.title The title of the page. Defaults to `#{resource} #${id}`.
  *
  * @see ShowView for the actual rendering
  */
-export const Show = ({
+export const Show = <RecordType extends Record = Record>({
     id,
     resource,
-    onFailure,
+    queryOptions,
     ...rest
-}: ShowProps): ReactElement => (
+}: ShowProps<RecordType>): ReactElement => (
     <ResourceContextProvider value={resource}>
-        <ShowBase id={id} onFailure={onFailure}>
+        <ShowBase<RecordType> id={id} queryOptions={queryOptions}>
             <ShowView {...rest} />
         </ShowBase>
     </ResourceContextProvider>
