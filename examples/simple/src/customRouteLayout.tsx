@@ -9,7 +9,7 @@ import {
 
 const currentSort = { field: 'published_at', order: 'DESC' };
 
-const CustomRouteLayout = () => {
+const CustomRouteLayout = ({ title = 'Posts' }) => {
     useAuthenticated();
 
     const { ids, data, total, loaded } = useGetList(
@@ -21,7 +21,7 @@ const CustomRouteLayout = () => {
     return loaded ? (
         <div>
             <Title title="Example Admin" />
-            <h1>Posts</h1>
+            <h1>{title}</h1>
             <p>
                 Found <span className="total">{total}</span> posts !
             </p>

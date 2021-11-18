@@ -99,7 +99,6 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
             <StyledMenuItem
                 // @ts-ignore
                 className={({ isActive }) => {
-                    console.log({ to: rest, isActive });
                     return classnames(MenuItemLinkClasses.root, className, {
                         [MenuItemLinkClasses.active]: isActive,
                     });

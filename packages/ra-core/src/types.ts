@@ -1,17 +1,10 @@
 import { ReactNode, ReactElement, ComponentType } from 'react';
-import {
-    RouteProps,
-    RouteComponentProps,
-    match as Match,
-} from 'react-router-dom';
 import { DeprecatedThemeOptions } from '@mui/material';
-import { StaticContext } from 'react-router';
+import { Location, History } from 'history';
 import { QueryClient } from 'react-query';
-import { Location, History, LocationState } from 'history';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
-import { ShowControllerProps } from './controller/show/useShowController';
 
 /**
  * data types
@@ -395,17 +388,10 @@ export type RenderResourcesFunction = (
 ) => ResourceElement[] | Promise<ResourceElement[]>;
 export type AdminChildren = RenderResourcesFunction | ReactNode;
 
-export interface CustomRoute extends RouteProps {
-    noLayout?: boolean;
-    [key: string]: any;
-}
-
-export type CustomRoutes = Array<ReactElement<CustomRoute>>;
-
 export type TitleComponent = string | ReactElement<any>;
 export type CatchAllComponent = ComponentType<{ title?: TitleComponent }>;
 
-interface LoginComponentProps extends RouteComponentProps {
+interface LoginComponentProps {
     title?: TitleComponent;
     theme?: object;
 }
@@ -442,40 +428,13 @@ export interface ResourceComponentInjectedProps {
     hasCreate?: boolean;
 }
 
-export interface ResourceComponentProps<
-    Params extends { [K in keyof Params]?: string } = {},
-    C extends StaticContext = StaticContext,
-    S = LocationState
-> extends Partial<RouteComponentProps<Params, C, S>>,
-        ResourceComponentInjectedProps {}
-
-// deprecated name, use ResourceComponentProps instead
-export type ReactAdminComponentProps = ResourceComponentProps;
-
-export interface ResourceComponentPropsWithId<
-    Params extends { id?: string } = {},
-    C extends StaticContext = StaticContext,
-    S = LocationState
-> extends Partial<RouteComponentProps<Params, C, S>>,
-        ResourceComponentInjectedProps {
-    id?: string;
-}
-
-// deprecated name, use ResourceComponentPropsWithId instead
-export type ReactAdminComponentPropsWithId = ResourceComponentPropsWithId;
-
-export type ResourceMatch = Match<{
-    id?: string;
-}>;
-
 export interface ResourceProps {
     intent?: 'route' | 'registration';
-    match?: ResourceMatch;
     name: string;
-    list?: ComponentType<ResourceComponentProps>;
-    create?: ComponentType<ResourceComponentProps>;
-    edit?: ComponentType<ResourceComponentPropsWithId>;
-    show?: ComponentType<ShowControllerProps>;
+    list?: ComponentType;
+    create?: ComponentType;
+    edit?: ComponentType;
+    show?: ComponentType;
     icon?: ComponentType<any>;
     options?: object;
 }
@@ -486,7 +445,6 @@ export interface AdminProps {
     catchAll?: CatchAllComponent;
     children?: AdminChildren;
     customReducers?: object;
-    customRoutes?: CustomRoutes;
     dashboard?: DashboardComponent;
     dataProvider: DataProvider | LegacyDataProvider;
     disableTelemetry?: boolean;

@@ -6,7 +6,7 @@ import WithPermissions from '../auth/WithPermissions';
 import { ResourceProps } from '../types';
 import { ResourceContextProvider } from './ResourceContextProvider';
 
-const Resource = (props: ResourceProps) => {
+export const Resource = (props: ResourceProps) => {
     const { name, list, create, edit, show } = props;
 
     // match tends to change even on the same route ; using memo to avoid an extra render
@@ -43,5 +43,3 @@ const Resource = (props: ResourceProps) => {
         );
     }, [name, create, edit, list, show]);
 };
-
-export default Resource;

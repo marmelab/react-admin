@@ -6,14 +6,18 @@ import { ReduxState, ResourceDefinition } from '../types';
 
 export const useRegisterResource = () => {
     const dispatch = useDispatch();
-    const resources = useSelector<ReduxState>(state => state.admin.resources);
+    const knowResources = useSelector<ReduxState>(
+        state => state.admin.resources
+    );
 
-    return (resource: ResourceDefinition) => {
-        if (
-            !resources[resource.name] ||
-            !isEqual(resources[resource.name]?.props, resource)
-        ) {
-            dispatch(registerResource(resource));
-        }
+    return (...resources: ResourceDefinition[]) => {
+        resources.forEach(resource => {
+            if (
+                !knowResources[resource.name] ||
+                !isEqual(knowResources[resource.name]?.props, resource)
+            ) {
+                dispatch(registerResource(resource));
+            }
+        });
     };
 };

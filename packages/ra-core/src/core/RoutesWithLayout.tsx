@@ -1,10 +1,9 @@
-import React, { Children, cloneElement } from 'react';
+import React, { Children } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import WithPermissions from '../auth/WithPermissions';
 import {
     AdminChildren,
-    CustomRoutes,
     CatchAllComponent,
     TitleComponent,
     DashboardComponent,
@@ -12,13 +11,51 @@ import {
     ResourceProps,
 } from '../types';
 
-import Resource from './Resource';
+import { CustomRoutes, CustomRoutesProps } from './CustomRoutes';
+import { Resource } from './Resource';
 import { useRegisterResource } from './useRegisterResource';
+
+export const RoutesWithLayout = (props: RoutesWithLayoutProps) => {
+    const { catchAll: CatchAll, children, dashboard, title } = props;
+    const registerResource = useRegisterResource();
+    const resources = createResourcesFromChildren(children);
+
+    resources.forEach(resource => {
+        registerResource(resource);
+    });
+
+    const firstResource = resources.length > 0 ? resources[0].name : null;
+
+    return (
+        <>
+            <Routes>
+                {renderCustomRoutes(children)}
+                {renderResources(children)}
+                {dashboard ? (
+                    <Route
+                        index
+                        element={
+                            <WithPermissions
+                                authParams={defaultAuthParams}
+                                component={dashboard}
+                            />
+                        }
+                    />
+                ) : firstResource ? (
+                    <Route
+                        index
+                        element={<Navigate to={`/${firstResource}`} />}
+                    />
+                ) : null}
+                <Route path="*" element={<CatchAll title={title} />} />
+            </Routes>
+        </>
+    );
+};
 
 export interface RoutesWithLayoutProps {
     catchAll: CatchAllComponent;
     children: AdminChildren;
-    customRoutes?: CustomRoutes;
     dashboard?: DashboardComponent;
     title?: TitleComponent;
 }
@@ -41,6 +78,10 @@ const createResourcesFromChildren = (children: React.ReactNode) => {
                 resources,
                 createResourcesFromChildren(element.props.children)
             );
+            return;
+        }
+
+        if (element.type === CustomRoutes) {
             return;
         }
 
@@ -83,6 +124,10 @@ const renderResources = (children: React.ReactNode) => {
             return renderResources(element.props.children);
         }
 
+        if (element.type === CustomRoutes) {
+            return null;
+        }
+
         const resourceElement = element as React.ReactElement<ResourceProps>;
 
         return (
@@ -95,55 +140,29 @@ const renderResources = (children: React.ReactNode) => {
     });
 };
 
-const RoutesWithLayout = (props: RoutesWithLayoutProps) => {
-    const {
-        catchAll: CatchAll,
-        children,
-        customRoutes,
-        dashboard,
-        title,
-    } = props;
-    const childrenAsArray = React.Children.toArray(children);
-    const registerResource = useRegisterResource();
-    const resources = createResourcesFromChildren(children);
+const renderCustomRoutes = (children: React.ReactNode) => {
+    return Children.map(children, element => {
+        if (!React.isValidElement(element)) {
+            // Ignore non-elements. This allows people to more easily inline
+            // conditionals in their route config.
+            return null;
+        }
+        if (element.type === React.Fragment) {
+            return renderCustomRoutes(element.props.children);
+        }
 
-    resources.forEach(resource => {
-        registerResource(resource);
+        if (element.type !== CustomRoutes) {
+            return null;
+        }
+
+        const customRoutesElement = element as React.ReactElement<
+            CustomRoutesProps
+        >;
+
+        if (!customRoutesElement.props.noLayout) {
+            return customRoutesElement.props.children;
+        }
+
+        return null;
     });
-
-    const firstChild: React.ReactElement<any> | null =
-        childrenAsArray.length > 0
-            ? (childrenAsArray[0] as React.ReactElement<any>)
-            : null;
-
-    return (
-        <>
-            <Routes>
-                {customRoutes &&
-                    customRoutes.map((route, key) =>
-                        cloneElement(route, { key })
-                    )}
-                {renderResources(children)}
-                {dashboard ? (
-                    <Route
-                        index
-                        element={
-                            <WithPermissions
-                                authParams={defaultAuthParams}
-                                component={dashboard}
-                            />
-                        }
-                    />
-                ) : firstChild ? (
-                    <Route
-                        index
-                        element={<Navigate to={`/${firstChild.props.name}`} />}
-                    />
-                ) : null}
-                <Route path="*" element={<CatchAll title={title} />} />
-            </Routes>
-        </>
-    );
 };
-
-export default RoutesWithLayout;

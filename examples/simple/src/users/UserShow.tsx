@@ -15,7 +15,7 @@ import Aside from './Aside';
 const UserShow = () => {
     const { permissions } = usePermissions();
     return (
-        <Show title={<UserTitle />} aside={<Aside />}>
+        <Show title={<UserTitle />}>
             <TabbedShowLayout>
                 <Tab label="user.form.summary">
                     <TextField source="id" />
@@ -27,6 +27,7 @@ const UserShow = () => {
                     </Tab>
                 )}
             </TabbedShowLayout>
+            <Aside />
         </Show>
     );
 };

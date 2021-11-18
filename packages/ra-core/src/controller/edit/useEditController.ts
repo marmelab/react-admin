@@ -66,7 +66,7 @@ export const useEditController = <RecordType extends Record = Record>(
     const redirect = useRedirect();
     const refresh = useRefresh();
     const version = useVersion();
-    const { id: routeId } = useParams<{ id?: string }>();
+    const { id: routeId } = useParams<'id'>();
     const id = propsId || decodeURIComponent(routeId);
     const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
 

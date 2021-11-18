@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createElement, ComponentType, useMemo, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import CoreAdminRouter from './CoreAdminRouter';
+import { CoreAdminRouter } from './CoreAdminRouter';
 import { Ready } from '../util';
 import {
     TitleComponent,
@@ -11,7 +11,6 @@ import {
     CoreLayoutProps,
     AdminChildren,
     CatchAllComponent,
-    CustomRoutes,
     DashboardComponent,
     LoadingComponent,
 } from '../types';
@@ -23,7 +22,6 @@ const DefaultLayout = ({ children }: CoreLayoutProps) => <>{children}</>;
 export interface AdminUIProps {
     catchAll?: CatchAllComponent;
     children?: AdminChildren;
-    customRoutes?: CustomRoutes;
     dashboard?: DashboardComponent;
     disableTelemetry?: boolean;
     layout?: LayoutComponent;
@@ -43,7 +41,6 @@ const CoreAdminUI = (props: AdminUIProps) => {
     const {
         catchAll = Noop,
         children,
-        customRoutes = [],
         dashboard,
         disableTelemetry = false,
         layout = DefaultLayout,
@@ -87,7 +84,6 @@ const CoreAdminUI = (props: AdminUIProps) => {
                 element={
                     <CoreAdminRouter
                         catchAll={catchAll}
-                        customRoutes={customRoutes}
                         dashboard={dashboard}
                         layout={layout}
                         loading={loading}
