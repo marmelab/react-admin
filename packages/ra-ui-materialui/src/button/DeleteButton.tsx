@@ -6,6 +6,8 @@ import {
     RedirectionSideEffect,
     MutationMode,
     getMutationMode,
+    OnSuccess,
+    OnFailure,
 } from 'ra-core';
 
 import { ButtonProps } from './Button';
@@ -90,6 +92,8 @@ interface Props {
     submitOnEnter?: boolean;
     /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
 }
 
 export type DeleteButtonProps = Props & ButtonProps;
