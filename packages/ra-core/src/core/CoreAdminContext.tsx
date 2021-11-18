@@ -70,7 +70,7 @@ React-admin requires a valid dataProvider function to work.`);
 
     let historyRef = React.useRef<History>();
     if (historyRef.current == null) {
-        historyRef.current = createHashHistory({ window });
+        historyRef.current = history || createHashHistory({ window });
     }
 
     let finalHistory = historyRef.current;
