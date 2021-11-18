@@ -204,7 +204,7 @@ export interface CreateResult<RecordType extends Record = Record> {
 
 export interface DeleteParams {
     id: Identifier;
-    previousData: Record;
+    previousData?: Record;
 }
 export interface DeleteResult<RecordType extends Record = Record> {
     data: RecordType;

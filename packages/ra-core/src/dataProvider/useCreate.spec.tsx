@@ -34,6 +34,7 @@ describe('useCreate', () => {
     it('returns a callback that can be used with mutation payload', () => {
         const dataProvider: Partial<DataProvider> = {
             create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+            update: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
         };
         let localCreate;
         const Dummy = () => {
@@ -55,7 +56,8 @@ describe('useCreate', () => {
                 data: { bar: 'baz' },
             },
         });
-        expect(dataProvider.create).toHaveBeenCalledWith('foo', {
+        expect(dataProvider.create).not.toHaveBeenCalled();
+        expect(dataProvider.update).toHaveBeenCalledWith('foo', {
             data: { bar: 'baz' },
         });
     });

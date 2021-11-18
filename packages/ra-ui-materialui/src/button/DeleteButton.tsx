@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { ReactElement, SyntheticEvent } from 'react';
 import PropTypes from 'prop-types';
-import { Record, RedirectionSideEffect, MutationMode } from 'ra-core';
+import {
+    Record,
+    RedirectionSideEffect,
+    MutationMode,
+    OnSuccess,
+    OnFailure,
+} from 'ra-core';
 
 import { ButtonProps } from './Button';
 import { DeleteWithUndoButton } from './DeleteWithUndoButton';
@@ -81,6 +87,8 @@ interface Props {
     pristine?: boolean;
     saving?: boolean;
     submitOnEnter?: boolean;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
 }
 
 export type DeleteButtonProps = Props & ButtonProps;

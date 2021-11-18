@@ -41,15 +41,19 @@ const useNotify = () => {
                     'This way of calling useNotify callback is deprecated. Please use the new syntax passing notify("[Your message]", { ...restOfArguments })'
                 );
                 dispatch(
-                    showNotification(message, type || 'info', {
-                        messageArgs,
-                        undoable,
-                        autoHideDuration,
-                        multiLine,
-                    })
+                    showNotification(
+                        message,
+                        (type || 'info') as NotificationType,
+                        {
+                            messageArgs,
+                            undoable,
+                            autoHideDuration,
+                            multiLine,
+                        }
+                    )
                 );
             } else {
-                const { type: messageType, ...options } = type;
+                const { type: messageType, ...options } = type || {};
                 dispatch(showNotification(message, messageType, options));
             }
         },

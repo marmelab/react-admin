@@ -5,7 +5,7 @@ import {
     InMemoryCache,
 } from '@apollo/client';
 
-export default (options: ApolloClientOptions<unknown>) => {
+export default (options: Partial<ApolloClientOptions<unknown>>) => {
     if (!options) {
         return new ApolloClient({
             cache: new InMemoryCache().restore({}),

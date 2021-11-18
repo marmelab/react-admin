@@ -181,6 +181,8 @@ const StyledLayout = styled('div', { name: PREFIX })(({ theme }) => ({
         flexGrow: 1,
     },
     [`& .${LayoutClasses.content}`]: {
+        backgroundColor: theme.palette.background.default,
+        zIndex: 2,
         display: 'flex',
         flexDirection: 'column',
         flexGrow: 1,

@@ -839,6 +839,7 @@ import LabelIcon from '@material-ui/icons/Label';
 
 export const Menu = (props) => {
     const resources = useSelector(getResources);
+    const open = useSelector(state => state.admin.ui.sidebarOpen);
     return (
         <Menu {...props}>
             <DashboardMenuItem />
@@ -853,7 +854,7 @@ export const Menu = (props) => {
                     leftIcon={
                         resource.icon ? <resource.icon /> : <DefaultIcon />
                     }
-                    onClick={onMenuClick}
+                    onClick={props.onMenuClick}
                     sidebarIsOpen={open}
                 />
             ))}

@@ -21,7 +21,7 @@ export const Notification = (props: NotificationProps) => {
         type = 'info',
         autoHideDuration = 4000,
         className,
-        multiLine,
+        multiLine = false,
         ...rest
     } = props;
     const [open, setOpen] = useState(false);
@@ -138,5 +138,6 @@ const StyledButton = styled(Button, { name: PREFIX })(
 
 export interface NotificationProps extends Omit<SnackbarProps, 'open'> {
     type?: string;
+    autoHideDuration?: number;
     multiLine?: boolean;
 }
