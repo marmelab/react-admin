@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     Show,
     ShowButton,
@@ -13,16 +14,21 @@ import {
     TextField,
     EditButton,
     ReferenceInput,
+    SearchInput,
     SelectInput,
     SimpleForm,
     TextInput,
 } from 'react-admin';
 
+const StyledReferenceInput = styled(ReferenceInput)({
+    width: 250,
+});
+
 const postFilters = [
-    <TextInput source="q" label="Search" alwaysOn />,
-    <ReferenceInput source="userId" label="User" reference="users" allowEmpty>
+    <SearchInput source="q" alwaysOn />,
+    <StyledReferenceInput label="User" source="userId" reference="users">
         <SelectInput optionText="name" />
-    </ReferenceInput>,
+    </StyledReferenceInput>,
 ];
 
 export const PostList = props => (
