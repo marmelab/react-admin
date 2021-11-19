@@ -320,7 +320,13 @@ const mergeDefinitionAndCallTimeParameters = (
         type: callTimeQuery.type,
         resource: callTimeQuery.resource,
         payload: callTimeQuery.payload,
-        options: sanitizeOptions(callTimeOptions),
+        options: options
+            ? merge(
+                  {},
+                  sanitizeOptions(options),
+                  sanitizeOptions(callTimeOptions)
+              )
+            : sanitizeOptions(callTimeOptions),
     };
 };
 
