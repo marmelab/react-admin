@@ -5,6 +5,12 @@ import { QueryClient } from 'react-query';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
+import {
+    CreateControllerProps,
+    EditControllerProps,
+    ListControllerProps,
+    ShowControllerProps,
+} from './controller';
 
 /**
  * data types
@@ -431,10 +437,10 @@ export interface ResourceComponentInjectedProps {
 export interface ResourceProps {
     intent?: 'route' | 'registration';
     name: string;
-    list?: ComponentType;
-    create?: ComponentType;
-    edit?: ComponentType;
-    show?: ComponentType;
+    list?: ComponentType<ListControllerProps>;
+    create?: ComponentType<CreateControllerProps>;
+    edit?: ComponentType<EditControllerProps>;
+    show?: ComponentType<ShowControllerProps>;
     icon?: ComponentType<any>;
     options?: object;
 }
