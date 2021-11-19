@@ -1,4 +1,5 @@
-import React, { Children } from 'react';
+import * as React from 'react';
+import { Children, useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import WithPermissions from '../auth/WithPermissions';
@@ -20,9 +21,11 @@ export const RoutesWithLayout = (props: RoutesWithLayoutProps) => {
     const registerResource = useRegisterResource();
     const resources = createResourcesFromChildren(children);
 
-    resources.forEach(resource => {
-        registerResource(resource);
-    });
+    useEffect(() => {
+        resources.forEach(resource => {
+            registerResource(resource);
+        });
+    }, [registerResource, resources]);
 
     const firstResource = resources.length > 0 ? resources[0].name : null;
 
