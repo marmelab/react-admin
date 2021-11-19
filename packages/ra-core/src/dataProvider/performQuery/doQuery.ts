@@ -28,19 +28,7 @@ export const doQuery = ({
     store,
     mutationMode,
 }: DoQueryParameters) => {
-    const resourceState = store.getState().admin.resources[resource];
-    if (canReplyWithCache(type, payload, resourceState)) {
-        return answerWithCache({
-            type,
-            payload,
-            resource,
-            action,
-            rest,
-            onSuccess,
-            resourceState,
-            dispatch,
-        });
-    } else if (mutationMode === 'optimistic') {
+    if (mutationMode === 'optimistic') {
         return performOptimisticQuery({
             type,
             payload,
