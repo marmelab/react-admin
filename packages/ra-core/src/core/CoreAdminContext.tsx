@@ -40,6 +40,8 @@ export interface AdminContextProps {
     theme?: object;
 }
 
+const defaultQueryClient = new QueryClient();
+
 const CoreAdminContext = (props: AdminContextProps) => {
     const {
         authProvider,
@@ -48,7 +50,7 @@ const CoreAdminContext = (props: AdminContextProps) => {
         children,
         history,
         customReducers,
-        queryClient = new QueryClient(),
+        queryClient = defaultQueryClient,
         initialState,
     } = props;
     const reduxIsAlreadyInitialized = !!useContext(ReactReduxContext);

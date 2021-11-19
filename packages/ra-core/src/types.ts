@@ -177,8 +177,8 @@ export interface GetManyReferenceResult<RecordType extends Record = Record> {
 
 export interface UpdateParams<T = any> {
     id: Identifier;
-    data: T;
-    previousData: Record;
+    data: Partial<T>;
+    previousData: T;
 }
 export interface UpdateResult<RecordType extends Record = Record> {
     data: RecordType;
