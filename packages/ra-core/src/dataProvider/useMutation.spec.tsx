@@ -6,6 +6,7 @@ import Mutation from './Mutation';
 import { CoreAdmin, Resource } from '../core';
 import { renderWithRedux } from 'ra-test';
 import { DataProviderContext } from '.';
+import useMutation from './useMutation';
 
 describe('useMutation', () => {
     it('should pass a callback to trigger the mutation', () => {
@@ -263,5 +264,47 @@ describe('useMutation', () => {
         expect(promise).toBeInstanceOf(Promise);
         const result = await promise;
         expect(result).toMatchObject({ data: { foo: 'bar' } });
+    });
+
+    it('should return a response when returnPromise option is set at definition and the query is passed al callTime', async () => {
+        const MutationComponent = ({ query = undefined, options, children }) =>
+            children(...useMutation(query, options));
+        const dataProvider = {
+            mytype: jest.fn(() => Promise.resolve({ data: { foo: 'bar' } })),
+        };
+
+        let response = null;
+        const myPayload = {};
+        const { getByText, dispatch } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <MutationComponent options={{ returnPromise: true }}>
+                    {(mutate, { loading }) => (
+                        <button
+                            className={loading ? 'loading' : 'idle'}
+                            onClick={async () =>
+                                (response = await mutate({
+                                    type: 'mytype',
+                                    resource: 'myresource',
+                                    payload: myPayload,
+                                }))
+                            }
+                        >
+                            Hello
+                        </button>
+                    )}
+                </MutationComponent>
+            </DataProviderContext.Provider>
+        );
+        const buttonElement = getByText('Hello');
+        fireEvent.click(buttonElement);
+        const action = dispatch.mock.calls[0][0];
+        expect(action.type).toEqual('CUSTOM_FETCH');
+        expect(action.payload).toEqual(myPayload);
+        expect(action.meta.resource).toEqual('myresource');
+        await waitFor(() => {
+            expect(buttonElement.className).toEqual('idle');
+        });
+
+        expect(response).toMatchObject({ data: { foo: 'bar' } });
     });
 });
