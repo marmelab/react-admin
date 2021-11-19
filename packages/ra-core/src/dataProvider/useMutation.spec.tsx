@@ -266,7 +266,7 @@ describe('useMutation', () => {
         expect(result).toMatchObject({ data: { foo: 'bar' } });
     });
 
-    it('should return a response when returnPromise option is set and the query is passed al callTime', async () => {
+    it('should return a response when returnPromise option is set at definition and the query is passed al callTime', async () => {
         const MutationComponent = ({ query = undefined, options, children }) =>
             children(...useMutation(query, options));
         const dataProvider = {
