@@ -85,7 +85,12 @@ export const TestContext = (props: TestContextProps) => {
 
     return (
         <Provider store={storeWithDefault.current}>
-            <Router history={history.current}>{renderChildren()}</Router>
+            <Router
+                location={history.current.location}
+                navigator={history.current}
+            >
+                {renderChildren()}
+            </Router>
         </Provider>
     );
 };
