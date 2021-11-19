@@ -34,7 +34,7 @@ export const Resource = (props: ResourceProps) => {
                     )}
                     {list && (
                         <Route
-                            index
+                            path="/*"
                             element={<WithPermissions component={list} />}
                         />
                     )}
