@@ -1,5 +1,10 @@
 import React from 'react';
-import { Admin as RaAdmin, AdminProps, Resource } from 'react-admin';
+import {
+    Admin as RaAdmin,
+    AdminProps,
+    Resource,
+    CustomRoutes,
+} from 'react-admin';
 import localStorageDataProvider from 'ra-data-local-storage';
 import { Create, Edit, List, Show } from './builders';
 import {
@@ -10,15 +15,6 @@ import {
 import { Layout, Ready } from './ui';
 import { Route } from 'react-router';
 import { useApplication } from './ApplicationContext';
-
-const customRoutes = [
-    <Route
-        path="/configure/:resource"
-        render={({ match }) => (
-            <ResourceConfigurationPage resource={match.params.resource} />
-        )}
-    />,
-];
 
 export const Admin = (props: Omit<AdminProps, 'dataProvider'>) => {
     const { application } = useApplication();
@@ -46,12 +42,13 @@ const InnerAdmin = (props: AdminProps) => {
     const [resources] = useResourcesConfiguration();
     const hasResources = !!resources && Object.keys(resources).length > 0;
     return (
-        <RaAdmin
-            ready={Ready}
-            layout={Layout}
-            customRoutes={customRoutes}
-            {...props}
-        >
+        <RaAdmin ready={Ready} layout={Layout} {...props}>
+            <CustomRoutes>
+                <Route
+                    path="/configure/:resource"
+                    element={<ResourceConfigurationPage />}
+                />
+            </CustomRoutes>
             {hasResources
                 ? Object.keys(resources).map(resource => (
                       <Resource
