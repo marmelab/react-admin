@@ -21,7 +21,7 @@ import {
 } from 'react-admin';
 
 const StyledReferenceInput = styled(ReferenceInput)({
-    'min-width': 100,
+    'min-width': 99,
 });
 
 const postFilters = [
