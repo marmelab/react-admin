@@ -4,7 +4,7 @@ import { renderWithRedux } from 'ra-test';
 import { useNotify } from './index';
 
 const Notification = ({
-    type,
+    type = undefined,
     message,
     undoable = false,
     autoHideDuration = 4000,
@@ -55,6 +55,17 @@ describe('useNotify', () => {
                 message="Notification message"
                 autoHideDuration={4000}
                 shortSignature
+            />
+        );
+
+        expect(dispatch).toHaveBeenCalledTimes(1);
+    });
+
+    it('should show a notification when no type is assigned', () => {
+        const { dispatch } = renderWithRedux(
+            <Notification
+                message="Notification message"
+                autoHideDuration={4000}
             />
         );
 

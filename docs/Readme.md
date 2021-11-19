@@ -150,6 +150,10 @@ The [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise) <img cl
 
 [![React-admin enterprise Edition](https://marmelab.com/ra-enterprise/assets/ra-enterprise-demo.png)](https://marmelab.com/ra-enterprise/)
 
+## Carbon Footprint
+
+Working towards digital sustainability is a crucial goal for the react-admin core team (and [a formal commitment](https://marmelab.com/en/values) for our sponsor, Marmelab). We monitor the carbon footprint of example react-admin apps with [GreenFrame](https://greenframe.io) to avoid adding features with a high ecological footprint. This also leads us to add features that reduce this footprint (like application cache or optimistic rendering). As a consequence, react-admin is not only fast but also respectful of the environment. Apps built with react-admin usually emit less carbon than apps built with other frameworks. 
+
 ## Contributing
 
 If you want to give a hand: Thank you! There are many things you can do to help making react-admin better. 

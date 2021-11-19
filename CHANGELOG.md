@@ -1,5 +1,29 @@
 # Changelog
 
+## v3.19.1
+
+* Fix sidebar is displayed over the content ([#6723](https://github.com/marmelab/react-admin/pull/6723)) ([djhi](https://github.com/djhi))
+* Fix `warnWhenUnsavedChanges` warns too often ([#6719](https://github.com/marmelab/react-admin/pull/6719)) ([djhi](https://github.com/djhi))
+* Fix `useNotify` shows a warning if only one argument is passed ([#6760](https://github.com/marmelab/react-admin/pull/6760)) ([WiXSL](https://github.com/WiXSL))
+* Fix runtime error when type is not supplied to `useNotify` ([#6713](https://github.com/marmelab/react-admin/pull/6713)) ([danielhusar](https://github.com/danielhusar))
+* Fix `notify` function when no type is passed ([#6768](https://github.com/marmelab/react-admin/pull/6768)) ([nidebo](https://github.com/nidebo))
+* Fix `<SimpleFormIterator>` transition animations on add and remove items ([#6871](https://github.com/marmelab/react-admin/pull/6871)) ([WiXSL](https://github.com/WiXSL))
+* Fix simple CodeSandbox ([#6781](https://github.com/marmelab/react-admin/pull/6781)) ([djhi](https://github.com/djhi))
+* Fix `<DateInput>` breaks `<SimpleFormIterator>` ([#6763](https://github.com/marmelab/react-admin/pull/6763)) ([djhi](https://github.com/djhi))
+* Fix `<Login>` page isn't customizable through MUI theme ([#6762](https://github.com/marmelab/react-admin/pull/6762)) ([djhi](https://github.com/djhi))
+* Fix call time parameters don't take priority in `useMutation` ([#6761](https://github.com/marmelab/react-admin/pull/6761)) ([djhi](https://github.com/djhi))
+* Bump minor dependencies
+* [TypeScript] Fix Graphql Providers Types ([#6724](https://github.com/marmelab/react-admin/pull/6724)) ([djhi](https://github.com/djhi))
+* [TypeScript] Make `previousData` of `DeleteParams` optional ([#6536](https://github.com/marmelab/react-admin/pull/6536)) ([m0rtalis](https://github.com/m0rtalis))
+* [Doc] Add GeoServer data provider ([#6778](https://github.com/marmelab/react-admin/pull/6778)) ([sergioedo](https://github.com/sergioedo))
+* [Doc] Add paragraph about carbon footprint in README ([#6774](https://github.com/marmelab/react-admin/pull/6774)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add link to images in tutorial ([#6771](https://github.com/marmelab/react-admin/pull/6771)) ([ocxers](https://github.com/ocxers))
+* [Doc] Fix typo in Architecture chapter ([#6740](https://github.com/marmelab/react-admin/pull/6740)) ([HobbitCodes](https://github.com/HobbitCodes))
+* [Doc] Fix typo in Theming chapter ([#6714](https://github.com/marmelab/react-admin/pull/6714)) ([afilp](https://github.com/afilp))
+* Fix MUI's urls reference for version 4 ([#6702](https://github.com/marmelab/react-admin/pull/6702)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add `getIdentity` function to the authProvider reference ([#6697](https://github.com/marmelab/react-admin/pull/6697)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Improve `useRedirect` description and examples ([#6696](https://github.com/marmelab/react-admin/pull/6696)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.19.0
 
 ### 🚀 New Features

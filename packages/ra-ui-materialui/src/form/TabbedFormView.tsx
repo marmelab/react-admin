@@ -27,6 +27,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         basePath,
         children,
         className,
+        formRootPathname,
         handleSubmit,
         handleSubmitWithRedirect,
         invalid,

@@ -76,6 +76,50 @@ describe('useMutation', () => {
         expect(action.meta.meta).toEqual('baz');
     });
 
+    it('should use callTimeQuery over definition query', () => {
+        const dataProvider = {
+            mytype: jest.fn(() => Promise.resolve({ data: { foo: 'bar' } })),
+            callTimeType: jest.fn(() =>
+                Promise.resolve({ data: { foo: 'bar' } })
+            ),
+        };
+
+        const myPayload = { foo: 1 };
+        const { getByText, dispatch } = renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <Mutation
+                    type="mytype"
+                    resource="myresource"
+                    payload={myPayload}
+                >
+                    {mutate => (
+                        <button
+                            onClick={e =>
+                                mutate(
+                                    {
+                                        resource: 'callTimeResource',
+                                        type: 'callTimeType',
+                                        payload: { bar: 2 },
+                                    },
+                                    { meta: 'baz' }
+                                )
+                            }
+                        >
+                            Hello
+                        </button>
+                    )}
+                </Mutation>
+            </DataProviderContext.Provider>
+        );
+        fireEvent.click(getByText('Hello'));
+        const action = dispatch.mock.calls[0][0];
+        expect(action.payload).toEqual({ foo: 1, bar: 2 });
+        expect(action.meta.resource).toEqual('callTimeResource');
+        expect(action.meta.meta).toEqual('baz');
+        expect(dataProvider.mytype).not.toHaveBeenCalled();
+        expect(dataProvider.callTimeType).toHaveBeenCalled();
+    });
+
     it('should update the loading state when the mutation callback is triggered', () => {
         const dataProvider = {
             mytype: jest.fn(() => Promise.resolve({ data: { foo: 'bar' } })),

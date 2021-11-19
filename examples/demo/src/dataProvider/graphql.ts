@@ -2,14 +2,10 @@ import { ApolloQueryResult } from '@apollo/client';
 import buildApolloClient, {
     buildQuery as buildQueryFactory,
 } from 'ra-data-graphql-simple';
-import { BuildQuery } from 'ra-data-graphql';
+import { BuildQueryFactory } from 'ra-data-graphql';
 import { DataProvider, DELETE } from 'react-admin';
 import gql from 'graphql-tag';
-import {
-    IntrospectionField,
-    IntrospectionSchema,
-    IntrospectionType,
-} from 'graphql';
+import { IntrospectionType } from 'graphql';
 
 const getGqlResource = (resource: string) => {
     switch (resource) {
@@ -36,20 +32,7 @@ const getGqlResource = (resource: string) => {
     }
 };
 
-type IntrospectionResource = IntrospectionType & {
-    [key: string]: IntrospectionField;
-};
-
-interface IntrospectionResults {
-    types: IntrospectionType[];
-    queries: IntrospectionField[];
-    resources: IntrospectionResource[];
-    schema: IntrospectionSchema;
-}
-
-const customBuildQuery = (
-    introspectionResults: IntrospectionResults
-): BuildQuery => {
+const customBuildQuery: BuildQueryFactory = introspectionResults => {
     const buildQuery = buildQueryFactory(introspectionResults);
 
     return (type, resource, params) => {
