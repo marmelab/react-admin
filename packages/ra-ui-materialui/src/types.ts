@@ -6,8 +6,6 @@ import {
     SortPayload,
     FilterPayload,
     Record as RaRecord,
-    ResourceComponentProps,
-    ResourceComponentPropsWithId,
     MutationMode,
     OnSuccess,
     OnFailure,
@@ -15,7 +13,7 @@ import {
 } from 'ra-core';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
-export interface ListProps extends ResourceComponentProps {
+export interface ListProps {
     actions?: ReactElement | false;
     aside?: ReactElement;
     bulkActionButtons?: ReactElement | false;
@@ -29,18 +27,19 @@ export interface ListProps extends ResourceComponentProps {
     filters?: ReactElement | ReactElement[];
     pagination?: ReactElement | false;
     perPage?: number;
+    resource?: string;
     sort?: SortPayload;
     syncWithLocation?: boolean;
     title?: string | ReactElement;
 }
 
-export interface EditProps<RecordType extends RaRecord = RaRecord>
-    extends ResourceComponentPropsWithId {
+export interface EditProps<RecordType extends RaRecord = RaRecord> {
     actions?: ReactElement | false;
     aside?: ReactElement;
     classes?: any;
     className?: string;
     component?: ElementType;
+    id?: Identifier;
     mutationMode?: MutationMode;
     queryOptions?: UseQueryOptions<RecordType>;
     mutationOptions?: UseMutationOptions<
@@ -53,13 +52,14 @@ export interface EditProps<RecordType extends RaRecord = RaRecord>
     title?: string | ReactElement;
 }
 
-export interface CreateProps extends ResourceComponentProps {
+export interface CreateProps {
     actions?: ReactElement | false;
     aside?: ReactElement;
     classes?: any;
     className?: string;
     component?: ElementType;
     record?: Partial<RaRecord>;
+    resource?: string;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
     transform?: (data: RaRecord) => RaRecord | Promise<RaRecord>;

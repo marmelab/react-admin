@@ -18,7 +18,13 @@ import {
     RedirectionSideEffect,
     useTranslate,
 } from 'ra-core';
-import { LocationDescriptor } from 'history';
+import { Path } from 'react-router';
+
+export type LocationDescriptor = Partial<Path> & {
+    redirect?: boolean;
+    state?: any;
+    replace?: boolean;
+};
 
 /**
  * A generic Button with side icon. Only the icon is displayed on small screens.
@@ -42,9 +48,11 @@ export const Button = (props: ButtonProps) => {
         label,
         color = 'primary',
         size = 'small',
+        to: locationDescriptor,
         ...rest
     } = props;
     const translate = useTranslate();
+    const linkParams = getLinkParams(locationDescriptor);
 
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
@@ -59,6 +67,7 @@ export const Button = (props: ButtonProps) => {
                     className={className}
                     color={color}
                     {...restProps}
+                    {...linkParams}
                     size="large"
                 >
                     {children}
@@ -70,6 +79,7 @@ export const Button = (props: ButtonProps) => {
                 color={color}
                 disabled={disabled}
                 {...restProps}
+                {...linkParams}
                 size="large"
             >
                 {children}
@@ -83,6 +93,7 @@ export const Button = (props: ButtonProps) => {
             aria-label={label ? translate(label, { _: label }) : undefined}
             disabled={disabled}
             {...restProps}
+            {...linkParams}
         >
             {alignIcon === 'left' &&
                 children &&
@@ -196,3 +207,19 @@ const StyledButton = styled(MuiButton, { name: PREFIX })({
         fontSize: 24,
     },
 });
+
+const getLinkParams = (
+    locationDescriptor: LocationDescriptor | string = {}
+) => {
+    if (typeof locationDescriptor === 'string') {
+        return { to: locationDescriptor };
+    }
+
+    const { redirect, replace, state, ...to } = locationDescriptor;
+    return {
+        to,
+        redirect,
+        replace,
+        state,
+    };
+};
