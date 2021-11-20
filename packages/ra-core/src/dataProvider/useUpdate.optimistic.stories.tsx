@@ -42,12 +42,13 @@ export const SuccessCase = () => {
 const SuccessCore = () => {
     const [success, setSuccess] = useState<string>();
     const { data, refetch } = useGetOne('posts', 1);
-    const mutation = useUpdate('posts', undefined, undefined, undefined, {
+    const mutation = useUpdate(undefined, undefined, undefined, undefined, {
         mutationMode: 'optimistic',
     });
     const handleClick = () => {
         mutation.mutate(
             {
+                resource: 'posts',
                 id: 1,
                 data: { title: 'Hello World' },
             },
@@ -109,12 +110,13 @@ const ErrorCore = () => {
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<any>();
     const { data, refetch } = useGetOne('posts', 1);
-    const mutation = useUpdate('posts', undefined, undefined, undefined, {
+    const mutation = useUpdate(undefined, undefined, undefined, undefined, {
         mutationMode: 'optimistic',
     });
     const handleClick = () => {
         mutation.mutate(
             {
+                resource: 'posts',
                 id: 1,
                 data: { title: 'Hello World' },
             },

@@ -171,12 +171,6 @@ export const useEditController = <RecordType extends Record = Record>(
                                           },
                                       }
                                   );
-                                  if (
-                                      mutationMode === 'undoable' ||
-                                      mutationMode === 'pessimistic'
-                                  ) {
-                                      refresh();
-                                  }
                               },
                     }
                 )
