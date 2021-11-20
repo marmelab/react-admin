@@ -132,7 +132,7 @@ describe('useUpdate', () => {
                 </DataProviderContext.Provider>
             </QueryClientProvider>
         );
-        expect(sku).toBeNull();
+        expect(sku).toBeUndefined();
         localUpdate({
             resource: 'products',
             id: 1,

@@ -8,13 +8,7 @@ import {
 
 import useDataProvider from './useDataProvider';
 import undoableEventEmitter from './undoableEventEmitter';
-import {
-    Identifier,
-    Record,
-    UpdateParams,
-    UpdateResult,
-    MutationMode,
-} from '../types';
+import { Identifier, Record, UpdateParams, MutationMode } from '../types';
 
 /**
  * Get a callback to call the dataProvider.update() method, the result and the loading state.
@@ -115,7 +109,7 @@ export const useUpdate = <RecordType extends Record = Record>(
     let context: { previousGetOne?: any; previousGetList?: any } = {};
 
     const mutation = useMutation<
-        UpdateResult<RecordType>,
+        RecordType,
         unknown,
         Partial<UseUpdateParams<RecordType>>
     >(
@@ -125,11 +119,13 @@ export const useUpdate = <RecordType extends Record = Record>(
             data: callTimeData = data,
             previousData: callTimePreviousData = previousData,
         } = {}) => {
-            return dataProvider.update<RecordType>(callTimeResource, {
-                id: callTimeId,
-                data: callTimeData,
-                previousData: callTimePreviousData,
-            });
+            return dataProvider
+                .update<RecordType>(callTimeResource, {
+                    id: callTimeId,
+                    data: callTimeData,
+                    previousData: callTimePreviousData,
+                })
+                .then(({ data }) => data);
         },
         {
             ...reactMutationOptions,
@@ -179,7 +175,7 @@ export const useUpdate = <RecordType extends Record = Record>(
                 }
             },
             onSuccess: (
-                data: UpdateResult<RecordType>,
+                data: RecordType,
                 variables: Partial<UseUpdateParams<RecordType>> = {},
                 context: unknown
             ) => {
@@ -205,7 +201,7 @@ export const useUpdate = <RecordType extends Record = Record>(
                 }
             },
             onSettled: (
-                data: UpdateResult<RecordType>,
+                data: RecordType,
                 error: unknown,
                 variables: Partial<UseUpdateParams<RecordType>> = {},
                 context: unknown
@@ -245,7 +241,7 @@ export const useUpdate = <RecordType extends Record = Record>(
     const mutateAsync = async (
         variables: Partial<UseUpdateParams<RecordType>> = {},
         callTimeOptions: MutateOptions<
-            UpdateResult<RecordType>,
+            RecordType,
             unknown,
             Partial<UseUpdateParams<RecordType>>,
             unknown
@@ -364,7 +360,7 @@ export interface UseUpdateParams<RecordType extends Record = Record> {
 export type UseUpdateOptions<
     RecordType extends Record = Record
 > = UseMutationOptions<
-    UpdateResult<RecordType>,
+    RecordType,
     unknown,
     Partial<UpdateParams<RecordType>>
 > & { mutationMode?: MutationMode };
@@ -372,7 +368,7 @@ export type UseUpdateOptions<
 export type UseUpdateResult<
     RecordType extends Record = Record
 > = UseMutationResult<
-    UpdateResult<RecordType>,
+    RecordType,
     unknown,
     Partial<UpdateParams<RecordType> & { resource?: string }>,
     unknown

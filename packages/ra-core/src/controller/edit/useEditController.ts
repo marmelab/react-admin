@@ -9,7 +9,6 @@ import {
     MutationMode,
     OnSuccess,
     OnFailure,
-    UpdateResult,
     UpdateParams,
 } from '../../types';
 import {
@@ -215,7 +214,7 @@ export interface EditControllerProps<RecordType extends Record = Record> {
     mutationMode?: MutationMode;
     queryOptions?: UseQueryOptions<RecordType>;
     mutationOptions?: UseMutationOptions<
-        UpdateResult<RecordType>,
+        RecordType,
         unknown,
         UpdateParams<RecordType>
     >;
