@@ -103,10 +103,7 @@ export const useEditController = <RecordType extends Record = Record>(
     });
 
     const { mutate, isLoading: saving } = useUpdate<RecordType>(
-        resource,
-        id,
-        undefined, // set by the caller
-        record,
+        { resource, id, previousData: record },
         { ...mutationOptions, mutationMode }
     );
 
@@ -153,7 +150,7 @@ export const useEditController = <RecordType extends Record = Record>(
                             ? onFailureFromSave
                             : onFailureRef.current
                             ? onFailureRef.current
-                            : error => {
+                            : (error: Error | string) => {
                                   notify(
                                       typeof error === 'string'
                                           ? error

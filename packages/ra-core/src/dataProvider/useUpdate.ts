@@ -68,16 +68,9 @@ import {
  *                    \-- data is Product
  */
 export const useUpdate = <RecordType extends Record = Record>(
-    resource?: string,
-    id?: Identifier,
-    data?: Partial<RecordType>,
-    previousData?: any,
-    options?: UseMutationOptions<
-        UpdateResult<RecordType>,
-        unknown,
-        Partial<UpdateParams<RecordType>>
-    > & { mutationMode?: MutationMode }
-): UseUpdateHookValue<RecordType> => {
+    { resource, id, data, previousData }: UseUpdateHookParams<RecordType> = {},
+    options?: UseUpdateHookOptions<RecordType>
+): UseUpdateHookResult<RecordType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const { mutationMode = 'optimistic', ...reactMutationOptions } =
@@ -122,7 +115,7 @@ export const useUpdate = <RecordType extends Record = Record>(
     const mutation = useMutation<
         UpdateResult<RecordType>,
         unknown,
-        Partial<UpdateParams<RecordType> & { resource: string }>
+        Partial<UseUpdateHookParams<RecordType>>
     >(
         ({
             resource: callTimeResource,
@@ -156,9 +149,7 @@ export const useUpdate = <RecordType extends Record = Record>(
             },
             onError: (
                 error: unknown,
-                variables: Partial<
-                    UpdateParams<RecordType> & { resource: string }
-                >,
+                variables: Partial<UseUpdateHookParams<RecordType>>,
                 context: { previousGetOne: any; previousGetList: any }
             ) => {
                 const {
@@ -194,7 +185,7 @@ export const useUpdate = <RecordType extends Record = Record>(
             },
             onSuccess: (
                 data: UpdateResult<RecordType>,
-                variables: UpdateParams<RecordType> & { resource: string },
+                variables: Partial<UseUpdateHookParams<RecordType>>,
                 context: unknown
             ) => {
                 if (mutationMode === 'pessimistic') {
@@ -222,9 +213,7 @@ export const useUpdate = <RecordType extends Record = Record>(
             onSettled: (
                 data: UpdateResult<RecordType>,
                 error: unknown,
-                variables: Partial<
-                    UpdateParams<RecordType> & { resource: string }
-                >,
+                variables: Partial<UseUpdateHookParams<RecordType>>,
                 context: unknown
             ) => {
                 const {
@@ -260,11 +249,11 @@ export const useUpdate = <RecordType extends Record = Record>(
     );
 
     const mutateAsync = async (
-        variables: Partial<UpdateParams<RecordType> & { resource: string }>,
+        variables: Partial<UseUpdateHookParams<RecordType>>,
         callTimeOptions: MutateOptions<
             UpdateResult<RecordType>,
             unknown,
-            Partial<UpdateParams<RecordType> & { resource: string }>,
+            Partial<UseUpdateHookParams<RecordType>>,
             unknown
         > = {}
     ) => {
@@ -370,7 +359,7 @@ export const useUpdate = <RecordType extends Record = Record>(
         ...mutation,
         mutateAsync,
         mutate: (
-            variables: Partial<UpdateParams<RecordType> & { resource: string }>,
+            variables: Partial<UseUpdateHookParams<RecordType>>,
             options
         ) => {
             mutateAsync(variables, options);
@@ -378,7 +367,22 @@ export const useUpdate = <RecordType extends Record = Record>(
     };
 };
 
-export type UseUpdateHookValue<
+export interface UseUpdateHookParams<RecordType extends Record = Record> {
+    resource?: string;
+    id?: Identifier;
+    data?: Partial<RecordType>;
+    previousData?: any;
+}
+
+export type UseUpdateHookOptions<
+    RecordType extends Record = Record
+> = UseMutationOptions<
+    UpdateResult<RecordType>,
+    unknown,
+    Partial<UpdateParams<RecordType>>
+> & { mutationMode?: MutationMode };
+
+export type UseUpdateHookResult<
     RecordType extends Record = Record
 > = UseMutationResult<
     UpdateResult<RecordType>,

@@ -42,7 +42,7 @@ export const SuccessCase = () => {
 const SuccessCore = () => {
     const [success, setSuccess] = useState<string>();
     const { data, refetch } = useGetOne('posts', 1);
-    const mutation = useUpdate(undefined, undefined, undefined, undefined, {
+    const mutation = useUpdate(undefined, {
         mutationMode: 'optimistic',
     });
     const handleClick = () => {
@@ -110,7 +110,7 @@ const ErrorCore = () => {
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<any>();
     const { data, refetch } = useGetOne('posts', 1);
-    const mutation = useUpdate(undefined, undefined, undefined, undefined, {
+    const mutation = useUpdate(undefined, {
         mutationMode: 'optimistic',
     });
     const handleClick = () => {
