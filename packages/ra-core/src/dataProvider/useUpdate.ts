@@ -247,96 +247,92 @@ export const useUpdate = <RecordType extends Record = Record>(
             unknown
         > = {}
     ) => {
+        if (mutationMode === 'pessimistic') {
+            return mutation.mutateAsync(variables, callTimeOptions);
+        }
+
         const { onSuccess, onSettled, onError } = callTimeOptions;
         const {
             resource: callTimeResource = resource,
             id: callTimeId = id,
             data: callTimeData = data,
         } = variables;
-        if (mutationMode === 'optimistic' || mutationMode === 'undoable') {
-            // optimistic update as documented in https://react-query.tanstack.com/guides/optimistic-updates
-            // except we wo it in a mutate wrapper instead of the onMutete callback
-            // to have access to success side effects
 
-            // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
-            await queryClient.cancelQueries([
-                callTimeResource,
-                'getOne',
-                callTimeId,
-            ]);
-            await queryClient.cancelQueries([resource, 'getList']);
+        // optimistic update as documented in https://react-query.tanstack.com/guides/optimistic-updates
+        // except we wo it in a mutate wrapper instead of the onMutete callback
+        // to have access to success side effects
 
-            // Snapshot the previous values
-            const previousGetOne = queryClient.getQueryData([
-                callTimeResource,
-                'getOne',
-                callTimeId,
-            ]);
-            const previousGetList = queryClient.getQueriesData([
-                callTimeResource,
-                'getList',
-            ]);
+        // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+        await queryClient.cancelQueries([
+            callTimeResource,
+            'getOne',
+            callTimeId,
+        ]);
+        await queryClient.cancelQueries([resource, 'getList']);
 
-            // Optimistically update to the new value in getOne
-            await updateCache({
-                resource: callTimeResource,
-                id: callTimeId,
-                data: callTimeData,
-            });
+        // Snapshot the previous values
+        const previousGetOne = queryClient.getQueryData([
+            callTimeResource,
+            'getOne',
+            callTimeId,
+        ]);
+        const previousGetList = queryClient.getQueriesData([
+            callTimeResource,
+            'getList',
+        ]);
 
-            context = { previousGetOne, previousGetList };
+        // Optimistically update to the new value in getOne
+        await updateCache({
+            resource: callTimeResource,
+            id: callTimeId,
+            data: callTimeData,
+        });
 
-            // run the success callbacks during the next tick
-            if (onSuccess) {
-                setTimeout(
-                    () =>
-                        onSuccess(
-                            queryClient.getQueryData([
-                                callTimeResource,
-                                'getOne',
-                                callTimeId,
-                            ]),
-                            variables,
-                            context
-                        ),
-                    0
-                );
-            }
+        context = { previousGetOne, previousGetList };
 
-            if (mutationMode === 'optimistic') {
-                // call the mutate without success side effects
-                return mutation.mutateAsync(variables, {
-                    onSettled,
-                    onError,
-                });
-            } else {
-                // undoable mutation: register the mutation for later
-                undoableEventEmitter.once('end', ({ isUndo }) => {
-                    if (isUndo) {
-                        // rollback
-                        queryClient.setQueryData(
-                            [callTimeResource, 'getOne', callTimeId],
-                            context.previousGetOne
-                        );
-                        queryClient.setQueriesData(
-                            [callTimeResource, 'getList'],
-                            context.previousGetList
-                        );
-                    } else {
-                        // commit
-                        mutation.mutateAsync(variables, {
-                            onSettled,
-                            onError,
-                        });
-                    }
-                });
-            }
-        } else {
-            // pessimistic mode, just call the mutation
+        // run the success callbacks during the next tick
+        if (onSuccess) {
+            setTimeout(
+                () =>
+                    onSuccess(
+                        queryClient.getQueryData([
+                            callTimeResource,
+                            'getOne',
+                            callTimeId,
+                        ]),
+                        variables,
+                        context
+                    ),
+                0
+            );
+        }
+
+        if (mutationMode === 'optimistic') {
+            // call the mutate without success side effects
             return mutation.mutateAsync(variables, {
-                onSuccess,
                 onSettled,
                 onError,
+            });
+        } else {
+            // undoable mutation: register the mutation for later
+            undoableEventEmitter.once('end', ({ isUndo }) => {
+                if (isUndo) {
+                    // rollback
+                    queryClient.setQueryData(
+                        [callTimeResource, 'getOne', callTimeId],
+                        context.previousGetOne
+                    );
+                    queryClient.setQueriesData(
+                        [callTimeResource, 'getList'],
+                        context.previousGetList
+                    );
+                } else {
+                    // commit
+                    mutation.mutateAsync(variables, {
+                        onSettled,
+                        onError,
+                    });
+                }
             });
         }
     };
@@ -345,7 +341,7 @@ export const useUpdate = <RecordType extends Record = Record>(
         ...mutation,
         mutateAsync,
         mutate: (variables: Partial<UseUpdateParams<RecordType>>, options) => {
-            mutateAsync(variables, options);
+            mutateAsync(variables, options).catch(() => {});
         },
     };
 };
