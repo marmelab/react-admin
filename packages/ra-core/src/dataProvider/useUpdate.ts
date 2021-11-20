@@ -328,10 +328,12 @@ export const useUpdate = <RecordType extends Record = Record>(
                     );
                 } else {
                     // commit
-                    mutation.mutateAsync(variables, {
-                        onSettled,
-                        onError,
-                    });
+                    mutation
+                        .mutateAsync(variables, {
+                            onSettled,
+                            onError,
+                        })
+                        .catch(() => {});
                 }
             });
         }

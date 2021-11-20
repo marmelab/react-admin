@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { QueryClientProvider, QueryClient } from 'react-query';
+import { QueryClientProvider, QueryClient, useIsMutating } from 'react-query';
 import { TestContext } from 'ra-test';
 import DataProviderContext from './DataProviderContext';
 import { useUpdate } from './useUpdate';
@@ -40,6 +40,7 @@ export const SuccessCase = () => {
 };
 
 const SuccessCore = () => {
+    const isMutating = useIsMutating();
     const [success, setSuccess] = useState<string>();
     const { data, refetch } = useGetOne('posts', 1);
     const mutation = useUpdate(undefined, {
@@ -73,6 +74,7 @@ const SuccessCore = () => {
                 <button onClick={() => refetch()}>Refetch</button>
             </div>
             {success && <div>{success}</div>}
+            {isMutating !== 0 && <div>mutating</div>}
         </>
     );
 };
@@ -107,6 +109,7 @@ export const ErrorCase = () => {
 };
 
 const ErrorCore = () => {
+    const isMutating = useIsMutating();
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<any>();
     const { data, refetch } = useGetOne('posts', 1);
@@ -144,6 +147,7 @@ const ErrorCore = () => {
             </div>
             {error && <div>{error.message}</div>}
             {success && <div>{success}</div>}
+            {isMutating !== 0 && <div>mutating</div>}
         </>
     );
 };

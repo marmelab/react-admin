@@ -11,6 +11,14 @@ import {
     ErrorCase as ErrorCasePessimistic,
     SuccessCase as SuccessCasePessimistic,
 } from './useUpdate.pessimistic.stories';
+import {
+    ErrorCase as ErrorCaseOptimistic,
+    SuccessCase as SuccessCaseOptimistic,
+} from './useUpdate.optimistic.stories';
+import {
+    ErrorCase as ErrorCaseUndoable,
+    SuccessCase as SuccessCaseUndoable,
+} from './useUpdate.undoable.stories';
 
 describe('useUpdate', () => {
     describe('mutate', () => {
@@ -165,10 +173,12 @@ describe('useUpdate', () => {
             await waitFor(() => {
                 expect(screen.queryByText('success')).toBeNull();
                 expect(screen.queryByText('Hello World')).toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
             });
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
                 expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
             });
         });
         it('when pessimistic, displays error and error side effects when dataProvider promise rejects', async () => {
@@ -180,6 +190,7 @@ describe('useUpdate', () => {
                 expect(screen.queryByText('success')).toBeNull();
                 expect(screen.queryByText('something went wrong')).toBeNull();
                 expect(screen.queryByText('Hello World')).toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
             });
             await waitFor(() => {
                 expect(screen.queryByText('success')).toBeNull();
@@ -187,7 +198,104 @@ describe('useUpdate', () => {
                     screen.queryByText('something went wrong')
                 ).not.toBeNull();
                 expect(screen.queryByText('Hello World')).toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+        it('when optimistic, displays result and success side effects right away', async () => {
+            jest.spyOn(console, 'log').mockImplementation(() => {});
+            renderWithRedux(<SuccessCaseOptimistic />);
+            screen.getByText('Update title').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+        it('when optimistic, displays error and error side effects when dataProvider promise rejects', async () => {
+            jest.spyOn(console, 'log').mockImplementation(() => {});
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            renderWithRedux(<ErrorCaseOptimistic />);
+            screen.getByText('Update title').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(
+                    screen.queryByText('something went wrong')
+                ).not.toBeNull();
+                expect(screen.queryByText('Hello World')).toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+        it('when undoable, displays result and success side effects right away and fetched on confirm', async () => {
+            jest.spyOn(console, 'log').mockImplementation(() => {});
+            renderWithRedux(<SuccessCaseUndoable />);
+            screen.getByText('Update title').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+            screen.getByText('Confirm').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+        it('when undoable, displays result and success side effects right away and reverts on cancel', async () => {
+            jest.spyOn(console, 'log').mockImplementation(() => {});
+            renderWithRedux(<SuccessCaseUndoable />);
+            screen.getByText('Update title').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+            screen.getByText('Cancel').click();
+            await waitFor(() => {
+                expect(screen.queryByText('Hello World')).toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+        it('when undoable,  displays result and success side effects right away and reverts on error', async () => {
+            jest.spyOn(console, 'log').mockImplementation(() => {});
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            renderWithRedux(<ErrorCaseUndoable />);
+            screen.getByText('Update title').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+            screen.getByText('Confirm').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(screen.queryByText('Hello World')).toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
             });
         });
     });
+});
+
+afterEach(() => {
+    jest.restoreAllMocks();
 });

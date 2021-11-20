@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { QueryClientProvider, QueryClient } from 'react-query';
+import { QueryClientProvider, QueryClient, useIsMutating } from 'react-query';
 import { TestContext } from 'ra-test';
 
 import undoableEventEmitter from './undoableEventEmitter';
@@ -42,6 +42,7 @@ export const SuccessCase = () => {
 };
 
 const SuccessCore = () => {
+    const isMutating = useIsMutating();
     const [notification, setNotification] = useState<boolean>(false);
     const [success, setSuccess] = useState<string>();
     const { data, refetch } = useGetOne('posts', 1);
@@ -102,8 +103,8 @@ const SuccessCore = () => {
                 &nbsp;
                 <button onClick={() => refetch()}>Refetch</button>
             </div>
-
             {success && <div>{success}</div>}
+            {isMutating !== 0 && <div>mutating</div>}
         </>
     );
 };
@@ -138,6 +139,7 @@ export const ErrorCase = () => {
 };
 
 const ErrorCore = () => {
+    const isMutating = useIsMutating();
     const [notification, setNotification] = useState<boolean>(false);
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<any>();
@@ -205,6 +207,7 @@ const ErrorCore = () => {
             </div>
             {success && <div>{success}</div>}
             {error && <div>{error.message}</div>}
+            {isMutating !== 0 && <div>mutating</div>}
         </>
     );
 };
