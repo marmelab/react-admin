@@ -1,7 +1,7 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import { Tabs, Tab, Toolbar, AppBar, Box, Typography } from '@mui/material';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link, matchPath, useLocation } from 'react-router-dom';
 import { UserMenu, Logout, LoadingIndicator } from 'react-admin';
 
 const PREFIX = 'Header';
@@ -22,8 +22,17 @@ const Root = styled('nav')({
 });
 
 const Header = () => {
-    const match = useRouteMatch(['/contacts', '/companies', '/deals']);
-    const currentPath = match?.path ?? '/';
+    const location = useLocation();
+    const matchContacts = matchPath('/contacts/*', location.pathname);
+    const matchCompanies = matchPath('/companies/*', location.pathname);
+    const matchDeals = matchPath('/deals/*', location.pathname);
+    const currentPath = !!matchContacts?.pathname
+        ? '/contacts'
+        : !!matchCompanies?.pathname
+        ? '/companies'
+        : !!matchDeals?.pathname
+        ? '/deals'
+        : '/';
 
     return (
         <Root className={classes.root}>

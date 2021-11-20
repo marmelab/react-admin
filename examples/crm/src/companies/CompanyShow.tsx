@@ -202,10 +202,8 @@ const ContactsIterator = () => {
 const CreateRelatedContactButton = ({ record }: any) => (
     <Button
         component={RouterLink}
-        to={{
-            pathname: '/contacts/create',
-            state: { record: { company_id: record.id } },
-        }}
+        to="/contacts/create"
+        state={{ record: { company_id: record.id } }}
         color="primary"
         variant="contained"
         size="small"
