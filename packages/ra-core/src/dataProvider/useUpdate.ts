@@ -26,7 +26,7 @@ import {
  * - success: { mutate, data: [data from response], isLoading: false, isSuccess: true }
  * - error:   { mutate, error: [error from response], isLoading: false, isError: true }
  *
- * @param {Params} params The update parameters
+ * @param {Params} params The update parameters { resource, id, data, previousData }
  * @param {Object} options Options object to pass to the dataProvider. May include side effects to be executed upon success or failure, e.g. { onSuccess: { refresh: true } }
  *
  * @typedef Params
@@ -34,11 +34,12 @@ import {
  * @props params.id The resource identifier, e.g. 123
  * @props params.data The updates to merge into the record, e.g. { views: 10 }
  * @props params.previousData The record before the update is applied
+ *
  * @returns The current mutation state. Destructure as { mutate, data, error, isLoading }.
  *
- * @see https://react-query.tanstack.com/reference/useMutation
+ * The mutate() function must be called with a parameter object: mutate({ resource, id, data, previousData }, options)
  *
- * The update() function must be called with a parameter object: update({ resource, id, data, previousData }, options)
+ * @see https://react-query.tanstack.com/reference/useMutation
  *
  * @example // set params when calling the update callback
  *
@@ -66,7 +67,7 @@ import {
  * };
  *
  * @example // TypeScript
- * const { mutate, data } = useUpdate<Product>({ resource: 'products', id, data: changes, previousDate: product });
+ * const { mutate, data } = useUpdate<Product>({ resource: 'products', id, data: diff, previousData: product });
  *                    \-- data is Product
  */
 export const useUpdate = <RecordType extends Record = Record>(
@@ -75,7 +76,7 @@ export const useUpdate = <RecordType extends Record = Record>(
 ): UseUpdateResult<RecordType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const { mutationMode = 'optimistic', ...reactMutationOptions } = options;
+    const { mutationMode = 'pessimistic', ...reactMutationOptions } = options;
 
     const updateCache = async ({ resource, id, data }) => {
         // hack: only way to tell react-query not to fetch this query for the next 5 seconds
@@ -123,7 +124,7 @@ export const useUpdate = <RecordType extends Record = Record>(
             id: callTimeId = id,
             data: callTimeData = data,
             previousData: callTimePreviousData = previousData,
-        }) => {
+        } = {}) => {
             return dataProvider.update<RecordType>(callTimeResource, {
                 id: callTimeId,
                 data: callTimeData,
@@ -147,7 +148,7 @@ export const useUpdate = <RecordType extends Record = Record>(
             },
             onError: (
                 error: unknown,
-                variables: Partial<UseUpdateParams<RecordType>>,
+                variables: Partial<UseUpdateParams<RecordType>> = {},
                 context: { previousGetOne: any; previousGetList: any }
             ) => {
                 const {
@@ -179,7 +180,7 @@ export const useUpdate = <RecordType extends Record = Record>(
             },
             onSuccess: (
                 data: UpdateResult<RecordType>,
-                variables: Partial<UseUpdateParams<RecordType>>,
+                variables: Partial<UseUpdateParams<RecordType>> = {},
                 context: unknown
             ) => {
                 if (mutationMode === 'pessimistic') {
@@ -206,7 +207,7 @@ export const useUpdate = <RecordType extends Record = Record>(
             onSettled: (
                 data: UpdateResult<RecordType>,
                 error: unknown,
-                variables: Partial<UseUpdateParams<RecordType>>,
+                variables: Partial<UseUpdateParams<RecordType>> = {},
                 context: unknown
             ) => {
                 const {
@@ -242,7 +243,7 @@ export const useUpdate = <RecordType extends Record = Record>(
     );
 
     const mutateAsync = async (
-        variables: Partial<UseUpdateParams<RecordType>>,
+        variables: Partial<UseUpdateParams<RecordType>> = {},
         callTimeOptions: MutateOptions<
             UpdateResult<RecordType>,
             unknown,
