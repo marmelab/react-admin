@@ -3,6 +3,7 @@ import {
     useQueryClient,
     UseMutationOptions,
     UseMutationResult,
+    MutateOptions,
 } from 'react-query';
 
 import useDataProvider from './useDataProvider';
@@ -66,7 +67,7 @@ import {
  * const [update, { data }] = useUpdate<Product>('products', id, changes, product);
  *                    \-- data is Product
  */
-const useUpdate = <RecordType extends Record = Record>(
+export const useUpdate = <RecordType extends Record = Record>(
     resource?: string,
     id?: Identifier,
     data?: Partial<RecordType>,
@@ -82,13 +83,18 @@ const useUpdate = <RecordType extends Record = Record>(
     const { mutationMode = 'optimistic', ...reactMutationOptions } =
         options || {};
 
-    const updateCache = ({ id, data }) => {
-        queryClient.setQueryData(
+    const updateCache = async ({ id, data }) => {
+        // hack: only way to tell react-query not to fetch this query for the next 5 seconds
+        // because setQueryData doesn't accept a staletime option
+        const updatedAt =
+            mutationMode === 'undoable' ? Date.now() + 1000 * 5 : Date.now();
+        await queryClient.setQueryData(
             [resource, 'getOne', id],
             (old: RecordType) => ({
                 ...old,
                 ...data,
-            })
+            }),
+            { updatedAt }
         );
         queryClient.setQueriesData(
             [resource, 'getList'],
@@ -106,9 +112,12 @@ const useUpdate = <RecordType extends Record = Record>(
                     { ...old[index], ...data },
                     ...old.slice(index + 1),
                 ];
-            }
+            },
+            { updatedAt }
         );
     };
+
+    let context = {};
 
     const mutation = useMutation<
         UpdateResult<RecordType>,
@@ -132,62 +141,24 @@ const useUpdate = <RecordType extends Record = Record>(
         {
             ...reactMutationOptions,
             onMutate: async (variables: UpdateParams<RecordType>) => {
-                const { id: callTimeId, data: callTimeData } = variables;
-                if (
-                    mutationMode === 'optimistic' ||
-                    mutationMode === 'undoable'
-                ) {
-                    // optimistic update as documented in https://react-query.tanstack.com/guides/optimistic-updates
-
-                    // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
-                    await queryClient.cancelQueries([
-                        resource,
-                        'getOne',
-                        callTimeId || id,
-                    ]);
-                    await queryClient.cancelQueries([resource, 'getList']);
-
-                    // Snapshot the previous values
-                    const previousGetOne = queryClient.getQueryData([
-                        resource,
-                        'getOne',
-                        callTimeId || id,
-                    ]);
-                    const previousGetList = queryClient.getQueriesData([
-                        resource,
-                        'getList',
-                    ]);
-
-                    // Optimistically update to the new value in getOne
-                    updateCache({
-                        id: callTimeId || id,
-                        data: callTimeData || data,
-                    });
-
-                    // Return a context object with the snapshotted value
-                    if (reactMutationOptions.onMutate) {
-                        const userContext =
-                            (await reactMutationOptions.onMutate(variables)) ||
-                            {};
-                        return {
-                            previousGetOne,
-                            previousGetList,
-                            // @ts-ignore
-                            ...userContext,
-                        };
-                    }
-                    return { previousGetOne, previousGetList };
-                }
-
+                // Return a context object with the snapshotted value
                 if (reactMutationOptions.onMutate) {
-                    return reactMutationOptions.onMutate(variables);
+                    const userContext =
+                        (await reactMutationOptions.onMutate(variables)) || {};
+                    return {
+                        ...context,
+                        // @ts-ignore
+                        ...userContext,
+                    };
                 }
+                return context;
             },
             onError: (
                 error: unknown,
                 variables: Partial<UpdateParams<RecordType>>,
                 context: { previousGetOne: any; previousGetList: any }
             ) => {
+                console.log('onError');
                 const { id: callTimeId } = variables;
                 if (
                     mutationMode === 'optimistic' ||
@@ -217,6 +188,7 @@ const useUpdate = <RecordType extends Record = Record>(
                 variables: UpdateParams<RecordType>,
                 context: unknown
             ) => {
+                console.log('onSuccess');
                 if (mutationMode === 'pessimistic') {
                     // Optimistically update to the new value in getOne
                     const { id: callTimeId, data: callTimeData } = variables;
@@ -224,14 +196,14 @@ const useUpdate = <RecordType extends Record = Record>(
                         id: callTimeId || id,
                         data: callTimeData || data,
                     });
-                }
 
-                if (reactMutationOptions.onSuccess) {
-                    return reactMutationOptions.onSuccess(
-                        data,
-                        variables,
-                        context
-                    );
+                    if (reactMutationOptions.onSuccess) {
+                        return reactMutationOptions.onSuccess(
+                            data,
+                            variables,
+                            context
+                        );
+                    }
                 }
             },
             onSettled: (
@@ -240,6 +212,7 @@ const useUpdate = <RecordType extends Record = Record>(
                 variables: UpdateParams<RecordType>,
                 context: unknown
             ) => {
+                console.log('onSettled');
                 const { id: callTimeId } = variables;
                 if (
                     mutationMode === 'optimistic' ||
@@ -265,7 +238,94 @@ const useUpdate = <RecordType extends Record = Record>(
             },
         }
     );
-    return mutation;
+
+    const mutateAsync = async (
+        variables: UpdateParams<RecordType>,
+        callTimeOptions: MutateOptions<
+            UpdateResult<RecordType>,
+            unknown,
+            Partial<UpdateParams<RecordType>>,
+            unknown
+        > = {}
+    ) => {
+        const { onSuccess, onSettled, onError } = callTimeOptions;
+        console.log('preMutate');
+        const { id: callTimeId, data: callTimeData } = variables;
+        if (mutationMode === 'optimistic' || mutationMode === 'undoable') {
+            // optimistic update as documented in https://react-query.tanstack.com/guides/optimistic-updates
+            // except we wo it in a mutate rapper instead of the onMutete callback
+            // to have access to success side effects
+
+            // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+            await queryClient.cancelQueries([
+                resource,
+                'getOne',
+                callTimeId || id,
+            ]);
+            await queryClient.cancelQueries([resource, 'getList']);
+
+            // Snapshot the previous values
+            const previousGetOne = queryClient.getQueryData([
+                resource,
+                'getOne',
+                callTimeId || id,
+            ]);
+            const previousGetList = queryClient.getQueriesData([
+                resource,
+                'getList',
+            ]);
+
+            // Optimistically update to the new value in getOne
+            await updateCache({
+                id: callTimeId || id,
+                data: callTimeData || data,
+            });
+
+            context = { previousGetOne, previousGetList };
+
+            // run the success callbacks during the next tick
+            if (onSuccess) {
+                setTimeout(
+                    () =>
+                        onSuccess(
+                            queryClient.getQueryData([
+                                resource,
+                                'getOne',
+                                callTimeId || id,
+                            ]),
+                            variables,
+                            context
+                        ),
+                    0
+                );
+            }
+
+            if (mutationMode === 'optimistic') {
+                // call the mutate without success side effects
+                return mutation.mutateAsync(variables, {
+                    onSettled,
+                    onError,
+                });
+            } else {
+                // undoable mode
+            }
+        } else {
+            // pessimistic mode, just call the mutation
+            return mutation.mutateAsync(variables, {
+                onSuccess,
+                onSettled,
+                onError,
+            });
+        }
+    };
+
+    return {
+        ...mutation,
+        mutateAsync,
+        mutate: (variables: UpdateParams<RecordType>, options) => {
+            mutateAsync(variables, options);
+        },
+    };
 };
 
 export type UseUpdateHookValue<
@@ -276,5 +336,3 @@ export type UseUpdateHookValue<
     Partial<UpdateParams<RecordType>>,
     unknown
 >;
-
-export default useUpdate;

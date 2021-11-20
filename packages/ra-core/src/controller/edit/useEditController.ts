@@ -120,21 +120,7 @@ export const useEditController = <RecordType extends Record = Record>(
                 transform: transformFromSave,
             } = {}
         ) => {
-            const successSideEffect = onSuccessFromSave
-                ? onSuccessFromSave
-                : onSuccessRef.current
-                ? onSuccessRef.current
-                : () => {
-                      notify('ra.notification.updated', {
-                          type: 'info',
-                          messageArgs: {
-                              smart_count: 1,
-                          },
-                          undoable: mutationMode === 'undoable',
-                      });
-                      redirect(redirectTo, `/${resource}`, data.id, data);
-                  };
-            const promise = Promise.resolve(
+            return Promise.resolve(
                 transformFromSave
                     ? transformFromSave(data)
                     : transformRef.current
@@ -144,11 +130,25 @@ export const useEditController = <RecordType extends Record = Record>(
                 mutate(
                     { data },
                     {
-                        onSuccess:
-                            mutationMode === 'optimistic' ||
-                            mutationMode === 'undoable'
-                                ? undefined
-                                : successSideEffect,
+                        onSuccess: onSuccessFromSave
+                            ? onSuccessFromSave
+                            : onSuccessRef.current
+                            ? onSuccessRef.current
+                            : () => {
+                                  notify('ra.notification.updated', {
+                                      type: 'info',
+                                      messageArgs: {
+                                          smart_count: 1,
+                                      },
+                                      undoable: mutationMode === 'undoable',
+                                  });
+                                  redirect(
+                                      redirectTo,
+                                      `/${resource}`,
+                                      data.id,
+                                      data
+                                  );
+                              },
                         onError: onFailureFromSave
                             ? onFailureFromSave
                             : onFailureRef.current
@@ -181,11 +181,6 @@ export const useEditController = <RecordType extends Record = Record>(
                     }
                 )
             );
-            if (mutationMode === 'optimistic' || mutationMode === 'undoable') {
-                // if a redirect occurs before the mutation starts, the cached darra isn't updated yet
-                setTimeout(successSideEffect, 0);
-            }
-            return promise;
         },
         [
             transformRef,
