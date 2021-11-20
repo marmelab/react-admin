@@ -35,7 +35,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         pristine,
         record,
         redirect: defaultRedirect,
-        rootPath: rootPathFromProps,
         saving,
         submitOnEnter = true,
         syncWithLocation = true,
@@ -48,7 +47,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
     } = props;
     const location = useLocation();
     const resource = useResourceContext(props);
-    const rootPath = rootPathFromProps ?? getRootPath(location.pathname);
     const [tabValue, setTabValue] = useState(0);
 
     const handleTabChange = (event: ChangeEvent<{}>, value: any): void => {
@@ -68,7 +66,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                     classes: TabbedFormClasses,
                     onChange: handleTabChange,
                     syncWithLocation,
-                    url: rootPath,
+                    url: formRootPathname,
                     value: tabValue,
                 },
                 children
@@ -86,7 +84,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                     const tabPath = getTabbedFormTabFullPath(
                         tab,
                         index,
-                        rootPath
+                        formRootPathname
                     );
                     const hidden = syncWithLocation
                         ? !matchPath(tabPath, location.pathname)
@@ -169,7 +167,7 @@ export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
     mutationMode?: MutationMode;
     record?: Record;
     resource?: string;
-    rootPath?: string;
+    formRootPathname?: string;
     syncWithLocation?: boolean;
     tabs?: ReactElement;
     toolbar?: ReactElement;
@@ -223,18 +221,3 @@ const Root = styled('form', { name: PREFIX })(({ theme }) => ({
         paddingRight: theme.spacing(2),
     },
 }));
-
-const getRootPath = (path: string) => {
-    const createMatch = matchPath(':resource/create/*', path);
-    const editMatch = matchPath(':resource/:id/*', path);
-
-    if (createMatch) {
-        return createMatch.pathnameBase;
-    }
-
-    if (editMatch) {
-        return editMatch.pathnameBase;
-    }
-
-    return null;
-};
