@@ -7,6 +7,7 @@ import {
 } from 'react-query';
 
 import useDataProvider from './useDataProvider';
+import undoableEventEmitter from './undoableEventEmitter';
 import {
     Identifier,
     Record,
@@ -117,7 +118,7 @@ export const useUpdate = <RecordType extends Record = Record>(
         );
     };
 
-    let context = {};
+    let context: { previousGetOne?: any; previousGetList?: any } = {};
 
     const mutation = useMutation<
         UpdateResult<RecordType>,
@@ -129,9 +130,6 @@ export const useUpdate = <RecordType extends Record = Record>(
             data: callTimeData,
             previousData: callTimePreviousData,
         }) => {
-            if (mutationMode === 'undoable') {
-                // FIXME
-            }
             return dataProvider.update<RecordType>(resource, {
                 id: callTimeId || id,
                 data: callTimeData || data,
@@ -253,7 +251,7 @@ export const useUpdate = <RecordType extends Record = Record>(
         const { id: callTimeId, data: callTimeData } = variables;
         if (mutationMode === 'optimistic' || mutationMode === 'undoable') {
             // optimistic update as documented in https://react-query.tanstack.com/guides/optimistic-updates
-            // except we wo it in a mutate rapper instead of the onMutete callback
+            // except we wo it in a mutate wrapper instead of the onMutete callback
             // to have access to success side effects
 
             // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
@@ -307,7 +305,26 @@ export const useUpdate = <RecordType extends Record = Record>(
                     onError,
                 });
             } else {
-                // undoable mode
+                // undoable mutation: register the mutation for later
+                undoableEventEmitter.once('end', ({ isUndo }) => {
+                    if (isUndo) {
+                        // rollback
+                        queryClient.setQueryData(
+                            [resource, 'getOne', callTimeId || id],
+                            context.previousGetOne
+                        );
+                        queryClient.setQueriesData(
+                            [resource, 'getList'],
+                            context.previousGetList
+                        );
+                    } else {
+                        // commit
+                        mutation.mutateAsync(variables, {
+                            onSettled,
+                            onError,
+                        });
+                    }
+                });
             }
         } else {
             // pessimistic mode, just call the mutation
