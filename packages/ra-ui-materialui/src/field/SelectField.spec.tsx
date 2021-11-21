@@ -9,7 +9,7 @@ import {
 } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 
-import SelectField from './SelectField';
+import { SelectField } from './SelectField';
 
 describe('<SelectField />', () => {
     const defaultProps = {

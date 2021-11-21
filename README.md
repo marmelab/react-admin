@@ -207,7 +207,7 @@ Both of these examples work without server - the API is simulated on the client-
 
 ### Testing Your Changes In Your App
 
-Using `yarn link`, you can have your project use a local checkout of the react-admn package instead of npm. This allows you to test react-admin changes in your app: 
+Using `yarn link`, you can have your project use a local checkout of the react-admin package instead of npm. This allows you to test react-admin changes in your app: 
 
 ```sh
 # Register your local react-admin as a linkable package

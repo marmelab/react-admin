@@ -2,9 +2,11 @@ import * as React from 'react';
 import expect from 'expect';
 import { SaveContextProvider, SideEffectContextProvider } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import SimpleForm from './SimpleForm';
-import TextInput from '../input/TextInput';
+import { defaultTheme } from '../defaultTheme';
+import { SimpleForm } from './SimpleForm';
+import { TextInput } from '../input';
 
 describe('<SimpleForm />', () => {
     const saveContextValue = {
@@ -16,14 +18,16 @@ describe('<SimpleForm />', () => {
 
     it('should embed a form with given component children', () => {
         const { queryByLabelText } = renderWithRedux(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffects}>
-                    <SimpleForm>
-                        <TextInput source="name" />
-                        <TextInput source="city" />
-                    </SimpleForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
+            <ThemeProvider theme={createTheme(defaultTheme)}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffects}>
+                        <SimpleForm>
+                            <TextInput source="name" />
+                            <TextInput source="city" />
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
         );
         expect(
             queryByLabelText('resources.undefined.fields.name')
@@ -35,14 +39,16 @@ describe('<SimpleForm />', () => {
 
     it('should display <Toolbar />', () => {
         const { queryByLabelText } = renderWithRedux(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffects}>
-                    <SimpleForm>
-                        <TextInput source="name" />
-                        <TextInput source="city" />
-                    </SimpleForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
+            <ThemeProvider theme={createTheme(defaultTheme)}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffects}>
+                        <SimpleForm>
+                            <TextInput source="name" />
+                            <TextInput source="city" />
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
         );
         expect(queryByLabelText('ra.action.save')).not.toBeNull();
     });
@@ -53,25 +59,29 @@ describe('<SimpleForm />', () => {
         );
 
         const { queryByText, rerender } = renderWithRedux(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffects}>
-                    <SimpleForm submitOnEnter={false} toolbar={<Toolbar />}>
-                        <TextInput source="name" />
-                    </SimpleForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
+            <ThemeProvider theme={createTheme(defaultTheme)}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffects}>
+                        <SimpleForm submitOnEnter={false} toolbar={<Toolbar />}>
+                            <TextInput source="name" />
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
         );
 
         expect(queryByText('submitOnEnter: false')).not.toBeNull();
 
         rerender(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffects}>
-                    <SimpleForm submitOnEnter toolbar={<Toolbar />}>
-                        <TextInput source="name" />
-                    </SimpleForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
+            <ThemeProvider theme={createTheme(defaultTheme)}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffects}>
+                        <SimpleForm submitOnEnter toolbar={<Toolbar />}>
+                            <TextInput source="name" />
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
         );
 
         expect(queryByText('submitOnEnter: true')).not.toBeNull();
@@ -79,13 +89,15 @@ describe('<SimpleForm />', () => {
 
     it('should not alter default margin or variant', () => {
         const { queryByLabelText } = renderWithRedux(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffects}>
-                    <SimpleForm>
-                        <TextInput source="name" />
-                    </SimpleForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
+            <ThemeProvider theme={createTheme(defaultTheme)}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffects}>
+                        <SimpleForm>
+                            <TextInput source="name" />
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
         );
         const inputElement = queryByLabelText(
             'resources.undefined.fields.name'
@@ -98,13 +110,15 @@ describe('<SimpleForm />', () => {
 
     it('should pass variant and margin to child inputs', () => {
         const { queryByLabelText } = renderWithRedux(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffects}>
-                    <SimpleForm variant="outlined" margin="normal">
-                        <TextInput source="name" />
-                    </SimpleForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
+            <ThemeProvider theme={createTheme(defaultTheme)}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffects}>
+                        <SimpleForm variant="outlined" margin="normal">
+                            <TextInput source="name" />
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
         );
         const inputElement = queryByLabelText(
             'resources.undefined.fields.name'
@@ -117,17 +131,19 @@ describe('<SimpleForm />', () => {
 
     it('should allow input children to override variant and margin', () => {
         const { queryByLabelText } = renderWithRedux(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffects}>
-                    <SimpleForm variant="standard" margin="none">
-                        <TextInput
-                            source="name"
-                            variant="outlined"
-                            margin="normal"
-                        />
-                    </SimpleForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
+            <ThemeProvider theme={createTheme(defaultTheme)}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffects}>
+                        <SimpleForm variant="standard" margin="none">
+                            <TextInput
+                                source="name"
+                                variant="outlined"
+                                margin="normal"
+                            />
+                        </SimpleForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
         );
         const inputElement = queryByLabelText(
             'resources.undefined.fields.name'

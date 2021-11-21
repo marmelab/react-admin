@@ -16,7 +16,7 @@ import { useResourceContext } from '../../core';
  * @example
  *
  * import React from 'react';
- * import ActionDelete from '@material-ui/icons/Delete';
+ * import ActionDelete from '@mui/icons-material/Delete';
  * import { Button, useDeleteWithUndoController } from 'react-admin';
  *
  * const DeleteButton = ({

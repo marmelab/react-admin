@@ -12,8 +12,8 @@ An `Input` component displays an input, or a dropdown list, a list of radio butt
 import * as React from "react";
 import { Edit, SimpleForm, ReferenceInput, SelectInput, TextInput, required } from 'react-admin';
 
-export const PostEdit = (props) => (
-    <Edit title={<PostTitle />} {...props}>
+export const PostEdit = () => (
+    <Edit title={<PostTitle />}>
         <SimpleForm>
             <TextInput disabled source="id" />
             <ReferenceInput label="User" source="userId" reference="users" validate={[required()]}>
@@ -331,8 +331,8 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 import { Edit, SimpleForm, TextInput } from 'react-admin';
 import { MarkdownInput } from '@react-admin/ra-markdown';
 
-const PostEdit = props => (
-    <Edit {...props}>
+const PostEdit = () => (
+    <Edit>
         <SimpleForm>
             <TextInput source="title" />
             <MarkdownInput source="description" />
@@ -473,8 +473,8 @@ import { Edit, SimpleForm, TextInput } from 'react-admin';
 +import { withStyles } from '@material-ui/core/styles';
 
 -const PostEdit = props => (
-+const PostEdit = withStyles({ card: { overflow: 'initial' } })(props => (
-   <Edit {...props}>
++const PostEdit = withStyles({ card: { overflow: 'initial' } })(() => (
+   <Edit>
        <SimpleForm>
             // ...
        </SimpleForm>
@@ -685,13 +685,13 @@ Use the `onCreate` prop when you only require users to provide a simple string a
 ```js
 import { AutocompleteInput, Create, SimpleForm, TextInput } from 'react-admin';
 
-const PostCreate = (props) => {
+const PostCreate = () => {
     const categories = [
         { name: 'Tech', id: 'tech' },
         { name: 'Lifestyle', id: 'lifestyle' },
     ];
     return (
-        <Create {...props}>
+        <Create>
             <SimpleForm>
                 <TextInput source="title" />
                 <AutocompleteInput
@@ -734,9 +734,9 @@ import {
     TextField,
 } from '@material-ui/core';
 
-const PostCreate = (props) => {
+const PostCreate = () => {
     return (
-        <Create {...props}>
+        <Create>
             <SimpleForm>
                 <TextInput source="title" />
                 <ReferenceInput source="category_id" reference="categories">
@@ -1071,13 +1071,13 @@ Use the `onCreate` prop when you only require users to provide a simple string a
 ```js
 import { SelectInput, Create, SimpleForm, TextInput } from 'react-admin';
 
-const PostCreate = (props) => {
+const PostCreate = () => {
     const categories = [
         { name: 'Tech', id: 'tech' },
         { name: 'Lifestyle', id: 'lifestyle' },
     ];
     return (
-        <Create {...props}>
+        <Create>
             <SimpleForm>
                 <TextInput source="title" />
                 <SelectInput
@@ -1120,9 +1120,9 @@ import {
     TextField,
 } from '@material-ui/core';
 
-const PostCreate = (props) => {
+const PostCreate = () => {
     return (
-        <Create {...props}>
+        <Create>
             <SimpleForm>
                 <TextInput source="title" />
                 <ReferenceInput source="category_id" reference="categories">
@@ -1464,13 +1464,13 @@ Use the `onCreate` prop when you only require users to provide a simple string a
 ```js
 import { AutocompleteArrayInput, Create, SimpleForm, TextInput } from 'react-admin';
 
-const PostCreate = (props) => {
+const PostCreate = () => {
     const tags = [
         { name: 'Tech', id: 'tech' },
         { name: 'Lifestyle', id: 'lifestyle' },
     ];
     return (
-        <Create {...props}>
+        <Create>
             <SimpleForm>
                 <TextInput source="title" />
                 <AutocompleteArrayInput
@@ -1513,9 +1513,9 @@ import {
     TextField,
 } from '@material-ui/core';
 
-const PostCreate = (props) => {
+const PostCreate = () => {
     return (
-        <Create {...props}>
+        <Create>
             <SimpleForm>
                 <TextInput source="title" />
                 <ReferenceArrayInput source="tags" reference="tags">
@@ -1825,8 +1825,8 @@ import {
     TextInput,
 } from 'react-admin';
 
-export const PostCreate = props => (
-    <Create {...props}>
+export const PostCreate = () => (
+    <Create>
         <SimpleForm>
             <TextInput source="title" />
             <TextInput multiline source="body" />
@@ -1856,13 +1856,13 @@ Use the `onCreate` prop when you only require users to provide a simple string a
 ```js
 import { SelectArrayInput, Create, SimpleForm, TextInput } from 'react-admin';
 
-const PostCreate = (props) => {
+const PostCreate = () => {
     const tags = [
         { name: 'Tech', id: 'tech' },
         { name: 'Lifestyle', id: 'lifestyle' },
     ];
     return (
-        <Create {...props}>
+        <Create>
             <SimpleForm>
                 <TextInput source="title" />
                 <SelectArrayInput
@@ -1905,9 +1905,9 @@ import {
     TextField,
 } from '@material-ui/core';
 
-const PostCreate = (props) => {
+const PostCreate = () => {
     return (
-        <Create {...props}>
+        <Create>
             <SimpleForm>
                 <TextInput source="title" />
                 <ReferenceArrayInput source="tags" reference="tags">
@@ -2073,6 +2073,21 @@ You can tweak how this component fetches the possible values using the `perPage`
 ```
 {% endraw %}
 
+**Tip**: `<ReferenceArrayInput>` can also used with an `<AutocompleteArrayInput>` to allow filtering the choices. By default, it will fetch the choices on mount, but you can prevent this by using the `enableGetChoices`. This prop should be a function that receives the `filterValues` as parameter and return a boolean. In order to also hide the choices when `enableGetChoices` returns `false`, you should use `shouldRenderSuggestions` on the `<AutocompleteArrayInput>`:
+
+```jsx
+<ReferenceArrayInput
+  label="Tags"
+  reference="tags"
+  source="tags"
+  enableGetChoices={({ q }) => (q ? q.length >= 2 : false)}
+>
+  <AutocompleteArrayInput
+    shouldRenderSuggestions={(value: string) => value.length >= 2}
+  />
+</ReferenceArrayInput>
+```
+
 In addition to the `ReferenceArrayInputContext`, `<ReferenceArrayInput>` also sets up a `ListContext` providing access to the records from the reference resource in a similar fashion to that of the `<List>` component. This `ListContext` value is accessible with the [`useListContext`](./List.md#uselistcontext) hook.
 
 `<ReferenceArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
@@ -2134,6 +2149,8 @@ import { ReferenceInput, SelectInput } from 'react-admin';
 | `perPage`       | Optional | `number`                                    | 25                                    | Number of suggestions to show                                                                                         |
 | `reference`     | Required | `string`                                    | ''                                    | Name of the reference resource, e.g. 'posts'.                                                                         |
 | `sort`          | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`      | How to order the list of suggestions                                                                                  |
+| `enableGetChoices`     | Optional | `({q: string}) => boolean`                  | `() => true`                          | Function taking the `filterValues` and returning a boolean to enable the `getList` call.                              |
+
 
 `<ReferenceInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -2222,6 +2239,16 @@ The child component receives the following props from `<ReferenceInput>`:
 - `setPagination`: : function to call to update the pagination of the request for possible values
 - `setSort`: function to call to update the sorting of the request for possible values
 
+**Tip** You can make the `getList()` call lazy by using the `enableGetChoices` prop. This prop should be a function that receives the `filterValues` as parameter and return a boolean. This can be useful when using an `AutocompleteInput` on a resource with a lot of data. The following example only starts fetching the options when the query has at least 2 characters:
+```jsx
+<ReferenceInput
+     source="post_id"
+     reference="posts"
+     enableGetChoices={({ q }) => q.length >= 2}>
+    <AutocompleteInput optionText="title" />
+</ReferenceInput>
+```
+
 **Tip**: Why does `<ReferenceInput>` use the `dataProvider.getMany()` method with a single value `[id]` instead of `dataProvider.getOne()` to fetch the record for the current value? Because when there are many `<ReferenceInput>` for the same resource in a form (for instance when inside an `<ArrayInput>`), react-admin *aggregates* the calls to `dataProvider.getMany()` into a single one with `[id1, id2, ...]`. This speeds up the UI and avoids hitting the API too much.
 
 ### `<ReferenceManyToManyInput>`
@@ -2268,8 +2295,8 @@ const ArtistEditForm = props => {
     return <SimpleForm {...props} save={save} />;
 };
 
-const ArtistEdit = props => (
-    <Edit {...props}>
+const ArtistEdit = () => (
+    <Edit>
         <ArtistEditForm>
             <TextInput disabled source="id" />
             <TextInput source="first_name" />
@@ -2473,8 +2500,8 @@ const CityInput = props => {
     );
 };
 
-const OrderEdit = props => (
-    <Edit {...props}>
+const OrderEdit = () => (
+    <Edit>
         <SimpleForm>
             <SelectInput source="country" choices={toChoices(countries)} />
             <CityInput source="cities" />
@@ -2491,8 +2518,8 @@ Alternatively, you can use the react-admin `<FormDataConsumer>` component, which
 import * as React from 'react';
 import { Edit, SimpleForm, SelectInput, FormDataConsumer } from 'react-admin';
 
-const OrderEdit = props => (
-    <Edit {...props}>
+const OrderEdit = () => (
+    <Edit>
         <SimpleForm>
             <SelectInput source="country" choices={toChoices(countries)} />
             <FormDataConsumer>
@@ -2523,8 +2550,8 @@ And here is an example usage for `getSource` inside `<ArrayInput>`:
 ```jsx
 import { FormDataConsumer } from 'react-admin';
 
-const PostEdit = (props) => (
-    <Edit {...props}>
+const PostEdit = () => (
+    <Edit>
         <SimpleForm>
             <ArrayInput source="authors">
                 <SimpleFormIterator>
@@ -2561,8 +2588,8 @@ For such cases, you can use the approach described above, using the `<FormDataCo
 ```jsx
 import { FormDataConsumer } from 'react-admin';
 
- const PostEdit = (props) => (
-     <Edit {...props}>
+ const PostEdit = () => (
+     <Edit>
          <SimpleForm>
              <BooleanInput source="hasEmail" />
              <FormDataConsumer>
@@ -2581,8 +2608,8 @@ import { FormDataConsumer } from 'react-admin';
 ```jsx
 import { FormDataConsumer } from 'react-admin';
 
- const PostEdit = (props) => (
-     <Edit {...props}>
+ const PostEdit = () => (
+     <Edit>
          <SimpleForm>
              <BooleanInput source="hasEmail" />
              <FormDataConsumer subscription={{ values: true }}>
@@ -2617,8 +2644,8 @@ const LatLngInput = () => (
 export default LatLngInput;
 
 // in ItemEdit.js
-const ItemEdit = (props) => (
-    <Edit {...props}>
+const ItemEdit = () => (
+    <Edit>
         <SimpleForm>
             <LatLngInput />
         </SimpleForm>
@@ -2810,8 +2837,8 @@ export default SexInput;
 const parse = value => {/* ... */};
 const format = value => {/* ... */};
 
-const PersonEdit = props => (
-    <Edit {...props}>
+const PersonEdit = () => (
+    <Edit>
         <SimpleForm>
             <SexInput
                 source="sex"
@@ -2827,6 +2854,7 @@ const PersonEdit = props => (
 
 You can find components for react-admin in third-party repositories.
 
+- [marmelab/ra-richtext-tiptap](https://github.com/marmelab/ra-richtext-tiptap): a rich text input based on [Tiptap](https://www.tiptap.dev/)
 - [vascofg/react-admin-color-input](https://github.com/vascofg/react-admin-color-input): a color input using [React Color](https://casesandberg.github.io/react-color/), a collection of color pickers.
 - [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs): a collection of Date Inputs, based on [material-ui-pickers](https://material-ui-pickers.firebaseapp.com/)
 - [MrHertal/react-admin-json-view](https://github.com/MrHertal/react-admin-json-view): JSON field and input for react-admin.

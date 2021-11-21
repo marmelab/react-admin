@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import ThumbDown from '@material-ui/icons/ThumbDown';
+import ThumbDown from '@mui/icons-material/ThumbDown';
 
 import {
     Button,
@@ -27,7 +27,7 @@ const BulkRejectButton = (props: BulkActionProps) => {
         { status: 'rejected' },
         {
             action: CRUD_UPDATE_MANY,
-            undoable: true,
+            mutationMode: 'undoable',
             onSuccess: () => {
                 notify(
                     'resources.reviews.notification.approved_success',

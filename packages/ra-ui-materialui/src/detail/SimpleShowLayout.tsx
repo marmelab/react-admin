@@ -1,11 +1,135 @@
 import * as React from 'react';
-import { Children, isValidElement, cloneElement, ReactNode } from 'react';
+import { Children, isValidElement, ReactNode, ElementType } from 'react';
+import { styled } from '@mui/material/styles';
+import { Card, Stack } from '@mui/material';
+import { ResponsiveStyleValue, SxProps } from '@mui/system';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Record } from 'ra-core';
+import {
+    Record,
+    useRecordContext,
+    OptionalRecordContextProvider,
+} from 'ra-core';
+import { FieldWithLabel } from './FieldWithLabel';
 
-import CardContentInner from '../layout/CardContentInner';
-import Labeled from '../input/Labeled';
+/**
+ * Layout for a Show view showing fields in one column.
+ *
+ * It pulls the record from the RecordContext. It renders a material-ui `<Card>`
+ * containing the record fields in a single-column layout (via material-ui's
+ * `<Stack>` component).
+ * `<SimpleShowLayout>` delegates the actual rendering of fields to its children.
+ * It wraps each field inside a `<Labeled>` component to add a label.
+ *
+ * @example
+ * // in src/posts.js
+ * import * as React from "react";
+ * import { Show, SimpleShowLayout, TextField } from 'react-admin';
+ *
+ * export const PostShow = () => (
+ *     <Show>
+ *         <SimpleShowLayout>
+ *             <TextField source="title" />
+ *         </SimpleShowLayout>
+ *     </Show>
+ * );
+ *
+ * // in src/App.js
+ * import * as React from "react";
+ * import { Admin, Resource } from 'react-admin';
+ *
+ * import { PostShow } from './posts';
+ *
+ * const App = () => (
+ *     <Admin dataProvider={...}>
+ *         <Resource name="posts" show={PostShow} />
+ *     </Admin>
+ * );
+ *
+ * @param {SimpleShowLayoutProps} props
+ * @param {string} props.className A className to apply to the page content.
+ * @param {ElementType} props.component The component to use as root component (div by default).
+ * @param {ReactNode} props.divider An optional divider btween each field, passed to `<Stack>`.
+ * @param {number} props.spacing The spacing to use between each field, passed to `<Stack>`. Defaults to 1.
+ * @param {Object} props.sx Custom style object.
+ */
+export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
+    const {
+        className,
+        children,
+        component: Component = Root,
+        divider,
+        spacing = 1,
+        ...rest
+    } = props;
+    const record = useRecordContext(props);
+    if (!record) {
+        return null;
+    }
+    return (
+        <OptionalRecordContextProvider value={props.record}>
+            <Component className={className} {...sanitizeRestProps(rest)}>
+                <Stack
+                    spacing={spacing}
+                    divider={divider}
+                    className={SimpleShowLayoutClasses.stack}
+                >
+                    {Children.map(children, field =>
+                        field && isValidElement<any>(field) ? (
+                            <FieldWithLabel
+                                key={field.props.source}
+                                className={classnames(
+                                    'ra-field',
+                                    field.props.source &&
+                                        `ra-field-${field.props.source}`,
+                                    SimpleShowLayoutClasses.row,
+                                    field.props.className
+                                )}
+                            >
+                                {field}
+                            </FieldWithLabel>
+                        ) : null
+                    )}
+                </Stack>
+            </Component>
+        </OptionalRecordContextProvider>
+    );
+};
+
+export interface SimpleShowLayoutProps {
+    children: ReactNode;
+    className?: string;
+    component?: ElementType;
+    divider?: ReactNode;
+    record?: Record;
+    spacing?: ResponsiveStyleValue<number | string>;
+    sx?: SxProps;
+}
+
+SimpleShowLayout.propTypes = {
+    children: PropTypes.node,
+    className: PropTypes.string,
+    component: PropTypes.elementType,
+    record: PropTypes.object,
+    spacing: PropTypes.any,
+    sx: PropTypes.any,
+};
+
+const PREFIX = 'RaSimpleShowLayout';
+
+export const SimpleShowLayoutClasses = {
+    stack: `${PREFIX}-stack`,
+    row: `${PREFIX}-row`,
+};
+
+const Root = styled(Card, { name: PREFIX })(({ theme }) => ({
+    flex: 1,
+    padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
+    [`& .${SimpleShowLayoutClasses.stack}`]: {},
+    [`& .${SimpleShowLayoutClasses.row}`]: {
+        display: 'inline',
+    },
+}));
 
 const sanitizeRestProps = ({
     children,
@@ -18,105 +142,3 @@ const sanitizeRestProps = ({
     translate,
     ...rest
 }: any) => rest;
-
-/**
- * Simple Layout for a Show view, showing fields in one column.
- *
- * Receives the current `record` from the parent `<Show>` component,
- * and passes it to its children. Children should be Field-like components.
- *
- * @example
- *     // in src/posts.js
- *     import * as React from "react";
- *     import { Show, SimpleShowLayout, TextField } from 'react-admin';
- *
- *     export const PostShow = (props) => (
- *         <Show {...props}>
- *             <SimpleShowLayout>
- *                 <TextField source="title" />
- *             </SimpleShowLayout>
- *         </Show>
- *     );
- *
- *     // in src/App.js
- *     import * as React from "react";
- *     import { Admin, Resource } from 'react-admin';
- *
- *     import { PostShow } from './posts';
- *
- *     const App = () => (
- *         <Admin dataProvider={...}>
- *             <Resource name="posts" show={PostShow} />
- *         </Admin>
- *     );
- *     export default App;
- */
-const SimpleShowLayout = ({
-    basePath,
-    className,
-    children,
-    record,
-    resource,
-    version,
-    ...rest
-}: SimpleShowLayoutProps) => (
-    <CardContentInner
-        className={className}
-        key={version}
-        {...sanitizeRestProps(rest)}
-    >
-        {Children.map(children, field =>
-            field && isValidElement<any>(field) ? (
-                <div
-                    key={field.props.source}
-                    className={classnames(
-                        `ra-field ra-field-${field.props.source}`,
-                        field.props.className
-                    )}
-                >
-                    {field.props.addLabel ? (
-                        <Labeled
-                            record={record}
-                            resource={resource}
-                            basePath={basePath}
-                            label={field.props.label}
-                            source={field.props.source}
-                            disabled={false}
-                            fullWidth={field.props.fullWidth}
-                        >
-                            {field}
-                        </Labeled>
-                    ) : typeof field.type === 'string' ? (
-                        field
-                    ) : (
-                        cloneElement(field, {
-                            record,
-                            resource,
-                            basePath,
-                        })
-                    )}
-                </div>
-            ) : null
-        )}
-    </CardContentInner>
-);
-
-export interface SimpleShowLayoutProps {
-    basePath?: string;
-    className?: string;
-    children: ReactNode;
-    record?: Record;
-    resource?: string;
-    version?: number;
-}
-
-SimpleShowLayout.propTypes = {
-    basePath: PropTypes.string,
-    className: PropTypes.string,
-    children: PropTypes.node,
-    record: PropTypes.object,
-    resource: PropTypes.string,
-    version: PropTypes.number,
-};
-
-export default SimpleShowLayout;

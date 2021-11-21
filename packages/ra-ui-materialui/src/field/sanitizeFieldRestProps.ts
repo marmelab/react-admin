@@ -1,4 +1,4 @@
-const sanitizeFieldRestProps: (props: any) => any = ({
+export const sanitizeFieldRestProps: (props: any) => any = ({
     addLabel,
     allowEmpty,
     basePath,
@@ -23,5 +23,3 @@ const sanitizeFieldRestProps: (props: any) => any = ({
     translateChoice,
     ...props
 }) => props;
-
-export default sanitizeFieldRestProps;

@@ -14,8 +14,8 @@ The most usual of all field components is `<TextField>`, and it displays one fie
 import * as React from "react";
 import { List, Datagrid, TextField } from 'react-admin';
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" />
@@ -45,8 +45,8 @@ React-admin Field components also accept a `record` prop. This allows you to use
 // { id: 123, title: "Hello, world", author: "John Doe", body: "..." }
 
 const PostShow = ({ id }) => {
-    const { data, loaded } = useGetOne('books', id);
-    if (!loaded) return <span>Loading</span>; 
+    const { data, isLoading } = useGetOne('books', id);
+    if (isLoading) return <span>Loading</span>; 
     return (
         <dl>
             <dt>Title</dt>
@@ -665,12 +665,12 @@ Ideal for embedded arrays of objects, e.g. `tags` and `backlinks` in the followi
 
 ```js
 {
-  id: 123,
-  tags: [
+    id: 123,
+    tags: [
         { name: 'foo' },
         { name: 'bar' }
-  ],
-  backlinks: [
+    ],
+    backlinks: [
         {
             uuid: '34fdf393-f449-4b04-a423-38ad02ae159e',
             date: '2012-08-10T00:00:00.000Z',
@@ -681,7 +681,7 @@ Ideal for embedded arrays of objects, e.g. `tags` and `backlinks` in the followi
             date: '2012-08-14T00:00:00.000Z',
             url: 'https://blog.johndoe.com/2012/08/12/foobar.html',
         }
-   ]
+    ]
 }
 ```
 
@@ -757,8 +757,8 @@ For instance, if a `post` has one author from the `users` resource, referenced b
 import * as React from "react";
 import { List, Datagrid, ReferenceField, TextField, EditButton } from 'react-admin';
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid>
             <TextField source="id" />
             <ReferenceField label="User" source="user_id" reference="users">
@@ -877,8 +877,8 @@ For instance, here is how to show the authors of the comments related to each po
 import * as React from "react";
 import { List, Datagrid, ChipField, ReferenceManyField, SingleFieldList, TextField } from 'react-admin';
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" type="email" />
@@ -1048,8 +1048,8 @@ For instance, if each post contains a list of tag ids (e.g. `{ id: 1234, title: 
 import * as React from "react";
 import { List, Datagrid, ChipField, ReferenceArrayField, SingleFieldList, TextField } from 'react-admin';
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" />
@@ -1233,11 +1233,11 @@ In this case, you'll have to get the current locale through the `useLocale` hook
 
 {% raw %}
 ```jsx
-const PostList = props => {
+const PostList = () => {
     const locale = useLocale();
 
     return (
-        <List {...props}>
+        <List>
             <Datagrid>
                 <TextField source={`name.${locale}`} />
                 <ReferenceArrayField
@@ -1280,8 +1280,8 @@ const PriceField = props => {
     return <TextField className={classes.price} {...props} />;
 };
 
-export const ProductList = (props) => (
-    <List {...props}>
+export const ProductList = () => (
+    <List>
         <Datagrid>
             <PriceField source="price" />
         </Datagrid>
@@ -1309,8 +1309,8 @@ const PriceField = props => {
     return <TextField cellClassName={classes.priceCell} {...props} />;
 };
 
-export const ProductList = (props) => (
-    <List {...props}>
+export const ProductList = () => (
+    <List>
         <Datagrid>
             <PriceField source="price" />
         </Datagrid>
@@ -1337,8 +1337,8 @@ const PriceField = props => {
     return <TextField headerClassName={classes.priceHeader} {...props} />;
 }
 
-export const ProductList = (props) => (
-    <List {...props}>
+export const ProductList = () => (
+    <List>
         <Datagrid>
             <PriceField source="price" />
         </Datagrid>
@@ -1431,8 +1431,8 @@ const FullNameField = (props) => {
 
 FullNameField.defaultProps = { label: 'Name' };
 
-export const UserList = (props) => (
-    <List {...props}>
+export const UserList = () => (
+    <List>
         <Datagrid>
             <FullNameField source="lastName" />
         </Datagrid>
@@ -1621,10 +1621,10 @@ import { Link } from 'react-router-dom';
 
 const AuthorField = () => {
     const post = useRecordContext(props);
-    const { data, loaded } = useGetOne('users', post.user_id);
+    const { data, isLoading } = useGetOne('users', post.user_id);
     const userShowPage = linkToRecord('/users', post.user_id, 'show');
 
-    return loaded ? <Link to={userShowPage}>{data.username}</Link> : null;
+    return isLoading ? null : <Link to={userShowPage}>{data.username}</Link>;
 };
 ```
 

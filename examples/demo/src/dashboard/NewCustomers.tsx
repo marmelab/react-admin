@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     Avatar,
     Box,
@@ -7,9 +8,8 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemText,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import CustomerIcon from '@material-ui/icons/PersonAdd';
+} from '@mui/material';
+import CustomerIcon from '@mui/icons-material/PersonAdd';
 import { Link } from 'react-router-dom';
 import { useTranslate, useQueryWithStore } from 'react-admin';
 import { subDays } from 'date-fns';
@@ -17,9 +17,25 @@ import { subDays } from 'date-fns';
 import CardWithIcon from './CardWithIcon';
 import { Customer } from '../types';
 
+const PREFIX = 'NewCustomers';
+
+const classes = {
+    link: `${PREFIX}-link`,
+    linkContent: `${PREFIX}-linkContent`,
+};
+
+const StyledCardWithIcon = styled(CardWithIcon)(({ theme }) => ({
+    [`& .${classes.link}`]: {
+        borderRadius: 0,
+    },
+
+    [`& .${classes.linkContent}`]: {
+        color: theme.palette.primary.main,
+    },
+}));
+
 const NewCustomers = () => {
     const translate = useTranslate();
-    const classes = useStyles();
 
     const aMonthAgo = subDays(new Date(), 30);
     aMonthAgo.setDate(aMonthAgo.getDate() - 30);
@@ -45,7 +61,7 @@ const NewCustomers = () => {
 
     const nb = visitors ? visitors.reduce((nb: number) => ++nb, 0) : 0;
     return (
-        <CardWithIcon
+        <StyledCardWithIcon
             to="/customers"
             icon={CustomerIcon}
             title={translate('pos.dashboard.new_customers')}
@@ -70,7 +86,7 @@ const NewCustomers = () => {
                       ))
                     : null}
             </List>
-            <Box flexGrow="1">&nbsp;</Box>
+            <Box flexGrow={1}>&nbsp;</Box>
             <Button
                 className={classes.link}
                 component={Link}
@@ -82,17 +98,8 @@ const NewCustomers = () => {
                     {translate('pos.dashboard.all_customers')}
                 </Box>
             </Button>
-        </CardWithIcon>
+        </StyledCardWithIcon>
     );
 };
-
-const useStyles = makeStyles(theme => ({
-    link: {
-        borderRadius: 0,
-    },
-    linkContent: {
-        color: theme.palette.primary.main,
-    },
-}));
 
 export default NewCustomers;

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     Create,
     CreateProps,
@@ -8,16 +9,21 @@ import {
     SelectInput,
     required,
 } from 'react-admin';
-import { Box, CardContent, Divider, Avatar } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import BusinessIcon from '@material-ui/icons/Business';
+import { Box, CardContent, Divider, Avatar } from '@mui/material';
+import BusinessIcon from '@mui/icons-material/Business';
 import clsx from 'clsx';
 
 import { sectors } from './sectors';
 import { sizes } from './sizes';
 
-const useStyles = makeStyles({
-    inline: {
+const PREFIX = 'CompanyCreate';
+
+const classes = {
+    inline: `${PREFIX}-inline`,
+};
+
+const StyledCreate = styled(Create)({
+    [`& .${classes.inline}`]: {
         display: 'inline-block',
         marginLeft: '1em',
         '&.first-child': {
@@ -27,9 +33,8 @@ const useStyles = makeStyles({
 });
 
 export const CompanyCreate = (props: CreateProps) => {
-    const classes = useStyles();
     return (
-        <Create {...props} actions={false}>
+        <StyledCreate {...props} actions={false}>
             <SimpleForm component={CustomLayout} redirect="show">
                 <TextInput source="name" validate={required()} fullWidth />
                 <SelectInput
@@ -74,7 +79,7 @@ export const CompanyCreate = (props: CreateProps) => {
                     />
                 </ReferenceInput>
             </SimpleForm>
-        </Create>
+        </StyledCreate>
     );
 };
 

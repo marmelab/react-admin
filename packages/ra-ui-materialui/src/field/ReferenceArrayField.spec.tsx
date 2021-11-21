@@ -4,36 +4,42 @@ import { render, act, waitFor } from '@testing-library/react';
 import { renderWithRedux } from 'ra-test';
 import { MemoryRouter } from 'react-router-dom';
 import { ListContextProvider, DataProviderContext } from 'ra-core';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import ReferenceArrayField, {
+import {
+    ReferenceArrayField,
     ReferenceArrayFieldView,
 } from './ReferenceArrayField';
-import TextField from './TextField';
-import SingleFieldList from '../list/SingleFieldList';
+import { TextField } from './TextField';
+import { SingleFieldList } from '../list';
+
+const theme = createTheme({});
 
 describe('<ReferenceArrayField />', () => {
     it('should render a loading indicator when related records are not yet fetched and a second has passed', async () => {
         const { queryAllByRole } = render(
-            <ListContextProvider
-                value={{
-                    resource: 'foo',
-                    basePath: '',
-                    data: null,
-                    ids: [1, 2],
-                    loaded: false,
-                    loading: true,
-                }}
-            >
-                <ReferenceArrayFieldView
-                    source="barIds"
-                    reference="bar"
-                    record={{ id: 123, barIds: [1, 2] }}
+            <ThemeProvider theme={theme}>
+                <ListContextProvider
+                    value={{
+                        resource: 'foo',
+                        basePath: '',
+                        data: null,
+                        ids: [1, 2],
+                        loaded: false,
+                        loading: true,
+                    }}
                 >
-                    <SingleFieldList>
-                        <TextField source="title" />
-                    </SingleFieldList>
-                </ReferenceArrayFieldView>
-            </ListContextProvider>
+                    <ReferenceArrayFieldView
+                        source="barIds"
+                        reference="bar"
+                        record={{ id: 123, barIds: [1, 2] }}
+                    >
+                        <SingleFieldList>
+                            <TextField source="title" />
+                        </SingleFieldList>
+                    </ReferenceArrayFieldView>
+                </ListContextProvider>
+            </ThemeProvider>
         );
 
         await new Promise(resolve => setTimeout(resolve, 1001));
@@ -47,12 +53,45 @@ describe('<ReferenceArrayField />', () => {
         };
         const { queryAllByRole, container, getByText } = render(
             <MemoryRouter>
+                <ThemeProvider theme={theme}>
+                    <ListContextProvider
+                        value={{
+                            resource: 'foo',
+                            basePath: '',
+                            data,
+                            ids: [1, 2],
+                            loaded: true,
+                            loading: false,
+                        }}
+                    >
+                        <ReferenceArrayFieldView
+                            source="barIds"
+                            record={{ id: 123, barIds: [1, 2] }}
+                            reference="bar"
+                        >
+                            <SingleFieldList>
+                                <TextField source="title" />
+                            </SingleFieldList>
+                        </ReferenceArrayFieldView>
+                    </ListContextProvider>
+                </ThemeProvider>
+            </MemoryRouter>
+        );
+        expect(queryAllByRole('progressbar')).toHaveLength(0);
+        expect(container.firstChild.textContent).not.toBeUndefined();
+        expect(getByText('hello')).not.toBeNull();
+        expect(getByText('world')).not.toBeNull();
+    });
+
+    it('should render nothing when there are no related records', () => {
+        const { queryAllByRole, container } = render(
+            <ThemeProvider theme={theme}>
                 <ListContextProvider
                     value={{
                         resource: 'foo',
                         basePath: '',
-                        data,
-                        ids: [1, 2],
+                        data: {},
+                        ids: [],
                         loaded: true,
                         loading: false,
                     }}
@@ -67,36 +106,7 @@ describe('<ReferenceArrayField />', () => {
                         </SingleFieldList>
                     </ReferenceArrayFieldView>
                 </ListContextProvider>
-            </MemoryRouter>
-        );
-        expect(queryAllByRole('progressbar')).toHaveLength(0);
-        expect(container.firstChild.textContent).not.toBeUndefined();
-        expect(getByText('hello')).not.toBeNull();
-        expect(getByText('world')).not.toBeNull();
-    });
-
-    it('should render nothing when there are no related records', () => {
-        const { queryAllByRole, container } = render(
-            <ListContextProvider
-                value={{
-                    resource: 'foo',
-                    basePath: '',
-                    data: {},
-                    ids: [],
-                    loaded: true,
-                    loading: false,
-                }}
-            >
-                <ReferenceArrayFieldView
-                    source="barIds"
-                    record={{ id: 123, barIds: [1, 2] }}
-                    reference="bar"
-                >
-                    <SingleFieldList>
-                        <TextField source="title" />
-                    </SingleFieldList>
-                </ReferenceArrayFieldView>
-            </ListContextProvider>
+            </ThemeProvider>
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
         expect(container.firstChild.textContent).toBe('');
@@ -109,26 +119,28 @@ describe('<ReferenceArrayField />', () => {
         };
         const { queryAllByRole, container, getByText } = render(
             <MemoryRouter>
-                <ListContextProvider
-                    value={{
-                        resource: 'foo',
-                        basePath: '',
-                        data,
-                        ids: ['abc-1', 'abc-2'],
-                        loaded: true,
-                        loading: false,
-                    }}
-                >
-                    <ReferenceArrayFieldView
-                        record={{ id: 123, barIds: ['abc-1', 'abc-2'] }}
-                        reference="bar"
-                        source="barIds"
+                <ThemeProvider theme={theme}>
+                    <ListContextProvider
+                        value={{
+                            resource: 'foo',
+                            basePath: '',
+                            data,
+                            ids: ['abc-1', 'abc-2'],
+                            loaded: true,
+                            loading: false,
+                        }}
                     >
-                        <SingleFieldList>
-                            <TextField source="title" />
-                        </SingleFieldList>
-                    </ReferenceArrayFieldView>
-                </ListContextProvider>
+                        <ReferenceArrayFieldView
+                            record={{ id: 123, barIds: ['abc-1', 'abc-2'] }}
+                            reference="bar"
+                            source="barIds"
+                        >
+                            <SingleFieldList>
+                                <TextField source="title" />
+                            </SingleFieldList>
+                        </ReferenceArrayFieldView>
+                    </ListContextProvider>
+                </ThemeProvider>
             </MemoryRouter>
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
@@ -144,27 +156,29 @@ describe('<ReferenceArrayField />', () => {
         };
         const { queryAllByRole, container, getByText } = render(
             <MemoryRouter>
-                <ListContextProvider
-                    value={{
-                        resource: 'foo',
-                        basePath: '',
-                        data,
-                        ids: [1, 2],
-                        loaded: true,
-                        loading: false,
-                    }}
-                >
-                    <ReferenceArrayFieldView
-                        record={{ id: 123, barIds: [1, 2] }}
-                        resource="foo"
-                        reference="bar"
-                        source="barIds"
+                <ThemeProvider theme={theme}>
+                    <ListContextProvider
+                        value={{
+                            resource: 'foo',
+                            basePath: '',
+                            data,
+                            ids: [1, 2],
+                            loaded: true,
+                            loading: false,
+                        }}
                     >
-                        <SingleFieldList>
-                            <TextField source="title" />
-                        </SingleFieldList>
-                    </ReferenceArrayFieldView>
-                </ListContextProvider>
+                        <ReferenceArrayFieldView
+                            record={{ id: 123, barIds: [1, 2] }}
+                            resource="foo"
+                            reference="bar"
+                            source="barIds"
+                        >
+                            <SingleFieldList>
+                                <TextField source="title" />
+                            </SingleFieldList>
+                        </ReferenceArrayFieldView>
+                    </ListContextProvider>
+                </ThemeProvider>
             </MemoryRouter>
         );
         expect(queryAllByRole('progressbar')).toHaveLength(0);
@@ -180,28 +194,30 @@ describe('<ReferenceArrayField />', () => {
         };
         const { container } = render(
             <MemoryRouter>
-                <ListContextProvider
-                    value={{
-                        resource: 'foo',
-                        basePath: '',
-                        data,
-                        ids: [1, 2],
-                        loaded: true,
-                        loading: false,
-                    }}
-                >
-                    <ReferenceArrayFieldView
-                        record={{ id: 123, barIds: [1, 2] }}
-                        className="myClass"
-                        resource="foo"
-                        reference="bar"
-                        source="barIds"
+                <ThemeProvider theme={theme}>
+                    <ListContextProvider
+                        value={{
+                            resource: 'foo',
+                            basePath: '',
+                            data,
+                            ids: [1, 2],
+                            loaded: true,
+                            loading: false,
+                        }}
                     >
-                        <SingleFieldList>
-                            <TextField source="title" />
-                        </SingleFieldList>
-                    </ReferenceArrayFieldView>
-                </ListContextProvider>
+                        <ReferenceArrayFieldView
+                            record={{ id: 123, barIds: [1, 2] }}
+                            className="myClass"
+                            resource="foo"
+                            reference="bar"
+                            source="barIds"
+                        >
+                            <SingleFieldList>
+                                <TextField source="title" />
+                            </SingleFieldList>
+                        </ReferenceArrayFieldView>
+                    </ListContextProvider>
+                </ThemeProvider>
             </MemoryRouter>
         );
         expect(container.getElementsByClassName('myClass')).toHaveLength(1);
@@ -224,18 +240,20 @@ describe('<ReferenceArrayField />', () => {
         };
         const { queryByText } = renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
-                <ReferenceArrayField
-                    record={{ id: 123, barIds: [1, 2] }}
-                    className="myClass"
-                    resource="foos"
-                    reference="bars"
-                    source="barIds"
-                    basePath="/foos"
-                >
-                    <SingleFieldList linkType={false}>
-                        <WeakField />
-                    </SingleFieldList>
-                </ReferenceArrayField>
+                <ThemeProvider theme={theme}>
+                    <ReferenceArrayField
+                        record={{ id: 123, barIds: [1, 2] }}
+                        className="myClass"
+                        resource="foos"
+                        reference="bars"
+                        source="barIds"
+                        basePath="/foos"
+                    >
+                        <SingleFieldList linkType={false}>
+                            <WeakField />
+                        </SingleFieldList>
+                    </ReferenceArrayField>
+                </ThemeProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { bars: { data: {} } } } }
         );
@@ -284,18 +302,20 @@ describe('<ReferenceArrayField />', () => {
         const onError = jest.fn();
         renderWithRedux(
             <ErrorBoundary onError={onError}>
-                <ReferenceArrayField
-                    record={{ id: 123, barIds: [1, 2] }}
-                    className="myClass"
-                    resource="foos"
-                    reference="bars"
-                    source="barIds"
-                    basePath="/foos"
-                >
-                    <SingleFieldList>
-                        <TextField source="title" />
-                    </SingleFieldList>
-                </ReferenceArrayField>
+                <ThemeProvider theme={theme}>
+                    <ReferenceArrayField
+                        record={{ id: 123, barIds: [1, 2] }}
+                        className="myClass"
+                        resource="foos"
+                        reference="bars"
+                        source="barIds"
+                        basePath="/foos"
+                    >
+                        <SingleFieldList>
+                            <TextField source="title" />
+                        </SingleFieldList>
+                    </ReferenceArrayField>
+                </ThemeProvider>
             </ErrorBoundary>,
             { admin: { resources: { comments: { data: {} } } } }
         );

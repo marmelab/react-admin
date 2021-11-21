@@ -1,12 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render } from '@testing-library/react';
-import { ThemeProvider } from '@material-ui/styles';
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ListPaginationContext } from 'ra-core';
 
-import Pagination from './Pagination';
-import DeviceTestWrapper from '../../layout/DeviceTestWrapper';
+import { Pagination } from './Pagination';
+import { DeviceTestWrapper } from '../../layout';
 
 const theme = createTheme();
 

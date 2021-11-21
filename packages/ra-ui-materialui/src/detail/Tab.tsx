@@ -2,11 +2,12 @@ import * as React from 'react';
 import { isValidElement, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
-import MuiTab, { TabProps as MuiTabProps } from '@material-ui/core/Tab';
+import { Tab as MuiTab, TabProps as MuiTabProps, Stack } from '@mui/material';
+import { ResponsiveStyleValue } from '@mui/system';
 import { useTranslate, Record } from 'ra-core';
 import classnames from 'classnames';
 
-import Labeled from '../input/Labeled';
+import { FieldWithLabel } from './FieldWithLabel';
 
 /**
  * Tab element for the SimpleShowLayout.
@@ -20,8 +21,8 @@ import Labeled from '../input/Labeled';
  * @example
  *     // in src/posts.js
  *     import * as React from "react";
- *     import FavoriteIcon from '@material-ui/icons/Favorite';
- *     import PersonPinIcon from '@material-ui/icons/PersonPin';
+ *     import FavoriteIcon from '@mui/icons-material/Favorite';
+ *     import PersonPinIcon from '@mui/icons-material/PersonPin';
  *     import { Show, TabbedShowLayout, Tab, TextField } from 'react-admin';
  *
  *     export const PostShow = (props) => (
@@ -57,10 +58,11 @@ export const Tab = ({
     contentClassName,
     context,
     className,
+    divider,
     icon,
     label,
     record,
-    resource,
+    spacing = 1,
     syncWithLocation = true,
     value,
     ...rest
@@ -85,40 +87,23 @@ export const Tab = ({
     );
 
     const renderContent = () => (
-        <span className={contentClassName}>
+        <Stack className={contentClassName} spacing={spacing} divider={divider}>
             {React.Children.map(children, field =>
                 field && isValidElement<any>(field) ? (
-                    <div
+                    <FieldWithLabel
                         key={field.props.source}
                         className={classnames(
                             'ra-field',
-                            `ra-field-${field.props.source}`,
+                            field.props.source &&
+                                `ra-field-${field.props.source}`,
                             field.props.className
                         )}
                     >
-                        {field.props.addLabel ? (
-                            <Labeled
-                                label={field.props.label}
-                                source={field.props.source}
-                                basePath={basePath}
-                                record={record}
-                                resource={resource}
-                            >
-                                {field}
-                            </Labeled>
-                        ) : typeof field.type === 'string' ? (
-                            field
-                        ) : (
-                            React.cloneElement(field, {
-                                basePath,
-                                record,
-                                resource,
-                            })
-                        )}
-                    </div>
+                        {field}
+                    </FieldWithLabel>
                 ) : null
             )}
-        </span>
+        </Stack>
     );
 
     return context === 'header' ? renderHeader() : renderContent();
@@ -132,20 +117,22 @@ Tab.propTypes = {
     icon: PropTypes.element,
     label: PropTypes.string.isRequired,
     path: PropTypes.string,
+    spacing: PropTypes.any,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
-export interface TabProps extends MuiTabProps {
+export interface TabProps extends Omit<MuiTabProps, 'children'> {
     basePath?: string;
     children: ReactNode;
     contentClassName?: string;
     context?: 'header' | 'content';
     className?: string;
+    divider?: ReactNode;
     icon?: ReactElement;
     label: string;
     path?: string;
     record?: Record;
-    resource?: string;
+    spacing?: ResponsiveStyleValue<number | string>;
     syncWithLocation?: boolean;
     value?: string | number;
 }

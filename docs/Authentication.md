@@ -57,6 +57,7 @@ It's very common that your auth logic is so specific that you'll need to write y
 - **[AWS Amplify](https://docs.amplify.aws)**: [MrHertal/react-admin-amplify](https://github.com/MrHertal/react-admin-amplify)
 - **[AWS Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/setting-up-the-javascript-sdk.html)**: [thedistance/ra-cognito](https://github.com/thedistance/ra-cognito)
 - **[Firebase Auth (Google, Facebook, Github etc)](https://firebase.google.com/docs/auth/web/firebaseui)**: [benwinding/react-admin-firebase](https://github.com/benwinding/react-admin-firebase#auth-provider)
+- **[Supabase](https://supabase.io/)**: [marmelab/ra-supabase](https://github.com/marmelab/ra-supabase).
 
 Beyond ready-to-use providers, you may find help in these third-party tutorials about integrating more authentication backends:
 
@@ -76,7 +77,7 @@ Once an admin has an `authProvider`, react-admin enables a new page on the `/log
 
 ![Default Login Form](./img/login-form.png)
 
-Upon submission, this form calls the `authProvider.login({ login, password })` method. React-admin expects this method to return a resolved Promise if the credentials are correct, and a rejected Promise if they're not. 
+Upon submission, this form calls the `authProvider.login({ username, password })` method. React-admin expects this method to return a resolved Promise if the credentials are correct, and a rejected Promise if they're not. 
 
 For instance, to query an authentication route via HTTPS and store the credentials (a token) in local storage, configure the `authProvider` as follows:
 
@@ -448,22 +449,26 @@ export default {
 
 ### Getting User Permissions In CRUD Pages
 
-By default, react-admin calls `authProvider.getPermissions()` for each resource route, and passes the permissions to the `list`, `edit`, `create`, and `show` view components. So the `<List>`, `<Edit>`, `<Create>` and `<Show>` components all receive a `permissions` prop containing what `authProvider.getPermissions()` returned.
+If you need to check the permissions in any of the default react-admin views, you can use the `usePermissions` hook:
 
 Here is an example of a `Create` view with a conditional Input based on permissions:
 
 {% raw %}
 ```jsx
-export const UserCreate = ({ permissions, ...props }) =>
-    <Create {...props}>
-        <SimpleForm
-            defaultValue={{ role: 'user' }}
-        >
-            <TextInput source="name" validate={[required()]} />
-            {permissions === 'admin' &&
-                <TextInput source="role" validate={[required()]} />}
-        </SimpleForm>
-    </Create>;
+export const UserCreate = () => {
+    const { permissions } = usePermissions();
+    return (
+        <Create>
+            <SimpleForm
+                defaultValue={{ role: 'user' }}
+            >
+                <TextInput source="name" validate={[required()]} />
+                {permissions === 'admin' &&
+                    <TextInput source="role" validate={[required()]} />}
+            </SimpleForm>
+        </Create>;
+    )
+}
 ```
 {% endraw %}
 
@@ -742,7 +747,7 @@ const MyPage = () => {
 
 ### `useLogout()` Hook
 
-Just like `useLogin()`, `useLogout()` returns a callback that you can use to call `authProvider.logout()``. Use it to build a custom Logout button, like the following: 
+Just like `useLogin()`, `useLogout()` returns a callback that you can use to call `authProvider.logout()`. Use it to build a custom Logout button, like the following: 
 
 ```jsx
 // in src/MyLogoutButton.js
@@ -1041,22 +1046,26 @@ Note that the function returns an array of React elements. This is required to a
 
 ### Restricting Access to Fields and Inputs
 
-You might want to display some fields or inputs only to users with specific permissions. By default, react-admin calls the `authProvider` for permissions for each resource routes, and passes them to the `list`, `edit`, `create`, and `show` components.
+You might want to display some fields or inputs only to users with specific permissions. You can use the `usePermissions` hook for that.
 
 Here is an example of a `Create` view with a conditional Input based on permissions:
 
 {% raw %}
 ```jsx
-export const UserCreate = ({ permissions, ...props }) =>
-    <Create {...props}>
-        <SimpleForm
-            defaultValue={{ role: 'user' }}
-        >
-            <TextInput source="name" validate={[required()]} />
-            {permissions === 'admin' &&
-                <TextInput source="role" validate={[required()]} />}
-        </SimpleForm>
-    </Create>;
+export const UserCreate = () => {
+    const { permissions } = usePermissions();
+    return (
+        <Create>
+            <SimpleForm
+                defaultValue={{ role: 'user' }}
+            >
+                <TextInput source="name" validate={[required()]} />
+                {permissions === 'admin' &&
+                    <TextInput source="role" validate={[required()]} />}
+            </SimpleForm>
+        </Create>;
+    );
+}
 ```
 {% endraw %}
 
@@ -1064,19 +1073,23 @@ This also works inside an `Edit` view with a `TabbedForm`, and you can even hide
 
 {% raw %}
 ```jsx
-export const UserEdit = ({ permissions, ...props }) =>
-    <Edit title={<UserTitle />} {...props}>
-        <TabbedForm defaultValue={{ role: 'user' }}>
-            <FormTab label="user.form.summary">
-                {permissions === 'admin' && <TextInput disabled source="id" />}
-                <TextInput source="name" validate={required()} />
-            </FormTab>
-            {permissions === 'admin' &&
-                <FormTab label="user.form.security">
-                    <TextInput source="role" validate={required()} />
-                </FormTab>}
-        </TabbedForm>
-    </Edit>;
+export const UserEdit = () => {
+    const { permissions } = usePermissions();
+    return (
+        <Edit title={<UserTitle />}>
+            <TabbedForm defaultValue={{ role: 'user' }}>
+                <FormTab label="user.form.summary">
+                    {permissions === 'admin' && <TextInput disabled source="id" />}
+                    <TextInput source="name" validate={required()} />
+                </FormTab>
+                {permissions === 'admin' &&
+                    <FormTab label="user.form.security">
+                        <TextInput source="role" validate={required()} />
+                    </FormTab>}
+            </TabbedForm>
+        </Edit>;
+    );
+};
 ```
 {% endraw %}
 
@@ -1092,16 +1105,20 @@ const getUserFilters = (permissions) => ([
     permissions === 'admin' ? <TextInput source="role" /> : null,
 ].filter(filter => filter !== null));
 
-export const UserList = ({ permissions, ...props }) =>
-    <List {...props} filters={getUserFilters(permissions)}>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="name" />
-            {permissions === 'admin' && <TextField source="role" />}
-            {permissions === 'admin' && <EditButton />}
-            <ShowButton />
-        </Datagrid>
-    </List>;
+export const UserList = () => {
+    const { permissions } = usePermissions();
+    return (
+        <List filters={getUserFilters(permissions)}>
+            <Datagrid>
+                <TextField source="id" />
+                <TextField source="name" />
+                {permissions === 'admin' && <TextField source="role" />}
+                {permissions === 'admin' && <EditButton />}
+                <ShowButton />
+            </Datagrid>
+        </List>;
+    );
+};
 ```
 
 ### Restricting Access to the Dashboard

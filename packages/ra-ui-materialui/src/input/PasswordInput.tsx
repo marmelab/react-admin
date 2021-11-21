@@ -1,17 +1,13 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useTranslate } from 'ra-core';
-import { InputAdornment, IconButton } from '@material-ui/core';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { InputAdornment, IconButton } from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-import TextInput, { TextInputProps } from './TextInput';
+import { TextInput, TextInputProps } from './TextInput';
 
-export interface PasswordInputProps extends TextInputProps {
-    initiallyVisible?: boolean;
-}
-
-const PasswordInput = (props: PasswordInputProps) => {
+export const PasswordInput = (props: PasswordInputProps) => {
     const { initiallyVisible = false, ...rest } = props;
     const [visible, setVisible] = useState(initiallyVisible);
     const translate = useTranslate();
@@ -34,6 +30,7 @@ const PasswordInput = (props: PasswordInputProps) => {
                                     : 'ra.input.password.toggle_hidden'
                             )}
                             onClick={handleClick}
+                            size="large"
                         >
                             {visible ? <Visibility /> : <VisibilityOff />}
                         </IconButton>
@@ -44,4 +41,6 @@ const PasswordInput = (props: PasswordInputProps) => {
     );
 };
 
-export default PasswordInput;
+export interface PasswordInputProps extends TextInputProps {
+    initiallyVisible?: boolean;
+}

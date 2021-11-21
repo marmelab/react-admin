@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { Children, cloneElement, isValidElement, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslate, useGetIdentity } from 'ra-core';
@@ -9,43 +10,13 @@ import {
     Button,
     Avatar,
     PopoverOrigin,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+} from '@mui/material';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 
-import { ClassesOverride } from '../types';
-
-const defaultIcon = <AccountCircle />;
-
-const useStyles = makeStyles(
-    theme => ({
-        user: {},
-        userButton: {
-            textTransform: 'none',
-        },
-        avatar: {
-            width: theme.spacing(4),
-            height: theme.spacing(4),
-        },
-    }),
-    { name: 'RaUserMenu' }
-);
-
-const AnchorOrigin: PopoverOrigin = {
-    vertical: 'bottom',
-    horizontal: 'right',
-};
-
-const TransformOrigin: PopoverOrigin = {
-    vertical: 'top',
-    horizontal: 'right',
-};
-
-const UserMenu = (props: UserMenuProps) => {
+export const UserMenu = (props: UserMenuProps) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const translate = useTranslate();
     const { loaded, identity } = useGetIdentity();
-    const classes = useStyles(props);
 
     const {
         children,
@@ -61,16 +32,16 @@ const UserMenu = (props: UserMenuProps) => {
     const handleClose = () => setAnchorEl(null);
 
     return (
-        <div className={classes.user}>
+        <Root className={UserMenuClasses.user}>
             {loaded && identity?.fullName ? (
                 <Button
                     aria-label={label && translate(label, { _: label })}
-                    className={classes.userButton}
+                    className={UserMenuClasses.userButton}
                     color="inherit"
                     startIcon={
                         identity.avatar ? (
                             <Avatar
-                                className={classes.avatar}
+                                className={UserMenuClasses.avatar}
                                 src={identity.avatar}
                                 alt={identity.fullName}
                             />
@@ -90,6 +61,7 @@ const UserMenu = (props: UserMenuProps) => {
                         aria-haspopup={true}
                         color="inherit"
                         onClick={handleMenu}
+                        size="large"
                     >
                         {icon}
                     </IconButton>
@@ -101,9 +73,6 @@ const UserMenu = (props: UserMenuProps) => {
                 anchorEl={anchorEl}
                 anchorOrigin={AnchorOrigin}
                 transformOrigin={TransformOrigin}
-                // Make sure the menu is display under the button and not over the appbar
-                // See https://material-ui.com/components/menus/#customized-menus
-                getContentAnchorEl={null}
                 open={open}
                 onClose={handleClose}
             >
@@ -116,7 +85,7 @@ const UserMenu = (props: UserMenuProps) => {
                 )}
                 {logout}
             </Menu>
-        </div>
+        </Root>
     );
 };
 
@@ -130,10 +99,41 @@ UserMenu.propTypes = {
 
 export interface UserMenuProps {
     children?: React.ReactNode;
-    classes?: ClassesOverride<typeof useStyles>;
+
     label?: string;
     logout?: React.ReactNode;
     icon?: React.ReactNode;
 }
 
-export default UserMenu;
+const PREFIX = 'RaUserMenu';
+
+export const UserMenuClasses = {
+    user: `${PREFIX}-user`,
+    userButton: `${PREFIX}-userButton`,
+    avatar: `${PREFIX}-avatar`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${UserMenuClasses.user}`]: {},
+
+    [`& .${UserMenuClasses.userButton}`]: {
+        textTransform: 'none',
+    },
+
+    [`& .${UserMenuClasses.avatar}`]: {
+        width: theme.spacing(4),
+        height: theme.spacing(4),
+    },
+}));
+
+const defaultIcon = <AccountCircle />;
+
+const AnchorOrigin: PopoverOrigin = {
+    vertical: 'bottom',
+    horizontal: 'right',
+};
+
+const TransformOrigin: PopoverOrigin = {
+    vertical: 'top',
+    horizontal: 'right',
+};

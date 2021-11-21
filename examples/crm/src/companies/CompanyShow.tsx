@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useState, ChangeEvent } from 'react';
 import {
     ShowBase,
-    ShowProps,
     TextField,
     ReferenceManyField,
     SelectField,
@@ -24,8 +23,8 @@ import {
     Tabs,
     Tab,
     Divider,
-} from '@material-ui/core';
-import PersonAddIcon from '@material-ui/icons/PersonAdd';
+} from '@mui/material';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { Link as RouterLink } from 'react-router-dom';
 import { formatDistance } from 'date-fns';
 
@@ -38,8 +37,8 @@ import { CompanyAside } from './CompanyAside';
 import { Company, Deal, Contact } from '../types';
 import { stageNames } from '../deals/stages';
 
-export const CompanyShow = (props: ShowProps) => (
-    <ShowBase {...props}>
+export const CompanyShow = () => (
+    <ShowBase>
         <CompanyShowContent />
     </ShowBase>
 );

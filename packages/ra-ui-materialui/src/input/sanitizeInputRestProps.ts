@@ -1,4 +1,4 @@
-const sanitizeInputRestProps = ({
+export const sanitizeInputRestProps = ({
     afterSubmit,
     allowEmpty,
     allowNull,
@@ -43,5 +43,3 @@ const sanitizeInputRestProps = ({
     value,
     ...rest
 }: any) => rest;
-
-export default sanitizeInputRestProps;

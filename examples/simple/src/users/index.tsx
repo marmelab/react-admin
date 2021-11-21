@@ -1,4 +1,4 @@
-import PeopleIcon from '@material-ui/icons/People';
+import PeopleIcon from '@mui/icons-material/People';
 import UserCreate from './UserCreate';
 import UserEdit from './UserEdit';
 import UserList from './UserList';

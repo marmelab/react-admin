@@ -1,20 +1,30 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
+import { useSelector } from 'react-redux';
 import {
-    CREATE,
     SaveButton,
     SimpleForm,
     TextInput,
     Toolbar,
     required,
-    showNotification,
     ReduxState,
+    useCreate,
+    useNotify,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import CancelButton from './PostQuickCreateCancelButton';
+
+const PREFIX = 'PostQuickCreate';
+
+const classes = {
+    form: `${PREFIX}-form`,
+};
+
+const StyledSimpleForm = styled(SimpleForm)({
+    [`& .${classes.form}`]: { padding: 0 },
+});
 
 // We need a custom toolbar to add our custom buttons
 // The CancelButton allows to close the modal without submitting anything
@@ -30,41 +40,29 @@ PostQuickCreateToolbar.propTypes = {
     onCancel: PropTypes.func.isRequired,
 };
 
-const useStyles = makeStyles({
-    form: { padding: 0 },
-});
-
 const PostQuickCreate = ({ onCancel, onSave, ...props }) => {
-    const classes = useStyles();
-    const dispatch = useDispatch();
+    const [create] = useCreate();
+    const notify = useNotify();
     const submitting = useSelector<ReduxState, boolean>(
         state => state.admin.loading > 0
     );
 
     const handleSave = useCallback(
         values => {
-            dispatch({
-                type: 'QUICK_CREATE',
-                payload: { data: values },
-                meta: {
-                    fetch: CREATE,
-                    resource: 'posts',
-                    onSuccess: {
-                        callback: ({ payload: { data } }) => onSave(data),
-                    },
-                    onFailure: {
-                        callback: ({ error }) => {
-                            dispatch(showNotification(error.message, 'error'));
-                        },
-                    },
+            create('posts', values, {
+                onSuccess: ({ data }) => {
+                    onSave(data);
+                },
+                onFailure: error => {
+                    notify(error.message, 'error');
                 },
             });
         },
-        [dispatch, onSave]
+        [create, notify, onSave]
     );
 
     return (
-        <SimpleForm
+        <StyledSimpleForm
             save={handleSave}
             saving={submitting}
             redirect={false}
@@ -84,7 +82,7 @@ const PostQuickCreate = ({ onCancel, onSave, ...props }) => {
                 fullWidth={true}
                 multiline={true}
             />
-        </SimpleForm>
+        </StyledSimpleForm>
     );
 };
 

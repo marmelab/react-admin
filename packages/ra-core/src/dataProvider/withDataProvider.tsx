@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DataProvider } from '../types';
 
-import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDeclarativeSideEffects';
+import useDataProvider from './useDataProvider';
 
 export interface DataProviderProps {
     dataProvider: DataProvider;
@@ -19,7 +19,7 @@ export interface DataProviderProps {
  * In addition to the 2 usual parameters of the dataProvider methods (resource,
  * payload), the Proxy supports a third parameter for every call. It's an
  * object literal which may contain side effects, or make the action optimistic
- * (with undoable: true).
+ * (with mutationMode: 'undoable').
  *
  * @see useDataProvider
  *
@@ -58,10 +58,7 @@ export interface DataProviderProps {
 const withDataProvider = <P extends object>(
     Component: React.ComponentType<P>
 ): React.FunctionComponent<P & DataProviderProps> => (props: P) => (
-    <Component
-        {...props}
-        dataProvider={useDataProviderWithDeclarativeSideEffects()}
-    />
+    <Component {...props} dataProvider={useDataProvider()} />
 );
 
 export default withDataProvider;

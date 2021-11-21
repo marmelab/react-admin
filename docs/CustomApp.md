@@ -7,15 +7,15 @@ title: "Including the Admin in Another App"
 
 The `<Admin>` tag is a great shortcut to be up and running with react-admin in minutes. However, in many cases, you will want to embed the admin in another application, or customize the admin redux store deeply.
 
-**Tip**: Before going for the Custom App route, explore all the options of [the `<Admin>` component](./Admin.md). They allow you to add custom routes, custom reducers, custom sagas, and customize the layout.
+**Tip**: Before going for the Custom App route, explore all the options of [the `<Admin>` component](./Admin.md). They allow you to add custom routes, custom reducers, and customize the layout.
 
 ## Using an Existing Redux Provider
 
 The `<Admin>` component detects when it's used inside an existing Redux `<Provider>`, and skips its own store initialization. That means that react-admin will work out of the box inside another Redux application - provided, of course, the store is compatible.
 
-Beware that you need to know about [redux](https://redux.js.org/), [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start), and [redux-saga](https://github.com/yelouafi/redux-saga) to go further.
+Beware that you need to know about [redux](https://redux.js.org/), and [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start) to go further.
 
-React-admin requires that the redux state contains at least 2 reducers: `admin` and `router`. You can add more, or replace some of them with your own, but you can't remove or rename them. As it relies on `connected-react-router` and `redux-saga`, react-admin also expects the store to use their middlewares.
+React-admin requires that the redux state contains at least 2 reducers: `admin` and `router`. You can add more, or replace some of them with your own, but you can't remove or rename them. As it relies on `connected-react-router`, react-admin also expects the store to use their middlewares.
 
 Here is the default store creation for react-admin:
 
@@ -23,11 +23,8 @@ Here is the default store creation for react-admin:
 // in src/createAdminStore.js
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import { routerMiddleware, connectRouter } from 'connected-react-router';
-import createSagaMiddleware from 'redux-saga';
-import { all, fork } from 'redux-saga/effects';
 import {
     adminReducer,
-    adminSaga,
     USER_LOGOUT,
 } from 'react-admin';
 
@@ -44,16 +41,6 @@ export default ({
     const resettableAppReducer = (state, action) =>
         reducer(action.type !== USER_LOGOUT ? state : undefined, action);
 
-    const saga = function* rootSaga() {
-        yield all(
-            [
-                adminSaga(dataProvider, authProvider),
-                // add your own sagas here
-            ].map(fork)
-        );
-    };
-    const sagaMiddleware = createSagaMiddleware();
-
     const composeEnhancers =
         (process.env.NODE_ENV === 'development' &&
             typeof window !== 'undefined' &&
@@ -69,14 +56,12 @@ export default ({
         { /* set your initial state here */ },
         composeEnhancers(
             applyMiddleware(
-                sagaMiddleware,
                 routerMiddleware(history),
                 // add your own middlewares here
             ),
             // add your own enhancers here
         ),        
     );
-    sagaMiddleware.run(saga);
     return store;
 };
 ```

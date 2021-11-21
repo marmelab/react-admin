@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import PaginationActions from './PaginationActions';
+import { PaginationActions } from './PaginationActions';
 
 describe('<PaginationActions />', () => {
     it('should not render any actions when no pagination is necessary', () => {
@@ -11,7 +11,7 @@ describe('<PaginationActions />', () => {
                 rowsPerPage={20}
                 count={15}
                 translate={x => x}
-                onChangePage={() => null}
+                onPageChange={() => null}
                 classes={{}}
             />
         );
@@ -25,7 +25,7 @@ describe('<PaginationActions />', () => {
                 rowsPerPage={5}
                 count={15}
                 translate={x => x}
-                onChangePage={() => null}
+                onPageChange={() => null}
                 classes={{}}
             />
         );
@@ -40,7 +40,7 @@ describe('<PaginationActions />', () => {
                 rowsPerPage={1}
                 count={15}
                 translate={x => x}
-                onChangePage={() => null}
+                onPageChange={() => null}
                 classes={{}}
             />
         );

@@ -1,9 +1,9 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     BooleanInput,
     DateField,
     Edit,
-    EditProps,
     FormWithRedirect,
     Labeled,
     ReferenceField,
@@ -13,19 +13,21 @@ import {
     useTranslate,
 } from 'react-admin';
 import { Link as RouterLink } from 'react-router-dom';
-import {
-    Card,
-    CardContent,
-    Box,
-    Grid,
-    Typography,
-    Link,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Card, CardContent, Box, Grid, Typography, Link } from '@mui/material';
 
 import { Order, Customer } from '../types';
 import Basket from './Basket';
 import Totals from './Totals';
+
+const PREFIX = 'OrderEdit';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const StyledEdit = styled(Edit)({
+    [`&.${classes.root}`]: { alignItems: 'flex-start' },
+});
 
 interface OrderTitleProps {
     record?: Order;
@@ -74,10 +76,6 @@ const CustomerAddress = ({ record }: { record?: Customer }) => (
         </Typography>
     </Box>
 );
-
-const useEditStyles = makeStyles({
-    root: { alignItems: 'flex-start' },
-});
 
 const Spacer = () => <Box m={1}>&nbsp;</Box>;
 
@@ -215,7 +213,7 @@ const OrderForm = (props: any) => {
                         <Toolbar
                             record={formProps.record}
                             basePath={formProps.basePath}
-                            undoable={true}
+                            mutationMode="undoable"
                             invalid={formProps.invalid}
                             handleSubmit={formProps.handleSubmit}
                             saving={formProps.saving}
@@ -227,18 +225,10 @@ const OrderForm = (props: any) => {
         />
     );
 };
-const OrderEdit = (props: EditProps) => {
-    const classes = useEditStyles();
-    return (
-        <Edit
-            title={<OrderTitle />}
-            classes={classes}
-            {...props}
-            component="div"
-        >
-            <OrderForm />
-        </Edit>
-    );
-};
+const OrderEdit = () => (
+    <StyledEdit title={<OrderTitle />} component="div">
+        <OrderForm />
+    </StyledEdit>
+);
 
 export default OrderEdit;

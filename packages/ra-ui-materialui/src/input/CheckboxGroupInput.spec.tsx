@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import CheckboxGroupInput from './CheckboxGroupInput';
+import { CheckboxGroupInput } from './CheckboxGroupInput';
 import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';

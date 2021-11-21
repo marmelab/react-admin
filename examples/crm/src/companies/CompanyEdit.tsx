@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     Edit,
-    EditProps,
     ReferenceInput,
     SimpleForm,
     TextInput,
@@ -9,8 +9,7 @@ import {
     useRecordContext,
     required,
 } from 'react-admin';
-import { Box, CardContent, Divider } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Box, CardContent, Divider } from '@mui/material';
 import clsx from 'clsx';
 
 import { CompanyAside } from './CompanyAside';
@@ -18,8 +17,14 @@ import { LogoField } from './LogoField';
 import { sectors } from './sectors';
 import { sizes } from './sizes';
 
-const useStyles = makeStyles({
-    inline: {
+const PREFIX = 'CompanyEdit';
+
+const classes = {
+    inline: `${PREFIX}-inline`,
+};
+
+const StyledEdit = styled(Edit)({
+    [`& .${classes.inline}`]: {
         display: 'inline-block',
         marginLeft: '1em',
         '&.first-child': {
@@ -28,10 +33,9 @@ const useStyles = makeStyles({
     },
 });
 
-export const CompanyEdit = (props: EditProps) => {
-    const classes = useStyles();
+export const CompanyEdit = () => {
     return (
-        <Edit {...props} aside={<CompanyAside link="show" />} actions={false}>
+        <StyledEdit aside={<CompanyAside link="show" />} actions={false}>
             <SimpleForm component={CustomLayout} redirect="show">
                 <TextInput source="name" validate={required()} fullWidth />
                 <SelectInput
@@ -76,7 +80,7 @@ export const CompanyEdit = (props: EditProps) => {
                     />
                 </ReferenceInput>
             </SimpleForm>
-        </Edit>
+        </StyledEdit>
     );
 };
 

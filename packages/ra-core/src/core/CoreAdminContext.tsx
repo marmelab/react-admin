@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { ComponentType, useContext, useState } from 'react';
+import { QueryClientProvider, QueryClient } from 'react-query';
 import { Provider, ReactReduxContext } from 'react-redux';
-import { History } from 'history';
-import { createHashHistory } from 'history';
-import { ConnectedRouter } from 'connected-react-router';
+import { createHashHistory, History } from 'history';
+import { Router } from 'react-router';
 
 import { AuthContext, convertLegacyAuthProvider } from '../auth';
 import {
@@ -29,11 +29,11 @@ export type ChildrenFunction = () => ComponentType[];
 export interface AdminContextProps {
     authProvider?: AuthProvider | LegacyAuthProvider;
     children?: AdminChildren;
-    customSagas?: any[];
     customReducers?: object;
     customRoutes?: CustomRoutes;
     dashboard?: DashboardComponent;
     dataProvider: DataProvider | LegacyDataProvider;
+    queryClient?: QueryClient;
     history?: History;
     i18nProvider?: I18nProvider;
     initialState?: InitialState;
@@ -48,7 +48,7 @@ const CoreAdminContext = (props: AdminContextProps) => {
         children,
         history,
         customReducers,
-        customSagas,
+        queryClient = new QueryClient(),
         initialState,
     } = props;
     const reduxIsAlreadyInitialized = !!useContext(ReactReduxContext);
@@ -74,15 +74,11 @@ React-admin requires a valid dataProvider function to work.`);
         return (
             <AuthContext.Provider value={finalAuthProvider}>
                 <DataProviderContext.Provider value={finalDataProvider}>
-                    <TranslationProvider i18nProvider={i18nProvider}>
-                        {typeof window !== 'undefined' ? (
-                            <ConnectedRouter history={finalHistory}>
-                                {children}
-                            </ConnectedRouter>
-                        ) : (
-                            children
-                        )}
-                    </TranslationProvider>
+                    <QueryClientProvider client={queryClient}>
+                        <TranslationProvider i18nProvider={i18nProvider}>
+                            <Router history={finalHistory}>{children}</Router>
+                        </TranslationProvider>
+                    </QueryClientProvider>
                 </DataProviderContext.Provider>
             </AuthContext.Provider>
         );
@@ -91,12 +87,8 @@ React-admin requires a valid dataProvider function to work.`);
     const [store] = useState(() =>
         !reduxIsAlreadyInitialized
             ? createAdminStore({
-                  authProvider: finalAuthProvider,
                   customReducers,
-                  customSagas,
-                  dataProvider: finalDataProvider,
                   initialState,
-                  history: finalHistory,
               })
             : undefined
     );

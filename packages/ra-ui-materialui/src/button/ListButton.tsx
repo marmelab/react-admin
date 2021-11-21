@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import ActionList from '@material-ui/icons/List';
+import ActionList from '@mui/icons-material/List';
 import { Link } from 'react-router-dom';
 import { useResourceContext } from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 
 /**
  * Opens the List view of a given resource
@@ -33,18 +33,13 @@ import Button, { ButtonProps } from './Button';
  *     </Edit>
  * );
  */
-const ListButton = (props: ListButtonProps) => {
-    const {
-        basePath = '',
-        icon = defaultIcon,
-        label = 'ra.action.list',
-        ...rest
-    } = props;
-    const resource = useResourceContext();
+export const ListButton = (props: ListButtonProps) => {
+    const { icon = defaultIcon, label = 'ra.action.list', ...rest } = props;
+    const resource = useResourceContext(props);
     return (
         <Button
             component={Link}
-            to={basePath || `/${resource}`}
+            to={`/${resource}`}
             label={label}
             {...(rest as any)}
         >
@@ -56,7 +51,6 @@ const ListButton = (props: ListButtonProps) => {
 const defaultIcon = <ActionList />;
 
 interface Props {
-    basePath?: string;
     icon?: ReactElement;
     label?: string;
 }
@@ -64,9 +58,6 @@ interface Props {
 export type ListButtonProps = Props & ButtonProps;
 
 ListButton.propTypes = {
-    basePath: PropTypes.string,
     icon: PropTypes.element,
     label: PropTypes.string,
 };
-
-export default ListButton;

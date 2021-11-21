@@ -1,11 +1,27 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { ReactElement } from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import { makeStyles } from '@material-ui/core/styles';
-import Tabs, { TabsProps } from '@material-ui/core/Tabs';
+import AppBar from '@mui/material/AppBar';
+import Tabs, { TabsProps } from '@mui/material/Tabs';
 import { useTranslatableContext } from 'ra-core';
 import { TranslatableFieldsTab } from './TranslatableFieldsTab';
 import { AppBarProps } from '../layout';
+
+const PREFIX = 'RaTranslatableFieldsTabs';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
+    [`&.${classes.root}`]: {
+        boxShadow: 'none',
+        borderRadius: 0,
+        borderTopLeftRadius: theme.shape.borderRadius,
+        borderTopRightRadius: theme.shape.borderRadius,
+        border: `1px solid ${theme.palette.divider}`,
+    },
+}));
 
 /**
  * Default locale selector for the TranslatableFields component. Generates a tab for each specified locale.
@@ -16,14 +32,17 @@ export const TranslatableFieldsTabs = (
 ): ReactElement => {
     const { groupKey, TabsProps: tabsProps } = props;
     const { locales, selectLocale, selectedLocale } = useTranslatableContext();
-    const classes = useStyles(props);
 
     const handleChange = (event, newLocale): void => {
         selectLocale(newLocale);
     };
 
     return (
-        <AppBar color="default" position="static" className={classes.root}>
+        <StyledAppBar
+            color="default"
+            position="static"
+            className={classes.root}
+        >
             <Tabs
                 value={selectedLocale}
                 onChange={handleChange}
@@ -40,7 +59,7 @@ export const TranslatableFieldsTabs = (
                     />
                 ))}
             </Tabs>
-        </AppBar>
+        </StyledAppBar>
     );
 };
 
@@ -48,16 +67,3 @@ export interface TranslatableFieldsTabsProps {
     TabsProps?: TabsProps;
     groupKey?: string;
 }
-
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            boxShadow: 'none',
-            borderRadius: 0,
-            borderTopLeftRadius: theme.shape.borderRadius,
-            borderTopRightRadius: theme.shape.borderRadius,
-            border: `1px solid ${theme.palette.divider}`,
-        },
-    }),
-    { name: 'RaTranslatableFieldsTabs' }
-);

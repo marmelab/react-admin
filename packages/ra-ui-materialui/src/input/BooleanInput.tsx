@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormGroup, { FormGroupProps } from '@material-ui/core/FormGroup';
-import Switch, { SwitchProps } from '@material-ui/core/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormGroup, { FormGroupProps } from '@mui/material/FormGroup';
+import Switch, { SwitchProps } from '@mui/material/Switch';
 import { FieldTitle, useInput, InputProps } from 'ra-core';
 
-import sanitizeInputRestProps from './sanitizeInputRestProps';
-import InputHelperText from './InputHelperText';
-import InputPropTypes from './InputPropTypes';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
+import { InputHelperText } from './InputHelperText';
+import { InputPropTypes } from './InputPropTypes';
 
-const BooleanInput = (props: BooleanInputProps) => {
+export const BooleanInput = (props: BooleanInputProps) => {
     const {
         format,
         label,
@@ -99,5 +99,3 @@ BooleanInput.defaultProps = {
 
 export type BooleanInputProps = InputProps<SwitchProps> &
     Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'>;
-
-export default BooleanInput;

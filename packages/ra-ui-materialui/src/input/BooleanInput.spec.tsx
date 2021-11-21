@@ -2,7 +2,7 @@ import * as React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 
-import BooleanInput from './BooleanInput';
+import { BooleanInput } from './BooleanInput';
 
 describe('<BooleanInput />', () => {
     const defaultProps = {

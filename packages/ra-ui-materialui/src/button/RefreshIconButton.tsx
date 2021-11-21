@@ -2,12 +2,12 @@ import * as React from 'react';
 import { useCallback, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton, { IconButtonProps } from '@material-ui/core/IconButton';
-import NavigationRefresh from '@material-ui/icons/Refresh';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import NavigationRefresh from '@mui/icons-material/Refresh';
 import { refreshView, useTranslate } from 'ra-core';
 
-const RefreshIconButton = (props: RefreshIconButtonProps) => {
+export const RefreshIconButton = (props: RefreshIconButtonProps) => {
     const {
         label = 'ra.action.refresh',
         icon = defaultIcon,
@@ -36,6 +36,7 @@ const RefreshIconButton = (props: RefreshIconButtonProps) => {
                 color="inherit"
                 onClick={handleClick}
                 {...rest}
+                size="large"
             >
                 {icon}
             </IconButton>
@@ -59,5 +60,3 @@ RefreshIconButton.propTypes = {
     label: PropTypes.string,
     icon: PropTypes.element,
 };
-
-export default RefreshIconButton;

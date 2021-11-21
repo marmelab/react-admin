@@ -1,7 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
-import ThumbUp from '@material-ui/icons/ThumbUp';
+import Button from '@mui/material/Button';
+import ThumbUp from '@mui/icons-material/ThumbUp';
 import { useTranslate, useUpdate, useNotify, useRedirect } from 'react-admin';
 import { Review } from './../types';
 
@@ -19,7 +19,7 @@ const AcceptButton = ({ record }: { record: Review }) => {
         { status: 'accepted' },
         record,
         {
-            undoable: true,
+            mutationMode: 'undoable',
             onSuccess: () => {
                 notify(
                     'resources.reviews.notification.approved_success',

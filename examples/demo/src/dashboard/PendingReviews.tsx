@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     Avatar,
     Box,
@@ -7,15 +8,45 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemText,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import CommentIcon from '@material-ui/icons/Comment';
+} from '@mui/material';
+import CommentIcon from '@mui/icons-material/Comment';
 import { Link } from 'react-router-dom';
 import { useTranslate } from 'react-admin';
 
 import CardWithIcon from './CardWithIcon';
 import StarRatingField from '../reviews/StarRatingField';
 import { Customer, Review } from '../types';
+
+const PREFIX = 'PendingReviews';
+
+const classes = {
+    avatar: `${PREFIX}-avatar`,
+    listItemText: `${PREFIX}-listItemText`,
+    link: `${PREFIX}-link`,
+    linkContent: `${PREFIX}-linkContent`,
+};
+
+const StyledCardWithIcon = styled(CardWithIcon)(({ theme }) => ({
+    [`& .${classes.avatar}`]: {
+        background: theme.palette.background.paper,
+    },
+
+    [`& .${classes.listItemText}`]: {
+        overflowY: 'hidden',
+        height: '4em',
+        display: '-webkit-box',
+        WebkitLineClamp: 2,
+        WebkitBoxOrient: 'vertical',
+    },
+
+    [`& .${classes.link}`]: {
+        borderRadius: 0,
+    },
+
+    [`& .${classes.linkContent}`]: {
+        color: theme.palette.primary.main,
+    },
+}));
 
 interface Props {
     reviews?: Review[];
@@ -24,10 +55,9 @@ interface Props {
 }
 
 const PendingReviews = ({ reviews = [], customers = {}, nb }: Props) => {
-    const classes = useStyles();
     const translate = useTranslate();
     return (
-        <CardWithIcon
+        <StyledCardWithIcon
             to="/reviews"
             icon={CommentIcon}
             title={translate('pos.dashboard.pending_reviews')}
@@ -64,7 +94,7 @@ const PendingReviews = ({ reviews = [], customers = {}, nb }: Props) => {
                     </ListItem>
                 ))}
             </List>
-            <Box flexGrow="1">&nbsp;</Box>
+            <Box flexGrow={1}>&nbsp;</Box>
             <Button
                 className={classes.link}
                 component={Link}
@@ -76,27 +106,8 @@ const PendingReviews = ({ reviews = [], customers = {}, nb }: Props) => {
                     {translate('pos.dashboard.all_reviews')}
                 </Box>
             </Button>
-        </CardWithIcon>
+        </StyledCardWithIcon>
     );
 };
-
-const useStyles = makeStyles(theme => ({
-    avatar: {
-        background: theme.palette.background.paper,
-    },
-    listItemText: {
-        overflowY: 'hidden',
-        height: '4em',
-        display: '-webkit-box',
-        WebkitLineClamp: 2,
-        WebkitBoxOrient: 'vertical',
-    },
-    link: {
-        borderRadius: 0,
-    },
-    linkContent: {
-        color: theme.palette.primary.main,
-    },
-}));
 
 export default PendingReviews;

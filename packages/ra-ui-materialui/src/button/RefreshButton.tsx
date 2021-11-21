@@ -2,12 +2,12 @@ import * as React from 'react';
 import { ReactElement, MouseEvent, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import NavigationRefresh from '@material-ui/icons/Refresh';
+import NavigationRefresh from '@mui/icons-material/Refresh';
 import { refreshView } from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 
-const RefreshButton = (props: RefreshButtonProps) => {
+export const RefreshButton = (props: RefreshButtonProps) => {
     const {
         label = 'ra.action.refresh',
         icon = defaultIcon,
@@ -48,5 +48,3 @@ RefreshButton.propTypes = {
     icon: PropTypes.element,
     onClick: PropTypes.func,
 };
-
-export default RefreshButton;

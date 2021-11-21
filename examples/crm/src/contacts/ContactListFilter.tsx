@@ -7,11 +7,11 @@ import {
     useGetIdentity,
     useGetList,
 } from 'react-admin';
-import { Box, Chip } from '@material-ui/core';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import TrendingUpIcon from '@material-ui/icons/TrendingUp';
-import LocalOfferIcon from '@material-ui/icons/LocalOffer';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import { Box, Chip } from '@mui/material';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import { endOfYesterday, startOfWeek, startOfMonth, subMonths } from 'date-fns';
 
 import { Status } from '../misc/Status';
@@ -24,7 +24,7 @@ export const ContactListFilter = () => {
         { field: 'name', order: 'ASC' }
     );
     return (
-        <Box width="15em" order="-1" marginRight="1em">
+        <Box width="15em" order={-1} marginRight="1em">
             <FilterLiveSearch />
             <FilterList label="Last seen" icon={<AccessTimeIcon />}>
                 <FilterListItem

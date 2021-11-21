@@ -10,7 +10,7 @@ import {
     Identifier,
     SortPayload,
 } from '../../types';
-import { ListControllerProps } from '../useListController';
+import { ListControllerProps } from '../list';
 import useReference from '../useReference';
 import usePaginationState from '../usePaginationState';
 import { useSortState } from '..';
@@ -73,6 +73,7 @@ export const useReferenceInputController = (
         reference,
         filterToQuery,
         sort: sortOverride,
+        enableGetChoices,
     } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
@@ -123,7 +124,10 @@ export const useReferenceInputController = (
         loading: possibleValuesLoading,
         error: possibleValuesError,
         refetch: refetchGetList,
-    } = useGetList(reference, pagination, sort, filterValues);
+    } = useGetList(reference, pagination, sort, filterValues, {
+        action: 'CUSTOM_QUERY',
+        enabled: enableGetChoices ? enableGetChoices(filterValues) : true,
+    });
 
     // fetch current value
     const {
@@ -268,4 +272,5 @@ interface Option {
     resource?: string;
     sort?: SortPayload;
     source: string;
+    enableGetChoices?: (filters: any) => boolean;
 }

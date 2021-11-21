@@ -1,3 +1,358 @@
+# Upgrade to 4.0
+
+## No More Prop Injection In Page Components
+
+Page components (`<List>`, `<Show>`, etc.) used to expect to receive props (route parameters, permissions, resource name). These components don't receive any props anymore by default. They use hooks to get the props they need from contexts or route state.  
+
+```diff
+-const PostShow = (props) => (
++const PostShow = () => (
+-   <Show>
++   <Show {...props}>
+        <SimpleShowLayout>
+            <TextField source="title" />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+If you need to access the permissions previously passed as props, you need to call the `usePermissions` hook instead.
+
+```diff
++const { usePermissions } from 'react-admin';
+
+-const PostShow = ({ permissions, ...props }) => {
++const PostShow = () => {
++   const permissions = usePermissions();
+    return (
+-       <Show>
++       <Show {...props}>
+            <SimpleShowLayout>
+                <TextField source="title" />
+                {permissions === 'admin' &&
+                    <NumberField source="nb_views" />
+                }
+            </SimpleShowLayout>
+        </Show>
+    );
+};
+```
+
+If you need to access the `hasList` and other flags related to resource configuration, use the `useResourceConfiguration` hook instead.
+
+```diff
++const { useResourceDefinition } from 'react-admin';
+
+-const PostShow = ({ hasEdit, ...props }) => {
++const PostShow = () => {
++   const { hasEdit } = useResourceDefinition();
+    return (
+        <Show actions={hasEdit ? <ShowActions /> : null}>
+            <SimpleShowLayout>
+                <TextField source="title" />
+            </SimpleShowLayout>
+        </Show>
+    );
+};
+```
+
+If you need to access a route parameter, use react-router's `useParams` hook instead.
+
+```diff
++const { useParams } from 'react-router-dom';
+
+-const PostShow = ({ id, ...props }) => {
++const PostShow = () => {
++   const { id } = useParams();
+    return (
+        <Show title={`Post #${id}`}>
+            <SimpleShowLayout>
+                <TextField source="title" />
+            </SimpleShowLayout>
+        </Show>
+    );
+};
+```
+
+We used to inject a `syncWithLocation` prop set to `true` to the `<List>` components used in a `<Resource>`. This instructed the `<List>` to synchronize its parameters (such as pagination, sorting and filters) with the browser location.
+
+As we removed the props injection, we enabled this synchronization by default for all `<List>`, used in a `<Resource>` or not. As a consequence, we also inverted this prop and renamed it `disableSyncWithLocation`. This doesn't change anything if you only used `<List>` components inside `<Resource list>`. 
+
+However, if you had multiple `<List>` components inside used a single page, or if you used `<List>` outside of a `<Resource>`, you now have to explicitly opt out the synchronization of the list parameters with the browser location:
+
+```dif
+const MyList = () => (
+-    <List>
++    <List disableSyncWithLocation>
+        // ...
+    </List>
+)
+```
+
+## `<Card>` Is Now Rendered By Inner Components
+
+The page components (`<List>`, `<Show>`, etc.) used to render a `<Card>` around their child. It's now the responsibility of the child to render the `<Card>` itself. If you only use react-admin components, you don't need to change anything. But if you use custom layout components, you need to wrap them inside a `<Card>`.
+
+```diff
++import { Card } from '@mui/material';
+
+const MyShowLayout = () => {
+    const record useRecordContext();
+    return (
++       <Card>
+            <Stack>
+                <TextField source="title" />
+                <TextField source="author" />
+            </Stack>
++       </Card>
+    );
+}
+```
+
+## Redux-Saga Was Removed
+
+The use of sagas has been deprecated for a while. React-admin v4 doesn't support them anymore. That means that the Redux actions don't include meta parameters anymore to trigger sagas, the Redux store doesn't include the saga middleware, and the saga-based side effects were removed.
+
+In particular, the data action creators (like `crudGetList`) don't support the `onSuccess` and `onFailure` callbacks anymore. You should use the related data provider hook (e.g. `useGetList`) instead.
+
+If you still relied on sagas, you have to port your saga code to react `useEffect`, which is the standard way to write side effects in modern react.
+
+## Removed Deprecated Elements
+
+- Removed `<BulkDeleteAction>` (use `<BulkDeleteButton>` instead)
+- Removed declarative side effects in dataProvider hooks (e.g. `{ onSuccess: { refresh: true } }`). Use function side effects instead (e.g. `{ onSuccess: () => { refresh(); } }`)
+
+## Removed connected-react-router
+
+If you were dispatching `connected-react-router` actions to navigate, you'll now have to use `react-router` hooks:
+
+```diff
+-import { useDispatch } from 'react-redux';
+-import { push } from 'connected-react-router';
++import { useHistory } from 'react-router';
+
+const MyComponent = () => {
+-    const dispatch = useDispatch();
++    const history = useHistory();
+
+    const myHandler = () => {
+-        dispatch(push('/my-url'));
++        history.push('/my-url');
+    }
+}
+
+```
+
+## Removed the undoable prop in Favor of mutationMode
+
+We removed the `undoable` prop as we introduced the `mutationMode` in v3. This impact the following hooks and components:
+
+- `useDeleteWithConfirmController`
+- `useEditController`
+- `useDataProvider`
+- `useMutation`
+
+- `BulkDeleteButton`
+- `BulkDeleteWithConfirmButton`
+- `DeleteButton`
+- `DeleteWithConfirmButton`
+- `Edit`
+
+Wherever you were using `undoable`, replace it with `mutationMode`:
+
+```diff
+const {
+    open,
+    loading,
+    handleDialogOpen,
+    handleDialogClose,
+    handleDelete,
+} = useDeleteWithConfirmController({
+    resource,
+    record,
+    redirect,
+    basePath,
+    onClick,
+-    undoable: true
++    mutationMode: 'undoable'
+});
+```
+
+Or in a component:
+```diff
+export const PostEdit = (props) => (
+-    <Edit {...props} undoable>
++    <Edit {...props} mutationMode="undoable">
+        <SimpleForm>
+            <TextInput source="title" />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+## `addLabel` Prop No Longer Considered For Show Labelling 
+
+`<SimpleShowLayout>` and `<TabbedShowLayout>` used to look for an `addLabel` prop to decide whether they needed to add a label or not. this relied on `defaultProps`, which will soon be removed from React. 
+
+The Show layout components now render a label for their children as soon as they have a `source` or a `label` prop. If you don't want a field to have a label in the show view, pass the `label={false}` prop.
+
+```jsx
+const PostShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            {/* this field will have a Label */}
+            <TextField source="title" />
+            {/* this one will also have a Label */}
+            <TextField label="Author name" source="author" />
+            {/* this field will not */}
+            <TextField label={false} source="title" />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+As the `addLabel` prop is now ignored in fields, you can remove it from your custom fields:
+
+```diff
+const MyCustomField = () => (
+    ... 
+);
+-MyCustomField.defaultProps = {
+-    addLabel: true
+-};
+```
+
+## Removed The `aside` Prop From `<Show>`
+
+To add a sidebar to a `<Show>` component, you can no longer use the `<Show aside>` prop. But `<Show>` has evolved to accept many children, and render a `<div style={{ display: 'flex" }}>`. So adding a sidebar becomes more natural:
+
+```diff
+export const PostShow = () => (
+-    <Show aside={<PostShowAside />}>
++    <Show>
+        <SimpleShowLayout>
+            <TextField source="title" />
+        </SimpleShowLayout>
++       <PostShowAside />
+    </Show>
+);
+```
+
+If you want more control over the relative widths of the two children, use layout components like material-ui's `<Grid>`:
+
+```jsx
+ import { Grid } from '@mui/material';
+
+export const PostShow = () => (
+    <Show>
+        <Grid container>
+            <Grid item xs={8}>
+                <SimpleShowLayout>
+                    <TextField source="title" />
+                </SimpleShowLayout>
+            </Grid>
+            <Grid item xs={4}>
+               <PostShowAside />
+            </Grid>
+        </Grid>
+    </Show>
+);
+```
+
+## Removed `loading` and `loaded` Data Provider State Variables
+
+The dataProvider hooks (`useGetOne`, etc) return the request state. The `loading` and `loaded` state variables were changed to `isLoading` and `isFetching` respectively. The meaning has changed, too:
+
+- `loading` is now `isFetching`
+- `loaded` is now `!isLoading`
+
+```diff
+const BookDetail = ({ id }) => {
+-   const { data, error, loaded } = useGetOne('books', id);
++   const { data, error, isLoading } = useGetOne('books', id);
+-   if (!loaded) {
++   if (isLoading) {
+        return <Loading />;
+    }
+    if (error) {
+        return <Error error={error} />;
+    }
+    if (!data) {
+        return null;
+    }
+    return (
+        <div>
+            <h1>{data.book.title}</h1>
+            <p>{data.book.author.name}</p>
+        </div>
+    );
+};
+```
+
+The new props are actually returned by react-query's `useQuery` hook. Check [their documentation](https://react-query.tanstack.com/reference/useQuery) for more information.
+
+## Page Components No Longer Accept `onSuccess` and `onFailure` Props
+
+Prior to 4.0, the page components (`<List>`, `<Show>`, etc.) used to accept props for success and failure side effects. They now accept a generic `queryOptions` prop, which is passed to the underlying react-query `useQuery` call. 
+
+This options object accepts `onSuccess` and `onError` fields, so you can migrate your code as follows:
+
+```diff
+const PostShow = () => {
+    const onSuccess = () => {
+        // do something
+    };
+    const onFailure = () => {
+        // do something
+    };
+    return (
+-       <Show {...props} onSuccess={onSuccess} onFailure={onFailure}>
++       <Show {...props} queryOptions={{ onSuccess: onSuccess, onError: onFailure }}>
+            <SimpleShowLayout>
+                <TextField source="title" />
+            </SimpleShowLayout>
+        </Show>
+    );
+};
+```
+
+## Unit Tests for Data Provider Dependent Components Need A QueryClientContext
+
+If you were using components dependent on the dataProvider hooks in isolation (e.g. in unit or integration tests), you now need to wrap them inside a `<QueryClientContext>` component, to let the access react-query's `QueryClient` instance.
+
+```diff
++import { QueryClientProvider, QueryClient } from 'react-query';
+
+// this component relies on dataProvider hooks
+const BookDetail = ({ id }) => {
+    const { data, error, isLoading } = useGetOne('books', id);
+    if (isLoading) {
+        return <Loading />;
+    }
+    if (error) {
+        return <Error error={error} />;
+    }
+    if (!data) {
+        return null;
+    }
+    return (
+        <div>
+            <h1>{data.book.title}</h1>
+            <p>{data.book.author.name}</p>
+        </div>
+    );
+};
+
+test('MyComponent', () => {
+    render(
++       <QueryClientProvider client={new QueryClient()}>
+            <BookDetail id={1} />
++       </QueryClientProvider>
+    );
+    // ...
+});
+```
+
 # Upgrade to 3.0
 
 We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.
@@ -35,7 +390,7 @@ Failing to upgrade one of the `ra-` packages will result in a duplication of the
 * `react` and `react-dom` are now required to be >= 16.9. This version is backward compatible with 16.3, which was the minimum requirement in react-admin, and it offers the support for Hooks, on which react-admin v3 relies heavily.
 * `react-redux` requires a minimum version of 7.1.0 (instead of 5.0). Check their upgrade guide for [6.0](https://github.com/reduxjs/react-redux/releases/tag/v6.0.0) and [7.0](https://github.com/reduxjs/react-redux/releases/tag/v7.0.0)
 * `redux-saga` requires a minimum version of 1.0.0 (instead of ~0.16.0). Check their [list of breaking changes for redux-saga 1.0](https://github.com/redux-saga/redux-saga/releases/tag/v1.0.0) on GitHub. 
-* `material-ui` requires a minimum of 4.0.0 (instead of 1.5). Check their [Upgrade guide](https://next.material-ui.com/guides/migration-v3/).
+* `material-ui` requires a minimum of 4.0.0 (instead of 1.5). Check their [Upgrade guide](https://mui.com/guides/migration-v3/).
 
 ## `react-router-redux` replaced by `connected-react-router`
 
@@ -118,12 +473,11 @@ Here's how to migrate the *Altering the Form Values before Submitting* example f
 import * as React from 'react';
 import { useCallback } from 'react';
 import { useForm } from 'react-final-form';
-import { SaveButton, Toolbar, useCreate, useRedirect, useNotify } from 'react-admin';
+import { SaveButton, Toolbar, useCreate, useRedirect } from 'react-admin';
 
 const SaveWithNoteButton = ({ handleSubmit, handleSubmitWithRedirect, ...props }) => {
     const [create] = useCreate('posts');
     const redirectTo = useRedirect();
-    const notify = useNotify();
     const { basePath, redirect } = props;
 
     const form = useForm();
@@ -171,9 +525,7 @@ const SaveWithNoteButton = props => {
                 },
                 {
                     onSuccess: ({ data: newRecord }) => {
-                        notify('ra.notification.created', 'info', {
-                            smart_count: 1,
-                        });
+                        notify('ra.notification.created', { messageArgs: { smart_count: 1 } });
                         redirectTo(redirect, basePath, newRecord.id, newRecord);
                     },
                 }
@@ -472,7 +824,7 @@ const ExportButton = ({ sort, filter, maxResults = 1000, resource }) => {
     const payload = { sort, filter, pagination: { page: 1, perPage: maxResults }}
     const handleClick = dataProvider.getList(resource, payload)
         .then(({ data }) => jsonExport(data, (err, csv) => downloadCSV(csv, resource)))
-        .catch(error => notify('ra.notification.http_error', 'warning'));
+        .catch(error => notify('ra.notification.http_error', { type: 'warning' }));
 
     return (
         <Button

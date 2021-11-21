@@ -39,7 +39,7 @@ import { SimpleFormView } from './SimpleFormView';
  *
  * @param {Props} props
  */
-const SimpleForm = (props: SimpleFormProps) => (
+export const SimpleForm = (props: SimpleFormProps) => (
     <FormWithRedirect
         {...props}
         render={formProps => <SimpleFormView {...formProps} />}
@@ -61,7 +61,6 @@ SimpleForm.propTypes = {
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.element,
-    undoable: PropTypes.bool,
     validate: PropTypes.func,
     version: PropTypes.number,
     sanitizeEmptyValues: PropTypes.bool,
@@ -83,9 +82,5 @@ export interface SimpleFormProps
     resource?: string;
     submitOnEnter?: boolean;
     toolbar?: ReactElement;
-    /** @deprecated use mutationMode: undoable instead */
-    undoable?: boolean;
     variant?: 'standard' | 'outlined' | 'filled';
 }
-
-export default SimpleForm;

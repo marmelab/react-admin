@@ -138,8 +138,8 @@ const PostEditActions = ({ basePath, record, resource }) => (
     </TopToolbar>
 );
 
-export const PostEdit = (props) => (
-    <Edit actions={<PostEditActions />} {...props}>
+export const PostEdit = () => (
+    <Edit actions={<PostEditActions />}>
         ...
     </Edit>
 );
@@ -176,8 +176,8 @@ const PostListActions = ({ basePath }) => (
     </TopToolbar>
 );
 
-export const PostList = (props) => (
-    <List actions={<PostListActions />} {...props}>
+export const PostList = () => (
+    <List actions={<PostListActions />}>
         ...
     </List>
 );
@@ -208,8 +208,8 @@ const PostBulkActionButtons = ({ basePath }) => (
     </Fragment>
 );
 
-export const PostList = (props) => (
-    <List {...props} bulkActionButtons={<PostBulkActionButtons />}>
+export const PostList = () => (
+    <List bulkActionButtons={<PostBulkActionButtons />}>
         ...
     </List>
 );
@@ -239,8 +239,8 @@ const PostBulkActionButtons = ({ basePath }) => (
     </Fragment>
 );
 
-export const PostList = (props) => (
-    <List {...props} bulkActionButtons={<PostBulkActionButtons />}>
+export const PostList = () => (
+    <List bulkActionButtons={<PostBulkActionButtons />}>
         ...
     </List>
 );
@@ -362,20 +362,20 @@ You can create a custom menu component using the `<DashboardMenuItem>` and `<Men
 ```jsx
 // in src/Menu.js
 import * as React from 'react';
-import { DashboardMenuItem, MenuItemLink } from 'react-admin';
+import { DashboardMenuItem, Menu, MenuItemLink } from 'react-admin';
 import BookIcon from '@material-ui/icons/Book';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import PeopleIcon from '@material-ui/icons/People';
 import LabelIcon from '@material-ui/icons/Label';
 
-export const Menu = () => (
-    <div>
+export const Menu = (props) => (
+    <Menu {...props}>
         <DashboardMenuItem />
         <MenuItemLink to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
         <MenuItemLink to="/comments" primaryText="Comments" leftIcon={<ChatBubbleIcon />}/>
         <MenuItemLink to="/users" primaryText="Users" leftIcon={<PeopleIcon />}/>
         <MenuItemLink to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
-    </div>
+    </Menu>
 );
 ```
 

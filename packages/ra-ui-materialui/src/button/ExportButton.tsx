@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import DownloadIcon from '@material-ui/icons/GetApp';
+import DownloadIcon from '@mui/icons-material/GetApp';
 import {
     fetchRelatedRecords,
     useDataProvider,
@@ -12,9 +12,9 @@ import {
     FilterPayload,
     useResourceContext,
 } from 'ra-core';
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 
-const ExportButton = (props: ExportButtonProps) => {
+export const ExportButton = (props: ExportButtonProps) => {
     const {
         maxResults = 1000,
         onClick,
@@ -126,5 +126,3 @@ ExportButton.propTypes = {
     }),
     icon: PropTypes.element,
 };
-
-export default ExportButton;

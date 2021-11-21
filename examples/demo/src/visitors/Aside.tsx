@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import {
     NumberField,
@@ -22,20 +23,25 @@ import {
     Step,
     StepLabel,
     StepContent,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import { makeStyles } from '@material-ui/core/styles';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 import order from '../orders';
 import review from '../reviews';
 import StarRatingField from '../reviews/StarRatingField';
 import { Order as OrderRecord, Review as ReviewRecord } from '../types';
 
-const useAsideStyles = makeStyles(theme => ({
-    root: {
+const PREFIX = 'Aside';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const AsideRoot = styled('div')(({ theme }) => ({
+    [`&.${classes.root}`]: {
         width: 400,
-        [theme.breakpoints.down('md')]: {
+        [theme.breakpoints.down('lg')]: {
             display: 'none',
         },
     },
@@ -46,14 +52,11 @@ interface AsideProps {
     basePath?: string;
 }
 
-const Aside = ({ record, basePath }: AsideProps) => {
-    const classes = useAsideStyles();
-    return (
-        <div className={classes.root}>
-            {record && <EventList record={record} basePath={basePath} />}
-        </div>
-    );
-};
+const Aside = ({ record, basePath }: AsideProps) => (
+    <AsideRoot className={classes.root}>
+        {record && <EventList record={record} basePath={basePath} />}
+    </AsideRoot>
+);
 
 Aside.propTypes = {
     record: PropTypes.any,
@@ -65,8 +68,8 @@ interface EventListProps {
     basePath?: string;
 }
 
-const useEventStyles = makeStyles({
-    stepper: {
+const StyledStepper = styled(Stepper)({
+    '&': {
         background: 'none',
         border: 'none',
         marginLeft: '0.3em',
@@ -75,7 +78,6 @@ const useEventStyles = makeStyles({
 
 const EventList = ({ record, basePath }: EventListProps) => {
     const translate = useTranslate();
-    const classes = useEventStyles();
     const locale = useLocale();
     const { data: orders, ids: orderIds } = useGetList<OrderRecord>(
         'commands',
@@ -190,7 +192,7 @@ const EventList = ({ record, basePath }: EventListProps) => {
                     </CardContent>
                 </Card>
             </Box>
-            <Stepper orientation="vertical" classes={{ root: classes.stepper }}>
+            <StyledStepper orientation="vertical">
                 {events.map(event => (
                     <Step
                         key={`${event.type}-${event.data.id}`}
@@ -239,7 +241,7 @@ const EventList = ({ record, basePath }: EventListProps) => {
                         </StepContent>
                     </Step>
                 ))}
-            </Stepper>
+            </StyledStepper>
         </>
     );
 };
@@ -327,8 +329,8 @@ interface ReviewProps {
     basePath?: string;
 }
 
-const useReviewStyles = makeStyles({
-    clamp: {
+const ReviewRoot = styled('div')({
+    '& .clamp': {
         display: '-webkit-box',
         '-webkit-line-clamp': 3,
         '-webkit-box-orient': 'vertical',
@@ -337,10 +339,9 @@ const useReviewStyles = makeStyles({
 });
 
 const Review = ({ record, basePath }: ReviewProps) => {
-    const classes = useReviewStyles();
     const translate = useTranslate();
     return record ? (
-        <>
+        <ReviewRoot>
             <Typography variant="body2" gutterBottom>
                 <Link to={`/reviews/${record.id}`} component={RouterLink}>
                     {translate('resources.reviews.relative_to_poster')} "
@@ -360,14 +361,10 @@ const Review = ({ record, basePath }: ReviewProps) => {
             <Typography variant="body2" color="textSecondary" gutterBottom>
                 <StarRatingField record={record} />
             </Typography>
-            <Typography
-                variant="body2"
-                color="textSecondary"
-                className={classes.clamp}
-            >
+            <Typography variant="body2" color="textSecondary" className="clamp">
                 {record.comment}
             </Typography>
-        </>
+        </ReviewRoot>
     ) : null;
 };
 

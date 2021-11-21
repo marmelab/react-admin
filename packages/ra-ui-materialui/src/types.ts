@@ -1,4 +1,5 @@
-import { ReactElement, ElementType } from 'react';
+import { ReactElement, ReactNode, ElementType } from 'react';
+import { SxProps } from '@mui/system';
 import {
     Identifier,
     Exporter,
@@ -11,6 +12,7 @@ import {
     OnSuccess,
     OnFailure,
 } from 'ra-core';
+import { UseQueryOptions } from 'react-query';
 
 export interface ListProps extends ResourceComponentProps {
     actions?: ReactElement | false;
@@ -22,7 +24,7 @@ export interface ListProps extends ResourceComponentProps {
     empty?: ReactElement | false;
     exporter?: Exporter | false;
     filter?: FilterPayload;
-    filterDefaultValues?: any;
+    filterDefaultValues?: object;
     filters?: ReactElement | ReactElement[];
     pagination?: ReactElement | false;
     perPage?: number;
@@ -31,17 +33,17 @@ export interface ListProps extends ResourceComponentProps {
     title?: string | ReactElement;
 }
 
-export interface EditProps extends ResourceComponentPropsWithId {
+export interface EditProps<RecordType extends RaRecord = RaRecord>
+    extends ResourceComponentPropsWithId {
     actions?: ReactElement | false;
     aside?: ReactElement;
     classes?: any;
     className?: string;
     component?: ElementType;
-    /** @deprecated use mutationMode: undoable instead */
-    undoable?: boolean;
     mutationMode?: MutationMode;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
+    queryOptions?: UseQueryOptions<RecordType>;
     transform?: (data: RaRecord) => RaRecord | Promise<RaRecord>;
     title?: string | ReactElement;
 }
@@ -59,13 +61,17 @@ export interface CreateProps extends ResourceComponentProps {
     title?: string | ReactElement;
 }
 
-export interface ShowProps extends ResourceComponentPropsWithId {
+export interface ShowProps<RecordType extends RaRecord = RaRecord> {
     actions?: ReactElement | false;
-    aside?: ReactElement;
-    classes?: any;
+    children: ReactNode;
     className?: string;
     component?: ElementType;
+    emptyWhileLoading?: boolean;
+    id?: Identifier;
+    queryOptions?: UseQueryOptions<RecordType>;
+    resource?: string;
     title?: string | ReactElement;
+    sx?: SxProps;
 }
 
 export interface BulkActionProps {

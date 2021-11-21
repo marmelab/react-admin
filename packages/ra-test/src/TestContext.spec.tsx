@@ -1,9 +1,11 @@
-import expect from 'expect';
-import { render } from '@testing-library/react';
 import * as React from 'react';
+import expect from 'expect';
+import { render, screen } from '@testing-library/react';
+import { refreshView } from 'ra-core';
 
 import TestContext, { defaultStore } from './TestContext';
-import { refreshView } from 'ra-core';
+
+import { WithDataProvider } from './TestContext.stories';
 
 const primedStore = {
     admin: {
@@ -18,17 +20,6 @@ const primedStore = {
             viewVersion: 1,
         },
         customQueries: {},
-    },
-    router: {
-        action: 'POP',
-        location: {
-            hash: '',
-            key: '',
-            pathname: '/',
-            query: {},
-            search: '',
-            state: undefined,
-        },
     },
 };
 
@@ -54,11 +45,6 @@ const customReducer = (prevState = customReducerInitialState, action) => {
         default:
             return prevState;
     }
-};
-
-const eraseRouterKey = state => {
-    state.router.location.key = ''; // react-router initializes the state with a random key
-    return state;
 };
 
 describe('TestContext.js', () => {
@@ -98,8 +84,7 @@ describe('TestContext.js', () => {
                     }}
                 </TestContext>
             );
-            const initialstate = eraseRouterKey(testStore.getState());
-            expect(initialstate).toEqual(primedStore);
+            expect(testStore.getState()).toEqual(primedStore);
 
             testStore.dispatch(refreshView());
 
@@ -145,9 +130,8 @@ describe('TestContext.js', () => {
                     }}
                 </TestContext>
             );
-            const initialstate = eraseRouterKey(testStore.getState());
 
-            expect(initialstate).toEqual({
+            expect(testStore.getState()).toEqual({
                 ...primedStore,
                 customReducer: customReducerInitialState,
             });
@@ -169,15 +153,20 @@ describe('TestContext.js', () => {
             );
 
             testStore.dispatch(customAction(testValue));
-            const alteredState = eraseRouterKey(testStore.getState());
 
-            expect(alteredState).toEqual({
+            expect(testStore.getState()).toEqual({
                 ...primedStore,
                 customReducer: {
                     ...customReducerInitialState,
                     foo: testValue,
                 },
             });
+        });
+
+        it('should work with useDataProvider actions', async () => {
+            render(<WithDataProvider />);
+            expect(screen.getByText('loading')).toBeDefined();
+            await screen.findByText('foo');
         });
     });
 });

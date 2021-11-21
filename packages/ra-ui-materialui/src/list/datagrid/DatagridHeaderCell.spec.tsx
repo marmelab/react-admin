@@ -7,13 +7,14 @@ import { DatagridHeaderCell } from './DatagridHeaderCell';
 describe('<DatagridHeaderCell />', () => {
     it('should accept a React element as Field label', () => {
         const Label = () => <>Label</>;
-        const Field = () => <div />;
+        const Field = ({ source, label }) => <div />;
         const { getByText } = render(
             <table>
                 <tbody>
                     <tr>
                         <DatagridHeaderCell
-                            currentSort={{}}
+                            resource="posts"
+                            currentSort={{ field: 'title', order: 'ASC' }}
                             field={<Field source="title" label={<Label />} />}
                             updateSort={() => true}
                         />
@@ -25,19 +26,26 @@ describe('<DatagridHeaderCell />', () => {
     });
 
     describe('sorting on a column', () => {
-        const Field = () => <div />;
+        const Field = (props: {
+            source?: string;
+            sortBy?: string;
+            sortByOrder?: string;
+            label?: string;
+            sortable?: boolean;
+        }) => <div />;
         Field.defaultProps = {
             type: 'foo',
             updateSort: () => true,
         };
 
         it('should be enabled when field has a source', () => {
-            const { getByTitle } = render(
+            const { getByLabelText } = render(
                 <table>
                     <tbody>
                         <tr>
                             <DatagridHeaderCell
-                                currentSort={{}}
+                                resource="posts"
+                                currentSort={{ field: 'title', order: 'ASC' }}
                                 field={<Field source="title" />}
                                 updateSort={() => true}
                             />
@@ -45,16 +53,19 @@ describe('<DatagridHeaderCell />', () => {
                     </tbody>
                 </table>
             );
-            expect(getByTitle('ra.action.sort').dataset.field).toBe('title');
+            expect(getByLabelText('ra.action.sort').dataset.field).toBe(
+                'title'
+            );
         });
 
         it('should be enabled when field has a sortBy props', () => {
-            const { getByTitle } = render(
+            const { getByLabelText } = render(
                 <table>
                     <tbody>
                         <tr>
                             <DatagridHeaderCell
-                                currentSort={{}}
+                                resource="posts"
+                                currentSort={{ field: 'title', order: 'ASC' }}
                                 field={<Field sortBy="title" />}
                                 updateSort={() => true}
                             />
@@ -62,16 +73,19 @@ describe('<DatagridHeaderCell />', () => {
                     </tbody>
                 </table>
             );
-            expect(getByTitle('ra.action.sort').dataset.field).toBe('title');
+            expect(getByLabelText('ra.action.sort').dataset.field).toBe(
+                'title'
+            );
         });
 
         it('should be change order when field has a sortByOrder props', () => {
-            const { getByTitle } = render(
+            const { getByLabelText } = render(
                 <table>
                     <tbody>
                         <tr>
                             <DatagridHeaderCell
-                                currentSort={{}}
+                                resource="posts"
+                                currentSort={{ field: 'title', order: 'ASC' }}
                                 field={
                                     <Field sortBy="title" sortByOrder="DESC" />
                                 }
@@ -81,16 +95,17 @@ describe('<DatagridHeaderCell />', () => {
                     </tbody>
                 </table>
             );
-            expect(getByTitle('ra.action.sort').dataset.order).toBe('DESC');
+            expect(getByLabelText('ra.action.sort').dataset.order).toBe('DESC');
         });
 
         it('should be keep ASC order when field has not sortByOrder props', () => {
-            const { getByTitle } = render(
+            const { getByLabelText } = render(
                 <table>
                     <tbody>
                         <tr>
                             <DatagridHeaderCell
-                                currentSort={{}}
+                                resource="posts"
+                                currentSort={{ field: 'title', order: 'ASC' }}
                                 field={<Field source="title" />}
                                 updateSort={() => true}
                             />
@@ -98,16 +113,17 @@ describe('<DatagridHeaderCell />', () => {
                     </tbody>
                 </table>
             );
-            expect(getByTitle('ra.action.sort').dataset.order).toBe('ASC');
+            expect(getByLabelText('ra.action.sort').dataset.order).toBe('ASC');
         });
 
         it('should be disabled when field has no sortBy and no source', () => {
-            const { queryAllByTitle } = render(
+            const { queryAllByLabelText } = render(
                 <table>
                     <tbody>
                         <tr>
                             <DatagridHeaderCell
-                                currentSort={{}}
+                                resource="posts"
+                                currentSort={{ field: 'title', order: 'ASC' }}
                                 field={<Field />}
                                 updateSort={() => true}
                             />
@@ -115,16 +131,17 @@ describe('<DatagridHeaderCell />', () => {
                     </tbody>
                 </table>
             );
-            expect(queryAllByTitle('ra.action.sort')).toHaveLength(0);
+            expect(queryAllByLabelText('ra.action.sort')).toHaveLength(0);
         });
 
         it('should be disabled when sortable prop is explicitly set to false', () => {
-            const { queryAllByTitle } = render(
+            const { queryAllByLabelText } = render(
                 <table>
                     <tbody>
                         <tr>
                             <DatagridHeaderCell
-                                currentSort={{}}
+                                resource="posts"
+                                currentSort={{ field: 'title', order: 'ASC' }}
                                 field={
                                     <Field source="title" sortable={false} />
                                 }
@@ -134,7 +151,7 @@ describe('<DatagridHeaderCell />', () => {
                     </tbody>
                 </table>
             );
-            expect(queryAllByTitle('ra.action.sort')).toHaveLength(0);
+            expect(queryAllByLabelText('ra.action.sort')).toHaveLength(0);
         });
 
         it('should use cell className if specified', () => {
@@ -143,7 +160,8 @@ describe('<DatagridHeaderCell />', () => {
                     <tbody>
                         <tr>
                             <DatagridHeaderCell
-                                currentSort={{}}
+                                resource="posts"
+                                currentSort={{ field: 'title', order: 'ASC' }}
                                 updateSort={() => true}
                                 field={<Field />}
                                 className="blue"

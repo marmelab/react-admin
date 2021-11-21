@@ -1,5 +1,95 @@
 # Changelog
 
+## v3.19.1
+
+* Fix sidebar is displayed over the content ([#6723](https://github.com/marmelab/react-admin/pull/6723)) ([djhi](https://github.com/djhi))
+* Fix `warnWhenUnsavedChanges` warns too often ([#6719](https://github.com/marmelab/react-admin/pull/6719)) ([djhi](https://github.com/djhi))
+* Fix `useNotify` shows a warning if only one argument is passed ([#6760](https://github.com/marmelab/react-admin/pull/6760)) ([WiXSL](https://github.com/WiXSL))
+* Fix runtime error when type is not supplied to `useNotify` ([#6713](https://github.com/marmelab/react-admin/pull/6713)) ([danielhusar](https://github.com/danielhusar))
+* Fix `notify` function when no type is passed ([#6768](https://github.com/marmelab/react-admin/pull/6768)) ([nidebo](https://github.com/nidebo))
+* Fix `<SimpleFormIterator>` transition animations on add and remove items ([#6871](https://github.com/marmelab/react-admin/pull/6871)) ([WiXSL](https://github.com/WiXSL))
+* Fix simple CodeSandbox ([#6781](https://github.com/marmelab/react-admin/pull/6781)) ([djhi](https://github.com/djhi))
+* Fix `<DateInput>` breaks `<SimpleFormIterator>` ([#6763](https://github.com/marmelab/react-admin/pull/6763)) ([djhi](https://github.com/djhi))
+* Fix `<Login>` page isn't customizable through MUI theme ([#6762](https://github.com/marmelab/react-admin/pull/6762)) ([djhi](https://github.com/djhi))
+* Fix call time parameters don't take priority in `useMutation` ([#6761](https://github.com/marmelab/react-admin/pull/6761)) ([djhi](https://github.com/djhi))
+* Bump minor dependencies
+* [TypeScript] Fix Graphql Providers Types ([#6724](https://github.com/marmelab/react-admin/pull/6724)) ([djhi](https://github.com/djhi))
+* [TypeScript] Make `previousData` of `DeleteParams` optional ([#6536](https://github.com/marmelab/react-admin/pull/6536)) ([m0rtalis](https://github.com/m0rtalis))
+* [Doc] Add GeoServer data provider ([#6778](https://github.com/marmelab/react-admin/pull/6778)) ([sergioedo](https://github.com/sergioedo))
+* [Doc] Add paragraph about carbon footprint in README ([#6774](https://github.com/marmelab/react-admin/pull/6774)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add link to images in tutorial ([#6771](https://github.com/marmelab/react-admin/pull/6771)) ([ocxers](https://github.com/ocxers))
+* [Doc] Fix typo in Architecture chapter ([#6740](https://github.com/marmelab/react-admin/pull/6740)) ([HobbitCodes](https://github.com/HobbitCodes))
+* [Doc] Fix typo in Theming chapter ([#6714](https://github.com/marmelab/react-admin/pull/6714)) ([afilp](https://github.com/afilp))
+* Fix MUI's urls reference for version 4 ([#6702](https://github.com/marmelab/react-admin/pull/6702)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add `getIdentity` function to the authProvider reference ([#6697](https://github.com/marmelab/react-admin/pull/6697)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Improve `useRedirect` description and examples ([#6696](https://github.com/marmelab/react-admin/pull/6696)) ([WiXSL](https://github.com/WiXSL))
+
+## v3.19.0
+
+### 🚀 New Features
+
+- Allow lazy loading of choices in ReferenceInput ([#6013](https://github.com/marmelab/react-admin/pull/6013)) ([@ValentinH](https://github.com/ValentinH))
+- Add support for custom url in SimpleList ([#6594](https://github.com/marmelab/react-admin/pull/6594)) ([djhi](https://github.com/djhi))
+- Added support for customizing the styles of the Datagrid expand panels  ([#6596](https://github.com/marmelab/react-admin/pull/6596)) ([mjomble](https://github.com/mjomble))
+- Blur input on suggestion create ([#6646](https://github.com/marmelab/react-admin/pull/6646)) ([andrico1234](https://github.com/andrico1234))
+- Add support for multiline notifications ([#6670](https://github.com/marmelab/react-admin/pull/6670)) ([WiXSL](https://github.com/WiXSL))
+- Introduce simpler signature for the `notify` function returned by `useNotify` ([#6671](https://github.com/marmelab/react-admin/pull/6671)) ([WiXSL](https://github.com/WiXSL))
+- Returns `error` from controllers & add support for custom `onFailure` on `useShowController` and `useEditController` ([#6680](https://github.com/marmelab/react-admin/pull/6680)) ([djhi](https://github.com/djhi))
+- Extract sidebar toggle button ([#6603](https://github.com/marmelab/react-admin/pull/6603)) ([djhi](https://github.com/djhi))
+- [GraphQL] Upgrade graphql packages dependencies (Apollo v3) ([#6614](https://github.com/marmelab/react-admin/pull/6614)) ([djhi](https://github.com/djhi))
+
+### 🐛 Bug Fixes
+
+- Fix MUI 4.12 deprecation warnings ([#6587](https://github.com/marmelab/react-admin/pull/6587)) ([fzaninotto](https://github.com/fzaninotto))
+- Refactor ArrayInput and SimpleFormIterator with context ([#6612](https://github.com/marmelab/react-admin/pull/6612)) ([djhi](https://github.com/djhi))
+- Refactor graphql providers and migrate to the new dataProvider signature ([#6628](https://github.com/marmelab/react-admin/pull/6628)) ([djhi](https://github.com/djhi))
+- [GraphQL]: Fix Simple Response Parser Modify all Objects ([#6643](https://github.com/marmelab/react-admin/pull/6643)) ([djhi](https://github.com/djhi))
+- [GraphQL]: add basic network error handling ([#6648](https://github.com/marmelab/react-admin/pull/6648)) ([djhi](https://github.com/djhi))
+- Fix remove unused import ([#6676](https://github.com/marmelab/react-admin/pull/6676)) ([WiXSL](https://github.com/WiXSL))
+- Fix react import ([#6677](https://github.com/marmelab/react-admin/pull/6677)) ([WiXSL](https://github.com/WiXSL))
+
+### 🟦 Types
+
+- Upgrade TypeScript version to 4.4 ([#6588](https://github.com/marmelab/react-admin/pull/6588)) ([fzaninotto](https://github.com/fzaninotto))
+- Support custom DataProvider type with useDataProvider ([#6605](https://github.com/marmelab/react-admin/pull/6605)) ([djhi](https://github.com/djhi))
+- Fix simple project type errors ([#6637](https://github.com/marmelab/react-admin/pull/6637)) ([WiXSL](https://github.com/WiXSL))
+- Fix export TranslationMessages StringMap type ([#6638](https://github.com/marmelab/react-admin/pull/6638)) ([WiXSL](https://github.com/WiXSL))
+- Add missing types for TranslationMessages ([#6640](https://github.com/marmelab/react-admin/pull/6640)) ([Aikain](https://github.com/Aikain))
+
+### 📚 Docs
+
+- Fix menus examples ([#6637](https://github.com/marmelab/react-admin/pull/6636)) ([WiXSL](https://github.com/WiXSL))
+- Fixed typo in Auth doc ([#6649](https://github.com/marmelab/react-admin/pull/6649)) ([davidhenley](https://github.com/davidhenley))
+
+## v3.18.3
+
+- Fix custom menus do not shrink when sidebar is closed (#6635) ([djhi](https://github.com/djhi))
+- Fix undoable bulk actions failure by refreshing the view (#6616) ([WiXSL](https://github.com/WiXSL))
+- Fix datagrid usage inside reference array input (#6589) ([djhi](https://github.com/djhi))
+- Fix tests console errors and warnings (#6578) ([WiXSL](https://github.com/WiXSL))
+- [TypeScript] Fix DataProvider and RouteWithoutLayout some types (#6634) ([djhi](https://github.com/djhi))
+- [TypeScript] Fix TranslatableInputs props interface (#6633) ([djhi](https://github.com/djhi))
+- [Doc] Add DatagridHeader to reference section (#6631) ([WiXSL](https://github.com/WiXSL))
+- [Doc] Fix typos in several examples (#6623) ([WiXSL](https://github.com/WiXSL))
+- [Doc] Add SimpleForm component prop description and example (#6611) ([WiXSL](https://github.com/WiXSL))
+- [Doc] Fix scrollable TabbedForm usage description (#6608) ([WiXSL](https://github.com/WiXSL))
+- [Doc] Fixed naming of getMany ids params (#6604) ([davidhenley](https://github.com/davidhenley))
+- [Doc] Updated README of ra-data-graphql-simple for function components (#6555) ([Panzki](https://github.com/Panzki))
+
+## v3.18.2
+
+* Fix `displayName` prop in Field components ([6569](https://github.com/marmelab/react-admin/pull/6569)) ([WiXSL](https://github.com/WiXSL))
+* Fix `submitErrorsMutators` form mutator is not exported ([6586](https://github.com/marmelab/react-admin/pull/6586)) ([djhi](https://github.com/djhi))
+* Fix `linkToRecord` syntax when pointing to the show page ([6575](https://github.com/marmelab/react-admin/pull/6575)) ([ValentinnDimitroff](https://github.com/ValentinnDimitroff))
+* Fix `<UrlField>` font size differs from other fields ([6568](https://github.com/marmelab/react-admin/pull/6568)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<EmailField>` font size differs from other fields ([6567](https://github.com/marmelab/react-admin/pull/6567)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add mentions of supabase data & auth providers and Tip Tap rich text input ([6590](https://github.com/marmelab/react-admin/pull/6590)) ([djhi](https://github.com/djhi))
+* [Doc] Fix examples of `ra-test` usage with fake dataProviders ([6600](https://github.com/marmelab/react-admin/pull/6600)) ([DjebbZ](https://github.com/DjebbZ))
+* [TypeScript] Remove FunctionComponent usage from `RichTextInput` ([6577](https://github.com/marmelab/react-admin/pull/6577)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix `<AutocompleteArrayInput>` image link typo ([6574](https://github.com/marmelab/react-admin/pull/6574)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix outdated link to Django REST Framework dataProvider ([6571](https://github.com/marmelab/react-admin/pull/6571)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Rename and export Mutation props ([6576](https://github.com/marmelab/react-admin/pull/6576)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.18.1
 
 * Fix `BooleanField` doesn't show label when used in a Show view ([6553](https://github.com/marmelab/react-admin/pull/6553)) ([WiXSL](https://github.com/WiXSL))

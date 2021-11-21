@@ -5,12 +5,12 @@ import React, {
     useMemo,
     isValidElement,
 } from 'react';
+import { styled } from '@mui/material/styles';
 import Downshift, { DownshiftProps } from 'downshift';
 import classNames from 'classnames';
 import get from 'lodash/get';
-import { TextField, Chip, InputProps } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { TextFieldProps } from '@material-ui/core/TextField';
+import { TextField, Chip, InputProps } from '@mui/material';
+import { TextFieldProps } from '@mui/material/TextField';
 import {
     useInput,
     FieldTitle,
@@ -21,9 +21,9 @@ import {
 } from 'ra-core';
 import debounce from 'lodash/debounce';
 
-import InputHelperText from './InputHelperText';
-import AutocompleteSuggestionList from './AutocompleteSuggestionList';
-import AutocompleteSuggestionItem from './AutocompleteSuggestionItem';
+import { InputHelperText } from './InputHelperText';
+import { AutocompleteSuggestionList } from './AutocompleteSuggestionList';
+import { AutocompleteSuggestionItem } from './AutocompleteSuggestionItem';
 import { AutocompleteInputLoader } from './AutocompleteInputLoader';
 import {
     SupportCreateSuggestionOptions,
@@ -92,11 +92,10 @@ import {
  * @example
  * <AutocompleteArrayInput source="author_id" options={{ color: 'secondary' }} />
  */
-const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
+export const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
     const {
         allowDuplicates,
         allowEmpty,
-        classes: classesOverride,
         choices = [],
         create,
         createLabel,
@@ -160,8 +159,6 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
         choices === undefined,
         `If you're not wrapping the AutocompleteArrayInput inside a ReferenceArrayInput, you must provide the choices prop`
     );
-
-    const classes = useStyles(props);
 
     let inputEl = useRef<HTMLInputElement>();
     let anchorEl = useRef<any>();
@@ -385,6 +382,7 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                     getItemProps,
                     getLabelProps,
                     getMenuProps,
+                    getRootProps,
                     isOpen,
                     inputValue: suggestionFilter,
                     highlightedIndex,
@@ -413,7 +411,10 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                         ...(onCreate || create ? [getCreateItem()] : []),
                     ];
                     return (
-                        <div className={classes.container}>
+                        <Root
+                            className={AutocompleteArrayInputClasses.container}
+                            {...getRootProps()}
+                        >
                             <TextField
                                 id={id}
                                 fullWidth={fullWidth}
@@ -423,18 +424,22 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                                         inputRef,
                                     ]),
                                     classes: {
-                                        root: classNames(classes.inputRoot, {
-                                            [classes.inputRootFilled]:
-                                                variant === 'filled',
-                                        }),
-                                        input: classes.inputInput,
+                                        root: classNames(
+                                            AutocompleteArrayInputClasses.inputRoot,
+                                            {
+                                                [AutocompleteArrayInputClasses.inputRootFilled]:
+                                                    variant === 'filled',
+                                            }
+                                        ),
+                                        input:
+                                            AutocompleteArrayInputClasses.inputInput,
                                     },
                                     startAdornment: (
                                         <div
                                             className={classNames({
-                                                [classes.chipContainerFilled]:
+                                                [AutocompleteArrayInputClasses.chipContainerFilled]:
                                                     variant === 'filled',
-                                                [classes.chipContainerOutlined]:
+                                                [AutocompleteArrayInputClasses.chipContainerOutlined]:
                                                     variant === 'outlined',
                                             })}
                                         >
@@ -446,7 +451,9 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                                                         label={getChoiceText(
                                                             item
                                                         )}
-                                                        className={classes.chip}
+                                                        className={
+                                                            AutocompleteArrayInputClasses.chip
+                                                        }
                                                         onDelete={handleDelete(
                                                             item
                                                         )}
@@ -514,7 +521,9 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                                 suggestionsContainerProps={
                                     suggestionsContainerProps
                                 }
-                                className={classes.suggestionsContainer}
+                                className={
+                                    AutocompleteArrayInputClasses.suggestionsContainer
+                                }
                             >
                                 {suggestions.map((suggestion, index) => (
                                     <AutocompleteSuggestionItem
@@ -536,7 +545,7 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                                     />
                                 ))}
                             </AutocompleteSuggestionList>
-                        </div>
+                        </Root>
                     );
                 }}
             </Downshift>
@@ -546,44 +555,6 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
 };
 
 const emptyArray = [];
-
-const useStyles = makeStyles(
-    theme => ({
-        container: {
-            flexGrow: 1,
-            position: 'relative',
-        },
-        suggestionsContainer: {
-            zIndex: theme.zIndex.modal,
-        },
-        chip: {
-            margin: theme.spacing(0.5, 0.5, 0.5, 0),
-        },
-        chipContainerFilled: {
-            margin: '27px 12px 10px 0',
-        },
-        chipContainerOutlined: {
-            margin: '12px 12px 10px 0',
-        },
-        inputRoot: {
-            flexWrap: 'wrap',
-        },
-        inputRootFilled: {
-            flexWrap: 'wrap',
-            '& $chip': {
-                backgroundColor:
-                    theme.palette.type === 'light'
-                        ? 'rgba(0, 0, 0, 0.09)'
-                        : 'rgba(255, 255, 255, 0.09)',
-            },
-        },
-        inputInput: {
-            width: 'auto',
-            flexGrow: 1,
-        },
-    }),
-    { name: 'RaAutocompleteArrayInput' }
-);
 
 const DefaultSetFilter = () => {};
 
@@ -600,4 +571,57 @@ export interface AutocompleteArrayInputProps
     options?: Options;
 }
 
-export default AutocompleteArrayInput;
+const PREFIX = 'RaAutocompleteArrayInput';
+
+export const AutocompleteArrayInputClasses = {
+    container: `${PREFIX}-container`,
+    suggestionsContainer: `${PREFIX}-suggestionsContainer`,
+    chip: `${PREFIX}-chip`,
+    chipContainerFilled: `${PREFIX}-chipContainerFilled`,
+    chipContainerOutlined: `${PREFIX}-chipContainerOutlined`,
+    inputRoot: `${PREFIX}-inputRoot`,
+    inputRootFilled: `${PREFIX}-inputRootFilled`,
+    inputInput: `${PREFIX}-inputInput`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${AutocompleteArrayInputClasses.container}`]: {
+        flexGrow: 1,
+        position: 'relative',
+    },
+
+    [`& .${AutocompleteArrayInputClasses.suggestionsContainer}`]: {
+        zIndex: theme.zIndex.modal,
+    },
+
+    [`& .${AutocompleteArrayInputClasses.chip}`]: {
+        margin: theme.spacing(0.5, 0.5, 0.5, 0),
+    },
+
+    [`& .${AutocompleteArrayInputClasses.chipContainerFilled}`]: {
+        margin: '27px 12px 10px 0',
+    },
+
+    [`& .${AutocompleteArrayInputClasses.chipContainerOutlined}`]: {
+        margin: '12px 12px 10px 0',
+    },
+
+    [`& .${AutocompleteArrayInputClasses.inputRoot}`]: {
+        flexWrap: 'wrap',
+    },
+
+    [`& .${AutocompleteArrayInputClasses.inputRootFilled}`]: {
+        flexWrap: 'wrap',
+        '& $chip': {
+            backgroundColor:
+                theme.palette.mode === 'light'
+                    ? 'rgba(0, 0, 0, 0.09)'
+                    : 'rgba(255, 255, 255, 0.09)',
+        },
+    },
+
+    [`& .${AutocompleteArrayInputClasses.inputInput}`]: {
+        width: 'auto',
+        flexGrow: 1,
+    },
+}));

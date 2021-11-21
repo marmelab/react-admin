@@ -1,43 +1,20 @@
-import { createStore, compose, applyMiddleware } from 'redux';
-import { routerMiddleware } from 'connected-react-router';
-import createSagaMiddleware from 'redux-saga';
-import { all, fork } from 'redux-saga/effects';
-import { History } from 'history';
+import { createStore, StoreEnhancer } from 'redux';
 
-import {
-    AuthProvider,
-    DataProvider,
-    I18nProvider,
-    InitialState,
-} from '../types';
+import { InitialState } from '../types';
 import createAppReducer from '../reducer';
-import { adminSaga } from '../sideEffect';
 import { CLEAR_STATE } from '../actions/clearActions';
 
 interface Window {
-    __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: (traceOptions: object) => Function;
+    __REDUX_DEVTOOLS_EXTENSION__?: (traceOptions: object) => StoreEnhancer;
 }
 
 interface Params {
-    dataProvider: DataProvider;
-    history: History;
-    authProvider?: AuthProvider;
     customReducers?: any;
-    customSagas?: any[];
-    i18nProvider?: I18nProvider;
     initialState?: InitialState;
-    locale?: string;
 }
 
-export default ({
-    dataProvider,
-    history,
-    customReducers = {},
-    authProvider = null,
-    customSagas = [],
-    initialState,
-}: Params) => {
-    const appReducer = createAppReducer(customReducers, history);
+export default ({ customReducers = {}, initialState }: Params) => {
+    const appReducer = createAppReducer(customReducers);
 
     const resettableAppReducer = (state, action) =>
         appReducer(
@@ -57,31 +34,16 @@ export default ({
                   },
             action
         );
-    const saga = function* rootSaga() {
-        yield all(
-            [adminSaga(dataProvider, authProvider), ...customSagas].map(fork)
-        );
-    };
-    const sagaMiddleware = createSagaMiddleware();
     const typedWindow = typeof window !== 'undefined' && (window as Window);
-
-    const composeEnhancers =
-        (process.env.NODE_ENV === 'development' &&
-            typeof typedWindow !== 'undefined' &&
-            typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
-            typedWindow.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-                trace: true,
-                traceLimit: 25,
-            })) ||
-        compose;
 
     const store = createStore(
         resettableAppReducer,
         typeof initialState === 'function' ? initialState() : initialState,
-        composeEnhancers(
-            applyMiddleware(sagaMiddleware, routerMiddleware(history))
-        )
+        typedWindow.__REDUX_DEVTOOLS_EXTENSION__ &&
+            typedWindow.__REDUX_DEVTOOLS_EXTENSION__({
+                trace: true,
+                traceLimit: 25,
+            })
     );
-    sagaMiddleware.run(saga);
     return store;
 };

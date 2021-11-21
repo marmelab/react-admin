@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 
 import useReferenceArrayFieldController from './useReferenceArrayFieldController';
-import { ListControllerProps } from '../useListController';
+import { ListControllerProps } from '../list';
 import { Record, SortPayload } from '../../types';
 
 export interface ReferenceArrayFieldControllerProps {

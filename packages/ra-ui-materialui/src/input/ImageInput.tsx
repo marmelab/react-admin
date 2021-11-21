@@ -1,51 +1,15 @@
 import * as React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 
-import FileInput, { FileInputProps, FileInputOptions } from './FileInput';
+import { FileInput, FileInputProps, FileInputOptions } from './FileInput';
 import { InputProps } from 'ra-core';
 
-const useStyles = makeStyles(
-    theme => ({
-        root: { width: '100%' },
-        dropZone: {
-            background: theme.palette.background.default,
-            cursor: 'pointer',
-            padding: theme.spacing(1),
-            textAlign: 'center',
-            color: theme.palette.getContrastText(
-                theme.palette.background.default
-            ),
-        },
-        preview: {
-            display: 'inline-block',
-        },
-        removeButton: {
-            display: 'inline-block',
-            position: 'relative',
-            float: 'left',
-            '& button': {
-                position: 'absolute',
-                top: theme.spacing(1),
-                right: theme.spacing(1),
-                minWidth: theme.spacing(2),
-                opacity: 0,
-            },
-            '&:hover button': {
-                opacity: 1,
-            },
-        },
-    }),
-    { name: 'RaImageInput' }
-);
-
-const ImageInput = (props: ImageInputProps) => {
-    const classes = useStyles(props);
-
+export const ImageInput = (props: ImageInputProps) => {
     return (
-        <FileInput
+        <StyledFileInput
             labelMultiple="ra.input.image.upload_several"
             labelSingle="ra.input.image.upload_single"
-            classes={classes}
+            classes={ImageInputClasses}
             {...props}
         />
     );
@@ -53,4 +17,43 @@ const ImageInput = (props: ImageInputProps) => {
 
 export type ImageInputProps = FileInputProps & InputProps<FileInputOptions>;
 
-export default ImageInput;
+const PREFIX = 'RaImageInput';
+
+export const ImageInputClasses = {
+    root: `${PREFIX}-root`,
+    dropZone: `${PREFIX}-dropZone`,
+    preview: `${PREFIX}-preview`,
+    removeButton: `${PREFIX}-removeButton`,
+};
+
+const StyledFileInput = styled(FileInput, { name: PREFIX })(({ theme }) => ({
+    [`& .${ImageInputClasses.root}`]: { width: '100%' },
+
+    [`& .${ImageInputClasses.dropZone}`]: {
+        background: theme.palette.background.default,
+        cursor: 'pointer',
+        padding: theme.spacing(1),
+        textAlign: 'center',
+        color: theme.palette.getContrastText(theme.palette.background.default),
+    },
+
+    [`& .${ImageInputClasses.preview}`]: {
+        display: 'inline-block',
+    },
+
+    [`& .${ImageInputClasses.removeButton}`]: {
+        display: 'inline-block',
+        position: 'relative',
+        float: 'left',
+        '& button': {
+            position: 'absolute',
+            top: theme.spacing(1),
+            right: theme.spacing(1),
+            minWidth: theme.spacing(2),
+            opacity: 0,
+        },
+        '&:hover button': {
+            opacity: 1,
+        },
+    },
+}));

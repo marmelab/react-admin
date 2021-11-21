@@ -8,10 +8,10 @@ import {
     FormContextProvider,
 } from 'ra-core';
 import { renderWithRedux, TestContext } from 'ra-test';
-import { ThemeProvider } from '@material-ui/core';
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { QueryClientProvider, QueryClient } from 'react-query';
 
-import SaveButton from './SaveButton';
+import { SaveButton } from './SaveButton';
 import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
@@ -31,7 +31,7 @@ const invalidButtonDomProps = {
     resource: 'posts',
     saving: false,
     submitOnEnter: true,
-    undoable: false,
+    mutationMode: 'pessimistic',
 };
 
 describe('<SaveButton />', () => {
@@ -90,11 +90,13 @@ describe('<SaveButton />', () => {
     it('should render as submit type when submitOnEnter is true', () => {
         const { getByLabelText } = render(
             <TestContext>
-                <SaveContextProvider value={saveContextValue}>
-                    <FormContextProvider value={formContextValue}>
-                        <SaveButton submitOnEnter />
-                    </FormContextProvider>
-                </SaveContextProvider>
+                <ThemeProvider theme={theme}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <FormContextProvider value={formContextValue}>
+                            <SaveButton submitOnEnter />
+                        </FormContextProvider>
+                    </SaveContextProvider>
+                </ThemeProvider>
             </TestContext>
         );
         expect(getByLabelText('ra.action.save').getAttribute('type')).toEqual(
@@ -105,11 +107,13 @@ describe('<SaveButton />', () => {
     it('should render as button type when submitOnEnter is false', () => {
         const { getByLabelText } = render(
             <TestContext>
-                <SaveContextProvider value={saveContextValue}>
-                    <FormContextProvider value={formContextValue}>
-                        <SaveButton submitOnEnter={false} />
-                    </FormContextProvider>
-                </SaveContextProvider>
+                <ThemeProvider theme={theme}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <FormContextProvider value={formContextValue}>
+                            <SaveButton submitOnEnter={false} />
+                        </FormContextProvider>
+                    </SaveContextProvider>
+                </ThemeProvider>
             </TestContext>
         );
 
@@ -122,14 +126,16 @@ describe('<SaveButton />', () => {
         const onSubmit = jest.fn();
         const { getByLabelText } = render(
             <TestContext>
-                <SaveContextProvider value={saveContextValue}>
-                    <FormContextProvider value={formContextValue}>
-                        <SaveButton
-                            handleSubmitWithRedirect={onSubmit}
-                            saving={false}
-                        />
-                    </FormContextProvider>
-                </SaveContextProvider>
+                <ThemeProvider theme={theme}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <FormContextProvider value={formContextValue}>
+                            <SaveButton
+                                handleSubmitWithRedirect={onSubmit}
+                                saving={false}
+                            />
+                        </FormContextProvider>
+                    </SaveContextProvider>
+                </ThemeProvider>
             </TestContext>
         );
 
@@ -142,14 +148,16 @@ describe('<SaveButton />', () => {
 
         const { getByLabelText } = render(
             <TestContext>
-                <SaveContextProvider value={saveContextValue}>
-                    <FormContextProvider value={formContextValue}>
-                        <SaveButton
-                            handleSubmitWithRedirect={onSubmit}
-                            saving
-                        />
-                    </FormContextProvider>
-                </SaveContextProvider>
+                <ThemeProvider theme={theme}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <FormContextProvider value={formContextValue}>
+                            <SaveButton
+                                handleSubmitWithRedirect={onSubmit}
+                                saving
+                            />
+                        </FormContextProvider>
+                    </SaveContextProvider>
+                </ThemeProvider>
             </TestContext>
         );
 
@@ -166,14 +174,16 @@ describe('<SaveButton />', () => {
                 {({ store }) => {
                     dispatchSpy = jest.spyOn(store, 'dispatch');
                     return (
-                        <SaveContextProvider value={saveContextValue}>
-                            <FormContextProvider value={formContextValue}>
-                                <SaveButton
-                                    handleSubmitWithRedirect={onSubmit}
-                                    invalid
-                                />
-                            </FormContextProvider>
-                        </SaveContextProvider>
+                        <ThemeProvider theme={theme}>
+                            <SaveContextProvider value={saveContextValue}>
+                                <FormContextProvider value={formContextValue}>
+                                    <SaveButton
+                                        handleSubmitWithRedirect={onSubmit}
+                                        invalid
+                                    />
+                                </FormContextProvider>
+                            </SaveContextProvider>
+                        </ThemeProvider>
                     );
                 }}
             </TestContext>
@@ -183,9 +193,7 @@ describe('<SaveButton />', () => {
         expect(dispatchSpy).toHaveBeenCalledWith({
             payload: {
                 message: 'ra.message.invalid_form',
-                messageArgs: {},
                 type: 'warning',
-                undoable: false,
             },
             type: 'RA/SHOW_NOTIFICATION',
         });
@@ -208,7 +216,7 @@ describe('<SaveButton />', () => {
             path: '/customers/123',
             url: '/customers/123',
         },
-        undoable: false,
+        mutationMode: 'pessimistic',
     };
 
     it('should allow to override the onSuccess side effects', async () => {
@@ -230,13 +238,17 @@ describe('<SaveButton />', () => {
             getByLabelText,
             getByText,
         } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <Edit {...defaultEditProps}>
-                    <SimpleForm toolbar={<EditToolbar />}>
-                        <TextInput source="title" />
-                    </SimpleForm>
-                </Edit>
-            </DataProviderContext.Provider>,
+            <ThemeProvider theme={theme}>
+                <QueryClientProvider client={new QueryClient()}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <Edit {...defaultEditProps}>
+                            <SimpleForm toolbar={<EditToolbar />}>
+                                <TextInput source="title" />
+                            </SimpleForm>
+                        </Edit>
+                    </DataProviderContext.Provider>
+                </QueryClientProvider>
+            </ThemeProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         // waitFor for the dataProvider.getOne() return
@@ -275,13 +287,17 @@ describe('<SaveButton />', () => {
             getByLabelText,
             getByText,
         } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <Edit {...defaultEditProps}>
-                    <SimpleForm toolbar={<EditToolbar />}>
-                        <TextInput source="title" />
-                    </SimpleForm>
-                </Edit>
-            </DataProviderContext.Provider>,
+            <ThemeProvider theme={theme}>
+                <QueryClientProvider client={new QueryClient()}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <Edit {...defaultEditProps}>
+                            <SimpleForm toolbar={<EditToolbar />}>
+                                <TextInput source="title" />
+                            </SimpleForm>
+                        </Edit>
+                    </DataProviderContext.Provider>
+                </QueryClientProvider>
+            </ThemeProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         // waitFor for the dataProvider.getOne() return
@@ -325,13 +341,17 @@ describe('<SaveButton />', () => {
             getByLabelText,
             getByText,
         } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <Edit {...defaultEditProps}>
-                    <SimpleForm toolbar={<EditToolbar />}>
-                        <TextInput source="title" />
-                    </SimpleForm>
-                </Edit>
-            </DataProviderContext.Provider>,
+            <ThemeProvider theme={theme}>
+                <QueryClientProvider client={new QueryClient()}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <Edit {...defaultEditProps}>
+                            <SimpleForm toolbar={<EditToolbar />}>
+                                <TextInput source="title" />
+                            </SimpleForm>
+                        </Edit>
+                    </DataProviderContext.Provider>
+                </QueryClientProvider>
+            </ThemeProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         // waitFor for the dataProvider.getOne() return
@@ -371,18 +391,20 @@ describe('<SaveButton />', () => {
         };
 
         const { queryByDisplayValue, getByLabelText } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <ThemeProvider theme={theme}>
-                    <Edit {...defaultEditProps}>
-                        <SimpleForm>
-                            <TextInput
-                                source="title"
-                                validate={validateAsync}
-                            />
-                        </SimpleForm>
-                    </Edit>
-                </ThemeProvider>
-            </DataProviderContext.Provider>,
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <ThemeProvider theme={theme}>
+                        <Edit {...defaultEditProps}>
+                            <SimpleForm>
+                                <TextInput
+                                    source="title"
+                                    validate={validateAsync}
+                                />
+                            </SimpleForm>
+                        </Edit>
+                    </ThemeProvider>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         // waitFor for the dataProvider.getOne() return

@@ -1,29 +1,17 @@
 import * as React from 'react';
+import { memo, FC } from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
+import Button from '@mui/material/Button';
+import { useTheme } from '@mui/material/styles';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
+import ChevronRight from '@mui/icons-material/ChevronRight';
 import { useTranslate } from 'ra-core';
 import classnames from 'classnames';
 
-const useStyles = makeStyles(
-    theme => ({
-        actions: {
-            flexShrink: 0,
-            color: theme.palette.text.secondary,
-            marginLeft: 20,
-        },
-        button: {},
-        currentPageButton: {},
-        hellip: { padding: '1.2em' },
-    }),
-    { name: 'RaPaginationActions' }
-);
-
-const PaginationActions = props => {
+export const PaginationActions: FC<PaginationActionsProps> = memo(props => {
     const { page, rowsPerPage, count, onPageChange, color, size } = props;
-    const classes = useStyles(props);
+
     const translate = useTranslate();
     const theme = useTheme();
     /**
@@ -96,16 +84,25 @@ const PaginationActions = props => {
     const renderPageNums = () => {
         return range().map((pageNum, index) =>
             pageNum === '.' ? (
-                <span key={`hyphen_${index}`} className={classes.hellip}>
+                <span
+                    key={`hyphen_${index}`}
+                    className={PaginationActionsClasses.hellip}
+                >
                     &hellip;
                 </span>
             ) : (
                 <Button
                     size={size}
-                    className={classnames('page-number', classes.button, {
-                        [classes.currentPageButton]: pageNum === page + 1,
-                    })}
-                    color={pageNum === page + 1 ? 'default' : color}
+                    className={classnames(
+                        'page-number',
+                        PaginationActionsClasses.button,
+                        {
+                            [PaginationActionsClasses.currentPageButton]:
+                                pageNum === page + 1,
+                        }
+                    )}
+                    color={color}
+                    variant={pageNum === page + 1 ? 'outlined' : 'text'}
                     key={pageNum}
                     data-page={pageNum - 1}
                     onClick={gotoPage}
@@ -119,11 +116,11 @@ const PaginationActions = props => {
     const nbPages = getNbPages();
 
     if (nbPages === 1) {
-        return <div className={classes.actions} />;
+        return <Root className={PaginationActionsClasses.actions} />;
     }
 
     return (
-        <div className={classes.actions}>
+        <Root className={PaginationActionsClasses.actions}>
             {page > 0 && (
                 <Button
                     color={color}
@@ -157,10 +154,25 @@ const PaginationActions = props => {
                     )}
                 </Button>
             )}
-        </div>
+        </Root>
     );
-};
+});
 
+export interface PaginationActionsProps {
+    page: number;
+    rowsPerPage: number;
+    count: number;
+    onPageChange: (event: MouseEvent, page: number) => void;
+    color:
+        | 'inherit'
+        | 'primary'
+        | 'secondary'
+        | 'success'
+        | 'error'
+        | 'info'
+        | 'warning';
+    size: 'small' | 'medium' | 'large';
+}
 /**
  * PaginationActions propTypes are copied over from material-ui’s
  * TablePaginationActions propTypes. See
@@ -168,16 +180,12 @@ const PaginationActions = props => {
  * for reference.
  */
 PaginationActions.propTypes = {
-    backIconButtonProps: PropTypes.object,
     count: PropTypes.number.isRequired,
-    classes: PropTypes.object,
-    nextIconButtonProps: PropTypes.object,
     onPageChange: PropTypes.func.isRequired,
     page: PropTypes.number.isRequired,
     rowsPerPage: PropTypes.number.isRequired,
     color: PropTypes.oneOf(['primary', 'secondary']),
     size: PropTypes.oneOf(['small', 'medium', 'large']),
-    theme: PropTypes.object,
 };
 
 PaginationActions.defaultProps = {
@@ -185,4 +193,23 @@ PaginationActions.defaultProps = {
     size: 'small',
 };
 
-export default React.memo(PaginationActions);
+const PREFIX = 'RaPaginationActions';
+
+export const PaginationActionsClasses = {
+    actions: `${PREFIX}-actions`,
+    button: `${PREFIX}-button`,
+    currentPageButton: `${PREFIX}-currentPageButton`,
+    hellip: `${PREFIX}-hellip`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${PaginationActionsClasses.actions}`]: {
+        flexShrink: 0,
+        color: theme.palette.text.secondary,
+        marginLeft: 20,
+    },
+
+    [`& .${PaginationActionsClasses.button}`]: {},
+    [`& .${PaginationActionsClasses.currentPageButton}`]: {},
+    [`& .${PaginationActionsClasses.hellip}`]: { padding: '1.2em' },
+}));

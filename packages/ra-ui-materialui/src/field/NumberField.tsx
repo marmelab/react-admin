@@ -2,17 +2,11 @@ import * as React from 'react';
 import { memo, FC } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import Typography, { TypographyProps } from '@mui/material/Typography';
 import { useRecordContext } from 'ra-core';
 
-import sanitizeFieldRestProps from './sanitizeFieldRestProps';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
-
-const hasNumberFormat = !!(
-    typeof Intl === 'object' &&
-    Intl &&
-    typeof Intl.NumberFormat === 'function'
-);
 
 /**
  * Display a numeric value as a locale string.
@@ -89,6 +83,7 @@ NumberField.defaultProps = {
     addLabel: true,
     textAlign: 'right',
 };
+
 NumberField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
@@ -103,9 +98,13 @@ NumberField.propTypes = {
 export interface NumberFieldProps
     extends PublicFieldProps,
         InjectedFieldProps,
-        TypographyProps {
+        Omit<TypographyProps, 'textAlign'> {
     locales?: string | string[];
     options?: object;
 }
 
-export default NumberField;
+const hasNumberFormat = !!(
+    typeof Intl === 'object' &&
+    Intl &&
+    typeof Intl.NumberFormat === 'function'
+);

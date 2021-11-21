@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { ChangeEvent, memo, useMemo } from 'react';
-import { InputAdornment } from '@material-ui/core';
-import SearchIcon from '@material-ui/icons/Search';
+import { InputAdornment } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 import { Form } from 'react-final-form';
 import { useTranslate, useListFilterContext } from 'ra-core';
 
-import TextInput from '../../input/TextInput';
+import { TextInput } from '../../input';
 
 /**
  * Form and search input for doing a full-text search filter.
@@ -22,7 +22,7 @@ import TextInput from '../../input/TextInput';
  *     </Card>
  * );
  */
-const FilterLiveSearch = (props: { source?: string }) => {
+export const FilterLiveSearch = memo((props: { source?: string }) => {
     const { source = 'q', ...rest } = props;
     const { filterValues, setFilters } = useListFilterContext();
     const translate = useTranslate();
@@ -66,6 +66,4 @@ const FilterLiveSearch = (props: { source?: string }) => {
             )}
         </Form>
     );
-};
-
-export default memo(FilterLiveSearch);
+});

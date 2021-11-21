@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import ThumbUp from '@material-ui/icons/ThumbUp';
+import ThumbUp from '@mui/icons-material/ThumbUp';
 
 import {
     Button,
@@ -27,7 +27,7 @@ const BulkAcceptButton = (props: BulkActionProps) => {
         { status: 'accepted' },
         {
             action: CRUD_UPDATE_MANY,
-            undoable: true,
+            mutationMode: 'undoable',
             onSuccess: () => {
                 notify(
                     'resources.reviews.notification.approved_success',

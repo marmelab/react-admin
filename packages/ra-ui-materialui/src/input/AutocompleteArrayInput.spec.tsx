@@ -3,7 +3,7 @@ import { fireEvent, render, waitFor } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import expect from 'expect';
 
-import AutocompleteArrayInput from './AutocompleteArrayInput';
+import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 import { TestTranslationProvider } from 'ra-core';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 

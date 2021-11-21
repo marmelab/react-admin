@@ -2,27 +2,24 @@ import * as React from 'react';
 import { ReactElement, FC, memo } from 'react';
 import PropTypes from 'prop-types';
 import {
-    Table,
     TableCell,
     TableHead,
     TableRow,
     TableBody,
     IconButton,
     Checkbox,
-} from '@material-ui/core';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import classnames from 'classnames';
 import { useTimeout, Identifier, Record } from 'ra-core';
 
-import useDatagridStyles from './useDatagridStyles';
-import Placeholder from '../Placeholder';
-import { ClassesOverride } from '../../types';
+import { DatagridClasses, StyledTable } from './useDatagridStyles';
+import { Placeholder } from '../Placeholder';
 
 const times = (nbChildren, fn) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
 
 const DatagridLoading = ({
-    classes,
     className,
     expand,
     hasBulkActions,
@@ -33,19 +30,22 @@ const DatagridLoading = ({
     const oneSecondHasPassed = useTimeout(1000);
 
     return oneSecondHasPassed ? (
-        <Table className={classnames(classes.table, className)} size={size}>
+        <StyledTable
+            className={classnames(DatagridClasses.table, className)}
+            size={size}
+        >
             <TableHead>
-                <TableRow className={classes.row}>
+                <TableRow className={DatagridClasses.row}>
                     {expand && (
                         <TableCell
                             padding="none"
-                            className={classes.expandHeader}
+                            className={DatagridClasses.expandHeader}
                         />
                     )}
                     {hasBulkActions && (
                         <TableCell
                             padding="checkbox"
-                            className={classes.expandIconCell}
+                            className={DatagridClasses.expandIconCell}
                         >
                             <Checkbox
                                 className="select-all"
@@ -57,7 +57,7 @@ const DatagridLoading = ({
                     {times(nbChildren, key => (
                         <TableCell
                             variant="head"
-                            className={classes.headerCell}
+                            className={DatagridClasses.headerCell}
                             key={key}
                         >
                             <Placeholder />
@@ -71,12 +71,13 @@ const DatagridLoading = ({
                         {expand && (
                             <TableCell
                                 padding="none"
-                                className={classes.expandIconCell}
+                                className={DatagridClasses.expandIconCell}
                             >
                                 <IconButton
-                                    className={classes.expandIcon}
+                                    className={DatagridClasses.expandIcon}
                                     component="div"
                                     aria-hidden="true"
+                                    size="large"
                                 >
                                     <ExpandMoreIcon />
                                 </IconButton>
@@ -85,7 +86,7 @@ const DatagridLoading = ({
                         {hasBulkActions && (
                             <TableCell
                                 padding="checkbox"
-                                className={classes.expandIconCell}
+                                className={DatagridClasses.expandIconCell}
                             >
                                 <Checkbox
                                     className="select-all"
@@ -95,19 +96,21 @@ const DatagridLoading = ({
                             </TableCell>
                         )}
                         {times(nbChildren, key2 => (
-                            <TableCell className={classes.rowCell} key={key2}>
+                            <TableCell
+                                className={DatagridClasses.rowCell}
+                                key={key2}
+                            >
                                 <Placeholder />
                             </TableCell>
                         ))}
                     </TableRow>
                 ))}
             </TableBody>
-        </Table>
+        </StyledTable>
     ) : null;
 };
 
 DatagridLoading.propTypes = {
-    classes: PropTypes.object,
     className: PropTypes.string,
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hasBulkActions: PropTypes.bool,
@@ -118,7 +121,6 @@ DatagridLoading.propTypes = {
 
 export interface DatagridLoadingProps {
     className?: string;
-    classes?: ClassesOverride<typeof useDatagridStyles>;
     expand?:
         | ReactElement
         | FC<{

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, RouteProps } from 'react-router-dom';
 import { CustomRoute } from '../types';
 
 /**
@@ -32,10 +32,13 @@ import { CustomRoute } from '../types';
  *
  * export default App;
  */
-export const RouteWithoutLayout = ({ noLayout, ...props }) => (
-    <Route<CustomRoute> {...props} />
-);
+export const RouteWithoutLayout = ({
+    noLayout,
+    ...props
+}: RouteWithoutLayoutProps) => <Route<CustomRoute> {...props} />;
 
 RouteWithoutLayout.defaultProps = {
     noLayout: true,
 };
+
+export type RouteWithoutLayoutProps = RouteProps & { noLayout?: boolean };

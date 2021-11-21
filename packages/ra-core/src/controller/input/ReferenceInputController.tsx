@@ -21,6 +21,7 @@ export interface ReferenceInputControllerProps {
     sort?: SortPayload;
     source: string;
     onChange: () => void;
+    enableGetChoices?: (filters: any) => boolean;
 }
 
 /**

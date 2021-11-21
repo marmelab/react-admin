@@ -1,11 +1,15 @@
 import * as React from 'react';
-import { render } from '@testing-library/react';
-import ReferenceArrayInput, {
-    ReferenceArrayInputView,
-} from './ReferenceArrayInput';
+import { render, waitFor, within, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { useListContext } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
+import addDays from 'date-fns/add_days';
+import { Datagrid } from '../list';
+import { TextField } from '../field';
+import {
+    ReferenceArrayInput,
+    ReferenceArrayInputView,
+} from './ReferenceArrayInput';
 
 describe('<ReferenceArrayInput />', () => {
     const defaultProps = {
@@ -226,5 +230,102 @@ describe('<ReferenceArrayInput />', () => {
             }
         );
         expect(getByLabelText('total').innerHTML).toEqual('2');
+    });
+
+    test('should allow to use a Datagrid', async () => {
+        const { getByLabelText, queryByText } = renderWithRedux(
+            <Form
+                onSubmit={jest.fn()}
+                initialValues={{ tag_ids: [5] }}
+                render={() => (
+                    <ReferenceArrayInput
+                        reference="tags"
+                        resource="posts"
+                        source="tag_ids"
+                        basePath="/posts"
+                    >
+                        <Datagrid
+                            hasBulkActions={true}
+                            rowClick="toggleSelection"
+                        >
+                            <TextField source="name" />
+                        </Datagrid>
+                    </ReferenceArrayInput>
+                )}
+            />,
+            {
+                admin: {
+                    references: {
+                        possibleValues: {
+                            'posts@tag_ids': [5, 6],
+                        },
+                    },
+                    resources: {
+                        tags: {
+                            list: {
+                                cachedRequests: {
+                                    [JSON.stringify({
+                                        pagination: { page: 1, perPage: 25 },
+                                        sort: {
+                                            field: 'id',
+                                            order: 'DESC',
+                                        },
+                                        filter: {},
+                                    })]: {
+                                        ids: [5, 6],
+                                        total: 2,
+                                        validity: addDays(new Date(), 1),
+                                    },
+                                },
+                            },
+                            data: {
+                                5: { id: 5, name: 'test1' },
+                                6: { id: 6, name: 'test2' },
+                            },
+                        },
+                    },
+                },
+            }
+        );
+
+        await waitFor(() => {
+            expect(queryByText('test1')).not.toBeNull();
+            expect(queryByText('test2')).not.toBeNull();
+        });
+
+        const checkBoxTest1 = within(queryByText('test1').closest('tr'))
+            .getByLabelText('ra.action.select_row')
+            .querySelector('input');
+
+        const checkBoxTest2 = within(queryByText('test2').closest('tr'))
+            .getByLabelText('ra.action.select_row')
+            .querySelector('input');
+
+        const checkBoxAll = getByLabelText(
+            'ra.action.select_all'
+        ).querySelector('input');
+
+        expect(checkBoxTest1.checked).toEqual(true);
+        expect(checkBoxTest2.checked).toEqual(false);
+        fireEvent.click(checkBoxTest2);
+
+        await waitFor(() => {
+            expect(checkBoxTest2.checked).toEqual(true);
+            expect(checkBoxAll.checked).toEqual(true);
+        });
+
+        fireEvent.click(checkBoxAll);
+        await waitFor(() => {
+            expect(checkBoxTest1.checked).toEqual(false);
+            expect(checkBoxTest2.checked).toEqual(false);
+            expect(checkBoxAll.checked).toEqual(false);
+        });
+
+        fireEvent.click(checkBoxAll);
+        await waitFor(() => {
+            expect(checkBoxTest1.checked).toEqual(true);
+            expect(checkBoxTest2.checked).toEqual(true);
+            expect(checkBoxAll.checked).toEqual(true);
+        });
     });
 });

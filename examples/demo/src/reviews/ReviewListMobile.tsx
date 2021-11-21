@@ -1,11 +1,11 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
-import { makeStyles } from '@material-ui/core/styles';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
 import { Link } from 'react-router-dom';
 import {
     linkToRecord,
@@ -19,32 +19,39 @@ import {
 import AvatarField from '../visitors/AvatarField';
 import { Review, Customer } from './../types';
 
-const useStyles = makeStyles({
-    root: {
+const PREFIX = 'ReviewListMobile';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    link: `${PREFIX}-link`,
+    inline: `${PREFIX}-inline`,
+};
+
+const StyledList = styled(List)({
+    [`&.${classes.root}`]: {
         width: '100vw',
     },
-    link: {
+    [`& .${classes.link}`]: {
         textDecoration: 'none',
         color: 'inherit',
     },
-    inline: {
+    [`& .${classes.inline}`]: {
         display: 'inline',
     },
 });
 
 const ReviewListMobile = () => {
-    const classes = useStyles();
-    const { basePath, data, ids, loaded, total } = useListContext<Review>();
+    const { data, ids, loaded, total } = useListContext<Review>();
 
     return loaded || Number(total) > 0 ? (
-        <List className={classes.root}>
+        <StyledList className={classes.root}>
             {(ids as Exclude<typeof ids, undefined>).map(id => {
                 const item = (data as Exclude<typeof data, undefined>)[id];
                 if (!item) return null;
 
                 return (
                     <Link
-                        to={linkToRecord(basePath, id)}
+                        to={linkToRecord('/reviews', id)}
                         className={classes.link}
                         key={id}
                     >
@@ -54,7 +61,7 @@ const ReviewListMobile = () => {
                                     record={item}
                                     source="customer_id"
                                     reference="customers"
-                                    basePath={basePath}
+                                    basePath="/customers"
                                     link={false}
                                 >
                                     <AvatarField size="40" />
@@ -67,7 +74,7 @@ const ReviewListMobile = () => {
                                             record={item}
                                             source="customer_id"
                                             reference="customers"
-                                            basePath={basePath}
+                                            basePath="/customers"
                                             link={false}
                                         >
                                             <FunctionField
@@ -91,7 +98,7 @@ const ReviewListMobile = () => {
                                             record={item}
                                             source="product_id"
                                             reference="products"
-                                            basePath={basePath}
+                                            basePath="/products"
                                             link={false}
                                         >
                                             <TextField
@@ -109,7 +116,7 @@ const ReviewListMobile = () => {
                     </Link>
                 );
             })}
-        </List>
+        </StyledList>
     ) : null;
 };
 

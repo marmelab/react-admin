@@ -5,6 +5,7 @@ import React, {
     ReactElement,
     ReactNode,
 } from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,25 +20,7 @@ import {
     TooltipProps,
     useMediaQuery,
     Theme,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-
-const NavLinkRef = forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => (
-    <NavLink innerRef={ref} {...props} />
-));
-
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            color: theme.palette.text.secondary,
-        },
-        active: {
-            color: theme.palette.text.primary,
-        },
-        icon: { minWidth: theme.spacing(5) },
-    }),
-    { name: 'RaMenuItemLink' }
-);
+} from '@mui/material';
 
 /**
  * Displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized.
@@ -56,10 +39,10 @@ const useStyles = makeStyles(
  * // in src/Menu.js
  * import * as React from 'react';
  * import { DashboardMenuItem, MenuItemLink } from 'react-admin';
- * import BookIcon from '@material-ui/icons/Book';
- * import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
- * import PeopleIcon from '@material-ui/icons/People';
- * import LabelIcon from '@material-ui/icons/Label';
+ * import BookIcon from '@mui/icons-material/Book';
+ * import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+ * import PeopleIcon from '@mui/icons-material/People';
+ * import LabelIcon from '@mui/icons-material/Label';
  *
  * export const Menu = () => (
  *     <div>
@@ -88,9 +71,8 @@ const useStyles = makeStyles(
  *     </Admin>
  * );
  */
-const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
+export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
     const {
-        classes: classesOverride,
         className,
         primaryText,
         leftIcon,
@@ -99,9 +81,9 @@ const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
         tooltipProps,
         ...rest
     } = props;
-    const classes = useStyles(props);
+
     const dispatch = useDispatch();
-    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
     const handleMenuTap = useCallback(
         e => {
@@ -115,24 +97,25 @@ const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
 
     const renderMenuItem = () => {
         return (
-            <MenuItem
-                className={classnames(classes.root, className)}
-                activeClassName={classes.active}
+            <StyledMenuItem
+                className={classnames(MenuItemLinkClasses.root, className)}
+                activeClassName={MenuItemLinkClasses.active}
                 component={NavLinkRef}
+                // @ts-ignore
                 ref={ref}
                 tabIndex={0}
                 {...rest}
                 onClick={handleMenuTap}
             >
                 {leftIcon && (
-                    <ListItemIcon className={classes.icon}>
+                    <ListItemIcon className={MenuItemLinkClasses.icon}>
                         {cloneElement(leftIcon, {
                             titleAccess: primaryText,
                         })}
                     </ListItemIcon>
                 )}
                 {primaryText}
-            </MenuItem>
+            </StyledMenuItem>
         );
     };
 
@@ -161,7 +144,6 @@ export type MenuItemLinkProps = Props &
     MenuItemProps<'li', { button?: true }>; // HACK: https://github.com/mui-org/material-ui/issues/16245
 
 MenuItemLink.propTypes = {
-    classes: PropTypes.object,
     className: PropTypes.string,
     leftIcon: PropTypes.element,
     onClick: PropTypes.func,
@@ -171,4 +153,26 @@ MenuItemLink.propTypes = {
     sidebarIsOpen: PropTypes.bool,
 };
 
-export default MenuItemLink;
+const PREFIX = 'RaMenuItemLink';
+
+export const MenuItemLinkClasses = {
+    root: `${PREFIX}-root`,
+    active: `${PREFIX}-active`,
+    icon: `${PREFIX}-icon`,
+};
+
+const StyledMenuItem = styled(MenuItem, { name: PREFIX })(({ theme }) => ({
+    [`&.${MenuItemLinkClasses.root}`]: {
+        color: theme.palette.text.secondary,
+    },
+
+    [`& .${MenuItemLinkClasses.active}`]: {
+        color: theme.palette.text.primary,
+    },
+
+    [`& .${MenuItemLinkClasses.icon}`]: { minWidth: theme.spacing(5) },
+}));
+
+const NavLinkRef = forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => (
+    <NavLink innerRef={ref} {...props} />
+));

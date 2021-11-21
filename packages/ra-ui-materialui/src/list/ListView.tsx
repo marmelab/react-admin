@@ -1,9 +1,9 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { Children, cloneElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import Card from '@material-ui/core/Card';
+import Card from '@mui/material/Card';
 import classnames from 'classnames';
-import { makeStyles } from '@material-ui/core/styles';
 import {
     ComponentPropType,
     defaultExporter,
@@ -13,12 +13,12 @@ import {
     useVersion,
 } from 'ra-core';
 
-import Title, { TitlePropType } from '../layout/Title';
-import ListToolbar from './ListToolbar';
-import DefaultPagination from './pagination/Pagination';
-import BulkDeleteButton from '../button/BulkDeleteButton';
-import BulkActionsToolbar from './BulkActionsToolbar';
-import DefaultActions from './ListActions';
+import { Title, TitlePropType } from '../layout/Title';
+import { ListToolbar } from './ListToolbar';
+import { Pagination as DefaultPagination } from './pagination';
+import { BulkDeleteButton } from '../button';
+import { BulkActionsToolbar } from './BulkActionsToolbar';
+import { ListActions as DefaultActions } from './ListActions';
 import { Empty } from './Empty';
 import { ListProps } from '../types';
 
@@ -31,7 +31,6 @@ export const ListView = (props: ListViewProps) => {
         pagination,
         children,
         className,
-        classes: classesOverride,
         component: Content,
         exporter = defaultExporter,
         title,
@@ -40,7 +39,7 @@ export const ListView = (props: ListViewProps) => {
     } = props;
     const controllerProps = getListControllerProps(props); // deprecated, to be removed in v4
     const listContext = useListContext(props);
-    const classes = useStyles(props);
+
     const {
         defaultTitle,
         total,
@@ -61,10 +60,11 @@ export const ListView = (props: ListViewProps) => {
                     exporter={exporter} // deprecated, use ListContext instead, to be removed in v4
                 />
             )}
-            <div className={classes.main}>
+            <div className={ListClasses.main}>
                 <Content
-                    className={classnames(classes.content, {
-                        [classes.bulkActionsDisplayed]: selectedIds.length > 0,
+                    className={classnames(ListClasses.content, {
+                        [ListClasses.bulkActionsDisplayed]:
+                            selectedIds.length > 0,
                     })}
                     key={version}
                 >
@@ -90,15 +90,15 @@ export const ListView = (props: ListViewProps) => {
         loaded && !loading && total === 0 && !Object.keys(filterValues).length;
 
     return (
-        <div
-            className={classnames('list-page', classes.root, className)}
+        <Root
+            className={classnames('list-page', ListClasses.root, className)}
             {...sanitizeRestProps(rest)}
         >
             <Title title={title} defaultTitle={defaultTitle} />
             {shouldRenderEmptyPage && empty !== false
                 ? cloneElement(empty, listContext)
                 : renderList()}
-        </div>
+        </Root>
     );
 };
 
@@ -111,7 +111,6 @@ ListView.propTypes = {
     bulkActionButtons: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     children: PropTypes.element,
     className: PropTypes.string,
-    classes: PropTypes.object,
     component: ComponentPropType,
     // @ts-ignore-line
     currentSort: PropTypes.shape({
@@ -157,43 +156,11 @@ const DefaultBulkActionButtons = props => <BulkDeleteButton {...props} />;
 
 ListView.defaultProps = {
     actions: <DefaultActions />,
-    classes: {},
     component: Card,
     bulkActionButtons: <DefaultBulkActionButtons />,
     pagination: <DefaultPagination />,
     empty: <Empty />,
 };
-
-const useStyles = makeStyles(
-    theme => ({
-        root: {},
-        main: {
-            display: 'flex',
-        },
-        content: {
-            marginTop: 0,
-            transition: theme.transitions.create('margin-top'),
-            position: 'relative',
-            flex: '1 1 auto',
-            [theme.breakpoints.down('xs')]: {
-                boxShadow: 'none',
-            },
-            overflow: 'inherit',
-        },
-        bulkActionsDisplayed: {
-            marginTop: -theme.spacing(8),
-            transition: theme.transitions.create('margin-top'),
-        },
-        actions: {
-            zIndex: 2,
-            display: 'flex',
-            justifyContent: 'flex-end',
-            flexWrap: 'wrap',
-        },
-        noResults: { padding: 20 },
-    }),
-    { name: 'RaList' }
-);
 
 export interface ListViewProps
     extends Omit<ListProps, 'basePath' | 'hasCreate' | 'perPage' | 'resource'>,
@@ -259,4 +226,46 @@ const sanitizeRestProps: (
     ...rest
 }) => rest;
 
-export default ListView;
+const PREFIX = 'RaList';
+
+export const ListClasses = {
+    root: `${PREFIX}-root`,
+    main: `${PREFIX}-main`,
+    content: `${PREFIX}-content`,
+    bulkActionsDisplayed: `${PREFIX}-bulkActionsDisplayed`,
+    actions: `${PREFIX}-actions`,
+    noResults: `${PREFIX}-noResults`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${ListClasses.root}`]: {},
+
+    [`& .${ListClasses.main}`]: {
+        display: 'flex',
+    },
+
+    [`& .${ListClasses.content}`]: {
+        marginTop: 0,
+        transition: theme.transitions.create('margin-top'),
+        position: 'relative',
+        flex: '1 1 auto',
+        [theme.breakpoints.down('sm')]: {
+            boxShadow: 'none',
+        },
+        overflow: 'inherit',
+    },
+
+    [`& .${ListClasses.bulkActionsDisplayed}`]: {
+        marginTop: theme.spacing(-8),
+        transition: theme.transitions.create('margin-top'),
+    },
+
+    [`& .${ListClasses.actions}`]: {
+        zIndex: 2,
+        display: 'flex',
+        justifyContent: 'flex-end',
+        flexWrap: 'wrap',
+    },
+
+    [`& .${ListClasses.noResults}`]: { padding: 20 },
+}));

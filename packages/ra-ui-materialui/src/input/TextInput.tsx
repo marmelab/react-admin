@@ -1,14 +1,11 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { useInput, FieldTitle, InputProps } from 'ra-core';
-import { TextFieldProps } from '@material-ui/core/TextField';
+import { TextFieldProps } from '@mui/material/TextField';
 
-import ResettableTextField from './ResettableTextField';
-import InputHelperText from './InputHelperText';
-import sanitizeInputRestProps from './sanitizeInputRestProps';
-
-export type TextInputProps = InputProps<TextFieldProps> &
-    Omit<TextFieldProps, 'label' | 'helperText'>;
+import { ResettableTextField } from './ResettableTextField';
+import { InputHelperText } from './InputHelperText';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 
 /**
  * An Input component for a string
@@ -24,7 +21,7 @@ export type TextInputProps = InputProps<TextFieldProps> &
  *
  * The object passed as `options` props is passed to the <ResettableTextField> component
  */
-const TextInput = (props: TextInputProps) => {
+export const TextInput = (props: TextInputProps) => {
     const {
         label,
         format,
@@ -98,4 +95,5 @@ TextInput.defaultProps = {
     options: {},
 };
 
-export default TextInput;
+export type TextInputProps = InputProps<TextFieldProps> &
+    Omit<TextFieldProps, 'label' | 'helperText'>;

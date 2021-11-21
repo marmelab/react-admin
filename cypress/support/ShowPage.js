@@ -1,12 +1,12 @@
 export default (url, initialField = 'title') => ({
     elements: {
         body: 'body',
-        field: name => `.ra-field-${name} > div > div > span`,
+        field: name => `.ra-field-${name} > p > span`,
         fields: `.ra-field`,
         snackbar: 'div[role="alertdialog"]',
         tabs: `.show-tab`,
         tab: index => `.show-tab:nth-of-type(${index})`,
-        userMenu: 'button[title="Profile"]',
+        userMenu: 'button[aria-label="Profile"]',
         logout: '.logout',
     },
 

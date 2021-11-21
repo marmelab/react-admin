@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Card, Box, Link } from '@material-ui/core';
-import ContactsIcon from '@material-ui/icons/Contacts';
+import { Card, Box, Link } from '@mui/material';
+import ContactsIcon from '@mui/icons-material/Contacts';
 import { useGetList, SimpleList, useGetIdentity } from 'react-admin';
 import { formatDistance } from 'date-fns';
 
@@ -40,7 +40,6 @@ export const HotContacts = () => {
             </Box>
             <Card>
                 <SimpleList<Contact>
-                    basePath="/contacts"
                     linkType="show"
                     ids={contactIds}
                     data={contactData}

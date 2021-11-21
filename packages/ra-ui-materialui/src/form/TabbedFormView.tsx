@@ -11,24 +11,23 @@ import {
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Route, useRouteMatch, useLocation } from 'react-router-dom';
-import { Divider } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Divider } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import {
     escapePath,
     FormWithRedirectRenderProps,
     MutationMode,
     Record,
 } from 'ra-core';
-import Toolbar from './Toolbar';
-import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
-import { ClassesOverride } from '../types';
+import { Toolbar } from './Toolbar';
+import { TabbedFormTabs, getTabbedFormTabFullPath } from './TabbedFormTabs';
 
 export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
     const {
         basePath,
         children,
         className,
-        classes: classesOverride,
+        formRootPathname,
         handleSubmit,
         handleSubmitWithRedirect,
         invalid,
@@ -38,17 +37,15 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         redirect: defaultRedirect,
         resource,
         saving,
-        submitOnEnter,
+        submitOnEnter = true,
         syncWithLocation = true,
-        tabs,
-        toolbar,
-        undoable,
+        tabs = DefaultTabs,
+        toolbar = DefaultToolbar,
         variant,
         margin,
         validating,
         ...rest
     } = props;
-    const classes = useTabbedFormViewStyles(props);
     const match = useRouteMatch();
     const location = useLocation();
     const url = match ? match.url : location.pathname;
@@ -61,14 +58,14 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
     };
 
     return (
-        <form
+        <Root
             className={classnames('tabbed-form', className)}
             {...sanitizeRestProps(rest)}
         >
             {cloneElement(
                 tabs,
                 {
-                    classes,
+                    classes: TabbedFormClasses,
                     url,
                     syncWithLocation,
                     onChange: handleTabChange,
@@ -77,7 +74,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                 children
             )}
             <Divider />
-            <div className={classes.content}>
+            <div className={TabbedFormClasses.content}>
                 {/* All tabs are rendered (not only the one in focus), to allow validation
                 on tabs not in focus. The tabs receive a `hidden` property, which they'll
                 use to hide the tab using CSS if it's not the one in focus.
@@ -86,14 +83,14 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                     if (!tab) {
                         return;
                     }
-                    const tabPath = getTabFullPath(tab, index, url);
+                    const tabPath = getTabbedFormTabFullPath(tab, index, url);
                     return (
                         <Route exact path={escapePath(tabPath)}>
                             {routeProps =>
                                 isValidElement<any>(tab)
                                     ? React.cloneElement(tab, {
                                           intent: 'content',
-                                          classes,
+                                          classes: TabbedFormClasses,
                                           resource,
                                           record,
                                           basePath,
@@ -127,29 +124,15 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                     saving,
                     submitOnEnter,
                     validating,
-                    undoable,
                 })}
-        </form>
+        </Root>
     );
 };
-
-export const useTabbedFormViewStyles = makeStyles(
-    theme => ({
-        errorTabButton: { color: theme.palette.error.main },
-        content: {
-            paddingTop: theme.spacing(1),
-            paddingLeft: theme.spacing(2),
-            paddingRight: theme.spacing(2),
-        },
-    }),
-    { name: 'RaTabbedForm' }
-);
 
 TabbedFormView.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
-    classes: PropTypes.object,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
     handleSubmit: PropTypes.func, // passed by react-final-form
     initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
@@ -169,25 +152,20 @@ TabbedFormView.propTypes = {
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
-    tabs: PropTypes.element.isRequired,
+    tabs: PropTypes.element,
     toolbar: PropTypes.element,
     translate: PropTypes.func,
-    undoable: PropTypes.bool,
     validate: PropTypes.func,
     value: PropTypes.number,
     version: PropTypes.number,
 };
 
-TabbedFormView.defaultProps = {
-    submitOnEnter: true,
-    tabs: <TabbedFormTabs />,
-    toolbar: <Toolbar />,
-};
+const DefaultTabs = <TabbedFormTabs />;
+const DefaultToolbar = <Toolbar />;
 
 export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
     basePath?: string;
     children?: ReactNode;
-    classes?: ClassesOverride<typeof useTabbedFormViewStyles>;
     className?: string;
     margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
@@ -196,8 +174,6 @@ export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
     syncWithLocation?: boolean;
     tabs?: ReactElement;
     toolbar?: ReactElement;
-    /** @deprecated use mutationMode: undoable instead */
-    undoable?: boolean;
     variant?: 'standard' | 'outlined' | 'filled';
     submitOnEnter?: boolean;
     __versions?: any; // react-final-form internal prop, missing in their type
@@ -230,3 +206,21 @@ const sanitizeRestProps = ({
     __versions = null,
     ...props
 }) => props;
+
+const PREFIX = 'RaTabbedForm';
+
+export const TabbedFormClasses = {
+    errorTabButton: `${PREFIX}-errorTabButton`,
+    content: `${PREFIX}-content`,
+};
+
+const Root = styled('form', { name: PREFIX })(({ theme }) => ({
+    [`& .${TabbedFormClasses.errorTabButton}`]: {
+        color: theme.palette.error.main,
+    },
+    [`& .${TabbedFormClasses.content}`]: {
+        paddingTop: theme.spacing(1),
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+    },
+}));

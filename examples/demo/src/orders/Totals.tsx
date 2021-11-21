@@ -1,24 +1,32 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import classnames from 'classnames';
-import { Table, TableBody, TableCell, TableRow } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Table, TableBody, TableCell, TableRow } from '@mui/material';
 import { FieldProps, useTranslate } from 'react-admin';
 
 import { Order } from '../types';
 
-const useStyles = makeStyles({
-    container: { minWidth: '35em' },
-    rightAlignedCell: { textAlign: 'right' },
-    boldCell: { fontWeight: 'bold' },
+const PREFIX = 'Totals';
+
+const classes = {
+    container: `${PREFIX}-container`,
+    rightAlignedCell: `${PREFIX}-rightAlignedCell`,
+    boldCell: `${PREFIX}-boldCell`,
+};
+
+const StyledTable = styled(Table)({
+    [`&.${classes.container}`]: { minWidth: '35em' },
+    [`& .${classes.rightAlignedCell}`]: { textAlign: 'right' },
+    [`& .${classes.boldCell}`]: { fontWeight: 'bold' },
 });
 
 const Totals = (props: FieldProps<Order>) => {
     const { record } = props;
-    const classes = useStyles();
+
     const translate = useTranslate();
 
     return (
-        <Table className={classes.container}>
+        <StyledTable className={classes.container}>
             <TableBody>
                 <TableRow>
                     <TableCell>
@@ -74,7 +82,7 @@ const Totals = (props: FieldProps<Order>) => {
                     </TableCell>
                 </TableRow>
             </TableBody>
-        </Table>
+        </StyledTable>
     );
 };
 

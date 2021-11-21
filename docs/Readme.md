@@ -61,8 +61,8 @@ import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditBut
 import BookIcon from '@material-ui/icons/Book';
 export const PostIcon = BookIcon;
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid>
             <TextField source="id" />
             <TextField source="title" />
@@ -78,8 +78,8 @@ const PostTitle = ({ record }) => {
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
 
-export const PostEdit = (props) => (
-    <Edit title={<PostTitle />} {...props}>
+export const PostEdit = () => (
+    <Edit title={<PostTitle />}>
         <SimpleForm>
             <TextInput disabled source="id" />
             <TextInput source="title" />
@@ -92,8 +92,8 @@ export const PostEdit = (props) => (
     </Edit>
 );
 
-export const PostCreate = (props) => (
-    <Create title="Create a Post" {...props}>
+export const PostCreate = () => (
+    <Create title="Create a Post">
         <SimpleForm>
             <TextInput source="title" />
             <TextInput source="teaser" options={{ multiline: true }} />
@@ -149,6 +149,10 @@ The [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise) <img cl
 - Prioritize your needs in the react-admin **Development Roadmap** thanks to a priority vote.
 
 [![React-admin enterprise Edition](https://marmelab.com/ra-enterprise/assets/ra-enterprise-demo.png)](https://marmelab.com/ra-enterprise/)
+
+## Carbon Footprint
+
+Working towards digital sustainability is a crucial goal for the react-admin core team (and [a formal commitment](https://marmelab.com/en/values) for our sponsor, Marmelab). We monitor the carbon footprint of example react-admin apps with [GreenFrame](https://greenframe.io) to avoid adding features with a high ecological footprint. This also leads us to add features that reduce this footprint (like application cache or optimistic rendering). As a consequence, react-admin is not only fast but also respectful of the environment. Apps built with react-admin usually emit less carbon than apps built with other frameworks. 
 
 ## Contributing
 

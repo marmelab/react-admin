@@ -2,9 +2,8 @@ import * as React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 
-import ImageField from '../field/ImageField';
-import FileField from '../field/FileField';
-import FileInput from './FileInput';
+import { FileField, ImageField } from '../field';
+import { FileInput } from './FileInput';
 
 describe('<FileInput />', () => {
     const defaultProps = {

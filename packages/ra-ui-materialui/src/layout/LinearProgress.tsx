@@ -1,21 +1,11 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import Progress, {
     LinearProgressProps as ProgressProps,
-} from '@material-ui/core/LinearProgress';
+} from '@mui/material/LinearProgress';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import { useTimeout } from 'ra-core';
-
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            margin: `${theme.spacing(1)}px 0`,
-            width: `${theme.spacing(20)}px`,
-        },
-    }),
-    { name: 'RaLinearProgress' }
-);
 
 /**
  * Progress bar formatted to replace an input or a field in a form layout
@@ -32,18 +22,23 @@ const useStyles = makeStyles(
  *
  * @param {Props} props
  */
-const LinearProgress = ({ timeout = 1000, ...props }: LinearProgressProps) => {
-    const { classes: classesOverride, className, ...rest } = props;
-    const classes = useStyles(props);
+export const LinearProgress = ({
+    timeout = 1000,
+    ...props
+}: LinearProgressProps) => {
+    const { className, ...rest } = props;
+
     const oneSecondHasPassed = useTimeout(timeout);
 
     return oneSecondHasPassed ? (
-        <Progress className={classnames(classes.root, className)} {...rest} />
+        <StyledProgress
+            className={classnames(LinearProgressClasses.root, className)}
+            {...rest}
+        />
     ) : null;
 };
 
 LinearProgress.propTypes = {
-    classes: PropTypes.object,
     className: PropTypes.string,
     timeout: PropTypes.number,
 };
@@ -55,4 +50,15 @@ export interface LinearProgressProps extends ProgressProps {
     timeout?: number;
 }
 
-export default LinearProgress;
+const PREFIX = 'RaLinearProgress';
+
+export const LinearProgressClasses = {
+    root: `${PREFIX}-root`,
+};
+
+const StyledProgress = styled(Progress, { name: PREFIX })(({ theme }) => ({
+    [`&.${LinearProgressClasses.root}`]: {
+        margin: `${theme.spacing(1)} 0`,
+        width: theme.spacing(20),
+    },
+}));

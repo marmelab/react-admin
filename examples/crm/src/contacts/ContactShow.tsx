@@ -1,13 +1,12 @@
 import * as React from 'react';
 import {
     ShowBase,
-    ShowProps,
     TextField,
     ReferenceField,
     ReferenceManyField,
     useShowContext,
 } from 'react-admin';
-import { Box, Card, CardContent, Typography } from '@material-ui/core';
+import { Box, Card, CardContent, Typography } from '@mui/material';
 
 import { Avatar } from './Avatar';
 import { ContactAside } from './ContactAside';
@@ -15,8 +14,8 @@ import { LogoField } from '../companies/LogoField';
 import { NotesIterator } from '../notes';
 import { Contact } from '../types';
 
-export const ContactShow = (props: ShowProps) => (
-    <ShowBase {...props}>
+export const ContactShow = () => (
+    <ShowBase>
         <ContactShowContent />
     </ShowBase>
 );

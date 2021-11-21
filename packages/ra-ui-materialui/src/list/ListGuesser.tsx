@@ -9,8 +9,8 @@ import {
     useResourceContext,
 } from 'ra-core';
 
-import ListView, { ListViewProps } from './ListView';
-import listFieldTypes from './listFieldTypes';
+import { ListView, ListViewProps } from './ListView';
+import { listFieldTypes } from './listFieldTypes';
 import { ListProps } from '../types';
 
 /**
@@ -33,7 +33,7 @@ import { ListProps } from '../types';
  *     </Admin>
  * );
  */
-const ListGuesser = (props: ListProps) => {
+export const ListGuesser = (props: ListProps) => {
     const controllerProps = useListController(props);
     return (
         <ListContextProvider value={controllerProps}>
@@ -79,5 +79,3 @@ ${inferredChild.getRepresentation()}
 };
 
 ListViewGuesser.propTypes = ListView.propTypes;
-
-export default ListGuesser;

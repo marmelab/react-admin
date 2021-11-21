@@ -9,11 +9,11 @@ import { useMemo } from 'react';
  * Hook which returns the definition of the requested resource
  */
 export const useResourceDefinition = (
-    props: UseResourceDefinitionOptions
+    props?: UseResourceDefinitionOptions
 ): ResourceDefinition => {
     const resource = useResourceContext(props);
     const resources = useSelector(getResources);
-    const { hasCreate, hasEdit, hasList, hasShow } = props;
+    const { hasCreate, hasEdit, hasList, hasShow } = props || {};
 
     const definition = useMemo(() => {
         const definitionFromRedux = resources.find(r => r?.name === resource);

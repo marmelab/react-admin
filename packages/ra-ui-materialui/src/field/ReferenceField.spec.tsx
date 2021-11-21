@@ -3,10 +3,12 @@ import expect from 'expect';
 import { render, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { DataProviderContext, RecordContextProvider } from 'ra-core';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { renderWithRedux } from 'ra-test';
 
-import ReferenceField, { ReferenceFieldView } from './ReferenceField';
-import TextField from './TextField';
+import { ReferenceField, ReferenceFieldView } from './ReferenceField';
+import { TextField } from './TextField';
+const theme = createTheme({});
 
 describe('<ReferenceField />', () => {
     const record = { id: 123, postId: 123 };
@@ -14,17 +16,19 @@ describe('<ReferenceField />', () => {
     describe('Progress bar', () => {
         it("should not display a loader on mount if the reference is not in the store and a second hasn't passed yet", async () => {
             const { queryByRole, container } = renderWithRedux(
-                <ReferenceFieldView
-                    record={record}
-                    resource="comments"
-                    source="postId"
-                    reference="posts"
-                    basePath="/comments"
-                    loaded={false}
-                    loading={true}
-                >
-                    <TextField source="title" />
-                </ReferenceFieldView>
+                <ThemeProvider theme={theme}>
+                    <ReferenceFieldView
+                        record={record}
+                        resource="comments"
+                        source="postId"
+                        reference="posts"
+                        basePath="/comments"
+                        loaded={false}
+                        loading={true}
+                    >
+                        <TextField source="title" />
+                    </ReferenceFieldView>
+                </ThemeProvider>
             );
             await new Promise(resolve => setTimeout(resolve, 500));
             expect(queryByRole('progressbar')).toBeNull();
@@ -34,17 +38,19 @@ describe('<ReferenceField />', () => {
 
         it('should display a loader on mount if the reference is not in the store and a second has passed', async () => {
             const { queryByRole, container } = renderWithRedux(
-                <ReferenceFieldView
-                    record={record}
-                    resource="comments"
-                    source="postId"
-                    reference="posts"
-                    basePath="/comments"
-                    loaded={false}
-                    loading={true}
-                >
-                    <TextField source="title" />
-                </ReferenceFieldView>
+                <ThemeProvider theme={theme}>
+                    <ReferenceFieldView
+                        record={record}
+                        resource="comments"
+                        source="postId"
+                        reference="posts"
+                        basePath="/comments"
+                        loaded={false}
+                        loading={true}
+                    >
+                        <TextField source="title" />
+                    </ReferenceFieldView>
+                </ThemeProvider>
             );
             await new Promise(resolve => setTimeout(resolve, 1001));
             expect(queryByRole('progressbar')).not.toBeNull();
@@ -55,15 +61,17 @@ describe('<ReferenceField />', () => {
         it('should not display a loader on mount if the reference is in the store', () => {
             const { queryByRole, container } = renderWithRedux(
                 <MemoryRouter>
-                    <ReferenceField
-                        record={record}
-                        resource="comments"
-                        source="postId"
-                        reference="posts"
-                        basePath="/comments"
-                    >
-                        <TextField source="title" />
-                    </ReferenceField>
+                    <ThemeProvider theme={theme}>
+                        <ReferenceField
+                            record={record}
+                            resource="comments"
+                            source="postId"
+                            reference="posts"
+                            basePath="/comments"
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </ThemeProvider>
                 </MemoryRouter>,
                 {
                     admin: {
@@ -90,15 +98,17 @@ describe('<ReferenceField />', () => {
                 // @ts-ignore-line
                 <DataProviderContext.Provider value={dataProvider}>
                     <MemoryRouter>
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
-                            basePath="/comments"
-                        >
-                            <TextField source="title" />
-                        </ReferenceField>
+                        <ThemeProvider theme={theme}>
+                            <ReferenceField
+                                record={record}
+                                resource="comments"
+                                source="postId"
+                                reference="posts"
+                                basePath="/comments"
+                            >
+                                <TextField source="title" />
+                            </ReferenceField>
+                        </ThemeProvider>
                     </MemoryRouter>
                 </DataProviderContext.Provider>,
                 {
@@ -122,15 +132,17 @@ describe('<ReferenceField />', () => {
             const { queryByRole, container } = renderWithRedux(
                 // @ts-ignore-line
                 <DataProviderContext.Provider value={dataProvider}>
-                    <ReferenceField
-                        record={record}
-                        resource="comments"
-                        source="postId"
-                        reference="posts"
-                        basePath="/comments"
-                    >
-                        <TextField source="title" />
-                    </ReferenceField>
+                    <ThemeProvider theme={theme}>
+                        <ReferenceField
+                            record={record}
+                            resource="comments"
+                            source="postId"
+                            reference="posts"
+                            basePath="/comments"
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </ThemeProvider>
                 </DataProviderContext.Provider>,
                 { admin: { resources: { posts: { data: {} } } } }
             );
@@ -148,15 +160,17 @@ describe('<ReferenceField />', () => {
             const { queryByRole, container } = renderWithRedux(
                 // @ts-ignore-line
                 <DataProviderContext.Provider value={dataProvider}>
-                    <ReferenceField
-                        record={record}
-                        resource="comments"
-                        source="postId"
-                        reference="posts"
-                        basePath="/comments"
-                    >
-                        <TextField source="title" />
-                    </ReferenceField>
+                    <ThemeProvider theme={theme}>
+                        <ReferenceField
+                            record={record}
+                            resource="comments"
+                            source="postId"
+                            reference="posts"
+                            basePath="/comments"
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </ThemeProvider>
                 </DataProviderContext.Provider>,
                 { admin: { resources: { posts: { data: {} } } } }
             );
@@ -169,16 +183,18 @@ describe('<ReferenceField />', () => {
 
     it('should display the emptyText if the field is empty', () => {
         const { getByText } = renderWithRedux(
-            <ReferenceField
-                record={{ id: 123 }}
-                resource="comments"
-                source="postId"
-                reference="posts"
-                basePath="/comments"
-                emptyText="EMPTY"
-            >
-                <TextField source="title" />
-            </ReferenceField>,
+            <ThemeProvider theme={theme}>
+                <ReferenceField
+                    record={{ id: 123 }}
+                    resource="comments"
+                    source="postId"
+                    reference="posts"
+                    basePath="/comments"
+                    emptyText="EMPTY"
+                >
+                    <TextField source="title" />
+                </ReferenceField>
+            </ThemeProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
         expect(getByText('EMPTY')).not.toBeNull();
@@ -187,15 +203,17 @@ describe('<ReferenceField />', () => {
     it('should use the reference from the store if available', () => {
         const { container, getByText } = renderWithRedux(
             <MemoryRouter>
-                <ReferenceField
-                    record={record}
-                    resource="comments"
-                    source="postId"
-                    reference="posts"
-                    basePath="/comments"
-                >
-                    <TextField source="title" />
-                </ReferenceField>
+                <ThemeProvider theme={theme}>
+                    <ReferenceField
+                        record={record}
+                        resource="comments"
+                        source="postId"
+                        reference="posts"
+                        basePath="/comments"
+                    >
+                        <TextField source="title" />
+                    </ReferenceField>
+                </ThemeProvider>
             </MemoryRouter>,
             {
                 admin: {
@@ -217,14 +235,16 @@ describe('<ReferenceField />', () => {
         const { container, getByText } = renderWithRedux(
             <MemoryRouter>
                 <RecordContextProvider value={record}>
-                    <ReferenceField
-                        resource="comments"
-                        source="postId"
-                        reference="posts"
-                        basePath="/comments"
-                    >
-                        <TextField source="title" />
-                    </ReferenceField>
+                    <ThemeProvider theme={theme}>
+                        <ReferenceField
+                            resource="comments"
+                            source="postId"
+                            reference="posts"
+                            basePath="/comments"
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </ThemeProvider>
                 </RecordContextProvider>
             </MemoryRouter>,
             {
@@ -253,15 +273,17 @@ describe('<ReferenceField />', () => {
             // @ts-ignore-line
             <DataProviderContext.Provider value={dataProvider}>
                 <MemoryRouter>
-                    <ReferenceField
-                        record={record}
-                        resource="comments"
-                        source="postId"
-                        reference="posts"
-                        basePath="/comments"
-                    >
-                        <TextField source="title" />
-                    </ReferenceField>
+                    <ThemeProvider theme={theme}>
+                        <ReferenceField
+                            record={record}
+                            resource="comments"
+                            source="postId"
+                            reference="posts"
+                            basePath="/comments"
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </ThemeProvider>
                 </MemoryRouter>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
@@ -281,15 +303,17 @@ describe('<ReferenceField />', () => {
         const { queryByRole } = renderWithRedux(
             // @ts-ignore-line
             <DataProviderContext.Provider value={dataProvider}>
-                <ReferenceField
-                    record={record}
-                    resource="comments"
-                    source="postId"
-                    reference="posts"
-                    basePath="/comments"
-                >
-                    <TextField source="title" />
-                </ReferenceField>
+                <ThemeProvider theme={theme}>
+                    <ReferenceField
+                        record={record}
+                        resource="comments"
+                        source="postId"
+                        reference="posts"
+                        basePath="/comments"
+                    >
+                        <TextField source="title" />
+                    </ReferenceField>
+                </ThemeProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -338,15 +362,17 @@ describe('<ReferenceField />', () => {
         const onError = jest.fn();
         renderWithRedux(
             <ErrorBoundary onError={onError}>
-                <ReferenceField
-                    record={{ id: 123 }}
-                    resource="comments"
-                    source="postId"
-                    reference="posts"
-                    basePath="/comments"
-                >
-                    <TextField source="title" />
-                </ReferenceField>
+                <ThemeProvider theme={theme}>
+                    <ReferenceField
+                        record={{ id: 123 }}
+                        resource="comments"
+                        source="postId"
+                        reference="posts"
+                        basePath="/comments"
+                    >
+                        <TextField source="title" />
+                    </ReferenceField>
+                </ThemeProvider>
             </ErrorBoundary>,
             { admin: { resources: { comments: { data: {} } } } }
         );
@@ -361,19 +387,21 @@ describe('<ReferenceField />', () => {
         it('should render a link to specified resourceLinkPath', () => {
             const { container } = render(
                 <MemoryRouter>
-                    <ReferenceFieldView
-                        record={record}
-                        source="postId"
-                        referenceRecord={{ id: 123, title: 'foo' }}
-                        reference="posts"
-                        resource="comments"
-                        resourceLinkPath="/posts/123"
-                        basePath="/comments"
-                        loaded={true}
-                        loading={false}
-                    >
-                        <TextField source="title" />
-                    </ReferenceFieldView>
+                    <ThemeProvider theme={theme}>
+                        <ReferenceFieldView
+                            record={record}
+                            source="postId"
+                            referenceRecord={{ id: 123, title: 'foo' }}
+                            reference="posts"
+                            resource="comments"
+                            resourceLinkPath="/posts/123"
+                            basePath="/comments"
+                            loaded={true}
+                            loading={false}
+                        >
+                            <TextField source="title" />
+                        </ReferenceFieldView>
+                    </ThemeProvider>
                 </MemoryRouter>
             );
             const links = container.getElementsByTagName('a');
@@ -383,18 +411,20 @@ describe('<ReferenceField />', () => {
 
         it('should render no link when resourceLinkPath is not specified', () => {
             const { container } = render(
-                <ReferenceFieldView
-                    record={record}
-                    source="fooId"
-                    referenceRecord={{ id: 123, title: 'foo' }}
-                    reference="bar"
-                    basePath="/foo"
-                    resourceLinkPath={false}
-                    loaded={true}
-                    loading={false}
-                >
-                    <TextField source="title" />
-                </ReferenceFieldView>
+                <ThemeProvider theme={theme}>
+                    <ReferenceFieldView
+                        record={record}
+                        source="fooId"
+                        referenceRecord={{ id: 123, title: 'foo' }}
+                        reference="bar"
+                        basePath="/foo"
+                        resourceLinkPath={false}
+                        loaded={true}
+                        loading={false}
+                    >
+                        <TextField source="title" />
+                    </ReferenceFieldView>
+                </ThemeProvider>
             );
             const links = container.getElementsByTagName('a');
             expect(links).toHaveLength(0);
@@ -403,18 +433,20 @@ describe('<ReferenceField />', () => {
         it('should work without basePath', () => {
             const { container } = render(
                 <MemoryRouter>
-                    <ReferenceFieldView
-                        record={record}
-                        source="postId"
-                        referenceRecord={{ id: 123, title: 'foo' }}
-                        reference="posts"
-                        resource="comments"
-                        resourceLinkPath="/posts/123"
-                        loaded={true}
-                        loading={false}
-                    >
-                        <TextField source="title" />
-                    </ReferenceFieldView>
+                    <ThemeProvider theme={theme}>
+                        <ReferenceFieldView
+                            record={record}
+                            source="postId"
+                            referenceRecord={{ id: 123, title: 'foo' }}
+                            reference="posts"
+                            resource="comments"
+                            resourceLinkPath="/posts/123"
+                            loaded={true}
+                            loading={false}
+                        >
+                            <TextField source="title" />
+                        </ReferenceFieldView>
+                    </ThemeProvider>
                 </MemoryRouter>
             );
             const links = container.getElementsByTagName('a');

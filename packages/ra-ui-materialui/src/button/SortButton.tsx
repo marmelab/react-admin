@@ -8,9 +8,9 @@ import {
     IconButton,
     useMediaQuery,
     Theme,
-} from '@material-ui/core';
-import SortIcon from '@material-ui/icons/Sort';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+} from '@mui/material';
+import SortIcon from '@mui/icons-material/Sort';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { shallowEqual } from 'react-redux';
 import {
     useListSortContext,
@@ -48,7 +48,7 @@ const SortButton = (props: SortButtonProps) => {
     const { resource, currentSort, setSort } = useListSortContext();
     const translate = useTranslate();
     const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('xs')
+        theme.breakpoints.down('sm')
     );
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -91,6 +91,7 @@ const SortButton = (props: SortButtonProps) => {
                         aria-label={buttonLabel}
                         color="primary"
                         onClick={handleClick}
+                        size="large"
                     >
                         {icon}
                     </IconButton>

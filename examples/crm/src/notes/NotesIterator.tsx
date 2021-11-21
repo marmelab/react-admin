@@ -1,12 +1,18 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useListContext } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
 
 import { Note } from './Note';
 import { NewNote } from './NewNote';
 
-const useStyles = makeStyles({
-    root: {
+const PREFIX = 'NotesIterator';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const Root = styled('div')({
+    [`&.${classes.root}`]: {
         marginTop: '0.5em',
     },
 });
@@ -18,13 +24,12 @@ export const NotesIterator = ({
     showStatus?: boolean;
     reference: 'contacts' | 'deals';
 }) => {
-    const classes = useStyles();
     const { data, ids, loaded } = useListContext();
     if (!loaded) return null;
     return (
         <>
             <NewNote showStatus={showStatus} reference={reference} />
-            <div className={classes.root}>
+            <Root className={classes.root}>
                 {ids.map((id, index) => (
                     <Note
                         note={data[id]}
@@ -34,7 +39,7 @@ export const NotesIterator = ({
                         key={index}
                     />
                 ))}
-            </div>
+            </Root>
         </>
     );
 };

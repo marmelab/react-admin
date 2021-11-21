@@ -17,9 +17,9 @@ import {
     OnFailure,
 } from 'ra-core';
 import get from 'lodash/get';
+import { useRouteMatch, useLocation } from 'react-router';
 
-import { ClassesOverride } from '../types';
-import { TabbedFormView, useTabbedFormViewStyles } from './TabbedFormView';
+import { TabbedFormView } from './TabbedFormView';
 
 /**
  * Form layout where inputs are divided by tab, one input per line.
@@ -88,12 +88,19 @@ import { TabbedFormView, useTabbedFormViewStyles } from './TabbedFormView';
  *
  * @param {Props} props
  */
-export const TabbedForm = (props: TabbedFormProps) => (
-    <FormWithRedirect
-        {...props}
-        render={formProps => <TabbedFormView {...formProps} />}
-    />
-);
+export const TabbedForm = (props: TabbedFormProps) => {
+    const match = useRouteMatch();
+    const location = useLocation();
+    const formRootPathname = match ? match.url : location.pathname;
+
+    return (
+        <FormWithRedirect
+            {...props}
+            formRootPathname={formRootPathname}
+            render={formProps => <TabbedFormView {...formProps} />}
+        />
+    );
+};
 
 TabbedForm.propTypes = {
     children: PropTypes.node,
@@ -109,7 +116,6 @@ TabbedForm.propTypes = {
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
-    undoable: PropTypes.bool,
     validate: PropTypes.func,
     sanitizeEmptyValues: PropTypes.bool,
 };
@@ -123,7 +129,6 @@ export interface TabbedFormProps
     basePath?: string;
     children: ReactNode;
     className?: string;
-    classes?: ClassesOverride<typeof useTabbedFormViewStyles>;
     initialValues?: any;
     margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
@@ -143,8 +148,6 @@ export interface TabbedFormProps
     syncWithLocation?: boolean;
     tabs?: ReactElement;
     toolbar?: ReactElement;
-    /** @deprecated use mutationMode: undoable instead */
-    undoable?: boolean;
     variant?: 'standard' | 'outlined' | 'filled';
     warnWhenUnsavedChanges?: boolean;
 }

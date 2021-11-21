@@ -1,20 +1,27 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { forwardRef } from 'react';
 import { AppBar, UserMenu, MenuItemLink, useTranslate } from 'react-admin';
-import Typography from '@material-ui/core/Typography';
-import SettingsIcon from '@material-ui/icons/Settings';
-import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 import Logo from './Logo';
 
-const useStyles = makeStyles({
-    title: {
+const PREFIX = 'CustomAppBar';
+
+const classes = {
+    title: `${PREFIX}-title`,
+    spacer: `${PREFIX}-spacer`,
+};
+
+const StyledAppBar = styled(AppBar)({
+    [`& .${classes.title}`]: {
         flex: 1,
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
         overflow: 'hidden',
     },
-    spacer: {
+    [`& .${classes.spacer}`]: {
         flex: 1,
     },
 });
@@ -40,9 +47,13 @@ const CustomUserMenu = (props: any) => (
 );
 
 const CustomAppBar = (props: any) => {
-    const classes = useStyles();
     return (
-        <AppBar {...props} elevation={1} userMenu={<CustomUserMenu />}>
+        <StyledAppBar
+            {...props}
+            color="secondary"
+            elevation={1}
+            userMenu={<CustomUserMenu />}
+        >
             <Typography
                 variant="h6"
                 color="inherit"
@@ -51,7 +62,7 @@ const CustomAppBar = (props: any) => {
             />
             <Logo />
             <span className={classes.spacer} />
-        </AppBar>
+        </StyledAppBar>
     );
 };
 

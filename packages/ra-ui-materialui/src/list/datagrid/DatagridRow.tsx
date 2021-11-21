@@ -11,26 +11,23 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { TableCell, TableRow, TableRowProps, Checkbox } from '@mui/material';
 import {
-    TableCell,
-    TableRow,
-    TableRowProps,
-    Checkbox,
-} from '@material-ui/core';
-import {
-    linkToRecord,
-    useExpanded,
     Identifier,
+    linkToRecord,
     Record,
-    useResourceContext,
     RecordContextProvider,
+    useExpanded,
+    useResourceContext,
+    useTranslate,
 } from 'ra-core';
 import { shallowEqual } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import classNames from 'classnames';
 
 import DatagridCell from './DatagridCell';
 import ExpandRowButton from './ExpandRowButton';
-import useDatagridStyles from './useDatagridStyles';
+import { DatagridClasses } from './useDatagridStyles';
 import { useDatagridContext } from './useDatagridContext';
 
 const computeNbColumns = (expand, children, hasBulkActions) =>
@@ -40,13 +37,10 @@ const computeNbColumns = (expand, children, hasBulkActions) =>
           React.Children.toArray(children).filter(child => !!child).length // non-null children
         : 0; // we don't need to compute columns if there is no expand panel;
 
-const defaultClasses = { expandIconCell: '', checkbox: '', rowCell: '' };
-
 const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
     const {
         basePath,
         children,
-        classes = defaultClasses,
         className,
         expand,
         hasBulkActions,
@@ -62,6 +56,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
     } = props;
 
     const context = useDatagridContext();
+    const translate = useTranslate();
     const expandable =
         (!context ||
             !context.isRowExpandable ||
@@ -158,11 +153,16 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                 {expand && (
                     <TableCell
                         padding="none"
-                        className={classes.expandIconCell}
+                        className={DatagridClasses.expandIconCell}
                     >
                         {expandable && (
                             <ExpandRowButton
-                                classes={classes}
+                                className={classNames(
+                                    DatagridClasses.expandIcon,
+                                    {
+                                        [DatagridClasses.expanded]: expanded,
+                                    }
+                                )}
                                 expanded={expanded}
                                 onClick={handleToggleExpand}
                                 expandContentId={`${id}-expand`}
@@ -174,8 +174,11 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                     <TableCell padding="checkbox">
                         {selectable && (
                             <Checkbox
+                                aria-label={translate('ra.action.select_row', {
+                                    _: 'Select this row',
+                                })}
                                 color="primary"
-                                className={`select-item ${classes.checkbox}`}
+                                className={`select-item ${DatagridClasses.checkbox}`}
                                 checked={selected}
                                 onClick={handleToggleSelection}
                             />
@@ -190,7 +193,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                             }`}
                             className={classnames(
                                 `column-${(field.props as any).source}`,
-                                classes.rowCell
+                                DatagridClasses.rowCell
                             )}
                             record={record}
                             {...{ field, basePath, resource }}
@@ -199,7 +202,11 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                 )}
             </TableRow>
             {expandable && expanded && (
-                <TableRow key={`${id}-expand`} id={`${id}-expand`}>
+                <TableRow
+                    key={`${id}-expand`}
+                    id={`${id}-expand`}
+                    className={DatagridClasses.expandedPanel}
+                >
                     <TableCell colSpan={nbColumns}>
                         {isValidElement(expand)
                             ? cloneElement(expand, {
@@ -225,7 +232,6 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
 DatagridRow.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
-    classes: PropTypes.any,
     className: PropTypes.string,
     // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
@@ -252,7 +258,6 @@ DatagridRow.defaultProps = {
 
 export interface DatagridRowProps
     extends Omit<TableRowProps, 'id' | 'classes'> {
-    classes?: ReturnType<typeof useDatagridStyles>;
     basePath?: string;
     className?: string;
     expand?:

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useState } from 'react';
 import { useForm } from 'react-final-form';
 import {
@@ -13,15 +14,21 @@ import {
     DialogContent,
     DialogActions,
     TextField as MuiTextField,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+} from '@mui/material';
 
-const useStyles = makeStyles({
-    button: {
+const PREFIX = 'TagReferenceInput';
+
+const classes = {
+    button: `${PREFIX}-button`,
+    input: `${PREFIX}-input`,
+};
+
+const StyledDialog = styled(Dialog)({
+    [`& .${classes.button}`]: {
         margin: '0 24px',
         position: 'relative',
     },
-    input: {
+    [`& .${classes.input}`]: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
@@ -36,7 +43,6 @@ const TagReferenceInput = ({
     source: string;
     label?: string;
 }) => {
-    const classes = useStyles();
     const { change } = useForm();
     const [filter, setFilter] = useState(true);
 
@@ -91,7 +97,7 @@ const CreateTag = () => {
         return false;
     };
     return (
-        <Dialog open onClose={onCancel}>
+        <StyledDialog open onClose={onCancel}>
             <form onSubmit={handleSubmit}>
                 <DialogContent>
                     <MuiTextField
@@ -106,7 +112,7 @@ const CreateTag = () => {
                     <Button onClick={onCancel}>Cancel</Button>
                 </DialogActions>
             </form>
-        </Dialog>
+        </StyledDialog>
     );
 };
 

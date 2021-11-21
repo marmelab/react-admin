@@ -3,10 +3,12 @@ import { fireEvent } from '@testing-library/react';
 import * as React from 'react';
 import { renderWithRedux } from 'ra-test';
 import { minLength } from 'ra-core';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import FilterForm, { mergeInitialValuesWithDefaultValues } from './FilterForm';
-import TextInput from '../../input/TextInput';
-import { SelectInput } from '../../input/SelectInput';
+import { FilterForm, mergeInitialValuesWithDefaultValues } from './FilterForm';
+import { TextInput, SelectInput } from '../../input';
+
+const theme = createTheme({});
 
 describe('<FilterForm />', () => {
     const defaultProps = {
@@ -29,11 +31,13 @@ describe('<FilterForm />', () => {
         };
 
         const { queryAllByLabelText } = renderWithRedux(
-            <FilterForm
-                {...defaultProps}
-                filters={filters}
-                displayedFilters={displayedFilters}
-            />
+            <ThemeProvider theme={theme}>
+                <FilterForm
+                    {...defaultProps}
+                    filters={filters}
+                    displayedFilters={displayedFilters}
+                />
+            </ThemeProvider>
         );
         expect(queryAllByLabelText('Title')).toHaveLength(1);
         expect(queryAllByLabelText('Name')).toHaveLength(1);
@@ -47,12 +51,14 @@ describe('<FilterForm />', () => {
         const setFilters = jest.fn();
 
         const { queryByLabelText } = renderWithRedux(
-            <FilterForm
-                {...defaultProps}
-                filters={filters}
-                displayedFilters={displayedFilters}
-                setFilters={setFilters}
-            />
+            <ThemeProvider theme={theme}>
+                <FilterForm
+                    {...defaultProps}
+                    filters={filters}
+                    displayedFilters={displayedFilters}
+                    setFilters={setFilters}
+                />
+            </ThemeProvider>
         );
         fireEvent.change(queryByLabelText('Title'), {
             target: { value: 'foo' },
@@ -77,12 +83,14 @@ describe('<FilterForm />', () => {
         const setFilters = jest.fn();
 
         const { queryByLabelText } = renderWithRedux(
-            <FilterForm
-                {...defaultProps}
-                filters={filters}
-                displayedFilters={displayedFilters}
-                setFilters={setFilters}
-            />
+            <ThemeProvider theme={theme}>
+                <FilterForm
+                    {...defaultProps}
+                    filters={filters}
+                    displayedFilters={displayedFilters}
+                    setFilters={setFilters}
+                />
+            </ThemeProvider>
         );
         fireEvent.change(queryByLabelText('Title'), {
             target: { value: 'foo' },
@@ -108,11 +116,13 @@ describe('<FilterForm />', () => {
             };
 
             const { queryAllByRole, queryByLabelText } = renderWithRedux(
-                <FilterForm
-                    {...defaultProps}
-                    filters={filters}
-                    displayedFilters={displayedFilters}
-                />
+                <ThemeProvider theme={theme}>
+                    <FilterForm
+                        {...defaultProps}
+                        filters={filters}
+                        displayedFilters={displayedFilters}
+                    />
+                </ThemeProvider>
             );
 
             const select = queryByLabelText('SelectWithUndefinedAllowEmpty');
@@ -139,11 +149,13 @@ describe('<FilterForm />', () => {
             };
 
             const { queryAllByRole, queryByLabelText } = renderWithRedux(
-                <FilterForm
-                    {...defaultProps}
-                    filters={filters}
-                    displayedFilters={displayedFilters}
-                />
+                <ThemeProvider theme={theme}>
+                    <FilterForm
+                        {...defaultProps}
+                        filters={filters}
+                        displayedFilters={displayedFilters}
+                    />
+                </ThemeProvider>
             );
             const select = queryByLabelText('SelectWithFalseAllowEmpty');
             fireEvent.mouseDown(select);
@@ -169,11 +181,13 @@ describe('<FilterForm />', () => {
             };
 
             const { queryAllByRole, queryByLabelText } = renderWithRedux(
-                <FilterForm
-                    {...defaultProps}
-                    filters={filters}
-                    displayedFilters={displayedFilters}
-                />
+                <ThemeProvider theme={theme}>
+                    <FilterForm
+                        {...defaultProps}
+                        filters={filters}
+                        displayedFilters={displayedFilters}
+                    />
+                </ThemeProvider>
             );
             const select = queryByLabelText('SelectWithTrueAllowEmpty');
             fireEvent.mouseDown(select);

@@ -138,8 +138,8 @@ const ResourceName = () => {
     return <>{resource}</>;
 }
 
-const PostList = (props) => (
-    <List {...props}>
+const PostList = () => (
+    <List>
         <>
             <ResourceName /> {/* renders 'posts' */}
             <Datagrid>

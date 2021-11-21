@@ -1,10 +1,11 @@
-import { render } from '@testing-library/react';
 import * as React from 'react';
+import { render } from '@testing-library/react';
 import expect from 'expect';
+import { MutationMode } from 'ra-core';
 import { TestContext } from 'ra-test';
-import { ThemeProvider } from '@material-ui/core';
-import { createTheme } from '@material-ui/core/styles';
-import Button from './Button';
+import { ThemeProvider } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+import { Button } from './Button';
 
 const theme = createTheme();
 
@@ -20,7 +21,7 @@ const invalidButtonDomProps = {
     resource: 'posts',
     saving: false,
     submitOnEnter: true,
-    undoable: false,
+    mutationMode: 'pessimistic' as MutationMode,
 };
 
 describe('<Button />', () => {

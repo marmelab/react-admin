@@ -58,8 +58,8 @@ const PostEditActions = ({ basePath, data, resource }) => (
     </TopToolbar>
 );
 
-export const PostEdit = (props) => (
-    <Edit actions={<PostEditActions />} {...props}>
+export const PostEdit = () => (
+    <Edit actions={<PostEditActions />}>
         ...
     </Edit>
 );
@@ -181,9 +181,7 @@ const MyRefreshButton = () => {
 
 React-admin uses [Redux](https://react-redux.js.org/) for some of its state management. Redux has performance advantages over pure React contexts. But we don't document the action creators or the Redux state, because we see Redux as an implementation detail. Instead of dispatching actions, react-admin developers use hooks.
 
-Similarly, react-admin supports redux-saga for side effects with Redux. But the sagas registered at startup are only there for backward compatibility reasons, and no new feature use sagas. Instead, we use hooks. 
-
-Previous versions of react-admin used to put a greater emphasis on Redux and redux-saga. It's no longer the case, and we even consider that we could remove Redux completely in the future - if React ever implements Context selectors. 
+Previous versions of react-admin used to put a greater emphasis on Redux. It's no longer the case, and we even consider that we could remove Redux completely in the future - if React ever implements Context selectors. 
 
 ## Minimal API Surface
 
@@ -229,7 +227,7 @@ If you don't find a particular feature in the react-admin documentation, it prob
 
 ## Principle Of Least Documentation
 
-None reads docs. It's an unfortunate fact that we have learned to live with.
+No one reads docs. It's an unfortunate fact that we have learned to live with.
 
 So when we design a new feature, we try to do it in the most intuitive way for developers. We keep the API minimal (see above). We copy the API of well-known libraries. We throw errors with helpful and explicit messages. We provide TypeScript types and JSDoc to help developers discover the API from within their IDE. We publish live examples with commented code.
 

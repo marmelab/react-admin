@@ -2,10 +2,13 @@ import * as React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { SelectInput } from './SelectInput';
 import { required } from 'ra-core';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
+
+const theme = createTheme({});
 
 describe('<SelectInput />', () => {
     const defaultProps = {
@@ -19,11 +22,13 @@ describe('<SelectInput />', () => {
 
     it('should use the input parameter value as the initial input value', () => {
         const { container } = render(
-            <Form
-                initialValues={{ language: 'ang' }}
-                onSubmit={jest.fn()}
-                render={() => <SelectInput {...defaultProps} />}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    initialValues={{ language: 'ang' }}
+                    onSubmit={jest.fn()}
+                    render={() => <SelectInput {...defaultProps} />}
+                />
+            </ThemeProvider>
         );
         const input = container.querySelector('input');
         expect(input.value).toEqual('ang');
@@ -31,10 +36,12 @@ describe('<SelectInput />', () => {
 
     it('should render choices as mui MenuItem components', async () => {
         const { getByRole, getByText, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => <SelectInput {...defaultProps} />}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => <SelectInput {...defaultProps} />}
+                />
+            </ThemeProvider>
         );
         const select = getByRole('button');
         fireEvent.mouseDown(select);
@@ -50,23 +57,25 @@ describe('<SelectInput />', () => {
 
     it('should render disable choices marked so', () => {
         const { getByRole, getByText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        {...defaultProps}
-                        choices={[
-                            { id: 'ang', name: 'Angular' },
-                            { id: 'rea', name: 'React', disabled: true },
-                        ]}
-                    />
-                )}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectInput
+                            {...defaultProps}
+                            choices={[
+                                { id: 'ang', name: 'Angular' },
+                                { id: 'rea', name: 'React', disabled: true },
+                            ]}
+                        />
+                    )}
+                />
+            </ThemeProvider>
         );
         const select = getByRole('button');
         fireEvent.mouseDown(select);
         const option1 = getByText('Angular');
-        expect(option1.getAttribute('aria-disabled')).toEqual('false');
+        expect(option1.getAttribute('aria-disabled')).toBeNull();
 
         const option2 = getByText('React');
         expect(option2.getAttribute('aria-disabled')).toEqual('true');
@@ -74,10 +83,12 @@ describe('<SelectInput />', () => {
 
     it('should add an empty menu when allowEmpty is true', () => {
         const { getByRole, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => <SelectInput {...defaultProps} allowEmpty />}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => <SelectInput {...defaultProps} allowEmpty />}
+                />
+            </ThemeProvider>
         );
         const select = getByRole('button');
         fireEvent.mouseDown(select);
@@ -91,16 +102,18 @@ describe('<SelectInput />', () => {
         const emptyValue = 'test';
 
         const { getByRole, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        {...defaultProps}
-                        allowEmpty
-                        emptyValue={emptyValue}
-                    />
-                )}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectInput
+                            {...defaultProps}
+                            allowEmpty
+                            emptyValue={emptyValue}
+                        />
+                    )}
+                />
+            </ThemeProvider>
         );
         const select = getByRole('button');
         fireEvent.mouseDown(select);
@@ -114,16 +127,18 @@ describe('<SelectInput />', () => {
         const emptyText = 'Default';
 
         const { getByRole, getByText, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        allowEmpty
-                        emptyText={emptyText}
-                        {...defaultProps}
-                    />
-                )}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectInput
+                            allowEmpty
+                            emptyText={emptyText}
+                            {...defaultProps}
+                        />
+                    )}
+                />
+            </ThemeProvider>
         );
         const emptyOption = getByRole('button');
         fireEvent.mouseDown(emptyOption);
@@ -142,16 +157,18 @@ describe('<SelectInput />', () => {
         );
 
         const { getByRole, getByText, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        allowEmpty
-                        emptyText={emptyText}
-                        {...defaultProps}
-                    />
-                )}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectInput
+                            allowEmpty
+                            emptyText={emptyText}
+                            {...defaultProps}
+                        />
+                    )}
+                />
+            </ThemeProvider>
         );
         const emptyOption = getByRole('button');
         fireEvent.mouseDown(emptyOption);
@@ -164,10 +181,12 @@ describe('<SelectInput />', () => {
 
     it('should not add a falsy (null or false) element when allowEmpty is false', () => {
         const { getByRole, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => <SelectInput {...defaultProps} />}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => <SelectInput {...defaultProps} />}
+                />
+            </ThemeProvider>
         );
         const select = getByRole('button');
         fireEvent.mouseDown(select);
@@ -177,19 +196,21 @@ describe('<SelectInput />', () => {
 
     it('should use optionValue as value identifier', () => {
         const { getByRole, getByText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        {...defaultProps}
-                        optionValue="foobar"
-                        choices={[
-                            { foobar: 'ang', name: 'Angular' },
-                            { foobar: 'rea', name: 'React' },
-                        ]}
-                    />
-                )}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectInput
+                            {...defaultProps}
+                            optionValue="foobar"
+                            choices={[
+                                { foobar: 'ang', name: 'Angular' },
+                                { foobar: 'rea', name: 'React' },
+                            ]}
+                        />
+                    )}
+                />
+            </ThemeProvider>
         );
         const select = getByRole('button');
         fireEvent.mouseDown(select);
@@ -200,19 +221,21 @@ describe('<SelectInput />', () => {
 
     it('should use optionValue including "." as value identifier', () => {
         const { getByRole, getByText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        {...defaultProps}
-                        optionValue="foobar.id"
-                        choices={[
-                            { foobar: { id: 'ang' }, name: 'Angular' },
-                            { foobar: { id: 'rea' }, name: 'React' },
-                        ]}
-                    />
-                )}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectInput
+                            {...defaultProps}
+                            optionValue="foobar.id"
+                            choices={[
+                                { foobar: { id: 'ang' }, name: 'Angular' },
+                                { foobar: { id: 'rea' }, name: 'React' },
+                            ]}
+                        />
+                    )}
+                />
+            </ThemeProvider>
         );
         const select = getByRole('button');
         fireEvent.mouseDown(select);
@@ -223,19 +246,21 @@ describe('<SelectInput />', () => {
 
     it('should use optionText with a string value as text identifier', () => {
         const { getByRole, getByText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        {...defaultProps}
-                        optionText="foobar"
-                        choices={[
-                            { id: 'ang', foobar: 'Angular' },
-                            { id: 'rea', foobar: 'React' },
-                        ]}
-                    />
-                )}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectInput
+                            {...defaultProps}
+                            optionText="foobar"
+                            choices={[
+                                { id: 'ang', foobar: 'Angular' },
+                                { id: 'rea', foobar: 'React' },
+                            ]}
+                        />
+                    )}
+                />
+            </ThemeProvider>
         );
         const select = getByRole('button');
         fireEvent.mouseDown(select);
@@ -246,19 +271,21 @@ describe('<SelectInput />', () => {
 
     it('should use optionText with a string value including "." as text identifier', () => {
         const { getByRole, getByText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        {...defaultProps}
-                        optionText="foobar.name"
-                        choices={[
-                            { id: 'ang', foobar: { name: 'Angular' } },
-                            { id: 'rea', foobar: { name: 'React' } },
-                        ]}
-                    />
-                )}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectInput
+                            {...defaultProps}
+                            optionText="foobar.name"
+                            choices={[
+                                { id: 'ang', foobar: { name: 'Angular' } },
+                                { id: 'rea', foobar: { name: 'React' } },
+                            ]}
+                        />
+                    )}
+                />
+            </ThemeProvider>
         );
         const select = getByRole('button');
         fireEvent.mouseDown(select);
@@ -269,19 +296,21 @@ describe('<SelectInput />', () => {
 
     it('should use optionText with a function value as text identifier', () => {
         const { getByRole, getByText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        {...defaultProps}
-                        optionText={choice => choice.foobar}
-                        choices={[
-                            { id: 'ang', foobar: 'Angular' },
-                            { id: 'rea', foobar: 'React' },
-                        ]}
-                    />
-                )}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectInput
+                            {...defaultProps}
+                            optionText={choice => choice.foobar}
+                            choices={[
+                                { id: 'ang', foobar: 'Angular' },
+                                { id: 'rea', foobar: 'React' },
+                            ]}
+                        />
+                    )}
+                />
+            </ThemeProvider>
         );
         const select = getByRole('button');
         fireEvent.mouseDown(select);
@@ -296,19 +325,21 @@ describe('<SelectInput />', () => {
         );
 
         const { getByRole, getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        {...defaultProps}
-                        optionText={<Foobar />}
-                        choices={[
-                            { id: 'ang', foobar: 'Angular' },
-                            { id: 'rea', foobar: 'React' },
-                        ]}
-                    />
-                )}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectInput
+                            {...defaultProps}
+                            optionText={<Foobar />}
+                            choices={[
+                                { id: 'ang', foobar: 'Angular' },
+                                { id: 'rea', foobar: 'React' },
+                            ]}
+                        />
+                    )}
+                />
+            </ThemeProvider>
         );
         const select = getByRole('button');
         fireEvent.mouseDown(select);
@@ -319,12 +350,14 @@ describe('<SelectInput />', () => {
 
     it('should translate the choices by default', () => {
         const { getByRole, getByText, queryAllByRole } = render(
-            <TestTranslationProvider translate={x => `**${x}**`}>
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => <SelectInput {...defaultProps} />}
-                />
-            </TestTranslationProvider>
+            <ThemeProvider theme={theme}>
+                <TestTranslationProvider translate={x => `**${x}**`}>
+                    <Form
+                        onSubmit={jest.fn()}
+                        render={() => <SelectInput {...defaultProps} />}
+                    />
+                </TestTranslationProvider>
+            </ThemeProvider>
         );
         const select = getByRole('button');
         fireEvent.mouseDown(select);
@@ -340,17 +373,19 @@ describe('<SelectInput />', () => {
 
     it('should not translate the choices if translateChoice is false', () => {
         const { getByRole, getByText, queryAllByRole } = render(
-            <TestTranslationProvider translate={x => `**${x}**`}>
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <SelectInput
-                            {...defaultProps}
-                            translateChoice={false}
-                        />
-                    )}
-                />
-            </TestTranslationProvider>
+            <ThemeProvider theme={theme}>
+                <TestTranslationProvider translate={x => `**${x}**`}>
+                    <Form
+                        onSubmit={jest.fn()}
+                        render={() => (
+                            <SelectInput
+                                {...defaultProps}
+                                translateChoice={false}
+                            />
+                        )}
+                    />
+                </TestTranslationProvider>
+            </ThemeProvider>
         );
         const select = getByRole('button');
         fireEvent.mouseDown(select);
@@ -366,15 +401,17 @@ describe('<SelectInput />', () => {
 
     it('should display helperText if prop is present', () => {
         const { getByText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        {...defaultProps}
-                        helperText="Can I help you?"
-                    />
-                )}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectInput
+                            {...defaultProps}
+                            helperText="Can I help you?"
+                        />
+                    )}
+                />
+            </ThemeProvider>
         );
         const helperText = getByText('Can I help you?');
         expect(helperText).not.toBeNull();
@@ -383,12 +420,17 @@ describe('<SelectInput />', () => {
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
             const { queryAllByText } = render(
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <SelectInput {...defaultProps} validate={required()} />
-                    )}
-                />
+                <ThemeProvider theme={theme}>
+                    <Form
+                        onSubmit={jest.fn()}
+                        render={() => (
+                            <SelectInput
+                                {...defaultProps}
+                                validate={required()}
+                            />
+                        )}
+                    />
+                </ThemeProvider>
             );
             const error = queryAllByText('ra.validation.required');
             expect(error.length).toEqual(0);
@@ -396,14 +438,19 @@ describe('<SelectInput />', () => {
 
         it('should not be displayed if field has been touched but is valid', () => {
             const { getByLabelText, queryAllByText } = render(
-                <Form
-                    validateOnBlur
-                    initialValues={{ language: 'ang' }}
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <SelectInput {...defaultProps} validate={required()} />
-                    )}
-                />
+                <ThemeProvider theme={theme}>
+                    <Form
+                        validateOnBlur
+                        initialValues={{ language: 'ang' }}
+                        onSubmit={jest.fn()}
+                        render={() => (
+                            <SelectInput
+                                {...defaultProps}
+                                validate={required()}
+                            />
+                        )}
+                    />
+                </ThemeProvider>
             );
             const input = getByLabelText('resources.posts.fields.language *');
             input.focus();
@@ -415,18 +462,20 @@ describe('<SelectInput />', () => {
 
         it('should be displayed if field has been touched and is invalid', () => {
             const { getByLabelText, getByRole, getByText } = render(
-                <Form
-                    validateOnBlur
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <SelectInput
-                            {...defaultProps}
-                            allowEmpty
-                            emptyText="Empty"
-                            validate={required()}
-                        />
-                    )}
-                />
+                <ThemeProvider theme={theme}>
+                    <Form
+                        validateOnBlur
+                        onSubmit={jest.fn()}
+                        render={() => (
+                            <SelectInput
+                                {...defaultProps}
+                                allowEmpty
+                                emptyText="Empty"
+                                validate={required()}
+                            />
+                        )}
+                    />
+                </ThemeProvider>
             );
             const input = getByLabelText('resources.posts.fields.language *');
             input.focus();
@@ -451,19 +500,21 @@ describe('<SelectInput />', () => {
 
     it('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
         const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        {...{
-                            ...defaultProps,
-                            loaded: true,
-                            loading: true,
-                        }}
-                    />
-                )}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    validateOnBlur
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectInput
+                            {...{
+                                ...defaultProps,
+                                loaded: true,
+                                loading: true,
+                            }}
+                        />
+                    )}
+                />
+            </ThemeProvider>
         );
 
         expect(queryByRole('progressbar')).toBeNull();
@@ -471,19 +522,21 @@ describe('<SelectInput />', () => {
 
     it('should render a LinearProgress if loading is true and a second has passed', async () => {
         const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        {...{
-                            ...defaultProps,
-                            loaded: true,
-                            loading: true,
-                        }}
-                    />
-                )}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    validateOnBlur
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectInput
+                            {...{
+                                ...defaultProps,
+                                loaded: true,
+                                loading: true,
+                            }}
+                        />
+                    )}
+                />
+            </ThemeProvider>
         );
 
         await new Promise(resolve => setTimeout(resolve, 1001));
@@ -493,11 +546,13 @@ describe('<SelectInput />', () => {
 
     it('should not render a LinearProgress if loading is false', () => {
         const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
-                render={() => <SelectInput {...defaultProps} />}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    validateOnBlur
+                    onSubmit={jest.fn()}
+                    render={() => <SelectInput {...defaultProps} />}
+                />
+            </ThemeProvider>
         );
 
         expect(queryByRole('progressbar')).toBeNull();
@@ -508,20 +563,22 @@ describe('<SelectInput />', () => {
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 
         const { getByLabelText, getByRole, getByText, queryByText } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        {...defaultProps}
-                        choices={choices}
-                        onCreate={() => {
-                            choices.push(newChoice);
-                            return newChoice;
-                        }}
-                    />
-                )}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    validateOnBlur
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectInput
+                            {...defaultProps}
+                            choices={choices}
+                            onCreate={() => {
+                                choices.push(newChoice);
+                                return newChoice;
+                            }}
+                        />
+                    )}
+                />
+            </ThemeProvider>
         );
 
         const input = getByLabelText(
@@ -546,24 +603,26 @@ describe('<SelectInput />', () => {
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 
         const { getByLabelText, getByRole, getByText, queryByText } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        {...defaultProps}
-                        choices={choices}
-                        onCreate={() => {
-                            return new Promise(resolve => {
-                                setTimeout(() => {
-                                    choices.push(newChoice);
-                                    resolve(newChoice);
-                                }, 200);
-                            });
-                        }}
-                    />
-                )}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    validateOnBlur
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectInput
+                            {...defaultProps}
+                            choices={choices}
+                            onCreate={() => {
+                                return new Promise(resolve => {
+                                    setTimeout(() => {
+                                        choices.push(newChoice);
+                                        resolve(newChoice);
+                                    }, 200);
+                                });
+                            }}
+                        />
+                    )}
+                />
+            </ThemeProvider>
         );
 
         const input = getByLabelText(
@@ -600,17 +659,19 @@ describe('<SelectInput />', () => {
         };
 
         const { getByLabelText, getByRole, getByText, queryByText } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        {...defaultProps}
-                        choices={choices}
-                        create={<Create />}
-                    />
-                )}
-            />
+            <ThemeProvider theme={theme}>
+                <Form
+                    validateOnBlur
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <SelectInput
+                            {...defaultProps}
+                            choices={choices}
+                            create={<Create />}
+                        />
+                    )}
+                />
+            </ThemeProvider>
         );
 
         const input = getByLabelText(

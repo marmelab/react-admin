@@ -1,35 +1,15 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import classnames from 'classnames';
 import { useRecordContext } from 'ra-core';
 
-import sanitizeFieldRestProps from './sanitizeFieldRestProps';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const useStyles = makeStyles(
-    {
-        list: {
-            display: 'flex',
-            listStyleType: 'none',
-        },
-        image: {
-            margin: '0.5rem',
-            maxHeight: '10rem',
-        },
-    },
-    { name: 'RaImageField' }
-);
-
-export interface ImageFieldProps extends PublicFieldProps, InjectedFieldProps {
-    src?: string;
-    title?: string;
-    classes?: object;
-}
-
-const ImageField = (props: ImageFieldProps) => {
+export const ImageField = (props: ImageFieldProps) => {
     const {
         className,
         classes: classesOverride,
@@ -41,7 +21,7 @@ const ImageField = (props: ImageFieldProps) => {
     } = props;
     const record = useRecordContext(props);
     const sourceValue = get(record, source);
-    const classes = useStyles(props);
+
     if (!sourceValue) {
         return emptyText ? (
             <Typography
@@ -59,8 +39,8 @@ const ImageField = (props: ImageFieldProps) => {
 
     if (Array.isArray(sourceValue)) {
         return (
-            <ul
-                className={classnames(classes.list, className)}
+            <List
+                className={classnames(ImageFieldClasses.list, className)}
                 {...sanitizeFieldRestProps(rest)}
             >
                 {sourceValue.map((file, index) => {
@@ -73,12 +53,12 @@ const ImageField = (props: ImageFieldProps) => {
                                 alt={fileTitleValue}
                                 title={fileTitleValue}
                                 src={srcValue}
-                                className={classes.image}
+                                className={ImageFieldClasses.image}
                             />
                         </li>
                     );
                 })}
-            </ul>
+            </List>
         );
     }
 
@@ -90,7 +70,7 @@ const ImageField = (props: ImageFieldProps) => {
                 title={titleValue}
                 alt={titleValue}
                 src={sourceValue}
-                className={classes.image}
+                className={ImageFieldClasses.image}
             />
         </div>
     );
@@ -109,4 +89,26 @@ ImageField.propTypes = {
     title: PropTypes.string,
 };
 
-export default ImageField;
+const PREFIX = 'RaImageField';
+
+export const ImageFieldClasses = {
+    list: `${PREFIX}-list`,
+    image: `${PREFIX}-image`,
+};
+
+const List = styled('ul', { name: PREFIX })({
+    [`&.${ImageFieldClasses.list}`]: {
+        display: 'flex',
+        listStyleType: 'none',
+    },
+    [`& .${ImageFieldClasses.image}`]: {
+        margin: '0.5rem',
+        maxHeight: '10rem',
+    },
+});
+
+export interface ImageFieldProps extends PublicFieldProps, InjectedFieldProps {
+    src?: string;
+    title?: string;
+    classes?: object;
+}

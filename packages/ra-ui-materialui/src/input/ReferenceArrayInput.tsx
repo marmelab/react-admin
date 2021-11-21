@@ -15,21 +15,9 @@ import {
     ListContextProvider,
 } from 'ra-core';
 
-import sanitizeInputRestProps from './sanitizeInputRestProps';
-import ReferenceError from './ReferenceError';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
+import { ReferenceError } from './ReferenceError';
 import { FieldInputProps, FieldMetaState } from 'react-final-form';
-
-export interface ReferenceArrayInputProps extends InputProps {
-    allowEmpty?: boolean;
-    basePath?: string;
-    children: ReactElement;
-    classes?: any;
-    className?: string;
-    label?: string;
-    reference: string;
-    resource?: string;
-    [key: string]: any;
-}
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -109,7 +97,7 @@ export interface ReferenceArrayInputProps extends InputProps {
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  */
-const ReferenceArrayInput = ({
+export const ReferenceArrayInput = ({
     children,
     id: idOverride,
     onBlur,
@@ -155,7 +143,6 @@ const ReferenceArrayInput = ({
     );
 
     const translate = useTranslate();
-
     return (
         <ResourceContextProvider value={props.reference}>
             <ReferenceArrayInputContextProvider value={controllerProps}>
@@ -336,4 +323,14 @@ ReferenceArrayInputView.propTypes = {
     warning: PropTypes.string,
 };
 
-export default ReferenceArrayInput;
+export interface ReferenceArrayInputProps extends InputProps {
+    allowEmpty?: boolean;
+    basePath?: string;
+    children: ReactElement;
+    className?: string;
+    label?: string;
+    reference: string;
+    resource?: string;
+    enableGetChoices?: (filters: any) => boolean;
+    [key: string]: any;
+}

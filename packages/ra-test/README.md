@@ -65,7 +65,44 @@ testUtils = render(
 
 This means that reducers will work as they will within the app.
 
-### Passing your custom reducers
+### Testing With The Data Provider
+
+React-admin's dataProvider hooks like `useGetOne` and `useGetList` rely on react-query and the Redux store. To make the dataProvider available to your component, you must wrap it inside a `DataProviderContext` and a `QueryClientProvider`:
+
+```jsx
+import { useGetOne, DataProviderContext } from 'react-admin';
+import { QueryClientProvider, QueryClient } from 'react-query';
+import { TestContext } from 'ra-test';
+
+test('should render a book', async () => {
+    const dataProvider = {
+        getOne: () => Promise.resolve({ data: { id: 123, title: 'The Lord of the Rings' } }),
+    };
+
+    const Book = ({ id }) => {
+        const { data, isLoading } = useGetOne('books', id);
+        return isLoading ? <span>loading</span> : <span>{data.title}</span>;
+    };
+
+    render(
+        <TestContext
+            // reducers must be enabled to use the dataProvider hooks, as they rely on Redux
+            enableReducers={true}
+        >
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <Book id={1} />
+                </DataProviderContext.Provider>
+            </QueryClientProvider>
+        </TestContext>
+    );
+
+    expect(screen.getByText('loading')).toBeDefined();
+    expect(await screen.findByText('The Lord of the Rings')).toBeDefined();
+});
+```
+
+### Passing Custom Reducers
 
 If your component relies on customReducers which are passed originally to the `<Admin/>` component, you can plug them in the TestContext using the `customReducers` props:
 
@@ -142,7 +179,8 @@ Here is an example with Jest and TestingLibrary, which is testing the [`UserShow
 // UserShow.spec.js
 import * as React from "react";
 import { render } from '@testing-library/react';
-import { Tab, TextField } from 'react-admin';
+import { Tab, TextField, DataProviderContext } from 'react-admin';
+import { QueryClientProvider, QueryClient } from 'react-query';
 
 import UserShow from './UserShow';
 
@@ -155,21 +193,25 @@ describe('UserShow', () => {
             expect(tabs.length).toEqual(1);
         });
 
-        it('should show the user identity in the first tab', () => {
+        it('should show the user identity in the first tab', async () => {
             const dataProvider = {
-                getOne: jest.fn().resolve({
+                getOne: () => Promise.resolve({
                     id: 1,
                     name: 'Leila'
                 })
             }
             const testUtils = render(
-                <TestContext>
-                    <UserShow permissions="user" id="1" />
-                </TestContext>
+                <QueryClientProvider client={new QueryClient()}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <TestContext>
+                            <UserShow permissions="user" id="1" />
+                        </TestContext>
+                    </DataProviderContext.Provider>
+                </QueryClientProvider>
             );
 
-            expect(testUtils.queryByDisplayValue('1')).not.toBeNull();
-            expect(testUtils.queryByDisplayValue('Leila')).not.toBeNull();
+            expect(await testUtils.findByDisplayValue('1')).not.toBeNull();
+            expect(await testUtils.findByDisplayValue('Leila')).not.toBeNull();
         });
     });
 
@@ -181,39 +223,43 @@ describe('UserShow', () => {
             expect(tabs.length).toEqual(2);
         });
 
-        it('should show the user identity in the first tab', () => {
+        it('should show the user identity in the first tab', async () => {
             const dataProvider = {
-                getOne: jest.fn().resolve({
+                getOne: () => Promise.resolve({
                     id: 1,
                     name: 'Leila'
                 })
             }
             const testUtils = render(
-                <TestContext>
-                    <UserShow permissions="user" id="1" />
-                </TestContext>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <TestContext>
+                        <UserShow permissions="user" id="1" />
+                    </TestContext>
+                </DataProviderContext.Provider>
             );
 
-            expect(testUtils.queryByDisplayValue('1')).not.toBeNull();
-            expect(testUtils.queryByDisplayValue('Leila')).not.toBeNull();
+            expect(await testUtils.findByDisplayValue('1')).not.toBeNull();
+            expect(await testUtils.findByDisplayValue('Leila')).not.toBeNull();
         });
 
-        it('should show the user role in the second tab', () => {
+        it('should show the user role in the second tab', async () => {
             const dataProvider = {
-                getOne: jest.fn().resolve({
+                getOne: () => Promise.resolve({
                     id: 1,
                     name: 'Leila',
                     role: 'admin'
                 })
             }
             const testUtils = render(
-                <TestContext>
-                    <UserShow permissions="user" id="1" />
-                </TestContext>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <TestContext>
+                        <UserShow permissions="user" id="1" />
+                    </TestContext>
+                </DataProviderContext.Provider>
             );
 
             fireEvent.click(testUtils.getByText('Security'));
-            expect(testUtils.queryByDisplayValue('admin')).not.toBeNull();
+            expect(await testUtils.findByDisplayValue('admin')).not.toBeNull();
         });
     });
 });

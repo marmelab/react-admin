@@ -1,9 +1,11 @@
-import { render, waitFor, fireEvent } from '@testing-library/react';
 import * as React from 'react';
+import { render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
-import { DataProvider, DataProviderContext } from 'ra-core';
+import { DataProvider, DataProviderContext, MutationMode } from 'ra-core';
+import { QueryClientProvider, QueryClient } from 'react-query';
 import { renderWithRedux, TestContext } from 'ra-test';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
@@ -23,7 +25,7 @@ const invalidButtonDomProps = {
     resource: 'posts',
     saving: false,
     submitOnEnter: true,
-    undoable: false,
+    mutationMode: 'undoable' as MutationMode,
 };
 
 describe('<DeleteWithUndoButton />', () => {
@@ -65,9 +67,14 @@ describe('<DeleteWithUndoButton />', () => {
         basePath: '',
         id: '123',
         resource: 'posts',
-        location: {},
-        match: {},
-        undoable: false,
+        location: {
+            pathname: '',
+            search: undefined,
+            state: undefined,
+            hash: undefined,
+        },
+        match: { isExact: true, path: '', url: '', params: undefined },
+        mutationMode: 'pessimistic' as MutationMode,
     };
 
     it('should allow to override the onSuccess side effects', async () => {
@@ -86,15 +93,16 @@ describe('<DeleteWithUndoButton />', () => {
         );
         const { queryByDisplayValue, getByLabelText } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <DataProviderContext.Provider value={dataProvider}>
-                    <Edit {...defaultEditProps}>
-                        <SimpleForm toolbar={<EditToolbar />}>
-                            <TextInput source="title" />
-                        </SimpleForm>
-                    </Edit>
-                </DataProviderContext.Provider>
-            </ThemeProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+                <QueryClientProvider client={new QueryClient()}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <Edit {...defaultEditProps}>
+                            <SimpleForm toolbar={<EditToolbar />}>
+                                <TextInput source="title" />
+                            </SimpleForm>
+                        </Edit>
+                    </DataProviderContext.Provider>
+                </QueryClientProvider>
+            </ThemeProvider>
         );
         // waitFor for the dataProvider.getOne() return
         await waitFor(() => {

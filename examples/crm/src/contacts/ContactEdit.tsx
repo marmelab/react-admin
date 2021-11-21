@@ -10,7 +10,7 @@ import {
     Toolbar,
     useEditContext,
 } from 'react-admin';
-import { Card, CardContent, Divider, Box } from '@material-ui/core';
+import { Card, CardContent, Divider, Box } from '@mui/material';
 import omit from 'lodash/omit';
 
 import { Avatar } from './Avatar';
@@ -84,7 +84,7 @@ const ContactEditContent = () => {
                             </CardContent>
                             <Toolbar
                                 {...omit(formProps, [
-                                    // FIXME Not super user firendly way to remove warnings
+                                    // FIXME Not super user friendly way to remove warnings
                                     'dirtyFields',
                                     'dirtyFieldsSinceLastSubmit',
                                     'dirtySinceLastSubmit',

@@ -3,8 +3,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useSafeSetState } from '../util/hooks';
 import { OnSuccess, OnFailure } from '../types';
 import useDataProvider from './useDataProvider';
-import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDeclarativeSideEffects';
-import { DeclarativeSideEffect } from './useDeclarativeSideEffects';
 import useVersion from '../controller/useVersion';
 import { DataProviderQuery, Refetch } from './useQueryWithStore';
 
@@ -26,7 +24,6 @@ import { DataProviderQuery, Refetch } from './useQueryWithStore';
  * @param {boolean} options.enabled Flag to conditionally run the query. True by default. If it's false, the query will not run
  * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. () => refresh()
  * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. (error) => notify(error.message)
- * @param {boolean} options.withDeclarativeSideEffectsSupport Set to true to support legacy side effects e.g. { onSuccess: { refresh: true } }
  *
  * @returns The current request state. Destructure as { data, total, error, loading, loaded, refetch }.
  *
@@ -76,7 +73,6 @@ export const useQuery = (
     options: UseQueryOptions = { onSuccess: undefined }
 ): UseQueryValue => {
     const { type, resource, payload } = query;
-    const { withDeclarativeSideEffectsSupport, ...otherOptions } = options;
     const version = useVersion(); // used to allow force reload
     // used to force a refetch without relying on version
     // which might trigger other queries as well
@@ -88,7 +84,7 @@ export const useQuery = (
 
     const requestSignature = JSON.stringify({
         query,
-        options: otherOptions,
+        options,
         version,
         innerVersion,
     });
@@ -101,27 +97,17 @@ export const useQuery = (
         refetch,
     });
     const dataProvider = useDataProvider();
-    const dataProviderWithDeclarativeSideEffects = useDataProviderWithDeclarativeSideEffects();
 
     /* eslint-disable react-hooks/exhaustive-deps */
     useEffect(() => {
-        /**
-         * Support legacy side effects, e.g. { onSuccess: { refresh: true, unSelectAll: true }}
-         *
-         * @deprecated to be removed in 4.0
-         */
-        const finalDataProvider = withDeclarativeSideEffectsSupport
-            ? dataProviderWithDeclarativeSideEffects
-            : dataProvider;
-
         setState(prevState => ({ ...prevState, loading: true }));
 
-        finalDataProvider[type]
+        dataProvider[type]
             .apply(
-                finalDataProvider,
+                dataProvider,
                 typeof resource !== 'undefined'
-                    ? [resource, payload, otherOptions]
-                    : [payload, otherOptions]
+                    ? [resource, payload, options]
+                    : [payload, options]
             )
             .then(({ data, total }) => {
                 setState({
@@ -140,12 +126,7 @@ export const useQuery = (
                     refetch,
                 });
             });
-    }, [
-        requestSignature,
-        dataProvider,
-        dataProviderWithDeclarativeSideEffects,
-        setState,
-    ]);
+    }, [requestSignature, dataProvider, setState]);
     /* eslint-enable react-hooks/exhaustive-deps */
 
     return state;
@@ -154,9 +135,8 @@ export const useQuery = (
 export interface UseQueryOptions {
     action?: string;
     enabled?: boolean;
-    onSuccess?: OnSuccess | DeclarativeSideEffect;
-    onFailure?: OnFailure | DeclarativeSideEffect;
-    withDeclarativeSideEffectsSupport?: boolean;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
 }
 
 export type UseQueryValue = {

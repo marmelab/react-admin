@@ -1,26 +1,22 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { memo, isValidElement, ReactElement } from 'react';
 import {
     IconButton,
     ListItem,
+    ListItemButton,
     ListItemText,
     ListItemSecondaryAction,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import CancelIcon from '@material-ui/icons/CancelOutlined';
+} from '@mui/material';
+import CancelIcon from '@mui/icons-material/CancelOutlined';
 import { useTranslate, useListFilterContext } from 'ra-core';
 import { shallowEqual } from 'react-redux';
 import matches from 'lodash/matches';
 import pickBy from 'lodash/pickBy';
 
-const useStyles = makeStyles(theme => ({
-    listItem: {
-        paddingLeft: '2em',
-    },
-    listItemText: {
-        margin: 0,
-    },
-}));
+const arePropsEqual = (prevProps, nextProps) =>
+    prevProps.label === nextProps.label &&
+    shallowEqual(prevProps.value, nextProps.value);
 
 /**
  * Button to enable/disable a list filter.
@@ -35,8 +31,8 @@ const useStyles = makeStyles(theme => ({
  * @example
  *
  * import * as React from 'react';
- * import { Card, CardContent } from '@material-ui/core';
- * import MailIcon from '@material-ui/icons/MailOutline';
+ * import { Card, CardContent } from '@mui/material';
+ * import MailIcon from '@mui/icons-material/MailOutline';
  * import { FilterList, FilterListItem } from 'react-admin';
  *
  * const FilterSidebar = () => (
@@ -69,8 +65,8 @@ const useStyles = makeStyles(theme => ({
  *     startOfMonth,
  *     subMonths,
  * } from 'date-fns';
- * import { Card, CardContent } from '@material-ui/core';
- * import AccessTimeIcon from '@material-ui/icons/AccessTime';
+ * import { Card, CardContent } from '@mui/material';
+ * import AccessTimeIcon from '@mui/icons-material/AccessTime';
  * import { FilterList, FilterListItem } from 'react-admin';
  *
  * const FilterSidebar = () => (
@@ -144,67 +140,84 @@ const useStyles = makeStyles(theme => ({
  *     </Card>
  * );
  */
-const FilterListItem = (props: {
-    label: string | ReactElement;
-    value: any;
-}) => {
-    const { label, value } = props;
-    const { filterValues, setFilters } = useListFilterContext();
-    const translate = useTranslate();
-    const classes = useStyles(props);
+export const FilterListItem = memo(
+    (props: { label: string | ReactElement; value: any }) => {
+        const { label, value } = props;
+        const { filterValues, setFilters } = useListFilterContext();
+        const translate = useTranslate();
 
-    const isSelected = matches(
-        pickBy(value, val => typeof val !== 'undefined')
-    )(filterValues);
+        const isSelected = matches(
+            pickBy(value, val => typeof val !== 'undefined')
+        )(filterValues);
 
-    const addFilter = () => {
-        setFilters({ ...filterValues, ...value }, null, false);
-    };
+        const addFilter = () => {
+            setFilters({ ...filterValues, ...value }, null, false);
+        };
 
-    const removeFilter = () => {
-        const keysToRemove = Object.keys(value);
-        const filters = Object.keys(filterValues).reduce(
-            (acc, key) =>
-                keysToRemove.includes(key)
-                    ? acc
-                    : { ...acc, [key]: filterValues[key] },
-            {}
+        const removeFilter = () => {
+            const keysToRemove = Object.keys(value);
+            const filters = Object.keys(filterValues).reduce(
+                (acc, key) =>
+                    keysToRemove.includes(key)
+                        ? acc
+                        : { ...acc, [key]: filterValues[key] },
+                {}
+            );
+
+            setFilters(filters, null, false);
+        };
+
+        const toggleFilter = () => (isSelected ? removeFilter() : addFilter());
+
+        return (
+            <StyledListItem
+                onClick={toggleFilter}
+                selected={isSelected}
+                className={FilterListItemClasses.listItem}
+                disablePadding
+            >
+                <ListItemButton
+                    disableGutters
+                    className={FilterListItemClasses.listItemButton}
+                >
+                    <ListItemText
+                        primary={
+                            isValidElement(label)
+                                ? label
+                                : translate(label, { _: label })
+                        }
+                        className={FilterListItemClasses.listItemText}
+                        data-selected={isSelected ? 'true' : 'false'}
+                    />
+                    {isSelected && (
+                        <ListItemSecondaryAction>
+                            <IconButton size="small" onClick={toggleFilter}>
+                                <CancelIcon />
+                            </IconButton>
+                        </ListItemSecondaryAction>
+                    )}
+                </ListItemButton>
+            </StyledListItem>
         );
+    },
+    arePropsEqual
+);
 
-        setFilters(filters, null, false);
-    };
+const PREFIX = 'RaFilterListItem';
 
-    const toggleFilter = () => (isSelected ? removeFilter() : addFilter());
-
-    return (
-        <ListItem
-            button
-            onClick={toggleFilter}
-            selected={isSelected}
-            className={classes.listItem}
-        >
-            <ListItemText
-                primary={
-                    isValidElement(label)
-                        ? label
-                        : translate(label, { _: label })
-                }
-                className={classes.listItemText}
-                data-selected={isSelected ? 'true' : 'false'}
-            />
-            {isSelected && (
-                <ListItemSecondaryAction>
-                    <IconButton size="small" onClick={toggleFilter}>
-                        <CancelIcon />
-                    </IconButton>
-                </ListItemSecondaryAction>
-            )}
-        </ListItem>
-    );
+export const FilterListItemClasses = {
+    listItem: `${PREFIX}-listItem`,
+    listItemButton: `${PREFIX}-listItemButton`,
+    listItemText: `${PREFIX}-listItemText`,
 };
 
-const arePropsEqual = (prevProps, nextProps) =>
-    prevProps.label === nextProps.label &&
-    shallowEqual(prevProps.value, nextProps.value);
-
-export default memo(FilterListItem, arePropsEqual);
+const StyledListItem = styled(ListItem, { name: PREFIX })(({ theme }) => ({
+    [`&.${FilterListItemClasses.listItem}`]: {},
+    [`& .${FilterListItemClasses.listItemButton}`]: {
+        paddingRight: '2em',
+        paddingLeft: '2em',
+    },
+    [`& .${FilterListItemClasses.listItemText}`]: {
+        margin: 0,
+    },
+}));

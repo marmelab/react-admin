@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import TopToolbar from '../layout/TopToolbar';
 import { ListButton } from '../button';
-import { useCreateContext, useResourceDefinition } from 'ra-core';
+import { useResourceDefinition } from 'ra-core';
 
 /**
  * Action Toolbar for the Create view
@@ -13,7 +13,7 @@ import { useCreateContext, useResourceDefinition } from 'ra-core';
  * use it in the `actions` prop to pass a custom component.
  *
  * @example
- *     import Button from '@material-ui/core/Button';
+ *     import Button from '@mui/material/Button';
  *     import { TopToolbar, Create, ListButton } from 'react-admin';
  *
  *     const PostCreateActions = ({ basePath }) => (
@@ -31,17 +31,15 @@ import { useCreateContext, useResourceDefinition } from 'ra-core';
  *     );
  */
 export const CreateActions = ({ className, ...rest }: CreateActionsProps) => {
-    const { basePath } = useCreateContext(rest);
     const { hasList } = useResourceDefinition(rest);
     return (
         <TopToolbar className={className} {...sanitizeRestProps(rest)}>
-            {hasList && <ListButton basePath={basePath} />}
+            {hasList && <ListButton />}
         </TopToolbar>
     );
 };
 
 const sanitizeRestProps = ({
-    basePath = null,
     className = null,
     hasList = null,
     resource = null,
@@ -49,7 +47,6 @@ const sanitizeRestProps = ({
 }) => rest;
 
 export interface CreateActionsProps {
-    basePath?: string;
     className?: string;
     hasCreate?: boolean;
     hasEdit?: boolean;

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Children, cloneElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
+import { Card } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { CreateControllerProps, useCreateContext } from 'ra-core';
-import { Card } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
 import { CreateProps } from '../types';
 import { TitleForRecord } from '../layout';
@@ -13,19 +13,14 @@ export const CreateView = (props: CreateViewProps) => {
         actions,
         aside,
         children,
-        classes: classesOverride,
         className,
-        component: Content,
+        component: Content = Card,
         title,
         ...rest
     } = props;
 
-    const classes = useStyles(props);
-
     const {
-        basePath,
         defaultTitle,
-        hasList,
         record,
         redirect,
         resource,
@@ -35,8 +30,8 @@ export const CreateView = (props: CreateViewProps) => {
     } = useCreateContext(props);
 
     return (
-        <div
-            className={classnames('create-page', classes.root, className)}
+        <Root
+            className={classnames('create-page', CreateClasses.root, className)}
             {...sanitizeRestProps(rest)}
         >
             <TitleForRecord
@@ -46,20 +41,17 @@ export const CreateView = (props: CreateViewProps) => {
             />
             {actions &&
                 cloneElement(actions, {
-                    basePath,
                     resource,
-                    hasList,
                     //  Ensure we don't override any user provided props
                     ...actions.props,
                 })}
             <div
-                className={classnames(classes.main, {
-                    [classes.noActions]: !actions,
+                className={classnames(CreateClasses.main, {
+                    [CreateClasses.noActions]: !actions,
                 })}
             >
-                <Content className={classes.card}>
+                <Content className={CreateClasses.card}>
                     {cloneElement(Children.only(children), {
-                        basePath,
                         record,
                         redirect:
                             typeof children.props.redirect === 'undefined'
@@ -76,7 +68,6 @@ export const CreateView = (props: CreateViewProps) => {
                 </Content>
                 {aside &&
                     cloneElement(aside, {
-                        basePath,
                         record,
                         resource,
                         save:
@@ -87,7 +78,7 @@ export const CreateView = (props: CreateViewProps) => {
                         version,
                     })}
             </div>
-        </div>
+        </Root>
     );
 };
 
@@ -102,7 +93,6 @@ CreateView.propTypes = {
     aside: PropTypes.element,
     basePath: PropTypes.string,
     children: PropTypes.element,
-    classes: PropTypes.object,
     className: PropTypes.string,
     defaultTitle: PropTypes.any,
     hasList: PropTypes.bool,
@@ -118,29 +108,6 @@ CreateView.propTypes = {
     setOnFailure: PropTypes.func,
     setTransform: PropTypes.func,
 };
-
-CreateView.defaultProps = {
-    classes: {},
-    component: Card,
-};
-
-const useStyles = makeStyles(
-    theme => ({
-        root: {},
-        main: {
-            display: 'flex',
-        },
-        noActions: {
-            [theme.breakpoints.up('sm')]: {
-                marginTop: '1em',
-            },
-        },
-        card: {
-            flex: '1 1 auto',
-        },
-    }),
-    { name: 'RaCreate' }
-);
 
 const sanitizeRestProps = ({
     basePath = null,
@@ -169,3 +136,30 @@ const sanitizeRestProps = ({
     transformRef = null,
     ...rest
 }) => rest;
+
+const PREFIX = 'RaCreate';
+
+export const CreateClasses = {
+    root: `${PREFIX}-root`,
+    main: `${PREFIX}-main`,
+    noActions: `${PREFIX}-noActions`,
+    card: `${PREFIX}-card`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${CreateClasses.root}`]: {},
+
+    [`& .${CreateClasses.main}`]: {
+        display: 'flex',
+    },
+
+    [`& .${CreateClasses.noActions}`]: {
+        [theme.breakpoints.up('sm')]: {
+            marginTop: '1em',
+        },
+    },
+
+    [`& .${CreateClasses.card}`]: {
+        flex: '1 1 auto',
+    },
+}));

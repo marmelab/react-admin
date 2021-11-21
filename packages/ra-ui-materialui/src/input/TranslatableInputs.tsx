@@ -1,14 +1,13 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { ReactElement, ReactNode } from 'react';
 import {
     TranslatableContextProvider,
     useTranslatable,
     UseTranslatableOptions,
-    InputProps,
 } from 'ra-core';
 import { TranslatableInputsTabs } from './TranslatableInputsTabs';
 import { TranslatableInputsTabContent } from './TranslatableInputsTabContent';
-import { makeStyles } from '@material-ui/core/styles';
 
 /**
  * Provides a way to edit multiple languages for any input passed as children.
@@ -63,7 +62,9 @@ import { makeStyles } from '@material-ui/core/styles';
  * * @param {string[]} props.locales An array of the possible locales. For example: `['en', 'fr'].
  * * @param {ReactElement} props.selector The element responsible for selecting a locale. Defaults to Material UI tabs.
  */
-export const TranslatableInputs = (props: TranslatableProps): ReactElement => {
+export const TranslatableInputs = (
+    props: TranslatableInputsProps
+): ReactElement => {
     const {
         defaultLocale,
         locales,
@@ -74,10 +75,9 @@ export const TranslatableInputs = (props: TranslatableProps): ReactElement => {
         margin,
     } = props;
     const context = useTranslatable({ defaultLocale, locales });
-    const classes = useStyles(props);
 
     return (
-        <div className={classes.root}>
+        <Root className={TranslatableInputsClasses.root}>
             <TranslatableContextProvider value={context}>
                 {selector}
                 {locales.map(locale => (
@@ -92,23 +92,28 @@ export const TranslatableInputs = (props: TranslatableProps): ReactElement => {
                     </TranslatableInputsTabContent>
                 ))}
             </TranslatableContextProvider>
-        </div>
+        </Root>
     );
 };
 
-export interface TranslatableProps extends UseTranslatableOptions, InputProps {
+export interface TranslatableInputsProps extends UseTranslatableOptions {
     selector?: ReactElement;
     children: ReactNode;
     groupKey?: string;
+    margin?: 'none' | 'normal' | 'dense';
+    variant?: 'standard' | 'outlined' | 'filled';
 }
 
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            flexGrow: 1,
-            marginTop: theme.spacing(1),
-            marginBottom: theme.spacing(0.5),
-        },
-    }),
-    { name: 'RaTranslatableInputs' }
-);
+const PREFIX = 'RaTranslatableInputs';
+
+export const TranslatableInputsClasses = {
+    root: `${PREFIX}-root`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${TranslatableInputsClasses.root}`]: {
+        flexGrow: 1,
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(0.5),
+    },
+}));

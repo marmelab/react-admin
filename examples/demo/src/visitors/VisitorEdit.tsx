@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
     DateInput,
     Edit,
-    EditProps,
     NullableBooleanInput,
     TextInput,
     PasswordInput,
@@ -13,7 +12,7 @@ import {
     email,
     FieldProps,
 } from 'react-admin';
-import { Box, Card, CardContent, Typography } from '@material-ui/core';
+import { Box, Card, CardContent, Typography } from '@mui/material';
 
 import Aside from './Aside';
 import FullNameField from './FullNameField';
@@ -21,14 +20,9 @@ import SegmentsInput from './SegmentsInput';
 import { validatePasswords } from './VisitorCreate';
 import { Customer } from '../types';
 
-const VisitorEdit = (props: EditProps) => {
+const VisitorEdit = () => {
     return (
-        <Edit
-            title={<VisitorTitle />}
-            aside={<Aside />}
-            component="div"
-            {...props}
-        >
+        <Edit title={<VisitorTitle />} aside={<Aside />} component="div">
             <VisitorForm />
         </Edit>
     );
@@ -206,7 +200,7 @@ const VisitorForm = (props: any) => {
                         <Toolbar
                             record={formProps.record}
                             basePath={formProps.basePath}
-                            undoable={true}
+                            mutationMode="undoable"
                             invalid={formProps.invalid}
                             handleSubmit={formProps.handleSubmit}
                             saving={formProps.saving}

@@ -6,6 +6,7 @@ import {
     ResourceContextProvider,
     useCheckMinimumRequiredProps,
     useEditController,
+    Record,
 } from 'ra-core';
 import { EditProps } from '../types';
 import { EditView } from './EditView';
@@ -27,7 +28,6 @@ import { EditView } from './EditView';
  * - successMessage
  * - title
  * - mutationMode
- * - undoable (deprecated)
  *
  * @example
  *
@@ -56,11 +56,11 @@ import { EditView } from './EditView';
  * );
  * export default App;
  */
-export const Edit = (
-    props: EditProps & { children: ReactElement }
+export const Edit = <RecordType extends Record = Record>(
+    props: EditProps<RecordType> & { children: ReactElement }
 ): ReactElement => {
     useCheckMinimumRequiredProps('Edit', ['children'], props);
-    const controllerProps = useEditController(props);
+    const controllerProps = useEditController<RecordType>(props);
     const body = (
         <EditContextProvider value={controllerProps}>
             <EditView {...props} {...controllerProps} />
@@ -86,13 +86,13 @@ Edit.propTypes = {
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
     hasList: PropTypes.bool,
-    id: PropTypes.any.isRequired,
+    id: PropTypes.any,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     onSuccess: PropTypes.func,
     onFailure: PropTypes.func,
+    queryOptions: PropTypes.object,
     resource: PropTypes.string,
     successMessage: PropTypes.string,
     title: PropTypes.node,
     transform: PropTypes.func,
-    undoable: PropTypes.bool,
 };

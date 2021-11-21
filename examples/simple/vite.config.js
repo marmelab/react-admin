@@ -7,31 +7,28 @@ import path from 'path';
  */
 export default {
     plugins: [reactRefresh()],
-    alias: [
-        {
-            find: /^react-admin$/,
-            replacement: path.resolve(
-                __dirname,
-                '../../packages/react-admin/src'
-            ),
-        },
-        {
-            find: /^ra-(.*)$/,
-            replacement: path.resolve(__dirname, '../../packages/ra-$1/src'),
-        },
-        {
-            find: /^@material-ui\/icons\/(.*)/,
-            replacement: '@material-ui/icons/esm/$1',
-        },
-        {
-            find: /^@material-ui\/core\/(.+)/,
-            replacement: '@material-ui/core/es/$1',
-        },
-        {
-            find: /^@material-ui\/core$/,
-            replacement: '@material-ui/core/es',
-        },
-    ],
+    resolve: {
+        alias: [
+            {
+                find: /^react-admin$/,
+                replacement: path.resolve(
+                    __dirname,
+                    '../../packages/react-admin/src'
+                ),
+            },
+            {
+                find: /^ra-(.*)$/,
+                replacement: path.resolve(
+                    __dirname,
+                    '../../packages/ra-$1/src'
+                ),
+            },
+            {
+                find: /^@mui\/icons-material\/(.*)/,
+                replacement: '@mui/icons-material/esm/$1',
+            },
+        ],
+    },
     server: {
         port: 8080,
     },

@@ -1,5 +1,5 @@
-import RichTextInput from 'ra-input-rich-text';
 import * as React from 'react';
+import RichTextInput from 'ra-input-rich-text';
 import {
     TopToolbar,
     AutocompleteInput,
@@ -30,6 +30,7 @@ import {
     FormDataConsumer,
     useCreateSuggestionContext,
     EditActionsProps,
+    usePermissions,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import {
     Box,
@@ -39,7 +40,7 @@ import {
     DialogActions,
     DialogContent,
     TextField as MuiTextField,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import PostTitle from './PostTitle';
 import TagReferenceInput from './TagReferenceInput';
@@ -101,9 +102,10 @@ const categories = [
     { name: 'Lifestyle', id: 'lifestyle' },
 ];
 
-const PostEdit = ({ permissions, ...props }) => {
+const PostEdit = () => {
+    const { permissions } = usePermissions();
     return (
-        <Edit title={<PostTitle />} actions={<EditActions />} {...props}>
+        <Edit title={<PostTitle />} actions={<EditActions />}>
             <TabbedForm
                 initialValues={{ average_note: 0 }}
                 warnWhenUnsavedChanges

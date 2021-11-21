@@ -32,8 +32,8 @@ const MyEditButton = props => {
     return <EditButton className={classes.button} {...props} />;
 };
 
-export const ProductList = (props) => (
-    <List {...props}>
+export const ProductList = () => (
+    <List>
         <Datagrid>
             <TextField source="sku" />
             <TextField source="price" />
@@ -76,11 +76,11 @@ const useStyles = makeStyles({
     },
 });
 
-export const PostList = props => {
+export const PostList = () => {
     const classes = useStyles();
     return (
-        <List {...props}>
-            <Datagrid classes={classes} {...props}>
+        <List>
+            <Datagrid classes={classes}>
                 <TextField source="id" />
                 <TextField source="title" />
                 <DateField source="published_at" sortByOrder="DESC"/>
@@ -135,8 +135,8 @@ const ColoredNumberField = props => {
 // Ensure the original component defaultProps are still applied as they may be used by its parents (such as the `Show` component):
 ColoredNumberField.defaultProps = NumberField.defaultProps;
 
-export const PostList = props => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid>
             <TextField source="id" />
             ...
@@ -180,8 +180,8 @@ const ColoredNumberField = colored(NumberField);
 // Ensure the original component defaultProps are still applied as they may be used by its parents (such as the `Show` component):
 ColoredNumberField.defaultProps = NumberField.defaultProps;
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid>
             <TextField source="id" />
             ...
@@ -221,10 +221,10 @@ import * as React from 'react';
 import { useMediaQuery } from '@material-ui/core';
 import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
-export const PostList = (props) => {
+export const PostList = () => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
     return (
-        <List {...props}>
+        <List>
             {isSmall ? (
                 <SimpleList
                     primaryText={record => record.title}
@@ -740,6 +740,12 @@ export default MyAppBar;
 
 Take note that this uses *material-ui's `<AppBar>`* instead of *react-admin's `<AppBar>`*. To use this custom `AppBar` component, pass it as prop to a custom `Layout`, as explained in the previous section.
 
+To make it easier to customize, we export some of the components and hooks used by the `<AppBar>`:
+
+- `<LoadingIndicator>`: A `CircularProgress` bound to the dataProvider activity.
+- `<SidebarToggleButton>`: An `IconButton` used to toggle the `<Sidebar>`.
+- `useToggleSidebar`: A hook that returns the sidebar open state and a function to toggle it. Used internally by `<SidebarToggleButton>`.
+
 ## Adding Dark Mode Support
 
 The `<ToggleThemeButton>` component is part of `ra-preferences`, an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> module. It lets users switch from light to dark mode, and persists that choice in local storage so that users only have to do it once.
@@ -779,20 +785,20 @@ You can create a custom menu component using the `<DashboardMenuItem>` and `<Men
 ```jsx
 // in src/Menu.js
 import * as React from 'react';
-import { DashboardMenuItem, MenuItemLink } from 'react-admin';
+import { DashboardMenuItem, Menu, MenuItemLink } from 'react-admin';
 import BookIcon from '@material-ui/icons/Book';
 import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
 import PeopleIcon from '@material-ui/icons/People';
 import LabelIcon from '@material-ui/icons/Label';
 
-export const Menu = () => (
-    <div>
+export const Menu = (props) => (
+    <Menu {...props}>
         <DashboardMenuItem />
         <MenuItemLink to="/posts" primaryText="Posts" leftIcon={<BookIcon />}/>
         <MenuItemLink to="/comments" primaryText="Comments" leftIcon={<ChatBubbleIcon />}/>
         <MenuItemLink to="/users" primaryText="Users" leftIcon={<PeopleIcon />}/>
         <MenuItemLink to="/custom-route" primaryText="Miscellaneous" leftIcon={<LabelIcon />}/>
-    </div>
+    </Menu>
 );
 ```
 
@@ -827,14 +833,15 @@ import * as React from 'react';
 import { createElement } from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
-import { DashboardMenuItem, MenuItemLink, getResources } from 'react-admin';
+import { DashboardMenuItem, Menu, MenuItemLink, getResources } from 'react-admin';
 import DefaultIcon from '@material-ui/icons/ViewList';
 import LabelIcon from '@material-ui/icons/Label';
 
-export const Menu = () => {
+export const Menu = (props) => {
     const resources = useSelector(getResources);
+    const open = useSelector(state => state.admin.ui.sidebarOpen);
     return (
-        <div>
+        <Menu {...props}>
             <DashboardMenuItem />
             {resources.map(resource => (
                 <MenuItemLink
@@ -847,12 +854,12 @@ export const Menu = () => {
                     leftIcon={
                         resource.icon ? <resource.icon /> : <DefaultIcon />
                     }
-                    onClick={onMenuClick}
+                    onClick={props.onMenuClick}
                     sidebarIsOpen={open}
                 />
             ))}
             {/* add your custom menus here */}
-        </div>
+        </Menu>
     );
 };
 ```
@@ -1029,12 +1036,23 @@ import Button from '@material-ui/core/Button';
 import ErrorIcon from '@material-ui/icons/Report';
 import History from '@material-ui/icons/History';
 import { Title, useTranslate } from 'react-admin';
+import { useLocation } from 'react-router';
 
 const MyError = ({
     error,
-    errorInfo,
+    resetErrorBoundary,
     ...rest
 }) => {
+    const { pathname } = useLocation();
+    const originalPathname = useRef(pathname);
+
+    // Effect that resets the error state whenever the location changes
+    useEffect(() => {
+        if (pathname !== originalPathname.current) {
+            resetErrorBoundary();
+        }
+    }, [pathname, resetErrorBoundary]);
+
     const translate = useTranslate();
     return (
         <div>

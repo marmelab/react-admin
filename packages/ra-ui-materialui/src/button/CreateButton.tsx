@@ -1,14 +1,14 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { ReactElement, memo, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Fab, useMediaQuery, Theme } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import ContentAdd from '@material-ui/icons/Add';
+import { Fab, useMediaQuery, Theme } from '@mui/material';
+import ContentAdd from '@mui/icons-material/Add';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useTranslate, useResourceContext } from 'ra-core';
 
-import Button, { ButtonProps, sanitizeButtonRestProps } from './Button';
+import { Button, ButtonProps, sanitizeButtonRestProps } from './Button';
 
 /**
  * Opens the Create view of a given resource
@@ -25,39 +25,37 @@ import Button, { ButtonProps, sanitizeButtonRestProps } from './Button';
  */
 const CreateButton = (props: CreateButtonProps) => {
     const {
-        basePath = '',
         className,
-        classes: classesOverride,
         icon = defaultIcon,
         label = 'ra.action.create',
         scrollToTop = true,
         variant,
         ...rest
     } = props;
-    const classes = useStyles(props);
+
+    const resource = useResourceContext(props);
     const translate = useTranslate();
     const isSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('sm')
+        theme.breakpoints.down('md')
     );
-    const resource = useResourceContext();
     const location = useMemo(
         () => ({
-            pathname: basePath ? `${basePath}/create` : `/${resource}/create`,
+            pathname: `/${resource}/create`,
             state: { _scrollToTop: scrollToTop },
         }),
-        [basePath, resource, scrollToTop]
+        [resource, scrollToTop]
     );
     return isSmall ? (
-        <Fab
+        <StyledFab
             component={Link}
             color="primary"
-            className={classnames(classes.floating, className)}
+            className={classnames(CreateButtonClasses.floating, className)}
             to={location}
             aria-label={label && translate(label)}
             {...sanitizeButtonRestProps(rest)}
         >
             {icon}
-        </Fab>
+        </StyledFab>
     ) : (
         <Button
             component={Link}
@@ -74,24 +72,8 @@ const CreateButton = (props: CreateButtonProps) => {
 
 const defaultIcon = <ContentAdd />;
 
-const useStyles = makeStyles(
-    theme => ({
-        floating: {
-            color: theme.palette.getContrastText(theme.palette.primary.main),
-            margin: 0,
-            top: 'auto',
-            right: 20,
-            bottom: 60,
-            left: 'auto',
-            position: 'fixed',
-            zIndex: 1000,
-        },
-    }),
-    { name: 'RaCreateButton' }
-);
-
 interface Props {
-    basePath?: string;
+    resource?: string;
     icon?: ReactElement;
     scrollToTop?: boolean;
 }
@@ -99,16 +81,34 @@ interface Props {
 export type CreateButtonProps = Props & ButtonProps;
 
 CreateButton.propTypes = {
-    basePath: PropTypes.string,
-    classes: PropTypes.object,
+    resource: PropTypes.string,
     className: PropTypes.string,
     icon: PropTypes.element,
     label: PropTypes.string,
 };
 
+const PREFIX = 'RaCreateButton';
+
+export const CreateButtonClasses = {
+    floating: `${PREFIX}-floating`,
+};
+
+const StyledFab = styled(Fab, { name: PREFIX })(({ theme }) => ({
+    [`&.${CreateButtonClasses.floating}`]: {
+        color: theme.palette.getContrastText(theme.palette.primary.main),
+        margin: 0,
+        top: 'auto',
+        right: 20,
+        bottom: 60,
+        left: 'auto',
+        position: 'fixed',
+        zIndex: 1000,
+    },
+}));
+
 export default memo(CreateButton, (prevProps, nextProps) => {
     return (
-        prevProps.basePath === nextProps.basePath &&
+        prevProps.resource === nextProps.resource &&
         prevProps.label === nextProps.label &&
         prevProps.translate === nextProps.translate &&
         prevProps.to === nextProps.to &&

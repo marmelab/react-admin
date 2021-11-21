@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { ReactElement } from 'react';
-import { AppBar, Tabs, TabsProps } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { AppBar, Tabs, TabsProps } from '@mui/material';
 import { useTranslatableContext } from 'ra-core';
 import { TranslatableInputsTab } from './TranslatableInputsTab';
 import { AppBarProps } from '../layout';
@@ -15,20 +15,23 @@ export const TranslatableInputsTabs = (
 ): ReactElement => {
     const { groupKey, TabsProps: tabsProps } = props;
     const { locales, selectLocale, selectedLocale } = useTranslatableContext();
-    const classes = useStyles(props);
 
     const handleChange = (event, newLocale): void => {
         selectLocale(newLocale);
     };
 
     return (
-        <AppBar color="default" position="static" className={classes.root}>
+        <StyledAppBar
+            color="default"
+            position="static"
+            className={TranslatableInputsTabsClasses.root}
+        >
             <Tabs
                 value={selectedLocale}
                 onChange={handleChange}
                 indicatorColor="primary"
                 textColor="primary"
-                className={classes.tabs}
+                className={TranslatableInputsTabsClasses.tabs}
                 {...tabsProps}
             >
                 {locales.map(locale => (
@@ -40,7 +43,7 @@ export const TranslatableInputsTabs = (
                     />
                 ))}
             </Tabs>
-        </AppBar>
+        </StyledAppBar>
     );
 };
 
@@ -49,18 +52,23 @@ export interface TranslatableInputsTabsProps {
     TabsProps?: TabsProps;
 }
 
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            boxShadow: 'none',
-            borderRadius: 0,
-            borderTopLeftRadius: theme.shape.borderRadius,
-            borderTopRightRadius: theme.shape.borderRadius,
-            border: `1px solid ${theme.palette.divider}`,
-        },
-        tabs: {
-            minHeight: theme.spacing(3),
-        },
-    }),
-    { name: 'RaTranslatableInputsTabs' }
-);
+const PREFIX = 'RaTranslatableInputsTabs';
+
+export const TranslatableInputsTabsClasses = {
+    root: `${PREFIX}-root`,
+    tabs: `${PREFIX}-tabs`,
+};
+
+const StyledAppBar = styled(AppBar, { name: PREFIX })(({ theme }) => ({
+    [`&.${TranslatableInputsTabsClasses.root}`]: {
+        boxShadow: 'none',
+        borderRadius: 0,
+        borderTopLeftRadius: theme.shape.borderRadius,
+        borderTopRightRadius: theme.shape.borderRadius,
+        border: `1px solid ${theme.palette.divider}`,
+    },
+
+    [`& .${TranslatableInputsTabsClasses.tabs}`]: {
+        minHeight: theme.spacing(3),
+    },
+}));

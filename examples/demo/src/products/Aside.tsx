@@ -1,10 +1,10 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import inflection from 'inflection';
-import { Card, CardContent } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import LocalOfferIcon from '@material-ui/icons/LocalOfferOutlined';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import { Card, CardContent } from '@mui/material';
+import LocalOfferIcon from '@mui/icons-material/LocalOfferOutlined';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import {
     FilterList,
     FilterListItem,
@@ -14,14 +14,20 @@ import {
 
 import { Category } from '../types';
 
-const useStyles = makeStyles(theme => ({
-    root: {
+const PREFIX = 'Aside';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const StyledCard = styled(Card)(({ theme }) => ({
+    [`&.${classes.root}`]: {
         [theme.breakpoints.up('sm')]: {
             width: '15em',
             marginRight: '1em',
             overflow: 'initial',
         },
-        [theme.breakpoints.down('sm')]: {
+        [theme.breakpoints.down('md')]: {
             display: 'none',
         },
     },
@@ -34,9 +40,9 @@ const Aside = () => {
         { field: 'name', order: 'ASC' },
         {}
     );
-    const classes = useStyles();
+
     return (
-        <Card className={classes.root}>
+        <StyledCard className={classes.root}>
             <CardContent>
                 <FilterLiveSearch />
 
@@ -131,7 +137,7 @@ const Aside = () => {
                         ))}
                 </FilterList>
             </CardContent>
-        </Card>
+        </StyledCard>
     );
 };
 

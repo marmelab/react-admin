@@ -3,7 +3,7 @@ import expect from 'expect';
 import { fireEvent, render, waitFor } from '@testing-library/react';
 import { Form } from 'react-final-form';
 
-import NullableBooleanInput from './NullableBooleanInput';
+import { NullableBooleanInput } from './NullableBooleanInput';
 
 describe('<NullableBooleanInput />', () => {
     const defaultProps = {

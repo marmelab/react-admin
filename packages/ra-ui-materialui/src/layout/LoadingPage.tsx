@@ -1,28 +1,29 @@
 import * as React from 'react';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { ThemeProvider } from '@material-ui/styles';
 
-import { createMuiTheme } from './createMuiTheme';
-import Loading from './Loading';
+import { Loading } from './Loading';
 
-const LoadingPage = ({ theme, ...props }) => (
+export const LoadingPage = ({
+    theme = DefaultTheme,
+    loadingPrimary = 'ra.page.loading',
+    loadingSecondary = 'ra.message.loading',
+    ...props
+}) => (
     <ThemeProvider theme={theme}>
-        <Loading {...props} />
+        <Loading
+            loadingPrimary={loadingPrimary}
+            loadingSecondary={loadingSecondary}
+            {...props}
+        />
     </ThemeProvider>
 );
 
 LoadingPage.propTypes = {
     theme: PropTypes.object,
-    classes: PropTypes.object,
     className: PropTypes.string,
     loadingPrimary: PropTypes.string,
     loadingSecondary: PropTypes.string,
 };
 
-LoadingPage.defaultProps = {
-    theme: createMuiTheme({}),
-    loadingPrimary: 'ra.page.loading',
-    loadingSecondary: 'ra.message.loading',
-};
-
-export default LoadingPage;
+const DefaultTheme = createTheme({});

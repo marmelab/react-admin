@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     Children,
     cloneElement,
@@ -7,8 +8,6 @@ import {
     ReactNode,
 } from 'react';
 import { useTranslatableContext, Record } from 'ra-core';
-import { makeStyles } from '@material-ui/core/styles';
-import { ClassesOverride } from '../types';
 import { Labeled } from '../input';
 
 /**
@@ -28,15 +27,14 @@ export const TranslatableFieldsTabContent = (
         ...other
     } = props;
     const { selectedLocale, getLabel, getSource } = useTranslatableContext();
-    const classes = useStyles(props);
 
     return (
-        <div
+        <Root
             role="tabpanel"
             hidden={selectedLocale !== locale}
             id={`translatable-content-${groupKey}${locale}`}
             aria-labelledby={`translatable-header-${groupKey}${locale}`}
-            className={classes.root}
+            className={TranslatableFieldsTabContentClasses.root}
             {...other}
         >
             {Children.map(children, field =>
@@ -72,14 +70,13 @@ export const TranslatableFieldsTabContent = (
                     </div>
                 ) : null
             )}
-        </div>
+        </Root>
     );
 };
 
 export type TranslatableFieldsTabContentProps = {
     basePath: string;
     children: ReactNode;
-    classes?: ClassesOverride<typeof useStyles>;
     formGroupKeyPrefix?: string;
     groupKey: string;
     locale: string;
@@ -87,17 +84,20 @@ export type TranslatableFieldsTabContentProps = {
     resource: string;
 };
 
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            flexGrow: 1,
-            padding: theme.spacing(2),
-            borderRadius: 0,
-            borderBottomLeftRadius: theme.shape.borderRadius,
-            borderBottomRightRadius: theme.shape.borderRadius,
-            border: `1px solid ${theme.palette.divider}`,
-            borderTop: 0,
-        },
-    }),
-    { name: 'RaTranslatableFieldsTabContent' }
-);
+const PREFIX = 'RaTranslatableFieldsTabContent';
+
+export const TranslatableFieldsTabContentClasses = {
+    root: `${PREFIX}-root`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${TranslatableFieldsTabContentClasses.root}`]: {
+        flexGrow: 1,
+        padding: theme.spacing(2),
+        borderRadius: 0,
+        borderBottomLeftRadius: theme.shape.borderRadius,
+        borderBottomRightRadius: theme.shape.borderRadius,
+        border: `1px solid ${theme.palette.divider}`,
+        borderTop: 0,
+    },
+}));

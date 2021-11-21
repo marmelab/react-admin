@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Card, CardContent, Typography, Box } from '@material-ui/core';
-import NoteIcon from '@material-ui/icons/Note';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
+import { Card, CardContent, Typography, Box } from '@mui/material';
+import NoteIcon from '@mui/icons-material/Note';
 import {
     useGetList,
     useGetIdentity,
@@ -13,16 +13,26 @@ import { formatDistance } from 'date-fns';
 
 import { Contact as ContactType } from '../types';
 
-const useStyles = makeStyles(theme => ({
-    note: {
+const PREFIX = 'LatestNotes';
+
+const classes = {
+    note: `${PREFIX}-note`,
+    noteText: `${PREFIX}-noteText`,
+    noteTextText: `${PREFIX}-noteTextText`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`& .${classes.note}`]: {
         marginBottom: theme.spacing(2),
     },
-    noteText: {
+
+    [`& .${classes.noteText}`]: {
         backgroundColor: '#edf3f0',
         padding: theme.spacing(1),
         borderRadius: 10,
     },
-    noteTextText: {
+
+    [`& .${classes.noteTextText}`]: {
         display: '-webkit-box',
         '-webkit-line-clamp': 3,
         '-webkit-box-orient': 'vertical',
@@ -31,7 +41,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export const LatestNotes = () => {
-    const classes = useStyles();
     const { identity } = useGetIdentity();
     const {
         data: contactNotesData,
@@ -80,7 +89,7 @@ export const LatestNotes = () => {
         .slice(0, 5);
 
     return (
-        <>
+        <Root>
             <Box display="flex" alignItems="center" marginBottom="1em">
                 <Box ml={2} mr={2} display="flex">
                     <NoteIcon color="disabled" fontSize="large" />
@@ -122,7 +131,7 @@ export const LatestNotes = () => {
                     ))}
                 </CardContent>
             </Card>
-        </>
+        </Root>
     );
 };
 

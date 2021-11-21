@@ -3,7 +3,9 @@ import { useDispatch } from 'react-redux';
 import {
     showNotification,
     NotificationType,
+    NotificationOptions,
 } from '../actions/notificationActions';
+import warning from '../util/warning';
 
 /**
  * Hook for Notification Side Effect
@@ -25,18 +27,35 @@ const useNotify = () => {
     return useCallback(
         (
             message: string,
-            type: NotificationType = 'info',
+            type?:
+                | NotificationType
+                | (NotificationOptions & { type: NotificationType }),
             messageArgs: any = {},
             undoable: boolean = false,
-            autoHideDuration?: number
+            autoHideDuration?: number,
+            multiLine?: boolean
         ) => {
-            dispatch(
-                showNotification(message, type, {
-                    messageArgs,
-                    undoable,
-                    autoHideDuration,
-                })
-            );
+            if (typeof type === 'string') {
+                warning(
+                    true,
+                    'This way of calling useNotify callback is deprecated. Please use the new syntax passing notify("[Your message]", { ...restOfArguments })'
+                );
+                dispatch(
+                    showNotification(
+                        message,
+                        (type || 'info') as NotificationType,
+                        {
+                            messageArgs,
+                            undoable,
+                            autoHideDuration,
+                            multiLine,
+                        }
+                    )
+                );
+            } else {
+                const { type: messageType, ...options } = type || {};
+                dispatch(showNotification(message, messageType, options));
+            }
         },
         [dispatch]
     );

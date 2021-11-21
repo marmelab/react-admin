@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { Children, ReactElement, ReactNode } from 'react';
 import classnames from 'classnames';
-import FormInput from './FormInput';
 import PropTypes from 'prop-types';
 import { FormWithRedirectRenderProps, MutationMode, Record } from 'ra-core';
-import Toolbar from './Toolbar';
-import CardContentInner from '../layout/CardContentInner';
+import { CardContentInner } from '../layout';
+import { Toolbar } from './Toolbar';
+import { FormInput } from './FormInput';
 
 export const SimpleFormView = ({
     basePath,
     children,
     className,
-    component: Component,
+    component: Component = CardContentInner,
     handleSubmit,
     handleSubmitWithRedirect,
     invalid,
@@ -22,9 +22,8 @@ export const SimpleFormView = ({
     redirect,
     resource,
     saving,
-    submitOnEnter,
-    toolbar,
-    undoable,
+    submitOnEnter = true,
+    toolbar = DefaultToolbar,
     variant,
     validating,
     ...rest
@@ -63,7 +62,6 @@ export const SimpleFormView = ({
                 saving,
                 submitOnEnter,
                 validating,
-                undoable,
             })}
     </form>
 );
@@ -88,15 +86,10 @@ SimpleFormView.propTypes = {
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.element,
-    undoable: PropTypes.bool,
     validate: PropTypes.func,
 };
 
-SimpleFormView.defaultProps = {
-    submitOnEnter: true,
-    toolbar: <Toolbar />,
-    component: CardContentInner,
-};
+const DefaultToolbar = <Toolbar />;
 
 export interface SimpleFormViewProps extends FormWithRedirectRenderProps {
     basePath?: string;
@@ -108,8 +101,6 @@ export interface SimpleFormViewProps extends FormWithRedirectRenderProps {
     record?: Record;
     resource?: string;
     toolbar?: ReactElement;
-    /** @deprecated use mutationMode: undoable instead */
-    undoable?: boolean;
     variant?: 'standard' | 'outlined' | 'filled';
     submitOnEnter?: boolean;
     __versions?: any; // react-final-form internal prop, missing in their type

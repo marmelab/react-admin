@@ -1,6 +1,6 @@
 {
     "name": "ra-data-simple-rest",
-    "version": "3.18.0",
+    "version": "4.0.0-alpha.0",
     "description": "Simple REST data provider for react-admin",
     "main": "lib/index.js",
     "module": "esm/index.js",
@@ -29,10 +29,10 @@
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "ra-core": "^3.18.0",
+        "ra-core": "^4.0.0-alpha.0",
         "rimraf": "^2.6.3"
     },
     "peerDependencies": {
-        "ra-core": "^3.17.2"
+        "ra-core": "^4.0.0-alpha.0"
     }
 }

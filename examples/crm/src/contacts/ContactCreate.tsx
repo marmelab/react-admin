@@ -11,7 +11,7 @@ import {
     required,
     useCreateContext,
 } from 'react-admin';
-import { Card, CardContent, Divider, Box, Avatar } from '@material-ui/core';
+import { Card, CardContent, Divider, Box, Avatar } from '@mui/material';
 
 import { Contact } from '../types';
 

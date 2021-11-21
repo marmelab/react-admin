@@ -1,17 +1,24 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useListContext } from 'react-admin';
-import { Link } from '@material-ui/core';
+import { Link } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles({
-    ul: {
+const PREFIX = 'ContactList';
+
+const classes = {
+    ul: `${PREFIX}-ul`,
+    li: `${PREFIX}-li`,
+};
+
+const Root = styled('ul')({
+    [`&.${classes.ul}`]: {
         listStyle: 'none',
         padding: 0,
         margin: 0,
         display: 'inline-block',
     },
-    li: {
+    [`& .${classes.li}`]: {
         display: 'inline',
         '&:after': {
             content: '", "',
@@ -24,10 +31,10 @@ const useStyles = makeStyles({
 
 export const ContactList = () => {
     const { ids, data, loaded } = useListContext();
-    const classes = useStyles();
+
     if (!loaded) return <div style={{ height: '2em' }} />;
     return (
-        <ul className={classes.ul}>
+        <Root className={classes.ul}>
             {ids.map(id => (
                 <li key={id} className={classes.li}>
                     <Link
@@ -39,6 +46,6 @@ export const ContactList = () => {
                     </Link>
                 </li>
             ))}
-        </ul>
+        </Root>
     );
 };

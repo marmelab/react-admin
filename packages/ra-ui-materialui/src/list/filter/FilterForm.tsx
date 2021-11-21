@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     useEffect,
     useCallback,
@@ -11,17 +12,14 @@ import { useListContext, useResourceContext } from 'ra-core';
 import { Form, FormRenderProps, FormSpy } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 import classnames from 'classnames';
-import { makeStyles } from '@material-ui/core/styles';
 import lodashSet from 'lodash/set';
 import lodashGet from 'lodash/get';
 
-import FilterFormInput from './FilterFormInput';
-import { ClassesOverride } from '../../types';
+import { FilterFormInput } from './FilterFormInput';
 import { FilterContext } from '../FilterContext';
 
-export const FilterForm = (props: FilterFormProps) => {
+export const FilterFormBase = (props: FilterFormProps) => {
     const {
-        classes = {},
         className,
         margin,
         filters,
@@ -56,8 +54,8 @@ export const FilterForm = (props: FilterFormProps) => {
     );
 
     return (
-        <form
-            className={classnames(className, classes.form)}
+        <StyledForm
+            className={classnames(className, FilterFormClasses.form)}
             {...sanitizeRestProps(rest)}
             onSubmit={handleSubmit}
         >
@@ -71,8 +69,8 @@ export const FilterForm = (props: FilterFormProps) => {
                     margin={filterElement.props.margin || margin}
                 />
             ))}
-            <div className={classes.clearFix} />
-        </form>
+            <div className={FilterFormClasses.clearFix} />
+        </StyledForm>
     );
 };
 
@@ -81,31 +79,14 @@ const handleSubmit = event => {
     return false;
 };
 
-FilterForm.propTypes = {
+FilterFormBase.propTypes = {
     resource: PropTypes.string,
     filters: PropTypes.arrayOf(PropTypes.node).isRequired,
     displayedFilters: PropTypes.object,
     hideFilter: PropTypes.func,
     initialValues: PropTypes.object,
-    classes: PropTypes.object,
     className: PropTypes.string,
 };
-
-const useStyles = makeStyles(
-    theme => ({
-        form: {
-            marginTop: -theme.spacing(2),
-            paddingTop: 0,
-            display: 'flex',
-            alignItems: 'flex-end',
-            flexWrap: 'wrap',
-            minHeight: theme.spacing(10),
-            pointerEvents: 'none',
-        },
-        clearFix: { clear: 'right' },
-    }),
-    { name: 'RaFilterForm' }
-);
 
 const sanitizeRestProps = ({
     active,
@@ -144,7 +125,6 @@ const sanitizeRestProps = ({
 export interface FilterFormProps
     extends Omit<FormRenderProps, 'initialValues'>,
         Omit<HtmlHTMLAttributes<HTMLFormElement>, 'children'> {
-    classes?: ClassesOverride<typeof useStyles>;
     className?: string;
     resource?: string;
     filterValues: any;
@@ -178,14 +158,14 @@ export const mergeInitialValuesWithDefaultValues = (
     ...initialValues,
 });
 
-const EnhancedFilterForm = props => {
+export const FilterForm = props => {
     const {
         classes: classesOverride,
         filters: filtersProps,
         initialValues,
         ...rest
     } = props;
-    const classes = useStyles(props);
+
     const { setFilters, displayedFilters, filterValues } = useListContext(
         props
     );
@@ -212,8 +192,7 @@ const EnhancedFilterForm = props => {
                             setFilters(values, displayedFilters);
                         }}
                     />
-                    <FilterForm
-                        classes={classes}
+                    <FilterFormBase
                         {...formProps}
                         {...rest}
                         filters={filters}
@@ -229,4 +208,23 @@ const handleFinalFormSubmit = () => {};
 // Options to instruct the FormSpy that it should only listen to the values and pristine changes
 const FormSpySubscription = { values: true, pristine: true, invalid: true };
 
-export default EnhancedFilterForm;
+const PREFIX = 'RaFilterForm';
+
+export const FilterFormClasses = {
+    form: `${PREFIX}-form`,
+    clearFix: `${PREFIX}-clearFix`,
+};
+
+const StyledForm = styled('form', { name: PREFIX })(({ theme }) => ({
+    [`&.${FilterFormClasses.form}`]: {
+        marginTop: theme.spacing(-2),
+        paddingTop: 0,
+        display: 'flex',
+        alignItems: 'flex-end',
+        flexWrap: 'wrap',
+        minHeight: theme.spacing(10),
+        pointerEvents: 'none',
+    },
+
+    [`& .${FilterFormClasses.clearFix}`]: { clear: 'right' },
+}));

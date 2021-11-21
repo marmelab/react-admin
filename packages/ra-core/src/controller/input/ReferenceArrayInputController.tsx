@@ -3,7 +3,7 @@ import debounce from 'lodash/debounce';
 
 import { Record, SortPayload, PaginationPayload } from '../../types';
 import { useReferenceArrayInputController } from './useReferenceArrayInputController';
-import { ListControllerProps } from '..';
+import { ListControllerProps } from '../list';
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -94,6 +94,7 @@ const ReferenceArrayInputController = ({
     resource,
     sort = { field: 'id', order: 'DESC' },
     source,
+    enableGetChoices,
 }: ReferenceArrayInputControllerProps) => {
     const { setFilter, ...controllerProps } = useReferenceArrayInputController({
         basePath,
@@ -105,6 +106,7 @@ const ReferenceArrayInputController = ({
         reference,
         resource,
         source,
+        enableGetChoices,
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -147,6 +149,7 @@ interface ReferenceArrayInputControllerProps {
     resource: string;
     sort?: SortPayload;
     source: string;
+    enableGetChoices?: (filters: any) => boolean;
 }
 
 export default ReferenceArrayInputController as ComponentType<

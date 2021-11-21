@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { forwardRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import MenuItem from '@material-ui/core/MenuItem';
+import MenuItem from '@mui/material/MenuItem';
 import { FieldTitle, useResourceContext } from 'ra-core';
 
 export const FilterButtonMenuItem = forwardRef<any, FilterButtonMenuItemProps>(

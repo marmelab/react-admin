@@ -1,7 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
-import ThumbDown from '@material-ui/icons/ThumbDown';
+import Button from '@mui/material/Button';
+import ThumbDown from '@mui/icons-material/ThumbDown';
 import { useTranslate, useUpdate, useNotify, useRedirect } from 'react-admin';
 import { Review } from '../types';
 
@@ -19,7 +19,7 @@ const RejectButton = ({ record }: { record: Review }) => {
         { status: 'rejected' },
         record,
         {
-            undoable: true,
+            mutationMode: 'undoable',
             onSuccess: () => {
                 notify(
                     'resources.reviews.notification.rejected_success',

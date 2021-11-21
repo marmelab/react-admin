@@ -1,30 +1,16 @@
-import { Create } from './Create';
-import { CreateView } from './CreateView';
-import { Edit } from './Edit';
-import { EditView } from './EditView';
-import EditGuesser from './EditGuesser';
-import { Show } from './Show';
-import { ShowView } from './ShowView';
-import ShowGuesser from './ShowGuesser';
-import SimpleShowLayout, { SimpleShowLayoutProps } from './SimpleShowLayout';
-
+export * from './Create';
 export * from './CreateActions';
+export * from './CreateView';
+export * from './Edit';
 export * from './EditActions';
+export * from './EditGuesser';
+export * from './EditView';
+export * from './FieldWithLabel';
+export * from './Show';
 export * from './ShowActions';
+export * from './ShowGuesser';
+export * from './ShowView';
+export * from './SimpleShowLayout';
 export * from './TabbedShowLayout';
 export * from './TabbedShowLayoutTabs';
 export * from './Tab';
-
-export {
-    Create,
-    CreateView,
-    Edit,
-    EditView,
-    EditGuesser,
-    Show,
-    ShowView,
-    ShowGuesser,
-    SimpleShowLayout,
-};
-
-export type { SimpleShowLayoutProps };

@@ -1,20 +1,28 @@
 import * as React from 'react';
-import Icon from '@material-ui/icons/Stars';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
+import Icon from '@mui/icons-material/Stars';
 
 import { FieldProps } from 'react-admin';
 
-const useStyles = makeStyles({
-    root: {
+const PREFIX = 'StarRatingField';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    large: `${PREFIX}-large`,
+    small: `${PREFIX}-small`,
+};
+
+const Root = styled('span')({
+    [`&.${classes.root}`]: {
         opacity: 0.87,
         whiteSpace: 'nowrap',
         display: 'flex',
     },
-    large: {
+    [`& .${classes.large}`]: {
         width: 20,
         height: 20,
     },
-    small: {
+    [`& .${classes.small}`]: {
         width: 15,
         height: 15,
     },
@@ -25,9 +33,8 @@ interface OwnProps {
 }
 
 const StarRatingField = ({ record, size = 'large' }: FieldProps & OwnProps) => {
-    const classes = useStyles();
     return record ? (
-        <span className={classes.root}>
+        <Root className={classes.root}>
             {Array(record.rating)
                 .fill(true)
                 .map((_, i) => (
@@ -38,7 +45,7 @@ const StarRatingField = ({ record, size = 'large' }: FieldProps & OwnProps) => {
                         }
                     />
                 ))}
-        </span>
+        </Root>
     ) : null;
 };
 

@@ -4,8 +4,6 @@ import merge from 'lodash/merge';
 import { useSafeSetState } from '../util/hooks';
 import { MutationMode, OnSuccess, OnFailure } from '../types';
 import useDataProvider from './useDataProvider';
-import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDeclarativeSideEffects';
-import { DeclarativeSideEffect } from './useDeclarativeSideEffects';
 
 /**
  * Get a callback to fetch the data provider through Redux, usually for mutations.
@@ -32,11 +30,10 @@ import { DeclarativeSideEffect } from './useDeclarativeSideEffects';
  * @param {Object} query.payload The payload object, e.g; { post_id: 12 }
  * @param {Object} options
  * @param {string} options.action Redux action type
- * @param {boolean} options.undoable Set to true to run the mutation locally before calling the dataProvider
+ * @param {boolean} options.mutationMode Either 'optimistic', 'pessimistic' or 'undoable'
  * @param {boolean} options.returnPromise Set to true to return the result promise of the mutation
  * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. () => refresh()
  * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. (error) => notify(error.message)
- * @param {boolean} options.withDeclarativeSideEffectsSupport Set to true to support legacy side effects e.g. { onSuccess: { refresh: true } }
  *
  * @returns A tuple with the mutation callback and the request state. Destructure as [mutate, { data, total, error, loading, loaded }].
  *
@@ -54,11 +51,10 @@ import { DeclarativeSideEffect } from './useDeclarativeSideEffects';
  * - {Object} query.payload The payload object, e.g. { id: 123, data: { isApproved: true } }
  * - {Object} options
  * - {string} options.action Redux action type
- * - {boolean} options.undoable Set to true to run the mutation locally before calling the dataProvider
+ * - {boolean} options.mutationMode Either 'optimistic', 'pessimistic' or 'undoable'
  * - {boolean} options.returnPromise Set to true to return the result promise of the mutation
  * - {Function} options.onSuccess Side effect function to be executed upon success or failure, e.g. { onSuccess: response => refresh() }
  * - {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
- * - {boolean} withDeclarativeSideEffectsSupport Set to true to support legacy side effects e.g. { onSuccess: { refresh: true } }
  *
  * @example
  *
@@ -115,7 +111,7 @@ import { DeclarativeSideEffect } from './useDeclarativeSideEffects';
  *              payload: { id: record.id, data: { stock: 0 } }
  *         },
  *         {
- *              undoable: true,
+ *              mutationMode: 'undoable',
  *              action: CRUD_UPDATE,
  *              onSuccess: response => notify('Success !'),
  *              onFailure: error => notify('Failure !')
@@ -137,7 +133,6 @@ const useMutation = (
     });
 
     const dataProvider = useDataProvider();
-    const dataProviderWithDeclarativeSideEffects = useDataProviderWithDeclarativeSideEffects();
 
     /* eslint-disable react-hooks/exhaustive-deps */
     const mutate = useCallback(
@@ -145,12 +140,6 @@ const useMutation = (
             callTimeQuery?: Partial<Mutation> | Event,
             callTimeOptions?: MutationOptions
         ): void | Promise<any> => {
-            const finalDataProvider = hasDeclarativeSideEffectsSupport(
-                options,
-                callTimeOptions
-            )
-                ? dataProviderWithDeclarativeSideEffects
-                : dataProvider;
             const params = mergeDefinitionAndCallTimeParameters(
                 query,
                 callTimeQuery,
@@ -162,9 +151,9 @@ const useMutation = (
 
             const returnPromise = params.options.returnPromise;
 
-            const promise = finalDataProvider[params.type]
+            const promise = dataProvider[params.type]
                 .apply(
-                    finalDataProvider,
+                    dataProvider,
                     typeof params.resource !== 'undefined'
                         ? [params.resource, params.payload, params.options]
                         : [params.payload, params.options]
@@ -203,7 +192,6 @@ const useMutation = (
             // deep equality, see https://github.com/facebook/react/issues/14476#issuecomment-471199055
             JSON.stringify({ query, options }),
             dataProvider,
-            dataProviderWithDeclarativeSideEffects,
             setState,
         ]
         /* eslint-enable react-hooks/exhaustive-deps */
@@ -221,11 +209,8 @@ export interface Mutation {
 export interface MutationOptions {
     action?: string;
     returnPromise?: boolean;
-    onSuccess?: OnSuccess | DeclarativeSideEffect;
-    onFailure?: OnFailure | DeclarativeSideEffect;
-    withDeclarativeSideEffectsSupport?: boolean;
-    /** @deprecated use mutationMode: undoable instead */
-    undoable?: boolean;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
     mutationMode?: MutationMode;
 }
 
@@ -290,17 +275,20 @@ const mergeDefinitionAndCallTimeParameters = (
     if (!query && (!callTimeQuery || callTimeQuery instanceof Event)) {
         throw new Error('Missing query either at definition or at call time');
     }
-    if (callTimeQuery instanceof Event)
+
+    const event = callTimeQuery as Event;
+    if (callTimeQuery instanceof Event || !!event?.preventDefault)
         return {
             type: query.type,
             resource: query.resource,
             payload: query.payload,
             options: sanitizeOptions(options),
         };
-    if (query)
+
+    if (query) {
         return {
-            type: query.type || callTimeQuery.type,
-            resource: query.resource || callTimeQuery.resource,
+            type: callTimeQuery?.type || query.type,
+            resource: callTimeQuery?.resource || query.resource,
             payload: callTimeQuery
                 ? merge({}, query.payload, callTimeQuery.payload)
                 : query.payload,
@@ -312,6 +300,7 @@ const mergeDefinitionAndCallTimeParameters = (
                   )
                 : sanitizeOptions(options),
         };
+    }
     return {
         type: callTimeQuery.type,
         resource: callTimeQuery.resource,
@@ -320,20 +309,7 @@ const mergeDefinitionAndCallTimeParameters = (
     };
 };
 
-const hasDeclarativeSideEffectsSupport = (
-    options?: MutationOptions,
-    callTimeOptions?: MutationOptions
-) => {
-    if (!options && !callTimeOptions) return false;
-    if (callTimeOptions && callTimeOptions.withDeclarativeSideEffectsSupport)
-        return true;
-    return options && options.withDeclarativeSideEffectsSupport;
-};
-
-const sanitizeOptions = (args?: MutationOptions) => {
-    if (!args) return { onSuccess: undefined };
-    const { withDeclarativeSideEffectsSupport, ...options } = args;
-    return { onSuccess: undefined, ...options };
-};
+const sanitizeOptions = (args?: MutationOptions) =>
+    args ? { onSuccess: undefined, ...args } : { onSuccess: undefined };
 
 export default useMutation;

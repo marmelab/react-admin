@@ -1,9 +1,11 @@
-import { render, waitFor, fireEvent } from '@testing-library/react';
 import * as React from 'react';
+import { render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
-import { DataProvider, DataProviderContext } from 'ra-core';
+import { DataProvider, DataProviderContext, MutationMode } from 'ra-core';
+import { QueryClientProvider, QueryClient } from 'react-query';
 import { renderWithRedux, TestContext } from 'ra-test';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
 import { Toolbar, SimpleForm } from '../form';
 import { Edit } from '../detail';
@@ -24,7 +26,7 @@ const invalidButtonDomProps = {
     resource: 'posts',
     saving: false,
     submitOnEnter: true,
-    undoable: false,
+    mutationMode: 'pessimistic' as MutationMode,
 };
 
 describe('<DeleteWithConfirmButton />', () => {
@@ -68,7 +70,7 @@ describe('<DeleteWithConfirmButton />', () => {
         resource: 'posts',
         location: {},
         match: {},
-        undoable: false,
+        mutationMode: 'pessimistic',
     };
 
     it('should allow to override the resource', async () => {
@@ -90,15 +92,16 @@ describe('<DeleteWithConfirmButton />', () => {
             getByText,
         } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <DataProviderContext.Provider value={dataProvider}>
-                    <Edit {...defaultEditProps}>
-                        <SimpleForm toolbar={<EditToolbar />}>
-                            <TextInput source="title" />
-                        </SimpleForm>
-                    </Edit>
-                </DataProviderContext.Provider>
-            </ThemeProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+                <QueryClientProvider client={new QueryClient()}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <Edit {...defaultEditProps}>
+                            <SimpleForm toolbar={<EditToolbar />}>
+                                <TextInput source="title" />
+                            </SimpleForm>
+                        </Edit>
+                    </DataProviderContext.Provider>
+                </QueryClientProvider>
+            </ThemeProvider>
         );
         // waitFor for the dataProvider.getOne() return
         await waitFor(() => {
@@ -114,7 +117,7 @@ describe('<DeleteWithConfirmButton />', () => {
         });
     });
 
-    it('should allows to undo the deletion after confirmation if undoable is true', async () => {
+    it('should allows to undo the deletion after confirmation if mutationMode is undoable', async () => {
         const dataProvider = ({
             getOne: () =>
                 Promise.resolve({
@@ -124,7 +127,7 @@ describe('<DeleteWithConfirmButton />', () => {
         } as unknown) as DataProvider;
         const EditToolbar = props => (
             <Toolbar {...props}>
-                <DeleteWithConfirmButton undoable />
+                <DeleteWithConfirmButton mutationMode="undoable" />
             </Toolbar>
         );
         const {
@@ -134,18 +137,19 @@ describe('<DeleteWithConfirmButton />', () => {
             getByText,
         } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <DataProviderContext.Provider value={dataProvider}>
-                    <>
-                        <Edit {...defaultEditProps}>
-                            <SimpleForm toolbar={<EditToolbar />}>
-                                <TextInput source="title" />
-                            </SimpleForm>
-                        </Edit>
-                        <Notification />
-                    </>
-                </DataProviderContext.Provider>
-            </ThemeProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+                <QueryClientProvider client={new QueryClient()}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <>
+                            <Edit {...defaultEditProps}>
+                                <SimpleForm toolbar={<EditToolbar />}>
+                                    <TextInput source="title" />
+                                </SimpleForm>
+                            </Edit>
+                            <Notification />
+                        </>
+                    </DataProviderContext.Provider>
+                </QueryClientProvider>
+            </ThemeProvider>
         );
         // waitFor for the dataProvider.getOne() return
         await waitFor(() => {
@@ -180,15 +184,16 @@ describe('<DeleteWithConfirmButton />', () => {
             getByText,
         } = renderWithRedux(
             <ThemeProvider theme={theme}>
-                <DataProviderContext.Provider value={dataProvider}>
-                    <Edit {...defaultEditProps}>
-                        <SimpleForm toolbar={<EditToolbar />}>
-                            <TextInput source="title" />
-                        </SimpleForm>
-                    </Edit>
-                </DataProviderContext.Provider>
-            </ThemeProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+                <QueryClientProvider client={new QueryClient()}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <Edit {...defaultEditProps}>
+                            <SimpleForm toolbar={<EditToolbar />}>
+                                <TextInput source="title" />
+                            </SimpleForm>
+                        </Edit>
+                    </DataProviderContext.Provider>
+                </QueryClientProvider>
+            </ThemeProvider>
         );
         // waitFor for the dataProvider.getOne() return
         await waitFor(() => {
@@ -224,16 +229,17 @@ describe('<DeleteWithConfirmButton />', () => {
             getByLabelText,
             getByText,
         } = renderWithRedux(
-            <ThemeProvider theme={theme}>
-                <DataProviderContext.Provider value={dataProvider}>
-                    <Edit {...defaultEditProps}>
-                        <SimpleForm toolbar={<EditToolbar />}>
-                            <TextInput source="title" />
-                        </SimpleForm>
-                    </Edit>
-                </DataProviderContext.Provider>
-            </ThemeProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            <QueryClientProvider client={new QueryClient()}>
+                <ThemeProvider theme={theme}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <Edit {...defaultEditProps}>
+                            <SimpleForm toolbar={<EditToolbar />}>
+                                <TextInput source="title" />
+                            </SimpleForm>
+                        </Edit>
+                    </DataProviderContext.Provider>
+                </ThemeProvider>
+            </QueryClientProvider>
         );
         // waitFor for the dataProvider.getOne() return
         await waitFor(() => {

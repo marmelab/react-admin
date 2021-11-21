@@ -1,17 +1,10 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
-import TextField, { TextFieldProps } from '@material-ui/core/TextField';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useInput, FieldTitle, InputProps } from 'ra-core';
 
-import InputHelperText from './InputHelperText';
-import sanitizeInputRestProps from './sanitizeInputRestProps';
-
-const convertStringToNumber = value => {
-    const float = parseFloat(value);
-
-    return isNaN(float) ? null : float;
-};
+import { InputHelperText } from './InputHelperText';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 
 /**
  * An Input component for a number
@@ -25,7 +18,7 @@ const convertStringToNumber = value => {
  *
  * The object passed as `options` props is passed to the material-ui <TextField> component
  */
-const NumberInput: FunctionComponent<NumberInputProps> = ({
+export const NumberInput = ({
     format,
     helperText,
     label,
@@ -44,7 +37,7 @@ const NumberInput: FunctionComponent<NumberInputProps> = ({
     variant = 'filled',
     inputProps: overrideInputProps,
     ...rest
-}) => {
+}: NumberInputProps) => {
     const {
         id,
         input,
@@ -124,4 +117,8 @@ export interface NumberInputProps
     max?: string | number;
 }
 
-export default NumberInput;
+const convertStringToNumber = value => {
+    const float = parseFloat(value);
+
+    return isNaN(float) ? null : float;
+};

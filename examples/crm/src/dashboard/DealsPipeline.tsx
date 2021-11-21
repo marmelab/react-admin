@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Card, Link, Box } from '@material-ui/core';
-import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import { Card, Link, Box } from '@mui/material';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import {
     useGetList,
     SimpleList,
@@ -55,7 +55,6 @@ export const DealsPipeline = () => {
             </Box>
             <Card>
                 <SimpleList<Deal>
-                    basePath="/deals"
                     linkType="show"
                     ids={ids}
                     data={data}

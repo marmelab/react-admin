@@ -1,20 +1,21 @@
 import * as React from 'react';
 import { ReactNode, ReactElement } from 'react';
-import SimpleForm from '../form/SimpleForm';
-import { SimpleFormIterator } from '../form/SimpleFormIterator';
-import ArrayInput from '../input/ArrayInput';
-import BooleanInput from '../input/BooleanInput';
-import DateInput from '../input/DateInput';
-import NumberInput from '../input/NumberInput';
-import ReferenceInput from '../input/ReferenceInput';
-import ReferenceArrayInput, {
+import { SimpleForm } from '../form';
+import {
+    ArrayInput,
+    BooleanInput,
+    DateInput,
+    NumberInput,
+    ReferenceInput,
+    ReferenceArrayInput,
     ReferenceArrayInputProps,
-} from '../input/ReferenceArrayInput';
-import { SelectInput } from '../input/SelectInput';
-import TextInput from '../input/TextInput';
+    SelectInput,
+    SimpleFormIterator,
+    TextInput,
+} from '../input';
 import { InferredElement, InferredTypeMap, InputProps } from 'ra-core';
 
-const editFieldTypes: InferredTypeMap = {
+export const editFieldTypes: InferredTypeMap = {
     form: {
         component: SimpleForm,
         representation: (
@@ -106,5 +107,3 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             `<TextInput source="${props.source}" />`,
     },
 };
-
-export default editFieldTypes;

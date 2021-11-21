@@ -1,56 +1,35 @@
 import * as React from 'react';
-import { cloneElement, Children, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import Card from '@material-ui/core/Card';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
 import classnames from 'classnames';
-import {
-    ShowControllerProps,
-    useResourceDefinition,
-    useShowContext,
-} from 'ra-core';
+import { useShowContext } from 'ra-core';
 
-import { ShowActions as DefaultActions } from './ShowActions';
-import TitleForRecord from '../layout/TitleForRecord';
 import { ShowProps } from '../types';
+import { ShowActions } from './ShowActions';
+import { TitleForRecord } from '../layout';
+
+const defaultActions = <ShowActions />;
 
 export const ShowView = (props: ShowViewProps) => {
     const {
-        actions,
-        aside,
+        actions = defaultActions,
         children,
-        classes: classesOverride,
         className,
-        component: Content,
+        component: Content = 'div',
+        emptyWhileLoading = false,
         title,
         ...rest
     } = props;
 
-    const classes = useStyles(props);
+    const { defaultTitle, record, version } = useShowContext(props);
 
-    const {
-        basePath,
-        defaultTitle,
-        hasList,
-        record,
-        resource,
-        version,
-    } = useShowContext(props);
-    const { hasEdit } = useResourceDefinition(props);
-
-    const finalActions =
-        typeof actions === 'undefined' && hasEdit ? (
-            <DefaultActions />
-        ) : (
-            actions
-        );
-
-    if (!children) {
+    if (!children || (!record && emptyWhileLoading)) {
         return null;
     }
     return (
-        <div
-            className={classnames('show-page', classes.root, className)}
+        <Root
+            className={classnames('show-page', ShowClasses.root, className)}
+            key={version}
             {...sanitizeRestProps(rest)}
         >
             <TitleForRecord
@@ -58,86 +37,21 @@ export const ShowView = (props: ShowViewProps) => {
                 record={record}
                 defaultTitle={defaultTitle}
             />
-            {finalActions &&
-                cloneElement(finalActions, {
-                    basePath,
-                    data: record,
-                    hasList,
-                    hasEdit,
-                    resource,
-                    //  Ensure we don't override any user provided props
-                    ...finalActions.props,
-                })}
-            <div
-                className={classnames(classes.main, {
-                    [classes.noActions]: !finalActions,
-                })}
-            >
-                <Content className={classes.card}>
-                    {record &&
-                        cloneElement(Children.only(children), {
-                            resource,
-                            basePath,
-                            record,
-                            version,
-                        })}
-                </Content>
-                {aside &&
-                    cloneElement(aside, {
-                        resource,
-                        basePath,
-                        record,
-                        version,
-                    })}
-            </div>
-        </div>
+            {actions !== false && actions}
+            <Content className={ShowClasses.main}>{children}</Content>
+        </Root>
     );
 };
 
-interface ShowViewProps
-    extends ShowProps,
-        Partial<Omit<ShowControllerProps, 'resource'>> {
-    children: ReactElement;
-}
+export type ShowViewProps = ShowProps;
 
 ShowView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    aside: PropTypes.element,
-    basePath: PropTypes.string,
-    children: PropTypes.element,
-    classes: PropTypes.object,
+    children: PropTypes.node,
     className: PropTypes.string,
-    defaultTitle: PropTypes.any,
-    hasEdit: PropTypes.bool,
-    hasList: PropTypes.bool,
-    loading: PropTypes.bool,
-    loaded: PropTypes.bool,
-    record: PropTypes.object,
-    resource: PropTypes.string,
+    emptyWhileLoading: PropTypes.bool,
     title: PropTypes.any,
-    version: PropTypes.node,
 };
-
-ShowView.defaultProps = {
-    classes: {},
-    component: Card,
-};
-
-const useStyles = makeStyles(
-    {
-        root: {},
-        main: {
-            display: 'flex',
-        },
-        noActions: {
-            marginTop: '1em',
-        },
-        card: {
-            flex: '1 1 auto',
-        },
-    },
-    { name: 'RaShow' }
-);
 
 const sanitizeRestProps = ({
     basePath = null,
@@ -148,8 +62,8 @@ const sanitizeRestProps = ({
     hasShow = null,
     history = null,
     id = null,
-    loaded = null,
-    loading = null,
+    isLoading = null,
+    isFetching = null,
     location = null,
     match = null,
     options = null,
@@ -157,3 +71,19 @@ const sanitizeRestProps = ({
     permissions = null,
     ...rest
 }) => rest;
+
+const PREFIX = 'RaShow';
+
+export const ShowClasses = {
+    root: `${PREFIX}-root`,
+    main: `${PREFIX}-main`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${ShowClasses.root}`]: {
+        paddingTop: theme.spacing(2),
+    },
+    [`& .${ShowClasses.main}`]: {
+        display: 'flex',
+    },
+}));

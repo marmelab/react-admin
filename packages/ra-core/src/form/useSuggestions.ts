@@ -211,6 +211,7 @@ export const getSuggestionsFactory = ({
         }
     } else {
         suggestions = choices.filter(choice => matchSuggestion(filter, choice));
+
         if (!allowDuplicates) {
             suggestions = removeAlreadySelectedSuggestions(
                 suggestions,

@@ -3,11 +3,10 @@ import { fireEvent, waitFor, act, render } from '@testing-library/react';
 import expect from 'expect';
 
 import Mutation from './Mutation';
-import { showNotification, refreshView, setListSelectedIds } from '../actions';
+import { showNotification } from '../actions';
 import DataProviderContext from './DataProviderContext';
 import { renderWithRedux, TestContext } from 'ra-test';
 import { useNotify } from '../sideEffect';
-import { History } from 'history';
 
 describe('Mutation', () => {
     it('should render its child function', () => {
@@ -41,72 +40,6 @@ describe('Mutation', () => {
         });
     });
 
-    it('supports declarative onSuccess side effects', async () => {
-        let dispatchSpy;
-        let historyForAssertions: History;
-
-        const dataProvider = {
-            mytype: jest.fn(() => Promise.resolve({ data: { foo: 'bar' } })),
-        };
-
-        let getByTestId;
-        act(() => {
-            const res = render(
-                <DataProviderContext.Provider value={dataProvider}>
-                    <TestContext>
-                        {({ store, history }) => {
-                            dispatchSpy = jest.spyOn(store, 'dispatch');
-                            historyForAssertions = history;
-                            return (
-                                <Mutation
-                                    type="mytype"
-                                    resource="foo"
-                                    options={{
-                                        onSuccess: {
-                                            notification: {
-                                                body: 'Youhou!',
-                                                level: 'info',
-                                            },
-                                            redirectTo: '/a_path',
-                                            refresh: true,
-                                            unselectAll: true,
-                                        },
-                                    }}
-                                >
-                                    {(mutate, { data }) => (
-                                        <button
-                                            data-testid="test"
-                                            onClick={mutate}
-                                        >
-                                            {data ? data.foo : 'no data'}
-                                        </button>
-                                    )}
-                                </Mutation>
-                            );
-                        }}
-                    </TestContext>
-                </DataProviderContext.Provider>
-            );
-            getByTestId = res.getByTestId;
-        });
-
-        const testElement = getByTestId('test');
-        fireEvent.click(testElement);
-        await waitFor(() => {
-            expect(dispatchSpy).toHaveBeenCalledWith(
-                showNotification('Youhou!', 'info', {
-                    messageArgs: {},
-                    undoable: false,
-                })
-            );
-            expect(historyForAssertions.location.pathname).toEqual('/a_path');
-            expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
-            expect(dispatchSpy).toHaveBeenCalledWith(
-                setListSelectedIds('foo', [])
-            );
-        });
-    });
-
     it('supports onSuccess side effects using hooks', async () => {
         let dispatchSpy;
         const dataProvider = {
@@ -121,7 +54,7 @@ describe('Mutation', () => {
                     resource="foo"
                     options={{
                         onSuccess: () => {
-                            notify('Youhou!', 'info');
+                            notify('Youhou!', { type: 'info' });
                         },
                     }}
                 >
@@ -152,79 +85,7 @@ describe('Mutation', () => {
         fireEvent.click(testElement);
         await waitFor(() => {
             expect(dispatchSpy).toHaveBeenCalledWith(
-                showNotification('Youhou!', 'info', {
-                    messageArgs: {},
-                    undoable: false,
-                })
-            );
-        });
-    });
-
-    it('supports declarative onFailure side effects', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
-        let dispatchSpy;
-        let historyForAssertions: History;
-
-        const dataProvider = {
-            mytype: jest.fn(() =>
-                Promise.reject({ message: 'provider error' })
-            ),
-        };
-
-        let getByTestId;
-        act(() => {
-            const res = render(
-                <DataProviderContext.Provider value={dataProvider}>
-                    <TestContext>
-                        {({ store, history }) => {
-                            dispatchSpy = jest.spyOn(store, 'dispatch');
-                            historyForAssertions = history;
-                            return (
-                                <Mutation
-                                    type="mytype"
-                                    resource="foo"
-                                    options={{
-                                        onFailure: {
-                                            notification: {
-                                                body: 'Damn!',
-                                                level: 'warning',
-                                            },
-                                            redirectTo: '/a_path',
-                                            refresh: true,
-                                            unselectAll: true,
-                                        },
-                                    }}
-                                >
-                                    {(mutate, { error }) => (
-                                        <button
-                                            data-testid="test"
-                                            onClick={mutate}
-                                        >
-                                            {error ? error.message : 'no data'}
-                                        </button>
-                                    )}
-                                </Mutation>
-                            );
-                        }}
-                    </TestContext>
-                </DataProviderContext.Provider>
-            );
-            getByTestId = res.getByTestId;
-        });
-
-        const testElement = getByTestId('test');
-        fireEvent.click(testElement);
-        await waitFor(() => {
-            expect(dispatchSpy).toHaveBeenCalledWith(
-                showNotification('Damn!', 'warning', {
-                    messageArgs: {},
-                    undoable: false,
-                })
-            );
-            expect(historyForAssertions.location.pathname).toEqual('/a_path');
-            expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
-            expect(dispatchSpy).toHaveBeenCalledWith(
-                setListSelectedIds('foo', [])
+                showNotification('Youhou!', 'info')
             );
         });
     });
@@ -246,7 +107,7 @@ describe('Mutation', () => {
                     resource="foo"
                     options={{
                         onFailure: () => {
-                            notify('Damn!', 'warning');
+                            notify('Damn!', { type: 'warning' });
                         },
                     }}
                 >
@@ -277,10 +138,7 @@ describe('Mutation', () => {
         fireEvent.click(testElement);
         await waitFor(() => {
             expect(dispatchSpy).toHaveBeenCalledWith(
-                showNotification('Damn!', 'warning', {
-                    messageArgs: {},
-                    undoable: false,
-                })
+                showNotification('Damn!', 'warning')
             );
         });
     });

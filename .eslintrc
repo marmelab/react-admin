@@ -23,9 +23,9 @@
             {
                 "paths": [
                     {
-                        "name": "@material-ui/core",
+                        "name": "@mui/material",
                         "importNames": ["makeStyles", "createMuiTheme"],
-                        "message": "Please import from @material-ui/core/styles instead. See https://material-ui.com/guides/minimizing-bundle-size/#option-2 for more information"
+                        "message": "Please import from @mui/material/styles instead. See https://material-ui.com/guides/minimizing-bundle-size/#option-2 for more information"
                     }
                 ]
             }

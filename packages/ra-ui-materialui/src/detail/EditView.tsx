@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { Children, cloneElement, ReactElement } from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import { makeStyles } from '@material-ui/core/styles';
+import { Card, CardContent } from '@mui/material';
 import classnames from 'classnames';
 import {
     EditControllerProps,
     ComponentPropType,
     useEditContext,
+    useResourceDefinition,
 } from 'ra-core';
 
 import { EditActions as DefaultActions } from './EditActions';
-import TitleForRecord from '../layout/TitleForRecord';
+import { TitleForRecord } from '../layout';
 import { EditProps } from '../types';
 
 export const EditView = (props: EditViewProps) => {
@@ -20,22 +20,16 @@ export const EditView = (props: EditViewProps) => {
         actions,
         aside,
         children,
-        classes: classesOverride,
         className,
-        component: Content,
+        component: Content = Card,
         title,
-        undoable,
         mutationMode,
         ...rest
     } = props;
 
-    const classes = useStyles(props);
-
+    const { hasList, hasShow } = useResourceDefinition();
     const {
-        basePath,
         defaultTitle,
-        hasList,
-        hasShow,
         record,
         redirect,
         resource,
@@ -54,8 +48,8 @@ export const EditView = (props: EditViewProps) => {
         return null;
     }
     return (
-        <div
-            className={classnames('edit-page', classes.root, className)}
+        <Root
+            className={classnames('edit-page', EditClasses.root, className)}
             {...sanitizeRestProps(rest)}
         >
             <TitleForRecord
@@ -65,7 +59,6 @@ export const EditView = (props: EditViewProps) => {
             />
             {finalActions &&
                 cloneElement(finalActions, {
-                    basePath,
                     data: record,
                     hasShow,
                     hasList,
@@ -74,14 +67,13 @@ export const EditView = (props: EditViewProps) => {
                     ...finalActions.props,
                 })}
             <div
-                className={classnames(classes.main, {
-                    [classes.noActions]: !finalActions,
+                className={classnames(EditClasses.main, {
+                    [EditClasses.noActions]: !finalActions,
                 })}
             >
-                <Content className={classes.card}>
+                <Content className={EditClasses.card}>
                     {record ? (
                         cloneElement(Children.only(children), {
-                            basePath,
                             record,
                             redirect:
                                 typeof children.props.redirect === 'undefined'
@@ -93,7 +85,6 @@ export const EditView = (props: EditViewProps) => {
                                     ? save
                                     : children.props.save,
                             saving,
-                            undoable,
                             mutationMode,
                             version,
                         })
@@ -103,7 +94,6 @@ export const EditView = (props: EditViewProps) => {
                 </Content>
                 {aside &&
                     React.cloneElement(aside, {
-                        basePath,
                         record,
                         resource,
                         version,
@@ -114,7 +104,7 @@ export const EditView = (props: EditViewProps) => {
                         saving,
                     })}
             </div>
-        </div>
+        </Root>
     );
 };
 
@@ -127,9 +117,7 @@ interface EditViewProps
 EditView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     aside: PropTypes.element,
-    basePath: PropTypes.string,
     children: PropTypes.element,
-    classes: PropTypes.object,
     className: PropTypes.string,
     component: ComponentPropType,
     defaultTitle: PropTypes.any,
@@ -147,29 +135,7 @@ EditView.propTypes = {
     setOnSuccess: PropTypes.func,
     setOnFailure: PropTypes.func,
     setTransform: PropTypes.func,
-    undoable: PropTypes.bool,
 };
-
-EditView.defaultProps = {
-    classes: {},
-    component: Card,
-};
-
-const useStyles = makeStyles(
-    {
-        root: {},
-        main: {
-            display: 'flex',
-        },
-        noActions: {
-            marginTop: '1em',
-        },
-        card: {
-            flex: '1 1 auto',
-        },
-    },
-    { name: 'RaEdit' }
-);
 
 const sanitizeRestProps = ({
     basePath = null,
@@ -180,8 +146,8 @@ const sanitizeRestProps = ({
     hasShow = null,
     history = null,
     id = null,
-    loaded = null,
-    loading = null,
+    isFetching = null,
+    isLoading = null,
     location = null,
     match = null,
     onFailure = null,
@@ -201,3 +167,25 @@ const sanitizeRestProps = ({
     transformRef = null,
     ...rest
 }) => rest;
+
+const PREFIX = 'RaEdit';
+
+export const EditClasses = {
+    root: `${PREFIX}-root`,
+    main: `${PREFIX}-main`,
+    noActions: `${PREFIX}-noActions`,
+    card: `${PREFIX}-card`,
+};
+
+const Root = styled('div', { name: PREFIX })({
+    [`&.${EditClasses.root}`]: {},
+    [`& .${EditClasses.main}`]: {
+        display: 'flex',
+    },
+    [`& .${EditClasses.noActions}`]: {
+        marginTop: '1em',
+    },
+    [`& .${EditClasses.card}`]: {
+        flex: '1 1 auto',
+    },
+});

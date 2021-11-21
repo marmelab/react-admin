@@ -1,29 +1,18 @@
 import { Record, PaginationPayload, SortPayload } from '../../types';
 import { GET_LIST } from '../../core';
 import { FETCH_END, FETCH_ERROR } from '../fetchActions';
-import { NotificationSideEffect, CallbackSideEffect } from '../../sideEffect';
 
 export const crudGetAll = (
     resource: string,
     sort: SortPayload,
     filter: object,
-    maxResults: number,
-    callback?: CallbackSideEffect
+    maxResults: number
 ): CrudGetAllAction => ({
     type: CRUD_GET_ALL,
     payload: { sort, filter, pagination: { page: 1, perPage: maxResults } },
     meta: {
         resource,
         fetch: GET_LIST,
-        onSuccess: {
-            callback,
-        },
-        onFailure: {
-            notification: {
-                body: 'ra.notification.http_error',
-                level: 'warning',
-            },
-        },
     },
 });
 
@@ -40,12 +29,6 @@ interface CrudGetAllAction {
     readonly meta: {
         resource: string;
         fetch: typeof GET_LIST;
-        onFailure: {
-            notification: NotificationSideEffect;
-        };
-        onSuccess: {
-            callback: CallbackSideEffect;
-        };
     };
 }
 
@@ -66,7 +49,6 @@ export interface CrudGetAllFailureAction {
     readonly requestPayload: RequestPayload;
     readonly meta: {
         resource: string;
-        notification: NotificationSideEffect;
         fetchResponse: typeof GET_LIST;
         fetchStatus: typeof FETCH_ERROR;
     };
@@ -82,7 +64,6 @@ export interface CrudGetAllSuccessAction {
     readonly requestPayload: RequestPayload;
     readonly meta: {
         resource: string;
-        callback: any;
         fetchResponse: typeof GET_LIST;
         fetchStatus: typeof FETCH_END;
     };

@@ -8,6 +8,8 @@ import { ApplicationContext } from './ApplicationContext';
 
 describe('Admin', () => {
     it('should be functional', async () => {
+        jest.setTimeout(10000);
+
         const customers = fs.readFileSync(
             path.resolve(__dirname, '../assets/ra-customers.csv'),
             {
@@ -30,7 +32,12 @@ describe('Admin', () => {
         let file = new File([customers], 'customers.csv', {
             type: 'text/csv',
         });
-        const { getByLabelText, getByText, getByDisplayValue } = render(
+        const {
+            getAllByText,
+            getByLabelText,
+            getByText,
+            getByDisplayValue,
+        } = render(
             <ApplicationContext.Provider
                 value={{
                     application: { name: 'test', created_at: new Date() },
@@ -72,7 +79,9 @@ describe('Admin', () => {
             getByText('1-10 of 10');
         });
 
-        fireEvent.click(getByText('New resource', { selector: 'button *' }));
+        fireEvent.click(
+            getAllByText('New resource', { selector: '[role="menuitem"] *' })[0]
+        );
 
         file = new File([orders1], 'orders.csv', {
             type: 'text/csv',
@@ -101,7 +110,9 @@ describe('Admin', () => {
             getByText('1-5 of 5');
         });
 
-        fireEvent.click(getByText('New resource', { selector: 'button *' }));
+        fireEvent.click(
+            getAllByText('New resource', { selector: '[role="menuitem"] *' })[0]
+        );
 
         file = new File([orders2], 'orders2.csv', {
             type: 'text/csv',

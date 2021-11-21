@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {
     useUpdateMany,
     useNotify,

@@ -5,11 +5,13 @@ import { Form } from 'react-final-form';
 import { required, FormWithRedirect } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 import format from 'date-fns/format';
+import { createTheme, ThemeProvider } from '@mui/material';
 
-import DateTimeInput from './DateTimeInput';
-import ArrayInput from './ArrayInput';
-import { SimpleFormIterator } from '../form/SimpleFormIterator';
+import { DateTimeInput } from './DateTimeInput';
+import { ArrayInput, SimpleFormIterator } from './ArrayInput';
 import { FormApi } from 'final-form';
+
+const theme = createTheme();
 
 describe('<DateTimeInput />', () => {
     const defaultProps = {
@@ -56,22 +58,24 @@ describe('<DateTimeInput />', () => {
         ];
         let formApi: FormApi;
         const { getByDisplayValue } = renderWithRedux(
-            <FormWithRedirect
-                onSubmit={jest.fn}
-                render={({ form }) => {
-                    formApi = form;
-                    return (
-                        <ArrayInput
-                            defaultValue={backlinksDefaultValue}
-                            source="backlinks"
-                        >
-                            <SimpleFormIterator>
-                                <DateTimeInput source="date" />
-                            </SimpleFormIterator>
-                        </ArrayInput>
-                    );
-                }}
-            />
+            <ThemeProvider theme={theme}>
+                <FormWithRedirect
+                    onSubmit={jest.fn}
+                    render={({ form }) => {
+                        formApi = form;
+                        return (
+                            <ArrayInput
+                                defaultValue={backlinksDefaultValue}
+                                source="backlinks"
+                            >
+                                <SimpleFormIterator>
+                                    <DateTimeInput source="date" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        );
+                    }}
+                />
+            </ThemeProvider>
         );
 
         expect(getByDisplayValue(format(date, 'YYYY-MM-DDTHH:mm')));
@@ -132,6 +136,7 @@ describe('<DateTimeInput />', () => {
 
     it('should call `input.onChange` method when changed', () => {
         let formApi;
+        const publishedAt = new Date('Wed Oct 05 2011 16:48:00 GMT+0200');
         const { getByLabelText } = render(
             <Form
                 onSubmit={jest.fn()}
@@ -143,10 +148,10 @@ describe('<DateTimeInput />', () => {
         );
         const input = getByLabelText('resources.posts.fields.publishedAt');
         fireEvent.change(input, {
-            target: { value: '2010-01-04T10:20' },
+            target: { value: format(publishedAt, 'YYYY-MM-DDTHH:mm') },
         });
         expect(formApi.getState().values.publishedAt).toEqual(
-            new Date('2010-01-04T09:20:00.000Z')
+            new Date('2011-10-05T14:48:00.000Z')
         );
     });
 

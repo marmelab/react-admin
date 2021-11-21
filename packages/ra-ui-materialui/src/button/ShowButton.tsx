@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { memo, useMemo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import ImageEye from '@material-ui/icons/RemoveRedEye';
+import ImageEye from '@mui/icons-material/RemoveRedEye';
 import { Link } from 'react-router-dom';
 import { linkToRecord, Record, useResourceContext } from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 
 /**
  * Opens the Show view of a given record

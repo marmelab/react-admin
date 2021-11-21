@@ -6,9 +6,8 @@ import Query from './Query';
 import { CoreAdmin, Resource } from '../core';
 import { renderWithRedux, TestContext } from 'ra-test';
 import DataProviderContext from './DataProviderContext';
-import { showNotification, refreshView, setListSelectedIds } from '../actions';
+import { showNotification } from '../actions';
 import { useNotify, useRefresh } from '../sideEffect';
-import { History } from 'history';
 
 describe('Query', () => {
     it('should render its child', () => {
@@ -252,72 +251,6 @@ describe('Query', () => {
         expect(dispatchSpy.mock.calls.length).toEqual(3);
     });
 
-    it('supports declarative onSuccess side effects', async () => {
-        let dispatchSpy;
-        let historyForAssertions: History;
-
-        const dataProvider = {
-            getList: jest.fn(() =>
-                Promise.resolve({ data: [{ id: 1, foo: 'bar' }], total: 42 })
-            ),
-        };
-
-        act(() => {
-            render(
-                <DataProviderContext.Provider value={dataProvider}>
-                    <TestContext>
-                        {({ store, history }) => {
-                            dispatchSpy = jest.spyOn(store, 'dispatch');
-                            historyForAssertions = history;
-                            return (
-                                <Query
-                                    type="getList"
-                                    resource="foo"
-                                    options={{
-                                        onSuccess: {
-                                            notification: {
-                                                body: 'Youhou!',
-                                                level: 'info',
-                                            },
-                                            redirectTo: '/a_path',
-                                            refresh: true,
-                                            unselectAll: true,
-                                        },
-                                    }}
-                                >
-                                    {({ loading, data, total }) => (
-                                        <div
-                                            data-testid="test"
-                                            className={
-                                                loading ? 'loading' : 'idle'
-                                            }
-                                        >
-                                            {loading ? 'no data' : total}
-                                        </div>
-                                    )}
-                                </Query>
-                            );
-                        }}
-                    </TestContext>
-                </DataProviderContext.Provider>
-            );
-        });
-
-        await waitFor(() => {
-            expect(dispatchSpy).toHaveBeenCalledWith(
-                showNotification('Youhou!', 'info', {
-                    messageArgs: {},
-                    undoable: false,
-                })
-            );
-            expect(historyForAssertions.location.pathname).toEqual('/a_path');
-            expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
-            expect(dispatchSpy).toHaveBeenCalledWith(
-                setListSelectedIds('foo', [])
-            );
-        });
-    });
-
     it('supports onSuccess function for side effects', async () => {
         let dispatchSpy;
         const dataProvider = {
@@ -334,7 +267,7 @@ describe('Query', () => {
                     resource="foo"
                     options={{
                         onSuccess: () => {
-                            notify('Youhou!', 'info');
+                            notify('Youhou!', { type: 'info' });
                         },
                     }}
                 >
@@ -364,77 +297,7 @@ describe('Query', () => {
 
         await waitFor(() => {
             expect(dispatchSpy).toHaveBeenCalledWith(
-                showNotification('Youhou!', 'info', {
-                    messageArgs: {},
-                    undoable: false,
-                })
-            );
-        });
-    });
-
-    it('supports declarative onFailure side effects', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
-        let dispatchSpy;
-        let historyForAssertions: History;
-
-        const dataProvider = {
-            getList: jest.fn(() =>
-                Promise.reject({ message: 'provider error' })
-            ),
-        };
-
-        act(() => {
-            render(
-                <DataProviderContext.Provider value={dataProvider}>
-                    <TestContext>
-                        {({ store, history }) => {
-                            historyForAssertions = history;
-                            dispatchSpy = jest.spyOn(store, 'dispatch');
-                            return (
-                                <Query
-                                    type="getList"
-                                    resource="foo"
-                                    options={{
-                                        onFailure: {
-                                            notification: {
-                                                body: 'Damn!',
-                                                level: 'warning',
-                                            },
-                                            redirectTo: '/a_path',
-                                            refresh: true,
-                                            unselectAll: true,
-                                        },
-                                    }}
-                                >
-                                    {({ loading, data, total }) => (
-                                        <div
-                                            data-testid="test"
-                                            className={
-                                                loading ? 'loading' : 'idle'
-                                            }
-                                        >
-                                            {loading ? 'no data' : total}
-                                        </div>
-                                    )}
-                                </Query>
-                            );
-                        }}
-                    </TestContext>
-                </DataProviderContext.Provider>
-            );
-        });
-
-        await waitFor(() => {
-            expect(dispatchSpy).toHaveBeenCalledWith(
-                showNotification('Damn!', 'warning', {
-                    messageArgs: {},
-                    undoable: false,
-                })
-            );
-            expect(historyForAssertions.location.pathname).toEqual('/a_path');
-            expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
-            expect(dispatchSpy).toHaveBeenCalledWith(
-                setListSelectedIds('foo', [])
+                showNotification('Youhou!', 'info')
             );
         });
     });
@@ -456,7 +319,7 @@ describe('Query', () => {
                     resource="foo"
                     options={{
                         onFailure: () => {
-                            notify('Damn!', 'warning');
+                            notify('Damn!', { type: 'warning' });
                         },
                     }}
                 >
@@ -486,10 +349,7 @@ describe('Query', () => {
 
         await waitFor(() => {
             expect(dispatchSpy).toHaveBeenCalledWith(
-                showNotification('Damn!', 'warning', {
-                    messageArgs: {},
-                    undoable: false,
-                })
+                showNotification('Damn!', 'warning')
             );
         });
     });

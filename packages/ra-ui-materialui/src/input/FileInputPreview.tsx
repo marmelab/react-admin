@@ -1,30 +1,12 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { useEffect, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import RemoveCircle from '@material-ui/icons/RemoveCircle';
-import IconButton from '@material-ui/core/IconButton';
+import RemoveCircle from '@mui/icons-material/RemoveCircle';
+import IconButton from '@mui/material/IconButton';
 import { useTranslate } from 'ra-core';
 
-const useStyles = makeStyles(
-    theme => ({
-        removeButton: {},
-        removeIcon: {
-            color: theme.palette.error.main,
-        },
-    }),
-    { name: 'RaFileInputPreview' }
-);
-
-interface Props {
-    children: ReactNode;
-    className?: string;
-    classes?: object;
-    onRemove: () => void;
-    file: any;
-}
-
-const FileInputPreview = (props: Props) => {
+export const FileInputPreview = (props: FileInputPreviewProps) => {
     const {
         children,
         classes: classesOverride,
@@ -33,7 +15,7 @@ const FileInputPreview = (props: Props) => {
         file,
         ...rest
     } = props;
-    const classes = useStyles(props);
+
     const translate = useTranslate();
 
     useEffect(() => {
@@ -47,17 +29,18 @@ const FileInputPreview = (props: Props) => {
     }, [file]);
 
     return (
-        <div className={className} {...rest}>
+        <Root className={className} {...rest}>
             <IconButton
-                className={classes.removeButton}
+                className={FileInputPreviewClasses.removeButton}
                 onClick={onRemove}
                 aria-label={translate('ra.action.delete')}
                 title={translate('ra.action.delete')}
+                size="large"
             >
-                <RemoveCircle className={classes.removeIcon} />
+                <RemoveCircle className={FileInputPreviewClasses.removeIcon} />
             </IconButton>
             {children}
-        </div>
+        </Root>
     );
 };
 
@@ -72,4 +55,25 @@ FileInputPreview.defaultProps = {
     file: undefined,
 };
 
-export default FileInputPreview;
+const PREFIX = 'RaFileInputPreview';
+
+const FileInputPreviewClasses = {
+    removeButton: `${PREFIX}-removeButton`,
+    removeIcon: `${PREFIX}-removeIcon`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`& .${FileInputPreviewClasses.removeButton}`]: {},
+
+    [`& .${FileInputPreviewClasses.removeIcon}`]: {
+        color: theme.palette.error.main,
+    },
+}));
+
+export interface FileInputPreviewProps {
+    children: ReactNode;
+    className?: string;
+    classes?: object;
+    onRemove: () => void;
+    file: any;
+}

@@ -1,5 +1,3 @@
-import { StyleRules } from '@material-ui/core/styles';
-
 // converted from vendor (node_modules/quill/dist/quill.snow.css) using the jss cli
 export default {
     '.ql-container': {
@@ -799,4 +797,4 @@ export default {
     '.ql-container.ql-snow': {
         border: '1px solid #ccc',
     },
-} as StyleRules;
+};

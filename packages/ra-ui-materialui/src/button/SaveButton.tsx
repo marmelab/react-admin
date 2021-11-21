@@ -1,21 +1,22 @@
 import React, { cloneElement, ReactElement, SyntheticEvent } from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import Button, { ButtonProps } from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles } from '@material-ui/core/styles';
-import ContentSave from '@material-ui/icons/Save';
+import Button, { ButtonProps } from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import ContentSave from '@mui/icons-material/Save';
 import classnames from 'classnames';
 import {
-    useTranslate,
-    useNotify,
-    RedirectionSideEffect,
+    HandleSubmitWithRedirect,
+    MutationMode,
     OnSuccess,
     OnFailure,
-    TransformData,
     Record,
-    HandleSubmitWithRedirect,
-    useSaveContext,
+    RedirectionSideEffect,
+    TransformData,
     useFormContext,
+    useNotify,
+    useSaveContext,
+    useTranslate,
 } from 'ra-core';
 
 import { sanitizeButtonRestProps } from './Button';
@@ -58,10 +59,9 @@ import { FormRenderProps } from 'react-final-form';
  *     return <SaveButton {...props} onSuccess={onSuccess} />;
  * }
  */
-const SaveButton = (props: SaveButtonProps) => {
+export const SaveButton = (props: SaveButtonProps) => {
     const {
         className,
-        classes: classesOverride,
         invalid,
         label = 'ra.action.save',
         disabled,
@@ -78,7 +78,7 @@ const SaveButton = (props: SaveButtonProps) => {
         transform,
         ...rest
     } = props;
-    const classes = useStyles(props);
+
     const notify = useNotify();
     const translate = useTranslate();
     const formContext = useFormContext();
@@ -129,7 +129,7 @@ const SaveButton = (props: SaveButtonProps) => {
             event.preventDefault();
         } else {
             if (invalid) {
-                notify('ra.message.invalid_form', 'warning');
+                notify('ra.message.invalid_form', { type: 'warning' });
             }
             // always submit form explicitly regardless of button type
             if (event) {
@@ -146,12 +146,14 @@ const SaveButton = (props: SaveButtonProps) => {
     const type = submitOnEnter ? 'submit' : 'button';
     const displayedLabel = label && translate(label, { _: label });
     return (
-        <Button
-            className={classnames(classes.button, className)}
+        <StyledButton
+            className={classnames(SaveButtonClasses.button, className)}
             variant={variant}
             type={type}
             onClick={handleClick}
-            color={saving ? 'default' : 'primary'}
+            // TODO: find a way to display the loading state (LoadingButton from mui Lab?)
+            // This is because the "default" color does not exist anymore
+            color="primary"
             aria-label={displayedLabel}
             disabled={disabled}
             {...sanitizeButtonRestProps(rest)}
@@ -160,34 +162,22 @@ const SaveButton = (props: SaveButtonProps) => {
                 <CircularProgress
                     size={18}
                     thickness={2}
-                    className={classes.leftIcon}
+                    className={SaveButtonClasses.leftIcon}
                 />
             ) : (
                 cloneElement(icon, {
-                    className: classnames(classes.leftIcon, classes.icon),
+                    className: classnames(
+                        SaveButtonClasses.leftIcon,
+                        SaveButtonClasses.icon
+                    ),
                 })
             )}
             {displayedLabel}
-        </Button>
+        </StyledButton>
     );
 };
 
 const defaultIcon = <ContentSave />;
-
-const useStyles = makeStyles(
-    theme => ({
-        button: {
-            position: 'relative',
-        },
-        leftIcon: {
-            marginRight: theme.spacing(1),
-        },
-        icon: {
-            fontSize: 18,
-        },
-    }),
-    { name: 'RaSaveButton' }
-);
 
 interface Props {
     classes?: object;
@@ -214,7 +204,7 @@ interface Props {
     handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
     record?: Record;
     resource?: string;
-    undoable?: boolean;
+    mutationMode?: MutationMode;
 }
 
 export type SaveButtonProps = Props & ButtonProps;
@@ -238,4 +228,24 @@ SaveButton.propTypes = {
     icon: PropTypes.element,
 };
 
-export default SaveButton;
+const PREFIX = 'RaSaveButton';
+
+export const SaveButtonClasses = {
+    button: `${PREFIX}-button`,
+    leftIcon: `${PREFIX}-leftIcon`,
+    icon: `${PREFIX}-icon`,
+};
+
+const StyledButton = styled(Button, { name: PREFIX })(({ theme }) => ({
+    [`&.${SaveButtonClasses.button}`]: {
+        position: 'relative',
+    },
+
+    [`& .${SaveButtonClasses.leftIcon}`]: {
+        marginRight: theme.spacing(1),
+    },
+
+    [`& .${SaveButtonClasses.icon}`]: {
+        fontSize: 18,
+    },
+}));

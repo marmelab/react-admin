@@ -10,12 +10,12 @@ import {
     useResourceContext,
     useResourceDefinition,
 } from 'ra-core';
-import { ToolbarProps } from '@material-ui/core';
+import { ToolbarProps } from '@mui/material';
 
 import TopToolbar from '../layout/TopToolbar';
 import { CreateButton, ExportButton } from '../button';
 import { FilterContext } from './FilterContext';
-import FilterButton from './filter/FilterButton';
+import { FilterButton } from './filter';
 
 /**
  * Action Toolbar for the List view
@@ -26,7 +26,7 @@ import FilterButton from './filter/FilterButton';
  *
  * @example
  *     import { cloneElement } from 'react';
- *     import Button from '@material-ui/core/Button';
+ *     import Button from '@mui/material/Button';
  *     import { TopToolbar, List, CreateButton, ExportButton } from 'react-admin';
  *
  *     const PostListActions = ({ basePath, filters }) => (
@@ -45,13 +45,12 @@ import FilterButton from './filter/FilterButton';
  *         </List>
  *     );
  */
-const ListActions = (props: ListActionsProps) => {
+export const ListActions = (props: ListActionsProps) => {
     const { className, exporter, filters: filtersProp, ...rest } = props;
     const {
         currentSort,
         displayedFilters,
         filterValues,
-        basePath,
         selectedIds,
         showFilter,
         total,
@@ -71,7 +70,7 @@ const ListActions = (props: ListActionsProps) => {
                           context: 'button',
                       })
                     : filters && <FilterButton />}
-                {hasCreate && <CreateButton basePath={basePath} />}
+                {hasCreate && <CreateButton />}
                 {exporter !== false && (
                     <ExportButton
                         disabled={total === 0}
@@ -87,7 +86,6 @@ const ListActions = (props: ListActionsProps) => {
 };
 
 ListActions.propTypes = {
-    basePath: PropTypes.string,
     className: PropTypes.string,
     currentSort: PropTypes.any,
     displayedFilters: PropTypes.object,
@@ -123,5 +121,3 @@ export interface ListActionsProps extends ToolbarProps {
     showFilter?: (filterName: string, defaultValue: any) => void;
     total?: number;
 }
-
-export default ListActions;

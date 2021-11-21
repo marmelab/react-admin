@@ -38,7 +38,6 @@ Here are all the props accepted by the component:
 - [`theme`](#theme)
 - [`layout`](#layout)
 - [`customReducers`](#customreducers)
-- [`customSagas`](#customsagas)
 - [`customRoutes`](#customroutes)
 - [`loginPage`](#loginpage)
 - [`logoutButton`](#logoutbutton)
@@ -68,7 +67,7 @@ The `dataProvider` is also the ideal place to add custom HTTP headers, authentic
 
 ## `authProvider`
 
-The `authProvider` prop expect an object with 5 methods, each returning a Promise, to control the authentication strategy:
+The `authProvider` prop expect an object with 6 methods, each returning a Promise, to control the authentication strategy:
 
 ```jsx
 const authProvider = {
@@ -76,6 +75,7 @@ const authProvider = {
     logout: params => Promise.resolve(),
     checkAuth: params => Promise.resolve(),
     checkError: error => Promise.resolve(),
+    getIdentity: params => Promise.resolve(),
     getPermissions: params => Promise.resolve(),
 };
 
@@ -218,7 +218,6 @@ import { createElement } from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
 import { MenuItemLink, getResources } from 'react-admin';
-import { withRouter } from 'react-router-dom';
 import LabelIcon from '@material-ui/icons/Label';
 
 const Menu = ({ onMenuClick, logout }) => {
@@ -249,7 +248,7 @@ const Menu = ({ onMenuClick, logout }) => {
     );
 }
 
-export default withRouter(Menu);
+export default Menu;
 ```
 
 **Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views. It supports a custom text and icon (which must be a material-ui `<SvgIcon>`).
@@ -384,42 +383,6 @@ Now the state will look like:
     "routing": { /*...*/ }, // used by connected-react-router
     "bitcoinRate": 123, // managed by rateReducer
 }
-```
-
-## `customSagas`
-
-The `<Admin>` app uses [redux-saga](https://github.com/redux-saga/redux-saga) to handle side effects (AJAX calls, notifications, redirections, etc).
-
-If your components dispatch custom actions, you probably need to register your own side effects as sagas. Let's imagine that you want to show a notification whenever the `BITCOIN_RATE_RECEIVED` action is dispatched. You probably have a saga looking like the following:
-
-```jsx
-// in src/bitcoinSaga.js
-import { put, takeEvery } from 'redux-saga/effects';
-import { showNotification } from 'react-admin';
-
-export default function* bitcoinSaga() {
-    yield takeEvery('BITCOIN_RATE_RECEIVED', function* () {
-        yield put(showNotification('Bitcoin rate updated'));
-    })
-}
-```
-
-To register this saga in the `<Admin>` app, simply pass it in the `customSagas` prop:
-
-```jsx
-// in src/App.js
-import * as React from "react";
-import { Admin } from 'react-admin';
-
-import bitcoinSaga from './bitcoinSaga';
-
-const App = () => (
-    <Admin customSagas={[ bitcoinSaga ]} dataProvider={simpleRestProvider('http://path.to.my.api')}>
-        ...
-    </Admin>
-);
-
-export default App;
 ```
 
 ## `customRoutes`

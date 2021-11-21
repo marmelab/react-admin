@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { Field, Form } from 'react-final-form';
 import {
@@ -6,58 +7,15 @@ import {
     CardActions,
     CircularProgress,
     TextField,
-} from '@material-ui/core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+} from '@mui/material';
 import { useTranslate, useLogin, useNotify, useSafeSetState } from 'ra-core';
 
-interface Props {
-    redirectTo?: string;
-}
-
-interface FormData {
-    username: string;
-    password: string;
-}
-
-const useStyles = makeStyles(
-    (theme: Theme) => ({
-        form: {
-            padding: '0 1em 1em 1em',
-        },
-        input: {
-            marginTop: '1em',
-        },
-        button: {
-            width: '100%',
-        },
-        icon: {
-            marginRight: theme.spacing(1),
-        },
-    }),
-    { name: 'RaLoginForm' }
-);
-
-const Input = ({
-    meta: { touched, error }, // eslint-disable-line react/prop-types
-    input: inputProps, // eslint-disable-line react/prop-types
-    ...props
-}) => (
-    <TextField
-        error={!!(touched && error)}
-        helperText={touched && error}
-        {...inputProps}
-        {...props}
-        fullWidth
-    />
-);
-
-const LoginForm = (props: Props) => {
+export const LoginForm = (props: LoginFormProps) => {
     const { redirectTo } = props;
     const [loading, setLoading] = useSafeSetState(false);
     const login = useLogin();
     const translate = useTranslate();
     const notify = useNotify();
-    const classes = useStyles(props);
 
     const validate = (values: FormData) => {
         const errors = { username: undefined, password: undefined };
@@ -103,9 +61,9 @@ const LoginForm = (props: Props) => {
             onSubmit={submit}
             validate={validate}
             render={({ handleSubmit }) => (
-                <form onSubmit={handleSubmit} noValidate>
-                    <div className={classes.form}>
-                        <div className={classes.input}>
+                <Root onSubmit={handleSubmit} noValidate>
+                    <div className={LoginFormClasses.form}>
+                        <div className={LoginFormClasses.input}>
                             <Field
                                 autoFocus
                                 id="username"
@@ -115,7 +73,7 @@ const LoginForm = (props: Props) => {
                                 disabled={loading}
                             />
                         </div>
-                        <div className={classes.input}>
+                        <div className={LoginFormClasses.input}>
                             <Field
                                 id="password"
                                 name="password"
@@ -133,11 +91,11 @@ const LoginForm = (props: Props) => {
                             type="submit"
                             color="primary"
                             disabled={loading}
-                            className={classes.button}
+                            className={LoginFormClasses.button}
                         >
                             {loading && (
                                 <CircularProgress
-                                    className={classes.icon}
+                                    className={LoginFormClasses.icon}
                                     size={18}
                                     thickness={2}
                                 />
@@ -145,14 +103,62 @@ const LoginForm = (props: Props) => {
                             {translate('ra.auth.sign_in')}
                         </Button>
                     </CardActions>
-                </form>
+                </Root>
             )}
         />
     );
 };
 
+const PREFIX = 'RaLoginForm';
+
+export const LoginFormClasses = {
+    form: `${PREFIX}-form`,
+    input: `${PREFIX}-input`,
+    button: `${PREFIX}-button`,
+    icon: `${PREFIX}-icon`,
+};
+
+const Root = styled('form', { name: 'RaLoginForm' })(({ theme }) => ({
+    [`& .${LoginFormClasses.form}`]: {
+        padding: '0 1em 1em 1em',
+    },
+
+    [`& .${LoginFormClasses.input}`]: {
+        marginTop: '1em',
+    },
+
+    [`& .${LoginFormClasses.button}`]: {
+        width: '100%',
+    },
+
+    [`& .${LoginFormClasses.icon}`]: {
+        marginRight: theme.spacing(1),
+    },
+}));
+
+export interface LoginFormProps {
+    redirectTo?: string;
+}
+
+interface FormData {
+    username: string;
+    password: string;
+}
+
+const Input = ({
+    meta: { touched, error }, // eslint-disable-line react/prop-types
+    input: inputProps, // eslint-disable-line react/prop-types
+    ...props
+}) => (
+    <TextField
+        error={!!(touched && error)}
+        helperText={touched && error}
+        {...inputProps}
+        {...props}
+        fullWidth
+    />
+);
+
 LoginForm.propTypes = {
     redirectTo: PropTypes.string,
 };
-
-export default LoginForm;

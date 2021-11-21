@@ -24,6 +24,18 @@ describe('notifications reducer', () => {
             })
         );
     });
+    it('should set multiLine when passed in payload', () => {
+        expect([{ message: 'test', type: 'info', multiLine: true }]).toEqual(
+            reducer(undefined, {
+                type: SHOW_NOTIFICATION,
+                payload: {
+                    message: 'test',
+                    type: 'info',
+                    multiLine: true,
+                },
+            })
+        );
+    });
     it('should set text and type upon SHOW_NOTIFICATION', () => {
         expect([{ message: 'foo', type: 'warning' }]).toEqual(
             reducer(undefined, {

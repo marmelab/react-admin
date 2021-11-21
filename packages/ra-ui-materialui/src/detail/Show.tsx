@@ -1,12 +1,7 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import {
-    ShowContextProvider,
-    ResourceContextProvider,
-    useCheckMinimumRequiredProps,
-    useShowController,
-} from 'ra-core';
+import { ShowBase, ResourceContextProvider, Record } from 'ra-core';
 
 import { ShowProps } from '../types';
 import { ShowView } from './ShowView';
@@ -14,18 +9,14 @@ import { ShowView } from './ShowView';
 /**
  * Page component for the Show view
  *
- * The `<Show>` component renders the page title and actions,
- * fetches the record from the data provider.
- * It is not responsible for rendering the actual form -
- * that's the job of its child component (usually `<SimpleShowLayout>`),
- * to which it passes the `record` as prop.
+ * The `<Show>` component handles the headless logic of the Show page:
+ * - it calls useShowcontroller to fetch the record from the data provider,
+ * - it creates a ShowContext and a RecordContext,
+ * - it computes the default page title
+ * - it renders the page layout with the correct title and actions
  *
- * The <Show> component accepts the following props:
- *
- * - actions
- * - aside
- * - component
- * - title
+ * `<Show>` is not responsible for rendering the actual page -
+ * that's the job of its child component (usually `<SimpleShowLayout>`).
  *
  * @example
  *
@@ -33,8 +24,8 @@ import { ShowView } from './ShowView';
  * import * as React from "react";
  * import { Show, SimpleShowLayout, TextField } from 'react-admin';
  *
- * export const PostShow = (props) => (
- *     <Show {...props}>
+ * export const PostShow = () => (
+ *     <Show>
  *         <SimpleShowLayout>
  *             <TextField source="title" />
  *         </SimpleShowLayout>
@@ -53,38 +44,40 @@ import { ShowView } from './ShowView';
  *     </Admin>
  * );
  * export default App;
+ *
+ * @param {ShowProps} props
+ * @param {ReactElement|false} props.actions An element to display above the page content, or false to disable actions.
+ * @param {string} props.className A className to apply to the page content.
+ * @param {ElementType} props.component The component to use as root component (div by default).
+ * @param {boolean} props.emptyWhileLoading Do not display the page content while loading the initial data.
+ * @param {string} props.id The id of the resource to display (grabbed from the route params if not defined).
+ * @param {Object} props.queryClient Options to pass to the react-query useQuery hook.
+ * @param {string} props.resource The resource to fetch from the data provider (grabbed from the ResourceContext if not defined).
+ * @param {Object} props.sx Custom style object.
+ * @param {ElementType|string} props.title The title of the page. Defaults to `#{resource} #${id}`.
+ *
+ * @see ShowView for the actual rendering
  */
-export const Show = (
-    props: ShowProps & { children: ReactElement }
-): ReactElement => {
-    useCheckMinimumRequiredProps('Show', ['children'], props);
-    const controllerProps = useShowController(props);
-    const body = (
-        <ShowContextProvider value={controllerProps}>
-            <ShowView {...props} {...controllerProps} />
-        </ShowContextProvider>
-    );
-    return props.resource ? (
-        // support resource override via props
-        <ResourceContextProvider value={props.resource}>
-            {body}
-        </ResourceContextProvider>
-    ) : (
-        body
-    );
-};
+export const Show = <RecordType extends Record = Record>({
+    id,
+    resource,
+    queryOptions,
+    ...rest
+}: ShowProps<RecordType>): ReactElement => (
+    <ResourceContextProvider value={resource}>
+        <ShowBase<RecordType> id={id} queryOptions={queryOptions}>
+            <ShowView {...rest} />
+        </ShowBase>
+    </ResourceContextProvider>
+);
 
 Show.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    aside: PropTypes.element,
-    children: PropTypes.element,
-    classes: PropTypes.object,
+    children: PropTypes.node.isRequired,
     className: PropTypes.string,
-    hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasList: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    id: PropTypes.any.isRequired,
+    emptyWhileLoading: PropTypes.bool,
+    component: PropTypes.elementType,
     resource: PropTypes.string,
     title: PropTypes.node,
+    sx: PropTypes.any,
 };

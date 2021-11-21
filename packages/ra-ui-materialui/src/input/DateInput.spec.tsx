@@ -6,7 +6,7 @@ import { required, FormWithRedirect } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 import format from 'date-fns/format';
 
-import DateInput from './DateInput';
+import { DateInput } from './DateInput';
 import { FormApi } from 'final-form';
 
 describe('<DateInput />', () => {
@@ -155,7 +155,7 @@ describe('<DateInput />', () => {
         fireEvent.change(input, {
             target: { value: '' },
         });
-        // uncommenting this line mak sthe test fail, cf https://github.com/marmelab/react-admin/issues/6573
+        // Uncommenting this line makes the test fail, cf https://github.com/marmelab/react-admin/issues/6573
         // fireEvent.blur(input);
         expect(formApi.getState().values.publishedAt).toBeNull();
     });

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import ChipField from './ChipField';
+import { ChipField } from './ChipField';
 import { render } from '@testing-library/react';
 import { RecordContextProvider } from 'ra-core';
 

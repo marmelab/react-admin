@@ -2,10 +2,11 @@ import * as React from 'react';
 import expect from 'expect';
 import { SaveContextProvider, SideEffectContextProvider } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
-
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { TabbedForm } from './TabbedForm';
 import { FormTab } from './FormTab';
-import TextInput from '../input/TextInput';
+import { TextInput } from '../input';
+import { defaultTheme } from '../defaultTheme';
 
 describe('<FormTab label="foo" />', () => {
     const saveContextValue = {
@@ -17,31 +18,35 @@ describe('<FormTab label="foo" />', () => {
 
     it('should display <Toolbar />', () => {
         const { queryByLabelText } = renderWithRedux(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffectValue}>
-                    <TabbedForm>
-                        <FormTab label="foo">
-                            <TextInput source="name" />
-                            <TextInput source="city" />
-                        </FormTab>
-                    </TabbedForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
+            <ThemeProvider theme={createTheme(defaultTheme)}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <TabbedForm>
+                            <FormTab label="foo">
+                                <TextInput source="name" />
+                                <TextInput source="city" />
+                            </FormTab>
+                        </TabbedForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
         );
         expect(queryByLabelText('ra.action.save')).not.toBeNull();
     });
 
     it('should not alter default margin or variant', () => {
         const { queryByLabelText } = renderWithRedux(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffectValue}>
-                    <TabbedForm>
-                        <FormTab label="foo">
-                            <TextInput source="name" />
-                        </FormTab>
-                    </TabbedForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
+            <ThemeProvider theme={createTheme(defaultTheme)}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <TabbedForm>
+                            <FormTab label="foo">
+                                <TextInput source="name" />
+                            </FormTab>
+                        </TabbedForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
         );
         const inputElement = queryByLabelText(
             'resources.undefined.fields.name'
@@ -57,42 +62,44 @@ describe('<FormTab label="foo" />', () => {
 
         const record = { id: 'gazebo', name: 'foo' };
         const { container } = renderWithRedux(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffectValue}>
-                    <TabbedForm>
-                        <FormTab
-                            label="First"
-                            basePath="/posts"
-                            resource="posts"
-                            record={record}
-                            margin="none"
-                            variant="standard"
-                        >
-                            <TextInput source="name" />
-                        </FormTab>
-                        <FormTab
-                            label="Second"
-                            basePath="/posts"
-                            resource="posts"
-                            record={record}
-                            margin="dense"
-                            variant="filled"
-                        >
-                            <TextInput source="name" />
-                        </FormTab>
-                        <FormTab
-                            label="Third"
-                            basePath="/posts"
-                            resource="posts"
-                            record={record}
-                            margin="normal"
-                            variant="outlined"
-                        >
-                            <TextInput source="name" />
-                        </FormTab>
-                    </TabbedForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
+            <ThemeProvider theme={createTheme(defaultTheme)}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <TabbedForm>
+                            <FormTab
+                                label="First"
+                                basePath="/posts"
+                                resource="posts"
+                                record={record}
+                                margin="none"
+                                variant="standard"
+                            >
+                                <TextInput source="name" />
+                            </FormTab>
+                            <FormTab
+                                label="Second"
+                                basePath="/posts"
+                                resource="posts"
+                                record={record}
+                                margin="dense"
+                                variant="filled"
+                            >
+                                <TextInput source="name" />
+                            </FormTab>
+                            <FormTab
+                                label="Third"
+                                basePath="/posts"
+                                resource="posts"
+                                record={record}
+                                margin="normal"
+                                variant="outlined"
+                            >
+                                <TextInput source="name" />
+                            </FormTab>
+                        </TabbedForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
         );
         expect(spy).not.toHaveBeenCalled();
         expect(container).not.toBeNull();
@@ -102,15 +109,21 @@ describe('<FormTab label="foo" />', () => {
 
     it('should pass variant and margin to child inputs', () => {
         const { queryByLabelText } = renderWithRedux(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffectValue}>
-                    <TabbedForm>
-                        <FormTab label="foo" variant="outlined" margin="normal">
-                            <TextInput source="name" />
-                        </FormTab>
-                    </TabbedForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
+            <ThemeProvider theme={createTheme(defaultTheme)}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <TabbedForm>
+                            <FormTab
+                                label="foo"
+                                variant="outlined"
+                                margin="normal"
+                            >
+                                <TextInput source="name" />
+                            </FormTab>
+                        </TabbedForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
         );
         const inputElement = queryByLabelText(
             'resources.undefined.fields.name'
@@ -123,19 +136,25 @@ describe('<FormTab label="foo" />', () => {
 
     it('should allow input children to override variant and margin', () => {
         const { queryByLabelText } = renderWithRedux(
-            <SaveContextProvider value={saveContextValue}>
-                <SideEffectContextProvider value={sideEffectValue}>
-                    <TabbedForm>
-                        <FormTab label="foo" variant="standard" margin="none">
-                            <TextInput
-                                source="name"
-                                variant="outlined"
-                                margin="normal"
-                            />
-                        </FormTab>
-                    </TabbedForm>
-                </SideEffectContextProvider>
-            </SaveContextProvider>
+            <ThemeProvider theme={createTheme(defaultTheme)}>
+                <SaveContextProvider value={saveContextValue}>
+                    <SideEffectContextProvider value={sideEffectValue}>
+                        <TabbedForm>
+                            <FormTab
+                                label="foo"
+                                variant="standard"
+                                margin="none"
+                            >
+                                <TextInput
+                                    source="name"
+                                    variant="outlined"
+                                    margin="normal"
+                                />
+                            </FormTab>
+                        </TabbedForm>
+                    </SideEffectContextProvider>
+                </SaveContextProvider>
+            </ThemeProvider>
         );
         const inputElement = queryByLabelText(
             'resources.undefined.fields.name'

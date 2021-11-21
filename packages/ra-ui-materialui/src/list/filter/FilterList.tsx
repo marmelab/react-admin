@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { Box, Typography, List } from '@material-ui/core';
+import { Box, Typography, List } from '@mui/material';
 import { useTranslate } from 'ra-core';
 
 /**
@@ -16,8 +16,8 @@ import { useTranslate } from 'ra-core';
  * @example
  *
  * import * as React from 'react';
- * import { Card, CardContent } from '@material-ui/core';
- * import MailIcon from '@material-ui/icons/MailOutline';
+ * import { Card, CardContent } from '@mui/material';
+ * import MailIcon from '@mui/icons-material/MailOutline';
  * import { FilterList, FilterListItem } from 'react-admin';
  *
  * const FilterSidebar = () => (
@@ -40,7 +40,7 @@ import { useTranslate } from 'ra-core';
  *     </Card>
  * );
  */
-const FilterList = (props: {
+export const FilterList = (props: {
     label: string;
     icon: ReactNode;
     children: ReactNode;
@@ -59,5 +59,3 @@ const FilterList = (props: {
         </>
     );
 };
-
-export default FilterList;

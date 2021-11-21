@@ -5,7 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import WithPermissions from '../auth/WithPermissions';
 import { registerResource, unregisterResource } from '../actions';
-import { ResourceProps, ResourceMatch, ReduxState } from '../types';
+import { ResourceProps, ReduxState } from '../types';
 import { ResourceContextProvider } from './ResourceContextProvider';
 
 const defaultOptions = {};
@@ -56,18 +56,6 @@ const ResourceRoutes = (props: ResourceProps) => {
 
     const basePath = match ? match.path : '';
 
-    const resourceData = useMemo(
-        () => ({
-            resource: name,
-            options,
-            hasList: !!list,
-            hasEdit: !!edit,
-            hasShow: !!show,
-            hasCreate: !!create,
-        }),
-        [name, options, create, edit, list, show]
-    );
-
     // match tends to change even on the same route ; using memo to avoid an extra render
     return useMemo(() => {
         // if the registration hasn't finished, no need to render
@@ -79,65 +67,24 @@ const ResourceRoutes = (props: ResourceProps) => {
             <ResourceContextProvider value={name}>
                 <Switch>
                     {create && (
-                        <Route
-                            path={`${basePath}/create`}
-                            render={routeProps => (
-                                <WithPermissions
-                                    component={create}
-                                    basePath={basePath}
-                                    {...routeProps}
-                                    {...resourceData}
-                                />
-                            )}
-                        />
+                        <Route path={`${basePath}/create`}>
+                            <WithPermissions component={create} />
+                        </Route>
                     )}
                     {show && (
-                        <Route
-                            path={`${basePath}/:id/show`}
-                            render={routeProps => (
-                                <WithPermissions
-                                    component={show}
-                                    basePath={basePath}
-                                    id={decodeURIComponent(
-                                        (routeProps.match as ResourceMatch)
-                                            .params.id
-                                    )}
-                                    {...routeProps}
-                                    {...resourceData}
-                                />
-                            )}
-                        />
+                        <Route path={`${basePath}/:id/show`}>
+                            <WithPermissions component={show} />
+                        </Route>
                     )}
                     {edit && (
-                        <Route
-                            path={`${basePath}/:id`}
-                            render={routeProps => (
-                                <WithPermissions
-                                    component={edit}
-                                    basePath={basePath}
-                                    id={decodeURIComponent(
-                                        (routeProps.match as ResourceMatch)
-                                            .params.id
-                                    )}
-                                    {...routeProps}
-                                    {...resourceData}
-                                />
-                            )}
-                        />
+                        <Route path={`${basePath}/:id`}>
+                            <WithPermissions component={edit} />
+                        </Route>
                     )}
                     {list && (
-                        <Route
-                            path={`${basePath}`}
-                            render={routeProps => (
-                                <WithPermissions
-                                    component={list}
-                                    basePath={basePath}
-                                    {...routeProps}
-                                    {...resourceData}
-                                    syncWithLocation
-                                />
-                            )}
-                        />
+                        <Route path={`${basePath}`}>
+                            <WithPermissions component={list} />
+                        </Route>
                     )}
                 </Switch>
             </ResourceContextProvider>

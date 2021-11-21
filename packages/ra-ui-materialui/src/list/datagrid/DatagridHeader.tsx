@@ -8,13 +8,13 @@ import {
     Record,
     RecordMap,
     SortPayload,
+    useTranslate,
 } from 'ra-core';
-import { Checkbox, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { Checkbox, TableCell, TableHead, TableRow } from '@mui/material';
 import classnames from 'classnames';
 
 import DatagridHeaderCell from './DatagridHeaderCell';
-import useDatagridStyles from './useDatagridStyles';
-import { ClassesOverride } from '../../types';
+import { DatagridClasses } from './useDatagridStyles';
 
 /**
  * The default Datagrid Header component.
@@ -24,13 +24,13 @@ import { ClassesOverride } from '../../types';
 export const DatagridHeader = (props: DatagridHeaderProps) => {
     const {
         children,
-        classes,
         className,
         hasExpand = false,
         hasBulkActions = false,
         isRowSelectable,
     } = props;
     const resource = useResourceContext(props);
+    const translate = useTranslate();
     const {
         currentSort,
         data,
@@ -81,23 +81,31 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
         : ids;
 
     return (
-        <TableHead className={classnames(className, classes.thead)}>
-            <TableRow className={classnames(classes.row, classes.headerRow)}>
+        <TableHead className={classnames(className, DatagridClasses.thead)}>
+            <TableRow
+                className={classnames(
+                    DatagridClasses.row,
+                    DatagridClasses.headerRow
+                )}
+            >
                 {hasExpand && (
                     <TableCell
                         padding="none"
                         className={classnames(
-                            classes.headerCell,
-                            classes.expandHeader
+                            DatagridClasses.headerCell,
+                            DatagridClasses.expandHeader
                         )}
                     />
                 )}
                 {hasBulkActions && selectedIds && (
                     <TableCell
                         padding="checkbox"
-                        className={classes.headerCell}
+                        className={DatagridClasses.headerCell}
                     >
                         <Checkbox
+                            aria-label={translate('ra.action.select_all', {
+                                _: 'Select all',
+                            })}
                             className="select-all"
                             color="primary"
                             checked={
@@ -114,7 +122,7 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                 {Children.map(children, (field, index) =>
                     isValidElement(field) ? (
                         <DatagridHeaderCell
-                            className={classes.headerCell}
+                            className={DatagridClasses.headerCell}
                             currentSort={currentSort}
                             field={field}
                             isSorting={
@@ -135,7 +143,6 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
 
 DatagridHeader.propTypes = {
     children: PropTypes.node,
-    classes: PropTypes.object,
     className: PropTypes.string,
     currentSort: PropTypes.exact({
         field: PropTypes.string,
@@ -156,7 +163,6 @@ DatagridHeader.propTypes = {
 
 export interface DatagridHeaderProps<RecordType extends Record = Record> {
     children?: React.ReactNode;
-    classes?: ClassesOverride<typeof useDatagridStyles>;
     className?: string;
     hasExpand?: boolean;
     hasBulkActions?: boolean;

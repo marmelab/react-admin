@@ -11,8 +11,8 @@ import {
     ResourceContextProvider,
 } from 'ra-core';
 
-import sanitizeInputRestProps from './sanitizeInputRestProps';
-import ReferenceError from './ReferenceError';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
+import { ReferenceError } from './ReferenceError';
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -93,7 +93,7 @@ import ReferenceError from './ReferenceError';
  *     <AutocompleteInput optionText="title" />
  * </ReferenceInput>
  */
-const ReferenceInput = (props: ReferenceInputProps) => {
+export const ReferenceInput = (props: ReferenceInputProps) => {
     const {
         format,
         onBlur,
@@ -153,7 +153,6 @@ export interface ReferenceInputProps extends InputProps {
     allowEmpty?: boolean;
     basePath?: string;
     children: ReactElement;
-    classes?: any;
     className?: string;
     filterToQuery?: (filter: string) => any;
     label?: string;
@@ -162,6 +161,7 @@ export interface ReferenceInputProps extends InputProps {
     // @deprecated
     referenceSource?: (resource: string, source: string) => string;
     resource?: string;
+    enableGetChoices?: (filters: any) => boolean;
     [key: string]: any;
 }
 
@@ -190,7 +190,6 @@ export const ReferenceInputView = (props: ReferenceInputViewProps) => {
         basePath,
         children,
         choices,
-        classes,
         className,
         error,
         helperText,
@@ -243,7 +242,6 @@ export const ReferenceInputView = (props: ReferenceInputViewProps) => {
             <ListContextProvider value={possibleValues}>
                 {cloneElement(children, {
                     allowEmpty,
-                    classes,
                     className,
                     input,
                     isRequired,
@@ -264,5 +262,3 @@ export const ReferenceInputView = (props: ReferenceInputViewProps) => {
         </ResourceContextProvider>
     );
 };
-
-export default ReferenceInput;

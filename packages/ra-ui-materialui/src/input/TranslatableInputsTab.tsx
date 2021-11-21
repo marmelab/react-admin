@@ -1,9 +1,9 @@
 import React from 'react';
-import Tab, { TabProps } from '@material-ui/core/Tab';
+import { styled } from '@mui/material/styles';
+import Tab, { TabProps } from '@mui/material/Tab';
 import { useFormGroup, useTranslate } from 'ra-core';
-import { makeStyles } from '@material-ui/core/styles';
-import { ClassesOverride } from '../types';
 import { capitalize } from 'inflection';
+import classnames from 'classnames';
 
 /**
  * Single tab that selects a locale in a TranslatableInputs component.
@@ -12,40 +12,45 @@ import { capitalize } from 'inflection';
 export const TranslatableInputsTab = (
     props: TranslatableInputsTabProps & TabProps
 ) => {
-    const { groupKey = '', locale, classes: classesOverride, ...rest } = props;
+    const { groupKey = '', locale, ...rest } = props;
     const { invalid, touched } = useFormGroup(`${groupKey}${locale}`);
 
-    const classes = useStyles(props);
     const translate = useTranslate();
 
     return (
-        <Tab
+        <StyledTab
             id={`translatable-header-${groupKey}${locale}`}
             label={translate(`ra.locales.${locale}`, {
                 _: capitalize(locale),
             })}
-            className={`${classes.root} ${
-                invalid && touched ? classes.error : ''
-            }`}
+            className={classnames(TranslatableInputsTabClasses.root, {
+                [TranslatableInputsTabClasses.error]: invalid && touched,
+            })}
             {...rest}
         />
     );
 };
 
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            fontSize: '0.8em',
-            minHeight: theme.spacing(3),
-            minWidth: theme.spacing(6),
-        },
-        error: { color: theme.palette.error.main },
-    }),
-    { name: 'RaTranslatableInputsTab' }
-);
-
-interface TranslatableInputsTabProps {
-    classes?: ClassesOverride<typeof useStyles>;
+export interface TranslatableInputsTabProps {
     groupKey?: string;
     locale: string;
 }
+
+const PREFIX = 'RaTranslatableInputsTab';
+
+export const TranslatableInputsTabClasses = {
+    root: `${PREFIX}-root`,
+    error: `${PREFIX}-error`,
+};
+
+const StyledTab = styled(Tab, { name: PREFIX })(({ theme }) => ({
+    [`&.${TranslatableInputsTabClasses.root}`]: {
+        fontSize: '0.8em',
+        minHeight: theme.spacing(3),
+        minWidth: theme.spacing(6),
+    },
+
+    [`& .${TranslatableInputsTabClasses.error}`]: {
+        color: theme.palette.error.main,
+    },
+}));

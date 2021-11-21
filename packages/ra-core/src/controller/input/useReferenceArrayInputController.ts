@@ -10,7 +10,7 @@ import { useTranslate } from '../../i18n';
 import { getStatusForArrayInput as getDataStatus } from './referenceDataStatus';
 import { useResourceContext } from '../../core';
 import { usePaginationState, useSortState } from '..';
-import { ListControllerProps } from '../useListController';
+import { ListControllerProps } from '../list';
 import { indexById, removeEmpty, useSafeSetState } from '../../util';
 import { ReferenceArrayInputContextValue } from './ReferenceArrayInputContext';
 
@@ -51,6 +51,7 @@ export const useReferenceArrayInputController = (
         options,
         reference,
         source,
+        enableGetChoices,
     } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
@@ -59,7 +60,7 @@ export const useReferenceArrayInputController = (
     // only the missing references when the input value changes
     const inputValue = useRef(input.value);
     const [idsToFetch, setIdsToFetch] = useState(input.value);
-    const [idsToGetFromStore, setIdsToGetFromStore] = useState([]);
+    const [idsToGetFromStore, setIdsToGetFromStore] = useState(EmptyArray);
     const referenceRecordsFromStore = useSelector((state: ReduxState) =>
         idsToGetFromStore.map(id => state.admin.resources[reference].data[id])
     );
@@ -121,18 +122,23 @@ export const useReferenceArrayInputController = (
     const form = useForm();
     const onSelect = useCallback(
         (newIds: Identifier[]) => {
+            // This could happen when user unselect all items using the datagrid for instance
+            if (newIds.length === 0) {
+                form.change(input.name, EmptyArray);
+                return;
+            }
+
             const newValue = new Set(input.value);
             newIds.forEach(newId => {
                 newValue.add(newId);
             });
-
             form.change(input.name, Array.from(newValue));
         },
-        [form, input.name, input.value]
+        [form, input.value, input.name]
     );
 
     const onUnselectItems = useCallback(() => {
-        form.change(input.name, []);
+        form.change(input.name, EmptyArray);
     }, [form, input.name]);
 
     const onToggleItem = useCallback(
@@ -244,7 +250,7 @@ export const useReferenceArrayInputController = (
         data: referenceRecordsFetched,
         loaded,
         refetch: refetchGetMany,
-    } = useGetMany(reference, idsToFetch || []);
+    } = useGetMany(reference, idsToFetch || EmptyArray);
 
     const referenceRecords = referenceRecordsFetched
         ? referenceRecordsFetched.concat(referenceRecordsFromStore)
@@ -253,6 +259,9 @@ export const useReferenceArrayInputController = (
     // filter out not found references - happens when the dataProvider doesn't guarantee referential integrity
     const finalReferenceRecords = referenceRecords.filter(Boolean);
 
+    const isGetMatchingEnabled = enableGetChoices
+        ? enableGetChoices(finalFilter)
+        : true;
     const {
         data: matchingReferences,
         ids: matchingReferencesIds,
@@ -266,6 +275,8 @@ export const useReferenceArrayInputController = (
         source,
         resource,
         options
+            ? { ...options, enabled: isGetMatchingEnabled }
+            : { enabled: isGetMatchingEnabled }
     );
 
     // We merge the currently selected records with the matching ones, otherwise
@@ -306,7 +317,7 @@ export const useReferenceArrayInputController = (
         hideFilter,
         // For the ListContext, we don't want to always display the selected items first.
         // Indeed it wouldn't work well regarding sorting and pagination
-        ids: matchingReferencesIds || [],
+        ids: matchingReferencesIds || EmptyArray,
         loaded,
         loading: dataStatus.waiting,
         onSelect,
@@ -316,7 +327,7 @@ export const useReferenceArrayInputController = (
         perPage,
         refetch,
         resource,
-        selectedIds: input.value,
+        selectedIds: input.value || EmptyArray,
         setFilter,
         setFilters,
         setPage,
@@ -329,6 +340,8 @@ export const useReferenceArrayInputController = (
         total,
     };
 };
+
+const EmptyArray = [];
 
 // concatenate and deduplicate two lists of records
 const mergeReferences = (ref1: Record[], ref2: Record[]): Record[] => {
@@ -356,6 +369,7 @@ export interface UseReferenceArrayInputOptions {
     resource?: string;
     sort?: SortPayload;
     source: string;
+    enableGetChoices?: (filters: any) => boolean;
 }
 
 const defaultFilterToQuery = searchText => ({ q: searchText });

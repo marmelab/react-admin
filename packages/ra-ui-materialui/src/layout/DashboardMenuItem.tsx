@@ -1,11 +1,11 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import DashboardIcon from '@material-ui/icons/Dashboard';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import { useTranslate } from 'ra-core';
 
-import MenuItemLink from './MenuItemLink';
+import { MenuItemLink } from './MenuItemLink';
 
-const DashboardMenuItem = (props: DashboardMenuItemProps) => {
+export const DashboardMenuItem = (props: DashboardMenuItemProps) => {
     const { locale, ...rest } = props;
     const translate = useTranslate();
     return (
@@ -37,5 +37,3 @@ DashboardMenuItem.propTypes = {
     dense: PropTypes.bool,
     sidebarIsOpen: PropTypes.bool,
 };
-
-export default DashboardMenuItem;

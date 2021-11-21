@@ -1,0 +1,30 @@
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="expires" content="-1" />
+<script type="text/javascript">
+    // We refresh the iframe with cache buster because of caching issues on vercel
+    if (window.location.href.indexOf('&t=') === -1) {
+        window.location.href = window.location.href + '&t=' + Math.random();
+    }
+</script>
+<style>
+    body {
+        margin: 0;
+    }
+    .sb-show-main {
+        padding: 0 !important;
+    }
+</style>
+<script type="text/javascript">
+    var WebFontConfig = {
+        google: { families: ['Roboto:300,400,500,700:latin'] },
+    };
+    (function () {
+        var wf = document.createElement('script');
+        wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+        wf.type = 'text/javascript';
+        wf.async = 'true';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(wf, s);
+    })();
+</script>
