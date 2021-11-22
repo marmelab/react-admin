@@ -77,10 +77,11 @@ export const useUpdate = <RecordType extends Record = Record>(
 ): UseUpdateResult<RecordType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const { id, data, previousData } = params;
+    const { id, data } = params;
     const { mutationMode = 'pessimistic', ...reactMutationOptions } = options;
     const mode = useRef<MutationMode>(mutationMode);
-    let rollbackData = useRef<{
+    const paramsRef = useRef<Partial<UpdateParams<RecordType>>>({});
+    const rollbackData = useRef<{
         previousGetOne?: any;
         previousGetList?: any;
     }>({});
@@ -126,9 +127,9 @@ export const useUpdate = <RecordType extends Record = Record>(
     >(
         ({
             resource: callTimeResource = resource,
-            id: callTimeId = id,
-            data: callTimeData = data,
-            previousData: callTimePreviousData = previousData,
+            id: callTimeId = paramsRef.current.id,
+            data: callTimeData = paramsRef.current.data,
+            previousData: callTimePreviousData = paramsRef.current.previousData,
         } = {}) =>
             dataProvider
                 .update<RecordType>(callTimeResource, {
@@ -185,6 +186,7 @@ export const useUpdate = <RecordType extends Record = Record>(
                         context
                     );
                 }
+                // call-time error callback is executed by react-query
             },
             onSuccess: (
                 data: RecordType,
@@ -204,12 +206,13 @@ export const useUpdate = <RecordType extends Record = Record>(
                     });
 
                     if (reactMutationOptions.onSuccess) {
-                        return reactMutationOptions.onSuccess(
+                        reactMutationOptions.onSuccess(
                             data,
                             variables,
                             context
                         );
                     }
+                    // call-time success callback is executed by react-query
                 }
             },
             onSettled: (
@@ -252,7 +255,7 @@ export const useUpdate = <RecordType extends Record = Record>(
 
     const update = async (
         callTimeResource: string = resource,
-        params: Partial<UpdateParams<RecordType>> = {},
+        callTimeParams: Partial<UpdateParams<RecordType>> = {},
         updateOptions: MutateOptions<
             RecordType,
             unknown,
@@ -262,18 +265,26 @@ export const useUpdate = <RecordType extends Record = Record>(
     ) => {
         const { mutationMode, onSuccess, onSettled, onError } = updateOptions;
 
+        // store the hook time params *at the moment of the call*
+        // because they may change afterwards, which would break the undoable mode
+        // as the previousData would be overwritten by the optimistic update
+        paramsRef.current = params;
+
         if (mutationMode) {
             mode.current = mutationMode;
         }
 
         if (mode.current === 'pessimistic') {
             return mutation.mutate(
-                { resource: callTimeResource, ...params },
+                { resource: callTimeResource, ...callTimeParams },
                 { onSuccess, onSettled, onError }
             );
         }
 
-        const { id: callTimeId = id, data: callTimeData = data } = params;
+        const {
+            id: callTimeId = id,
+            data: callTimeData = data,
+        } = callTimeParams;
 
         // optimistic update as documented in https://react-query.tanstack.com/guides/optimistic-updates
         // except we wo it in a mutate wrapper instead of the onMutete callback
@@ -288,7 +299,7 @@ export const useUpdate = <RecordType extends Record = Record>(
         await queryClient.cancelQueries([callTimeResource, 'getList']);
 
         // Snapshot the previous values
-        const previousGetOne = queryClient.getQueryData([
+        const previousGetOne: RecordType = queryClient.getQueryData([
             callTimeResource,
             'getOne',
             callTimeId,
@@ -311,12 +322,19 @@ export const useUpdate = <RecordType extends Record = Record>(
             setTimeout(
                 () =>
                     onSuccess(
-                        queryClient.getQueryData([
-                            callTimeResource,
-                            'getOne',
-                            callTimeId,
-                        ]),
-                        { resource: callTimeResource, ...params },
+                        previousGetOne,
+                        { resource: callTimeResource, ...callTimeParams },
+                        rollbackData.current
+                    ),
+                0
+            );
+        }
+        if (reactMutationOptions.onSuccess) {
+            setTimeout(
+                () =>
+                    reactMutationOptions.onSuccess(
+                        previousGetOne,
+                        { resource: callTimeResource, ...callTimeParams },
                         rollbackData.current
                     ),
                 0
@@ -326,7 +344,7 @@ export const useUpdate = <RecordType extends Record = Record>(
         if (mode.current === 'optimistic') {
             // call the mutate without success side effects
             return mutation.mutate(
-                { resource: callTimeResource, ...params },
+                { resource: callTimeResource, ...callTimeParams },
                 {
                     onSettled,
                     onError,
@@ -346,9 +364,9 @@ export const useUpdate = <RecordType extends Record = Record>(
                         rollbackData.current.previousGetList
                     );
                 } else {
-                    // commit
+                    // call the mutate without success side effects
                     mutation.mutate(
-                        { resource: callTimeResource, ...params },
+                        { resource: callTimeResource, ...callTimeParams },
                         {
                             onSettled,
                             onError,
@@ -374,7 +392,7 @@ export type UseUpdateOptions<
 > = UseMutationOptions<
     RecordType,
     unknown,
-    Partial<UpdateParams<RecordType>>
+    Partial<UseUpdateMutateParams<RecordType>>
 > & { mutationMode?: MutationMode };
 
 export type UseUpdateResult<RecordType extends Record = Record> = [

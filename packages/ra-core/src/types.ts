@@ -294,8 +294,12 @@ export type DataProviderProxy<
 };
 
 export type MutationMode = 'pessimistic' | 'optimistic' | 'undoable';
-export type OnSuccess = (response?: any) => void;
-export type OnFailure = (error?: any) => void;
+export type OnSuccess = (
+    response?: any,
+    variables?: any,
+    context?: any
+) => void;
+export type OnFailure = (error?: any, variables?: any, context?: any) => void;
 
 export interface UseDataProviderOptions {
     action?: string;

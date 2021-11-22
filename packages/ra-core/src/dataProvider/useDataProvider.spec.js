@@ -687,7 +687,10 @@ describe('useDataProvider', () => {
                 update: () => Promise.resolve({ data: { id: 1, foo: 'bar' } }),
             };
             const Update = () => {
-                const [update] = useUpdate('posts', 1, { foo: 'bar ' });
+                const [update] = useUpdate('posts', {
+                    id: 1,
+                    data: { foo: 'bar ' },
+                });
                 return <button onClick={() => update()}>update</button>;
             };
             const { getByText, rerender } = renderWithRedux(

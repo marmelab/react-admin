@@ -1,4 +1,4 @@
-import { useCallback, MutableRefObject } from 'react';
+import { useRef, useCallback, MutableRefObject } from 'react';
 import { useParams } from 'react-router-dom';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
@@ -55,8 +55,6 @@ export const useEditController = <RecordType extends Record = Record>(
 ): EditControllerResult<RecordType> => {
     const {
         id: propsId,
-        onSuccess,
-        onFailure,
         mutationMode = 'undoable',
         transform,
         queryOptions = {},
@@ -70,6 +68,7 @@ export const useEditController = <RecordType extends Record = Record>(
     const version = useVersion();
     const { id: routeId } = useParams<{ id?: string }>();
     const id = propsId || decodeURIComponent(routeId);
+    const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
 
     const {
         onSuccessRef,
@@ -78,7 +77,11 @@ export const useEditController = <RecordType extends Record = Record>(
         setOnFailure,
         transformRef,
         setTransform,
-    } = useSaveModifiers({ onSuccess, onFailure, transform });
+    } = useSaveModifiers({
+        onSuccess: mutationOptions.onSuccess,
+        onFailure: mutationOptions.onError,
+        transform,
+    });
 
     const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
         RecordType
@@ -90,6 +93,7 @@ export const useEditController = <RecordType extends Record = Record>(
             redirect('list', `/${resource}`);
             refresh();
         },
+
         retry: false,
         ...queryOptions,
     });
@@ -104,7 +108,7 @@ export const useEditController = <RecordType extends Record = Record>(
     const [update, { isLoading: saving }] = useUpdate<RecordType>(
         resource,
         { id, previousData: record },
-        { ...mutationOptions, mutationMode }
+        { ...otherMutationOptions, mutationMode }
     );
 
     const save = useCallback(
@@ -181,10 +185,7 @@ export const useEditController = <RecordType extends Record = Record>(
             onFailureRef,
             notify,
             redirect,
-            refresh,
             resource,
-            id,
-            record,
             mutationMode,
         ]
     );
