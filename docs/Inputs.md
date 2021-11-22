@@ -464,7 +464,7 @@ const configureQuill = quill => quill.getModule('toolbar').addHandler('bold', fu
 
 `<RichTextInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
-**Tip**: When used inside a material-ui `<Card>` (e.g in the default `<Edit>` view), `<RichTextInput>` displays link tooltip as cut off when the user wants to add a hyperlink to a word located on the left side of the input. This is due to an incompatibility between material-ui's `<Card>` component and Quill's positioning algorithm for the link tooltip. 
+**Tip**: When used inside a material-ui `<Card>` (e.g. in the default `<Edit>` view), `<RichTextInput>` displays link tooltip as cut off when the user wants to add a hyperlink to a word located on the left side of the input. This is due to an incompatibility between material-ui's `<Card>` component and Quill's positioning algorithm for the link tooltip. 
 
 To fix this problem, you should override the default card style, as follows:
 
@@ -571,7 +571,7 @@ import { AutocompleteInput } from 'react-admin';
 | `inputText`               | Optional | `Function`     | `-`          | If `optionText` is a custom Component, this function is needed to determine the text displayed for the current selection. |
 | `resettable`              | Optional | `boolean`      | `false`      | Display a button to reset the text filter. Useful when using `<AutocompleteInput>` inside the list filters |
 | `setFilter`               | Optional | `Function`     | `null`       | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`. |
-| `shouldRenderSuggestions` | Optional | `Function`     | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
+| `shouldRenderSuggestions` | Optional | `Function`     | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim().length > 2` |
 | `suggestionLimit`         | Optional | `number`       | `null`       | Limits the numbers of suggestions that are shown in the dropdown list |
 
 `<AutocompleteInput>` also accepts the [common input props](./Inputs.md#common-input-props).
@@ -1328,7 +1328,7 @@ import { AutocompleteArrayInput } from 'react-admin';
 | `optionValue`             | Optional | `string`                   | `id`         | Field name of record containing the value to use as input value                                                                                                                                                                                                                                       |
 | `optionText`              | Optional | `string` &#124; `Function` | `name`       | Field name of record to display in the suggestion item or function which accepts the current record as argument (`record => {string}`)                                                                                                                                                               |
 | `setFilter`               | Optional | `Function`                 | `null`       | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`.                                                                                   |
-| `shouldRenderSuggestions` | Optional | `Function`                 | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
+| `shouldRenderSuggestions` | Optional | `Function`                 | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim().length > 2` |
 | `source`                  | Required | `string`                   | -            | Name of field to edit, its type should match the type retrieved from `optionValue`                                                                                                                                                                                                                   |
 | `suggestionLimit`         | Optional | `number`                   | `null`       | Limits the numbers of suggestions that are shown in the dropdown list                                                                                                                                                                                                                                |
 
@@ -2073,7 +2073,7 @@ You can tweak how this component fetches the possible values using the `perPage`
 ```
 {% endraw %}
 
-**Tip**: `<ReferenceArrayInput>` can also used with an `<AutocompleteArrayInput>` to allow filtering the choices. By default, it will fetch the choices on mount, but you can prevent this by using the `enableGetChoices`. This prop should be a function that receives the `filterValues` as parameter and return a boolean. In order to also hide the choices when `enableGetChoices` returns `false`, you should use `shouldRenderSuggestions` on the `<AutocompleteArrayInput>`:
+**Tip**: `<ReferenceArrayInput>` can also be used with an `<AutocompleteArrayInput>` to allow filtering the choices. By default, it will fetch the choices on mount, but you can prevent this by using the `enableGetChoices`. This prop should be a function that receives the `filterValues` as parameter and return a boolean. In order to also hide the choices when `enableGetChoices` returns `false`, you should use `shouldRenderSuggestions` on the `<AutocompleteArrayInput>`:
 
 ```jsx
 <ReferenceArrayInput
@@ -2859,6 +2859,6 @@ You can find components for react-admin in third-party repositories.
 - [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs): a collection of Date Inputs, based on [material-ui-pickers](https://material-ui-pickers.firebaseapp.com/)
 - [MrHertal/react-admin-json-view](https://github.com/MrHertal/react-admin-json-view): JSON field and input for react-admin.
 - [@bb-tech/ra-components](https://github.com/bigbasket/ra-components): `JsonInput` which allows only valid JSON as input, `JsonField` to view JSON properly on show card and `TrimField` to trim the fields while showing in `Datagrid` in `List` component.
-- [@react-page/react-admin](https://react-page.github.io/docs/#/integration-react-admin): ReactPage is a rich content editor and can comes with a ready-to-use React-admin input component. [check out the demo](https://react-page.github.io/examples/reactadmin)
+- [@react-page/react-admin](https://react-page.github.io/docs/#/integration-react-admin): ReactPage is a rich content editor and comes with a ready-to-use React-admin input component. [check out the demo](https://react-page.github.io/examples/reactadmin)
 
 - **DEPRECATED V3** [LoicMahieu/aor-tinymce-input](https://github.com/LoicMahieu/aor-tinymce-input): a TinyMCE component, useful for editing HTML
