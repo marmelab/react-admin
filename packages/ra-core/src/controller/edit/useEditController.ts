@@ -101,8 +101,9 @@ export const useEditController = <RecordType extends Record = Record>(
         record,
     });
 
-    const { mutate, isLoading: saving } = useUpdate<RecordType>(
-        { resource, id, previousData: record },
+    const [update, { isLoading: saving }] = useUpdate<RecordType>(
+        resource,
+        { id, previousData: record },
         { ...mutationOptions, mutationMode }
     );
 
@@ -123,7 +124,8 @@ export const useEditController = <RecordType extends Record = Record>(
                     ? transformRef.current(data)
                     : data
             ).then((data: Partial<RecordType>) =>
-                mutate(
+                update(
+                    resource,
                     { data },
                     {
                         onSuccess: onSuccessFromSave
@@ -174,7 +176,7 @@ export const useEditController = <RecordType extends Record = Record>(
         },
         [
             transformRef,
-            mutate,
+            update,
             onSuccessRef,
             onFailureRef,
             notify,

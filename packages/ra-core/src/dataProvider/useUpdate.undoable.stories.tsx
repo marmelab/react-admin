@@ -46,17 +46,16 @@ const SuccessCore = () => {
     const [notification, setNotification] = useState<boolean>(false);
     const [success, setSuccess] = useState<string>();
     const { data, refetch } = useGetOne('posts', 1);
-    const mutation = useUpdate(undefined, {
-        mutationMode: 'undoable',
-    });
+    const [update, { isLoading }] = useUpdate();
     const handleClick = () => {
-        mutation.mutate(
+        update(
+            'posts',
             {
-                resource: 'posts',
                 id: 1,
                 data: { title: 'Hello World' },
             },
             {
+                mutationMode: 'undoable',
                 onSuccess: () => setSuccess('success'),
             }
         );
@@ -96,7 +95,7 @@ const SuccessCore = () => {
                         </button>
                     </>
                 ) : (
-                    <button onClick={handleClick} disabled={mutation.isLoading}>
+                    <button onClick={handleClick} disabled={isLoading}>
                         Update title
                     </button>
                 )}
@@ -144,17 +143,16 @@ const ErrorCore = () => {
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<any>();
     const { data, refetch } = useGetOne('posts', 1);
-    const mutation = useUpdate(undefined, {
-        mutationMode: 'undoable',
-    });
+    const [update, { isLoading }] = useUpdate();
     const handleClick = () => {
-        mutation.mutate(
+        update(
+            'posts',
             {
-                resource: 'posts',
                 id: 1,
                 data: { title: 'Hello World' },
             },
             {
+                mutationMode: 'undoable',
                 onSuccess: () => setSuccess('success'),
                 onError: e => {
                     setError(e);
@@ -198,7 +196,7 @@ const ErrorCore = () => {
                         </button>
                     </>
                 ) : (
-                    <button onClick={handleClick} disabled={mutation.isLoading}>
+                    <button onClick={handleClick} disabled={isLoading}>
                         Update title
                     </button>
                 )}

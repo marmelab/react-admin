@@ -43,17 +43,16 @@ const SuccessCore = () => {
     const isMutating = useIsMutating();
     const [success, setSuccess] = useState<string>();
     const { data, refetch } = useGetOne('posts', 1);
-    const mutation = useUpdate(undefined, {
-        mutationMode: 'optimistic',
-    });
+    const [update, { isLoading }] = useUpdate();
     const handleClick = () => {
-        mutation.mutate(
+        update(
+            'posts',
             {
-                resource: 'posts',
                 id: 1,
                 data: { title: 'Hello World' },
             },
             {
+                mutationMode: 'optimistic',
                 onSuccess: () => setSuccess('success'),
             }
         );
@@ -67,7 +66,7 @@ const SuccessCore = () => {
                 <dd>{data?.author}</dd>
             </dl>
             <div>
-                <button onClick={handleClick} disabled={mutation.isLoading}>
+                <button onClick={handleClick} disabled={isLoading}>
                     Update title
                 </button>
                 &nbsp;
@@ -113,17 +112,16 @@ const ErrorCore = () => {
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<any>();
     const { data, refetch } = useGetOne('posts', 1);
-    const mutation = useUpdate(undefined, {
-        mutationMode: 'optimistic',
-    });
+    const [update, { isLoading }] = useUpdate();
     const handleClick = () => {
-        mutation.mutate(
+        update(
+            'posts',
             {
-                resource: 'posts',
                 id: 1,
                 data: { title: 'Hello World' },
             },
             {
+                mutationMode: 'optimistic',
                 onSuccess: () => setSuccess('success'),
                 onError: e => {
                     setError(e);
@@ -141,7 +139,7 @@ const ErrorCore = () => {
                 <dd>{data?.author}</dd>
             </dl>
             <div>
-                <button onClick={handleClick} disabled={mutation.isLoading}>
+                <button onClick={handleClick} disabled={isLoading}>
                     Update title
                 </button>
                 &nbsp;

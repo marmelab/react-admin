@@ -30,8 +30,8 @@ describe('useUpdate', () => {
             } as any;
             let localUpdate;
             const Dummy = () => {
-                const { mutate } = useUpdate();
-                localUpdate = mutate;
+                const [update] = useUpdate();
+                localUpdate = update;
                 return <span />;
             };
 
@@ -42,8 +42,7 @@ describe('useUpdate', () => {
                     </DataProviderContext.Provider>
                 </QueryClientProvider>
             );
-            localUpdate({
-                resource: 'foo',
+            localUpdate('foo', {
                 id: 1,
                 data: { bar: 'baz' },
                 previousData: { id: 1, bar: 'bar' },
@@ -65,13 +64,12 @@ describe('useUpdate', () => {
             } as any;
             let localUpdate;
             const Dummy = () => {
-                const { mutate } = useUpdate({
-                    resource: 'foo',
+                const [update] = useUpdate('foo', {
                     id: 1,
                     data: { bar: 'baz' },
                     previousData: { id: 1, bar: 'bar' },
                 });
-                localUpdate = mutate;
+                localUpdate = update;
                 return <span />;
             };
 
@@ -100,13 +98,12 @@ describe('useUpdate', () => {
             } as any;
             let localUpdate;
             const Dummy = () => {
-                const { mutate } = useUpdate({
-                    resource: 'foo',
+                const [update] = useUpdate('foo', {
                     id: 1,
                     data: { bar: 'baz' },
                     previousData: { id: 1, bar: 'bar' },
                 });
-                localUpdate = mutate;
+                localUpdate = update;
                 return <span />;
             };
 
@@ -117,7 +114,7 @@ describe('useUpdate', () => {
                     </DataProviderContext.Provider>
                 </QueryClientProvider>
             );
-            localUpdate({ data: { foo: 456 } });
+            localUpdate(undefined, { data: { foo: 456 } });
             await waitFor(() => {
                 expect(dataProvider.update).toHaveBeenCalledWith('foo', {
                     id: 1,
@@ -140,8 +137,8 @@ describe('useUpdate', () => {
             let localUpdate;
             let sku;
             const Dummy = () => {
-                const { mutate, data } = useUpdate<Product>();
-                localUpdate = mutate;
+                const [update, { data }] = useUpdate<Product>();
+                localUpdate = update;
                 sku = data && data.sku;
                 return <span />;
             };
@@ -153,8 +150,7 @@ describe('useUpdate', () => {
                 </QueryClientProvider>
             );
             expect(sku).toBeUndefined();
-            localUpdate({
-                resource: 'products',
+            localUpdate('products', {
                 id: 1,
                 data: { sku: 'abc' },
                 previousData: { id: 1, sku: 'bcd' },
