@@ -20,6 +20,7 @@ module.exports = {
     },
     moduleNameMapper: {
         '^ra-core(.*)$': path.join(__dirname, './packages/ra-core/src$1'),
+        '^ra-test(.*)$': path.join(__dirname, './packages/ra-test/src$1'),
         '^ra-ui-materialui(.*)$': path.join(
             __dirname,
             './packages/ra-ui-materialui/src$1'
