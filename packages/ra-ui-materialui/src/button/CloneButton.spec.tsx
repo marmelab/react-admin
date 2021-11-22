@@ -3,8 +3,7 @@ import expect from 'expect';
 import { ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { render } from '@testing-library/react';
-import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { TestContext } from 'ra-test';
 import { MutationMode } from 'ra-core';
 
@@ -29,16 +28,15 @@ const invalidButtonDomProps = {
 
 describe('<CloneButton />', () => {
     it('should pass a clone of the record in the location state', () => {
-        const history = createMemoryHistory();
         const { getByLabelText } = render(
-            <Router history={history}>
+            <MemoryRouter>
                 <ThemeProvider theme={theme}>
                     <CloneButton
                         record={{ id: 123, foo: 'bar' }}
                         basePath="/posts"
                     />
                 </ThemeProvider>
-            </Router>
+            </MemoryRouter>
         );
 
         expect(getByLabelText('ra.action.clone').getAttribute('href')).toEqual(

@@ -1,13 +1,23 @@
 import * as React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import expect from 'expect';
+import { MemoryRouter } from 'react-router';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 
 import Mutation from './Mutation';
-import { CoreAdmin, Resource } from '../core';
+import { Resource } from '../core';
 import { renderWithRedux } from 'ra-test';
 import { DataProviderContext } from '.';
 
 describe('useMutation', () => {
+    const store = createStore(() => ({
+        admin: {
+            resources: { foo: {} },
+        },
+        router: { location: { pathname: '/' } },
+    }));
+
     it('should pass a callback to trigger the mutation', () => {
         let callback = null;
         renderWithRedux(
@@ -164,9 +174,13 @@ describe('useMutation', () => {
             </Mutation>
         );
         const { getByTestId } = render(
-            <CoreAdmin dataProvider={dataProvider}>
-                <Resource name="foo" list={Foo} />
-            </CoreAdmin>
+            <Provider store={store}>
+                <MemoryRouter>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <Resource name="foo" list={Foo} />
+                    </DataProviderContext.Provider>
+                </MemoryRouter>
+            </Provider>
         );
         const testElement = getByTestId('test');
         expect(testElement.textContent).toBe('no data');
@@ -193,9 +207,13 @@ describe('useMutation', () => {
             </Mutation>
         );
         const { getByTestId } = render(
-            <CoreAdmin dataProvider={dataProvider}>
-                <Resource name="foo" list={Foo} />
-            </CoreAdmin>
+            <Provider store={store}>
+                <MemoryRouter>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <Resource name="foo" list={Foo} />
+                    </DataProviderContext.Provider>
+                </MemoryRouter>
+            </Provider>
         );
         const testElement = getByTestId('test');
         expect(testElement.textContent).toBe('no data');
