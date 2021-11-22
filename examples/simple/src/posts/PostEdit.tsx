@@ -31,6 +31,7 @@ import {
     useCreateSuggestionContext,
     EditActionsProps,
     usePermissions,
+    Button as RaButton,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import {
     Box,
@@ -41,7 +42,7 @@ import {
     DialogContent,
     TextField as MuiTextField,
 } from '@mui/material';
-
+import { Link } from 'react-router-dom';
 import PostTitle from './PostTitle';
 import TagReferenceInput from './TagReferenceInput';
 
@@ -80,22 +81,22 @@ const CreateCategory = ({
     );
 };
 
-const EditActions = ({ basePath, data, hasShow }: EditActionsProps) => (
+const EditActions = ({ data, hasShow, resource }: EditActionsProps) => (
     <TopToolbar>
         <CloneButton
             className="button-clone"
-            basePath={basePath}
+            basePath={`/${resource}`}
             record={data}
         />
-        {hasShow && <ShowButton basePath={basePath} record={data} />}
+        {hasShow && <ShowButton basePath={`/${resource}`} record={data} />}
+        <RaButton component={Link} label="Create post" to="/posts/create" />
     </TopToolbar>
 );
 
 const SanitizedBox = ({
     fullWidth,
-    basePath,
     ...props
-}: BoxProps & { fullWidth?: boolean; basePath?: string }) => <Box {...props} />;
+}: BoxProps & { fullWidth?: boolean }) => <Box {...props} />;
 
 const categories = [
     { name: 'Tech', id: 'tech' },

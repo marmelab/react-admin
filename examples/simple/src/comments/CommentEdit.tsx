@@ -11,20 +11,23 @@ import {
 } from '@mui/material';
 import {
     AutocompleteInput,
+    Button as RaButton,
     DateInput,
-    EditActions,
     EditContextProvider,
     useEditController,
-    Link,
+    Link as RaLink,
     ReferenceInput,
     SimpleForm,
     TextInput,
     Title,
     minLength,
     Record,
+    ShowButton,
+    TopToolbar,
     useCreateSuggestionContext,
     useCreate,
-} from 'react-admin'; // eslint-disable-line import/no-unresolved
+} from 'react-admin';
+import { Link } from 'react-router-dom';
 
 const PREFIX = 'CommentEdit';
 
@@ -44,11 +47,11 @@ const Root = styled('div')({
 });
 
 const LinkToRelatedPost = ({ record }: { record?: Record }) => (
-    <Link to={`/posts/${record?.post_id}`}>
+    <RaLink to={`/posts/${record?.post_id}`}>
         <Typography variant="caption" color="inherit" align="right">
             See related post
         </Typography>
-    </Link>
+    </RaLink>
 );
 
 const OptionRenderer = ({ record }: { record?: Record }) => {
@@ -112,32 +115,25 @@ const CreatePost = () => {
 
 const CommentEdit = props => {
     const controllerProps = useEditController(props);
-    const {
-        resource,
-        record,
-        redirect,
-        save,
-        basePath,
-        version,
-    } = controllerProps;
+    const { resource, record, redirect, save, version } = controllerProps;
 
     return (
         <EditContextProvider value={controllerProps}>
             <Root className="edit-page">
                 <Title defaultTitle={`Comment #${record ? record.id : ''}`} />
                 <div className={classes.actions}>
-                    <EditActions
-                        basePath={basePath}
-                        resource={resource}
-                        data={record}
-                        hasShow
-                        hasList
-                    />
+                    <TopToolbar>
+                        <ShowButton record={record} />
+                        <RaButton
+                            component={Link}
+                            label="Create post"
+                            to="/posts/create"
+                        />
+                    </TopToolbar>
                 </div>
                 <Card className={classes.card}>
                     {record && (
                         <SimpleForm
-                            basePath={basePath}
                             redirect={redirect}
                             resource={resource}
                             record={record}
