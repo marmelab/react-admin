@@ -2,15 +2,16 @@ import * as React from 'react';
 import { Route, MemoryRouter } from 'react-router-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
-import RoutesWithLayout from './RoutesWithLayout';
+import { CustomRoutes } from './CustomRoutes';
+import { RoutesWithLayout } from './RoutesWithLayout';
 
 describe('<RoutesWithLayout>', () => {
     const Dashboard = () => <div>Dashboard</div>;
-    const Custom = ({ name }) => <div>Custom</div>;
-    const FirstResource = ({ name }) => <div>Default</div>;
-    const Resource = ({ name }) => <div>Resource</div>;
+    const Custom = () => <div>Custom</div>;
+    const Resource = ({ name }) => <div>{name}</div>;
+    const CatchAll = () => <div>Catch all</div>;
 
     // the Provider is required because the dashboard is wrapped by <Authenticated>, which is a connected component
     const store = createStore(() => ({
@@ -19,11 +20,15 @@ describe('<RoutesWithLayout>', () => {
     }));
 
     it('should show dashboard on / when provided', () => {
-        const { queryByText } = render(
+        render(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/']}>
-                    <RoutesWithLayout dashboard={Dashboard}>
-                        <FirstResource name="default" />
+                    <RoutesWithLayout
+                        catchAll={CatchAll}
+                        dashboard={Dashboard}
+                        firstResource="default"
+                    >
+                        <Resource name="default" />
                         <Resource name="another" />
                         <Resource name="yetanother" />
                     </RoutesWithLayout>
@@ -31,29 +36,35 @@ describe('<RoutesWithLayout>', () => {
             </Provider>
         );
 
-        expect(queryByText('Dashboard')).not.toBeNull();
+        expect(screen.queryByText('Dashboard')).not.toBeNull();
     });
 
     it('should show the first resource on / when there is only one resource and no dashboard', () => {
-        const { queryByText } = render(
+        render(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/']}>
-                    <RoutesWithLayout>
-                        <FirstResource name="default" />
+                    <RoutesWithLayout
+                        firstResource="default"
+                        catchAll={CatchAll}
+                    >
+                        <Resource name="default" />
                     </RoutesWithLayout>
                 </MemoryRouter>
             </Provider>
         );
 
-        expect(queryByText('Default')).not.toBeNull();
+        expect(screen.queryByText('default')).not.toBeNull();
     });
 
     it('should show the first resource on / when there are multiple resource and no dashboard', () => {
-        const { queryByText } = render(
+        render(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/']}>
-                    <RoutesWithLayout>
-                        <FirstResource name="default" />
+                    <RoutesWithLayout
+                        firstResource="default"
+                        catchAll={CatchAll}
+                    >
+                        <Resource name="default" />
                         <Resource name="another" />
                         <Resource name="yetanother" />
                     </RoutesWithLayout>
@@ -61,26 +72,30 @@ describe('<RoutesWithLayout>', () => {
             </Provider>
         );
 
-        expect(queryByText('Default')).not.toBeNull();
-        expect(queryByText('Resource')).toBeNull();
+        expect(screen.queryByText('default')).not.toBeNull();
+        expect(screen.queryByText('another')).toBeNull();
+        expect(screen.queryByText('yetanother')).toBeNull();
     });
 
     it('should accept custom routes', () => {
-        const customRoutes = [
-            <Route key="custom" path="/custom" component={Custom} />,
-        ]; // eslint-disable-line react/jsx-key
-        const { queryByText } = render(
+        render(
             <Provider store={store}>
                 <MemoryRouter initialEntries={['/custom']}>
-                    <RoutesWithLayout customRoutes={customRoutes}>
-                        <FirstResource name="default" />
+                    <RoutesWithLayout
+                        catchAll={CatchAll}
+                        firstResource="default"
+                    >
+                        <Resource name="default" />
                         <Resource name="another" />
                         <Resource name="yetanother" />
+                        <CustomRoutes>
+                            <Route path="/custom" element={<Custom />} />
+                        </CustomRoutes>
                     </RoutesWithLayout>
                 </MemoryRouter>
             </Provider>
         );
 
-        expect(queryByText('Custom')).not.toBeNull();
+        expect(screen.queryByText('Custom')).not.toBeNull();
     });
 });

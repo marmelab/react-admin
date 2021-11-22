@@ -27,22 +27,19 @@ export const RoutesWithLayout = (props: RoutesWithLayoutProps) => {
             <Routes>
                 {renderCustomRoutes(children)}
                 {renderResources(children)}
-                {dashboard ? (
-                    <Route
-                        index
-                        element={
+                <Route
+                    index
+                    element={
+                        dashboard ? (
                             <WithPermissions
                                 authParams={defaultAuthParams}
                                 component={dashboard}
                             />
-                        }
-                    />
-                ) : firstResource ? (
-                    <Route
-                        index
-                        element={<Navigate to={`/${firstResource}`} />}
-                    />
-                ) : null}
+                        ) : (
+                            <Navigate to={`/${firstResource}`} />
+                        )
+                    }
+                />
                 <Route path="*" element={<CatchAll title={title} />} />
             </Routes>
         </>
