@@ -25,27 +25,6 @@
         "storybook": "start-storybook -p 9009",
         "build-storybook": "build-storybook --no-dll -c .storybook -o public --quiet"
     },
-    "jest": {
-        "globalSetup": "./test-global-setup.js",
-        "setupFilesAfterEnv": [
-            "./test-setup.js"
-        ],
-        "preset": "ts-jest/presets/js-with-ts",
-        "testPathIgnorePatterns": [
-            "/node_modules/",
-            "/lib/",
-            "/esm/",
-            "/examples/simple/"
-        ],
-        "transformIgnorePatterns": [
-            "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|ts|tsx)$"
-        ],
-        "globals": {
-            "ts-jest": {
-                "isolatedModules": true
-            }
-        }
-    },
     "devDependencies": {
         "@storybook/addon-actions": "^6.3.12",
         "@storybook/addon-controls": "^6.3.12",
