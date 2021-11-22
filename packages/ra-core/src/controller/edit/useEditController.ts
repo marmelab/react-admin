@@ -77,11 +77,7 @@ export const useEditController = <RecordType extends Record = Record>(
         setOnFailure,
         transformRef,
         setTransform,
-    } = useSaveModifiers({
-        onSuccess: mutationOptions.onSuccess,
-        onFailure: mutationOptions.onError,
-        transform,
-    });
+    } = useSaveModifiers({ onSuccess, onFailure: onError, transform });
 
     const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
         RecordType
@@ -120,8 +116,8 @@ export const useEditController = <RecordType extends Record = Record>(
                 onFailure: onFailureFromSave,
                 transform: transformFromSave,
             } = {}
-        ) => {
-            return Promise.resolve(
+        ) =>
+            Promise.resolve(
                 transformFromSave
                     ? transformFromSave(data)
                     : transformRef.current
@@ -176,8 +172,7 @@ export const useEditController = <RecordType extends Record = Record>(
                               },
                     }
                 )
-            );
-        },
+            ),
         [
             transformRef,
             update,
