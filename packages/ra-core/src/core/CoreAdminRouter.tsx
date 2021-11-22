@@ -19,19 +19,45 @@ import {
     LoadingComponent,
     CoreLayoutProps,
     RenderResourcesFunction,
+    ResourceDefinition,
+    ResourceProps,
 } from '../types';
 import { CustomRoutes, CustomRoutesProps } from './CustomRoutes';
+import { Resource } from './Resource';
+import { useRegisterResource } from './useRegisterResource';
 
 export const CoreAdminRouter = (props: AdminRouterProps) => {
     const getPermissions = useGetPermissions();
     const doLogout = useLogout();
     const { authenticated } = useAuthState();
+    const registerResource = useRegisterResource();
     const oneSecondHasPassed = useTimeout(1000);
+    const [resources, setResources] = useSafeSetState<ResourceDefinition[]>(
+        () => createResourcesFromChildren(props.children)
+    );
+    const [firstResource, setFirstResource] = useSafeSetState<
+        ResourceDefinition
+    >();
     const [computedChildren, setComputedChildren] = useSafeSetState<
         ReactNode
     >();
     const [hasFunctionChild, setHasFunctionChild] = useSafeSetState(false);
     useScrollToTop();
+
+    useEffect(() => {
+        resources.forEach(resource => {
+            registerResource(resource);
+        });
+        setFirstResource(resources.length > 0 ? resources[0] : null);
+    }, [registerResource, resources, setFirstResource]);
+
+    useEffect(() => {
+        const resources = createResourcesFromChildren(computedChildren);
+        setResources(registeredResources => {
+            return registeredResources.concat(resources);
+        });
+    }, [setResources, computedChildren]);
+
     useEffect(() => {
         if (Array.isArray(props.children)) {
             const functionChildren = props.children.filter(
@@ -135,6 +161,7 @@ export const CoreAdminRouter = (props: AdminRouterProps) => {
                                 catchAll={catchAll}
                                 dashboard={dashboard}
                                 title={title}
+                                firstResource={firstResource?.name}
                             >
                                 {/*
                                     Render the resources and custom routes that were outside the child function. We use Children.map as it will automatically ignore
@@ -163,6 +190,57 @@ export interface AdminRouterProps extends CoreLayoutProps {
     loading: LoadingComponent;
     ready?: ComponentType;
 }
+
+const createResourcesFromChildren = (children: React.ReactNode) => {
+    const resources: ResourceDefinition[] = [];
+
+    Children.forEach(children, element => {
+        if (!React.isValidElement(element)) {
+            // Ignore non-elements. This allows people to more easily inline
+            // conditionals in their route config.
+            return;
+        }
+
+        if (element.type === React.Fragment) {
+            // Transparently support React.Fragment and its children.
+            resources.push.apply(
+                resources,
+                createResourcesFromChildren(element.props.children)
+            );
+            return;
+        }
+
+        if (element.type === CustomRoutes) {
+            return;
+        }
+
+        if (element.type !== Resource) {
+            throw new Error(
+                `[${
+                    typeof element.type === 'string'
+                        ? element.type
+                        : element.type.name
+                }] is not a <Route> component. All component children of <Routes> must be a <Route> or <React.Fragment>`
+            );
+        }
+
+        const resourceElement = element as React.ReactElement<ResourceProps>;
+
+        const resource: ResourceDefinition = {
+            name: resourceElement.props.name,
+            options: resourceElement.props.options,
+            hasList: !!resourceElement.props.list,
+            hasEdit: !!resourceElement.props.edit,
+            hasShow: !!resourceElement.props.show,
+            hasCreate: !!resourceElement.props.create,
+            icon: resourceElement.props.icon,
+        };
+
+        resources.push(resource);
+    });
+
+    return resources;
+};
 
 const renderCustomRoutes = (children: ReactNode) => {
     return Children.map(children, element => {
