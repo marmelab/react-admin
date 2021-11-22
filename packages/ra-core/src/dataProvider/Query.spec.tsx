@@ -1,15 +1,26 @@
 import * as React from 'react';
 import { render, act, fireEvent, waitFor } from '@testing-library/react';
 import expect from 'expect';
+import { renderWithRedux, TestContext } from 'ra-test';
+import { MemoryRouter } from 'react-router';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 
 import Query from './Query';
-import { CoreAdmin, Resource } from '../core';
-import { renderWithRedux, TestContext } from 'ra-test';
+import { Resource } from '../core';
 import DataProviderContext from './DataProviderContext';
 import { showNotification } from '../actions';
 import { useNotify, useRefresh } from '../sideEffect';
 
 describe('Query', () => {
+    const store = createStore(() => ({
+        admin: {
+            resources: { foo: {} },
+            ui: {},
+        },
+        router: { location: { pathname: '/' } },
+    }));
+
     it('should render its child', () => {
         const { getByTestId } = renderWithRedux(
             <Query type="getList" resource="bar">
@@ -69,9 +80,13 @@ describe('Query', () => {
         let getByTestId;
         act(() => {
             const res = render(
-                <CoreAdmin dataProvider={dataProvider}>
-                    <Resource name="foo" list={Foo} />
-                </CoreAdmin>
+                <Provider store={store}>
+                    <MemoryRouter>
+                        <DataProviderContext.Provider value={dataProvider}>
+                            <Resource name="foo" list={Foo} />
+                        </DataProviderContext.Provider>
+                    </MemoryRouter>
+                </Provider>
             );
             getByTestId = res.getByTestId;
         });
@@ -107,9 +122,13 @@ describe('Query', () => {
         let getByTestId;
         act(() => {
             const res = render(
-                <CoreAdmin dataProvider={dataProvider}>
-                    <Resource name="foo" list={Foo} />
-                </CoreAdmin>
+                <Provider store={store}>
+                    <MemoryRouter>
+                        <DataProviderContext.Provider value={dataProvider}>
+                            <Resource name="foo" list={Foo} />
+                        </DataProviderContext.Provider>
+                    </MemoryRouter>
+                </Provider>
             );
             getByTestId = res.getByTestId;
         });
@@ -145,9 +164,13 @@ describe('Query', () => {
         let getByTestId;
         act(() => {
             const res = render(
-                <CoreAdmin dataProvider={dataProvider}>
-                    <Resource name="foo" list={Foo} />
-                </CoreAdmin>
+                <Provider store={store}>
+                    <MemoryRouter>
+                        <DataProviderContext.Provider value={dataProvider}>
+                            <Resource name="foo" list={Foo} />
+                        </DataProviderContext.Provider>
+                    </MemoryRouter>
+                </Provider>
             );
             getByTestId = res.getByTestId;
         });
