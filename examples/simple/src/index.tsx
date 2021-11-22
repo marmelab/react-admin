@@ -33,29 +33,27 @@ render(
             <Resource name="posts" {...posts} />
             <Resource name="comments" {...comments} />
             <Resource name="tags" {...tags} />
-            {permissions =>
-                permissions ? (
-                    <>
-                        <Resource name="users" {...users} />
-                        <CustomRoutes noLayout>
-                            <Route
-                                path="/custom1"
-                                element={
-                                    <CustomRouteNoLayout title="Posts from /custom1" />
-                                }
-                            />
-                        </CustomRoutes>
-                        <CustomRoutes>
-                            <Route
-                                path="/custom2"
-                                element={
-                                    <CustomRouteLayout title="Posts from /custom2" />
-                                }
-                            />
-                        </CustomRoutes>
-                    </>
-                ) : null
-            }
+            {permissions => (
+                <>
+                    {permissions ? <Resource name="users" {...users} /> : null}
+                    <CustomRoutes noLayout>
+                        <Route
+                            path="/custom1"
+                            element={
+                                <CustomRouteNoLayout title="Posts from /custom1" />
+                            }
+                        />
+                    </CustomRoutes>
+                    <CustomRoutes>
+                        <Route
+                            path="/custom2"
+                            element={
+                                <CustomRouteLayout title="Posts from /custom2" />
+                            }
+                        />
+                    </CustomRoutes>
+                </>
+            )}
             <CustomRoutes>
                 <Route
                     path="/custom3"
