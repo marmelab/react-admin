@@ -59,23 +59,23 @@ export const CoreAdminRouter = (props: AdminRouterProps) => {
     }, [setResources, computedChildren]);
 
     useEffect(() => {
-        if (Array.isArray(props.children)) {
-            const functionChildren = props.children.filter(
-                child => typeof child === 'function'
+        const children = Array.isArray(props.children)
+            ? props.children
+            : [props.children];
+
+        const functionChildren = children.filter(
+            child => typeof child === 'function'
+        );
+
+        if (functionChildren.length > 1) {
+            throw new Error(
+                'You can only provide one function child to AdminRouter'
             );
+        }
 
-            if (functionChildren.length > 1) {
-                throw new Error(
-                    'You can only provide one function child to AdminRouter'
-                );
-            }
-
-            if (functionChildren.length === 1) {
-                setHasFunctionChild(true);
-                initializeResources(
-                    functionChildren[0] as RenderResourcesFunction
-                );
-            }
+        if (functionChildren.length === 1) {
+            setHasFunctionChild(true);
+            initializeResources(functionChildren[0] as RenderResourcesFunction);
         }
     }, [authenticated]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -115,18 +115,12 @@ export const CoreAdminRouter = (props: AdminRouterProps) => {
         return <Ready />;
     }
 
-    if (
-        (hasFunctionChild && !computedChildren) ||
-        (Array.isArray(children) && children.length === 0)
-    ) {
+    if (hasFunctionChild && !computedChildren) {
         return (
             <Routes>
                 {renderCustomRoutes(props.children)}
                 {oneSecondHasPassed && (
-                    <Route
-                        key="loading"
-                        element={<LoadingPage theme={theme} />}
-                    />
+                    <Route path="*" element={<LoadingPage theme={theme} />} />
                 )}
             </Routes>
         );
@@ -134,7 +128,9 @@ export const CoreAdminRouter = (props: AdminRouterProps) => {
 
     const childrenToRender = (hasFunctionChild
         ? computedChildren
-        : children) as Array<ReactElement<any, any>>;
+        : typeof children !== 'function'
+        ? children
+        : []) as Array<ReactElement<any, any>>;
 
     return (
         <Routes>
