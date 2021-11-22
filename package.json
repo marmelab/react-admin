@@ -23,27 +23,6 @@
         "run-crm": "cd examples/crm && yarn -s start",
         "build-crm": "cd examples/crm && yarn -s build"
     },
-    "jest": {
-        "globalSetup": "./test-global-setup.js",
-        "setupFilesAfterEnv": [
-            "./test-setup.js"
-        ],
-        "preset": "ts-jest/presets/js-with-ts",
-        "testPathIgnorePatterns": [
-            "/node_modules/",
-            "/lib/",
-            "/esm/",
-            "/examples/simple/"
-        ],
-        "transformIgnorePatterns": [
-            "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|ts|tsx)$"
-        ],
-        "globals": {
-            "ts-jest": {
-                "isolatedModules": true
-            }
-        }
-    },
     "devDependencies": {
         "@types/jest": "^26.0.19",
         "@types/react": "^17.0.20",
