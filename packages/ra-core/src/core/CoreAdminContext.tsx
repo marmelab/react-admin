@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ComponentType, useContext, useState } from 'react';
+import { ComponentType, useContext, useLayoutEffect, useState } from 'react';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { Provider, ReactReduxContext } from 'react-redux';
 import { createHashHistory, History } from 'history';
@@ -79,9 +79,7 @@ React-admin requires a valid dataProvider function to work.`);
         location: finalHistory.location,
     });
 
-    React.useLayoutEffect(() => finalHistory.listen(setHistoryState), [
-        finalHistory,
-    ]);
+    useLayoutEffect(() => finalHistory.listen(setHistoryState), [finalHistory]);
 
     const renderCore = () => {
         return (
