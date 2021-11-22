@@ -9,7 +9,7 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, NavLinkProps } from 'react-router-dom';
+import { Link, LinkProps, useMatch } from 'react-router-dom';
 import { ReduxState, setSidebarVisibility } from 'ra-core';
 import {
     MenuItem,
@@ -94,16 +94,18 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
         [dispatch, isSmall, onClick]
     );
 
+    const match = useMatch(
+        typeof props.to === 'string' ? props.to : props.to.pathname
+    );
+    console.log({ match, to: props.to });
     const renderMenuItem = () => {
         return (
             <StyledMenuItem
                 // @ts-ignore
-                className={({ isActive }) => {
-                    return classnames(MenuItemLinkClasses.root, className, {
-                        [MenuItemLinkClasses.active]: isActive,
-                    });
-                }}
-                component={NavLinkRef}
+                className={classnames(MenuItemLinkClasses.root, className, {
+                    [MenuItemLinkClasses.active]: !!match,
+                })}
+                component={LinkRef}
                 // @ts-ignore
                 ref={ref}
                 tabIndex={0}
@@ -142,7 +144,7 @@ interface Props {
 }
 
 export type MenuItemLinkProps = Props &
-    NavLinkProps &
+    LinkProps &
     MenuItemProps<'li', { button?: true }>; // HACK: https://github.com/mui-org/material-ui/issues/16245
 
 MenuItemLink.propTypes = {
@@ -167,13 +169,13 @@ const StyledMenuItem = styled(MenuItem, { name: PREFIX })(({ theme }) => ({
         color: theme.palette.text.secondary,
     },
 
-    [`& .${MenuItemLinkClasses.active}`]: {
+    [`&.${MenuItemLinkClasses.active}`]: {
         color: theme.palette.text.primary,
     },
 
     [`& .${MenuItemLinkClasses.icon}`]: { minWidth: theme.spacing(5) },
 }));
 
-const NavLinkRef = forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => (
-    <NavLink ref={ref} {...props} />
+const LinkRef = forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
+    <Link ref={ref} {...props} />
 ));
