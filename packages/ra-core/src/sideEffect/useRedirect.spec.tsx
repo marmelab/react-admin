@@ -2,8 +2,8 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import expect from 'expect';
 import { renderWithRedux } from 'ra-test';
-import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
+import { screen, waitFor } from '@testing-library/react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 
 import useRedirect from './useRedirect';
 
@@ -21,43 +21,63 @@ const Redirect = ({
     return null;
 };
 
+const Component = () => {
+    const location = useLocation();
+
+    return (
+        <div>
+            <label htmlFor="pathname">Pathname</label>
+            <input id="pathname" readOnly value={location.pathname} />
+            <label htmlFor="search">Search</label>
+            <input id="search" readOnly value={location.search} />
+            <label htmlFor="state">State</label>
+            <input id="state" readOnly value={JSON.stringify(location.state)} />
+        </div>
+    );
+};
+
 describe('useRedirect', () => {
-    it('should redirect to the path with query string', () => {
-        const history = createMemoryHistory();
+    it('should redirect to the path with query string', async () => {
         renderWithRedux(
-            <Router history={history}>
-                <Redirect redirectTo="/foo?bar=baz" />
-            </Router>
+            <Routes>
+                <Route
+                    path="/"
+                    element={<Redirect redirectTo="/foo?bar=baz" />}
+                />
+                <Route path="foo" element={<Component />} />
+            </Routes>
         );
-        expect(history.location).toMatchObject({
-            pathname: '/foo',
-            search: '?bar=baz',
-            state: { _scrollToTop: true },
+        await waitFor(() => {
+            expect(screen.queryByDisplayValue('?bar=baz')).not.toBeNull();
         });
     });
-    it('should redirect to the path with state', () => {
-        const history = createMemoryHistory();
+    it('should redirect to the path with state', async () => {
         renderWithRedux(
-            <Router history={history}>
-                <Redirect redirectTo="/foo" state={{ bar: 'baz' }} />
-            </Router>
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <Redirect redirectTo="/foo" state={{ bar: 'baz' }} />
+                    }
+                />
+                <Route path="/foo" element={<Component />} />
+            </Routes>
         );
-        expect(history.location).toMatchObject({
-            pathname: '/foo',
-            state: { _scrollToTop: true, bar: 'baz' },
+        await waitFor(() => {
+            expect(
+                screen.queryByDisplayValue(
+                    JSON.stringify({ _scrollToTop: true, bar: 'baz' })
+                )
+            ).not.toBeNull();
         });
     });
+
     it('should support absolute URLs', () => {
         const oldLocation = window.location;
         delete window.location;
         // @ts-ignore
         window.location = { href: '' };
-        const history = createMemoryHistory();
-        renderWithRedux(
-            <Router history={history}>
-                <Redirect redirectTo="https://google.com" />
-            </Router>
-        );
+        renderWithRedux(<Redirect redirectTo="https://google.com" />);
         expect(window.location.href).toBe('https://google.com');
         window.location = oldLocation;
     });

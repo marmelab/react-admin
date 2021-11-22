@@ -74,11 +74,9 @@ const useRedirect = () => {
                 window.location.href = redirectTo;
             } else {
                 navigate(
-                    {
-                        ...parsePath(
-                            resolveRedirectTo(redirectTo, basePath, id, data)
-                        ),
-                    },
+                    parsePath(
+                        resolveRedirectTo(redirectTo, basePath, id, data)
+                    ),
                     {
                         state: { _scrollToTop: true, ...state },
                     }

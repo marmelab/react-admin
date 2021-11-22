@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { render, RenderResult } from '@testing-library/react';
+import { History } from 'history';
 
 import TestContext from './TestContext';
 
 export interface RenderWithReduxResult extends RenderResult {
     dispatch: jest.Mock;
     reduxStore: any;
+    history: History;
 }
 
 /**
@@ -42,15 +44,17 @@ export const renderWithRedux = (
 ): RenderWithReduxResult => {
     let dispatch;
     let reduxStore;
+    let currentHistory;
     const renderResult = render(
         <TestContext
             initialState={initialState}
             customReducers={customReducers}
             enableReducers
         >
-            {({ store }) => {
+            {({ store, history }) => {
                 dispatch = jest.spyOn(store, 'dispatch');
                 reduxStore = store;
+                currentHistory = history;
                 return component;
             }}
         </TestContext>,
@@ -76,5 +80,6 @@ export const renderWithRedux = (
         },
         dispatch,
         reduxStore,
+        history: currentHistory,
     };
 };
