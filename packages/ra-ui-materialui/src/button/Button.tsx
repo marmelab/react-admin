@@ -208,9 +208,12 @@ const StyledButton = styled(MuiButton, { name: PREFIX })({
     },
 });
 
-const getLinkParams = (
-    locationDescriptor: LocationDescriptor | string = {}
-) => {
+const getLinkParams = (locationDescriptor?: LocationDescriptor | string) => {
+    // eslint-disable-next-line eqeqeq
+    if (locationDescriptor == undefined) {
+        return undefined;
+    }
+
     if (typeof locationDescriptor === 'string') {
         return { to: locationDescriptor };
     }
