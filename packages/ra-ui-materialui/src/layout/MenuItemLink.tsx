@@ -97,7 +97,7 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
     const match = useMatch(
         typeof props.to === 'string' ? props.to : props.to.pathname
     );
-    console.log({ match, to: props.to });
+
     const renderMenuItem = () => {
         return (
             <StyledMenuItem
