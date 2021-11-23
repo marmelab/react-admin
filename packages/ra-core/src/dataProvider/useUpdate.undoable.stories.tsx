@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { QueryClientProvider, QueryClient, useIsMutating } from 'react-query';
-import { TestContext } from 'ra-test';
+import { QueryClient, useIsMutating } from 'react-query';
 
+import { CoreAdminContext } from '../core';
 import undoableEventEmitter from './undoableEventEmitter';
-import DataProviderContext from './DataProviderContext';
 import { useUpdate } from './useUpdate';
 import { useGetOne } from './useGetOne';
 
@@ -31,13 +30,12 @@ export const SuccessCase = () => {
         },
     } as any;
     return (
-        <TestContext enableReducers>
-            <QueryClientProvider client={new QueryClient()}>
-                <DataProviderContext.Provider value={dataProvider}>
-                    <SuccessCore />
-                </DataProviderContext.Provider>
-            </QueryClientProvider>
-        </TestContext>
+        <CoreAdminContext
+            queryClient={new QueryClient()}
+            dataProvider={dataProvider}
+        >
+            <SuccessCore />
+        </CoreAdminContext>
     );
 };
 
@@ -127,13 +125,12 @@ export const ErrorCase = () => {
         },
     } as any;
     return (
-        <TestContext enableReducers>
-            <QueryClientProvider client={new QueryClient()}>
-                <DataProviderContext.Provider value={dataProvider}>
-                    <ErrorCore />
-                </DataProviderContext.Provider>
-            </QueryClientProvider>
-        </TestContext>
+        <CoreAdminContext
+            queryClient={new QueryClient()}
+            dataProvider={dataProvider}
+        >
+            <ErrorCore />
+        </CoreAdminContext>
     );
 };
 

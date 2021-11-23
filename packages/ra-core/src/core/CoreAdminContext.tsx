@@ -53,7 +53,7 @@ const CoreAdminContext = (props: AdminContextProps) => {
         queryClient = defaultQueryClient,
         initialState,
     } = props;
-    const reduxIsAlreadyInitialized = !!useContext(ReactReduxContext);
+    const needsNewRedux = !useContext(ReactReduxContext);
 
     if (!dataProvider) {
         throw new Error(`Missing dataProvider prop.
@@ -87,7 +87,7 @@ React-admin requires a valid dataProvider function to work.`);
     };
 
     const [store] = useState(() =>
-        !reduxIsAlreadyInitialized
+        needsNewRedux
             ? createAdminStore({
                   customReducers,
                   initialState,
@@ -95,15 +95,10 @@ React-admin requires a valid dataProvider function to work.`);
             : undefined
     );
 
-    if (reduxIsAlreadyInitialized) {
-        if (!history) {
-            throw new Error(`Missing history prop.
-When integrating react-admin inside an existing redux Provider, you must provide the same 'history' prop to the <Admin> as the one used to bootstrap your routerMiddleware.
-React-admin uses this history for its own ConnectedRouter.`);
-        }
-        return renderCore();
-    } else {
+    if (needsNewRedux) {
         return <Provider store={store}>{renderCore()}</Provider>;
+    } else {
+        return renderCore();
     }
 };
 
