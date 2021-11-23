@@ -55,7 +55,7 @@ describe('useEditController', () => {
         const getOne = jest
             .fn()
             .mockImplementationOnce(() =>
-                Promise.resolve({ data: { id: 12, title: 'hello' } })
+                Promise.resolve({ data: { id: 'test?', title: 'hello' } })
             );
         const dataProvider = ({ getOne } as unknown) as DataProvider;
         const { unmount } = renderWithRedux(
