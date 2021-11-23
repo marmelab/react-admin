@@ -88,10 +88,12 @@ export const useShowController = <RecordType extends Record = Record>(
             }),
     });
 
-    warning(
-        record && record.id && record.id !== id,
-        `useShowController: Fetched record's id attribute (${record.id}) must match the requested 'id' (${id})`
-    );
+    if (record && record.id && record.id !== id) {
+        warning(
+            true,
+            `useShowController: Fetched record's id attribute (${record.id}) must match the requested 'id' (${id})`
+        );
+    }
 
     const getResourceLabel = useGetResourceLabel();
     const defaultTitle = translate('ra.page.show', {

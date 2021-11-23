@@ -151,10 +151,12 @@ export const useEditController = <RecordType extends Record = Record>(
         },
     });
 
-    warning(
-        record && record.id && record.id !== id,
-        `useEditController: Fetched record's id attribute (${record.id}) must match the requested 'id' (${id})`
-    );
+    if (record && record.id && record.id !== id) {
+        warning(
+            true,
+            `useEditController: Fetched record's id attribute (${record.id}) must match the requested 'id' (${id})`
+        );
+    }
 
     const getResourceLabel = useGetResourceLabel();
     const defaultTitle = translate('ra.page.edit', {
