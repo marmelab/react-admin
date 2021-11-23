@@ -9,6 +9,7 @@ import { useUpdate } from './useUpdate';
 import { DataProviderContext } from '../dataProvider';
 import { useRefresh } from '../sideEffect';
 import undoableEventEmitter from './undoableEventEmitter';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const UseGetOne = () => {
     const [data, setData] = useState();
@@ -695,10 +696,12 @@ describe('useDataProvider', () => {
                 return <button onClick={() => update()}>update</button>;
             };
             const { getByText, rerender } = renderWithRedux(
-                <DataProviderContext.Provider value={dataProvider}>
-                    <UseGetOne key="1" />
-                    <Update />
-                </DataProviderContext.Provider>,
+                <QueryClientProvider client={new QueryClient()}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <UseGetOne key="1" />
+                        <Update />
+                    </DataProviderContext.Provider>
+                </QueryClientProvider>,
                 { admin: { resources: { posts: { data: {}, list: {} } } } }
             );
             // waitFor for the dataProvider to return
