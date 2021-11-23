@@ -1,5 +1,209 @@
 # Upgrade to 4.0
 
+## Changed Signature Of Data Provider Hooks
+
+Specialized data provider hooks (like `useUpdate`) have a new signature. 
+
+For mutations:
+
+```diff
+-const [update, { loading }] = useUpdate(
+-   'posts',
+-   123,
+-   { likes: 12 },
+-   { id: 123, title: "hello, world", likes: 122 }
+-);
++const [update, { isLoading }] = useUpdate(
++   'posts',
++   {
++       id: 123,
++       data: { likes: 12 },
++       previousData: { id: 123, title: "hello, world", likes: 122 }
++   }
++);
+```
+
+There are 2 changes:
+
+- `loading` is renamed to `isLoading`
+- the hook signature now reflects the dataProvider signature (so every hook now takes 2 arguments, `resource` and `params`).
+
+The signature of the `update` mutation callback has also changed, and is the same as the hook:
+
+```diff
+-update(resource, id, data, previousData, options);
++update(resource, { id, data, previousData }, options);
+```
+
+This new signature should be easier to learn and use.
+
+To upgrade, check every instance of your code of the following hooks:
+
+- `useUpdate`
+
+And update the calls. If you're using TypeScript, your code won't compile until you properly upgrade the calls. 
+
+These hooks are now powered by react-query, so the state argument contains way more than just `isLoading` (`reset`, `status`, `refetch`, etc.). Check the [`useQuery`](https://react-query.tanstack.com/reference/useQuery) and the [`useMutation`](https://react-query.tanstack.com/reference/useMutation) documentation on the react-query website for more details. 
+
+## Mutation Callbacks Can No Longer Be Used As Event Handlers
+
+In 3.0, you could use a mutation callback in an event handler, e.g. a click handler on a button. This is no longer possible, so you'll have to call the callback manually inside a handler function:
+
+```diff
+const IncreaseLikeButton = ({ record }) => {
+    const diff = { likes: record.likes + 1 };
+    const [update, { isLoading, error }] = useUpdate('likes', { id: record.id, data: diff, previousData: record });
+    if (error) { return <p>ERROR</p>; }
+-   return <button disabled={isLoading} onClick={update}>Like</button>;
++   return <button disabled={isLoading} onClick={() => update()}>Like</button>;
+};
+```
+
+TypeScript will complain if you don't.
+
+Note that your code will be more readable if you pass the mutation parameters to the mutation callback instaed of the mutation hook, e.g.
+
+```diff
+const IncreaseLikeButton = ({ record }) => {
+    const diff = { likes: record.likes + 1 };
+-   const [update, { isLoading, error }] = useUpdate('likes', { id: record.id, data: diff, previousData: record });
++   const [update, { isLoading, error }] = useUpdate();
++   const handleClick = () => {
++       update('likes', { id: record.id, data: diff, previousData: record });
++   };
+    if (error) { return <p>ERROR</p>; }
+-   return <button disabled={isLoading} onClick={update}>Like</button>;
++   return <button disabled={isLoading} onClick={handleClick}>Like</button>;
+};
+```
+
+## `onSuccess` And `onFailure` Props Have Moved
+
+If you need to override the success or failure side effects of a component, you now have to use the `queryOptions` (for query side effects) or `mutationOptions` (for mutation side effects).
+
+For instance, here is how to override the side eggects for the `getOne` query in a `<Show>` component: 
+
+```diff
+const PostShow = () => {
+    const onSuccess = () => {
+        // do something
+    };
+    const onFailure = () => {
+        // do something
+    };
+    return (
+        <Show 
+-           onSuccess={onSuccess}
+-           onFailure={onFailure}
++           queryOptions={{
++               onSuccess: onSuccess,
++               onError: onFailure
++           }}
+        >
+            <SimpleShowLayout>
+                <TextField source="title" />
+            </SimpleShowLayout>
+        </Show>
+    );
+};
+```
+
+Here is how to customize side effects on the `update` mutation in `<Edit>`:
+
+```diff
+const PostEdit = () => {
+    const onSuccess = () => {
+        // do something
+    };
+    const onFailure = () => {
+        // do something
+    };
+    return (
+        <Edit 
+-           onSuccess={onSuccess}
+-           onFailure={onFailure}
++           mutationOptions={{
++               onSuccess: onSuccess,
++               onError: onFailure
++           }}
+        >
+            <SimpleForm>
+                <TextInput source="title" />
+            </SimpleForm>
+        </Show>
+    );
+};
+```
+
+Note that the `onFailure` prop was renamed to `onError` in the options, to match the react-query convention.
+
+**Tip**: `<Edit>` also has a `queryOption` prop allowing you to specify custom success and error side effects for the `getOne` query.
+
+The change concerns the following components:
+
+- `useEditController`
+- `<Edit>`
+- `<EditBase>`
+- `<SaveButton>`
+- `useShowController`
+- `<Show>`
+- `<ShowBase>`
+
+## `onSuccess` Callback On DataProvider Hooks And Components Has A New Signature
+
+The `onSuccess` callback used to receive the *response* from the dataProvider. On specialized hooks, it now receives the `data` property of the response instead. 
+
+```diff
+const [update] = useUpdate();
+const handleClick = () => {
+    update(
+        'posts',
+        { id: 123, data: { likes: 12 } },
+        {
+-           onSuccess: ({ data }) => {
++           onSuccess: (data) => {
+                // do something with data
+            }
+        }
+    );
+};
+```
+
+The change concerns the following components:
+
+- `useUpdate`
+- `useEditController`
+- `<Edit>`
+- `<EditBase>`
+- `<SaveButton>`
+- `useGetOne`
+- `useShowController`
+- `<Show>`
+- `<ShowBase>`
+
+## `<Edit successMessage>` Prop Was Removed
+
+This prop has been deprecated for a long time. Replace it with a custom success handler in the `mutationOptions`:
+
+```diff
+-import { Edit, SimpleForm } from 'react-admin';
++import { Edit, SimpleForm, useNotify } from 'react-admin';
+
+const PostEdit = () => {
++   const notify = useNotify();
++   const onSuccess = () => notify('Post updated successfully');
+    return (
+-       <Edit successMessage="Post updated successfully">
++       <Edit mutationOptions={{ onSuccess }}>
+            <SimpleForm>
+                ...
+            </SimpleForm>
+        </Edit>
+    );
+};
+```
+
+
 ## No More Prop Injection In Page Components
 
 Page components (`<List>`, `<Show>`, etc.) used to expect to receive props (route parameters, permissions, resource name). These components don't receive any props anymore by default. They use hooks to get the props they need from contexts or route state.  
@@ -290,31 +494,6 @@ const BookDetail = ({ id }) => {
 ```
 
 The new props are actually returned by react-query's `useQuery` hook. Check [their documentation](https://react-query.tanstack.com/reference/useQuery) for more information.
-
-## Page Components No Longer Accept `onSuccess` and `onFailure` Props
-
-Prior to 4.0, the page components (`<List>`, `<Show>`, etc.) used to accept props for success and failure side effects. They now accept a generic `queryOptions` prop, which is passed to the underlying react-query `useQuery` call. 
-
-This options object accepts `onSuccess` and `onError` fields, so you can migrate your code as follows:
-
-```diff
-const PostShow = () => {
-    const onSuccess = () => {
-        // do something
-    };
-    const onFailure = () => {
-        // do something
-    };
-    return (
--       <Show {...props} onSuccess={onSuccess} onFailure={onFailure}>
-+       <Show {...props} queryOptions={{ onSuccess: onSuccess, onError: onFailure }}>
-            <SimpleShowLayout>
-                <TextField source="title" />
-            </SimpleShowLayout>
-        </Show>
-    );
-};
-```
 
 ## Unit Tests for Data Provider Dependent Components Need A QueryClientContext
 
