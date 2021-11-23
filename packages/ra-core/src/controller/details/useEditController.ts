@@ -150,7 +150,8 @@ export const useEditController = <RecordType extends Record = Record>(
         },
     });
 
-    if (record && record.id && record.id !== id) {
+    // eslint-disable-next-line eqeqeq
+    if (record && record.id && record.id != id) {
         throw new Error(
             `useEditController: Fetched record's id attribute (${record.id}) must match the requested 'id' (${id})`
         );
