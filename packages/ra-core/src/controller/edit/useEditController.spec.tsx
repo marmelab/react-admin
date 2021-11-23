@@ -339,6 +339,41 @@ describe('useEditController', () => {
         );
     });
 
+    it('should allow mutationOptions to override the default success side effects in undoable mode', async () => {
+        let saveCallback;
+        const dataProvider = ({
+            getOne: () => Promise.resolve({ data: { id: 12 } }),
+            update: (_, { id, data, previousData }) =>
+                Promise.resolve({ data: { id, ...previousData, ...data } }),
+        } as unknown) as DataProvider;
+        const onSuccess = jest.fn();
+        const { dispatch } = renderWithRedux(
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <EditController
+                            {...defaultProps}
+                            mutationOptions={{ onSuccess }}
+                        >
+                            {({ save }) => {
+                                saveCallback = save;
+                                return null;
+                            }}
+                        </EditController>
+                    </SaveContextProvider>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>
+        );
+        await act(async () => saveCallback({ foo: 'bar' }));
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(onSuccess).toHaveBeenCalled();
+        expect(dispatch).not.toHaveBeenCalledWith(
+            expect.objectContaining({
+                type: 'RA/SHOW_NOTIFICATION',
+            })
+        );
+    });
+
     it('should allow the save onSuccess option to override the success side effects override', async () => {
         let saveCallback;
         const dataProvider = ({

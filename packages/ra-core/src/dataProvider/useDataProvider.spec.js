@@ -5,7 +5,7 @@ import expect from 'expect';
 
 import { renderWithRedux } from 'ra-test';
 import useDataProvider from './useDataProvider';
-import useUpdate from './useUpdate';
+import { useUpdate } from './useUpdate';
 import { DataProviderContext } from '../dataProvider';
 import { useRefresh } from '../sideEffect';
 import undoableEventEmitter from './undoableEventEmitter';
@@ -552,7 +552,8 @@ describe('useDataProvider', () => {
             expect(getOne).toBeCalledTimes(2);
         });
 
-        it('should skip the dataProvider call if there is a valid cache', async () => {
+        // to be revisited once we reimplement caching via react-query
+        it.skip('should skip the dataProvider call if there is a valid cache', async () => {
             const getOne = jest.fn(() => {
                 const validUntil = new Date();
                 validUntil.setTime(validUntil.getTime() + 1000);
