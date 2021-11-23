@@ -6,7 +6,6 @@ import { useTranslate } from '../../i18n';
 import { useNotify, useRedirect, useRefresh } from '../../sideEffect';
 import { CRUD_GET_ONE } from '../../actions';
 import { useResourceContext, useGetResourceLabel } from '../../core';
-import { warning } from '../../util';
 
 export interface ShowProps {
     basePath?: string;
@@ -89,8 +88,7 @@ export const useShowController = <RecordType extends Record = Record>(
     });
 
     if (record && record.id && record.id !== id) {
-        warning(
-            true,
+        throw new Error(
             `useShowController: Fetched record's id attribute (${record.id}) must match the requested 'id' (${id})`
         );
     }

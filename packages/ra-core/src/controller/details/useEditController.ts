@@ -26,7 +26,6 @@ import {
     useSaveModifiers,
 } from '../saveModifiers';
 import { useResourceContext, useGetResourceLabel } from '../../core';
-import { warning } from '../../util';
 
 export interface EditProps {
     basePath?: string;
@@ -152,8 +151,7 @@ export const useEditController = <RecordType extends Record = Record>(
     });
 
     if (record && record.id && record.id !== id) {
-        warning(
-            true,
+        throw new Error(
             `useEditController: Fetched record's id attribute (${record.id}) must match the requested 'id' (${id})`
         );
     }
