@@ -6,6 +6,7 @@ import { useTranslate } from '../../i18n';
 import { useNotify, useRedirect, useRefresh } from '../../sideEffect';
 import { CRUD_GET_ONE } from '../../actions';
 import { useResourceContext, useGetResourceLabel } from '../../core';
+import { warning } from '../../util';
 
 export interface ShowProps {
     basePath?: string;
@@ -86,6 +87,11 @@ export const useShowController = <RecordType extends Record = Record>(
                 refresh();
             }),
     });
+
+    warning(
+        record && record.id && record.id !== id,
+        `useShowController: Fetched record's id attribute (${record.id}) must match the requested 'id' (${id})`
+    );
 
     const getResourceLabel = useGetResourceLabel();
     const defaultTitle = translate('ra.page.show', {
