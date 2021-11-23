@@ -281,7 +281,7 @@ import * as React from "react";
 import { useUpdate, Button } from 'react-admin';
 
 const ApproveButton = ({ record }) => {
-    const [approve, { loading }] = useUpdate('comments', record.id, { isApproved: true }, record);
+    const [approve, { loading }] = useUpdate('comments', { id: record.id, data: { isApproved: true }, previousData: record });
     return <Button label="Approve" onClick={approve} disabled={loading} />;
 };
 ```
@@ -430,13 +430,16 @@ const LikeButton = ({ record }) => {
 
 ```jsx
 // syntax
-const [update, { data, loading, loaded, error }] = useUpdate(resource, id, data, previousData, options);
+const [update, { data, isLoading, error }] = useUpdate(resource, { id, data, previousData }, options);
 ```
 
-The `update()` method can be called in 3 different ways:
- - with the same parameters as the `useUpdate()` hook: `update(resource, id, data, previousData, options)`
- - with the same syntax as `useMutation`: `update({ resource, payload: { id, data, previousData } }, options)`
- - with no parameter (if they were already passed to useUpdate()): `update()`
+The `update()` method can be called with the same parameters as the hook:
+
+```jsx
+update(resource, { id, data, previousData }, options);
+```
+
+This means the parameters can be passed either when calling the hook, or when calling the callback.
 
 ```jsx
 // set params when calling the update callback
@@ -446,7 +449,7 @@ const IncreaseLikeButton = ({ record }) => {
     const diff = { likes: record.likes + 1 };
     const [update, { loading, error }] = useUpdate();
     const handleClick = () => {
-        update('likes', record.id, diff, record)
+        update('likes', { id: record.id, data: diff, previousData: record })
     }
     if (error) { return <p>ERROR</p>; }
     return <button disabled={loading} onClick={handleClick}>Like</button>;
@@ -457,7 +460,7 @@ import { useUpdate } from 'react-admin';
 
 const IncreaseLikeButton = ({ record }) => {
     const diff = { likes: record.likes + 1 };
-    const [update, { loading, error }] = useUpdate('likes', record.id, diff, record);
+    const [update, { loading, error }] = useUpdate('likes', { id: record.id, data: diff, previousData: record });
     if (error) { return <p>ERROR</p>; }
     return <button disabled={loading} onClick={update}>Like</button>;
 };
@@ -884,21 +887,19 @@ import { useUpdate, useNotify, useRedirect, Button } from 'react-admin';
 const ApproveButton = ({ record }) => {
     const notify = useNotify();
     const redirect = useRedirect();
-    const [approve, { loading }] = useUpdate(
+    const [approve, { isLoading }] = useUpdate(
         'comments',
-        record.id,
-        { isApproved: true },
-        record,
+        { id: record.id, data: { isApproved: true }, previousData: record },
         {
             mutationMode: 'undoable',
             onSuccess: () => {
                 redirect('/comments');
                 notify('Comment approved', { undoable: true });
             },
-            onFailure: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
+            onError: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
         }
     );
-    return <Button label="Approve" onClick={approve} disabled={loading} />;
+    return <Button label="Approve" onClick={approve} disabled={isLoading} />;
 };
 ```
 
@@ -921,8 +922,7 @@ const ApproveButton = ({ record }) => {
     const redirect = useRedirect();
     const [approve, { loading }] = useUpdate(
         'comments',
-        record.id,
-        { isApproved: true },
+        { id: record.id, data: { isApproved: true } },
         {
 +           action: 'MY_CUSTOM_ACTION',
             mutationMode: 'undoable',
@@ -930,7 +930,7 @@ const ApproveButton = ({ record }) => {
                 redirect('/comments');
                 notify('Comment approved', { undoable: true });
             },
-            onFailure: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
+            onError: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
         }
     );
     return <Button label="Approve" onClick={approve} disabled={loading} />;
