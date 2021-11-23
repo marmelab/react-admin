@@ -262,7 +262,8 @@ describe('<SaveButton />', () => {
         fireEvent.click(getByText('ra.action.save'));
         await waitFor(() => {
             expect(onSuccess).toHaveBeenCalledWith({
-                data: { id: 123, title: 'ipsum' },
+                id: 123,
+                title: 'ipsum',
             });
         });
     });
