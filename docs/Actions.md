@@ -422,7 +422,7 @@ const LikeButton = ({ record }) => {
     const like = { postId: record.id };
     const [create, { loading, error }] = useCreate('likes', like);
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={create}>Like</button>;
+    return <button disabled={loading} onClick={() => create()}>Like</button>;
 };
 ```
 

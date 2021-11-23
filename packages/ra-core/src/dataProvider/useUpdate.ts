@@ -287,7 +287,7 @@ export const useUpdate = <RecordType extends Record = Record>(
         } = callTimeParams;
 
         // optimistic update as documented in https://react-query.tanstack.com/guides/optimistic-updates
-        // except we wo it in a mutate wrapper instead of the onMutete callback
+        // except we do it in a mutate wrapper instead of the onMutete callback
         // to have access to success side effects
 
         // Cancel any outgoing refetches (so they don't overwrite our optimistic update)

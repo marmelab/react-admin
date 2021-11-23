@@ -1,8 +1,6 @@
 import { performOptimisticQuery } from './performOptimisticQuery';
 import { performUndoableQuery } from './performUndoableQuery';
 import { performPessimisticQuery } from './performPessimisticQuery';
-import { answerWithCache } from './answerWithCache';
-import { canReplyWithCache } from '../replyWithCache';
 import { QueryFunctionParams } from './QueryFunctionParams';
 import { MutationMode } from '../../types';
 
