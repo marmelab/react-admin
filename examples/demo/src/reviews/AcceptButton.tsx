@@ -13,11 +13,9 @@ const AcceptButton = ({ record }: { record: Review }) => {
     const notify = useNotify();
     const redirectTo = useRedirect();
 
-    const [approve, { loading }] = useUpdate(
+    const [approve, { isLoading }] = useUpdate(
         'reviews',
-        record.id,
-        { status: 'accepted' },
-        record,
+        { id: record.id, data: { status: 'accepted' }, previousData: record },
         {
             mutationMode: 'undoable',
             onSuccess: () => {
@@ -29,7 +27,7 @@ const AcceptButton = ({ record }: { record: Review }) => {
                 );
                 redirectTo('/reviews');
             },
-            onFailure: () => {
+            onError: () => {
                 notify(
                     'resources.reviews.notification.approved_error',
                     'warning'
@@ -42,8 +40,8 @@ const AcceptButton = ({ record }: { record: Review }) => {
             variant="outlined"
             color="primary"
             size="small"
-            onClick={approve}
-            disabled={loading}
+            onClick={() => approve()}
+            disabled={isLoading}
         >
             <ThumbUp
                 color="primary"
