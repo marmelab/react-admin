@@ -281,8 +281,8 @@ import * as React from "react";
 import { useUpdate, Button } from 'react-admin';
 
 const ApproveButton = ({ record }) => {
-    const [approve, { loading }] = useUpdate('comments', { id: record.id, data: { isApproved: true }, previousData: record });
-    return <Button label="Approve" onClick={approve} disabled={loading} />;
+    const [approve, { isLoading }] = useUpdate('comments', { id: record.id, data: { isApproved: true }, previousData: record });
+    return <Button label="Approve" onClick={approve} disabled={isLoading} />;
 };
 ```
 
@@ -447,12 +447,12 @@ import { useUpdate } from 'react-admin';
 
 const IncreaseLikeButton = ({ record }) => {
     const diff = { likes: record.likes + 1 };
-    const [update, { loading, error }] = useUpdate();
+    const [update, { isLoading, error }] = useUpdate();
     const handleClick = () => {
         update('likes', { id: record.id, data: diff, previousData: record })
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={handleClick}>Like</button>;
+    return <button disabled={isLoading} onClick={handleClick}>Like</button>;
 };
 
 // or set params when calling the hook
@@ -460,9 +460,9 @@ import { useUpdate } from 'react-admin';
 
 const IncreaseLikeButton = ({ record }) => {
     const diff = { likes: record.likes + 1 };
-    const [update, { loading, error }] = useUpdate('likes', { id: record.id, data: diff, previousData: record });
+    const [update, { isLoading, error }] = useUpdate('likes', { id: record.id, data: diff, previousData: record });
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={update}>Like</button>;
+    return <button disabled={isLoading} onClick={update}>Like</button>;
 };
 ```
 
@@ -920,7 +920,7 @@ import { useUpdate, useNotify, useRedirect, Button } from 'react-admin';
 const ApproveButton = ({ record }) => {
     const notify = useNotify();
     const redirect = useRedirect();
-    const [approve, { loading }] = useUpdate(
+    const [approve, { isLoading }] = useUpdate(
         'comments',
         { id: record.id, data: { isApproved: true } },
         {
@@ -933,7 +933,7 @@ const ApproveButton = ({ record }) => {
             onError: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
         }
     );
-    return <Button label="Approve" onClick={approve} disabled={loading} />;
+    return <Button label="Approve" onClick={approve} disabled={isLoading} />;
 };
 ```
 
