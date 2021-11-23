@@ -120,6 +120,8 @@ describe('useWarnWhenUnsavedChanges', () => {
             });
             expect(getByDisplayValue('John Doe')).not.toBeNull();
             fireEvent.click(getByText('Submit'));
+            await new Promise(resolve => setTimeout(resolve, 101));
+
             // We don't check whether the redirection happened because final-form keeps the form
             // dirty state even after the submit.
             expect(window.confirm).not.toHaveBeenCalled();
