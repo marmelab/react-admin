@@ -44,12 +44,12 @@ export const CompanyShow = () => (
 );
 
 const CompanyShowContent = () => {
-    const { record, loaded } = useShowContext<Company>();
+    const { record, isLoading } = useShowContext<Company>();
     const [value, setValue] = useState(0);
     const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
     };
-    if (!loaded || !record) return null;
+    if (isLoading || !record) return null;
     return (
         <Box mt={2} display="flex">
             <Box flex="1">

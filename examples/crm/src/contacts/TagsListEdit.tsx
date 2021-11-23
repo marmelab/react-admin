@@ -61,12 +61,20 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
         const tags: Identifier[] = record.tags.filter(
             (tagId: Identifier) => tagId !== id
         );
-        update('contacts', record.id, { tags }, record);
+        update('contacts', {
+            id: record.id,
+            data: { tags },
+            previousData: record,
+        });
     };
 
     const handleAddTag = (id: Identifier) => {
         const tags: Identifier[] = [...record.tags, id];
-        update('contacts', record.id, { tags }, record);
+        update('contacts', {
+            id: record.id,
+            data: { tags },
+            previousData: record,
+        });
         setAnchorEl(null);
     };
 
@@ -92,9 +100,11 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
                 onSuccess: ({ data }) => {
                     update(
                         'contacts',
-                        record.id,
-                        { tags: [...record.tags, data.id] },
-                        record,
+                        {
+                            id: record.id,
+                            data: { tags: [...record.tags, data.id] },
+                            previousData: record,
+                        },
                         {
                             onSuccess: () => {
                                 setNewTagName('');
