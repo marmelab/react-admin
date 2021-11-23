@@ -3,7 +3,7 @@ import { styled, Theme } from '@mui/material/styles';
 import { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button, Snackbar, SnackbarProps } from '@mui/material';
+import { Button, Snackbar, SnackbarProps, SnackbarOrigin } from '@mui/material';
 import classnames from 'classnames';
 
 import {
@@ -15,6 +15,11 @@ import {
     useTranslate,
 } from 'ra-core';
 
+const defaultAnchorOrigin: SnackbarOrigin = {
+    vertical: 'bottom',
+    horizontal: 'center',
+};
+
 export const Notification = (props: NotificationProps) => {
     const {
         classes: classesOverride,
@@ -22,6 +27,7 @@ export const Notification = (props: NotificationProps) => {
         autoHideDuration = 4000,
         className,
         multiLine = false,
+        anchorOrigin = defaultAnchorOrigin,
         ...rest
     } = props;
     const [open, setOpen] = useState(false);
@@ -86,6 +92,7 @@ export const Notification = (props: NotificationProps) => {
                     </StyledButton>
                 ) : null
             }
+            anchorOrigin={anchorOrigin}
             {...rest}
         />
     );
