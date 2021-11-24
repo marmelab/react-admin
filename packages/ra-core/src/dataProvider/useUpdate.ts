@@ -194,7 +194,7 @@ export const useUpdate = <RecordType extends Record = Record>(
                 context: unknown
             ) => {
                 if (mode.current === 'pessimistic') {
-                    // Optimistically update to the new value in getOne
+                    // update the getOne and getList query cache with the new result
                     const {
                         resource: callTimeResource = resource,
                         id: callTimeId = id,
@@ -287,7 +287,7 @@ export const useUpdate = <RecordType extends Record = Record>(
         } = callTimeParams;
 
         // optimistic update as documented in https://react-query.tanstack.com/guides/optimistic-updates
-        // except we do it in a mutate wrapper instead of the onMutete callback
+        // except we do it in a mutate wrapper instead of the onMutate callback
         // to have access to success side effects
 
         // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
