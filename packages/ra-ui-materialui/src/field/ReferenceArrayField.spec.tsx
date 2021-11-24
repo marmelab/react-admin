@@ -212,7 +212,7 @@ describe('<ReferenceArrayField />', () => {
         const promise = new Promise<any>(res => {
             resolve = res;
         });
-        const WeakField = ({ record }: any) => <div>{record.title}</div>;
+        const WeakField = ({ record }: any) => <div>{record?.title}</div>;
         const dataProvider = {
             getMany: () =>
                 promise.then(() => ({
