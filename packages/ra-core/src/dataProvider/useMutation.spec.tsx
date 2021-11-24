@@ -1,32 +1,31 @@
 import * as React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
-import { MemoryRouter } from 'react-router';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
+import { CoreAdminContext, Resource } from '../core';
 import Mutation from './Mutation';
-import { Resource } from '../core';
-import { renderWithRedux } from 'ra-test';
-import { DataProviderContext } from '.';
 
 describe('useMutation', () => {
-    const store = createStore(() => ({
+    const initialState = {
         admin: {
             resources: { foo: {} },
         },
-        router: { location: { pathname: '/' } },
-    }));
+    };
+    const store = createStore(() => initialState);
 
     it('should pass a callback to trigger the mutation', () => {
         let callback = null;
-        renderWithRedux(
-            <Mutation type="foo" resource="bar">
-                {mutate => {
-                    callback = mutate;
-                    return <div data-testid="test">Hello</div>;
-                }}
-            </Mutation>
+        render(
+            <CoreAdminContext dataProvider={() => Promise.resolve()}>
+                <Mutation type="foo" resource="bar">
+                    {mutate => {
+                        callback = mutate;
+                        return <div data-testid="test">Hello</div>;
+                    }}
+                </Mutation>
+            </CoreAdminContext>
         );
         expect(callback).toBeInstanceOf(Function);
     });
@@ -37,22 +36,26 @@ describe('useMutation', () => {
         };
 
         const myPayload = {};
-        const { getByText, dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <Mutation
-                    type="mytype"
-                    resource="myresource"
-                    payload={myPayload}
-                >
-                    {mutate => <button onClick={mutate}>Hello</button>}
-                </Mutation>
-            </DataProviderContext.Provider>
+        const dispatch = jest.spyOn(store, 'dispatch');
+        render(
+            <Provider store={store}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Mutation
+                        type="mytype"
+                        resource="myresource"
+                        payload={myPayload}
+                    >
+                        {mutate => <button onClick={mutate}>Hello</button>}
+                    </Mutation>
+                </CoreAdminContext>
+            </Provider>
         );
-        fireEvent.click(getByText('Hello'));
+        fireEvent.click(screen.getByText('Hello'));
         const action = dispatch.mock.calls[0][0];
         expect(action.type).toEqual('CUSTOM_FETCH');
         expect(action.payload).toEqual(myPayload);
         expect(action.meta.resource).toEqual('myresource');
+        dispatch.mockRestore();
     });
 
     it('should use callTimePayload and callTimeOptions', () => {
@@ -61,29 +64,36 @@ describe('useMutation', () => {
         };
 
         const myPayload = { foo: 1 };
-        const { getByText, dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <Mutation
-                    type="mytype"
-                    resource="myresource"
-                    payload={myPayload}
-                >
-                    {mutate => (
-                        <button
-                            onClick={e =>
-                                mutate({ payload: { bar: 2 } }, { meta: 'baz' })
-                            }
-                        >
-                            Hello
-                        </button>
-                    )}
-                </Mutation>
-            </DataProviderContext.Provider>
+        const dispatch = jest.spyOn(store, 'dispatch');
+        render(
+            <Provider store={store}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Mutation
+                        type="mytype"
+                        resource="myresource"
+                        payload={myPayload}
+                    >
+                        {mutate => (
+                            <button
+                                onClick={e =>
+                                    mutate(
+                                        { payload: { bar: 2 } },
+                                        { meta: 'baz' }
+                                    )
+                                }
+                            >
+                                Hello
+                            </button>
+                        )}
+                    </Mutation>
+                </CoreAdminContext>
+            </Provider>
         );
-        fireEvent.click(getByText('Hello'));
+        fireEvent.click(screen.getByText('Hello'));
         const action = dispatch.mock.calls[0][0];
         expect(action.payload).toEqual({ foo: 1, bar: 2 });
         expect(action.meta.meta).toEqual('baz');
+        dispatch.mockRestore();
     });
 
     it('should use callTimeQuery over definition query', () => {
@@ -95,39 +105,43 @@ describe('useMutation', () => {
         };
 
         const myPayload = { foo: 1 };
-        const { getByText, dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <Mutation
-                    type="mytype"
-                    resource="myresource"
-                    payload={myPayload}
-                >
-                    {mutate => (
-                        <button
-                            onClick={e =>
-                                mutate(
-                                    {
-                                        resource: 'callTimeResource',
-                                        type: 'callTimeType',
-                                        payload: { bar: 2 },
-                                    },
-                                    { meta: 'baz' }
-                                )
-                            }
-                        >
-                            Hello
-                        </button>
-                    )}
-                </Mutation>
-            </DataProviderContext.Provider>
+        const dispatch = jest.spyOn(store, 'dispatch');
+        render(
+            <Provider store={store}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Mutation
+                        type="mytype"
+                        resource="myresource"
+                        payload={myPayload}
+                    >
+                        {mutate => (
+                            <button
+                                onClick={e =>
+                                    mutate(
+                                        {
+                                            resource: 'callTimeResource',
+                                            type: 'callTimeType',
+                                            payload: { bar: 2 },
+                                        },
+                                        { meta: 'baz' }
+                                    )
+                                }
+                            >
+                                Hello
+                            </button>
+                        )}
+                    </Mutation>
+                </CoreAdminContext>
+            </Provider>
         );
-        fireEvent.click(getByText('Hello'));
+        fireEvent.click(screen.getByText('Hello'));
         const action = dispatch.mock.calls[0][0];
         expect(action.payload).toEqual({ foo: 1, bar: 2 });
         expect(action.meta.resource).toEqual('callTimeResource');
         expect(action.meta.meta).toEqual('baz');
         expect(dataProvider.mytype).not.toHaveBeenCalled();
         expect(dataProvider.callTimeType).toHaveBeenCalled();
+        dispatch.mockRestore();
     });
 
     it('should update the loading state when the mutation callback is triggered', () => {
@@ -136,8 +150,8 @@ describe('useMutation', () => {
         };
 
         const myPayload = {};
-        const { getByText } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <Mutation
                     type="mytype"
                     resource="myresource"
@@ -152,11 +166,11 @@ describe('useMutation', () => {
                         </button>
                     )}
                 </Mutation>
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
-        expect(getByText('Hello').className).toEqual('idle');
-        fireEvent.click(getByText('Hello'));
-        expect(getByText('Hello').className).toEqual('loading');
+        expect(screen.getByText('Hello').className).toEqual('idle');
+        fireEvent.click(screen.getByText('Hello'));
+        expect(screen.getByText('Hello').className).toEqual('loading');
     });
 
     it('should update the data state after a success response', async () => {
@@ -173,16 +187,15 @@ describe('useMutation', () => {
                 )}
             </Mutation>
         );
-        const { getByTestId } = render(
-            <Provider store={store}>
-                <MemoryRouter>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Resource name="foo" list={Foo} />
-                    </DataProviderContext.Provider>
-                </MemoryRouter>
-            </Provider>
+        render(
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                initialState={initialState}
+            >
+                <Resource name="foo" list={Foo} />
+            </CoreAdminContext>
         );
-        const testElement = getByTestId('test');
+        const testElement = screen.getByTestId('test');
         expect(testElement.textContent).toBe('no data');
         fireEvent.click(testElement);
         await waitFor(() => {
@@ -206,16 +219,15 @@ describe('useMutation', () => {
                 )}
             </Mutation>
         );
-        const { getByTestId } = render(
-            <Provider store={store}>
-                <MemoryRouter>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Resource name="foo" list={Foo} />
-                    </DataProviderContext.Provider>
-                </MemoryRouter>
-            </Provider>
+        render(
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                initialState={initialState}
+            >
+                <Resource name="foo" list={Foo} />
+            </CoreAdminContext>
         );
-        const testElement = getByTestId('test');
+        const testElement = screen.getByTestId('test');
         expect(testElement.textContent).toBe('no data');
         fireEvent.click(testElement);
         await waitFor(() => {
@@ -229,18 +241,22 @@ describe('useMutation', () => {
         };
 
         const myPayload = {};
-        const { getByText, dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <Mutation type="mytype" payload={myPayload}>
-                    {mutate => <button onClick={mutate}>Hello</button>}
-                </Mutation>
-            </DataProviderContext.Provider>
+        const dispatch = jest.spyOn(store, 'dispatch');
+        render(
+            <Provider store={store}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Mutation type="mytype" payload={myPayload}>
+                        {mutate => <button onClick={mutate}>Hello</button>}
+                    </Mutation>
+                </CoreAdminContext>
+            </Provider>
         );
-        fireEvent.click(getByText('Hello'));
+        fireEvent.click(screen.getByText('Hello'));
         const action = dispatch.mock.calls[0][0];
         expect(action.type).toEqual('CUSTOM_FETCH');
         expect(action.meta.resource).toBeUndefined();
         expect(dataProvider.mytype).toHaveBeenCalledWith(myPayload);
+        dispatch.mockRestore();
     });
 
     it('should return a promise to dispatch a fetch action when returnPromise option is set and the mutation callback is triggered', async () => {
@@ -250,26 +266,29 @@ describe('useMutation', () => {
 
         let promise = null;
         const myPayload = {};
-        const { getByText, dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <Mutation
-                    type="mytype"
-                    resource="myresource"
-                    payload={myPayload}
-                    options={{ returnPromise: true }}
-                >
-                    {(mutate, { loading }) => (
-                        <button
-                            className={loading ? 'loading' : 'idle'}
-                            onClick={() => (promise = mutate())}
-                        >
-                            Hello
-                        </button>
-                    )}
-                </Mutation>
-            </DataProviderContext.Provider>
+        const dispatch = jest.spyOn(store, 'dispatch');
+        render(
+            <Provider store={store}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Mutation
+                        type="mytype"
+                        resource="myresource"
+                        payload={myPayload}
+                        options={{ returnPromise: true }}
+                    >
+                        {(mutate, { loading }) => (
+                            <button
+                                className={loading ? 'loading' : 'idle'}
+                                onClick={() => (promise = mutate())}
+                            >
+                                Hello
+                            </button>
+                        )}
+                    </Mutation>
+                </CoreAdminContext>
+            </Provider>
         );
-        const buttonElement = getByText('Hello');
+        const buttonElement = screen.getByText('Hello');
         fireEvent.click(buttonElement);
         const action = dispatch.mock.calls[0][0];
         expect(action.type).toEqual('CUSTOM_FETCH');
@@ -281,5 +300,6 @@ describe('useMutation', () => {
         expect(promise).toBeInstanceOf(Promise);
         const result = await promise;
         expect(result).toMatchObject({ data: { foo: 'bar' } });
+        dispatch.mockRestore();
     });
 });
