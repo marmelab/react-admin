@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
-import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
-import { CoreAdminContext, Resource } from '../core';
+import { createAdminStore, CoreAdminContext, Resource } from '../core';
 import Mutation from './Mutation';
 
 describe('useMutation', () => {
@@ -13,7 +12,7 @@ describe('useMutation', () => {
             resources: { foo: {} },
         },
     };
-    const store = createStore(() => initialState);
+    const store = createAdminStore({ initialState });
 
     it('should pass a callback to trigger the mutation', () => {
         let callback = null;
