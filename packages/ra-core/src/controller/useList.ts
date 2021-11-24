@@ -67,17 +67,15 @@ export const useList = (props: UseListOptions): UseListValue => {
         perPage: initialPerPage = 1000,
         sort: initialSort = defaultSort,
     } = props;
-    const [loadingState, setLoadingState] = useSafeSetState<boolean>(loading);
-    const [loadedState, setLoadedState] = useSafeSetState<boolean>(loaded);
 
     const [finalItems, setFinalItems] = useSafeSetState<{
         data: RecordMap;
         ids: Identifier[];
         total: number;
     }>(() => ({
-        data: indexById(data),
-        ids,
-        total: ids.length,
+        data: Array.isArray(data) ? indexById(data) : {},
+        ids: Array.isArray(ids) ? ids : [],
+        total: Array.isArray(ids) ? ids.length : 0,
     }));
 
     // pagination logic
@@ -213,18 +211,6 @@ export const useList = (props: UseListOptions): UseListValue => {
         sort.order,
     ]);
 
-    useEffect(() => {
-        if (loaded !== loadedState) {
-            setLoadedState(loaded);
-        }
-    }, [loaded, loadedState, setLoadedState]);
-
-    useEffect(() => {
-        if (loading !== loadingState) {
-            setLoadingState(loading);
-        }
-    }, [loading, loadingState, setLoadingState]);
-
     return {
         currentSort: sort,
         data: finalItems.data,
@@ -233,8 +219,8 @@ export const useList = (props: UseListOptions): UseListValue => {
         filterValues,
         hideFilter,
         ids: finalItems.ids,
-        loaded: loadedState,
-        loading: loadingState,
+        loaded,
+        loading,
         onSelect,
         onToggleItem,
         onUnselectItems,
@@ -251,8 +237,8 @@ export const useList = (props: UseListOptions): UseListValue => {
 };
 
 export interface UseListOptions<RecordType extends Record = Record> {
-    data: RecordType[];
-    ids: Identifier[];
+    data?: RecordType[];
+    ids?: Identifier[];
     error?: any;
     filter?: FilterPayload;
     loading: boolean;
