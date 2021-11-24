@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import expect from 'expect';
-import { renderWithRedux } from 'ra-test';
-import { screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { Routes, Route, useLocation } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 
+import { CoreAdminContext } from '../core';
 import useRedirect from './useRedirect';
 
 const Redirect = ({
@@ -38,30 +39,43 @@ const Component = () => {
 
 describe('useRedirect', () => {
     it('should redirect to the path with query string', async () => {
-        renderWithRedux(
-            <Routes>
-                <Route
-                    path="/"
-                    element={<Redirect redirectTo="/foo?bar=baz" />}
-                />
-                <Route path="foo" element={<Component />} />
-            </Routes>
+        render(
+            <CoreAdminContext
+                dataProvider={() => Promise.resolve()}
+                history={createMemoryHistory()}
+            >
+                <Routes>
+                    <Route
+                        path="/"
+                        element={<Redirect redirectTo="/foo?bar=baz" />}
+                    />
+                    <Route path="foo" element={<Component />} />
+                </Routes>
+            </CoreAdminContext>
         );
         await waitFor(() => {
             expect(screen.queryByDisplayValue('?bar=baz')).not.toBeNull();
         });
     });
     it('should redirect to the path with state', async () => {
-        renderWithRedux(
-            <Routes>
-                <Route
-                    path="/"
-                    element={
-                        <Redirect redirectTo="/foo" state={{ bar: 'baz' }} />
-                    }
-                />
-                <Route path="/foo" element={<Component />} />
-            </Routes>
+        render(
+            <CoreAdminContext
+                dataProvider={() => Promise.resolve()}
+                history={createMemoryHistory()}
+            >
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            <Redirect
+                                redirectTo="/foo"
+                                state={{ bar: 'baz' }}
+                            />
+                        }
+                    />
+                    <Route path="/foo" element={<Component />} />
+                </Routes>
+            </CoreAdminContext>
         );
         await waitFor(() => {
             expect(
@@ -77,7 +91,14 @@ describe('useRedirect', () => {
         delete window.location;
         // @ts-ignore
         window.location = { href: '' };
-        renderWithRedux(<Redirect redirectTo="https://google.com" />);
+        render(
+            <CoreAdminContext
+                dataProvider={() => Promise.resolve()}
+                history={createMemoryHistory()}
+            >
+                <Redirect redirectTo="https://google.com" />
+            </CoreAdminContext>
+        );
         expect(window.location.href).toBe('https://google.com');
         window.location = oldLocation;
     });
