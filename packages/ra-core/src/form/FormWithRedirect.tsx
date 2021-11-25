@@ -137,9 +137,11 @@ const FormWithRedirect = ({
                             ...(formGroups.current[group] || []),
                             source,
                         ];
-                        subscribers.current[group].forEach(subscriber =>
-                            subscriber()
-                        );
+                        if (subscribers.current[group]) {
+                            subscribers.current[group].forEach(subscriber =>
+                                subscriber()
+                            );
+                        }
                     }
                 }
             },
@@ -151,9 +153,11 @@ const FormWithRedirect = ({
                         const fields = new Set(formGroups.current[group]);
                         fields.delete(source);
                         formGroups.current[group] = Array.from(fields);
-                        subscribers.current[group].forEach(subscriber =>
-                            subscriber()
-                        );
+                        if (subscribers.current[group]) {
+                            subscribers.current[group].forEach(subscriber =>
+                                subscriber()
+                            );
+                        }
                     }
                 }
             },
