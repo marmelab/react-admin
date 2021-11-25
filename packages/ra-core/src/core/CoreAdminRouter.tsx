@@ -45,6 +45,10 @@ export const CoreAdminRouter = (props: AdminRouterProps) => {
     useScrollToTop();
 
     useEffect(() => {
+        setResources(createResourcesFromChildren(props.children));
+    }, [setResources, props.children]);
+
+    useEffect(() => {
         resources.forEach(resource => {
             registerResource(resource);
         });
@@ -77,7 +81,7 @@ export const CoreAdminRouter = (props: AdminRouterProps) => {
             setHasFunctionChild(true);
             initializeResources(functionChildren[0] as RenderResourcesFunction);
         }
-    }, [authenticated]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [authenticated, props.children]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const initializeResources = async (childFunc: RenderResourcesFunction) => {
         try {
