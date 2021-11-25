@@ -55,7 +55,7 @@ const Root = styled('div')(({ theme }) => ({
     },
 }));
 
-interface Props extends EditProps {
+interface Props extends EditProps<Review> {
     onCancel: () => void;
 }
 

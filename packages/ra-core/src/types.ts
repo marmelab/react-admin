@@ -177,8 +177,8 @@ export interface GetManyReferenceResult<RecordType extends Record = Record> {
 
 export interface UpdateParams<T = any> {
     id: Identifier;
-    data: T;
-    previousData: Record;
+    data: Partial<T>;
+    previousData: T;
 }
 export interface UpdateResult<RecordType extends Record = Record> {
     data: RecordType;
@@ -294,8 +294,12 @@ export type DataProviderProxy<
 };
 
 export type MutationMode = 'pessimistic' | 'optimistic' | 'undoable';
-export type OnSuccess = (response?: any) => void;
-export type OnFailure = (error?: any) => void;
+export type OnSuccess = (
+    response?: any,
+    variables?: any,
+    context?: any
+) => void;
+export type OnFailure = (error?: any, variables?: any, context?: any) => void;
 
 export interface UseDataProviderOptions {
     action?: string;

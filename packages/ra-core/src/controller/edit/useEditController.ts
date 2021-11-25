@@ -1,6 +1,6 @@
 import { useCallback, MutableRefObject } from 'react';
 import { useParams } from 'react-router-dom';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
 import useVersion from '../useVersion';
 import {
@@ -9,6 +9,7 @@ import {
     MutationMode,
     OnSuccess,
     OnFailure,
+    UpdateParams,
 } from '../../types';
 import {
     useNotify,
@@ -18,7 +19,6 @@ import {
 } from '../../sideEffect';
 import { useGetOne, useUpdate, Refetch } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
-import { CRUD_UPDATE } from '../../actions';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import {
     SetOnSuccess,
@@ -55,12 +55,10 @@ export const useEditController = <RecordType extends Record = Record>(
 ): EditControllerResult<RecordType> => {
     const {
         id: propsId,
-        successMessage,
-        onSuccess,
-        onFailure,
         mutationMode = 'undoable',
         transform,
         queryOptions = {},
+        mutationOptions = {},
     } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
@@ -70,12 +68,7 @@ export const useEditController = <RecordType extends Record = Record>(
     const version = useVersion();
     const { id: routeId } = useParams<{ id?: string }>();
     const id = propsId || decodeURIComponent(routeId);
-
-    if (process.env.NODE_ENV !== 'production' && successMessage) {
-        console.log(
-            '<Edit successMessage> prop is deprecated, use the onSuccess prop instead.'
-        );
-    }
+    const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
 
     const {
         onSuccessRef,
@@ -84,7 +77,7 @@ export const useEditController = <RecordType extends Record = Record>(
         setOnFailure,
         transformRef,
         setTransform,
-    } = useSaveModifiers({ onSuccess, onFailure, transform });
+    } = useSaveModifiers({ onSuccess, onFailure: onError, transform });
 
     const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
         RecordType
@@ -96,6 +89,7 @@ export const useEditController = <RecordType extends Record = Record>(
             redirect('list', `/${resource}`);
             refresh();
         },
+
         retry: false,
         ...queryOptions,
     });
@@ -114,16 +108,15 @@ export const useEditController = <RecordType extends Record = Record>(
         record,
     });
 
-    const [update, { loading: saving }] = useUpdate(
+    const [update, { isLoading: saving }] = useUpdate<RecordType>(
         resource,
-        id,
-        {}, // set by the caller
-        record
+        { id, previousData: record },
+        { ...otherMutationOptions, mutationMode }
     );
 
     const save = useCallback(
         (
-            data: Partial<Record>,
+            data: Partial<RecordType>,
             redirectTo = DefaultRedirect,
             {
                 onSuccess: onSuccessFromSave,
@@ -137,27 +130,23 @@ export const useEditController = <RecordType extends Record = Record>(
                     : transformRef.current
                     ? transformRef.current(data)
                     : data
-            ).then(data =>
+            ).then((data: Partial<RecordType>) =>
                 update(
-                    { payload: { data } },
+                    resource,
+                    { data },
                     {
-                        action: CRUD_UPDATE,
                         onSuccess: onSuccessFromSave
                             ? onSuccessFromSave
                             : onSuccessRef.current
                             ? onSuccessRef.current
                             : () => {
-                                  notify(
-                                      successMessage ||
-                                          'ra.notification.updated',
-                                      {
-                                          type: 'info',
-                                          messageArgs: {
-                                              smart_count: 1,
-                                          },
-                                          undoable: mutationMode === 'undoable',
-                                      }
-                                  );
+                                  notify('ra.notification.updated', {
+                                      type: 'info',
+                                      messageArgs: {
+                                          smart_count: 1,
+                                      },
+                                      undoable: mutationMode === 'undoable',
+                                  });
                                   redirect(
                                       redirectTo,
                                       `/${resource}`,
@@ -165,11 +154,11 @@ export const useEditController = <RecordType extends Record = Record>(
                                       data
                                   );
                               },
-                        onFailure: onFailureFromSave
+                        onError: onFailureFromSave
                             ? onFailureFromSave
                             : onFailureRef.current
                             ? onFailureRef.current
-                            : error => {
+                            : (error: Error | string) => {
                                   notify(
                                       typeof error === 'string'
                                           ? error
@@ -187,14 +176,7 @@ export const useEditController = <RecordType extends Record = Record>(
                                           },
                                       }
                                   );
-                                  if (
-                                      mutationMode === 'undoable' ||
-                                      mutationMode === 'pessimistic'
-                                  ) {
-                                      refresh();
-                                  }
                               },
-                        mutationMode,
                     }
                 )
             ),
@@ -204,9 +186,7 @@ export const useEditController = <RecordType extends Record = Record>(
             onSuccessRef,
             onFailureRef,
             notify,
-            successMessage,
             redirect,
-            refresh,
             resource,
             mutationMode,
         ]
@@ -238,6 +218,11 @@ export interface EditControllerProps<RecordType extends Record = Record> {
     resource?: string;
     mutationMode?: MutationMode;
     queryOptions?: UseQueryOptions<RecordType>;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        unknown,
+        UpdateParams<RecordType>
+    >;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
     transform?: TransformData;
@@ -268,7 +253,6 @@ export interface EditControllerResult<RecordType extends Record = Record> {
     setOnSuccess: SetOnSuccess;
     setOnFailure: SetOnFailure;
     setTransform: SetTransformData;
-    successMessage?: string;
     record?: RecordType;
     refetch: Refetch;
     redirect: RedirectionSideEffect;

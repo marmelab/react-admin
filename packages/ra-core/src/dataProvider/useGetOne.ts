@@ -35,7 +35,7 @@ import useDataProvider from './useDataProvider';
  *     return <div>User {data.username}</div>;
  * };
  */
-const useGetOne = <RecordType extends Record = Record>(
+export const useGetOne = <RecordType extends Record = Record>(
     resource: string,
     id: Identifier,
     options?: UseQueryOptions<RecordType>
@@ -54,5 +54,3 @@ const useGetOne = <RecordType extends Record = Record>(
 export type UseGetOneHookValue<
     RecordType extends Record = Record
 > = UseQueryResult<RecordType>;
-
-export default useGetOne;

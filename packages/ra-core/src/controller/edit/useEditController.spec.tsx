@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { act, waitFor } from '@testing-library/react';
+import { screen, act, waitFor } from '@testing-library/react';
 import { renderWithRedux } from 'ra-test';
 import { MemoryRouter, Route } from 'react-router';
 import { QueryClientProvider, QueryClient } from 'react-query';
@@ -9,6 +9,7 @@ import { EditController } from './EditController';
 import { DataProviderContext } from '../../dataProvider';
 import { DataProvider } from '../../types';
 import { SaveContextProvider } from '..';
+import undoableEventEmitter from '../../dataProvider//undoableEventEmitter';
 
 describe('useEditController', () => {
     const defaultProps = {
@@ -40,8 +41,7 @@ describe('useEditController', () => {
                         </EditController>
                     </SaveContextProvider>
                 </DataProviderContext.Provider>
-            </QueryClientProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </QueryClientProvider>
         );
         await waitFor(() => {
             expect(getOne).toHaveBeenCalled();
@@ -73,8 +73,7 @@ describe('useEditController', () => {
                         </DataProviderContext.Provider>
                     </QueryClientProvider>
                 </Route>
-            </MemoryRouter>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </MemoryRouter>
         );
         await waitFor(() => {
             expect(getOne).toHaveBeenCalledWith('posts', { id: 'test?' });
@@ -136,8 +135,7 @@ describe('useEditController', () => {
                         </EditController>
                     </SaveContextProvider>
                 </DataProviderContext.Provider>
-            </QueryClientProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </QueryClientProvider>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         expect(update).toHaveBeenCalledWith('posts', {
@@ -148,42 +146,95 @@ describe('useEditController', () => {
     });
 
     it('should return an undoable save callback by default', async () => {
+        let post = { id: 12 };
+        const update = jest
+            .fn()
+            .mockImplementationOnce((_, { id, data, previousData }) => {
+                post = { ...previousData, ...data };
+                return Promise.resolve({ data: post });
+            });
         const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update: (_, { id, data, previousData }) =>
-                Promise.resolve({ data: { id, ...previousData, ...data } }),
+            getOne: () => Promise.resolve({ data: post }),
+            update,
         } as unknown) as DataProvider;
         let saveCallback;
-        const { dispatch } = renderWithRedux(
+        renderWithRedux(
             <QueryClientProvider client={new QueryClient()}>
                 <DataProviderContext.Provider value={dataProvider}>
                     <SaveContextProvider value={saveContextValue}>
                         <EditController {...defaultProps}>
-                            {({ save }) => {
+                            {({ save, record }) => {
                                 saveCallback = save;
-                                return null;
+                                return <>{JSON.stringify(record)}</>;
                             }}
                         </EditController>
                     </SaveContextProvider>
                 </DataProviderContext.Provider>
-            </QueryClientProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </QueryClientProvider>
         );
+        await new Promise(resolve => setTimeout(resolve, 10));
+        screen.getByText('{"id":12}');
         await act(async () => saveCallback({ foo: 'bar' }));
-        const call = dispatch.mock.calls.find(
-            params => params[0].type === 'RA/CRUD_UPDATE_OPTIMISTIC'
-        );
-        expect(call).not.toBeUndefined();
-        const crudUpdateAction = call[0];
-        expect(crudUpdateAction.payload).toEqual({
+        await new Promise(resolve => setTimeout(resolve, 10));
+        screen.getByText('{"id":12,"foo":"bar"}');
+        expect(update).not.toHaveBeenCalledWith('posts', {
             id: 12,
             data: { foo: 'bar' },
-            previousData: undefined,
+            previousData: { id: 12 },
         });
-        expect(crudUpdateAction.meta.resource).toEqual('posts');
+        undoableEventEmitter.emit('end', { isUndo: false });
+        await new Promise(resolve => setTimeout(resolve, 10));
+        screen.getByText('{"id":12,"foo":"bar"}');
+        expect(update).toHaveBeenCalledWith('posts', {
+            id: 12,
+            data: { foo: 'bar' },
+            previousData: { id: 12 },
+        });
     });
 
-    it('should return a save callback when mutationMode is pessimistic', async () => {
+    it('should return an immediate save callback when mutationMode is pessimistic', async () => {
+        let post = { id: 12 };
+        const update = jest
+            .fn()
+            .mockImplementationOnce((_, { id, data, previousData }) => {
+                post = { ...previousData, ...data };
+                return Promise.resolve({ data: post });
+            });
+        const dataProvider = ({
+            getOne: () => Promise.resolve({ data: post }),
+            update,
+        } as unknown) as DataProvider;
+        let saveCallback;
+        renderWithRedux(
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <EditController
+                            {...defaultProps}
+                            mutationMode="pessimistic"
+                        >
+                            {({ save, record }) => {
+                                saveCallback = save;
+                                return <>{JSON.stringify(record)}</>;
+                            }}
+                        </EditController>
+                    </SaveContextProvider>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>
+        );
+        await new Promise(resolve => setTimeout(resolve, 10));
+        screen.getByText('{"id":12}');
+        await act(async () => saveCallback({ foo: 'bar' }));
+        await new Promise(resolve => setTimeout(resolve, 10));
+        screen.getByText('{"id":12,"foo":"bar"}');
+        expect(update).toHaveBeenCalledWith('posts', {
+            id: 12,
+            data: { foo: 'bar' },
+            previousData: { id: 12 },
+        });
+    });
+
+    it('should execute success side effects on success in pessimistic mode', async () => {
         let saveCallback;
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
@@ -205,32 +256,18 @@ describe('useEditController', () => {
                         </EditController>
                     </SaveContextProvider>
                 </DataProviderContext.Provider>
-            </QueryClientProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </QueryClientProvider>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
-        const call = dispatch.mock.calls.find(
-            params => params[0].type === 'RA/CRUD_UPDATE_OPTIMISTIC'
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(dispatch).toHaveBeenCalledWith(
+            expect.objectContaining({
+                type: 'RA/SHOW_NOTIFICATION',
+            })
         );
-        expect(call).toBeUndefined();
-        const call2 = dispatch.mock.calls.find(
-            params => params[0].type === 'RA/CRUD_UPDATE'
-        );
-        expect(call2).not.toBeUndefined();
-        const crudUpdateAction = call2[0];
-        expect(crudUpdateAction.payload).toEqual({
-            id: 12,
-            data: { foo: 'bar' },
-            previousData: undefined,
-        });
-        expect(crudUpdateAction.meta.resource).toEqual('posts');
-        const notify = dispatch.mock.calls.find(
-            params => params[0].type === 'RA/SHOW_NOTIFICATION'
-        );
-        expect(notify).not.toBeUndefined();
     });
 
-    it('should allow onSuccess to override the default success side effects', async () => {
+    it('should allow mutationOptions to override the default success side effects in pessimistic mode', async () => {
         let saveCallback;
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
@@ -245,7 +282,7 @@ describe('useEditController', () => {
                         <EditController
                             {...defaultProps}
                             mutationMode="pessimistic"
-                            onSuccess={onSuccess}
+                            mutationOptions={{ onSuccess }}
                         >
                             {({ save }) => {
                                 saveCallback = save;
@@ -254,15 +291,87 @@ describe('useEditController', () => {
                         </EditController>
                     </SaveContextProvider>
                 </DataProviderContext.Provider>
-            </QueryClientProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </QueryClientProvider>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
+        await new Promise(resolve => setTimeout(resolve, 10));
         expect(onSuccess).toHaveBeenCalled();
-        const notify = dispatch.mock.calls.find(
-            params => params[0].type === 'RA/SHOW_NOTIFICATION'
+        expect(dispatch).not.toHaveBeenCalledWith(
+            expect.objectContaining({
+                type: 'RA/SHOW_NOTIFICATION',
+            })
         );
-        expect(notify).toBeUndefined();
+    });
+
+    it('should allow mutationOptions to override the default success side effects in optimistic mode', async () => {
+        let saveCallback;
+        const dataProvider = ({
+            getOne: () => Promise.resolve({ data: { id: 12 } }),
+            update: (_, { id, data, previousData }) =>
+                Promise.resolve({ data: { id, ...previousData, ...data } }),
+        } as unknown) as DataProvider;
+        const onSuccess = jest.fn();
+        const { dispatch } = renderWithRedux(
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <EditController
+                            {...defaultProps}
+                            mutationMode="optimistic"
+                            mutationOptions={{ onSuccess }}
+                        >
+                            {({ save }) => {
+                                saveCallback = save;
+                                return null;
+                            }}
+                        </EditController>
+                    </SaveContextProvider>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>
+        );
+        await act(async () => saveCallback({ foo: 'bar' }));
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(onSuccess).toHaveBeenCalled();
+        expect(dispatch).not.toHaveBeenCalledWith(
+            expect.objectContaining({
+                type: 'RA/SHOW_NOTIFICATION',
+            })
+        );
+    });
+
+    it('should allow mutationOptions to override the default success side effects in undoable mode', async () => {
+        let saveCallback;
+        const dataProvider = ({
+            getOne: () => Promise.resolve({ data: { id: 12 } }),
+            update: (_, { id, data, previousData }) =>
+                Promise.resolve({ data: { id, ...previousData, ...data } }),
+        } as unknown) as DataProvider;
+        const onSuccess = jest.fn();
+        const { dispatch } = renderWithRedux(
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <EditController
+                            {...defaultProps}
+                            mutationOptions={{ onSuccess }}
+                        >
+                            {({ save }) => {
+                                saveCallback = save;
+                                return null;
+                            }}
+                        </EditController>
+                    </SaveContextProvider>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>
+        );
+        await act(async () => saveCallback({ foo: 'bar' }));
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(onSuccess).toHaveBeenCalled();
+        expect(dispatch).not.toHaveBeenCalledWith(
+            expect.objectContaining({
+                type: 'RA/SHOW_NOTIFICATION',
+            })
+        );
     });
 
     it('should allow the save onSuccess option to override the success side effects override', async () => {
@@ -281,7 +390,7 @@ describe('useEditController', () => {
                         <EditController
                             {...defaultProps}
                             mutationMode="pessimistic"
-                            onSuccess={onSuccess}
+                            mutationOptions={{ onSuccess }}
                         >
                             {({ save }) => {
                                 saveCallback = save;
@@ -290,8 +399,7 @@ describe('useEditController', () => {
                         </EditController>
                     </SaveContextProvider>
                 </DataProviderContext.Provider>
-            </QueryClientProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </QueryClientProvider>
         );
         await act(async () =>
             saveCallback({ foo: 'bar' }, undefined, {
@@ -300,20 +408,20 @@ describe('useEditController', () => {
         );
         expect(onSuccess).not.toHaveBeenCalled();
         expect(onSuccessSave).toHaveBeenCalled();
-        const notify = dispatch.mock.calls.find(
-            params => params[0].type === 'RA/SHOW_NOTIFICATION'
+        expect(dispatch).not.toHaveBeenCalledWith(
+            expect.objectContaining({
+                type: 'RA/SHOW_NOTIFICATION',
+            })
         );
-        expect(notify).toBeUndefined();
     });
 
-    it('should allow onFailure to override the default failure side effects', async () => {
+    it('should execute error side effects on error in pessimistic mode', async () => {
         jest.spyOn(console, 'error').mockImplementationOnce(() => {});
         let saveCallback;
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             update: () => Promise.reject({ message: 'not good' }),
         } as unknown) as DataProvider;
-        const onFailure = jest.fn();
         const { dispatch } = renderWithRedux(
             <QueryClientProvider client={new QueryClient()}>
                 <DataProviderContext.Provider value={dataProvider}>
@@ -321,7 +429,6 @@ describe('useEditController', () => {
                         <EditController
                             {...defaultProps}
                             mutationMode="pessimistic"
-                            onFailure={onFailure}
                         >
                             {({ save }) => {
                                 saveCallback = save;
@@ -330,15 +437,96 @@ describe('useEditController', () => {
                         </EditController>
                     </SaveContextProvider>
                 </DataProviderContext.Provider>
-            </QueryClientProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </QueryClientProvider>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
-        expect(onFailure).toHaveBeenCalled();
-        const notify = dispatch.mock.calls.find(
-            params => params[0].type === 'RA/SHOW_NOTIFICATION'
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(dispatch).toHaveBeenCalledWith({
+            type: 'RA/SHOW_NOTIFICATION',
+            payload: {
+                type: 'warning',
+                message: 'not good',
+                messageArgs: { _: 'not good' },
+            },
+        });
+    });
+
+    it('should allow mutationOptions to override the default failure side effects in pessimistic mode', async () => {
+        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+        let saveCallback;
+        const dataProvider = ({
+            getOne: () => Promise.resolve({ data: { id: 12 } }),
+            update: () => Promise.reject({ message: 'not good' }),
+        } as unknown) as DataProvider;
+        const onError = jest.fn();
+        const { dispatch } = renderWithRedux(
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <EditController
+                            {...defaultProps}
+                            mutationMode="pessimistic"
+                            mutationOptions={{ onError }}
+                        >
+                            {({ save }) => {
+                                saveCallback = save;
+                                return null;
+                            }}
+                        </EditController>
+                    </SaveContextProvider>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>
         );
-        expect(notify).toBeUndefined();
+        await act(async () => saveCallback({ foo: 'bar' }));
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(onError).toHaveBeenCalled();
+        expect(dispatch).not.toHaveBeenCalledWith({
+            type: 'RA/SHOW_NOTIFICATION',
+            payload: {
+                type: 'warning',
+                message: 'not good',
+                messageArgs: { _: 'not good' },
+            },
+        });
+    });
+
+    it('should allow mutationOptions to override the default failure side effects in optimistic mode', async () => {
+        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+        let saveCallback;
+        const dataProvider = ({
+            getOne: () => Promise.resolve({ data: { id: 12 } }),
+            update: () => Promise.reject({ message: 'not good' }),
+        } as unknown) as DataProvider;
+        const onError = jest.fn();
+        const { dispatch } = renderWithRedux(
+            <QueryClientProvider client={new QueryClient()}>
+                <DataProviderContext.Provider value={dataProvider}>
+                    <SaveContextProvider value={saveContextValue}>
+                        <EditController
+                            {...defaultProps}
+                            mutationMode="optimistic"
+                            mutationOptions={{ onError }}
+                        >
+                            {({ save }) => {
+                                saveCallback = save;
+                                return null;
+                            }}
+                        </EditController>
+                    </SaveContextProvider>
+                </DataProviderContext.Provider>
+            </QueryClientProvider>
+        );
+        await act(async () => saveCallback({ foo: 'bar' }));
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(onError).toHaveBeenCalled();
+        expect(dispatch).not.toHaveBeenCalledWith({
+            type: 'RA/SHOW_NOTIFICATION',
+            payload: {
+                type: 'warning',
+                message: 'not good',
+                messageArgs: { _: 'not good' },
+            },
+        });
     });
 
     it('should allow the save onFailure option to override the failure side effects override', async () => {
@@ -348,7 +536,7 @@ describe('useEditController', () => {
             getOne: () => Promise.resolve({ data: { id: 12 } }),
             update: () => Promise.reject({ message: 'not good' }),
         } as unknown) as DataProvider;
-        const onFailure = jest.fn();
+        const onError = jest.fn();
         const onFailureSave = jest.fn();
         const { dispatch } = renderWithRedux(
             <QueryClientProvider client={new QueryClient()}>
@@ -357,7 +545,7 @@ describe('useEditController', () => {
                         <EditController
                             {...defaultProps}
                             mutationMode="pessimistic"
-                            onFailure={onFailure}
+                            mutationOptions={{ onError }}
                         >
                             {({ save }) => {
                                 saveCallback = save;
@@ -366,15 +554,14 @@ describe('useEditController', () => {
                         </EditController>
                     </SaveContextProvider>
                 </DataProviderContext.Provider>
-            </QueryClientProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </QueryClientProvider>
         );
         await act(async () =>
             saveCallback({ foo: 'bar' }, undefined, {
                 onFailure: onFailureSave,
             })
         );
-        expect(onFailure).not.toHaveBeenCalled();
+        expect(onError).not.toHaveBeenCalled();
         expect(onFailureSave).toHaveBeenCalled();
         const notify = dispatch.mock.calls.find(
             params => params[0].type === 'RA/SHOW_NOTIFICATION'
@@ -413,8 +600,7 @@ describe('useEditController', () => {
                         </EditController>
                     </SaveContextProvider>
                 </DataProviderContext.Provider>
-            </QueryClientProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </QueryClientProvider>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         expect(transform).toHaveBeenCalledWith({
@@ -459,8 +645,7 @@ describe('useEditController', () => {
                         </EditController>
                     </SaveContextProvider>
                 </DataProviderContext.Provider>
-            </QueryClientProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </QueryClientProvider>
         );
         await act(async () =>
             saveCallback({ foo: 'bar' }, undefined, {

@@ -5,10 +5,11 @@ import expect from 'expect';
 
 import { renderWithRedux } from 'ra-test';
 import useDataProvider from './useDataProvider';
-import useUpdate from './useUpdate';
+import { useUpdate } from './useUpdate';
 import { DataProviderContext } from '../dataProvider';
 import { useRefresh } from '../sideEffect';
 import undoableEventEmitter from './undoableEventEmitter';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const UseGetOne = () => {
     const [data, setData] = useState();
@@ -552,7 +553,8 @@ describe('useDataProvider', () => {
             expect(getOne).toBeCalledTimes(2);
         });
 
-        it('should skip the dataProvider call if there is a valid cache', async () => {
+        // to be revisited once we reimplement caching via react-query
+        it.skip('should skip the dataProvider call if there is a valid cache', async () => {
             const getOne = jest.fn(() => {
                 const validUntil = new Date();
                 validUntil.setTime(validUntil.getTime() + 1000);
@@ -687,14 +689,19 @@ describe('useDataProvider', () => {
                 update: () => Promise.resolve({ data: { id: 1, foo: 'bar' } }),
             };
             const Update = () => {
-                const [update] = useUpdate('posts', 1, { foo: 'bar ' });
+                const [update] = useUpdate('posts', {
+                    id: 1,
+                    data: { foo: 'bar ' },
+                });
                 return <button onClick={() => update()}>update</button>;
             };
             const { getByText, rerender } = renderWithRedux(
-                <DataProviderContext.Provider value={dataProvider}>
-                    <UseGetOne key="1" />
-                    <Update />
-                </DataProviderContext.Provider>,
+                <QueryClientProvider client={new QueryClient()}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <UseGetOne key="1" />
+                        <Update />
+                    </DataProviderContext.Provider>
+                </QueryClientProvider>,
                 { admin: { resources: { posts: { data: {}, list: {} } } } }
             );
             // waitFor for the dataProvider to return

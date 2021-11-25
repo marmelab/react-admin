@@ -11,8 +11,9 @@ import {
     MutationMode,
     OnSuccess,
     OnFailure,
+    UpdateParams,
 } from 'ra-core';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
 export interface ListProps extends ResourceComponentProps {
     actions?: ReactElement | false;
@@ -41,9 +42,13 @@ export interface EditProps<RecordType extends RaRecord = RaRecord>
     className?: string;
     component?: ElementType;
     mutationMode?: MutationMode;
-    onSuccess?: OnSuccess;
-    onFailure?: OnFailure;
     queryOptions?: UseQueryOptions<RecordType>;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        unknown,
+        UpdateParams<RecordType>
+    >;
+    resource?: string;
     transform?: (data: RaRecord) => RaRecord | Promise<RaRecord>;
     title?: string | ReactElement;
 }
