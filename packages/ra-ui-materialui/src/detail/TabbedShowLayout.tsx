@@ -164,7 +164,7 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
                             {Children.map(nonNullChildren, (tab, index) => {
                                 if (
                                     !isValidElement(tab) ||
-                                    tabValue === index
+                                    tabValue !== index
                                 ) {
                                     return null;
                                 }
