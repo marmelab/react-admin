@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { render } from '@testing-library/react';
-import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
+import { screen } from '@testing-library/react';
 import { ListContext, ResourceContextProvider } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { SingleFieldList } from './SingleFieldList';
@@ -10,18 +9,9 @@ import { ChipField } from '../field';
 
 const theme = createTheme();
 
-const renderWithRouter = children => {
-    const history = createMemoryHistory();
-
-    return {
-        history,
-        ...render(<Router history={history}>{children}</Router>),
-    };
-};
-
 describe('<SingleFieldList />', () => {
     it('should render a link to the Edit page of the related record by default', () => {
-        const { queryAllByRole } = renderWithRouter(
+        renderWithRedux(
             <ThemeProvider theme={theme}>
                 <ResourceContextProvider value="posts">
                     <ListContext.Provider
@@ -41,7 +31,7 @@ describe('<SingleFieldList />', () => {
                 </ResourceContextProvider>
             </ThemeProvider>
         );
-        const linkElements = queryAllByRole('link');
+        const linkElements = screen.queryAllByRole('link');
         expect(linkElements).toHaveLength(2);
         expect(linkElements.map(link => link.getAttribute('href'))).toEqual([
             '/posts/1',
@@ -50,7 +40,7 @@ describe('<SingleFieldList />', () => {
     });
 
     it('should render a link to the Edit page of the related record when the resource contains slashes', () => {
-        const { queryAllByRole } = renderWithRouter(
+        renderWithRedux(
             <ThemeProvider theme={theme}>
                 <ResourceContextProvider value="posts/foo">
                     <ListContext.Provider
@@ -69,7 +59,7 @@ describe('<SingleFieldList />', () => {
                 </ResourceContextProvider>
             </ThemeProvider>
         );
-        const linkElements = queryAllByRole('link');
+        const linkElements = screen.queryAllByRole('link');
         expect(linkElements).toHaveLength(2);
         expect(linkElements.map(link => link.getAttribute('href'))).toEqual([
             '/posts/foo/1',
@@ -79,7 +69,7 @@ describe('<SingleFieldList />', () => {
 
     ['edit', 'show'].forEach(action => {
         it(`should render a link to the Edit page of the related record when the resource is named ${action}`, () => {
-            const { queryAllByRole } = renderWithRouter(
+            renderWithRedux(
                 <ThemeProvider theme={theme}>
                     <ResourceContextProvider value={action}>
                         <ListContext.Provider
@@ -99,7 +89,7 @@ describe('<SingleFieldList />', () => {
                     </ResourceContextProvider>
                 </ThemeProvider>
             );
-            const linkElements = queryAllByRole('link');
+            const linkElements = screen.queryAllByRole('link');
             expect(linkElements).toHaveLength(2);
             expect(
                 linkElements.map(link => link.getAttribute('href'))
@@ -108,7 +98,7 @@ describe('<SingleFieldList />', () => {
     });
 
     it('should render a link to the Show page of the related record when the linkType is show', () => {
-        const { queryAllByRole } = renderWithRouter(
+        renderWithRedux(
             <ThemeProvider theme={theme}>
                 <ResourceContextProvider value="prefix/bar">
                     <ListContext.Provider
@@ -119,7 +109,6 @@ describe('<SingleFieldList />', () => {
                                 2: { id: 2, title: 'bar' },
                             },
                             resource: 'prefix/bar',
-                            basePath: '/prefix/bar',
                         }}
                     >
                         <SingleFieldList linkType="show">
@@ -130,7 +119,7 @@ describe('<SingleFieldList />', () => {
             </ThemeProvider>
         );
 
-        const linkElements = queryAllByRole('link');
+        const linkElements = screen.queryAllByRole('link');
         expect(linkElements).toHaveLength(2);
         expect(linkElements.map(link => link.getAttribute('href'))).toEqual([
             '/prefix/bar/1/show',
@@ -140,7 +129,7 @@ describe('<SingleFieldList />', () => {
 
     ['edit', 'show'].forEach(action => {
         it(`should render a link to the Edit page of the related record when the resource is named ${action} and linkType is show`, () => {
-            const { queryAllByRole } = renderWithRouter(
+            renderWithRedux(
                 <ThemeProvider theme={theme}>
                     <ResourceContextProvider value={action}>
                         <ListContext.Provider
@@ -160,7 +149,7 @@ describe('<SingleFieldList />', () => {
                     </ResourceContextProvider>
                 </ThemeProvider>
             );
-            const linkElements = queryAllByRole('link');
+            const linkElements = screen.queryAllByRole('link');
             expect(linkElements).toHaveLength(2);
             expect(
                 linkElements.map(link => link.getAttribute('href'))
@@ -169,7 +158,7 @@ describe('<SingleFieldList />', () => {
     });
 
     it('should render no link when the linkType is false', () => {
-        const { queryAllByRole, queryByText } = renderWithRouter(
+        renderWithRedux(
             <ThemeProvider theme={theme}>
                 <ListContext.Provider
                     value={{
@@ -179,7 +168,6 @@ describe('<SingleFieldList />', () => {
                             2: { id: 2, title: 'bar' },
                         },
                         resource: 'bar',
-                        basePath: '/bar',
                     }}
                 >
                     <SingleFieldList linkType={false}>
@@ -189,9 +177,9 @@ describe('<SingleFieldList />', () => {
             </ThemeProvider>
         );
 
-        const linkElements = queryAllByRole('link');
+        const linkElements = screen.queryAllByRole('link');
         expect(linkElements).toHaveLength(0);
-        expect(queryByText('foo')).not.toBeNull();
-        expect(queryByText('bar')).not.toBeNull();
+        expect(screen.queryByText('foo')).not.toBeNull();
+        expect(screen.queryByText('bar')).not.toBeNull();
     });
 });
