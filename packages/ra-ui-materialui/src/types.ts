@@ -29,7 +29,7 @@ export interface ListProps {
     perPage?: number;
     resource?: string;
     sort?: SortPayload;
-    syncWithLocation?: boolean;
+    disableSyncWithLocation?: boolean;
     title?: string | ReactElement;
 }
 
