@@ -6,7 +6,7 @@ Custom routes used to be provided to the `Admin` component through the `customRo
 
 As we upgraded to react-router v6 (more on that later), we had to come up with another way to support custom routes.
 
-Meet the `<CustomRoutes>` component. You you can pass it as a child of `<Admin>`, just like a `<Resource>`. It accepts react-router `<Route>` as its children (and only that). You can specify whether the custom routes it contains should be rendered with the `<Layout>` or not by setting the `noLayout` prop. It's `true` by default.
+Meet the `<CustomRoutes>` component. You you can pass it as a child of `<Admin>`, just like a `<Resource>`. It accepts react-router `<Route>` as its children (and only that). You can specify whether the custom routes it contains should be rendered with the `<Layout>` or not by setting the `noLayout` prop. It's `false` by default.
 
 ```diff
 -import { Admin, Resource, RouteWithoutLayout } from 'react-admin';

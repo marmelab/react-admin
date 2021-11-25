@@ -387,9 +387,7 @@ const PostDetail = ({ id }) => {
 
 Some applications may require fine-grained permissions to enable or disable access to certain features depending on user permissions. Since there are many possible strategies (single role, multiple roles or rights, ACLs, etc.), react-admin delegates the permission logic to `authProvider.getPermissions()`.
 
-By default, a react-admin app doesn't require any special permission on list, create, edit, and show pages. However, react-admin calls the `authProvider.getPermissions()` method before navigating to these pages, and passes the result to the main page component (`<List>`, `<Edit>`, etc.). You can then tweak the content of these pages based on permissions.
-
-Additionally, in custom pages, you can call the `usePermissions()` hook to grab the user permissions.
+By default, a react-admin app doesn't require any special permission on list, create, edit, and show pages. However, should you need to customize the views according to the permissions, you can call the [`usePermissions()`](#usepermissions-hook) hook to grab them. This works for custom pages too.
 
 ### User Permissions
 
@@ -449,7 +447,7 @@ export default {
 
 ### Getting User Permissions In CRUD Pages
 
-If you need to check the permissions in any of the default react-admin views, you can use the `usePermissions` hook:
+If you need to check the permissions in any of the default react-admin views, you can use the [`usePermissions()`](#usepermissions-hook) hook:
 
 Here is an example of a `Create` view with a conditional Input based on permissions:
 
@@ -1017,30 +1015,32 @@ export default MyLogoutButton;
 
 ### Restricting Access to Resources or Views
 
-Permissions can be useful to restrict access to resources or their views. To do so, you must use a function as the `<Admin>` only child. React-admin will call this function with the permissions returned by the `authProvider`.
+Permissions can be useful to restrict access to resources or their views. To do so, you must pass a function as a child of the `<Admin>`  component. React-admin will call this function with the permissions returned by the `authProvider`. Note that you can only provide one of such function child.
 
 ```jsx
 <Admin
     dataProvider={dataProvider}
     authProvider={authProvider}
 >
-    {permissions => [
-        // Restrict access to the edit and remove views to admin only
-        <Resource
-            name="customers"
-            list={VisitorList}
-            edit={permissions === 'admin' ? VisitorEdit : null}
-            icon={VisitorIcon}
-        />,
-        // Only include the categories resource for admin users
-        permissions === 'admin'
-            ? <Resource name="categories" list={CategoryList} edit={CategoryEdit} icon={CategoryIcon} />
-            : null,
-    ]}
+    {permissions => (
+        <>
+            {/* Restrict access to the edit view to admin only */}
+            <Resource
+                name="customers"
+                list={VisitorList}
+                edit={permissions === 'admin' ? VisitorEdit : null}
+                icon={VisitorIcon}
+            />
+            {/* Only include the categories resource for admin users */}
+            {permissions === 'admin'
+                ? <Resource name="categories" list={CategoryList} edit={CategoryEdit} icon={CategoryIcon} />
+                : null}
+        </>
+    )}
 </Admin>
 ```
 
-Note that the function returns an array of React elements. This is required to avoid having to wrap them in a container element which would prevent the `Admin` from working.
+Note that the function may return as many fragments as you need.
 
 **Tip**: Even if that's possible, be careful when completely excluding a resource (like with the `categories` resource in this example) as it will prevent you to reference this resource in the other resource views, too.
 
