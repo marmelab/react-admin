@@ -16,5 +16,5 @@ export const useFormRootPath = () => {
         return editMatch.pathnameBase;
     }
 
-    return null;
+    return '';
 };
