@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { ComponentType, useContext, useState } from 'react';
+import { ComponentType, useContext, useMemo, useState } from 'react';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { Provider, ReactReduxContext } from 'react-redux';
-import { History } from 'history';
+import { createHashHistory, History } from 'history';
 import { HistoryRouter } from './HistoryRouter';
 
 import { AuthContext, convertLegacyAuthProvider } from '../auth';
@@ -38,8 +38,6 @@ export interface AdminContextProps {
     theme?: object;
 }
 
-const defaultQueryClient = new QueryClient();
-
 const CoreAdminContext = (props: AdminContextProps) => {
     const {
         authProvider,
@@ -48,7 +46,7 @@ const CoreAdminContext = (props: AdminContextProps) => {
         children,
         history,
         customReducers,
-        queryClient = defaultQueryClient,
+        queryClient,
         initialState,
     } = props;
     const needsNewRedux = !useContext(ReactReduxContext);
@@ -58,23 +56,37 @@ const CoreAdminContext = (props: AdminContextProps) => {
 React-admin requires a valid dataProvider function to work.`);
     }
 
-    const finalAuthProvider =
-        authProvider instanceof Function
-            ? convertLegacyAuthProvider(authProvider)
-            : authProvider;
+    const finalQueryClient = useMemo(() => queryClient || new QueryClient(), [
+        queryClient,
+    ]);
 
-    const finalDataProvider =
-        dataProvider instanceof Function
-            ? convertLegacyDataProvider(dataProvider)
-            : dataProvider;
+    const finalAuthProvider = useMemo(
+        () =>
+            authProvider instanceof Function
+                ? convertLegacyAuthProvider(authProvider)
+                : authProvider,
+        [authProvider]
+    );
+
+    const finalDataProvider = useMemo(
+        () =>
+            dataProvider instanceof Function
+                ? convertLegacyDataProvider(dataProvider)
+                : dataProvider,
+        [dataProvider]
+    );
+
+    const finalHistory = useMemo(() => history || createHashHistory(), [
+        history,
+    ]);
 
     const renderCore = () => {
         return (
             <AuthContext.Provider value={finalAuthProvider}>
                 <DataProviderContext.Provider value={finalDataProvider}>
-                    <QueryClientProvider client={queryClient}>
+                    <QueryClientProvider client={finalQueryClient}>
                         <TranslationProvider i18nProvider={i18nProvider}>
-                            <HistoryRouter history={history}>
+                            <HistoryRouter history={finalHistory}>
                                 {children}
                             </HistoryRouter>
                         </TranslationProvider>
