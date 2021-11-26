@@ -2,7 +2,7 @@ import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
-import { CoreAdminContext } from 'ra-core';
+import { CoreAdminContext, testDataProvider } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import {
@@ -34,7 +34,7 @@ describe('<ReferenceManyField />', () => {
         const history = createMemoryHistory();
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={history}
             >
                 <ThemeProvider theme={theme}>
@@ -81,7 +81,7 @@ describe('<ReferenceManyField />', () => {
         const history = createMemoryHistory();
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={history}
             >
                 <ThemeProvider theme={theme}>
@@ -114,7 +114,7 @@ describe('<ReferenceManyField />', () => {
         const history = createMemoryHistory();
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={history}
             >
                 <ThemeProvider theme={theme}>
@@ -177,7 +177,7 @@ describe('<ReferenceManyField />', () => {
         const onError = jest.fn();
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 initialState={{
                     admin: { resources: { comments: { data: {} } } },
                 }}

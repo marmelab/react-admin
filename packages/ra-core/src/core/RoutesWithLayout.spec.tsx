@@ -6,6 +6,7 @@ import { render, screen } from '@testing-library/react';
 import CoreAdminContext from './CoreAdminContext';
 import { CustomRoutes } from './CustomRoutes';
 import { RoutesWithLayout } from './RoutesWithLayout';
+import { testDataProvider } from '../dataProvider';
 
 describe('<RoutesWithLayout>', () => {
     const Dashboard = () => <div>Dashboard</div>;
@@ -16,7 +17,7 @@ describe('<RoutesWithLayout>', () => {
     it('should show dashboard on / when provided', () => {
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={createMemoryHistory({ initialEntries: ['/'] })}
             >
                 <RoutesWithLayout
@@ -37,7 +38,7 @@ describe('<RoutesWithLayout>', () => {
     it('should show the first resource on / when there is only one resource and no dashboard', () => {
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={createMemoryHistory({ initialEntries: ['/'] })}
             >
                 <RoutesWithLayout firstResource="default" catchAll={CatchAll}>
@@ -52,7 +53,7 @@ describe('<RoutesWithLayout>', () => {
     it('should show the first resource on / when there are multiple resource and no dashboard', () => {
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={createMemoryHistory({ initialEntries: ['/'] })}
             >
                 <RoutesWithLayout firstResource="default" catchAll={CatchAll}>
@@ -71,7 +72,7 @@ describe('<RoutesWithLayout>', () => {
     it('should accept custom routes', () => {
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={createMemoryHistory({ initialEntries: ['/custom'] })}
             >
                 <RoutesWithLayout catchAll={CatchAll} firstResource="default">

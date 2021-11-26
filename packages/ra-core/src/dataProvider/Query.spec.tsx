@@ -12,15 +12,14 @@ import { Provider } from 'react-redux';
 
 import Query from './Query';
 import { createAdminStore, CoreAdminContext, Resource } from '../core';
+import { testDataProvider } from '../dataProvider';
 import { showNotification } from '../actions';
 import { useNotify, useRefresh } from '../sideEffect';
 
 describe('Query', () => {
     it('should render its child', () => {
         render(
-            <CoreAdminContext
-                dataProvider={() => Promise.resolve({ data: [], total: 0 })}
-            >
+            <CoreAdminContext dataProvider={testDataProvider()}>
                 <Query type="getList" resource="bar">
                     {() => <div data-testid="test">Hello</div>}
                 </Query>
@@ -36,9 +35,7 @@ describe('Query', () => {
 
         render(
             <Provider store={store}>
-                <CoreAdminContext
-                    dataProvider={() => Promise.resolve({ data: [], total: 0 })}
-                >
+                <CoreAdminContext dataProvider={testDataProvider()}>
                     <Query
                         type="getList"
                         resource="myresource"
@@ -59,9 +56,7 @@ describe('Query', () => {
     it('should set the loading state to loading when mounting', () => {
         const myPayload = {};
         render(
-            <CoreAdminContext
-                dataProvider={() => Promise.resolve({ data: [], total: 0 })}
-            >
+            <CoreAdminContext dataProvider={testDataProvider()}>
                 <Query type="getList" resource="myresource" payload={myPayload}>
                     {({ loading }) => (
                         <div className={loading ? 'loading' : 'idle'}>
@@ -180,9 +175,7 @@ describe('Query', () => {
         const myPayload = {};
         const { rerender } = render(
             <Provider store={store}>
-                <CoreAdminContext
-                    dataProvider={() => Promise.resolve({ data: [], total: 0 })}
-                >
+                <CoreAdminContext dataProvider={testDataProvider()}>
                     <Query
                         type="getList"
                         resource="myresource"

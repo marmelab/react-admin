@@ -6,6 +6,7 @@ import { createMemoryHistory } from 'history';
 
 import CoreAdminContext from './CoreAdminContext';
 import { Resource } from './Resource';
+import { testDataProvider } from '../dataProvider';
 
 const PostList = () => <div>PostList</div>;
 const PostEdit = () => <div>PostEdit</div>;
@@ -29,7 +30,7 @@ describe('<Resource>', () => {
         render(
             <CoreAdminContext
                 history={history}
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 initialState={{ admin: { resources: { posts: {} } } }}
             >
                 <Routes>
@@ -62,7 +63,7 @@ describe('<Resource>', () => {
         const { getByText } = render(
             <CoreAdminContext
                 authProvider={authProvider}
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={history}
                 initialState={{ admin: { resources: { posts: {} } } }}
             >

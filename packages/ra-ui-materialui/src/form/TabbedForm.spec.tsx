@@ -6,7 +6,7 @@ import {
     SaveContextProvider,
     SideEffectContextProvider,
 } from 'ra-core';
-import { CoreAdminContext } from 'ra-core';
+import { CoreAdminContext, testDataProvider } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
     fireEvent,
@@ -32,7 +32,7 @@ describe('<TabbedForm />', () => {
         const history = createMemoryHistory();
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={history}
             >
                 <ThemeProvider theme={createTheme(defaultTheme)}>
@@ -60,7 +60,7 @@ describe('<TabbedForm />', () => {
 
         const { rerender } = render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={history}
             >
                 <ThemeProvider theme={createTheme(defaultTheme)}>
@@ -83,7 +83,7 @@ describe('<TabbedForm />', () => {
 
         rerender(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={history}
             >
                 <ThemeProvider theme={createTheme(defaultTheme)}>
@@ -106,7 +106,7 @@ describe('<TabbedForm />', () => {
         const history = createMemoryHistory({ initialEntries: ['/posts/1'] });
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={history}
             >
                 <ThemeProvider theme={createTheme(defaultTheme)}>
@@ -149,7 +149,7 @@ describe('<TabbedForm />', () => {
         const history = createMemoryHistory({ initialEntries: ['/posts/1'] });
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={history}
             >
                 <ThemeProvider theme={createTheme(defaultTheme)}>
@@ -190,7 +190,7 @@ describe('<TabbedForm />', () => {
         const history = createMemoryHistory({ initialEntries: ['/posts/1'] });
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={history}
             >
                 <ThemeProvider theme={createTheme(defaultTheme)}>
@@ -234,7 +234,7 @@ describe('<TabbedForm />', () => {
 
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={history}
             >
                 <ThemeProvider theme={createTheme(defaultTheme)}>
@@ -289,7 +289,7 @@ describe('<TabbedForm />', () => {
 
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={history}
             >
                 <ThemeProvider theme={createTheme(defaultTheme)}>

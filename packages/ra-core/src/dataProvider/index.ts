@@ -21,6 +21,7 @@ import useDeleteMany from './useDeleteMany';
 import useRefreshWhenVisible from './useRefreshWhenVisible';
 import useIsAutomaticRefreshEnabled from './useIsAutomaticRefreshEnabled';
 
+export * from './testDataProvider';
 export * from './useGetOne';
 export * from './useQueryWithStore';
 export * from './useQuery';

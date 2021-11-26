@@ -2,7 +2,7 @@ import * as React from 'react';
 import expect from 'expect';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
-import { CoreAdminContext } from 'ra-core';
+import { CoreAdminContext, testDataProvider } from 'ra-core';
 
 import { TabbedShowLayout } from './TabbedShowLayout';
 import { Tab } from './Tab';
@@ -13,7 +13,7 @@ describe('<TabbedShowLayout />', () => {
         const history = createMemoryHistory();
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={history}
             >
                 <TabbedShowLayout record={{ id: 123 }}>
@@ -35,7 +35,7 @@ describe('<TabbedShowLayout />', () => {
         const history = createMemoryHistory();
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={history}
             >
                 <TabbedShowLayout record={{ id: 123 }}>
@@ -59,7 +59,7 @@ describe('<TabbedShowLayout />', () => {
 
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={history}
             >
                 <TabbedShowLayout record={{ id: 123 }}>
@@ -89,7 +89,7 @@ describe('<TabbedShowLayout />', () => {
 
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={history}
             >
                 <TabbedShowLayout record={{ id: 123 }}>
@@ -119,7 +119,7 @@ describe('<TabbedShowLayout />', () => {
         const record = { id: 123 };
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={history}
             >
                 <TabbedShowLayout record={record} syncWithLocation={false}>

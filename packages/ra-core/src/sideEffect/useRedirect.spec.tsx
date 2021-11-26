@@ -7,6 +7,7 @@ import { createMemoryHistory } from 'history';
 
 import { CoreAdminContext } from '../core';
 import useRedirect from './useRedirect';
+import { testDataProvider } from '../dataProvider';
 
 const Redirect = ({
     redirectTo,
@@ -41,7 +42,7 @@ describe('useRedirect', () => {
     it('should redirect to the path with query string', async () => {
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={createMemoryHistory()}
             >
                 <Routes>
@@ -60,7 +61,7 @@ describe('useRedirect', () => {
     it('should redirect to the path with state', async () => {
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={createMemoryHistory()}
             >
                 <Routes>
@@ -93,7 +94,7 @@ describe('useRedirect', () => {
         window.location = { href: '' };
         render(
             <CoreAdminContext
-                dataProvider={() => Promise.resolve()}
+                dataProvider={testDataProvider()}
                 history={createMemoryHistory()}
             >
                 <Redirect redirectTo="https://google.com" />

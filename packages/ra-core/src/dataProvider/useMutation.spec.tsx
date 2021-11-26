@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 
 import { createAdminStore, CoreAdminContext, Resource } from '../core';
 import Mutation from './Mutation';
+import { testDataProvider } from '../dataProvider';
 
 describe('useMutation', () => {
     const initialState = {
@@ -17,7 +18,7 @@ describe('useMutation', () => {
     it('should pass a callback to trigger the mutation', () => {
         let callback = null;
         render(
-            <CoreAdminContext dataProvider={() => Promise.resolve()}>
+            <CoreAdminContext dataProvider={testDataProvider()}>
                 <Mutation type="foo" resource="bar">
                     {mutate => {
                         callback = mutate;

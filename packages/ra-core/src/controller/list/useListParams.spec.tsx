@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { fireEvent, waitFor } from '@testing-library/react';
 
 import { CoreAdminContext, createAdminStore } from '../../core';
+import { testDataProvider } from '../../dataProvider';
 import { useListParams, getQuery, getNumberOrDefault } from './useListParams';
 import {
     SORT_DESC,
@@ -205,7 +206,7 @@ describe('useListParams', () => {
             render(
                 <CoreAdminContext
                     history={history}
-                    dataProvider={() => Promise.resolve({ data: {} })}
+                    dataProvider={testDataProvider()}
                 >
                     <TestedComponent />
                 </CoreAdminContext>
@@ -244,7 +245,7 @@ describe('useListParams', () => {
             render(
                 <CoreAdminContext
                     history={history}
-                    dataProvider={() => Promise.resolve({ data: {} })}
+                    dataProvider={testDataProvider()}
                 >
                     <TestedComponent />
                 </CoreAdminContext>
@@ -284,7 +285,7 @@ describe('useListParams', () => {
             render(
                 <CoreAdminContext
                     history={history}
-                    dataProvider={() => Promise.resolve({ data: {} })}
+                    dataProvider={testDataProvider()}
                 >
                     <TestedComponent />
                 </CoreAdminContext>
@@ -326,7 +327,7 @@ describe('useListParams', () => {
             render(
                 <CoreAdminContext
                     history={history}
-                    dataProvider={() => Promise.resolve({ data: {} })}
+                    dataProvider={testDataProvider()}
                 >
                     <TestedComponent />
                 </CoreAdminContext>
@@ -378,7 +379,7 @@ describe('useListParams', () => {
                 <Provider store={store}>
                     <CoreAdminContext
                         history={history}
-                        dataProvider={() => Promise.resolve({ data: {} })}
+                        dataProvider={testDataProvider()}
                     >
                         <Component />
                     </CoreAdminContext>
@@ -404,7 +405,7 @@ describe('useListParams', () => {
                 <Provider store={store}>
                     <CoreAdminContext
                         history={history}
-                        dataProvider={() => Promise.resolve({ data: {} })}
+                        dataProvider={testDataProvider()}
                     >
                         <Component />
                     </CoreAdminContext>

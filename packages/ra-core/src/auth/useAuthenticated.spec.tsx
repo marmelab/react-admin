@@ -7,6 +7,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import Authenticated from './Authenticated';
 import { showNotification } from '../actions';
 import { CoreAdminContext, createAdminStore } from '../core';
+import { testDataProvider } from '../dataProvider';
 
 describe('useAuthenticated', () => {
     const Foo = () => <div>Foo</div>;
@@ -25,7 +26,7 @@ describe('useAuthenticated', () => {
             <Provider store={store}>
                 <CoreAdminContext
                     authProvider={authProvider}
-                    dataProvider={() => Promise.resolve()}
+                    dataProvider={testDataProvider()}
                 >
                     <Authenticated>
                         <Foo />
@@ -53,7 +54,7 @@ describe('useAuthenticated', () => {
             <Provider store={store}>
                 <CoreAdminContext
                     authProvider={authProvider}
-                    dataProvider={() => Promise.resolve()}
+                    dataProvider={testDataProvider()}
                 >
                     <Authenticated {...props}>
                         <Foo />
@@ -83,7 +84,7 @@ describe('useAuthenticated', () => {
             <Provider store={store}>
                 <CoreAdminContext
                     authProvider={authProvider}
-                    dataProvider={() => Promise.resolve()}
+                    dataProvider={testDataProvider()}
                 >
                     <Authenticated>
                         <Foo />
@@ -123,7 +124,7 @@ describe('useAuthenticated', () => {
             <Provider store={store}>
                 <CoreAdminContext
                     authProvider={authProvider}
-                    dataProvider={() => Promise.resolve()}
+                    dataProvider={testDataProvider()}
                     history={history}
                 >
                     <Routes>
