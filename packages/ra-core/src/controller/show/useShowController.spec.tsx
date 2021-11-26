@@ -48,7 +48,6 @@ describe('useShowController', () => {
                 history={createMemoryHistory({
                     initialEntries: ['/posts/test%3F'],
                 })}
-                initialState={{ admin: { resources: { posts: { data: {} } } } }}
             >
                 <Routes>
                     <Route
@@ -82,7 +81,6 @@ describe('useShowController', () => {
                 history={createMemoryHistory({
                     initialEntries: ['/posts/1'],
                 })}
-                initialState={{ admin: { resources: { posts: { data: {} } } } }}
             >
                 <Routes>
                     <Route
