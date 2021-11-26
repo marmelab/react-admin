@@ -581,7 +581,7 @@ function AsyncResources() {
 
 ## Adding Custom Pages
 
-To register your own routes, pass one or several `<CustomRoutes>` elements as children of `<Admin>`. Declare as many [react-router-dom](https://reacttraining.com/react-router/web/guides/quick-start) `<Route>` as you want inside them:
+To register your own routes, pass one or several `<CustomRoutes>` elements as children of `<Admin>`. Declare as many [react-router-dom](https://reactrouter.com/docs/en/v6/api#routes-and-route) `<Route>` as you want inside them:
 
 ```jsx
 // in src/App.js

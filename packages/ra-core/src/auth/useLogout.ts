@@ -26,21 +26,7 @@ import { useLocation, useNavigate, Path } from 'react-router-dom';
 const useLogout = (): Logout => {
     const authProvider = useAuthProvider();
     const dispatch = useDispatch();
-
-    /**
-     * We need the current location to pass in the router state
-     * so that the login hook knows where to redirect to as next route after login.
-     *
-     * But if we used useLocation to get it, the logout function
-     * would be rebuilt each time the user changes location. Consequently, that
-     * would force a rerender of all components using this hook upon navigation
-     * (CoreAdminRouter for example).
-     *
-     * To avoid that, we read the location directly from history which is mutable.
-     * See: https://reacttraining.com/react-router/web/api/history/history-is-mutable
-     */
     const navigate = useNavigate();
-    // TODO: ensure we don't rerender too much (see previous comment)
     const location = useLocation();
 
     const logout = useCallback(

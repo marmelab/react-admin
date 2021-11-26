@@ -102,7 +102,7 @@ const MyAdmin = () => (
 
 ## React Router Upgraded to v6
 
-This should be mostly transparent or you unless:
+This should be mostly transparent for you unless:
 
 - you had custom routes: see [https://reactrouter.com/docs/en/v6/upgrading/v5#advantages-of-route-element](https://reactrouter.com/docs/en/v6/upgrading/v5#advantages-of-route-element) to upgrade.
 - you used `useHistory` to navigate: see [https://reactrouter.com/docs/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory](https://reactrouter.com/docs/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory) to upgrade.
