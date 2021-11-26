@@ -4,7 +4,6 @@ import { act, render, screen, waitFor } from '@testing-library/react';
 import { Routes, Route } from 'react-router';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
-import { QueryClient } from 'react-query';
 
 import { EditController } from './EditController';
 import { DataProvider } from '../../types';
@@ -32,10 +31,7 @@ describe('useEditController', () => {
             );
         const dataProvider = ({ getOne } as unknown) as DataProvider;
         render(
-            <CoreAdminContext
-                dataProvider={dataProvider}
-                queryClient={new QueryClient()}
-            >
+            <CoreAdminContext dataProvider={dataProvider}>
                 <SaveContextProvider value={saveContextValue}>
                     <EditController {...defaultProps}>
                         {({ record }) => <div>{record && record.title}</div>}
@@ -61,11 +57,7 @@ describe('useEditController', () => {
         });
 
         render(
-            <CoreAdminContext
-                dataProvider={dataProvider}
-                history={history}
-                queryClient={new QueryClient()}
-            >
+            <CoreAdminContext dataProvider={dataProvider} history={history}>
                 <Routes>
                     <Route
                         path="/posts/:id"
@@ -95,10 +87,7 @@ describe('useEditController', () => {
         const onError = jest.fn();
         const dataProvider = ({ getOne } as unknown) as DataProvider;
         render(
-            <CoreAdminContext
-                dataProvider={dataProvider}
-                queryClient={new QueryClient()}
-            >
+            <CoreAdminContext dataProvider={dataProvider}>
                 <EditController
                     {...defaultProps}
                     resource="posts"
@@ -127,10 +116,7 @@ describe('useEditController', () => {
         } as unknown) as DataProvider;
         let saveCallback;
         render(
-            <CoreAdminContext
-                dataProvider={dataProvider}
-                queryClient={new QueryClient()}
-            >
+            <CoreAdminContext dataProvider={dataProvider}>
                 <SaveContextProvider value={saveContextValue}>
                     <EditController
                         {...defaultProps}
@@ -166,10 +152,7 @@ describe('useEditController', () => {
         } as unknown) as DataProvider;
         let saveCallback;
         render(
-            <CoreAdminContext
-                dataProvider={dataProvider}
-                queryClient={new QueryClient()}
-            >
+            <CoreAdminContext dataProvider={dataProvider}>
                 <SaveContextProvider value={saveContextValue}>
                     <EditController {...defaultProps}>
                         {({ save, record }) => {
@@ -214,10 +197,7 @@ describe('useEditController', () => {
         } as unknown) as DataProvider;
         let saveCallback;
         render(
-            <CoreAdminContext
-                dataProvider={dataProvider}
-                queryClient={new QueryClient()}
-            >
+            <CoreAdminContext dataProvider={dataProvider}>
                 <SaveContextProvider value={saveContextValue}>
                     <EditController
                         {...defaultProps}
@@ -254,10 +234,7 @@ describe('useEditController', () => {
         const dispatch = jest.spyOn(store, 'dispatch');
         render(
             <Provider store={store}>
-                <CoreAdminContext
-                    dataProvider={dataProvider}
-                    queryClient={new QueryClient()}
-                >
+                <CoreAdminContext dataProvider={dataProvider}>
                     <SaveContextProvider value={saveContextValue}>
                         <EditController
                             {...defaultProps}
@@ -293,10 +270,7 @@ describe('useEditController', () => {
         const dispatch = jest.spyOn(store, 'dispatch');
         render(
             <Provider store={store}>
-                <CoreAdminContext
-                    dataProvider={dataProvider}
-                    queryClient={new QueryClient()}
-                >
+                <CoreAdminContext dataProvider={dataProvider}>
                     <SaveContextProvider value={saveContextValue}>
                         <EditController
                             {...defaultProps}
@@ -334,10 +308,7 @@ describe('useEditController', () => {
         const dispatch = jest.spyOn(store, 'dispatch');
         render(
             <Provider store={store}>
-                <CoreAdminContext
-                    dataProvider={dataProvider}
-                    queryClient={new QueryClient()}
-                >
+                <CoreAdminContext dataProvider={dataProvider}>
                     <SaveContextProvider value={saveContextValue}>
                         <EditController
                             {...defaultProps}
@@ -375,10 +346,7 @@ describe('useEditController', () => {
         const dispatch = jest.spyOn(store, 'dispatch');
         render(
             <Provider store={store}>
-                <CoreAdminContext
-                    dataProvider={dataProvider}
-                    queryClient={new QueryClient()}
-                >
+                <CoreAdminContext dataProvider={dataProvider}>
                     <SaveContextProvider value={saveContextValue}>
                         <EditController
                             {...defaultProps}
@@ -416,10 +384,7 @@ describe('useEditController', () => {
         const dispatch = jest.spyOn(store, 'dispatch');
         render(
             <Provider store={store}>
-                <CoreAdminContext
-                    dataProvider={dataProvider}
-                    queryClient={new QueryClient()}
-                >
+                <CoreAdminContext dataProvider={dataProvider}>
                     <SaveContextProvider value={saveContextValue}>
                         <EditController
                             {...defaultProps}
@@ -460,10 +425,7 @@ describe('useEditController', () => {
         const dispatch = jest.spyOn(store, 'dispatch');
         render(
             <Provider store={store}>
-                <CoreAdminContext
-                    dataProvider={dataProvider}
-                    queryClient={new QueryClient()}
-                >
+                <CoreAdminContext dataProvider={dataProvider}>
                     <SaveContextProvider value={saveContextValue}>
                         <EditController
                             {...defaultProps}
@@ -502,10 +464,7 @@ describe('useEditController', () => {
         const dispatch = jest.spyOn(store, 'dispatch');
         render(
             <Provider store={store}>
-                <CoreAdminContext
-                    dataProvider={dataProvider}
-                    queryClient={new QueryClient()}
-                >
+                <CoreAdminContext dataProvider={dataProvider}>
                     <SaveContextProvider value={saveContextValue}>
                         <EditController
                             {...defaultProps}
@@ -546,10 +505,7 @@ describe('useEditController', () => {
         const dispatch = jest.spyOn(store, 'dispatch');
         render(
             <Provider store={store}>
-                <CoreAdminContext
-                    dataProvider={dataProvider}
-                    queryClient={new QueryClient()}
-                >
+                <CoreAdminContext dataProvider={dataProvider}>
                     <SaveContextProvider value={saveContextValue}>
                         <EditController
                             {...defaultProps}
@@ -591,10 +547,7 @@ describe('useEditController', () => {
         const dispatch = jest.spyOn(store, 'dispatch');
         render(
             <Provider store={store}>
-                <CoreAdminContext
-                    dataProvider={dataProvider}
-                    queryClient={new QueryClient()}
-                >
+                <CoreAdminContext dataProvider={dataProvider}>
                     <SaveContextProvider value={saveContextValue}>
                         <EditController
                             {...defaultProps}
@@ -638,11 +591,8 @@ describe('useEditController', () => {
             ...data,
             transformed: true,
         }));
-        const { unmount } = render(
-            <CoreAdminContext
-                dataProvider={dataProvider}
-                queryClient={new QueryClient()}
-            >
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <SaveContextProvider value={saveContextValue}>
                     <EditController
                         {...defaultProps}
@@ -666,7 +616,6 @@ describe('useEditController', () => {
             data: { foo: 'bar', transformed: true },
             previousData: undefined,
         });
-        unmount();
     });
 
     it('should the save transform option to override the transform side effect', async () => {
@@ -686,10 +635,7 @@ describe('useEditController', () => {
             transformed: true,
         }));
         render(
-            <CoreAdminContext
-                dataProvider={dataProvider}
-                queryClient={new QueryClient()}
-            >
+            <CoreAdminContext dataProvider={dataProvider}>
                 <SaveContextProvider value={saveContextValue}>
                     <EditController
                         {...defaultProps}
