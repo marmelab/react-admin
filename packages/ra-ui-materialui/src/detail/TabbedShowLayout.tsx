@@ -71,7 +71,7 @@ import {
  * @param {TabbedShowLayoutProps} props
  * @param {string} props.className A className to apply to the page content.
  * @param {ElementType} props.component The component to use as root component (div by default).
- * @param {ReactNode} props.divider An optional divider btween each field, passed to `<Stack>`.
+ * @param {ReactNode} props.divider An optional divider between each field, passed to `<Stack>`.
  * @param {number} props.spacing The spacing to use between each field, passed to `<Stack>`. Defaults to 1.
  * @param {Object} props.sx Custom style object.
  * @param {boolean} props.syncWithLocation Whether to update the URL when the tab changes. Defaults to true.
