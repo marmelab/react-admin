@@ -88,10 +88,10 @@ export const useFormGroup = (name: string): FormGroupState => {
     useEffect(() => {
         // Whenever the group content changes (input are added or removed)
         // we must update its state
-        formContext.subscribe(name, () => {
+        const unsubscribe = formContext.subscribe(name, () => {
             updateGroupState();
         });
-        const unsubscribe = form.subscribe(
+        const unsubscribeFinalForm = form.subscribe(
             () => {
                 updateGroupState();
             },
@@ -104,7 +104,10 @@ export const useFormGroup = (name: string): FormGroupState => {
                 touched: true,
             }
         );
-        return unsubscribe;
+        return () => {
+            unsubscribe();
+            unsubscribeFinalForm();
+        };
     }, [form, formContext, name, updateGroupState]);
 
     return state;
