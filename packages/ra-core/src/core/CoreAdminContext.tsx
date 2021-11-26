@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { ComponentType, useContext, useLayoutEffect, useState } from 'react';
+import { ComponentType, useContext, useState } from 'react';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { Provider, ReactReduxContext } from 'react-redux';
-import { createHashHistory, History } from 'history';
-import { Router } from 'react-router';
+import { History } from 'history';
+import { HistoryRouter } from './HistoryRouter';
 
 import { AuthContext, convertLegacyAuthProvider } from '../auth';
 import {
@@ -68,32 +68,15 @@ React-admin requires a valid dataProvider function to work.`);
             ? convertLegacyDataProvider(dataProvider)
             : dataProvider;
 
-    let historyRef = React.useRef<History>();
-    if (historyRef.current == null) {
-        historyRef.current = history || createHashHistory({ window });
-    }
-
-    let finalHistory = historyRef.current;
-    let [historyState, setHistoryState] = React.useState({
-        action: finalHistory.action,
-        location: finalHistory.location,
-    });
-
-    useLayoutEffect(() => finalHistory.listen(setHistoryState), [finalHistory]);
-
     const renderCore = () => {
         return (
             <AuthContext.Provider value={finalAuthProvider}>
                 <DataProviderContext.Provider value={finalDataProvider}>
                     <QueryClientProvider client={queryClient}>
                         <TranslationProvider i18nProvider={i18nProvider}>
-                            <Router
-                                navigator={finalHistory}
-                                location={historyState.location}
-                                navigationType={historyState.action}
-                            >
+                            <HistoryRouter history={history}>
                                 {children}
-                            </Router>
+                            </HistoryRouter>
                         </TranslationProvider>
                     </QueryClientProvider>
                 </DataProviderContext.Provider>
