@@ -159,6 +159,7 @@ describe('useLogoutIfAccessDenied', () => {
                             element={
                                 <>
                                     <TestComponent />
+                                    <TestComponent />
                                 </>
                             }
                         />
