@@ -387,7 +387,7 @@ const PostDetail = ({ id }) => {
 
 Some applications may require fine-grained permissions to enable or disable access to certain features depending on user permissions. Since there are many possible strategies (single role, multiple roles or rights, ACLs, etc.), react-admin delegates the permission logic to `authProvider.getPermissions()`.
 
-By default, a react-admin app doesn't require any special permission on list, create, edit, and show pages. However, should you need to customize the views according to the permissions, you can call the [`usePermissions()`](#usepermissions-hook) hook to grab them. This works for custom pages too.
+By default, a react-admin app only requires users to be logged in for the list, create, edit, and show pages. However, should you need to customize the views according to the users permissions, you can call the [`usePermissions()`](#usepermissions-hook) hook to grab them. This works for custom pages too.
 
 ### User Permissions
 
@@ -445,9 +445,9 @@ export default {
 ```
 {% endraw %}
 
-### Getting User Permissions In CRUD Pages
+### Getting User Permissions
 
-If you need to check the permissions in any of the default react-admin views, you can use the [`usePermissions()`](#usepermissions-hook) hook:
+If you need to check the permissions in any of the default react-admin views or in custom spage, you can use the [`usePermissions()`](#usepermissions-hook) hook:
 
 Here is an example of a `Create` view with a conditional Input based on permissions:
 
@@ -470,9 +470,7 @@ export const UserCreate = () => {
 ```
 {% endraw %}
 
-### Getting User Permissions In Custom Pages
-
-In custom pages, react-admin doesn't call `authProvider.getPermissions()`. It's up to you to call it yourself, using [the `usePermissions()` hook](#usepermissions-hook):
+It works in custom pages too:
 
 ```jsx
 // in src/MyPage.js
