@@ -11,6 +11,7 @@ import {
     DateInput,
     Edit,
     CloneButton,
+    CreateButton,
     ShowButton,
     EditButton,
     FormTab,
@@ -89,7 +90,7 @@ const EditActions = ({ data, hasShow, resource }: EditActionsProps) => (
             record={data}
         />
         {hasShow && <ShowButton basePath={`/${resource}`} record={data} />}
-        <RaButton component={Link} label="Create post" to="/posts/create" />
+        <CreateButton basePath={`/${resource}`} />
     </TopToolbar>
 );
 

@@ -183,7 +183,7 @@ describe('Edit Page', () => {
         // We can't navigate using cypress function as it would prevent the confirm dialog
         // to appear. This is because react-router (history) cannot block history pushes that
         // it didn't initiate.
-        cy.contains('Create post').click();
+        cy.contains('Create').click();
         cy.get(CreatePostPage.elements.input('title')).should(el =>
             expect(el).to.have.value('')
         );

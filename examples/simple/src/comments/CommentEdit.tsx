@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import {
     AutocompleteInput,
-    Button as RaButton,
+    CreateButton,
     DateInput,
     EditContextProvider,
     useEditController,
@@ -27,7 +27,6 @@ import {
     useCreateSuggestionContext,
     useCreate,
 } from 'react-admin';
-import { Link } from 'react-router-dom';
 
 const PREFIX = 'CommentEdit';
 
@@ -124,11 +123,7 @@ const CommentEdit = props => {
                 <div className={classes.actions}>
                     <TopToolbar>
                         <ShowButton record={record} />
-                        <RaButton
-                            component={Link}
-                            label="Create post"
-                            to="/posts/create"
-                        />
+                        <CreateButton resource="posts" label="Create post" />
                     </TopToolbar>
                 </div>
                 <Card className={classes.card}>
