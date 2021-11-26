@@ -14,22 +14,25 @@ export default {
     },
 };
 
-export const AuthenticatedCustomRoute = (args, context) => (
-    <Admin
-        authProvider={authProvider}
-        dataProvider={dataProvider}
-        history={context.history}
-        loginPage={Login}
-    >
-        <CustomRoutes noLayout>
-            <Route
-                path="/authenticated"
-                element={<CustomAuthenticatedNoLayout />}
-            />
-        </CustomRoutes>
-        <Resource name="posts" list={PostList} />
-    </Admin>
-);
+export const AuthenticatedCustomRoute = (argsOrProps, context) => {
+    const history = context?.history || argsOrProps.history;
+    return (
+        <Admin
+            authProvider={authProvider}
+            dataProvider={dataProvider}
+            history={history}
+            loginPage={Login}
+        >
+            <CustomRoutes noLayout>
+                <Route
+                    path="/authenticated"
+                    element={<CustomAuthenticatedNoLayout />}
+                />
+            </CustomRoutes>
+            <Resource name="posts" list={PostList} />
+        </Admin>
+    );
+};
 
 const dataProvider = {
     getList: () => Promise.resolve({ data: [], total: 0 }),

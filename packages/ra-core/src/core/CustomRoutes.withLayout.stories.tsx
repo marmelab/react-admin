@@ -14,20 +14,24 @@ export default {
     },
 };
 
-export const WithLayout = (args, context) => (
-    <Admin
-        authProvider={authProvider}
-        dataProvider={dataProvider}
-        history={context.history}
-        loginPage={Login}
-        layout={Layout}
-    >
-        <CustomRoutes>
-            <Route path="/custom" element={<CustomWithLayout />} />
-        </CustomRoutes>
-        <Resource name="posts" list={PostList} />
-    </Admin>
-);
+export const WithLayoutCustomRoute = (argsOrProps, context) => {
+    const history = context?.history || argsOrProps.history;
+
+    return (
+        <Admin
+            authProvider={authProvider}
+            dataProvider={dataProvider}
+            history={history}
+            loginPage={Login}
+            layout={Layout}
+        >
+            <CustomRoutes>
+                <Route path="/custom" element={<CustomWithLayout />} />
+            </CustomRoutes>
+            <Resource name="posts" list={PostList} />
+        </Admin>
+    );
+};
 
 const dataProvider = {
     getList: () => Promise.resolve({ data: [], total: 0 }),
