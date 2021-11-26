@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
 import { Route } from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 
-import { renderWithRedux } from 'ra-test';
+import CoreAdminContext from './CoreAdminContext';
 import { CoreAdminRouter } from './CoreAdminRouter';
-import AuthContext from '../auth/AuthContext';
 import { Resource } from './Resource';
 import { CustomRoutes } from './CustomRoutes';
 import { CoreLayoutProps } from '../types';
+import { testDataProvider } from '../dataProvider';
 
 const Layout = ({ children }: CoreLayoutProps) => <div>Layout {children}</div>;
 const CatchAll = () => <div />;
@@ -21,61 +22,76 @@ describe('<CoreAdminRouter>', () => {
 
     describe('With resources as regular children', () => {
         it('should render all resources in routes', () => {
-            const { getByText, history } = renderWithRedux(
-                <CoreAdminRouter
-                    {...defaultProps}
-                    layout={Layout}
-                    catchAll={CatchAll}
-                    loading={Loading}
+            const history = createMemoryHistory();
+            render(
+                <CoreAdminContext
+                    dataProvider={testDataProvider()}
+                    history={history}
                 >
-                    <Resource name="posts" list={() => <span>PostList</span>} />
-                    <Resource
-                        name="comments"
-                        list={() => <span>CommentList</span>}
-                    />
-                </CoreAdminRouter>
+                    <CoreAdminRouter
+                        {...defaultProps}
+                        layout={Layout}
+                        catchAll={CatchAll}
+                        loading={Loading}
+                    >
+                        <Resource
+                            name="posts"
+                            list={() => <span>PostList</span>}
+                        />
+                        <Resource
+                            name="comments"
+                            list={() => <span>CommentList</span>}
+                        />
+                    </CoreAdminRouter>
+                </CoreAdminContext>
             );
-            expect(getByText('Layout')).not.toBeNull();
+            expect(screen.getByText('Layout')).not.toBeNull();
             history.push('/posts');
-            expect(getByText('PostList')).not.toBeNull();
+            expect(screen.getByText('PostList')).not.toBeNull();
             history.push('/comments');
-            expect(getByText('CommentList')).not.toBeNull();
+            expect(screen.getByText('CommentList')).not.toBeNull();
         });
     });
 
     describe('With no authProvider defined', () => {
         it('should render all resources with a render prop', async () => {
-            const { getByText, history } = renderWithRedux(
-                <CoreAdminRouter
-                    {...defaultProps}
-                    layout={Layout}
-                    catchAll={CatchAll}
-                    loading={Loading}
+            const history = createMemoryHistory();
+            render(
+                <CoreAdminContext
+                    dataProvider={testDataProvider()}
+                    history={history}
                 >
-                    {() => (
-                        <>
-                            <Resource
-                                name="posts"
-                                list={() => <span>PostList</span>}
-                            />
-                            <Resource
-                                name="comments"
-                                list={() => <span>CommentList</span>}
-                            />
-                        </>
-                    )}
-                </CoreAdminRouter>
+                    <CoreAdminRouter
+                        {...defaultProps}
+                        layout={Layout}
+                        catchAll={CatchAll}
+                        loading={Loading}
+                    >
+                        {() => (
+                            <>
+                                <Resource
+                                    name="posts"
+                                    list={() => <span>PostList</span>}
+                                />
+                                <Resource
+                                    name="comments"
+                                    list={() => <span>CommentList</span>}
+                                />
+                            </>
+                        )}
+                    </CoreAdminRouter>
+                </CoreAdminContext>
             );
             await waitFor(() => {
-                expect(getByText('Layout')).not.toBeNull();
+                expect(screen.getByText('Layout')).not.toBeNull();
             });
             history.push('/posts');
             await waitFor(() => {
-                expect(getByText('PostList')).not.toBeNull();
+                expect(screen.getByText('PostList')).not.toBeNull();
             });
             history.push('/comments');
             await waitFor(() => {
-                expect(getByText('CommentList')).not.toBeNull();
+                expect(screen.getByText('CommentList')).not.toBeNull();
             });
         });
     });
@@ -90,8 +106,13 @@ describe('<CoreAdminRouter>', () => {
                 getPermissions: jest.fn().mockResolvedValue(''),
             };
 
-            const { queryByText, history } = renderWithRedux(
-                <AuthContext.Provider value={authProvider}>
+            const history = createMemoryHistory();
+            render(
+                <CoreAdminContext
+                    authProvider={authProvider}
+                    dataProvider={testDataProvider()}
+                    history={history}
+                >
                     <CoreAdminRouter
                         layout={Layout}
                         catchAll={CatchAll}
@@ -111,16 +132,16 @@ describe('<CoreAdminRouter>', () => {
                             </>
                         )}
                     </CoreAdminRouter>
-                </AuthContext.Provider>
+                </CoreAdminContext>
             );
             // Timeout needed because of the authProvider call
             await waitFor(() => {
-                expect(queryByText('Layout')).not.toBeNull();
+                expect(screen.queryByText('Layout')).not.toBeNull();
             });
             history.push('/posts');
-            expect(queryByText('PostList')).not.toBeNull();
+            expect(screen.queryByText('PostList')).not.toBeNull();
             history.push('/comments');
-            expect(queryByText('CommentList')).not.toBeNull();
+            expect(screen.queryByText('CommentList')).not.toBeNull();
         });
 
         it('should return loading while the resources are not resolved', async () => {
@@ -133,8 +154,13 @@ describe('<CoreAdminRouter>', () => {
             };
             const Custom = () => <>Custom</>;
 
-            const { queryByText, history } = renderWithRedux(
-                <AuthContext.Provider value={authProvider}>
+            const history = createMemoryHistory();
+            render(
+                <CoreAdminContext
+                    authProvider={authProvider}
+                    dataProvider={testDataProvider()}
+                    history={history}
+                >
                     <CoreAdminRouter
                         {...defaultProps}
                         layout={Layout}
@@ -146,39 +172,45 @@ describe('<CoreAdminRouter>', () => {
                         </CustomRoutes>
                         {() => new Promise(() => null)}
                     </CoreAdminRouter>
-                </AuthContext.Provider>
+                </CoreAdminContext>
             );
             // Timeout needed because we wait for a second before displaying the loading screen
             await new Promise(resolve => setTimeout(resolve, 1010));
             history.push('/posts');
-            expect(queryByText('Loading')).not.toBeNull();
+            expect(screen.queryByText('Loading')).not.toBeNull();
             history.push('/foo');
-            expect(queryByText('Loading')).toBeNull();
-            expect(queryByText('Custom')).not.toBeNull();
+            expect(screen.queryByText('Loading')).toBeNull();
+            expect(screen.queryByText('Custom')).not.toBeNull();
         });
     });
 
     it('should render the custom routes with and without layout', () => {
-        const { getByText, history, queryByText } = renderWithRedux(
-            <CoreAdminRouter
-                layout={Layout}
-                catchAll={CatchAll}
-                loading={Loading}
+        const history = createMemoryHistory();
+        render(
+            <CoreAdminContext
+                dataProvider={testDataProvider()}
+                history={history}
             >
-                <CustomRoutes noLayout>
-                    <Route path="/foo" element={<div>Foo</div>} />
-                </CustomRoutes>
-                <CustomRoutes>
-                    <Route path="/bar" element={<div>Bar</div>} />
-                </CustomRoutes>
-                <Resource name="posts" />
-            </CoreAdminRouter>
+                <CoreAdminRouter
+                    layout={Layout}
+                    catchAll={CatchAll}
+                    loading={Loading}
+                >
+                    <CustomRoutes noLayout>
+                        <Route path="/foo" element={<div>Foo</div>} />
+                    </CustomRoutes>
+                    <CustomRoutes>
+                        <Route path="/bar" element={<div>Bar</div>} />
+                    </CustomRoutes>
+                    <Resource name="posts" />
+                </CoreAdminRouter>
+            </CoreAdminContext>
         );
         history.push('/foo');
-        expect(queryByText('Layout')).toBeNull();
-        expect(getByText('Foo')).not.toBeNull();
+        expect(screen.queryByText('Layout')).toBeNull();
+        expect(screen.getByText('Foo')).not.toBeNull();
         history.push('/bar');
-        expect(getByText('Layout')).not.toBeNull();
-        expect(getByText('Bar')).not.toBeNull();
+        expect(screen.getByText('Layout')).not.toBeNull();
+        expect(screen.getByText('Bar')).not.toBeNull();
     });
 });
