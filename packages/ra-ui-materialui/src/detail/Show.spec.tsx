@@ -8,7 +8,6 @@ import {
 import { createMemoryHistory } from 'history';
 import { Route, Routes } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
-import { QueryClient } from 'react-query';
 
 import { Default, Actions, Basic, Component } from './Show.stories';
 import { Show } from './Show';
@@ -43,7 +42,6 @@ describe('<Show />', () => {
                 initialState={{
                     admin: { resources: { books: { props: {}, data: {} } } },
                 }}
-                queryClient={new QueryClient()}
             >
                 <Routes>
                     <Route
@@ -79,10 +77,7 @@ describe('<Show />', () => {
             return record ? <span>{record.name}</span> : null;
         };
         render(
-            <CoreAdminContext
-                dataProvider={dataProvider}
-                queryClient={new QueryClient()}
-            >
+            <CoreAdminContext dataProvider={dataProvider}>
                 <Show id="123" resource="books">
                     <BookName />
                 </Show>
@@ -102,10 +97,7 @@ describe('<Show />', () => {
         } as any;
         const BookName = () => <span>foo</span>;
         render(
-            <CoreAdminContext
-                dataProvider={dataProvider}
-                queryClient={new QueryClient()}
-            >
+            <CoreAdminContext dataProvider={dataProvider}>
                 <Show id="123" resource="books" queryOptions={{ onError }}>
                     <BookName />
                 </Show>
