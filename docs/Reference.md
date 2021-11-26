@@ -119,20 +119,20 @@ title: "Reference"
 * [`<SelectColumnsButton>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#selectcolumnsbutton-store-datagrid-columns-in-preferences)<img class="icon" src="./img/premium.svg" />
 * [`<SelectField>`](./Fields.md#selectfield)
 * [`<SelectInput>`](./Inputs.md#selectinput)
-* [`<Show>`](./Show.md#the-show-component)
-* [`<ShowGuesser`](./Show.md#the-showguesser-component)
+* [`<Show>`](./Show.md#show)
+* [`<ShowGuesser`](./ShowGuesser.md#showguesser)
 * [`<ShowButton>`](./Buttons.md#showbutton)
 * [`<Sidebar>`](./Theming.md#sidebar-customization)
 * [`<SidebarOpenPreferenceSync>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#sidebaropenpreferencesync-store-the-sidebar-openclose-state-in-preferences)<img class="icon" src="./img/premium.svg" />
 * [`<SimpleForm>`](./CreateEdit.md#the-simpleform-component)
 * [`<SimpleFormIterator>`](./Inputs.md#arrayinput)
 * [`<SimpleList>`](./List.md#the-simplelist-component)
-* [`<SimpleShowLayout>`](./Show.md#the-simpleshowlayout-component)
+* [`<SimpleShowLayout>`](./SimpleShowLayout.md#simpleshowlayout)
 * [`<SingleFieldList>`](./List.md#the-singlefieldlist-component)
 * [`<SortButton>`](./Buttons.md#sortbutton)
 * `<Tab>`
 * [`<TabbedForm>`](./CreateEdit.md#the-tabbedform-component)
-* [`<TabbedShowLayout>`](./Show.md#the-tabbedshowlayout-component)
+* [`<TabbedShowLayout>`](./TabbedShowLayout.md#tabbedshowlayout)
 * [`<TestContext>`](./UnitTesting.md#testing-custom-views)
 * [`<TextField>`](./Fields.md#textfield)
 * [`<TextInput>`](./Inputs.md#textinput)
@@ -199,7 +199,7 @@ title: "Reference"
 * [`useResourceAppLocation`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useresourceapplocation-access-current-resource-app-location)<img class="icon" src="./img/premium.svg" />
 * [`useSearch`](https://marmelab.com/ra-enterprise/modules/ra-search#the-usesearch-hook)<img class="icon" src="./img/premium.svg" />
 * [`useSetLocale`](./Translation.md#usesetlocale-changing-locale-at-runtime)
-* [`useShowController`](./Show.md#useshowcontroller)
+* [`useShowController`](./useShowController.md#useshowcontroller)
 * `useSortState`
 * [`useStyles`](./Theming.md#overriding-a-component-style)
 * `useSuggestions`
