@@ -13,6 +13,9 @@ const useWarnWhenUnsavedChanges = (
     enable: boolean,
     formRootPathname?: string
 ) => {
+    // react-router v6 does not yet provide a way to block navigation
+    // This is planned for a future release
+    // See https://github.com/remix-run/react-router/issues/8139
     const navigator = useContext(UNSAFE_NavigationContext).navigator as History;
     const location = useLocation();
     const translate = useTranslate();
