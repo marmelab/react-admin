@@ -51,12 +51,11 @@ const BulkDeleteWithUndoButton = (props: BulkDeleteWithUndoButtonProps) => {
     const [deleteMany, { loading }] = useDeleteMany(resource, selectedIds, {
         action: CRUD_DELETE_MANY,
         onSuccess: () => {
-            notify(
-                'ra.notification.deleted',
-                'info',
-                { smart_count: selectedIds.length },
-                true
-            );
+            notify('ra.notification.deleted', {
+                type: 'info',
+                messageArgs: { smart_count: selectedIds.length },
+                undoable: true,
+            });
             unselectAll(resource);
             refresh();
         },
@@ -65,14 +64,16 @@ const BulkDeleteWithUndoButton = (props: BulkDeleteWithUndoButtonProps) => {
                 typeof error === 'string'
                     ? error
                     : error.message || 'ra.notification.http_error',
-                'warning',
                 {
-                    _:
-                        typeof error === 'string'
-                            ? error
-                            : error && error.message
-                            ? error.message
-                            : undefined,
+                    type: 'warning',
+                    messageArgs: {
+                        _:
+                            typeof error === 'string'
+                                ? error
+                                : error && error.message
+                                ? error.message
+                                : undefined,
+                    },
                 }
             );
             refresh();

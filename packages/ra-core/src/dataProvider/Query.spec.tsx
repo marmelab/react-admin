@@ -334,7 +334,7 @@ describe('Query', () => {
                     resource="foo"
                     options={{
                         onSuccess: () => {
-                            notify('Youhou!', 'info');
+                            notify('Youhou!');
                         },
                     }}
                 >
@@ -456,7 +456,7 @@ describe('Query', () => {
                     resource="foo"
                     options={{
                         onFailure: () => {
-                            notify('Damn!', 'warning');
+                            notify('Damn!', { type: 'warning' });
                         },
                     }}
                 >

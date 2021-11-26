@@ -45,11 +45,10 @@ const useDeclarativeSideEffects = () => {
 
                 return () => {
                     if (notification) {
-                        notify(
-                            notification.body,
-                            notification.level,
-                            notification.messageArgs
-                        );
+                        notify(notification.body, {
+                            type: notification.level,
+                            messageArgs: notification.messageArgs,
+                        });
                     }
 
                     if (redirectTo) {

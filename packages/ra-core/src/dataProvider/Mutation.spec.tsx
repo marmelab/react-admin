@@ -121,7 +121,7 @@ describe('Mutation', () => {
                     resource="foo"
                     options={{
                         onSuccess: () => {
-                            notify('Youhou!', 'info');
+                            notify('Youhou!');
                         },
                     }}
                 >
@@ -246,7 +246,7 @@ describe('Mutation', () => {
                     resource="foo"
                     options={{
                         onFailure: () => {
-                            notify('Damn!', 'warning');
+                            notify('Damn!', { type: 'warning' });
                         },
                     }}
                 >
