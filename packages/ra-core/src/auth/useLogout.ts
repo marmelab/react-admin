@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
@@ -28,6 +28,22 @@ const useLogout = (): Logout => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
+    const locationRef = useRef(location);
+
+    /*
+     * We need the current location to pass in the router state
+     * so that the login hook knows where to redirect to as next route after login.
+     *
+     * But if we used the location from useLocation as a dependency of the logout
+     * function, it would be rebuilt each time the user changes location.
+     * Consequently, that would force a rerender of all components using this hook
+     * upon navigation (CoreAdminRouter for example).
+     *
+     * To avoid that, we store the location in a ref.
+     */
+    useEffect(() => {
+        locationRef.current = location;
+    }, [location]);
 
     const logout = useCallback(
         (
@@ -53,13 +69,13 @@ const useLogout = (): Logout => {
 
                 if (
                     redirectToCurrentLocationAfterLogin &&
-                    location &&
-                    location.pathname
+                    locationRef.current &&
+                    locationRef.current.pathname
                 ) {
                     newLocationOptions = {
                         state: {
-                            nextPathname: location.pathname,
-                            nextSearch: location.search,
+                            nextPathname: locationRef.current.pathname,
+                            nextSearch: locationRef.current.search,
                         },
                     };
                 }
@@ -71,7 +87,7 @@ const useLogout = (): Logout => {
 
                 return redirectToFromProvider;
             }),
-        [authProvider, dispatch, location, navigate]
+        [authProvider, dispatch, navigate]
     );
 
     const logoutWithoutProvider = useCallback(
