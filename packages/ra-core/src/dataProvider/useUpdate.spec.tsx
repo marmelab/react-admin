@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
-import { QueryClient } from 'react-query';
 
 import { CoreAdminContext } from '../core';
 import { Record } from '../types';
@@ -35,10 +34,7 @@ describe('useUpdate', () => {
             };
 
             render(
-                <CoreAdminContext
-                    dataProvider={dataProvider}
-                    queryClient={new QueryClient()}
-                >
+                <CoreAdminContext dataProvider={dataProvider}>
                     <Dummy />
                 </CoreAdminContext>
             );
@@ -74,10 +70,7 @@ describe('useUpdate', () => {
             };
 
             render(
-                <CoreAdminContext
-                    dataProvider={dataProvider}
-                    queryClient={new QueryClient()}
-                >
+                <CoreAdminContext dataProvider={dataProvider}>
                     <Dummy />
                 </CoreAdminContext>
             );
@@ -109,10 +102,7 @@ describe('useUpdate', () => {
             };
 
             render(
-                <CoreAdminContext
-                    dataProvider={dataProvider}
-                    queryClient={new QueryClient()}
-                >
+                <CoreAdminContext dataProvider={dataProvider}>
                     <Dummy />
                 </CoreAdminContext>
             );
@@ -145,10 +135,7 @@ describe('useUpdate', () => {
                 return <span />;
             };
             render(
-                <CoreAdminContext
-                    dataProvider={dataProvider}
-                    queryClient={new QueryClient()}
-                >
+                <CoreAdminContext dataProvider={dataProvider}>
                     <Dummy />
                 </CoreAdminContext>
             );
