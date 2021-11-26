@@ -13,7 +13,7 @@ export const TabbedShowLayoutTabs = ({
 }: TabbedShowLayoutTabsProps) => {
     const params = useParams();
 
-    // params wil include eventual parameters from the root pathname and * for the remaining part
+    // params will include eventual parameters from the root pathname and * for the remaining part
     // which should match the tabs paths
     const tabValue = params['*'];
 

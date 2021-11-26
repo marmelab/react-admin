@@ -102,6 +102,18 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
     if (!record) {
         return null;
     }
+
+    const renderTabHeaders = () =>
+        cloneElement(
+            tabs,
+            {
+                onChange: handleTabChange,
+                syncWithLocation,
+                value: tabValue,
+            },
+            nonNullChildren
+        );
+
     return (
         <OptionalRecordContextProvider value={props.record}>
             <Component className={className} {...sanitizeRestProps(rest)}>
@@ -111,15 +123,7 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
                             path="/*"
                             element={
                                 <>
-                                    {cloneElement(
-                                        tabs,
-                                        {
-                                            onChange: handleTabChange,
-                                            syncWithLocation,
-                                            value: tabValue,
-                                        },
-                                        nonNullChildren
-                                    )}
+                                    {renderTabHeaders()}
                                     <Divider />
                                     <div
                                         className={
@@ -150,15 +154,7 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
                     </Routes>
                 ) : (
                     <>
-                        {cloneElement(
-                            tabs,
-                            {
-                                onChange: handleTabChange,
-                                syncWithLocation,
-                                value: tabValue,
-                            },
-                            nonNullChildren
-                        )}
+                        {renderTabHeaders()}
                         <Divider />
                         <div className={TabbedShowLayoutClasses.content}>
                             {Children.map(nonNullChildren, (tab, index) => {
