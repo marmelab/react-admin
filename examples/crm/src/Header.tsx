@@ -23,16 +23,15 @@ const Root = styled('nav')({
 
 const Header = () => {
     const location = useLocation();
-    const matchContacts = matchPath('/contacts/*', location.pathname);
-    const matchCompanies = matchPath('/companies/*', location.pathname);
-    const matchDeals = matchPath('/deals/*', location.pathname);
-    const currentPath = !!matchContacts?.pathname
-        ? '/contacts'
-        : !!matchCompanies?.pathname
-        ? '/companies'
-        : !!matchDeals?.pathname
-        ? '/deals'
-        : '/';
+
+    let currentPath = '/';
+    if (!!matchPath('/contacts/*', location.pathname)) {
+        currentPath = '/contacts';
+    } else if (!!matchPath('/companies/*', location.pathname)) {
+        currentPath = '/companies';
+    } else if (!!matchPath('/deals/*', location.pathname)) {
+        currentPath = '/deals';
+    }
 
     return (
         <Root className={classes.root}>
