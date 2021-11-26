@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { parsePath } from 'history';
@@ -38,6 +38,12 @@ const useRedirect = () => {
     const navigate = useNavigate();
     // Ensure this doesn't rerender too much
     const location = useLocation();
+    const locationRef = useRef(location);
+
+    useEffect(() => {
+        locationRef.current = location;
+    }, [location]);
+
     return useCallback(
         (
             redirectTo: RedirectionSideEffect,
@@ -47,10 +53,10 @@ const useRedirect = () => {
             state: object = {}
         ) => {
             if (!redirectTo) {
-                if (location.state || location.search) {
+                if (locationRef.current.state || locationRef.current.search) {
                     navigate(
                         {
-                            ...location,
+                            ...locationRef.current,
                             search: undefined,
                         },
                         {
@@ -83,7 +89,7 @@ const useRedirect = () => {
                 );
             }
         },
-        [dispatch, location, navigate]
+        [dispatch, navigate]
     );
 };
 
