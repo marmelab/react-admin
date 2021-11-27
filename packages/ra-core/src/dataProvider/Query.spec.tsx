@@ -305,10 +305,7 @@ describe('Query', () => {
 
         await waitFor(() => {
             expect(dispatchSpy).toHaveBeenCalledWith(
-                showNotification('Youhou!', 'info', {
-                    messageArgs: {},
-                    undoable: false,
-                })
+                showNotification('Youhou!', 'info')
             );
             expect(historyForAssertions.location.pathname).toEqual('/a_path');
             expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
@@ -364,10 +361,7 @@ describe('Query', () => {
 
         await waitFor(() => {
             expect(dispatchSpy).toHaveBeenCalledWith(
-                showNotification('Youhou!', 'info', {
-                    messageArgs: {},
-                    undoable: false,
-                })
+                showNotification('Youhou!', 'info')
             );
         });
     });
@@ -426,10 +420,7 @@ describe('Query', () => {
 
         await waitFor(() => {
             expect(dispatchSpy).toHaveBeenCalledWith(
-                showNotification('Damn!', 'warning', {
-                    messageArgs: {},
-                    undoable: false,
-                })
+                showNotification('Damn!', 'warning')
             );
             expect(historyForAssertions.location.pathname).toEqual('/a_path');
             expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
@@ -486,10 +477,7 @@ describe('Query', () => {
 
         await waitFor(() => {
             expect(dispatchSpy).toHaveBeenCalledWith(
-                showNotification('Damn!', 'warning', {
-                    messageArgs: {},
-                    undoable: false,
-                })
+                showNotification('Damn!', 'warning')
             );
         });
     });
