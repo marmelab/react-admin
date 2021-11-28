@@ -172,7 +172,6 @@ const useGetMany = (
         /* eslint-enable react-hooks/exhaustive-deps */
     );
 
-    console.log(state);
     return state;
 };
 
