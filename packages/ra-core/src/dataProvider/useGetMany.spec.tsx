@@ -5,6 +5,7 @@ import { renderWithRedux } from 'ra-test';
 import useGetMany from './useGetMany';
 import { DataProviderContext } from '../dataProvider';
 import { waitFor } from '@testing-library/react';
+import { useState } from 'react';
 
 const UseGetMany = ({
     resource,
@@ -15,6 +16,26 @@ const UseGetMany = ({
 }) => {
     const hookValue = useGetMany(resource, ids, options);
     if (callback) callback(hookValue);
+    return <div>hello</div>;
+};
+
+let updateState;
+
+const UseCustomGetMany = ({
+    resource,
+    ids,
+    options = {},
+    callback = null,
+    ...rest
+}) => {
+    const [stateIds, setStateIds] = useState(ids);
+    const hookValue = useGetMany(resource, stateIds, options);
+    if (callback) callback(hookValue);
+
+    updateState = newIds => {
+        setStateIds(newIds);
+    };
+
     return <div>hello</div>;
 };
 
@@ -197,6 +218,133 @@ describe('useGetMany', () => {
         await waitFor(() => {
             expect(dispatch).toBeCalledTimes(10);
             expect(dataProvider.getMany).toBeCalledTimes(2);
+        });
+    });
+
+    it('should update loading state when ids change', async () => {
+        const dataProvider = {
+            getMany: jest.fn((resource, params) => {
+                if (params.ids.length === 1) {
+                    return Promise.resolve({
+                        data: [{ id: 1, title: 'foo' }],
+                    });
+                } else {
+                    return Promise.resolve({
+                        data: [
+                            { id: 1, title: 'foo' },
+                            { id: 2, title: 'bar' },
+                        ],
+                    });
+                }
+            }),
+        };
+
+        const hookValue = jest.fn();
+        renderWithRedux(
+            <DataProviderContext.Provider value={dataProvider}>
+                <UseCustomGetMany
+                    resource="posts"
+                    ids={[1]}
+                    callback={hookValue}
+                />
+            </DataProviderContext.Provider>,
+            {
+                admin: {
+                    resources: {
+                        posts: {
+                            data: {},
+                        },
+                    },
+                },
+            }
+        );
+
+        await waitFor(() => {
+            expect(dataProvider.getMany).toBeCalledTimes(1);
+        });
+
+        expect(hookValue.mock.calls[0][0]).toEqual({
+            data: [undefined],
+            error: null,
+            loaded: false,
+            loading: true,
+            refetch: expect.any(Function),
+        });
+        expect(hookValue.mock.calls[1][0]).toEqual({
+            data: [undefined],
+            error: null,
+            loaded: false,
+            loading: true,
+            refetch: expect.any(Function),
+        });
+        expect(hookValue.mock.calls[2][0]).toEqual({
+            data: [{ id: 1, title: 'foo' }],
+            error: null,
+            loaded: true,
+            loading: true,
+            refetch: expect.any(Function),
+        });
+        expect(hookValue.mock.calls[3][0]).toEqual({
+            data: [{ id: 1, title: 'foo' }],
+            error: null,
+            loaded: true,
+            loading: false,
+            refetch: expect.any(Function),
+        });
+
+        // Updating ids...
+        updateState([1, 2]);
+
+        await waitFor(() => {
+            expect(dataProvider.getMany).toBeCalledTimes(2);
+        });
+
+        expect(hookValue.mock.calls[4][0]).toEqual({
+            data: [{ id: 1, title: 'foo' }],
+            error: null,
+            loaded: true,
+            loading: false,
+            refetch: expect.any(Function),
+        });
+        expect(hookValue.mock.calls[5][0]).toEqual({
+            data: [{ id: 1, title: 'foo' }, undefined],
+            error: null,
+            loaded: false,
+            loading: true,
+            refetch: expect.any(Function),
+        });
+        expect(hookValue.mock.calls[6][0]).toEqual({
+            data: [{ id: 1, title: 'foo' }, undefined],
+            error: null,
+            loaded: false,
+            loading: true,
+            refetch: expect.any(Function),
+        });
+        expect(hookValue.mock.calls[7][0]).toEqual({
+            data: [
+                { id: 1, title: 'foo' },
+                {
+                    id: 2,
+                    title: 'bar',
+                },
+            ],
+            error: null,
+            loaded: true,
+            loading: false,
+            refetch: expect.any(Function),
+        });
+        expect(hookValue.mock.calls[8][0]).toEqual({
+            data: [
+                { id: 1, title: 'foo' },
+                {
+                    id: 2,
+                    title: 'bar',
+                },
+            ],
+            error: null,
+            loaded: true,
+            loading: false,
+            refetch: expect.any(Function),
         });
     });
 

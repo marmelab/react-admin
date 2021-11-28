@@ -170,7 +170,11 @@ const useGetMany = (
         /* eslint-enable react-hooks/exhaustive-deps */
     );
 
-    return state;
+    return {
+        ...state,
+        loading: state.loading || state.data?.includes(undefined),
+        loaded: state.data?.length !== 0 && !state.data?.includes(undefined),
+    };
 };
 
 /**
