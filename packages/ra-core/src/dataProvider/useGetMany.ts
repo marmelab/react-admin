@@ -122,6 +122,8 @@ const useGetMany = (
         setState({
             ...state,
             data,
+            loading: state.loading || data?.includes(undefined),
+            loaded: data?.length !== 0 && !data?.includes(undefined),
         });
     }
     dataProvider = useDataProvider(); // not the best way to pass the dataProvider to a function outside the hook, but I couldn't find a better one
@@ -170,11 +172,8 @@ const useGetMany = (
         /* eslint-enable react-hooks/exhaustive-deps */
     );
 
-    return {
-        ...state,
-        loading: state.loading || state.data?.includes(undefined),
-        loaded: state.data?.length !== 0 && !state.data?.includes(undefined),
-    };
+    console.log(state);
+    return state;
 };
 
 /**

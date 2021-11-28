@@ -330,7 +330,7 @@ describe('useGetMany', () => {
             ],
             error: null,
             loaded: true,
-            loading: false,
+            loading: true,
             refetch: expect.any(Function),
         });
         expect(hookValue.mock.calls[8][0]).toEqual({
