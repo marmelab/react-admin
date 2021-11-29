@@ -43,7 +43,6 @@ describe('Admin', () => {
             </ApplicationContext.Provider>
         );
 
-        userEvents.click(screen.getByLabelText('New resource'));
         userEvents.upload(screen.getByLabelText('CSV File'), file);
 
         await waitFor(() => {

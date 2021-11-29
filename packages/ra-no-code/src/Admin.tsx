@@ -41,6 +41,7 @@ export const Admin = (props: Omit<AdminProps, 'dataProvider'>) => {
 const InnerAdmin = (props: AdminProps) => {
     const [resources] = useResourcesConfiguration();
     const hasResources = !!resources && Object.keys(resources).length > 0;
+
     return (
         <RaAdmin ready={Ready} layout={Layout} {...props}>
             <CustomRoutes>

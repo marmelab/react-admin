@@ -6,7 +6,6 @@ import createAdminStore from './createAdminStore';
 export * from './CoreAdminRouter';
 export * from './CustomRoutes';
 export * from './Resource';
-export * from './RoutesWithLayout';
 
 export type { AdminContextProps, AdminUIProps };
 
