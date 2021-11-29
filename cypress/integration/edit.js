@@ -126,6 +126,7 @@ describe('Edit Page', () => {
                 "Some of your changes weren't saved. Are you sure you want to ignore them?"
             );
         });
+        // FIXME
         // We can't navigate using cypress function as it would prevent the confirm dialog
         // to appear. This is because react-router (history) cannot block history pushes that
         // it didn't initiate.
@@ -180,6 +181,7 @@ describe('Edit Page', () => {
                 "Some of your changes weren't saved. Are you sure you want to ignore them?"
             );
         });
+        // FIXME
         // We can't navigate using cypress function as it would prevent the confirm dialog
         // to appear. This is because react-router (history) cannot block history pushes that
         // it didn't initiate.

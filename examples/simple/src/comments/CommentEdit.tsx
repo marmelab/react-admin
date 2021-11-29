@@ -123,6 +123,7 @@ const CommentEdit = props => {
                 <div className={classes.actions}>
                     <TopToolbar>
                         <ShowButton record={record} />
+                        {/* FIXME: added because react-router HashHistory cannot block navigation induced by address bar changes */}
                         <CreateButton resource="posts" label="Create post" />
                     </TopToolbar>
                 </div>

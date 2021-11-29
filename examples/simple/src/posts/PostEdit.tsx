@@ -88,6 +88,7 @@ const EditActions = ({ data, hasShow, resource }: EditActionsProps) => (
             record={data}
         />
         {hasShow && <ShowButton basePath={`/${resource}`} record={data} />}
+        {/* FIXME: added because react-router HashHistory cannot block navigation induced by address bar changes */}
         <CreateButton basePath={`/${resource}`} />
     </TopToolbar>
 );
