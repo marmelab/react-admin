@@ -1017,7 +1017,7 @@ describe('<ReferenceArrayInputController />', () => {
             const enableGetChoices = jest.fn().mockImplementation(({ q }) => {
                 return false;
             });
-            const { dispatch } = renderWithRedux(
+            renderWithRedux(
                 <Form
                     onSubmit={jest.fn()}
                     render={() => (
