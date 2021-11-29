@@ -98,6 +98,7 @@ export const useListController = <RecordType extends Record = Record>(
         },
         {
             keepPreviousData: true,
+            retry: false,
             onError: error =>
                 notify(
                     error?.message || 'ra.notification.http_error',

@@ -42,7 +42,7 @@ export const useGetOne = <RecordType extends Record = Record>(
 ): UseGetOneHookValue<RecordType> => {
     const dataProvider = useDataProvider();
     return useQuery<RecordType, unknown, RecordType>(
-        [resource, 'getOne', id],
+        [resource, 'getOne', String(id)],
         () =>
             dataProvider
                 .getOne<RecordType>(resource, { id })
