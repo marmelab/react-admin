@@ -21,11 +21,8 @@ import Title, { TitleProps, TitlePropType } from './Title';
 import TitleForRecord from './TitleForRecord';
 import TopToolbar from './TopToolbar';
 import UserMenu, { UserMenuProps } from './UserMenu';
-import {
-    SidebarToggleButton,
-    SidebarToggleButtonProps,
-} from './SidebarToggleButton';
-import { useToggleSidebar, UseToggleSidebarResult } from './useToggleSidebar';
+export * from './SidebarToggleButton';
+export * from './useToggleSidebar';
 export * from './createMuiTheme';
 
 export {
@@ -48,13 +45,11 @@ export {
     Notification,
     Responsive,
     Sidebar,
-    SidebarToggleButton,
     Title,
     TitleForRecord,
     TitlePropType,
     TopToolbar,
     UserMenu,
-    useToggleSidebar,
 };
 
 export type {
@@ -71,8 +66,6 @@ export type {
     NotificationProps,
     ResponsiveProps,
     SidebarProps,
-    SidebarToggleButtonProps,
     TitleProps,
     UserMenuProps,
-    UseToggleSidebarResult,
 };
