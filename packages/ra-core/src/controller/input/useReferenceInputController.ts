@@ -111,7 +111,7 @@ export const useReferenceInputController = (
 
     // fetch possible values
     const {
-        data: possibleValuesData,
+        data: possibleValuesData = [],
         total: possibleValuesTotal,
         isFetching: possibleValuesFetching,
         isLoading: possibleValuesLoading,
@@ -148,7 +148,7 @@ export const useReferenceInputController = (
     // overall status
     const dataStatus = getDataStatus({
         input,
-        matchingReferences: Object.keys(finalData).map(id => finalData[id]),
+        matchingReferences: finalData,
         referenceRecord,
         translate,
     });
