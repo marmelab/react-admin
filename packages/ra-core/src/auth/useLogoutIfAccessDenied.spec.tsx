@@ -75,18 +75,6 @@ describe('useLogoutIfAccessDenied', () => {
         authProvider.login('');
     });
 
-    it('should not logout if passed no error', async () => {
-        render(<Route path="/" element={<TestComponent />} />, {
-            wrapper: TestWrapper,
-        });
-
-        await waitFor(() => {
-            expect(authProvider.logout).toHaveBeenCalledTimes(0);
-            expect(notify).toHaveBeenCalledTimes(0);
-            expect(screen.queryByText('logged in')).not.toBeNull();
-        });
-    });
-
     it('should not log out if passed an error that does not make the authProvider throw', async () => {
         render(
             <Route path="/" element={<TestComponent error={new Error()} />} />,
