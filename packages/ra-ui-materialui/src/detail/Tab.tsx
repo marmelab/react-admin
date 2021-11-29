@@ -100,6 +100,7 @@ export const Tab = ({
                             <Labeled
                                 label={field.props.label}
                                 source={field.props.source}
+                                fullWidth={field.props.fullWidth}
                                 basePath={basePath}
                                 record={record}
                                 resource={resource}
