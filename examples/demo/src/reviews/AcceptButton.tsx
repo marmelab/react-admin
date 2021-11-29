@@ -21,19 +21,16 @@ const AcceptButton = ({ record }: { record: Review }) => {
         {
             undoable: true,
             onSuccess: () => {
-                notify(
-                    'resources.reviews.notification.approved_success',
-                    'info',
-                    {},
-                    true
-                );
+                notify('resources.reviews.notification.approved_success', {
+                    type: 'info',
+                    undoable: true,
+                });
                 redirectTo('/reviews');
             },
             onFailure: () => {
-                notify(
-                    'resources.reviews.notification.approved_error',
-                    'warning'
-                );
+                notify('resources.reviews.notification.approved_error', {
+                    type: 'warning',
+                });
             },
         }
     );

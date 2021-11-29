@@ -21,19 +21,16 @@ const RejectButton = ({ record }: { record: Review }) => {
         {
             undoable: true,
             onSuccess: () => {
-                notify(
-                    'resources.reviews.notification.rejected_success',
-                    'info',
-                    {},
-                    true
-                );
+                notify('resources.reviews.notification.rejected_success', {
+                    type: 'info',
+                    undoable: true,
+                });
                 redirectTo('/reviews');
             },
             onFailure: () => {
-                notify(
-                    'resources.reviews.notification.rejected_error',
-                    'warning'
-                );
+                notify('resources.reviews.notification.rejected_error', {
+                    type: 'warning',
+                });
             },
         }
     );

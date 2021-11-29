@@ -94,10 +94,7 @@ describe('Mutation', () => {
         fireEvent.click(testElement);
         await waitFor(() => {
             expect(dispatchSpy).toHaveBeenCalledWith(
-                showNotification('Youhou!', 'info', {
-                    messageArgs: {},
-                    undoable: false,
-                })
+                showNotification('Youhou!', 'info')
             );
             expect(historyForAssertions.location.pathname).toEqual('/a_path');
             expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
@@ -121,7 +118,7 @@ describe('Mutation', () => {
                     resource="foo"
                     options={{
                         onSuccess: () => {
-                            notify('Youhou!', 'info');
+                            notify('Youhou!');
                         },
                     }}
                 >
@@ -152,10 +149,7 @@ describe('Mutation', () => {
         fireEvent.click(testElement);
         await waitFor(() => {
             expect(dispatchSpy).toHaveBeenCalledWith(
-                showNotification('Youhou!', 'info', {
-                    messageArgs: {},
-                    undoable: false,
-                })
+                showNotification('Youhou!', 'info')
             );
         });
     });
@@ -216,10 +210,7 @@ describe('Mutation', () => {
         fireEvent.click(testElement);
         await waitFor(() => {
             expect(dispatchSpy).toHaveBeenCalledWith(
-                showNotification('Damn!', 'warning', {
-                    messageArgs: {},
-                    undoable: false,
-                })
+                showNotification('Damn!', 'warning')
             );
             expect(historyForAssertions.location.pathname).toEqual('/a_path');
             expect(dispatchSpy).toHaveBeenCalledWith(refreshView());
@@ -246,7 +237,7 @@ describe('Mutation', () => {
                     resource="foo"
                     options={{
                         onFailure: () => {
-                            notify('Damn!', 'warning');
+                            notify('Damn!', { type: 'warning' });
                         },
                     }}
                 >
@@ -277,10 +268,7 @@ describe('Mutation', () => {
         fireEvent.click(testElement);
         await waitFor(() => {
             expect(dispatchSpy).toHaveBeenCalledWith(
-                showNotification('Damn!', 'warning', {
-                    messageArgs: {},
-                    undoable: false,
-                })
+                showNotification('Damn!', 'warning')
             );
         });
     });

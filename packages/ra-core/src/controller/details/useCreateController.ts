@@ -165,9 +165,9 @@ export const useCreateController = <
                                   notify(
                                       successMessage ||
                                           'ra.notification.created',
-                                      'info',
                                       {
-                                          smart_count: 1,
+                                          type: 'info',
+                                          messageArgs: { smart_count: 1 },
                                       }
                                   );
                                   redirect(
@@ -187,14 +187,16 @@ export const useCreateController = <
                                           ? error
                                           : error.message ||
                                                 'ra.notification.http_error',
-                                      'warning',
                                       {
-                                          _:
-                                              typeof error === 'string'
-                                                  ? error
-                                                  : error && error.message
-                                                  ? error.message
-                                                  : undefined,
+                                          type: 'warning',
+                                          messageArgs: {
+                                              _:
+                                                  typeof error === 'string'
+                                                      ? error
+                                                      : error && error.message
+                                                      ? error.message
+                                                      : undefined,
+                                          },
                                       }
                                   );
                               },
