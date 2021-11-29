@@ -32,7 +32,6 @@ import {
     useCreateSuggestionContext,
     EditActionsProps,
     usePermissions,
-    Button as RaButton,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import {
     Box,
@@ -43,7 +42,6 @@ import {
     DialogContent,
     TextField as MuiTextField,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
 import PostTitle from './PostTitle';
 import TagReferenceInput from './TagReferenceInput';
 
