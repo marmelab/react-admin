@@ -38,34 +38,32 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
             )}
             {...rest}
         >
-            {Array.isArray(data) &&
-                data.map((record, rowIndex) =>
-                    cloneElement(
-                        row,
-                        {
-                            basePath,
-                            className: classnames(DatagridClasses.row, {
-                                [DatagridClasses.rowEven]: rowIndex % 2 === 0,
-                                [DatagridClasses.rowOdd]: rowIndex % 2 !== 0,
-                                [DatagridClasses.clickableRow]: rowClick,
-                            }),
-                            expand,
-                            hasBulkActions: hasBulkActions && !!selectedIds,
-                            hover,
-                            id: record.id,
-                            key: record.id,
-                            onToggleItem,
-                            record,
-                            resource,
-                            rowClick,
-                            selectable:
-                                !isRowSelectable || isRowSelectable(record),
-                            selected: selectedIds?.includes(record.id),
-                            style: rowStyle ? rowStyle(record, rowIndex) : null,
-                        },
-                        children
-                    )
-                )}
+            {data.map((record, rowIndex) =>
+                cloneElement(
+                    row,
+                    {
+                        basePath,
+                        className: classnames(DatagridClasses.row, {
+                            [DatagridClasses.rowEven]: rowIndex % 2 === 0,
+                            [DatagridClasses.rowOdd]: rowIndex % 2 !== 0,
+                            [DatagridClasses.clickableRow]: rowClick,
+                        }),
+                        expand,
+                        hasBulkActions: hasBulkActions && !!selectedIds,
+                        hover,
+                        id: record.id,
+                        key: record.id,
+                        onToggleItem,
+                        record,
+                        resource,
+                        rowClick,
+                        selectable: !isRowSelectable || isRowSelectable(record),
+                        selected: selectedIds?.includes(record.id),
+                        style: rowStyle ? rowStyle(record, rowIndex) : null,
+                    },
+                    children
+                )
+            )}
         </TableBody>
     )
 );
@@ -80,7 +78,6 @@ DatagridBody.propTypes = {
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hasBulkActions: PropTypes.bool.isRequired,
     hover: PropTypes.bool,
-    ids: PropTypes.arrayOf(PropTypes.any).isRequired,
     onToggleItem: PropTypes.func,
     resource: PropTypes.string,
     row: PropTypes.element,
@@ -94,7 +91,6 @@ DatagridBody.propTypes = {
 DatagridBody.defaultProps = {
     data: [],
     hasBulkActions: false,
-    ids: [],
     row: <DatagridRow />,
 };
 
@@ -112,7 +108,6 @@ export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
           }>;
     hasBulkActions?: boolean;
     hover?: boolean;
-    ids?: Identifier[];
     onToggleItem?: (
         id: Identifier,
         event: React.TouchEvent | React.MouseEvent

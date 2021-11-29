@@ -84,11 +84,14 @@ export const useGetList = <RecordType extends Record = Record>(
             ...options,
         }
     );
-    return {
-        ...result,
-        data: result.data?.data,
-        total: result.data?.total,
-    } as UseQueryResult<RecordType[], Error> & { total?: number };
+
+    return (result.data
+        ? {
+              ...result,
+              data: result.data?.data,
+              total: result.data?.total,
+          }
+        : result) as UseQueryResult<RecordType[], Error> & { total?: number };
 };
 
 export type UseGetListHookValue<

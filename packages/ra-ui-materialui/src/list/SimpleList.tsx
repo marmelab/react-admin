@@ -79,10 +79,10 @@ export const SimpleList = <RecordType extends Record = Record>(
         rowStyle,
         ...rest
     } = props;
-    const { data, ids, loaded, total } = useListContext<RecordType>(props);
+    const { data, isLoading, total } = useListContext<RecordType>(props);
     const resource = useResourceContext(props);
 
-    if (loaded === false) {
+    if (isLoading === true) {
         return (
             <SimpleListLoading
                 className={className}
@@ -95,10 +95,10 @@ export const SimpleList = <RecordType extends Record = Record>(
     }
 
     const renderAvatar = (
-        id: Identifier,
+        record: RecordType,
         avatarCallback: FunctionToElement<RecordType>
     ) => {
-        const avatarValue = avatarCallback(data[id], id);
+        const avatarValue = avatarCallback(record, record.id);
         if (
             typeof avatarValue === 'string' &&
             (avatarValue.startsWith('http') || avatarValue.startsWith('data:'))
@@ -111,28 +111,28 @@ export const SimpleList = <RecordType extends Record = Record>(
 
     return total > 0 ? (
         <Root className={className} {...sanitizeListRestProps(rest)}>
-            {ids.map((id, rowIndex) => (
-                <RecordContextProvider key={id} value={data[id]}>
+            {data.map((record, rowIndex) => (
+                <RecordContextProvider key={record.id} value={record}>
                     <ListItem>
                         <LinkOrNot
                             linkType={linkType}
                             resource={resource}
-                            id={id}
-                            record={data[id]}
+                            id={record.id}
+                            record={record}
                             style={
                                 rowStyle
-                                    ? rowStyle(data[id], rowIndex)
+                                    ? rowStyle(record, rowIndex)
                                     : undefined
                             }
                         >
                             {leftIcon && (
                                 <ListItemIcon>
-                                    {leftIcon(data[id], id)}
+                                    {leftIcon(record, record.id)}
                                 </ListItemIcon>
                             )}
                             {leftAvatar && (
                                 <ListItemAvatar>
-                                    {renderAvatar(id, leftAvatar)}
+                                    {renderAvatar(record, leftAvatar)}
                                 </ListItemAvatar>
                             )}
                             <ListItemText
@@ -140,7 +140,7 @@ export const SimpleList = <RecordType extends Record = Record>(
                                     <div>
                                         {isValidElement(primaryText)
                                             ? primaryText
-                                            : primaryText(data[id], id)}
+                                            : primaryText(record, record.id)}
 
                                         {!!tertiaryText &&
                                             (isValidElement(tertiaryText) ? (
@@ -151,7 +151,10 @@ export const SimpleList = <RecordType extends Record = Record>(
                                                         SimpleListClasses.tertiary
                                                     }
                                                 >
-                                                    {tertiaryText(data[id], id)}
+                                                    {tertiaryText(
+                                                        record,
+                                                        record.id
+                                                    )}
                                                 </span>
                                             ))}
                                     </div>
@@ -160,19 +163,19 @@ export const SimpleList = <RecordType extends Record = Record>(
                                     !!secondaryText &&
                                     (isValidElement(secondaryText)
                                         ? secondaryText
-                                        : secondaryText(data[id], id))
+                                        : secondaryText(record, record.id))
                                 }
                             />
                             {(rightAvatar || rightIcon) && (
                                 <ListItemSecondaryAction>
                                     {rightAvatar && (
                                         <Avatar>
-                                            {renderAvatar(id, rightAvatar)}
+                                            {renderAvatar(record, rightAvatar)}
                                         </Avatar>
                                     )}
                                     {rightIcon && (
                                         <ListItemIcon>
-                                            {rightIcon(data[id], id)}
+                                            {rightIcon(record, record.id)}
                                         </ListItemIcon>
                                     )}
                                 </ListItemSecondaryAction>

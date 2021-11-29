@@ -157,7 +157,6 @@ DatagridHeader.propTypes = {
     data: PropTypes.any,
     hasExpand: PropTypes.bool,
     hasBulkActions: PropTypes.bool,
-    ids: PropTypes.arrayOf(PropTypes.any),
     isRowSelectable: PropTypes.func,
     isRowExpandable: PropTypes.func,
     onSelect: PropTypes.func,
