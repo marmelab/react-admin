@@ -42,6 +42,7 @@ Here are all the props accepted by the component:
 - [`logoutButton`](#logoutbutton)
 - [`initialState`](#initialstate)
 - [`history`](#history)
+- [`basename`](#basename)
 - [`ready`](#ready)
 
 ## `dataProvider`
@@ -470,7 +471,17 @@ const App = () => (
 );
 ```
 
-**Caution**: Do not use the 5.x version of the `history` package. It's currently incompatible with another dependency of react-admin, `connected-react-router`. `history@4.10.1` works fine. 
+## `basename`
+
+Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is useful when including the Admin inside a larger app. See https://reactrouter.com/docs/en/v6/api#router for more informations.
+
+```jsx
+const App = () => (
+    <Admin basename="admin">
+        ...
+    </Admin>
+);
+```
 
 ## `ready`
 
