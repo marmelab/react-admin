@@ -12,13 +12,12 @@ const currentSort = { field: 'published_at', order: 'DESC' };
 const CustomRouteLayout = ({ title = 'Posts' }) => {
     useAuthenticated();
 
-    const { ids, data, total, loaded } = useGetList(
-        'posts',
-        { page: 1, perPage: 10 },
-        currentSort
-    );
+    const { data, total, isLoading } = useGetList('posts', {
+        pagination: { page: 1, perPage: 10 },
+        sort: currentSort,
+    });
 
-    return loaded ? (
+    return !isLoading ? (
         <div>
             <Title title="Example Admin" />
             <h1>{title}</h1>
@@ -29,8 +28,7 @@ const CustomRouteLayout = ({ title = 'Posts' }) => {
                 basePath="/posts"
                 currentSort={currentSort}
                 data={data}
-                ids={ids}
-                loaded={loaded}
+                isLoading={isLoading}
                 total={total}
                 rowClick="edit"
             >

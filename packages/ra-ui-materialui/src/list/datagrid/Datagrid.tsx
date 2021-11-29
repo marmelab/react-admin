@@ -15,10 +15,8 @@ import PropTypes from 'prop-types';
 import {
     sanitizeListRestProps,
     useListContext,
-    useVersion,
     Identifier,
     Record,
-    RecordMap,
     SortPayload,
 } from 'ra-core';
 import { TableProps } from '@mui/material';
@@ -123,11 +121,13 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     } = props;
 
     const {
+        currentSort,
         data,
         isLoading,
         onSelect,
         onToggleItem,
         selectedIds,
+        setSort,
         total,
     } = useListContext(props);
 
@@ -217,9 +217,15 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                     header,
                     {
                         children,
+                        currentSort,
+                        data,
                         hasExpand: !!expand,
                         hasBulkActions,
                         isRowSelectable,
+                        onSelect,
+                        resource,
+                        selectedIds,
+                        setSort,
                     },
                     children
                 )}
@@ -267,7 +273,7 @@ Datagrid.propTypes = {
     // @ts-ignore
     header: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hover: PropTypes.bool,
-    loading: PropTypes.bool,
+    isLoading: PropTypes.bool,
     onSelect: PropTypes.func,
     onToggleItem: PropTypes.func,
     resource: PropTypes.string,
@@ -307,7 +313,7 @@ export interface DatagridProps<RecordType extends Record = Record>
     basePath?: string;
     currentSort?: SortPayload;
     data?: RecordType[];
-    loaded?: boolean;
+    isLoading?: boolean;
     onSelect?: (ids: Identifier[]) => void;
     onToggleItem?: (id: Identifier) => void;
     setSort?: (sort: string, order?: string) => void;
