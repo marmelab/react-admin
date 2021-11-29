@@ -60,7 +60,7 @@ That's enough to display the post show view:
 * [`children`](#layout): the components that render the record fields
 * [`component`](#root-component): overrides the root component
 * [`emptyWhileLoading`](#loading-state)
-* [`queryOptions`](#query-client-options): options to pass to the react-query client
+* [`queryOptions`](#client-query-options): options to pass to the react-query client
 * [`sx`](#css-api): Override the styles
 * [`title`](#page-title)
 

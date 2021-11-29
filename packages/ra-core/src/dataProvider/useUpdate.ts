@@ -18,7 +18,7 @@ import { Identifier, Record, UpdateParams, MutationMode } from '../types';
  * @param {Params} params The update parameters { id, data, previousData }
  * @param {Object} options Options object to pass to the queryClient.
  * May include side effects to be executed upon success or failure, e.g. { onSuccess: { refresh: true } }
- * May inclide a mutation mode (optimistic/pessimistic/undoable), e.g. { mutationMode: 'undoable' }
+ * May include a mutation mode (optimistic/pessimistic/undoable), e.g. { mutationMode: 'undoable' }
  *
  * @typedef Params
  * @props params.id The resource identifier, e.g. 123
@@ -88,7 +88,7 @@ export const useUpdate = <RecordType extends Record = Record>(
 
     const updateCache = async ({ resource, id, data }) => {
         // hack: only way to tell react-query not to fetch this query for the next 5 seconds
-        // because setQueryData doesn't accept a staletime option
+        // because setQueryData doesn't accept a stale time option
         const updatedAt =
             mode.current === 'undoable' ? Date.now() + 1000 * 5 : Date.now();
         await queryClient.setQueryData(
@@ -152,7 +152,7 @@ export const useUpdate = <RecordType extends Record = Record>(
                         ...userContext,
                     };
                 }
-                // Return a context object with the snapshotted value
+                // Return a context object with the snapshot value
                 return rollbackData.current;
             },
             onError: (
@@ -290,7 +290,7 @@ export const useUpdate = <RecordType extends Record = Record>(
         // except we do it in a mutate wrapper instead of the onMutate callback
         // to have access to success side effects
 
-        // Cancel any outgoing refetches (so they don't overwrite our optimistic update)
+        // Cancel any outgoing re-fetches (so they don't overwrite our optimistic update)
         await queryClient.cancelQueries([
             callTimeResource,
             'getOne',
