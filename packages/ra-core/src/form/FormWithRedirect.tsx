@@ -111,6 +111,10 @@ const FormWithRedirect = ({
     const formContextValue = useMemo<FormContextValue>(
         () => ({
             setOnSave,
+            /**
+             * Register a subscriber function for the specified group. The subscriber
+             * will be called whenever the group content changes (fields added or removed).
+             */
             subscribe: (group, subscriber) => {
                 if (!subscribers.current[group]) {
                     subscribers.current[group] = [];
@@ -137,6 +141,7 @@ const FormWithRedirect = ({
                             ...(formGroups.current[group] || []),
                             source,
                         ];
+                        // Notify subscribers that the group fields have changed
                         if (subscribers.current[group]) {
                             subscribers.current[group].forEach(subscriber =>
                                 subscriber()
@@ -153,6 +158,8 @@ const FormWithRedirect = ({
                         const fields = new Set(formGroups.current[group]);
                         fields.delete(source);
                         formGroups.current[group] = Array.from(fields);
+
+                        // Notify subscribers that the group fields have changed
                         if (subscribers.current[group]) {
                             subscribers.current[group].forEach(subscriber =>
                                 subscriber()
