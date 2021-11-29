@@ -21,6 +21,8 @@ import Title, { TitleProps, TitlePropType } from './Title';
 import TitleForRecord from './TitleForRecord';
 import TopToolbar from './TopToolbar';
 import UserMenu, { UserMenuProps } from './UserMenu';
+export * from './SidebarToggleButton';
+export * from './useToggleSidebar';
 export * from './createMuiTheme';
 
 export {
