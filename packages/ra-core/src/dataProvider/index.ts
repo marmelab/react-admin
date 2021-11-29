@@ -9,7 +9,6 @@ import undoableEventEmitter from './undoableEventEmitter';
 import useDataProvider from './useDataProvider';
 import useMutation, { UseMutationValue } from './useMutation';
 import withDataProvider from './withDataProvider';
-import { useGetMainList } from './useGetMainList';
 import useGetMany from './useGetMany';
 import useGetManyReference from './useGetManyReference';
 import useGetMatching from './useGetMatching';
@@ -40,7 +39,6 @@ export {
     undoableEventEmitter,
     useDataProvider,
     useMutation,
-    useGetMainList,
     useGetMany,
     useGetManyReference,
     useGetMatching,

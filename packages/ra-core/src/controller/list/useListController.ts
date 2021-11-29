@@ -1,5 +1,6 @@
 import { isValidElement, ReactElement, useEffect, useMemo } from 'react';
 import { Location } from 'history';
+import { UseQueryOptions } from 'react-query';
 
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../sideEffect';
@@ -39,7 +40,7 @@ import { useListParams } from './useListParams';
  * }
  */
 export const useListController = <RecordType extends Record = Record>(
-    props: ListControllerProps = {}
+    props: ListControllerProps<RecordType> = {}
 ): ListControllerResult<RecordType> => {
     const {
         exporter = defaultExporter,
@@ -49,6 +50,7 @@ export const useListController = <RecordType extends Record = Record>(
         filter,
         debounce = 500,
         disableSyncWithLocation,
+        queryOptions,
     } = props;
     const resource = useResourceContext(props);
     const { hasCreate } = useResourceDefinition(props);
@@ -104,6 +106,7 @@ export const useListController = <RecordType extends Record = Record>(
                         _: error?.message,
                     }
                 ),
+            ...queryOptions,
         }
     );
 
@@ -166,7 +169,7 @@ export const useListController = <RecordType extends Record = Record>(
     };
 };
 
-export interface ListControllerProps {
+export interface ListControllerProps<RecordType extends Record = Record> {
     // the props you can change
     filter?: FilterPayload;
     filters?: ReactElement | ReactElement[];
@@ -174,6 +177,7 @@ export interface ListControllerProps {
     perPage?: number;
     sort?: SortPayload;
     exporter?: Exporter | false;
+    queryOptions?: UseQueryOptions<{ data: RecordType[]; total: number }>;
     // the props managed by react-admin
     debounce?: number;
     location?: Location;
