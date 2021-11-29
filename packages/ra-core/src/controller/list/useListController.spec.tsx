@@ -61,7 +61,7 @@ describe('useListController', () => {
 
     describe('setFilters', () => {
         let clock;
-        let fakeComponent = ({ setFilters, filterValues }) => (
+        let childFunction = ({ setFilters, filterValues }) => (
             // TODO: we shouldn't import mui components in ra-core
             <TextField
                 inputProps={{
@@ -84,7 +84,7 @@ describe('useListController', () => {
 
             const props = {
                 ...defaultProps,
-                children: fakeComponent,
+                children: childFunction,
             };
 
             const store = createAdminStore({
@@ -128,10 +128,10 @@ describe('useListController', () => {
             });
         });
 
-        it.only('should remove empty filters', () => {
+        it('should remove empty filters', () => {
             const props = {
                 ...defaultProps,
-                children: fakeComponent,
+                children: childFunction,
             };
 
             const store = createAdminStore({
@@ -154,7 +154,9 @@ describe('useListController', () => {
             const dispatch = jest.spyOn(store, 'dispatch');
             const history = createMemoryHistory({
                 initialEntries: [
-                    `/posts?filter=${JSON.stringify({ q: 'hello' })}`,
+                    `/posts?filter=${JSON.stringify({
+                        q: 'hello',
+                    })}&displayedFilters=${JSON.stringify({ q: true })}`,
                 ],
             });
             render(
@@ -167,17 +169,23 @@ describe('useListController', () => {
                     </CoreAdminContext>
                 </Provider>
             );
-            const searchInput = screen.getByLabelText('search');
+            expect(
+                dispatch.mock.calls.filter(
+                    call => call[0].type === CRUD_CHANGE_LIST_PARAMS
+                )
+            ).toHaveLength(1);
 
+            const searchInput = screen.getByLabelText('search');
             // FIXME: For some reason, triggering the change event with an empty string
-            // does not call the event handler on fakeComponent
+            // does not call the event handler on childFunction
             fireEvent.change(searchInput, { target: { value: '' } });
             clock.tick(210);
 
-            const changeParamsCalls = dispatch.mock.calls.filter(
-                call => call[0].type === CRUD_CHANGE_LIST_PARAMS
-            );
-            expect(changeParamsCalls).toHaveLength(1);
+            expect(
+                dispatch.mock.calls.filter(
+                    call => call[0].type === CRUD_CHANGE_LIST_PARAMS
+                )
+            ).toHaveLength(2);
 
             const state = store.getState();
             expect(state.admin.resources.posts.list.params.filter).toEqual({});
@@ -199,9 +207,12 @@ describe('useListController', () => {
                     Promise.resolve({ data: [], total: 0 })
                 );
             const dataProvider = testDataProvider({ getList });
+            const history = createMemoryHistory({
+                initialEntries: [`/posts`],
+            });
 
             const { rerender } = render(
-                <CoreAdminContext dataProvider={dataProvider}>
+                <CoreAdminContext dataProvider={dataProvider} history={history}>
                     <ListController {...props} filter={{ foo: 1 }} />
                 </CoreAdminContext>
             );
@@ -222,7 +233,7 @@ describe('useListController', () => {
             );
 
             rerender(
-                <CoreAdminContext dataProvider={dataProvider}>
+                <CoreAdminContext dataProvider={dataProvider} history={history}>
                     <ListController {...props} filter={{ foo: 2 }} />
                 </CoreAdminContext>
             );
@@ -244,7 +255,7 @@ describe('useListController', () => {
         it('Does not remove previously shown filter when adding a new one', async () => {
             let currentDisplayedFilters;
 
-            let fakeComponent = ({
+            let childFunction = ({
                 showFilter,
                 displayedFilters,
                 filterValues,
@@ -270,7 +281,7 @@ describe('useListController', () => {
 
             const props = {
                 ...defaultProps,
-                children: fakeComponent,
+                children: childFunction,
             };
 
             render(
