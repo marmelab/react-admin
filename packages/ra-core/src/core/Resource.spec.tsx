@@ -1,7 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
-import { Route, Routes } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
 import CoreAdminContext from './CoreAdminContext';
@@ -33,21 +32,18 @@ describe('<Resource>', () => {
                 dataProvider={testDataProvider()}
                 initialState={{ admin: { resources: { posts: {} } } }}
             >
-                <Routes>
-                    <Route
-                        path="posts/*"
-                        element={<Resource {...resource} />}
-                    />
-                </Routes>
+                <Resource {...resource} />
             </CoreAdminContext>
         );
-        history.push('/posts');
+        // Resource does not declare a route matching its name, it only renders its child routes
+        // so we don't need to navigate to a path matching its name
+        history.push('/');
         expect(screen.getByText('PostList')).not.toBeNull();
-        history.push('/posts/123');
+        history.push('/123');
         expect(screen.getByText('PostEdit')).not.toBeNull();
-        history.push('/posts/123/show');
+        history.push('/123/show');
         expect(screen.getByText('PostShow')).not.toBeNull();
-        history.push('/posts/create');
+        history.push('/create');
         expect(screen.getByText('PostCreate')).not.toBeNull();
     });
     it('injects permissions to the resource routes', async () => {
@@ -75,7 +71,9 @@ describe('<Resource>', () => {
                 />
             </CoreAdminContext>
         );
-        history.push('/posts');
+        // Resource does not declare a route matching its name, it only renders its child routes
+        // so we don't need to navigate to a path matching its name
+        history.push('/');
         await waitFor(() => {
             expect(getByText('Permissions: admin')).not.toBeNull();
         });
