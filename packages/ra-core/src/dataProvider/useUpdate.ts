@@ -101,20 +101,23 @@ export const useUpdate = <RecordType extends Record = Record>(
         );
         queryClient.setQueriesData(
             [resource, 'getList'],
-            (old: RecordType[]) => {
-                if (!old) return;
-                const index = old.findIndex(
+            (old: { data?: RecordType[]; total?: number }) => {
+                if (!old || !old.data) return;
+                const index = old.data?.findIndex(
                     // eslint-disable-next-line eqeqeq
                     record => record.id == id
                 );
                 if (index === -1) {
                     return old;
                 }
-                return [
-                    ...old.slice(0, index),
-                    { ...old[index], ...data },
-                    ...old.slice(index + 1),
-                ];
+                return {
+                    data: [
+                        ...old.data.slice(0, index),
+                        { ...old.data[index], ...data },
+                        ...old.data.slice(index + 1),
+                    ],
+                    total: old.total,
+                };
             },
             { updatedAt }
         );

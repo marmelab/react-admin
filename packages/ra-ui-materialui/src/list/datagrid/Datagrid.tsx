@@ -123,17 +123,13 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     } = props;
 
     const {
-        currentSort,
         data,
-        ids,
-        loaded,
+        isLoading,
         onSelect,
         onToggleItem,
         selectedIds,
-        setSort,
         total,
     } = useListContext(props);
-    const version = useVersion();
 
     const contextValue = useMemo(() => ({ isRowExpandable }), [
         isRowExpandable,
@@ -147,8 +143,10 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         }
     }, [JSON.stringify(selectedIds)]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    // we manage row selection at the datagrid level to llow shift+click to select an array of rows
     const handleToggleItem = useCallback(
         (id, event) => {
+            const ids = data.map(record => record.id);
             const lastSelectedIndex = ids.indexOf(lastSelected.current);
             lastSelected.current = event.target.checked ? id : null;
 
@@ -174,15 +172,10 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                 onToggleItem(id);
             }
         },
-        [data, ids, isRowSelectable, onSelect, onToggleItem, selectedIds]
+        [data, isRowSelectable, onSelect, onToggleItem, selectedIds]
     );
 
-    /**
-     * if loaded is false, the list displays for the first time, and the dataProvider hasn't answered yet
-     * if loaded is true, the data for the list has at least been returned once by the dataProvider
-     * if loaded is undefined, the Datagrid parent doesn't track loading state (e.g. ReferenceArrayField)
-     */
-    if (loaded === false) {
+    if (isLoading === true) {
         return (
             <DatagridLoading
                 className={className}
@@ -199,7 +192,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
      * displaying the table header with zero data rows,
      * the datagrid displays nothing or a custom empty component.
      */
-    if (loaded && (ids.length === 0 || total === 0)) {
+    if (data.length === 0 || total === 0) {
         if (empty) {
             return empty;
         }
@@ -224,16 +217,9 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                     header,
                     {
                         children,
-                        currentSort,
-                        data,
                         hasExpand: !!expand,
                         hasBulkActions,
-                        ids,
                         isRowSelectable,
-                        onSelect,
-                        resource,
-                        selectedIds,
-                        setSort,
                     },
                     children
                 )}
@@ -245,13 +231,11 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                         data,
                         hasBulkActions,
                         hover,
-                        ids,
                         onToggleItem: handleToggleItem,
                         resource,
                         rowStyle,
                         selectedIds,
                         isRowSelectable,
-                        version,
                     },
                     children
                 )}
@@ -275,7 +259,7 @@ Datagrid.propTypes = {
         field: PropTypes.string,
         order: PropTypes.string,
     }),
-    data: PropTypes.any,
+    data: PropTypes.arrayOf(PropTypes.any),
     empty: PropTypes.element,
     // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
@@ -283,7 +267,6 @@ Datagrid.propTypes = {
     // @ts-ignore
     header: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hover: PropTypes.bool,
-    ids: PropTypes.arrayOf(PropTypes.any),
     loading: PropTypes.bool,
     onSelect: PropTypes.func,
     onToggleItem: PropTypes.func,
@@ -323,8 +306,7 @@ export interface DatagridProps<RecordType extends Record = Record>
     // can be injected when using the component without context
     basePath?: string;
     currentSort?: SortPayload;
-    data?: RecordMap<RecordType>;
-    ids?: Identifier[];
+    data?: RecordType[];
     loaded?: boolean;
     onSelect?: (ids: Identifier[]) => void;
     onToggleItem?: (id: Identifier) => void;

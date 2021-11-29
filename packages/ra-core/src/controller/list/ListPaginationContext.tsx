@@ -39,7 +39,7 @@ import { ListControllerResult } from './useListController';
  * };
  */
 export const ListPaginationContext = createContext<ListPaginationContextValue>({
-    loading: null,
+    isLoading: null,
     page: null,
     perPage: null,
     setPage: null,
@@ -52,7 +52,7 @@ ListPaginationContext.displayName = 'ListPaginationContext';
 
 export type ListPaginationContextValue = Pick<
     ListControllerResult,
-    | 'loading'
+    | 'isLoading'
     | 'page'
     | 'perPage'
     | 'setPage'
@@ -67,7 +67,7 @@ export const usePickPaginationContext = (
     useMemo(
         () =>
             pick(context, [
-                'loading',
+                'isLoading',
                 'page',
                 'perPage',
                 'setPage',
@@ -77,7 +77,7 @@ export const usePickPaginationContext = (
             ]),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [
-            context.loading,
+            context.isLoading,
             context.page,
             context.perPage,
             context.setPage,

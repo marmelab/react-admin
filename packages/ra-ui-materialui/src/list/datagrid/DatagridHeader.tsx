@@ -34,7 +34,6 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
     const {
         currentSort,
         data,
-        ids,
         onSelect,
         selectedIds,
         setSort,
@@ -59,26 +58,33 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
     const updateSort = setSort ? updateSortCallback : null;
 
     const handleSelectAll = useCallback(
-        event => {
-            if (event.target.checked) {
-                const all = ids.concat(
-                    selectedIds.filter(id => !ids.includes(id))
-                );
-                onSelect(
-                    isRowSelectable
-                        ? all.filter(id => isRowSelectable(data[id]))
-                        : all
-                );
-            } else {
-                onSelect([]);
-            }
-        },
-        [data, ids, onSelect, isRowSelectable, selectedIds]
+        event =>
+            onSelect(
+                event.target.checked
+                    ? selectedIds.concat(
+                          data
+                              .filter(
+                                  record => !selectedIds.includes(record.id)
+                              )
+                              .filter(record =>
+                                  isRowSelectable
+                                      ? isRowSelectable(record)
+                                      : true
+                              )
+                              .map(record => record.id)
+                      )
+                    : []
+            ),
+        [data, onSelect, isRowSelectable, selectedIds]
     );
 
-    const selectableIds = isRowSelectable
-        ? ids.filter(id => isRowSelectable(data[id]))
-        : ids;
+    const selectableIds = Array.isArray(data)
+        ? isRowSelectable
+            ? data
+                  .filter(record => isRowSelectable(record))
+                  .map(record => record.id)
+            : data.map(record => record.id)
+        : [];
 
     return (
         <TableHead className={classnames(className, DatagridClasses.thead)}>

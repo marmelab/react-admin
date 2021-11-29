@@ -26,7 +26,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         ...rest
     } = props;
     const {
-        loading,
+        isLoading,
         page,
         perPage,
         total,
@@ -79,7 +79,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
 
     // Avoid rendering TablePagination if "page" value is invalid
     if (total === null || total === 0 || page < 1 || page > totalPages) {
-        return loading ? <Toolbar variant="dense" /> : limit;
+        return isLoading ? <Toolbar variant="dense" /> : limit;
     }
 
     if (isSmall) {

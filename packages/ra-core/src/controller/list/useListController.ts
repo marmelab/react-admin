@@ -3,14 +3,12 @@ import { Location } from 'history';
 
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../sideEffect';
-import { useGetMainList, Refetch } from '../../dataProvider';
+import { useGetList, Refetch } from '../../dataProvider';
 import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
-import { CRUD_GET_LIST } from '../../actions';
 import { defaultExporter } from '../../export';
 import {
     FilterPayload,
     SortPayload,
-    RecordMap,
     Identifier,
     Record,
     Exporter,
@@ -84,57 +82,46 @@ export const useListController = <RecordType extends Record = Record>(
      * We want the list of ids to be always available for optimistic rendering,
      * and therefore we need a custom action (CRUD_GET_LIST) that will be used.
      */
-    const {
-        ids,
-        data,
-        total,
-        error,
-        loading,
-        loaded,
-        refetch,
-    } = useGetMainList<RecordType>(
+    const { data, total, error, isLoading, isFetching, refetch } = useGetList<
+        RecordType
+    >(
         resource,
         {
-            page: query.page,
-            perPage: query.perPage,
+            pagination: {
+                page: query.page,
+                perPage: query.perPage,
+            },
+            sort: { field: query.sort, order: query.order },
+            filter: { ...query.filter, ...filter },
         },
-        { field: query.sort, order: query.order },
-        { ...query.filter, ...filter },
         {
-            action: CRUD_GET_LIST,
-            onFailure: error =>
+            keepPreviousData: true,
+            onError: error =>
                 notify(
-                    typeof error === 'string'
-                        ? error
-                        : error.message || 'ra.notification.http_error',
+                    error?.message || 'ra.notification.http_error',
                     'warning',
                     {
-                        _:
-                            typeof error === 'string'
-                                ? error
-                                : error && error.message
-                                ? error.message
-                                : undefined,
+                        _: error?.message,
                     }
                 ),
         }
     );
 
-    const totalPages = Math.ceil(total / query.perPage) || 1;
-
+    // change page if there is no data
     useEffect(() => {
+        const totalPages = Math.ceil(total / query.perPage) || 1;
         if (
             query.page <= 0 ||
-            (!loading && query.page > 1 && ids.length === 0)
+            (!isFetching && query.page > 1 && data.length === 0)
         ) {
             // Query for a page that doesn't exist, set page to 1
             queryModifiers.setPage(1);
-        } else if (!loading && query.page > totalPages) {
+        } else if (!isFetching && query.page > totalPages) {
             // Query for a page out of bounds, set page to the last existing page
             // It occurs when deleting the last element of the last page
             queryModifiers.setPage(totalPages);
         }
-    }, [loading, query.page, ids, queryModifiers, total, totalPages]);
+    }, [isFetching, query.page, query.perPage, data, queryModifiers, total]);
 
     const currentSort = useMemo(
         () => ({
@@ -160,9 +147,8 @@ export const useListController = <RecordType extends Record = Record>(
         filterValues: query.filterValues,
         hasCreate,
         hideFilter: queryModifiers.hideFilter,
-        ids,
-        loaded: loaded || ids.length > 0,
-        loading,
+        isFetching,
+        isLoading,
         onSelect: selectionModifiers.select,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
@@ -206,7 +192,7 @@ const defaultSort = {
 
 export interface ListControllerResult<RecordType extends Record = Record> {
     currentSort: SortPayload;
-    data: RecordMap<RecordType>;
+    data: RecordType[];
     defaultTitle?: string;
     displayedFilters: any;
     error?: any;
@@ -215,9 +201,8 @@ export interface ListControllerResult<RecordType extends Record = Record> {
     filterValues: any;
     hasCreate?: boolean;
     hideFilter: (filterName: string) => void;
-    ids: Identifier[];
-    loading: boolean;
-    loaded: boolean;
+    isFetching: boolean;
+    isLoading: boolean;
     onSelect: (ids: Identifier[]) => void;
     onToggleItem: (id: Identifier) => void;
     onUnselectItems: () => void;

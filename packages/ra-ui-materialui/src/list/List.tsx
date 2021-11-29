@@ -62,15 +62,11 @@ import { ListProps } from '../types';
  */
 export const List = (
     props: ListProps & { children: ReactElement }
-): ReactElement => {
-    useCheckMinimumRequiredProps('List', ['children'], props);
-    const controllerProps = useListController(props);
-    return (
-        <ListContextProvider value={controllerProps}>
-            <ListView {...props} {...controllerProps} />
-        </ListContextProvider>
-    );
-};
+): ReactElement => (
+    <ListContextProvider value={useListController(props)}>
+        <ListView {...props} />
+    </ListContextProvider>
+);
 
 List.propTypes = {
     // the props you can change
@@ -79,7 +75,7 @@ List.propTypes = {
     aside: PropTypes.element,
     // @ts-ignore-line
     bulkActionButtons: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
-    children: PropTypes.element,
+    children: PropTypes.element.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
     filter: PropTypes.object,
