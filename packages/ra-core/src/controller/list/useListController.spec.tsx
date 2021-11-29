@@ -1,9 +1,10 @@
 import * as React from 'react';
 import expect from 'expect';
-import { fireEvent, waitFor, act } from '@testing-library/react';
+import { render, fireEvent, waitFor, act } from '@testing-library/react';
 import lolex from 'lolex';
 // TODO: we shouldn't import mui components in ra-core
 import { TextField } from '@mui/material';
+import { renderWithRedux } from 'ra-test';
 
 import { DataProviderContext } from '../../dataProvider';
 import { ListController } from './ListController';
@@ -11,10 +12,10 @@ import {
     getListControllerProps,
     sanitizeListRestProps,
 } from './useListController';
-
-import { renderWithRedux } from 'ra-test';
+import { CoreAdminContext } from '../../core';
 import { CRUD_CHANGE_LIST_PARAMS } from '../../actions';
 import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
+import { DataProvider } from '../../types';
 
 describe('useListController', () => {
     const defaultProps = {
@@ -42,6 +43,27 @@ describe('useListController', () => {
         resource: 'posts',
         debounce: 200,
     };
+
+    it('should accept custom client query options', async () => {
+        const mock = jest.spyOn(console, 'error').mockImplementation(() => {});
+        const getList = jest
+            .fn()
+            .mockImplementationOnce(() => Promise.reject(new Error()));
+        const onError = jest.fn();
+        const dataProvider = ({ getList } as unknown) as DataProvider;
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ListController resource="posts" queryOptions={{ onError }}>
+                    {() => <div />}
+                </ListController>
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(getList).toHaveBeenCalled();
+            expect(onError).toHaveBeenCalled();
+        });
+        mock.mockRestore();
+    });
 
     describe('data', () => {
         it('should be synchronized with ids after delete', async () => {
