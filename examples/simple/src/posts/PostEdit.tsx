@@ -11,6 +11,7 @@ import {
     DateInput,
     Edit,
     CloneButton,
+    CreateButton,
     ShowButton,
     EditButton,
     FormTab,
@@ -41,7 +42,6 @@ import {
     DialogContent,
     TextField as MuiTextField,
 } from '@mui/material';
-
 import PostTitle from './PostTitle';
 import TagReferenceInput from './TagReferenceInput';
 
@@ -80,22 +80,23 @@ const CreateCategory = ({
     );
 };
 
-const EditActions = ({ basePath, data, hasShow }: EditActionsProps) => (
+const EditActions = ({ data, hasShow, resource }: EditActionsProps) => (
     <TopToolbar>
         <CloneButton
             className="button-clone"
-            basePath={basePath}
+            basePath={`/${resource}`}
             record={data}
         />
-        {hasShow && <ShowButton basePath={basePath} record={data} />}
+        {hasShow && <ShowButton basePath={`/${resource}`} record={data} />}
+        {/* FIXME: added because react-router HashHistory cannot block navigation induced by address bar changes */}
+        <CreateButton basePath={`/${resource}`} />
     </TopToolbar>
 );
 
 const SanitizedBox = ({
     fullWidth,
-    basePath,
     ...props
-}: BoxProps & { fullWidth?: boolean; basePath?: string }) => <Box {...props} />;
+}: BoxProps & { fullWidth?: boolean }) => <Box {...props} />;
 
 const categories = [
     { name: 'Tech', id: 'tech' },

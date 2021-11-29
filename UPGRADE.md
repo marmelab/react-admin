@@ -1,5 +1,113 @@
 # Upgrade to 4.0
 
+## The Way To Providing Custom Routes Has Changed
+
+Custom routes used to be provided to the `Admin` component through the `customRoutes` prop. This was awkward to use as you had to provide an array of `<Route>` elements. Besides, we had to provide the `<RouteWithoutLayout>` component to support custom routes rendered without the `<Layout>` and keep TypeScript happy.
+
+As we upgraded to react-router v6 (more on that later), we had to come up with another way to support custom routes.
+
+Meet the `<CustomRoutes>` component. You you can pass it as a child of `<Admin>`, just like a `<Resource>`. It accepts react-router `<Route>` as its children (and only that). You can specify whether the custom routes it contains should be rendered with the `<Layout>` or not by setting the `noLayout` prop. It's `false` by default.
+
+```diff
+-import { Admin, Resource, RouteWithoutLayout } from 'react-admin';
++import { Admin, CustomRoutes, Resource } from 'react-admin';
+
+const MyAdmin = () => (
+    <Admin
+-       customRoutes={[
+-           <Route path="/custom" component={MyCustomRoute} />,
+-           <RouteWithoutLayout path="/custom2" component={MyCustomRoute2} />,
+-       ]}
+    >
++       <CustomRoutes>
++           <Route path="/custom" element={<MyCustomRoute />} />
++       </CustomRoutes>
++       <CustomRoutes noLayout>
++           <Route path="/custom2" element={<MyCustomRoute2 />} />
++       </CustomRoutes>
+        <Resource name="posts" />
+    </Admin>
+)
+```
+
+Note that `<CustomRoutes>` handles `null` elements and fragments correctly, so you can check for any condition before returning one of its children:
+
+```jsx
+    const MyAdmin = () => {
+        const condition = useGetConditionFromSomewhere();
+    
+        return (
+            <Admin>
+                <CustomRoutes>
+                    <Route path="/custom" element={<MyCustomRoute />} />
+                    {condition
+                        ? (
+                              <>
+                                  <Route path="/a_path" element={<ARoute />} />
+                                  <Route path="/another_path" element={<AnotherRoute />} />
+                              </>
+                          )
+                        : null}
+                </CustomRoutes>
+            </Admin>
+        );
+    }
+```
+
+## Admin Child Function Result Has Changed
+
+In order to define the resources and their views according to users permissions, we used to support a function as a child of `<Admin>`. Just like the `customRoutes`, this function had to return an array of elements.
+
+You can now return a fragment and this fragment may contains `null` elements. Besides, if you don't need to check the permissions for a resource, you may even include it as a direct child of `<Admin>`.
+
+```diff
+<Admin>
+-    {permissions => [
+-       <Resource name="posts" {...posts} />,
+-       <Resource name="comments" {...comments} />,
+-       permissions ? <Resource name="users" {...users} /> : null,
+-       <Resource name="tags" {...tags} />,
+-   ]}
++   <Resource name="posts" {...posts} />
++   <Resource name="comments" {...comments} />
++   <Resource name="tags" {...tags} />
++   {permissions => (
++       <>
++           {permissions ? <Resource name="users" {...users} /> : null}
++       </> 
++   )}
+</Admin>
+```
+
+Last thing, you can return any element supported by `<Admin>`, including the new `<CustomRoutes>`:
+
+```jsx
+import { Admin, Resource, CustomRoutes } from 'react-admin';
+
+const MyAdmin = () => (
+    <Admin>
+        <Resource name="posts" {...posts} />
+        {permissions => (
+            <>
+                {permissions ? <Resource name="users" {...posts} /> : null}
+                <CustomRoutes>
+                    {permissions ? <Route path="/a_path" element={<ARoute />} /> : null}
+                    <Route path="/another_path" element={<AnotherRoute />} />
+                </CustomRoutes>
+            </>
+        )}
+    </Admin>
+)
+```
+
+## React Router Upgraded to v6
+
+This should be mostly transparent for you unless:
+
+- you had custom routes: see [https://reactrouter.com/docs/en/v6/upgrading/v5#advantages-of-route-element](https://reactrouter.com/docs/en/v6/upgrading/v5#advantages-of-route-element) to upgrade.
+- you used `useHistory` to navigate: see [https://reactrouter.com/docs/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory](https://reactrouter.com/docs/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory) to upgrade.
+- you had custom components similar to our `TabbedForm` or `TabbedShowLayout` (declaring multiple sub routes): see [https://reactrouter.com/docs/en/v6/upgrading/v5](https://reactrouter.com/docs/en/v6/upgrading/v5) to upgrade.
+
 ## Changed Signature Of Data Provider Hooks
 
 Specialized data provider hooks (like `useUpdate`) have a new signature. 
@@ -333,15 +441,15 @@ If you were dispatching `connected-react-router` actions to navigate, you'll now
 ```diff
 -import { useDispatch } from 'react-redux';
 -import { push } from 'connected-react-router';
-+import { useHistory } from 'react-router';
++import { useNavigate } from 'react-router';
 
 const MyComponent = () => {
 -    const dispatch = useDispatch();
-+    const history = useHistory();
++    const navigate = useNavigate();
 
     const myHandler = () => {
 -        dispatch(push('/my-url'));
-+        history.push('/my-url');
++        navigate('/my-url');
     }
 }
 

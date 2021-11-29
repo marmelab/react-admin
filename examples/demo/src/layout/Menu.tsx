@@ -81,10 +81,8 @@ const Menu = ({ dense = false }: MenuProps) => {
                 dense={dense}
             >
                 <MenuItemLink
-                    to={{
-                        pathname: '/commands',
-                        state: { _scrollToTop: true },
-                    }}
+                    to="/commands"
+                    state={{ _scrollToTop: true }}
                     primaryText={translate(`resources.commands.name`, {
                         smart_count: 2,
                     })}
@@ -92,10 +90,8 @@ const Menu = ({ dense = false }: MenuProps) => {
                     dense={dense}
                 />
                 <MenuItemLink
-                    to={{
-                        pathname: '/invoices',
-                        state: { _scrollToTop: true },
-                    }}
+                    to="/invoices"
+                    state={{ _scrollToTop: true }}
                     primaryText={translate(`resources.invoices.name`, {
                         smart_count: 2,
                     })}
@@ -111,10 +107,8 @@ const Menu = ({ dense = false }: MenuProps) => {
                 dense={dense}
             >
                 <MenuItemLink
-                    to={{
-                        pathname: '/products',
-                        state: { _scrollToTop: true },
-                    }}
+                    to="/products"
+                    state={{ _scrollToTop: true }}
                     primaryText={translate(`resources.products.name`, {
                         smart_count: 2,
                     })}
@@ -122,10 +116,8 @@ const Menu = ({ dense = false }: MenuProps) => {
                     dense={dense}
                 />
                 <MenuItemLink
-                    to={{
-                        pathname: '/categories',
-                        state: { _scrollToTop: true },
-                    }}
+                    to="/categories"
+                    state={{ _scrollToTop: true }}
                     primaryText={translate(`resources.categories.name`, {
                         smart_count: 2,
                     })}
@@ -141,10 +133,8 @@ const Menu = ({ dense = false }: MenuProps) => {
                 dense={dense}
             >
                 <MenuItemLink
-                    to={{
-                        pathname: '/customers',
-                        state: { _scrollToTop: true },
-                    }}
+                    to="/customers"
+                    state={{ _scrollToTop: true }}
                     primaryText={translate(`resources.customers.name`, {
                         smart_count: 2,
                     })}
@@ -152,10 +142,8 @@ const Menu = ({ dense = false }: MenuProps) => {
                     dense={dense}
                 />
                 <MenuItemLink
-                    to={{
-                        pathname: '/segments',
-                        state: { _scrollToTop: true },
-                    }}
+                    to="/segments"
+                    state={{ _scrollToTop: true }}
                     primaryText={translate(`resources.segments.name`, {
                         smart_count: 2,
                     })}
@@ -164,10 +152,8 @@ const Menu = ({ dense = false }: MenuProps) => {
                 />
             </SubMenu>
             <MenuItemLink
-                to={{
-                    pathname: '/reviews',
-                    state: { _scrollToTop: true },
-                }}
+                to="/reviews"
+                state={{ _scrollToTop: true }}
                 primaryText={translate(`resources.reviews.name`, {
                     smart_count: 2,
                 })}

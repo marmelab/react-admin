@@ -106,7 +106,7 @@ const Login = () => {
 
     const notify = useNotify();
     const login = useLogin();
-    const location = useLocation<{ nextPathname: string } | null>();
+    const location = useLocation();
 
     const handleSubmit = (auth: FormValues) => {
         setLoading(true);

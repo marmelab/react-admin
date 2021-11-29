@@ -1,15 +1,19 @@
 import * as React from 'react';
-import { waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
-import { Router, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
-import { renderWithRedux } from 'ra-test';
-import CoreAdminRouter from './CoreAdminRouter';
-import AuthContext from '../auth/AuthContext';
-import Resource from './Resource';
+import CoreAdminContext from './CoreAdminContext';
+import { CoreAdminRouter } from './CoreAdminRouter';
+import { Resource } from './Resource';
+import { CustomRoutes } from './CustomRoutes';
+import { CoreLayoutProps } from '../types';
+import { testDataProvider } from '../dataProvider';
 
-const Layout = ({ children }) => <div>Layout {children}</div>;
+const Layout = ({ children }: CoreLayoutProps) => <div>Layout {children}</div>;
+const CatchAll = () => <div />;
+const Loading = () => <>Loading</>;
 
 describe('<CoreAdminRouter>', () => {
     const defaultProps = {
@@ -17,11 +21,25 @@ describe('<CoreAdminRouter>', () => {
     };
 
     describe('With resources as regular children', () => {
-        it('should render all resources in routes', () => {
+        it('should render resources and custom routes with and without layout', () => {
             const history = createMemoryHistory();
-            const { getByText } = renderWithRedux(
-                <Router history={history}>
-                    <CoreAdminRouter {...defaultProps} layout={Layout}>
+            render(
+                <CoreAdminContext
+                    dataProvider={testDataProvider()}
+                    history={history}
+                >
+                    <CoreAdminRouter
+                        {...defaultProps}
+                        layout={Layout}
+                        catchAll={CatchAll}
+                        loading={Loading}
+                    >
+                        <CustomRoutes noLayout>
+                            <Route path="/foo" element={<div>Foo</div>} />
+                        </CustomRoutes>
+                        <CustomRoutes>
+                            <Route path="/bar" element={<div>Bar</div>} />
+                        </CustomRoutes>
                         <Resource
                             name="posts"
                             list={() => <span>PostList</span>}
@@ -31,89 +49,133 @@ describe('<CoreAdminRouter>', () => {
                             list={() => <span>CommentList</span>}
                         />
                     </CoreAdminRouter>
-                </Router>
+                </CoreAdminContext>
             );
-            expect(getByText('Layout')).not.toBeNull();
+            expect(screen.getByText('Layout')).not.toBeNull();
             history.push('/posts');
-            expect(getByText('PostList')).not.toBeNull();
+            expect(screen.getByText('PostList')).not.toBeNull();
             history.push('/comments');
-            expect(getByText('CommentList')).not.toBeNull();
+            expect(screen.getByText('CommentList')).not.toBeNull();
+            history.push('/foo');
+            expect(screen.queryByText('Layout')).toBeNull();
+            expect(screen.getByText('Foo')).not.toBeNull();
+            history.push('/bar');
+            expect(screen.getByText('Layout')).not.toBeNull();
+            expect(screen.getByText('Bar')).not.toBeNull();
         });
     });
 
-    describe('With no authProvider defined', () => {
-        it('should render all resources with a render prop', async () => {
-            const history = createMemoryHistory();
-            const { getByText } = renderWithRedux(
-                <Router history={history}>
-                    <CoreAdminRouter {...defaultProps} layout={Layout}>
-                        {() => [
-                            <Resource
-                                name="posts"
-                                list={() => <span>PostList</span>}
-                            />,
-                            <Resource
-                                name="comments"
-                                list={() => <span>CommentList</span>}
-                            />,
-                        ]}
-                    </CoreAdminRouter>
-                </Router>
-            );
-            await waitFor(() => {
-                expect(getByText('Layout')).not.toBeNull();
-            });
-            history.push('/posts');
-            expect(getByText('PostList')).not.toBeNull();
-            history.push('/comments');
-            expect(getByText('CommentList')).not.toBeNull();
+    describe('With children returned from a function as children', () => {
+        beforeEach(() => {
+            jest.useFakeTimers();
         });
-    });
+        afterEach(() => {
+            jest.useRealTimers();
+        });
 
-    describe('With resources returned from a function as children', () => {
-        it('should render all resources with a registration intent', async () => {
+        it('should render resources and custom routes with and without layout', async () => {
             const history = createMemoryHistory();
-            const authProvider = {
-                login: jest.fn().mockResolvedValue(''),
-                logout: jest.fn().mockResolvedValue(''),
-                checkAuth: jest.fn().mockResolvedValue(''),
-                checkError: jest.fn().mockResolvedValue(''),
-                getPermissions: jest.fn().mockResolvedValue(''),
-            };
-
-            const { queryByText } = renderWithRedux(
-                <AuthContext.Provider value={authProvider}>
-                    <Router history={history}>
-                        <CoreAdminRouter layout={Layout}>
-                            {() => [
+            render(
+                <CoreAdminContext
+                    dataProvider={testDataProvider()}
+                    history={history}
+                >
+                    <CoreAdminRouter
+                        layout={Layout}
+                        catchAll={CatchAll}
+                        loading={Loading}
+                    >
+                        <CustomRoutes noLayout>
+                            <Route path="/foo" element={<div>Foo</div>} />
+                        </CustomRoutes>
+                        {() => (
+                            <>
+                                <CustomRoutes>
+                                    <Route
+                                        path="/bar"
+                                        element={<div>Bar</div>}
+                                    />
+                                </CustomRoutes>
                                 <Resource
-                                    key="posts"
                                     name="posts"
                                     list={() => <span>PostList</span>}
-                                />,
+                                />
                                 <Resource
-                                    key="comments"
                                     name="comments"
                                     list={() => <span>CommentList</span>}
-                                />,
-                                null,
-                            ]}
-                        </CoreAdminRouter>
-                    </Router>
-                </AuthContext.Provider>
+                                />
+                            </>
+                        )}
+                    </CoreAdminRouter>
+                </CoreAdminContext>
             );
-            // Timeout needed because of the authProvider call
+            history.push('/foo');
+            expect(screen.queryByText('Layout')).toBeNull();
+            expect(screen.getByText('Foo')).not.toBeNull();
+            // Wait for the function child to resolve
+            jest.advanceTimersByTime(100);
+            history.push('/bar');
             await waitFor(() => {
-                expect(queryByText('Layout')).not.toBeNull();
+                expect(screen.queryByText('Layout')).not.toBeNull();
             });
+            expect(screen.getByText('Bar')).not.toBeNull();
             history.push('/posts');
-            expect(queryByText('PostList')).not.toBeNull();
+            expect(screen.queryByText('PostList')).not.toBeNull();
             history.push('/comments');
-            expect(queryByText('CommentList')).not.toBeNull();
+            expect(screen.queryByText('CommentList')).not.toBeNull();
         });
 
-        it('should return loading while the resources are not resolved', async () => {
+        it('should render resources and custom routes with and without layout even without an authProvider', async () => {
             const history = createMemoryHistory();
+            render(
+                <CoreAdminContext
+                    dataProvider={testDataProvider()}
+                    history={history}
+                >
+                    <CoreAdminRouter
+                        layout={Layout}
+                        catchAll={CatchAll}
+                        loading={Loading}
+                    >
+                        <CustomRoutes noLayout>
+                            <Route path="/foo" element={<div>Foo</div>} />
+                        </CustomRoutes>
+                        {() => (
+                            <>
+                                <CustomRoutes>
+                                    <Route
+                                        path="/bar"
+                                        element={<div>Bar</div>}
+                                    />
+                                </CustomRoutes>
+                                <Resource
+                                    name="posts"
+                                    list={() => <span>PostList</span>}
+                                />
+                                <Resource
+                                    name="comments"
+                                    list={() => <span>CommentList</span>}
+                                />
+                            </>
+                        )}
+                    </CoreAdminRouter>
+                </CoreAdminContext>
+            );
+            history.push('/foo');
+            expect(screen.queryByText('Layout')).toBeNull();
+            expect(screen.getByText('Foo')).not.toBeNull();
+            history.push('/bar');
+            await waitFor(() => {
+                expect(screen.queryByText('Layout')).not.toBeNull();
+            });
+            expect(screen.getByText('Bar')).not.toBeNull();
+            history.push('/posts');
+            expect(screen.queryByText('PostList')).not.toBeNull();
+            history.push('/comments');
+            expect(screen.queryByText('CommentList')).not.toBeNull();
+        });
+
+        it('should return loading while the function child is not resolved', async () => {
             const authProvider = {
                 login: jest.fn().mockResolvedValue(''),
                 logout: jest.fn().mockResolvedValue(''),
@@ -121,72 +183,35 @@ describe('<CoreAdminRouter>', () => {
                 checkError: jest.fn().mockResolvedValue(''),
                 getPermissions: jest.fn().mockResolvedValue(''),
             };
-            const Loading = () => <>Loading</>;
             const Custom = () => <>Custom</>;
 
-            const { queryByText } = renderWithRedux(
-                <AuthContext.Provider value={authProvider}>
-                    <Router history={history}>
-                        <CoreAdminRouter
-                            {...defaultProps}
-                            layout={Layout}
-                            loading={Loading}
-                            customRoutes={[
-                                <Route
-                                    key="foo"
-                                    noLayout
-                                    path="/foo"
-                                    component={Custom}
-                                />,
-                            ]}
-                        >
-                            {() => new Promise(() => {})}
-                        </CoreAdminRouter>
-                    </Router>
-                </AuthContext.Provider>
-            );
-            // Timeout needed because of the authProvider call
-            await new Promise(resolve => setTimeout(resolve, 1010));
-            history.push('/posts');
-            expect(queryByText('Loading')).not.toBeNull();
-            history.push('/foo');
-            expect(queryByText('Loading')).toBeNull();
-            expect(queryByText('Custom')).not.toBeNull();
-        });
-    });
-
-    it('should render the custom routes with and without layout', () => {
-        const history = createMemoryHistory();
-        const { getByText, queryByText } = renderWithRedux(
-            <Router history={history}>
-                <CoreAdminRouter
-                    layout={Layout}
-                    customRoutes={[
-                        <Route
-                            key="foo"
-                            noLayout
-                            exact
-                            path="/foo"
-                            render={() => <div>Foo</div>}
-                        />,
-                        <Route
-                            key="bar"
-                            exact
-                            path="/bar"
-                            component={() => <div>Bar</div>}
-                        />,
-                    ]}
-                    location={{ pathname: '/custom' }}
+            const history = createMemoryHistory();
+            render(
+                <CoreAdminContext
+                    authProvider={authProvider}
+                    dataProvider={testDataProvider()}
+                    history={history}
                 >
-                    <Resource name="posts" />
-                </CoreAdminRouter>
-            </Router>
-        );
-        history.push('/foo');
-        expect(queryByText('Layout')).toBeNull();
-        expect(getByText('Foo')).not.toBeNull();
-        history.push('/bar');
-        expect(getByText('Layout')).not.toBeNull();
-        expect(getByText('Bar')).not.toBeNull();
+                    <CoreAdminRouter
+                        {...defaultProps}
+                        layout={Layout}
+                        loading={Loading}
+                        catchAll={CatchAll}
+                    >
+                        <CustomRoutes noLayout>
+                            <Route path="/foo" element={<Custom />} />
+                        </CustomRoutes>
+                        {() => new Promise(() => null)}
+                    </CoreAdminRouter>
+                </CoreAdminContext>
+            );
+            // Timeout needed because we wait for a second before displaying the loading screen
+            jest.advanceTimersByTime(1010);
+            history.push('/posts');
+            expect(screen.queryByText('Loading')).not.toBeNull();
+            history.push('/foo');
+            expect(screen.queryByText('Loading')).toBeNull();
+            expect(screen.queryByText('Custom')).not.toBeNull();
+        });
     });
 });

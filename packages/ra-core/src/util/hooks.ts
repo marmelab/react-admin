@@ -48,7 +48,7 @@ export function useDeepCompareEffect(callback, inputs) {
 }
 
 export function useTimeout(ms = 0) {
-    const [ready, setReady] = useState(false);
+    const [ready, setReady] = useSafeSetState(false);
 
     useEffect(() => {
         let timer = setTimeout(() => {
@@ -58,7 +58,7 @@ export function useTimeout(ms = 0) {
         return () => {
             clearTimeout(timer);
         };
-    }, [ms]);
+    }, [ms, setReady]);
 
     return ready;
 }

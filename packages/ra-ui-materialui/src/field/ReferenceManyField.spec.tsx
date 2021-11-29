@@ -1,9 +1,8 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
-import { renderWithRedux } from 'ra-test';
+import { CoreAdminContext, testDataProvider } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import {
@@ -33,8 +32,11 @@ describe('<ReferenceManyField />', () => {
             2: { id: 2, title: 'world' },
         };
         const history = createMemoryHistory();
-        const { queryAllByRole } = render(
-            <Router history={history}>
+        render(
+            <CoreAdminContext
+                dataProvider={testDataProvider()}
+                history={history}
+            >
                 <ThemeProvider theme={theme}>
                     <ReferenceManyFieldView
                         {...defaultProps}
@@ -46,10 +48,10 @@ describe('<ReferenceManyField />', () => {
                         </SingleFieldList>
                     </ReferenceManyFieldView>
                 </ThemeProvider>
-            </Router>
+            </CoreAdminContext>
         );
-        expect(queryAllByRole('progressbar')).toHaveLength(0);
-        const links = queryAllByRole('link');
+        expect(screen.queryAllByRole('progressbar')).toHaveLength(0);
+        const links = screen.queryAllByRole('link');
         expect(links).toHaveLength(2);
         expect(links[0].textContent).toEqual('hello');
         expect(links[1].textContent).toEqual('world');
@@ -58,7 +60,7 @@ describe('<ReferenceManyField />', () => {
     });
 
     it('should render nothing when there are no related records', () => {
-        const { queryAllByRole } = render(
+        render(
             <ThemeProvider theme={theme}>
                 <ReferenceManyFieldView {...defaultProps} data={{}} ids={[]}>
                     <SingleFieldList>
@@ -67,8 +69,8 @@ describe('<ReferenceManyField />', () => {
                 </ReferenceManyFieldView>
             </ThemeProvider>
         );
-        expect(queryAllByRole('progressbar')).toHaveLength(0);
-        expect(queryAllByRole('link')).toHaveLength(0);
+        expect(screen.queryAllByRole('progressbar')).toHaveLength(0);
+        expect(screen.queryAllByRole('link')).toHaveLength(0);
     });
 
     it('should support record with string identifier', () => {
@@ -77,8 +79,11 @@ describe('<ReferenceManyField />', () => {
             'abc-2': { id: 'abc-2', title: 'world' },
         };
         const history = createMemoryHistory();
-        const { queryAllByRole } = render(
-            <Router history={history}>
+        render(
+            <CoreAdminContext
+                dataProvider={testDataProvider()}
+                history={history}
+            >
                 <ThemeProvider theme={theme}>
                     <ReferenceManyFieldView
                         {...defaultProps}
@@ -90,10 +95,10 @@ describe('<ReferenceManyField />', () => {
                         </SingleFieldList>
                     </ReferenceManyFieldView>
                 </ThemeProvider>
-            </Router>
+            </CoreAdminContext>
         );
-        expect(queryAllByRole('progressbar')).toHaveLength(0);
-        const links = queryAllByRole('link');
+        expect(screen.queryAllByRole('progressbar')).toHaveLength(0);
+        const links = screen.queryAllByRole('link');
         expect(links).toHaveLength(2);
         expect(links[0].textContent).toEqual('hello');
         expect(links[1].textContent).toEqual('world');
@@ -107,8 +112,11 @@ describe('<ReferenceManyField />', () => {
             2: { id: 2, title: 'world' },
         };
         const history = createMemoryHistory();
-        const { queryAllByRole } = render(
-            <Router history={history}>
+        render(
+            <CoreAdminContext
+                dataProvider={testDataProvider()}
+                history={history}
+            >
                 <ThemeProvider theme={theme}>
                     <ReferenceManyFieldView
                         {...defaultProps}
@@ -120,10 +128,10 @@ describe('<ReferenceManyField />', () => {
                         </SingleFieldList>
                     </ReferenceManyFieldView>
                 </ThemeProvider>
-            </Router>
+            </CoreAdminContext>
         );
-        expect(queryAllByRole('progressbar')).toHaveLength(0);
-        const links = queryAllByRole('link');
+        expect(screen.queryAllByRole('progressbar')).toHaveLength(0);
+        const links = screen.queryAllByRole('link');
         expect(links).toHaveLength(2);
         expect(links[0].textContent).toEqual('hello');
         expect(links[1].textContent).toEqual('world');
@@ -167,23 +175,30 @@ describe('<ReferenceManyField />', () => {
             }
         }
         const onError = jest.fn();
-        renderWithRedux(
-            <ErrorBoundary onError={onError}>
-                <ThemeProvider theme={theme}>
-                    <ReferenceManyField
-                        record={{ id: 123 }}
-                        resource="comments"
-                        target="postId"
-                        reference="posts"
-                        basePath="/comments"
-                    >
-                        <SingleFieldList>
-                            <TextField source="title" />
-                        </SingleFieldList>
-                    </ReferenceManyField>
-                </ThemeProvider>
-            </ErrorBoundary>,
-            { admin: { resources: { comments: { data: {} } } } }
+        render(
+            <CoreAdminContext
+                dataProvider={testDataProvider()}
+                initialState={{
+                    admin: { resources: { comments: { data: {} } } },
+                }}
+            >
+                <ErrorBoundary onError={onError}>
+                    <ThemeProvider theme={theme}>
+                        <ReferenceManyField
+                            record={{ id: 123 }}
+                            resource="comments"
+                            target="postId"
+                            reference="posts"
+                            basePath="/comments"
+                        >
+                            <SingleFieldList>
+                                <TextField source="title" />
+                            </SingleFieldList>
+                        </ReferenceManyField>
+                    </ThemeProvider>
+                </ErrorBoundary>
+                ,
+            </CoreAdminContext>
         );
         await waitFor(() => {
             expect(onError.mock.calls[0][0].message).toBe(

@@ -9,6 +9,7 @@ import sanitizeEmptyValues from './sanitizeEmptyValues';
 import getFormInitialValues from './getFormInitialValues';
 import {
     FormContextValue,
+    FormGroupSubscriber,
     Record as RaRecord,
     OnSuccess,
     OnFailure,
@@ -103,9 +104,29 @@ const FormWithRedirect = ({
         [save]
     );
 
+    const subscribers = useRef<{
+        [key: string]: FormGroupSubscriber[];
+    }>({});
+
     const formContextValue = useMemo<FormContextValue>(
         () => ({
             setOnSave,
+            /**
+             * Register a subscriber function for the specified group. The subscriber
+             * will be called whenever the group content changes (fields added or removed).
+             */
+            subscribe: (group, subscriber) => {
+                if (!subscribers.current[group]) {
+                    subscribers.current[group] = [];
+                }
+                subscribers.current[group].push(subscriber);
+
+                return () => {
+                    subscribers.current[group] = subscribers.current[
+                        group
+                    ].filter(s => s !== subscriber);
+                };
+            },
             getGroupFields: name => formGroups.current[name] || [],
             registerGroup: name => {
                 formGroups.current[name] = formGroups.current[name] || [];
@@ -115,9 +136,18 @@ const FormWithRedirect = ({
             },
             registerField: (source, group) => {
                 if (group) {
-                    const fields = new Set(formGroups.current[group] || []);
-                    fields.add(source);
-                    formGroups.current[group] = Array.from(fields);
+                    if (!(formGroups.current[group] || []).includes(source)) {
+                        formGroups.current[group] = [
+                            ...(formGroups.current[group] || []),
+                            source,
+                        ];
+                        // Notify subscribers that the group fields have changed
+                        if (subscribers.current[group]) {
+                            subscribers.current[group].forEach(subscriber =>
+                                subscriber()
+                            );
+                        }
+                    }
                 }
             },
             unregisterField: (source, group) => {
@@ -128,6 +158,13 @@ const FormWithRedirect = ({
                         const fields = new Set(formGroups.current[group]);
                         fields.delete(source);
                         formGroups.current[group] = Array.from(fields);
+
+                        // Notify subscribers that the group fields have changed
+                        if (subscribers.current[group]) {
+                            subscribers.current[group].forEach(subscriber =>
+                                subscriber()
+                            );
+                        }
                     }
                 }
             },

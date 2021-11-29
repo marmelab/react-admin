@@ -1,5 +1,4 @@
 import React, {
-    createElement,
     useEffect,
     useRef,
     useState,
@@ -26,15 +25,15 @@ import { SkipNavigationButton } from '../button';
 
 const LayoutWithoutTheme = (props: LayoutWithoutThemeProps) => {
     const {
-        appBar = DefaultAppBar,
+        appBar: AppBar = DefaultAppBar,
         children,
         className,
         dashboard,
         error: errorComponent,
         logout,
-        menu = DefaultMenu,
-        notification = DefaultNotification,
-        sidebar = DefaultSidebar,
+        menu: Menu = DefaultMenu,
+        notification: Notification = DefaultNotification,
+        sidebar: Sidebar = DefaultSidebar,
         title,
         ...rest
     } = props;
@@ -56,13 +55,11 @@ const LayoutWithoutTheme = (props: LayoutWithoutThemeProps) => {
             >
                 <SkipNavigationButton />
                 <div className={LayoutClasses.appFrame}>
-                    {createElement(appBar, { logout, open, title })}
+                    <AppBar logout={logout} open={open} title={title} />
                     <main className={LayoutClasses.contentWithSidebar}>
-                        {createElement(sidebar, {
-                            children: createElement(menu, {
-                                hasDashboard: !!dashboard,
-                            }),
-                        })}
+                        <Sidebar>
+                            <Menu hasDashboard={!!dashboard} />
+                        </Sidebar>
                         <div
                             id="main-content"
                             className={LayoutClasses.content}
@@ -88,7 +85,7 @@ const LayoutWithoutTheme = (props: LayoutWithoutThemeProps) => {
                     </main>
                 </div>
             </StyledLayout>
-            {createElement(notification)}
+            <Notification />
         </>
     );
 };

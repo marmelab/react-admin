@@ -90,7 +90,6 @@ const Admin = (props: AdminProps) => {
         catchAll,
         children,
         customReducers,
-        customRoutes = [],
         dashboard,
         dataProvider,
         disableTelemetry,
@@ -135,7 +134,6 @@ const Admin = (props: AdminProps) => {
         >
             <AdminUI
                 layout={appLayout || layout}
-                customRoutes={customRoutes}
                 dashboard={dashboard}
                 disableTelemetry={disableTelemetry}
                 menu={menu}

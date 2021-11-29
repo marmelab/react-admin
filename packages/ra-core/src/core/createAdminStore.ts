@@ -13,7 +13,7 @@ interface Params {
     initialState?: InitialState;
 }
 
-export default ({ customReducers = {}, initialState }: Params) => {
+export default ({ customReducers = {}, initialState }: Params = {}) => {
     const appReducer = createAppReducer(customReducers);
 
     const resettableAppReducer = (state, action) =>

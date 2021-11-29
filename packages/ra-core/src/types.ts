@@ -1,17 +1,16 @@
 import { ReactNode, ReactElement, ComponentType } from 'react';
-import {
-    RouteProps,
-    RouteComponentProps,
-    match as Match,
-} from 'react-router-dom';
 import { DeprecatedThemeOptions } from '@mui/material';
-import { StaticContext } from 'react-router';
+import { Location, History } from 'history';
 import { QueryClient } from 'react-query';
-import { Location, History, LocationState } from 'history';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
-import { ShowControllerProps } from './controller/show/useShowController';
+import {
+    CreateControllerProps,
+    EditControllerProps,
+    ListControllerProps,
+    ShowControllerProps,
+} from './controller';
 
 /**
  * data types
@@ -395,17 +394,10 @@ export type RenderResourcesFunction = (
 ) => ResourceElement[] | Promise<ResourceElement[]>;
 export type AdminChildren = RenderResourcesFunction | ReactNode;
 
-export interface CustomRoute extends RouteProps {
-    noLayout?: boolean;
-    [key: string]: any;
-}
-
-export type CustomRoutes = Array<ReactElement<CustomRoute>>;
-
 export type TitleComponent = string | ReactElement<any>;
 export type CatchAllComponent = ComponentType<{ title?: TitleComponent }>;
 
-interface LoginComponentProps extends RouteComponentProps {
+interface LoginComponentProps {
     title?: TitleComponent;
     theme?: object;
 }
@@ -442,39 +434,12 @@ export interface ResourceComponentInjectedProps {
     hasCreate?: boolean;
 }
 
-export interface ResourceComponentProps<
-    Params extends { [K in keyof Params]?: string } = {},
-    C extends StaticContext = StaticContext,
-    S = LocationState
-> extends Partial<RouteComponentProps<Params, C, S>>,
-        ResourceComponentInjectedProps {}
-
-// deprecated name, use ResourceComponentProps instead
-export type ReactAdminComponentProps = ResourceComponentProps;
-
-export interface ResourceComponentPropsWithId<
-    Params extends { id?: string } = {},
-    C extends StaticContext = StaticContext,
-    S = LocationState
-> extends Partial<RouteComponentProps<Params, C, S>>,
-        ResourceComponentInjectedProps {
-    id?: string;
-}
-
-// deprecated name, use ResourceComponentPropsWithId instead
-export type ReactAdminComponentPropsWithId = ResourceComponentPropsWithId;
-
-export type ResourceMatch = Match<{
-    id?: string;
-}>;
-
 export interface ResourceProps {
     intent?: 'route' | 'registration';
-    match?: ResourceMatch;
     name: string;
-    list?: ComponentType<ResourceComponentProps>;
-    create?: ComponentType<ResourceComponentProps>;
-    edit?: ComponentType<ResourceComponentPropsWithId>;
+    list?: ComponentType<ListControllerProps>;
+    create?: ComponentType<CreateControllerProps>;
+    edit?: ComponentType<EditControllerProps>;
     show?: ComponentType<ShowControllerProps>;
     icon?: ComponentType<any>;
     options?: object;
@@ -486,7 +451,6 @@ export interface AdminProps {
     catchAll?: CatchAllComponent;
     children?: AdminChildren;
     customReducers?: object;
-    customRoutes?: CustomRoutes;
     dashboard?: DashboardComponent;
     dataProvider: DataProvider | LegacyDataProvider;
     disableTelemetry?: boolean;
@@ -520,6 +484,7 @@ export type SetOnSave = (
     onSave?: (values: object, redirect: any) => void
 ) => void;
 
+export type FormGroupSubscriber = () => void;
 export type FormContextValue = {
     setOnSave?: SetOnSave;
     registerGroup: (name: string) => void;
@@ -527,6 +492,12 @@ export type FormContextValue = {
     registerField: (source: string, group?: string) => void;
     unregisterField: (source: string, group?: string) => void;
     getGroupFields: (name: string) => string[];
+    /**
+     * Subscribe to any changes of the group content (fields added or removed).
+     * Subscribers can get the current fields of the group by calling getGroupFields.
+     * Returns a function to unsubscribe.
+     */
+    subscribe: (name: string, subscriber: FormGroupSubscriber) => () => void;
 };
 
 export type FormFunctions = {

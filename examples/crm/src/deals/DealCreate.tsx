@@ -66,7 +66,6 @@ export const DealCreate = ({ open }: { open: boolean }) => {
         <StyledDialog open={open} onClose={handleClose}>
             <Create
                 resource="deals"
-                basePath="/deals"
                 className={classes.root}
                 onSuccess={onSuccess}
             >

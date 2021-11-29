@@ -41,10 +41,8 @@ export const ResourceMenuItem = (
             <MenuItemLink
                 key={resource.name}
                 className={classes.resource}
-                to={{
-                    pathname: `/${resource.name}`,
-                    state: { _scrollToTop: true },
-                }}
+                to={`/${resource.name}`}
+                state={{ _scrollToTop: true }}
                 primaryText={resource?.label || resource.name}
                 leftIcon={<DefaultIcon />}
                 {...rest}
@@ -64,5 +62,5 @@ export const ResourceMenuItem = (
 };
 
 const NavLinkRef = forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => (
-    <NavLink innerRef={ref} {...props} />
+    <NavLink ref={ref} {...props} />
 ));

@@ -1,18 +1,15 @@
 import * as React from 'react';
 import expect from 'expect';
 import {
-    DataProviderContext,
+    CoreAdminContext,
     ResourceContextProvider,
     useRecordContext,
 } from 'ra-core';
-import { TestContext, renderWithRedux } from 'ra-test';
 import { createMemoryHistory } from 'history';
-import { Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
-import { QueryClientProvider, QueryClient } from 'react-query';
 
 import { Default, Actions, Basic, Component } from './Show.stories';
-
 import { Show } from './Show';
 
 describe('<Show />', () => {
@@ -39,25 +36,26 @@ describe('<Show />', () => {
             initialEntries: ['/books/123/show'],
         });
         render(
-            <TestContext
+            <CoreAdminContext
+                dataProvider={dataProvider}
                 history={history}
-                enableReducers
                 initialState={{
                     admin: { resources: { books: { props: {}, data: {} } } },
                 }}
             >
-                <Route path="/books/:id/show">
-                    <QueryClientProvider client={new QueryClient()}>
-                        <DataProviderContext.Provider value={dataProvider}>
+                <Routes>
+                    <Route
+                        path="/books/:id/show"
+                        element={
                             <ResourceContextProvider value="books">
                                 <Show>
                                     <BookName />
                                 </Show>
                             </ResourceContextProvider>
-                        </DataProviderContext.Provider>
-                    </QueryClientProvider>
-                </Route>
-            </TestContext>
+                        }
+                    />
+                </Routes>
+            </CoreAdminContext>
         );
         expect(screen.queryByText('War and Peace')).toBeNull(); // while loading
         await waitFor(() => {
@@ -78,14 +76,12 @@ describe('<Show />', () => {
             const record = useRecordContext();
             return record ? <span>{record.name}</span> : null;
         };
-        renderWithRedux(
-            <QueryClientProvider client={new QueryClient()}>
-                <DataProviderContext.Provider value={dataProvider}>
-                    <Show id="123" resource="books">
-                        <BookName />
-                    </Show>
-                </DataProviderContext.Provider>
-            </QueryClientProvider>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Show id="123" resource="books">
+                    <BookName />
+                </Show>
+            </CoreAdminContext>
         );
         expect(screen.queryByText('War and Peace')).toBeNull(); // while loading
         await waitFor(() => {
@@ -100,14 +96,12 @@ describe('<Show />', () => {
             getOne: () => Promise.reject('error'),
         } as any;
         const BookName = () => <span>foo</span>;
-        renderWithRedux(
-            <QueryClientProvider client={new QueryClient()}>
-                <DataProviderContext.Provider value={dataProvider}>
-                    <Show id="123" resource="books" queryOptions={{ onError }}>
-                        <BookName />
-                    </Show>
-                </DataProviderContext.Provider>
-            </QueryClientProvider>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Show id="123" resource="books" queryOptions={{ onError }}>
+                    <BookName />
+                </Show>
+            </CoreAdminContext>
         );
         await waitFor(() => expect(onError).toHaveBeenCalled());
     });

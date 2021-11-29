@@ -12,13 +12,13 @@ import {
 import { useDropzone } from 'react-dropzone';
 
 import { useNotify, useRefresh } from 'ra-core';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useImportResourceFromCsv } from './useImportResourceFromCsv';
 
 export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
     const [file, setFile] = useState<File>();
     const [resource, setResource] = useState<string>('');
-    const history = useHistory();
+    const navigate = useNavigate();
     const refresh = useRefresh();
     const notify = useNotify();
 
@@ -47,7 +47,7 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
             importResource(resource, file)
                 .then(({ resource, resourceAlreadyExists }) => {
                     handleClose();
-                    history.push(`/${resource}`);
+                    navigate(`/${resource}`);
 
                     if (resourceAlreadyExists) {
                         // If we imported more records for an existing resource,

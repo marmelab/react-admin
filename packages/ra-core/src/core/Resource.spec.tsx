@@ -1,13 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
-import { waitFor } from '@testing-library/react';
-import { Router } from 'react-router-dom';
+import { render, screen, waitFor } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 
-import Resource from './Resource';
-import { registerResource, unregisterResource } from '../actions';
-import { renderWithRedux } from 'ra-test';
-import AuthContext from '../auth/AuthContext';
+import CoreAdminContext from './CoreAdminContext';
+import { Resource } from './Resource';
+import { testDataProvider } from '../dataProvider';
 
 const PostList = () => <div>PostList</div>;
 const PostEdit = () => <div>PostEdit</div>;
@@ -26,58 +24,27 @@ const resource = {
 };
 
 describe('<Resource>', () => {
-    it(`registers its resource in redux on mount when context is 'registration'`, () => {
-        const { dispatch } = renderWithRedux(
-            <Resource {...resource} intent="registration" />
-        );
-        expect(dispatch).toHaveBeenCalledWith(
-            registerResource({
-                name: 'posts',
-                options: { foo: 'bar' },
-                hasList: true,
-                hasEdit: true,
-                hasShow: true,
-                hasCreate: true,
-                icon: PostIcon,
-            })
-        );
-    });
-    it(`unregister its resource from redux on unmount when context is 'registration'`, async () => {
-        const { unmount, dispatch } = renderWithRedux(
-            <Resource {...resource} intent="registration" />
-        );
-        unmount();
-        await waitFor(() => {
-            expect(dispatch).toHaveBeenCalledTimes(2);
-            expect(dispatch.mock.calls[1][0]).toEqual(
-                unregisterResource('posts')
-            );
-        });
-    });
     it('renders resource routes by default', () => {
         const history = createMemoryHistory();
-        const { getByText } = renderWithRedux(
-            <Router history={history}>
-                <Resource
-                    {...resource}
-                    match={{
-                        url: '/posts',
-                        params: {},
-                        isExact: true,
-                        path: '/posts',
-                    }}
-                />
-            </Router>,
-            { admin: { resources: { posts: {} } } }
+        render(
+            <CoreAdminContext
+                history={history}
+                dataProvider={testDataProvider()}
+                initialState={{ admin: { resources: { posts: {} } } }}
+            >
+                <Resource {...resource} />
+            </CoreAdminContext>
         );
-        history.push('/posts');
-        expect(getByText('PostList')).not.toBeNull();
-        history.push('/posts/123');
-        expect(getByText('PostEdit')).not.toBeNull();
-        history.push('/posts/123/show');
-        expect(getByText('PostShow')).not.toBeNull();
-        history.push('/posts/create');
-        expect(getByText('PostCreate')).not.toBeNull();
+        // Resource does not declare a route matching its name, it only renders its child routes
+        // so we don't need to navigate to a path matching its name
+        history.push('/');
+        expect(screen.getByText('PostList')).not.toBeNull();
+        history.push('/123');
+        expect(screen.getByText('PostEdit')).not.toBeNull();
+        history.push('/123/show');
+        expect(screen.getByText('PostShow')).not.toBeNull();
+        history.push('/create');
+        expect(screen.getByText('PostCreate')).not.toBeNull();
     });
     it('injects permissions to the resource routes', async () => {
         const history = createMemoryHistory();
@@ -89,26 +56,24 @@ describe('<Resource>', () => {
             getPermissions: jest.fn().mockResolvedValue('admin'),
         };
 
-        const { getByText } = renderWithRedux(
-            <AuthContext.Provider value={authProvider}>
-                <Router history={history}>
-                    <Resource
-                        name="posts"
-                        list={({ permissions }) => (
-                            <span>Permissions: {permissions}</span>
-                        )}
-                        match={{
-                            url: '/posts',
-                            params: {},
-                            isExact: true,
-                            path: '/',
-                        }}
-                    />
-                </Router>
-            </AuthContext.Provider>,
-            { admin: { resources: { posts: {} } } }
+        const { getByText } = render(
+            <CoreAdminContext
+                authProvider={authProvider}
+                dataProvider={testDataProvider()}
+                history={history}
+                initialState={{ admin: { resources: { posts: {} } } }}
+            >
+                <Resource
+                    name="posts"
+                    list={({ permissions }) => (
+                        <span>Permissions: {permissions}</span>
+                    )}
+                />
+            </CoreAdminContext>
         );
-        history.push('/posts');
+        // Resource does not declare a route matching its name, it only renders its child routes
+        // so we don't need to navigate to a path matching its name
+        history.push('/');
         await waitFor(() => {
             expect(getByText('Permissions: admin')).not.toBeNull();
         });

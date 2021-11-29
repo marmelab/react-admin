@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useRef, ReactNode } from 'react';
+import { useRef, ReactNode, useLayoutEffect } from 'react';
 import { createStore, Store } from 'redux';
 import { Provider } from 'react-redux';
 import merge from 'lodash/merge';
@@ -63,7 +63,19 @@ export const TestContext = (props: TestContextProps) => {
         enableReducers = false,
         customReducers = {},
     } = props;
-    const history = useRef<History>(props.history || createMemoryHistory());
+    let historyRef = React.useRef<History>();
+    if (historyRef.current == null) {
+        historyRef.current = createMemoryHistory();
+    }
+
+    let finalHistory = historyRef.current;
+    let [historyState, setHistoryState] = React.useState({
+        action: finalHistory.action,
+        location: finalHistory.location,
+    });
+
+    useLayoutEffect(() => finalHistory.listen(setHistoryState), [finalHistory]);
+
     const storeWithDefault = useRef<Store<ReduxState>>(
         enableReducers
             ? createAdminStore({
@@ -78,14 +90,20 @@ export const TestContext = (props: TestContextProps) => {
         return typeof children === 'function'
             ? (children as TextContextChildrenFunction)({
                   store: storeWithDefault.current,
-                  history: history.current,
+                  history: historyRef.current,
               })
             : children;
     };
 
     return (
         <Provider store={storeWithDefault.current}>
-            <Router history={history.current}>{renderChildren()}</Router>
+            <Router
+                navigator={finalHistory}
+                location={historyState.location}
+                navigationType={historyState.action}
+            >
+                {renderChildren()}
+            </Router>
         </Provider>
     );
 };

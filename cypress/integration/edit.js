@@ -121,7 +121,16 @@ describe('Edit Page', () => {
         // This validate that the current redux form values are not kept after we navigate
         EditCommentPage.setInputValue('input', 'body', 'Test');
 
-        CreatePostPage.navigate();
+        cy.on('window:confirm', message => {
+            expect(message).to.equal(
+                "Some of your changes weren't saved. Are you sure you want to ignore them?"
+            );
+        });
+        // FIXME
+        // We can't navigate using cypress function as it would prevent the confirm dialog
+        // to appear. This is because react-router (history) cannot block history pushes that
+        // it didn't initiate.
+        cy.contains('Create post').click();
 
         cy.get(CreatePostPage.elements.input('body', 'rich-text-input')).should(
             el =>
@@ -167,7 +176,16 @@ describe('Edit Page', () => {
         // This validate that the current redux form values are not kept after we navigate
         EditPostPage.setInputValue('input', 'title', 'Another title');
 
-        CreatePostPage.navigate();
+        cy.on('window:confirm', message => {
+            expect(message).to.equal(
+                "Some of your changes weren't saved. Are you sure you want to ignore them?"
+            );
+        });
+        // FIXME
+        // We can't navigate using cypress function as it would prevent the confirm dialog
+        // to appear. This is because react-router (history) cannot block history pushes that
+        // it didn't initiate.
+        cy.contains('Create').click();
         cy.get(CreatePostPage.elements.input('title')).should(el =>
             expect(el).to.have.value('')
         );

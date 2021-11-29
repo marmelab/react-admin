@@ -1,66 +1,68 @@
 import * as React from 'react';
 import expect from 'expect';
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
+import { CoreAdminContext, testDataProvider } from 'ra-core';
 
 import { TabbedShowLayout } from './TabbedShowLayout';
 import { Tab } from './Tab';
 import { TextField } from '../field';
 
 describe('<TabbedShowLayout />', () => {
-    const renderWithRouter = children => {
-        const history = createMemoryHistory();
-
-        return {
-            history,
-            ...render(<Router history={history}>{children}</Router>),
-        };
-    };
-
     it('should display the first Tab component and its content', () => {
-        const { queryByText } = renderWithRouter(
-            <TabbedShowLayout basePath="/" record={{ id: 123 }} resource="foo">
-                <Tab label="Tab1">
-                    <TextField label="Field On Tab1" source="field1" />
-                </Tab>
-                <Tab label="Tab2">
-                    <TextField label="Field On Tab2" source="field2" />
-                </Tab>
-            </TabbedShowLayout>
+        const history = createMemoryHistory();
+        render(
+            <CoreAdminContext
+                dataProvider={testDataProvider()}
+                history={history}
+            >
+                <TabbedShowLayout record={{ id: 123 }}>
+                    <Tab label="Tab1">
+                        <TextField label="Field On Tab1" source="field1" />
+                    </Tab>
+                    <Tab label="Tab2">
+                        <TextField label="Field On Tab2" source="field2" />
+                    </Tab>
+                </TabbedShowLayout>
+            </CoreAdminContext>
         );
 
-        expect(queryByText('Tab1')).not.toBeNull();
-        expect(queryByText('Field On Tab1')).not.toBeNull();
+        expect(screen.queryByText('Tab1')).not.toBeNull();
+        expect(screen.queryByText('Field On Tab1')).not.toBeNull();
     });
 
     it('should display the first valid Tab component and its content', () => {
-        const { queryByText } = renderWithRouter(
-            <TabbedShowLayout basePath="/" record={{ id: 123 }} resource="foo">
-                {null}
-                <Tab label="Tab1">
-                    <TextField label="Field On Tab1" source="field1" />
-                </Tab>
-                <Tab label="Tab2">
-                    <TextField label="Field On Tab2" source="field2" />
-                </Tab>
-            </TabbedShowLayout>
+        const history = createMemoryHistory();
+        render(
+            <CoreAdminContext
+                dataProvider={testDataProvider()}
+                history={history}
+            >
+                <TabbedShowLayout record={{ id: 123 }}>
+                    {null}
+                    <Tab label="Tab1">
+                        <TextField label="Field On Tab1" source="field1" />
+                    </Tab>
+                    <Tab label="Tab2">
+                        <TextField label="Field On Tab2" source="field2" />
+                    </Tab>
+                </TabbedShowLayout>
+            </CoreAdminContext>
         );
 
-        expect(queryByText('Tab1')).not.toBeNull();
-        expect(queryByText('Field On Tab1')).not.toBeNull();
+        expect(screen.queryByText('Tab1')).not.toBeNull();
+        expect(screen.queryByText('Field On Tab1')).not.toBeNull();
     });
 
     it('should sync tabs with location by default', () => {
         const history = createMemoryHistory({ initialEntries: ['/'] });
 
-        const { getAllByRole, queryByText } = renderWithRouter(
-            <Router history={history}>
-                <TabbedShowLayout
-                    basePath="/"
-                    record={{ id: 123 }}
-                    resource="foo"
-                >
+        render(
+            <CoreAdminContext
+                dataProvider={testDataProvider()}
+                history={history}
+            >
+                <TabbedShowLayout record={{ id: 123 }}>
                     {null}
                     <Tab label="Tab1">
                         <TextField label="Field On Tab1" source="field1" />
@@ -69,31 +71,58 @@ describe('<TabbedShowLayout />', () => {
                         <TextField label="Field On Tab2" source="field2" />
                     </Tab>
                 </TabbedShowLayout>
-            </Router>
+            </CoreAdminContext>
         );
 
-        const tabs = getAllByRole('tab');
-        fireEvent.click(tabs[1]);
+        fireEvent.click(screen.getByText('Tab2'));
         expect(history.location.pathname).toEqual('/1');
-        expect(queryByText('Field On Tab2')).not.toBeNull();
-        expect(queryByText('Field On Tab1')).toBeNull();
-        fireEvent.click(tabs[0]);
+        expect(screen.queryByText('Field On Tab2')).not.toBeNull();
+        expect(screen.queryByText('Field On Tab1')).toBeNull();
+        fireEvent.click(screen.getByText('Tab1'));
         expect(history.location.pathname).toEqual('/');
-        expect(queryByText('Field On Tab1')).not.toBeNull();
-        expect(queryByText('Field On Tab2')).toBeNull();
+        expect(screen.queryByText('Field On Tab1')).not.toBeNull();
+        expect(screen.queryByText('Field On Tab2')).toBeNull();
     });
 
-    it('should not sync tabs with location if syncWithLocation is false', () => {
+    it('should sync tabs with location by default when using custom tab paths', () => {
         const history = createMemoryHistory({ initialEntries: ['/'] });
 
-        const { getAllByRole, queryByText } = renderWithRouter(
-            <Router history={history}>
-                <TabbedShowLayout
-                    basePath="/"
-                    record={{ id: 123 }}
-                    resource="foo"
-                    syncWithLocation={false}
-                >
+        render(
+            <CoreAdminContext
+                dataProvider={testDataProvider()}
+                history={history}
+            >
+                <TabbedShowLayout record={{ id: 123 }}>
+                    {null}
+                    <Tab label="Tab1">
+                        <TextField label="Field On Tab1" source="field1" />
+                    </Tab>
+                    <Tab label="Tab2" path="second">
+                        <TextField label="Field On Tab2" source="field2" />
+                    </Tab>
+                </TabbedShowLayout>
+            </CoreAdminContext>
+        );
+
+        fireEvent.click(screen.getByText('Tab2'));
+        expect(history.location.pathname).toEqual('/second');
+        expect(screen.queryByText('Field On Tab2')).not.toBeNull();
+        expect(screen.queryByText('Field On Tab1')).toBeNull();
+        fireEvent.click(screen.getByText('Tab1'));
+        expect(history.location.pathname).toEqual('/');
+        expect(screen.queryByText('Field On Tab1')).not.toBeNull();
+        expect(screen.queryByText('Field On Tab2')).toBeNull();
+    });
+
+    it('should not sync tabs with location if syncWithLocation is false', async () => {
+        const history = createMemoryHistory({ initialEntries: ['/'] });
+        const record = { id: 123 };
+        render(
+            <CoreAdminContext
+                dataProvider={testDataProvider()}
+                history={history}
+            >
+                <TabbedShowLayout record={record} syncWithLocation={false}>
                     {null}
                     <Tab label="Tab1">
                         <TextField label="Field On Tab1" source="field1" />
@@ -102,17 +131,16 @@ describe('<TabbedShowLayout />', () => {
                         <TextField label="Field On Tab2" source="field2" />
                     </Tab>
                 </TabbedShowLayout>
-            </Router>
+            </CoreAdminContext>
         );
 
-        const tabs = getAllByRole('tab');
-        fireEvent.click(tabs[1]);
+        fireEvent.click(screen.getByText('Tab2'));
         expect(history.location.pathname).toEqual('/');
-        expect(queryByText('Field On Tab2')).not.toBeNull();
-        expect(queryByText('Field On Tab1')).toBeNull();
-        fireEvent.click(tabs[0]);
+        expect(screen.queryByText('Field On Tab2')).not.toBeNull();
+        expect(screen.queryByText('Field On Tab1')).toBeNull();
+        fireEvent.click(screen.getByText('Tab1'));
         expect(history.location.pathname).toEqual('/');
-        expect(queryByText('Field On Tab1')).not.toBeNull();
-        expect(queryByText('Field On Tab2')).toBeNull();
+        expect(screen.queryByText('Field On Tab1')).not.toBeNull();
+        expect(screen.queryByText('Field On Tab2')).toBeNull();
     });
 });

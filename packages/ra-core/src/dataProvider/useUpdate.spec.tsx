@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { renderWithRedux } from 'ra-test';
-import { screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
-import { QueryClientProvider, QueryClient } from 'react-query';
 
+import { CoreAdminContext } from '../core';
 import { Record } from '../types';
-import DataProviderContext from './DataProviderContext';
 import { useUpdate } from './useUpdate';
 import {
     ErrorCase as ErrorCasePessimistic,
@@ -35,12 +33,10 @@ describe('useUpdate', () => {
                 return <span />;
             };
 
-            renderWithRedux(
-                <QueryClientProvider client={new QueryClient()}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Dummy />
-                    </DataProviderContext.Provider>
-                </QueryClientProvider>
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Dummy />
+                </CoreAdminContext>
             );
             localUpdate('foo', {
                 id: 1,
@@ -73,12 +69,10 @@ describe('useUpdate', () => {
                 return <span />;
             };
 
-            renderWithRedux(
-                <QueryClientProvider client={new QueryClient()}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Dummy />
-                    </DataProviderContext.Provider>
-                </QueryClientProvider>
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Dummy />
+                </CoreAdminContext>
             );
             localUpdate();
             await waitFor(() => {
@@ -107,12 +101,10 @@ describe('useUpdate', () => {
                 return <span />;
             };
 
-            renderWithRedux(
-                <QueryClientProvider client={new QueryClient()}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Dummy />
-                    </DataProviderContext.Provider>
-                </QueryClientProvider>
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Dummy />
+                </CoreAdminContext>
             );
             localUpdate(undefined, { data: { foo: 456 } });
             await waitFor(() => {
@@ -142,12 +134,10 @@ describe('useUpdate', () => {
                 sku = data && data.sku;
                 return <span />;
             };
-            renderWithRedux(
-                <QueryClientProvider client={new QueryClient()}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Dummy />
-                    </DataProviderContext.Provider>
-                </QueryClientProvider>
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Dummy />
+                </CoreAdminContext>
             );
             expect(sku).toBeUndefined();
             localUpdate('products', {
@@ -164,7 +154,7 @@ describe('useUpdate', () => {
     describe('mutationMode', () => {
         it('when pessimistic, displays result and success side effects when dataProvider promise resolves', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
-            renderWithRedux(<SuccessCasePessimistic />);
+            render(<SuccessCasePessimistic />);
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).toBeNull();
@@ -180,7 +170,7 @@ describe('useUpdate', () => {
         it('when pessimistic, displays error and error side effects when dataProvider promise rejects', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
             jest.spyOn(console, 'error').mockImplementation(() => {});
-            renderWithRedux(<ErrorCasePessimistic />);
+            render(<ErrorCasePessimistic />);
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).toBeNull();
@@ -199,7 +189,7 @@ describe('useUpdate', () => {
         });
         it('when optimistic, displays result and success side effects right away', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
-            renderWithRedux(<SuccessCaseOptimistic />);
+            render(<SuccessCaseOptimistic />);
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
@@ -215,7 +205,7 @@ describe('useUpdate', () => {
         it('when optimistic, displays error and error side effects when dataProvider promise rejects', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
             jest.spyOn(console, 'error').mockImplementation(() => {});
-            renderWithRedux(<ErrorCaseOptimistic />);
+            render(<ErrorCaseOptimistic />);
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
@@ -233,7 +223,7 @@ describe('useUpdate', () => {
         });
         it('when undoable, displays result and success side effects right away and fetched on confirm', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
-            renderWithRedux(<SuccessCaseUndoable />);
+            render(<SuccessCaseUndoable />);
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
@@ -254,7 +244,7 @@ describe('useUpdate', () => {
         });
         it('when undoable, displays result and success side effects right away and reverts on cancel', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
-            renderWithRedux(<SuccessCaseUndoable />);
+            render(<SuccessCaseUndoable />);
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
@@ -270,7 +260,7 @@ describe('useUpdate', () => {
         it('when undoable,  displays result and success side effects right away and reverts on error', async () => {
             jest.spyOn(console, 'log').mockImplementation(() => {});
             jest.spyOn(console, 'error').mockImplementation(() => {});
-            renderWithRedux(<ErrorCaseUndoable />);
+            render(<ErrorCaseUndoable />);
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();

@@ -1,12 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
-import { waitFor } from '@testing-library/react';
-import { renderWithRedux } from 'ra-test';
-import { MemoryRouter, Route } from 'react-router';
-import { QueryClientProvider, QueryClient } from 'react-query';
+import { render, screen, waitFor } from '@testing-library/react';
+import { Route, Routes } from 'react-router';
+import { createMemoryHistory } from 'history';
 
 import { ShowController } from './ShowController';
-import { DataProviderContext } from '../../dataProvider';
+import { CoreAdminContext } from '../../core';
 import { DataProvider } from '../../types';
 
 describe('useShowController', () => {
@@ -23,18 +22,16 @@ describe('useShowController', () => {
                 Promise.resolve({ data: { id: 12, title: 'hello' } })
             );
         const dataProvider = ({ getOne } as unknown) as DataProvider;
-        const { queryAllByText } = renderWithRedux(
-            <QueryClientProvider client={new QueryClient()}>
-                <DataProviderContext.Provider value={dataProvider}>
-                    <ShowController {...defaultProps}>
-                        {({ record }) => <div>{record && record.title}</div>}
-                    </ShowController>
-                </DataProviderContext.Provider>
-            </QueryClientProvider>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ShowController {...defaultProps}>
+                    {({ record }) => <div>{record && record.title}</div>}
+                </ShowController>
+            </CoreAdminContext>
         );
         await waitFor(() => {
             expect(getOne).toHaveBeenCalled();
-            expect(queryAllByText('hello')).toHaveLength(1);
+            expect(screen.queryAllByText('hello')).toHaveLength(1);
         });
     });
 
@@ -45,21 +42,26 @@ describe('useShowController', () => {
                 Promise.resolve({ data: { id: 'test?', title: 'hello' } })
             );
         const dataProvider = ({ getOne } as unknown) as DataProvider;
-        renderWithRedux(
-            <MemoryRouter initialEntries={['/posts/test%3F']}>
-                <Route path="/posts/:id">
-                    <QueryClientProvider client={new QueryClient()}>
-                        <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                history={createMemoryHistory({
+                    initialEntries: ['/posts/test%3F'],
+                })}
+            >
+                <Routes>
+                    <Route
+                        path="posts/:id"
+                        element={
                             <ShowController resource="posts">
                                 {({ record }) => (
                                     <div>{record && record.title}</div>
                                 )}
                             </ShowController>
-                        </DataProviderContext.Provider>
-                    </QueryClientProvider>
-                </Route>
-            </MemoryRouter>,
-            { admin: { resources: { posts: { data: {} } } } }
+                        }
+                    />
+                </Routes>
+            </CoreAdminContext>
         );
         await waitFor(() => {
             expect(getOne).toHaveBeenCalledWith('posts', { id: 'test?' });
@@ -73,21 +75,27 @@ describe('useShowController', () => {
             .mockImplementationOnce(() => Promise.reject(new Error()));
         const onError = jest.fn();
         const dataProvider = ({ getOne } as unknown) as DataProvider;
-        renderWithRedux(
-            <MemoryRouter initialEntries={['/posts/1']}>
-                <Route path="/posts/:id">
-                    <QueryClientProvider client={new QueryClient()}>
-                        <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                history={createMemoryHistory({
+                    initialEntries: ['/posts/1'],
+                })}
+            >
+                <Routes>
+                    <Route
+                        path="posts/:id"
+                        element={
                             <ShowController
                                 resource="posts"
                                 queryOptions={{ onError }}
                             >
                                 {() => <div />}
                             </ShowController>
-                        </DataProviderContext.Provider>
-                    </QueryClientProvider>
-                </Route>
-            </MemoryRouter>
+                        }
+                    />
+                </Routes>
+            </CoreAdminContext>
         );
         await waitFor(() => {
             expect(getOne).toHaveBeenCalled();

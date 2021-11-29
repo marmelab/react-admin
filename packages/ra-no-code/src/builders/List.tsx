@@ -4,7 +4,6 @@ import {
     Datagrid as RaDatagrid,
     DatagridProps,
     List as RaList,
-    ListProps,
 } from 'ra-ui-materialui';
 
 import {
@@ -13,8 +12,8 @@ import {
 } from '../ResourceConfiguration';
 import { getFieldFromFieldDefinition } from './getFieldFromFieldDefinition';
 
-export const List = (props: ListProps) => (
-    <RaList {...props}>
+export const List = () => (
+    <RaList>
         <Datagrid />
     </RaList>
 );
