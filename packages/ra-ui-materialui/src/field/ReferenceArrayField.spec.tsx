@@ -24,9 +24,7 @@ describe('<ReferenceArrayField />', () => {
                         resource: 'foo',
                         basePath: '',
                         data: null,
-                        ids: [1, 2],
-                        loaded: false,
-                        loading: true,
+                        isLoading: true,
                     }}
                 >
                     <ReferenceArrayFieldView
@@ -47,10 +45,10 @@ describe('<ReferenceArrayField />', () => {
     });
 
     it('should render a list of the child component', () => {
-        const data = {
-            1: { id: 1, title: 'hello' },
-            2: { id: 2, title: 'world' },
-        };
+        const data = [
+            { id: 1, title: 'hello' },
+            { id: 2, title: 'world' },
+        ];
         const { queryAllByRole, container, getByText } = render(
             <MemoryRouter>
                 <ThemeProvider theme={theme}>
@@ -59,9 +57,7 @@ describe('<ReferenceArrayField />', () => {
                             resource: 'foo',
                             basePath: '',
                             data,
-                            ids: [1, 2],
-                            loaded: true,
-                            loading: false,
+                            isLoading: false,
                         }}
                     >
                         <ReferenceArrayFieldView
@@ -90,10 +86,8 @@ describe('<ReferenceArrayField />', () => {
                     value={{
                         resource: 'foo',
                         basePath: '',
-                        data: {},
-                        ids: [],
-                        loaded: true,
-                        loading: false,
+                        data: [],
+                        isLoading: false,
                     }}
                 >
                     <ReferenceArrayFieldView
@@ -113,10 +107,10 @@ describe('<ReferenceArrayField />', () => {
     });
 
     it('should support record with string identifier', () => {
-        const data = {
-            'abc-1': { id: 'abc-1', title: 'hello' },
-            'abc-2': { id: 'abc-2', title: 'world' },
-        };
+        const data = [
+            { id: 'abc-1', title: 'hello' },
+            { id: 'abc-2', title: 'world' },
+        ];
         const { queryAllByRole, container, getByText } = render(
             <MemoryRouter>
                 <ThemeProvider theme={theme}>
@@ -125,9 +119,7 @@ describe('<ReferenceArrayField />', () => {
                             resource: 'foo',
                             basePath: '',
                             data,
-                            ids: ['abc-1', 'abc-2'],
-                            loaded: true,
-                            loading: false,
+                            isLoading: false,
                         }}
                     >
                         <ReferenceArrayFieldView
@@ -150,10 +142,10 @@ describe('<ReferenceArrayField />', () => {
     });
 
     it('should support record with number identifier', () => {
-        const data = {
-            1: { id: 1, title: 'hello' },
-            2: { id: 2, title: 'world' },
-        };
+        const data = [
+            { id: 1, title: 'hello' },
+            { id: 2, title: 'world' },
+        ];
         const { queryAllByRole, container, getByText } = render(
             <MemoryRouter>
                 <ThemeProvider theme={theme}>
@@ -162,9 +154,7 @@ describe('<ReferenceArrayField />', () => {
                             resource: 'foo',
                             basePath: '',
                             data,
-                            ids: [1, 2],
-                            loaded: true,
-                            loading: false,
+                            isLoading: false,
                         }}
                     >
                         <ReferenceArrayFieldView
@@ -188,10 +178,10 @@ describe('<ReferenceArrayField />', () => {
     });
 
     it('should use custom className', () => {
-        const data = {
-            1: { id: 1, title: 'hello' },
-            2: { id: 2, title: 'world' },
-        };
+        const data = [
+            { id: 1, title: 'hello' },
+            { id: 2, title: 'world' },
+        ];
         const { container } = render(
             <MemoryRouter>
                 <ThemeProvider theme={theme}>
@@ -200,9 +190,7 @@ describe('<ReferenceArrayField />', () => {
                             resource: 'foo',
                             basePath: '',
                             data,
-                            ids: [1, 2],
-                            loaded: true,
-                            loading: false,
+                            isLoading: false,
                         }}
                     >
                         <ReferenceArrayFieldView

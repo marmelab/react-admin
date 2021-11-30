@@ -27,10 +27,10 @@ describe('<ReferenceManyField />', () => {
     };
 
     it('should render a list of the child component', () => {
-        const data = {
-            1: { id: 1, title: 'hello' },
-            2: { id: 2, title: 'world' },
-        };
+        const data = [
+            { id: 1, title: 'hello' },
+            { id: 2, title: 'world' },
+        ];
         const history = createMemoryHistory();
         render(
             <CoreAdminContext
@@ -38,11 +38,7 @@ describe('<ReferenceManyField />', () => {
                 history={history}
             >
                 <ThemeProvider theme={theme}>
-                    <ReferenceManyFieldView
-                        {...defaultProps}
-                        data={data}
-                        ids={[1, 2]}
-                    >
+                    <ReferenceManyFieldView {...defaultProps} data={data}>
                         <SingleFieldList>
                             <TextField source="title" />
                         </SingleFieldList>
@@ -62,7 +58,7 @@ describe('<ReferenceManyField />', () => {
     it('should render nothing when there are no related records', () => {
         render(
             <ThemeProvider theme={theme}>
-                <ReferenceManyFieldView {...defaultProps} data={{}} ids={[]}>
+                <ReferenceManyFieldView {...defaultProps} data={[]}>
                     <SingleFieldList>
                         <TextField source="title" />
                     </SingleFieldList>
@@ -74,10 +70,10 @@ describe('<ReferenceManyField />', () => {
     });
 
     it('should support record with string identifier', () => {
-        const data = {
-            'abc-1': { id: 'abc-1', title: 'hello' },
-            'abc-2': { id: 'abc-2', title: 'world' },
-        };
+        const data = [
+            { id: 'abc-1', title: 'hello' },
+            { id: 'abc-2', title: 'world' },
+        ];
         const history = createMemoryHistory();
         render(
             <CoreAdminContext
@@ -85,11 +81,7 @@ describe('<ReferenceManyField />', () => {
                 history={history}
             >
                 <ThemeProvider theme={theme}>
-                    <ReferenceManyFieldView
-                        {...defaultProps}
-                        data={data}
-                        ids={['abc-1', 'abc-2']}
-                    >
+                    <ReferenceManyFieldView {...defaultProps} data={data}>
                         <SingleFieldList>
                             <TextField source="title" />
                         </SingleFieldList>
@@ -107,10 +99,10 @@ describe('<ReferenceManyField />', () => {
     });
 
     it('should support record with number identifier', () => {
-        const data = {
-            1: { id: 1, title: 'hello' },
-            2: { id: 2, title: 'world' },
-        };
+        const data = [
+            { id: 1, title: 'hello' },
+            { id: 2, title: 'world' },
+        ];
         const history = createMemoryHistory();
         render(
             <CoreAdminContext
