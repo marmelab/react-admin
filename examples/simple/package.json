@@ -16,7 +16,7 @@
         "ra-language-english": "^3.12.4",
         "ra-language-french": "^3.12.4",
         "react": "^17.0.0",
-        "react-admin": "^3.12.4",
+        "react-admin": "^3.19.0",
         "react-dom": "^17.0.0"
     },
     "devDependencies": {
