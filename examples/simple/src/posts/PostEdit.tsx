@@ -161,7 +161,6 @@ const PostEdit = ({ permissions, ...props }) => {
                                         scopedFormData &&
                                         scopedFormData.user_id ? (
                                             <SelectInput
-                                                label="Role"
                                                 source={getSource('role')}
                                                 choices={[
                                                     {
@@ -178,6 +177,7 @@ const PostEdit = ({ permissions, ...props }) => {
                                                     },
                                                 ]}
                                                 {...rest}
+                                                label="Role"
                                             />
                                         ) : null
                                     }
