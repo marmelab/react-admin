@@ -3,6 +3,7 @@ import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     CreateContextProvider,
+    Record,
     ResourceContextProvider,
     useCheckMinimumRequiredProps,
     useCreateController,
@@ -54,11 +55,11 @@ import { CreateView } from './CreateView';
  * );
  * export default App;
  */
-export const Create = (
-    props: CreateProps & { children: ReactElement }
+export const Create = <RecordType extends Record = Record>(
+    props: CreateProps<RecordType> & { children: ReactElement }
 ): ReactElement => {
     useCheckMinimumRequiredProps('Create', ['children'], props);
-    const controllerProps = useCreateController(props);
+    const controllerProps = useCreateController<RecordType>(props);
     const body = (
         <CreateContextProvider value={controllerProps}>
             <CreateView {...props} {...controllerProps} />

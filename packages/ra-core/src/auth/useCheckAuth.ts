@@ -40,7 +40,7 @@ import useNotify from '../sideEffect/useNotify';
  *     return authenticated ? <Bar /> : <BarNotAuthenticated />;
  * } // tip: use useAuthState() hook instead
  */
-const useCheckAuth = (): CheckAuth => {
+export const useCheckAuth = (): CheckAuth => {
     const authProvider = useAuthProvider();
     const notify = useNotify();
     const logout = useLogout();
@@ -104,5 +104,3 @@ const getErrorMessage = (error, defaultMessage) =>
         : typeof error === 'undefined' || !error.message
         ? defaultMessage
         : error.message;
-
-export default useCheckAuth;

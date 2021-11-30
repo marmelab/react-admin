@@ -2,7 +2,7 @@ import { Children, ReactElement, ComponentType, createElement } from 'react';
 import { Location } from 'history';
 
 import warning from '../util/warning';
-import useAuthenticated from './useAuthenticated';
+import { useAuthenticated } from './useAuthenticated';
 import usePermissionsOptimized from './usePermissionsOptimized';
 
 export interface WithPermissionsChildrenParams {

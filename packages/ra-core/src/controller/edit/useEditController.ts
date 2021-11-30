@@ -2,6 +2,7 @@ import { useCallback, MutableRefObject } from 'react';
 import { useParams } from 'react-router-dom';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
+import { useAuthenticated } from '../../auth';
 import useVersion from '../useVersion';
 import {
     Record,
@@ -54,12 +55,14 @@ export const useEditController = <RecordType extends Record = Record>(
     props: EditControllerProps<RecordType> = {}
 ): EditControllerResult<RecordType> => {
     const {
+        disableAuthentication,
         id: propsId,
         mutationMode = 'undoable',
         transform,
         queryOptions = {},
         mutationOptions = {},
     } = props;
+    useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
     const translate = useTranslate();
     const notify = useNotify();
@@ -214,17 +217,18 @@ export const useEditController = <RecordType extends Record = Record>(
 };
 
 export interface EditControllerProps<RecordType extends Record = Record> {
+    disableAuthentication?: boolean;
     id?: Identifier;
-    resource?: string;
     mutationMode?: MutationMode;
-    queryOptions?: UseQueryOptions<RecordType>;
     mutationOptions?: UseMutationOptions<
         RecordType,
         unknown,
         UpdateParams<RecordType>
     >;
-    onSuccess?: OnSuccess;
     onFailure?: OnFailure;
+    onSuccess?: OnSuccess;
+    queryOptions?: UseQueryOptions<RecordType>;
+    resource?: string;
     transform?: TransformData;
     [key: string]: any;
 }
