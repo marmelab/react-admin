@@ -17,7 +17,8 @@
         "ra-language-french": "^3.12.4",
         "react": "^17.0.0",
         "react-admin": "^3.19.0",
-        "react-dom": "^17.0.0"
+        "react-dom": "^17.0.0",
+        "lodash": "^4.17.21"
     },
     "devDependencies": {
         "@babel/preset-react": "^7.12.10",

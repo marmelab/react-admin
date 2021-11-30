@@ -40,6 +40,7 @@ import {
     DialogContent,
     TextField as MuiTextField,
 } from '@material-ui/core';
+import _ from 'lodash';
 
 import PostTitle from './PostTitle';
 import TagReferenceInput from './TagReferenceInput';
@@ -105,7 +106,7 @@ const PostEdit = ({ permissions, ...props }) => {
     return (
         <Edit title={<PostTitle />} actions={<EditActions />} {...props}>
             <TabbedForm
-                initialValues={{ average_note: 0 }}
+                initialValues={_.merge({}, { average_note: 0, pictures: [] })}
                 warnWhenUnsavedChanges
             >
                 <FormTab label="post.form.summary">
@@ -228,6 +229,16 @@ const PostEdit = ({ permissions, ...props }) => {
                         validate={[required(), number(), minValue(0)]}
                     />
                     <BooleanInput source="commentable" defaultValue />
+                    <ArrayInput source="pictures">
+                        <SimpleFormIterator>
+                            <TextInput source="url" initialValue="" />
+                            <ArrayInput source="metas.authors">
+                                <SimpleFormIterator>
+                                    <TextInput source="name" initialValue="" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleFormIterator>
+                    </ArrayInput>
                     <TextInput disabled source="views" />
                 </FormTab>
                 <FormTab label="post.form.comments">
