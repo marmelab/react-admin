@@ -1,13 +1,10 @@
 import * as React from 'react';
 import expect from 'expect';
-import { Provider } from 'react-redux';
-import { renderWithRedux } from 'ra-test';
 import { render, waitFor } from '@testing-library/react';
 import { QueryClient } from 'react-query';
 
-import { CoreAdminContext, createAdminStore } from '../core';
+import { CoreAdminContext } from '../core';
 import { useGetList } from './useGetList';
-import { DataProviderContext } from '../dataProvider';
 
 const UseGetList = ({
     resource = 'posts',

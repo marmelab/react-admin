@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef } from 'react';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
-import { indexById, removeEmpty, useSafeSetState } from '../../util';
-import { FilterPayload, Record, RecordMap, SortPayload } from '../../types';
+import { removeEmpty, useSafeSetState } from '../../util';
+import { FilterPayload, Record, SortPayload } from '../../types';
 import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
 import useSelectionState from '../useSelectionState';

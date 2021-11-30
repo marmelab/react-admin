@@ -1,11 +1,7 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import {
-    useCheckMinimumRequiredProps,
-    useListController,
-    ListContextProvider,
-} from 'ra-core';
+import { useListController, ListContextProvider } from 'ra-core';
 
 import { TitlePropType } from '../layout/Title';
 
