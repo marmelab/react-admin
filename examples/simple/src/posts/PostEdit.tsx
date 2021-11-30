@@ -248,6 +248,7 @@ const PostEdit = ({ permissions, ...props }) => {
                                             <TextInput
                                                 source={getSource('url')}
                                                 initialValue=""
+                                                label="Url"
                                             />
                                             <ArrayInput
                                                 source={getSource(
@@ -258,6 +259,7 @@ const PostEdit = ({ permissions, ...props }) => {
                                                     <TextInput
                                                         source="name"
                                                         initialValue=""
+                                                        label="Author name"
                                                     />
                                                 </SimpleFormIterator>
                                             </ArrayInput>
