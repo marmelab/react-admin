@@ -231,12 +231,40 @@ const PostEdit = ({ permissions, ...props }) => {
                     <BooleanInput source="commentable" defaultValue />
                     <ArrayInput source="pictures">
                         <SimpleFormIterator>
-                            <TextInput source="url" initialValue="" />
-                            <ArrayInput source="metas.authors">
-                                <SimpleFormIterator>
-                                    <TextInput source="name" initialValue="" />
-                                </SimpleFormIterator>
-                            </ArrayInput>
+                            <FormDataConsumer>
+                                {({ getSource, scopedFormData }) => {
+                                    if (
+                                        getSource &&
+                                        !scopedFormData?.metas?.authors
+                                    ) {
+                                        _.assign(scopedFormData, {
+                                            metas: {
+                                                authors: [],
+                                            },
+                                        });
+                                    }
+                                    return (
+                                        <>
+                                            <TextInput
+                                                source={getSource('url')}
+                                                initialValue=""
+                                            />
+                                            <ArrayInput
+                                                source={getSource(
+                                                    'metas.authors'
+                                                )}
+                                            >
+                                                <SimpleFormIterator>
+                                                    <TextInput
+                                                        source="name"
+                                                        initialValue=""
+                                                    />
+                                                </SimpleFormIterator>
+                                            </ArrayInput>
+                                        </>
+                                    );
+                                }}
+                            </FormDataConsumer>
                         </SimpleFormIterator>
                     </ArrayInput>
                     <TextInput disabled source="views" />
