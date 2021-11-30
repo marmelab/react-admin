@@ -12,13 +12,11 @@ describe('<SimpleList />', () => {
             <ResourceContextProvider value="posts">
                 <ListContext.Provider
                     value={{
-                        loaded: true,
-                        loading: false,
-                        ids: [1, 2],
-                        data: {
-                            1: { id: 1, title: 'foo' },
-                            2: { id: 2, title: 'bar' },
-                        },
+                        isLoading: false,
+                        data: [
+                            { id: 1, title: 'foo' },
+                            { id: 2, title: 'bar' },
+                        ],
                         total: 2,
                         resource: 'posts',
                     }}
@@ -67,13 +65,11 @@ describe('<SimpleList />', () => {
                 <ResourceContextProvider value="posts">
                     <ListContext.Provider
                         value={{
-                            loaded: true,
-                            loading: false,
-                            ids: [1, 2],
-                            data: {
-                                1: { id: 1, title: 'foo' },
-                                2: { id: 2, title: 'bar' },
-                            },
+                            isLoading: false,
+                            data: [
+                                { id: 1, title: 'foo' },
+                                { id: 2, title: 'bar' },
+                            ],
                             total: 2,
                             resource: 'posts',
                         }}
@@ -103,13 +99,11 @@ describe('<SimpleList />', () => {
             <ResourceContextProvider value="posts">
                 <ListContext.Provider
                     value={{
-                        loaded: true,
-                        loading: false,
-                        ids: [1, 2],
-                        data: {
-                            1: { id: 1, title: 'foo' },
-                            2: { id: 2, title: 'bar' },
-                        },
+                        isLoading: false,
+                        data: [
+                            { id: 1, title: 'foo' },
+                            { id: 2, title: 'bar' },
+                        ],
                         total: 2,
                         resource: 'posts',
                     }}

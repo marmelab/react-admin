@@ -16,11 +16,10 @@ describe('<SingleFieldList />', () => {
                 <ResourceContextProvider value="posts">
                     <ListContext.Provider
                         value={{
-                            ids: [1, 2],
-                            data: {
-                                1: { id: 1, title: 'foo' },
-                                2: { id: 2, title: 'bar' },
-                            },
+                            data: [
+                                { id: 1, title: 'foo' },
+                                { id: 2, title: 'bar' },
+                            ],
                             resource: 'posts',
                         }}
                     >
@@ -45,11 +44,10 @@ describe('<SingleFieldList />', () => {
                 <ResourceContextProvider value="posts/foo">
                     <ListContext.Provider
                         value={{
-                            ids: [1, 2],
-                            data: {
-                                1: { id: 1, title: 'foo' },
-                                2: { id: 2, title: 'bar' },
-                            },
+                            data: [
+                                { id: 1, title: 'foo' },
+                                { id: 2, title: 'bar' },
+                            ],
                         }}
                     >
                         <SingleFieldList>
@@ -74,11 +72,10 @@ describe('<SingleFieldList />', () => {
                     <ResourceContextProvider value={action}>
                         <ListContext.Provider
                             value={{
-                                ids: [1, 2],
-                                data: {
-                                    1: { id: 1, title: 'foo' },
-                                    2: { id: 2, title: 'bar' },
-                                },
+                                data: [
+                                    { id: 1, title: 'foo' },
+                                    { id: 2, title: 'bar' },
+                                ],
                                 resource: action,
                             }}
                         >
@@ -103,11 +100,10 @@ describe('<SingleFieldList />', () => {
                 <ResourceContextProvider value="prefix/bar">
                     <ListContext.Provider
                         value={{
-                            ids: [1, 2],
-                            data: {
-                                1: { id: 1, title: 'foo' },
-                                2: { id: 2, title: 'bar' },
-                            },
+                            data: [
+                                { id: 1, title: 'foo' },
+                                { id: 2, title: 'bar' },
+                            ],
                             resource: 'prefix/bar',
                         }}
                     >
@@ -134,11 +130,10 @@ describe('<SingleFieldList />', () => {
                     <ResourceContextProvider value={action}>
                         <ListContext.Provider
                             value={{
-                                ids: [1, 2],
-                                data: {
-                                    1: { id: 1, title: 'foo' },
-                                    2: { id: 2, title: 'bar' },
-                                },
+                                data: [
+                                    { id: 1, title: 'foo' },
+                                    { id: 2, title: 'bar' },
+                                ],
                                 resource: action,
                             }}
                         >
@@ -162,11 +157,10 @@ describe('<SingleFieldList />', () => {
             <ThemeProvider theme={theme}>
                 <ListContext.Provider
                     value={{
-                        ids: [1, 2],
-                        data: {
-                            1: { id: 1, title: 'foo' },
-                            2: { id: 2, title: 'bar' },
-                        },
+                        data: [
+                            { id: 1, title: 'foo' },
+                            { id: 2, title: 'bar' },
+                        ],
                         resource: 'bar',
                     }}
                 >

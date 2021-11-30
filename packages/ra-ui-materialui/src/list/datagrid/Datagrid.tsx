@@ -143,7 +143,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         }
     }, [JSON.stringify(selectedIds)]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    // we manage row selection at the datagrid level to llow shift+click to select an array of rows
+    // we manage row selection at the datagrid level to allow shift+click to select an array of rows
     const handleToggleItem = useCallback(
         (id, event) => {
             const ids = data.map(record => record.id);
@@ -164,7 +164,9 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                 onSelect(
                     isRowSelectable
                         ? newSelectedIds.filter((id: Identifier) =>
-                              isRowSelectable(data[id])
+                              isRowSelectable(
+                                  data.find(record => record.id === id)
+                              )
                           )
                         : newSelectedIds
                 );
