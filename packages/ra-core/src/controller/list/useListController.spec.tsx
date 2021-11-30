@@ -25,7 +25,6 @@ describe('useListController', () => {
         hasEdit: true,
         hasList: true,
         hasShow: true,
-        ids: [],
         query: {
             page: 1,
             perPage: 10,
@@ -376,14 +375,39 @@ describe('useListController', () => {
                 getListControllerProps({
                     foo: 1,
                     data: [4, 5],
-                    ids: [1, 2],
                     page: 3,
                     bar: 'hello',
                 })
             ).toEqual({
+                basePath: undefined,
+                currentSort: undefined,
                 data: [4, 5],
-                ids: [1, 2],
+                defaultTitle: undefined,
+                displayedFilters: undefined,
+                error: undefined,
+                exporter: undefined,
+                filterValues: undefined,
+                hasCreate: undefined,
+                hideFilter: undefined,
+                isFetching: undefined,
+                isLoading: undefined,
+                onSelect: undefined,
+                onToggleItem: undefined,
+                onUnselectItems: undefined,
                 page: 3,
+                perPage: undefined,
+                refetch: undefined,
+                refresh: undefined,
+                resource: undefined,
+                selectedIds: undefined,
+                setFilters: undefined,
+                setPage: undefined,
+                setPerPage: undefined,
+                setSort: undefined,
+                showFilter: undefined,
+                total: undefined,
+                totalPages: undefined,
+                version: undefined,
             });
         });
     });
@@ -393,7 +417,6 @@ describe('useListController', () => {
                 sanitizeListRestProps({
                     foo: 1,
                     data: [4, 5],
-                    ids: [1, 2],
                     page: 3,
                     bar: 'hello',
                 })
