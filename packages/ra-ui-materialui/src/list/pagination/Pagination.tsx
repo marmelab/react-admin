@@ -78,7 +78,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
     );
 
     // Avoid rendering TablePagination if "page" value is invalid
-    if (total === null || total === 0 || page < 1 || page > totalPages) {
+    if (total == null || total === 0 || page < 1 || page > totalPages) {
         return isLoading ? <Toolbar variant="dense" /> : limit;
     }
 

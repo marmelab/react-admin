@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { useListController, ListContextProvider } from 'ra-core';
+import {
+    useListController,
+    ListContextProvider,
+    ResourceContextProvider,
+} from 'ra-core';
 
 import { TitlePropType } from '../layout/Title';
 
@@ -59,9 +63,11 @@ import { ListProps } from '../types';
 export const List = (
     props: ListProps & { children: ReactElement }
 ): ReactElement => (
-    <ListContextProvider value={useListController(props)}>
-        <ListView {...props} />
-    </ListContextProvider>
+    <ResourceContextProvider value={props.resource}>
+        <ListContextProvider value={useListController(props)}>
+            <ListView {...props} />
+        </ListContextProvider>
+    </ResourceContextProvider>
 );
 
 List.propTypes = {
