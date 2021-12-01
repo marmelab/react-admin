@@ -11,7 +11,7 @@ const aliases = packages.map(dirName => {
         'package.json'
     ));
     return {
-        find: new RegExp(`^${packageJson.name}$/`),
+        find: new RegExp(`^${packageJson.name}$`),
         replacement: path.resolve(
             __dirname,
             `../../packages/${packageJson.name}/src`
