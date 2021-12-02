@@ -85,30 +85,28 @@ const Notification = (props: NotificationProps) => {
         undoableEventEmitter.emit('end', { isUndo: true });
     }, [dispatch]);
 
+    if (!notification) return null;
+
     return (
         <Snackbar
             open={open}
             message={
-                notification &&
                 notification.message &&
                 translate(notification.message, notification.messageArgs)
             }
-            autoHideDuration={
-                (notification && notification.autoHideDuration) ||
-                autoHideDuration
-            }
-            disableWindowBlurListener={notification && notification.undoable}
+            autoHideDuration={notification.autoHideDuration || autoHideDuration}
+            disableWindowBlurListener={notification.undoable}
             TransitionProps={{ onExited: handleExited }}
             onClose={handleRequestClose}
             ContentProps={{
                 className: classnames(
-                    styles[(notification && notification.type) || type],
+                    styles[notification.type || type],
                     className,
                     { [styles['multiLine']]: multiLine }
                 ),
             }}
             action={
-                notification && notification.undoable ? (
+                notification.undoable ? (
                     <Button
                         color="primary"
                         className={styles.undo}
