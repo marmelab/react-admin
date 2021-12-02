@@ -135,9 +135,9 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     });
 
     const handleChange = useCallback(
-        (event, newItem) => {
-            if (newItem) {
-                input.onChange([...input.value, getChoiceValue(newItem)]);
+        event => {
+            if (event?.target?.value === undefined) {
+                input.onChange([...input.value, getChoiceValue(event)]);
                 return;
             }
             input.onChange(event);

@@ -178,14 +178,12 @@ export const SelectInput = (props: SelectInputProps) => {
     ]);
 
     const handleChange = useCallback(
-        async (event: React.ChangeEvent<HTMLSelectElement>, newItem) => {
-            if (newItem) {
-                const value = getChoiceValue(newItem);
-                input.onChange(value);
-                return;
+        async (event: any) => {
+            let choice = event;
+            if (event?.target?.value) {
+                choice = event.target.value;
             }
-
-            input.onChange(event);
+            input.onChange(getChoiceValue(choice));
         },
         [input, getChoiceValue]
     );

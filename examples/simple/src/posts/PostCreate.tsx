@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import RichTextInput from 'ra-input-rich-text';
 import {
     ArrayInput,
-    AutocompleteInput,
+    MuiAutocompleteInput,
     BooleanInput,
     Create,
     DateInput,
@@ -59,6 +59,20 @@ const backlinksDefaultValue = [
     },
 ];
 const PostCreate = () => {
+    const [roles, setRoles] = React.useState([
+        {
+            id: 'headwriter',
+            name: 'Head Writer',
+        },
+        {
+            id: 'proofreader',
+            name: 'Proof reader',
+        },
+        {
+            id: 'cowriter',
+            name: 'Co-Writer',
+        },
+    ]);
     const initialValues = useMemo(
         () => ({
             average_note: 0,
@@ -129,7 +143,7 @@ const PostCreate = () => {
                                 source="user_id"
                                 reference="users"
                             >
-                                <AutocompleteInput />
+                                <MuiAutocompleteInput />
                             </ReferenceInput>
                             <FormDataConsumer>
                                 {({
@@ -139,23 +153,24 @@ const PostCreate = () => {
                                     ...rest
                                 }) =>
                                     scopedFormData && scopedFormData.user_id ? (
-                                        <SelectInput
+                                        <MuiAutocompleteInput
                                             label="Role"
                                             source={getSource('role')}
-                                            choices={[
-                                                {
-                                                    id: 'headwriter',
-                                                    name: 'Head Writer',
-                                                },
-                                                {
-                                                    id: 'proofreader',
-                                                    name: 'Proof reader',
-                                                },
-                                                {
-                                                    id: 'cowriter',
-                                                    name: 'Co-Writer',
-                                                },
-                                            ]}
+                                            onCreate={() => {
+                                                const newRoleName = prompt(
+                                                    'Enter a new role'
+                                                );
+                                                const newRole = {
+                                                    id: newRoleName.toLowerCase(),
+                                                    name: newRoleName,
+                                                };
+                                                setRoles(oldRoles => [
+                                                    ...oldRoles,
+                                                    newRole,
+                                                ]);
+                                                return newRole;
+                                            }}
+                                            choices={roles}
                                             {...rest}
                                         />
                                     ) : null

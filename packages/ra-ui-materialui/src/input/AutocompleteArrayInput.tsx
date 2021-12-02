@@ -260,7 +260,7 @@ export const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
     );
 
     const handleChange = useCallback(
-        (item: any, newItem) => {
+        (item: any, newItem?: any) => {
             const finalItem = newItem || item;
             const newSelectedItems =
                 !allowDuplicates && selectedItems.includes(finalItem)

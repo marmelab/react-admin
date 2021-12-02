@@ -16,7 +16,7 @@ import {
     useSupportCreateSuggestion,
 } from './useSupportCreateSuggestion';
 
-export const AutocompleteInput = (props: AutocompleteInputProps) => {
+export const MuiAutocompleteInput = (props: MuiAutocompleteInputProps) => {
     const {
         allowEmpty,
         choices,
@@ -218,7 +218,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
     );
 };
 
-export interface AutocompleteInputProps
+export interface MuiAutocompleteInputProps
     extends ChoicesInputProps<AutocompleteProps<any, false, false, false>>,
         UseChoicesOptions,
         Omit<SupportCreateSuggestionOptions, 'handleChange' | 'optionText'> {}
