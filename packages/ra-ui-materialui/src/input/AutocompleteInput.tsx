@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { isValidElement, useCallback, useMemo, useState } from 'react';
+import {
+    isValidElement,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react';
 import get from 'lodash/get';
 import { Autocomplete, AutocompleteProps, TextField } from '@mui/material';
 import {
@@ -9,12 +15,12 @@ import {
     UseChoicesOptions,
     useSuggestions,
     useTranslate,
-    warning,
 } from 'ra-core';
 import {
     SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
 } from './useSupportCreateSuggestion';
+import { InputHelperText } from './InputHelperText';
 
 export const AutocompleteInput = (props: AutocompleteInputProps) => {
     const {
@@ -27,10 +33,12 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         emptyText,
         emptyValue,
         format,
+        helperText,
         id: idOverride,
         input: inputOverride,
         isRequired: isRequiredOverride,
         label,
+        loaded,
         limitChoicesToValue,
         matchSuggestion,
         meta: metaOverride,
@@ -50,6 +58,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         ...rest
     } = props;
 
+    const translate = useTranslate();
     const {
         id,
         input,
@@ -80,6 +89,14 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         [input.value, getSuggestionFromValue]
     );
 
+    useEffect(() => {
+        if (isValidElement(optionText)) {
+            throw new Error(`
+AutocompleteInput does not accept an element for the optionText prop.
+Please provide an optionText that returns a string (used for the text input) and use the renderOption prop to customize how options are rendered.`);
+        }
+    }, [optionText]);
+
     const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
         allowEmpty,
         choices,
@@ -97,7 +114,9 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
     const handleChange = (choice: any) => {
         input.onChange(getChoiceValue(choice));
     };
+
     const [filterValue, setFilterValue] = useState('');
+
     const {
         getCreateItem,
         handleChange: handleChangeWithCreateSupport,
@@ -114,7 +133,8 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
     });
 
     const getOptionLabel = (option: any) => {
-        if (option === null) {
+        // eslint-disable-next-line eqeqeq
+        if (option == undefined) {
             return null;
         }
         // Value selected with enter, right from the input
@@ -176,24 +196,24 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
 
         return options;
     };
+
     const handleAutocompleteChange = (event: any, newValue) => {
         handleChangeWithCreateSupport(newValue);
     };
+
     return (
         <>
             <Autocomplete
-                filterOptions={filterOptions}
+                clearText={translate('ra.action.clear_input_value')}
+                closeText={translate('ra.action.close')}
                 freeSolo={!!create || !!onCreate}
                 selectOnFocus={!!create || !!onCreate}
                 clearOnBlur={!!create || !!onCreate}
                 handleHomeEndKeys={!!create || !!onCreate}
-                id={id}
-                inputValue={filterValue}
+                openText={translate('ra.action.open')}
+                options={suggestions}
                 getOptionLabel={getOptionLabel}
                 isOptionEqualToValue={isOptionEqualToValue}
-                onChange={handleAutocompleteChange}
-                onInputChange={handleInputChange}
-                options={suggestions}
                 renderInput={params => (
                     <TextField
                         {...params}
@@ -209,9 +229,24 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                                 }
                             />
                         }
+                        error={!!(touched && (error || submitError))}
+                        helperText={
+                            <InputHelperText
+                                touched={touched}
+                                error={error || submitError}
+                                helperText={helperText}
+                            />
+                        }
                     />
                 )}
+                {...options}
+                filterOptions={filterOptions}
+                id={id}
+                inputValue={filterValue}
+                loading={!loaded}
                 value={selectedItem}
+                onChange={handleAutocompleteChange}
+                onInputChange={handleInputChange}
             />
             {createElement}
         </>

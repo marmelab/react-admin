@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { Resource } from 'ra-core';
+import { Resource, required } from 'ra-core';
 import { createMemoryHistory } from 'history';
 
 import { Edit } from '../detail';
@@ -25,31 +25,146 @@ const dataProvider = {
 } as any;
 
 const history = createMemoryHistory({ initialEntries: ['/books/1'] });
-const choices = [
-    { id: 1, name: 'Leo Tolstoy' },
-    { id: 2, name: 'Victor Hugo' },
-    { id: 3, name: 'William Shakespeare' },
-    { id: 4, name: 'Charles Baudelaire' },
-    { id: 5, name: 'Marcel Proust' },
-];
 
-const BookEdit = () => (
-    <Edit
-        mutationMode="pessimistic"
-        mutationOptions={{
-            onSuccess: data => {
-                console.log(data);
-            },
-        }}
-    >
-        <SimpleForm>
-            <AutocompleteInput source="author" choices={choices} />
-        </SimpleForm>
-    </Edit>
-);
+const BookEdit = () => {
+    const choices = [
+        { id: 1, name: 'Leo Tolstoy' },
+        { id: 2, name: 'Victor Hugo' },
+        { id: 3, name: 'William Shakespeare' },
+        { id: 4, name: 'Charles Baudelaire' },
+        { id: 5, name: 'Marcel Proust' },
+    ];
+    return (
+        <Edit
+            mutationMode="pessimistic"
+            mutationOptions={{
+                onSuccess: data => {
+                    console.log(data);
+                },
+            }}
+        >
+            <SimpleForm>
+                <AutocompleteInput
+                    source="author"
+                    choices={choices}
+                    validate={required()}
+                />
+            </SimpleForm>
+        </Edit>
+    );
+};
 
 export const Basic = () => (
     <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" edit={BookEdit} />
+    </Admin>
+);
+
+const BookEditCustomText = () => {
+    const choices = [
+        { id: 1, fullName: 'Leo Tolstoy' },
+        { id: 2, fullName: 'Victor Hugo' },
+        { id: 3, fullName: 'William Shakespeare' },
+        { id: 4, fullName: 'Charles Baudelaire' },
+        { id: 5, fullName: 'Marcel Proust' },
+    ];
+    return (
+        <Edit
+            mutationMode="pessimistic"
+            mutationOptions={{
+                onSuccess: data => {
+                    console.log(data);
+                },
+            }}
+        >
+            <SimpleForm>
+                <AutocompleteInput
+                    source="author"
+                    optionText="fullName"
+                    choices={choices}
+                />
+            </SimpleForm>
+        </Edit>
+    );
+};
+
+export const CustomText = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="books" edit={BookEditCustomText} />
+    </Admin>
+);
+
+const BookEditCustomTextFunction = () => {
+    const choices = [
+        { id: 1, fullName: 'Leo Tolstoy' },
+        { id: 2, fullName: 'Victor Hugo' },
+        { id: 3, fullName: 'William Shakespeare' },
+        { id: 4, fullName: 'Charles Baudelaire' },
+        { id: 5, fullName: 'Marcel Proust' },
+    ];
+    return (
+        <Edit
+            mutationMode="pessimistic"
+            mutationOptions={{
+                onSuccess: data => {
+                    console.log(data);
+                },
+            }}
+        >
+            <SimpleForm>
+                <AutocompleteInput
+                    source="author"
+                    optionText={choice => choice?.fullName}
+                    choices={choices}
+                />
+            </SimpleForm>
+        </Edit>
+    );
+};
+
+export const CustomTextFunction = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="books" edit={BookEditCustomTextFunction} />
+    </Admin>
+);
+
+const BookEditCustomOptions = () => {
+    const choices = [
+        { id: 1, fullName: 'Leo Tolstoy', language: 'Russian' },
+        { id: 2, fullName: 'Victor Hugo', language: 'French' },
+        { id: 3, fullName: 'William Shakespeare', language: 'English' },
+        { id: 4, fullName: 'Charles Baudelaire', language: 'French' },
+        { id: 5, fullName: 'Marcel Proust', language: 'French' },
+    ];
+    return (
+        <Edit
+            mutationMode="pessimistic"
+            mutationOptions={{
+                onSuccess: data => {
+                    console.log(data);
+                },
+            }}
+        >
+            <SimpleForm>
+                <AutocompleteInput
+                    source="author"
+                    optionText="fullName"
+                    choices={choices}
+                    options={{
+                        renderOption: (props, choice) => (
+                            <div {...props}>
+                                {choice.fullName} <i>({choice.language})</i>
+                            </div>
+                        ),
+                    }}
+                />
+            </SimpleForm>
+        </Edit>
+    );
+};
+
+export const CustomOptions = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="books" edit={BookEditCustomOptions} />
     </Admin>
 );
