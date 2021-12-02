@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Children, cloneElement, ReactElement } from 'react';
+import { Children, cloneElement, isValidElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import classnames from 'classnames';
@@ -68,18 +68,15 @@ export const ListView = (props: ListViewProps) => {
                     })}
                     key={version}
                 >
-                    {bulkActionButtons === true ? (
+                    {bulkActionButtons !== false ? (
                         <BulkActionsToolbar {...controllerProps}>
-                            <DefaultBulkActionButtons />
+                            {isValidElement(bulkActionButtons) ? (
+                                bulkActionButtons
+                            ) : (
+                                <DefaultBulkActionButtons />
+                            )}
                         </BulkActionsToolbar>
-                    ) : (
-                        bulkActionButtons !== false &&
-                        bulkActionButtons && (
-                            <BulkActionsToolbar {...controllerProps}>
-                                {bulkActionButtons}
-                            </BulkActionsToolbar>
-                        )
-                    )}
+                    ) : null}
                     {children &&
                         // @ts-ignore-line
                         cloneElement(Children.only(children), {
