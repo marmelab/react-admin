@@ -6,7 +6,7 @@ import { renderWithRedux } from 'ra-test';
 import ReferenceArrayInputController, {
     ReferenceArrayInputControllerChildrenFuncParams,
 } from './ReferenceArrayInputController';
-import { CRUD_GET_MATCHING, CRUD_GET_MANY } from '../../../lib';
+import { CRUD_GET_MATCHING, CRUD_GET_MANY } from '../../actions';
 import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
 
 describe('<ReferenceArrayInputController />', () => {
