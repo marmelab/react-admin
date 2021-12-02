@@ -68,10 +68,15 @@ export const ListView = (props: ListViewProps) => {
                     })}
                     key={version}
                 >
-                    {bulkActionButtons !== false && bulkActionButtons && (
-                        <BulkActionsToolbar {...controllerProps}>
-                            {bulkActionButtons}
-                        </BulkActionsToolbar>
+                    {bulkActionButtons === true ? (
+                        <DefaultBulkActionButtons />
+                    ) : (
+                        bulkActionButtons !== false &&
+                        bulkActionButtons && (
+                            <BulkActionsToolbar {...controllerProps}>
+                                {bulkActionButtons}
+                            </BulkActionsToolbar>
+                        )
                     )}
                     {children &&
                         // @ts-ignore-line
