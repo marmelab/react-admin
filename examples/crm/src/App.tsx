@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Admin, Resource, ListGuesser, defaultTheme } from 'react-admin';
 import {
     unstable_createMuiStrictModeTheme,
-    createMuiTheme,
+    createTheme,
 } from '@material-ui/core/styles';
 
 import { dataProvider } from './dataProvider';
@@ -17,7 +17,7 @@ import { Dashboard } from './dashboard/Dashboard';
 const theme =
     process.env.NODE_ENV !== 'production'
         ? unstable_createMuiStrictModeTheme(defaultTheme)
-        : createMuiTheme(defaultTheme);
+        : createTheme(defaultTheme);
 
 const App = () => (
     <Admin

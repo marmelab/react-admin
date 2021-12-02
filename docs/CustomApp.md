@@ -162,7 +162,7 @@ import restProvider from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 +import { ThemeProvider } from '@material-ui/styles';
-+import { createMuiTheme } from "@material-ui/core/styles";
++import { createTheme } from "@material-ui/core/styles";
 +import AppBar from '@material-ui/core/AppBar';
 +import Toolbar from '@material-ui/core/Toolbar';
 +import Typography from '@material-ui/core/Typography';
@@ -186,7 +186,7 @@ const i18nProvider = polyglotI18nProvider(locale => {
     return defaultMessages;
 });
 const history = createHashHistory();
-const theme = createMuiTheme();
+const theme = createTheme();
 
 const App = () => (
     <Provider
