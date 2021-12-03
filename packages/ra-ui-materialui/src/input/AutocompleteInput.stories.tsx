@@ -6,6 +6,7 @@ import { createMemoryHistory } from 'history';
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { AutocompleteInput } from './AutocompleteInput';
+import { ReferenceInput } from './ReferenceInput';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteInput' };
 
@@ -166,5 +167,72 @@ const BookEditCustomOptions = () => {
 export const CustomOptions = () => (
     <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" edit={BookEditCustomOptions} />
+    </Admin>
+);
+
+const authors = [
+    { id: 1, name: 'Leo Tolstoy', language: 'Russian' },
+    { id: 2, name: 'Victor Hugo', language: 'French' },
+    { id: 3, name: 'William Shakespeare', language: 'English' },
+    { id: 4, name: 'Charles Baudelaire', language: 'French' },
+    { id: 5, name: 'Marcel Proust', language: 'French' },
+];
+
+const dataProviderWithAuthors = {
+    getOne: (resource, params) =>
+        Promise.resolve({
+            data: {
+                id: 1,
+                title: 'War and Peace',
+                author: 1,
+                summary:
+                    "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
+                year: 1869,
+            },
+        }),
+    getMany: (resource, params) =>
+        Promise.resolve({
+            data: authors.filter(author => params.ids.includes(author.id)),
+        }),
+    getList: (resource, params) => {
+        if (params.filter.q == undefined) {
+            return Promise.resolve({
+                data: authors,
+                total: authors.length,
+            });
+        }
+        const filteredAuthors = authors.filter(author =>
+            author.name.toLowerCase().includes(params.filter.q.toLowerCase())
+        );
+
+        return Promise.resolve({
+            data: filteredAuthors,
+            total: filteredAuthors.length,
+        });
+    },
+    update: (resource, params) => Promise.resolve(params),
+} as any;
+
+const BookEditWithReference = () => (
+    <Edit
+        mutationMode="pessimistic"
+        mutationOptions={{
+            onSuccess: data => {
+                console.log(data);
+            },
+        }}
+    >
+        <SimpleForm>
+            <ReferenceInput reference="authors" source="author">
+                <AutocompleteInput />
+            </ReferenceInput>
+        </SimpleForm>
+    </Edit>
+);
+
+export const InsideReferenceInput = () => (
+    <Admin dataProvider={dataProviderWithAuthors} history={history}>
+        <Resource name="authors" />
+        <Resource name="books" edit={BookEditWithReference} />
     </Admin>
 );
