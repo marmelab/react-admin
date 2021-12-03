@@ -104,6 +104,12 @@ const authProvider = {
                 throw new Error('Network error')
             });
     },
+    checkAuth: () => {
+        return localStorage.getItem('auth') ? Promise.resolve() : Promise.reject();
+    },
+    getPermissions: () => {
+        return Promise.resolve();
+    },
     // ...
 };
 
