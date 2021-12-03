@@ -229,6 +229,16 @@ const PostEdit = ({ permissions, ...props }) => {
                     />
                     <BooleanInput source="commentable" defaultValue />
                     <TextInput disabled source="views" />
+                    <ArrayInput source="pictures">
+                        <SimpleFormIterator>
+                            <TextInput source="url" initialValue="" />
+                            <ArrayInput source="metas.authors">
+                                <SimpleFormIterator>
+                                    <TextInput source="name" initialValue="" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleFormIterator>
+                    </ArrayInput>
                 </FormTab>
                 <FormTab label="post.form.comments">
                     <ReferenceManyField
