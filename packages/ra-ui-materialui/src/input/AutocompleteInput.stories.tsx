@@ -170,6 +170,52 @@ export const CustomOptions = () => (
     </Admin>
 );
 
+const choicesForCreationSupport = [
+    { id: 1, name: 'Leo Tolstoy' },
+    { id: 2, name: 'Victor Hugo' },
+    { id: 3, name: 'William Shakespeare' },
+    { id: 4, name: 'Charles Baudelaire' },
+    { id: 5, name: 'Marcel Proust' },
+];
+const BookEditWithCreationSupport = () => (
+    <Edit
+        mutationMode="pessimistic"
+        mutationOptions={{
+            onSuccess: data => {
+                console.log(data);
+            },
+        }}
+    >
+        <SimpleForm>
+            <AutocompleteInput
+                source="author"
+                choices={choicesForCreationSupport}
+                onCreate={filter => {
+                    const newAuthorName = window.prompt(
+                        'Enter a new author',
+                        filter
+                    );
+
+                    if (newAuthorName) {
+                        const newAuthor = {
+                            id: choicesForCreationSupport.length + 1,
+                            name: newAuthorName,
+                        };
+                        choicesForCreationSupport.push(newAuthor);
+                        return newAuthor;
+                    }
+                }}
+            />
+        </SimpleForm>
+    </Edit>
+);
+
+export const CreationSupport = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="books" edit={BookEditWithCreationSupport} />
+    </Admin>
+);
+
 const authors = [
     { id: 1, name: 'Leo Tolstoy', language: 'Russian' },
     { id: 2, name: 'Victor Hugo', language: 'French' },
@@ -194,22 +240,26 @@ const dataProviderWithAuthors = {
         Promise.resolve({
             data: authors.filter(author => params.ids.includes(author.id)),
         }),
-    getList: (resource, params) => {
-        if (params.filter.q == undefined) {
-            return Promise.resolve({
-                data: authors,
-                total: authors.length,
-            });
-        }
-        const filteredAuthors = authors.filter(author =>
-            author.name.toLowerCase().includes(params.filter.q.toLowerCase())
-        );
+    getList: (resource, params) =>
+        new Promise(resolve => {
+            if (params.filter.q == undefined) {
+                resolve({
+                    data: authors,
+                    total: authors.length,
+                });
+            }
 
-        return Promise.resolve({
-            data: filteredAuthors,
-            total: filteredAuthors.length,
-        });
-    },
+            const filteredAuthors = authors.filter(author =>
+                author.name
+                    .toLowerCase()
+                    .includes(params.filter.q.toLowerCase())
+            );
+
+            resolve({
+                data: filteredAuthors,
+                total: filteredAuthors.length,
+            });
+        }),
     update: (resource, params) => Promise.resolve(params),
 } as any;
 

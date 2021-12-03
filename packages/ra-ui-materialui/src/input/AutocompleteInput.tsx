@@ -39,6 +39,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         isRequired: isRequiredOverride,
         label,
         loaded,
+        loading,
         limitChoicesToValue,
         matchSuggestion,
         meta: metaOverride,
@@ -51,6 +52,8 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         optionValue = 'id',
         parse,
         resource,
+        setFilter,
+        shouldRenderSuggestions,
         source,
         suggestionLimit,
         translateChoice,
@@ -96,6 +99,17 @@ AutocompleteInput does not accept an element for the optionText prop.
 Please provide an optionText that returns a string (used for the text input) and use the renderOption prop to customize how options are rendered.`);
         }
     }, [optionText]);
+
+    useEffect(() => {
+        if (
+            shouldRenderSuggestions != undefined &&
+            options?.noOptionsText == undefined &&
+            process.env.NODE_ENV === 'development'
+        ) {
+            console.warn(`
+When providing a shouldRenderSuggestions function, we recommend you also provide the noOptionsText through the options prop and set it to a text explaining users why no options are displayed.`);
+        }
+    }, [shouldRenderSuggestions, options]);
 
     const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
         allowEmpty,
@@ -150,6 +164,10 @@ Please provide an optionText that returns a string (used for the text input) and
 
     const handleInputChange = (event: any, newInputValue: string) => {
         setFilterValue(newInputValue);
+
+        if (setFilter && newInputValue !== getChoiceText(selectedItem)) {
+            setFilter(newInputValue);
+        }
     };
 
     const suggestions = useMemo(() => getSuggestions(filterValue), [
@@ -204,19 +222,28 @@ Please provide an optionText that returns a string (used for the text input) and
     return (
         <>
             <Autocomplete
+                blurOnSelect
                 clearText={translate('ra.action.clear_input_value')}
                 closeText={translate('ra.action.close')}
                 freeSolo={!!create || !!onCreate}
                 selectOnFocus={!!create || !!onCreate}
                 clearOnBlur={!!create || !!onCreate}
                 handleHomeEndKeys={!!create || !!onCreate}
+                openOnFocus
                 openText={translate('ra.action.open')}
-                options={suggestions}
+                options={
+                    shouldRenderSuggestions == undefined ||
+                    shouldRenderSuggestions(filterValue)
+                        ? suggestions
+                        : []
+                }
                 getOptionLabel={getOptionLabel}
                 isOptionEqualToValue={isOptionEqualToValue}
                 renderInput={params => (
                     <TextField
                         {...params}
+                        id={id}
+                        name={input.name}
                         label={
                             <FieldTitle
                                 label={label}
@@ -241,11 +268,12 @@ Please provide an optionText that returns a string (used for the text input) and
                 )}
                 {...options}
                 filterOptions={filterOptions}
-                id={id}
                 inputValue={filterValue}
-                loading={!loaded}
+                loading={loading && suggestions.length === 0}
                 value={selectedItem}
                 onChange={handleAutocompleteChange}
+                onBlur={input.onBlur}
+                onFocus={input.onFocus}
                 onInputChange={handleInputChange}
             />
             {createElement}
