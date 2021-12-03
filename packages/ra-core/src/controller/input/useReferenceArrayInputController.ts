@@ -49,9 +49,8 @@ export const useReferenceArrayInputController = (
         page: initialPage = 1,
         perPage: initialPerPage = 25,
         sort: initialSort = { field: 'id', order: 'DESC' },
-        options,
+        options = {},
         reference,
-        source,
         enableGetChoices,
     } = props;
     const resource = useResourceContext(props);
@@ -278,13 +277,12 @@ export const useReferenceArrayInputController = (
         data: matchingReferences,
         total,
         error: errorGetList,
+        isLoading: isLoadingGetList,
         refetch: refetchGetMatching,
     } = useGetList(
         reference,
         { pagination, sort, filter: finalFilter },
-        options
-            ? { ...options, retry: false, enabled: isGetMatchingEnabled }
-            : { retry: false, enabled: isGetMatchingEnabled }
+        { retry: false, enabled: isGetMatchingEnabled, ...options }
     );
 
     // We merge the currently selected records with the matching ones, otherwise
@@ -312,12 +310,7 @@ export const useReferenceArrayInputController = (
         basePath: props.basePath || `/${resource}`,
         choices: dataStatus.choices,
         currentSort: sort,
-        // For the ListContext, we don't want to always display the selected items first.
-        // Indeed it wouldn't work well regarding sorting and pagination
-        data:
-            matchingReferences && matchingReferences.length > 0
-                ? indexById(matchingReferences)
-                : {},
+        data: matchingReferences,
         displayedFilters,
         error:
             errorGetMany || errorGetList
@@ -328,10 +321,8 @@ export const useReferenceArrayInputController = (
         filterValues,
         hasCreate: false,
         hideFilter,
-        // For the ListContext, we don't want to always display the selected items first.
-        // Indeed it wouldn't work well regarding sorting and pagination
-        ids: matchingReferences?.map(record => record.id) || EmptyArray,
         loaded,
+        isLoading: !loaded || isLoadingGetList,
         loading: dataStatus.waiting,
         onSelect,
         onToggleItem,
