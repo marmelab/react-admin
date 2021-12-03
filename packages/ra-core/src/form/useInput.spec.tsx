@@ -5,7 +5,7 @@ import { Form, useFormState } from 'react-final-form';
 import FormWithRedirect from './FormWithRedirect';
 import useInput, { InputProps } from './useInput';
 import { required } from './validate';
-import { renderWithRedux } from '../../../ra-test/esm';
+import { renderWithRedux } from 'ra-test';
 
 const Input: FunctionComponent<
     { children: (props: any) => ReactElement } & InputProps
