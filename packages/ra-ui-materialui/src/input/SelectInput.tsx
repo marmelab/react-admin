@@ -180,10 +180,12 @@ export const SelectInput = (props: SelectInputProps) => {
     const handleChange = useCallback(
         async (event: any) => {
             let choice = event;
-            if (event?.target?.value) {
-                choice = event.target.value;
+            // eslint-disable-next-line eqeqeq
+            if (event?.target?.value != undefined) {
+                input.onChange(event.target.value);
+            } else {
+                input.onChange(getChoiceValue(choice));
             }
-            input.onChange(getChoiceValue(choice));
         },
         [input, getChoiceValue]
     );
