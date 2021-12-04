@@ -202,7 +202,10 @@ export const FileInput = (
 };
 
 FileInput.propTypes = {
-    accept: PropTypes.string,
+    accept: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.string),
+    ]),
     children: PropTypes.element,
     className: PropTypes.string,
     id: PropTypes.string,
