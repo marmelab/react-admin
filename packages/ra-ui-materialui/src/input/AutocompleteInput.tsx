@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-    isValidElement,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState,
-} from 'react';
+import { isValidElement, useEffect, useMemo, useRef, useState } from 'react';
 import get from 'lodash/get';
 import { Autocomplete, AutocompleteProps, TextField } from '@mui/material';
 import {
@@ -15,6 +9,7 @@ import {
     UseChoicesOptions,
     useSuggestions,
     useTranslate,
+    warning,
 } from 'ra-core';
 import {
     SupportCreateSuggestionOptions,
@@ -82,14 +77,11 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         ...rest,
     });
 
-    const getSuggestionFromValue = useCallback(
-        value => choices.find(choice => get(choice, optionValue) === value),
-        [choices, optionValue]
-    );
-
     const selectedItem = useMemo(
-        () => getSuggestionFromValue(input.value) || null,
-        [input.value, getSuggestionFromValue]
+        () =>
+            choices?.find(choice => get(choice, optionValue) === input.value) ||
+            null,
+        [choices, input.value, optionValue]
     );
 
     useEffect(() => {
@@ -101,14 +93,13 @@ Please provide an optionText that returns a string (used for the text input) and
     }, [optionText]);
 
     useEffect(() => {
-        if (
+        warning(
+            /* eslint-disable eqeqeq */
             shouldRenderSuggestions != undefined &&
-            options?.noOptionsText == undefined &&
-            process.env.NODE_ENV === 'development'
-        ) {
-            console.warn(`
-When providing a shouldRenderSuggestions function, we recommend you also provide the noOptionsText through the options prop and set it to a text explaining users why no options are displayed.`);
-        }
+                options?.noOptionsText == undefined,
+            `When providing a shouldRenderSuggestions function, we recommend you also provide the noOptionsText through the options prop and set it to a text explaining users why no options are displayed.`
+        );
+        /* eslint-enable eqeqeq */
     }, [shouldRenderSuggestions, options]);
 
     const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
@@ -130,6 +121,20 @@ When providing a shouldRenderSuggestions function, we recommend you also provide
     };
 
     const [filterValue, setFilterValue] = useState('');
+
+    // We must reset the filter every time the value changes to ensure we
+    // display at least some choices even if the input has a value.
+    // Otherwise, it would only display the currently selected one and the user
+    // would have to first clear the input before seeing any other choices
+    const currentValue = useRef(input.value);
+    useEffect(() => {
+        if (currentValue.current !== input.value) {
+            currentValue.current = input.value;
+            if (setFilter) {
+                setFilter('');
+            }
+        }
+    }, [input.value]); // eslint-disable-line
 
     const {
         getCreateItem,
@@ -195,9 +200,11 @@ When providing a shouldRenderSuggestions function, we recommend you also provide
         }
 
         const selectedItemText = get(selectedItem, optionText);
-        const hasOption = choices.some(choice => {
-            return get(choice, optionText) === filterValue;
-        });
+        const hasOption = !!choices
+            ? choices.some(choice => {
+                  return get(choice, optionText) === filterValue;
+              })
+            : false;
 
         return selectedItemText === filterValue || hasOption;
     }, [choices, optionText, filterValue, matchSuggestion, selectedItem]);
@@ -232,7 +239,7 @@ When providing a shouldRenderSuggestions function, we recommend you also provide
                 openOnFocus
                 openText={translate('ra.action.open')}
                 options={
-                    shouldRenderSuggestions == undefined ||
+                    shouldRenderSuggestions == undefined || // eslint-disable-line eqeqeq
                     shouldRenderSuggestions(filterValue)
                         ? suggestions
                         : []

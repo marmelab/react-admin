@@ -242,11 +242,16 @@ const dataProviderWithAuthors = {
         }),
     getList: (resource, params) =>
         new Promise(resolve => {
+            // eslint-disable-next-line eqeqeq
             if (params.filter.q == undefined) {
-                resolve({
-                    data: authors,
-                    total: authors.length,
-                });
+                setTimeout(
+                    () =>
+                        resolve({
+                            data: authors,
+                            total: authors.length,
+                        }),
+                    1000
+                );
             }
 
             const filteredAuthors = authors.filter(author =>
@@ -255,10 +260,14 @@ const dataProviderWithAuthors = {
                     .includes(params.filter.q.toLowerCase())
             );
 
-            resolve({
-                data: filteredAuthors,
-                total: filteredAuthors.length,
-            });
+            setTimeout(
+                () =>
+                    resolve({
+                        data: filteredAuthors,
+                        total: filteredAuthors.length,
+                    }),
+                1000
+            );
         }),
     update: (resource, params) => Promise.resolve(params),
 } as any;
