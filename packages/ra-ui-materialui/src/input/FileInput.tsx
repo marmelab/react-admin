@@ -242,14 +242,14 @@ const StyledLabeled = styled(Labeled, { name: PREFIX })(({ theme }) => ({
     [`&.${FileInputClasses.root}`]: { width: '100%' },
 }));
 
-export interface FileInputProps {
-    accept?: string;
+export interface FileInputProps
+    extends Pick<
+        DropzoneOptions,
+        'accept' | 'multiple' | 'maxSize' | 'minSize'
+    > {
     children?: ReactNode;
     labelMultiple?: string;
     labelSingle?: string;
-    maxSize?: number;
-    minSize?: number;
-    multiple?: boolean;
     placeholder?: ReactNode;
 }
 
