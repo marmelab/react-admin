@@ -36,14 +36,14 @@ const useStyles = makeStyles(
     { name: 'RaFileInput' }
 );
 
-export interface FileInputProps {
-    accept?: string;
+export interface FileInputProps
+    extends Pick<
+        DropzoneOptions,
+        'accept' | 'multiple' | 'maxSize' | 'minSize'
+    > {
     children?: ReactNode;
     labelMultiple?: string;
     labelSingle?: string;
-    maxSize?: number;
-    minSize?: number;
-    multiple?: boolean;
     placeholder?: ReactNode;
 }
 
