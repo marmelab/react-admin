@@ -10,7 +10,6 @@ export * from './ImageInput';
 export * from './InputHelperText';
 export * from './InputPropTypes';
 export * from './Labeled';
-export * from './MuiAutocompleteInput';
 export * from './NullableBooleanInput';
 export * from './NumberInput';
 export * from './PasswordInput';
