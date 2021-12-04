@@ -236,7 +236,10 @@ const FileInput = (props: FileInputProps & InputProps<FileInputOptions>) => {
 };
 
 FileInput.propTypes = {
-    accept: PropTypes.string,
+    accept: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.string),
+    ]),
     children: PropTypes.element,
     classes: PropTypes.object,
     className: PropTypes.string,
