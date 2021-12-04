@@ -678,9 +678,9 @@ describe('<AutocompleteInput />', () => {
         expect(
             screen.queryByDisplayValue('New Kid On The Block')
         ).not.toBeNull();
-        fireEvent.click(
-            screen.getByLabelText('resources.posts.fields.language')
-        );
+        fireEvent.click(screen.getByLabelText('ra.action.clear_input_value'));
+        fireEvent.blur(input);
+        fireEvent.focus(input);
         expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
     });
 
@@ -741,9 +741,9 @@ describe('<AutocompleteInput />', () => {
         expect(
             screen.queryByDisplayValue('New Kid On The Block')
         ).not.toBeNull();
-        fireEvent.click(
-            screen.getByLabelText('resources.posts.fields.language')
-        );
+        fireEvent.click(screen.getByLabelText('ra.action.clear_input_value'));
+        fireEvent.blur(input);
+        fireEvent.focus(input);
         expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
     });
 
@@ -783,7 +783,6 @@ describe('<AutocompleteInput />', () => {
         const input = screen.getByLabelText(
             'resources.posts.fields.language'
         ) as HTMLInputElement;
-        input.focus();
         fireEvent.change(input, { target: { value: 'New Kid On The Block' } });
         fireEvent.click(screen.getByText('ra.action.create_item'));
         fireEvent.click(screen.getByText('Get the kid'));
@@ -805,9 +804,9 @@ describe('<AutocompleteInput />', () => {
         expect(
             screen.queryByDisplayValue('New Kid On The Block')
         ).not.toBeNull();
-        fireEvent.click(
-            screen.getByLabelText('resources.posts.fields.language')
-        );
+        fireEvent.click(screen.getByLabelText('ra.action.clear_input_value'));
+        fireEvent.blur(input);
+        fireEvent.focus(input);
         expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
     });
 });
