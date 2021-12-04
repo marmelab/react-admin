@@ -2019,15 +2019,9 @@ const data = [
     { id: 2, name: 'Sylvester' },
     { id: 3, name: 'Jean-Claude' },
 ]
-const ids = [1, 2, 3];
 
 const MyComponent = () => {
-    const listContext = useList({
-        data,
-        ids,
-        basePath: '/resource',
-        resource: 'resource',
-    });
+    const listContext = useList({ data });
     return (
         <ListContextProvider value={listContext}>
             <Datagrid>

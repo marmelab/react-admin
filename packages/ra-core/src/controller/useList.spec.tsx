@@ -27,12 +27,10 @@ describe('<useList />', () => {
             { id: 1, title: 'hello' },
             { id: 2, title: 'world' },
         ];
-        const ids = [1, 2];
 
         render(
             <UseList
                 data={data}
-                ids={ids}
                 loaded
                 loading
                 filter={{ title: 'world' }}
@@ -70,8 +68,6 @@ describe('<useList />', () => {
             <UseList
                 data={data}
                 ids={ids}
-                loaded
-                loading
                 filter={{ items: ['two', 'four', 'five'] }}
                 sort={{ field: 'id', order: 'ASC' }}
                 callback={callback}
@@ -83,7 +79,7 @@ describe('<useList />', () => {
                 expect.objectContaining({
                     currentSort: { field: 'id', order: 'ASC' },
                     loaded: true,
-                    loading: true,
+                    loading: false,
                     data: {
                         1: { id: 1, items: ['one', 'two'] },
                         3: { id: 3, items: 'four' },
