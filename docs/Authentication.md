@@ -105,9 +105,11 @@ const authProvider = {
             });
     },
     checkAuth: () => {
-        return localStorage.getItem('auth') ? Promise.resolve() : Promise.reject();
+        // Required for the authentication to work
+        return Promise.resolve();
     },
     getPermissions: () => {
+        // Required for the authentication to work
         return Promise.resolve();
     },
     // ...
