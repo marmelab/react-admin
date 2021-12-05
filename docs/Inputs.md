@@ -2566,7 +2566,7 @@ const PostEdit = (props) => (
                             scopedFormData && scopedFormData.name ? (
                                 <SelectInput
                                     source={getSource('role')} // Will translate to "authors[0].role"
-                                    choices={['main', 'coauthor']}
+                                    choices={[{id:'headwriter', name:'Head Writer'}, {id:'cowriter', name:'Co-Writer'}]
                                     {...rest}
                                 />
                             ) : null

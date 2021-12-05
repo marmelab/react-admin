@@ -111,7 +111,7 @@ export const FormDataConsumerView = (props: Props) => {
                 scopedFormData.name ? (
                     <SelectInput
                         source={getSource('role')} // Will translate to "users[0].role"
-                        choices={['admin', 'user']}
+                        choices={[{id: '1', name: 'Admin'}, {id: '2', name: 'User'},
                         {...rest}
                     />
                 ) : null
