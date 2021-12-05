@@ -2077,14 +2077,14 @@ You can tweak how this component fetches the possible values using the `perPage`
 
 ```jsx
 <ReferenceArrayInput
-  label="Tags"
-  reference="tags"
-  source="tags"
-  enableGetChoices={({ q }) => (q ? q.length >= 2 : false)}
+    label="Tags"
+    reference="tags"
+    source="tags"
+    enableGetChoices={({ q }) => (q ? q.length >= 2 : false)}
 >
-  <AutocompleteArrayInput
-    shouldRenderSuggestions={(value: string) => value.length >= 2}
-  />
+    <AutocompleteArrayInput
+        shouldRenderSuggestions={value => value.length >= 2}
+    />
 </ReferenceArrayInput>
 ```
 
