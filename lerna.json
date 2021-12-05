@@ -2,6 +2,7 @@
   "lerna": "2.5.1",
   "packages": [
     "examples/data-generator",
+    "examples/simple",
     "packages/*"
   ],
   "version": "3.19.2"
