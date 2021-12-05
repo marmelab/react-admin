@@ -2077,14 +2077,14 @@ You can tweak how this component fetches the possible values using the `perPage`
 
 ```jsx
 <ReferenceArrayInput
-  label="Tags"
-  reference="tags"
-  source="tags"
-  enableGetChoices={({ q }) => (q ? q.length >= 2 : false)}
+    label="Tags"
+    reference="tags"
+    source="tags"
+    enableGetChoices={({ q }) => (q ? q.length >= 2 : false)}
 >
-  <AutocompleteArrayInput
-    shouldRenderSuggestions={(value: string) => value.length >= 2}
-  />
+    <AutocompleteArrayInput
+        shouldRenderSuggestions={value => value.length >= 2}
+    />
 </ReferenceArrayInput>
 ```
 
@@ -2566,7 +2566,7 @@ const PostEdit = (props) => (
                             scopedFormData && scopedFormData.name ? (
                                 <SelectInput
                                     source={getSource('role')} // Will translate to "authors[0].role"
-                                    choices={['main', 'coauthor']}
+                                    choices={[{id:1, name:'Head Writer'}, {id:2, name:'Co-Writer'}]
                                     {...rest}
                                 />
                             ) : null
