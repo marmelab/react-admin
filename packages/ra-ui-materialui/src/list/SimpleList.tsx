@@ -20,7 +20,6 @@ import {
     linkToRecord,
     Record,
     RecordContextProvider,
-    RecordMap,
     sanitizeListRestProps,
     useListContext,
     useResourceContext,

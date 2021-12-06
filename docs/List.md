@@ -283,11 +283,11 @@ import Button from '@material-ui/core/Button';
 import { BulkDeleteButton } from 'react-admin';
 import ResetViewsButton from './ResetViewsButton';
 
-const PostBulkActionButtons = props => (
+const PostBulkActionButtons = () => (
     <Fragment>
-        <ResetViewsButton label="Reset Views" {...props} />
+        <ResetViewsButton label="Reset Views" />
         {/* default bulk delete action */}
-        <BulkDeleteButton {...props} />
+        <BulkDeleteButton />
     </Fragment>
 );
 
@@ -302,12 +302,11 @@ export const PostList = () => (
 
 **Tip**: You can also disable bulk actions altogether by passing `false` to the `bulkActionButtons` prop. When using a `Datagrid` inside a `List` with disabled bulk actions, the checkboxes column won't be added.
 
-Bulk action button components receive several props allowing them to perform their job:
+Bulk action button components can use the `useListContext` to get the elements they need to perform their job:
 
-* `resource`: the currently displayed resource (eg `posts`, `comments`, etc.)
-* `basePath`: the current router base path for the resource (eg `/posts`, `/comments`, etc.)
-* `filterValues`: the filter values. This can be useful if you want to apply your action on all items matching the filter.
 * `selectedIds`: the identifiers of the currently selected items.
+* `resource`: the currently displayed resource (eg `posts`, `comments`, etc.)
+* `filterValues`: the filter values. This can be useful if you want to apply your action on all items matching the filter.
 
 Here is an example of `BulkUpdateButton` usage, which sets the `views` property of all posts to `0` optimistically:
 
@@ -331,7 +330,7 @@ const ResetViewsButton = (props) => (
 export default ResetViewsButton;
 ```
 
-You can also implement the same `ResetViewsButton` behind a confirmation dialog by using the [`mutationMode`](./CreateEdit.md#mutationmode) prop:
+You can also implement the same `<ResetViewsButton>` behind a confirmation dialog by using the [`mutationMode`](./CreateEdit.md#mutationmode) prop:
 
 ```diff
 // in ./ResetViewsButton.js
@@ -361,6 +360,7 @@ But let's say you need a customized bulkAction button, here is an example levera
 import * as React from "react";
 import {
     Button,
+    useListContext,
     useUpdateMany,
     useRefresh,
     useNotify,
@@ -368,7 +368,8 @@ import {
 } from 'react-admin';
 import { VisibilityOff } from '@material-ui/icons';
 
-const CustomResetViewsButton = ({ selectedIds }) => {
+const CustomResetViewsButton = () => {
+    const { selectedIds } = useListContext();
     const refresh = useRefresh();
     const notify = useNotify();
     const unselectAll = useUnselectAll();
@@ -400,7 +401,7 @@ const CustomResetViewsButton = ({ selectedIds }) => {
 export default CustomResetViewsButton;
 ```
 
-But most of the time, bulk actions are mini-applications with a standalone user interface (in a Dialog). Here is the same `CustomResetViewsAction` implemented behind a confirmation dialog:
+But most of the time, bulk actions are mini-applications with a standalone user interface (in a Dialog). Here is the same `<CustomResetViewsAction>` implemented behind a confirmation dialog:
 
 ```jsx
 // in ./CustomResetViewsButton.js
@@ -409,13 +410,15 @@ import { Fragment, useState } from 'react';
 import {
     Button,
     Confirm,
+    useListContext,
     useUpdateMany,
     useRefresh,
     useNotify,
     useUnselectAll,
 } from 'react-admin';
 
-const CustomResetViewsButton = ({ selectedIds }) => {
+const CustomResetViewsButton = () => {
+    const { selectedIds } = useListContext();
     const [open, setOpen] = useState(false);
     const refresh = useRefresh();
     const notify = useNotify();
@@ -465,7 +468,7 @@ export default CustomResetViewsButton;
 
 **Tip**: You can customize the text of the two `<Confirm>` component buttons using the `cancel` and `confirm` props which accept translation keys. You can customize the icons by setting the `ConfirmIcon` and `CancelIcon` props, which accept a SvgIcon type.
 
-**Tip**: React-admin doesn't use the `<Confirm>` component internally, because deletes and updates are applied locally immediately, then dispatched to the server after a few seconds, unless the user chooses to undo the modification. That's what we call optimistic rendering. You can do the same for the `ResetViewsButton` by setting `undoable: true` in the last argument of `useUpdateMany()`, as follows:
+**Tip**: React-admin doesn't use the `<Confirm>` component internally, because deletes and updates are applied locally immediately, then dispatched to the server after a few seconds, unless the user chooses to undo the modification. That's what we call optimistic rendering. You can do the same for the `<ResetViewsButton>` by setting `undoable: true` in the last argument of `useUpdateMany()`, as follows:
 
 ```diff
 // in ./CustomResetViewsButton.js
@@ -663,30 +666,29 @@ const PostList = () => (
 
 The `aside` component can call the `useListContext()` hook to receive the same props as the `List` child component, including the following:
 
-* `basePath`,
-* `currentSort`,
+* `isLoading`,
 * `data`,
-* `defaultTitle`,
+* `total`,
+* `currentSort`,
 * `filterValues`,
-* `ids`,
 * `page`,
 * `perPage`,
 * `resource`,
 * `selectedIds`,
-* `total`,
-* `version`,
+* `defaultTitle`,
 
 That means you can display additional details of the current list in the aside component:
 
 {% raw %}
 ```jsx
 const Aside = () => {
-    const { data, ids } = useListContext();
+    const { data, isLoading } = useListContext();
+    if (isLoading) return null;
     return (
         <div style={{ width: 200, margin: '1em' }}>
             <Typography variant="h6">Posts stats</Typography>
             <Typography variant="body2">
-                Total views: {ids.map(id => data[id]).reduce((sum, post) => sum + post.views, 0)}
+                Total views: {data.reduce((sum, post) => sum + post.views, 0)}
             </Typography>
         </div>
     );
@@ -705,23 +707,20 @@ You can use the `empty` prop to replace that page by a custom component:
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import { CreateButton, List, useListContext } from 'react-admin';
+import { CreateButton, List } from 'react-admin';
 
-const Empty = () => {
-    const { basePath, resource } = useListContext();
-    return (
-        <Box textAlign="center" m={1}>
-            <Typography variant="h4" paragraph>
-                No products available
-            </Typography>
-            <Typography variant="body1">
-                Create one or import from a file
-            </Typography>
-            <CreateButton basePath={basePath} />
-            <Button onClick={/* ... */}>Import</Button>
-        </Box>
-    );
-};
+const Empty = () => (
+    <Box textAlign="center" m={1}>
+        <Typography variant="h4" paragraph>
+            No products available
+        </Typography>
+        <Typography variant="body1">
+            Create one or import from a file
+        </Typography>
+        <CreateButton />
+        <Button onClick={/* ... */}>Import</Button>
+    </Box>
+);
 
 const ProductList = () => (
     <List empty={<Empty />}>
@@ -733,18 +732,16 @@ const ProductList = () => (
 
 The `empty` component can call the `useListContext()` hook to receive the same props as the `List` child component, including the following:
 
--   `basePath`,
--   `currentSort`,
--   `data`,
--   `defaultTitle`,
--   `filterValues`,
--   `ids`,
--   `page`,
--   `perPage`,
--   `resource`,
--   `selectedIds`,
--   `total`,
--   `version`,
+* `isLoading`,
+* `data`,
+* `total`,
+* `currentSort`,
+* `filterValues`,
+* `page`,
+* `perPage`,
+* `resource`,
+* `selectedIds`,
+* `defaultTitle`,
 
 You can also set the `empty` props value to `false` to bypass the empty page display and render an empty list instead.
 
@@ -1660,7 +1657,7 @@ import { TopToolbar, SortButton, CreateButton, ExportButton } from 'react-admin'
 const ListActions = () => (
     <TopToolbar>
         <SortButton fields={['reference', 'sales', 'stock']} />
-        <CreateButton basePath="/products" />
+        <CreateButton />
         <ExportButton />
     </TopToolbar>
 );
@@ -1668,7 +1665,9 @@ const ListActions = () => (
 
 ### Building a Custom Sort Control
 
-When neither the `<Datagrid>` or the `<SortButton>` fit your UI needs, you have to write a custom sort control. As with custom filters, this boils down to grabbing the required data and callbacks from the `ListContext`. Let's use the `<SortButton>` source as an example usage of `currentSort` and `setSort`:
+When neither the `<Datagrid>` or the `<SortButton>` fit your UI needs, you have to write a custom sort control. As with custom filters, this boils down to grabbing the required data and callbacks from the `ListContext`. 
+
+Let's use the `<SortButton>` source as an example usage of `currentSort` and `setSort`:
 
 ```jsx
 import * as React from 'react';
@@ -1763,6 +1762,11 @@ export default SortButton;
 
 By default, the `<List>` uses the `<Pagination>` component for pagination. This component displays buttons to navigate between pages, including buttons for the surrounding pages.
 
+It accepts the following props: 
+
+* `actions`: A component that displays the pagination buttons (default: `<PaginationActions>`)
+* `limit`: An element that is displayed if there is no data to show (default: `<PaginationLimit>`)
+
 By decorating this component, you can create your own variant with a different set of perPage options.
 
 ```jsx
@@ -1789,14 +1793,12 @@ export const PostList = () => (
 
 ### Building a Custom Pagination Control
 
-The `<Pagination>` component gets the following constants from [the `useListContext` hook](#uselistcontext):
+The `<Pagination>` component can grab the data and callbacks it needs from [the `useListContext` hook](#uselistcontext), including:
 
+* `total`: The total number of records.
 * `page`: The current page number (integer). First page is `1`.
 * `perPage`: The number of records per page.
 * `setPage`: `Function(page: number) => void`. A function that set the current page number.
-* `total`: The total number of records.
-* `actions`: A component that displays the pagination buttons (default: `<PaginationActions>`)
-* `limit`: An element that is displayed if there is no data to show (default: `<PaginationLimit>`)
 
 If you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
 
@@ -1886,7 +1888,7 @@ In addition to fetching the list data, the `<List>` component renders the page t
 
 `<ListBase>` fetches the data and puts it in a `ListContext`, then renders its child.
 
-You can use `ListBase` to create your own custom List component, like this one:
+You can use `<ListBase>` to create your own custom List component, like this one:
 
 ```jsx
 import * as React from 'react';
@@ -1902,8 +1904,8 @@ import {
 } from 'react-admin';
 import Card from '@material-ui/core/Card';
 
-const PostList = props => (
-    <MyList {...props} title="Post List">
+const PostList = () => (
+    <MyList title="Post List">
         <Datagrid>
             ...
         </Datagrid>
@@ -1952,11 +1954,10 @@ Any component can grab information from the `ListContext` using the `useListCont
 ```jsx
 const {
     // fetched data
-    data, // an id-based dictionary of the list data, e.g. { 123: { id: 123, title: 'hello world' }, 456: { ... } }
-    ids, // an array listing the ids of the records in the list, e.g [123, 456, ...]
+    data, // an array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }]
     total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls. e.g. 23 
-    loaded, // boolean that is false until the data is available
-    loading, // boolean that is true on mount, and false once the data was fetched
+    isFetching, // boolean that is true on mount, and false once the data was fetched
+    isLoading, //  boolean that is false until the data is available
     // pagination
     page, // the current page. Starts at 1
     setPage, // a callback to change the current page, e.g. setPage(3)
@@ -2084,7 +2085,7 @@ export const PostList = () => (
 
 **Tip**: To let users hide or show columns at will, check the [`<SelectColumnsButton>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#selectcolumnsbutton-store-datagrid-columns-in-preferences)<img class="icon" src="./img/premium.svg" />, an [Enterprise Edition](https://marmelab.com/ra-enterprise) component.
 
-The `<Datagrid>` is an **iterator** component: it gets an array of ids and a data store from the `ListContext`, and iterates over the ids to display each record. Other examples of iterator component are [`<SimpleList>`](#the-simplelist-component) and [`<SingleFieldList>`](#the-singlefieldlist-component).
+The `<Datagrid>` is an **iterator** component: it gets an array of records from the `ListContext`, and iterates to display each record in a row. Other examples of iterator component are [`<SimpleList>`](#the-simplelist-component) and [`<SingleFieldList>`](#the-singlefieldlist-component).
 
 ### Body element
 
@@ -2230,13 +2231,20 @@ const postRowClick = (id, basePath, record) => fetchUserRights().then(({ canEdit
 
 ![expandable panel](./img/datagrid_expand.gif)
 
-To show more data from the resource without adding too many columns, you can show data in an expandable panel below the row on demand, using the `expand` prop. For instance, this code shows the `body` of a post in an expandable panel:
+To show more data from the resource without adding too many columns, you can show data in an expandable panel below the row on demand, using the `expand` prop. 
+
+For instance, this code shows the `body` of a post in an expandable panel:
 
 {% raw %}
 ```jsx
-const PostPanel = ({ id, record, resource }) => (
-    <div dangerouslySetInnerHTML={{ __html: record.body }} />
-);
+import { useRecordContext } from 'react-admin';
+
+const PostPanel = () => {
+    const record = useRecordContext();
+    return (
+        <div dangerouslySetInnerHTML={{ __html: record.body }} />
+    );
+};
 
 const PostList = () => (
     <List>
@@ -2251,22 +2259,27 @@ const PostList = () => (
 )
 ```
 
-The `expand` prop expects a component as value. When the user chooses to expand the row, the Datagrid renders the component and passes the current `record`, `id`, and `resource`.
+The `expand` prop expects a React element as value. When the user chooses to expand the row, the Datagrid renders the component inside a `RecordContext`.
 
-**Tip**: Since the `expand` element receives the same props as a detail view, you can actually use a `<Show>` view as component for the `expand` prop:
+**Tip**: You can actually use a `<Show>` view for the `expand` prop:
 
 ```jsx
-const PostShow = props => (
-    <Show
-        {...props}
-        /* disable the app title change when shown */
-        title=" "
-    >
-        <SimpleShowLayout>
-            <RichTextField source="body" />
-        </SimpleShowLayout>
-    </Show>
-);
+const PostShow = () => {
+    const record = useRecordContext();
+    const resource = useResourceContext();
+    return (
+        <Show
+            resource={resource}
+            id={id}
+            /* disable the app title change when shown */
+            title=" "
+        >
+            <SimpleShowLayout>
+                <RichTextField source="body" />
+            </SimpleShowLayout>
+        </Show>
+    );
+};
 
 const PostList = () => (
     <List>
@@ -2286,17 +2299,22 @@ The result will be the same as in the previous snippet, except that `<Show>` enc
 **Tip**: You can go one step further and use an `<Edit>` view as `expand` component:
 
 ```jsx
-const PostEdit = props => (
-    <Edit
-        {...props}
-        /* disable the app title change when shown */
-        title=" "
-    >
-        <SimpleForm>
-            <RichTextInput source="body" />
-        </SimpleForm>
-    </Edit>
-);
+const PostEdit = () => {
+    const record = useRecordContext();
+    const resource = useResourceContext();
+    return (
+        <Edit
+            resource={resource}
+            id={id}
+            /* disable the app title change when shown */
+            title=" "
+        >
+            <SimpleForm>
+                <RichTextInput source="body" />
+            </SimpleForm>
+        </Edit>
+    );
+};
 
 const PostList = () => (
     <List>
@@ -2316,9 +2334,12 @@ const PostList = () => (
 You can customize which rows will allow to show an expandable panel below them using the `isRowExpandable` prop. It expects a function that will receive the record of each `<DatagridRow>` and returns a boolean expression.  For instance, this code shows an expand button only for rows that has a detail to show:
 
 ```jsx
-const PostPanel = ({ id, record, resource }) => (
-    <div dangerouslySetInnerHTML={{ __html: record.body }} />
-);
+const PostPanel = () => {
+    const record = useRecordContext();
+    return (
+        <div dangerouslySetInnerHTML={{ __html: record.body }} />
+    );
+};
 
 const PostList = () => (
     <List>
@@ -2848,10 +2869,7 @@ Check [the `ra-calendar` documentation](https://marmelab.com/ra-enterprise/modul
 
 ### Using a Custom Iterator
 
-A `<List>` can delegate to any iterator component - `<Datagrid>` is just one example. An iterator component can get the data to display from [the `useListContext` hook](#uselistcontext). The data comes in two constants:
-
-- `ids` is an array of the ids currently displayed in the list
-- `data` is an object of all the fetched data for this resource, indexed by id.
+A `<List>` can delegate to any iterator component - `<Datagrid>` is just one example. An iterator component can get the `data` to display from [the `useListContext` hook](#uselistcontext).
 
 For instance, what if you prefer to show a list of cards rather than a datagrid?
 
@@ -2875,27 +2893,28 @@ const cardStyle = {
     verticalAlign: 'top'
 };
 const CommentGrid = () => {
-    const { ids, data, basePath } = useListContext();
+    const { data, isLoading } = useListContext();
+    if (isLoading) return null;
     return (
         <div style={{ margin: '1em' }}>
-        {ids.map(id =>
-            <Card key={id} style={cardStyle}>
+        {data.map(record =>
+            <Card key={record.id} style={cardStyle}>
                 <CardHeader
-                    title={<TextField record={data[id]} source="author.name" />}
-                    subheader={<DateField record={data[id]} source="created_at" />}
+                    title={<TextField record={record} source="author.name" />}
+                    subheader={<DateField record={record} source="created_at" />}
                     avatar={<Avatar icon={<PersonIcon />} />}
                 />
                 <CardContent>
-                    <TextField record={data[id]} source="body" />
+                    <TextField record={record} source="body" />
                 </CardContent>
                 <CardContent>
                     about&nbsp;
-                    <ReferenceField label="Post" resource="comments" record={data[id]} source="post_id" reference="posts" basePath={basePath}>
+                    <ReferenceField label="Post" resource="comments" record={record} source="post_id" reference="posts">
                         <TextField source="title" />
                     </ReferenceField>
                 </CardContent>
                 <CardActions style={{ textAlign: 'right' }}>
-                    <EditButton resource="posts" basePath={basePath} record={data[id]} />
+                    <EditButton resource="posts" record={record} />
                 </CardActions>
             </Card>
         )}
@@ -2979,17 +2998,12 @@ const CustomList = () => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(25);
     const [sort, setSort] = useState({ field: 'id', order: 'ASC' })
-    const { data, total, loading, error } = useQuery({
-        type: 'getList',
-        resource: 'posts',
-        payload: {
-            pagination: { page, perPage },
-            sort,
-            filter: {},
-        }
+    const { data, total, isLoading, error } = useGetList('posts', {
+        pagination: { page, perPage },
+        sort,
     });
 
-    if (loading) {
+    if (isLoading) {
         return <Loading />
     }
     if (error) {
@@ -2998,8 +3012,7 @@ const CustomList = () => {
     return (
         <Fragment>
             <Datagrid 
-                data={keyBy(data, 'id')}
-                ids={data.map(({ id }) => id)}
+                data={data}
                 currentSort={sort}
                 setSort={(field, order) => setSort({ field, order })}
             >

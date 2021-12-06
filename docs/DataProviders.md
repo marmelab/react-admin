@@ -767,8 +767,8 @@ Here is a glimpse of the `useGetOne` hook usage:
 import { useGetOne } from 'react-admin';
 
 const UserProfile = ({ record }) => {
-    const { data, loading, error } = useGetOne('users', record.id);
-    if (loading) { return <Loading />; }
+    const { data, isLoading, error } = useGetOne('users', record.id);
+    if (isLoading) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return <div>User {data.username}</div>;
 };

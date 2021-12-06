@@ -291,30 +291,32 @@ The specialized hooks based on `useQuery` (`useGetList`, `useGetOne`, `useGetMan
 **Tip**: If you use TypeScript, you can specify the record type for more type safety:
 
 ```jsx
-const { data, loaded } = useGetOne<Product>('products', 123);
+const { data, isLoading } = useGetOne<Product>('products', 123);
 //        \- type of data is Product
 ```
 
 ### `useGetList`
 
+This hook calls `dataProvider.getList()` when the component mounts. 
+
 ```jsx
 // syntax
-const { data, ids, total, loading, loaded, error, refetch } = useGetList(resource, pagination, sort, filter, options);
+const { data, total, isFetching, isLoading, error, refetch } = useGetList(resource, { pagination, sort, filter }, options);
 
 // example
 import { useGetList } from 'react-admin';
+
 const LatestNews = () => {
-    const { data, ids, loading, error } = useGetList(
+    const { data, isLoading, error } = useGetList(
         'posts',
-        { page: 1, perPage: 10 },
-        { field: 'published_at', order: 'DESC' }
+        { pagination: { page: 1, perPage: 10 }, sort: { field: 'published_at', order: 'DESC' } }
     );
-    if (loading) { return <Loading />; }
+    if (isLoading) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>
-            {ids.map(id =>
-                <li key={id}>{data[id].title}</li>
+            {data.map(record =>
+                <li key={record.id}>{record.title}</li>
             )}
         </ul>
     );
@@ -323,15 +325,18 @@ const LatestNews = () => {
 
 ### `useGetOne`
 
+This hook calls `dataProvider.getOne()` when the component mounts. 
+
 ```jsx
 // syntax
-const { data, loading, loaded, error, refetch } = useGetOne(resource, id, options);
+const { data, isFetching, isLoading, error, refetch } = useGetOne(resource, id, options);
 
 // example
 import { useGetOne } from 'react-admin';
+
 const UserProfile = ({ record }) => {
-    const { data, loading, error } = useGetOne('users', record.id);
-    if (loading) { return <Loading />; }
+    const { data, isLoading, error } = useGetOne('users', record.id);
+    if (isLoading) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return <div>User {data.username}</div>;
 };
@@ -576,19 +581,17 @@ const BulkDeletePostsButton = ({ selectedIds }) => {
 `useQuery` and all its corresponding specialized hooks support an `enabled` option. This is useful if you need to have a query executed only when a condition is met. For example, in the following example, we only fetch the categories if we have at least one post:
 ```jsx
 // fetch posts
-const { ids, data: posts, loading: isLoading } = useGetList(
+const { data: posts, isLoading } = useGetList(
     'posts',
-    { page: 1, perPage: 20 },
-    { field: 'name', order: 'ASC' },
-    {}
+    { pagination: { page: 1, perPage: 20 }, sort: { field: 'name', order: 'ASC' } },
 );
 
 // then fetch categories for these posts
-const { data: categories, loading: isLoadingCategories } = useGetMany(
+const { data: categories, isLoading: isLoadingCategories } = useGetMany(
     'categories',
-    ids.map(id=> posts[id].category_id),
+    posts.map(post => posts.category_id),
     // run only if the first query returns non-empty result
-    { enabled: ids.length > 0 }
+    { enabled: !isLoading && posts.length > 0 }
 );
 ```
 

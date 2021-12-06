@@ -17,11 +17,10 @@ import { Record } from '../../types';
  * The given props will take precedence over context values.
  *
  * @typedef {Object} ListControllerProps
- * @prop {Object}   data an id-based dictionary of the list data, e.g. { 123: { id: 123, title: 'hello world' }, 456: { ... } }
- * @prop {Array}    ids an array listing the ids of the records in the list, e.g. [123, 456, ...]
+ * @prop {Object}   data an array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }]
  * @prop {integer}  total the total number of results for the current filters, excluding pagination. Useful to build the pagination controls. e.g. 23
- * @prop {boolean}  loaded boolean that is false until the data is available
- * @prop {boolean}  loading boolean that is true on mount, and false once the data was fetched
+ * @prop {boolean}  isFetching boolean that is true on mount, and false once the data was fetched
+ * @prop {boolean}  isLoading boolean that is false until the data is available
  * @prop {integer}  page the current page. Starts at 1
  * @prop {Function} setPage a callback to change the page, e.g. setPage(3)
  * @prop {integer}  perPage the number of results per page. Defaults to 25
@@ -50,14 +49,13 @@ import { Record } from '../../types';
  * import { useListContext } from 'react-admin';
  *
  * const MyList = () => {
- *     const { data, ids, loaded } = useListContext();
- *     if (!loaded) {
+ *     const { data, isLoading } = useListContext();
+ *     if (isLoading) {
  *         return <>Loading...</>;
  *     }
- *     const records = ids.map(id => data[id]);
  *     return (
  *         <ul>
- *             {records.map(record => (
+ *             {data.map(record => (
  *                 <li key={record.id}>{record.name}</li>
  *             ))}
  *         </ul>
@@ -126,7 +124,6 @@ const extractListContextProps = ({
     filterValues,
     hasCreate,
     hideFilter,
-    ids,
     isFetching,
     isLoading,
     onSelect,
@@ -152,7 +149,6 @@ const extractListContextProps = ({
     filterValues,
     hasCreate,
     hideFilter,
-    ids,
     isFetching,
     isLoading,
     onSelect,
