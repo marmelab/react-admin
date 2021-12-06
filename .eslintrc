@@ -17,7 +17,7 @@
     ],
     "rules": {
         "no-use-before-define": "off",
-        "prettier/prettier": ["error", {"endOfLine": "auto"}] ,
+        "prettier/prettier": "error",
         "no-restricted-imports": [
             "error",
             {
