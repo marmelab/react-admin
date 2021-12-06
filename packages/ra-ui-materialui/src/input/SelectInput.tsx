@@ -204,7 +204,8 @@ export const SelectInput = (props: SelectInputProps) => {
         onCreate,
         optionText,
     });
-    if (isFetching) {
+
+    if (isLoading) {
         return (
             <Labeled
                 id={id}
