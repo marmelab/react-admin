@@ -1172,7 +1172,8 @@ const Menu = ({ onMenuClick, logout }) => {
 
 ### Allowing Anonymous Access to Custom Views
 
-You might have custom views that leverages our components or hooks such as:
+You might have custom views that leverage react-admin components or hooks such as:
+
 - `Create`, `CreateBase` `CreateController` and `useCreateController`
 - `Edit`, `EditBase`, `EditController` and `useEditController`
 - `List`, `ListBase`, `ListController` and `useListController`
