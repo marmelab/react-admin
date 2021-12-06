@@ -87,6 +87,7 @@ const Admin = (props: AdminProps) => {
     const {
         appLayout,
         authProvider,
+        basename,
         catchAll,
         children,
         customReducers,
@@ -126,6 +127,7 @@ const Admin = (props: AdminProps) => {
     return (
         <AdminContext
             authProvider={authProvider}
+            basename={basename}
             dataProvider={dataProvider}
             i18nProvider={i18nProvider}
             history={history}
