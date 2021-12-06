@@ -10,6 +10,7 @@ import ReferenceArrayInputController, {
 } from './ReferenceArrayInputController';
 import { CoreAdminContext, createAdminStore } from '../../core';
 import { testDataProvider } from '../../dataProvider';
+import { CRUD_GET_MANY } from '../../actions';
 import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
 
 describe('<ReferenceArrayInputController />', () => {
