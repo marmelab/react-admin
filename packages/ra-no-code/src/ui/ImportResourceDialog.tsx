@@ -10,8 +10,9 @@ import {
     TextField,
 } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
+import { useQueryClient } from 'react-query';
 
-import { useNotify, useRefresh } from 'ra-core';
+import { useNotify } from 'ra-core';
 import { useNavigate } from 'react-router-dom';
 import { useImportResourceFromCsv } from './useImportResourceFromCsv';
 
@@ -19,7 +20,7 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
     const [file, setFile] = useState<File>();
     const [resource, setResource] = useState<string>('');
     const navigate = useNavigate();
-    const refresh = useRefresh();
+    const queryClient = useQueryClient();
     const notify = useNotify();
 
     const handleClose = () => {
@@ -52,7 +53,7 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
                     if (resourceAlreadyExists) {
                         // If we imported more records for an existing resource,
                         // we must refresh the list
-                        refresh();
+                        queryClient.refetchQueries([resource, 'getList']);
                     }
                 })
                 .catch(() => {
