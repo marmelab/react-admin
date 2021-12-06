@@ -470,6 +470,51 @@ export const PostList = () => (
 );
 ```
 
+## `useListContext` No Longer Returns An `ids` Prop
+
+The `ListContext` used to return two props for the list data: `data` and `ids`. To render the list data, you had to iterate over the `ids`. 
+
+Starting with react-admin v4, `useListContext` only returns a `data` prop, and it is now an array. This means you have to update all your code that relies on `ids` from a `ListContext`. Here is an example for a custom list iterator using cards:
+
+```diff
+import * as React from 'react';
+import { useListContext, List, TextField, DateField, ReferenceField, EditButton } from 'react-admin';
+import { Card, CardActions, CardContent, CardHeader, Avatar } from '@material-ui/core';
+import PersonIcon from '@material-ui/icons/Person';
+
+const CommentGrid = () => {
+-   const { data, ids, loading } = useListContext();
++   const { data, isLoading } = useListContext();
+-   if (loading) return null;
++   if (isLoading) return null;
+    return (
+        <div style={{ margin: '1em' }}>
+-       {ids.map(id =>
++       {data.map(record =>
+-           <Card key={id} style={cardStyle}>
++           <Card key={record.id} style={cardStyle}>
+                <CardHeader
+-                   title={<TextField record={data[id]} source="author.name" />}
++                   title={<TextField record={record} source="author.name" />}
+-                   subheader={<DateField record={data[id]} source="created_at" />}
++                   subheader={<DateField record={record} source="created_at" />}
+                    avatar={<Avatar icon={<PersonIcon />} />}
+                />
+                <CardContent>
+-                   <TextField record={data[id]} source="body" />
++                   <TextField record={record} source="body" />
+                </CardContent>
+                <CardActions style={{ textAlign: 'right' }}>
+-                   <EditButton resource="posts" record={data[id]} />
++                   <EditButton resource="posts" record={record} />
+                </CardActions>
+            </Card>
+        )}
+        </div>
+    );
+};
+```
+
 ## `<Card>` Is Now Rendered By Inner Components
 
 The page components (`<List>`, `<Show>`, etc.) used to render a `<Card>` around their child. It's now the responsibility of the child to render the `<Card>` itself. If you only use react-admin components, you don't need to change anything. But if you use custom layout components, you need to wrap them inside a `<Card>`.
