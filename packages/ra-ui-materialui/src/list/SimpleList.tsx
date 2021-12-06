@@ -225,9 +225,9 @@ export interface SimpleListProps<RecordType extends Record = Record>
     rowStyle?: (record: Record, index: number) => any;
     // can be injected when using the component without context
     resource?: string;
-    data?: RecordMap<RecordType>;
-    ids?: Identifier[];
-    loaded?: boolean;
+    data?: RecordType[];
+    isLoading?: boolean;
+    isLoaded?: boolean;
     total?: number;
 }
 
