@@ -640,6 +640,17 @@ test('MyComponent', () => {
 });
 ```
 
+## `useAuthenticated` Signature hsa Changed
+
+`useAuthenticated` uses to accept only the parameters passed to the `authProvider.checkAuth` function. It now accept an option object with two properties:
+- `enabled`: whether it should check for an authenticated user
+- `params`: the parameters to pass to `checkAuth`
+
+```diff
+- useAuthenticated('permissions.posts.can_create');
++ useAuthenticated({ params: 'permissions.posts.can_create' })
+```
+
 # Upgrade to 3.0
 
 We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.

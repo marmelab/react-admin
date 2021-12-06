@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
-import useCheckAuth from './useCheckAuth';
-
-const emptyParams = {};
+import { useCheckAuth } from './useCheckAuth';
 
 /**
  * Restrict access to authenticated users.
@@ -28,9 +26,21 @@ const emptyParams = {};
  *         </Admin>
  *     );
  */
-export default (params: any = emptyParams) => {
+export const useAuthenticated = <ParamsType = any>(
+    options: UseAuthenticatedOptions<ParamsType> = {}
+) => {
+    const { enabled = true, params = emptyParams } = options;
     const checkAuth = useCheckAuth();
     useEffect(() => {
-        checkAuth(params).catch(() => {});
-    }, [checkAuth, params]);
+        if (enabled) {
+            checkAuth(params).catch(() => {});
+        }
+    }, [checkAuth, enabled, params]);
 };
+
+export type UseAuthenticatedOptions<ParamsType> = {
+    enabled?: boolean;
+    params?: ParamsType;
+};
+
+const emptyParams = {};
