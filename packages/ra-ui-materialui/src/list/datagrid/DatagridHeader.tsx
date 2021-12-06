@@ -68,7 +68,9 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                 );
                 onSelect(
                     isRowSelectable
-                        ? all.filter(id => isRowSelectable(data[id]))
+                        ? all.filter(id =>
+                              data[id] ? isRowSelectable(data[id]) : true
+                          )
                         : all
                 );
             } else {
