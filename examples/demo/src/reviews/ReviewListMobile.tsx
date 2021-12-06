@@ -41,19 +41,20 @@ const StyledList = styled(List)({
 });
 
 const ReviewListMobile = () => {
-    const { data, ids, loaded, total } = useListContext<Review>();
-
-    return loaded || Number(total) > 0 ? (
+    const { data, isLoading, total } = useListContext<Review>();
+    if (isLoading || Number(total) === 0) {
+        return null;
+    }
+    return (
         <StyledList className={classes.root}>
-            {(ids as Exclude<typeof ids, undefined>).map(id => {
-                const item = (data as Exclude<typeof data, undefined>)[id];
+            {data.map(item => {
                 if (!item) return null;
 
                 return (
                     <Link
-                        to={linkToRecord('/reviews', id)}
+                        to={linkToRecord('/reviews', item.id)}
                         className={classes.link}
-                        key={id}
+                        key={item.id}
                     >
                         <ListItem button>
                             <ListItemAvatar>
@@ -117,7 +118,7 @@ const ReviewListMobile = () => {
                 );
             })}
         </StyledList>
-    ) : null;
+    );
 };
 
 ReviewListMobile.propTypes = {

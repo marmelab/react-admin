@@ -478,7 +478,7 @@ export default {
     '.ql-snow .ql-direction.ql-active svg:last-child': {
         display: 'inline',
     },
-    '.ql-snow .ql-direction.ql-active svg:first-child': {
+    '.ql-snow .ql-direction.ql-active svg:first-of-type': {
         display: 'none',
     },
     '.ql-snow .ql-editor h1': {

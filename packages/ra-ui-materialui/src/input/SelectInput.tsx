@@ -115,6 +115,8 @@ export const SelectInput = (props: SelectInputProps) => {
         emptyValue,
         format,
         helperText,
+        isFetching,
+        isLoading,
         label,
         loaded,
         loading,
@@ -202,7 +204,7 @@ export const SelectInput = (props: SelectInputProps) => {
         onCreate,
         optionText,
     });
-    if (loading) {
+    if (isLoading) {
         return (
             <Labeled
                 id={id}
