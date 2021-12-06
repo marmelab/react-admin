@@ -1,4 +1,20 @@
 const path = require('path');
+const fs = require('fs');
+
+const packages = fs.readdirSync(path.resolve(__dirname, './packages'));
+const moduleNameMapper = packages.reduce((mapper, dirName) => {
+    const package = require(path.resolve(
+        __dirname,
+        './packages',
+        dirName,
+        'package.json'
+    ));
+    mapper[`^${package.name}(.*)$`] = path.join(
+        __dirname,
+        `./packages/${dirName}/src$1`
+    );
+    return mapper;
+}, {});
 
 module.exports = {
     globalSetup: './test-global-setup.js',
@@ -18,12 +34,5 @@ module.exports = {
             isolatedModules: true,
         },
     },
-    moduleNameMapper: {
-        '^ra-core(.*)$': path.join(__dirname, './packages/ra-core/src$1'),
-        '^ra-test(.*)$': path.join(__dirname, './packages/ra-test/src$1'),
-        '^ra-ui-materialui(.*)$': path.join(
-            __dirname,
-            './packages/ra-ui-materialui/src$1'
-        ),
-    },
+    moduleNameMapper,
 };
