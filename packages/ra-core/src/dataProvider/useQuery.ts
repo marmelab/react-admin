@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { useSafeSetState } from '../util/hooks';
+import { useSafeSetState } from '../util';
 import { OnSuccess, OnFailure } from '../types';
 import useDataProvider from './useDataProvider';
 import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDeclarativeSideEffects';

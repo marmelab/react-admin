@@ -1,22 +1,20 @@
 import expect from 'expect';
 import { runSaga } from 'redux-saga';
 import {
-    handleLogin,
     handleCheck,
-    handleLogout,
     handleFetchError,
+    handleLogin,
+    handleLogout,
 } from './auth';
 import {
+    clearState,
+    hideNotification,
+    showNotification,
+    USER_LOGIN_FAILURE,
     USER_LOGIN_LOADING,
     USER_LOGIN_SUCCESS,
-    USER_LOGIN_FAILURE,
-} from '../actions/authActions';
+} from '../actions';
 import { push, replace } from 'connected-react-router';
-import {
-    showNotification,
-    hideNotification,
-} from '../actions/notificationActions';
-import { clearState } from '../actions/clearActions';
 import { waitFor } from '@testing-library/react';
 
 describe('Auth saga', () => {

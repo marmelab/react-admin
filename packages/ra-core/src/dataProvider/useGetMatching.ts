@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import get from 'lodash/get';
 
-import { CRUD_GET_MATCHING } from '../actions/dataActions/crudGetMatching';
+import { CRUD_GET_MATCHING } from '../actions';
 import {
     Identifier,
     PaginationPayload,

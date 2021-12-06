@@ -3,7 +3,7 @@ import { push } from 'connected-react-router';
 
 import { Identifier } from '../types';
 import resolveRedirectTo from '../util/resolveRedirectTo';
-import { refreshView } from '../actions/uiActions';
+import { refreshView } from '../actions';
 
 type RedirectToFunction = (
     basePath: string,

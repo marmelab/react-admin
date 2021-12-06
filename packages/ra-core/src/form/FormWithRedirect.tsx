@@ -14,7 +14,7 @@ import {
     OnFailure,
 } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
-import { setAutomaticRefresh } from '../actions/uiActions';
+import { setAutomaticRefresh } from '../actions';
 import { FormContextProvider } from './FormContextProvider';
 import submitErrorsMutators from './submitErrorsMutators';
 import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';

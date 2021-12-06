@@ -14,7 +14,7 @@ import queryReducer, {
     SET_SORT,
     SORT_ASC,
 } from '../reducer/admin/resource/list/queryReducer';
-import { changeListParams, ListParams } from '../actions/listActions';
+import { changeListParams, ListParams } from '../actions';
 import { SortPayload, ReduxState, FilterPayload } from '../types';
 import removeEmpty from '../util/removeEmpty';
 

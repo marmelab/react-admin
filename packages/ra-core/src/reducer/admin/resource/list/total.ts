@@ -2,7 +2,7 @@ import { Reducer } from 'redux';
 import {
     CRUD_GET_LIST_SUCCESS,
     CrudGetListSuccessAction,
-} from '../../../../actions/dataActions';
+} from '../../../../actions';
 import { DELETE, DELETE_MANY } from '../../../../core';
 
 type ActionTypes =

@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import useGetPermissions from './useGetPermissions';
-import { useSafeSetState } from '../util/hooks';
+import { useSafeSetState } from '../util';
 
 interface State<Permissions, Error> {
     loading: boolean;

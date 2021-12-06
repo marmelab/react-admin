@@ -4,7 +4,7 @@ import {
     FETCH_END,
     FETCH_ERROR,
     FETCH_CANCEL,
-} from '../../actions/fetchActions';
+} from '../../actions';
 
 import reducer from './loading';
 

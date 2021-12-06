@@ -4,7 +4,7 @@ import {
     setSidebarVisibility,
     refreshView,
     setAutomaticRefresh,
-} from '../../actions/uiActions';
+} from '../../actions';
 import reducer from './ui';
 
 describe('ui reducer', () => {

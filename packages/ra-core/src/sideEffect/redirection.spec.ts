@@ -3,7 +3,7 @@ import { put } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 
 import { handleRedirection } from './redirection';
-import { refreshView } from '../actions/uiActions';
+import { refreshView } from '../actions';
 
 describe('redirection saga', () => {
     it('should yield a refresh of the view if redirectTo is falsy', () => {

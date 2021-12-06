@@ -1,6 +1,6 @@
 import { getResultFromCache } from '../replyWithCache';
 import getFetchType from '../getFetchType';
-import { FETCH_END } from '../../actions/fetchActions';
+import { FETCH_END } from '../../actions';
 
 export const answerWithCache = ({
     type,

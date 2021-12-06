@@ -2,7 +2,7 @@ import { Reducer } from 'redux';
 import {
     ToggleListItemExpandAction,
     TOGGLE_LIST_ITEM_EXPAND,
-} from '../../../../actions/listActions';
+} from '../../../../actions';
 import { Identifier } from '../../../../types';
 
 type IdentifierArray = Identifier[];

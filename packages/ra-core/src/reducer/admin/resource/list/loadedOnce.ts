@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { CRUD_GET_LIST_SUCCESS } from '../../../../actions/dataActions';
+import { CRUD_GET_LIST_SUCCESS } from '../../../../actions';
 
 type State = boolean;
 

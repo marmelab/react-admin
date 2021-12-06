@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
-import { clearState } from '../actions/clearActions';
+import { clearState } from '../actions';
 import { useHistory } from 'react-router-dom';
 import { LocationDescriptorObject } from 'history';
 

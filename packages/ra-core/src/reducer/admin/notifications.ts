@@ -1,14 +1,15 @@
 import { Reducer } from 'redux';
 import {
-    SHOW_NOTIFICATION,
-    ShowNotificationAction,
     HIDE_NOTIFICATION,
     HideNotificationAction,
+    NotificationPayload,
     RESET_NOTIFICATION,
     ResetNotificationAction,
-    NotificationPayload,
-} from '../../actions/notificationActions';
-import { UNDO, UndoAction } from '../../actions/undoActions';
+    SHOW_NOTIFICATION,
+    ShowNotificationAction,
+    UNDO,
+    UndoAction,
+} from '../../actions';
 
 type ActionTypes =
     | ShowNotificationAction

@@ -10,11 +10,9 @@ import {
     StartOptimisticModeAction,
     STOP_OPTIMISTIC_MODE,
     StopOptimisticModeAction,
-} from '../../actions';
-import {
     SET_AUTOMATIC_REFRESH,
     SetAutomaticRefreshAction,
-} from '../../actions/uiActions';
+} from '../../actions';
 
 type ActionTypes =
     | ToggleSidebarAction

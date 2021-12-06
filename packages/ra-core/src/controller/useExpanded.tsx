@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { toggleListItemExpand } from '../actions/listActions';
+import { toggleListItemExpand } from '../actions';
 import { Identifier, ReduxState } from '../types';
 
 /**

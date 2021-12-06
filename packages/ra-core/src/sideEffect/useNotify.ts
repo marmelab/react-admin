@@ -4,7 +4,7 @@ import {
     showNotification,
     NotificationType,
     NotificationOptions,
-} from '../actions/notificationActions';
+} from '../actions';
 import warning from '../util/warning';
 
 /**

@@ -3,7 +3,7 @@ import {
     HIDE_NOTIFICATION,
     SHOW_NOTIFICATION,
     NotificationType,
-} from '../../actions/notificationActions';
+} from '../../actions';
 import reducer from './notifications';
 
 describe('notifications reducer', () => {

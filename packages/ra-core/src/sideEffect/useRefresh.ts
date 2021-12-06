@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { refreshView } from '../actions/uiActions';
+import { refreshView } from '../actions';
 
 /**
  * Hook for Refresh Side Effect

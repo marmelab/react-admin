@@ -1,4 +1,4 @@
-import { createStore, compose, applyMiddleware } from 'redux';
+import { applyMiddleware, compose, createStore } from 'redux';
 import { routerMiddleware } from 'connected-react-router';
 import createSagaMiddleware from 'redux-saga';
 import { all, fork } from 'redux-saga/effects';
@@ -12,7 +12,7 @@ import {
 } from '../types';
 import createAppReducer from '../reducer';
 import { adminSaga } from '../sideEffect';
-import { CLEAR_STATE } from '../actions/clearActions';
+import { CLEAR_STATE } from '../actions';
 
 interface Window {
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: (traceOptions: object) => Function;

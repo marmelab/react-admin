@@ -1,7 +1,7 @@
 import get from 'lodash/get';
 import { useMemo } from 'react';
 
-import { CRUD_GET_MANY_REFERENCE } from '../actions/dataActions/crudGetManyReference';
+import { CRUD_GET_MANY_REFERENCE } from '../actions';
 import {
     PaginationPayload,
     SortPayload,

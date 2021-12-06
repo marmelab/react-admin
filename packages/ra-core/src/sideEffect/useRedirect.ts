@@ -5,7 +5,7 @@ import { parsePath } from 'history';
 
 import { Identifier, Record } from '../types';
 import resolveRedirectTo from '../util/resolveRedirectTo';
-import { refreshView } from '../actions/uiActions';
+import { refreshView } from '../actions';
 
 type RedirectToFunction = (
     basePath?: string,

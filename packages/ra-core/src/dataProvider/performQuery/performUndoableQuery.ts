@@ -2,16 +2,14 @@ import validateResponseFormat from '../validateResponseFormat';
 import getFetchType from '../getFetchType';
 import undoableEventEmitter from '../undoableEventEmitter';
 import {
-    startOptimisticMode,
-    stopOptimisticMode,
-} from '../../actions/undoActions';
-import { showNotification } from '../../actions/notificationActions';
-import { refreshView } from '../../actions/uiActions';
-import {
     FETCH_END,
     FETCH_ERROR,
     FETCH_START,
-} from '../../actions/fetchActions';
+    refreshView,
+    showNotification,
+    startOptimisticMode,
+    stopOptimisticMode,
+} from '../../actions';
 import { replayStackedCalls } from './stackedCalls';
 import { QueryFunctionParams } from './QueryFunctionParams';
 

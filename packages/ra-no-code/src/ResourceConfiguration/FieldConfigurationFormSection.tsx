@@ -2,8 +2,7 @@ import * as React from 'react';
 import { getFieldLabelTranslationArgs, useTranslate } from 'ra-core';
 import { TextInput } from 'ra-ui-materialui';
 import { CardContent } from '@material-ui/core';
-import { FieldTypeInput } from './FieldConfiguration/FieldTypeInput';
-import { FieldViewsInput } from './FieldConfiguration/FieldViewsInput';
+import { FieldTypeInput, FieldViewsInput } from './FieldConfiguration';
 import { ConfigurationInputsFromFieldDefinition } from './ConfigurationInputsFromFieldDefinition';
 
 export const FieldConfigurationFormSection = props => {

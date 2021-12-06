@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import isEqual from 'lodash/isEqual';
 
 import useGetPermissions from './useGetPermissions';
-import { useSafeSetState } from '../util/hooks';
+import { useSafeSetState } from '../util';
 
 interface State {
     permissions?: any;

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { setListSelectedIds, toggleListItem } from '../actions/listActions';
+import { setListSelectedIds, toggleListItem } from '../actions';
 import { Identifier, ReduxState } from '../types';
 
 const defaultRecords = [];

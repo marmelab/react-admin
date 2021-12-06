@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { fetchStart, fetchEnd } from '../actions/fetchActions';
+import { fetchStart, fetchEnd } from '../actions';
 
 /**
  * Update the loading count, which starts or stops the loading indicator.

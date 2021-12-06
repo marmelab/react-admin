@@ -4,7 +4,7 @@ import { GET_LIST } from '../../../../../core';
 import {
     CrudGetListSuccessAction,
     CrudGetMatchingSuccessAction,
-} from '../../../../../actions/dataActions';
+} from '../../../../../actions';
 
 type ActionTypes =
     | CrudGetListSuccessAction

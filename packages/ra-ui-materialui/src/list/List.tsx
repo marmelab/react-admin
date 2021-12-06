@@ -7,7 +7,7 @@ import {
     ListContextProvider,
 } from 'ra-core';
 
-import { TitlePropType } from '../layout/Title';
+import { TitlePropType } from '../layout';
 
 import ListView from './ListView';
 import { ListProps } from '../types';

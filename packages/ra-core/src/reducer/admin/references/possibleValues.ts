@@ -4,7 +4,7 @@ import {
     CrudGetMatchingSuccessAction,
     CRUD_GET_MATCHING_FAILURE,
     CrudGetMatchingFailureAction,
-} from '../../../actions/dataActions';
+} from '../../../actions';
 import { Identifier } from '../../../types';
 
 const initialState = {};

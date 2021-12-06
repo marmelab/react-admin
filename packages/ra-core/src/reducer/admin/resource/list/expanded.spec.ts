@@ -1,7 +1,7 @@
 import expect from 'expect';
 
 import expand from './expanded';
-import { toggleListItemExpand } from '../../../../actions/listActions';
+import { toggleListItemExpand } from '../../../../actions';
 
 describe('expanded reducer', () => {
     describe('TOGGLE_LIST_ITEM_EXPAND action', () => {

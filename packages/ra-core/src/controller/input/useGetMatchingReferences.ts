@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { crudGetMatchingAccumulate } from '../../actions/accumulateActions';
+import { crudGetMatchingAccumulate } from '../../actions';
 import { useResourceContext } from '../../core';
 import {
     getPossibleReferences,

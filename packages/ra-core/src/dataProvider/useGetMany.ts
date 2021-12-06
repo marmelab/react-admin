@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -7,11 +7,10 @@ import union from 'lodash/union';
 import isEqual from 'lodash/isEqual';
 import get from 'lodash/get';
 
-import { CRUD_GET_MANY } from '../actions/dataActions/crudGetMany';
+import { CRUD_GET_MANY } from '../actions';
 import { Identifier, Record, ReduxState, DataProviderProxy } from '../types';
-import { useSafeSetState } from '../util/hooks';
+import { useSafeSetState } from '../util';
 import useDataProvider from './useDataProvider';
-import { useEffect } from 'react';
 import { useVersion } from '../controller';
 import { Refetch } from './useQueryWithStore';
 

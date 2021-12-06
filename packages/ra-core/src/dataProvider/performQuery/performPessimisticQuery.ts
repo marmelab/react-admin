@@ -1,10 +1,6 @@
 import validateResponseFormat from '../validateResponseFormat';
 import getFetchType from '../getFetchType';
-import {
-    FETCH_END,
-    FETCH_ERROR,
-    FETCH_START,
-} from '../../actions/fetchActions';
+import { FETCH_END, FETCH_ERROR, FETCH_START } from '../../actions';
 import { QueryFunctionParams } from './QueryFunctionParams';
 
 /**

@@ -1,8 +1,5 @@
 import { put, takeEvery } from 'redux-saga/effects';
-import {
-    showNotification,
-    NotificationType,
-} from '../actions/notificationActions';
+import { showNotification, NotificationType } from '../actions';
 
 export interface NotificationSideEffect {
     body: string;

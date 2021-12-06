@@ -1,14 +1,14 @@
 import expect from 'expect';
 import { put, race, take } from 'redux-saga/effects';
 
-import { showNotification } from '../actions/notificationActions';
 import {
+    showNotification,
     UNDO,
     COMPLETE,
     startOptimisticMode,
     stopOptimisticMode,
-} from '../actions/undoActions';
-import { refreshView } from '../actions/uiActions';
+    refreshView,
+} from '../actions';
 
 import { handleUndoRace } from './undo';
 

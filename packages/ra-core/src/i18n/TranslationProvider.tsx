@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, Children, ReactNode } from 'react';
 
-import { useSafeSetState } from '../util/hooks';
+import { useSafeSetState } from '../util';
 import { TranslationContext } from './TranslationContext';
 import { I18nProvider } from '../types';
 

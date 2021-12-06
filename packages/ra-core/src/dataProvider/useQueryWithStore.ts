@@ -5,7 +5,7 @@ import isEqual from 'lodash/isEqual';
 import useDataProvider from './useDataProvider';
 import useVersion from '../controller/useVersion';
 import getFetchType from './getFetchType';
-import { useSafeSetState } from '../util/hooks';
+import { useSafeSetState } from '../util';
 import { ReduxState, OnSuccess, OnFailure, DataProvider } from '../types';
 
 export interface DataProviderQuery {

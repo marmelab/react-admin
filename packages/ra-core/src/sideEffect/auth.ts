@@ -1,28 +1,26 @@
 import {
     all,
-    put,
     call,
+    put,
     select,
-    takeLatest,
     takeEvery,
+    takeLatest,
 } from 'redux-saga/effects';
 import { push, replace } from 'connected-react-router';
 
 import { AuthProvider } from '../types';
 import {
-    showNotification,
+    clearState,
+    FETCH_ERROR,
     hideNotification,
-} from '../actions/notificationActions';
-import {
+    showNotification,
+    USER_CHECK,
     USER_LOGIN,
+    USER_LOGIN_FAILURE,
     USER_LOGIN_LOADING,
     USER_LOGIN_SUCCESS,
-    USER_LOGIN_FAILURE,
-    USER_CHECK,
     USER_LOGOUT,
-} from '../actions/authActions';
-import { FETCH_ERROR } from '../actions/fetchActions';
-import { clearState } from '../actions/clearActions';
+} from '../actions';
 
 export default (authProvider?: AuthProvider) => {
     if (!authProvider) {

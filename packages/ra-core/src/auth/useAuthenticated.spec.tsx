@@ -5,7 +5,7 @@ import { waitFor } from '@testing-library/react';
 import Authenticated from './Authenticated';
 import AuthContext from './AuthContext';
 import { renderWithRedux } from 'ra-test';
-import { showNotification } from '../actions/notificationActions';
+import { showNotification } from '../actions';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 

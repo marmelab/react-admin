@@ -9,7 +9,7 @@ import { StaticContext } from 'react-router';
 import { Location, History, LocationState } from 'history';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
-import { AuthActionType } from './auth/types';
+import { AuthActionType } from './auth';
 
 /**
  * data types

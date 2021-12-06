@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import merge from 'lodash/merge';
 
-import { useSafeSetState } from '../util/hooks';
+import { useSafeSetState } from '../util';
 import { MutationMode, OnSuccess, OnFailure } from '../types';
 import useDataProvider from './useDataProvider';
 import useDataProviderWithDeclarativeSideEffects from './useDataProviderWithDeclarativeSideEffects';

@@ -1,14 +1,12 @@
 import validateResponseFormat from '../validateResponseFormat';
 import getFetchType from '../getFetchType';
 import {
-    startOptimisticMode,
-    stopOptimisticMode,
-} from '../../actions/undoActions';
-import {
     FETCH_END,
     FETCH_ERROR,
     FETCH_START,
-} from '../../actions/fetchActions';
+    startOptimisticMode,
+    stopOptimisticMode,
+} from '../../actions';
 import { replayStackedCalls } from './stackedCalls';
 import { QueryFunctionParams } from './QueryFunctionParams';
 

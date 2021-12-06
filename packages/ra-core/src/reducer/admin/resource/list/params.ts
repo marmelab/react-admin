@@ -1,8 +1,8 @@
 import { Reducer } from 'redux';
 import {
-    CRUD_CHANGE_LIST_PARAMS,
     ChangeListParamsAction,
-} from '../../../../actions/listActions';
+    CRUD_CHANGE_LIST_PARAMS,
+} from '../../../../actions';
 
 const defaultState = {
     sort: null,

@@ -3,7 +3,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
-import { resetNotification } from '../actions/notificationActions';
+import { resetNotification } from '../actions';
 
 /**
  * Get a callback for calling the authProvider.login() method
