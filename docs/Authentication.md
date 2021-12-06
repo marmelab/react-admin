@@ -104,6 +104,14 @@ const authProvider = {
                 throw new Error('Network error')
             });
     },
+    checkAuth: () => {
+        // Required for the authentication to work
+        return Promise.resolve();
+    },
+    getPermissions: () => {
+        // Required for the authentication to work
+        return Promise.resolve();
+    },
     // ...
 };
 
