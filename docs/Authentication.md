@@ -702,7 +702,7 @@ export default MyPage;
 ```
 
 `useAuthenticated` accepts an options object as its only argument, with the following properties:
-- `enabled`: whether it should check for an authenticated user
+- `enabled`: whether it should check for an authenticated user (`true` by default)
 - `params`: the parameters to pass to `checkAuth`
 
 If you call `useAuthenticated()` with a `params` option, those parameters are passed to the `authProvider.checkAuth` call. That allows you to add authentication logic depending on the context of the call:
