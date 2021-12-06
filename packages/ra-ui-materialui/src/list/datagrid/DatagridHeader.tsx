@@ -6,7 +6,6 @@ import {
     useResourceContext,
     Identifier,
     Record,
-    RecordMap,
     SortPayload,
     useTranslate,
 } from 'ra-core';
@@ -154,7 +153,7 @@ DatagridHeader.propTypes = {
         field: PropTypes.string,
         order: PropTypes.string,
     }),
-    data: PropTypes.any,
+    data: PropTypes.arrayOf(PropTypes.any),
     hasExpand: PropTypes.bool,
     hasBulkActions: PropTypes.bool,
     isRowSelectable: PropTypes.func,
@@ -176,8 +175,7 @@ export interface DatagridHeaderProps<RecordType extends Record = Record> {
     size?: 'medium' | 'small';
     // can be injected when using the component without context
     currentSort?: SortPayload;
-    data?: RecordMap<RecordType>;
-    ids?: Identifier[];
+    data?: RecordType[];
     onSelect?: (ids: Identifier[]) => void;
     onToggleItem?: (id: Identifier) => void;
     resource?: string;

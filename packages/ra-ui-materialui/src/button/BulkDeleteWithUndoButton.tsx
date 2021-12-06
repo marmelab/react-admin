@@ -53,7 +53,7 @@ export const BulkDeleteWithUndoButton = (
                     const newData = old.data.filter(
                         record => !selectedIds.includes(record.id)
                     );
-                    if (newData.length == old.data.length) {
+                    if (newData.length === old.data.length) {
                         return old;
                     }
                     return {
