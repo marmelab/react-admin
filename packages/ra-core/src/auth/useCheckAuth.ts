@@ -90,7 +90,7 @@ const checkAuthWithoutAuthProvider = () => Promise.resolve();
  *
  * @return {Promise} Resolved to the authProvider response if the user passes the check, or rejected with an error otherwise
  */
-type CheckAuth = (
+export type CheckAuth = (
     params?: any,
     logoutOnFailure?: boolean,
     redirectTo?: string,
