@@ -1,12 +1,21 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { Resource, required } from 'ra-core';
+import { Resource, required, useCreate } from 'ra-core';
 import { createMemoryHistory } from 'history';
+import {
+    Dialog,
+    DialogContent,
+    TextField,
+    DialogActions,
+    Button,
+    Stack,
+} from '@mui/material';
 
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { AutocompleteInput } from './AutocompleteInput';
 import { ReferenceInput } from './ReferenceInput';
+import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteInput' };
 
@@ -250,8 +259,9 @@ const dataProviderWithAuthors = {
                             data: authors,
                             total: authors.length,
                         }),
-                    1000
+                    500
                 );
+                return;
             }
 
             const filteredAuthors = authors.filter(author =>
@@ -266,10 +276,19 @@ const dataProviderWithAuthors = {
                         data: filteredAuthors,
                         total: filteredAuthors.length,
                     }),
-                1000
+                500
             );
         }),
     update: (resource, params) => Promise.resolve(params),
+    create: (resource, params) => {
+        const newAuthor = {
+            id: authors.length + 1,
+            name: params.data.name,
+            language: params.data.language,
+        };
+        authors.push(newAuthor);
+        return Promise.resolve({ data: newAuthor });
+    },
 } as any;
 
 const BookEditWithReference = () => (
@@ -293,5 +312,98 @@ export const InsideReferenceInput = () => (
     <Admin dataProvider={dataProviderWithAuthors} history={history}>
         <Resource name="authors" />
         <Resource name="books" edit={BookEditWithReference} />
+    </Admin>
+);
+
+const CreateAuthor = () => {
+    const { filter, onCancel, onCreate } = useCreateSuggestionContext();
+    const [name, setName] = React.useState(filter || '');
+    const [language, setLanguage] = React.useState('');
+    const [create] = useCreate('authors');
+
+    const handleSubmit = event => {
+        event.preventDefault();
+        create(
+            {
+                payload: {
+                    data: {
+                        name,
+                        language,
+                    },
+                },
+            },
+            {
+                onSuccess: ({ data }) => {
+                    setName('');
+                    setLanguage('');
+                    onCreate(data);
+                },
+            }
+        );
+    };
+
+    return (
+        <Dialog open onClose={onCancel}>
+            <form onSubmit={handleSubmit}>
+                <DialogContent>
+                    <Stack gap={4}>
+                        <TextField
+                            name="name"
+                            label="The author name"
+                            value={name}
+                            onChange={event => setName(event.target.value)}
+                            autoFocus
+                        />
+                        <TextField
+                            name="language"
+                            label="The author language"
+                            value={language}
+                            onChange={event => setLanguage(event.target.value)}
+                            autoFocus
+                        />
+                    </Stack>
+                </DialogContent>
+                <DialogActions>
+                    <Button type="submit">Save</Button>
+                    <Button onClick={onCancel}>Cancel</Button>
+                </DialogActions>
+            </form>
+        </Dialog>
+    );
+};
+
+const BookEditWithReferenceAndCreationSupport = () => (
+    <Edit
+        mutationMode="pessimistic"
+        mutationOptions={{
+            onSuccess: data => {
+                console.log(data);
+            },
+        }}
+    >
+        <SimpleForm>
+            <ReferenceInput reference="authors" source="author">
+                <AutocompleteInput
+                    create={<CreateAuthor />}
+                    options={{
+                        renderOption: (props, choice) => (
+                            <div {...props}>
+                                {choice.name}{' '}
+                                {choice.language ? (
+                                    <i>({choice.language})</i>
+                                ) : null}
+                            </div>
+                        ),
+                    }}
+                />
+            </ReferenceInput>
+        </SimpleForm>
+    </Edit>
+);
+
+export const InsideReferenceInputWithCreationSupport = () => (
+    <Admin dataProvider={dataProviderWithAuthors} history={history}>
+        <Resource name="authors" />
+        <Resource name="books" edit={BookEditWithReferenceAndCreationSupport} />
     </Admin>
 );

@@ -8,6 +8,7 @@ import {
     ChoicesInputProps,
     UseChoicesOptions,
     useSuggestions,
+    useTimeout,
     useTranslate,
     warning,
 } from 'ra-core';
@@ -103,6 +104,8 @@ Please provide an optionText that returns a string (used for the text input) and
     }, [shouldRenderSuggestions, options]);
 
     const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
+        // AutocompleteInput allows duplicate so that we ensure the selected item is always in the choices
+        allowDuplicates: true,
         allowEmpty,
         choices,
         emptyText,
@@ -175,11 +178,6 @@ Please provide an optionText that returns a string (used for the text input) and
         }
     };
 
-    const suggestions = useMemo(() => getSuggestions(filterValue), [
-        filterValue,
-        getSuggestions,
-    ]);
-
     const doesQueryMatchSuggestion = useMemo(() => {
         if (isValidElement(optionText)) {
             return choices.some(choice => matchSuggestion(filterValue, choice));
@@ -216,7 +214,7 @@ Please provide an optionText that returns a string (used for the text input) and
             inputValue !== '' &&
             !doesQueryMatchSuggestion
         ) {
-            return options.concat(getCreateItem());
+            return options.concat(getCreateItem(inputValue));
         }
 
         return options;
@@ -226,25 +224,33 @@ Please provide an optionText that returns a string (used for the text input) and
         handleChangeWithCreateSupport(newValue);
     };
 
+    const oneSecondHasPassed = useTimeout(1000, filterValue);
+
+    // To avoid displaying an empty list of choices while a search is in progress,
+    // we store the last choices in a ref. We'll display those last choices until
+    // a second has passed.
+    const currentChoices = useRef(choices);
+    useEffect(() => {
+        if (choices && (choices.length > 0 || oneSecondHasPassed)) {
+            currentChoices.current = choices;
+        }
+    }, [choices, oneSecondHasPassed]);
+
+    const suggestions = useMemo(() => {
+        if (setFilter && choices?.length === 0 && !oneSecondHasPassed) {
+            return currentChoices.current;
+        }
+        return getSuggestions(filterValue);
+    }, [choices, filterValue, getSuggestions, oneSecondHasPassed, setFilter]);
+
     return (
         <>
             <Autocomplete
                 blurOnSelect
                 clearText={translate('ra.action.clear_input_value')}
                 closeText={translate('ra.action.close')}
-                freeSolo={!!create || !!onCreate}
-                selectOnFocus={!!create || !!onCreate}
-                clearOnBlur={!!create || !!onCreate}
-                handleHomeEndKeys={!!create || !!onCreate}
                 openOnFocus
                 openText={translate('ra.action.open')}
-                options={
-                    shouldRenderSuggestions == undefined || // eslint-disable-line eqeqeq
-                    shouldRenderSuggestions(filterValue)
-                        ? suggestions
-                        : []
-                }
-                getOptionLabel={getOptionLabel}
                 isOptionEqualToValue={isOptionEqualToValue}
                 renderInput={params => (
                     <TextField
@@ -274,9 +280,22 @@ Please provide an optionText that returns a string (used for the text input) and
                     />
                 )}
                 {...options}
+                freeSolo={!!create || !!onCreate}
+                selectOnFocus={!!create || !!onCreate}
+                clearOnBlur={!!create || !!onCreate}
+                handleHomeEndKeys={!!create || !!onCreate}
                 filterOptions={filterOptions}
+                options={
+                    shouldRenderSuggestions == undefined || // eslint-disable-line eqeqeq
+                    shouldRenderSuggestions(filterValue)
+                        ? suggestions
+                        : []
+                }
+                getOptionLabel={getOptionLabel}
                 inputValue={filterValue}
-                loading={loading && suggestions.length === 0}
+                loading={
+                    loading && suggestions.length === 0 && oneSecondHasPassed
+                }
                 value={selectedItem}
                 onChange={handleAutocompleteChange}
                 onBlur={input.onBlur}
