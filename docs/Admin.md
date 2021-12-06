@@ -473,7 +473,7 @@ const App = () => (
 
 ## `basename`
 
-Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is useful when including the Admin inside a larger app. See https://reactrouter.com/docs/en/v6/api#router for more informations.
+Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is useful when including the Admin inside a larger app. See https://reactrouter.com/docs/en/v6/api#router for more information.
 
 ```jsx
 const App = () => (
