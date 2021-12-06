@@ -69,21 +69,18 @@ import { DatagridClasses, StyledTable } from './useDatagridStyles';
  * const currentSort = { field: 'published_at', order: 'DESC' };
  *
  * export const MyCustomList = (props) => {
- *     const { ids, data, total, loaded } = useGetList(
+ *     const { data, total, isLoading } = useGetList(
  *         'posts',
- *         { page: 1, perPage: 10 },
- *         currentSort
+ *         { pagination: { page: 1, perPage: 10 }, sort: currentSort }
  *     );
  *
  *     return (
  *         <Datagrid
- *             basePath=""
- *             currentSort={currentSort}
  *             data={data}
- *             ids={ids}
- *             selectedIds={[]}
- *             loaded={loaded}
  *             total={total}
+ *             isLoading={isLoading}
+ *             currentSort={currentSort}
+ *             selectedIds={[]}
  *             setSort={() => {
  *                 console.log('set sort');
  *             }}
