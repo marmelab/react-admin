@@ -13,6 +13,7 @@ import {
     useResourceContext,
     useListContext,
 } from 'ra-core';
+import { useQueryClient } from 'react-query';
 
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
@@ -28,6 +29,7 @@ export const BulkDeleteWithUndoButton = (
         ...rest
     } = props;
     const { selectedIds } = useListContext(props);
+    const queryClient = useQueryClient();
 
     const notify = useNotify();
     const unselectAll = useUnselectAll();
@@ -43,7 +45,23 @@ export const BulkDeleteWithUndoButton = (
                 true
             );
             unselectAll(resource);
-            refresh();
+            // FIXME: Remove when useDeleteMany is migrated to react-query
+            queryClient.setQueriesData(
+                [resource, 'getList'],
+                (old: { data?: any[]; total?: number }) => {
+                    if (!old || !old.data) return;
+                    const newData = old.data.filter(
+                        record => !selectedIds.includes(record.id)
+                    );
+                    if (newData.length == old.data.length) {
+                        return old;
+                    }
+                    return {
+                        data: newData,
+                        total: newData.length,
+                    };
+                }
+            );
         },
         onFailure: error => {
             notify(
