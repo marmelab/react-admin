@@ -2,6 +2,7 @@ import { isValidElement, ReactElement, useEffect, useMemo } from 'react';
 import { Location } from 'history';
 import { UseQueryOptions } from 'react-query';
 
+import { useAuthenticated } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../sideEffect';
 import { useGetList, Refetch } from '../../dataProvider';
@@ -43,6 +44,7 @@ export const useListController = <RecordType extends Record = Record>(
     props: ListControllerProps<RecordType> = {}
 ): ListControllerResult<RecordType> => {
     const {
+        disableAuthentication,
         exporter = defaultExporter,
         filterDefaultValues,
         sort = defaultSort,
@@ -52,6 +54,7 @@ export const useListController = <RecordType extends Record = Record>(
         disableSyncWithLocation,
         queryOptions,
     } = props;
+    useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
     const { hasCreate } = useResourceDefinition(props);
 
@@ -171,6 +174,7 @@ export const useListController = <RecordType extends Record = Record>(
 };
 
 export interface ListControllerProps<RecordType extends Record = Record> {
+    disableAuthentication?: boolean;
     // the props you can change
     filter?: FilterPayload;
     filters?: ReactElement | ReactElement[];

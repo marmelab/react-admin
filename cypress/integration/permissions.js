@@ -65,7 +65,7 @@ describe('Permissions', () => {
         });
 
         it('in Show page', () => {
-            ShowPage.navigate();
+            UserShowPage.navigate();
             cy.contains('Id');
             cy.contains('Name');
             cy.contains('Role').should(el => expect(el).to.not.exist);
