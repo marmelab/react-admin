@@ -423,7 +423,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
             if (endAdornment) {
                 return endAdornment;
             }
-            if (isLoading) {
+            if (isFetching) {
                 return <AutocompleteInputLoader />;
             }
         } else if (!filterValue) {
@@ -447,7 +447,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                                 )}
                             />
                         </IconButton>
-                        {isLoading && <AutocompleteInputLoader />}
+                        {isFetching && <AutocompleteInputLoader />}
                     </InputAdornment>
                 );
             } else {
@@ -462,7 +462,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                             >
                                 &nbsp;
                             </span>
-                            {isLoading && <AutocompleteInputLoader />}
+                            {isFetching && <AutocompleteInputLoader />}
                         </InputAdornment>
                     );
                 }
@@ -492,7 +492,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                             )}
                         />
                     </IconButton>
-                    {isLoading && <AutocompleteInputLoader />}
+                    {isFetching && <AutocompleteInputLoader />}
                 </InputAdornment>
             );
         }

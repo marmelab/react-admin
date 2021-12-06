@@ -376,7 +376,7 @@ describe('<RadioButtonGroupInput />', () => {
         });
     });
 
-    it('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
+    it('should not render a LinearProgress if isFetching is true and a second has not passed yet', () => {
         const { queryByRole } = render(
             <Form
                 validateOnBlur
@@ -385,8 +385,7 @@ describe('<RadioButtonGroupInput />', () => {
                     <RadioButtonGroupInput
                         {...{
                             ...defaultProps,
-                            loaded: true,
-                            loading: true,
+                            isFetching: true,
                         }}
                     />
                 )}
@@ -396,7 +395,7 @@ describe('<RadioButtonGroupInput />', () => {
         expect(queryByRole('progressbar')).toBeNull();
     });
 
-    it('should render a LinearProgress if loading is true and a second has passed', async () => {
+    it('should render a LinearProgress if isFetching is true and a second has passed', async () => {
         const { queryByRole } = render(
             <Form
                 validateOnBlur
@@ -405,8 +404,7 @@ describe('<RadioButtonGroupInput />', () => {
                     <RadioButtonGroupInput
                         {...{
                             ...defaultProps,
-                            loaded: true,
-                            loading: true,
+                            isFetching: true,
                         }}
                     />
                 )}
@@ -418,7 +416,7 @@ describe('<RadioButtonGroupInput />', () => {
         expect(queryByRole('progressbar')).not.toBeNull();
     });
 
-    it('should not render a LinearProgress if loading is false', () => {
+    it('should not render a LinearProgress if isFetching is false', () => {
         const { queryByRole } = render(
             <Form
                 validateOnBlur
