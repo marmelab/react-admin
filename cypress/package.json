@@ -7,8 +7,8 @@
         "test": "node ./start.js"
     },
     "devDependencies": {
-        "@cypress/webpack-preprocessor": "^5.4.5",
-        "cypress": "^5.1.0",
+        "@cypress/webpack-preprocessor": "^5.10.0",
+        "cypress": "^9.1.1",
         "cypress-plugin-tab": "^1.0.5"
     }
 }
