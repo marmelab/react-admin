@@ -473,11 +473,15 @@ const App = () => (
 
 ## `basename`
 
-Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is useful when including the Admin inside a larger app. See https://reactrouter.com/docs/en/v6/api#router for more information.
+Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is only needed when using the [`BrowserHistory`](https://github.com/remix-run/history/blob/main/docs/api-reference.md#createbrowserhistory) to serve the application under a subpath of your domain (for example https://marmelab.com/ra-enterprise-demo). See https://reactrouter.com/docs/en/v6/api#router for more information.
 
 ```jsx
+import { Admin } from 'react-admin';
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory();
 const App = () => (
-    <Admin basename="admin">
+    <Admin basename="admin" history={history}>
         ...
     </Admin>
 );
