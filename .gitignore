@@ -13,3 +13,5 @@ examples/**/static
 examples/**/dist
 cypress/videos
 cypress/screenshots
+/public
+/storybook-static
