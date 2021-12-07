@@ -66,6 +66,7 @@ const AppBar = (props: AppBarProps): JSX.Element => {
         title,
         userMenu,
         container: Container,
+        showLoadingIndicator = true,
         ...rest
     } = props;
     const classes = useStyles(props);
@@ -99,7 +100,8 @@ const AppBar = (props: AppBarProps): JSX.Element => {
                     ) : (
                         children
                     )}
-                    <LoadingIndicator />
+                    {showLoadingIndicator && <LoadingIndicator />}
+                    
                     {typeof userMenu === 'boolean' ? (
                         userMenu === true ? (
                             <DefaultUserMenu logout={logout} />
@@ -166,6 +168,7 @@ export interface AppBarProps extends Omit<MuiAppBarProps, 'title' | 'classes'> {
     open?: boolean;
     title?: string | JSX.Element;
     userMenu?: JSX.Element | boolean;
+    showLoadingIndicator?: boolean;
 }
 
 export default memo(AppBar);
