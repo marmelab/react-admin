@@ -3,7 +3,11 @@ import expect from 'expect';
 import { render, act, waitFor } from '@testing-library/react';
 import { renderWithRedux } from 'ra-test';
 import { MemoryRouter } from 'react-router-dom';
-import { ListContextProvider, DataProviderContext } from 'ra-core';
+import {
+    ListContextProvider,
+    DataProviderContext,
+    useRecordContext,
+} from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import {
@@ -216,7 +220,10 @@ describe('<ReferenceArrayField />', () => {
         const promise = new Promise<any>(res => {
             resolve = res;
         });
-        const WeakField = ({ record }: any) => <div>{record.title}</div>;
+        const WeakField = () => {
+            const record = useRecordContext();
+            return <div>{record.title}</div>;
+        };
         const dataProvider = {
             getMany: () =>
                 promise.then(() => ({
