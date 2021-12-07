@@ -28,7 +28,7 @@ const useWarnWhenUnsavedChanges = (
         }
 
         const release = history.block(location => {
-            const isInsideForm = location.pathname.startsWith(
+            const isInsideForm = history.location.pathname.startsWith(
                 initialLocation.current
             );
 
