@@ -281,6 +281,7 @@ import * as React from 'react';
 import { Fragment } from 'react';
 import Button from '@material-ui/core/Button';
 import { BulkDeleteButton } from 'react-admin';
+
 import ResetViewsButton from './ResetViewsButton';
 
 const PostBulkActionButtons = () => (
@@ -308,7 +309,7 @@ Bulk action button components can use the [`useListContext`](#uselistcontext) to
 * `resource`: the currently displayed resource (eg `posts`, `comments`, etc.)
 * `filterValues`: the filter values. This can be useful if you want to apply your action on all items matching the filter.
 
-Here is an example of `BulkUpdateButton` usage, which sets the `views` property of all posts to `0` optimistically:
+Here is an example of custom bulk action button, which sets the `views` property of all posts to `0` optimistically:
 
 ```jsx
 // in ./ResetViewsButton.js
@@ -318,13 +319,8 @@ import { BulkUpdateButton } from 'react-admin';
 
 const views = { views: 0 };
 
-const ResetViewsButton = (props) => (
-    <BulkUpdateButton
-        {...props}
-        label="Reset Views"
-        data={views}
-        icon={<VisibilityOff/>}
-    />
+const ResetViewsButton = () => (
+    <BulkUpdateButton label="Reset Views" data={views} icon={<VisibilityOff/>} />
 );
 
 export default ResetViewsButton;
@@ -334,23 +330,14 @@ You can also implement the same `<ResetViewsButton>` behind a confirmation dialo
 
 ```diff
 // in ./ResetViewsButton.js
-import * as React from 'react';
-import { VisibilityOff } from '@material-ui/icons';
-import { BulkUpdateButton } from 'react-admin';
-
-const views = { views: 0 };
-
-const ResetViewsButton = (props) => (
+const ResetViewsButton = () => (
     <BulkUpdateButton
-        {...props}
         label="Reset Views"
         data={views}
         icon={VisibilityOff}
 +       mutationMode="pessimistic"
     />
 );
-
-export default ResetViewsButton;
 ```
 
 But let's say you need a customized bulkAction button, here is an example leveraging the `useUpdateMany` hook, which sets the `views` property of all posts to `0`:
@@ -476,6 +463,7 @@ import * as React from "react";
 import {
     Button,
     Confirm,
+    useListContext,
     useUpdateMany,
     useRefresh,
     useNotify,
@@ -483,7 +471,8 @@ import {
 } from 'react-admin';
 import { VisibilityOff } from '@material-ui/icons';
 
-const CustomResetViewsButton = ({ selectedIds }) => {
+const CustomResetViewsButton = () => {
+    const { selectedIds } = useListContext();
     const refresh = useRefresh();
     const notify = useNotify();
     const unselectAll = useUnselectAll();

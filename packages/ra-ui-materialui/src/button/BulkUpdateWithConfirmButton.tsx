@@ -5,6 +5,7 @@ import ActionUpdate from '@mui/icons-material/Update';
 import inflection from 'inflection';
 import { alpha, styled } from '@mui/material/styles';
 import {
+    useListContext,
     useTranslate,
     useUpdateMany,
     useRefresh,
@@ -28,6 +29,7 @@ export const BulkUpdateWithConfirmButton = (
     const unselectAll = useUnselectAll();
     const resource = useResourceContext(props);
     const [isOpen, setOpen] = useState(false);
+    const { selectedIds } = useListContext(props);
 
     const {
         basePath,
@@ -38,7 +40,6 @@ export const BulkUpdateWithConfirmButton = (
         label = 'ra.action.update',
         mutationMode = 'pessimistic',
         onClick,
-        selectedIds,
         onSuccess = () => {
             refresh();
             notify('ra.notification.updated', 'info', {
