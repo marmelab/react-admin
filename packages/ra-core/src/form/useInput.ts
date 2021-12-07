@@ -5,10 +5,12 @@ import {
     FieldRenderProps,
     FieldInputProps,
 } from 'react-final-form';
+import get from 'lodash/get';
 import { Validator, composeValidators } from './validate';
 import isRequired from './isRequired';
 import { useFormGroupContext } from './useFormGroupContext';
 import { useFormContext } from './useFormContext';
+import { useRecordContext } from '../controller';
 
 export interface InputProps<T = any>
     extends Omit<
@@ -51,6 +53,7 @@ const useInput = ({
     const finalName = name || source;
     const formGroupName = useFormGroupContext();
     const formContext = useFormContext();
+    const record = useRecordContext();
 
     useEffect(() => {
         if (!formContext || !formGroupName) {
@@ -67,8 +70,12 @@ const useInput = ({
         ? composeValidators(validate)
         : validate;
 
+    // Fetch the initialValue from the record if available or apply the provided initialValue.
+    // This ensure dynamically added inputs have their value set correctly (ArrayInput for example).
+    // We don't do this for the form level initialValues so that it works as it should in final-form
+    // (ie. field level initialValue override form level initialValues for this field).
     const { input, meta } = useFinalFormField(finalName, {
-        initialValue,
+        initialValue: get(record, source, initialValue),
         defaultValue,
         validate: sanitizedValidate,
         ...options,

@@ -105,7 +105,7 @@ export interface SimpleFormViewProps extends FormWithRedirectRenderProps {
     component?: React.ComponentType<any>;
     margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
-    record?: Record;
+    record?: Partial<Record>;
     resource?: string;
     toolbar?: ReactElement;
     /** @deprecated use mutationMode: undoable instead */
