@@ -80,6 +80,8 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         choices = [],
         format,
         helperText,
+        isFetching,
+        isLoading,
         label,
         loaded,
         loading,
@@ -123,7 +125,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
 
     const { error, submitError, touched } = meta;
 
-    if (loading) {
+    if (isLoading) {
         return (
             <Labeled
                 id={id}

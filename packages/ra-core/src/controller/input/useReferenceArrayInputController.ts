@@ -2,16 +2,17 @@ import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 import difference from 'lodash/difference';
+
 import { Record, SortPayload, ReduxState, Identifier } from '../../types';
 import { useGetMany } from '../../dataProvider';
 import { FieldInputProps, useForm } from 'react-final-form';
-import useGetMatching from '../../dataProvider/useGetMatching';
+import { useGetList } from '../../dataProvider/useGetList';
 import { useTranslate } from '../../i18n';
 import { getStatusForArrayInput as getDataStatus } from './referenceDataStatus';
 import { useResourceContext } from '../../core';
 import { usePaginationState, useSortState } from '..';
 import { ListControllerProps } from '../list';
-import { indexById, removeEmpty, useSafeSetState } from '../../util';
+import { removeEmpty, useSafeSetState } from '../../util';
 import { ReferenceArrayInputContextValue } from './ReferenceArrayInputContext';
 
 /**
@@ -48,13 +49,16 @@ export const useReferenceArrayInputController = (
         page: initialPage = 1,
         perPage: initialPerPage = 25,
         sort: initialSort = { field: 'id', order: 'DESC' },
-        options,
+        options = {},
         reference,
-        source,
         enableGetChoices,
     } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
+
+    /**
+     * Get the records related to the current value (with getMany)
+     */
 
     // We store the current input value in a ref so that we are able to fetch
     // only the missing references when the input value changes
@@ -105,6 +109,21 @@ export const useReferenceArrayInputController = (
         setIdsToFetch,
         setIdsToGetFromStore,
     ]);
+
+    const {
+        data: referenceRecordsFetched,
+        error: errorGetMany,
+        loaded,
+        refetch: refetchGetMany,
+    } = useGetMany(reference, idsToFetch || EmptyArray);
+
+    const referenceRecords = referenceRecordsFetched
+        ? referenceRecordsFetched.concat(referenceRecordsFromStore)
+        : referenceRecordsFromStore;
+
+    /**
+     * Get the possible values to display as choices (with getList)
+     */
 
     // pagination logic
     const {
@@ -162,6 +181,7 @@ export const useReferenceArrayInputController = (
     // ReferenceArrayInput.setSort had a different signature than the one from ListContext.
     // In order to not break backward compatibility, we added this temporary setSortForList in the
     // ReferenceArrayInputContext
+    // FIXME remove in 4.0
     const setSortForList = useCallback(
         (field: string, order: string = 'ASC') => {
             setSort({ field, order });
@@ -246,37 +266,23 @@ export const useReferenceArrayInputController = (
         [queryFilter, defaultFilter, filterToQuery]
     );
 
-    const {
-        data: referenceRecordsFetched,
-        loaded,
-        refetch: refetchGetMany,
-    } = useGetMany(reference, idsToFetch || EmptyArray);
-
-    const referenceRecords = referenceRecordsFetched
-        ? referenceRecordsFetched.concat(referenceRecordsFromStore)
-        : referenceRecordsFromStore;
-
     // filter out not found references - happens when the dataProvider doesn't guarantee referential integrity
     const finalReferenceRecords = referenceRecords.filter(Boolean);
 
     const isGetMatchingEnabled = enableGetChoices
         ? enableGetChoices(finalFilter)
         : true;
+
     const {
         data: matchingReferences,
-        ids: matchingReferencesIds,
         total,
+        error: errorGetList,
+        isLoading: isLoadingGetList,
         refetch: refetchGetMatching,
-    } = useGetMatching(
+    } = useGetList(
         reference,
-        pagination,
-        sort,
-        finalFilter,
-        source,
-        resource,
-        options
-            ? { ...options, enabled: isGetMatchingEnabled }
-            : { enabled: isGetMatchingEnabled }
+        { pagination, sort, filter: finalFilter },
+        { retry: false, enabled: isGetMatchingEnabled, ...options }
     );
 
     // We merge the currently selected records with the matching ones, otherwise
@@ -304,21 +310,19 @@ export const useReferenceArrayInputController = (
         basePath: props.basePath || `/${resource}`,
         choices: dataStatus.choices,
         currentSort: sort,
-        // For the ListContext, we don't want to always display the selected items first.
-        // Indeed it wouldn't work well regarding sorting and pagination
-        data:
-            matchingReferences && matchingReferences.length > 0
-                ? indexById(matchingReferences)
-                : {},
+        data: matchingReferences,
         displayedFilters,
-        error: dataStatus.error,
+        error:
+            errorGetMany || errorGetList
+                ? translate('ra.input.references.all_missing', {
+                      _: 'ra.input.references.all_missing',
+                  })
+                : undefined,
         filterValues,
         hasCreate: false,
         hideFilter,
-        // For the ListContext, we don't want to always display the selected items first.
-        // Indeed it wouldn't work well regarding sorting and pagination
-        ids: matchingReferencesIds || EmptyArray,
         loaded,
+        isLoading: !loaded || isLoadingGetList,
         loading: dataStatus.waiting,
         onSelect,
         onToggleItem,

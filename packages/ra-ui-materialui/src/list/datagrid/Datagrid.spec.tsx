@@ -9,20 +9,19 @@ const TitleField = ({ record }: any): JSX.Element => (
 );
 
 describe('<Datagrid />', () => {
-    const defaultData = {
-        1: { id: 1, title: 'title 1' },
-        2: { id: 2, title: 'title 2' },
-        3: { id: 3, title: 'title 3' },
-        4: { id: 4, title: 'title 4' },
-    };
+    const defaultData = [
+        { id: 1, title: 'title 1' },
+        { id: 2, title: 'title 2' },
+        { id: 3, title: 'title 3' },
+        { id: 4, title: 'title 4' },
+    ];
 
     const contextValue = {
         resource: 'posts',
         basePath: '',
         data: defaultData,
-        ids: [1, 2, 3, 4],
-        loaded: true,
-        loading: false,
+        isFetching: false,
+        isLoading: false,
         selectedIds: [],
         currentSort: { field: 'title', order: 'ASC' },
         onToggleItem: jest.fn(),
@@ -128,13 +127,9 @@ describe('<Datagrid />', () => {
         });
 
         it('should call onToggeItem when the last selected id is not in the ids', () => {
-            const Test = ({
-                selectedIds = [],
-                ids = [1, 2, 3, 4],
-                data = defaultData,
-            }: any) => (
+            const Test = ({ selectedIds = [], data = defaultData }: any) => (
                 <ListContextProvider
-                    value={{ ...contextValue, selectedIds, ids, data }}
+                    value={{ ...contextValue, selectedIds, data }}
                 >
                     <Datagrid hasBulkActions>
                         <TitleField />
@@ -145,8 +140,8 @@ describe('<Datagrid />', () => {
             fireEvent.click(queryAllByRole('checkbox')[1], { checked: true });
 
             // Simulate page change
-            const newData = { 5: { id: 5, title: 'title 5' } };
-            rerender(<Test ids={[5]} selectedIds={[1]} data={newData} />);
+            const newData = [{ id: 5, title: 'title 5' }];
+            rerender(<Test selectedIds={[1]} data={newData} />);
 
             fireEvent.click(queryAllByRole('checkbox')[1], {
                 checked: true,
@@ -193,11 +188,12 @@ describe('<Datagrid />', () => {
                     </Datagrid>
                 </ListContextProvider>
             );
-            const { queryAllByRole, rerender } = renderWithRedux(<Test />);
+            const { queryAllByRole } = renderWithRedux(<Test />);
             const checkboxes = queryAllByRole('checkbox');
-            fireEvent.click(checkboxes[1], { checked: true });
-            rerender(<Test selectedIds={[1]} />);
+            expect(checkboxes.length).toBe(4); // 1 for the header, 3 for the rows
+            fireEvent.click(checkboxes[1], { checked: true }); // first row, id = 1
             fireEvent.click(checkboxes[2], {
+                // third row, id = 3
                 shiftKey: true,
                 checked: true,
             });

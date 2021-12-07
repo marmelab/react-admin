@@ -9,10 +9,9 @@ import {
     ReactElement,
 } from 'react';
 import get from 'lodash/get';
-import { Identifier, ListContextProvider, useRecordContext } from 'ra-core';
+import { ListContextProvider, useRecordContext } from 'ra-core';
 
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
-import PropTypes from 'prop-types';
 
 /**
  * Display a collection
@@ -66,14 +65,6 @@ import PropTypes from 'prop-types';
  *         </SingleFieldList>
  *     </ArrayField>
  *
- * If the array value contains a lot of items, you may experience slowdowns in the UI.
- * In such cases, set the `fieldKey` prop to use one field as key, and reduce CPU and memory usage:
- *
- * @example
- *     <ArrayField source="backlinks" fieldKey="uuid">
- *         ...
- *     </ArrayField>
- *
  * If you need to render a collection in a custom way, it's often simpler
  * to write your own component:
  *
@@ -88,33 +79,19 @@ import PropTypes from 'prop-types';
  *     TagsField.defaultProps = { addLabel: true };
  */
 export const ArrayField: FC<ArrayFieldProps> = memo(props => {
-    const {
-        addLabel,
-        basePath,
-        children,
-        record: _record,
-        resource,
-        sortable,
-        source,
-        fieldKey,
-        ...rest
-    } = props;
+    const { basePath, children, resource, source, addLabel, ...rest } = props;
     const record = useRecordContext(props);
-    const [ids, setIds] = useState(initialState.ids);
-    const [data, setData] = useState(initialState.data);
+    const [data, setData] = useState(initialState);
 
     useEffect(() => {
-        const { ids, data } = getDataAndIds(record, source, fieldKey);
-        setIds(ids);
+        const data = get(record, source) || initialState;
         setData(data);
-    }, [record, source, fieldKey]);
+    }, [record, source]);
 
     return (
         <ListContextProvider
             value={{
-                ids,
                 data,
-                loading: false,
                 basePath,
                 selectedIds: [],
                 currentSort: { field: null, order: null },
@@ -122,7 +99,8 @@ export const ArrayField: FC<ArrayFieldProps> = memo(props => {
                 filterValues: null,
                 hasCreate: null,
                 hideFilter: null,
-                loaded: true,
+                isFetching: false,
+                isLoading: false,
                 onSelect: null,
                 onToggleItem: null,
                 onUnselectItems: null,
@@ -138,9 +116,8 @@ export const ArrayField: FC<ArrayFieldProps> = memo(props => {
             }}
         >
             {cloneElement(Children.only(children), {
-                ids,
                 data,
-                loading: false,
+                isLoading: false,
                 basePath,
                 currentSort: { field: null, order: null },
                 resource,
@@ -156,48 +133,12 @@ ArrayField.defaultProps = {
 
 ArrayField.propTypes = {
     ...fieldPropTypes,
-    fieldKey: PropTypes.string,
 };
 
 export interface ArrayFieldProps extends PublicFieldProps, InjectedFieldProps {
-    fieldKey?: string;
     children: ReactElement;
-}
-
-interface State {
-    data: object;
-    ids: Identifier[];
 }
 
 ArrayField.displayName = 'ArrayField';
 
-const initialState = {
-    data: {},
-    ids: [],
-};
-
-const getDataAndIds = (
-    record: object,
-    source: string,
-    fieldKey: string
-): State => {
-    const list = get(record, source);
-    if (!list) {
-        return initialState;
-    }
-    return fieldKey
-        ? {
-              data: list.reduce((prev, item) => {
-                  prev[item[fieldKey]] = item;
-                  return prev;
-              }, {}),
-              ids: list.map(item => item[fieldKey]),
-          }
-        : {
-              data: list.reduce((prev, item) => {
-                  prev[JSON.stringify(item)] = item;
-                  return prev;
-              }, {}),
-              ids: list.map(JSON.stringify),
-          };
-};
+const initialState = [];

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Card, Link, Box } from '@mui/material';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
@@ -8,7 +7,6 @@ import {
     SimpleList,
     useGetIdentity,
     ReferenceField,
-    Identifier,
 } from 'react-admin';
 
 import { CompanyAvatar } from '../companies/CompanyAvatar';
@@ -17,26 +15,31 @@ import { Deal } from '../types';
 
 export const DealsPipeline = () => {
     const { identity } = useGetIdentity();
-    const { data, ids: unorderedIds, total, loaded } = useGetList<Deal>(
+    const { data, total, isLoading } = useGetList<Deal>(
         'deals',
-        { page: 1, perPage: 10 },
-        { field: 'last_seen', order: 'DESC' },
-        { stage_neq: 'lost', sales_id: identity?.id },
+        {
+            pagination: { page: 1, perPage: 10 },
+            sort: { field: 'last_seen', order: 'DESC' },
+            filter: { stage_neq: 'lost', sales_id: identity?.id },
+        },
         { enabled: Number.isInteger(identity?.id) }
     );
-    const [ids, setIds] = useState(unorderedIds);
-    useEffect(() => {
-        const deals = unorderedIds.map(id => data[id]);
-        const orderedIds: Identifier[] = [];
+
+    const getOrderedDeals = (data?: Deal[]): Deal[] | undefined => {
+        if (!data) {
+            return;
+        }
+        const deals: Deal[] = [];
         stages
             .filter(stage => stage !== 'won')
             .forEach(stage =>
-                deals
+                data
                     .filter(deal => deal.stage === stage)
-                    .forEach(deal => orderedIds.push(deal.id))
+                    .forEach(deal => deals.push(deal))
             );
-        setIds(orderedIds);
-    }, [unorderedIds, data]);
+        return deals;
+    };
+
     return (
         <>
             <Box display="flex" alignItems="center" marginBottom="1em">
@@ -56,10 +59,9 @@ export const DealsPipeline = () => {
             <Card>
                 <SimpleList<Deal>
                     linkType="show"
-                    ids={ids}
-                    data={data}
+                    data={getOrderedDeals(data)}
                     total={total}
-                    loaded={loaded}
+                    isLoading={isLoading}
                     primaryText={deal => deal.name}
                     secondaryText={deal =>
                         `${deal.amount.toLocaleString('en-US', {

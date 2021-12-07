@@ -120,6 +120,8 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         id: idOverride,
         input: inputOverride,
         inputText,
+        isFetching,
+        isLoading,
         isRequired: isRequiredOverride,
         label,
         limitChoicesToValue,
@@ -421,7 +423,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
             if (endAdornment) {
                 return endAdornment;
             }
-            if (loading) {
+            if (isLoading) {
                 return <AutocompleteInputLoader />;
             }
         } else if (!filterValue) {
@@ -445,7 +447,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                                 )}
                             />
                         </IconButton>
-                        {loading && <AutocompleteInputLoader />}
+                        {isLoading && <AutocompleteInputLoader />}
                     </InputAdornment>
                 );
             } else {
@@ -460,7 +462,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                             >
                                 &nbsp;
                             </span>
-                            {loading && <AutocompleteInputLoader />}
+                            {isLoading && <AutocompleteInputLoader />}
                         </InputAdornment>
                     );
                 }
@@ -490,7 +492,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                             )}
                         />
                     </IconButton>
-                    {loading && <AutocompleteInputLoader />}
+                    {isLoading && <AutocompleteInputLoader />}
                 </InputAdornment>
             );
         }
@@ -665,6 +667,7 @@ export interface AutocompleteInputProps
     resettable?: boolean;
     loaded?: boolean;
     loading?: boolean;
+    isLoading?: boolean;
     options?: Options;
 }
 

@@ -9,7 +9,7 @@ import { ListControllerResult } from './useListController';
  * That's what List components do in react-admin (e.g. <Pagination>).
  *
  * @typedef {Object} ListPaginationContextValue
- * @prop {boolean}  loading boolean that is true on mount, and false once the data was fetched
+ * @prop {boolean}  isLoading boolean that is false until the data is available
  * @prop {integer}  total the total number of results for the current filters, excluding pagination. Useful to build the pagination controls. e.g. 23
  * @prop {integer}  page the current page. Starts at 1
  * @prop {Function} setPage a callback to change the page, e.g. setPage(3)
@@ -39,7 +39,7 @@ import { ListControllerResult } from './useListController';
  * };
  */
 export const ListPaginationContext = createContext<ListPaginationContextValue>({
-    loading: null,
+    isLoading: null,
     page: null,
     perPage: null,
     setPage: null,
@@ -52,7 +52,7 @@ ListPaginationContext.displayName = 'ListPaginationContext';
 
 export type ListPaginationContextValue = Pick<
     ListControllerResult,
-    | 'loading'
+    | 'isLoading'
     | 'page'
     | 'perPage'
     | 'setPage'
@@ -67,7 +67,7 @@ export const usePickPaginationContext = (
     useMemo(
         () =>
             pick(context, [
-                'loading',
+                'isLoading',
                 'page',
                 'perPage',
                 'setPage',
@@ -77,7 +77,7 @@ export const usePickPaginationContext = (
             ]),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [
-            context.loading,
+            context.isLoading,
             context.page,
             context.perPage,
             context.setPage,

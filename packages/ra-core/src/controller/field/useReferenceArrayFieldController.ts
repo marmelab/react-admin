@@ -28,7 +28,7 @@ const defaultSort = { field: null, order: null };
  *
  * @example
  *
- * const { ids, data, error, loaded, loading, referenceBasePath } = useReferenceArrayFieldController({
+ * const { data, error, isFetching, isLoading, referenceBasePath } = useReferenceArrayFieldController({
  *      basePath: 'resource';
  *      record: { referenceIds: ['id1', 'id2']};
  *      reference: 'reference';
@@ -89,9 +89,8 @@ const useReferenceArrayFieldController = (
         data,
         error,
         filter,
-        ids,
-        loaded,
-        loading,
+        isFetching: loading,
+        isLoading: !loaded,
         page,
         perPage,
         sort,

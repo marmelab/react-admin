@@ -8,11 +8,10 @@ import { ListControllerResult } from './useListController';
  * List components do in react-admin (e.g. <Datagrid>, <FilterForm>, <Pagination>).
  *
  * @typedef {Object} ListControllerProps
- * @prop {Object}   data an id-based dictionary of the list data, e.g. { 123: { id: 123, title: 'hello world' }, 456: { ... } }
- * @prop {Array}    ids an array listing the ids of the records in the list, e.g. [123, 456, ...]
+ * @prop {Array}    data an array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }]
  * @prop {integer}  total the total number of results for the current filters, excluding pagination. Useful to build the pagination controls. e.g. 23
- * @prop {boolean}  loaded boolean that is false until the data is available
- * @prop {boolean}  loading boolean that is true on mount, and false once the data was fetched
+ * @prop {boolean}  isFetching boolean that is true on mount, and false once the data was fetched
+ * @prop {boolean}  isLoading boolean that is false until the data is available
  * @prop {integer}  page the current page. Starts at 1
  * @prop {Function} setPage a callback to change the page, e.g. setPage(3)
  * @prop {integer}  perPage the number of results per page. Defaults to 25
@@ -62,9 +61,8 @@ export const ListContext = createContext<ListControllerResult>({
     filterValues: null,
     hasCreate: null,
     hideFilter: null,
-    ids: null,
-    loaded: null,
-    loading: null,
+    isFetching: null,
+    isLoading: null,
     onSelect: null,
     onToggleItem: null,
     onUnselectItems: null,

@@ -12,11 +12,10 @@ import useSelectionState from '../useSelectionState';
 import useSortState from '../useSortState';
 import { useResourceContext } from '../../core';
 
-interface Options {
+export interface UseReferenceManyFieldControllerParams {
     basePath?: string;
     data?: RecordMap;
     filter?: any;
-    ids?: any[];
     loaded?: boolean;
     page?: number;
     perPage?: number;
@@ -67,7 +66,7 @@ const defaultFilter = {};
  * @returns {ReferenceManyProps} The reference many props
  */
 const useReferenceManyFieldController = (
-    props: Options
+    props: UseReferenceManyFieldControllerParams
 ): ListControllerProps => {
     const {
         reference,
@@ -198,16 +197,15 @@ const useReferenceManyFieldController = (
             ? basePath.replace(resource, reference)
             : `/${reference}`,
         currentSort: sort,
-        data,
+        data: ids.map(id => data[id]),
         defaultTitle: null,
         displayedFilters,
         error,
         filterValues,
         hasCreate: false,
         hideFilter,
-        ids,
-        loaded,
-        loading,
+        isFetching: loading,
+        isLoading: !loaded,
         onSelect,
         onToggleItem,
         onUnselectItems,

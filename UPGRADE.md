@@ -110,7 +110,40 @@ This should be mostly transparent for you unless:
 
 ## Changed Signature Of Data Provider Hooks
 
-Specialized data provider hooks (like `useUpdate`) have a new signature. 
+Specialized data provider hooks (like `useGetList` and `useUpdate`) have a new signature. There are 2 changes:
+
+- `loading` is renamed to `isLoading`
+- the hook signature now reflects the dataProvider signature (so every hook now takes 2 arguments, `resource` and `params`).
+
+For queries:
+
+```diff
+// useGetOne
+-const { data, loading } = useGetOne(
+-   'posts',
+-   123,
+-);
++const { data, isLoading } = useGetOne(
++   'posts',
++   { id: 123 }
++);
+
+// useGetList
+-const { data, ids, loading } = useGetList(
+-   'posts',
+-   { page: 1, perPage: 10 },
+-   { field: 'published_at', order: 'DESC' },
+-);
+-return <>{ids.map(id => <span key={id}>{data[id].title}</span>)}</>;
++const { data, isLoading } = useGetList(
++   'posts',
++   {
++      pagination: { page: 1, perPage: 10 },
++      sort: { field: 'published_at', order: 'DESC' },
++   }
++);
++return <>{data.map(record => <span key={record.id}>{record.title}</span>)}</>;
+```
 
 For mutations:
 
@@ -121,6 +154,7 @@ For mutations:
 -   { likes: 12 },
 -   { id: 123, title: "hello, world", likes: 122 }
 -);
+-update(resource, id, data, previousData, options);
 +const [update, { isLoading }] = useUpdate(
 +   'posts',
 +   {
@@ -129,17 +163,6 @@ For mutations:
 +       previousData: { id: 123, title: "hello, world", likes: 122 }
 +   }
 +);
-```
-
-There are 2 changes:
-
-- `loading` is renamed to `isLoading`
-- the hook signature now reflects the dataProvider signature (so every hook now takes 2 arguments, `resource` and `params`).
-
-The signature of the `update` mutation callback has also changed, and is the same as the hook:
-
-```diff
--update(resource, id, data, previousData, options);
 +update(resource, { id, data, previousData }, options);
 ```
 
@@ -147,6 +170,8 @@ This new signature should be easier to learn and use.
 
 To upgrade, check every instance of your code of the following hooks:
 
+- `useGetOne`
+- `useGetList`
 - `useUpdate`
 
 And update the calls. If you're using TypeScript, your code won't compile until you properly upgrade the calls. 
@@ -311,7 +336,6 @@ const PostEdit = () => {
 };
 ```
 
-
 ## No More Prop Injection In Page Components
 
 Page components (`<List>`, `<Show>`, etc.) used to expect to receive props (route parameters, permissions, resource name). These components don't receive any props anymore by default. They use hooks to get the props they need from contexts or route state.  
@@ -392,13 +416,103 @@ As we removed the props injection, we enabled this synchronization by default fo
 
 However, if you had multiple `<List>` components inside used a single page, or if you used `<List>` outside of a `<Resource>`, you now have to explicitly opt out the synchronization of the list parameters with the browser location:
 
-```dif
+```diff
 const MyList = () => (
 -    <List>
 +    <List disableSyncWithLocation>
         // ...
     </List>
 )
+```
+
+## No More props injection in custom Pagination and Empty components
+
+The `<List>` component renders a Pagination component when there are records to display, and an Empty component otherwise. You can customize these components by passing your own with the `pagination`and `empty`props. 
+
+`<List>` used to inject `ListContext` props (`data`, `isLoaded`, etc.) to these Pagination component. In v4, the component rendered by `<List>` no longer receive these props. They must grab them from the ListContext instead.
+
+This means you'll have to do a few changes if you use a custom Pagination component in a List:
+
+```diff
+import { Button, Toolbar } from '@material-ui/core';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronRight from '@material-ui/icons/ChevronRight';
++import { useListContext } from 'react-admin';
+
+-const PostPagination = (props) => {
++const PostPagination = () => {
+-   const { page, perPage, total, setPage } = props;
++   const { page, perPage, total, setPage } = useListContext();
+    const nbPages = Math.ceil(total / perPage) || 1;
+    return (
+        nbPages > 1 &&
+            <Toolbar>
+                {page > 1 &&
+                    <Button color="primary" key="prev" onClick={() => setPage(page - 1)}>
+                        <ChevronLeft />
+                        Prev
+                    </Button>
+                }
+                {page !== nbPages &&
+                    <Button color="primary" key="next" onClick={() => setPage(page + 1)}>
+                        Next
+                        <ChevronRight />
+                    </Button>
+                }
+            </Toolbar>
+    );
+}
+
+export const PostList = () => (
+    <List pagination={<PostPagination />}>
+        ...
+    </List>
+);
+```
+
+## `useListContext` No Longer Returns An `ids` Prop
+
+The `ListContext` used to return two props for the list data: `data` and `ids`. To render the list data, you had to iterate over the `ids`. 
+
+Starting with react-admin v4, `useListContext` only returns a `data` prop, and it is now an array. This means you have to update all your code that relies on `ids` from a `ListContext`. Here is an example for a custom list iterator using cards:
+
+```diff
+import * as React from 'react';
+import { useListContext, List, TextField, DateField, ReferenceField, EditButton } from 'react-admin';
+import { Card, CardActions, CardContent, CardHeader, Avatar } from '@material-ui/core';
+import PersonIcon from '@material-ui/icons/Person';
+
+const CommentGrid = () => {
+-   const { data, ids, loading } = useListContext();
++   const { data, isLoading } = useListContext();
+-   if (loading) return null;
++   if (isLoading) return null;
+    return (
+        <div style={{ margin: '1em' }}>
+-       {ids.map(id =>
++       {data.map(record =>
+-           <Card key={id} style={cardStyle}>
++           <Card key={record.id} style={cardStyle}>
+                <CardHeader
+-                   title={<TextField record={data[id]} source="author.name" />}
++                   title={<TextField record={record} source="author.name" />}
+-                   subheader={<DateField record={data[id]} source="created_at" />}
++                   subheader={<DateField record={record} source="created_at" />}
+                    avatar={<Avatar icon={<PersonIcon />} />}
+                />
+                <CardContent>
+-                   <TextField record={data[id]} source="body" />
++                   <TextField record={record} source="body" />
+                </CardContent>
+                <CardActions style={{ textAlign: 'right' }}>
+-                   <EditButton resource="posts" record={data[id]} />
++                   <EditButton resource="posts" record={record} />
+                </CardActions>
+            </Card>
+        )}
+        </div>
+    );
+};
 ```
 
 ## `<Card>` Is Now Rendered By Inner Components
@@ -452,7 +566,6 @@ const MyComponent = () => {
 +        navigate('/my-url');
     }
 }
-
 ```
 
 ## Removed the undoable prop in Favor of mutationMode
@@ -601,6 +714,8 @@ const BookDetail = ({ id }) => {
 };
 ```
 
+In general, you should use `isLoading`. It's false as long as the data has never been loaded (whether from the dataProvider or from the cache).
+
 The new props are actually returned by react-query's `useQuery` hook. Check [their documentation](https://react-query.tanstack.com/reference/useQuery) for more information.
 
 ## Unit Tests for Data Provider Dependent Components Need A QueryClientContext
@@ -640,7 +755,7 @@ test('MyComponent', () => {
 });
 ```
 
-## `useAuthenticated` Signature hsa Changed
+## `useAuthenticated` Signature has Changed
 
 `useAuthenticated` uses to accept only the parameters passed to the `authProvider.checkAuth` function. It now accept an option object with two properties:
 - `enabled`: whether it should check for an authenticated user
@@ -650,6 +765,10 @@ test('MyComponent', () => {
 - useAuthenticated('permissions.posts.can_create');
 + useAuthenticated({ params: 'permissions.posts.can_create' })
 ```
+
+## `useGetMainList` Was Removed
+
+`useGetMainList` was a modified version of `useGetList` designed to keep previous data on screen upon navigation. As [this is now supported natively by react-query](https://react-query.tanstack.com/guides/paginated-queries#better-paginated-queries-with-keeppreviousdata), this hook is no longer necessary and has been removed. Use `useGetList()` instead.
 
 # Upgrade to 3.0
 

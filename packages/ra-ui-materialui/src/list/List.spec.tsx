@@ -1,8 +1,8 @@
 import * as React from 'react';
 import expect from 'expect';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { DataProviderContext, ResourceContextProvider } from 'ra-core';
-import { renderWithRedux } from 'ra-test';
+import { render, fireEvent, screen, waitFor } from '@testing-library/react';
+import { CoreAdminContext, testDataProvider, useListContext } from 'ra-core';
+import { createMemoryHistory } from 'history';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { defaultTheme } from '../defaultTheme';
@@ -13,36 +13,16 @@ import { TextInput } from '../input';
 const theme = createTheme(defaultTheme);
 
 describe('<List />', () => {
-    const defaultProps = {
-        resource: 'posts',
-    };
-
-    const defaultStateForList = {
-        admin: {
-            resources: {
-                posts: {
-                    list: {
-                        ids: [],
-                        params: {},
-                        selectedIds: [],
-                        total: 0,
-                        cachedRequests: {},
-                    },
-                },
-            },
-        },
-    };
-
     it('should render a list page', () => {
         const Datagrid = () => <div>datagrid</div>;
-
-        const { container } = renderWithRedux(
-            <ThemeProvider theme={theme}>
-                <List {...defaultProps}>
-                    <Datagrid />
-                </List>
-            </ThemeProvider>,
-            defaultStateForList
+        const { container } = render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <ThemeProvider theme={theme}>
+                    <List resource="posts">
+                        <Datagrid />
+                    </List>
+                </ThemeProvider>
+            </CoreAdminContext>
         );
         expect(container.querySelectorAll('.list-page')).toHaveLength(1);
     });
@@ -51,17 +31,18 @@ describe('<List />', () => {
         const Filters = () => <div>filters</div>;
         const Pagination = () => <div>pagination</div>;
         const Datagrid = () => <div>datagrid</div>;
-        renderWithRedux(
-            <ThemeProvider theme={theme}>
-                <List
-                    filters={<Filters />}
-                    pagination={<Pagination />}
-                    {...defaultProps}
-                >
-                    <Datagrid />
-                </List>
-            </ThemeProvider>,
-            defaultStateForList
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <ThemeProvider theme={theme}>
+                    <List
+                        filters={<Filters />}
+                        pagination={<Pagination />}
+                        resource="posts"
+                    >
+                        <Datagrid />
+                    </List>
+                </ThemeProvider>
+            </CoreAdminContext>
         );
         expect(screen.queryAllByText('filters')).toHaveLength(2);
         expect(screen.queryAllByLabelText('ra.action.export')).toHaveLength(1);
@@ -72,80 +53,84 @@ describe('<List />', () => {
     it('should display aside component', () => {
         const Dummy = () => <div />;
         const Aside = () => <div id="aside">Hello</div>;
-        renderWithRedux(
-            <ThemeProvider theme={theme}>
-                <List {...defaultProps} aside={<Aside />}>
-                    <Dummy />
-                </List>
-            </ThemeProvider>,
-            defaultStateForList
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <ThemeProvider theme={theme}>
+                    <List resource="posts" aside={<Aside />}>
+                        <Dummy />
+                    </List>
+                </ThemeProvider>
+            </CoreAdminContext>
         );
         expect(screen.queryAllByText('Hello')).toHaveLength(1);
     });
 
     it('should render an invite when the list is empty', async () => {
-        const Dummy = () => <div />;
+        const Dummy = () => {
+            const { isLoading } = useListContext();
+            return <div>{isLoading ? 'loading' : 'dummy'}</div>;
+        };
         const dataProvider = {
             getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
         } as any;
-        renderWithRedux(
-            <ThemeProvider theme={theme}>
-                <DataProviderContext.Provider value={dataProvider}>
-                    <List {...defaultProps}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ThemeProvider theme={theme}>
+                    <List resource="posts">
                         <Dummy />
                     </List>
-                </DataProviderContext.Provider>
-            </ThemeProvider>,
-            defaultStateForList
+                </ThemeProvider>
+            </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(screen.queryAllByText('resources.posts.empty')).toHaveLength(
-                1
-            );
+            screen.getByText('resources.posts.empty');
+            expect(screen.queryByText('dummy')).toBeNull();
         });
     });
 
     it('should not render an invite when the list is empty with an empty prop set to false', async () => {
-        const Dummy = () => <div />;
+        const Dummy = () => {
+            const { isLoading } = useListContext();
+            return <div>{isLoading ? 'loading' : 'dummy'}</div>;
+        };
         const dataProvider = {
             getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
         } as any;
-        renderWithRedux(
-            <ThemeProvider theme={theme}>
-                <DataProviderContext.Provider value={dataProvider}>
-                    <List {...defaultProps} empty={false}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ThemeProvider theme={theme}>
+                    <List resource="posts" empty={false}>
                         <Dummy />
                     </List>
-                </DataProviderContext.Provider>
-            </ThemeProvider>,
-            defaultStateForList
+                </ThemeProvider>
+            </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(screen.queryAllByText('resources.posts.empty')).toHaveLength(
-                0
-            );
+            expect(screen.queryByText('resources.posts.empty')).toBeNull();
+            screen.getByText('dummy');
         });
     });
 
     it('should not render an invite when a filter is active', async () => {
-        const Dummy = () => <div />;
+        const Dummy = () => {
+            const { isLoading } = useListContext();
+            return <div>{isLoading ? 'loading' : 'dummy'}</div>;
+        };
         const dataProvider = {
             getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
         } as any;
-        renderWithRedux(
-            <ThemeProvider theme={theme}>
-                <DataProviderContext.Provider value={dataProvider}>
-                    <List {...defaultProps} filter={{ foo: 'bar' }}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ThemeProvider theme={theme}>
+                    <List resource="posts" filterDefaultValues={{ foo: 'bar' }}>
                         <Dummy />
                     </List>
-                </DataProviderContext.Provider>
-            </ThemeProvider>,
-            defaultStateForList
+                </ThemeProvider>
+            </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(screen.queryAllByText('resources.posts.empty')).toHaveLength(
-                1
-            );
+            expect(screen.queryByText('resources.posts.empty')).toBeNull();
+            screen.getByText('dummy');
         });
     });
 
@@ -162,15 +147,17 @@ describe('<List />', () => {
                 Promise.resolve({ data: [{ id: 0 }], total: 1 })
             ),
         } as any;
-        renderWithRedux(
-            <ThemeProvider theme={theme}>
-                <DataProviderContext.Provider value={dataProvider}>
-                    <List filters={<DummyFilters />} {...defaultProps}>
+        const history = createMemoryHistory({
+            initialEntries: [`/posts`],
+        });
+        render(
+            <CoreAdminContext dataProvider={dataProvider} history={history}>
+                <ThemeProvider theme={theme}>
+                    <List filters={<DummyFilters />} resource="posts">
                         <Dummy />
                     </List>
-                </DataProviderContext.Provider>
-            </ThemeProvider>,
-            defaultStateForList
+                </ThemeProvider>
+            </CoreAdminContext>
         );
         await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
         expect(
@@ -196,18 +183,17 @@ describe('<List />', () => {
                 Promise.resolve({ data: [{ id: 0 }], total: 1 })
             ),
         } as any;
-        renderWithRedux(
-            // As FilterForm doesn't receive rest parameters, it must grab the resource from the context
-            <ResourceContextProvider value="posts">
+        const history = createMemoryHistory({
+            initialEntries: [`/posts`],
+        });
+        render(
+            <CoreAdminContext dataProvider={dataProvider} history={history}>
                 <ThemeProvider theme={theme}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <List filters={dummyFilters} {...defaultProps}>
-                            <Dummy />
-                        </List>
-                    </DataProviderContext.Provider>
+                    <List filters={dummyFilters} resource="posts">
+                        <Dummy />
+                    </List>
                 </ThemeProvider>
-            </ResourceContextProvider>,
-            defaultStateForList
+            </CoreAdminContext>
         );
         await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
         expect(

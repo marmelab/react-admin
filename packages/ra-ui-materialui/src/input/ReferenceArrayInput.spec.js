@@ -1,9 +1,20 @@
 import * as React from 'react';
-import { render, waitFor, within, fireEvent } from '@testing-library/react';
+import {
+    render,
+    screen,
+    waitFor,
+    within,
+    fireEvent,
+} from '@testing-library/react';
 import { Form } from 'react-final-form';
-import { useListContext } from 'ra-core';
-import { renderWithRedux } from 'ra-test';
-import addDays from 'date-fns/add_days';
+import { Provider } from 'react-redux';
+import {
+    CoreAdminContext,
+    testDataProvider,
+    createAdminStore,
+    useListContext,
+} from 'ra-core';
+
 import { Datagrid } from '../list';
 import { TextField } from '../field';
 import {
@@ -175,135 +186,92 @@ describe('<ReferenceArrayInput />', () => {
 
     it('should provide a ListContext with all available choices', async () => {
         const Children = () => {
-            const listContext = useListContext();
-
-            return (
-                <>
-                    <div aria-label="total">{listContext.total}</div>
-                    <div aria-label="ids">{listContext.ids.join()}</div>
-                    <div aria-label="data">
-                        {JSON.stringify(listContext.data)}
-                    </div>
-                </>
-            );
+            const { total } = useListContext();
+            return <div aria-label="total">{total}</div>;
         };
 
-        const { getByLabelText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <ReferenceArrayInput {...defaultProps}>
-                        <Children />
-                    </ReferenceArrayInput>
-                )}
-            />,
-            {
-                admin: {
-                    references: {
-                        possibleValues: {
-                            'posts@tag_ids': [5, 6],
-                        },
-                    },
-                    resources: {
-                        tags: {
-                            list: {
-                                cachedRequests: {
-                                    [JSON.stringify({
-                                        pagination: { page: 1, perPage: 25 },
-                                        sort: {
-                                            field: 'id',
-                                            order: 'DESC',
-                                        },
-                                        filter: {},
-                                    })]: {
-                                        total: 2,
-                                    },
-                                },
-                            },
-                            data: {
-                                5: { id: 5, name: 'test1' },
-                                6: { id: 6, name: 'test2' },
-                            },
-                        },
-                    },
-                },
-            }
+        const store = createAdminStore({
+            initialState: { admin: { resources: { tags: { data: {} } } } },
+        });
+        const dataProvider = testDataProvider({
+            getList: () =>
+                Promise.resolve({ data: [{ id: 1 }, { id: 2 }], total: 2 }),
+        });
+        render(
+            <Provider store={store}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Form
+                        onSubmit={jest.fn()}
+                        render={() => (
+                            <ReferenceArrayInput {...defaultProps}>
+                                <Children />
+                            </ReferenceArrayInput>
+                        )}
+                    />
+                </CoreAdminContext>
+            </Provider>
         );
-        expect(getByLabelText('total').innerHTML).toEqual('2');
+        await waitFor(() => {
+            expect(screen.getByLabelText('total').innerHTML).toEqual('2');
+        });
     });
 
-    test('should allow to use a Datagrid', async () => {
-        const { getByLabelText, queryByText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
-                initialValues={{ tag_ids: [5] }}
-                render={() => (
-                    <ReferenceArrayInput
-                        reference="tags"
-                        resource="posts"
-                        source="tag_ids"
-                        basePath="/posts"
-                    >
-                        <Datagrid
-                            hasBulkActions={true}
-                            rowClick="toggleSelection"
-                        >
-                            <TextField source="name" />
-                        </Datagrid>
-                    </ReferenceArrayInput>
-                )}
-            />,
-            {
-                admin: {
-                    references: {
-                        possibleValues: {
-                            'posts@tag_ids': [5, 6],
-                        },
-                    },
-                    resources: {
-                        tags: {
-                            list: {
-                                cachedRequests: {
-                                    [JSON.stringify({
-                                        pagination: { page: 1, perPage: 25 },
-                                        sort: {
-                                            field: 'id',
-                                            order: 'DESC',
-                                        },
-                                        filter: {},
-                                    })]: {
-                                        ids: [5, 6],
-                                        total: 2,
-                                        validity: addDays(new Date(), 1),
-                                    },
-                                },
-                            },
-                            data: {
-                                5: { id: 5, name: 'test1' },
-                                6: { id: 6, name: 'test2' },
-                            },
-                        },
-                    },
-                },
-            }
+    it('should allow to use a Datagrid', async () => {
+        const store = createAdminStore({
+            initialState: { admin: { resources: { tags: { data: {} } } } },
+        });
+        const dataProvider = testDataProvider({
+            getList: () =>
+                Promise.resolve({
+                    data: [
+                        { id: 5, name: 'test1' },
+                        { id: 6, name: 'test2' },
+                    ],
+                    total: 2,
+                }),
+        });
+        render(
+            <Provider store={store}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Form
+                        onSubmit={jest.fn()}
+                        initialValues={{ tag_ids: [5] }}
+                        render={() => (
+                            <ReferenceArrayInput
+                                reference="tags"
+                                resource="posts"
+                                source="tag_ids"
+                                basePath="/posts"
+                            >
+                                <Datagrid
+                                    hasBulkActions={true}
+                                    rowClick="toggleSelection"
+                                >
+                                    <TextField source="name" />
+                                </Datagrid>
+                            </ReferenceArrayInput>
+                        )}
+                    />
+                </CoreAdminContext>
+            </Provider>
         );
 
         await waitFor(() => {
-            expect(queryByText('test1')).not.toBeNull();
-            expect(queryByText('test2')).not.toBeNull();
+            expect(screen.queryByText('test1')).not.toBeNull();
+            expect(screen.queryByText('test2')).not.toBeNull();
         });
 
-        const checkBoxTest1 = within(queryByText('test1').closest('tr'))
+        const checkBoxTest1 = within(screen.queryByText('test1').closest('tr'))
             .getByLabelText('ra.action.select_row')
             .querySelector('input');
 
-        const checkBoxTest2 = within(queryByText('test2').closest('tr'))
+        const checkBoxTest2 = within(screen.queryByText('test2').closest('tr'))
             .getByLabelText('ra.action.select_row')
             .querySelector('input');
 
-        const checkBoxAll = getByLabelText(
-            'ra.action.select_all'
-        ).querySelector('input');
+        const checkBoxAll = screen
+            .getByLabelText('ra.action.select_all')
+            .querySelector('input');
 
         expect(checkBoxTest1.checked).toEqual(true);
         expect(checkBoxTest2.checked).toEqual(false);

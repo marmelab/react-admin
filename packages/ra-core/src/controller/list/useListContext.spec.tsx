@@ -7,11 +7,11 @@ import { useListContext } from './useListContext';
 
 describe('useListContext', () => {
     const NaiveList = props => {
-        const { ids, data } = useListContext(props);
+        const { data } = useListContext(props);
         return (
             <ul>
-                {ids.map(id => (
-                    <li key={id}>{data[id].title}</li>
+                {data.map(record => (
+                    <li key={record.id}>{record.title}</li>
                 ))}
             </ul>
         );
@@ -23,8 +23,7 @@ describe('useListContext', () => {
                 // @ts-ignore
                 value={{
                     resource: 'foo',
-                    ids: [1],
-                    data: { 1: { id: 1, title: 'hello' } },
+                    data: [{ id: 1, title: 'hello' }],
                 }}
             >
                 <NaiveList />
@@ -36,11 +35,7 @@ describe('useListContext', () => {
     it('should return injected props if the context was not set', () => {
         jest.spyOn(console, 'log').mockImplementationOnce(() => {});
         const { getByText } = render(
-            <NaiveList
-                resource="foo"
-                ids={[1]}
-                data={{ 1: { id: 1, title: 'hello' } }}
-            />
+            <NaiveList resource="foo" data={[{ id: 1, title: 'hello' }]} />
         );
         expect(getByText('hello')).not.toBeNull();
     });

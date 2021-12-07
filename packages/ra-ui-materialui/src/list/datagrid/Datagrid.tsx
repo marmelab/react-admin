@@ -15,10 +15,8 @@ import PropTypes from 'prop-types';
 import {
     sanitizeListRestProps,
     useListContext,
-    useVersion,
     Identifier,
     Record,
-    RecordMap,
     SortPayload,
 } from 'ra-core';
 import { TableProps } from '@mui/material';
@@ -71,21 +69,18 @@ import { DatagridClasses, StyledTable } from './useDatagridStyles';
  * const currentSort = { field: 'published_at', order: 'DESC' };
  *
  * export const MyCustomList = (props) => {
- *     const { ids, data, total, loaded } = useGetList(
+ *     const { data, total, isLoading } = useGetList(
  *         'posts',
- *         { page: 1, perPage: 10 },
- *         currentSort
+ *         { pagination: { page: 1, perPage: 10 }, sort: currentSort }
  *     );
  *
  *     return (
  *         <Datagrid
- *             basePath=""
- *             currentSort={currentSort}
  *             data={data}
- *             ids={ids}
- *             selectedIds={[]}
- *             loaded={loaded}
  *             total={total}
+ *             isLoading={isLoading}
+ *             currentSort={currentSort}
+ *             selectedIds={[]}
  *             setSort={() => {
  *                 console.log('set sort');
  *             }}
@@ -125,15 +120,13 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     const {
         currentSort,
         data,
-        ids,
-        loaded,
+        isLoading,
         onSelect,
         onToggleItem,
         selectedIds,
         setSort,
         total,
     } = useListContext(props);
-    const version = useVersion();
 
     const contextValue = useMemo(() => ({ isRowExpandable }), [
         isRowExpandable,
@@ -147,8 +140,10 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         }
     }, [JSON.stringify(selectedIds)]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    // we manage row selection at the datagrid level to allow shift+click to select an array of rows
     const handleToggleItem = useCallback(
         (id, event) => {
+            const ids = data.map(record => record.id);
             const lastSelectedIndex = ids.indexOf(lastSelected.current);
             lastSelected.current = event.target.checked ? id : null;
 
@@ -166,7 +161,9 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                 onSelect(
                     isRowSelectable
                         ? newSelectedIds.filter((id: Identifier) =>
-                              isRowSelectable(data[id])
+                              isRowSelectable(
+                                  data.find(record => record.id === id)
+                              )
                           )
                         : newSelectedIds
                 );
@@ -174,15 +171,10 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                 onToggleItem(id);
             }
         },
-        [data, ids, isRowSelectable, onSelect, onToggleItem, selectedIds]
+        [data, isRowSelectable, onSelect, onToggleItem, selectedIds]
     );
 
-    /**
-     * if loaded is false, the list displays for the first time, and the dataProvider hasn't answered yet
-     * if loaded is true, the data for the list has at least been returned once by the dataProvider
-     * if loaded is undefined, the Datagrid parent doesn't track loading state (e.g. ReferenceArrayField)
-     */
-    if (loaded === false) {
+    if (isLoading === true) {
         return (
             <DatagridLoading
                 className={className}
@@ -199,7 +191,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
      * displaying the table header with zero data rows,
      * the datagrid displays nothing or a custom empty component.
      */
-    if (loaded && (ids.length === 0 || total === 0)) {
+    if (data.length === 0 || total === 0) {
         if (empty) {
             return empty;
         }
@@ -228,7 +220,6 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                         data,
                         hasExpand: !!expand,
                         hasBulkActions,
-                        ids,
                         isRowSelectable,
                         onSelect,
                         resource,
@@ -245,13 +236,11 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                         data,
                         hasBulkActions,
                         hover,
-                        ids,
                         onToggleItem: handleToggleItem,
                         resource,
                         rowStyle,
                         selectedIds,
                         isRowSelectable,
-                        version,
                     },
                     children
                 )}
@@ -275,7 +264,7 @@ Datagrid.propTypes = {
         field: PropTypes.string,
         order: PropTypes.string,
     }),
-    data: PropTypes.any,
+    data: PropTypes.arrayOf(PropTypes.any),
     empty: PropTypes.element,
     // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
@@ -283,8 +272,7 @@ Datagrid.propTypes = {
     // @ts-ignore
     header: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hover: PropTypes.bool,
-    ids: PropTypes.arrayOf(PropTypes.any),
-    loading: PropTypes.bool,
+    isLoading: PropTypes.bool,
     onSelect: PropTypes.func,
     onToggleItem: PropTypes.func,
     resource: PropTypes.string,
@@ -323,9 +311,8 @@ export interface DatagridProps<RecordType extends Record = Record>
     // can be injected when using the component without context
     basePath?: string;
     currentSort?: SortPayload;
-    data?: RecordMap<RecordType>;
-    ids?: Identifier[];
-    loaded?: boolean;
+    data?: RecordType[];
+    isLoading?: boolean;
     onSelect?: (ids: Identifier[]) => void;
     onToggleItem?: (id: Identifier) => void;
     setSort?: (sort: string, order?: string) => void;
