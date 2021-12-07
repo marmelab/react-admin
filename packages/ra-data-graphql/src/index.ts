@@ -221,7 +221,6 @@ export default async (options: Options): Promise<DataProvider> => {
 };
 
 const handleError = (error: ApolloError) => {
-    console.error({ error });
     if (error?.networkError as ServerError) {
         throw new HttpError(
             (error?.networkError as ServerError)?.message,
@@ -229,7 +228,7 @@ const handleError = (error: ApolloError) => {
         );
     }
 
-    throw new HttpError(error.message, 200);
+    throw new HttpError(error.message, 200, error);
 };
 
 const getQueryOperation = query => {
