@@ -39,7 +39,7 @@ describe('GraphQL data provider', () => {
                         data: {},
                     });
                 } catch (error) {
-                    expect(error.body).toBeDefined();
+                    expect(error.body).not.toBeNull();
                     expect(error.body.graphQLErrors).toBeDefined();
                     expect(error.body.graphQLErrors).toHaveLength(1);
                     return;
