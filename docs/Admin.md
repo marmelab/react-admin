@@ -42,6 +42,7 @@ Here are all the props accepted by the component:
 - [`logoutButton`](#logoutbutton)
 - [`initialState`](#initialstate)
 - [`history`](#history)
+- [`basename`](#basename)
 - [`ready`](#ready)
 
 ## `dataProvider`
@@ -470,7 +471,21 @@ const App = () => (
 );
 ```
 
-**Caution**: Do not use the 5.x version of the `history` package. It's currently incompatible with another dependency of react-admin, `connected-react-router`. `history@4.10.1` works fine. 
+## `basename`
+
+Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is only needed when using the [`BrowserHistory`](https://github.com/remix-run/history/blob/main/docs/api-reference.md#createbrowserhistory) to serve the application under a subpath of your domain (for example https://marmelab.com/ra-enterprise-demo). See https://reactrouter.com/docs/en/v6/api#router for more information.
+
+```jsx
+import { Admin } from 'react-admin';
+import { createBrowserHistory } from 'history';
+
+const history = createBrowserHistory();
+const App = () => (
+    <Admin basename="admin" history={history}>
+        ...
+    </Admin>
+);
+```
 
 ## `ready`
 

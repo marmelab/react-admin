@@ -27,6 +27,7 @@ export type ChildrenFunction = () => ComponentType[];
 
 export interface AdminContextProps {
     authProvider?: AuthProvider | LegacyAuthProvider;
+    basename?: string;
     children?: AdminChildren;
     customReducers?: object;
     dashboard?: DashboardComponent;
@@ -41,6 +42,7 @@ export interface AdminContextProps {
 const CoreAdminContext = (props: AdminContextProps) => {
     const {
         authProvider,
+        basename,
         dataProvider,
         i18nProvider,
         children,
@@ -86,7 +88,10 @@ React-admin requires a valid dataProvider function to work.`);
                 <DataProviderContext.Provider value={finalDataProvider}>
                     <QueryClientProvider client={finalQueryClient}>
                         <TranslationProvider i18nProvider={i18nProvider}>
-                            <HistoryRouter history={finalHistory}>
+                            <HistoryRouter
+                                history={finalHistory}
+                                basename={basename}
+                            >
                                 {children}
                             </HistoryRouter>
                         </TranslationProvider>
