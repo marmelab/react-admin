@@ -302,7 +302,7 @@ export const PostList = () => (
 
 **Tip**: You can also disable bulk actions altogether by passing `false` to the `bulkActionButtons` prop. When using a `Datagrid` inside a `List` with disabled bulk actions, the checkboxes column won't be added.
 
-Bulk action button components can use the `useListContext` to get the elements they need to perform their job:
+Bulk action button components can use the [`useListContext`](#uselistcontext) to get the elements they need to perform their job:
 
 * `selectedIds`: the identifiers of the currently selected items.
 * `resource`: the currently displayed resource (eg `posts`, `comments`, etc.)
