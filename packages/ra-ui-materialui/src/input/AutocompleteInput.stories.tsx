@@ -138,6 +138,12 @@ export const CustomTextFunction = () => (
     </Admin>
 );
 
+const CustomOption = ({ record, ...rest }) => (
+    <div {...rest}>
+        {record?.fullName}&nbsp;<i>({record?.language})</i>
+    </div>
+);
+
 const BookEditCustomOptions = () => {
     const choices = [
         { id: 1, fullName: 'Leo Tolstoy', language: 'Russian' },
@@ -158,15 +164,22 @@ const BookEditCustomOptions = () => {
             <SimpleForm>
                 <AutocompleteInput
                     source="author"
-                    optionText="fullName"
-                    choices={choices}
-                    options={{
-                        renderOption: (props, choice) => (
-                            <div {...props}>
-                                {choice.fullName} <i>({choice.language})</i>
-                            </div>
-                        ),
+                    optionText={<CustomOption />}
+                    inputText={record =>
+                        `${record.fullName} (${record.language})`
+                    }
+                    matchSuggestion={(searchText, record) => {
+                        const searchTextLower = searchText.toLowerCase();
+                        return (
+                            record.fullName
+                                .toLowerCase()
+                                .includes(searchTextLower) ||
+                            record.language
+                                .toLowerCase()
+                                .includes(searchTextLower)
+                        );
                     }}
+                    choices={choices}
                 />
             </SimpleForm>
         </Edit>

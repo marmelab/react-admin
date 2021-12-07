@@ -640,6 +640,14 @@ test('MyComponent', () => {
 });
 ```
 
+## AutocompleteInput Now Uses Material UI Autocomplete
+
+We migrated the `AutocompleteInput` so that it leverage Material UI [`<Autocomplete>`](https://mui.com/components/autocomplete/). If you relied on [Downshift](https://www.downshift-js.com/) options, you'll have to update your component.
+
+Besides, some props supported by the previous implementation aren't anymore:
+- `clearAlwaysVisible`: the clear button is now always either while hovering the input or when it has focus. You can hide it using the `<Autocomplete>` `disableClearable` prop though.
+- `resettable`: Removed for the same reason as `clearAlwaysVisible`
+
 # Upgrade to 3.0
 
 We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.

@@ -1,12 +1,20 @@
 import * as React from 'react';
-import { isValidElement, useEffect, useMemo, useRef, useState } from 'react';
+import {
+    cloneElement,
+    isValidElement,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
 import get from 'lodash/get';
 import { Autocomplete, AutocompleteProps, TextField } from '@mui/material';
 import {
-    useInput,
-    FieldTitle,
     ChoicesInputProps,
+    FieldTitle,
+    Record,
     UseChoicesOptions,
+    useInput,
     useSuggestions,
     useTimeout,
     useTranslate,
@@ -32,6 +40,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         helperText,
         id: idOverride,
         input: inputOverride,
+        inputText,
         isRequired: isRequiredOverride,
         label,
         loaded,
@@ -86,12 +95,17 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
     );
 
     useEffect(() => {
-        if (isValidElement(optionText)) {
+        // eslint-disable-next-line eqeqeq
+        if (isValidElement(optionText) && inputText == undefined) {
             throw new Error(`
-AutocompleteInput does not accept an element for the optionText prop.
-Please provide an optionText that returns a string (used for the text input) and use the renderOption prop to customize how options are rendered.`);
+If you provided a React element for the optionText prop, you must also provide the inputText prop (used for the text input)`);
         }
-    }, [optionText]);
+        // eslint-disable-next-line eqeqeq
+        if (isValidElement(optionText) && matchSuggestion == undefined) {
+            throw new Error(`
+If you provided a React element for the optionText prop, you must also provide the matchSuggestion prop (used to match the user input with a choice)`);
+        }
+    }, [optionText, inputText, matchSuggestion]);
 
     useEffect(() => {
         warning(
@@ -163,6 +177,12 @@ Please provide an optionText that returns a string (used for the text input) and
         if (typeof option === 'string') {
             return option;
         }
+
+        // eslint-disable-next-line eqeqeq
+        if (inputText != undefined) {
+            return inputText(option);
+        }
+
         return getChoiceText(option);
     };
 
@@ -301,6 +321,16 @@ Please provide an optionText that returns a string (used for the text input) and
                 onBlur={input.onBlur}
                 onFocus={input.onFocus}
                 onInputChange={handleInputChange}
+                renderOption={(props, record) => {
+                    if (isValidElement(optionText)) {
+                        return cloneElement(optionText, {
+                            record: record as Record,
+                            ...props,
+                        });
+                    }
+
+                    return <li {...props}>{getChoiceText(record)}</li>;
+                }}
             />
             {createElement}
         </>
