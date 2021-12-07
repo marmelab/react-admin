@@ -62,18 +62,15 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
 
     const handleSelectAll = useCallback(
         event => {
-            if (event.target.checked) {
-                const all = ids.concat(
-                    selectedIds.filter(id => !ids.includes(id))
-                );
-                onSelect(
-                    isRowSelectable
-                        ? all.filter(id => isRowSelectable(data[id]))
-                        : all
-                );
-            } else {
-                onSelect([]);
-            }
+            onSelect(
+                event.target.checked
+                    ? ids
+                          .filter(id =>
+                              isRowSelectable ? isRowSelectable(data[id]) : true
+                          )
+                          .concat(selectedIds.filter(id => !ids.includes(id)))
+                    : []
+            );
         },
         [data, ids, onSelect, isRowSelectable, selectedIds]
     );
