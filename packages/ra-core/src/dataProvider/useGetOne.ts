@@ -42,6 +42,9 @@ export const useGetOne = <RecordType extends Record = Record>(
 ): UseGetOneHookValue<RecordType> => {
     const dataProvider = useDataProvider();
     return useQuery<RecordType, unknown, RecordType>(
+        // Sometimes the id comes as a string (e.g. when read from the URL in a Show view).
+        // Sometimes the id comes as a number (e.g. when read from a Record in useGetList response).
+        // As the react-query cache is type-sensitive, we always stringify the identifier to get a match
         [resource, 'getOne', String(id)],
         () =>
             dataProvider
