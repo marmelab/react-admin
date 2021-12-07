@@ -209,31 +209,30 @@ describe('useInput', () => {
 
     it('does not apply the initialValue when input has a value of 0', () => {
         const { queryByDisplayValue } = renderWithRedux(
-            <RecordContextProvider value={{ id: 1, views: 0 }}>
-                <FormWithRedirect
-                    onSubmit={jest.fn()}
-                    render={() => {
-                        return (
-                            <Input
-                                source="views"
-                                resource="posts"
-                                initialValue={99}
-                            >
-                                {({ id, input }) => {
-                                    return (
-                                        <input
-                                            type="number"
-                                            id={id}
-                                            aria-label="Views"
-                                            {...input}
-                                        />
-                                    );
-                                }}
-                            </Input>
-                        );
-                    }}
-                />
-            </RecordContextProvider>
+            <FormWithRedirect
+                onSubmit={jest.fn()}
+                record={{ id: 1, views: 0 }}
+                render={() => {
+                    return (
+                        <Input
+                            source="views"
+                            resource="posts"
+                            initialValue={99}
+                        >
+                            {({ id, input }) => {
+                                return (
+                                    <input
+                                        type="number"
+                                        id={id}
+                                        aria-label="Views"
+                                        {...input}
+                                    />
+                                );
+                            }}
+                        </Input>
+                    );
+                }}
+            />
         );
         expect(queryByDisplayValue('99')).toBeNull();
     });
