@@ -11,7 +11,6 @@ import useMutation, { UseMutationValue } from './useMutation';
 import withDataProvider from './withDataProvider';
 import useGetMany from './useGetMany';
 import useGetManyReference from './useGetManyReference';
-import useGetMatching from './useGetMatching';
 import useUpdateMany from './useUpdateMany';
 import useCreate from './useCreate';
 import useDelete from './useDelete';
@@ -41,7 +40,6 @@ export {
     useMutation,
     useGetMany,
     useGetManyReference,
-    useGetMatching,
     useUpdateMany,
     useCreate,
     useDelete,
