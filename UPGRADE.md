@@ -427,7 +427,7 @@ const MyList = () => (
 
 ## No More props injection in custom Pagination and Empty components
 
-The `<List>` component renders a Pagination component when there are records to displayu, and an Empty component otherwise. You can customize these components by passing your own with the `pagination`and `empty`props. 
+The `<List>` component renders a Pagination component when there are records to display, and an Empty component otherwise. You can customize these components by passing your own with the `pagination`and `empty`props. 
 
 `<List>` used to inject `ListContext` props (`data`, `isLoaded`, etc.) to these Pagination component. In v4, the component rendered by `<List>` no longer receive these props. They must grab them from the ListContext instead.
 
