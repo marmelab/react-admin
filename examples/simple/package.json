@@ -1,6 +1,7 @@
 {
     "name": "simple",
     "version": "3.19.3",
+    "private": true,
     "scripts": {
         "dev": "./node_modules/.bin/webpack-dev-server --progress --color --hot --watch --mode development",
         "start": "vite",
