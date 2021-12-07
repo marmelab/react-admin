@@ -69,7 +69,7 @@ export const ListView = (props: ListViewProps) => {
                         cloneElement(Children.only(children), {
                             hasBulkActions: bulkActionButtons !== false,
                         })}
-                    {pagination !== false && cloneElement(pagination)}
+                    {pagination !== false && pagination}
                 </Content>
                 {aside}
             </div>

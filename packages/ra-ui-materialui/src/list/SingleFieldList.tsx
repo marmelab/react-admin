@@ -103,10 +103,7 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
 
                 return (
                     <RecordContextProvider value={record} key={record.id}>
-                        {cloneElement(Children.only(children), {
-                            record,
-                            resource,
-                        })}
+                        {children}
                     </RecordContextProvider>
                 );
             })}
