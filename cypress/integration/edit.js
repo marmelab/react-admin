@@ -155,9 +155,7 @@ describe('Edit Page', () => {
             .type('{selectall}')
             .clear()
             .type('Sed quo');
-        cy.get('[role="option"]').within(() => {
-            cy.contains('Sed quo et et fugiat modi').click();
-        });
+        cy.contains('[role="option"]', 'Sed quo et et fugiat modi').click();
         cy.get('[role="option"]').should(el => expect(el).to.not.exist);
 
         // Ensure it does not reappear a little after
@@ -168,15 +166,13 @@ describe('Edit Page', () => {
         cy.get(EditCommentPage.elements.input('post_id'))
             .clear()
             .type('Accusantium qui nihil');
-        cy.get('[role="option"]')
-            .within(() => {
-                cy.contains(
-                    'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
-                );
-            })
-            // We select the original value so that the form stay pristine and we avoid the
-            // warning about unsaved changes that prevents the following tests to run
-            .click();
+
+        // We select the original value so that the form stay pristine and we avoid the
+        // warning about unsaved changes that prevents the following tests to run
+        cy.contains(
+            '[role="option"]',
+            'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
+        ).click();
     });
 
     it('should reset the form correctly when switching from edit to create', () => {
