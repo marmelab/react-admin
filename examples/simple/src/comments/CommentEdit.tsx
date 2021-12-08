@@ -154,18 +154,8 @@ const CommentEdit = props => {
                                         const title = `${suggestion.title} - ${suggestion.id}`;
                                         return title.includes(filterValue);
                                     }}
-                                    optionText={record =>
-                                        `${record?.title} - ${record?.id}`
-                                    }
+                                    optionText={<OptionRenderer />}
                                     inputText={inputText}
-                                    options={{
-                                        renderOption: (props, record) => (
-                                            <OptionRenderer
-                                                record={record}
-                                                {...props}
-                                            />
-                                        ),
-                                    }}
                                 />
                             </ReferenceInput>
 
