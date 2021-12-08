@@ -19,7 +19,7 @@ const useWarnWhenUnsavedChanges = (
     const navigator = useContext(UNSAFE_NavigationContext).navigator as History;
     const location = useLocation();
     const translate = useTranslate();
-    const { pristine, submitSucceeded } = useFormState(
+    const { pristine, submitSucceeded, submitting } = useFormState(
         UseFormStateSubscription
     );
     const initialLocation = useRef(formRootPathname || location.pathname);
@@ -33,9 +33,10 @@ const useWarnWhenUnsavedChanges = (
             );
 
             if (
-                newLocationIsInsideForm ||
-                submitSucceeded ||
-                window.confirm(translate('ra.message.unsaved_changes'))
+                !submitting &&
+                (newLocationIsInsideForm ||
+                    submitSucceeded ||
+                    window.confirm(translate('ra.message.unsaved_changes')))
             ) {
                 unblock();
                 tx.retry();
@@ -43,13 +44,26 @@ const useWarnWhenUnsavedChanges = (
         });
 
         return unblock;
-    }, [enable, location, navigator, pristine, submitSucceeded, translate]);
+    }, [
+        enable,
+        location,
+        navigator,
+        pristine,
+        submitting,
+        submitSucceeded,
+        translate,
+    ]);
 };
 
 const UseFormStateSubscription: UseFormStateParams = {
     // For some reason, subscribing only to pristine does not rerender when a field become dirty
     // because it has a defaultValue (not initialValue as setting an initialValue does not make the field dirty)
-    subscription: { pristine: true, dirtyFields: true, submitSucceeded: true },
+    subscription: {
+        pristine: true,
+        dirtyFields: true,
+        submitSucceeded: true,
+        submitting: true,
+    },
 };
 
 export default useWarnWhenUnsavedChanges;
