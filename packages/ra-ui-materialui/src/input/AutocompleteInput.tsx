@@ -111,6 +111,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         loading,
         limitChoicesToValue,
         matchSuggestion,
+        margin = 'dense',
         meta: metaOverride,
         onBlur,
         onChange,
@@ -127,6 +128,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         suggestionLimit,
         translateChoice,
         validate,
+        variant = 'filled',
         ...rest
     } = props;
 
@@ -361,6 +363,8 @@ If you provided a React element for the optionText prop, you must also provide t
                                 helperText={helperText}
                             />
                         }
+                        margin={margin}
+                        variant={variant}
                     />
                 )}
                 {...options}
