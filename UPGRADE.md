@@ -765,7 +765,7 @@ Besides, some props supported by the previous implementation aren't anymore:
 
 ## `useAuthenticated` Signature has Changed
 
-`useAuthenticated` uses to accept only the parameters passed to the `authProvider.checkAuth` function. It now accept an option object with two properties:
+`useAuthenticated` uses to accept only the parameters passed to the `authProvider.checkAuth` function. It now accepts an option object with two properties:
 - `enabled`: whether it should check for an authenticated user
 - `params`: the parameters to pass to `checkAuth`
 
