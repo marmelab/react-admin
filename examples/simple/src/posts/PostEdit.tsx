@@ -6,6 +6,7 @@ import {
     ArrayInput,
     BooleanInput,
     CheckboxGroupInput,
+    SelectArrayInput,
     Datagrid,
     DateField,
     DateInput,
@@ -133,7 +134,7 @@ const PostEdit = () => {
                         validate={required()}
                         resettable
                     />
-                    <CheckboxGroupInput
+                    <SelectArrayInput
                         source="notifications"
                         choices={[
                             { id: 12, name: 'Ray Hakt' },

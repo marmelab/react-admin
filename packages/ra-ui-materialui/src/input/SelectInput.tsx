@@ -180,13 +180,15 @@ export const SelectInput = (props: SelectInputProps) => {
     ]);
 
     const handleChange = useCallback(
-        async (event: any) => {
-            let choice = event;
+        async (eventOrChoice: any) => {
+            // We might receive an event from the mui component
+            // In this case, it will be the choice id
             // eslint-disable-next-line eqeqeq
-            if (event?.target?.value != undefined) {
-                input.onChange(event.target.value);
+            if (eventOrChoice?.target?.value != undefined) {
+                input.onChange(eventOrChoice.target.value);
             } else {
-                input.onChange(getChoiceValue(choice));
+                // Or we might receive a choice directly, for instance a newly created one
+                input.onChange(getChoiceValue(eventOrChoice));
             }
         },
         [input, getChoiceValue]
