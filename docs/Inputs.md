@@ -536,7 +536,7 @@ import { TextInput } from 'react-admin';
 ### `<AutocompleteInput>`
 
 To let users choose a value in a list using a dropdown with autocompletion, use `<AutocompleteInput>`.
-It renders using [downshift](https://github.com/downshift-js/downshift) and a `fuzzySearch` filter.
+It renders using Material UI [Autocomplete](https://mui.com/components/autocomplete/).
 
 ![AutocompleteInput](./img/autocomplete-input.gif)
 
@@ -557,7 +557,6 @@ import { AutocompleteInput } from 'react-admin';
 | Prop                      | Required | Type           | Default      | Description                          |
 | ------------------------- | -------- | -------------- | ------------ | ------------------------------------ |
 | `allowEmpty`              | Optional | `boolean`      | `false`      | If `false` and the `searchText` typed did not match any suggestion, the `searchText` will revert to the current value when the field is blurred. If `true` and the `searchText` is set to `''` then the field will set the input value to `null`. |
-| `clearAlwaysVisible`      | Optional | `boolean`      | `false`      | When `resettable` is true, set this prop to `true` to have the Reset button visible even when the field is empty |
 | `choices`                 | Required | `Object[]`     | `-`          | List of items to autosuggest |
 | `create`                 | Optional | `Element`     | `-`          | A React Element to render when users want to create a new choice |
 | `createLabel`                 | Optional | `string`     | `ra.action.create`          | The label for the menu item allowing users to create a new choice. Used when the filter is empty |
@@ -568,8 +567,7 @@ import { AutocompleteInput } from 'react-admin';
 | `onCreate`              | Optional | `Function`     | `-`       | A function called with the current filter value when users choose to create a new choice. |
 | `optionText`              | Optional | `string` &#124; `Function` &#124; `Component` | `name`       | Field name of record to display in the suggestion item or function which accepts the correct record as argument (`(record)=> {string}`) |
 | `optionValue`             | Optional | `string`       | `id`         | Field name of record containing the value to use as input value |
-| `inputText`               | Optional | `Function`     | `-`          | If `optionText` is a custom Component, this function is needed to determine the text displayed for the current selection. |
-| `resettable`              | Optional | `boolean`      | `false`      | Display a button to reset the text filter. Useful when using `<AutocompleteInput>` inside the list filters |
+| `inputText`               | Optional | `Function`     | `-`          | Required if `optionText` is a custom Component, this function must return the text displayed for the current selection. |
 | `setFilter`               | Optional | `Function`     | `null`       | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically setup when using `ReferenceInput`. |
 | `shouldRenderSuggestions` | Optional | `Function`     | `() => true` | A function that returns a `boolean` to determine whether or not suggestions are rendered. Use this when working with large collections of data to improve performance and user experience. This function is passed into the underlying react-autosuggest component. Ex.`(value) => value.trim() > 2` |
 | `suggestionLimit`         | Optional | `number`       | `null`       | Limits the numbers of suggestions that are shown in the dropdown list |
@@ -613,11 +611,18 @@ const OptionRenderer = choice => (
     </span>
 );
 const inputText = choice => `${choice.first_name} ${choice.last_name}`;
+const matchSuggestion = (filter, choice) => {
+    return (
+        choice.first_name.toLowerCase().includes(filter.toLowerCase())
+        || choice.last_name.toLowerCase().includes(filter.toLowerCase())
+};
+
 <AutocompleteInput
     source="author_id"
     choices={choices}
     optionText={<OptionRenderer />}
     inputText={inputText}
+    matchSuggestion={matchSuggestion}
 />
 ```
 
@@ -661,17 +666,6 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin';
     <AutocompleteInput optionText="title" />
 </ReferenceInput>
 ```
-
-Lastly, would you need to override the props of the suggestion's container (a `Popper` element), you can specify them using the `options.suggestionsContainerProps`. For example:
-
-{% raw %}
-```jsx
-<AutocompleteInput source="category" options={{
-    suggestionsContainerProps: {
-        disablePortal: true,
-}}} />
-```
-{% endraw %}
 
 **Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](#referenceinput) doesn't cover your need), you'll have to [write your own Input component](#writing-your-own-input-component) based on material-ui `<AutoComplete>` component.
 

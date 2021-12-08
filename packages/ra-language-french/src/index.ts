@@ -36,6 +36,7 @@ const frenchMessages: TranslationMessages = {
             update: 'Modifier',
             move_up: 'Déplacer vers le haut',
             move_down: 'Déplacer vers le bas',
+            open: 'Ouvrir',
         },
         boolean: {
             true: 'Oui',

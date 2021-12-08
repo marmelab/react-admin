@@ -40,25 +40,29 @@ export const useSupportCreateSuggestion = (
     } = options;
     const translate = useTranslate();
     const [renderOnCreate, setRenderOnCreate] = useState(false);
+    const [filterValue, setFilterValue] = useState(filter);
 
     const context = {
-        filter,
+        filter: filterValue,
         onCancel: () => setRenderOnCreate(false),
         onCreate: item => {
             setRenderOnCreate(false);
-            handleChange(undefined, item);
+            handleChange(item);
         },
     };
 
     return {
-        getCreateItem: () => {
+        getCreateItem: filterValue => {
+            if (filterValue) {
+                setFilterValue(filterValue);
+            }
             if (typeof optionText !== 'string') {
                 return {
                     id: createValue,
                     name:
-                        filter && createItemLabel
+                        (filterValue ?? filter) && createItemLabel
                             ? translate(createItemLabel, {
-                                  item: filter,
+                                  item: filterValue ?? filter,
                                   _: createItemLabel,
                               })
                             : translate(createLabel, { _: createLabel }),
@@ -69,18 +73,18 @@ export const useSupportCreateSuggestion = (
                     id: createValue,
                 },
                 optionText,
-                filter && createItemLabel
+                (filterValue ?? filter) && createItemLabel
                     ? translate(createItemLabel, {
-                          item: filter,
+                          item: filterValue ?? filter,
                           _: createItemLabel,
                       })
                     : translate(createLabel, { _: createLabel })
             );
         },
         handleChange: async eventOrValue => {
-            const value = eventOrValue.target?.value || eventOrValue;
-            const finalValue = Array.isArray(value) ? [...value].pop() : value;
+            const value = eventOrValue?.target?.value || eventOrValue;
 
+            const finalValue = Array.isArray(value) ? [...value].pop() : value;
             if (eventOrValue?.preventDefault) {
                 eventOrValue.preventDefault();
                 eventOrValue.stopPropagation();
@@ -90,7 +94,7 @@ export const useSupportCreateSuggestion = (
                     const newSuggestion = await onCreate(filter);
 
                     if (newSuggestion) {
-                        handleChange(eventOrValue, newSuggestion);
+                        handleChange(newSuggestion);
                         return;
                     }
                 } else {
@@ -98,7 +102,7 @@ export const useSupportCreateSuggestion = (
                     return;
                 }
             }
-            handleChange(eventOrValue, undefined);
+            handleChange(eventOrValue);
         },
         createElement:
             renderOnCreate && isValidElement(create) ? (
@@ -115,13 +119,15 @@ export interface SupportCreateSuggestionOptions {
     createLabel?: string;
     createItemLabel?: string;
     filter?: string;
-    handleChange: (value: any, newChoice: any) => void;
+    handleChange: (value: any) => void;
     onCreate?: OnCreateHandler;
     optionText?: OptionText;
 }
 
 export interface UseSupportCreateValue {
-    getCreateItem: () => { id: Identifier; [key: string]: any };
+    getCreateItem: (
+        filterValue?: string
+    ) => { id: Identifier; [key: string]: any };
     handleChange: (eventOrValue: ChangeEvent | any) => Promise<void>;
     createElement: ReactElement | null;
 }

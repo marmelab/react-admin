@@ -53,13 +53,13 @@ const LinkToRelatedPost = ({ record }: { record?: Record }) => (
     </RaLink>
 );
 
-const OptionRenderer = ({ record }: { record?: Record }) => {
+const OptionRenderer = ({ record, ...rest }: { record?: Record }) => {
     return record.id === '@@ra-create' ? (
-        <span>{record.name}</span>
+        <div {...rest}>{record.name}</div>
     ) : (
-        <span>
+        <div {...rest}>
             {record?.title} - {record?.id}
-        </span>
+        </div>
     );
 };
 
@@ -152,16 +152,10 @@ const CommentEdit = props => {
                                         suggestion
                                     ) => {
                                         const title = `${suggestion.title} - ${suggestion.id}`;
-
                                         return title.includes(filterValue);
                                     }}
                                     optionText={<OptionRenderer />}
                                     inputText={inputText}
-                                    options={{
-                                        InputProps: {
-                                            fullWidth: true,
-                                        },
-                                    }}
                                 />
                             </ReferenceInput>
 

@@ -78,6 +78,12 @@ describe('Edit Page', () => {
             cy.get(EditPostPage.elements.input('backlinks[0].url')).blur();
 
             cy.contains('Required');
+            // FIXME: We navigate away from the page and confirm the unsaved changes
+            // This is needed because HashHistory would prevent further navigation
+            cy.window().then(win => {
+                cy.on('window:confirm', () => true);
+            });
+            cy.get('[role="menuitem"]:first-child').click();
         });
 
         it('should change reference list correctly when changing filter', () => {
@@ -149,22 +155,24 @@ describe('Edit Page', () => {
             .type('{selectall}')
             .clear()
             .type('Sed quo');
-        cy.get('[role="tooltip"]').within(() => {
-            cy.contains('Sed quo et et fugiat modi').click();
-        });
-        cy.get('[role="tooltip"]').should(el => expect(el).to.not.exist);
+        cy.contains('[role="option"]', 'Sed quo et et fugiat modi').click();
+        cy.get('[role="option"]').should(el => expect(el).to.not.exist);
 
         // Ensure it does not reappear a little after
         cy.wait(500);
-        cy.get('[role="tooltip"]').should(el => expect(el).to.not.exist);
+        cy.get('[role="option"]').should(el => expect(el).to.not.exist);
 
         // Ensure they still appear when needed though
         cy.get(EditCommentPage.elements.input('post_id'))
             .clear()
-            .type('architecto aut');
-        cy.get('[role="tooltip"]').within(() => {
-            cy.contains('Sint dignissimos in architecto aut');
-        });
+            .type('Accusantium qui nihil');
+
+        // We select the original value so that the form stay pristine and we avoid the
+        // warning about unsaved changes that prevents the following tests to run
+        cy.contains(
+            '[role="option"]',
+            'Accusantium qui nihil voluptatum quia voluptas maxime ab similique'
+        ).click();
     });
 
     it('should reset the form correctly when switching from edit to create', () => {

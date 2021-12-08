@@ -755,9 +755,17 @@ test('MyComponent', () => {
 });
 ```
 
+## AutocompleteInput Now Uses Material UI Autocomplete
+
+We migrated the `AutocompleteInput` so that it leverages Material UI [`<Autocomplete>`](https://mui.com/components/autocomplete/). If you relied on [Downshift](https://www.downshift-js.com/) options, you'll have to update your component.
+
+Besides, some props supported by the previous implementation aren't anymore:
+- `clearAlwaysVisible`: the clear button is now always visible, either while hovering the input or when it has focus. You can hide it using the `<Autocomplete>` `disableClearable` prop though.
+- `resettable`: Removed for the same reason as `clearAlwaysVisible`
+
 ## `useAuthenticated` Signature has Changed
 
-`useAuthenticated` uses to accept only the parameters passed to the `authProvider.checkAuth` function. It now accept an option object with two properties:
+`useAuthenticated` uses to accept only the parameters passed to the `authProvider.checkAuth` function. It now accepts an option object with two properties:
 - `enabled`: whether it should check for an authenticated user
 - `params`: the parameters to pass to `checkAuth`
 
