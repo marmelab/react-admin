@@ -53,21 +53,14 @@ import { FieldWithLabel } from './FieldWithLabel';
  * @param {Object} props.sx Custom style object.
  */
 export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
-    const {
-        className,
-        children,
-        component: Component = Root,
-        divider,
-        spacing = 1,
-        ...rest
-    } = props;
+    const { className, children, divider, spacing = 1, ...rest } = props;
     const record = useRecordContext(props);
     if (!record) {
         return null;
     }
     return (
         <OptionalRecordContextProvider value={props.record}>
-            <Component className={className} {...sanitizeRestProps(rest)}>
+            <Root className={className} {...sanitizeRestProps(rest)}>
                 <Stack
                     spacing={spacing}
                     divider={divider}
@@ -90,7 +83,7 @@ export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
                         ) : null
                     )}
                 </Stack>
-            </Component>
+            </Root>
         </OptionalRecordContextProvider>
     );
 };
@@ -98,7 +91,6 @@ export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
 export interface SimpleShowLayoutProps {
     children: ReactNode;
     className?: string;
-    component?: ElementType;
     divider?: ReactNode;
     record?: Record;
     spacing?: ResponsiveStyleValue<number | string>;
@@ -108,7 +100,6 @@ export interface SimpleShowLayoutProps {
 SimpleShowLayout.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
-    component: PropTypes.elementType,
     record: PropTypes.object,
     spacing: PropTypes.any,
     sx: PropTypes.any,
@@ -131,8 +122,6 @@ const Root = styled('div', { name: PREFIX })(({ theme }) => ({
 }));
 
 const sanitizeRestProps = ({
-    children,
-    className,
     record,
     resource,
     basePath,

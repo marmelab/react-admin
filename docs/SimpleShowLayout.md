@@ -27,7 +27,6 @@ const PostShow = () => (
 
 * [`children`](#fields): components rendering a record field
 * `className`: passed to the root component
-* [`component`](#root-component): overrides the root component
 * [`divider`](#divider): optional element to render between each field
 * [`record`](#controlled-mode): can be injected when outside a RecordContext 
 * [`spacing`](#spacing): optional integer to set the spacing between the fields
@@ -146,21 +145,6 @@ const PostShow = () => (
     <Show>
         <SimpleShowLayout divider={<Divider flexItem />}>
             <PostTitle label="title" />
-        </SimpleShowLayout>
-    </Show>
-);
-```
-
-## Root Component
-
-By default, the `<SimpleShowLayout>` view renders the main content area inside a `<div>`. You can override the main area container by passing a `component` prop:
-
-```jsx
-// use a span as root component
-const PostShow = () => (
-    <Show>
-        <SimpleShowLayout component="span">
-            <TextField source="title" />
         </SimpleShowLayout>
     </Show>
 );

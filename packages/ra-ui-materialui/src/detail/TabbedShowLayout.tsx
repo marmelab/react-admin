@@ -79,7 +79,6 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
     const {
         children,
         className,
-        component: Component = Root,
         spacing,
         divider,
         syncWithLocation = true,
@@ -116,7 +115,7 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
 
     return (
         <OptionalRecordContextProvider value={props.record}>
-            <Component className={className} {...sanitizeRestProps(rest)}>
+            <Root className={className} {...sanitizeRestProps(rest)}>
                 {syncWithLocation ? (
                     <Routes>
                         <Route
@@ -173,7 +172,7 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
                         </div>
                     </>
                 )}
-            </Component>
+            </Root>
         </OptionalRecordContextProvider>
     );
 };
@@ -181,7 +180,6 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
 export interface TabbedShowLayoutProps {
     children: ReactNode;
     className?: string;
-    component?: ElementType;
     divider?: ReactNode;
     record?: Record;
     rootPath?: string;
@@ -195,7 +193,6 @@ export interface TabbedShowLayoutProps {
 TabbedShowLayout.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
-    component: PropTypes.elementType,
     record: PropTypes.object,
     spacing: PropTypes.any,
     sx: PropTypes.any,
@@ -220,8 +217,6 @@ const Root = styled('div', { name: PREFIX })(({ theme }) => ({
 }));
 
 const sanitizeRestProps = ({
-    children,
-    className,
     record,
     resource,
     basePath,
