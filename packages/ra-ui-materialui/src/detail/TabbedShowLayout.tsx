@@ -12,7 +12,7 @@ import {
 import PropTypes from 'prop-types';
 import { ResponsiveStyleValue, SxProps } from '@mui/system';
 import { styled } from '@mui/material/styles';
-import { Card, Divider } from '@mui/material';
+import { Divider } from '@mui/material';
 import { Outlet, Routes, Route } from 'react-router-dom';
 import {
     Record,
@@ -28,9 +28,9 @@ import {
 /**
  * Layout for a Show view showing fields grouped in tabs and laid out in a single column.
  *
- * It pulls the record from the RecordContext. It renders a material-ui `<Card>`
- * containing a set of `<Tabs>`, each of which contains a list of record fields
- * in a single-column layout (via material-ui's `<Stack>` component).
+ * It pulls the record from the RecordContext. It renders a set of `<Tabs>`,
+ * each of which contains a list of record fields in a single-column layout
+ * (via material-ui's `<Stack>` component).
  * `<TabbedShowLayout>` delegates the actual rendering of fields to its children,
  * which should be `<Tab>` components.
  * `<Tab>` wraps each field inside a <Labeled> component to add a label.
@@ -212,7 +212,7 @@ export const TabbedShowLayoutClasses = {
     content: `${PREFIX}-content`,
 };
 
-const Root = styled(Card, { name: PREFIX })(({ theme }) => ({
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
     flex: 1,
     [`& .${TabbedShowLayoutClasses.content}`]: {
         padding: `${theme.spacing(1)} ${theme.spacing(2)}`,

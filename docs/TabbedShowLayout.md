@@ -5,7 +5,7 @@ title: "TabbedShowLayout"
 
 # `<TabbedShowLayout>`
 
-The `<TabbedShowLayout>` pulls the `record` from the `RecordContext`. It renders a material-ui `<Card>` containing a set of `<Tabs>`, each of which contains a list of record fields in a single-column layout (via material-ui's `<Stack>` component). `<TabbedShowLayout>` delegates the actual rendering of fields to its children, which should be `<Tab>` components. `<Tab>`  wraps each field inside a `<FieldWithLabel>` component to add a label.
+The `<TabbedShowLayout>` pulls the `record` from the `RecordContext`. It renders a set of `<Tabs>`, each of which contains a list of record fields in a single-column layout (via material-ui's `<Stack>` component). `<TabbedShowLayout>` delegates the actual rendering of fields to its children, which should be `<Tab>` components. `<Tab>`  wraps each field inside a `<FieldWithLabel>` component to add a label.
 
 Switching tabs will update the current url. By default, it uses the tabs indexes and the first tab will be displayed at the root url. You can customize the path by providing a `path` prop to each `Tab` component. If you'd like the first one to act as an index page, just omit the `path` prop.
 
@@ -64,7 +64,7 @@ export const PostShow = () => (
 * [`syncWithLocation`](#sync-tabs-with-location): optional boolean to disable storing the active tab in the url
 * [`tabs`](#custom-tab-component): custom Tabs component
 
-Additional props are passed to the root component (`<Card>`).
+Additional props are passed to the root component (`<div>`).
 
 ## Tabs
 
@@ -230,13 +230,13 @@ const PostShow = () => (
 
 ## Root Component
 
-By default, `<TabbedShowLayout>` view renders the main content area inside a material-ui `<Card>`. You can override the main area container by passing a `component` prop:
+By default, `<TabbedShowLayout>` view renders the main content area inside a `<div>`. You can override the main area container by passing a `component` prop:
 
 ```jsx
-// use a div as root component
+// use a span as root component
 const PostShow = () => (
     <Show>
-        <TabbedShowLayout component="div">
+        <TabbedShowLayout component="span">
             <Tab label="main">
                 <TextField source="title" />
             </Tab>

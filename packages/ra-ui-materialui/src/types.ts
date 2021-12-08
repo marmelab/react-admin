@@ -69,6 +69,7 @@ export interface CreateProps<RecordType extends RaRecord = RaRecord> {
 
 export interface ShowProps<RecordType extends RaRecord = RaRecord> {
     actions?: ReactElement | false;
+    aside?: ReactElement;
     children: ReactNode;
     className?: string;
     component?: ElementType;

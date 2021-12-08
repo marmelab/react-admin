@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import { Card } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import classnames from 'classnames';
 import { useShowContext } from 'ra-core';
@@ -13,9 +14,10 @@ const defaultActions = <ShowActions />;
 export const ShowView = (props: ShowViewProps) => {
     const {
         actions = defaultActions,
+        aside,
         children,
         className,
-        component: Content = 'div',
+        component: Content = Card,
         emptyWhileLoading = false,
         title,
         ...rest
@@ -38,7 +40,10 @@ export const ShowView = (props: ShowViewProps) => {
                 defaultTitle={defaultTitle}
             />
             {actions !== false && actions}
-            <Content className={ShowClasses.main}>{children}</Content>
+            <div className={ShowClasses.main}>
+                <Content className={ShowClasses.card}>{children}</Content>
+                {aside}
+            </div>
         </Root>
     );
 };
@@ -77,6 +82,7 @@ const PREFIX = 'RaShow';
 export const ShowClasses = {
     root: `${PREFIX}-root`,
     main: `${PREFIX}-main`,
+    card: `${PREFIX}-card`,
 };
 
 const Root = styled('div', { name: PREFIX })(({ theme }) => ({
@@ -85,5 +91,8 @@ const Root = styled('div', { name: PREFIX })(({ theme }) => ({
     },
     [`& .${ShowClasses.main}`]: {
         display: 'flex',
+    },
+    [`& .${ShowClasses.card}`]: {
+        flex: '1 1 auto',
     },
 }));

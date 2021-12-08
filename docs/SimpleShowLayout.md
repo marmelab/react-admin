@@ -5,7 +5,7 @@ title: "SimpleShowLayout"
 
 # `<SimpleShowLayout>`
 
-The `<SimpleShowLayout>` pulls the `record` from the `RecordContext`. It renders a material-ui `<Card>` containing the record fields in a single-column layout (via material-ui's `<Stack>` component). `<SimpleShowLayout>` delegates the actual rendering of fields to its children. It wraps each field inside [a `<FieldWithLabel>` component](./FieldWithLabel.md) to add a label.
+The `<SimpleShowLayout>` pulls the `record` from the `RecordContext`. It renders the record fields in a single-column layout (via material-ui's `<Stack>` component). `<SimpleShowLayout>` delegates the actual rendering of fields to its children. It wraps each field inside [a `<FieldWithLabel>` component](./FieldWithLabel.md) to add a label.
 
 ## Usage
 
@@ -33,7 +33,7 @@ const PostShow = () => (
 * [`spacing`](#spacing): optional integer to set the spacing between the fields
 * [`sx`](#css-api): Override the styles
 
-Additional props are passed to the root component (`<Card>`).
+Additional props are passed to the root component (`<div>`).
 
 ## Fields
 
@@ -42,19 +42,17 @@ Additional props are passed to the root component (`<Card>`).
 ```jsx
 const PostShow = () => (
     <Show>
-        <Card>
-            <Stack>
-                <FieldWithLabel label="Title">
-                    <TextField source="title" />
-                </FieldWithLabel>
-                <FieldWithLabel label="Body">
-                    <RichTextField source="body" />
-                </FieldWithLabel>
-                <FieldWithLabel label="Nb Views">
-                    <NumberField source="nb_views" />
-                </FieldWithLabel>
-            </Stack>
-        </Card>
+        <Stack>
+            <FieldWithLabel label="Title">
+                <TextField source="title" />
+            </FieldWithLabel>
+            <FieldWithLabel label="Body">
+                <RichTextField source="body" />
+            </FieldWithLabel>
+            <FieldWithLabel label="Nb Views">
+                <NumberField source="nb_views" />
+            </FieldWithLabel>
+        </Stack>
     </Show>
 );
 ```
@@ -74,13 +72,11 @@ const PostShow = () => (
 // translates to
 const PostShow = () => (
     <Show>
-        <Card>
-            <Stack>
-                <FieldWithLabel label="My Custom Title">
-                    <TextField source="title" />
-                </FieldWithLabel>
-            </Stack>
-        </Card>
+        <Stack>
+            <FieldWithLabel label="My Custom Title">
+                <TextField source="title" />
+            </FieldWithLabel>
+        </Stack>
     </Show>
 );
 ```
@@ -99,11 +95,9 @@ const PostShow = () => (
 // translates to
 const PostShow = () => (
     <Show>
-        <Card>
-            <Stack>
-                <TextField source="title" />
-            </Stack>
-        </Card>
+        <Stack>
+            <TextField source="title" />
+        </Stack>
     </Show>
 );
 ```
@@ -159,13 +153,13 @@ const PostShow = () => (
 
 ## Root Component
 
-By default, the `<SimpleShowLayout>` view renders the main content area inside a material-ui `<Card>`. You can override the main area container by passing a `component` prop:
+By default, the `<SimpleShowLayout>` view renders the main content area inside a `<div>`. You can override the main area container by passing a `component` prop:
 
 ```jsx
-// use a div as root component
+// use a span as root component
 const PostShow = () => (
     <Show>
-        <SimpleShowLayout component="div">
+        <SimpleShowLayout component="span">
             <TextField source="title" />
         </SimpleShowLayout>
     </Show>
@@ -179,28 +173,24 @@ const PostShow = () => (
 ```jsx
 const BookShow = () => (
     <Show>
-        <Card>
-            <Grid container spacing={2}>
-                <Grid item xs={6}>
-                    <SimpleShowLayout component="div">
-                        <TextField source="id" />
-                        <TextField source="title" />
-                    </SimpleShowLayout>
-                </Grid>
-                <Grid item xs={6}>
-                    <SimpleShowLayout component="div">
-                        <TextField source="author" />
-                        <TextField source="summary" />
-                        <NumberField source="year" />
-                    </SimpleShowLayout>
-                </Grid>
+        <Grid container spacing={2}>
+            <Grid item xs={6}>
+                <SimpleShowLayout>
+                    <TextField source="id" />
+                    <TextField source="title" />
+                </SimpleShowLayout>
             </Grid>
-        </Card>
+            <Grid item xs={6}>
+                <SimpleShowLayout>
+                    <TextField source="author" />
+                    <TextField source="summary" />
+                    <NumberField source="year" />
+                </SimpleShowLayout>
+            </Grid>
+        </Grid>
     </Show>
 );
 ```
-
-Just make sure that you set `component="div"` to avoid rendering a card inside another card.
 
 ## Controlled Mode
 
