@@ -21,9 +21,9 @@ import { Identifier, Record, UpdateParams, MutationMode } from '../types';
  * May include a mutation mode (optimistic/pessimistic/undoable), e.g. { mutationMode: 'undoable' }
  *
  * @typedef Params
- * @props params.id The resource identifier, e.g. 123
- * @props params.data The updates to merge into the record, e.g. { views: 10 }
- * @props params.previousData The record before the update is applied
+ * @prop params.id The resource identifier, e.g. 123
+ * @prop params.data The updates to merge into the record, e.g. { views: 10 }
+ * @prop params.previousData The record before the update is applied
  *
  * @returns The current mutation state. Destructure as [update, { data, error, isLoading }].
  *
