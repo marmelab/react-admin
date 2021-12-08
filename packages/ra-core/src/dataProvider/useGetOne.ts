@@ -20,12 +20,12 @@ import useDataProvider from './useDataProvider';
  * @param {Options} options Options object to pass to the react-query queryClient.
  *
  * @typedef Params
- * @property id a resource identifier, e.g. 123
+ * @prop id a resource identifier, e.g. 123
  *
  * @typedef Options
- * @property enabled Flag to conditionally run the query. If it's false, the query will not run
- * @property onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
- * @property onError Side effect function to be executed upon failure, e.g. { onError: error => notify(error.message) }
+ * @prop enabled Flag to conditionally run the query. If it's false, the query will not run
+ * @prop onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
+ * @prop onError Side effect function to be executed upon failure, e.g. { onError: error => notify(error.message) }
  *
  * @returns The current request state. Destructure as { data, error, isLoading, refetch }.
  *
