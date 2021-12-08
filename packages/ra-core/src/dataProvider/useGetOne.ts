@@ -1,4 +1,4 @@
-import { Identifier, Record, GetOneParams } from '../types';
+import { Record, GetOneParams } from '../types';
 import { useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
 import useDataProvider from './useDataProvider';
 
