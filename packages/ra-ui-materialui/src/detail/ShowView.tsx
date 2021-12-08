@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Card } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import classnames from 'classnames';
-import { useShowContext } from 'ra-core';
+import { useShowContext, useResourceDefinition } from 'ra-core';
 
 import { ShowProps } from '../types';
 import { ShowActions } from './ShowActions';
@@ -13,7 +13,7 @@ const defaultActions = <ShowActions />;
 
 export const ShowView = (props: ShowViewProps) => {
     const {
-        actions = defaultActions,
+        actions,
         aside,
         children,
         className,
@@ -24,6 +24,10 @@ export const ShowView = (props: ShowViewProps) => {
     } = props;
 
     const { defaultTitle, record, version } = useShowContext(props);
+    const { hasEdit } = useResourceDefinition(props);
+
+    const finalActions =
+        typeof actions === 'undefined' && hasEdit ? defaultActions : actions;
 
     if (!children || (!record && emptyWhileLoading)) {
         return null;
@@ -39,8 +43,12 @@ export const ShowView = (props: ShowViewProps) => {
                 record={record}
                 defaultTitle={defaultTitle}
             />
-            {actions !== false && actions}
-            <div className={ShowClasses.main}>
+            {finalActions !== false && finalActions}
+            <div
+                className={classnames(ShowClasses.main, {
+                    [ShowClasses.noActions]: !finalActions,
+                })}
+            >
                 <Content className={ShowClasses.card}>{children}</Content>
                 {aside}
             </div>
@@ -82,15 +90,19 @@ const PREFIX = 'RaShow';
 export const ShowClasses = {
     root: `${PREFIX}-root`,
     main: `${PREFIX}-main`,
+    noActions: `${PREFIX}-noActions`,
     card: `${PREFIX}-card`,
 };
 
 const Root = styled('div', { name: PREFIX })(({ theme }) => ({
     [`&.${ShowClasses.root}`]: {
-        paddingTop: theme.spacing(2),
+        paddingTop: theme.spacing(1),
     },
     [`& .${ShowClasses.main}`]: {
         display: 'flex',
+    },
+    [`& .${ShowClasses.noActions}`]: {
+        marginTop: '1em',
     },
     [`& .${ShowClasses.card}`]: {
         flex: '1 1 auto',
