@@ -370,7 +370,7 @@ React-admin uses the `fullName` and the `avatar` (an image source, or a data-uri
 import { useGetIdentity, useGetOne } from 'react-admin';
 
 const PostDetail = ({ id }) => {
-    const { data: post, isLoading: postLoading } = useGetOne('posts', id);
+    const { data: post, isLoading: postLoading } = useGetOne('posts', { id });
     const { identity, loading: identityLoading } = useGetIdentity();
     if (postLoading || identityLoading) return <>Loading...</>;
     if (!post.lockedBy || post.lockedBy === identity.id) {
@@ -799,7 +799,7 @@ Here is an example Edit component, which falls back to a Show component is the r
 import { useGetIdentity, useGetOne } from 'react-admin';
 
 const PostDetail = ({ id }) => {
-    const { data: post, isLoading: postLoading } = useGetOne('posts', id);
+    const { data: post, isLoading: postLoading } = useGetOne('posts', { id });
     const { identity, loading: identityLoading } = useGetIdentity();
     if (postLoading || identityLoading) return <>Loading...</>;
     if (!post.lockedBy || post.lockedBy === identity.id) {

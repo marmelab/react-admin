@@ -1,4 +1,4 @@
-import { Identifier, Record } from '../types';
+import { Identifier, Record, GetOneParams } from '../types';
 import { useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
 import useDataProvider from './useDataProvider';
 
@@ -16,11 +16,15 @@ import useDataProvider from './useDataProvider';
  * with the same parameters, until the response arrives.
  *
  * @param resource The resource name, e.g. 'posts'
- * @param id The resource identifier, e.g. 123
- * @param {Object} options Options object to pass to the react-query queryClient.
- * @param {boolean} options.enabled Flag to conditionally run the query. If it's false, the query will not run
- * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
- * @param {Function} options.onError Side effect function to be executed upon failure, e.g. { onError: error => notify(error.message) }
+ * @param {Params} params The getOne parameters { id }, e.g. { id: 123 }
+ * @param {Options} options Options object to pass to the react-query queryClient.
+ *
+ * @typedef Params
+ * @props params.id a resource identifier, e.g. 123
+ * @typedef Options
+ * @pprops options.enabled Flag to conditionally run the query. If it's false, the query will not run
+ * @pprops options.onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
+ * @pprops options.onError Side effect function to be executed upon failure, e.g. { onError: error => notify(error.message) }
  *
  * @returns The current request state. Destructure as { data, error, isLoading, refetch }.
  *
@@ -29,7 +33,7 @@ import useDataProvider from './useDataProvider';
  * import { useGetOne } from 'react-admin';
  *
  * const UserProfile = ({ record }) => {
- *     const { data, isLoading, error } = useGetOne('users', record.id);
+ *     const { data, isLoading, error } = useGetOne('users', { id: record.id });
  *     if (isLoading) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }
  *     return <div>User {data.username}</div>;
@@ -37,7 +41,7 @@ import useDataProvider from './useDataProvider';
  */
 export const useGetOne = <RecordType extends Record = Record>(
     resource: string,
-    id: Identifier,
+    { id }: GetOneParams,
     options?: UseQueryOptions<RecordType>
 ): UseGetOneHookValue<RecordType> => {
     const dataProvider = useDataProvider();

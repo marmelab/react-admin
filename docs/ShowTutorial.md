@@ -24,9 +24,12 @@ import { Card, Stack, Typography } from '@mui/material';
 const BookShow = () => {
     const { id } = useParams(); // this component is rendered in the /books/:id path
     const redirect = useRedirect();
-    const { data, isLoading } = useGetOne('books', id, {
-        onError: () => redirect('/books') // redirect to the list if the book is not found
-    });
+    const { data, isLoading } = useGetOne(
+        'books',
+        { id },
+        // redirect to the list if the book is not found
+        { onError: () => redirect('/books') }
+    );
     if (isLoading) { return <Loading />; }
     return (
         <div>
@@ -64,9 +67,11 @@ import { Card, Stack } from '@mui/material';
 const BookShow = () => {
     const { id } = useParams();
     const redirect = useRedirect();
-    const { data, isLoading } = useGetOne('books', id, {
-        onError: () => redirect('/books')
-    });
+    const { data, isLoading } = useGetOne(
+        'books',
+        { id },
+        { onError: () => redirect('/books') }
+    );
     if (isLoading) { return <Loading />; }
     return (
         <div>
@@ -98,9 +103,11 @@ import { Card, Stack } from '@mui/material';
 const BookShow = () => {
     const { id } = useParams();
     const redirect = useRedirect();
-    const { data, isLoading } = useGetOne('books', id, {
-        onError: () => redirect('/books')
-    });
+    const { data, isLoading } = useGetOne(
+        'books',
+        { id },
+        { onError: () => redirect('/books') }
+    );
     if (isLoading) { return <Loading />; }
     return (
         <RecordContextProvider value={data}>
@@ -133,9 +140,11 @@ import { useGetOne, useRedirect, RecordContextProvider, SimpleShowLayout, Title,
 const BookShow = () => {
     const { id } = useParams();
     const redirect = useRedirect();
-    const { data } = useGetOne('books', id, {
-        onError: () => redirect('/books')
-    });
+    const { data, isLoading } = useGetOne(
+        'books',
+        { id },
+        { onError: () => redirect('/books') }
+    );
     return (
         <RecordContextProvider value={data}>
             <div>
