@@ -27,9 +27,9 @@ import useDataProvider from './useDataProvider';
  * May include side effects to be executed upon success or failure, e.g. { onSuccess: { refresh: true } }
  *
  * @typedef Params
- * @props params.pagination The request pagination { page, perPage }, e.g. { page: 1, perPage: 10 }
- * @props params.sort The request sort { field, order }, e.g. { field: 'id', order: 'DESC' }
- * @props params.filter The request filters, e.g. { title: 'hello, world' }
+ * @prop params.pagination The request pagination { page, perPage }, e.g. { page: 1, perPage: 10 }
+ * @prop params.sort The request sort { field, order }, e.g. { field: 'id', order: 'DESC' }
+ * @prop params.filter The request filters, e.g. { title: 'hello, world' }
  *
  * @returns The current request state. Destructure as { data, total, error, isLoading, refetch }.
  *
