@@ -256,7 +256,13 @@ export const getSuggestionsFactory = ({
             })
         );
     }
-    return suggestions;
+
+    // Only keep unique items. Necessary because we might have fetched
+    // the currently selected choice in addition of the possible choices
+    // that may also contain it
+    return suggestions.filter(
+        (suggestion, index) => suggestions.indexOf(suggestion) === index
+    );
 };
 
 /**
