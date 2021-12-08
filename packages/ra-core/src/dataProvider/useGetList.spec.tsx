@@ -1,10 +1,10 @@
 import * as React from 'react';
 import expect from 'expect';
+import { render, waitFor } from '@testing-library/react';
+import { QueryClient } from 'react-query';
 
-import { renderWithRedux } from 'ra-test';
-import useGetList from './useGetList';
-import { DataProviderContext } from '../dataProvider';
-import { waitFor } from '@testing-library/react';
+import { CoreAdminContext } from '../core';
+import { useGetList } from './useGetList';
 
 const UseGetList = ({
     resource = 'posts',
@@ -15,7 +15,11 @@ const UseGetList = ({
     callback = null,
     ...rest
 }) => {
-    const hookValue = useGetList(resource, pagination, sort, filter, options);
+    const hookValue = useGetList(
+        resource,
+        { pagination, sort, filter },
+        options
+    );
     if (callback) callback(hookValue);
     return <div>hello</div>;
 };
@@ -27,23 +31,19 @@ describe('useGetList', () => {
                 Promise.resolve({ data: [{ id: 1, title: 'foo' }], total: 1 })
             ),
         };
-        const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetList pagination={{ page: 1, perPage: 20 }} />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
-        await new Promise(resolve => setTimeout(resolve));
-        expect(dispatch).toBeCalledTimes(5);
-        expect(dispatch.mock.calls[0][0].type).toBe('CUSTOM_FETCH');
-        expect(dataProvider.getList).toBeCalledTimes(1);
-        expect(dataProvider.getList.mock.calls[0]).toEqual([
-            'posts',
-            {
+        await waitFor(() => {
+            expect(dataProvider.getList).toBeCalledTimes(1);
+            expect(dataProvider.getList).toBeCalledWith('posts', {
                 filter: {},
                 pagination: { page: 1, perPage: 20 },
                 sort: { field: 'id', order: 'DESC' },
-            },
-        ]);
+            });
+        });
     });
 
     it('should not call the dataProvider on update', async () => {
@@ -52,19 +52,20 @@ describe('useGetList', () => {
                 Promise.resolve({ data: [{ id: 1, title: 'foo' }], total: 1 })
             ),
         };
-        const { dispatch, rerender } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+        const { rerender } = render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetList />
-            </DataProviderContext.Provider>
-        );
-        await new Promise(resolve => setTimeout(resolve));
-        rerender(
-            <DataProviderContext.Provider value={dataProvider}>
-                <UseGetList />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(dispatch).toBeCalledTimes(5);
+            expect(dataProvider.getList).toBeCalledTimes(1);
+        });
+        rerender(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetList />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
         });
     });
@@ -75,63 +76,69 @@ describe('useGetList', () => {
                 Promise.resolve({ data: [{ id: 1, title: 'foo' }], total: 1 })
             ),
         };
-        const { dispatch, rerender } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+        const { rerender } = render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetList />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
-        await new Promise(resolve => setTimeout(resolve));
+        await waitFor(() => {
+            expect(dataProvider.getList).toBeCalledTimes(1);
+        });
         rerender(
-            <DataProviderContext.Provider value={dataProvider}>
+            <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetList resource="comments" />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
-        await new Promise(resolve => setTimeout(resolve));
-        expect(dispatch).toBeCalledTimes(10);
-        expect(dataProvider.getList).toBeCalledTimes(2);
-    });
-
-    it('should retrieve results from redux state on mount', () => {
-        const hookValue = jest.fn();
-        const dataProvider = {
-            getList: jest.fn(() =>
-                Promise.resolve({ data: [{ id: 1 }, { id: 2 }], total: 2 })
-            ),
-        };
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <UseGetList callback={hookValue} />
-            </DataProviderContext.Provider>,
-            {
-                admin: {
-                    resources: {
-                        posts: {
-                            data: { 1: { id: 1 }, 2: { id: 2 } },
-                            list: {
-                                cachedRequests: {
-                                    '{"pagination":{"page":1,"perPage":10},"sort":{"field":"id","order":"DESC"},"filter":{}}': {
-                                        ids: [1, 2],
-                                        total: 2,
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
-            }
-        );
-        expect(hookValue.mock.calls[0][0]).toMatchObject({
-            data: { 1: { id: 1 }, 2: { id: 2 } },
-            ids: [1, 2],
-            total: 2,
-            loading: true,
-            loaded: true,
-            error: null,
+        await waitFor(() => {
+            expect(dataProvider.getList).toBeCalledTimes(2);
         });
     });
 
-    it('should replace redux data with dataProvider data', async () => {
-        const hookValue = jest.fn();
+    it('should return initial data based on Query Cache', async () => {
+        const callback = jest.fn();
+        const queryClient = new QueryClient();
+        queryClient.setQueryData(
+            [
+                'posts',
+                'getList',
+                {
+                    pagination: { page: 1, perPage: 10 },
+                    sort: { field: 'id', order: 'DESC' },
+                    filter: {},
+                },
+            ],
+            {
+                data: [{ id: 1, title: 'cached' }],
+                total: 1,
+            }
+        );
+        const dataProvider = {
+            getList: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'live' }], total: 1 })
+            ),
+        };
+        render(
+            <CoreAdminContext
+                queryClient={queryClient}
+                dataProvider={dataProvider}
+            >
+                <UseGetList callback={callback} />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(callback).toHaveBeenCalledWith(
+                expect.objectContaining({ data: [{ id: 1, title: 'cached' }] })
+            );
+        });
+        await waitFor(() => {
+            expect(callback).toHaveBeenCalledWith(
+                expect.objectContaining({ data: [{ id: 1, title: 'live' }] })
+            );
+        });
+    });
+
+    it('should return isFetching false once the dataProvider returns', async () => {
+        const callback = jest.fn();
         const dataProvider = {
             getList: jest.fn(() =>
                 Promise.resolve({
@@ -143,118 +150,42 @@ describe('useGetList', () => {
                 })
             ),
         };
-        await new Promise(setImmediate); // empty the query deduplication in useQueryWithStore
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <UseGetList callback={hookValue} />
-            </DataProviderContext.Provider>,
-            {
-                admin: {
-                    resources: {
-                        posts: {
-                            data: { 1: { id: 1 }, 2: { id: 2 } },
-                            list: {
-                                cachedRequests: {
-                                    '{}': {
-                                        ids: [1, 2],
-                                        total: 2,
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
-            }
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetList callback={callback} />
+            </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(hookValue.mock.calls.pop()[0]).toMatchObject({
-                data: {
-                    1: { id: 1, title: 'foo' },
-                    2: { id: 2, title: 'bar' },
-                },
-                ids: [1, 2],
-                total: 2,
-                loading: false,
-                loaded: true,
-                error: null,
-            });
+            expect(callback).toHaveBeenCalledWith(
+                expect.objectContaining({ isFetching: true })
+            );
         });
-    });
-
-    it('should return loading state false once the dataProvider returns', async () => {
-        const hookValue = jest.fn();
-        const dataProvider = {
-            getList: jest.fn(() =>
-                Promise.resolve({
-                    data: [
-                        { id: 1, title: 'foo' },
-                        { id: 2, title: 'bar' },
-                    ],
-                    total: 2,
-                })
-            ),
-        };
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <UseGetList callback={hookValue} />
-            </DataProviderContext.Provider>,
-            {
-                admin: {
-                    resources: {
-                        posts: {
-                            data: { 1: { id: 1 }, 2: { id: 2 } },
-                            list: {
-                                cachedRequests: {
-                                    '{}': {
-                                        ids: [1, 2],
-                                        total: 2,
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
-            }
-        );
-        expect(hookValue.mock.calls.pop()[0].loading).toBe(true);
         await waitFor(() => {
-            expect(hookValue.mock.calls.pop()[0].loading).toBe(false);
-        });
-    });
-
-    it('should set the loading state depending on the availability of the data in the redux store', () => {
-        const hookValue = jest.fn();
-        renderWithRedux(<UseGetList callback={hookValue} />, {
-            admin: {
-                resources: { posts: { data: {}, cachedRequests: {} } },
-            },
-        });
-        expect(hookValue.mock.calls[0][0]).toMatchObject({
-            data: {},
-            ids: [],
-            total: undefined,
-            loading: true,
-            loaded: false,
-            error: null,
+            expect(callback).toHaveBeenCalledWith(
+                expect.objectContaining({ isFetching: false })
+            );
         });
     });
 
     it('should set the error state when the dataProvider fails', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
-        const hookValue = jest.fn();
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        const callback = jest.fn();
         const dataProvider = {
             getList: jest.fn(() => Promise.reject(new Error('failed'))),
         };
-        await new Promise(setImmediate); // empty the query deduplication in useQueryWithStore
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <UseGetList callback={hookValue} />
-            </DataProviderContext.Provider>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetList options={{ retry: false }} callback={callback} />
+            </CoreAdminContext>
         );
-        expect(hookValue.mock.calls.pop()[0].error).toBe(null);
         await waitFor(() => {
-            expect(hookValue.mock.calls.pop()[0].error).toEqual(
-                new Error('failed')
+            expect(callback).toHaveBeenCalledWith(
+                expect.objectContaining({ error: null })
+            );
+        });
+        await waitFor(() => {
+            expect(callback).toHaveBeenCalledWith(
+                expect.objectContaining({ error: new Error('failed') })
             );
         });
     });
@@ -284,15 +215,14 @@ describe('useGetList', () => {
                     })
                 ),
         };
-        await new Promise(setImmediate); // empty the query deduplication in useQueryWithStore
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetList options={{ onSuccess: onSuccess1 }} />
                 <UseGetList
                     resource="comments"
                     options={{ onSuccess: onSuccess2 }}
                 />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
         await waitFor(() => {
             expect(onSuccess1).toBeCalledTimes(1);
@@ -314,21 +244,20 @@ describe('useGetList', () => {
         });
     });
 
-    it('should execute failure side effects on failure', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
-        const onFailure = jest.fn();
+    it('should execute error side effects on failure', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        const onError = jest.fn();
         const dataProvider = {
             getList: jest.fn(() => Promise.reject(new Error('failed'))),
         };
-        await new Promise(setImmediate); // empty the query deduplication in useQueryWithStore
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <UseGetList options={{ onFailure }} />
-            </DataProviderContext.Provider>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetList options={{ onError, retry: false }} />
+            </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(onFailure).toBeCalledTimes(1);
-            expect(onFailure.mock.calls.pop()[0]).toEqual(new Error('failed'));
+            expect(onError).toBeCalledTimes(1);
+            expect(onError.mock.calls.pop()[0]).toEqual(new Error('failed'));
         });
     });
 });

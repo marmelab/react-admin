@@ -474,13 +474,9 @@ describe('<AutocompleteInput />', () => {
                 render={() => (
                     <AutocompleteInput
                         {...defaultProps}
-                        options={{
-                            renderOption: (props, choice) => (
-                                <SuggestionItem record={choice} {...props} />
-                            ),
-                        }}
-                        optionText={record => record && record.name}
+                        optionText={<SuggestionItem />}
                         matchSuggestion={() => true}
+                        inputText={record => record?.name}
                         choices={[
                             { id: 1, name: 'bar' },
                             { id: 2, name: 'foo' },

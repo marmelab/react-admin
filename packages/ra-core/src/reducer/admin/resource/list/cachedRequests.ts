@@ -10,7 +10,6 @@ import {
     UPDATE,
     UPDATE_MANY,
 } from '../../../../core';
-import ids from './cachedRequests/ids';
 import total from './cachedRequests/total';
 import validity from './cachedRequests/validity';
 
@@ -25,7 +24,7 @@ interface State {
 }
 
 const initialState = {};
-const initialSubstate = { ids: [], total: null, validity: null };
+const initialSubstate = { total: null, validity: null };
 
 const cachedRequestsReducer: Reducer<State> = (
     previousState = initialState,
@@ -84,7 +83,6 @@ const cachedRequestsReducer: Reducer<State> = (
     return {
         ...previousState,
         [requestKey]: {
-            ids: ids(previousSubState.ids, action),
             total: total(previousSubState.total, action),
             validity: validity(previousSubState.validity, action),
         },

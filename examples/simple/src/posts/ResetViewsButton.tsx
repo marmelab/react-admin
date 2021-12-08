@@ -8,9 +8,11 @@ import {
     Button,
     CRUD_UPDATE_MANY,
 } from 'react-admin';
+import { useQueryClient } from 'react-query';
 
 const ResetViewsButton = ({ resource, selectedIds }) => {
     const notify = useNotify();
+    const queryClient = useQueryClient();
     const unselectAll = useUnselectAll();
     const [updateMany, { loading }] = useUpdateMany(
         resource,
@@ -23,6 +25,8 @@ const ResetViewsButton = ({ resource, selectedIds }) => {
                     smart_count: selectedIds.length,
                 });
                 unselectAll(resource);
+                // FIXME: Remove when useUpdateMany is migrated to react-query
+                setTimeout(() => queryClient.refetchQueries(['posts']), 500);
             },
             onFailure: error =>
                 notify(

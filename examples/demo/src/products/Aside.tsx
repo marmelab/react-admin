@@ -34,12 +34,10 @@ const StyledCard = styled(Card)(({ theme }) => ({
 }));
 
 const Aside = () => {
-    const { data, ids } = useGetList<Category>(
-        'categories',
-        { page: 1, perPage: 100 },
-        { field: 'name', order: 'ASC' },
-        {}
-    );
+    const { data } = useGetList<Category>('categories', {
+        pagination: { page: 1, perPage: 100 },
+        sort: { field: 'name', order: 'ASC' },
+    });
 
     return (
         <StyledCard className={classes.root}>
@@ -126,13 +124,12 @@ const Aside = () => {
                     label="resources.products.filters.categories"
                     icon={<LocalOfferIcon />}
                 >
-                    {ids &&
-                        data &&
-                        ids.map((id: any) => (
+                    {data &&
+                        data.map((record: any) => (
                             <FilterListItem
-                                label={inflection.humanize(data[id].name)}
-                                key={data[id].id}
-                                value={{ category_id: data[id].id }}
+                                label={inflection.humanize(record.name)}
+                                key={record.id}
+                                value={{ category_id: record.id }}
                             />
                         ))}
                 </FilterList>

@@ -448,6 +448,7 @@ export interface ResourceProps {
 export interface AdminProps {
     appLayout?: LayoutComponent;
     authProvider?: AuthProvider | LegacyAuthProvider;
+    basename?: string;
     catchAll?: CatchAllComponent;
     children?: AdminChildren;
     customReducers?: object;

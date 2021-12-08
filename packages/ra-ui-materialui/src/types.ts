@@ -9,6 +9,7 @@ import {
     MutationMode,
     OnSuccess,
     OnFailure,
+    TransformData,
     UpdateParams,
 } from 'ra-core';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
@@ -48,21 +49,21 @@ export interface EditProps<RecordType extends RaRecord = RaRecord> {
         UpdateParams<RecordType>
     >;
     resource?: string;
-    transform?: (data: RaRecord) => RaRecord | Promise<RaRecord>;
+    transform?: TransformData;
     title?: string | ReactElement;
 }
 
-export interface CreateProps {
+export interface CreateProps<RecordType extends RaRecord = RaRecord> {
     actions?: ReactElement | false;
     aside?: ReactElement;
     classes?: any;
     className?: string;
     component?: ElementType;
-    record?: Partial<RaRecord>;
+    record?: Partial<RecordType>;
     resource?: string;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
-    transform?: (data: RaRecord) => RaRecord | Promise<RaRecord>;
+    transform?: TransformData;
     title?: string | ReactElement;
 }
 

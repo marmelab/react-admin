@@ -105,6 +105,8 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         id: idOverride,
         input: inputOverride,
         inputText,
+        isFetching,
+        isLoading,
         isRequired: isRequiredOverride,
         label,
         loaded,
@@ -408,4 +410,7 @@ If you provided a React element for the optionText prop, you must also provide t
 export interface AutocompleteInputProps
     extends ChoicesInputProps<AutocompleteProps<any, false, false, false>>,
         UseChoicesOptions,
-        Omit<SupportCreateSuggestionOptions, 'handleChange' | 'optionText'> {}
+        Omit<SupportCreateSuggestionOptions, 'handleChange' | 'optionText'> {
+    isFetching?: boolean;
+    isLoading?: boolean;
+}

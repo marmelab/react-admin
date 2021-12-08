@@ -92,7 +92,7 @@ export const useUpdate = <RecordType extends Record = Record>(
         const updatedAt =
             mode.current === 'undoable' ? Date.now() + 1000 * 5 : Date.now();
         await queryClient.setQueryData(
-            [resource, 'getOne', id],
+            [resource, 'getOne', String(id)],
             (old: RecordType) => ({
                 ...old,
                 ...data,
@@ -101,20 +101,23 @@ export const useUpdate = <RecordType extends Record = Record>(
         );
         queryClient.setQueriesData(
             [resource, 'getList'],
-            (old: RecordType[]) => {
-                if (!old) return;
-                const index = old.findIndex(
+            (old: { data?: RecordType[]; total?: number }) => {
+                if (!old || !old.data) return;
+                const index = old.data?.findIndex(
                     // eslint-disable-next-line eqeqeq
                     record => record.id == id
                 );
                 if (index === -1) {
                     return old;
                 }
-                return [
-                    ...old.slice(0, index),
-                    { ...old[index], ...data },
-                    ...old.slice(index + 1),
-                ];
+                return {
+                    data: [
+                        ...old.data.slice(0, index),
+                        { ...old.data[index], ...data },
+                        ...old.data.slice(index + 1),
+                    ],
+                    total: old.total,
+                };
             },
             { updatedAt }
         );
@@ -170,7 +173,7 @@ export const useUpdate = <RecordType extends Record = Record>(
                 ) {
                     // If the mutation fails, use the context returned from onMutate to roll back
                     queryClient.setQueryData(
-                        [callTimeResource, 'getOne', callTimeId],
+                        [callTimeResource, 'getOne', String(callTimeId)],
                         context.previousGetOne
                     );
                     queryClient.setQueriesData(
@@ -233,7 +236,7 @@ export const useUpdate = <RecordType extends Record = Record>(
                     queryClient.invalidateQueries([
                         callTimeResource,
                         'getOne',
-                        callTimeId,
+                        String(callTimeId),
                     ]);
                     queryClient.invalidateQueries([
                         callTimeResource,
@@ -294,7 +297,7 @@ export const useUpdate = <RecordType extends Record = Record>(
         await queryClient.cancelQueries([
             callTimeResource,
             'getOne',
-            callTimeId,
+            String(callTimeId),
         ]);
         await queryClient.cancelQueries([callTimeResource, 'getList']);
 
@@ -302,7 +305,7 @@ export const useUpdate = <RecordType extends Record = Record>(
         const previousGetOne: RecordType = queryClient.getQueryData([
             callTimeResource,
             'getOne',
-            callTimeId,
+            String(callTimeId),
         ]);
         const previousGetList = queryClient.getQueriesData([
             callTimeResource,
@@ -356,7 +359,7 @@ export const useUpdate = <RecordType extends Record = Record>(
                 if (isUndo) {
                     // rollback
                     queryClient.setQueryData(
-                        [callTimeResource, 'getOne', callTimeId],
+                        [callTimeResource, 'getOne', String(callTimeId)],
                         rollbackData.current.previousGetOne
                     );
                     queryClient.setQueriesData(

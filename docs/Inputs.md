@@ -2090,7 +2090,7 @@ In addition to the `ReferenceArrayInputContext`, `<ReferenceArrayInput>` also se
 
 The [`<ReferenceArrayInput>`](#referencearrayinput) component take care of fetching the data, and put that data in a context called `ReferenceArrayInputContext` so that it’s available for its descendants. This context also stores filters, pagination, sort state, and provides callbacks to update them.
 
-Any component descendant of `<ReferenceArryInput>` can grab information from the `ReferenceArrayInputContext` using the `useReferenceArrayInputContext` hook. Here is what it returns:
+Any component descendant of `<ReferenceArrayInput>` can grab information from the `ReferenceArrayInputContext` using the `useReferenceArrayInputContext` hook. Here is what it returns:
 
 ```js
 const {

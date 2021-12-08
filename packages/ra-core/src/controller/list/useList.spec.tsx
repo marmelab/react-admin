@@ -40,12 +40,9 @@ describe('<useList />', () => {
         expect(callback).toHaveBeenCalledWith(
             expect.objectContaining({
                 currentSort: { field: 'id', order: 'ASC' },
-                loaded: true,
-                loading: false,
-                data: {
-                    2: { id: 2, title: 'world' },
-                },
-                ids: [2],
+                isFetching: false,
+                isLoading: false,
+                data: [{ id: 2, title: 'world' }],
                 error: undefined,
                 total: 1,
             })
@@ -74,14 +71,13 @@ describe('<useList />', () => {
             expect(callback).toHaveBeenCalledWith(
                 expect.objectContaining({
                     currentSort: { field: 'id', order: 'ASC' },
-                    loaded: true,
-                    loading: false,
-                    data: {
-                        1: { id: 1, items: ['one', 'two'] },
-                        3: { id: 3, items: 'four' },
-                        4: { id: 4, items: ['five'] },
-                    },
-                    ids: [1, 3, 4],
+                    isFetching: false,
+                    isLoading: false,
+                    data: [
+                        { id: 1, items: ['one', 'two'] },
+                        { id: 3, items: 'four' },
+                        { id: 4, items: ['five'] },
+                    ],
                     error: undefined,
                     total: 3,
                 })
@@ -120,13 +116,12 @@ describe('<useList />', () => {
             expect(callback).toHaveBeenCalledWith(
                 expect.objectContaining({
                     currentSort: { field: 'title', order: 'DESC' },
-                    loaded: true,
-                    loading: false,
-                    data: {
-                        2: { id: 2, title: 'world' },
-                        1: { id: 1, title: 'hello' },
-                    },
-                    ids: [2, 1],
+                    isFetching: false,
+                    isLoading: false,
+                    data: [
+                        { id: 2, title: 'world' },
+                        { id: 1, title: 'hello' },
+                    ],
                     error: undefined,
                     total: 2,
                 })
@@ -138,13 +133,12 @@ describe('<useList />', () => {
             expect(callback).toHaveBeenCalledWith(
                 expect.objectContaining({
                     currentSort: { field: 'title', order: 'ASC' },
-                    loaded: true,
-                    loading: false,
-                    data: {
-                        1: { id: 1, title: 'hello' },
-                        2: { id: 2, title: 'world' },
-                    },
-                    ids: [1, 2],
+                    isFetching: false,
+                    isLoading: false,
+                    data: [
+                        { id: 1, title: 'hello' },
+                        { id: 2, title: 'world' },
+                    ],
                     error: undefined,
                     total: 2,
                 })
@@ -178,13 +172,12 @@ describe('<useList />', () => {
             expect(callback).toHaveBeenCalledWith(
                 expect.objectContaining({
                     currentSort: { field: 'id', order: 'ASC' },
-                    loaded: true,
-                    loading: false,
-                    data: {
-                        6: { id: 6, title: 'plop' },
-                        7: { id: 7, title: 'bazinga' },
-                    },
-                    ids: [6, 7],
+                    isFetching: false,
+                    isLoading: false,
+                    data: [
+                        { id: 6, title: 'plop' },
+                        { id: 7, title: 'bazinga' },
+                    ],
                     page: 2,
                     perPage: 5,
                     error: undefined,

@@ -46,73 +46,67 @@ const StyledTopToolbar = styled(TopToolbar)(({ theme }) => ({
 }));
 
 const ContactListContent = () => {
-    const { data, ids, loaded, onToggleItem, selectedIds } = useListContext<
+    const { data, isLoading, onToggleItem, selectedIds } = useListContext<
         Contact
     >();
-    const now = Date.now();
-    if (loaded === false) {
+    if (isLoading) {
         return <SimpleListLoading hasLeftAvatarOrIcon hasSecondaryText />;
     }
+    const now = Date.now();
 
     return (
         <List>
-            {ids.map(id => {
-                const contact = data[id];
-                return (
-                    <ListItem
-                        button
-                        key={id}
-                        component={Link}
-                        to={`/contacts/${id}/show`}
-                    >
-                        <ListItemIcon>
-                            <Checkbox
-                                edge="start"
-                                checked={selectedIds.includes(id)}
-                                tabIndex={-1}
-                                disableRipple
-                                onClick={e => {
-                                    e.stopPropagation();
-                                    onToggleItem(id);
-                                }}
-                            />
-                        </ListItemIcon>
-                        <ListItemAvatar>
-                            <Avatar record={contact} />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={`${contact.first_name} ${contact.last_name}`}
-                            secondary={
-                                <>
-                                    {contact.title} at{' '}
-                                    <ReferenceField
-                                        record={contact}
-                                        source="company_id"
-                                        reference="companies"
-                                        basePath="/companies"
-                                        link={false}
-                                    >
-                                        <TextField source="name" />
-                                    </ReferenceField>{' '}
-                                    {contact.nb_notes &&
-                                        `- ${contact.nb_notes} notes `}
-                                    <TagsList record={contact} />
-                                </>
-                            }
+            {data.map(contact => (
+                <ListItem
+                    button
+                    key={contact.id}
+                    component={Link}
+                    to={`/contacts/${contact.id}/show`}
+                >
+                    <ListItemIcon>
+                        <Checkbox
+                            edge="start"
+                            checked={selectedIds.includes(contact.id)}
+                            tabIndex={-1}
+                            disableRipple
+                            onClick={e => {
+                                e.stopPropagation();
+                                onToggleItem(contact.id);
+                            }}
                         />
-                        <ListItemSecondaryAction>
-                            <Typography variant="body2" color="textSecondary">
-                                last activity{' '}
-                                {formatDistance(
-                                    new Date(contact.last_seen),
-                                    now
-                                )}{' '}
-                                ago <Status status={contact.status} />
-                            </Typography>
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                );
-            })}
+                    </ListItemIcon>
+                    <ListItemAvatar>
+                        <Avatar record={contact} />
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={`${contact.first_name} ${contact.last_name}`}
+                        secondary={
+                            <>
+                                {contact.title} at{' '}
+                                <ReferenceField
+                                    record={contact}
+                                    source="company_id"
+                                    reference="companies"
+                                    basePath="/companies"
+                                    link={false}
+                                >
+                                    <TextField source="name" />
+                                </ReferenceField>{' '}
+                                {contact.nb_notes &&
+                                    `- ${contact.nb_notes} notes `}
+                                <TagsList record={contact} />
+                            </>
+                        }
+                    />
+                    <ListItemSecondaryAction>
+                        <Typography variant="body2" color="textSecondary">
+                            last activity{' '}
+                            {formatDistance(new Date(contact.last_seen), now)}{' '}
+                            ago <Status status={contact.status} />
+                        </Typography>
+                    </ListItemSecondaryAction>
+                </ListItem>
+            ))}
         </List>
     );
 };

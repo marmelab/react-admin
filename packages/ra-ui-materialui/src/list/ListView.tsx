@@ -6,11 +6,8 @@ import Card from '@mui/material/Card';
 import classnames from 'classnames';
 import {
     ComponentPropType,
-    defaultExporter,
     ListControllerProps,
     useListContext,
-    getListControllerProps,
-    useVersion,
 } from 'ra-core';
 
 import { Title, TitlePropType } from '../layout/Title';
@@ -22,43 +19,38 @@ import { ListActions as DefaultActions } from './ListActions';
 import { Empty } from './Empty';
 import { ListProps } from '../types';
 
+const defaultActions = <DefaultActions />;
+const defaultBulkActionButtons = <BulkDeleteButton />;
+const defaultPagination = <DefaultPagination />;
+const defaultEmpty = <Empty />;
+const DefaultComponent = Card;
+
 export const ListView = (props: ListViewProps) => {
     const {
-        actions,
+        actions = defaultActions,
         aside,
         filters,
-        bulkActionButtons,
-        pagination,
+        bulkActionButtons = defaultBulkActionButtons,
+        pagination = defaultPagination,
         children,
         className,
-        component: Content,
-        exporter = defaultExporter,
+        component: Content = DefaultComponent,
         title,
-        empty,
+        empty = defaultEmpty,
         ...rest
     } = props;
-    const controllerProps = getListControllerProps(props); // deprecated, to be removed in v4
-    const listContext = useListContext(props);
-
     const {
         defaultTitle,
         total,
-        loaded,
-        loading,
+        isLoading,
         filterValues,
         selectedIds,
-    } = listContext;
-    const version = useVersion();
+    } = useListContext(props);
 
     const renderList = () => (
         <>
             {(filters || actions) && (
-                <ListToolbar
-                    filters={filters}
-                    {...controllerProps} // deprecated, use ListContext instead, to be removed in v4
-                    actions={actions}
-                    exporter={exporter} // deprecated, use ListContext instead, to be removed in v4
-                />
+                <ListToolbar filters={filters} actions={actions} />
             )}
             <div className={ListClasses.main}>
                 <Content
@@ -66,28 +58,31 @@ export const ListView = (props: ListViewProps) => {
                         [ListClasses.bulkActionsDisplayed]:
                             selectedIds.length > 0,
                     })}
-                    key={version}
                 >
                     {bulkActionButtons !== false && bulkActionButtons && (
-                        <BulkActionsToolbar {...controllerProps}>
+                        <BulkActionsToolbar>
                             {bulkActionButtons}
                         </BulkActionsToolbar>
                     )}
                     {children &&
                         // @ts-ignore-line
                         cloneElement(Children.only(children), {
-                            ...controllerProps, // deprecated, use ListContext instead, to be removed in v4
                             hasBulkActions: bulkActionButtons !== false,
                         })}
-                    {pagination && cloneElement(pagination, listContext)}
+                    {pagination !== false && pagination}
                 </Content>
-                {aside && cloneElement(aside, listContext)}
+                {aside}
             </div>
         </>
     );
 
+    const renderEmpty = () => empty !== false && cloneElement(empty);
+
     const shouldRenderEmptyPage =
-        loaded && !loading && total === 0 && !Object.keys(filterValues).length;
+        !isLoading &&
+        total === 0 &&
+        !Object.keys(filterValues).length &&
+        empty !== false;
 
     return (
         <Root
@@ -95,9 +90,7 @@ export const ListView = (props: ListViewProps) => {
             {...sanitizeRestProps(rest)}
         >
             <Title title={title} defaultTitle={defaultTitle} />
-            {shouldRenderEmptyPage && empty !== false
-                ? cloneElement(empty, listContext)
-                : renderList()}
+            {shouldRenderEmptyPage ? renderEmpty() : renderList()}
         </Root>
     );
 };
@@ -152,16 +145,6 @@ ListView.propTypes = {
     version: PropTypes.number,
 };
 
-const DefaultBulkActionButtons = props => <BulkDeleteButton {...props} />;
-
-ListView.defaultProps = {
-    actions: <DefaultActions />,
-    component: Card,
-    bulkActionButtons: <DefaultBulkActionButtons />,
-    pagination: <DefaultPagination />,
-    empty: <Empty />,
-};
-
 export interface ListViewProps
     extends Omit<ListProps, 'basePath' | 'hasCreate' | 'perPage' | 'resource'>,
         // Partial because we now get those props via context
@@ -193,13 +176,14 @@ const sanitizeRestProps: (
     defaultTitle = null,
     disableSyncWithLocation = null,
     displayedFilters = null,
+    exporter = null,
     filterDefaultValues = null,
     filterValues = null,
     hasCreate = null,
     hideFilter = null,
     ids = null,
-    loading = null,
-    loaded = null,
+    isFetching = null,
+    isLoading = null,
     onSelect = null,
     onToggleItem = null,
     onUnselectItems = null,

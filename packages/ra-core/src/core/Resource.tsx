@@ -1,45 +1,20 @@
 import * as React from 'react';
-import { useMemo } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import WithPermissions from '../auth/WithPermissions';
 import { ResourceProps } from '../types';
 import { ResourceContextProvider } from './ResourceContextProvider';
 
 export const Resource = (props: ResourceProps) => {
-    const { name, list, create, edit, show } = props;
+    const { create: Create, edit: Edit, list: List, name, show: Show } = props;
 
-    // match tends to change even on the same route ; using memo to avoid an extra render
-    return useMemo(() => {
-        return (
-            <ResourceContextProvider value={name}>
-                <Routes>
-                    {create && (
-                        <Route
-                            path="create/*"
-                            element={<WithPermissions component={create} />}
-                        />
-                    )}
-                    {show && (
-                        <Route
-                            path=":id/show/*"
-                            element={<WithPermissions component={show} />}
-                        />
-                    )}
-                    {edit && (
-                        <Route
-                            path=":id/*"
-                            element={<WithPermissions component={edit} />}
-                        />
-                    )}
-                    {list && (
-                        <Route
-                            path="/*"
-                            element={<WithPermissions component={list} />}
-                        />
-                    )}
-                </Routes>
-            </ResourceContextProvider>
-        );
-    }, [name, create, edit, list, show]);
+    return (
+        <ResourceContextProvider value={name}>
+            <Routes>
+                {Create && <Route path="create/*" element={<Create />} />}
+                {Show && <Route path=":id/show/*" element={<Show />} />}
+                {Edit && <Route path=":id/*" element={<Edit />} />}
+                {List && <Route path="/*" element={<List />} />}
+            </Routes>
+        </ResourceContextProvider>
+    );
 };

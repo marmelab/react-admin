@@ -8,6 +8,7 @@ import {
     CRUD_DELETE_MANY,
     MutationMode,
     useDeleteMany,
+    useListContext,
     useNotify,
     useRefresh,
     useResourceContext,
@@ -30,9 +31,9 @@ export const BulkDeleteWithConfirmButton = (
         label = 'ra.action.delete',
         mutationMode = 'pessimistic',
         onClick,
-        selectedIds,
         ...rest
     } = props;
+    const { selectedIds } = useListContext(props);
     const [isOpen, setOpen] = useState(false);
     const notify = useNotify();
     const unselectAll = useUnselectAll();

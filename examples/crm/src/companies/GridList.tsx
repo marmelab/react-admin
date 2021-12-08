@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Box, Paper } from '@mui/material';
-import { useListContext, Identifier } from 'react-admin';
+import { useListContext } from 'react-admin';
 
 import { CompanyCard } from './CompanyCard';
 import { Company } from '../types';
@@ -26,20 +26,20 @@ const LoadingGridList = () => (
 );
 
 const LoadedGridList = () => {
-    const { ids, data } = useListContext<Company>();
+    const { data, isLoading } = useListContext<Company>();
 
-    if (!ids || !data) return null;
+    if (isLoading) return null;
 
     return (
         <Box display="flex" flexWrap="wrap" width="100%" gap={1}>
-            {ids.map((id: Identifier) => (
-                <CompanyCard key={id} record={data[id]} />
+            {data.map(record => (
+                <CompanyCard key={record.id} record={record} />
             ))}
         </Box>
     );
 };
 
 export const ImageList = () => {
-    const { loaded } = useListContext();
-    return loaded ? <LoadedGridList /> : <LoadingGridList />;
+    const { isLoading } = useListContext();
+    return isLoading ? <LoadingGridList /> : <LoadedGridList />;
 };

@@ -31,7 +31,7 @@ const TagList = () => (
 );
 
 const Tree = () => {
-    const { ids, data, defaultTitle } = useListContext();
+    const { data, defaultTitle } = useListContext();
     const [openChildren, setOpenChildren] = useState([]);
     const toggleNode = node =>
         setOpenChildren(state => {
@@ -44,10 +44,11 @@ const Tree = () => {
                 return [...state, node.id];
             }
         });
-    const nodes = ids.map(id => data[id]);
-    const roots = nodes.filter(node => typeof node.parent_id === 'undefined');
+    const roots = data
+        ? data.filter(node => typeof node.parent_id === 'undefined')
+        : [];
     const getChildNodes = root =>
-        nodes.filter(node => node.parent_id === root.id);
+        data.filter(node => node.parent_id === root.id);
     return (
         <List>
             <Title defaultTitle={defaultTitle} />

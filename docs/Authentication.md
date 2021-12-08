@@ -370,7 +370,7 @@ React-admin uses the `fullName` and the `avatar` (an image source, or a data-uri
 import { useGetIdentity, useGetOne } from 'react-admin';
 
 const PostDetail = ({ id }) => {
-    const { data: post, loading: postLoading } = useGetOne('posts', id);
+    const { data: post, isLoading: postLoading } = useGetOne('posts', id);
     const { identity, loading: identityLoading } = useGetIdentity();
     if (postLoading || identityLoading) return <>Loading...</>;
     if (!post.lockedBy || post.lockedBy === identity.id) {
@@ -701,11 +701,15 @@ const MyPage = () => {
 export default MyPage;
 ```
 
-If you call `useAuthenticated()` with a parameter, this parameter is passed to the `authProvider` call as second parameter. that allows you to add authentication logic depending on the context of the call:
+`useAuthenticated` accepts an options object as its only argument, with the following properties:
+- `enabled`: whether it should check for an authenticated user (`true` by default)
+- `params`: the parameters to pass to `checkAuth`
+
+If you call `useAuthenticated()` with a `params` option, those parameters are passed to the `authProvider.checkAuth` call. That allows you to add authentication logic depending on the context of the call:
 
 ```jsx
 const MyPage = () => {
-    useAuthenticated({ foo: 'bar' }); // calls authProvider.checkAuth({ foo: 'bar' })
+    useAuthenticated({ params: foo: 'bar' } }); // calls authProvider.checkAuth({ foo: 'bar' })
     return (
         <div>
             ...
@@ -795,7 +799,7 @@ Here is an example Edit component, which falls back to a Show component is the r
 import { useGetIdentity, useGetOne } from 'react-admin';
 
 const PostDetail = ({ id }) => {
-    const { data: post, loading: postLoading } = useGetOne('posts', id);
+    const { data: post, isLoading: postLoading } = useGetOne('posts', id);
     const { identity, loading: identityLoading } = useGetIdentity();
     if (postLoading || identityLoading) return <>Loading...</>;
     if (!post.lockedBy || post.lockedBy === identity.id) {
@@ -1163,5 +1167,33 @@ const Menu = ({ onMenuClick, logout }) => {
             {logout}
         </div>
     );
+}
+```
+
+### Allowing Anonymous Access to Custom Views
+
+You might have custom views that leverage react-admin components or hooks such as:
+
+- `Create`, `CreateBase` `CreateController` and `useCreateController`
+- `Edit`, `EditBase`, `EditController` and `useEditController`
+- `List`, `ListBase`, `ListController` and `useListController`
+- `Show`, `ShowBase`, `ShowController` and `useShowController`
+
+By default, they all redirect anonymous users to the login page. You can disable this behavior by passing the `disableAuthentication` boolean prop:
+
+```jsx
+const MostRecentComments = () => {
+    const { data, loaded } = useListController({
+        disableAuthentication: true,
+        resource: 'comments',
+        sort: { field: 'created_at', order: 'desc' },
+        perPage: 10
+    });
+
+    if (!loaded) {
+        return null;
+    }
+
+    return <CommentsList comments={data} />
 }
 ```
