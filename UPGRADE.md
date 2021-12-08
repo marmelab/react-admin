@@ -757,7 +757,7 @@ test('MyComponent', () => {
 
 ## AutocompleteInput Now Uses Material UI Autocomplete
 
-We migrated the `AutocompleteInput` so that it leverage Material UI [`<Autocomplete>`](https://mui.com/components/autocomplete/). If you relied on [Downshift](https://www.downshift-js.com/) options, you'll have to update your component.
+We migrated the `AutocompleteInput` so that it leverages Material UI [`<Autocomplete>`](https://mui.com/components/autocomplete/). If you relied on [Downshift](https://www.downshift-js.com/) options, you'll have to update your component.
 
 Besides, some props supported by the previous implementation aren't anymore:
 - `clearAlwaysVisible`: the clear button is now always visible, either while hovering the input or when it has focus. You can hide it using the `<Autocomplete>` `disableClearable` prop though.
