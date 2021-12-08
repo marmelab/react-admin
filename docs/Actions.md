@@ -291,7 +291,7 @@ The specialized hooks based on `useQuery` (`useGetList`, `useGetOne`, `useGetMan
 **Tip**: If you use TypeScript, you can specify the record type for more type safety:
 
 ```jsx
-const { data, isLoading } = useGetOne<Product>('products', 123);
+const { data, isLoading } = useGetOne<Product>('products', { id: 123 });
 //        \- type of data is Product
 ```
 
@@ -329,13 +329,13 @@ This hook calls `dataProvider.getOne()` when the component mounts.
 
 ```jsx
 // syntax
-const { data, isFetching, isLoading, error, refetch } = useGetOne(resource, id, options);
+const { data, isFetching, isLoading, error, refetch } = useGetOne(resource, { id }, options);
 
 // example
 import { useGetOne } from 'react-admin';
 
 const UserProfile = ({ record }) => {
-    const { data, isLoading, error } = useGetOne('users', record.id);
+    const { data, isLoading, error } = useGetOne('users', { id: record.id });
     if (isLoading) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return <div>User {data.username}</div>;

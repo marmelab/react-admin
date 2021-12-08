@@ -84,18 +84,22 @@ export const useEditController = <RecordType extends Record = Record>(
 
     const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
         RecordType
-    >(resource, id, {
-        onError: () => {
-            notify('ra.notification.item_doesnt_exist', {
-                type: 'warning',
-            });
-            redirect('list', `/${resource}`);
-            refresh();
-        },
+    >(
+        resource,
+        { id },
+        {
+            onError: () => {
+                notify('ra.notification.item_doesnt_exist', {
+                    type: 'warning',
+                });
+                redirect('list', `/${resource}`);
+                refresh();
+            },
 
-        retry: false,
-        ...queryOptions,
-    });
+            retry: false,
+            ...queryOptions,
+        }
+    );
 
     // eslint-disable-next-line eqeqeq
     if (record && record.id && record.id != id) {

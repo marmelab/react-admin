@@ -694,7 +694,7 @@ The dataProvider hooks (`useGetOne`, etc) return the request state. The `loading
 ```diff
 const BookDetail = ({ id }) => {
 -   const { data, error, loaded } = useGetOne('books', id);
-+   const { data, error, isLoading } = useGetOne('books', id);
++   const { data, error, isLoading } = useGetOne('books', { id });
 -   if (!loaded) {
 +   if (isLoading) {
         return <Loading />;
@@ -727,7 +727,7 @@ If you were using components dependent on the dataProvider hooks in isolation (e
 
 // this component relies on dataProvider hooks
 const BookDetail = ({ id }) => {
-    const { data, error, isLoading } = useGetOne('books', id);
+    const { data, error, isLoading } = useGetOne('books', { id });
     if (isLoading) {
         return <Loading />;
     }

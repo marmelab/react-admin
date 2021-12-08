@@ -17,7 +17,7 @@ const dataProvider = {
 } as any;
 
 const Book = ({ id }) => {
-    const { data, isLoading } = useGetOne('books', id);
+    const { data, isLoading } = useGetOne('books', { id });
     return isLoading ? <span>loading</span> : <span>{data.title}</span>;
 };
 
