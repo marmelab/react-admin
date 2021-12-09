@@ -8,6 +8,7 @@ import {
     ComponentPropType,
     ListControllerProps,
     useListContext,
+    Record,
 } from 'ra-core';
 
 import { Title, TitlePropType } from '../layout/Title';
@@ -25,12 +26,15 @@ const defaultPagination = <DefaultPagination />;
 const defaultEmpty = <Empty />;
 const DefaultComponent = Card;
 
-export const ListView = (props: ListViewProps) => {
+export const ListView = <RecordType extends Record = Record>(
+    props: ListViewProps<RecordType>
+) => {
     const {
         actions = defaultActions,
         aside,
         filters,
         bulkActionButtons = defaultBulkActionButtons,
+        emptyWhileLoading,
         pagination = defaultPagination,
         children,
         className,
@@ -41,18 +45,23 @@ export const ListView = (props: ListViewProps) => {
     } = props;
     const {
         defaultTitle,
+        data,
         total,
         isLoading,
         filterValues,
         selectedIds,
-    } = useListContext(props);
+    } = useListContext<RecordType>(props);
+
+    if (!children || (!data && isLoading && emptyWhileLoading)) {
+        return null;
+    }
 
     const renderList = () => (
         <>
-            {(filters || actions) && (
-                <ListToolbar filters={filters} actions={actions} />
-            )}
             <div className={ListClasses.main}>
+                {(filters || actions) && (
+                    <ListToolbar filters={filters} actions={actions} />
+                )}
                 <Content
                     className={classnames(ListClasses.content, {
                         [ListClasses.bulkActionsDisplayed]:
@@ -69,9 +78,8 @@ export const ListView = (props: ListViewProps) => {
                         cloneElement(Children.only(children), {
                             hasBulkActions: bulkActionButtons !== false,
                         })}
-                    {pagination !== false && pagination}
                 </Content>
-                {aside}
+                {pagination !== false && pagination}
             </div>
         </>
     );
@@ -91,6 +99,7 @@ export const ListView = (props: ListViewProps) => {
         >
             <Title title={title} defaultTitle={defaultTitle} />
             {shouldRenderEmptyPage ? renderEmpty() : renderList()}
+            {aside}
         </Root>
     );
 };
@@ -113,6 +122,7 @@ ListView.propTypes = {
     data: PropTypes.any,
     defaultTitle: PropTypes.string,
     displayedFilters: PropTypes.object,
+    emptyWhileLoading: PropTypes.bool,
     // @ts-ignore-line
     exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     filterDefaultValues: PropTypes.object,
@@ -145,10 +155,11 @@ ListView.propTypes = {
     version: PropTypes.number,
 };
 
-export interface ListViewProps
-    extends Omit<ListProps, 'basePath' | 'hasCreate' | 'perPage' | 'resource'>,
+export interface ListViewProps<
+    RecordType extends Record = Record
+> extends ListProps<RecordType>,
         // Partial because we now get those props via context
-        Partial<ListControllerProps> {
+        Partial<ListControllerProps<RecordType>> {
     children: ReactElement;
 }
 
@@ -214,17 +225,20 @@ export const ListClasses = {
 };
 
 const Root = styled('div', { name: PREFIX })(({ theme }) => ({
-    [`&.${ListClasses.root}`]: {},
+    [`&.${ListClasses.root}`]: {
+        display: 'flex',
+    },
 
     [`& .${ListClasses.main}`]: {
+        flex: '1 1 auto',
         display: 'flex',
+        flexDirection: 'column',
     },
 
     [`& .${ListClasses.content}`]: {
         marginTop: 0,
         transition: theme.transitions.create('margin-top'),
         position: 'relative',
-        flex: '1 1 auto',
         [theme.breakpoints.down('sm')]: {
             boxShadow: 'none',
         },

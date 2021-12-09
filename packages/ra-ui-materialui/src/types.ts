@@ -14,7 +14,7 @@ import {
 } from 'ra-core';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
-export interface ListProps {
+export interface ListProps<RecordType extends RaRecord = RaRecord> {
     actions?: ReactElement | false;
     aside?: ReactElement;
     bulkActionButtons?: ReactElement | false;
@@ -22,12 +22,14 @@ export interface ListProps {
     className?: string;
     component?: ElementType;
     empty?: ReactElement | false;
+    emptyWhileLoading?: boolean;
     exporter?: Exporter | false;
     filter?: FilterPayload;
     filterDefaultValues?: object;
     filters?: ReactElement | ReactElement[];
     pagination?: ReactElement | false;
     perPage?: number;
+    queryOptions?: UseQueryOptions<{ data: RecordType[]; total: number }>;
     resource?: string;
     sort?: SortPayload;
     disableSyncWithLocation?: boolean;

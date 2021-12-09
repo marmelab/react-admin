@@ -1,37 +1,87 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
 import { Resource, useListContext } from 'ra-core';
+import fakeRestDataProvider from 'ra-data-fakerest';
 import { createMemoryHistory } from 'history';
-import { Stack, Card } from '@mui/material';
+import { Box, Card, Stack, Typography } from '@mui/material';
 
 import { List } from './List';
+import { Datagrid } from './datagrid';
+import { TextField } from '../field';
+import { SearchInput, TextInput } from '../input';
 
 export default { title: 'ra-ui-materialui/list/List' };
 
-const dataProvider = {
-    getList: (resource, params) =>
-        Promise.resolve({
-            data: [
-                {
-                    id: 1,
-                    title: 'War and Peace',
-                    author: 'Leo Tolstoy',
-                    summary:
-                        "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
-                    year: 1869,
-                },
-                {
-                    id: 2,
-                    title: 'Pride and Predjudice',
-                    author: 'Jane Austen',
-                    summary:
-                        'Pride and Prejudice is a romance novel considered one of the most important novels in English literature',
-                    year: 1813,
-                },
-            ],
-            total: 2,
-        }),
-} as any;
+const dataProvider = fakeRestDataProvider({
+    books: [
+        {
+            id: 1,
+            title: 'War and Peace',
+            author: 'Leo Tolstoy',
+            year: 1869,
+        },
+        {
+            id: 2,
+            title: 'Pride and Predjudice',
+            author: 'Jane Austen',
+            year: 1813,
+        },
+        {
+            id: 3,
+            title: 'The Picture of Dorian Gray',
+            author: 'Oscar Wilde',
+            year: 1890,
+        },
+        {
+            id: 4,
+            title: 'Le Petit Prince',
+            author: 'Antoine de Saint-Exupéry',
+            year: 1943,
+        },
+        {
+            id: 5,
+            title: "Alice's Adventures in Wonderland",
+            author: 'Lewis Carroll',
+            year: 1865,
+        },
+        {
+            id: 6,
+            title: 'Madame Bovary',
+            author: 'Gustave Flaubert',
+            year: 1856,
+        },
+        {
+            id: 7,
+            title: 'The Lord of the Rings',
+            author: 'J. R. R. Tolkien',
+            year: 1954,
+        },
+        {
+            id: 8,
+            title: "Harry Potter and the Philosopher's Stone",
+            author: 'J. K. Rowling',
+            year: 1997,
+        },
+        {
+            id: 9,
+            title: 'The Alchemist',
+            author: 'Paulo Coelho',
+            year: 1988,
+        },
+        {
+            id: 10,
+            title: 'A Catcher in the Rye',
+            author: 'J. D. Salinger',
+            year: 1951,
+        },
+        {
+            id: 11,
+            title: 'Ulysses',
+            author: 'James Joyce',
+            year: 1922,
+        },
+    ],
+});
 
 const history = createMemoryHistory({ initialEntries: ['/books'] });
 
@@ -41,15 +91,13 @@ const BookList = () => {
         return <div>Loading...</div>;
     }
     return (
-        <Card sx={{ padding: 2, flex: 1 }}>
-            <Stack spacing={2}>
-                {data.map(book => (
-                    <div key={book.id}>
-                        "{book.title}" by {book.author} ({book.year})
-                    </div>
-                ))}
-            </Stack>
-        </Card>
+        <Stack spacing={2} sx={{ padding: 2 }}>
+            {data.map(book => (
+                <Typography key={book.id}>
+                    <i>{book.title}</i>, by {book.author} ({book.year})
+                </Typography>
+            ))}
+        </Stack>
     );
 };
 
@@ -66,7 +114,7 @@ export const Basic = () => (
 );
 
 const BookListBasicWithCustomActions = () => (
-    <List actions={<Card>Actions</Card>}>
+    <List actions={<Box sx={{ backgroundColor: 'info.main' }}>Actions</Box>}>
         <BookList />
     </List>
 );
@@ -74,5 +122,98 @@ const BookListBasicWithCustomActions = () => (
 export const Actions = () => (
     <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" list={BookListBasicWithCustomActions} />
+    </Admin>
+);
+
+const BookListWithFilters = () => (
+    <List
+        filters={[
+            <SearchInput source="q" alwaysOn />,
+            <TextInput source="title" />,
+        ]}
+    >
+        <BookList />
+    </List>
+);
+
+export const Filters = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="books" list={BookListWithFilters} />
+    </Admin>
+);
+
+const BookListWithPermanentFilter = () => (
+    <List filter={{ id: 2 }}>
+        <BookList />
+    </List>
+);
+
+export const Filter = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="books" list={BookListWithPermanentFilter} />
+    </Admin>
+);
+
+const BookListWithCustomTitle = () => (
+    <List title="Custom list title">
+        <BookList />
+    </List>
+);
+
+export const Title = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="books" list={BookListWithCustomTitle} />
+    </Admin>
+);
+
+const AsideComponent = () => <Card sx={{ padding: 2 }}>Aside</Card>;
+
+const BookListWithAside = () => (
+    <List aside={<AsideComponent />}>
+        <BookList />
+    </List>
+);
+
+export const Aside = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="books" list={BookListWithAside} />
+    </Admin>
+);
+
+const CustomWrapper = ({ children }) => (
+    <Box
+        sx={{ padding: 2, width: 200, border: 'solid 1px black' }}
+        data-testid="custom-component"
+    >
+        {children}
+    </Box>
+);
+
+const BookListWithCustomComponent = () => (
+    <List component={CustomWrapper}>
+        <BookList />
+    </List>
+);
+
+export const Component = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="books" list={BookListWithCustomComponent} />
+    </Admin>
+);
+
+const BookListWithDatagrid = () => (
+    <List filters={[<SearchInput source="q" alwaysOn />]}>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </List>
+);
+
+export const Default = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="books" list={BookListWithDatagrid} />
     </Admin>
 );

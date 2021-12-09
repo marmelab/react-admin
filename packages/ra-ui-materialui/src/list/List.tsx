@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {
     useListController,
     ListContextProvider,
+    Record,
     ResourceContextProvider,
 } from 'ra-core';
 
@@ -60,12 +61,12 @@ import { ListProps } from '../types';
  *     </List>
  * );
  */
-export const List = (
-    props: ListProps & { children: ReactElement }
+export const List = <RecordType extends Record = Record>(
+    props: ListProps<RecordType> & { children: ReactElement }
 ): ReactElement => (
     <ResourceContextProvider value={props.resource}>
         <ListContextProvider value={useListController(props)}>
-            <ListView {...props} />
+            <ListView<RecordType> {...props} />
         </ListContextProvider>
     </ResourceContextProvider>
 );
@@ -80,6 +81,7 @@ List.propTypes = {
     children: PropTypes.element.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
+    emptyWhileLoading: PropTypes.bool,
     filter: PropTypes.object,
     filterDefaultValues: PropTypes.object,
     filters: PropTypes.oneOfType([
