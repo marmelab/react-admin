@@ -7,7 +7,7 @@ title: "The List Page"
 
 The List view displays a list of records, and lets users search for specific records using filters, sorting, and pagination. 
 
-![post List view](./img/list-view.png)
+![The List View](./img/list-view.jpg)
 
 This tutorial explains the List view from first principles, and shows how react-admin allows you to reduce the amount of boilerplate code to focus on the business logic. 
 
@@ -150,7 +150,7 @@ const BookList = () => {
 
 `<Datagrid>`does more than the previous table: it renders table headers depending on the current sort, and allows you to change the sort order by clicking a column header. Also, for each row, `<Datagrid>` creates a `RecordContext`, which lets you use react-admin Field and Buttons without explicitely passing the row data.
 
-## `<ListContext>` Exposes The List Data To Descendent Components
+## `ListContext` Exposes List Data To Descendents
 
 `<Datagrid>` requires a `data` prop to render, but it can grab it from a `ListContext` instead. Creating such a context with `<ListContextProvider>` also allows to use other react-admin components specialized in filtering (`<FilterForm>`) and pagination (`<Pagination>`), and to reduce the boilerplate code even further:
 
@@ -206,7 +206,7 @@ const BookList = () => {
 ```
 {% endraw %}
 
-## `useListController`: The Controller Logic
+## `useListController` Handles Controller Logic
 
 The initial logic that grabs the records from the API, handles the filter and pagination state, and creates callbacks to change them is also common, and react-admin exposes [the `useListController` hook](./useListController.md) to do it. It returns an object that fits perfectly the format expected by `<ListContextProvider>`:
 
@@ -301,7 +301,7 @@ const BookList = () => (
 
 Notice that we're not handling the loading state manually anymore. In fact, the `<Datagrid>` component can render a skeleton while the data is being fetched.
 
-## `useListContext`: Access The List Context
+## `useListContext` Accesses The List Context
 
 Using the `<ListBase>` component has one drawback: you can no longer access the list context (`data`, `total`, etc) in the component. Instead, you have to access it from the `ListContext` using [the `useListContext` hook](./useListContext.md).
 
@@ -351,7 +351,7 @@ const BookList = () => (
 
 Now compare this code snippet with the first snippet in this page: it's much shorter, and more expressive! By encapsulating common CRUD logic, react-admin reduces the amount of code you need to write, and lets you focus on the business logic. As you've seen with the List controller and context, there is no magic: it's just standard React hooks and components designed for B2B apps and web developers with deadlines.
 
-## `<ListGuesser>`: Zero-Configuration List For Quick Prototyping
+## `<ListGuesser>`: Zero-Configuration List
 
 Sometimes typing `<Datagrid>` and a few `<Field>` components is too much - for instance if you want to prototype an admin for many resources, or search data through an API without worrying about the actual data structure.
 
