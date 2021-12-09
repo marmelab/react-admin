@@ -15,6 +15,7 @@ This tutorial explains the List view from first principles, and shows how react-
 
 The List view fetches a list of records and renders them, together with UI controls for filter, sort and pagination. You've probably developed it a dozen times, and in fact you don't need react-admin to build, say, a book List view:
 
+{% raw %}
 ```jsx
 import { useState } from 'react';
 import { Title, useGetList } from 'react-admin';
@@ -83,6 +84,7 @@ const BookList = () => {
     );
 };
 ```
+{% endraw %}
 
 You can pass this `BookList` component as the `list` prop of the `<Resource name="books" />`, and react-admin will render it on the `/books/` path.
 
@@ -152,6 +154,7 @@ const BookList = () => {
 
 `<Datagrid>` requires a `data` prop to render, but it can grab it from a `ListContext` instead. Creating such a context with `<ListContextProvider>` also allows to use other react-admin components specialized in filtering (`<FilterForm>`) and pagination (`<Pagination>`), and to reduce the boilerplate code even further:
 
+{% raw %}
 ```jsx
 import { useState } from 'react';
 import { 
@@ -201,6 +204,7 @@ const BookList = () => {
     );
 };
 ```
+{% endraw %}
 
 ## `useListController`: The Controller Logic
 
@@ -395,6 +399,7 @@ React-admin offers many more List layouts: `<EditableDatagrid>`, `<TreeWithDetai
 
 In some cases, neither the `<Datagrid>` nor the `<SimpleList>` components allow to display the records in an optimal way for a given task. In these cases, pass your layout component directly as children of the `<List>` component. As `<List>` takes care of fetching the data and putting it in a `ListContext`, you can leverage the `useListContext` hook to get the list data. 
 
+{% raw %}
 ```jsx
 import { List, useListContext } from 'react-admin';
 import { Stack, Typography } from '@mui/icons-material/Star';
@@ -419,6 +424,7 @@ const BookList = () => (
     </List>
 );
 ```
+{% endraw %}
 
 **Tip**: With `emptyWhileLoading` turned on, the `<List>` component doesn't render its child component until the data is available. Without this flag, the `<SimpleBookList>` component would render even during the loading phase, break at `data.map()`. 
 
