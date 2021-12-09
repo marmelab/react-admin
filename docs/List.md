@@ -13,7 +13,6 @@ Here is the minimal code necessary to display a list of posts using a `<Datagrid
 
 ```jsx
 // in src/posts.js
-import * as React from "react";
 import { List, Datagrid, TextField, DateField, BooleanField } from 'react-admin';
 
 export const PostList = () => (
@@ -29,7 +28,6 @@ export const PostList = () => (
 );
 
 // in src/App.js
-import * as React from "react";
 import { Admin, Resource } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 
@@ -47,6 +45,8 @@ export default App;
 That's enough to display a basic post list, with functional sort and pagination:
 
 ![Simple posts list](./img/simple-post-list.png)
+
+You can find more advanced examples of `<List>` usage in the [demos](./Demos.md). 
 
 ## `actions`
 
@@ -500,6 +500,8 @@ const Dashboard = () => (
 ## `empty`: Empty Page Component
 
 When there is no result, and there is no active filter, and the resource has a create page, react-admin displays a special page inviting the user to create the first record.
+
+![Empty invite](./img/list-empty.png)
 
 You can use the `empty` prop to replace that page by a custom component:
 

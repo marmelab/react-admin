@@ -18,30 +18,33 @@ import { ListProps } from '../types';
  *
  * The <List> component renders the list layout (title, buttons, filters, pagination),
  * and fetches the list of records from the REST API.
+ *
  * It then delegates the rendering of the list of records to its child component.
  * Usually, it's a <Datagrid>, responsible for displaying a table with one row for each post.
- *
- * In Redux terms, <List> is a connected component, and <Datagrid> is a dumb component.
  *
  * The <List> component accepts the following props:
  *
  * - actions
- * - aside
+ * - aside: Side Component
  * - bulkActionButtons
+ * - children: List Layout
  * - component
- * - empty
+ * - disableAuthentication
+ * - disableSyncWithLocation
+ * - empty: Empty Page Component
+ * - emptyWhileLoading
  * - exporter
- * - filter (the permanent filter to apply to the query)
- * - filterDefaultValues (the default values for `alwaysOn` filters)
- * - filters (a list of inputs used to display the filter button/form combo)
- * - pagination
- * - perPage
- * - sort
+ * - filters: Filter Inputs
+ * - filter: Permanent Filter
+ * - filterDefaultValues
+ * - pagination: Pagination Component
+ * - perPage: Pagination Size
+ * - queryOptions
+ * - sort: Default Sort Field & Order
  * - title
- * - syncWithLocation
+ * - sx: CSS API
  *
  * @example
- *
  * const postFilters = [
  *     <TextInput label="Search" source="q" alwaysOn />,
  *     <TextInput label="Title" source="title" />

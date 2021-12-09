@@ -65,6 +65,7 @@ export const EmptyClasses = {
 };
 
 const Root = styled('span', { name: PREFIX })(({ theme }) => ({
+    flex: 1,
     [`& .${EmptyClasses.message}`]: {
         textAlign: 'center',
         opacity: theme.palette.mode === 'light' ? 0.5 : 0.8,

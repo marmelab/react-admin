@@ -81,6 +81,7 @@ const dataProvider = fakeRestDataProvider({
             year: 1922,
         },
     ],
+    authors: [],
 });
 
 const history = createMemoryHistory({ initialEntries: ['/books'] });
@@ -198,6 +199,40 @@ const BookListWithCustomComponent = () => (
 export const Component = () => (
     <Admin dataProvider={dataProvider} history={history}>
         <Resource name="books" list={BookListWithCustomComponent} />
+    </Admin>
+);
+
+const EmptyAuthorList = () => (
+    <List>
+        <span />
+    </List>
+);
+const CreateAuthor = () => <span />;
+
+const historyAuthors = createMemoryHistory({ initialEntries: ['/authors'] });
+
+export const Empty = () => (
+    <Admin dataProvider={dataProvider} history={historyAuthors}>
+        <Resource name="authors" list={EmptyAuthorList} create={CreateAuthor} />
+    </Admin>
+);
+
+const BookListWithStyles = () => (
+    <List
+        sx={{
+            backgroundColor: 'yellow',
+            '& .RaList-content': {
+                backgroundColor: 'red',
+            },
+        }}
+    >
+        <BookList />
+    </List>
+);
+
+export const SX = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="books" list={BookListWithStyles} />
     </Admin>
 );
 
