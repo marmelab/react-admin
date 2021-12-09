@@ -34,6 +34,7 @@ export interface ListProps<RecordType extends RaRecord = RaRecord> {
     sort?: SortPayload;
     disableSyncWithLocation?: boolean;
     title?: string | ReactElement;
+    sx?: SxProps;
 }
 
 export interface EditProps<RecordType extends RaRecord = RaRecord> {

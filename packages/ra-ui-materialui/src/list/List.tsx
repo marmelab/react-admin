@@ -96,18 +96,15 @@ List.propTypes = {
         field: PropTypes.string,
         order: PropTypes.string,
     }),
+    sx: PropTypes.any,
     title: TitlePropType,
     // the props managed by react-admin
-    authProvider: PropTypes.func,
+    disableSyncWithLocation: PropTypes.bool,
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
-    location: PropTypes.any,
-    match: PropTypes.any,
-    path: PropTypes.string,
     resource: PropTypes.string,
-    syncWithLocation: PropTypes.bool,
 };
 
 List.defaultProps = {
