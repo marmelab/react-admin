@@ -63,7 +63,6 @@ import { DatagridClasses, StyledTable } from './useDatagridStyles';
  *     </Datagrid>
  * </ReferenceManyField>
  *
- *
  * @example Usage outside of a <List> or a <ReferenceManyField>.
  *
  * const currentSort = { field: 'published_at', order: 'DESC' };
@@ -97,7 +96,7 @@ import { DatagridClasses, StyledTable } from './useDatagridStyles';
  *     );
  * }
  */
-const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
+export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     const {
         optimized = false,
         body = optimized ? PureDatagridBody : DatagridBody,
@@ -320,7 +319,7 @@ export interface DatagridProps<RecordType extends Record = Record>
     total?: number;
 }
 
-export const injectedProps = [
+const injectedProps = [
     'allowEmpty',
     'isRequired',
     'setFilter',
@@ -335,5 +334,3 @@ const sanitizeRestProps = props =>
         .reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
 
 Datagrid.displayName = 'Datagrid';
-
-export default Datagrid;

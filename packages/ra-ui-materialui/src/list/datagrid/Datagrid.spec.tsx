@@ -2,7 +2,7 @@ import * as React from 'react';
 import { fireEvent } from '@testing-library/react';
 import { ListContextProvider } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
-import Datagrid from './Datagrid';
+import { Datagrid } from './Datagrid';
 
 const TitleField = ({ record }: any): JSX.Element => (
     <span>{record.title}</span>
