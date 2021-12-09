@@ -87,7 +87,10 @@ SimpleFormView.propTypes = {
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
-    toolbar: PropTypes.element,
+    toolbar: PropTypes.oneOfType([
+        PropTypes.element,
+        false,
+    ]),
     undoable: PropTypes.bool,
     validate: PropTypes.func,
 };
@@ -107,7 +110,7 @@ export interface SimpleFormViewProps extends FormWithRedirectRenderProps {
     mutationMode?: MutationMode;
     record?: Partial<Record>;
     resource?: string;
-    toolbar?: ReactElement;
+    toolbar?: ReactElement | false;
     /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
     variant?: 'standard' | 'outlined' | 'filled';
