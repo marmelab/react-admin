@@ -6,7 +6,7 @@ import { FieldTitle, useResourceContext } from 'ra-core';
 
 export const FilterButtonMenuItem = forwardRef<any, FilterButtonMenuItemProps>(
     (props, ref) => {
-        const { filter, onShow } = props;
+        const { filter, onShow, autoFocus } = props;
         const resource = useResourceContext(props);
         const handleShow = useCallback(() => {
             onShow({
@@ -22,6 +22,8 @@ export const FilterButtonMenuItem = forwardRef<any, FilterButtonMenuItemProps>(
                 data-default-value={filter.props.defaultValue}
                 key={filter.props.source}
                 onClick={handleShow}
+                aria-disabled={false}
+                autoFocus={autoFocus}
                 ref={ref}
             >
                 <FieldTitle
@@ -38,10 +40,12 @@ FilterButtonMenuItem.propTypes = {
     filter: PropTypes.element.isRequired,
     onShow: PropTypes.func.isRequired,
     resource: PropTypes.string,
+    autoFocus: PropTypes.bool,
 };
 
 export interface FilterButtonMenuItemProps {
     filter: JSX.Element;
     onShow: (params: { source: string; defaultValue: any }) => void;
     resource: string;
+    autoFocus: boolean;
 }

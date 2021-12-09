@@ -91,12 +91,13 @@ const FilterButton = (props: FilterButtonProps): JSX.Element => {
                 anchorEl={anchorEl.current}
                 onClose={handleRequestClose}
             >
-                {hiddenFilters.map((filterElement: JSX.Element) => (
+                {hiddenFilters.map((filterElement: JSX.Element, index) => (
                     <FilterButtonMenuItem
                         key={filterElement.props.source}
                         filter={filterElement}
                         resource={resource}
                         onShow={handleShow}
+                        autoFocus={index === 0}
                     />
                 ))}
             </Menu>
