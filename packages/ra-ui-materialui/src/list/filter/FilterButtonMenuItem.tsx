@@ -22,7 +22,6 @@ export const FilterButtonMenuItem = forwardRef<any, FilterButtonMenuItemProps>(
                 data-default-value={filter.props.defaultValue}
                 key={filter.props.source}
                 onClick={handleShow}
-                aria-disabled={false}
                 autoFocus={autoFocus}
                 ref={ref}
             >
