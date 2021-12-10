@@ -82,6 +82,7 @@ const FilterButton = (props: FilterButtonProps): JSX.Element => {
             <Button
                 className="add-filter"
                 label="ra.action.add_filter"
+                aria-haspopup="true"
                 onClick={handleClickButton}
             >
                 <ContentFilter />
