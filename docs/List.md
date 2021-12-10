@@ -552,7 +552,7 @@ export const PostList = () => (
 );
 ```
 
-See [Paginating the List](#paginating-the-list) below for details.
+See [Paginating the List](#PaginationTutorial.md) for details.
 
 ## `perPage`: Pagination Size 
 

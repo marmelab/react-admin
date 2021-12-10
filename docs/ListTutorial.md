@@ -397,7 +397,7 @@ React-admin offers many more List layouts: [`<EditableDatagrid>`](./EditableData
 
 ## Building a Custom Layout
 
-In some cases, neither the `<Datagrid>` nor the `<SimpleList>` components allow to display the records in an optimal way for a given task. In these cases, pass your layout component directly as children of the `<List>` component. As `<List>` takes care of fetching the data and putting it in a `ListContext`, you can leverage the `useListContext` hook to get the list data. 
+In some cases, neither the `<Datagrid>` nor the `<SimpleList>` components allow to display the records in an optimal way for a given task. In these cases, pass your layout component directly as children of the `<List>` component. As `<List>` takes care of fetching the data and putting it in a `ListContext`, you can leverage [the `useListContext` hook](./useListContext.md) to get the list data. 
 
 {% raw %}
 ```jsx

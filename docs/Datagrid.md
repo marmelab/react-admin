@@ -67,9 +67,7 @@ For instance, the `<Datagrid isRowSelectable>` prop allows to hide the selection
 ```jsx
 // in src/PostList.js
 import { Datagrid, DatagridBody, List, TextField } from 'react-admin';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Checkbox from '@material-ui/core/Checkbox';
+import { TableCell, TableRow, Checkbox } from '@mui/material';
 
 const MyDatagridRow = ({ id, onToggleItem, children, selected, selectable }) => (
     <TableRow key={id}>
@@ -105,6 +103,39 @@ const PostList = () => (
 export default PostList;
 ```
 
+## `children`
+
+`<Datagrid>` accepts a list of Field components as children. It inspects each child's `source` and/or `label` props to determine the name of the column.
+
+What's a Field component? Simply a component that reads the record (via `useGetRecord`) and renders a value. React-admin includes many Field componentds that you can use as children of `<Datagrid>` (`<TextField>`, `<NumberField>`, `<DateField>`, `<ReferenceField>`, and many more). Check [the Fields documentation](./Fields.md) for more information. 
+
+You can even create your own field components.
+
+```jsx
+// in src/posts.js
+import * as React from "react";
+import { useRecordContext, List, Datagrid, TextField, DateField } from 'react-admin';
+
+const FullNameField = () => {
+    const record = useRecordContext();
+    return <span>{record.firstName} {record.lastName}</span>;
+}
+
+export const UserList = () => (
+    <List>
+        <Datagrid rowclick="edit">
+            <FullNameField source="last_name" label="Name" />
+            <DateField source="dob" />
+            <TextField source="city" />
+        </Datagrid>
+    </List>
+);
+```
+
+`<Datagrid>` also inspects its children for `headerClassName` and `cellClassName` props, and gives the class names to the headers and the cells of that column. 
+
+Finally, `<Datagrid>` inspects children for props that indicate how it should be sorted (see [the Customizing The Sort Order For Columns section](#customizing-the-sort-order-for-columns)) below.
+
 ## `bulkActionButtons`
 
 ![Bulk Action Buttons](./img/bulk-actions-toolbar.gif)
@@ -138,7 +169,7 @@ export const PostList = () => (
 
 **Tip**: You can also disable bulk actions altogether by passing `false` to the `bulkActionButtons` prop. In this case, the checkboxes column doesn't show up.
 
-Bulk action button components can use the [`useListContext`](./uselistcontext.md) hook to get the elements they need to perform their job:
+Bulk action button components can use the [`useListContext`](./useListContext.md) hook to get the elements they need to perform their job:
 
 * `selectedIds`: the identifiers of the currently selected items.
 * `resource`: the currently displayed resource (eg `posts`, `comments`, etc.)
@@ -148,7 +179,7 @@ Here is an example of custom bulk action button, which sets the `views` property
 
 ```jsx
 // in ./ResetViewsButton.js
-import { VisibilityOff } from '@material-ui/icons';
+import { VisibilityOff } from '@mui/icons-material';
 import { BulkUpdateButton } from 'react-admin';
 
 const views = { views: 0 };
@@ -301,7 +332,7 @@ import {
     useNotify,
     useUnselectAll,
 } from 'react-admin';
-import { VisibilityOff } from '@material-ui/icons';
+import { VisibilityOff } from '@mui/icons-material';
 
 const CustomResetViewsButton = () => {
     const { selectedIds } = useListContext();
@@ -451,7 +482,7 @@ By default, `<Datagrid>` renders the table head using `<DatagridHeader>`, an int
 For instance, here is a simple datagrid header that displays column names with no sort and no "select all" button:
 
 ```jsx
-import { TableHead, TableRow, TableCell } from '@material-ui/core';
+import { TableHead, TableRow, TableCell } from '@mui/material';
 
 const DatagridHeader = ({ children }) => (
     <TableHead>
@@ -612,7 +643,10 @@ const postRowClick = (id, basePath, record) => record.editable ? 'edit' : 'show'
 ```js
 import fetchUserRights from './fetchUserRights';
 
-const postRowClick = (id, basePath, record) => fetchUserRights().then(({ canEdit }) => canEdit ? 'edit' : 'show');
+const getPermissions = useGetPermissions();
+const postRowClick = (id, basePath, record) => 
+    useGetPermissions()
+    .then(permissions => permissions === 'admin' ? 'edit' : 'show');
 ```
 
 ## `size`
@@ -735,3 +769,83 @@ const PostList = () => (
 );
 ```
 {% endraw %}
+
+## Customizing The Sort Order For Columns
+
+![Sort Column Header](./img/sort-column-header.gif)
+
+The column headers are buttons allowing users to change the list sort field and order. This feature requires no configuration and works out fo the box. The next sections explain how you can disable or modify the field used for sorting on a particular column.
+
+### Disabling Sorting
+
+It is possible to disable sorting for a specific `<Field>` by passing a `sortable` property set to `false`:
+
+{% raw %}
+```jsx
+// in src/posts.js
+import { List, Datagrid, TextField } from 'react-admin';
+
+export const PostList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="id" sortable={false} />
+            <TextField source="title" />
+            <TextField source="body" />
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
+### Specifying A Sort Field
+
+By default, a column is sorted by the `source` property. To define another attribute to sort by, set it via the `<Field sortBy>` property:
+
+{% raw %}
+```jsx
+// in src/posts.js
+import { List, Datagrid, TextField } from 'react-admin';
+
+export const PostList = () => (
+    <List>
+        <Datagrid>
+            <ReferenceField label="Post" source="id" reference="posts" sortBy="title">
+                <TextField source="title" />
+            </ReferenceField>
+            <FunctionField
+                label="Author"
+                sortBy="last_name"
+                render={record => `${record.author.first_name} ${record.author.last_name}`}
+            />
+            <TextField source="body" />
+        </Datagrid>
+    </List>
+);
+```
+{% endraw %}
+
+### Specifying The Sort Order
+
+By default, when the user clicks on a column header, the list becomes sorted in the ascending order. You change this behavior by setting the `sortByOrder` prop to `"DESC"` in a `<Datagrid>` `<Field>`:
+
+```jsx
+// in src/posts.js
+import { List, Datagrid, TextField } from 'react-admin';
+
+export const PostList = () => (
+    <List>
+        <Datagrid>
+            <ReferenceField label="Post" source="id" reference="posts" sortByOrder="DESC">
+                <TextField source="title" />
+            </ReferenceField>
+            <FunctionField
+                label="Author"
+                sortBy="last_name"
+                sortByOrder="DESC"
+                render={record => `${record.author.first_name} ${record.author.last_name}`}
+            />
+            <TextField source="body" />
+        </Datagrid>
+    </List>
+);
+```
