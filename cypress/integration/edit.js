@@ -94,27 +94,32 @@ describe('Edit Page', () => {
             // Music is selected by default
             cy.get(
                 EditPostTagsPage.elements.input('tags', 'reference-array-input')
-            )
-                .get(`div[role=button]`)
-                .contains('Music')
-                .should('exist');
+            ).within(() => {
+                cy.get(`[role=button]`).contains('Music').should('exist');
+            });
 
             EditPostTagsPage.clickInput('change-filter');
 
             // Music should not be selected anymore after filter reset
             cy.get(
                 EditPostTagsPage.elements.input('tags', 'reference-array-input')
-            )
-                .get(`div[role=button]`)
-                .contains('Music')
-                .should('not.exist');
+            ).within(() => {
+                cy.get(`[role=button]`).should('not.exist');
+            });
 
-            EditPostTagsPage.clickInput('tags', 'reference-array-input');
+            cy.get(
+                EditPostTagsPage.elements.input('tags', 'reference-array-input')
+            ).within(() => {
+                cy.get(`input`).click();
+            });
 
             // Music should not be visible in the list after filter reset
-            cy.get('div[role=listbox]').contains('Music').should('not.exist');
-
-            cy.get('div[role=listbox]').contains('Photo').should('exist');
+            cy.get('[role="listbox"]').within(() => {
+                cy.contains('Music').should('not.exist');
+            });
+            cy.get('[role="listbox"]').within(() => {
+                cy.contains('Photo').should('exist');
+            });
         });
     });
 
