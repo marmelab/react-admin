@@ -89,7 +89,7 @@ SimpleFormView.propTypes = {
     submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.oneOfType([
         PropTypes.element,
-        false,
+        PropTypes.oneOf([false]),
     ]),
     undoable: PropTypes.bool,
     validate: PropTypes.func,
