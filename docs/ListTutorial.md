@@ -184,7 +184,7 @@ const BookList = () => {
     }
     const filters = [<TextInput label="Search" source="q" size="small" alwaysOn />];
     const filterValues = { q: filter };
-    const setFilters = (filters: any) => setFilter(filters.q);
+    const setFilters = filters => setFilter(filters.q);
     return (
         <ListContextProvider value={{ data, total, page, perPage, setPage, filterValues, setFilters, currentSort }}>
             <div>
@@ -303,7 +303,7 @@ Notice that we're not handling the loading state manually anymore. In fact, the 
 
 ## `useListContext` Accesses The List Context
 
-Using the `<ListBase>` component has one drawback: you can no longer access the list context (`data`, `total`, etc) in the component. Instead, you have to access it from the `ListContext` using [the `useListContext` hook](./useListContext.md).
+Using the `<ListBase>` component has one drawback: you can no longer access the list context (`data`, `total`, etc.) in the component. Instead, you have to access it from the `ListContext` using [the `useListContext` hook](./useListContext.md).
 
 The following example illustrates the usage of `useListContext` with a custom pagination component:
 
@@ -393,7 +393,7 @@ const BookList = () => (
 );
 ```
 
-React-admin offers many more List layouts: `<EditableDatagrid>`, `<TreeWithDetails>`, `<Calendar>`, etc. The `<List>` component accepts any component as child - even components of your own! 
+React-admin offers many more List layouts: [`<EditableDatagrid>`](./EditableDatagrid.md), [`<TreeWithDetails>`](./Tree.md), [`<Calendar>`](./Calendar.md), etc. The `<List>` component accepts any component as child - even components of your own! 
 
 ## Building a Custom Layout
 
