@@ -87,10 +87,7 @@ SimpleFormView.propTypes = {
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
-    toolbar: PropTypes.oneOfType([
-        PropTypes.element,
-        PropTypes.oneOf([false]),
-    ]),
+    toolbar: PropTypes.oneOfType([PropTypes.element, PropTypes.oneOf([false])]),
     undoable: PropTypes.bool,
     validate: PropTypes.func,
 };
