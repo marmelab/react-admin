@@ -7,7 +7,7 @@ title: "The Datagrid Component"
 
 ![The `<Datagrid>` component](./img/tutorial_post_list_less_columns.png)
 
-The `Datagrid` component renders a list of records as a table. It is usually used as a descendant of the [`<List>`](#the-list-component) and [`<ReferenceManyField>`](./Fields.md#referencemanyfield) components. Outside these components, it must be used inside a `ListContext`.
+The `Datagrid` component renders a list of records as a table. It is usually used as a descendant of the [`<List>`](List.md#list) and [`<ReferenceManyField>`](./Fields.md#referencemanyfield) components. Outside these components, it must be used inside a `ListContext`.
 
 ## Usage
 
@@ -42,7 +42,7 @@ The `<Datagrid>` is an **iterator** component: it gets an array of records from 
 Here are all the props accepted by the component:
 
 * [`body`](#body)
-* [`bulkActionButtons`](#bulkActionButtons)
+* [`bulkActionButtons`](#bulkactionbuttons)
 * [`children`](#children)
 * [`empty`](#empty)
 * [`expand`](#expand)
@@ -50,7 +50,7 @@ Here are all the props accepted by the component:
 * [`hover`](#hover)
 * [`isRowExpandable`](#isrowexpandable)
 * [`isRowSelectable`](#isrowselectable)
-* [`optimized`](#performance)
+* [`optimized`](#optimized-better-performance-for-large-tables)
 * [`rowStyle`](#rowstyle)
 * [`rowClick`](#rowclick)
 * [`size`](#size)
@@ -71,7 +71,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 
-const MyDatagridRow = ({ record, resource, id, onToggleItem, children, selected, selectable, basePath }) => (
+const MyDatagridRow = ({ id, onToggleItem, children, selected, selectable }) => (
     <TableRow key={id}>
         {/* first column: selection checkbox */}
         <TableCell padding="none">
@@ -109,11 +109,11 @@ export default PostList;
 
 ![Bulk Action Buttons](./img/bulk-actions-toolbar.gif)
 
-Bulk action buttons are buttons that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, the bulk actions toolbar appears when a user ticks the checkboxes in the first column of the table. The user can then choose a button from the bulk actions toolbar. By default, all datagrids have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<List>` component:
+Bulk action buttons are buttons that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, the bulk actions toolbar appears when a user ticks the checkboxes in the first column of the table. The user can then choose a button from the bulk actions toolbar. By default, all datagrids have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<Datagrid>` component:
 
 ```jsx
 import { Button } from '@mui/material';
-import { BulkDeleteButton } from 'react-admin';
+import { Datagrid, BulkDeleteButton } from 'react-admin';
 
 import ResetViewsButton from './ResetViewsButton';
 
@@ -276,7 +276,7 @@ const CustomResetViewsButton = () => {
             />
         </>
     );
-}
+};
 
 export default CustomResetViewsButton;
 ```
@@ -285,7 +285,7 @@ export default CustomResetViewsButton;
 
 **Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass translation keys in these props. Note: `content` is only translatable when value is `string`, otherwise it renders the content as a `ReactNode`.
 
-**Tip**: You can customize the text of the two `<Confirm>` component buttons using the `cancel` and `confirm` props which accept translation keys. You can customize the icons by setting the `ConfirmIcon` and `CancelIcon` props, which accept a SvgIcon type.
+**Tip**: You can customize the text of the two `<Confirm>` component buttons using the `cancel` and `confirm` props which accept translation keys. You can customize the icons by setting the `ConfirmIcon` and `CancelIcon` props, which accept a [SvgIcon](https://mui.com/components/icons/) type.
 
 **Tip**: React-admin doesn't use the `<Confirm>` component internally, because deletes and updates are applied locally immediately, then dispatched to the server after a few seconds, unless the user chooses to undo the modification. That's what we call optimistic rendering. You can do the same for the `<ResetViewsButton>` by setting `undoable: true` in the last argument of `useUpdateMany()`, as follows:
 
@@ -294,7 +294,7 @@ export default CustomResetViewsButton;
 import * as React from "react";
 import {
     Button,
-    Confirm,
+-    Confirm,
     useListContext,
     useUpdateMany,
     useRefresh,
@@ -679,7 +679,7 @@ const PostList = () => (
 ```
 {% endraw %}
 
-**Tip**: `sx` is the standard for style customization in Material UI. Check [the sx documentation](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)) for more advanced usage.
+**Tip**: `sx` is the standard for style customization in Material UI. Check [the sx documentation](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles) for more advanced usage.
 
 **Tip**: The `Datagrid` component `classes` can also be customized for all instances of the component with its global css name `"RaDatagrid"` as [describe here](https://marmelab.com/blog/2019/12/18/react-admin-3-1.html#theme-overrides)
 

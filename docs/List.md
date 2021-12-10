@@ -161,12 +161,12 @@ const Aside = () => {
 
 ## `children`: List Layout
 
-`<List>` doesn't render any content by default - it delegates this to it child. List layout components grab the `data` from the `ListContext` and render them on screen.
+`<List>` doesn't render any content by default - it delegates this to its child. List layout components grab the `data` from the `ListContext` and render them on screen.
 
 React-admin provides several List layout components:
 
 - [`<Datagrid>`](./Datagrid.md) displays records in a table
-- [`<SimpleList>`](./SimpleList.md) displays records in a list without much details
+- [`<SimpleList>`](./SimpleList.md) displays records in a list without many details
 - [`<SingleFieldList>`](./SingleFieldList.md) displays records inline, showing one field per record 
 - [`<EditableDatagrid>`](./EditableDatagrid.md) displays records in a table AND lets users edit them inline
 - [`<Tree>`](./Tree.md) displays records in a tree structure
@@ -191,7 +191,7 @@ export const BookList = () => (
 );
 ```
 
-You can also pass React elements as children, so as to build a custom layout. Check [Building a custom List Layout](./ListTutorial.md#building-a-custom-layout) for more details.
+You can also pass React elements as children, to build a custom layout. Check [Building a custom List Layout](./ListTutorial.md#building-a-custom-layout) for more details.
 
 ## `component`
 
