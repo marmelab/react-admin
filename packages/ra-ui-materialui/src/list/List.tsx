@@ -26,7 +26,6 @@ import { ListProps } from '../types';
  *
  * - actions
  * - aside: Side Component
- * - bulkActionButtons
  * - children: List Layout
  * - component
  * - disableAuthentication
@@ -79,8 +78,6 @@ List.propTypes = {
     // @ts-ignore-line
     actions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     aside: PropTypes.element,
-    // @ts-ignore-line
-    bulkActionButtons: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     children: PropTypes.element.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,

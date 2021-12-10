@@ -146,7 +146,7 @@ export const SingleFieldListClasses = {
 };
 
 const Root = styled('div', { name: PREFIX })(({ theme }) => ({
-    [`& .${SingleFieldListClasses.root}`]: {
+    [`&.${SingleFieldListClasses.root}`]: {
         display: 'flex',
         flexWrap: 'wrap',
         marginTop: theme.spacing(-1),

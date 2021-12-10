@@ -66,6 +66,9 @@ const StyledDatagrid = styled(Datagrid)(({ theme }) => ({
             display: 'none',
         },
     },
+    '& .column-tags': {
+        minWidth: '9em',
+    },
     '& .publishedAt': { fontStyle: 'italic' },
 }));
 
@@ -77,21 +80,9 @@ const PostListBulkActions = memo(({ children, ...props }) => (
     </Fragment>
 ));
 
-const PostListActionToolbar = ({ children, ...props }) => {
-    return (
-        // @ts-ignore
-        <Box
-            sx={{
-                alignItems: 'center',
-                display: 'flex',
-                marginTop: -1,
-                marginBotton: -1,
-            }}
-        >
-            {Children.map(children, button => cloneElement(button, props))}
-        </Box>
-    );
-};
+const PostListActionToolbar = ({ children, ...props }) => (
+    <Box sx={{ alignItems: 'center', display: 'flex' }}>{children}</Box>
+);
 
 const rowClick = (id, basePath, record) => {
     if (record.commentable) {
@@ -109,7 +100,6 @@ const PostList = () => {
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     return (
         <List
-            bulkActionButtons={<PostListBulkActions />}
             filters={postFilter}
             sort={{ field: 'published_at', order: 'DESC' }}
             exporter={exporter}
@@ -124,6 +114,7 @@ const PostList = () => {
                 />
             ) : (
                 <StyledDatagrid
+                    bulkActionButtons={<PostListBulkActions />}
                     rowClick={rowClick}
                     expand={PostPanel}
                     optimized

@@ -17,6 +17,9 @@ import { UseQueryOptions, UseMutationOptions } from 'react-query';
 export interface ListProps<RecordType extends RaRecord = RaRecord> {
     actions?: ReactElement | false;
     aside?: ReactElement;
+    /**
+     * @deprecated pass the bulkActionButtons prop to the List child (Datagrid or SimpleList) instead
+     */
     bulkActionButtons?: ReactElement | false;
     classes?: any;
     className?: string;

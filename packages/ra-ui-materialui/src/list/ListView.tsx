@@ -14,14 +14,11 @@ import {
 import { Title, TitlePropType } from '../layout/Title';
 import { ListToolbar } from './ListToolbar';
 import { Pagination as DefaultPagination } from './pagination';
-import { BulkDeleteButton } from '../button';
-import { BulkActionsToolbar } from './BulkActionsToolbar';
 import { ListActions as DefaultActions } from './ListActions';
 import { Empty } from './Empty';
 import { ListProps } from '../types';
 
 const defaultActions = <DefaultActions />;
-const defaultBulkActionButtons = <BulkDeleteButton />;
 const defaultPagination = <DefaultPagination />;
 const defaultEmpty = <Empty />;
 const DefaultComponent = Card;
@@ -33,7 +30,7 @@ export const ListView = <RecordType extends Record = Record>(
         actions = defaultActions,
         aside,
         filters,
-        bulkActionButtons = defaultBulkActionButtons,
+        bulkActionButtons,
         emptyWhileLoading,
         pagination = defaultPagination,
         children,
@@ -49,7 +46,6 @@ export const ListView = <RecordType extends Record = Record>(
         total,
         isLoading,
         filterValues,
-        selectedIds,
     } = useListContext<RecordType>(props);
 
     if (!children || (!data && isLoading && emptyWhileLoading)) {
@@ -57,31 +53,19 @@ export const ListView = <RecordType extends Record = Record>(
     }
 
     const renderList = () => (
-        <>
-            <div className={ListClasses.main}>
-                {(filters || actions) && (
-                    <ListToolbar filters={filters} actions={actions} />
-                )}
-                <Content
-                    className={classnames(ListClasses.content, {
-                        [ListClasses.bulkActionsDisplayed]:
-                            selectedIds.length > 0,
-                    })}
-                >
-                    {bulkActionButtons !== false && bulkActionButtons && (
-                        <BulkActionsToolbar>
-                            {bulkActionButtons}
-                        </BulkActionsToolbar>
-                    )}
-                    {children &&
-                        // @ts-ignore-line
-                        cloneElement(Children.only(children), {
-                            hasBulkActions: bulkActionButtons !== false,
-                        })}
-                </Content>
-                {pagination !== false && pagination}
-            </div>
-        </>
+        <div className={ListClasses.main}>
+            {(filters || actions) && (
+                <ListToolbar filters={filters} actions={actions} />
+            )}
+            <Content className={ListClasses.content}>
+                {bulkActionButtons && children
+                    ? cloneElement(Children.only(children), {
+                          bulkActionButtons,
+                      })
+                    : children}
+            </Content>
+            {pagination !== false && pagination}
+        </div>
     );
 
     const renderEmpty = () => empty !== false && cloneElement(empty);
@@ -109,8 +93,6 @@ ListView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     aside: PropTypes.element,
     basePath: PropTypes.string,
-    // @ts-ignore-line
-    bulkActionButtons: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     children: PropTypes.element,
     className: PropTypes.string,
     component: ComponentPropType,
@@ -219,7 +201,6 @@ export const ListClasses = {
     root: `${PREFIX}-root`,
     main: `${PREFIX}-main`,
     content: `${PREFIX}-content`,
-    bulkActionsDisplayed: `${PREFIX}-bulkActionsDisplayed`,
     actions: `${PREFIX}-actions`,
     noResults: `${PREFIX}-noResults`,
 };
@@ -236,18 +217,11 @@ const Root = styled('div', { name: PREFIX })(({ theme }) => ({
     },
 
     [`& .${ListClasses.content}`]: {
-        marginTop: 0,
-        transition: theme.transitions.create('margin-top'),
         position: 'relative',
         [theme.breakpoints.down('sm')]: {
             boxShadow: 'none',
         },
         overflow: 'inherit',
-    },
-
-    [`& .${ListClasses.bulkActionsDisplayed}`]: {
-        marginTop: theme.spacing(-8),
-        transition: theme.transitions.create('margin-top'),
     },
 
     [`& .${ListClasses.actions}`]: {
