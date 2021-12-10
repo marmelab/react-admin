@@ -339,11 +339,11 @@ If you provided a React element for the optionText prop, you must also provide t
                 closeText={translate('ra.action.close')}
                 openOnFocus
                 openText={translate('ra.action.open')}
+                id={id}
                 isOptionEqualToValue={isOptionEqualToValue}
                 renderInput={params => (
                     <TextField
                         {...params}
-                        id={id}
                         name={input.name}
                         label={
                             <FieldTitle

@@ -136,7 +136,7 @@ const defaultMatchSuggestion = getChoiceText => (
     return isReactElement
         ? false
         : suggestionText &&
-              suggestionText.match(
+              !!suggestionText.match(
                   // We must escape any RegExp reserved characters to avoid errors
                   // For example, the filter might contains * which must be escaped as \*
                   new RegExp(exact ? `^${regex}$` : regex, 'i')
@@ -199,26 +199,11 @@ export const getSuggestionsFactory = ({
                 choice =>
                     getChoiceValue(choice) === getChoiceValue(selectedItem)
             );
-        } else if (!allowDuplicates) {
-            // ignore the filter to show more choices
-            suggestions = removeAlreadySelectedSuggestions(
-                choices,
-                selectedItem,
-                getChoiceValue
-            );
         } else {
             suggestions = choices;
         }
     } else {
         suggestions = choices.filter(choice => matchSuggestion(filter, choice));
-
-        if (!allowDuplicates) {
-            suggestions = removeAlreadySelectedSuggestions(
-                suggestions,
-                selectedItem,
-                getChoiceValue
-            );
-        }
     }
 
     suggestions = limitSuggestions(suggestions, suggestionLimit);
@@ -262,37 +247,6 @@ export const getSuggestionsFactory = ({
     // that may also contain it
     return suggestions.filter(
         (suggestion, index) => suggestions.indexOf(suggestion) === index
-    );
-};
-
-/**
- * @example
- *
- * removeAlreadySelectedSuggestions(
- *  [{ id: 1, name: 'foo'}, { id: 2, name: 'bar' }],
- *  [{ id: 1, name: 'foo'}]
- * );
- *
- * // Will return [{ id: 2, name: 'bar' }]
- *
- * @param suggestions List of suggestions
- * @param selectedItems List of selection
- * @param getChoiceValue Converter function from suggestion to value
- */
-const removeAlreadySelectedSuggestions = (
-    suggestions: any[],
-    selectedItems: any[] | any,
-    getChoiceValue: (suggestion: any) => any
-) => {
-    if (!selectedItems) {
-        return suggestions;
-    }
-    const selectedValues = Array.isArray(selectedItems)
-        ? selectedItems.map(getChoiceValue)
-        : [getChoiceValue(selectedItems)];
-
-    return suggestions.filter(
-        suggestion => !selectedValues.includes(getChoiceValue(suggestion))
     );
 };
 
