@@ -301,6 +301,7 @@ If you provided a React element for the optionText prop, you must also provide t
 
     const filterOptions = (options, params) => {
         const { inputValue } = params;
+
         if ((onCreate || create) && inputValue !== '') {
             return options.concat(getCreateItem(inputValue));
         }
@@ -396,7 +397,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 selectOnFocus={!!create || !!onCreate}
                 clearOnBlur={!!create || !!onCreate}
                 handleHomeEndKeys={!!create || !!onCreate}
-                filterOptions={setFilter ? DefaultFilterOptions : filterOptions}
+                filterOptions={filterOptions}
                 options={
                     shouldRenderSuggestions == undefined || // eslint-disable-line eqeqeq
                     shouldRenderSuggestions(filterValue)
@@ -439,7 +440,6 @@ export interface AutocompleteArrayInputProps
 }
 
 const DefaultSetFilter = () => {};
-const DefaultFilterOptions = options => options;
 
 const getSelectedItems = (choices = [], value = [], optionValue) =>
     choices.filter(choice => value.includes(get(choice, optionValue)));
