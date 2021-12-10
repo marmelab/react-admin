@@ -6,6 +6,7 @@ import {
     testDataProvider,
     useRecordContext,
     useRecordSelection,
+    useGetList,
 } from 'ra-core';
 import { Box } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -14,7 +15,7 @@ import { TextField } from '../../field';
 import { BulkDeleteButton, BulkExportButton } from '../../button';
 import { Datagrid } from './Datagrid';
 
-export default { title: 'ra-ui-materialui/list/datagrid/Datagrid' };
+export default { title: 'ra-ui-materialui/list/Datagrid' };
 
 const data = [
     {
@@ -281,4 +282,54 @@ export const ColumnStyles = () => (
             </Datagrid>
         </Box>
     </Wrapper>
+);
+
+const currentSort = { field: 'id', order: 'DESC' };
+
+const MyCustomList = () => {
+    const { data, total, isLoading } = useGetList('books', {
+        pagination: { page: 1, perPage: 10 },
+        sort: currentSort,
+    });
+
+    return (
+        <Datagrid
+            data={data}
+            total={total}
+            isLoading={isLoading}
+            currentSort={currentSort}
+            selectedIds={[]}
+            setSort={() => {
+                console.log('set sort');
+            }}
+            onSelect={() => {
+                console.log('on select');
+            }}
+            onToggleItem={() => {
+                console.log('on toggle item');
+            }}
+        >
+            <TextField source="id" />
+            <TextField source="title" />
+        </Datagrid>
+    );
+};
+
+export const Standalone = () => (
+    <ThemeProvider theme={theme}>
+        <CoreAdminContext
+            dataProvider={testDataProvider({
+                getList: () => Promise.resolve({ data, total: 4 }),
+            })}
+            initialState={{
+                admin: {
+                    resources: {
+                        books: { list: { expanded: [], selectedIds: [] } },
+                    },
+                },
+            }}
+        >
+            <MyCustomList />
+        </CoreAdminContext>
+    </ThemeProvider>
 );

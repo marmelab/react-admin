@@ -849,3 +849,42 @@ export const PostList = () => (
     </List>
 );
 ```
+
+## Standalone Usage
+
+You can use the `<Datagrid>` component to display data that you've fetched yourself. You'll need to pass all the props required for its features:
+
+```jsx
+import { Datagrid, TextField } from 'react-admin';
+
+const currentSort = { field: 'id', order: 'DESC' };
+
+const MyCustomList = () => {
+    const { data, total, isLoading } = useGetList('books', {
+        pagination: { page: 1, perPage: 10 },
+        sort: currentSort,
+    });
+
+    return (
+        <Datagrid
+            data={data}
+            total={total}
+            isLoading={isLoading}
+            currentSort={currentSort}
+            selectedIds={[]}
+            setSort={() => {
+                console.log('set sort');
+            }}
+            onSelect={() => {
+                console.log('on select');
+            }}
+            onToggleItem={() => {
+                console.log('on toggle item');
+            }}
+        >
+            <TextField source="id" />
+            <TextField source="title" />
+        </Datagrid>
+    );
+};
+```

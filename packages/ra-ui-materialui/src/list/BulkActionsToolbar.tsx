@@ -8,7 +8,12 @@ import Typography from '@mui/material/Typography';
 import { lighten } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { useTranslate, sanitizeListRestProps, useListContext } from 'ra-core';
+import {
+    useTranslate,
+    sanitizeListRestProps,
+    useListContext,
+    Identifier,
+} from 'ra-core';
 
 import TopToolbar from '../layout/TopToolbar';
 
@@ -17,7 +22,7 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
     const {
         filterValues,
         resource,
-        selectedIds,
+        selectedIds = [],
         onUnselectItems,
     } = useListContext(props);
 
@@ -74,6 +79,7 @@ BulkActionsToolbar.propTypes = {
 export interface BulkActionsToolbarProps {
     children?: ReactNode;
     label?: string;
+    selectedIds?: Identifier[];
 }
 
 const PREFIX = 'RaBulkActionsToolbar';

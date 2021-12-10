@@ -40,9 +40,22 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  * It is usually used as a child of the <List> and <ReferenceManyField> components.
  *
  * Props:
+ *  - body
+ *  - bulkActionButtons
+ *  - children
+ *  - empty
+ *  - expand
+ *  - header
+ *  - hover
+ *  - isRowExpandable
+ *  - isRowSelectable
+ *  - optimized
  *  - rowStyle
+ *  - rowClick
+ *  - size
+ *  - sx
  *
- * @example Display all posts as a datagrid
+ * @example // Display all posts as a datagrid
  * const postRowStyle = (record, index) => ({
  *     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
  * });
@@ -57,7 +70,7 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  *     </List>
  * );
  *
- * @example Display all the comments of the current post as a datagrid
+ * @example // Display all the comments of the current post as a datagrid
  * <ReferenceManyField reference="comments" target="post_id">
  *     <Datagrid>
  *         <TextField source="id" />
@@ -67,7 +80,7 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  *     </Datagrid>
  * </ReferenceManyField>
  *
- * @example Usage outside of a <List> or a <ReferenceManyField>.
+ * @example // Usage outside of a <List> or a <ReferenceManyField>.
  *
  * const currentSort = { field: 'published_at', order: 'DESC' };
  *
@@ -213,7 +226,9 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         <DatagridContextProvider value={contextValue}>
             <DatagridRoot>
                 {bulkActionButtons !== false && bulkActionButtons && (
-                    <BulkActionsToolbar>{bulkActionButtons}</BulkActionsToolbar>
+                    <BulkActionsToolbar selectedIds={selectedIds}>
+                        {bulkActionButtons}
+                    </BulkActionsToolbar>
                 )}
                 <Table
                     ref={ref}
