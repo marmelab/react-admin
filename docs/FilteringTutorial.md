@@ -280,3 +280,162 @@ If you want to display a full-text search allowing to look for any record in the
 ![ra-search demo](https://marmelab.com/ra-enterprise/modules/assets/ra-search-demo.gif)
 
 For mode details about the global search, check the [`ra-search` module](https://marmelab.com/ra-enterprise/modules/ra-search) in React-Admin Enterprise Edition. 
+
+## Building a Custom Filter
+
+![Filters with submit button](./img/filter_with_submit.gif)
+
+If neither the Filter button/form combo nor the `<FilterList>` sidebar match your need, you can always build your own. React-admin provides shortcuts to facilitate the development of custom filters.
+
+For instance, by default, the filter button/form combo doesn't provide a submit button, and submits automatically after the user has finished interacting with the form. This provides a smooth user experience, but for some APIs, it can cause too many calls. 
+
+In that case, the solution is to process the filter when users click on a submit button, rather than when they type values in form inputs. React-admin doesn't provide any component for that, but it's a good opportunity to illustrate the internals of the filter functionality. We'll actually provide an alternative implementation to the Filter button/form combo.
+
+To create a custom filter UI, we'll have to override the default List Actions component, which will contain both a Filter Button and a Filter Form, interacting with the List filters via the ListContext.
+
+### Filter Callbacks
+
+The new element can use the `useListContext()` hook to interact with the URI query parameter more easily. The hook returns the following constants:
+
+- `filterValues`: Value of the filters based on the URI, e.g. `{"commentable":true,"q":"lorem "}`
+- `setFilters()`: Callback to set the filter values, e.g. `setFilters({"commentable":true})`
+- `displayedFilters`: Names of the filters displayed in the form, e.g. `['commentable','title']`
+- `showFilter()`: Callback to display an additional filter in the form, e.g. `showFilter('views')`
+- `hideFilter()`: Callback to hide a filter in the form, e.g. `hideFilter('title')`
+
+Let's use this knowledge to write a custom `<List>` component that filters on submit.
+
+### Custom Filter Button
+
+The `<PostFilterButton>` shows the filter form on click. We'll take advantage of the `showFilter` function:
+
+```jsx
+import { useListContext } from 'react-admin';
+import { Button } from "@mui/material";
+import ContentFilter from "@mui/icons-material/FilterList";
+
+const PostFilterButton = () => {
+    const { showFilter } = useListContext();
+    return (
+        <Button
+            size="small"
+            color="primary"
+            onClick={() => showFilter("main")}
+            startIcon={<ContentFilter />}
+        >
+            Filter
+        </Button>
+    );
+};
+```
+
+Normally, `showFilter()` adds one input to the `displayedFilters` list. As the filter form will be entirely hidden or shown, we use `showFilter()` with a virtual "main" input, which represents the entire form. 
+
+### Custom Filter Form
+
+Next is the filter form component, displayed only when the "main" filter is displayed (i.e. when a user has clicked the filter button). The form inputs appear directly in the form, and the form submission triggers the `setFilters()` callback passed as parameter. We'll use `react-final-form` to handle the form state:
+
+{% raw %}
+```jsx
+import * as React from 'react';
+import { Form } from 'react-final-form';
+import { Box, Button, InputAdornment } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import { TextInput, NullableBooleanInput, useListContext } from 'react-admin';
+
+const PostFilterForm = () => {
+  const {
+    displayedFilters,
+    filterValues,
+    setFilters,
+    hideFilter
+  } = useListContext();
+
+  if (!displayedFilters.main) return null;
+
+  const onSubmit = (values) => {
+    if (Object.keys(values).length > 0) {
+      setFilters(values);
+    } else {
+      hideFilter("main");
+    }
+  };
+
+  const resetFilter = () => {
+    setFilters({}, []);
+  };
+
+  return (
+    <div>
+      <Form onSubmit={onSubmit} initialValues={filterValues}>
+        {({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <Box display="flex" alignItems="flex-end" mb={1}>
+              <Box component="span" mr={2}>
+                {/* Full-text search filter. We don't use <SearchFilter> to force a large form input */}
+                <TextInput
+                  resettable
+                  helperText={false}
+                  source="q"
+                  label="Search"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment>
+                        <SearchIcon color="disabled" />
+                      </InputAdornment>
+                    )
+                  }}
+                />
+              </Box>
+              <Box component="span" mr={2}>
+                {/* Commentable filter */}
+                <NullableBooleanInput helperText={false} source="commentable" />
+              </Box>
+              <Box component="span" mr={2} mb={1.5}>
+                <Button variant="outlined" color="primary" type="submit">
+                  Filter
+                </Button>
+              </Box>
+              <Box component="span" mb={1.5}>
+                <Button variant="outlined" onClick={resetFilter}>
+                  Close
+                </Button>
+              </Box>
+            </Box>
+          </form>
+        )}
+      </Form>
+    </div>
+  );
+};
+```
+{% endraw %}
+
+### Using The Custom Filters in The List Actions
+
+To finish, create a `<ListAction>` component and pass it to the `<List>` component using the `actions` prop:
+
+```jsx
+import { TopToolbar, ExportButton } from 'react-admin';
+import { Box } from '@mui/material';
+
+const ListActions = () => (
+  <Box width="100%">
+    <TopToolbar>
+      <PostFilterButton />
+      <ExportButton />
+    </TopToolbar>
+    <PostFilterForm />
+  </Box>
+);
+
+export const PostList = (props) => (
+    <List {...props} actions={<ListActions />}>
+        ...
+    </List>
+);
+```
+
+**Tip**: No need to pass any `filters` to the list anymore, as the `<PostFilterForm>` component will display them.
+
+You can use a similar approach to offer alternative User Experiences for data filtering, e.g. to display the filters as a line in the datagrid headers.

@@ -369,6 +369,95 @@ const App = () => (
 
 `<ListGuesser>` is also a good way to bootstrap a List view, as it outputs the code that it generated for the List into the console. Copy and paste that code in a custom List component, and you can start customizing the list view in no time.
 
+## List Iterators
+
+The components you can use as child of `<List>` are called "List Iterator". They render a list of records. `<Datagrid>` is such a List Iterator, but react-admin provides many more:
+
+- [`<Datagrid>`](./Datagrid.md)
+- [`<SimpleList>`](./SimpleList.md)
+- [`<SingleFieldList>`](./SingleFieldList.md)
+- [`<EditableDatagrid>`](./EditableDatagrid.md)
+- [`<TreeWithDetails>`](./Tree.md)
+- [`<Calendar>`](./Calendar.md)
+
+If that's not enough, [building a custom iterator](#building-a-custom-iterator) isn't hard. 
+
+## Responsive Lists
+
+On Mobile, `<Datagrid>` doesn't work well - the screen is too narrow. You should use [the  `<SimpleList>` component](./SimpleList.md) instead - it's another built-in List Iterator.
+
+<a href="./img/simple-list.gif"><img src="./img/simple-list.gif" style="height:300px" alt="The `<SimpleList>` component"></a>
+
+To use `<Datagrid>` on desktop and `<SimpleList>` on mobile, use the `useMediaQuery` hook:
+
+```jsx
+// in src/posts.js
+import * as React from 'react';
+import { useMediaQuery } from '@mui/material';
+import { List, SimpleList, Datagrid, TextField, ReferenceField } from 'react-admin';
+
+export const PostList = () => {
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    return (
+        <List>
+            {isSmall ? (
+                <SimpleList
+                    primaryText={record => record.title}
+                    secondaryText={record => `${record.views} views`}
+                    tertiaryText={record => new Date(record.published_at).toLocaleDateString()}
+                />
+            ) : (
+                <Datagrid rowClick="edit">
+                    <TextField source="id" />
+                    <ReferenceField label="User" source="userId" reference="users">
+                        <TextField source="name" />
+                    </ReferenceField>
+                    <TextField source="title" />
+                    <TextField source="body" />
+                </Datagrid>
+            )}
+        </List>
+    );
+};
+```
+
+Check [the Theming documentation](./Theming.md) for more information about the `useMediaQuery` hook.
+
+## Building a Custom Iterator
+
+In some cases, neither the `<Datagrid>` nor the `<SimpleList>` components allow to display the records in an optimal way for a given task. In these cases, pass your layout component directly as children of the `<List>` component. As `<List>` takes care of fetching the data and putting it in a `ListContext`, you can leverage [the `useListContext` hook](./useListContext.md) to get the list data. 
+
+{% raw %}
+```jsx
+import { List, useListContext } from 'react-admin';
+import { Stack, Typography } from '@mui/icons-material/Star';
+
+const SimpleBookList = () => {
+    const { data } = useListContext();
+    return (
+        <Stack spacing={2} sx={{ padding: 2 }}>
+            {data.map(book => (
+                <Typography key={book.id}>
+                    <i>{book.title}</i>, by {book.author} ({book.year})
+                </Typography>
+            ))}
+        </Stack>
+    );
+}
+
+// use the custom list layout as <List> child
+const BookList = () => (
+    <List emptyWhileLoading>
+        <SimpleBookList />
+    </List>
+);
+```
+{% endraw %}
+
+**Tip**: With `emptyWhileLoading` turned on, the `<List>` component doesn't render its child component until the data is available. Without this flag, the `<SimpleBookList>` component would render even during the loading phase, break at `data.map()`. 
+
+You can also handle the loading state inside a custom list layout by grabbing the `isLoading` variable from the `ListContext`, but `emptyWhileLoading` is usually more convenient.
+
 ## Filtering the List
 
 One of the most important features of the List page is the ability to search for a dedicated record. In this documentation, we use the term "filter" for the cpontrols allowing to search the list.
@@ -442,294 +531,6 @@ const SortByViews = () => (
 {% endraw %}
 
 **Tip**: You have to pass *all* the query string parameters - not just `sort` and `order`. That's a current limitation of react-admin.
-
-## Using Another Layout
-
-On Mobile, `<Datagrid>` doesn't work well - the screen is too narrow. You can use the `<SimpleList>` component instead. It's a drop-in replacement for `<Datagrid>`.
-
-```jsx
-import { 
-    List,
-    SimpleList,
-    TextInput
-} from 'react-admin';
-import { Card } from '@mui/material';
-
-const filters = [<TextInput label="Search" source="q" size="small" alwaysOn />];
-
-const BookList = () => (
-    <List filters={filters}>
-        <SimpleList 
-            primaryText={record => <i>record.title</i>}
-            secondaryText={record => <>By {record.author} ({record.year})</>}
-        />
-    </List>
-);
-```
-
-React-admin offers many more List layouts: [`<EditableDatagrid>`](./EditableDatagrid.md), [`<TreeWithDetails>`](./Tree.md), [`<Calendar>`](./Calendar.md), etc. The `<List>` component accepts any component as child - even components of your own! 
-
-## Building a Custom Layout
-
-In some cases, neither the `<Datagrid>` nor the `<SimpleList>` components allow to display the records in an optimal way for a given task. In these cases, pass your layout component directly as children of the `<List>` component. As `<List>` takes care of fetching the data and putting it in a `ListContext`, you can leverage [the `useListContext` hook](./useListContext.md) to get the list data. 
-
-{% raw %}
-```jsx
-import { List, useListContext } from 'react-admin';
-import { Stack, Typography } from '@mui/icons-material/Star';
-
-const SimpleBookList = () => {
-    const { data } = useListContext();
-    return (
-        <Stack spacing={2} sx={{ padding: 2 }}>
-            {data.map(book => (
-                <Typography key={book.id}>
-                    <i>{book.title}</i>, by {book.author} ({book.year})
-                </Typography>
-            ))}
-        </Stack>
-    );
-}
-
-// use the custom list layout as <List> child
-const BookList = () => (
-    <List emptyWhileLoading>
-        <SimpleBookList />
-    </List>
-);
-```
-{% endraw %}
-
-**Tip**: With `emptyWhileLoading` turned on, the `<List>` component doesn't render its child component until the data is available. Without this flag, the `<SimpleBookList>` component would render even during the loading phase, break at `data.map()`. 
-
-You can also handle the loading state inside a custom list layout by grabbing the `isLoading` variable from the `ListContext`, but `emptyWhileLoading` is usually more convenient.
-
-## Building a Custom Filter
-
-![Filters with submit button](./img/filter_with_submit.gif)
-
-If neither the Filter button/form combo nor the `<FilterList>` sidebar match your need, you can always build your own. React-admin provides shortcuts to facilitate the development of custom filters.
-
-For instance, by default, the filter button/form combo doesn't provide a submit button, and submits automatically after the user has finished interacting with the form. This provides a smooth user experience, but for some APIs, it can cause too many calls. 
-
-In that case, the solution is to process the filter when users click on a submit button, rather than when they type values in form inputs. React-admin doesn't provide any component for that, but it's a good opportunity to illustrate the internals of the filter functionality. We'll actually provide an alternative implementation to the Filter button/form combo.
-
-To create a custom filter UI, we'll have to override the default List Actions component, which will contain both a Filter Button and a Filter Form, interacting with the List filters via the ListContext.
-
-### Filter Callbacks
-
-The new element can use the `useListContext()` hook to interact with the URI query parameter more easily. The hook returns the following constants:
-
-- `filterValues`: Value of the filters based on the URI, e.g. `{"commentable":true,"q":"lorem "}`
-- `setFilters()`: Callback to set the filter values, e.g. `setFilters({"commentable":true})`
-- `displayedFilters`: Names of the filters displayed in the form, e.g. `['commentable','title']`
-- `showFilter()`: Callback to display an additional filter in the form, e.g. `showFilter('views')`
-- `hideFilter()`: Callback to hide a filter in the form, e.g. `hideFilter('title')`
-
-Let's use this knowledge to write a custom `<List>` component that filters on submit.
-
-### Custom Filter Button
-
-The `<PostFilterButton>` shows the filter form on click. We'll take advantage of the `showFilter` function:
-
-```jsx
-import { useListContext } from 'react-admin';
-import { Button } from "@mui/material";
-import ContentFilter from "@mui/icons-material/FilterList";
-
-const PostFilterButton = () => {
-    const { showFilter } = useListContext();
-    return (
-        <Button
-            size="small"
-            color="primary"
-            onClick={() => showFilter("main")}
-            startIcon={<ContentFilter />}
-        >
-            Filter
-        </Button>
-    );
-};
-```
-
-Normally, `showFilter()` adds one input to the `displayedFilters` list. As the filter form will be entirely hidden or shown, we use `showFilter()` with a virtual "main" input, which represents the entire form. 
-
-### Custom Filter Form
-
-Next is the filter form component, displayed only when the "main" filter is displayed (i.e. when a user has clicked the filter button). The form inputs appear directly in the form, and the form submission triggers the `setFilters()` callback passed as parameter. We'll use `react-final-form` to handle the form state:
-
-{% raw %}
-```jsx
-import * as React from 'react';
-import { Form } from 'react-final-form';
-import { Box, Button, InputAdornment } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import { TextInput, NullableBooleanInput, useListContext } from 'react-admin';
-
-const PostFilterForm = () => {
-  const {
-    displayedFilters,
-    filterValues,
-    setFilters,
-    hideFilter
-  } = useListContext();
-
-  if (!displayedFilters.main) return null;
-
-  const onSubmit = (values) => {
-    if (Object.keys(values).length > 0) {
-      setFilters(values);
-    } else {
-      hideFilter("main");
-    }
-  };
-
-  const resetFilter = () => {
-    setFilters({}, []);
-  };
-
-  return (
-    <div>
-      <Form onSubmit={onSubmit} initialValues={filterValues}>
-        {({ handleSubmit }) => (
-          <form onSubmit={handleSubmit}>
-            <Box display="flex" alignItems="flex-end" mb={1}>
-              <Box component="span" mr={2}>
-                {/* Full-text search filter. We don't use <SearchFilter> to force a large form input */}
-                <TextInput
-                  resettable
-                  helperText={false}
-                  source="q"
-                  label="Search"
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment>
-                        <SearchIcon color="disabled" />
-                      </InputAdornment>
-                    )
-                  }}
-                />
-              </Box>
-              <Box component="span" mr={2}>
-                {/* Commentable filter */}
-                <NullableBooleanInput helperText={false} source="commentable" />
-              </Box>
-              <Box component="span" mr={2} mb={1.5}>
-                <Button variant="outlined" color="primary" type="submit">
-                  Filter
-                </Button>
-              </Box>
-              <Box component="span" mb={1.5}>
-                <Button variant="outlined" onClick={resetFilter}>
-                  Close
-                </Button>
-              </Box>
-            </Box>
-          </form>
-        )}
-      </Form>
-    </div>
-  );
-};
-```
-{% endraw %}
-
-### Using The Custom Filters in The List Actions
-
-To finish, create a `<ListAction>` component and pass it to the `<List>` component using the `actions` prop:
-
-```jsx
-import { TopToolbar, ExportButton } from 'react-admin';
-import { Box } from '@mui/material';
-
-const ListActions = () => (
-  <Box width="100%">
-    <TopToolbar>
-      <PostFilterButton />
-      <ExportButton />
-    </TopToolbar>
-    <PostFilterForm />
-  </Box>
-);
-
-export const PostList = (props) => (
-    <List {...props} actions={<ListActions />}>
-        ...
-    </List>
-);
-```
-
-**Tip**: No need to pass any `filters` to the list anymore, as the `<PostFilterForm>` component will display them.
-
-You can use a similar approach to offer alternative User Experiences for data filtering, e.g. to display the filters as a line in the datagrid headers.
-
-## Building a Custom Pagination
-
-The [`<Pagination>`](./Pagination.md) component gets the following constants from [the `useListContext` hook](#uselistcontext):
-
-* `page`: The current page number (integer). First page is `1`.
-* `perPage`: The number of records per page.
-* `setPage`: `Function(page: number) => void`. A function that set the current page number.
-* `total`: The total number of records.
-* `actions`: A component that displays the pagination buttons (default: `<PaginationActions>`)
-* `limit`: An element that is displayed if there is no data to show (default: `<PaginationLimit>`)
-
-If you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
-
-```jsx
-import { useListContext } from 'react-admin';
-import { Button, Toolbar } from '@mui/material';
-import ChevronLeft from '@mui/icons-material/ChevronLeft';
-import ChevronRight from '@mui/icons-material/ChevronRight';
-
-const PostPagination = () => {
-    const { page, perPage, total, setPage } = useListContext();
-    const nbPages = Math.ceil(total / perPage) || 1;
-    return (
-        nbPages > 1 &&
-            <Toolbar>
-                {page > 1 &&
-                    <Button color="primary" key="prev" onClick={() => setPage(page - 1)}>
-                        <ChevronLeft />
-                        Prev
-                    </Button>
-                }
-                {page !== nbPages &&
-                    <Button color="primary" key="next" onClick={() => setPage(page + 1)}>
-                        Next
-                        <ChevronRight />
-                    </Button>
-                }
-            </Toolbar>
-    );
-}
-
-export const PostList = (props) => (
-    <List {...props} pagination={<PostPagination />}>
-        ...
-    </List>
-);
-```
-
-But if you just want to change the color property of the pagination button, you can extend the existing components:
-
-```jsx
-import {
-    List,
-    Pagination as RaPagination,
-    PaginationActions as RaPaginationActions,
-} from 'react-admin';
-
-export const PaginationActions = props => <RaPaginationActions {...props} color="secondary" />;
-
-export const Pagination = props => <RaPagination {...props} ActionsComponent={PaginationActions} />;
-
-export const UserList = props => (
-    <List {...props} pagination={<Pagination />} >
-        //...
-    </List>
-);
-```
 
 ## Building a Custom Sort Control
 
@@ -818,6 +619,74 @@ const SortButton = ({ fields }) => {
 const inverseOrder = sort => (sort === 'ASC' ? 'DESC' : 'ASC');
 
 export default SortButton;
+```
+
+## Building a Custom Pagination
+
+The [`<Pagination>`](./Pagination.md) component gets the following constants from [the `useListContext` hook](#uselistcontext):
+
+* `page`: The current page number (integer). First page is `1`.
+* `perPage`: The number of records per page.
+* `setPage`: `Function(page: number) => void`. A function that set the current page number.
+* `total`: The total number of records.
+* `actions`: A component that displays the pagination buttons (default: `<PaginationActions>`)
+* `limit`: An element that is displayed if there is no data to show (default: `<PaginationLimit>`)
+
+If you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
+
+```jsx
+import { useListContext } from 'react-admin';
+import { Button, Toolbar } from '@mui/material';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
+import ChevronRight from '@mui/icons-material/ChevronRight';
+
+const PostPagination = () => {
+    const { page, perPage, total, setPage } = useListContext();
+    const nbPages = Math.ceil(total / perPage) || 1;
+    return (
+        nbPages > 1 &&
+            <Toolbar>
+                {page > 1 &&
+                    <Button color="primary" key="prev" onClick={() => setPage(page - 1)}>
+                        <ChevronLeft />
+                        Prev
+                    </Button>
+                }
+                {page !== nbPages &&
+                    <Button color="primary" key="next" onClick={() => setPage(page + 1)}>
+                        Next
+                        <ChevronRight />
+                    </Button>
+                }
+            </Toolbar>
+    );
+}
+
+export const PostList = (props) => (
+    <List {...props} pagination={<PostPagination />}>
+        ...
+    </List>
+);
+```
+
+But if you just want to change the color property of the pagination button, you can extend the existing components:
+
+```jsx
+import {
+    List,
+    Pagination as RaPagination,
+    PaginationActions as RaPaginationActions,
+} from 'react-admin';
+
+export const PaginationActions = props => <RaPaginationActions {...props} color="secondary" />;
+
+export const Pagination = props => <RaPagination {...props} ActionsComponent={PaginationActions} />;
+
+export const UserList = props => (
+    <List {...props} pagination={<Pagination />} >
+        //...
+    </List>
+);
 ```
 
 ## Third-Party Components
