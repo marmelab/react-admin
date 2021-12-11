@@ -369,6 +369,64 @@ const App = () => (
 
 `<ListGuesser>` is also a good way to bootstrap a List view, as it outputs the code that it generated for the List into the console. Copy and paste that code in a custom List component, and you can start customizing the list view in no time.
 
+## Sorting the List
+
+The List view uses the `sort` and `order` query parameters to determine the sort field and order passed to `dataProvider.getList()`.
+
+Here is a typical List URL:
+
+> https://myadmin.dev/#/posts?displayedFilters=%7B%22commentable%22%3Atrue%7D&filter=%7B%22commentable%22%3Atrue%2C%22q%22%3A%22lorem%20%22%7D&order=DESC&page=1&perPage=10&sort=published_at
+
+Once decoded, this URL reveals the intended sort:
+
+```
+sort=published_at
+order=DESC
+```
+
+If you're using a `<Datagrid>` inside the List view, then the column headers are buttons allowing users to change the list sort field and order. This feature requires no configuration and works out fo the box. Check [the `<Datagrid>` documentation](./Datagrid.md#customizing-the-sort-order-for-columns) to see how to disable or modify the field used for sorting on a particular column.
+
+![Sort Column Header](./img/sort-column-header.gif)
+
+If you're using another List layout, check [the `<SortButton>` component](./SortButton.md): It's a standalone button that allows users to change the list sort field and order.
+
+![Sort Button](./img/sort-button.gif)
+
+## Linking to a Pre-Sorted List
+
+As the sort values are taken from the URL, you can link to a pre-sorted list by setting the `sort` and `order` query parameters.
+
+For instance, if you have a list of posts ordered by publication date, and you want to provide a button to sort the list by number of views descendent:
+
+{% raw %}
+```jsx
+import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
+import { stringify } from 'query-string';
+
+const SortByViews = () => (
+    <Button
+        color="primary"
+        component={Link}
+        to={{
+            pathname: '/posts',
+            search: stringify({
+                page: 1,
+                perPage: 25,
+                sort: 'nb_views',
+                order: 'DESC',
+                filter: {},
+            }),
+        }}
+    >
+        Sort by views 
+    </Button>
+);
+```
+{% endraw %}
+
+**Tip**: You have to pass *all* the query string parameters - not just `sort` and `order`. That's a current limitation of react-admin.
+
 ## Using Another Layout
 
 On Mobile, `<Datagrid>` doesn't work well - the screen is too narrow. You can use the `<SimpleList>` component instead. It's a drop-in replacement for `<Datagrid>`.
@@ -429,6 +487,322 @@ const BookList = () => (
 **Tip**: With `emptyWhileLoading` turned on, the `<List>` component doesn't render its child component until the data is available. Without this flag, the `<SimpleBookList>` component would render even during the loading phase, break at `data.map()`. 
 
 You can also handle the loading state inside a custom list layout by grabbing the `isLoading` variable from the `ListContext`, but `emptyWhileLoading` is usually more convenient.
+
+## Building a Custom Filter
+
+![Filters with submit button](./img/filter_with_submit.gif)
+
+If neither the Filter button/form combo nor the `<FilterList>` sidebar match your need, you can always build your own. React-admin provides shortcuts to facilitate the development of custom filters.
+
+For instance, by default, the filter button/form combo doesn't provide a submit button, and submits automatically after the user has finished interacting with the form. This provides a smooth user experience, but for some APIs, it can cause too many calls. 
+
+In that case, the solution is to process the filter when users click on a submit button, rather than when they type values in form inputs. React-admin doesn't provide any component for that, but it's a good opportunity to illustrate the internals of the filter functionality. We'll actually provide an alternative implementation to the Filter button/form combo.
+
+To create a custom filter UI, we'll have to override the default List Actions component, which will contain both a Filter Button and a Filter Form, interacting with the List filters via the ListContext.
+
+### Filter Callbacks
+
+The new element can use the `useListContext()` hook to interact with the URI query parameter more easily. The hook returns the following constants:
+
+- `filterValues`: Value of the filters based on the URI, e.g. `{"commentable":true,"q":"lorem "}`
+- `setFilters()`: Callback to set the filter values, e.g. `setFilters({"commentable":true})`
+- `displayedFilters`: Names of the filters displayed in the form, e.g. `['commentable','title']`
+- `showFilter()`: Callback to display an additional filter in the form, e.g. `showFilter('views')`
+- `hideFilter()`: Callback to hide a filter in the form, e.g. `hideFilter('title')`
+
+Let's use this knowledge to write a custom `<List>` component that filters on submit.
+
+### Custom Filter Button
+
+The `<PostFilterButton>` shows the filter form on click. We'll take advantage of the `showFilter` function:
+
+```jsx
+import { useListContext } from 'react-admin';
+import { Button } from "@mui/material";
+import ContentFilter from "@mui/icons-material/FilterList";
+
+const PostFilterButton = () => {
+    const { showFilter } = useListContext();
+    return (
+        <Button
+            size="small"
+            color="primary"
+            onClick={() => showFilter("main")}
+            startIcon={<ContentFilter />}
+        >
+            Filter
+        </Button>
+    );
+};
+```
+
+Normally, `showFilter()` adds one input to the `displayedFilters` list. As the filter form will be entirely hidden or shown, we use `showFilter()` with a virtual "main" input, which represents the entire form. 
+
+### Custom Filter Form
+
+Next is the filter form component, displayed only when the "main" filter is displayed (i.e. when a user has clicked the filter button). The form inputs appear directly in the form, and the form submission triggers the `setFilters()` callback passed as parameter. We'll use `react-final-form` to handle the form state:
+
+{% raw %}
+```jsx
+import * as React from 'react';
+import { Form } from 'react-final-form';
+import { Box, Button, InputAdornment } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import { TextInput, NullableBooleanInput, useListContext } from 'react-admin';
+
+const PostFilterForm = () => {
+  const {
+    displayedFilters,
+    filterValues,
+    setFilters,
+    hideFilter
+  } = useListContext();
+
+  if (!displayedFilters.main) return null;
+
+  const onSubmit = (values) => {
+    if (Object.keys(values).length > 0) {
+      setFilters(values);
+    } else {
+      hideFilter("main");
+    }
+  };
+
+  const resetFilter = () => {
+    setFilters({}, []);
+  };
+
+  return (
+    <div>
+      <Form onSubmit={onSubmit} initialValues={filterValues}>
+        {({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <Box display="flex" alignItems="flex-end" mb={1}>
+              <Box component="span" mr={2}>
+                {/* Full-text search filter. We don't use <SearchFilter> to force a large form input */}
+                <TextInput
+                  resettable
+                  helperText={false}
+                  source="q"
+                  label="Search"
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment>
+                        <SearchIcon color="disabled" />
+                      </InputAdornment>
+                    )
+                  }}
+                />
+              </Box>
+              <Box component="span" mr={2}>
+                {/* Commentable filter */}
+                <NullableBooleanInput helperText={false} source="commentable" />
+              </Box>
+              <Box component="span" mr={2} mb={1.5}>
+                <Button variant="outlined" color="primary" type="submit">
+                  Filter
+                </Button>
+              </Box>
+              <Box component="span" mb={1.5}>
+                <Button variant="outlined" onClick={resetFilter}>
+                  Close
+                </Button>
+              </Box>
+            </Box>
+          </form>
+        )}
+      </Form>
+    </div>
+  );
+};
+```
+{% endraw %}
+
+### Using The Custom Filters in The List Actions
+
+To finish, create a `<ListAction>` component and pass it to the `<List>` component using the `actions` prop:
+
+```jsx
+import { TopToolbar, ExportButton } from 'react-admin';
+import { Box } from '@mui/material';
+
+const ListActions = () => (
+  <Box width="100%">
+    <TopToolbar>
+      <PostFilterButton />
+      <ExportButton />
+    </TopToolbar>
+    <PostFilterForm />
+  </Box>
+);
+
+export const PostList = (props) => (
+    <List {...props} actions={<ListActions />}>
+        ...
+    </List>
+);
+```
+
+**Tip**: No need to pass any `filters` to the list anymore, as the `<PostFilterForm>` component will display them.
+
+You can use a similar approach to offer alternative User Experiences for data filtering, e.g. to display the filters as a line in the datagrid headers.
+
+## Building a Custom Pagination
+
+The [`<Pagination>`](./Pagination.md) component gets the following constants from [the `useListContext` hook](#uselistcontext):
+
+* `page`: The current page number (integer). First page is `1`.
+* `perPage`: The number of records per page.
+* `setPage`: `Function(page: number) => void`. A function that set the current page number.
+* `total`: The total number of records.
+* `actions`: A component that displays the pagination buttons (default: `<PaginationActions>`)
+* `limit`: An element that is displayed if there is no data to show (default: `<PaginationLimit>`)
+
+If you want to replace the default pagination by a "<previous - next>" pagination, create a pagination component like the following:
+
+```jsx
+import { useListContext } from 'react-admin';
+import { Button, Toolbar } from '@mui/material';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
+import ChevronRight from '@mui/icons-material/ChevronRight';
+
+const PostPagination = () => {
+    const { page, perPage, total, setPage } = useListContext();
+    const nbPages = Math.ceil(total / perPage) || 1;
+    return (
+        nbPages > 1 &&
+            <Toolbar>
+                {page > 1 &&
+                    <Button color="primary" key="prev" onClick={() => setPage(page - 1)}>
+                        <ChevronLeft />
+                        Prev
+                    </Button>
+                }
+                {page !== nbPages &&
+                    <Button color="primary" key="next" onClick={() => setPage(page + 1)}>
+                        Next
+                        <ChevronRight />
+                    </Button>
+                }
+            </Toolbar>
+    );
+}
+
+export const PostList = (props) => (
+    <List {...props} pagination={<PostPagination />}>
+        ...
+    </List>
+);
+```
+
+But if you just want to change the color property of the pagination button, you can extend the existing components:
+
+```jsx
+import {
+    List,
+    Pagination as RaPagination,
+    PaginationActions as RaPaginationActions,
+} from 'react-admin';
+
+export const PaginationActions = props => <RaPaginationActions {...props} color="secondary" />;
+
+export const Pagination = props => <RaPagination {...props} ActionsComponent={PaginationActions} />;
+
+export const UserList = props => (
+    <List {...props} pagination={<Pagination />} >
+        //...
+    </List>
+);
+```
+
+## Building a Custom Sort Control
+
+When neither the `<Datagrid>` or the `<SortButton>` fit your UI needs, you have to write a custom sort control. As with custom filters, this boils down to grabbing the required data and callbacks from the `ListContext`. Let's use the `<SortButton>` source as an example usage of `currentSort` and `setSort`:
+
+```jsx
+import * as React from 'react';
+import { Button, Menu, MenuItem, Tooltip, IconButton } from '@mui/material';
+import SortIcon from '@mui/icons-material/Sort';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { useListSortContext, useTranslate } from 'react-admin';
+
+const SortButton = ({ fields }) => {
+    // currentSort is an object { field, order } containing the current sort
+    // setSort is a callback (field, order) => void allowing to change the sort field and order
+    const { currentSort, setSort } = useListSortContext();
+    // rely on the translations to display labels like 'Sort by sales descending'
+    const translate = useTranslate();
+    // open/closed state for dropdown
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    // mouse handlers
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    const handleChangeSort = (event) => {
+        const field = event.currentTarget.dataset.sort;
+        setSort(
+            field,
+            field === currentSort.field
+                ? inverseOrder(currentSort.order)
+                : 'ASC'
+        );
+        setAnchorEl(null);
+    };
+
+    // English stranslation is 'Sort by %{field} %{order}'
+    const buttonLabel = translate('ra.sort.sort_by', {
+        field: translate(`resources.products.fields.${currentSort.field}`),
+        order: translate(`ra.sort.${currentSort.order}`),
+    });
+
+    return (<>
+        <Button
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            color="primary"
+            onClick={handleClick}
+            startIcon={<SortIcon />}
+            endIcon={<ArrowDropDownIcon />}
+            size="small"
+        >
+            {buttonLabel}
+        </Button>
+        <Menu
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+        >
+            {fields.map(field => (
+                <MenuItem
+                    onClick={handleChangeSort}
+                    // store the sort field in the element dataset to avoid creating a new click handler for each item (better for performance)
+                    data-sort={field}
+                    key={field}
+                >
+                    {translate(`resources.products.fields.${field}`)}{' '}
+                    {translate(
+                        `ra.sort.${
+                            currentSort.field === field
+                                ? inverseOrder(currentSort.order)
+                                : 'ASC'
+                        }`
+                    )}
+                </MenuItem>
+            ))}
+        </Menu>
+    </>);
+};
+
+const inverseOrder = sort => (sort === 'ASC' ? 'DESC' : 'ASC');
+
+export default SortButton;
+```
 
 ## Third-Party Components
 
