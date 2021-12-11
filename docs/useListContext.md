@@ -5,53 +5,102 @@ title: "useListContext"
 
 # `useListContext`
 
-The List components (`<List>`, `<ListGuesser>`, `<ListBase>`) take care of fetching the data, and put that data in a context called `ListContext` so that it's available for their descendants. This context also stores filters, pagination, sort state, and provides callbacks to update them. 
+Whenever react-admin displays a List, it creates a `ListContext` to store the list data, as well as filters, pagination, sort state, and callbacks to update them.
 
-Any component can grab information from the `ListContext` using the `useListContext` hook. As a matter of fact, react-admin's `<Datagrid>`, `<FilterForm>`, and `<Pagination>` components all use the `useListContext` hook. Here is what it returns:
+The `ListContext` is available to descendents of:
+
+- `<List>`,
+- `<ListGuesser>`,
+- `<ListBase>`,
+- `<ReferenceArrayField>`,
+- `<ReferenceManyField>`
+
+All descendent components can therefore access the list context, using the `useListContext` hook. As a matter of fact, react-admin's `<Datagrid>`, `<FilterForm>`, and `<Pagination>` components all use the `useListContext` hook.
+
+## Usage
+
+Call `useListContext` in a component, then use this component as a desendent of a List component.
+
+```jsx
+// in src/posts/Aside.js
+import { Typography } from '@mui/material';
+import { useListContext } from 'react-admin';
+
+export const Aside = () => {
+    const { data, isLoading } = useListContext();
+    if (isLoading) return null;
+    return (
+        <div>
+            <Typography variant="h6">Posts stats</Typography>
+            <Typography variant="body2">
+                Total views: {data.reduce((sum, post) => sum + post.views, 0)}
+            </Typography>
+        </div>
+    );
+};
+
+// in src/posts/PostList.js
+import { List, Datagrid, TextField } from 'react-admin';
+import Aside from './Aside';
+
+export const PostList = () => (
+    <List aside={<Aside />}>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" />
+            <TextField source="views" />
+        </Datagrid>
+    </List>
+);
+```
+
+## Return Value
+
+The `useListContext` hook returns an object with the following keys:
 
 ```jsx
 const {
     // fetched data
-    data, // an id-based dictionary of the list data, e.g. { 123: { id: 123, title: 'hello world' }, 456: { ... } }
-    ids, // an array listing the ids of the records in the list, e.g [123, 456, ...]
-    total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls. e.g. 23 
-    loaded, // boolean that is false until the data is available
-    loading, // boolean that is true on mount, and false once the data was fetched
+    data, // an array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }]
+    total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
+    isFetching, // boolean that is true on mount, and false once the data was fetched
+    isLoading, // boolean that is false until the data is available
     // pagination
     page, // the current page. Starts at 1
-    setPage, // a callback to change the current page, e.g. setPage(3)
-    perPage, // the number of results per page. Defaults to 10
+    perPage, // the number of results per page. Defaults to 25
+    setPage, // a callback to change the page, e.g. setPage(3)
     setPerPage, // a callback to change the number of results per page, e.g. setPerPage(25)
     // sorting
-    currentSort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' } 
+    currentSort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
     setSort, // a callback to change the sort, e.g. setSort('name', 'ASC')
     // filtering
     filterValues, // a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
-    setFilters, // a callback to update the filters, e.g. setFilters(filters, displayedFilters)
     displayedFilters, // a dictionary of the displayed filters, e.g. { title: true, nationality: true }
+    setFilters, // a callback to update the filters, e.g. setFilters(filters, displayedFilters)
     showFilter, // a callback to show one of the filters, e.g. showFilter('title', defaultValue)
-    hideFilter, // a callback to hide one of the filters, e.g. hidefilter('title')
-    // row selection
+    hideFilter, // a callback to hide one of the filters, e.g. hideFilter('title')
+    // record selection
     selectedIds, // an array listing the ids of the selected rows, e.g. [123, 456]
-    onSelect, // callback to change the list of selected rows, e.g onSelect([456, 789])
+    onSelect, // callback to change the list of selected rows, e.g. onSelect([456, 789])
     onToggleItem, // callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
     onUnselectItems, // callback to clear the selection, e.g. onUnselectItems();
     // misc
-    basePath, // deduced from the location, useful for action buttons
     defaultTitle, // the translated title based on the resource, e.g. 'Posts'
     resource, // the resource name, deduced from the location. e.g. 'posts'
-    refetch, // a callback to refresh the list data
+    refetch, // callback for fetching the list data again
 } = useListContext();
 ```
 
-You can find many usage examples of `useListContext` in this page, including:
+## Recipes
 
-- [Building a Custom Actions Bar](#actions)
-- [Building an Aside Component](#aside-aside-component)
-- [Building a Custom Empty Page](#empty-empty-page-component)
-- [Building a Custom Filter](#building-a-custom-filter)
-- [Building a Custom Sort Control](#building-a-custom-sort-control)
-- [Building a Custom Pagination Control](#building-a-custom-pagination-control)
-- [Building a Custom Iterator](#using-a-custom-iterator)
+You can find many usage examples of `useListContext` in the documentation, including:
+
+- [Adding a Side Component with `<List actions>`](./List.md#aside-aside-component)
+- [Building a Custom Actions Bar via `<List actions>`](./List.md#actions)
+- [Building a Custom Empty Page  via `<List empty>`](./List.md#empty-empty-page-component)
+- [Building a Custom Filter](./FilterTutorial.md#building-a-custom-filter)
+- [Building a Custom Sort Control](./ListTutorial.md#building-a-custom-sort-control)
+- [Building a Custom Pagination Control](./ListTutorial.md#building-a-custom-pagination-control)
+- [Building a Custom Iterator](./ListTutorial.md#using-a-custom-iterator)
 
 **Tip**: [`<ReferenceManyField>`](./Fields.md#referencemanyfield), as well as other relationship-related components, also implement a `ListContext`. That means you can use a `<Datagrid>` of a `<Pagination>` inside these components!
