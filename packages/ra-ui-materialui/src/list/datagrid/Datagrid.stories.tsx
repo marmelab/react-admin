@@ -7,6 +7,7 @@ import {
     useRecordContext,
     useRecordSelection,
     useGetList,
+    useList,
 } from 'ra-core';
 import { Box } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -298,20 +299,28 @@ const MyCustomList = () => {
             total={total}
             isLoading={isLoading}
             currentSort={currentSort}
-            selectedIds={[]}
-            setSort={() => {
-                console.log('set sort');
-            }}
-            onSelect={() => {
-                console.log('on select');
-            }}
-            onToggleItem={() => {
-                console.log('on toggle item');
-            }}
+            bulkActionButtons={false}
         >
             <TextField source="id" />
             <TextField source="title" />
         </Datagrid>
+    );
+};
+
+const MyCustomListInteractive = () => {
+    const { data, isLoading } = useGetList('books', {
+        pagination: { page: 1, perPage: 10 },
+        sort: currentSort,
+    });
+    const listContext = useList({ data, isLoading });
+
+    return (
+        <ListContextProvider value={listContext}>
+            <Datagrid>
+                <TextField source="id" />
+                <TextField source="title" />
+            </Datagrid>
+        </ListContextProvider>
     );
 };
 
@@ -329,7 +338,10 @@ export const Standalone = () => (
                 },
             }}
         >
+            <h1>Static</h1>
             <MyCustomList />
+            <h1>Dynamic (with useList)</h1>
+            <MyCustomListInteractive />
         </CoreAdminContext>
     </ThemeProvider>
 );

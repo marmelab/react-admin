@@ -65,7 +65,7 @@ export const useList = <RecordType extends Record = Record>(
         total: number;
     }>(() => ({
         data,
-        total: data.length,
+        total: data ? data.length : undefined,
     }));
 
     // pagination logic

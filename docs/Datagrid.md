@@ -770,7 +770,7 @@ const PostList = () => (
 ```
 {% endraw %}
 
-## Customizing The Sort Order For Columns
+## Customizing Column Sort
 
 ![Sort Column Header](./img/sort-column-header.gif)
 
@@ -850,12 +850,50 @@ export const PostList = () => (
 );
 ```
 
+## Fields And Permissions
+
+You might want to display some fields only to users with specific permissions. Use the `usePermissions` hook to get the user permissions and hide Fields accordingly:
+
+{% raw %}
+```jsx
+const getUserFilters = (permissions) => ([
+    <TextInput label="user.list.search" source="q" alwaysOn />,
+    <TextInput source="name" />,
+    permissions === 'admin' ? <TextInput source="role" /> : null,
+    ].filter(filter => filter !== null)
+);
+
+export const UserList = ({ permissions, ...props }) => {
+    const { permissions } = usePermissions();
+    return (
+        <List
+            {...props}
+            filters={getUserFilters(permissions)}
+            sort={{ field: 'name', order: 'ASC' }}
+        >
+            <Datagrid>
+                <TextField source="id" />
+                <TextField source="name" />
+                {permissions === 'admin' && <TextField source="role" />}
+                {permissions === 'admin' && <EditButton />}
+                <ShowButton />
+            </Datagrid>
+        </List>
+    )
+};
+```
+{% endraw %}
+
+Note how the `permissions` prop is passed down to the custom `filters` component to allow Filter customization, too.
+
+It's up to your `authProvider` to return whatever you need to check roles and permissions inside your component. Check [the authProvider documentation](./Authentication.md) for more information.
+
 ## Standalone Usage
 
 You can use the `<Datagrid>` component to display data that you've fetched yourself. You'll need to pass all the props required for its features:
 
 ```jsx
-import { Datagrid, TextField } from 'react-admin';
+import { useGetList, Datagrid, TextField } from 'react-admin';
 
 const currentSort = { field: 'id', order: 'DESC' };
 
@@ -871,20 +909,42 @@ const MyCustomList = () => {
             total={total}
             isLoading={isLoading}
             currentSort={currentSort}
-            selectedIds={[]}
-            setSort={() => {
-                console.log('set sort');
-            }}
-            onSelect={() => {
-                console.log('on select');
-            }}
-            onToggleItem={() => {
-                console.log('on toggle item');
-            }}
+            bulkActionButtons={false}
         >
             <TextField source="id" />
             <TextField source="title" />
         </Datagrid>
+    );
+};
+```
+
+This list has no filtering, sorting, or row selection - it's static. If you want to allow users to interact with this list, you should pass more props to the `<Datagrid>` component, but the logic isn't triviel. Fortunately, react-admin provides [the `useList` hook](./useList.md) to build callbacks to manipulate local data. You just have to put the result in a `ListContext` to have an interactive `<Datagrid>`:
+
+```jsx
+import {
+    useGetList,
+    useList,
+    ListContextProvider,
+    Datagrid,
+    TextField
+} from 'react-admin';
+
+const currentSort = { field: 'id', order: 'DESC' };
+
+const MyCustomList = () => {
+    const { data, isLoading } = useGetList('books', {
+        pagination: { page: 1, perPage: 10 },
+        sort: currentSort,
+    });
+    const listContext = useList({ data, isLoading });
+
+    return (
+        <ListContextProvider value={listContext}>
+            <Datagrid>
+                <TextField source="id" />
+                <TextField source="title" />
+            </Datagrid>
+        </ListContextProvider>
     );
 };
 ```
