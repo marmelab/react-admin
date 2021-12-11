@@ -1,0 +1,29 @@
+---
+layout: default
+title: "The ListGuesser Component"
+---
+
+# `<ListGuesser>`
+
+Instead of a custom `List`, you can use the `ListGuesser` to determine which fields to use based on the data returned by the API.
+
+```jsx
+// in src/App.js
+import * as React from "react";
+import { Admin, Resource, ListGuesser } from 'react-admin';
+import jsonServerProvider from 'ra-data-json-server';
+
+const App = () => (
+    <Admin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
+        <Resource name="posts" list={ListGuesser} />
+    </Admin>
+);
+```
+
+Just like `<List>`, `<ListGuesser>` fetches the data. It then analyzes the response, and guesses the fields it should use to display a basic `<Datagrid>` with the data. It also dumps the components it has guessed in the console, so you can copy it into your own code. Use this feature to quickly bootstrap a `<List>` on top of an existing API, without adding the fields one by one.
+
+![Guessed List](./img/guessed-list.png)
+
+React-admin provides guessers for the List view (`<ListGuesser>`), the Edit view ([`<EditGuesser>`](./CreateEdit.md#the-editguesser-component)), and the Show view ([`<ShowGuesser>`](./Show.md#the-showguesser-component)).
+
+**Tip**: Do not use the guessers in production. They are slower than manually-defined components, because they have to infer types based on the content. Besides, the guessers are not always perfect.
