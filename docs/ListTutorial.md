@@ -369,6 +369,22 @@ const App = () => (
 
 `<ListGuesser>` is also a good way to bootstrap a List view, as it outputs the code that it generated for the List into the console. Copy and paste that code in a custom List component, and you can start customizing the list view in no time.
 
+## Filtering the List
+
+One of the most important features of the List page is the ability to search for a dedicated record. In this documentation, we use the term "filter" for the cpontrols allowing to search the list.
+
+React-admin rovides 2 possible UIs for filters, and lets you you your own if they're not sufficient.
+
+The first filter UI is called "the Filer/Form Combo". 
+
+![Filter Button/Form Combo](./img/list_filter.gif)
+
+The second filter UI is called "the Filter List Sidebar".
+
+![Filter Button/Form Combo](./img/filter-sidebar.gif)
+
+Check [the dedicated Filter tutorial chapter](./FilteringTutorial.md) for more information on filtering.
+
 ## Sorting the List
 
 The List view uses the `sort` and `order` query parameters to determine the sort field and order passed to `dataProvider.getList()`.
