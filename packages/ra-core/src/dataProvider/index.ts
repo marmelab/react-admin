@@ -7,7 +7,7 @@ import Query, { QueryProps } from './Query';
 import cacheDataProviderProxy from './cacheDataProviderProxy';
 import undoableEventEmitter from './undoableEventEmitter';
 import useDataProvider from './useDataProvider';
-import useMutation, { UseMutationValue } from './useMutation';
+import useMutation, { MutationQuery, UseMutationValue } from './useMutation';
 import withDataProvider from './withDataProvider';
 import useGetOne, { UseGetOneHookValue } from './useGetOne';
 import useGetList from './useGetList';
@@ -26,7 +26,13 @@ import useIsAutomaticRefreshEnabled from './useIsAutomaticRefreshEnabled';
 export * from './useQueryWithStore';
 export * from './useQuery';
 
-export type { QueryProps, UseMutationValue, UseGetOneHookValue, MutationProps };
+export type {
+    QueryProps,
+    UseMutationValue,
+    UseGetOneHookValue,
+    MutationProps,
+    MutationQuery,
+};
 
 export {
     cacheDataProviderProxy,

@@ -125,7 +125,7 @@ import { DeclarativeSideEffect } from './useDeclarativeSideEffects';
  * };
  */
 const useMutation = (
-    query?: Mutation,
+    query?: MutationQuery,
     options?: MutationOptions
 ): UseMutationValue => {
     const [state, setState] = useSafeSetState({
@@ -142,7 +142,7 @@ const useMutation = (
     /* eslint-disable react-hooks/exhaustive-deps */
     const mutate = useCallback(
         (
-            callTimeQuery?: Partial<Mutation> | Event,
+            callTimeQuery?: Partial<MutationQuery> | Event,
             callTimeOptions?: MutationOptions
         ): void | Promise<any> => {
             const finalDataProvider = hasDeclarativeSideEffectsSupport(
@@ -212,7 +212,7 @@ const useMutation = (
     return [mutate, state];
 };
 
-export interface Mutation {
+export interface MutationQuery {
     type: string;
     resource?: string;
     payload?: object;
@@ -231,7 +231,7 @@ export interface MutationOptions {
 
 export type UseMutationValue = [
     (
-        query?: Partial<Mutation> | Event,
+        query?: Partial<MutationQuery> | Event,
         options?: Partial<MutationOptions>
     ) => void | Promise<any>,
     {
@@ -277,8 +277,8 @@ export type UseMutationValue = [
  * @return { type, resource, payload, options } The merged parameters
  */
 const mergeDefinitionAndCallTimeParameters = (
-    query?: Mutation,
-    callTimeQuery?: Partial<Mutation> | Event,
+    query?: MutationQuery,
+    callTimeQuery?: Partial<MutationQuery> | Event,
     options?: MutationOptions,
     callTimeOptions?: MutationOptions
 ): {
