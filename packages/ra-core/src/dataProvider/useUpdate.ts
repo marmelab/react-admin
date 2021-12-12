@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { Identifier, Record } from '../types';
-import useMutation, { MutationOptions, Mutation } from './useMutation';
+import useMutation, { MutationOptions, MutationQuery } from './useMutation';
 
 /**
  * Get a callback to call the dataProvider.update() method, the result and the loading state.
@@ -68,7 +68,7 @@ const useUpdate = <RecordType extends Record = Record>(
 
     const update = useCallback(
         (
-            resource?: string | Partial<Mutation> | Event,
+            resource?: string | Partial<MutationQuery> | Event,
             id?: Identifier | Partial<MutationOptions>,
             data?: Partial<RecordType>,
             previousData?: any,
@@ -87,7 +87,7 @@ const useUpdate = <RecordType extends Record = Record>(
                 return mutate(query, options);
             } else {
                 return mutate(
-                    resource as Mutation | Event,
+                    resource as MutationQuery | Event,
                     id as MutationOptions
                 );
             }
@@ -100,7 +100,7 @@ const useUpdate = <RecordType extends Record = Record>(
 
 type UseUpdateHookValue<RecordType extends Record = Record> = [
     (
-        resource?: string | Partial<Mutation> | Event,
+        resource?: string | Partial<MutationQuery> | Event,
         id?: Identifier | Partial<MutationOptions>,
         data?: Partial<RecordType>,
         previousData?: any,

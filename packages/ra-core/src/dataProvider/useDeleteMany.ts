@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { Identifier } from '../types';
-import useMutation, { MutationOptions, Mutation } from './useMutation';
+import useMutation, { MutationOptions, MutationQuery } from './useMutation';
 
 /**
  * Get a callback to call the dataProvider.deleteMany() method, the result
@@ -59,7 +59,7 @@ const useDeleteMany = (
 
     const deleteMany = useCallback(
         (
-            resource?: string | Partial<Mutation> | Event,
+            resource?: string | Partial<MutationQuery> | Event,
             ids?: Identifier[] | Partial<MutationOptions>,
             options?: MutationOptions
         ) => {
@@ -74,7 +74,7 @@ const useDeleteMany = (
                 return mutate(query, options);
             } else {
                 return mutate(
-                    resource as Mutation | Event,
+                    resource as MutationQuery | Event,
                     ids as MutationOptions
                 );
             }
@@ -87,7 +87,7 @@ const useDeleteMany = (
 
 type UseDeleteManyHookValue = [
     (
-        resource?: string | Partial<Mutation> | Event,
+        resource?: string | Partial<MutationQuery> | Event,
         ids?: Identifier[] | Partial<MutationOptions>,
         options?: MutationOptions
     ) => void | Promise<any>,

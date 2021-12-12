@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { Record } from '../types';
-import useMutation, { MutationOptions, Mutation } from './useMutation';
+import useMutation, { MutationOptions, MutationQuery } from './useMutation';
 
 /**
  * Get a callback to call the dataProvider.create() method, the result and the loading state.
@@ -60,7 +60,7 @@ const useCreate = <RecordType extends Record = Record>(
 
     const create = useCallback(
         (
-            resource?: string | Partial<Mutation> | Event,
+            resource?: string | Partial<MutationQuery> | Event,
             data?: Partial<RecordType>,
             options?: MutationOptions
         ) => {
@@ -75,7 +75,7 @@ const useCreate = <RecordType extends Record = Record>(
                 return mutate(query, options);
             } else {
                 return mutate(
-                    resource as Mutation | Event,
+                    resource as MutationQuery | Event,
                     data as MutationOptions
                 );
             }
@@ -88,7 +88,7 @@ const useCreate = <RecordType extends Record = Record>(
 
 type UseCreateHookValue<RecordType extends Record = Record> = [
     (
-        resource?: string | Partial<Mutation> | Event,
+        resource?: string | Partial<MutationQuery> | Event,
         data?: Partial<RecordType>,
         options?: MutationOptions
     ) => void | Promise<any>,

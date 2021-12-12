@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { Identifier, Record } from '../types';
-import useMutation, { MutationOptions, Mutation } from './useMutation';
+import useMutation, { MutationOptions, MutationQuery } from './useMutation';
 
 /**
  * Get a callback to call the dataProvider.delete() method, the result
@@ -61,7 +61,7 @@ const useDelete = <RecordType extends Record = Record>(
 
     const deleteOne = useCallback(
         (
-            resource?: string | Partial<Mutation> | Event,
+            resource?: string | Partial<MutationQuery> | Event,
             id?: Identifier | Partial<MutationOptions>,
             previousData?: any,
             options?: MutationOptions
@@ -78,7 +78,7 @@ const useDelete = <RecordType extends Record = Record>(
                 return mutate(query, options);
             } else {
                 return mutate(
-                    resource as Mutation | Event,
+                    resource as MutationQuery | Event,
                     id as MutationOptions
                 );
             }
@@ -91,7 +91,7 @@ const useDelete = <RecordType extends Record = Record>(
 
 type UseDeleteHookValue<RecordType extends Record = Record> = [
     (
-        resource?: string | Partial<Mutation> | Event,
+        resource?: string | Partial<MutationQuery> | Event,
         id?: Identifier | Partial<MutationOptions>,
         previousData?: RecordType,
         options?: MutationOptions
