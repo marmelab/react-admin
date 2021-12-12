@@ -1,17 +1,12 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import {
-    useListController,
-    ListContextProvider,
-    Record,
-    ResourceContextProvider,
-} from 'ra-core';
+import { ListBase, ListControllerProps, Record } from 'ra-core';
 
 import { TitlePropType } from '../layout/Title';
 
 import { ListView } from './ListView';
-import { ListProps } from '../types';
+import { ListViewProps } from '.';
 
 /**
  * List page component
@@ -63,15 +58,40 @@ import { ListProps } from '../types';
  *     </List>
  * );
  */
-export const List = <RecordType extends Record = Record>(
-    props: ListProps<RecordType> & { children: ReactElement }
-): ReactElement => (
-    <ResourceContextProvider value={props.resource}>
-        <ListContextProvider value={useListController(props)}>
-            <ListView<RecordType> {...props} />
-        </ListContextProvider>
-    </ResourceContextProvider>
+export const List = <RecordType extends Record = Record>({
+    debounce,
+    disableAuthentication,
+    disableSyncWithLocation,
+    exporter,
+    filter,
+    filterDefaultValues,
+    hasCreate,
+    perPage,
+    queryOptions,
+    resource,
+    sort,
+    ...rest
+}: ListProps<RecordType>): ReactElement => (
+    <ListBase<RecordType>
+        debounce={debounce}
+        disableAuthentication={disableAuthentication}
+        disableSyncWithLocation={disableSyncWithLocation}
+        exporter={exporter}
+        filter={filter}
+        filterDefaultValues={filterDefaultValues}
+        hasCreate={hasCreate}
+        perPage={perPage}
+        queryOptions={queryOptions}
+        resource={resource}
+        sort={sort}
+    >
+        <ListView<RecordType> {...rest} />
+    </ListBase>
 );
+
+export interface ListProps<RecordType extends Record = Record>
+    extends ListControllerProps<RecordType>,
+        ListViewProps {}
 
 List.propTypes = {
     // the props you can change

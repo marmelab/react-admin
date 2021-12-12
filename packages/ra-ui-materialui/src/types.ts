@@ -2,9 +2,6 @@ import { ReactElement, ReactNode, ElementType } from 'react';
 import { SxProps } from '@mui/system';
 import {
     Identifier,
-    Exporter,
-    SortPayload,
-    FilterPayload,
     Record as RaRecord,
     MutationMode,
     OnSuccess,
@@ -13,32 +10,6 @@ import {
     UpdateParams,
 } from 'ra-core';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
-
-export interface ListProps<RecordType extends RaRecord = RaRecord> {
-    actions?: ReactElement | false;
-    aside?: ReactElement;
-    /**
-     * @deprecated pass the bulkActionButtons prop to the List child (Datagrid or SimpleList) instead
-     */
-    bulkActionButtons?: ReactElement | false;
-    classes?: any;
-    className?: string;
-    component?: ElementType;
-    empty?: ReactElement | false;
-    emptyWhileLoading?: boolean;
-    exporter?: Exporter | false;
-    filter?: FilterPayload;
-    filterDefaultValues?: object;
-    filters?: ReactElement | ReactElement[];
-    pagination?: ReactElement | false;
-    perPage?: number;
-    queryOptions?: UseQueryOptions<{ data: RecordType[]; total: number }>;
-    resource?: string;
-    sort?: SortPayload;
-    disableSyncWithLocation?: boolean;
-    title?: string | ReactElement;
-    sx?: SxProps;
-}
 
 export interface EditProps<RecordType extends RaRecord = RaRecord> {
     actions?: ReactElement | false;

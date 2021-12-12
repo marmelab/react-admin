@@ -5,35 +5,25 @@ title: "The ListBase Component"
 
 # `<ListBase>`
 
-In addition to fetching the list data, the `<List>` component renders the page title, the actions, the content and aside areas. You may want to display a record list in an entirely different layout, i.e. use only the data fetching part of `<List>` and not the view layout. In that case, you should use `<ListBase>`.
+`<ListBase>` is a headless variant of `<List>`, as it does not render anything. `<ListBase>` calls `useListController`, puts the result in a `ListContext`, then renders its child. 
 
-`<ListBase>` fetches the data and puts it in a `ListContext`, then renders its child.
+If you want to display a record list in an entirely custom layout, i.e. use only the data fetching part of `<List>` and not the view layout, use `<ListBase>`.
 
-You can use `ListBase` to create your own custom List component, like this one:
+## Usage
+
+You can use `ListBase` to create your own custom reusable List component, like this one:
 
 ```jsx
-import * as React from 'react';
-import { cloneElement } from 'react';
 import { 
-    Datagrid,
     ListBase,
-    ListToolbar,
-    BulkActionsToolbar,
-    Pagination,
     Title,
-    useListContext,
+    ListToolbar,
+    Pagination,
+    Datagrid,
 } from 'react-admin';
-import Card from '@mui/material/Card';
+import { Card } from '@mui/material';
 
-const PostList = props => (
-    <MyList {...props} title="Post List">
-        <Datagrid>
-            ...
-        </Datagrid>
-    </MyList>
-);
-
-const MyList = ({children, actions, bulkActionButtons, filters, title, ...props}) => (
+const MyList = ({ children, actions, filters, title, ...props }) => (
     <ListBase {...props}>
         <Title title={title}/>
         <ListToolbar
@@ -41,27 +31,37 @@ const MyList = ({children, actions, bulkActionButtons, filters, title, ...props}
             actions={actions}
         />
         <Card>
-            <BulkActionsToolbar>
-                {bulkActionButtons}
-            </BulkActionsToolbar>
-            {cloneElement(children, {
-                hasBulkActions: bulkActionButtons !== false,
-            })}
-            <Pagination />
+            {children}
         </Card>
+        <Pagination />
     </ListBase>
+);
+
+const PostList = () => (
+    <MyList title="Post List">
+        <Datagrid>
+            ...
+        </Datagrid>
+    </MyList>
 );
 ```
 
 This custom List component has no aside component - it's up to you to add it in pure React.
 
-**Tip**: You don't have to clone the child element. If you can't reuse an existing list view component like `<Datagrid>` or `<SimpleList>`, feel free to write the form code inside your custom `MyList` component. 
+## Props
 
-The `<ListBase>` component accepts a subset of the props accepted by `<List>` - only the props that change data fetching, and not the props related to the user interface:
+The `<ListBase>` component accepts the same props as `useListController`:
 
-* [`exporter`](#exporter)
-* [`filter`](#filter-permanent-filter) (the permanent filter used in the REST request)
-* [`filterDefaultValues`](#filterdefaultvalues) (the default values for `alwaysOn` filters)
-* [`perPage`](#perpage-pagination-size)
-* [`sort`](#sort-default-sort-field--order)
-* [`pagination`](#pagination-pagination-component)
+* [`debounce`](./List.md#debounce)
+* [`disableAuthentication`](./List.md#disableAuthentication)
+* [`disableSyncWithLocation`](./List.md#disableSyncWithLocation)
+* [`exporter`](./List.md#exporter)
+* [`filter`](./List.md#filter-permanent-filter)
+* [`filterDefaultValues`](./List.md#filterDefaultValues)
+* [`hasCreate`](./List.md#hasCreate)
+* [`perPage`](./List.md#perpage-pagination-size)
+* [`queryOptions`](./List.md#queryOptions)
+* [`resource`](./List.md#resource)
+* [`sort`](./List.md#sort-default-sort-field-order)
+
+These are a subset of the props accepted by `<List>` - only the props that change data fetching, and not the props related to the user interface.

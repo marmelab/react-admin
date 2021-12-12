@@ -217,6 +217,21 @@ const PostList = () => (
 
 The default value for the `component` prop is `Card`.
 
+## `debounce`
+
+By default, `<List>` does not refresh the data as soon as the user enters data in the filter form. Instead, it waits for half a second of user inactivity (via `lodash.debounce`) before calling the dataProvider on filter change. This is to prevent repeated (and useless) calls to the API.
+
+You can customize the debounce duration in milliseconds - or disable it completely - by passing a `debounce` prop to the `<List>` component:
+
+```jsx
+// wait 1 seconds instead of 500 milliseconds befoce calling the dataProvider
+const PostList = () => (
+    <List debounce={1000}>
+        ...
+    </List>
+);
+```
+
 ## `disableAuthentication`
 
 By default, all pages using `<List>` require the user to be authenticated - any anonymous access redirects the user to the login page. 
@@ -533,6 +548,18 @@ export const PostList = () => (
 
 ```js
 const filterSentToDataProvider = { ...filterDefaultValues, ...filterChosenByUser, ...filter };
+```
+
+## `hasCreate`
+
+The List page shows a Create button if the resource has a create view, or if the `hasCreate` prop is set to true. Using this prop lets you force the display of the create button, or hide it.
+
+```jsx
+export const PostList = () => (
+    <List hasCreate={false}>
+        ...
+    </List>
+);
 ```
 
 ## `pagination`: Pagination Component

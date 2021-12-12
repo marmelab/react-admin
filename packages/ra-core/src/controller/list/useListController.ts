@@ -174,24 +174,20 @@ export const useListController = <RecordType extends Record = Record>(
 };
 
 export interface ListControllerProps<RecordType extends Record = Record> {
-    disableAuthentication?: boolean;
-    // the props you can change
-    filter?: FilterPayload;
-    filters?: ReactElement | ReactElement[];
-    filterDefaultValues?: object;
-    perPage?: number;
-    sort?: SortPayload;
-    exporter?: Exporter | false;
-    queryOptions?: UseQueryOptions<{ data: RecordType[]; total: number }>;
-    // the props managed by react-admin
     debounce?: number;
-    location?: Location;
-    path?: string;
-    resource?: string;
-    // Whether to disable the synchronization of the list parameters
-    // with the current location (URL search parameters)
+    disableAuthentication?: boolean;
+    /**
+     * Whether to disable the synchronization of the list parameters with the current location (URL search parameters)
+     */
     disableSyncWithLocation?: boolean;
-    [key: string]: any;
+    exporter?: Exporter | false;
+    filter?: FilterPayload;
+    filterDefaultValues?: object;
+    hasCreate?: boolean;
+    perPage?: number;
+    queryOptions?: UseQueryOptions<{ data: RecordType[]; total: number }>;
+    resource?: string;
+    sort?: SortPayload;
 }
 
 const defaultSort = {

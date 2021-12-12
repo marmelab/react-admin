@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 import { useListController, ListControllerProps } from './useListController';
+import { ResourceContextProvider } from '../../core';
+import { Record } from '../../types';
 import { ListContextProvider } from './ListContextProvider';
 
 /**
@@ -37,11 +39,13 @@ import { ListContextProvider } from './ListContextProvider';
  *     </ListBase>
  * );
  */
-export const ListBase = ({
+export const ListBase = <RecordType extends Record = Record>({
     children,
     ...props
-}: ListControllerProps & { children: ReactNode }) => (
-    <ListContextProvider value={useListController(props)}>
-        {children}
-    </ListContextProvider>
+}: ListControllerProps<RecordType> & { children: ReactNode }) => (
+    <ResourceContextProvider value={props.resource}>
+        <ListContextProvider value={useListController<RecordType>(props)}>
+            {children}
+        </ListContextProvider>
+    </ResourceContextProvider>
 );

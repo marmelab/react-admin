@@ -6,7 +6,7 @@ import { FilterPayload, Record, SortPayload } from '../../types';
 import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
 import useSelectionState from '../useSelectionState';
-import { ListControllerProps } from './useListController';
+import { ListControllerResult } from './useListController';
 
 /**
  * Handle filtering, sorting and pagination on local data.
@@ -246,7 +246,7 @@ export interface UseListOptions<RecordType extends Record = Record> {
 }
 
 export type UseListValue<RecordType extends Record = Record> = Omit<
-    ListControllerProps<RecordType>,
+    ListControllerResult<RecordType>,
     'resource' | 'basePath' | 'refetch'
 >;
 

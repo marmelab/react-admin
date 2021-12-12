@@ -50,7 +50,6 @@ import {
     Admin,
     Resource,
     List,
-    ListProps,
     SimpleForm,
     TextInput,
     DateTimeInput,

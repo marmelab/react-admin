@@ -1,22 +1,17 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { Children, cloneElement, ReactElement } from 'react';
+import { Children, cloneElement, ReactElement, ElementType } from 'react';
 import PropTypes from 'prop-types';
+import { SxProps } from '@mui/system';
 import Card from '@mui/material/Card';
 import classnames from 'classnames';
-import {
-    ComponentPropType,
-    ListControllerProps,
-    useListContext,
-    Record,
-} from 'ra-core';
+import { ComponentPropType, useListContext, Record } from 'ra-core';
 
 import { Title, TitlePropType } from '../layout/Title';
 import { ListToolbar } from './ListToolbar';
 import { Pagination as DefaultPagination } from './pagination';
 import { ListActions as DefaultActions } from './ListActions';
 import { Empty } from './Empty';
-import { ListProps } from '../types';
 
 const defaultActions = <DefaultActions />;
 const defaultPagination = <DefaultPagination />;
@@ -24,7 +19,7 @@ const defaultEmpty = <Empty />;
 const DefaultComponent = Card;
 
 export const ListView = <RecordType extends Record = Record>(
-    props: ListViewProps<RecordType>
+    props: ListViewProps
 ) => {
     const {
         actions = defaultActions,
@@ -79,7 +74,7 @@ export const ListView = <RecordType extends Record = Record>(
     return (
         <Root
             className={classnames('list-page', ListClasses.root, className)}
-            {...sanitizeRestProps(rest)}
+            {...rest}
         >
             <Title title={title} defaultTitle={defaultTitle} />
             {shouldRenderEmptyPage ? renderEmpty() : renderList()}
@@ -137,63 +132,24 @@ ListView.propTypes = {
     version: PropTypes.number,
 };
 
-export interface ListViewProps<
-    RecordType extends Record = Record
-> extends ListProps<RecordType>,
-        // Partial because we now get those props via context
-        Partial<ListControllerProps<RecordType>> {
+export interface ListViewProps {
+    actions?: ReactElement | false;
+    aside?: ReactElement;
+    /**
+     * @deprecated pass the bulkActionButtons prop to the List child (Datagrid or SimpleList) instead
+     */
+    bulkActionButtons?: ReactElement | false;
+    classes?: any;
+    className?: string;
     children: ReactElement;
+    component?: ElementType;
+    empty?: ReactElement | false;
+    emptyWhileLoading?: boolean;
+    filters?: ReactElement | ReactElement[];
+    pagination?: ReactElement | false;
+    title?: string | ReactElement;
+    sx?: SxProps;
 }
-
-const sanitizeRestProps: (
-    props: Omit<
-        ListViewProps,
-        | 'actions'
-        | 'aside'
-        | 'filter'
-        | 'filters'
-        | 'bulkActionButtons'
-        | 'pagination'
-        | 'children'
-        | 'className'
-        | 'classes'
-        | 'component'
-        | 'exporter'
-        | 'title'
-        | 'empty'
-    >
-) => any = ({
-    basePath = null,
-    currentSort = null,
-    data = null,
-    defaultTitle = null,
-    disableSyncWithLocation = null,
-    displayedFilters = null,
-    exporter = null,
-    filterDefaultValues = null,
-    filterValues = null,
-    hasCreate = null,
-    hideFilter = null,
-    ids = null,
-    isFetching = null,
-    isLoading = null,
-    onSelect = null,
-    onToggleItem = null,
-    onUnselectItems = null,
-    page = null,
-    perPage = null,
-    refetch = null,
-    resource = null,
-    selectedIds = null,
-    setFilters = null,
-    setPage = null,
-    setPerPage = null,
-    setSort = null,
-    showFilter = null,
-    sort = null,
-    total = null,
-    ...rest
-}) => rest;
 
 const PREFIX = 'RaList';
 
