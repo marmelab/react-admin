@@ -2,7 +2,7 @@ import get from 'lodash/get';
 
 import { Record, SortPayload } from '../../types';
 import { useGetMany } from '../../dataProvider';
-import { ListControllerProps, useList } from '../list';
+import { ListControllerResult, useList } from '../list';
 import { useNotify } from '../../sideEffect';
 import { useResourceContext } from '../../core';
 
@@ -49,7 +49,7 @@ const defaultSort = { field: null, order: null };
  */
 const useReferenceArrayFieldController = (
     props: Option
-): ListControllerProps => {
+): ListControllerResult => {
     const {
         basePath,
         filter = defaultFilter,
@@ -97,9 +97,6 @@ const useReferenceArrayFieldController = (
     });
 
     return {
-        basePath: basePath
-            ? basePath.replace(resource, reference)
-            : `/${reference}`,
         ...listProps,
         defaultTitle: null,
         hasCreate: false,
