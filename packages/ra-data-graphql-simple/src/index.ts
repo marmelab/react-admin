@@ -63,3 +63,6 @@ export default (
         }
     );
 };
+
+export * as isList from './isList';
+export * as isRequired from './isRequired';

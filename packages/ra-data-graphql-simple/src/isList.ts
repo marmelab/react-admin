@@ -7,7 +7,7 @@ import {
 
 const isList = (
     type: IntrospectionType | IntrospectionNonNullTypeRef | IntrospectionTypeRef
-) => {
+): boolean => {
     if (type.kind === TypeKind.NON_NULL) {
         return isList(type.ofType);
     }
