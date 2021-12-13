@@ -52,7 +52,6 @@ const ListActions = (props: ListActionsProps) => {
         displayedFilters,
         filterValues,
         basePath,
-        selectedIds,
         showFilter,
         total,
     } = useListContext(props);
