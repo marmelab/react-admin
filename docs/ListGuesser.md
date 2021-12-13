@@ -5,7 +5,15 @@ title: "The ListGuesser Component"
 
 # `<ListGuesser>`
 
-Instead of a custom `List`, you can use the `ListGuesser` to determine which fields to use based on the data returned by the API.
+Use `<ListGuesser>` to quickly bootstrap a List view on top of an existing API, without adding the fields one by one.
+
+Just like [`<List>`](./List.md), `<ListGuesser>` fetches the data. It then analyzes the response, and guesses the fields it should use to display a basic `<Datagrid>` with the data. It also dumps the components it has guessed in the console, so you can copy it into your own code.
+
+![Guessed List](./img/guessed-list.png)
+
+## Usage
+
+You can use the `ListGuesser` to determine which fields to use based on the data returned by the API.
 
 ```jsx
 // in src/App.js
@@ -19,10 +27,6 @@ const App = () => (
     </Admin>
 );
 ```
-
-Just like `<List>`, `<ListGuesser>` fetches the data. It then analyzes the response, and guesses the fields it should use to display a basic `<Datagrid>` with the data. It also dumps the components it has guessed in the console, so you can copy it into your own code. Use this feature to quickly bootstrap a `<List>` on top of an existing API, without adding the fields one by one.
-
-![Guessed List](./img/guessed-list.png)
 
 React-admin provides guessers for the List view (`<ListGuesser>`), the Edit view ([`<EditGuesser>`](./CreateEdit.md#the-editguesser-component)), and the Show view ([`<ShowGuesser>`](./Show.md#the-showguesser-component)).
 
