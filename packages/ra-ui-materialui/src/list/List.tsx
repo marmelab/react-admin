@@ -65,7 +65,6 @@ export const List = <RecordType extends Record = Record>({
     exporter,
     filter,
     filterDefaultValues,
-    hasCreate,
     perPage,
     queryOptions,
     resource,
@@ -79,7 +78,6 @@ export const List = <RecordType extends Record = Record>({
         exporter={exporter}
         filter={filter}
         filterDefaultValues={filterDefaultValues}
-        hasCreate={hasCreate}
         perPage={perPage}
         queryOptions={queryOptions}
         resource={resource}

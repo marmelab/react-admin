@@ -5,7 +5,7 @@ title: "The ListBase Component"
 
 # `<ListBase>`
 
-`<ListBase>` is a headless variant of `<List>`, as it does not render anything. `<ListBase>` calls `useListController`, puts the result in a `ListContext`, then renders its child. 
+`<ListBase>` is a headless variant of `<List>`, as it does not render anything. `<ListBase>` calls [`useListController`](./useListController.md), puts the result in a `ListContext`, then renders its child. 
 
 If you want to display a record list in an entirely custom layout, i.e. use only the data fetching part of `<List>` and not the view layout, use `<ListBase>`.
 
@@ -50,7 +50,7 @@ This custom List component has no aside component - it's up to you to add it in 
 
 ## Props
 
-The `<ListBase>` component accepts the same props as `useListController`:
+The `<ListBase>` component accepts the same props as [`useListController`](./useListController.md):
 
 * [`debounce`](./List.md#debounce)
 * [`disableAuthentication`](./List.md#disableAuthentication)
@@ -58,7 +58,6 @@ The `<ListBase>` component accepts the same props as `useListController`:
 * [`exporter`](./List.md#exporter)
 * [`filter`](./List.md#filter-permanent-filter)
 * [`filterDefaultValues`](./List.md#filterDefaultValues)
-* [`hasCreate`](./List.md#hasCreate)
 * [`perPage`](./List.md#perpage-pagination-size)
 * [`queryOptions`](./List.md#queryOptions)
 * [`resource`](./List.md#resource)

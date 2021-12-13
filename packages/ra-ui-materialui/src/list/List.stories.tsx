@@ -167,6 +167,18 @@ export const Title = () => (
     </Admin>
 );
 
+const BookListWithCreate = () => (
+    <List hasCreate={true}>
+        <BookList />
+    </List>
+);
+
+export const HasCreate = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="books" list={BookListWithCreate} />
+    </Admin>
+);
+
 const AsideComponent = () => <Card sx={{ padding: 2 }}>Aside</Card>;
 
 const BookListWithAside = () => (

@@ -56,8 +56,9 @@ ListToolbar.propTypes = {
 export interface ListToolbarProps
     extends Omit<ToolbarProps, 'classes' | 'onSelect'> {
     actions?: ReactElement | false;
-    filters?: ReactElement | ReactElement[];
     exporter?: Exporter | false;
+    filters?: ReactElement | ReactElement[];
+    hasCreate?: boolean;
 }
 
 const PREFIX = 'RaListToolbar';

@@ -27,7 +27,6 @@ import { ListControllerResult } from './useListController';
  * @prop {Function} onSelect callback to change the list of selected rows, e.g. onSelect([456, 789])
  * @prop {Function} onToggleItem callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
  * @prop {Function} onUnselectItems callback to clear the selection, e.g. onUnselectItems();
- * @prop {string}   basePath deduced from the location, useful for action buttons
  * @prop {string}   defaultTitle the translated title based on the resource, e.g. 'Posts'
  * @prop {string}   resource the resource name, deduced from the location. e.g. 'posts'
  * @prop {Function} refetch a function for triggering a refetch of the list data
@@ -59,7 +58,6 @@ export const ListContext = createContext<ListControllerResult>({
     defaultTitle: null,
     displayedFilters: null,
     filterValues: null,
-    hasCreate: null,
     hideFilter: null,
     isFetching: null,
     isLoading: null,

@@ -1,5 +1,4 @@
-import { isValidElement, ReactElement, useEffect, useMemo } from 'react';
-import { Location } from 'history';
+import { isValidElement, useEffect, useMemo } from 'react';
 import { UseQueryOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
@@ -15,11 +14,7 @@ import {
     Record,
     Exporter,
 } from '../../types';
-import {
-    useResourceContext,
-    useResourceDefinition,
-    useGetResourceLabel,
-} from '../../core';
+import { useResourceContext, useGetResourceLabel } from '../../core';
 import useRecordSelection from '../useRecordSelection';
 import { useListParams } from './useListParams';
 
@@ -56,7 +51,6 @@ export const useListController = <RecordType extends Record = Record>(
     } = props;
     useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
-    const { hasCreate } = useResourceDefinition(props);
 
     if (!resource) {
         throw new Error(
@@ -152,7 +146,6 @@ export const useListController = <RecordType extends Record = Record>(
         exporter,
         filter,
         filterValues: query.filterValues,
-        hasCreate,
         hideFilter: queryModifiers.hideFilter,
         isFetching,
         isLoading,
@@ -183,7 +176,6 @@ export interface ListControllerProps<RecordType extends Record = Record> {
     exporter?: Exporter | false;
     filter?: FilterPayload;
     filterDefaultValues?: object;
-    hasCreate?: boolean;
     perPage?: number;
     queryOptions?: UseQueryOptions<{ data: RecordType[]; total: number }>;
     resource?: string;
@@ -204,7 +196,6 @@ export interface ListControllerResult<RecordType extends Record = Record> {
     exporter?: Exporter | false;
     filter?: FilterPayload;
     filterValues: any;
-    hasCreate?: boolean;
     hideFilter: (filterName: string) => void;
     isFetching: boolean;
     isLoading: boolean;
@@ -237,7 +228,6 @@ export const injectedProps = [
     'error',
     'exporter',
     'filterValues',
-    'hasCreate',
     'hideFilter',
     'isFetching',
     'isLoading',

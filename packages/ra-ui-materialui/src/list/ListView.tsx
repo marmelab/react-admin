@@ -27,6 +27,7 @@ export const ListView = <RecordType extends Record = Record>(
         filters,
         bulkActionButtons,
         emptyWhileLoading,
+        hasCreate,
         pagination = defaultPagination,
         children,
         className,
@@ -50,7 +51,11 @@ export const ListView = <RecordType extends Record = Record>(
     const renderList = () => (
         <div className={ListClasses.main}>
             {(filters || actions) && (
-                <ListToolbar filters={filters} actions={actions} />
+                <ListToolbar
+                    filters={filters}
+                    actions={actions}
+                    hasCreate={hasCreate}
+                />
             )}
             <Content className={ListClasses.content}>
                 {bulkActionButtons && children
@@ -146,6 +151,7 @@ export interface ListViewProps {
     empty?: ReactElement | false;
     emptyWhileLoading?: boolean;
     filters?: ReactElement | ReactElement[];
+    hasCreate?: boolean;
     pagination?: ReactElement | false;
     title?: string | ReactElement;
     sx?: SxProps;
