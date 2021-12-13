@@ -134,10 +134,12 @@ export const useReferenceInputController = (
         id: input.value,
         reference,
     });
-
     // add current value to possible sources
     let finalData: Record[], finalTotal: number;
-    if (!referenceRecord || possibleValuesData.includes(input.value)) {
+    if (
+        !referenceRecord ||
+        possibleValuesData.find(record => record.id === input.value)
+    ) {
         finalData = possibleValuesData;
         finalTotal = possibleValuesTotal;
     } else {
