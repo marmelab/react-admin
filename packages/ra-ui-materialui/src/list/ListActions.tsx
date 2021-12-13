@@ -89,6 +89,7 @@ const ListActions = (props: ListActionsProps) => {
             selectedIds,
             filters,
             total,
+            basePath,
             className,
             currentSort,
             exporter,
