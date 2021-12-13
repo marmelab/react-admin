@@ -86,7 +86,7 @@ const ListActions = (props: ListActionsProps) => {
             resource,
             displayedFilters,
             filterValues,
-            selectedIds,
+            showFilter,
             filters,
             total,
             basePath,
