@@ -2,13 +2,13 @@
     "name": "ra-i18n-polyglot",
     "version": "4.0.0-alpha.0",
     "description": "Polyglot i18n provider for react-admin",
-    "main": "lib/index.js",
-    "module": "esm/index.js",
+    "main": "dist/index",
+    "module": "dist/esm/index.js",
+    "types": "dist/index.d.ts",
     "sideEffects": false,
     "files": [
         "*.md",
-        "lib",
-        "esm",
+        "dist",
         "src"
     ],
     "authors": [
@@ -19,10 +19,8 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "scripts": {
-        "build": "yarn run build-cjs && yarn run build-esm",
-        "build-cjs": "rimraf ./lib && tsc",
-        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
-        "watch": "tsc --outDir esm --module es2015 --watch"
+        "build": "tsup src/index.ts --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output",
+        "watch": "tsup src/index.ts --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
     },
     "dependencies": {
         "node-polyglot": "^2.2.2",

@@ -4,13 +4,13 @@
     "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
     "files": [
         "*.md",
-        "lib",
-        "esm",
+        "dist",
         "src",
         "docs"
     ],
-    "main": "lib/index.js",
-    "module": "esm/index.js",
+    "main": "dist/index",
+    "module": "dist/esm/index.js",
+    "types": "dist/index.d.ts",
     "sideEffects": false,
     "authors": [
         "François Zaninotto"
@@ -20,10 +20,8 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "scripts": {
-        "build": "yarn run build-cjs && yarn run build-esm",
-        "build-cjs": "rimraf ./lib && tsc",
-        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
-        "watch": "tsc --outDir esm --module es2015 --watch"
+        "build": "tsup src/index.ts --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output",
+        "watch": "tsup src/index.ts --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",

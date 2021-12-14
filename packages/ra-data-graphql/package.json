@@ -2,9 +2,9 @@
     "name": "ra-data-graphql",
     "version": "4.0.0-alpha.0",
     "description": "A GraphQL data provider for react-admin",
-    "main": "lib/index.js",
-    "module": "esm/index.js",
-    "types": "esm/index.d.ts",
+    "main": "dist/index",
+    "module": "dist/esm/index.js",
+    "types": "dist/index.d.ts",
     "sideEffects": false,
     "repository": {
         "type": "git",
@@ -27,10 +27,8 @@
     ],
     "license": "MIT",
     "scripts": {
-        "build": "yarn run build-cjs && yarn run build-esm",
-        "build-cjs": "rimraf ./lib && tsc",
-        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
-        "watch": "tsc --outDir esm --module es2015 --watch"
+        "build": "tsup src/index.ts --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output",
+        "watch": "tsup src/index.ts --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
     },
     "dependencies": {
         "@apollo/client": "^3.3.19",

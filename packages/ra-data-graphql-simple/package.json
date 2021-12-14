@@ -2,8 +2,9 @@
     "name": "ra-data-graphql-simple",
     "version": "4.0.0-alpha.0",
     "description": "A GraphQL simple data provider for react-admin",
-    "main": "lib/index.js",
-    "module": "esm/index.js",
+    "main": "dist/index",
+    "module": "dist/esm/index.js",
+    "types": "dist/index.d.ts",
     "sideEffects": false,
     "repository": {
         "type": "git",
@@ -26,10 +27,8 @@
     ],
     "license": "MIT",
     "scripts": {
-        "build": "yarn run build-cjs && yarn run build-esm",
-        "build-cjs": "rimraf ./lib && tsc",
-        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
-        "watch": "tsc --outDir esm --module es2015 --watch"
+        "build": "tsup src/index.ts --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output",
+        "watch": "tsup src/index.ts --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
     },
     "dependencies": {
         "graphql-ast-types-browser": "~1.0.2",

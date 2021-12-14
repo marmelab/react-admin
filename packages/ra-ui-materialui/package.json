@@ -4,12 +4,12 @@
     "description": "UI Components for react-admin with MaterialUI",
     "files": [
         "*.md",
-        "lib",
-        "esm",
+        "dist",
         "src"
     ],
-    "main": "lib/index",
-    "module": "esm/index.js",
+    "main": "dist/index",
+    "module": "dist/esm/index.js",
+    "types": "dist/index.d.ts",
     "sideEffects": false,
     "authors": [
         "François Zaninotto",
@@ -20,10 +20,8 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "scripts": {
-        "build": "yarn run build-cjs && yarn run build-esm",
-        "build-cjs": "rimraf ./lib && tsc",
-        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
-        "watch": "tsc --outDir esm --module es2015 --watch"
+        "build": "tsup src/index.ts --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output",
+        "watch": "tsup src/index.ts --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
     },
     "devDependencies": {
         "@mui/icons-material": "^5.0.1",
