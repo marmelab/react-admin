@@ -814,7 +814,7 @@ const PostDetail = ({ id }) => {
 
 ### `usePermissions()` Hook
 
-You might want to check user permissions inside a [custom page](./Admin.md#customroutes). That's the purpose of the `usePermissions()` hook, which calls the `authProvider.getPermissions()` method on mount, and returns the result when available:
+You might want to check user permissions inside a [custom page](./Admin.md#adding-custom-pages). That's the purpose of the `usePermissions()` hook, which calls the `authProvider.getPermissions()` method on mount, and returns the result when available:
 
 ```jsx
 // in src/MyPage.js
