@@ -84,7 +84,7 @@ You can use this button e.g. as a child of `<Datagrid>`. You can also create a c
 
 ![List Filters](./img/list_filter.gif)
 
-The default appearance for filters is an inline form displayed on top of the list. Users also see a dropdown button allowing to add more inputs to that form. This functionality relies on the `filters` prop: 
+The default appearance for filters is an inline form displayed on top of the list. Users also see a dropdown button allowing to add more inputs to that form. This functionality relies on the `<List filters>` prop: 
 
 ```jsx
 import { TextInput } from 'react-admin';
@@ -93,15 +93,7 @@ const postFilters = [
     <TextInput label="Search" source="q" alwaysOn />,
     <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
 ];
-```
 
-Elements of the `filters` array are regular inputs. That means you can build sophisticated filters based on references, array values, etc. `<List>` hides all inputs in the filter form by default, except those that have the `alwaysOn` prop.
-
-**Tip**: For technical reasons, react-admin does not accept Filter inputs having both a `defaultValue` and `alwaysOn`. To set default values for always on filters, use the [`filterDefaultValues`](./List.md#filterdefaultvalues) prop of the `<List>` component instead.
-
-To inject the filter form in a `<List>`, use the `filters` prop:
-
-```jsx
 export const PostList = (props) => (
     <List {...props} filters={postFilters}>
         ...
@@ -109,16 +101,20 @@ export const PostList = (props) => (
 );
 ```
 
+Elements passed as `filters` are regular inputs. That means you can build sophisticated filters based on references, array values, etc. `<List>` hides all inputs in the filter form by default, except those that have the `alwaysOn` prop.
+
+**Tip**: For technical reasons, react-admin does not accept Filter inputs having both a `defaultValue` and `alwaysOn`. To set default values for always on filters, use the [`filterDefaultValues`](./List.md#filterdefaultvalues) prop of the `<List>` component instead.
+
 `<List>` uses the elements passed as `filters` twice:
 
-- once to render the filter *form*
+- once to render the filter *form* 
 - once to render the filter *button* (using each element `label`, falling back to the humanized `source`)
 
-### Full-Text Search
+### `<SearchInput>`
 
 ![`<SearchInput>`](./img/search_input.gif)
 
-In addition to [the usual input types](./Inputs.md) (`<TextInput>`, `<SelectInput>`, `<ReferenceInput>`, etc.), you can use the `<SearchInput>`, which is designed especially for the filter form. It's like a `<TextInput resettable>` with a magnifier glass icon - exactly the type of input users look for when they want to do a full-text search. 
+In addition to [the usual input types](./Inputs.md) (`<TextInput>`, `<SelectInput>`, `<ReferenceInput>`, etc.), you can use the `<SearchInput>` in the `filters` array. This input is designed especially for the filter form. It's like a `<TextInput resettable>` with a magnifier glass icon - exactly the type of input users look for when they want to do a full-text search. 
 
 ```jsx
 import { SearchInput, TextInput } from 'react-admin';
@@ -171,7 +167,7 @@ An alternative UI to the Filter Button/Form Combo is the FilterList Sidebar. Sim
 
 Check [the `<FilterList>` documentation](./FilterList.md) for more information.
 
-If you use the FilterList, you'll probably need a search input. As the FilterList sidebar is not a form, this requires a bit of extra work. Fortunately, react-admin provides a specialized search inpurt component for that purpose: check [the `<FilterLiveSearch>` documentation](./FilterLiveSearch.md) for details.
+If you use the FilterList, you'll probably need a search input. As the FilterList sidebar is not a form, this requires a bit of extra work. Fortunately, react-admin provides a specialized search input component for that purpose: check [the `<FilterLiveSearch>` documentation](./FilterLiveSearch.md) for details.
 
 ![Filter Live Search](./img/filter-live-search.gif)
 
@@ -266,7 +262,6 @@ const SongList = props => (
 
 For mode details about Saved Queries, check the [`ra-preferences` module](https://marmelab.com/ra-enterprise/modules/ra-preferences#savedquerieslist-and-filterwithsave-store-user-queries-in-preferences) in React-Admin Enterprise Edition. 
 
-
 ## Global Search
 
 Although list filters allow to make precise queries using per-field criteria, users often prefer simpler interfaces like full-text search. After all, that's what they use every day on search engines, email clients, and in their file explorer. 
@@ -291,15 +286,15 @@ For instance, by default, the filter button/form combo doesn't provide a submit 
 
 In that case, the solution is to process the filter when users click on a submit button, rather than when they type values in form inputs. React-admin doesn't provide any component for that, but it's a good opportunity to illustrate the internals of the filter functionality. We'll actually provide an alternative implementation to the Filter button/form combo.
 
-To create a custom filter UI, we'll have to override the default List Actions component, which will contain both a Filter Button and a Filter Form, interacting with the List filters via the ListContext.
+To create a custom filter UI, we'll have to override the default List Toolbar component, which will contain both a Filter Button and a Filter Form, interacting with the List filters via the ListContext.
 
 ### Filter Callbacks
 
-The new element can use the `useListContext()` hook to interact with the URI query parameter more easily. The hook returns the following constants:
+The new element can use [the `useListContext` hook](./useListContext.md) to interact with the list filter more easily. The hook returns the following constants:
 
-- `filterValues`: Value of the filters based on the URI, e.g. `{"commentable":true,"q":"lorem "}`
-- `setFilters()`: Callback to set the filter values, e.g. `setFilters({"commentable":true})`
-- `displayedFilters`: Names of the filters displayed in the form, e.g. `['commentable','title']`
+- `filterValues`: Value of the filters based on the URI, e.g. `{ "commentable": true, "q": "lorem" }`
+- `setFilters()`: Callback to set the filter values, e.g. `setFilters({ "commentable":true })`
+- `displayedFilters`: Names of the filters displayed in the form, e.g. `['commentable', 'title']`
 - `showFilter()`: Callback to display an additional filter in the form, e.g. `showFilter('views')`
 - `hideFilter()`: Callback to hide a filter in the form, e.g. `hideFilter('title')`
 
@@ -307,7 +302,7 @@ Let's use this knowledge to write a custom `<List>` component that filters on su
 
 ### Custom Filter Button
 
-The `<PostFilterButton>` shows the filter form on click. We'll take advantage of the `showFilter` function:
+The following component shows the filter form on click. We'll take advantage of the `showFilter` function:
 
 ```jsx
 import { useListContext } from 'react-admin';
