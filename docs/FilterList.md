@@ -139,6 +139,7 @@ const SegmentFilter = () => (
 
 The children of `<FilterList>` must be a list of `<FilterListItem>` components. Each `<FilterListItem>` defines a filter `label` and a `value`, which is merged with the current filter value when enabled by the user.
 
+{% raw %}
 ```jsx
 import { FilterList, FilterListItem } from 'react-admin';
 
@@ -155,11 +156,13 @@ const HasNewsletterFilter = () => (
     </FilterList>
 );
 ```
+{% endraw %}
 
 ## `icon`
 
 When set, the `<FilterList icon>` prop appears at the left side of the filter label.
 
+{% raw %}
 ```jsx
 import { FilterList, FilterListItem } from 'react-admin';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOnOutlined';
@@ -180,11 +183,13 @@ const HasOrderedFilter = () => (
     </FilterList>
 );
 ```
+{% endraw %}
 
 ## `label`
 
 React-admin renders the `<FilterList label>`on top of the child filter items. The string is passed through the `useTranslate` hook, and therefore can be translated.
 
+{% raw %}
 ```jsx
 import { FilterList, FilterListItem } from 'react-admin';
 
@@ -201,6 +206,7 @@ const HasOrderedFilter = () => (
     </FilterList>
 );
 ```
+{% endraw %}
 
 ## Placing Filters In A Sidebar
 
