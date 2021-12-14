@@ -50,7 +50,6 @@ import React from 'react';
 import {
     Admin,
     Resource,
-    List,
     SimpleForm,
     TextInput,
     DateTimeInput,
