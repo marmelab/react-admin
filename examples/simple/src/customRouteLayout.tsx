@@ -25,7 +25,6 @@ const CustomRouteLayout = ({ title = 'Posts' }) => {
                 Found <span className="total">{total}</span> posts !
             </p>
             <Datagrid
-                basePath="/posts"
                 currentSort={currentSort}
                 data={data}
                 isLoading={isLoading}

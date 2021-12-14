@@ -68,7 +68,7 @@ export const ListContext = createContext<ListControllerResult>({
     perPage: null,
     refetch: null,
     resource: null,
-    selectedIds: null,
+    selectedIds: undefined,
     setFilters: null,
     setPage: null,
     setPerPage: null,
