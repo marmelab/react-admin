@@ -15,7 +15,6 @@ The `<FilterList>` component expects a list of `<FilterListItem>` as children. E
 
 {% raw %}
 ```jsx
-import * as React from 'react';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOnOutlined';
 import MailIcon from '@mui/icons-material/MailOutline';
@@ -129,6 +128,79 @@ const SegmentFilter = () => (
 );
 ```
 {% endraw %}
+
+`<FilterList>` accepts 3 props:
+
+* [`children`](#children), which must be a list of `<FilterListItem>`
+* [`icon`](#icon)
+* [`label`](#label)
+
+## `children`
+
+The children of `<FilterList>` must be a list of `<FilterListItem>` components. Each `<FilterListItem>` defines a filter `label` and a `value`, which is merged with the current filter value when enabled by the user.
+
+```jsx
+import { FilterList, FilterListItem } from 'react-admin';
+
+const HasNewsletterFilter = () => (
+    <FilterList label="Has newsletter">
+        <FilterListItem
+            label="True"
+            value={{ has_newsletter: true }}
+        />
+        <FilterListItem
+            label="False"
+            value={{ has_newsletter: false }}
+        />
+    </FilterList>
+);
+```
+
+## `icon`
+
+When set, the `<FilterList icon>` prop appears at the left side of the filter label.
+
+```jsx
+import { FilterList, FilterListItem } from 'react-admin';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOnOutlined';
+
+const HasOrderedFilter = () => (
+    <FilterList
+        label="Has ordered"
+        icon={<MonetizationOnIcon />}
+    >
+        <FilterListItem
+            label="True"
+            value={{ nb_commands_gte: 1, nb_commands_lte: undefined }}
+        />
+        <FilterListItem
+            label="False"
+            value={{ nb_commands_gte: undefined, nb_commands_lte: 0 }}
+        />
+    </FilterList>
+);
+```
+
+## `label`
+
+React-admin renders the `<FilterList label>`on top of the child filter items. The string is passed through the `useTranslate` hook, and therefore can be translated.
+
+```jsx
+import { FilterList, FilterListItem } from 'react-admin';
+
+const HasOrderedFilter = () => (
+    <FilterList label="Has ordered">
+        <FilterListItem
+            label="True"
+            value={{ nb_commands_gte: 1, nb_commands_lte: undefined }}
+        />
+        <FilterListItem
+            label="False"
+            value={{ nb_commands_gte: undefined, nb_commands_lte: 0 }}
+        />
+    </FilterList>
+);
+```
 
 ## Placing Filters In A Sidebar
 
