@@ -24,15 +24,16 @@ The user interface offers everything you expect:
 - locales and timezones
 - resource time grid (e.g. rooms) (requires additional licence from Full Calendar)
 
+## Usage
+
 Use `<Calendar>` as a child of `<List>`:
 
 ```jsx
 import { Calendar, getFilterValuesFromInterval } from '@react-admin/ra-calendar';
 import { List } from 'react-admin';
 
-const EventList = props => (
+const EventList = () => (
     <List
-        {...props}
         filterDefaultValues={getFilterValuesFromInterval()}
         perPage={1000}
         pagination={false}
@@ -58,8 +59,8 @@ import { CompleteCalendar } from '@react-admin/ra-calendar';
 
 import dataProvider from './dataProvider';
 
-const EventList = props => (
-    <CompleteCalendar {...props}>
+const EventList = () => (
+    <CompleteCalendar>
         <SimpleForm>
             <TextInput source="title" autoFocus />
             <DateTimeInput source="start" />
