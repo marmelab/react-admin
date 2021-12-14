@@ -198,7 +198,6 @@ const useReferenceManyFieldController = (
         displayedFilters,
         error,
         filterValues,
-        hasCreate: false,
         hideFilter,
         isFetching: loading,
         isLoading: !loaded,

@@ -4,7 +4,6 @@ import { Record, SortPayload } from '../../types';
 import { useGetMany } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';
 import { useNotify } from '../../sideEffect';
-import { useResourceContext } from '../../core';
 
 interface Option {
     basePath?: string;
@@ -51,7 +50,6 @@ const useReferenceArrayFieldController = (
     props: Option
 ): ListControllerResult => {
     const {
-        basePath,
         filter = defaultFilter,
         page = 1,
         perPage = 1000,
@@ -60,7 +58,6 @@ const useReferenceArrayFieldController = (
         sort = defaultSort,
         source,
     } = props;
-    const resource = useResourceContext(props);
     const notify = useNotify();
     const ids = get(record, source) || emptyArray;
     const { data, error, loading, loaded, refetch } = useGetMany(
@@ -99,7 +96,6 @@ const useReferenceArrayFieldController = (
     return {
         ...listProps,
         defaultTitle: null,
-        hasCreate: false,
         refetch,
         resource: reference,
     };

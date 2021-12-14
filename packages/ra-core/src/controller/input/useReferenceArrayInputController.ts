@@ -319,7 +319,6 @@ export const useReferenceArrayInputController = (
                   })
                 : undefined,
         filterValues,
-        hasCreate: false,
         hideFilter,
         loaded,
         isFetching,

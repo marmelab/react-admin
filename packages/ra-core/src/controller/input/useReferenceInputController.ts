@@ -165,7 +165,6 @@ export const useReferenceInputController = (
             error: possibleValuesError,
             isFetching: possibleValuesFetching,
             isLoading: possibleValuesLoading,
-            hasCreate: false,
             page,
             setPage,
             perPage,

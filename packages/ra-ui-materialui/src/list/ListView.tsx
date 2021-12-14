@@ -68,7 +68,8 @@ export const ListView = <RecordType extends Record = Record>(
         </div>
     );
 
-    const renderEmpty = () => empty !== false && cloneElement(empty);
+    const renderEmpty = () =>
+        empty !== false && cloneElement(empty, { hasCreate });
 
     const shouldRenderEmptyPage =
         !isLoading &&
