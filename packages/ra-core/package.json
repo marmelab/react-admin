@@ -49,7 +49,9 @@
         "rimraf": "^2.6.3"
     },
     "peerDependencies": {
+        "history": "^5.1.0",
         "final-form": "^4.20.2",
+        "final-form-arrays": "^3.0.2",
         "react": "^16.9.0 || ^17.0.0",
         "react-dom": "^16.9.0 || ^17.0.0",
         "react-final-form": "^6.5.2",

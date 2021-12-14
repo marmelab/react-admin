@@ -75,6 +75,7 @@
         "prop-types": "^15.7.0",
         "query-string": "^5.1.1",
         "react-dropzone": "^10.1.7",
+        "react-query": "^3.32.1",
         "react-transition-group": "^4.4.1"
     }
 }
