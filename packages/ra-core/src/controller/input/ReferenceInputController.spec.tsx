@@ -180,7 +180,6 @@ describe('<ReferenceInputController />', () => {
                     filterValues: {
                         q: '',
                     },
-                    hasCreate: false,
                     isFetching: true,
                     isLoading: true,
                     page: 1,
