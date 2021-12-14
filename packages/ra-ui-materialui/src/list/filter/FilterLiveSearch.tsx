@@ -52,7 +52,7 @@ export const FilterLiveSearch = memo((props: { source?: string }) => {
                     resettable
                     helperText={false}
                     source={source}
-                    label={translate('ra.action.search')}
+                    placeholder={translate('ra.action.search')}
                     InputProps={{
                         endAdornment: (
                             <InputAdornment position="end">
@@ -61,6 +61,9 @@ export const FilterLiveSearch = memo((props: { source?: string }) => {
                         ),
                     }}
                     onChange={onSearchChange}
+                    size="small"
+                    label={false}
+                    hiddenLabel
                     {...rest}
                 />
             )}

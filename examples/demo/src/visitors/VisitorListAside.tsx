@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { Card, CardContent } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOnOutlined';
@@ -16,28 +15,21 @@ import {
 
 import segments from '../segments/data';
 
-const PREFIX = 'Aside';
-
-const classes = {
-    root: `${PREFIX}-root`,
-};
-
-const StyledCard = styled(Card)(({ theme }) => ({
-    [`&.${classes.root}`]: {
-        [theme.breakpoints.up('md')]: {
+const Aside = () => (
+    <Card
+        sx={{
+            display: {
+                xs: 'none',
+                md: 'block',
+            },
             order: -1,
             width: '15em',
-            marginRight: '1em',
-        },
-        [theme.breakpoints.down('md')]: {
-            display: 'none',
-        },
-    },
-}));
-
-const Aside = () => (
-    <StyledCard className={classes.root}>
-        <CardContent>
+            mr: 2,
+            mt: 7,
+            alignSelf: 'flex-start',
+        }}
+    >
+        <CardContent sx={{ pt: 1 }}>
             <FilterLiveSearch />
 
             <FilterList
@@ -144,7 +136,7 @@ const Aside = () => (
                 ))}
             </FilterList>
         </CardContent>
-    </StyledCard>
+    </Card>
 );
 
 export default Aside;
