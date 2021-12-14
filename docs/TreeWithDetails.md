@@ -5,7 +5,13 @@ title: "The TreeWithDetails Component"
 
 # `<TreeWithDetails>`
 
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers a replacement for the `<List>` component when the records form **tree structures** like directories, categories, etc. `<TreeWithDetails>` allows to display, edit, and rearrange trees.
+This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers a replacement for the `<List>` component when the records form **tree structures** like directories, categories, etc. `<TreeWithDetails>` renders a tree structure and the show view/edition form in the same page.
+
+![TreeWithDetails](./img/treewithdetails.gif)
+
+This component allows users to browse, edit, and rearrange trees.
+
+## Usage
 
 ```jsx
 // in src/category.js
