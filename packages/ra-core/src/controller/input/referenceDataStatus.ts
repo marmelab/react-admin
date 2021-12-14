@@ -102,6 +102,15 @@ export const getStatusForArrayInput = <RecordType extends Record = Record>({
           })
         : null;
 
+    const choices = Array.isArray(matchingReferences)
+        ? referenceRecords.concat(
+              matchingReferences.filter(
+                  choice =>
+                      referenceRecords.findIndex(c => c.id === choice.id) === -1
+              )
+          )
+        : referenceRecords;
+
     return {
         waiting:
             (!matchingReferences &&
@@ -126,8 +135,6 @@ export const getStatusForArrayInput = <RecordType extends Record = Record>({
                       _: 'ra.input.references.many_missing',
                   })
                 : null,
-        choices: Array.isArray(matchingReferences)
-            ? matchingReferences
-            : referenceRecords,
+        choices,
     };
 };
