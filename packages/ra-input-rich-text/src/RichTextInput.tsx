@@ -15,7 +15,7 @@ import PropTypes from 'prop-types';
 import { RaRichTextClasses, RaRichTextStyles } from './styles';
 import QuillSnowStylesheet from './QuillSnowStylesheet';
 
-const RichTextInput = (props: RichTextInputProps) => {
+export const RichTextInput = (props: RichTextInputProps) => {
     const {
         options = {}, // Quill editor options
         toolbar = true,
@@ -163,5 +163,3 @@ RichTextInput.propTypes = {
 };
 
 const StyledFormControl = styled(FormControl)(RaRichTextStyles);
-
-export default RichTextInput;
