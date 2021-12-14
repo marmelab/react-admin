@@ -1,13 +1,14 @@
 import React from 'react';
-import { email, InferredElementDescription } from 'ra-core';
 import {
     BooleanInput,
     DateInput,
+    email,
+    InferredElementDescription,
     ImageInput,
     NumberInput,
     ReferenceInput,
     TextInput,
-} from 'ra-ui-materialui';
+} from 'react-admin';
 import {
     FieldConfiguration,
     ReferenceFieldConfiguration,

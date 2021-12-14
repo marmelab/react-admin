@@ -1,4 +1,4 @@
-import { getValuesFromRecords, inferTypeFromValues, Record } from 'ra-core';
+import { getValuesFromRecords, inferTypeFromValues, Record } from 'react-admin';
 import { FieldConfiguration } from './ResourceConfigurationContext';
 
 export const getFieldDefinitionsFromRecords = (

@@ -1,10 +1,10 @@
 import React from 'react';
-import { useResourceContext } from 'ra-core';
 import {
     Create as RaCreate,
     SimpleForm,
     SimpleFormProps,
-} from 'ra-ui-materialui';
+    useResourceContext,
+} from 'react-admin';
 import { getInputFromFieldDefinition } from './getInputFromFieldDefinition';
 import {
     useResourceConfiguration,

@@ -1,6 +1,10 @@
 import React from 'react';
-import { useResourceContext } from 'ra-core';
-import { Edit as RaEdit, SimpleForm, SimpleFormProps } from 'ra-ui-materialui';
+import {
+    Edit as RaEdit,
+    SimpleForm,
+    SimpleFormProps,
+    useResourceContext,
+} from 'react-admin';
 import {
     useResourceConfiguration,
     useResourcesConfiguration,

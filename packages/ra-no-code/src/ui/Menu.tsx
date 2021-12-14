@@ -5,9 +5,8 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import lodashGet from 'lodash/get';
 import classnames from 'classnames';
-import { ReduxState } from 'ra-core';
 
-import { DashboardMenuItem } from 'react-admin';
+import { DashboardMenuItem, ReduxState } from 'react-admin';
 import { NewResourceMenuItem } from './NewResourceMenuItem';
 import { useResourcesConfiguration } from '../ResourceConfiguration';
 import { ResourceMenuItem } from './ResourceMenuItem';

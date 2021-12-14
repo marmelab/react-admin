@@ -17,8 +17,9 @@ import {
     FormWithRedirect,
     RecordContextProvider,
     SaveContextProvider,
-} from 'ra-core';
-import { SaveButton, TextInput } from 'ra-ui-materialui';
+    SaveButton,
+    TextInput,
+} from 'react-admin';
 import {
     ResourceConfiguration,
     FieldConfiguration,
