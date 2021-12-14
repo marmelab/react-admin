@@ -17,13 +17,17 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2.0.1
+      with:
+        version: 6.20.3
     - name: Use Node.js LTS
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2
       with:
-        node-version: '14.x'
-    - uses: bahmutov/npm-install@v1
-      with:
-        install-command: yarn --frozen-lockfile --non-interactive --silent
+        node-version: '16.x'
+        cache: 'pnpm'
+    - name: Install dependencies
+      run: pnpm install
     - name: Build
       run: make build
 
@@ -32,13 +36,17 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2.0.1
+      with:
+        version: 6.20.3
     - name: Use Node.js LTS
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2
       with:
-        node-version: '14.x'
-    - uses: bahmutov/npm-install@v1
-      with:
-        install-command: yarn --frozen-lockfile --non-interactive --silent
+        node-version: '16.x'
+        cache: 'pnpm'
+    - name: Install dependencies
+      run: pnpm install
     - name: Lint
       run: make lint
     - name: Unit Tests
@@ -51,13 +59,17 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: Install pnpm
+      uses: pnpm/action-setup@v2.0.1
+      with:
+        version: 6.20.3
     - name: Use Node.js LTS
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2
       with:
-        node-version: '14.x'
-    - uses: bahmutov/npm-install@v1
-      with:
-        install-command: yarn --frozen-lockfile --non-interactive --silent
+        node-version: '16.x'
+        cache: 'pnpm'
+    - name: Install dependencies
+      run: pnpm install
     - name: e2e Tests
       run: make test-e2e
       env:
