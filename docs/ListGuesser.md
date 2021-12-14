@@ -13,7 +13,7 @@ Just like [`<List>`](./List.md), `<ListGuesser>` fetches the data. It then analy
 
 ## Usage
 
-You can use the `ListGuesser` to determine which fields to use based on the data returned by the API.
+You can use the `<ListGuesser>` component to determine which fields to use based on the data returned by the API.
 
 ```jsx
 // in src/App.js

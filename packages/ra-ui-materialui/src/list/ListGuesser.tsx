@@ -35,20 +35,14 @@ import { listFieldTypes } from './listFieldTypes';
  *     </Admin>
  * );
  */
-export const ListGuesser = <RecordType extends Record = Record>(
-    props: ListGuesserProps<RecordType>
-) => {
-    const controllerProps = useListController<RecordType>(props);
+export const ListGuesser = <RecordType extends Record = Record>() => {
+    const controllerProps = useListController<RecordType>();
     return (
         <ListContextProvider value={controllerProps}>
-            <ListViewGuesser {...props} {...controllerProps} />
+            <ListViewGuesser {...controllerProps} />
         </ListContextProvider>
     );
 };
-
-export interface ListGuesserProps<RecordType extends Record = Record>
-    extends ListControllerProps<RecordType>,
-        ListViewProps {}
 
 const ListViewGuesser = (props: Omit<ListViewProps, 'children'>) => {
     const { data } = useListContext(props);
