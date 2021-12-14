@@ -9,6 +9,10 @@ This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" s
 
 ![Editable Datagrid](https://marmelab.com/ra-enterprise/modules/assets/ra-editable-datagrid-overview.gif)
 
+## Usage
+
+`<EditableDatagrid>` is a drop-in replacement for `<Datagrid>`. It expects 2 additional props: `createForm` and `editForm`, the components to be displayed when a user creates or edits a row. The `<RowForm>` comopnent allows to create such forms using react-admin Input components. 
+
 ```jsx
 import * as React from 'react';
 import {
@@ -23,8 +27,8 @@ import {
 } from 'react-admin';
 import { EditableDatagrid, RowForm } from '@react-admin/ra-editable-datagrid';
 
-const ArtistList = props => (
-    <List {...props} hasCreate empty={false}>
+const ArtistList = () => (
+    <List hasCreate empty={false}>
         <EditableDatagrid
             undoable
             createForm={<ArtistForm />}
