@@ -8,6 +8,12 @@ import useSortState from '../useSortState';
 import useSelectionState from '../useSelectionState';
 import { ListControllerResult } from './useListController';
 
+const refetch = () => {
+    throw new Error(
+        'refetch is not available for a ListContext built from useList based on local data'
+    );
+};
+
 /**
  * Handle filtering, sorting and pagination on local data.
  *
@@ -213,6 +219,7 @@ export const useList = <RecordType extends Record = Record>(
     return {
         currentSort: sort,
         data: finalItems.data,
+        defaultTitle: '',
         error,
         displayedFilters,
         filterValues,
@@ -224,6 +231,8 @@ export const useList = <RecordType extends Record = Record>(
         onUnselectItems,
         page,
         perPage,
+        resource: undefined,
+        refetch,
         selectedIds,
         setFilters,
         setPage,
@@ -245,10 +254,9 @@ export interface UseListOptions<RecordType extends Record = Record> {
     sort?: SortPayload;
 }
 
-export type UseListValue<RecordType extends Record = Record> = Omit<
-    ListControllerResult<RecordType>,
-    'resource' | 'basePath' | 'refetch'
->;
+export type UseListValue<
+    RecordType extends Record = Record
+> = ListControllerResult<RecordType>;
 
 const defaultFilter = {};
 const defaultSort = { field: null, order: null };
