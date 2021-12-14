@@ -647,7 +647,7 @@ If you want to limit the initial choices shown to the current value only, you ca
 When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set).
 Ex. `<AutocompleteInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character has been entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
 
-`<AutocompleteInput>` renders a [material-ui `<TextField>` component](https://material-ui.com/api/text-field/). Use the `options` attribute to override any of the `<TextField>` attributes:
+`<AutocompleteInput>` renders a [material-ui `<Autocomplete>` component](https://mui.com/components/autocomplete/). Use the `options` attribute to override any of the `<Autocomplete>` attributes:
 
 {% raw %}
 ```jsx
@@ -789,12 +789,7 @@ const CreateCategory = () => {
 
 #### CSS API
 
-| Rule name              | Description                          |
-| ---------------------- | ------------------------------------ |
-| `container`            | Applied to the root element          |
-| `suggestionsContainer` | Applied to the suggestions container |
-
-To override the style of all instances of `<AutocompleteInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaAutocompleteInput` key.
+This component doesn't apply any custom styles on top of [material-ui `<Autocomplete>` component](https://mui.com/components/autocomplete/). Refer to their documentation to know its CSS API.
 
 
 ### `<RadioButtonGroupInput>`
@@ -1290,7 +1285,7 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput, FormDataConsumer 
 ### `<AutocompleteArrayInput>`
 
 To let users choose multiple values in a list using a dropdown with autocompletion, use `<AutocompleteArrayInput>`.
-It renders using [downshift](https://github.com/downshift-js/downshift) and a `fuzzySearch` filter.
+It renders using Material UI [Autocomplete](https://mui.com/components/autocomplete/).
 
 ![AutocompleteArrayInput](./img/autocomplete-array-input.gif)
 
@@ -1311,12 +1306,12 @@ import { AutocompleteArrayInput } from 'react-admin';
 | Prop                      | Required | Type                       | Default      | Description                                                                                                                                                                                                                                                                                          |
 | ------------------------- | -------- | -------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `allowEmpty`              | Optional | `boolean`                  | `false`      | If `true`, the first option is an empty one                                                                                                                                                                                                                                                          |
-| `allowDuplicates`         | Optional | `boolean`                  | `false`      | If `true`, the options can be selected several times                                                                                                                                                                                                                                                 |
 | `create`                 | Optional | `Element`     | `-`          | A React Element to render when users want to create a new choice |
 | `createLabel`                 | Optional | `string`     | `ra.action.create`          | The label for the menu item allowing users to create a new choice. Used when the filter is empty |
 | `createItemLabel`                 | Optional | `string`     | `ra.action.create_item`          | The label for the menu item allowing users to create a new choice. Used when the filter is not empty |
 | `debounce`         | Optional | `number`                  | `250`      | The delay to wait before calling the setFilter function injected when used in a ReferenceInput.                                                                                                                                                                                                                                                 |
 | `choices`                 | Required | `Object[]`                 | -            | List of items to autosuggest                                                                                                                                                                                                                                                                         |
+| `inputText`               | Optional | `Function`     | `-`          | Required if `optionText` is a custom Component, this function must return the text displayed for the current selection. |
 | `matchSuggestion`         | Optional | `Function`                 | -            | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`                                                                                                                                              |
 | `onCreate`              | Optional | `Function`     | `-`       | A function called with the current filter value when users choose to create a new choice. |
 | `optionValue`             | Optional | `string`                   | `id`         | Field name of record containing the value to use as input value                                                                                                                                                                                                                                       |
@@ -1411,7 +1406,7 @@ However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the 
 When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set).
 Ex. `<AutocompleteArrayInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character has been entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
 
-Lastly, `<AutocompleteArrayInput>` renders a [material-ui `<TextField>` component](https://material-ui.com/api/text-field/). Use the `options` attribute to override any of the `<TextField>` attributes:
+Lastly, `<AutocompleteArrayInput>` renders a [material-ui `<Autocomplete>` component](https://mui.com/components/autocomplete/). Use the `options` attribute to override any of the `<Autocomplete>` attributes:
 
 {% raw %}
 ```jsx
@@ -1568,18 +1563,7 @@ const CreateTag = () => {
 
 #### CSS API
 
-| Rule name               | Description                                                                                                                 |
-| ----------------------  | --------------------------------------------------------------------------------------------------------------------------- |
-| `container`             | Applied to the container of the underlying Material UI's `TextField` component input                                        |
-| `suggestionsContainer`  | Applied to the suggestions container |
-| `chip`                  | Applied to each Material UI's `Chip` component used as selected item                                                        |
-| `chipContainerFilled`   | Applied to each container of each Material UI's `Chip` component used as selected item when `variant` prop is `filled`      |
-| `chipContainerOutlined` | Applied to each container of each `Chip` component used as selected item when `variant` prop is `outlined`                  |
-| `inputRoot`             | Styles pass as the `root` class of the underlying Material UI's `TextField` component input                                 |
-| `inputRootFilled`       | Styles pass as the `root` class of the underlying Material UI's `TextField` component input when `variant` prop is `filled` |
-| `inputInput`            | Styles pass as the `input` class of the underlying Material UI's `TextField` component input                                |
-
-To override the style of all instances of `<AutocompleteArrayInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaAutocompleteArrayInput` key.
+This component doesn't apply any custom styles on top of [material-ui `<Autocomplete>` component](https://mui.com/components/autocomplete/). Refer to their documentation to know its CSS API.
 
 ### `<CheckboxGroupInput>`
 
