@@ -30,7 +30,6 @@ describe('<ReferenceArrayFieldController />', () => {
             }
         );
         expect(children.mock.calls[0][0]).toMatchObject({
-            basePath: '/bar',
             currentSort: { field: 'id', order: 'ASC' },
             isFetching: true,
             isLoading: true,
@@ -68,7 +67,6 @@ describe('<ReferenceArrayFieldController />', () => {
         );
 
         expect(children.mock.calls[0][0]).toMatchObject({
-            basePath: '/bar',
             currentSort: { field: 'id', order: 'ASC' },
             isFetching: true,
             isLoading: true,
@@ -108,7 +106,6 @@ describe('<ReferenceArrayFieldController />', () => {
             }
         );
         expect(children.mock.calls[0][0]).toMatchObject({
-            basePath: '/bar',
             currentSort: { field: 'id', order: 'ASC' },
             isFetching: true,
             isLoading: false,
@@ -145,7 +142,6 @@ describe('<ReferenceArrayFieldController />', () => {
             }
         );
         expect(children.mock.calls[0][0]).toMatchObject({
-            basePath: '/bar',
             currentSort: { field: 'id', order: 'ASC' },
             isFetching: true,
             isLoading: false,
@@ -225,7 +221,6 @@ describe('<ReferenceArrayFieldController />', () => {
         await waitFor(() => {
             expect(children).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    basePath: '/bar',
                     currentSort: { field: 'id', order: 'ASC' },
                     isFetching: false,
                     isLoading: false,
@@ -266,7 +261,6 @@ describe('<ReferenceArrayFieldController />', () => {
         await waitFor(() => {
             expect(children).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    basePath: '/bar',
                     currentSort: { field: 'id', order: 'ASC' },
                     isFetching: false,
                     isLoading: false,

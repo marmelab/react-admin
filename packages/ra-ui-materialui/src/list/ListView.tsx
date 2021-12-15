@@ -1,36 +1,33 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { Children, cloneElement, ReactElement } from 'react';
+import { Children, cloneElement, ReactElement, ElementType } from 'react';
 import PropTypes from 'prop-types';
+import { SxProps } from '@mui/system';
 import Card from '@mui/material/Card';
 import classnames from 'classnames';
-import {
-    ComponentPropType,
-    ListControllerProps,
-    useListContext,
-} from 'ra-core';
+import { ComponentPropType, useListContext, Record } from 'ra-core';
 
 import { Title, TitlePropType } from '../layout/Title';
 import { ListToolbar } from './ListToolbar';
 import { Pagination as DefaultPagination } from './pagination';
-import { BulkDeleteButton } from '../button';
-import { BulkActionsToolbar } from './BulkActionsToolbar';
 import { ListActions as DefaultActions } from './ListActions';
 import { Empty } from './Empty';
-import { ListProps } from '../types';
 
 const defaultActions = <DefaultActions />;
-const defaultBulkActionButtons = <BulkDeleteButton />;
 const defaultPagination = <DefaultPagination />;
 const defaultEmpty = <Empty />;
 const DefaultComponent = Card;
 
-export const ListView = (props: ListViewProps) => {
+export const ListView = <RecordType extends Record = Record>(
+    props: ListViewProps
+) => {
     const {
         actions = defaultActions,
         aside,
         filters,
-        bulkActionButtons = defaultBulkActionButtons,
+        bulkActionButtons,
+        emptyWhileLoading,
+        hasCreate,
         pagination = defaultPagination,
         children,
         className,
@@ -41,42 +38,38 @@ export const ListView = (props: ListViewProps) => {
     } = props;
     const {
         defaultTitle,
+        data,
         total,
         isLoading,
         filterValues,
-        selectedIds,
-    } = useListContext(props);
+    } = useListContext<RecordType>(props);
+
+    if (!children || (!data && isLoading && emptyWhileLoading)) {
+        return null;
+    }
 
     const renderList = () => (
-        <>
+        <div className={ListClasses.main}>
             {(filters || actions) && (
-                <ListToolbar filters={filters} actions={actions} />
+                <ListToolbar
+                    filters={filters}
+                    actions={actions}
+                    hasCreate={hasCreate}
+                />
             )}
-            <div className={ListClasses.main}>
-                <Content
-                    className={classnames(ListClasses.content, {
-                        [ListClasses.bulkActionsDisplayed]:
-                            selectedIds.length > 0,
-                    })}
-                >
-                    {bulkActionButtons !== false && bulkActionButtons && (
-                        <BulkActionsToolbar>
-                            {bulkActionButtons}
-                        </BulkActionsToolbar>
-                    )}
-                    {children &&
-                        // @ts-ignore-line
-                        cloneElement(Children.only(children), {
-                            hasBulkActions: bulkActionButtons !== false,
-                        })}
-                    {pagination !== false && pagination}
-                </Content>
-                {aside}
-            </div>
-        </>
+            <Content className={ListClasses.content}>
+                {bulkActionButtons && children
+                    ? cloneElement(Children.only(children), {
+                          bulkActionButtons,
+                      })
+                    : children}
+            </Content>
+            {pagination !== false && pagination}
+        </div>
     );
 
-    const renderEmpty = () => empty !== false && cloneElement(empty);
+    const renderEmpty = () =>
+        empty !== false && cloneElement(empty, { hasCreate });
 
     const shouldRenderEmptyPage =
         !isLoading &&
@@ -87,10 +80,11 @@ export const ListView = (props: ListViewProps) => {
     return (
         <Root
             className={classnames('list-page', ListClasses.root, className)}
-            {...sanitizeRestProps(rest)}
+            {...rest}
         >
             <Title title={title} defaultTitle={defaultTitle} />
             {shouldRenderEmptyPage ? renderEmpty() : renderList()}
+            {aside}
         </Root>
     );
 };
@@ -100,8 +94,6 @@ ListView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     aside: PropTypes.element,
     basePath: PropTypes.string,
-    // @ts-ignore-line
-    bulkActionButtons: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     children: PropTypes.element,
     className: PropTypes.string,
     component: ComponentPropType,
@@ -113,6 +105,7 @@ ListView.propTypes = {
     data: PropTypes.any,
     defaultTitle: PropTypes.string,
     displayedFilters: PropTypes.object,
+    emptyWhileLoading: PropTypes.bool,
     // @ts-ignore-line
     exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     filterDefaultValues: PropTypes.object,
@@ -145,62 +138,25 @@ ListView.propTypes = {
     version: PropTypes.number,
 };
 
-export interface ListViewProps
-    extends Omit<ListProps, 'basePath' | 'hasCreate' | 'perPage' | 'resource'>,
-        // Partial because we now get those props via context
-        Partial<ListControllerProps> {
+export interface ListViewProps {
+    actions?: ReactElement | false;
+    aside?: ReactElement;
+    /**
+     * @deprecated pass the bulkActionButtons prop to the List child (Datagrid or SimpleList) instead
+     */
+    bulkActionButtons?: ReactElement | false;
+    classes?: any;
+    className?: string;
     children: ReactElement;
+    component?: ElementType;
+    empty?: ReactElement | false;
+    emptyWhileLoading?: boolean;
+    filters?: ReactElement | ReactElement[];
+    hasCreate?: boolean;
+    pagination?: ReactElement | false;
+    title?: string | ReactElement;
+    sx?: SxProps;
 }
-
-const sanitizeRestProps: (
-    props: Omit<
-        ListViewProps,
-        | 'actions'
-        | 'aside'
-        | 'filter'
-        | 'filters'
-        | 'bulkActionButtons'
-        | 'pagination'
-        | 'children'
-        | 'className'
-        | 'classes'
-        | 'component'
-        | 'exporter'
-        | 'title'
-        | 'empty'
-    >
-) => any = ({
-    basePath = null,
-    currentSort = null,
-    data = null,
-    defaultTitle = null,
-    disableSyncWithLocation = null,
-    displayedFilters = null,
-    exporter = null,
-    filterDefaultValues = null,
-    filterValues = null,
-    hasCreate = null,
-    hideFilter = null,
-    ids = null,
-    isFetching = null,
-    isLoading = null,
-    onSelect = null,
-    onToggleItem = null,
-    onUnselectItems = null,
-    page = null,
-    perPage = null,
-    refetch = null,
-    resource = null,
-    selectedIds = null,
-    setFilters = null,
-    setPage = null,
-    setPerPage = null,
-    setSort = null,
-    showFilter = null,
-    sort = null,
-    total = null,
-    ...rest
-}) => rest;
 
 const PREFIX = 'RaList';
 
@@ -208,32 +164,27 @@ export const ListClasses = {
     root: `${PREFIX}-root`,
     main: `${PREFIX}-main`,
     content: `${PREFIX}-content`,
-    bulkActionsDisplayed: `${PREFIX}-bulkActionsDisplayed`,
     actions: `${PREFIX}-actions`,
     noResults: `${PREFIX}-noResults`,
 };
 
 const Root = styled('div', { name: PREFIX })(({ theme }) => ({
-    [`&.${ListClasses.root}`]: {},
-
-    [`& .${ListClasses.main}`]: {
+    [`&.${ListClasses.root}`]: {
         display: 'flex',
     },
 
-    [`& .${ListClasses.content}`]: {
-        marginTop: 0,
-        transition: theme.transitions.create('margin-top'),
-        position: 'relative',
+    [`& .${ListClasses.main}`]: {
         flex: '1 1 auto',
+        display: 'flex',
+        flexDirection: 'column',
+    },
+
+    [`& .${ListClasses.content}`]: {
+        position: 'relative',
         [theme.breakpoints.down('sm')]: {
             boxShadow: 'none',
         },
         overflow: 'inherit',
-    },
-
-    [`& .${ListClasses.bulkActionsDisplayed}`]: {
-        marginTop: theme.spacing(-8),
-        transition: theme.transitions.create('margin-top'),
     },
 
     [`& .${ListClasses.actions}`]: {

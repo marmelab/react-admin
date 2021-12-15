@@ -4,7 +4,7 @@ import { useGetList } from '../../dataProvider/useGetList';
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
 import { PaginationPayload, Record, SortPayload } from '../../types';
-import { ListControllerProps } from '../list';
+import { ListControllerResult } from '../list';
 import useReference from '../useReference';
 import usePaginationState from '../usePaginationState';
 import { useSortState } from '..';
@@ -59,7 +59,6 @@ export const useReferenceInputController = (
     props: Option
 ): ReferenceInputValue => {
     const {
-        basePath,
         input,
         page: initialPage = 1,
         perPage: initialPerPage = 25,
@@ -163,13 +162,11 @@ export const useReferenceInputController = (
     return {
         // should match the ListContext shape
         possibleValues: {
-            basePath,
             data: finalData,
             total: finalTotal,
             error: possibleValuesError,
             isFetching: possibleValuesFetching,
             isLoading: possibleValuesLoading,
-            hasCreate: false,
             page,
             setPage,
             perPage,
@@ -221,7 +218,7 @@ const hideFilter = () => {};
 const showFilter = () => {};
 
 export interface ReferenceInputValue {
-    possibleValues: ListControllerProps;
+    possibleValues: ListControllerResult;
     referenceRecord: {
         data?: Record;
         loaded: boolean;

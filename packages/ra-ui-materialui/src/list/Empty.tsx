@@ -4,7 +4,7 @@ import { Typography } from '@mui/material';
 import Inbox from '@mui/icons-material/Inbox';
 import {
     useTranslate,
-    useListContext,
+    useResourceDefinition,
     useResourceContext,
     useGetResourceLabel,
 } from 'ra-core';
@@ -12,7 +12,7 @@ import {
 import { CreateButton } from '../button';
 
 export const Empty = (props: EmptyProps) => {
-    const { hasCreate } = useListContext(props);
+    const { hasCreate } = useResourceDefinition(props);
     const resource = useResourceContext(props);
 
     const translate = useTranslate();
@@ -54,6 +54,7 @@ export const Empty = (props: EmptyProps) => {
 
 export interface EmptyProps {
     resource?: string;
+    hasCreate?: boolean;
 }
 
 const PREFIX = 'RaEmpty';
@@ -65,6 +66,7 @@ export const EmptyClasses = {
 };
 
 const Root = styled('span', { name: PREFIX })(({ theme }) => ({
+    flex: 1,
     [`& .${EmptyClasses.message}`]: {
         textAlign: 'center',
         opacity: theme.palette.mode === 'light' ? 0.5 : 0.8,

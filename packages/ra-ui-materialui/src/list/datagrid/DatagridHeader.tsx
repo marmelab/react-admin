@@ -127,7 +127,10 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                 {Children.map(children, (field, index) =>
                     isValidElement(field) ? (
                         <DatagridHeaderCell
-                            className={DatagridClasses.headerCell}
+                            className={classnames(
+                                DatagridClasses.headerCell,
+                                `column-${(field.props as any).source}`
+                            )}
                             currentSort={currentSort}
                             field={field}
                             isSorting={

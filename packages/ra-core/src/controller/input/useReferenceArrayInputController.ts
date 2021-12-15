@@ -11,7 +11,7 @@ import { useTranslate } from '../../i18n';
 import { getStatusForArrayInput as getDataStatus } from './referenceDataStatus';
 import { useResourceContext } from '../../core';
 import { usePaginationState, useSortState } from '..';
-import { ListControllerProps } from '../list';
+import { ListControllerResult } from '../list';
 import { removeEmpty, useSafeSetState } from '../../util';
 import { ReferenceArrayInputContextValue } from './ReferenceArrayInputContext';
 
@@ -41,7 +41,7 @@ import { ReferenceArrayInputContextValue } from './ReferenceArrayInputContext';
  */
 export const useReferenceArrayInputController = (
     props: UseReferenceArrayInputOptions
-): ReferenceArrayInputContextValue & Omit<ListControllerProps, 'setSort'> => {
+): ReferenceArrayInputContextValue & Omit<ListControllerResult, 'setSort'> => {
     const {
         filter: defaultFilter,
         filterToQuery = defaultFilterToQuery,
@@ -278,6 +278,7 @@ export const useReferenceArrayInputController = (
         total,
         error: errorGetList,
         isLoading: isLoadingGetList,
+        isFetching,
         refetch: refetchGetMatching,
     } = useGetList(
         reference,
@@ -307,7 +308,6 @@ export const useReferenceArrayInputController = (
     }, [refetchGetMany, refetchGetMatching]);
 
     return {
-        basePath: props.basePath || `/${resource}`,
         choices: dataStatus.choices,
         currentSort: sort,
         data: matchingReferences,
@@ -319,9 +319,9 @@ export const useReferenceArrayInputController = (
                   })
                 : undefined,
         filterValues,
-        hasCreate: false,
         hideFilter,
         loaded,
+        isFetching,
         isLoading: !loaded || isLoadingGetList,
         loading: dataStatus.waiting,
         onSelect,

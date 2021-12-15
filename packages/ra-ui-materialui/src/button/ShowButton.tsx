@@ -3,7 +3,12 @@ import { memo, useMemo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ImageEye from '@mui/icons-material/RemoveRedEye';
 import { Link } from 'react-router-dom';
-import { linkToRecord, Record, useResourceContext } from 'ra-core';
+import {
+    linkToRecord,
+    Record,
+    useResourceContext,
+    useRecordContext,
+} from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
 
@@ -22,11 +27,11 @@ const ShowButton = (props: ShowButtonProps) => {
         basePath = '',
         icon = defaultIcon,
         label = 'ra.action.show',
-        record,
         scrollToTop = true,
         ...rest
     } = props;
-    const resource = useResourceContext();
+    const resource = useResourceContext(props);
+    const record = useRecordContext(props);
     return (
         <Button
             component={Link}

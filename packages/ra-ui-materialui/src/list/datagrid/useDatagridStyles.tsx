@@ -1,4 +1,4 @@
-import { Table, styled } from '@mui/material';
+import { styled } from '@mui/material';
 
 const PREFIX = 'RaDatagrid';
 
@@ -21,8 +21,8 @@ export const DatagridClasses = {
     expandedPanel: `${PREFIX}-expandedPanel`,
 };
 
-export const StyledTable = styled(Table, { name: PREFIX })(({ theme }) => ({
-    [`&.${DatagridClasses.table}`]: {
+export const DatagridRoot = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`& .${DatagridClasses.table}`]: {
         tableLayout: 'auto',
     },
     [`& .${DatagridClasses.thead}`]: {},

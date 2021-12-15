@@ -23,8 +23,13 @@ export const ContactListFilter = () => {
         sort: { field: 'name', order: 'ASC' },
     });
     return (
-        <Box width="15em" order={-1} marginRight="1em">
-            <FilterLiveSearch />
+        <Box width="15em" order={-1} mr={2} mt={5}>
+            <FilterLiveSearch
+                sx={{
+                    display: 'block',
+                    '& .MuiFilledInput-root': { width: '100%' },
+                }}
+            />
             <FilterList label="Last seen" icon={<AccessTimeIcon />}>
                 <FilterListItem
                     label="Today"

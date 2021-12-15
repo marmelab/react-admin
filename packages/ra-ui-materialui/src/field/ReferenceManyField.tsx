@@ -5,7 +5,7 @@ import {
     SortPayload,
     useReferenceManyFieldController,
     ListContextProvider,
-    ListControllerProps,
+    ListControllerResult,
     ResourceContextProvider,
     useRecordContext,
     ReduxState,
@@ -174,7 +174,7 @@ export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => 
 
 export interface ReferenceManyFieldViewProps
     extends Omit<ReferenceManyFieldProps, 'resource' | 'page' | 'perPage'>,
-        ListControllerProps {
+        ListControllerResult {
     children: ReactElement;
 }
 
@@ -186,8 +186,7 @@ ReferenceManyFieldView.propTypes = {
         order: PropTypes.string,
     }),
     data: PropTypes.any,
-    ids: PropTypes.array,
-    loaded: PropTypes.bool,
+    isLoading: PropTypes.bool,
     pagination: PropTypes.element,
     reference: PropTypes.string,
     setSort: PropTypes.func,

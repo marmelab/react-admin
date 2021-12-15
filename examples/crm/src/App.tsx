@@ -15,6 +15,13 @@ const App = () => (
         authProvider={authProvider}
         layout={Layout}
         dashboard={Dashboard}
+        theme={{
+            palette: {
+                background: {
+                    default: '#fafafb',
+                },
+            },
+        }}
     >
         <Resource name="deals" {...deals} />
         <Resource name="contacts" {...contacts} />

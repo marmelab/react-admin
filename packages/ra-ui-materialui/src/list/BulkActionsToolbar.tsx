@@ -5,10 +5,15 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { alpha } from '@mui/material/styles';
+import { lighten } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { useTranslate, sanitizeListRestProps, useListContext } from 'ra-core';
+import {
+    useTranslate,
+    sanitizeListRestProps,
+    useListContext,
+    Identifier,
+} from 'ra-core';
 
 import TopToolbar from '../layout/TopToolbar';
 
@@ -17,48 +22,51 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
     const {
         filterValues,
         resource,
-        selectedIds,
+        selectedIds = [],
         onUnselectItems,
     } = useListContext(props);
 
     const translate = useTranslate();
 
     return (
-        <Root
-            data-test="bulk-actions-toolbar"
-            className={classnames(BulkActionsToolbarClasses.toolbar, {
-                [BulkActionsToolbarClasses.collapsed]: selectedIds.length === 0,
-            })}
-            {...sanitizeListRestProps(rest)}
-        >
-            <div className={BulkActionsToolbarClasses.title}>
-                <IconButton
-                    className={BulkActionsToolbarClasses.icon}
-                    aria-label={translate('ra.action.unselect')}
-                    title={translate('ra.action.unselect')}
-                    onClick={onUnselectItems}
-                    size="small"
-                >
-                    <CloseIcon fontSize="small" />
-                </IconButton>
-                <Typography color="inherit" variant="subtitle1">
-                    {translate(label, {
-                        _: label,
-                        smart_count: selectedIds.length,
-                    })}
-                </Typography>
-            </div>
-            <TopToolbar className={BulkActionsToolbarClasses.topToolbar}>
-                {Children.map(children, child =>
-                    isValidElement(child)
-                        ? cloneElement(child, {
-                              filterValues,
-                              resource,
-                              selectedIds,
-                          })
-                        : null
-                )}
-            </TopToolbar>
+        <Root>
+            <Toolbar
+                data-test="bulk-actions-toolbar"
+                className={classnames(BulkActionsToolbarClasses.toolbar, {
+                    [BulkActionsToolbarClasses.collapsed]:
+                        selectedIds.length === 0,
+                })}
+                {...sanitizeListRestProps(rest)}
+            >
+                <div className={BulkActionsToolbarClasses.title}>
+                    <IconButton
+                        className={BulkActionsToolbarClasses.icon}
+                        aria-label={translate('ra.action.unselect')}
+                        title={translate('ra.action.unselect')}
+                        onClick={onUnselectItems}
+                        size="small"
+                    >
+                        <CloseIcon fontSize="small" />
+                    </IconButton>
+                    <Typography color="inherit" variant="subtitle1">
+                        {translate(label, {
+                            _: label,
+                            smart_count: selectedIds.length,
+                        })}
+                    </Typography>
+                </div>
+                <TopToolbar className={BulkActionsToolbarClasses.topToolbar}>
+                    {Children.map(children, child =>
+                        isValidElement(child)
+                            ? cloneElement(child, {
+                                  filterValues,
+                                  resource,
+                                  selectedIds,
+                              })
+                            : null
+                    )}
+                </TopToolbar>
+            </Toolbar>
         </Root>
     );
 };
@@ -71,6 +79,7 @@ BulkActionsToolbar.propTypes = {
 export interface BulkActionsToolbarProps {
     children?: ReactNode;
     label?: string;
+    selectedIds?: Identifier[];
 }
 
 const PREFIX = 'RaBulkActionsToolbar';
@@ -84,8 +93,12 @@ export const BulkActionsToolbarClasses = {
     icon: `${PREFIX}-icon`,
 };
 
-const Root = styled(Toolbar, { name: PREFIX })(({ theme }) => ({
-    [`&.${BulkActionsToolbarClasses.toolbar}`]: {
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    position: 'relative',
+    [`& .${BulkActionsToolbarClasses.toolbar}`]: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
         zIndex: 3,
         color:
             theme.palette.mode === 'light'
@@ -94,24 +107,31 @@ const Root = styled(Toolbar, { name: PREFIX })(({ theme }) => ({
         justifyContent: 'space-between',
         backgroundColor:
             theme.palette.mode === 'light'
-                ? alpha(theme.palette.primary.light, 0.15)
+                ? lighten(theme.palette.primary.light, 0.8)
                 : theme.palette.primary.dark,
-        minHeight: theme.spacing(8),
-        height: theme.spacing(8),
+        minHeight: theme.spacing(6),
+        height: theme.spacing(6),
+        transform: `translateY(-${theme.spacing(6)})`,
         transition: `${theme.transitions.create(
             'height'
-        )}, ${theme.transitions.create('min-height')}`,
+        )}, ${theme.transitions.create(
+            'min-height'
+        )}, ${theme.transitions.create('transform')}`,
+        borderTopLeftRadius: theme.shape.borderRadius,
+        borderTopRightRadius: theme.shape.borderRadius,
     },
 
     [`& .${BulkActionsToolbarClasses.topToolbar}`]: {
-        paddingTop: theme.spacing(2),
+        paddingBottom: 0,
+        minHeight: 'auto',
     },
 
     [`& .${BulkActionsToolbarClasses.buttons}`]: {},
 
-    [`&.${BulkActionsToolbarClasses.toolbar}.${BulkActionsToolbarClasses.collapsed}`]: {
+    [`& .${BulkActionsToolbarClasses.collapsed}`]: {
         minHeight: 0,
         height: 0,
+        transform: `translateY(0)`,
         overflowY: 'hidden',
     },
 

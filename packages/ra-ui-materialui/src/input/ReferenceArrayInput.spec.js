@@ -14,6 +14,7 @@ import {
     createAdminStore,
     useListContext,
 } from 'ra-core';
+import { ThemeProvider, createTheme } from '@mui/material';
 
 import { Datagrid } from '../list';
 import { TextField } from '../field';
@@ -231,29 +232,28 @@ describe('<ReferenceArrayInput />', () => {
                 }),
         });
         render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <Form
-                        onSubmit={jest.fn()}
-                        initialValues={{ tag_ids: [5] }}
-                        render={() => (
-                            <ReferenceArrayInput
-                                reference="tags"
-                                resource="posts"
-                                source="tag_ids"
-                                basePath="/posts"
-                            >
-                                <Datagrid
-                                    hasBulkActions={true}
-                                    rowClick="toggleSelection"
+            <ThemeProvider theme={createTheme()}>
+                <Provider store={store}>
+                    <CoreAdminContext dataProvider={dataProvider}>
+                        <Form
+                            onSubmit={jest.fn()}
+                            initialValues={{ tag_ids: [5] }}
+                            render={() => (
+                                <ReferenceArrayInput
+                                    reference="tags"
+                                    resource="posts"
+                                    source="tag_ids"
+                                    basePath="/posts"
                                 >
-                                    <TextField source="name" />
-                                </Datagrid>
-                            </ReferenceArrayInput>
-                        )}
-                    />
-                </CoreAdminContext>
-            </Provider>
+                                    <Datagrid rowClick="toggleSelection">
+                                        <TextField source="name" />
+                                    </Datagrid>
+                                </ReferenceArrayInput>
+                            )}
+                        />
+                    </CoreAdminContext>
+                </Provider>
+            </ThemeProvider>
         );
 
         await waitFor(() => {
