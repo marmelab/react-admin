@@ -2,13 +2,22 @@ import * as React from 'react';
 import {
     cloneElement,
     isValidElement,
+    useCallback,
     useEffect,
     useMemo,
     useRef,
     useState,
 } from 'react';
 import get from 'lodash/get';
-import { Autocomplete, AutocompleteProps, TextField } from '@mui/material';
+import isEqual from 'lodash/isEqual';
+import debounce from 'lodash/debounce';
+
+import {
+    Autocomplete,
+    AutocompleteProps,
+    Chip,
+    TextField,
+} from '@mui/material';
 import {
     ChoicesInputProps,
     FieldTitle,
@@ -98,6 +107,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         createLabel,
         createItemLabel,
         createValue,
+        debounce: debounceDelay = 250,
         emptyText,
         emptyValue,
         format,
@@ -115,6 +125,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         matchSuggestion,
         margin = 'dense',
         meta: metaOverride,
+        multiple = false,
         onBlur,
         onChange,
         onCreate,
@@ -155,12 +166,28 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         ...rest,
     });
 
-    const selectedItem = useMemo(
-        () =>
-            choices?.find(choice => get(choice, optionValue) === input.value) ||
-            null,
-        [choices, input.value, optionValue]
+    const selectedItemsRef = useRef(
+        getSelectedItems(choices, input.value, optionValue, multiple)
     );
+    const [selectedItem, setSelectedItem] = useState<Record | Record[]>(() =>
+        getSelectedItems(choices, input.value, optionValue, multiple)
+    );
+
+    // As ou selected items are objects, we want to ensure we pass the same
+    // reference to the Autocomplete as it would reset its filter value otherwise.
+    useEffect(() => {
+        const newSelectedItems = getSelectedItems(
+            choices,
+            input.value,
+            optionValue,
+            multiple
+        );
+
+        if (!isEqual(selectedItemsRef.current, newSelectedItems)) {
+            selectedItemsRef.current = newSelectedItems;
+            setSelectedItem(newSelectedItems);
+        }
+    }, [choices, input.value, multiple, optionValue]);
 
     useEffect(() => {
         // eslint-disable-next-line eqeqeq
@@ -186,8 +213,6 @@ If you provided a React element for the optionText prop, you must also provide t
     }, [shouldRenderSuggestions, options]);
 
     const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
-        // AutocompleteInput allows duplicate so that we ensure the selected item is always in the choices
-        allowDuplicates: true,
         allowEmpty,
         choices,
         emptyText,
@@ -201,11 +226,26 @@ If you provided a React element for the optionText prop, you must also provide t
         translateChoice,
     });
 
-    const handleChange = (choice: any) => {
-        input.onChange(getChoiceValue(choice));
+    const handleChange = (newValue: any) => {
+        if (multiple) {
+            if (Array.isArray(newValue)) {
+                input.onChange(newValue.map(getChoiceValue));
+            } else {
+                input.onChange([...input.value, getChoiceValue(newValue)]);
+            }
+        } else {
+            input.onChange(getChoiceValue(newValue));
+            setFilterValue(getOptionLabel(newValue));
+        }
     };
 
     const [filterValue, setFilterValue] = useState('');
+
+    // eslint-disable-next-line
+    const debouncedSetFilter = useCallback(
+        debounce(setFilter || DefaultSetFilter, debounceDelay),
+        [debounceDelay, setFilter]
+    );
 
     // We must reset the filter every time the value changes to ensure we
     // display at least some choices even if the input has a value.
@@ -213,10 +253,10 @@ If you provided a React element for the optionText prop, you must also provide t
     // would have to first clear the input before seeing any other choices
     const currentValue = useRef(input.value);
     useEffect(() => {
-        if (currentValue.current !== input.value) {
+        if (!isEqual(currentValue.current, input.value)) {
             currentValue.current = input.value;
             if (setFilter) {
-                setFilter('');
+                debouncedSetFilter('');
             }
         }
     }, [input.value]); // eslint-disable-line
@@ -236,24 +276,32 @@ If you provided a React element for the optionText prop, you must also provide t
         optionText,
     });
 
-    const getOptionLabel = (option: any) => {
-        // eslint-disable-next-line eqeqeq
-        if (option == undefined) {
-            return null;
-        }
-        // Value selected with enter, right from the input
-        if (typeof option === 'string') {
-            return option;
-        }
+    const getOptionLabel = useCallback(
+        (option: any) => {
+            // eslint-disable-next-line eqeqeq
+            if (option == undefined) {
+                return '';
+            }
+            // Value selected with enter, right from the input
+            if (typeof option === 'string') {
+                return option;
+            }
 
-        // eslint-disable-next-line eqeqeq
-        if (inputText != undefined) {
-            return inputText(option);
+            // eslint-disable-next-line eqeqeq
+            if (inputText != undefined) {
+                return inputText(option);
+            }
+
+            return getChoiceText(option);
+        },
+        [getChoiceText, inputText]
+    );
+
+    useEffect(() => {
+        if (!multiple) {
+            setFilterValue(getOptionLabel(selectedItem));
         }
-
-        return getChoiceText(option);
-    };
-
+    }, [getOptionLabel, multiple, selectedItem]);
     const isOptionEqualToValue = (option, value) => {
         return getChoiceValue(option) === getChoiceValue(value);
     };
@@ -261,39 +309,26 @@ If you provided a React element for the optionText prop, you must also provide t
     const handleInputChange = (event: any, newInputValue: string) => {
         setFilterValue(newInputValue);
 
-        if (setFilter && newInputValue !== getChoiceText(selectedItem)) {
-            setFilter(newInputValue);
+        if (setFilter) {
+            debouncedSetFilter(newInputValue);
         }
     };
 
     const doesQueryMatchSuggestion = useMemo(() => {
-        if (isValidElement(optionText)) {
-            return choices.some(choice => matchSuggestion(filterValue, choice));
+        let selectedItemTexts = [];
+
+        if (multiple) {
+            selectedItemTexts = selectedItem.map(item => getOptionLabel(item));
+        } else {
+            selectedItemTexts = [getOptionLabel(selectedItem)];
         }
 
-        const isFunction = typeof optionText === 'function';
-
-        if (isFunction) {
-            const hasOption = choices.some(choice => {
-                const text = optionText(choice) as string;
-
-                return get(choice, text) === filterValue;
-            });
-
-            const selectedItemText = optionText(selectedItem);
-
-            return hasOption || selectedItemText === filterValue;
-        }
-
-        const selectedItemText = get(selectedItem, optionText);
         const hasOption = !!choices
-            ? choices.some(choice => {
-                  return get(choice, optionText) === filterValue;
-              })
+            ? choices.some(choice => getOptionLabel(choice) === filterValue)
             : false;
 
-        return selectedItemText === filterValue || hasOption;
-    }, [choices, optionText, filterValue, matchSuggestion, selectedItem]);
+        return selectedItemTexts.includes(filterValue) || hasOption;
+    }, [choices, getOptionLabel, filterValue, multiple, selectedItem]);
 
     const filterOptions = (options, params) => {
         const { inputValue } = params;
@@ -369,6 +404,26 @@ If you provided a React element for the optionText prop, you must also provide t
                         variant={variant}
                     />
                 )}
+                multiple={multiple}
+                renderTags={(value, getTagProps) =>
+                    value.map((option, index) => (
+                        <Chip
+                            label={
+                                isValidElement(optionText)
+                                    ? inputText(option)
+                                    : getChoiceText(option)
+                            }
+                            sx={{
+                                '.MuiSvgIcon-root': {
+                                    // FIXME: Workaround to allow choices deletion
+                                    // Maybe related to storybook and mui using different versions of emotion
+                                    zIndex: 100,
+                                },
+                            }}
+                            {...getTagProps({ index })}
+                        />
+                    ))
+                }
                 {...options}
                 freeSolo={!!create || !!onCreate}
                 selectOnFocus={!!create || !!onCreate}
@@ -413,4 +468,16 @@ export interface AutocompleteInputProps
         Omit<SupportCreateSuggestionOptions, 'handleChange' | 'optionText'> {
     isFetching?: boolean;
     isLoading?: boolean;
+    multiple?: boolean;
 }
+
+const getSelectedItems = (choices = [], value, optionValue, multiple) => {
+    if (multiple) {
+        return choices.filter(choice =>
+            value.includes(get(choice, optionValue))
+        );
+    }
+    return choices.find(choice => get(choice, optionValue) === value) || '';
+};
+
+const DefaultSetFilter = () => {};

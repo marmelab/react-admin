@@ -26,7 +26,6 @@ import { useTranslate } from '../i18n';
  */
 const useSuggestions = ({
     allowCreate,
-    allowDuplicates,
     allowEmpty,
     choices,
     createText = 'ra.action.create',
@@ -52,7 +51,6 @@ const useSuggestions = ({
     const getSuggestions = useCallback(
         getSuggestionsFactory({
             allowCreate,
-            allowDuplicates,
             allowEmpty,
             choices,
             createText,
@@ -70,7 +68,6 @@ const useSuggestions = ({
         }),
         [
             allowCreate,
-            allowDuplicates,
             allowEmpty,
             choices,
             createText,
@@ -167,7 +164,6 @@ const defaultMatchSuggestion = getChoiceText => (
  */
 export const getSuggestionsFactory = ({
     allowCreate = false,
-    allowDuplicates = false,
     allowEmpty = false,
     choices = [],
     createText = 'ra.action.create',
