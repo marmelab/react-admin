@@ -131,11 +131,12 @@ const BookShow = () => {
 
 ## `<SimpleShowLayout>` Displays Fields In A Stack
 
-Displaying a stack of fields with a label in a Card is such a common task that react-admin provides a helper component for that. It's called [`<SimpleShowLayout>`](./SimpleShowLayout.md):
+Displaying a stack of fields with a label is such a common task that react-admin provides a helper component for that. It's called [`<SimpleShowLayout>`](./SimpleShowLayout.md):
 
 ```jsx
 import { useParams } from 'react-router-dom';
 import { useGetOne, useRedirect, RecordContextProvider, SimpleShowLayout, Title, TextField, DateField } from 'react-admin';
+import { Card } from '@mui/material';
 
 const BookShow = () => {
     const { id } = useParams();
@@ -149,10 +150,12 @@ const BookShow = () => {
         <RecordContextProvider value={data}>
             <div>
                 <Title title="Book Show" />
-                <SimpleShowLayout>
-                    <TextField label="Title" source="title" />
-                    <DateField label="Publication Date" source="published_at" />
-                </SimpleShowLayout>
+                <Card>
+                    <SimpleShowLayout>
+                        <TextField label="Title" source="title" />
+                        <DateField label="Publication Date" source="published_at" />
+                    </SimpleShowLayout>
+                </Card>
             </div>
         </RecordContextProvider>
     );
@@ -167,6 +170,7 @@ The initial logic that grabs the id from the location and fetches the record fro
 
 ```jsx
 import { useShowController, SimpleShowLayout, Title, TextField, DateField } from 'react-admin';
+import { Card } from '@mui/material';
 
 const BookShow = () => {
     const { data } = useShowController();
@@ -174,10 +178,12 @@ const BookShow = () => {
         <RecordContextProvider value={data}>
             <div>
                 <Title title="Book Show" />
-                <SimpleShowLayout>
-                    <TextField label="Title" source="title" />
-                    <DateField label="Publication Date" source="published_at" />
-                </SimpleShowLayout>
+                <Card>
+                    <SimpleShowLayout>
+                        <TextField label="Title" source="title" />
+                        <DateField label="Publication Date" source="published_at" />
+                    </SimpleShowLayout>
+                </Card>
             </div>
         </RecordContextProvider>
     );
@@ -192,15 +198,18 @@ As calling the Show controller and putting its result into a context is also com
 
 ```jsx
 import { ShowBase, SimpleShowLayout, Title, TextField, DateField } from 'react-admin';
+import { Card } from '@mui/material';
 
 const BookShow = () => (
     <ShowBase>
         <div>
             <Title title="Book Show" />
-            <SimpleShowLayout>
-                <TextField label="Title" source="title" />
-                <DateField label="Publication Date" source="published_at" />
-            </SimpleShowLayout>
+            <Card>
+                <SimpleShowLayout>
+                    <TextField label="Title" source="title" />
+                    <DateField label="Publication Date" source="published_at" />
+                </SimpleShowLayout>
+            </Card>
         </div>
     </ShowBase>
 );
@@ -208,7 +217,7 @@ const BookShow = () => (
 
 ## `<Show>` Renders Title, Fields, And Actions
 
-`<ShowBase>` is a headless component: it renders only its children. But almost every show view needs a wrapping `<div>` and a title. That's why react-admin provides [the `<Show>` component](./Show.md), which includes the `<ShowBase>` component, a title build from the resource name, and even an "Edit" button if the resource has an edit component:
+`<ShowBase>` is a headless component: it renders only its children. But almost every show view needs a wrapping `<div>`, a title, and a `<Card>`. That's why react-admin provides [the `<Show>` component](./Show.md), which includes the `<ShowBase>` component, a title built from the resource name, and even an "Edit" button if the resource has an edit component:
 
 ```jsx
 import { Show, SimpleShowLayout, TextField, DateField } from 'react-admin';
@@ -313,38 +322,36 @@ In many cases, neither the `<SimpleShowLayout>` nor the `<TabbedShowLayout>` com
 
 For instance, to display several fields in a single line, you can use material-ui's `<Grid>` component:
 
+{% raw %}
 ```jsx
 import { Show, SimpleShowLayout, TextField, DateField, ReferenceField } from 'react-admin';
-import { Card, CardContent, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 
 const BookShow = () => (
     <Show emptyWhileLoading>
-        <Card>
-            <CardContent>
-                <Grid container spacing={2}>
-                    <Grid item xs={12} sm={6}>
-                        <TextField label="Title" source="title" />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <ReferenceField label="Author" source="author_id" reference="authors">
-                            <TextField source="name" />
-                        </ReferenceField>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <DateField label="Publication Date" source="published_at" />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <WithRecord label="Rating" render={record => <>
-                            {[...Array(record.rating)].map((_, index) => <StarIcon key={index} />)}
-                        </>} />
-                    </Grid>
-                </Grid>
-            </CardContent>
-        </Card>
+        <Grid container spacing={2} sx={{ margin: 2 }}>
+            <Grid item xs={12} sm={6}>
+                <TextField label="Title" source="title" />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+                <ReferenceField label="Author" source="author_id" reference="authors">
+                    <TextField source="name" />
+                </ReferenceField>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+                <DateField label="Publication Date" source="published_at" />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+                <WithRecord label="Rating" render={record => <>
+                    {[...Array(record.rating)].map((_, index) => <StarIcon key={index} />)}
+                </>} />
+            </Grid>
+        </Grid>
     </Show>
 );
 ```
+{% endraw %}
 
 **Tip**: With `emptyWhileLoading` turned on, the `<Show>` component doesn't render its child component until the record is available. Without this flag, the Field components would render even during the loading phase, and may break if they aren't planned to work with an empty record context. You could grab the `isLoading` state from the `ShowContext` instead, but that would force you to split the `<BookShow>` component into two.  
 
@@ -356,7 +363,7 @@ import StarIcon from '@mui/icons-material/Star';
 
 const BookShow = () => (
     <Show emptyWhileLoading>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} sx={{ margin: 2 }}>
             <Grid item xs={12} sm={8}>
                 <SimpleShowLayout>
                     <TextField label="Title" source="title" />

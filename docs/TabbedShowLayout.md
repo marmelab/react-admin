@@ -5,7 +5,7 @@ title: "TabbedShowLayout"
 
 # `<TabbedShowLayout>`
 
-The `<TabbedShowLayout>` pulls the `record` from the `RecordContext`. It renders a material-ui `<Card>` containing a set of `<Tabs>`, each of which contains a list of record fields in a single-column layout (via material-ui's `<Stack>` component). `<TabbedShowLayout>` delegates the actual rendering of fields to its children, which should be `<Tab>` components. `<Tab>`  wraps each field inside a `<FieldWithLabel>` component to add a label.
+The `<TabbedShowLayout>` pulls the `record` from the `RecordContext`. It renders a set of `<Tabs>`, each of which contains a list of record fields in a single-column layout (via material-ui's `<Stack>` component). `<TabbedShowLayout>` delegates the actual rendering of fields to its children, which should be `<Tab>` components. `<Tab>`  wraps each field inside a `<FieldWithLabel>` component to add a label.
 
 Switching tabs will update the current url. By default, it uses the tabs indexes and the first tab will be displayed at the root url. You can customize the path by providing a `path` prop to each `Tab` component. If you'd like the first one to act as an index page, just omit the `path` prop.
 
@@ -56,7 +56,6 @@ export const PostShow = () => (
 
 * [`children`](#tabs): components rendering a tab
 * `className`: passed to the root component
-* [`component`](#root-component): overrides the root component
 * [`divider`](#divider): optional element to render between each field
 * [`record`](#controlled-mode): can be injected when outside a RecordContext 
 * [`spacing`](#spacing): optional integer to set the spacing between the fields
@@ -64,7 +63,7 @@ export const PostShow = () => (
 * [`syncWithLocation`](#sync-tabs-with-location): optional boolean to disable storing the active tab in the url
 * [`tabs`](#custom-tab-component): custom Tabs component
 
-Additional props are passed to the root component (`<Card>`).
+Additional props are passed to the root component (`<div>`).
 
 ## Tabs
 
@@ -222,23 +221,6 @@ const PostShow = () => (
         <TabbedShowLayout divider={<Divider flexItem />}>
             <Tab label="main">
                 <PostTitle label="title" />
-            </Tab>
-        </TabbedShowLayout>
-    </Show>
-);
-```
-
-## Root Component
-
-By default, `<TabbedShowLayout>` view renders the main content area inside a material-ui `<Card>`. You can override the main area container by passing a `component` prop:
-
-```jsx
-// use a div as root component
-const PostShow = () => (
-    <Show>
-        <TabbedShowLayout component="div">
-            <Tab label="main">
-                <TextField source="title" />
             </Tab>
         </TabbedShowLayout>
     </Show>

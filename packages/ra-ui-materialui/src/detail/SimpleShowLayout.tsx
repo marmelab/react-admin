@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Children, isValidElement, ReactNode, ElementType } from 'react';
+import { Children, isValidElement, ReactNode } from 'react';
 import { styled } from '@mui/material/styles';
-import { Card, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { ResponsiveStyleValue, SxProps } from '@mui/system';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
@@ -15,9 +15,8 @@ import { FieldWithLabel } from './FieldWithLabel';
 /**
  * Layout for a Show view showing fields in one column.
  *
- * It pulls the record from the RecordContext. It renders a material-ui `<Card>`
- * containing the record fields in a single-column layout (via material-ui's
- * `<Stack>` component).
+ * It pulls the record from the RecordContext. It renders the record fields in
+ * a single-column layout (via material-ui's `<Stack>` component).
  * `<SimpleShowLayout>` delegates the actual rendering of fields to its children.
  * It wraps each field inside a `<Labeled>` component to add a label.
  *
@@ -54,21 +53,14 @@ import { FieldWithLabel } from './FieldWithLabel';
  * @param {Object} props.sx Custom style object.
  */
 export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
-    const {
-        className,
-        children,
-        component: Component = Root,
-        divider,
-        spacing = 1,
-        ...rest
-    } = props;
+    const { className, children, divider, spacing = 1, ...rest } = props;
     const record = useRecordContext(props);
     if (!record) {
         return null;
     }
     return (
         <OptionalRecordContextProvider value={props.record}>
-            <Component className={className} {...sanitizeRestProps(rest)}>
+            <Root className={className} {...sanitizeRestProps(rest)}>
                 <Stack
                     spacing={spacing}
                     divider={divider}
@@ -91,7 +83,7 @@ export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
                         ) : null
                     )}
                 </Stack>
-            </Component>
+            </Root>
         </OptionalRecordContextProvider>
     );
 };
@@ -99,7 +91,6 @@ export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
 export interface SimpleShowLayoutProps {
     children: ReactNode;
     className?: string;
-    component?: ElementType;
     divider?: ReactNode;
     record?: Record;
     spacing?: ResponsiveStyleValue<number | string>;
@@ -109,7 +100,6 @@ export interface SimpleShowLayoutProps {
 SimpleShowLayout.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
-    component: PropTypes.elementType,
     record: PropTypes.object,
     spacing: PropTypes.any,
     sx: PropTypes.any,
@@ -122,7 +112,7 @@ export const SimpleShowLayoutClasses = {
     row: `${PREFIX}-row`,
 };
 
-const Root = styled(Card, { name: PREFIX })(({ theme }) => ({
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
     flex: 1,
     padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
     [`& .${SimpleShowLayoutClasses.stack}`]: {},
@@ -132,8 +122,6 @@ const Root = styled(Card, { name: PREFIX })(({ theme }) => ({
 }));
 
 const sanitizeRestProps = ({
-    children,
-    className,
     record,
     resource,
     basePath,
