@@ -81,6 +81,7 @@ const ListActions = (props: ListActionsProps) => {
                 )}
             </TopToolbar>
         ),
+        /* eslint-disable react-hooks/exhaustive-deps */
         [
             resource,
             displayedFilters,
@@ -93,7 +94,7 @@ const ListActions = (props: ListActionsProps) => {
             currentSort,
             exporter,
             hasCreate,
-        ] // eslint-disable-line react-hooks/exhaustive-deps
+        ]
     );
 };
 
