@@ -1,5 +1,18 @@
 # Changelog
 
+# v3.19.4
+
+* Fix list `<FilterButton>` is not accessible ([#6967](https://githu.com/marmelab/react-admin/pull/6967)) ([WiXSL](https://github.com/WiXSL))
+* Fix incorrect `exporter` when switching resource ([#6989](https://githu.com/marmelab/react-admin/pull/6989)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<ArrayField>` doesn't accept `<SimpleList>` as child ([#6975](https://githu.com/marmelab/react-admin/pull/6975)) ([Luwangel](https://github.com/Luwangel))
+* Fix unit tests require build first ([#6983](https://githu.com/marmelab/react-admin/pull/6983)) ([WiXSL](https://github.com/WiXSL))
+* [TypeScript] Fix `<SimpleList toolbar>` doesn't allow `false` value ([#6969](https://githu.com/marmelab/react-admin/pull/6969)) ([ZachSelindh](https://github.com/ZachSelindh))
+* [TypeScript] Fix `ToolbarProps` to be compatible with `FormWithRedirectOwnProps` definition ([#6994](https://githu.com/marmelab/react-admin/pull/6994)) ([WiXSL](https://github.com/WiXSL))
+* [TypeScript] Fix missing definition for `<ReferenceFieldController label>` prop ([#6745](https://githu.com/marmelab/react-admin/pull/6745)) ([kevinmamaqi](https://github.com/kevinmamaqi))
+* [TypeScript] Fix `<ArrayInput>` proptype definition ([#6617](https://githu.com/marmelab/react-admin/pull/6617)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix typo in `<Tab>` jsDoc ([#6959](https://githu.com/marmelab/react-admin/pull/6959)) ([erakli](https://github.com/erakli))
+* [Demo] Fix `<SelectInput label>` is overridden in simple project ([#6920](https://githu.com/marmelab/react-admin/pull/6920)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.19.3
 
 * Fix `<ArrayInput>` issue with `initialValue` ([#6932](https://github.com/marmelab/react-admin/pull/6932)) ([djhi](https://github.com/djhi))
