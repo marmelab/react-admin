@@ -113,7 +113,7 @@ describe('<Show />', () => {
 
     it('should allow to display custom actions with the actions prop', () => {
         render(<Actions />);
-        expect(screen.getByText('Actions')).toBeDefined();
+        expect(screen.getByText('Edit')).toBeDefined();
     });
 
     it('should display a default title based on resource and id', async () => {

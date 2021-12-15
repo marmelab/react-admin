@@ -45,7 +45,7 @@ React-admin Field components also accept a `record` prop. This allows you to use
 // { id: 123, title: "Hello, world", author: "John Doe", body: "..." }
 
 const PostShow = ({ id }) => {
-    const { data, isLoading } = useGetOne('books', id);
+    const { data, isLoading } = useGetOne('books', { id });
     if (isLoading) return <span>Loading</span>; 
     return (
         <dl>
@@ -1621,7 +1621,7 @@ import { Link } from 'react-router-dom';
 
 const AuthorField = () => {
     const post = useRecordContext(props);
-    const { data, isLoading } = useGetOne('users', post.user_id);
+    const { data, isLoading } = useGetOne('users', { id: post.user_id });
     const userShowPage = linkToRecord('/users', post.user_id, 'show');
 
     return isLoading ? null : <Link to={userShowPage}>{data.username}</Link>;

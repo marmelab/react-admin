@@ -11,7 +11,7 @@ The `<Show>` component handles the logic of the Show page:
 - it computes the default page title
 - it creates a `ShowContext` and a `RecordContext`,
 - it renders the page layout with the correct title and actions
-- it renders its child component (a show layout component like `<SimpleShowLayout>`)
+- it renders its child component (a show layout component like `<SimpleShowLayout>`) in a Material-ui `<Card>`
 
 ## Usage
 
@@ -56,6 +56,7 @@ That's enough to display the post show view:
 ## Props
 
 * [`actions`](#actions): override the actions toolbar with a custom component
+* [`aside`](#aside): A component to render as a sidebar of the show view
 * `className`: passed to the root component
 * [`children`](#layout): the components that render the record fields
 * [`component`](#root-component): overrides the root component
@@ -92,7 +93,7 @@ export const PostShow = () => (
 );
 ```
 
-You can also pass React elements as children, so as to build a custom layout. Check [Building a custom Show Layout](./ShowTutorial.md#building-a-custom-layout) for more details.
+You can also pass a React element as child, so as to build a custom layout. Check [Building a custom Show Layout](./ShowTutorial.md#building-a-custom-layout) for more details.
 
 ## Page Title
 
@@ -249,20 +250,28 @@ const PostShow = () => (
 
 ## Root Component
 
-By default, the Show view renders the main content area inside a `<div>`. The actual layout of the record fields depends on the Show Layout component you're using (`<SimpleShowLayout>`, `<TabbedShowLayout>`, or a custom layout component).
+By default, the Show view renders the main content area inside a material-ui `<Card>`. The actual layout of the record fields depends on the Show Layout component you're using (`<SimpleShowLayout>`, `<TabbedShowLayout>`, or a custom layout component).
 
 You can override the main area container by passing a `component` prop:
 
+{% raw %}
 ```jsx
-import { Card } from '@mui/material';
+import { Box } from '@mui/material';
 
-// use a Card as root component
+const ShowWrapper = ({ children }) => (
+    <Box sx={{ margin: 2, border: 'solid 1px grey' }}>
+        {children}
+    </Box>
+);
+
+// use a ShowWrapper as root component
 const PostShow = props => (
-    <Show component={Card} {...props}>
+    <Show component={ShowWrapper} {...props}>
         ...
     </Show>
 );
 ```
+{% endraw %}
 
 ## CSS API
 
@@ -272,6 +281,7 @@ The `<Show>` component accepts the usual `className` prop but you can override m
 | ---------------- | ------------------------------------------------------------- |
 | `&.RaShow-root`  | Alternative to using `className`. Applied to the root element |
 | `& .RaShow-main` | Applied to the main container                                 |
+| `& .RaShow-card` | Applied to the `<Card>` element                               |
 
 Here's an example of how to override the default styles:
 

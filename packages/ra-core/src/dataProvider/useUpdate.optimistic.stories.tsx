@@ -41,7 +41,7 @@ export const SuccessCase = () => {
 const SuccessCore = () => {
     const isMutating = useIsMutating();
     const [success, setSuccess] = useState<string>();
-    const { data, refetch } = useGetOne('posts', 1);
+    const { data, refetch } = useGetOne('posts', { id: 1 });
     const [update, { isLoading }] = useUpdate();
     const handleClick = () => {
         update(
@@ -109,7 +109,7 @@ const ErrorCore = () => {
     const isMutating = useIsMutating();
     const [success, setSuccess] = useState<string>();
     const [error, setError] = useState<any>();
-    const { data, refetch } = useGetOne('posts', 1);
+    const { data, refetch } = useGetOne('posts', { id: 1 });
     const [update, { isLoading }] = useUpdate();
     const handleClick = () => {
         update(

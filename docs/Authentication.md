@@ -370,7 +370,7 @@ React-admin uses the `fullName` and the `avatar` (an image source, or a data-uri
 import { useGetIdentity, useGetOne } from 'react-admin';
 
 const PostDetail = ({ id }) => {
-    const { data: post, isLoading: postLoading } = useGetOne('posts', id);
+    const { data: post, isLoading: postLoading } = useGetOne('posts', { id });
     const { identity, loading: identityLoading } = useGetIdentity();
     if (postLoading || identityLoading) return <>Loading...</>;
     if (!post.lockedBy || post.lockedBy === identity.id) {
@@ -799,7 +799,7 @@ Here is an example Edit component, which falls back to a Show component is the r
 import { useGetIdentity, useGetOne } from 'react-admin';
 
 const PostDetail = ({ id }) => {
-    const { data: post, isLoading: postLoading } = useGetOne('posts', id);
+    const { data: post, isLoading: postLoading } = useGetOne('posts', { id });
     const { identity, loading: identityLoading } = useGetIdentity();
     if (postLoading || identityLoading) return <>Loading...</>;
     if (!post.lockedBy || post.lockedBy === identity.id) {
@@ -814,7 +814,7 @@ const PostDetail = ({ id }) => {
 
 ### `usePermissions()` Hook
 
-You might want to check user permissions inside a [custom page](./Admin.md#customroutes). That's the purpose of the `usePermissions()` hook, which calls the `authProvider.getPermissions()` method on mount, and returns the result when available:
+You might want to check user permissions inside a [custom page](./Admin.md#adding-custom-pages). That's the purpose of the `usePermissions()` hook, which calls the `authProvider.getPermissions()` method on mount, and returns the result when available:
 
 ```jsx
 // in src/MyPage.js

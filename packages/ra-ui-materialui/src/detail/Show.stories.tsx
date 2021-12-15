@@ -2,10 +2,12 @@ import * as React from 'react';
 import { Admin } from 'react-admin';
 import { Resource, useRecordContext } from 'ra-core';
 import { createMemoryHistory } from 'history';
-import { Stack, Card } from '@mui/material';
+import { Box, Card, Stack } from '@mui/material';
 import { TextField } from '../field';
 import { Labeled } from '../input';
 import { SimpleShowLayout } from './SimpleShowLayout';
+import { EditButton } from '../button';
+import TopToolbar from '../layout/TopToolbar';
 import { Show } from './Show';
 
 export default { title: 'ra-ui-materialui/detail/Show' };
@@ -45,23 +47,20 @@ export const Basic = () => (
 
 const PostShowWithFields = () => (
     <Show>
-        <Card sx={{ padding: 2, flex: 1 }}>
-            <Stack spacing={2}>
-                <Labeled label="Title">
-                    <TextField source="title" />
-                </Labeled>
-                <Labeled label="Author">
-                    <TextField source="author" />
-                </Labeled>
-                <Labeled label="Summary">
-                    <TextField source="summary" />
-                </Labeled>
-                <Labeled label="Year">
-                    <TextField source="year" />
-                </Labeled>
-            </Stack>
-        </Card>
-        <Card sx={{ width: 100, marginLeft: '1em' }}>Sidebar</Card>
+        <Stack spacing={2} sx={{ padding: 2 }}>
+            <Labeled label="Title">
+                <TextField source="title" />
+            </Labeled>
+            <Labeled label="Author">
+                <TextField source="author" />
+            </Labeled>
+            <Labeled label="Summary">
+                <TextField source="summary" />
+            </Labeled>
+            <Labeled label="Year">
+                <TextField source="year" />
+            </Labeled>
+        </Stack>
     </Show>
 );
 
@@ -72,7 +71,13 @@ export const WithFields = () => (
 );
 
 const PostShowWithCustomActions = () => (
-    <Show actions={<Card>Actions</Card>}>
+    <Show
+        actions={
+            <TopToolbar>
+                <EditButton />
+            </TopToolbar>
+        }
+    >
         <BookTitle />
     </Show>
 );
@@ -95,10 +100,27 @@ export const Title = () => (
     </Admin>
 );
 
+const AsideComponent = () => <Card sx={{ padding: 2 }}>Aside</Card>;
+
+const PostShowWithAside = () => (
+    <Show aside={<AsideComponent />}>
+        <BookTitle />
+    </Show>
+);
+
+export const Aside = () => (
+    <Admin dataProvider={dataProvider} history={history}>
+        <Resource name="books" show={PostShowWithAside} />
+    </Admin>
+);
+
 const CustomWrapper = ({ children }) => (
-    <Card sx={{ padding: 2, width: 200 }} data-testid="custom-component">
+    <Box
+        sx={{ padding: 2, width: 200, border: 'solid 1px black' }}
+        data-testid="custom-component"
+    >
         {children}
-    </Card>
+    </Box>
 );
 
 const PostShowWithComponent = () => (

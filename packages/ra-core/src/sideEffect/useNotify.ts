@@ -29,7 +29,7 @@ const useNotify = () => {
             message: string,
             type?:
                 | NotificationType
-                | (NotificationOptions & { type: NotificationType }),
+                | (NotificationOptions & { type?: NotificationType }),
             messageArgs: any = {},
             undoable: boolean = false,
             autoHideDuration?: number,
@@ -53,7 +53,7 @@ const useNotify = () => {
                     )
                 );
             } else {
-                const { type: messageType, ...options } = type || {};
+                const { type: messageType = 'info', ...options } = type || {};
                 dispatch(showNotification(message, messageType, options));
             }
         },
