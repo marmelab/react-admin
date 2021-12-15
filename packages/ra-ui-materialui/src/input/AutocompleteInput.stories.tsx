@@ -58,6 +58,7 @@ const BookEdit = () => {
                     source="author"
                     choices={choices}
                     validate={required()}
+                    fullWidth
                 />
             </SimpleForm>
         </Edit>
@@ -92,6 +93,7 @@ const BookEditCustomText = () => {
                     source="author"
                     optionText="fullName"
                     choices={choices}
+                    fullWidth
                 />
             </SimpleForm>
         </Edit>
@@ -126,6 +128,7 @@ const BookEditCustomTextFunction = () => {
                     source="author"
                     optionText={choice => choice?.fullName}
                     choices={choices}
+                    fullWidth
                 />
             </SimpleForm>
         </Edit>
@@ -163,21 +166,21 @@ const BookEditCustomOptions = () => {
         >
             <SimpleForm>
                 <AutocompleteInput
+                    fullWidth
                     source="author"
                     optionText={<CustomOption />}
-                    inputText={record =>
-                        `${record.fullName} (${record.language})`
-                    }
+                    inputText={record => record.fullName}
                     matchSuggestion={(searchText, record) => {
                         const searchTextLower = searchText.toLowerCase();
-                        return (
+                        const match =
                             record.fullName
                                 .toLowerCase()
                                 .includes(searchTextLower) ||
                             record.language
                                 .toLowerCase()
-                                .includes(searchTextLower)
-                        );
+                                .includes(searchTextLower);
+
+                        return match;
                     }}
                     choices={choices}
                 />
@@ -227,6 +230,7 @@ const BookEditWithCreationSupport = () => (
                         return newAuthor;
                     }
                 }}
+                fullWidth
             />
         </SimpleForm>
     </Edit>
@@ -314,7 +318,7 @@ const BookEditWithReference = () => (
         }}
     >
         <SimpleForm>
-            <ReferenceInput reference="authors" source="author">
+            <ReferenceInput reference="authors" source="author" fullWidth>
                 <AutocompleteInput />
             </ReferenceInput>
         </SimpleForm>
@@ -395,7 +399,7 @@ const BookEditWithReferenceAndCreationSupport = () => (
         }}
     >
         <SimpleForm>
-            <ReferenceInput reference="authors" source="author">
+            <ReferenceInput reference="authors" source="author" fullWidth>
                 <AutocompleteInput
                     create={<CreateAuthor />}
                     options={{
