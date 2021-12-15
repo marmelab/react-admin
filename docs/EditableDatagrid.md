@@ -27,6 +27,12 @@ import {
 } from 'react-admin';
 import { EditableDatagrid, RowForm } from '@react-admin/ra-editable-datagrid';
 
+const professionChoices = [
+    { id: 'actor', name: 'Actor' },
+    { id: 'singer', name: 'Singer' },
+    { id: 'other', name: 'Other' },
+];
+
 const ArtistList = () => (
     <List hasCreate empty={false}>
         <EditableDatagrid

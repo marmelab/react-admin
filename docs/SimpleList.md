@@ -10,7 +10,7 @@ title: "The SimpleList Component"
 For mobile devices, a `<Datagrid>` is often unusable - there is simply not enough space to display several columns. The convention in that case is to use a simple list, with only one column per row. The `<SimpleList>` component serves that purpose, leveraging [material-ui's `<List>` and `<ListItem>` components](https://mui.com/components/lists/). 
 
 `<SimpleList>` is an **iterator** component: it gets an array of ids and a data store from the `ListContext`, and iterates over the ids to display each record.
-    
+
 ## Usage
 
 You can use `<SimpleList>` as `<List>` or `<ReferenceManyField>` child. You must set at least the `primaryText` prop, and it should be a function returning the text to render for each list item.
@@ -79,7 +79,12 @@ Setting the `linkType` prop to `false` (boolean, not string) removes the link in
 The `primaryText`, `secondaryText` and `tertiaryText` functions can be either a function returning a string, or a React element. This means you can use any react-admin field, including reference fields:
 
 ```jsx
-import { List, SimpleList } from 'react-admin';
+import {
+    List,
+    ReferenceField,
+    SimpleList,
+    TextField,
+} from 'react-admin';
 
 export const PostList = () => (
     <List>
@@ -138,7 +143,7 @@ To use `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use
 
 ```jsx
 import { useMediaQuery } from '@mui/material';
-import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
+import { List, SimpleList, Datagrid } from 'react-admin';
 
 export const PostList = props => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));

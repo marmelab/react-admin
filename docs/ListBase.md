@@ -53,14 +53,14 @@ This custom List component has no aside component - it's up to you to add it in 
 The `<ListBase>` component accepts the same props as [`useListController`](./useListController.md):
 
 * [`debounce`](./List.md#debounce)
-* [`disableAuthentication`](./List.md#disableAuthentication)
-* [`disableSyncWithLocation`](./List.md#disableSyncWithLocation)
+* [`disableAuthentication`](./List.md#disableauthentication)
+* [`disableSyncWithLocation`](./List.md#disablesyncwithlocation)
 * [`exporter`](./List.md#exporter)
 * [`filter`](./List.md#filter-permanent-filter)
-* [`filterDefaultValues`](./List.md#filterDefaultValues)
+* [`filterDefaultValues`](./List.md#filterdefaultvalues)
 * [`perPage`](./List.md#perpage-pagination-size)
-* [`queryOptions`](./List.md#queryOptions)
+* [`queryOptions`](./List.md#queryoptions)
 * [`resource`](./List.md#resource)
-* [`sort`](./List.md#sort-default-sort-field-order)
+* [`sort`](./List.md#sort-default-sort-field--order)
 
 These are a subset of the props accepted by `<List>` - only the props that change data fetching, and not the props related to the user interface.

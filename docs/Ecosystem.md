@@ -17,7 +17,7 @@ title: "Ecosystem"
 
 ## List Related Components
 
-See the [List](./List.md#third-party-components) page.
+See the [List](./ListTutorial.md#third-party-components) page.
 
 ## Show Related Components
 

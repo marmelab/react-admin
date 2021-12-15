@@ -191,7 +191,7 @@ export const BookList = () => (
 );
 ```
 
-You can also pass React elements as children, to build a custom layout. Check [Building a custom List Layout](./ListTutorial.md#building-a-custom-layout) for more details.
+You can also pass React elements as children, to build a custom iterator. Check [Building a custom List Iterator](./ListTutorial.md#building-a-custom-iterator) for more details.
 
 ## `component`
 
@@ -626,13 +626,24 @@ const PostList = () => {
 
 The `onError` function receives the error from the dataProvider call (`dataProvider.getList()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
 
+## `resource`
+
+By default, `<List>` operates on the current `ResourceContext` (defined at the routing level), so under the `/posts` path, the `resource` prop will be `posts`. You may want to force a different resource for a list. In this case, pass a custom `resource` prop, and it will override the `ResourceContext` value.
+
+```jsx
+export const UsersList = () => (
+    <List sresource="users">
+        ...
+    </List>
+);
+```
+
 ## `sort`: Default Sort Field & Order
 
 Pass an object literal as the `sort` prop to determine the default `field` and `order` used for sorting:
 
 {% raw %}
 ```jsx
-// in src/posts.js
 export const PostList = () => (
     <List sort={{ field: 'published_at', order: 'DESC' }}>
         ...
@@ -650,7 +661,6 @@ For more details on list sort, see the [Sorting The List](#sorting-the-list) sec
 The default title for a list view is "[resource] list" (e.g. "Posts list"). Use the `title` prop to customize the List view title:
 
 ```jsx
-// in src/posts.js
 export const PostList = () => (
     <List title="List of posts">
         ...
@@ -670,7 +680,6 @@ The `List` component accepts the usual `className` prop but you can override man
 | `& .RaList-actions`              | Applied to the actions container                                                         |
 | `& .RaList-main`                 | Applied to the main container                                                            |
 | `& .RaList-content`              | Applied to the child component inside the main container                                 |
-| `& .RaList-bulkActionsDisplayed` | Applied to the child component inside the main container when there are selected records |
 | `& .RaList-noResults`            | Applied to the component shown when there is no result                                   |
 
 Here is an example:

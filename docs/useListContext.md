@@ -95,12 +95,12 @@ const {
 
 You can find many usage examples of `useListContext` in the documentation, including:
 
-- [Adding a Side Component with `<List actions>`](./List.md#aside-aside-component)
+- [Adding a Side Component with `<List actions>`](./List.md#aside-side-component)
 - [Building a Custom Actions Bar via `<List actions>`](./List.md#actions)
 - [Building a Custom Empty Page  via `<List empty>`](./List.md#empty-empty-page-component)
-- [Building a Custom Filter](./FilterTutorial.md#building-a-custom-filter)
+- [Building a Custom Filter](./FilteringTutorial.md#building-a-custom-filter)
 - [Building a Custom Sort Control](./ListTutorial.md#building-a-custom-sort-control)
-- [Building a Custom Pagination Control](./ListTutorial.md#building-a-custom-pagination-control)
-- [Building a Custom Iterator](./ListTutorial.md#using-a-custom-iterator)
+- [Building a Custom Pagination Control](./ListTutorial.md#building-a-custom-pagination)
+- [Building a Custom Iterator](./ListTutorial.md#building-a-custom-iterator)
 
 **Tip**: [`<ReferenceManyField>`](./Fields.md#referencemanyfield), as well as other relationship-related components, also implement a `ListContext`. That means you can use a `<Datagrid>` of a `<Pagination>` inside these components!

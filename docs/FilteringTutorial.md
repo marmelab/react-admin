@@ -25,7 +25,7 @@ React-admin proposes several UI components to let users see and modify filters, 
 
 - The Filter Button/Form Combo
   - [Usage](#the-filter-buttonform-combo)
-  - [Full-Text Search](#full-text-search)
+  - [Full-Text Search](#search-input)
   - [Quick Filters](#quick-filters)
 - [The `<FilterList>` Sidebar](#the-filterlist-sidebar)
 - [Saved Queries: Let Users Save Filter And Sort](#saved-queries-let-users-save-filter-and-sort)

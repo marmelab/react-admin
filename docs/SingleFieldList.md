@@ -59,7 +59,7 @@ const PostList = () => (
 `<SingleFieldList>` accepts the following props:
 
 * [`linkType`](#linktype)
-* [`sx`](#sx)
+* [`sx`](#sx-css-api)
 
 ## `linkType`
 

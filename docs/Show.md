@@ -316,10 +316,10 @@ const PostShowActions = () => {
     );
 }
 
-export const PostShow = ({ permissions, ...props }) => {
+export const PostShow = () => {
     const permissions = usePermissions();
     return (
-        <Show actions={<PostShowActions />} {...props}>
+        <Show actions={<PostShowActions />}>
             <SimpleShowLayout>
                 <TextField source="title" />
                 <RichTextField source="body" />

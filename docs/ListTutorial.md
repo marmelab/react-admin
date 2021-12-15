@@ -377,7 +377,7 @@ The components you can use as child of `<List>` are called "List Iterator". They
 - [`<SimpleList>`](./SimpleList.md)
 - [`<SingleFieldList>`](./SingleFieldList.md)
 - [`<EditableDatagrid>`](./EditableDatagrid.md)
-- [`<TreeWithDetails>`](./Tree.md)
+- [`<TreeWithDetails>`](./TreeWithDetails.md)
 - [`<Calendar>`](./Calendar.md)
 
 If that's not enough, [building a custom iterator](#building-a-custom-iterator) isn't hard. 
@@ -489,7 +489,7 @@ sort=published_at
 order=DESC
 ```
 
-If you're using a `<Datagrid>` inside the List view, then the column headers are buttons allowing users to change the list sort field and order. This feature requires no configuration and works out fo the box. Check [the `<Datagrid>` documentation](./Datagrid.md#customizing-the-sort-order-for-columns) to see how to disable or modify the field used for sorting on a particular column.
+If you're using a `<Datagrid>` inside the List view, then the column headers are buttons allowing users to change the list sort field and order. This feature requires no configuration and works out fo the box. Check [the `<Datagrid>` documentation](./Datagrid.md#customizing-column-sort) to see how to disable or modify the field used for sorting on a particular column.
 
 ![Sort Column Header](./img/sort-column-header.gif)
 
@@ -623,7 +623,7 @@ export default SortButton;
 
 ## Building a Custom Pagination
 
-The [`<Pagination>`](./Pagination.md) component gets the following constants from [the `useListContext` hook](#uselistcontext):
+The [`<Pagination>`](./Pagination.md) component gets the following constants from [the `useListContext` hook](./useListContext.md):
 
 * `page`: The current page number (integer). First page is `1`.
 * `perPage`: The number of records per page.

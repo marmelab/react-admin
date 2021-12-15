@@ -160,7 +160,7 @@ const HasNewsletterFilter = () => (
 
 ## `icon`
 
-When set, the `<FilterList icon>` prop appears at the left side of the filter label.
+When set, the `<FilterList icon>` prop appears on the left side of the filter label.
 
 {% raw %}
 ```jsx

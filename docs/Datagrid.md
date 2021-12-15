@@ -35,7 +35,7 @@ You can find more advanced examples of `<Datagrid>` usage in the [demos](./Demos
 
 **Tip**: To let users hide or show columns at will, check the [`<SelectColumnsButton>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#selectcolumnsbutton-store-datagrid-columns-in-preferences)<img class="icon" src="./img/premium.svg" />, an [Enterprise Edition](https://marmelab.com/ra-enterprise) component.
 
-The `<Datagrid>` is an **iterator** component: it gets an array of records from the `ListContext`, and iterates to display each record in a row. Other examples of iterator component are [`<SimpleList>`](#the-simplelist-component) and [`<SingleFieldList>`](#the-singlefieldlist-component).
+The `<Datagrid>` is an **iterator** component: it gets an array of records from the `ListContext`, and iterates to display each record in a row. Other examples of iterator component are [`<SimpleList>`](./SimpleList.md) and [`<SingleFieldList>`](./SingleFieldList.md).
 
 ## Props
 
@@ -134,7 +134,7 @@ export const UserList = () => (
 
 `<Datagrid>` also inspects its children for `headerClassName` and `cellClassName` props, and gives the class names to the headers and the cells of that column. 
 
-Finally, `<Datagrid>` inspects children for props that indicate how it should be sorted (see [the Customizing The Sort Order For Columns section](#customizing-the-sort-order-for-columns)) below.
+Finally, `<Datagrid>` inspects children for props that indicate how it should be sorted (see [the Customizing The Sort Order For Columns section](#customizing-column-sort)) below.
 
 ## `bulkActionButtons`
 
@@ -506,7 +506,7 @@ const PostList = () => (
 );
 ```
 
-**Tip**: To handle sorting in your custom Datagrid header component, check out the [Building a custom sort control](./Sort.md#building-a-custom-sort-control) section.
+**Tip**: To handle sorting in your custom Datagrid header component, check out the [Building a custom sort control](./ListTutorial.md#building-a-custom-sort-control) section.
 
 ## `hover`
 

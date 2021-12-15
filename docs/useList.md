@@ -7,7 +7,7 @@ title: "useList"
 
 The `useList` hook allows to create a `ListContext` based on local data. `useList` creates callbacks for sorting, paginating, filtering, and selecting records from an array.
 
-Thanks to it, you can display your data inside a [`<Datagrid>`](#the-datagrid-component), a [`<SimpleList>`](#the-simplelist-component) or an [`<EditableDatagrid>`](#the-editabledatagrid-component). 
+Thanks to it, you can display your data inside a [`<Datagrid>`](./Datagrid.md), a [`<SimpleList>`](./SimpleList.md) or an [`<EditableDatagrid>`](./EditableDatagrid.md). 
 
 ## Usage
 
@@ -65,10 +65,10 @@ const MyComponent = () => {
 The `useGetList` parameter accepts the following options:
 
 * [`filter`](#filter)
-* [`isFetching`](#isFetching)
-* [`isLoading`](#isLoading)
+* [`isFetching`](#isfetching)
+* [`isLoading`](#isloading)
 * [`page`](#page)
-* [`perPage`](#perPage)
+* [`perPage`](#perpage)
 * [`sort`](#sort)
 
 ## `filter`
@@ -116,7 +116,13 @@ const MyComponent = () => {
 This value ends up in the return value. It is used by list iterators (like `<Datagrid>`) to know when to display a loading indicator.
 
 ```jsx
-import { useGetList, useList } from 'react-admin';
+import {
+    useGetList,
+    useList,
+    ListContextProvider,
+    Datagrid,
+    TextField
+} from 'react-admin';
 
 const MyComponent = () => {
     const { data, isLoading } = useGetList(

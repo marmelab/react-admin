@@ -16,13 +16,7 @@ This component allows users to browse, edit, and rearrange trees.
 ```jsx
 // in src/category.js
 import * as React from 'react';
-import {
-    Admin,
-    Resource,
-    Create,
-    Edit,
-    TextInput,
-} from 'react-admin';
+import { Admin, Resource, TextInput } from 'react-admin';
 import { CreateNode, EditNode, SimpleForm, TreeWithDetails } from '@react-admin/ra-tree';
 
 // a Create view for a tree uses <CreateNode> instead of the standard <Create>
