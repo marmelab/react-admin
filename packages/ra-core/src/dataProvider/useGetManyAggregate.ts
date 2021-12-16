@@ -70,16 +70,17 @@ export const useGetManyAggregate = <RecordType extends Record = Record>(
     return useQuery<RecordType[], Error, RecordType[]>(
         [resource, 'getMany', { ids: ids.map(id => String(id)) }],
         () =>
-            new Promise((resolve, reject) => {
-                callQueries({
+            new Promise((resolve, reject) =>
+                // debounced / batched fetch
+                callGetManyQueries({
                     resource,
                     ids,
-                    dataProvider,
-                    queryClient,
                     resolve,
                     reject,
-                });
-            }),
+                    dataProvider,
+                    queryClient,
+                })
+            ),
         {
             onSuccess: data => {
                 // optimistically populate the getOne cache
@@ -124,17 +125,31 @@ const batch = fn => {
 interface GetManyCallArgs {
     resource: string;
     ids: Identifier[];
-    dataProvider: DataProviderProxy;
-    queryClient: QueryClient;
     resolve: (data: any[]) => void;
     reject: (error?: any) => void;
+    dataProvider: DataProviderProxy;
+    queryClient: QueryClient;
 }
 
-const callQueries = batch((calls: GetManyCallArgs[]) => {
+/**
+ * Group and execute all calls to the dataProvider.getMany() method for the current tick
+ *
+ * Thanks to batch(), this function executes at most once per tick,
+ * whatever the number of calls to useGetManyAggregate().
+ */
+const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
     const dataProvider = calls[0].dataProvider;
     const queryClient = calls[0].queryClient;
 
-    // aggregate by resource
+    /**
+     * Aggregate calls by resource
+     *
+     * callsByResource will look like:
+     * {
+     *     posts: [{ resource, ids, resolve, reject, dataProvider, queryClient }, ...],
+     *     tags: [{ resource, ids, resolve, reject, dataProvider, queryClient }, ...],
+     * }
+     */
     const callsByResource = calls.reduce((acc, callArgs) => {
         if (!acc[callArgs.resource]) {
             acc[callArgs.resource] = [];
@@ -143,7 +158,9 @@ const callQueries = batch((calls: GetManyCallArgs[]) => {
         return acc;
     }, {} as { [resource: string]: GetManyCallArgs[] });
 
-    // For each resource, call dataProvider.getMany() once
+    /**
+     * For each resource, aggregate ids and call dataProvider.getMany() once
+     */
     Object.keys(callsByResource).forEach(resource => {
         const callsForResource = callsByResource[resource];
         /**
@@ -151,27 +168,32 @@ const callQueries = batch((calls: GetManyCallArgs[]) => {
          *
          * @example from [[1, 2], [2, null, 3], [4, null]] to [1, 2, 3, 4]
          */
-        const accumulatedIds = callsForResource
+        const aggregatedIds = callsForResource
             .reduce((acc, { ids }) => union(acc, ids), []) // concat + unique
             .filter(v => v != null && v !== ''); // remove null values
 
-        if (accumulatedIds.length === 0) {
+        if (aggregatedIds.length === 0) {
             // no need to call the data provider if all the ids are null
             callsForResource.forEach(({ resolve }) => {
                 resolve([]);
             });
             return;
         }
+
+        /**
+         * Call dataProvider.getMany() with the aggregatedIds,
+         * and resolve each of the promises using the results
+         */
         queryClient
             .fetchQuery<any[], Error, any[]>(
                 [
                     resource,
                     'getMany',
-                    { ids: accumulatedIds.map(id => String(id)) },
+                    { ids: aggregatedIds.map(id => String(id)) },
                 ],
                 () =>
                     dataProvider
-                        .getMany<any>(resource, { ids: accumulatedIds })
+                        .getMany<any>(resource, { ids: aggregatedIds })
                         .then(({ data }) => data)
             )
             .then(data => {
