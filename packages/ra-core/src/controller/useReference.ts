@@ -1,5 +1,5 @@
 import { Record } from '../types';
-import { Refetch, useGetMany } from '../dataProvider';
+import { Refetch, useGetManyAggregate } from '../dataProvider';
 
 interface UseReferenceProps {
     id: string;
@@ -51,7 +51,7 @@ export const useReference = ({
         isLoading,
         isFetching,
         refetch,
-    } = useGetMany(reference, { ids: [id] });
+    } = useGetManyAggregate(reference, { ids: [id] });
     return {
         referenceRecord: error ? undefined : data ? data[0] : undefined,
         refetch,

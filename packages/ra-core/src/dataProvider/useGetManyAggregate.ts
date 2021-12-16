@@ -61,7 +61,7 @@ import { useDataProvider } from '.';
 export const useGetManyAggregate = <RecordType extends Record = Record>(
     resource: string,
     params: GetManyParams,
-    options: UseQueryOptions<RecordType[], Error>
+    options: UseQueryOptions<RecordType[], Error> = {}
 ): UseGetManyHookValue<RecordType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
