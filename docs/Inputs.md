@@ -165,7 +165,7 @@ To override the style of all instances of `<NullableBooleanInput>` using the [ma
 
 ### `<DateInput>`
 
-Ideal for editing dates, `<DateInput>` renders an HTML `<input type="date">` element, that most browsers display as a standard [Date Picker](https://material-ui.com/components/pickers/#date-pickers). 
+Ideal for editing dates, `<DateInput>` renders an HTML `<input type="date">` element, that most browsers display as a standard [Date Picker](https://material-ui.com/components/pickers/#date-pickers).
 
 ![DateInput](./img/date-input.gif)
 
@@ -278,6 +278,7 @@ To override the style of all instances of `<ImageInput>` using the [material-ui 
 | `labelSingle`   | Optional | `string`             | 'ra.input.file. upload_single'  | Invite displayed in the drop zone if the input accepts one file                                                                                                                                                                                                                                                                                        |
 | `labelMultiple` | Optional | `string`             | 'ra.input.file. upload_several' | Invite displayed in the drop zone if the input accepts several files                                                                                                                                                                                                                                                                                   |
 | `placeholder`   | Optional | `ReactNode`          | -                               | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple`                                                                                                                                                                                                                                                                         |
+| `onSubmitRemove`   | Optional | `Function`          | -                               | Set remove button click handler. Main difference from options.onRemove is able to cancel to remove the file's list item if it returns false `(file) => boolean \| Promise<boolean>`                                                                                                                                                                                                                                                                         |
 | `options`       | Optional | `Object`             | `{}`                            | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details .                                                                                                                                                          |
 
 `<FileInput>` also accepts the [common input props](./Inputs.md#common-input-props).
@@ -298,7 +299,7 @@ Writing a custom preview component is quite straightforward: it's a standard [fi
 
 When receiving **new** files, `FileInput` will add a `rawFile` property to the object passed as the `record` prop of children. This `rawFile` is the [File](https://developer.mozilla.org/en-US/docs/Web/API/File) instance of the newly added file. This can be useful to display information about size or MIME type inside a custom field.
 
-The `FileInput` component accepts an `options` prop into which you can pass all the [react-dropzone properties](https://react-dropzone.netlify.com/#proptypes). 
+The `FileInput` component accepts an `options` prop into which you can pass all the [react-dropzone properties](https://react-dropzone.netlify.com/#proptypes).
 
 If the default Dropzone label doesn't fit with your need, you can pass a `placeholder` prop to overwrite it. The value can be anything React can render (`PropTypes.node`):
 
@@ -345,7 +346,7 @@ Check [the `ra-markdown` documentation](https://marmelab.com/ra-enterprise/modul
 
 ### `<NumberInput>`
 
-`<NumberInput>` translates to an HTML `<input type="number">`. 
+`<NumberInput>` translates to an HTML `<input type="number">`.
 
 ![NumberInput](./img/number-input.gif)
 
@@ -464,7 +465,7 @@ const configureQuill = quill => quill.getModule('toolbar').addHandler('bold', fu
 
 `<RichTextInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
-**Tip**: When used inside a material-ui `<Card>` (e.g in the default `<Edit>` view), `<RichTextInput>` displays link tooltip as cut off when the user wants to add a hyperlink to a word located on the left side of the input. This is due to an incompatibility between material-ui's `<Card>` component and Quill's positioning algorithm for the link tooltip. 
+**Tip**: When used inside a material-ui `<Card>` (e.g in the default `<Edit>` view), `<RichTextInput>` displays link tooltip as cut off when the user wants to add a hyperlink to a word located on the left side of the input. This is due to an incompatibility between material-ui's `<Card>` component and Quill's positioning algorithm for the link tooltip.
 
 To fix this problem, you should override the default card style, as follows:
 
@@ -799,7 +800,7 @@ To override the style of all instances of `<AutocompleteInput>` using the [mater
 
 ### `<RadioButtonGroupInput>`
 
-If you want to let the user choose a value among a list of possible values that are always shown (instead of hiding them behind a dropdown list, as in [`<SelectInput>`](#selectinput)), `<RadioButtonGroupInput>` is the right component. 
+If you want to let the user choose a value among a list of possible values that are always shown (instead of hiding them behind a dropdown list, as in [`<SelectInput>`](#selectinput)), `<RadioButtonGroupInput>` is the right component.
 
 ![RadioButtonGroupInput](./img/radio-button-group-input.gif)
 
@@ -910,7 +911,7 @@ To override the style of all instances of `<RadioButtonGroupInput>` using the [m
 
 ### `<SelectInput>`
 
-To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<Select>`](https://material-ui.com/api/select). 
+To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<Select>`](https://material-ui.com/api/select).
 
 ![SelectInput](./img/select-input.gif)
 
@@ -1283,7 +1284,7 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput, FormDataConsumer 
 </ArrayInput>
 ```
 
-`<ArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props) (except `format` and `parse`). 
+`<ArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props) (except `format` and `parse`).
 
 **Important**: Note that asynchronous validators are not supported on the `<ArrayInput>` component due to a limitation of [react-final-form-arrays](https://github.com/final-form/react-final-form-arrays).
 
@@ -1339,7 +1340,7 @@ import { AutocompleteArrayInput } from 'react-admin';
 }
 ```
 
-When working with a field that contains an array of *objects*, use `parse` and `format` to turn the value into an array of scalar values. 
+When working with a field that contains an array of *objects*, use `parse` and `format` to turn the value into an array of scalar values.
 
 So for instance, for editing the `tags` field of records looking like the following:
 
@@ -1349,7 +1350,7 @@ So for instance, for editing the `tags` field of records looking like the follow
   "tags": [
       { "id": "lifestyle" },
       { "id": "photography" }
-   ] 
+   ]
 }
 ```
 
@@ -1358,7 +1359,7 @@ You should use the following syntax:
 ```jsx
 import { AutocompleteArrayInput } from 'react-admin';
 
-<AutocompleteArrayInput 
+<AutocompleteArrayInput
     source="tags"
     parse={value =>
         value && value.map(v => ({ id: v }))
@@ -1583,7 +1584,7 @@ To override the style of all instances of `<AutocompleteArrayInput>` using the [
 
 ### `<CheckboxGroupInput>`
 
-If you want to let the user choose multiple values among a list of possible values by showing them all, `<CheckboxGroupInput>` is the right component. 
+If you want to let the user choose multiple values among a list of possible values by showing them all, `<CheckboxGroupInput>` is the right component.
 
 ![CheckboxGroupInput](./img/checkbox-group-input.png)
 
@@ -1703,7 +1704,7 @@ Check [the `ra-relationships` documentation](https://marmelab.com/ra-enterprise/
 
 ### `<SelectArrayInput>`
 
-To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](https://material-ui.com/api/select). 
+To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](https://material-ui.com/api/select).
 
 ![SelectArrayInput](./img/select-array-input.gif)
 
@@ -1774,7 +1775,7 @@ const choices = [
 ];
 ```
 
-You can render any item as disabled by setting its `disabled` property to `true`: 
+You can render any item as disabled by setting its `disabled` property to `true`:
 
 ```jsx
 const choices = [
@@ -1785,7 +1786,7 @@ const choices = [
 <SelectArrayInput source="author_id" choices={choices} optionText="full_name" optionValue="_id" />
 ```
 
-You can use a custom field name by setting the `disableValue` prop: 
+You can use a custom field name by setting the `disableValue` prop:
 
 ```jsx
 const choices = [
@@ -1969,7 +1970,7 @@ const CreateTag = () => {
 To override the style of all instances of `<SelectArrayInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaSelectArrayInput` key.
 
 
-## Reference Inputs 
+## Reference Inputs
 
 ### `<ReferenceArrayInput>`
 
@@ -2096,7 +2097,7 @@ Any component descendant of `<ReferenceArrayInput>` can grab information from th
 const {
     choices, // An array of records matching both the current input value and the filters
     error, // A potential error that may have occured while fetching the data
-    warning, // A potential warning regarding missing references 
+    warning, // A potential warning regarding missing references
     loaded, // boolean that is false until the data is available
     loading, // boolean that is true on mount, and false once the data was fetched
     setFilter, // a callback to update the filters, e.g. setFilters({ q: 'query' })
@@ -2423,7 +2424,7 @@ You can add validators to any of the inputs inside a `TranslatableInputs`. If an
 </TranslatableInputs>
 ```
 
-## Recipes 
+## Recipes
 
 ### Transforming Input Value to/from Record
 
@@ -2469,7 +2470,7 @@ const dateParser = v => {
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 
-React-admin relies on [react-final-form](https://final-form.org/docs/react-final-form/getting-started) for form handling. You can grab the current form values using react-final-form [useFormState](https://final-form.org/docs/react-final-form/api/useFormState) hook. 
+React-admin relies on [react-final-form](https://final-form.org/docs/react-final-form/getting-started) for form handling. You can grab the current form values using react-final-form [useFormState](https://final-form.org/docs/react-final-form/api/useFormState) hook.
 
 ```jsx
 import * as React from 'react';
