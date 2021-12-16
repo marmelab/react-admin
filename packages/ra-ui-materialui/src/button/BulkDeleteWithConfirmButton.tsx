@@ -44,8 +44,9 @@ export const BulkDeleteWithConfirmButton = (
         action: CRUD_DELETE_MANY,
         onSuccess: () => {
             refresh();
-            notify('ra.notification.deleted', 'info', {
-                smart_count: selectedIds.length,
+            notify('ra.notification.deleted', {
+                type: 'info',
+                messageArgs: { smart_count: selectedIds.length },
             });
             unselectAll(resource);
         },
@@ -54,14 +55,16 @@ export const BulkDeleteWithConfirmButton = (
                 typeof error === 'string'
                     ? error
                     : error.message || 'ra.notification.http_error',
-                'warning',
                 {
-                    _:
-                        typeof error === 'string'
-                            ? error
-                            : error && error.message
-                            ? error.message
-                            : undefined,
+                    type: 'warning',
+                    messageArgs: {
+                        _:
+                            typeof error === 'string'
+                                ? error
+                                : error && error.message
+                                ? error.message
+                                : undefined,
+                    },
                 }
             );
             setOpen(false);

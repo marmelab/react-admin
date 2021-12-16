@@ -12,6 +12,7 @@ import { CoreAdminContext, createAdminStore } from '../../core';
 import { testDataProvider } from '../../dataProvider';
 import { CRUD_GET_MANY } from '../../actions';
 import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
+import { QueryClientProvider, QueryClient } from 'react-query';
 
 describe('<ReferenceArrayInputController />', () => {
     const defaultProps = {
@@ -233,21 +234,24 @@ describe('<ReferenceArrayInputController />', () => {
         ).toBeNull();
     });
 
-    it.skip('should set warning if references fetch fails but selected references are not empty', async () => {
+    it('should set warning if references fetch fails but selected references are not empty', async () => {
         const children = jest.fn(({ warning }) => <div>{warning}</div>);
+        const queryClient = new QueryClient();
         renderWithRedux(
             <Form
                 onSubmit={jest.fn()}
                 render={() => (
-                    <ReferenceArrayInputController
-                        {...defaultProps}
-                        // Avoid global collision in useGetMany with queriesToCall
-                        basePath="/articles"
-                        resource="articles"
-                        input={{ value: [1, 2] }}
-                    >
-                        {children}
-                    </ReferenceArrayInputController>
+                    <QueryClientProvider client={queryClient}>
+                        <ReferenceArrayInputController
+                            {...defaultProps}
+                            // Avoid global collision in useGetMany with queriesToCall
+                            basePath="/articles"
+                            resource="articles"
+                            input={{ value: [1, 2] }}
+                        >
+                            {children}
+                        </ReferenceArrayInputController>
+                    </QueryClientProvider>
                 )}
             />,
             {
@@ -1136,6 +1140,36 @@ describe('<ReferenceArrayInputController />', () => {
                 });
             });
             expect(dispatch).toHaveBeenCalledTimes(5);
+        });
+
+        it('should set loading to false if enableGetChoices returns false', async () => {
+            const children = jest.fn().mockReturnValue(<div />);
+            await new Promise(resolve => setTimeout(resolve, 100)); // empty the query deduplication in useQueryWithStore
+            const enableGetChoices = jest.fn().mockImplementation(({ q }) => {
+                return false;
+            });
+            const queryClient = new QueryClient();
+            renderWithRedux(
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <QueryClientProvider client={queryClient}>
+                            <ReferenceArrayInputController
+                                {...defaultProps}
+                                allowEmpty
+                                enableGetChoices={enableGetChoices}
+                            >
+                                {children}
+                            </ReferenceArrayInputController>
+                        </QueryClientProvider>
+                    )}
+                />,
+                { admin: { resources: { tags: { data: {} } } } }
+            );
+
+            await waitFor(() => {
+                expect(children.mock.calls[0][0].loading).toEqual(false);
+            });
         });
     });
 });

@@ -18,6 +18,7 @@ export interface ReferenceFieldControllerProps {
     resource: string;
     source: string;
     link?: string | boolean | LinkToFunctionType;
+    label?: string;
 }
 
 /**

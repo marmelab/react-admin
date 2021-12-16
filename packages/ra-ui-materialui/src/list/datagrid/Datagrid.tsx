@@ -225,11 +225,13 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     return (
         <DatagridContextProvider value={contextValue}>
             <DatagridRoot>
-                {bulkActionButtons !== false && bulkActionButtons && (
+                {bulkActionButtons !== false ? (
                     <BulkActionsToolbar selectedIds={selectedIds}>
-                        {bulkActionButtons}
+                        {isValidElement(bulkActionButtons)
+                            ? bulkActionButtons
+                            : defaultBulkActionButtons}
                     </BulkActionsToolbar>
-                )}
+                ) : null}
                 <Table
                     ref={ref}
                     className={classnames(DatagridClasses.table, className)}

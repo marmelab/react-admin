@@ -118,9 +118,7 @@ export const useCreateController = <
                                           'ra.notification.created',
                                       {
                                           type: 'info',
-                                          messageArgs: {
-                                              smart_count: 1,
-                                          },
+                                          messageArgs: { smart_count: 1 },
                                       }
                                   );
                                   redirect(

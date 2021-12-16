@@ -15,7 +15,8 @@ import {
     OnFailure,
 } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
-import { setAutomaticRefresh } from '../actions/uiActions';
+import { setAutomaticRefresh } from '../actions';
+import { useRecordContext, OptionalRecordContextProvider } from '../controller';
 import { FormContextProvider } from './FormContextProvider';
 import submitErrorsMutators from './submitErrorsMutators';
 import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
@@ -56,7 +57,6 @@ const FormWithRedirect = ({
     initialValuesEqual,
     keepDirtyOnReinitialize = true,
     mutators = defaultMutators,
-    record,
     render,
     save,
     saving,
@@ -68,6 +68,7 @@ const FormWithRedirect = ({
     sanitizeEmptyValues: shouldSanitizeEmptyValues = true,
     ...props
 }: FormWithRedirectProps) => {
+    const record = useRecordContext(props);
     const redirect = useRef(props.redirect);
     const onSave = useRef(save);
     const formGroups = useRef<{ [key: string]: string[] }>({});
@@ -195,38 +196,40 @@ const FormWithRedirect = ({
     };
 
     return (
-        <FormContextProvider value={formContextValue}>
-            <Form
-                key={`${version}_${record?.id || ''}`} // support for refresh button
-                debug={debug}
-                decorators={decorators}
-                destroyOnUnregister={destroyOnUnregister}
-                form={form}
-                initialValues={finalInitialValues}
-                initialValuesEqual={initialValuesEqual}
-                keepDirtyOnReinitialize={keepDirtyOnReinitialize}
-                mutators={finalMutators} // necessary for ArrayInput
-                onSubmit={submit}
-                subscription={subscription} // don't redraw entire form each time one field changes
-                validate={validate}
-                validateOnBlur={validateOnBlur}
-                render={formProps => (
-                    // @ts-ignore Ignored because of a weird error about the active prop
-                    <FormView
-                        {...props}
-                        {...formProps}
-                        key={`${version}_${record?.id || ''}`} // support for refresh button
-                        record={record}
-                        setRedirect={setRedirect}
-                        saving={formProps.submitting || saving}
-                        render={render}
-                        save={save}
-                        warnWhenUnsavedChanges={warnWhenUnsavedChanges}
-                        formRootPathname={formRootPathname}
-                    />
-                )}
-            />
-        </FormContextProvider>
+        <OptionalRecordContextProvider value={record}>
+            <FormContextProvider value={formContextValue}>
+                <Form
+                    key={`${version}_${record?.id || ''}`} // support for refresh button
+                    debug={debug}
+                    decorators={decorators}
+                    destroyOnUnregister={destroyOnUnregister}
+                    form={form}
+                    initialValues={finalInitialValues}
+                    initialValuesEqual={initialValuesEqual}
+                    keepDirtyOnReinitialize={keepDirtyOnReinitialize}
+                    mutators={finalMutators} // necessary for ArrayInput
+                    onSubmit={submit}
+                    subscription={subscription} // don't redraw entire form each time one field changes
+                    validate={validate}
+                    validateOnBlur={validateOnBlur}
+                    render={formProps => (
+                        // @ts-ignore Ignored because of a weird error about the active prop
+                        <FormView
+                            {...props}
+                            {...formProps}
+                            key={`${version}_${record?.id || ''}`} // support for refresh button
+                            record={record}
+                            setRedirect={setRedirect}
+                            saving={formProps.submitting || saving}
+                            render={render}
+                            save={save}
+                            warnWhenUnsavedChanges={warnWhenUnsavedChanges}
+                            formRootPathname={formRootPathname}
+                        />
+                    )}
+                />
+            </FormContextProvider>
+        </OptionalRecordContextProvider>
     );
 };
 
@@ -253,7 +256,7 @@ export type FormWithRedirectSave = (
 export interface FormWithRedirectOwnProps {
     defaultValue?: any;
     formRootPathname?: string;
-    record?: RaRecord;
+    record?: Partial<RaRecord>;
     redirect?: RedirectionSideEffect;
     render: FormWithRedirectRender;
     save?: FormWithRedirectSave;
