@@ -2,10 +2,6 @@ import { Reducer } from 'redux';
 import {
     TOGGLE_SIDEBAR,
     ToggleSidebarAction,
-    SET_SIDEBAR_VISIBILITY,
-    SetSidebarVisibilityAction,
-    REFRESH_VIEW,
-    RefreshViewAction,
     START_OPTIMISTIC_MODE,
     StartOptimisticModeAction,
     STOP_OPTIMISTIC_MODE,
@@ -18,18 +14,14 @@ import {
 
 type ActionTypes =
     | ToggleSidebarAction
-    | SetSidebarVisibilityAction
-    | RefreshViewAction
     | StartOptimisticModeAction
     | StopOptimisticModeAction
     | SetAutomaticRefreshAction
     | { type: 'OTHER_ACTION' };
 
 export interface UIState {
-    readonly automaticRefreshEnabled: boolean;
     readonly sidebarOpen: boolean;
     readonly optimistic: boolean;
-    readonly viewVersion: number;
 }
 
 // Match the medium breakpoint defined in the material-ui theme
@@ -43,10 +35,8 @@ const isDesktop = (): boolean =>
         : false;
 
 const defaultState: UIState = {
-    automaticRefreshEnabled: true,
     sidebarOpen: isDesktop(),
     optimistic: false,
-    viewVersion: 0,
 };
 
 const uiReducer: Reducer<UIState> = (
@@ -59,17 +49,10 @@ const uiReducer: Reducer<UIState> = (
                 ...previousState,
                 sidebarOpen: !previousState.sidebarOpen,
             };
-        case SET_SIDEBAR_VISIBILITY:
-            return { ...previousState, sidebarOpen: action.payload };
         case SET_AUTOMATIC_REFRESH:
             return {
                 ...previousState,
                 automaticRefreshEnabled: action.payload,
-            };
-        case REFRESH_VIEW:
-            return {
-                ...previousState,
-                viewVersion: previousState.viewVersion + 1,
             };
         case START_OPTIMISTIC_MODE:
             return { ...previousState, optimistic: true };

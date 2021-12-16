@@ -1,7 +1,7 @@
 import { Reducer } from 'redux';
 
 import { Identifier } from '../../../../types';
-import { FETCH_END, REFRESH_VIEW } from '../../../../actions';
+import { FETCH_END } from '../../../../actions';
 import {
     GET_LIST,
     CREATE,
@@ -30,22 +30,6 @@ const cachedRequestsReducer: Reducer<State> = (
     previousState = initialState,
     action
 ) => {
-    if (action.type === REFRESH_VIEW) {
-        if (action.payload?.hard) {
-            // force refresh
-            return initialState;
-        } else {
-            // remove validity only
-            const newState = {};
-            Object.keys(previousState).forEach(key => {
-                newState[key] = {
-                    ...previousState[key],
-                    validity: undefined,
-                };
-            });
-            return newState;
-        }
-    }
     if (action.meta && action.meta.optimistic) {
         if (
             action.meta.fetch === CREATE ||

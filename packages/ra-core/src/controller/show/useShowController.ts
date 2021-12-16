@@ -4,9 +4,9 @@ import { UseQueryOptions } from 'react-query';
 import { useAuthenticated } from '../../auth';
 import useVersion from '../useVersion';
 import { Record } from '../../types';
-import { useGetOne, Refetch } from '../../dataProvider';
+import { useGetOne, useRefresh, Refetch } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
-import { useNotify, useRedirect, useRefresh } from '../../sideEffect';
+import { useNotify, useRedirect } from '../../sideEffect';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 
 /**

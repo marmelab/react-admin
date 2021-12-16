@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { FETCH_END, REFRESH_VIEW } from '../../../../actions';
+import { FETCH_END } from '../../../../actions';
 import { GET_LIST, CREATE } from '../../../../core';
 
 interface ValidityRegistry {
@@ -12,9 +12,6 @@ const validityReducer: Reducer<ValidityRegistry> = (
     previousState = initialState,
     { type, payload, requestPayload, meta }
 ) => {
-    if (type === REFRESH_VIEW) {
-        return initialState;
-    }
     if (
         !meta ||
         !meta.fetchResponse ||

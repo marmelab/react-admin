@@ -22,18 +22,6 @@ export const setSidebarVisibility = (
     payload: isOpen,
 });
 
-export const REFRESH_VIEW = 'RA/REFRESH_VIEW';
-
-export interface RefreshViewAction {
-    readonly type: typeof REFRESH_VIEW;
-    readonly payload: { hard: boolean };
-}
-
-export const refreshView = (hard?: boolean): RefreshViewAction => ({
-    type: REFRESH_VIEW,
-    payload: { hard },
-});
-
 export const SET_AUTOMATIC_REFRESH = 'RA/SET_AUTOMATIC_REFRESH';
 
 export interface SetAutomaticRefreshAction {

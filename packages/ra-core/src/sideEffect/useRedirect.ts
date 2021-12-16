@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { parsePath } from 'history';
 
 import { Identifier, Record } from '../types';
 import resolveRedirectTo from '../util/resolveRedirectTo';
-import { refreshView } from '../actions/uiActions';
+import { useRefresh } from '../dataProvider';
 
 type RedirectToFunction = (
     basePath?: string,
@@ -34,7 +33,7 @@ export type RedirectionSideEffect = string | boolean | RedirectToFunction;
  * redirect((redirectTo, basePath, id, data) => ...)
  */
 const useRedirect = () => {
-    const dispatch = useDispatch();
+    const refresh = useRefresh();
     const navigate = useNavigate();
     // Ensure this doesn't rerender too much
     const location = useLocation();
@@ -65,7 +64,7 @@ const useRedirect = () => {
                         }
                     );
                 } else {
-                    dispatch(refreshView());
+                    refresh();
                 }
                 return;
             }
@@ -89,7 +88,7 @@ const useRedirect = () => {
                 );
             }
         },
-        [dispatch, navigate]
+        [navigate, refresh]
     );
 };
 

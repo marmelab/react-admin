@@ -22,18 +22,9 @@ const PostPreview = ({
             ? state.admin.resources[resource].data[id]
             : null
     );
-    const version = useSelector<ReduxState, number>(
-        state => state.admin.ui.viewVersion
-    );
-    useSelector<ReduxState>(state => state.admin.loading > 0);
 
     return (
-        <SimpleShowLayout
-            version={version}
-            record={record}
-            basePath={basePath}
-            resource={resource}
-        >
+        <SimpleShowLayout record={record} resource={resource}>
             <TextField source="id" />
             <TextField source="title" />
             <TextField source="teaser" />

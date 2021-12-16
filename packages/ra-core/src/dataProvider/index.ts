@@ -9,10 +9,10 @@ import undoableEventEmitter from './undoableEventEmitter';
 import useDataProvider from './useDataProvider';
 import useMutation, { UseMutationValue } from './useMutation';
 import withDataProvider from './withDataProvider';
-import useRefreshWhenVisible from './useRefreshWhenVisible';
-import useIsAutomaticRefreshEnabled from './useIsAutomaticRefreshEnabled';
 
 export * from './testDataProvider';
+export * from './useLoading';
+export * from './useRefresh';
 export * from './useGetOne';
 export * from './useGetList';
 export * from './useGetMany';
@@ -40,7 +40,5 @@ export {
     undoableEventEmitter,
     useDataProvider,
     useMutation,
-    useRefreshWhenVisible,
     withDataProvider,
-    useIsAutomaticRefreshEnabled,
 };

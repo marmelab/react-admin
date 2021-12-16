@@ -1,5 +1,4 @@
-import { useSelector } from 'react-redux';
-import { ReduxState } from '../types';
+import { useIsFetching, useIsMutating } from 'react-query';
 
 /**
  * Get the loading status, i.e. a boolean indicating if at least one request is pending
@@ -15,5 +14,8 @@ import { ReduxState } from '../types';
  *      return loading ? <Skeleton /> : <RealContent>;
  * }
  */
-export default () =>
-    useSelector((state: ReduxState) => state.admin.loading > 0);
+export const useLoading = () => {
+    const isFetching = useIsFetching();
+    const isMutating = useIsMutating();
+    return isFetching || isMutating;
+};

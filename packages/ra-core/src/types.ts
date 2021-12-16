@@ -343,10 +343,8 @@ export interface ResourceDefinition {
 export interface ReduxState {
     admin: {
         ui: {
-            automaticRefreshEnabled: boolean;
             optimistic: boolean;
             sidebarOpen: boolean;
-            viewVersion: number;
         };
         resources: {
             [name: string]: {
@@ -371,6 +369,11 @@ export interface ReduxState {
             };
         };
         loading: number;
+        references: {
+            oneToMany: {
+                [relatedTo: string]: { ids: Identifier[]; total: number };
+            };
+        };
         customQueries: {
             [key: string]: any;
         };

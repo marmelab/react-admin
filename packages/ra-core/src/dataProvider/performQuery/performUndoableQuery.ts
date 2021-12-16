@@ -6,7 +6,6 @@ import {
     stopOptimisticMode,
 } from '../../actions/undoActions';
 import { showNotification } from '../../actions/notificationActions';
-import { refreshView } from '../../actions/uiActions';
 import {
     FETCH_END,
     FETCH_ERROR,
@@ -62,7 +61,6 @@ export const performUndoableQuery = ({
         dispatch(stopOptimisticMode());
         if (isUndo) {
             dispatch(showNotification('ra.notification.canceled'));
-            dispatch(refreshView());
             if (window) {
                 window.removeEventListener(
                     'beforeunload',

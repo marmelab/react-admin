@@ -14,10 +14,9 @@ import {
 import {
     useNotify,
     useRedirect,
-    useRefresh,
     RedirectionSideEffect,
 } from '../../sideEffect';
-import { useGetOne, useUpdate, Refetch } from '../../dataProvider';
+import { useGetOne, useUpdate, useRefresh, Refetch } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import {

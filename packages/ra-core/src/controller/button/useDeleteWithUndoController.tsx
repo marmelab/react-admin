@@ -1,9 +1,8 @@
 import { useCallback, ReactEventHandler } from 'react';
 import { UseMutationOptions } from 'react-query';
 
-import { useDelete } from '../../dataProvider';
+import { useDelete, useRefresh } from '../../dataProvider';
 import {
-    useRefresh,
     useNotify,
     useRedirect,
     useUnselect,
