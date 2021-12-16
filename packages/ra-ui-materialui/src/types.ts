@@ -17,7 +17,7 @@ import { UseQueryOptions, UseMutationOptions } from 'react-query';
 export interface ListProps {
     actions?: ReactElement | false;
     aside?: ReactElement;
-    bulkActionButtons?: ReactElement | false;
+    bulkActionButtons?: ReactElement | boolean;
     classes?: any;
     className?: string;
     component?: ElementType;

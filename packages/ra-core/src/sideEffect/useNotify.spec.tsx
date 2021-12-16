@@ -21,6 +21,7 @@ const Notification = ({
                 multiLine,
             });
         } else {
+            jest.spyOn(console, 'warn').mockImplementationOnce(() => {});
             notify(message, type, {}, undoable, autoHideDuration, multiLine);
         }
     }, [

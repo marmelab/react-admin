@@ -95,12 +95,12 @@ You can replace the list of default actions by your own element using the `actio
 ```jsx
 import * as React from 'react';
 import { cloneElement } from 'react';
-import { List, ListActions, Button } from 'react-admin';
+import { List, ListActions, Button, FilterButton } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
 
 const ListActions = (props) => (
     <TopToolbar>
-        {cloneElement(props.filters, { context: 'button' })}
+        <FilterButton/>
         <CreateButton/>
         <ExportButton/>
         {/* Add your custom actions */}
@@ -132,6 +132,7 @@ import {
     TopToolbar,
     CreateButton,
     ExportButton,
+    FilterButton,
     Button,
     sanitizeListRestProps    
 } from 'react-admin';
@@ -140,7 +141,6 @@ import IconEvent from '@material-ui/icons/Event';
 const ListActions = (props) => {
     const {
         className,
-        filters,
         maxResults,
         ...rest
     } = props;
@@ -149,7 +149,7 @@ const ListActions = (props) => {
     } = useListContext();
     return (
         <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
-            {cloneElement(filters, { context: 'button' })}
+            <FilterButton />
             <CreateButton />
             <ExportButton disabled={total === 0} maxResults={maxResults} />
             {/* Add your custom actions */}
@@ -1299,7 +1299,7 @@ For mode details about Saved Queries, check the [`ra-preferences` module](https:
 
 ![Filters with submit button](./img/filter_with_submit.gif)
 
-If neither the Filter button/form combo or the `<FilterList>` sidebar match your need, you can always build your own. React-admin provides shortcuts to facilitate the development of custom filters.
+If neither the Filter button/form combo nor the `<FilterList>` sidebar match your need, you can always build your own. React-admin provides shortcuts to facilitate the development of custom filters.
 
 For instance, by default, the filter button/form combo doesn't provide a submit button, and submits automatically after the user has finished interacting with the form. This provides a smooth user experience, but for some APIs, it can cause too many calls. 
 
@@ -1486,7 +1486,7 @@ The next sections explain how to use the sort functionality. And first, a few ex
 - [Sort Query Parameter](#sort-query-parameter)
 - [Linking To A Pre-Sorted List](#linking-to-a-pre-sorted-list)
 
-React-admin proposes several UI components to let users to see and modify sort parameters, and gives you the tools to build custom ones.
+React-admin proposes several UI components to let users see and modify sort parameters, and gives you the tools to build custom ones.
 
 - The `<Datagrid>` Column Headers
   - [Usage](#using-datagrid-headers-to-modify-list-sort)

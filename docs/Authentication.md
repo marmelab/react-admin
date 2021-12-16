@@ -104,6 +104,14 @@ const authProvider = {
                 throw new Error('Network error')
             });
     },
+    checkAuth: () => {
+        // Required for the authentication to work
+        return Promise.resolve();
+    },
+    getPermissions: () => {
+        // Required for the authentication to work
+        return Promise.resolve();
+    },
     // ...
 };
 
@@ -626,7 +634,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useLogin, useNotify, Notification, defaultTheme } from 'react-admin';
 import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
 const MyLoginPage = ({ theme }) => {
     const [email, setEmail] = useState('');
@@ -642,7 +650,7 @@ const MyLoginPage = ({ theme }) => {
     };
 
     return (
-        <ThemeProvider theme={createMuiTheme(defaultTheme)}>
+        <ThemeProvider theme={createTheme(defaultTheme)}>
             <form onSubmit={submit}>
                 <input
                     name="email"
@@ -946,7 +954,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useLogin, useNotify, Notification, defaultTheme } from 'react-admin';
 import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
 const MyLoginPage = ({ theme }) => {
     const [email, setEmail] = useState('');
@@ -961,7 +969,7 @@ const MyLoginPage = ({ theme }) => {
     };
 
     return (
-        <ThemeProvider theme={createMuiTheme(defaultTheme)}>
+        <ThemeProvider theme={createTheme(defaultTheme)}>
             <form onSubmit={submit}>
                 <input
                     name="email"

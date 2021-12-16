@@ -186,4 +186,44 @@ describe('<useList />', () => {
             );
         });
     });
+
+    it('should be usable with asynchronously fetched data', () => {
+        const callback = jest.fn();
+        const data = [
+            { id: 1, title: 'hello' },
+            { id: 2, title: 'world' },
+        ];
+
+        const { rerender } = render(
+            <UseList
+                isFetching={false}
+                isLoading={true}
+                filter={{ title: 'world' }}
+                sort={{ field: 'id', order: 'ASC' }}
+                callback={callback}
+            />
+        );
+
+        rerender(
+            <UseList
+                data={data}
+                isFetching={true}
+                isLoading={false}
+                filter={{ title: 'world' }}
+                sort={{ field: 'id', order: 'ASC' }}
+                callback={callback}
+            />
+        );
+
+        expect(callback).toHaveBeenCalledWith(
+            expect.objectContaining({
+                currentSort: { field: 'id', order: 'ASC' },
+                isFetching: true,
+                isLoading: false,
+                data: [{ id: 2, title: 'world' }],
+                error: undefined,
+                total: 1,
+            })
+        );
+    });
 });

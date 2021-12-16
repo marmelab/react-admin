@@ -103,13 +103,12 @@ export const useListController = <RecordType extends Record = Record>(
             keepPreviousData: true,
             retry: false,
             onError: error =>
-                notify(
-                    error?.message || 'ra.notification.http_error',
-                    'warning',
-                    {
+                notify(error?.message || 'ra.notification.http_error', {
+                    type: 'warning',
+                    messageArgs: {
                         _: error?.message,
-                    }
-                ),
+                    },
+                }),
             ...queryOptions,
         }
     );

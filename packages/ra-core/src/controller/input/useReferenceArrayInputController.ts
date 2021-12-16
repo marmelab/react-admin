@@ -323,7 +323,7 @@ export const useReferenceArrayInputController = (
         hideFilter,
         loaded,
         isLoading: !loaded || isLoadingGetList,
-        loading: dataStatus.waiting,
+        loading: dataStatus.waiting && isGetMatchingEnabled,
         onSelect,
         onToggleItem,
         onUnselectItems,

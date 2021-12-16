@@ -61,11 +61,11 @@ export const useList = <RecordType extends Record = Record>(
     const [loadingState, setLoadingState] = useSafeSetState<boolean>(isLoading);
 
     const [finalItems, setFinalItems] = useSafeSetState<{
-        data: RecordType[];
+        data?: RecordType[];
         total: number;
     }>(() => ({
-        data,
-        total: data.length,
+        data: data || [],
+        total: data?.length || 0,
     }));
 
     // pagination logic
@@ -235,7 +235,7 @@ export const useList = <RecordType extends Record = Record>(
 };
 
 export interface UseListOptions<RecordType extends Record = Record> {
-    data: RecordType[];
+    data?: RecordType[];
     error?: any;
     filter?: FilterPayload;
     isFetching?: boolean;

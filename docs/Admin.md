@@ -275,9 +275,9 @@ See the [Theming documentation](./Theming.md#using-a-custom-menu) for more detai
 Material UI supports [theming](https://material-ui.com/customization/themes). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom material ui theme by using the `theme` prop:
 
 ```jsx
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     type: 'dark', // Switching the dark mode on is a single property value change.
   },

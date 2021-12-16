@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { Children, cloneElement, ReactElement } from 'react';
+import { Children, cloneElement, isValidElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import Card from '@mui/material/Card';
 import classnames from 'classnames';
@@ -59,11 +59,13 @@ export const ListView = (props: ListViewProps) => {
                             selectedIds.length > 0,
                     })}
                 >
-                    {bulkActionButtons !== false && bulkActionButtons && (
+                    {bulkActionButtons !== false ? (
                         <BulkActionsToolbar>
-                            {bulkActionButtons}
+                            {isValidElement(bulkActionButtons)
+                                ? bulkActionButtons
+                                : defaultBulkActionButtons}
                         </BulkActionsToolbar>
-                    )}
+                    ) : null}
                     {children &&
                         // @ts-ignore-line
                         cloneElement(Children.only(children), {

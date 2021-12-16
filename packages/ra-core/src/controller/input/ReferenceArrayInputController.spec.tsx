@@ -1139,5 +1139,32 @@ describe('<ReferenceArrayInputController />', () => {
             });
             expect(dispatch).toHaveBeenCalledTimes(5);
         });
+
+        it.skip('should set loading to false if enableGetChoices returns false', async () => {
+            const children = jest.fn().mockReturnValue(<div />);
+            await new Promise(resolve => setTimeout(resolve, 100)); // empty the query deduplication in useQueryWithStore
+            const enableGetChoices = jest.fn().mockImplementation(({ q }) => {
+                return false;
+            });
+            renderWithRedux(
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <ReferenceArrayInputController
+                            {...defaultProps}
+                            allowEmpty
+                            enableGetChoices={enableGetChoices}
+                        >
+                            {children}
+                        </ReferenceArrayInputController>
+                    )}
+                />,
+                { admin: { resources: { tags: { data: {} } } } }
+            );
+
+            await waitFor(() => {
+                expect(children.mock.calls[0][0].loading).toEqual(false);
+            });
+        });
     });
 });
