@@ -1,7 +1,7 @@
 import get from 'lodash/get';
 
 import { Record, SortPayload } from '../../types';
-import { useGetMany } from '../../dataProvider';
+import { useGetManyAggregate } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';
 import { useNotify } from '../../sideEffect';
 
@@ -60,7 +60,7 @@ const useReferenceArrayFieldController = (
     } = props;
     const notify = useNotify();
     const ids = get(record, source) || emptyArray;
-    const { data, error, isLoading, isFetching, refetch } = useGetMany(
+    const { data, error, isLoading, isFetching, refetch } = useGetManyAggregate(
         reference,
         { ids },
         {

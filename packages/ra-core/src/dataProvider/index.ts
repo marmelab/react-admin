@@ -21,6 +21,7 @@ export * from './testDataProvider';
 export * from './useGetOne';
 export * from './useGetList';
 export * from './useGetMany';
+export * from './useGetManyAggregate';
 export * from './useQueryWithStore';
 export * from './useQuery';
 export * from './useUpdate';

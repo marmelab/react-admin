@@ -46,7 +46,13 @@ import { FilterButton } from './filter';
  *     );
  */
 export const ListActions = (props: ListActionsProps) => {
-    const { className, exporter, filters: filtersProp, ...rest } = props;
+    const {
+        className,
+        exporter,
+        filters: filtersProp,
+        hasCreate: _,
+        ...rest
+    } = props;
     const {
         currentSort,
         displayedFilters,
@@ -55,8 +61,8 @@ export const ListActions = (props: ListActionsProps) => {
         showFilter,
         total,
     } = useListContext(props);
-    const resource = useResourceContext(rest);
-    const { hasCreate } = useResourceDefinition(rest);
+    const resource = useResourceContext(props);
+    const { hasCreate } = useResourceDefinition(props);
     const filters = useContext(FilterContext) || filtersProp;
     return useMemo(
         () => (
