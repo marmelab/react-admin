@@ -163,6 +163,7 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
      */
     Object.keys(callsByResource).forEach(resource => {
         const callsForResource = callsByResource[resource];
+
         /**
          * Extract ids from queries, aggregate and deduplicate them
          *
@@ -177,6 +178,29 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
             callsForResource.forEach(({ resolve }) => {
                 resolve([]);
             });
+            return;
+        }
+
+        if (
+            callsForResource.find(
+                ({ ids }) =>
+                    JSON.stringify(ids) === JSON.stringify(aggregatedIds)
+            )
+        ) {
+            // Either there is only one call (no aggregation), or one of the calls has the same ids as the sum of all calls
+            // either way, we can't trigger a new fetchQuery with the same signature, as it's already pending
+            // therefore, we reply with the dataProvider
+            const {
+                dataProvider,
+                resource,
+                ids,
+                resolve,
+                reject,
+            } = callsForResource[0];
+            dataProvider
+                .getMany<any>(resource, { ids })
+                .then(({ data }) => data)
+                .then(resolve, reject);
             return;
         }
 
