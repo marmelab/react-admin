@@ -12,6 +12,7 @@ import { CoreAdminContext, createAdminStore } from '../../core';
 import { testDataProvider } from '../../dataProvider';
 import { CRUD_GET_MANY } from '../../actions';
 import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
+import { QueryClientProvider, QueryClient } from 'react-query';
 
 describe('<ReferenceArrayInputController />', () => {
     const defaultProps = {
@@ -1138,23 +1139,26 @@ describe('<ReferenceArrayInputController />', () => {
             expect(dispatch).toHaveBeenCalledTimes(5);
         });
 
-        it.skip('should set loading to false if enableGetChoices returns false', async () => {
+        it('should set loading to false if enableGetChoices returns false', async () => {
             const children = jest.fn().mockReturnValue(<div />);
             await new Promise(resolve => setTimeout(resolve, 100)); // empty the query deduplication in useQueryWithStore
             const enableGetChoices = jest.fn().mockImplementation(({ q }) => {
                 return false;
             });
+            const queryClient = new QueryClient();
             renderWithRedux(
                 <Form
                     onSubmit={jest.fn()}
                     render={() => (
-                        <ReferenceArrayInputController
-                            {...defaultProps}
-                            allowEmpty
-                            enableGetChoices={enableGetChoices}
-                        >
-                            {children}
-                        </ReferenceArrayInputController>
+                        <QueryClientProvider client={queryClient}>
+                            <ReferenceArrayInputController
+                                {...defaultProps}
+                                allowEmpty
+                                enableGetChoices={enableGetChoices}
+                            >
+                                {children}
+                            </ReferenceArrayInputController>
+                        </QueryClientProvider>
                     )}
                 />,
                 { admin: { resources: { tags: { data: {} } } } }
