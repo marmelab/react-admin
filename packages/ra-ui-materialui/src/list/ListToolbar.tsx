@@ -20,7 +20,6 @@ export const ListToolbar: FC<ListToolbarProps> = memo(props => {
                 {actions &&
                     React.cloneElement(actions, {
                         ...rest,
-                        className: ListToolbarClasses.actions,
                         ...actions.props,
                     })}
             </Root>
@@ -36,7 +35,6 @@ export const ListToolbar: FC<ListToolbarProps> = memo(props => {
             {actions &&
                 React.cloneElement(actions, {
                     ...rest,
-                    className: ListToolbarClasses.actions,
                     filters,
                     ...actions.props,
                 })}
@@ -58,8 +56,9 @@ ListToolbar.propTypes = {
 export interface ListToolbarProps
     extends Omit<ToolbarProps, 'classes' | 'onSelect'> {
     actions?: ReactElement | false;
-    filters?: ReactElement | ReactElement[];
     exporter?: Exporter | false;
+    filters?: ReactElement | ReactElement[];
+    hasCreate?: boolean;
 }
 
 const PREFIX = 'RaListToolbar';
@@ -72,22 +71,14 @@ export const ListToolbarClasses = {
 const Root = styled(Toolbar)(({ theme }) => ({
     [`&.${ListToolbarClasses.toolbar}`]: {
         justifyContent: 'space-between',
-        alignItems: 'flex-start',
+        alignItems: 'flex-end',
+        minHeight: 'auto',
         paddingRight: 0,
         [theme.breakpoints.up('xs')]: {
             paddingLeft: 0,
         },
         [theme.breakpoints.down('sm')]: {
             paddingLeft: theme.spacing(2),
-            backgroundColor: theme.palette.background.paper,
-        },
-    },
-
-    [`& .${ListToolbarClasses.actions}`]: {
-        paddingTop: theme.spacing(3),
-        minHeight: theme.spacing(5),
-        [theme.breakpoints.down('sm')]: {
-            padding: theme.spacing(1),
             backgroundColor: theme.palette.background.paper,
         },
     },

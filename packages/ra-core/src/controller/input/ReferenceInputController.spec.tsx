@@ -170,7 +170,6 @@ describe('<ReferenceInputController />', () => {
                 ])
             ).toEqual({
                 possibleValues: {
-                    basePath: '/comments',
                     currentSort: {
                         field: 'title',
                         order: 'ASC',
@@ -181,7 +180,6 @@ describe('<ReferenceInputController />', () => {
                     filterValues: {
                         q: '',
                     },
-                    hasCreate: false,
                     isFetching: true,
                     isLoading: true,
                     page: 1,

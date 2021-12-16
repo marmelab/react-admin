@@ -194,7 +194,7 @@ export const PostList = () => (
 
 ### `<BulkExportButton>`
 
-Same as `<ExportButton>`, except it only exports the selected rows instead of the entire list. To be used inside [the `<List bulkActionButtons>` prop](./List.md#bulkactionbuttons).
+Same as `<ExportButton>`, except it only exports the selected rows instead of the entire list. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons).
 
 ```jsx
 import * as React from 'react';
@@ -209,8 +209,10 @@ const PostBulkActionButtons = ({ basePath }) => (
 );
 
 export const PostList = () => (
-    <List bulkActionButtons={<PostBulkActionButtons />}>
-        ...
+    <List>
+        <Datagrid bulkActionButtons={<PostBulkActionButtons />}>
+            ...
+        </Datagrid>
     </List>
 );
 ```
@@ -225,7 +227,7 @@ export const PostList = () => (
 
 ### `<BulkDeleteButton>`
 
-Deletes the selected rows. To be used inside [the `<List bulkActionButtons>` prop](./List.md#bulkactionbuttons) (where it's enabled by default).
+Deletes the selected rows. To be used inside [the `<Datagrid bulkActionButtons>` prop](./Datagrid.md#bulkactionbuttons) (where it's enabled by default).
 
 ```jsx
 import * as React from 'react';
@@ -240,8 +242,10 @@ const PostBulkActionButtons = ({ basePath }) => (
 );
 
 export const PostList = () => (
-    <List bulkActionButtons={<PostBulkActionButtons />}>
-        ...
+    <List>
+        <Datagrid bulkActionButtons={<PostBulkActionButtons />}>
+            ...
+        </Datagrid>
     </List>
 );
 ```
@@ -257,7 +261,7 @@ export const PostList = () => (
 
 ### `<FilterButton>`
 
-This button is an internal component used by react-admin in [the Filter button/form combo](./List.md#the-filter-buttonform-combo).
+This button is an internal component used by react-admin in [the Filter button/form combo](./FilteringTutorial.md#the-filter-buttonform-combo).
 
 ![List Filters](./img/list_filter.gif)
 

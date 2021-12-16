@@ -2,9 +2,8 @@ import get from 'lodash/get';
 
 import { Record, SortPayload } from '../../types';
 import { useGetMany } from '../../dataProvider';
-import { ListControllerProps, useList } from '../list';
+import { ListControllerResult, useList } from '../list';
 import { useNotify } from '../../sideEffect';
-import { useResourceContext } from '../../core';
 
 interface Option {
     basePath?: string;
@@ -49,9 +48,8 @@ const defaultSort = { field: null, order: null };
  */
 const useReferenceArrayFieldController = (
     props: Option
-): ListControllerProps => {
+): ListControllerResult => {
     const {
-        basePath,
         filter = defaultFilter,
         page = 1,
         perPage = 1000,
@@ -60,7 +58,6 @@ const useReferenceArrayFieldController = (
         sort = defaultSort,
         source,
     } = props;
-    const resource = useResourceContext(props);
     const notify = useNotify();
     const ids = get(record, source) || emptyArray;
     const { data, error, loading, loaded, refetch } = useGetMany(
@@ -99,12 +96,8 @@ const useReferenceArrayFieldController = (
     });
 
     return {
-        basePath: basePath
-            ? basePath.replace(resource, reference)
-            : `/${reference}`,
         ...listProps,
         defaultTitle: null,
-        hasCreate: false,
         refetch,
         resource: reference,
     };

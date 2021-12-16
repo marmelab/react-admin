@@ -1,5 +1,4 @@
-import { isValidElement, ReactElement, useEffect, useMemo } from 'react';
-import { Location } from 'history';
+import { isValidElement, useEffect, useMemo } from 'react';
 import { UseQueryOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
@@ -15,11 +14,7 @@ import {
     Record,
     Exporter,
 } from '../../types';
-import {
-    useResourceContext,
-    useResourceDefinition,
-    useGetResourceLabel,
-} from '../../core';
+import { useResourceContext, useGetResourceLabel } from '../../core';
 import useRecordSelection from '../useRecordSelection';
 import { useListParams } from './useListParams';
 
@@ -56,7 +51,6 @@ export const useListController = <RecordType extends Record = Record>(
     } = props;
     useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
-    const { hasCreate } = useResourceDefinition(props);
 
     if (!resource) {
         throw new Error(
@@ -151,7 +145,6 @@ export const useListController = <RecordType extends Record = Record>(
         exporter,
         filter,
         filterValues: query.filterValues,
-        hasCreate,
         hideFilter: queryModifiers.hideFilter,
         isFetching,
         isLoading,
@@ -173,24 +166,19 @@ export const useListController = <RecordType extends Record = Record>(
 };
 
 export interface ListControllerProps<RecordType extends Record = Record> {
+    debounce?: number;
     disableAuthentication?: boolean;
-    // the props you can change
+    /**
+     * Whether to disable the synchronization of the list parameters with the current location (URL search parameters)
+     */
+    disableSyncWithLocation?: boolean;
+    exporter?: Exporter | false;
     filter?: FilterPayload;
-    filters?: ReactElement | ReactElement[];
     filterDefaultValues?: object;
     perPage?: number;
-    sort?: SortPayload;
-    exporter?: Exporter | false;
     queryOptions?: UseQueryOptions<{ data: RecordType[]; total: number }>;
-    // the props managed by react-admin
-    debounce?: number;
-    location?: Location;
-    path?: string;
     resource?: string;
-    // Whether to disable the synchronization of the list parameters
-    // with the current location (URL search parameters)
-    disableSyncWithLocation?: boolean;
-    [key: string]: any;
+    sort?: SortPayload;
 }
 
 const defaultSort = {
@@ -207,7 +195,6 @@ export interface ListControllerResult<RecordType extends Record = Record> {
     exporter?: Exporter | false;
     filter?: FilterPayload;
     filterValues: any;
-    hasCreate?: boolean;
     hideFilter: (filterName: string) => void;
     isFetching: boolean;
     isLoading: boolean;
@@ -240,7 +227,6 @@ export const injectedProps = [
     'error',
     'exporter',
     'filterValues',
-    'hasCreate',
     'hideFilter',
     'isFetching',
     'isLoading',

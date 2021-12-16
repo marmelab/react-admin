@@ -1010,7 +1010,7 @@ describe('<ReferenceArrayInputController />', () => {
         });
     });
 
-    it('should call its children with the correct resource and basePath', () => {
+    it('should call its children with the correct resource', () => {
         const children = jest.fn(() => null);
         const store = createAdminStore({
             initialState: {
@@ -1034,9 +1034,7 @@ describe('<ReferenceArrayInputController />', () => {
                 </CoreAdminContext>
             </Provider>
         );
-
         expect(children.mock.calls[0][0].resource).toEqual('posts');
-        expect(children.mock.calls[0][0].basePath).toEqual('/posts');
     });
 
     describe('enableGetChoices', () => {

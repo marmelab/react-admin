@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import Datagrid from '../list/datagrid/Datagrid';
+import { Datagrid } from '../list/datagrid/Datagrid';
 import {
     ArrayField,
     BooleanField,

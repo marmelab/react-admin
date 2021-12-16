@@ -2082,7 +2082,7 @@ You can tweak how this component fetches the possible values using the `perPage`
 </ReferenceArrayInput>
 ```
 
-In addition to the `ReferenceArrayInputContext`, `<ReferenceArrayInput>` also sets up a `ListContext` providing access to the records from the reference resource in a similar fashion to that of the `<List>` component. This `ListContext` value is accessible with the [`useListContext`](./List.md#uselistcontext) hook.
+In addition to the `ReferenceArrayInputContext`, `<ReferenceArrayInput>` also sets up a `ListContext` providing access to the records from the reference resource in a similar fashion to that of the `<List>` component. This `ListContext` value is accessible with the [`useListContext`](./useListContext.md) hook.
 
 `<ReferenceArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 

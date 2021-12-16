@@ -19,7 +19,7 @@ import {
     Record,
     SortPayload,
 } from 'ra-core';
-import { TableProps } from '@mui/material';
+import { Table, TableProps } from '@mui/material';
 import classnames from 'classnames';
 import union from 'lodash/union';
 import difference from 'lodash/difference';
@@ -29,16 +29,33 @@ import DatagridLoading from './DatagridLoading';
 import DatagridBody, { PureDatagridBody } from './DatagridBody';
 import { RowClickFunction } from './DatagridRow';
 import DatagridContextProvider from './DatagridContextProvider';
-import { DatagridClasses, StyledTable } from './useDatagridStyles';
+import { DatagridClasses, DatagridRoot } from './useDatagridStyles';
+import { BulkActionsToolbar } from '../BulkActionsToolbar';
+import { BulkDeleteButton } from '../../button';
+
+const defaultBulkActionButtons = <BulkDeleteButton />;
 
 /**
  * The Datagrid component renders a list of records as a table.
  * It is usually used as a child of the <List> and <ReferenceManyField> components.
  *
  * Props:
+ *  - body
+ *  - bulkActionButtons
+ *  - children
+ *  - empty
+ *  - expand
+ *  - header
+ *  - hover
+ *  - isRowExpandable
+ *  - isRowSelectable
+ *  - optimized
  *  - rowStyle
+ *  - rowClick
+ *  - size
+ *  - sx
  *
- * @example Display all posts as a datagrid
+ * @example // Display all posts as a datagrid
  * const postRowStyle = (record, index) => ({
  *     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
  * });
@@ -53,7 +70,7 @@ import { DatagridClasses, StyledTable } from './useDatagridStyles';
  *     </List>
  * );
  *
- * @example Display all the comments of the current post as a datagrid
+ * @example // Display all the comments of the current post as a datagrid
  * <ReferenceManyField reference="comments" target="post_id">
  *     <Datagrid>
  *         <TextField source="id" />
@@ -63,8 +80,7 @@ import { DatagridClasses, StyledTable } from './useDatagridStyles';
  *     </Datagrid>
  * </ReferenceManyField>
  *
- *
- * @example Usage outside of a <List> or a <ReferenceManyField>.
+ * @example // Usage outside of a <List> or a <ReferenceManyField>.
  *
  * const currentSort = { field: 'published_at', order: 'DESC' };
  *
@@ -97,7 +113,7 @@ import { DatagridClasses, StyledTable } from './useDatagridStyles';
  *     );
  * }
  */
-const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
+export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     const {
         optimized = false,
         body = optimized ? PureDatagridBody : DatagridBody,
@@ -106,7 +122,7 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         className,
         empty,
         expand,
-        hasBulkActions = false,
+        bulkActionButtons = defaultBulkActionButtons,
         hover,
         isRowSelectable,
         isRowExpandable,
@@ -127,6 +143,8 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         setSort,
         total,
     } = useListContext(props);
+
+    const hasBulkActions = !!bulkActionButtons !== false;
 
     const contextValue = useMemo(() => ({ isRowExpandable }), [
         isRowExpandable,
@@ -206,45 +224,52 @@ const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
      */
     return (
         <DatagridContextProvider value={contextValue}>
-            <StyledTable
-                ref={ref}
-                className={classnames(DatagridClasses.table, className)}
-                size={size}
-                {...sanitizeRestProps(rest)}
-            >
-                {createOrCloneElement(
-                    header,
-                    {
-                        children,
-                        currentSort,
-                        data,
-                        hasExpand: !!expand,
-                        hasBulkActions,
-                        isRowSelectable,
-                        onSelect,
-                        resource,
-                        selectedIds,
-                        setSort,
-                    },
-                    children
+            <DatagridRoot>
+                {bulkActionButtons !== false && bulkActionButtons && (
+                    <BulkActionsToolbar selectedIds={selectedIds}>
+                        {bulkActionButtons}
+                    </BulkActionsToolbar>
                 )}
-                {createOrCloneElement(
-                    body,
-                    {
-                        expand,
-                        rowClick,
-                        data,
-                        hasBulkActions,
-                        hover,
-                        onToggleItem: handleToggleItem,
-                        resource,
-                        rowStyle,
-                        selectedIds,
-                        isRowSelectable,
-                    },
-                    children
-                )}
-            </StyledTable>
+                <Table
+                    ref={ref}
+                    className={classnames(DatagridClasses.table, className)}
+                    size={size}
+                    {...sanitizeRestProps(rest)}
+                >
+                    {createOrCloneElement(
+                        header,
+                        {
+                            children,
+                            currentSort,
+                            data,
+                            hasExpand: !!expand,
+                            hasBulkActions,
+                            isRowSelectable,
+                            onSelect,
+                            resource,
+                            selectedIds,
+                            setSort,
+                        },
+                        children
+                    )}
+                    {createOrCloneElement(
+                        body,
+                        {
+                            expand,
+                            rowClick,
+                            data,
+                            hasBulkActions,
+                            hover,
+                            onToggleItem: handleToggleItem,
+                            resource,
+                            rowStyle,
+                            selectedIds,
+                            isRowSelectable,
+                        },
+                        children
+                    )}
+                </Table>
+            </DatagridRoot>
         </DatagridContextProvider>
     );
 });
@@ -258,6 +283,8 @@ Datagrid.propTypes = {
     basePath: PropTypes.string,
     // @ts-ignore
     body: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
+    // @ts-ignore-line
+    bulkActionButtons: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
     currentSort: PropTypes.exact({
@@ -268,7 +295,6 @@ Datagrid.propTypes = {
     empty: PropTypes.element,
     // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
-    hasBulkActions: PropTypes.bool,
     // @ts-ignore
     header: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hover: PropTypes.bool,
@@ -290,6 +316,7 @@ export interface DatagridProps<RecordType extends Record = Record>
     extends Omit<TableProps, 'size' | 'classes' | 'onSelect'> {
     body?: ReactElement | ComponentType;
     className?: string;
+    bulkActionButtons?: ReactElement | false;
     expand?:
         | ReactElement
         | FC<{
@@ -320,7 +347,7 @@ export interface DatagridProps<RecordType extends Record = Record>
     total?: number;
 }
 
-export const injectedProps = [
+const injectedProps = [
     'allowEmpty',
     'isRequired',
     'setFilter',
@@ -335,5 +362,3 @@ const sanitizeRestProps = props =>
         .reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
 
 Datagrid.displayName = 'Datagrid';
-
-export default Datagrid;

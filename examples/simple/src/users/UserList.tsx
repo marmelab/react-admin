@@ -43,7 +43,6 @@ const UserList = () => {
             filterDefaultValues={{ role: 'user' }}
             sort={{ field: 'name', order: 'ASC' }}
             aside={<Aside />}
-            bulkActionButtons={<UserBulkActionButtons />}
         >
             {useMediaQuery((theme: Theme) => theme.breakpoints.down('md')) ? (
                 <SimpleList
@@ -56,6 +55,7 @@ const UserList = () => {
                 <Datagrid
                     rowClick={rowClick(permissions)}
                     expand={<UserEditEmbedded />}
+                    bulkActionButtons={<UserBulkActionButtons />}
                     optimized
                 >
                     <TextField source="id" />

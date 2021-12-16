@@ -277,11 +277,30 @@ const PostShow = props => (
 
 The `<Show>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
-| Rule name   | Description                                                   |
-| ----------- | ------------------------------------------------------------- |
-| `root`      | Alternative to using `className`. Applied to the root element |
-| `main`      | Applied to the main container                                 |
-| `card`      | Applied to the `<Card>` element                               |
+| Rule name        | Description                                                   |
+| ---------------- | ------------------------------------------------------------- |
+| `&.RaShow-root`  | Alternative to using `className`. Applied to the root element |
+| `& .RaShow-main` | Applied to the main container                                 |
+| `& .RaShow-card` | Applied to the `<Card>` element                               |
+
+Here's an example of how to override the default styles:
+
+{% raw %}
+```jsx
+const PostShow = () => (
+    <Show 
+        sx={{
+            backgroundColor: 'yellow',
+            '& .RaShow-main': {
+                backgroundColor: 'red',
+            },
+        }}
+    >
+            ...
+    </Show>
+);
+```
+{% endraw %}
 
 To override the style of all instances of `<Show>` using the [material-ui style overrides](https://mui.com/customization/theme-components/), use the `RaShow` key.
 
@@ -307,10 +326,10 @@ const PostShowActions = () => {
     );
 }
 
-export const PostShow = ({ permissions, ...props }) => {
+export const PostShow = () => {
     const permissions = usePermissions();
     return (
-        <Show actions={<PostShowActions />} {...props}>
+        <Show actions={<PostShowActions />}>
             <SimpleShowLayout>
                 <TextField source="title" />
                 <RichTextField source="body" />

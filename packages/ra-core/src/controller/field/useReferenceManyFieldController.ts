@@ -6,7 +6,7 @@ import { useSafeSetState, removeEmpty } from '../../util';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../sideEffect';
 import { Record, SortPayload, RecordMap } from '../../types';
-import { ListControllerProps } from '../list';
+import { ListControllerResult } from '../list';
 import usePaginationState from '../usePaginationState';
 import useSelectionState from '../useSelectionState';
 import useSortState from '../useSortState';
@@ -67,14 +67,13 @@ const defaultFilter = {};
  */
 const useReferenceManyFieldController = (
     props: UseReferenceManyFieldControllerParams
-): ListControllerProps => {
+): ListControllerResult => {
     const {
         reference,
         record,
         target,
         filter = defaultFilter,
         source,
-        basePath,
         page: initialPage,
         perPage: initialPerPage,
         sort: initialSort = { field: 'id', order: 'DESC' },
@@ -195,16 +194,12 @@ const useReferenceManyFieldController = (
     );
 
     return {
-        basePath: basePath
-            ? basePath.replace(resource, reference)
-            : `/${reference}`,
         currentSort: sort,
         data: ids.map(id => data[id]),
         defaultTitle: null,
         displayedFilters,
         error,
         filterValues,
-        hasCreate: false,
         hideFilter,
         isFetching: loading,
         isLoading: !loaded,

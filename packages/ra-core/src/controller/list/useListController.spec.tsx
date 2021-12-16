@@ -222,8 +222,9 @@ describe('useListController', () => {
                 'posts',
                 expect.objectContaining({ filter: { foo: 1 } })
             );
+
             // Check that the permanent filter is not included in the displayedFilters and filterValues (passed to Filter form and button)
-            expect(children).toHaveBeenCalledTimes(2);
+            expect(children).toHaveBeenCalledTimes(1);
             expect(children).toHaveBeenCalledWith(
                 expect.objectContaining({
                     displayedFilters: {},
@@ -243,7 +244,7 @@ describe('useListController', () => {
                 'posts',
                 expect.objectContaining({ filter: { foo: 2 } })
             );
-            expect(children).toHaveBeenCalledTimes(4);
+            expect(children).toHaveBeenCalledTimes(2);
         });
 
         afterEach(() => {

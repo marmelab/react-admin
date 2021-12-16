@@ -30,6 +30,7 @@ export const SearchInput = (props: SearchInputProps) => {
                 ),
             }}
             className={SearchInputClasses.input}
+            size="small"
             {...props}
         />
     );
@@ -46,6 +47,6 @@ export const SearchInputClasses = {
 
 const StyledTextInput = styled(TextInput, { name: PREFIX })({
     [`&.${SearchInputClasses.input}`]: {
-        marginTop: 32,
+        marginTop: 0,
     },
 });

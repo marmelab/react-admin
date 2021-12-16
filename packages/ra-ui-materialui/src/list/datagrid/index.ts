@@ -1,4 +1,3 @@
-import Datagrid, { DatagridProps } from './Datagrid';
 import DatagridBody, {
     DatagridBodyProps,
     PureDatagridBody,
@@ -16,11 +15,11 @@ import DatagridRow, {
 } from './DatagridRow';
 import ExpandRowButton, { ExpandRowButtonProps } from './ExpandRowButton';
 
+export * from './Datagrid';
 export * from './DatagridHeader';
 export * from './useDatagridStyles';
 
 export {
-    Datagrid,
     DatagridLoading,
     DatagridBody,
     DatagridRow,
@@ -33,7 +32,6 @@ export {
 };
 
 export type {
-    DatagridProps,
     DatagridBodyProps,
     DatagridCellProps,
     DatagridHeaderCellProps,
