@@ -194,7 +194,7 @@ const IncreaseLikeButton = ({ record }) => {
 
 TypeScript will complain if you don't.
 
-Note that your code will be more readable if you pass the mutation parameters to the mutation callback instaed of the mutation hook, e.g.
+Note that your code will be more readable if you pass the mutation parameters to the mutation callback instead of the mutation hook, e.g.
 
 ```diff
 const IncreaseLikeButton = ({ record }) => {
