@@ -16,7 +16,7 @@ import {
 } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
 import { setAutomaticRefresh } from '../actions';
-import { RecordContextProvider, useRecordContext } from '../controller';
+import { useRecordContext, OptionalRecordContextProvider } from '../controller';
 import { FormContextProvider } from './FormContextProvider';
 import submitErrorsMutators from './submitErrorsMutators';
 import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
@@ -196,7 +196,7 @@ const FormWithRedirect = ({
     };
 
     return (
-        <RecordContextProvider value={record}>
+        <OptionalRecordContextProvider value={record}>
             <FormContextProvider value={formContextValue}>
                 <Form
                     key={`${version}_${record?.id || ''}`} // support for refresh button
@@ -229,7 +229,7 @@ const FormWithRedirect = ({
                     )}
                 />
             </FormContextProvider>
-        </RecordContextProvider>
+        </OptionalRecordContextProvider>
     );
 };
 
