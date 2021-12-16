@@ -333,7 +333,6 @@ describe('<FileInput />', () => {
             });
         });
         it('error occurs', async done => {
-            const dummy = jest.fn();
             const onSubmit = jest.fn();
             // NOTE: We couldn't handle UnhandledPromiseRejection and make
             // ErrorBoundary method of https://github.com/testing-library/react-testing-library/issues/828#issuecomment-729860950 work,
@@ -376,11 +375,6 @@ describe('<FileInput />', () => {
             const fileDom = getByTitle('cats');
             expect(fileDom).not.toBeNull();
             fireEvent.click(getByLabelText('ra.action.delete'));
-            await waitFor(() => {
-                // NOTE: This is dummy method never called, but test will be done for jest's done method.
-                // This is mimicked as throw error and process abandoned.
-                expect(dummy).toBeCalled();
-            });
         });
     });
 
