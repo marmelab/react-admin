@@ -234,21 +234,24 @@ describe('<ReferenceArrayInputController />', () => {
         ).toBeNull();
     });
 
-    it.skip('should set warning if references fetch fails but selected references are not empty', async () => {
+    it('should set warning if references fetch fails but selected references are not empty', async () => {
         const children = jest.fn(({ warning }) => <div>{warning}</div>);
+        const queryClient = new QueryClient();
         renderWithRedux(
             <Form
                 onSubmit={jest.fn()}
                 render={() => (
-                    <ReferenceArrayInputController
-                        {...defaultProps}
-                        // Avoid global collision in useGetMany with queriesToCall
-                        basePath="/articles"
-                        resource="articles"
-                        input={{ value: [1, 2] }}
-                    >
-                        {children}
-                    </ReferenceArrayInputController>
+                    <QueryClientProvider client={queryClient}>
+                        <ReferenceArrayInputController
+                            {...defaultProps}
+                            // Avoid global collision in useGetMany with queriesToCall
+                            basePath="/articles"
+                            resource="articles"
+                            input={{ value: [1, 2] }}
+                        >
+                            {children}
+                        </ReferenceArrayInputController>
+                    </QueryClientProvider>
                 )}
             />,
             {
