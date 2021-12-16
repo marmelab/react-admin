@@ -157,8 +157,7 @@ export const ReferenceArrayInput = ({
                         children={children}
                         {...props}
                         choices={controllerProps.choices}
-                        loaded={controllerProps.loaded}
-                        loading={controllerProps.loading}
+                        isFetching={controllerProps.isFetching}
                         isLoading={controllerProps.isLoading}
                         setFilter={controllerProps.setFilter}
                         setPagination={controllerProps.setPagination}
@@ -220,8 +219,7 @@ export interface ReferenceArrayInputViewProps {
     input: FieldInputProps<any, HTMLElement>;
     isRequired: boolean;
     label?: string;
-    loaded: boolean;
-    loading: boolean;
+    isFetching: boolean;
     isLoading: boolean;
     meta: FieldMetaState<any>;
     onChange: any;
@@ -244,8 +242,7 @@ export const ReferenceArrayInputView = ({
     className,
     error,
     input,
-    loaded,
-    loading,
+    isFetching,
     isLoading,
     isRequired,
     label,
@@ -285,8 +282,7 @@ export const ReferenceArrayInputView = ({
         input,
         isRequired,
         label: translatedLabel,
-        loaded,
-        loading,
+        isFetching,
         isLoading,
         meta: {
             ...meta,

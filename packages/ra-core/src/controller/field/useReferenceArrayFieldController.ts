@@ -60,11 +60,11 @@ const useReferenceArrayFieldController = (
     } = props;
     const notify = useNotify();
     const ids = get(record, source) || emptyArray;
-    const { data, error, loading, loaded, refetch } = useGetMany(
+    const { data, error, isLoading, isFetching, refetch } = useGetMany(
         reference,
-        ids,
+        { ids },
         {
-            onFailure: error =>
+            onError: error =>
                 notify(
                     typeof error === 'string'
                         ? error
@@ -88,8 +88,8 @@ const useReferenceArrayFieldController = (
         data,
         error,
         filter,
-        isFetching: loading,
-        isLoading: !loaded,
+        isFetching,
+        isLoading,
         page,
         perPage,
         sort,

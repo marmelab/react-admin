@@ -4,9 +4,9 @@ import get from 'lodash/get';
 import { Record } from '../../types';
 
 import getResourceLinkPath, { LinkToFunctionType } from './getResourceLinkPath';
-import useReference, { UseReferenceProps } from '../useReference';
+import { useReference, UseReferenceResult } from '../useReference';
 
-interface ChildrenParams extends UseReferenceProps {
+interface ChildrenParams extends UseReferenceResult {
     resourceLinkPath: string | false;
 }
 

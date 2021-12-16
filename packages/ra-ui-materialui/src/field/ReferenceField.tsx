@@ -9,7 +9,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import { useSelector } from 'react-redux';
 import {
     useReference,
-    UseReferenceProps,
+    UseReferenceResult,
     getResourceLinkPath,
     LinkToType,
     ResourceContextProvider,
@@ -181,8 +181,8 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
         children,
         className,
         error,
-        loaded,
-        loading,
+        isFetching,
+        isLoading,
         record,
         reference,
         referenceRecord,
@@ -206,7 +206,7 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
             /* eslint-enable */
         );
     }
-    if (!loaded) {
+    if (isLoading) {
         return <LinearProgress />;
     }
     if (!referenceRecord) {
@@ -257,7 +257,7 @@ ReferenceFieldView.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.element,
     className: PropTypes.string,
-    loading: PropTypes.bool,
+    isLoading: PropTypes.bool,
     record: PropTypes.any,
     reference: PropTypes.string,
     referenceRecord: PropTypes.any,
@@ -273,7 +273,7 @@ ReferenceFieldView.propTypes = {
 export interface ReferenceFieldViewProps
     extends PublicFieldProps,
         InjectedFieldProps,
-        UseReferenceProps {
+        UseReferenceResult {
     reference: string;
     resource?: string;
     translateChoice?: Function | boolean;

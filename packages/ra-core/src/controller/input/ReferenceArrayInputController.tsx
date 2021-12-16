@@ -124,8 +124,6 @@ export interface ReferenceArrayInputControllerChildrenFuncParams
     extends Omit<ListControllerProps, 'setSort'> {
     choices: Record[];
     error?: string;
-    loaded: boolean;
-    loading: boolean;
     setFilter: (filter: any) => void;
     setPagination: (pagination: PaginationPayload) => void;
     setSort: (sort: SortPayload) => void;

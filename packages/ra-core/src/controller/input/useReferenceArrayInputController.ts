@@ -113,9 +113,10 @@ export const useReferenceArrayInputController = (
     const {
         data: referenceRecordsFetched,
         error: errorGetMany,
-        loaded,
+        isLoading: isLoadingGetMany,
+        isFetching: isFetchingGetMany,
         refetch: refetchGetMany,
-    } = useGetMany(reference, idsToFetch || EmptyArray);
+    } = useGetMany(reference, { ids: idsToFetch || EmptyArray });
 
     const referenceRecords = referenceRecordsFetched
         ? referenceRecordsFetched.concat(referenceRecordsFromStore)
@@ -278,7 +279,7 @@ export const useReferenceArrayInputController = (
         total,
         error: errorGetList,
         isLoading: isLoadingGetList,
-        isFetching,
+        isFetching: isFetchingGetList,
         refetch: refetchGetMatching,
     } = useGetList(
         reference,
@@ -320,10 +321,8 @@ export const useReferenceArrayInputController = (
                 : undefined,
         filterValues,
         hideFilter,
-        loaded,
-        isFetching,
-        isLoading: !loaded || isLoadingGetList,
-        loading: dataStatus.waiting && isGetMatchingEnabled,
+        isFetching: isFetchingGetMany || isFetchingGetList,
+        isLoading: isLoadingGetMany || isLoadingGetList,
         onSelect,
         onToggleItem,
         onUnselectItems,
