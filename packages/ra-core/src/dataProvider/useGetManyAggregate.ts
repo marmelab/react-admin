@@ -1,5 +1,10 @@
 import ReactDOM from 'react-dom';
-import { QueryClient, useQueryClient } from 'react-query';
+import {
+    QueryClient,
+    useQueryClient,
+    useQuery,
+    UseQueryOptions,
+} from 'react-query';
 import { createSelector } from 'reselect';
 import debounce from 'lodash/debounce';
 import union from 'lodash/union';
@@ -7,6 +12,7 @@ import isEqual from 'lodash/isEqual';
 import get from 'lodash/get';
 
 import { CRUD_GET_MANY } from '../actions/dataActions/crudGetMany';
+import { UseGetManyHookValue } from './useGetMany';
 import {
     Identifier,
     Record,
@@ -20,33 +26,17 @@ import { Refetch } from './useQueryWithStore';
 import { useDataProvider } from '.';
 
 type Callback = (args?: any) => void;
-type SetState = (args: any) => void;
+
 interface Query {
     ids: Identifier[];
-    onSuccess: Callback;
-    onError: Callback;
-    setState: SetState;
+    resolve: Callback;
+    reject: Callback;
 }
 interface QueriesToCall {
     [resource: string]: Query[];
 }
-interface UseGetManyOptions {
-    onSuccess?: Callback;
-    onError?: Callback;
-    enabled?: boolean;
-}
-interface UseGetManyAggregateResult<RecordType extends Record = Record> {
-    data: RecordType[];
-    error?: any;
-    isFetching: boolean;
-    isLoading: boolean;
-    refetch: Refetch;
-}
-let queriesToCall: QueriesToCall = {};
-let queryClient: QueryClient;
-let dataProvider: DataProviderProxy;
 
-const DataProviderOptions = { action: CRUD_GET_MANY };
+let queriesToCall: QueriesToCall = {};
 
 /**
  * Call the dataProvider.getMany() method and return the resolved result
@@ -99,119 +89,42 @@ const DataProviderOptions = { action: CRUD_GET_MANY };
 export const useGetManyAggregate = <RecordType extends Record = Record>(
     resource: string,
     params: GetManyParams,
-    options: UseGetManyOptions = { enabled: true }
-): UseGetManyAggregateResult<RecordType> => {
-    dataProvider = useDataProvider();
-    queryClient = useQueryClient(); // not the best way to pass the queryClient to a function outside the hook, but I couldn't find a better one
+    options: UseQueryOptions<RecordType[], Error>
+): UseGetManyHookValue<RecordType> => {
+    const dataProvider = useDataProvider();
+    const queryClient = useQueryClient();
     const { ids } = params;
-    const dataFromCache = ids.map(id =>
-        queryClient.getQueryData<RecordType[]>([resource, 'getOne', String(id)])
-    );
-    const data = dataFromCache.find(record => record !== undefined)
-        ? dataFromCache
-        : undefined;
-    const [state, setState] = useSafeSetState({
-        data,
-        error: null,
-        isLoading: !data,
-        isFetching: true,
-        refetch: () => {}, // fixme
-    });
 
-    useEffect(() => {
-        if (options.enabled === false) {
-            return;
-        }
-
-        if (!queriesToCall[resource]) {
-            queriesToCall[resource] = [];
-        }
-        /**
-         * queriesToCall stores the queries to call under the following shape:
-         *
-         * {
-         *   'posts': [
-         *     { ids: [1, 2], setState }
-         *     { ids: [2, 3], setState, onSuccess }
-         *     { ids: [4, 5], setState }
-         *   ],
-         *   'comments': [
-         *     { ids: [345], setState, onError }
-         *   ]
-         * }
-         */
-        queriesToCall[resource] = queriesToCall[resource].concat({
-            ids,
-            setState,
-            onSuccess: options && options.onSuccess,
-            onError: options && options.onError,
-        });
-        callQueries(); // debounced by lodash
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [JSON.stringify({ resource, ids, options }), setState]);
-
-    return state;
-};
-
-/**
- * Call the dataProvider once per resource
- */
-const callQueries = debounce(() => {
-    const resources = Object.keys(queriesToCall);
-    resources.forEach(resource => {
-        const queries = [...queriesToCall[resource]]; // cloning to avoid side effects
-        /**
-         * Extract ids from queries, aggregate and deduplicate them
-         *
-         * @example from [[1, 2], [2, null, 3], [4, null]] to [1, 2, 3, 4]
-         */
-        const accumulatedIds = queries
-            .reduce((acc, { ids }) => union(acc, ids), []) // concat + unique
-            .filter(v => v != null && v !== ''); // remove null values
-        if (accumulatedIds.length === 0) {
-            // no need to call the data provider if all the ids are null
-            queries.forEach(({ ids, setState, onSuccess }) => {
-                setState({
-                    data: emptyArray,
-                    isLoading: false,
-                    isFetching: false,
-                });
-                if (onSuccess) {
-                    onSuccess({ data: emptyArray });
+    return useQuery<RecordType[], Error, RecordType[]>(
+        [resource, 'getMany', { ids: ids.map(id => String(id)) }],
+        () =>
+            new Promise((resolve, reject) => {
+                if (!queriesToCall[resource]) {
+                    queriesToCall[resource] = [];
                 }
-            });
-            return;
-        }
-        queryClient
-            .fetchQuery<any[], Error, any[]>(
-                [
-                    resource,
-                    'getMany',
-                    { ids: accumulatedIds.map(id => String(id)) },
-                ],
-                () =>
-                    dataProvider
-                        .getMany<any>(resource, { ids: accumulatedIds })
-                        .then(({ data }) => data)
-            )
-            .then(data => {
-                // Forces batching, see https://stackoverflow.com/questions/48563650/does-react-keep-the-order-for-state-updates/48610973#48610973
-                ReactDOM.unstable_batchedUpdates(() =>
-                    queries.forEach(({ ids, setState, onSuccess }) => {
-                        const subData = ids.map(
-                            id => data.find(datum => datum.id == id) // eslint-disable-line eqeqeq
-                        );
-                        setState({
-                            data: subData,
-                            error: null,
-                            isFetching: false,
-                            isLoading: false,
-                        });
-                        if (onSuccess) {
-                            onSuccess({ data: subData });
-                        }
-                    })
-                );
+                /**
+                 * queriesToCall stores the queries to call under the following shape:
+                 *
+                 * {
+                 *   'posts': [
+                 *     { ids: [1, 2], resolve, reject }
+                 *     { ids: [2, 3], resolve, reject }
+                 *     { ids: [4, 5], resolve, reject }
+                 *   ],
+                 *   'comments': [
+                 *     { ids: [345], resolve, reject }
+                 *   ]
+                 * }
+                 */
+                queriesToCall[resource] = queriesToCall[resource].concat({
+                    ids,
+                    resolve,
+                    reject,
+                });
+                callQueries(dataProvider, queryClient); // debounced by lodash
+            }),
+        {
+            onSuccess: data => {
                 // optimistically populate the getOne cache
                 data.forEach(record => {
                     queryClient.setQueryData(
@@ -219,21 +132,55 @@ const callQueries = debounce(() => {
                         record
                     );
                 });
-            })
-            .catch(error =>
-                ReactDOM.unstable_batchedUpdates(() =>
-                    queries.forEach(({ setState, onError }) => {
-                        setState({
-                            error,
-                            isLoading: false,
-                            isFetching: false,
-                        });
-                        onError && onError(error);
-                    })
-                )
-            );
-        delete queriesToCall[resource];
-    });
-});
+            },
+            ...options,
+        }
+    );
+};
 
-const emptyArray = [];
+/**
+ * Call the dataProvider once per resource
+ */
+const callQueries = debounce(
+    (dataProvider: DataProviderProxy, queryClient: QueryClient) => {
+        const resources = Object.keys(queriesToCall);
+        resources.forEach(resource => {
+            const queries = [...queriesToCall[resource]]; // cloning to avoid side effects
+            /**
+             * Extract ids from queries, aggregate and deduplicate them
+             *
+             * @example from [[1, 2], [2, null, 3], [4, null]] to [1, 2, 3, 4]
+             */
+            const accumulatedIds = queries
+                .reduce((acc, { ids }) => union(acc, ids), []) // concat + unique
+                .filter(v => v != null && v !== ''); // remove null values
+            if (accumulatedIds.length === 0) {
+                // no need to call the data provider if all the ids are null
+                queries.forEach(({ resolve }) => {
+                    resolve({ data: [] });
+                });
+                return;
+            }
+            queryClient
+                .fetchQuery<any[], Error, any[]>(
+                    [
+                        resource,
+                        'getMany',
+                        { ids: accumulatedIds.map(id => String(id)) },
+                    ],
+                    () =>
+                        dataProvider
+                            .getMany<any>(resource, { ids: accumulatedIds })
+                            .then(({ data }) => data)
+                )
+                .then(data => {
+                    queries.forEach(({ ids, resolve }) => {
+                        resolve(data.filter(record => ids.includes(record.id)));
+                    });
+                })
+                .catch(error => queries.forEach(({ reject }) => reject(error)));
+
+            delete queriesToCall[resource];
+        });
+    }
+);
