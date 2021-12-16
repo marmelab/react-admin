@@ -1,7 +1,11 @@
 import * as React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import {
+    render,
+    fireEvent,
+    waitForElementToBeRemoved,
+    waitFor,
+} from '@testing-library/react';
 import { Form } from 'react-final-form';
-
 import { FileField, ImageField } from '../field';
 import { FileInput } from './FileInput';
 
@@ -244,6 +248,214 @@ describe('<FileInput />', () => {
                     title: 'cats',
                 },
             ],
+        });
+    });
+
+    describe('should stop to remove file field onSubmitReview return false', () => {
+        it('normal function', async () => {
+            const onSubmit = jest.fn();
+
+            const { getByLabelText, getByTitle } = render(
+                <Form
+                    initialValues={{
+                        image: {
+                            src: 'test.png',
+                            title: 'cats',
+                        },
+                    }}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <FileInput
+                                {...defaultProps}
+                                onSubmitRemove={file => false}
+                            >
+                                <FileField source="src" title="title" />
+                            </FileInput>
+                            <button type="submit" aria-label="Save" />
+                        </form>
+                    )}
+                />
+            );
+
+            const fileDom = getByTitle('cats');
+            expect(fileDom).not.toBeNull();
+            fireEvent.click(getByLabelText('ra.action.delete'));
+            await waitFor(() => {
+                expect(fileDom).not.toBeNull();
+            });
+            fireEvent.click(getByLabelText('Save'));
+
+            expect(onSubmit.mock.calls[0][0]).toEqual({
+                image: {
+                    src: 'test.png',
+                    title: 'cats',
+                },
+            });
+        });
+        it('promise function', async () => {
+            const onSubmit = jest.fn();
+
+            const { getByLabelText, getByTitle } = render(
+                <Form
+                    initialValues={{
+                        image: {
+                            src: 'test.png',
+                            title: 'cats',
+                        },
+                    }}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <FileInput
+                                {...defaultProps}
+                                onSubmitRemove={async file => false}
+                            >
+                                <FileField source="src" title="title" />
+                            </FileInput>
+                            <button type="submit" aria-label="Save" />
+                        </form>
+                    )}
+                />
+            );
+            const fileDom = getByTitle('cats');
+            expect(fileDom).not.toBeNull();
+            fireEvent.click(getByLabelText('ra.action.delete'));
+            await waitFor(() => {
+                expect(fileDom).not.toBeNull();
+            });
+            fireEvent.click(getByLabelText('Save'));
+            expect(onSubmit.mock.calls[0][0]).toEqual({
+                image: {
+                    src: 'test.png',
+                    title: 'cats',
+                },
+            });
+        });
+        it('error occurs', async done => {
+            const dummy = jest.fn();
+            const onSubmit = jest.fn();
+            // NOTE: We couldn't handle UnhandledPromiseRejection and make
+            // ErrorBoundary method of https://github.com/testing-library/react-testing-library/issues/828#issuecomment-729860950 work,
+            // so make mimic methods to read final states when process force exit by errors instead of throw new Error.
+            const errorMockFn = jest.fn(() => {
+                fireEvent.click(getByLabelText('Save'));
+                expect(onSubmit.mock.calls[0][0]).toEqual({
+                    image: {
+                        src: 'test.png',
+                        title: 'cats',
+                    },
+                });
+                // NOTE: Mimicking throw Error.The done method finish process even if having waitFor not resolved.
+                done();
+                return true;
+            });
+            const { getByLabelText, getByTitle } = render(
+                <Form
+                    initialValues={{
+                        image: {
+                            src: 'test.png',
+                            title: 'cats',
+                        },
+                    }}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <FileInput
+                                {...defaultProps}
+                                onSubmitRemove={errorMockFn}
+                            >
+                                <FileField source="src" title="title" />
+                            </FileInput>
+                            <button type="submit" aria-label="Save" />
+                        </form>
+                    )}
+                />
+            );
+
+            const fileDom = getByTitle('cats');
+            expect(fileDom).not.toBeNull();
+            fireEvent.click(getByLabelText('ra.action.delete'));
+            await waitFor(() => {
+                // NOTE: This is dummy method never called, but test will be done for jest's done method.
+                // This is mimicked as throw error and process abandoned.
+                expect(dummy).toBeCalled();
+            });
+        });
+    });
+
+    describe('should continue to remove file field onSubmitReview return true', () => {
+        it('normal function', async () => {
+            const onSubmit = jest.fn();
+
+            const { getByLabelText, getByTitle } = render(
+                <Form
+                    initialValues={{
+                        image: {
+                            src: 'test.png',
+                            title: 'cats',
+                        },
+                    }}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <FileInput
+                                {...defaultProps}
+                                onSubmitRemove={file => true}
+                            >
+                                <FileField source="src" title="title" />
+                            </FileInput>
+                            <button type="submit" aria-label="Save" />
+                        </form>
+                    )}
+                />
+            );
+
+            const fileDom = getByTitle('cats');
+            expect(fileDom).not.toBeNull();
+            fireEvent.click(getByLabelText('ra.action.delete'));
+            await waitForElementToBeRemoved(fileDom);
+            fireEvent.click(getByLabelText('Save'));
+
+            expect(onSubmit.mock.calls[0][0]).toEqual({
+                image: null,
+            });
+        });
+        it('promise function', async () => {
+            const onSubmit = jest.fn();
+
+            const { getByLabelText, getByTitle } = render(
+                <Form
+                    initialValues={{
+                        image: {
+                            src: 'test.png',
+                            title: 'cats',
+                        },
+                    }}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <FileInput
+                                {...defaultProps}
+                                onSubmitRemove={async file => true}
+                            >
+                                <FileField source="src" title="title" />
+                            </FileInput>
+                            <button type="submit" aria-label="Save" />
+                        </form>
+                    )}
+                />
+            );
+
+            const fileDom = getByTitle('cats');
+            expect(fileDom).not.toBeNull();
+            fireEvent.click(getByLabelText('ra.action.delete'));
+            await waitForElementToBeRemoved(fileDom);
+            fireEvent.click(getByLabelText('Save'));
+
+            expect(onSubmit.mock.calls[0][0]).toEqual({
+                image: null,
+            });
         });
     });
 
