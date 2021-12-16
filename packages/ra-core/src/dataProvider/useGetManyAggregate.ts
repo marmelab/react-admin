@@ -1,42 +1,14 @@
-import ReactDOM from 'react-dom';
 import {
     QueryClient,
     useQueryClient,
     useQuery,
     UseQueryOptions,
 } from 'react-query';
-import { createSelector } from 'reselect';
-import debounce from 'lodash/debounce';
 import union from 'lodash/union';
-import isEqual from 'lodash/isEqual';
-import get from 'lodash/get';
 
-import { CRUD_GET_MANY } from '../actions/dataActions/crudGetMany';
 import { UseGetManyHookValue } from './useGetMany';
-import {
-    Identifier,
-    Record,
-    ReduxState,
-    DataProviderProxy,
-    GetManyParams,
-} from '../types';
-import { useSafeSetState } from '../util/hooks';
-import { useEffect } from 'react';
-import { Refetch } from './useQueryWithStore';
+import { Identifier, Record, GetManyParams, DataProviderProxy } from '../types';
 import { useDataProvider } from '.';
-
-type Callback = (args?: any) => void;
-
-interface Query {
-    ids: Identifier[];
-    resolve: Callback;
-    reject: Callback;
-}
-interface QueriesToCall {
-    [resource: string]: Query[];
-}
-
-let queriesToCall: QueriesToCall = {};
 
 /**
  * Call the dataProvider.getMany() method and return the resolved result
@@ -58,7 +30,7 @@ let queriesToCall: QueriesToCall = {};
  *
  * during the same tick, the hook will only call the dataProvider once with the following parameters:
  *
- * dataProvider(GET_MANY, 'tags', [1, 2, 3, 4])
+ * dataProvider.getMany('tags', [1, 2, 3, 4])
  *
  * @param resource The resource name, e.g. 'posts'
  * @param ids The resource identifiers, e.g. [123, 456, 789]
@@ -99,29 +71,14 @@ export const useGetManyAggregate = <RecordType extends Record = Record>(
         [resource, 'getMany', { ids: ids.map(id => String(id)) }],
         () =>
             new Promise((resolve, reject) => {
-                if (!queriesToCall[resource]) {
-                    queriesToCall[resource] = [];
-                }
-                /**
-                 * queriesToCall stores the queries to call under the following shape:
-                 *
-                 * {
-                 *   'posts': [
-                 *     { ids: [1, 2], resolve, reject }
-                 *     { ids: [2, 3], resolve, reject }
-                 *     { ids: [4, 5], resolve, reject }
-                 *   ],
-                 *   'comments': [
-                 *     { ids: [345], resolve, reject }
-                 *   ]
-                 * }
-                 */
-                queriesToCall[resource] = queriesToCall[resource].concat({
+                callQueries({
+                    resource,
                     ids,
+                    dataProvider,
+                    queryClient,
                     resolve,
                     reject,
                 });
-                callQueries(dataProvider, queryClient); // debounced by lodash
             }),
         {
             onSuccess: data => {
@@ -139,48 +96,91 @@ export const useGetManyAggregate = <RecordType extends Record = Record>(
 };
 
 /**
- * Call the dataProvider once per resource
+ * Batch all calls to a function into one single call with the arguments of all the calls.
+ *
+ * @example
+ * let sum = 0;
+ * const add = (args) => { sum = args.reduce((arg, total) => total + arg, 0); };
+ * const addBatched = batch(add);
+ * addBatched(2);
+ * addBatched(8);
+ * // add will be called once with arguments [2, 8]
+ * // and sum will be equal to 10
  */
-const callQueries = debounce(
-    (dataProvider: DataProviderProxy, queryClient: QueryClient) => {
-        const resources = Object.keys(queriesToCall);
-        resources.forEach(resource => {
-            const queries = [...queriesToCall[resource]]; // cloning to avoid side effects
-            /**
-             * Extract ids from queries, aggregate and deduplicate them
-             *
-             * @example from [[1, 2], [2, null, 3], [4, null]] to [1, 2, 3, 4]
-             */
-            const accumulatedIds = queries
-                .reduce((acc, { ids }) => union(acc, ids), []) // concat + unique
-                .filter(v => v != null && v !== ''); // remove null values
-            if (accumulatedIds.length === 0) {
-                // no need to call the data provider if all the ids are null
-                queries.forEach(({ resolve }) => {
-                    resolve({ data: [] });
-                });
-                return;
-            }
-            queryClient
-                .fetchQuery<any[], Error, any[]>(
-                    [
-                        resource,
-                        'getMany',
-                        { ids: accumulatedIds.map(id => String(id)) },
-                    ],
-                    () =>
-                        dataProvider
-                            .getMany<any>(resource, { ids: accumulatedIds })
-                            .then(({ data }) => data)
-                )
-                .then(data => {
-                    queries.forEach(({ ids, resolve }) => {
-                        resolve(data.filter(record => ids.includes(record.id)));
-                    });
-                })
-                .catch(error => queries.forEach(({ reject }) => reject(error)));
+const batch = fn => {
+    let capturedArgs = [];
+    let timeout = null;
+    return arg => {
+        capturedArgs.push(arg);
+        if (timeout) clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            timeout = null;
+            fn(capturedArgs);
+            capturedArgs = [];
+        }, 0);
+    };
+};
 
-            delete queriesToCall[resource];
-        });
-    }
-);
+interface GetManyCallArgs {
+    resource: string;
+    ids: Identifier[];
+    dataProvider: DataProviderProxy;
+    queryClient: QueryClient;
+    resolve: (data: any[]) => void;
+    reject: (error?: any) => void;
+}
+
+const callQueries = batch((calls: GetManyCallArgs[]) => {
+    const dataProvider = calls[0].dataProvider;
+    const queryClient = calls[0].queryClient;
+
+    // aggregate by resource
+    const callsByResource = calls.reduce((acc, callArgs) => {
+        if (!acc[callArgs.resource]) {
+            acc[callArgs.resource] = [];
+        }
+        acc[callArgs.resource].push(callArgs);
+        return acc;
+    }, {} as { [resource: string]: GetManyCallArgs[] });
+
+    // For each resource, call dataProvider.getMany() once
+    Object.keys(callsByResource).forEach(resource => {
+        const callsForResource = callsByResource[resource];
+        /**
+         * Extract ids from queries, aggregate and deduplicate them
+         *
+         * @example from [[1, 2], [2, null, 3], [4, null]] to [1, 2, 3, 4]
+         */
+        const accumulatedIds = callsForResource
+            .reduce((acc, { ids }) => union(acc, ids), []) // concat + unique
+            .filter(v => v != null && v !== ''); // remove null values
+
+        if (accumulatedIds.length === 0) {
+            // no need to call the data provider if all the ids are null
+            callsForResource.forEach(({ resolve }) => {
+                resolve([]);
+            });
+            return;
+        }
+        queryClient
+            .fetchQuery<any[], Error, any[]>(
+                [
+                    resource,
+                    'getMany',
+                    { ids: accumulatedIds.map(id => String(id)) },
+                ],
+                () =>
+                    dataProvider
+                        .getMany<any>(resource, { ids: accumulatedIds })
+                        .then(({ data }) => data)
+            )
+            .then(data => {
+                callsForResource.forEach(({ ids, resolve }) => {
+                    resolve(data.filter(record => ids.includes(record.id)));
+                });
+            })
+            .catch(error =>
+                callsForResource.forEach(({ reject }) => reject(error))
+            );
+    });
+});
