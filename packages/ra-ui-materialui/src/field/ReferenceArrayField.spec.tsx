@@ -222,7 +222,7 @@ describe('<ReferenceArrayField />', () => {
         });
         const WeakField = () => {
             const record = useRecordContext();
-            return <div>{record.title}</div>;
+            return <div>{record?.title}</div>;
         };
         const dataProvider = {
             getMany: () =>

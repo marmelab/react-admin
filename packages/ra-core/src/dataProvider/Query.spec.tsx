@@ -275,7 +275,7 @@ describe('Query', () => {
                     resource="foo"
                     options={{
                         onSuccess: () => {
-                            notify('Youhou!', { type: 'info' });
+                            notify('Youhou!');
                         },
                     }}
                 >

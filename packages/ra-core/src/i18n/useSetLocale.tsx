@@ -48,7 +48,7 @@ const useSetLocale = (): SetLocale => {
                 })
                 .catch(error => {
                     stopLoading();
-                    notify('ra.notification.i18n_error', 'warning');
+                    notify('ra.notification.i18n_error', { type: 'warning' });
                     console.error(error);
                 }),
         [i18nProvider, notify, setLocale, startLoading, stopLoading]

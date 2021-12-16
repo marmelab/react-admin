@@ -19,19 +19,16 @@ const AcceptButton = ({ record }: { record: Review }) => {
         {
             mutationMode: 'undoable',
             onSuccess: () => {
-                notify(
-                    'resources.reviews.notification.approved_success',
-                    'info',
-                    {},
-                    true
-                );
+                notify('resources.reviews.notification.approved_success', {
+                    type: 'info',
+                    undoable: true,
+                });
                 redirectTo('/reviews');
             },
             onError: () => {
-                notify(
-                    'resources.reviews.notification.approved_error',
-                    'warning'
-                );
+                notify('resources.reviews.notification.approved_error', {
+                    type: 'warning',
+                });
             },
         }
     );

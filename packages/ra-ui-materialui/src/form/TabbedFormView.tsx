@@ -165,7 +165,7 @@ export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
     className?: string;
     margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
-    record?: Record;
+    record?: Partial<Record>;
     resource?: string;
     formRootPathname?: string;
     syncWithLocation?: boolean;

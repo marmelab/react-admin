@@ -7,7 +7,7 @@ title: "The Resource Component"
 
 `<Resource>` components are fundamental building blocks in react-admin apps. They form the skeleton of the application, and of its internal data store. 
 
-In react-admin terms, a *resource* is a string that refers to an entity type (like 'products', 'subscribers', or 'tags'). *Records* are objects with an `id` field, and two records of the same *resource* have the same field structure (e.g. all posts records have a title, a publication date, etc). 
+In react-admin terms, a *resource* is a string that refers to an entity type (like 'products', 'subscribers', or 'tags'). *Records* are objects with an `id` field, and two records of the same *resource* have the same field structure (e.g. all posts records have a title, a publication date, etc.). 
 
 A `<Resource>` component has 3 responsibilities:
 

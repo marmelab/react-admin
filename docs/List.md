@@ -67,7 +67,7 @@ import IconEvent from '@mui/icons-material/Event';
 
 const ListActions = () => (
     <TopToolbar>
-        <FilterButton />
+        <FilterButton/>
         <CreateButton/>
         <ExportButton/>
         {/* Add your custom actions */}

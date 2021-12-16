@@ -149,9 +149,7 @@ export const useEditController = <RecordType extends Record = Record>(
                             : () => {
                                   notify('ra.notification.updated', {
                                       type: 'info',
-                                      messageArgs: {
-                                          smart_count: 1,
-                                      },
+                                      messageArgs: { smart_count: 1 },
                                       undoable: mutationMode === 'undoable',
                                   });
                                   redirect(

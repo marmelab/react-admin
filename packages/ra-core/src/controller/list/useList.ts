@@ -67,7 +67,7 @@ export const useList = <RecordType extends Record = Record>(
     const [loadingState, setLoadingState] = useSafeSetState<boolean>(isLoading);
 
     const [finalItems, setFinalItems] = useSafeSetState<{
-        data: RecordType[];
+        data?: RecordType[];
         total: number;
     }>(() => ({
         data,
@@ -154,7 +154,7 @@ export const useList = <RecordType extends Record = Record>(
 
     // We do all the data processing (filtering, sorting, paginating) client-side
     useEffect(() => {
-        if (isLoading) return;
+        if (isLoading || !data) return;
 
         // 1. filter
         let tempData = data.filter(record =>
@@ -244,7 +244,7 @@ export const useList = <RecordType extends Record = Record>(
 };
 
 export interface UseListOptions<RecordType extends Record = Record> {
-    data: RecordType[];
+    data?: RecordType[];
     error?: any;
     filter?: FilterPayload;
     isFetching?: boolean;

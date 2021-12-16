@@ -944,7 +944,7 @@ const ApproveButton = ({ record }) => {
 
 ## Legacy Components: `<Query>`, `<Mutation>`, and `withDataProvider`
 
-Before react had hooks, react-admin used render props and higher order components to provide the same functionality. Legacy code will likely contain instances of `<Query>`, `<Mutation>`, and `withDataProvider`. Their syntax, which is identical to their hook counterpart, is illustrated below.
+Before React had hooks, react-admin used render props and higher order components to provide the same functionality. Legacy code will likely contain instances of `<Query>`, `<Mutation>`, and `withDataProvider`. Their syntax, which is identical to their hook counterpart, is illustrated below.
 
 You can fetch and display a user profile using the `<Query>` component, which uses render props:
 

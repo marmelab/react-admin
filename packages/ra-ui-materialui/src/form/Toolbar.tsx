@@ -158,7 +158,7 @@ export const Toolbar: FC<ToolbarProps> = props => {
     );
 };
 
-export interface ToolbarProps<RecordType extends Record = Record>
+export interface ToolbarProps<RecordType extends Partial<Record> = Record>
     extends Omit<MuiToolbarProps, 'classes'> {
     children?: ReactNode;
     alwaysEnableSaveButton?: boolean;
