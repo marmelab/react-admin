@@ -1,5 +1,5 @@
-import { InferredElementDescription } from 'ra-core';
 import { createContext } from 'react';
+import { InferredElementDescription } from 'react-admin';
 
 export const ResourceConfigurationContext = createContext<
     ResourceConfigurationContextValue

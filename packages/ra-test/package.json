@@ -4,13 +4,12 @@
     "description": "Test utilities for react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React",
     "files": [
         "*.md",
-        "lib",
-        "esm",
+        "dist",
         "src"
     ],
-    "main": "lib/index",
-    "module": "esm/index.js",
-    "types": "esm/index.d.ts",
+    "main": "dist/index",
+    "module": "dist/esm/index.js",
+    "types": "dist/index.d.ts",
     "sideEffects": false,
     "authors": [
         "François Zaninotto",
@@ -21,10 +20,8 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "scripts": {
-        "build": "yarn run build-cjs && yarn run build-esm",
-        "build-cjs": "rimraf ./lib && tsc",
-        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
-        "watch": "tsc --outDir esm --module es2015 --watch"
+        "build": "tsup src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output",
+        "watch": "tsup src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
     },
     "devDependencies": {
         "@types/node-polyglot": "^0.4.31",
@@ -32,6 +29,7 @@
         "@types/react-redux": "^7.1.1",
         "cross-env": "^5.2.0",
         "final-form": "^4.20.2",
+        "history": "^5.1.0",
         "ignore-styles": "~5.0.1",
         "ra-core": "^4.0.0-alpha.0",
         "react": "^17.0.0",
@@ -43,6 +41,7 @@
         "redux": "^3.7.2 || ^4.0.3"
     },
     "peerDependencies": {
+        "history": "^5.1.0",
         "ra-core": "^4.0.0-alpha.0",
         "react": "^16.9.0 || ^17.0.0",
         "react-dom": "^16.9.0 || ^17.0.0",

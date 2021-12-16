@@ -1,6 +1,9 @@
 import React from 'react';
-import { FormDataConsumer, InferredElementDescription } from 'ra-core';
-import { SelectInput } from 'ra-ui-materialui';
+import {
+    FormDataConsumer,
+    InferredElementDescription,
+    SelectInput,
+} from 'react-admin';
 import get from 'lodash/get';
 import { useResourcesConfiguration } from './useResourcesConfiguration';
 

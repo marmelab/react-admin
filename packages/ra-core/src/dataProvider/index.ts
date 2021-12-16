@@ -25,6 +25,7 @@ export * from './useQueryWithStore';
 export * from './useQuery';
 export * from './useUpdate';
 
+export type { Options } from './fetch';
 export type { QueryProps, UseMutationValue, MutationProps };
 
 export {

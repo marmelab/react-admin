@@ -16,7 +16,7 @@ import {
     TextInput,
 } from 'react-admin';
 import { InputAdornment, styled } from '@mui/material';
-import RichTextInput from 'ra-input-rich-text';
+import { RichTextInput } from 'ra-input-rich-text';
 
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from '../reviews/StarRatingField';

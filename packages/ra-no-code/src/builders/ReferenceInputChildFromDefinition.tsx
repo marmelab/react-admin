@@ -3,7 +3,7 @@ import {
     AutocompleteInput,
     RadioButtonGroupInput,
     SelectInput,
-} from 'ra-ui-materialui';
+} from 'react-admin';
 import { ReferenceFieldConfiguration } from '../ResourceConfiguration';
 
 export const ReferenceInputChildFromDefinition = ({

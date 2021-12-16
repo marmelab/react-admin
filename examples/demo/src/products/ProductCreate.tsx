@@ -12,7 +12,7 @@ import {
     CreateProps,
 } from 'react-admin';
 import { InputAdornment } from '@mui/material';
-import RichTextInput from 'ra-input-rich-text';
+import { RichTextInput } from 'ra-input-rich-text';
 
 const PREFIX = 'ProductCreate';
 
