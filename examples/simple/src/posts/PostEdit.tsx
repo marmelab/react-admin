@@ -1,5 +1,5 @@
 import * as React from 'react';
-import RichTextInput from 'ra-input-rich-text';
+import { RichTextInput } from 'ra-input-rich-text';
 import {
     TopToolbar,
     AutocompleteInput,

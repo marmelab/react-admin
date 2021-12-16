@@ -12,10 +12,7 @@ import {
     Typography,
 } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {
-    defaultTheme as RaDefaultTheme,
-    RaThemeOptions,
-} from 'ra-ui-materialui';
+import { defaultTheme as RaDefaultTheme, RaThemeOptions } from 'react-admin';
 import FolderIcon from '@mui/icons-material/Folder';
 import { Application } from './types';
 import { NewApplicationForm } from './NewApplicationForm';

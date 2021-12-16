@@ -5,6 +5,7 @@ node_modules
 lib
 esm
 es6
+dist
 docs/_site/
 docs/.jekyll-metadata
 docs/.jekyll-cache
