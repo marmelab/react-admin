@@ -1,5 +1,4 @@
 import { ReactNode, ReactElement, ComponentType } from 'react';
-import { DeprecatedThemeOptions } from '@mui/material';
 import { History } from 'history';
 import { QueryClient } from 'react-query';
 
@@ -298,9 +297,8 @@ export type AdminChildren = RenderResourcesFunction | ReactNode;
 export type TitleComponent = string | ReactElement<any>;
 export type CatchAllComponent = ComponentType<{ title?: TitleComponent }>;
 
-interface LoginComponentProps {
+export interface LoginComponentProps {
     title?: TitleComponent;
-    theme?: object;
 }
 export type LoginComponent = ComponentType<LoginComponentProps>;
 export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;
@@ -313,13 +311,11 @@ export interface CoreLayoutProps {
         logout?: ReactNode;
         hasDashboard?: boolean;
     }>;
-    theme?: DeprecatedThemeOptions;
     title?: TitleComponent;
 }
 
 export type LayoutComponent = ComponentType<CoreLayoutProps>;
 export type LoadingComponent = ComponentType<{
-    theme?: DeprecatedThemeOptions;
     loadingPrimary?: string;
     loadingSecondary?: string;
 }>;
@@ -346,7 +342,7 @@ export interface ResourceProps {
     options?: object;
 }
 
-export interface AdminProps {
+export interface CoreAdminProps {
     appLayout?: LayoutComponent;
     authProvider?: AuthProvider | LegacyAuthProvider;
     basename?: string;
@@ -367,7 +363,6 @@ export interface AdminProps {
     menu?: ComponentType;
     queryClient?: QueryClient;
     ready?: ComponentType;
-    theme?: DeprecatedThemeOptions;
     title?: TitleComponent;
 }
 

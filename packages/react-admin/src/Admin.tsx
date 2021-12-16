@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { AdminProps } from 'ra-core';
+import { CoreAdminProps } from 'ra-core';
+import { defaultTheme, ThemeProvider } from 'ra-ui-materialui';
+import { DeprecatedThemeOptions } from '@mui/material';
 
-import AdminContext from './AdminContext';
-import AdminUI from './AdminUI';
+import { AdminContext } from './AdminContext';
+import { AdminUI } from './AdminUI';
 
 /**
  * Main admin component, entry point to the application.
@@ -83,7 +85,7 @@ import { useEffect, useState } from 'react';
  *     );
  * };
  */
-const Admin = (props: AdminProps) => {
+export const Admin = (props: AdminProps) => {
     const {
         appLayout,
         authProvider,
@@ -104,7 +106,7 @@ const Admin = (props: AdminProps) => {
         logoutButton,
         menu, // deprecated, use a custom layout instead
         ready,
-        theme,
+        theme = defaultTheme,
         title = 'React Admin',
     } = props;
 
@@ -125,32 +127,37 @@ const Admin = (props: AdminProps) => {
     }
 
     return (
-        <AdminContext
-            authProvider={authProvider}
-            basename={basename}
-            dataProvider={dataProvider}
-            i18nProvider={i18nProvider}
-            history={history}
-            customReducers={customReducers}
-            initialState={initialState}
-        >
-            <AdminUI
-                layout={appLayout || layout}
-                dashboard={dashboard}
-                disableTelemetry={disableTelemetry}
-                menu={menu}
-                catchAll={catchAll}
-                theme={theme}
-                title={title}
-                loading={loading}
-                loginPage={loginPage}
-                logout={authProvider ? logoutButton : undefined}
-                ready={ready}
+        <ThemeProvider theme={theme}>
+            <AdminContext
+                authProvider={authProvider}
+                basename={basename}
+                dataProvider={dataProvider}
+                i18nProvider={i18nProvider}
+                history={history}
+                customReducers={customReducers}
+                initialState={initialState}
             >
-                {children}
-            </AdminUI>
-        </AdminContext>
+                <AdminUI
+                    layout={appLayout || layout}
+                    dashboard={dashboard}
+                    disableTelemetry={disableTelemetry}
+                    menu={menu}
+                    catchAll={catchAll}
+                    title={title}
+                    loading={loading}
+                    loginPage={loginPage}
+                    logout={authProvider ? logoutButton : undefined}
+                    ready={ready}
+                >
+                    {children}
+                </AdminUI>
+            </AdminContext>
+        </ThemeProvider>
     );
 };
 
 export default Admin;
+
+export interface AdminProps extends CoreAdminProps {
+    theme?: DeprecatedThemeOptions;
+}

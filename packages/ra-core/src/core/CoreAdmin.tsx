@@ -3,7 +3,7 @@ import { ComponentType } from 'react';
 
 import CoreAdminContext from './CoreAdminContext';
 import CoreAdminUI from './CoreAdminUI';
-import { AdminProps } from '../types';
+import { CoreAdminProps } from '../types';
 
 export type ChildrenFunction = () => ComponentType[];
 
@@ -86,7 +86,7 @@ export type ChildrenFunction = () => ComponentType[];
  *     );
  * };
  */
-const CoreAdmin = (props: AdminProps) => {
+const CoreAdmin = (props: CoreAdminProps) => {
     const {
         appLayout,
         authProvider,
@@ -106,7 +106,6 @@ const CoreAdmin = (props: AdminProps) => {
         loginPage,
         logoutButton,
         menu, // deprecated, use a custom layout instead
-        theme,
         title = 'React Admin',
     } = props;
     return (
@@ -126,7 +125,6 @@ const CoreAdmin = (props: AdminProps) => {
                 disableTelemetry={disableTelemetry}
                 menu={menu}
                 catchAll={catchAll}
-                theme={theme}
                 title={title}
                 loading={loading}
                 loginPage={loginPage}

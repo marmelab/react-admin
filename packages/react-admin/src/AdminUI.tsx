@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import { CoreAdminUI, AdminUIProps } from 'ra-core';
 import {
     Layout as DefaultLayout,
@@ -9,7 +8,7 @@ import {
     NotFound,
 } from 'ra-ui-materialui';
 
-const AdminUI: FC<AdminUIProps> = props => <CoreAdminUI {...props} />;
+export const AdminUI = (props: AdminUIProps) => <CoreAdminUI {...props} />;
 
 AdminUI.defaultProps = {
     layout: DefaultLayout,
@@ -18,5 +17,3 @@ AdminUI.defaultProps = {
     loginPage: Login,
     logout: Logout,
 };
-
-export default AdminUI;
