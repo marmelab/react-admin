@@ -3,7 +3,7 @@ import buildApolloClient, {
     buildQuery as buildQueryFactory,
 } from 'ra-data-graphql-simple';
 import { BuildQueryFactory } from 'ra-data-graphql';
-import { DataProvider, DELETE } from 'react-admin';
+import { CREATE, DataProvider, DELETE } from 'react-admin';
 import gql from 'graphql-tag';
 import { IntrospectionType } from 'graphql';
 
@@ -50,6 +50,60 @@ const customBuildQuery: BuildQueryFactory = introspectionResults => {
                     }
 
                     throw new Error(`Could not delete ${resource}`);
+                },
+            };
+        }
+
+        if (resource === 'Customer' && type === CREATE) {
+            return {
+                query: gql`
+                    mutation createCustomer(
+                        $first_name: String!
+                        $last_name: String!
+                        $email: String!
+                        $address: String
+                        $zipcode: String
+                        $city: String
+                        $stateAbbr: String
+                        $birthday: Date
+                        $first_seen: Date!
+                        $last_seen: Date!
+                        $has_ordered: Boolean!
+                        $latest_purchase: Date
+                        $has_newsletter: Boolean!
+                        $groups: [String]!
+                        $nb_commands: Int!
+                        $total_spent: Float!
+                    ) {
+                        createCustomer(
+                            first_name: $first_name
+                            last_name: $last_name
+                            email: $email
+                            address: $address
+                            zipcode: $zipcode
+                            city: $city
+                            stateAbbr: $stateAbbr
+                            birthday: $birthday
+                            first_seen: $first_seen
+                            last_seen: $last_seen
+                            has_ordered: $has_ordered
+                            latest_purchase: $latest_purchase
+                            has_newsletter: $has_newsletter
+                            groups: $groups
+                            nb_commands: $nb_commands
+                            total_spent: $total_spent
+                        ) {
+                            id
+                        }
+                    }
+                `,
+                variables: params.data,
+                parseResponse: ({ data }: ApolloQueryResult<any>) => {
+                    if (data.createCustomer) {
+                        return { data: { id: data.createCustomer.id } };
+                    }
+
+                    throw new Error(`Could not create Customer`);
                 },
             };
         }
