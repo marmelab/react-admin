@@ -196,8 +196,6 @@ describe('<useList />', () => {
 
         const { rerender } = render(
             <UseList
-                isFetching={false}
-                isLoading={true}
                 filter={{ title: 'world' }}
                 sort={{ field: 'id', order: 'ASC' }}
                 callback={callback}

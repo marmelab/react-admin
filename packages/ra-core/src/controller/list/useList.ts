@@ -154,7 +154,7 @@ export const useList = <RecordType extends Record = Record>(
 
     // We do all the data processing (filtering, sorting, paginating) client-side
     useEffect(() => {
-        if (isLoading) return;
+        if (isLoading || !data) return;
 
         // 1. filter
         let tempData = data.filter(record =>
