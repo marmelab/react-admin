@@ -1,12 +1,9 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, act, waitFor } from '@testing-library/react';
-import { renderWithRedux } from 'ra-test';
 import { MemoryRouter } from 'react-router-dom';
 import {
     ListContextProvider,
-    DataProviderContext,
-    testDataProvider,
     CoreAdminContext,
     useRecordContext,
 } from 'ra-core';

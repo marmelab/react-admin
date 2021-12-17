@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { useState, useCallback, ReactElement } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import omit from 'lodash/omit';
 import expect from 'expect';
-import { Provider } from 'react-redux';
 
 import { useReferenceInputController } from './useReferenceInputController';
-import { createAdminStore, CoreAdminContext } from '../../core';
+import { CoreAdminContext } from '../../core';
 import { testDataProvider } from '../../dataProvider';
 
 const ReferenceInputController = props => {
