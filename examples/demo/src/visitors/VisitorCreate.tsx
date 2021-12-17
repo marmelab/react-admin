@@ -51,10 +51,24 @@ export const validatePasswords = ({
 
 const VisitorCreate = (props: CreateProps) => {
     const classes = useStyles(props);
-
+    const date = new Date();
     return (
         <Create {...props}>
-            <SimpleForm validate={validatePasswords}>
+            <SimpleForm
+                // Here for the GQL provider
+                initialValues={{
+                    birthday: date,
+                    first_seen: date,
+                    last_seen: date,
+                    has_ordered: false,
+                    latest_purchase: date,
+                    has_newsletter: false,
+                    groups: [],
+                    nb_commands: 0,
+                    total_spent: 0,
+                }}
+                validate={validatePasswords}
+            >
                 <SectionTitle label="resources.customers.fieldGroups.identity" />
                 <TextInput
                     autoFocus

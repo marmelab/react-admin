@@ -83,6 +83,7 @@ describe('buildVariables', () => {
     describe('UPDATE', () => {
         it('returns correct variables', () => {
             const params = {
+                id: 'post1',
                 data: {
                     author: { id: 'author1' },
                     tags: [{ id: 'tag1' }, { id: 'tag2' }],
@@ -101,6 +102,7 @@ describe('buildVariables', () => {
                     queryType
                 )
             ).toEqual({
+                id: 'post1',
                 authorId: 'author1',
                 tagsIds: ['tag1', 'tag2'],
                 title: 'Foo',
