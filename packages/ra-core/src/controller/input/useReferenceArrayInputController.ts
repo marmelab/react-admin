@@ -40,7 +40,7 @@ import { ReferenceArrayInputContextValue } from './ReferenceArrayInputContext';
  * @return {Object} controllerProps Fetched data and callbacks for the ReferenceArrayInput components
  */
 export const useReferenceArrayInputController = (
-    props: UseReferenceArrayInputOptions
+    props: UseReferenceArrayInputPArams
 ): ReferenceArrayInputContextValue & Omit<ListControllerResult, 'setSort'> => {
     const {
         filter: defaultFilter,
@@ -359,7 +359,7 @@ const mergeReferences = (ref1: Record[], ref2: Record[]): Record[] => {
     return res;
 };
 
-export interface UseReferenceArrayInputOptions {
+export interface UseReferenceArrayInputPArams {
     basePath?: string;
     filter?: any;
     filterToQuery?: (filter: any) => any;

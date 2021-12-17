@@ -1,5 +1,3 @@
-import ReferenceArrayInputController from './ReferenceArrayInputController';
-
 import {
     getStatusForInput,
     getSelectedReferencesStatus,
@@ -16,5 +14,4 @@ export {
     getStatusForInput,
     getSelectedReferencesStatus,
     getStatusForArrayInput,
-    ReferenceArrayInputController,
 };

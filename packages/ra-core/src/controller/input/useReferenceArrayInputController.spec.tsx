@@ -1,20 +1,24 @@
 import * as React from 'react';
+import { ReactElement } from 'react';
 import expect from 'expect';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
 import { Provider } from 'react-redux';
 import { renderWithRedux } from 'ra-test';
+import { QueryClientProvider, QueryClient } from 'react-query';
 
-import ReferenceArrayInputController, {
-    ReferenceArrayInputControllerChildrenFuncParams,
-} from './ReferenceArrayInputController';
+import { useReferenceArrayInputController } from './useReferenceArrayInputController';
 import { CoreAdminContext, createAdminStore } from '../../core';
 import { testDataProvider } from '../../dataProvider';
 import { CRUD_GET_MANY } from '../../actions';
 import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
-import { QueryClientProvider, QueryClient } from 'react-query';
 
-describe('<ReferenceArrayInputController />', () => {
+const ReferenceArrayInputController = props => {
+    const { children, ...rest } = props;
+    return children(useReferenceArrayInputController(rest)) as ReactElement;
+};
+
+describe('useReferenceArrayInputController', () => {
     const defaultProps = {
         input: { value: undefined },
         record: undefined,
