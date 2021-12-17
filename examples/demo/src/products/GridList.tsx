@@ -52,9 +52,9 @@ const useColsForWidth = () => {
     const md = useMediaQuery(theme.breakpoints.up('md'));
     const lg = useMediaQuery(theme.breakpoints.up('lg'));
     const xl = useMediaQuery(theme.breakpoints.up('xl'));
-
-    if (xl) return 6;
-    if (lg) return 5;
+    // there are all dividers of 24, to have full rows on each page
+    if (xl) return 8;
+    if (lg) return 6;
     if (md) return 4;
     if (sm) return 3;
     return 2;
@@ -64,7 +64,7 @@ const times = (nbChildren: number, fn: (key: number) => any) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
 
 const LoadingGridList = (props: DatagridProps & { nbItems?: number }) => {
-    const { nbItems = 20 } = props;
+    const { nbItems = 24 } = props;
     const cols = useColsForWidth();
     return (
         <StyledGridList
