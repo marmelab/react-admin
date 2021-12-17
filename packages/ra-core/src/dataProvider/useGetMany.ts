@@ -71,6 +71,7 @@ export const useGetMany = <RecordType extends Record = Record>(
                     );
                 });
             },
+            retry: false,
             ...options,
         }
     );
