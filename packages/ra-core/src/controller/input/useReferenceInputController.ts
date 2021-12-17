@@ -56,7 +56,7 @@ const defaultFilter = {};
  * });
  */
 export const useReferenceInputController = (
-    props: Option
+    props: UseReferenceInputControllerParams
 ): ReferenceInputValue => {
     const {
         input,
@@ -245,7 +245,7 @@ export interface ReferenceInputValue {
     refetch: Refetch;
 }
 
-interface Option {
+export interface UseReferenceInputControllerParams {
     allowEmpty?: boolean;
     basePath?: string;
     filter?: any;

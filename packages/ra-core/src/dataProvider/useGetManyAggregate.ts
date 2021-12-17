@@ -8,7 +8,7 @@ import union from 'lodash/union';
 
 import { UseGetManyHookValue } from './useGetMany';
 import { Identifier, Record, GetManyParams, DataProviderProxy } from '../types';
-import { useDataProvider } from '.';
+import useDataProvider from './useDataProvider';
 
 /**
  * Call the dataProvider.getMany() method and return the resolved result

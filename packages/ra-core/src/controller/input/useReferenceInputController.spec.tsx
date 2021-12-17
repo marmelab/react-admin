@@ -1,14 +1,20 @@
 import * as React from 'react';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, ReactElement } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import omit from 'lodash/omit';
 import expect from 'expect';
 import { Provider } from 'react-redux';
 
-import ReferenceInputController from './ReferenceInputController';
+import { useReferenceInputController } from './useReferenceInputController';
 import { createAdminStore, CoreAdminContext } from '../../core';
+import { testDataProvider } from '../../dataProvider';
 
-describe('<ReferenceInputController />', () => {
+const ReferenceInputController = props => {
+    const { children, ...rest } = props;
+    return children(useReferenceInputController(rest)) as ReactElement;
+};
+
+describe('useReferenceInputController', () => {
     const defaultProps = {
         basePath: '/comments',
         children: jest.fn(),
@@ -19,23 +25,23 @@ describe('<ReferenceInputController />', () => {
         source: 'post_id',
     };
 
-    const dataProvider = {
-        getMany: jest.fn(() =>
-            Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-        ),
-        getList: jest.fn(() =>
-            Promise.resolve({
-                data: [
-                    { id: 1, title: 'foo' },
-                    { id: 2, title: 'bar' },
-                ],
-                total: 2,
-            })
-        ),
-    };
+    const dataProvider = testDataProvider({
+        getMany: jest
+            .fn()
+            .mockResolvedValue({ data: [{ id: 1, title: 'foo' }] }),
+        getList: jest.fn().mockResolvedValue({
+            data: [
+                { id: 1, title: 'foo' },
+                { id: 2, title: 'bar' },
+            ],
+            total: 2,
+        }),
+    });
 
     afterEach(() => {
+        // @ts-ignore
         dataProvider.getMany.mockClear();
+        // @ts-ignore
         dataProvider.getList.mockClear();
     });
 
@@ -126,92 +132,84 @@ describe('<ReferenceInputController />', () => {
 
     it('should pass possibleValues and record to child', async () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
-        const store = createAdminStore({
-            initialState: {
-                admin: {
-                    resources: { posts: { data: { 1: { id: 1 } } } },
-                },
-            },
-        });
         render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceInputController
-                        {...{
-                            ...defaultProps,
-                            input: { value: 1 } as any,
-                            loading: true,
-                            sort: { field: 'title', order: 'ASC' },
-                        }}
-                    >
-                        {children}
-                    </ReferenceInputController>
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ReferenceInputController
+                    {...{
+                        ...defaultProps,
+                        input: { value: 1 } as any,
+                        loading: true,
+                        sort: { field: 'title', order: 'ASC' },
+                    }}
+                >
+                    {children}
+                </ReferenceInputController>
+            </CoreAdminContext>
         );
 
         await waitFor(() => {
-            expect(
-                omit(children.mock.calls[0][0], [
-                    'onChange',
-                    'refetch',
-                    'setPagination',
-                    'setFilter',
-                    'setSort',
-                    'possibleValues.hideFilter',
-                    'possibleValues.onSelect',
-                    'possibleValues.onToggleItem',
-                    'possibleValues.onUnselectItems',
-                    'possibleValues.setFilters',
-                    'possibleValues.setPage',
-                    'possibleValues.setPerPage',
-                    'possibleValues.setSort',
-                    'possibleValues.showFilter',
-                ])
-            ).toEqual({
-                possibleValues: {
-                    currentSort: {
-                        field: 'title',
-                        order: 'ASC',
+            expect(children).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    possibleValues: {
+                        currentSort: {
+                            field: 'title',
+                            order: 'ASC',
+                        },
+                        data: [
+                            { id: 1, title: 'foo' },
+                            { id: 2, title: 'bar' },
+                        ],
+                        displayedFilters: [],
+                        error: null,
+                        filterValues: {
+                            q: '',
+                        },
+                        isFetching: false,
+                        isLoading: false,
+                        page: 1,
+                        perPage: 25,
+                        hideFilter: expect.any(Function),
+                        onSelect: expect.any(Function),
+                        onToggleItem: expect.any(Function),
+                        onUnselectItems: expect.any(Function),
+                        setFilters: expect.any(Function),
+                        setPage: expect.any(Function),
+                        setPerPage: expect.any(Function),
+                        setSort: expect.any(Function),
+                        showFilter: expect.any(Function),
+                        refetch: expect.any(Function),
+                        resource: 'comments',
+                        selectedIds: [],
+                        total: 2,
                     },
-                    data: [{ id: 1 }],
-                    displayedFilters: [],
-                    error: null,
-                    filterValues: {
-                        q: '',
+                    referenceRecord: {
+                        data: {
+                            id: 1,
+                            title: 'foo',
+                        },
+                        error: null,
+                        isLoading: false,
+                        isFetching: false,
+                        refetch: expect.any(Function),
                     },
-                    isFetching: true,
-                    isLoading: true,
-                    page: 1,
-                    perPage: 25,
-                    refetch: expect.any(Function),
-                    resource: 'comments',
-                    selectedIds: [],
-                    total: NaN,
-                },
-                referenceRecord: {
-                    data: {
-                        id: 1,
+                    dataStatus: {
+                        error: null,
+                        loading: false,
+                        warning: null,
                     },
+                    choices: [
+                        { id: 1, title: 'foo' },
+                        { id: 2, title: 'bar' },
+                    ],
                     error: null,
-                    loading: true,
-                    loaded: true,
-                    refetch: expect.any(Function),
-                },
-                dataStatus: {
-                    error: null,
-                    loading: false,
+                    filter: { q: '' },
+                    isFetching: false,
+                    isLoading: false,
+                    pagination: { page: 1, perPage: 25 },
+                    sort: { field: 'title', order: 'ASC' },
                     warning: null,
-                },
-                choices: [{ id: 1 }],
-                error: null,
-                filter: { q: '' },
-                isFetching: false,
-                isLoading: true,
-                pagination: { page: 1, perPage: 25 },
-                sort: { field: 'title', order: 'ASC' },
-                warning: null,
-            });
+                })
+            );
         });
     });
 

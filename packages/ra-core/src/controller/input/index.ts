@@ -1,7 +1,5 @@
 import ReferenceArrayInputController from './ReferenceArrayInputController';
-import ReferenceInputController, {
-    ReferenceInputControllerProps,
-} from './ReferenceInputController';
+
 import {
     getStatusForInput,
     getSelectedReferencesStatus,
@@ -19,7 +17,4 @@ export {
     getSelectedReferencesStatus,
     getStatusForArrayInput,
     ReferenceArrayInputController,
-    ReferenceInputController,
 };
-
-export type { ReferenceInputControllerProps };
