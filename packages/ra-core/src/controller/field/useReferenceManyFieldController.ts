@@ -65,7 +65,7 @@ const defaultFilter = {};
  *
  * @returns {ReferenceManyProps} The reference many props
  */
-const useReferenceManyFieldController = (
+export const useReferenceManyFieldController = (
     props: UseReferenceManyFieldControllerParams
 ): ListControllerResult => {
     const {
@@ -219,5 +219,3 @@ const useReferenceManyFieldController = (
         total,
     };
 };
-
-export default useReferenceManyFieldController;

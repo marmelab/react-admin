@@ -47,7 +47,7 @@ interface Option {
  *
  * @returns {string | false} The link to the reference record
  */
-const getResourceLinkPath = ({
+export const getResourceLinkPath = ({
     resource,
     source,
     reference,

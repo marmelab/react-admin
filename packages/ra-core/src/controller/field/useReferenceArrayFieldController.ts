@@ -5,7 +5,7 @@ import { useGetManyAggregate } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';
 import { useNotify } from '../../sideEffect';
 
-interface Option {
+export interface UseReferenceArrayFieldControllerParams {
     basePath?: string;
     filter?: any;
     page?: number;
@@ -46,8 +46,8 @@ const defaultSort = { field: null, order: null };
  *
  * @returns {ReferenceArrayProps} The reference props
  */
-const useReferenceArrayFieldController = (
-    props: Option
+export const useReferenceArrayFieldController = (
+    props: UseReferenceArrayFieldControllerParams
 ): ListControllerResult => {
     const {
         filter = defaultFilter,
@@ -102,5 +102,3 @@ const useReferenceArrayFieldController = (
         resource: reference,
     };
 };
-
-export default useReferenceArrayFieldController;

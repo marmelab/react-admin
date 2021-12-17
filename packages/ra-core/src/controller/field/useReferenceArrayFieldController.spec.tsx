@@ -1,12 +1,24 @@
 import * as React from 'react';
 import expect from 'expect';
 
-import ReferenceArrayFieldController from './ReferenceArrayFieldController';
+import { useReferenceArrayFieldController } from './useReferenceArrayFieldController';
 import { DataProviderContext } from '../../dataProvider';
 import { renderWithRedux } from 'ra-test';
 import { waitFor } from '@testing-library/react';
 
-describe('<ReferenceArrayFieldController />', () => {
+const ReferenceArrayFieldController = props => {
+    const { children, ...rest } = props;
+    const controllerProps = useReferenceArrayFieldController({
+        sort: {
+            field: 'id',
+            order: 'ASC',
+        },
+        ...rest,
+    });
+    return children(controllerProps);
+};
+
+describe('<useReferenceArrayFieldController />', () => {
     it('should set the isLoading prop to true when related records are not yet fetched', () => {
         const children = jest.fn().mockReturnValue('child');
 
@@ -166,7 +178,7 @@ describe('<ReferenceArrayFieldController />', () => {
             ),
         };
         const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+            <DataProviderContext.Provider value={dataProvider as any}>
                 <ReferenceArrayFieldController
                     record={{ id: 1, barIds: [1, 2] }}
                     resource="foo"
