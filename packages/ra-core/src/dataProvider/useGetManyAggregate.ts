@@ -25,8 +25,8 @@ import useDataProvider from './useDataProvider';
  *
  * This hook aggregates and deduplicates calls to the same resource, so for instance, if an app calls:
  *
- * useGetMany('tags', [1, 2, 3]);
- * useGetMany('tags', [3, 4]);
+ * useGetManyAggregate('tags', [1, 2, 3]);
+ * useGetManyAggregate('tags', [3, 4]);
  *
  * during the same tick, the hook will only call the dataProvider once with the following parameters:
  *
@@ -43,10 +43,10 @@ import useDataProvider from './useDataProvider';
  *
  * @example
  *
- * import { useGetMany } from 'react-admin';
+ * import { useGetManyAggregate } from 'react-admin';
  *
  * const PostTags = ({ record }) => {
- *     const { data, loading, error } = useGetMany('tags', record.tagIds);
+ *     const { data, loading, error } = useGetManyAggregate('tags', record.tagIds);
  *     if (loading) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }
  *     return (
@@ -117,7 +117,7 @@ const batch = fn => {
         if (timeout) clearTimeout(timeout);
         timeout = setTimeout(() => {
             timeout = null;
-            fn(capturedArgs);
+            fn([...capturedArgs]);
             capturedArgs = [];
         }, 0);
     };
