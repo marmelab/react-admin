@@ -1,10 +1,8 @@
 import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
-import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
-import difference from 'lodash/difference';
 
-import { Record, SortPayload, ReduxState, Identifier } from '../../types';
-import { useGetMany } from '../../dataProvider';
+import { Record, SortPayload, Identifier } from '../../types';
+import { useGetManyAggregate } from '../../dataProvider';
 import { FieldInputProps, useForm } from 'react-final-form';
 import { useGetList } from '../../dataProvider/useGetList';
 import { useTranslate } from '../../i18n';
@@ -59,68 +57,13 @@ export const useReferenceArrayInputController = (
     /**
      * Get the records related to the current value (with getMany)
      */
-
-    // We store the current input value in a ref so that we are able to fetch
-    // only the missing references when the input value changes
-    const inputValue = useRef(input.value);
-    const [idsToFetch, setIdsToFetch] = useState(input.value);
-    const [idsToGetFromStore, setIdsToGetFromStore] = useState(EmptyArray);
-    const referenceRecordsFromStore = useSelector((state: ReduxState) =>
-        idsToGetFromStore.map(id => state.admin.resources[reference].data[id])
-    );
-
-    // optimization: we fetch selected items only once. When the user selects more items,
-    // as we already have the past selected items in the store, we don't fetch them.
-    useEffect(() => {
-        // Only fetch new ids
-        const newIdsToFetch = difference(input.value, inputValue.current);
-        // Only get from store ids selected and already fetched
-        const newIdsToGetFromStore = difference(input.value, newIdsToFetch);
-        /*
-            input.value (current)
-                +------------------------+
-                | ********************** |
-                | ********************** |  inputValue.current (old)
-                | ********** +-----------------------+
-                | ********** | ooooooooo |           |
-                | ********** | ooooooooo |           |
-                | ********** | ooooooooo |           |
-                | ********** | ooooooooo |           |
-                +---|--------|------|----+           |
-                    |        |      |                |
-                    |        |      |                |
-                    |        +------|----------------+
-                    |               |
-            newIdsToFetch    newIdsToGetFromStore
-        */
-        // Change states each time input values changes to avoid keeping previous values no more selected
-        if (!isEqual(idsToFetch, newIdsToFetch)) {
-            setIdsToFetch(newIdsToFetch);
-        }
-        if (!isEqual(idsToGetFromStore, newIdsToGetFromStore)) {
-            setIdsToGetFromStore(newIdsToGetFromStore);
-        }
-
-        inputValue.current = input.value;
-    }, [
-        idsToFetch,
-        idsToGetFromStore,
-        input.value,
-        setIdsToFetch,
-        setIdsToGetFromStore,
-    ]);
-
     const {
-        data: referenceRecordsFetched,
+        data: referenceRecords,
         error: errorGetMany,
         isLoading: isLoadingGetMany,
         isFetching: isFetchingGetMany,
         refetch: refetchGetMany,
-    } = useGetMany(reference, { ids: idsToFetch || EmptyArray });
-
-    const referenceRecords = referenceRecordsFetched
-        ? referenceRecordsFetched.concat(referenceRecordsFromStore)
-        : referenceRecordsFromStore;
+    } = useGetManyAggregate(reference, { ids: input.value || EmptyArray });
 
     /**
      * Get the possible values to display as choices (with getList)
@@ -268,7 +211,9 @@ export const useReferenceArrayInputController = (
     );
 
     // filter out not found references - happens when the dataProvider doesn't guarantee referential integrity
-    const finalReferenceRecords = referenceRecords.filter(Boolean);
+    const finalReferenceRecords = referenceRecords
+        ? referenceRecords.filter(Boolean)
+        : [];
 
     const isGetMatchingEnabled = enableGetChoices
         ? enableGetChoices(finalFilter)

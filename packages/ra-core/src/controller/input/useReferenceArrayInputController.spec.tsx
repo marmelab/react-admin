@@ -3,14 +3,10 @@ import { ReactElement } from 'react';
 import expect from 'expect';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
-import { Provider } from 'react-redux';
-import { renderWithRedux } from 'ra-test';
-import { QueryClientProvider, QueryClient } from 'react-query';
 
 import { useReferenceArrayInputController } from './useReferenceArrayInputController';
-import { CoreAdminContext, createAdminStore } from '../../core';
+import { CoreAdminContext } from '../../core';
 import { testDataProvider } from '../../dataProvider';
-import { CRUD_GET_MANY } from '../../actions';
 import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
 
 const ReferenceArrayInputController = props => {
@@ -28,15 +24,17 @@ describe('useReferenceArrayInputController', () => {
         source: 'tag_ids',
     };
 
-    it('should set loading to true as long as there are no references fetched and no selected references', () => {
-        const children = jest.fn(({ loading }) => (
-            <div>{loading.toString()}</div>
-        ));
-        const store = createAdminStore({
-            initialState: { admin: { resources: { tags: { data: {} } } } },
-        });
-        render(
-            <Provider store={store}>
+    afterEach(async () => {
+        // wait for the getManyAggregate batch to resolve
+        await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
+    });
+
+    describe('isLoading', () => {
+        it('should set isLoading to true as long as there are no references fetched and no selected references', () => {
+            const children = jest.fn(({ isLoading }) => (
+                <div>{isLoading.toString()}</div>
+            ));
+            render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
                     <Form
                         onSubmit={jest.fn()}
@@ -50,22 +48,20 @@ describe('useReferenceArrayInputController', () => {
                         )}
                     />
                 </CoreAdminContext>
-            </Provider>
-        );
-
-        expect(screen.queryByText('true')).not.toBeNull();
-    });
-
-    it('should set loading to true as long as there are no references fetched and there are no data found for the references already selected', () => {
-        const children = jest.fn(({ loading }) => (
-            <div>{loading.toString()}</div>
-        ));
-        const store = createAdminStore({
-            initialState: { admin: { resources: { tags: { data: {} } } } },
+            );
+            expect(screen.queryByText('true')).not.toBeNull();
         });
-        render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
+
+        it('should set isLoading to false once the dataProvider returns', async () => {
+            const children = jest.fn(({ isLoading }) => (
+                <div>{isLoading.toString()}</div>
+            ));
+            const dataProvider = testDataProvider({
+                getMany: jest.fn().mockResolvedValue({ data: [] }),
+                getList: jest.fn().mockResolvedValue({ data: [], total: 0 }),
+            });
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
                     <Form
                         onSubmit={jest.fn()}
                         render={() => (
@@ -78,64 +74,24 @@ describe('useReferenceArrayInputController', () => {
                         )}
                     />
                 </CoreAdminContext>
-            </Provider>
-        );
-        expect(screen.queryByText('true')).not.toBeNull();
+            );
+            await waitFor(() => {
+                expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
+                expect(dataProvider.getList).toHaveBeenCalledTimes(1);
+            });
+            expect(screen.queryByText('false')).not.toBeNull();
+        });
     });
 
-    it('should set loading to false if the references are being searched but data from at least one selected reference was found', () => {
-        const children = jest.fn(({ loading }) => (
-            <div>{loading.toString()}</div>
-        ));
-        const store = createAdminStore({
-            initialState: {
-                admin: {
-                    resources: {
-                        tags: {
-                            data: {
-                                1: {
-                                    id: 1,
-                                },
-                            },
-                            list: {},
-                        },
-                    },
-                },
-            },
-        });
-        render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                input={{ value: [1, 2] }}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
-                </CoreAdminContext>
-            </Provider>
-        );
-
-        expect(screen.queryByText('false')).not.toBeNull();
-    });
-
-    it('should set error in case of references fetch error and there are no selected reference in the input value', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
-        const children = jest.fn(({ error }) => <div>{error}</div>);
-
-        const store = createAdminStore({
-            initialState: { admin: { resources: { tags: { data: {} } } } },
-        });
-        render(
-            <Provider store={store}>
+    describe('error', () => {
+        it('should set error in case of references fetch error and there are no selected reference in the input value', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            const children = jest.fn(({ error }) => <div>{error}</div>);
+            render(
                 <CoreAdminContext
                     dataProvider={testDataProvider({
                         getList: () => Promise.reject(new Error('boom')),
+                        getMany: () => Promise.resolve({ data: [] }),
                     })}
                 >
                     <Form
@@ -147,27 +103,23 @@ describe('useReferenceArrayInputController', () => {
                         )}
                     />
                 </CoreAdminContext>
-            </Provider>
-        );
+            );
 
-        await waitFor(() => {
-            expect(
-                screen.getByText('ra.input.references.all_missing')
-            ).not.toBeNull();
+            await waitFor(() => {
+                expect(
+                    screen.getByText('ra.input.references.all_missing')
+                ).not.toBeNull();
+            });
         });
-    });
 
-    it('should set error in case of references fetch error and there are no data found for the references already selected', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
-        const children = jest.fn(({ error }) => <div>{error}</div>);
-        const store = createAdminStore({
-            initialState: { admin: { resources: { tags: { data: {} } } } },
-        });
-        render(
-            <Provider store={store}>
+        it('should set error in case of references fetch error and there are no data found for the references already selected', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            const children = jest.fn(({ error }) => <div>{error}</div>);
+            render(
                 <CoreAdminContext
                     dataProvider={testDataProvider({
                         getList: () => Promise.reject(new Error('boom')),
+                        getMany: () => Promise.resolve({ data: [] }),
                     })}
                 >
                     <Form
@@ -182,40 +134,25 @@ describe('useReferenceArrayInputController', () => {
                         )}
                     />
                 </CoreAdminContext>
-            </Provider>
-        );
-        await waitFor(() => {
-            expect(
-                screen.queryByText('ra.input.references.all_missing')
-            ).not.toBeNull();
+            );
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('ra.input.references.all_missing')
+                ).not.toBeNull();
+            });
         });
-    });
 
-    it.skip('should not display an error in case of references fetch error but data from at least one selected reference was found', async () => {
-        const children = jest.fn(({ error }) => <div>{error}</div>);
-        const store = createAdminStore({
-            initialState: {
-                admin: {
-                    resources: {
-                        tags: {
-                            data: {
-                                1: {
-                                    id: 1,
-                                },
-                            },
-                            list: {
-                                total: 42,
-                            },
-                        },
-                    },
-                },
-            },
-        });
-        render(
-            <Provider store={store}>
+        it.skip('should not display an error in case of references fetch error but data from at least one selected reference was found', async () => {
+            const children = jest.fn(({ error }) => <div>{error}</div>);
+            render(
                 <CoreAdminContext
                     dataProvider={testDataProvider({
                         getList: () => Promise.reject(new Error('boom')),
+                        getMany: () =>
+                            // @ts-ignore
+                            Promise.resolve({
+                                data: [{ id: 1, title: 'foo' }],
+                            }),
                     })}
                 >
                     <Form
@@ -230,93 +167,74 @@ describe('useReferenceArrayInputController', () => {
                         )}
                     />
                 </CoreAdminContext>
-            </Provider>
-        );
-        await waitFor(() => new Promise(resolve => setTimeout(resolve, 100)));
-        expect(
-            screen.queryByText('ra.input.references.all_missing')
-        ).toBeNull();
-    });
-
-    it('should set warning if references fetch fails but selected references are not empty', async () => {
-        const children = jest.fn(({ warning }) => <div>{warning}</div>);
-        const queryClient = new QueryClient();
-        renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <QueryClientProvider client={queryClient}>
-                        <ReferenceArrayInputController
-                            {...defaultProps}
-                            // Avoid global collision in useGetMany with queriesToCall
-                            basePath="/articles"
-                            resource="articles"
-                            input={{ value: [1, 2] }}
-                        >
-                            {children}
-                        </ReferenceArrayInputController>
-                    </QueryClientProvider>
-                )}
-            />,
-            {
-                admin: {
-                    resources: {
-                        tags: {
-                            data: {
-                                1: {
-                                    id: 1,
-                                },
-                            },
-                            list: {
-                                total: 42,
-                            },
-                        },
-                    },
-                    references: {
-                        possibleValues: {
-                            'articles@tag_ids': { error: 'boom' },
-                        },
-                    },
-                },
-            }
-        );
-        await waitFor(() => {
+            );
+            await waitFor(
+                () => new Promise(resolve => setTimeout(resolve, 100))
+            );
             expect(
-                screen.queryByText('ra.input.references.many_missing')
-            ).not.toBeNull();
+                screen.queryByText('ra.input.references.all_missing')
+            ).toBeNull();
         });
     });
 
-    it('should set warning if references were found but selected references are not complete', async () => {
-        const children = jest.fn(({ warning }) => <div>{warning}</div>);
-        const store = createAdminStore({
-            initialState: {
-                admin: {
-                    resources: {
-                        tags: {
-                            data: {
-                                1: {
-                                    id: 1,
-                                },
-                            },
-                            list: {
-                                total: 42,
-                            },
-                        },
-                    },
-                },
-            },
+    describe('warning', () => {
+        it('should set warning if references fetch fails but selected references are not empty', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            const children = jest.fn(({ warning }) => <div>{warning}</div>);
+            render(
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <CoreAdminContext
+                            dataProvider={testDataProvider({
+                                getList: () =>
+                                    Promise.reject(new Error('boom')),
+                                getMany: () =>
+                                    // @ts-ignore
+                                    Promise.resolve({
+                                        data: [{ id: 1, name: 'foo ' }],
+                                    }),
+                            })}
+                        >
+                            <ReferenceArrayInputController
+                                {...defaultProps}
+                                // Avoid global collision in useGetMany with queriesToCall
+                                resource="articles"
+                                input={{ value: [1, 2] }}
+                            >
+                                {children}
+                            </ReferenceArrayInputController>
+                        </CoreAdminContext>
+                    )}
+                />
+            );
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('ra.input.references.many_missing')
+                ).not.toBeNull();
+            });
         });
-        render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
+
+        it('should set warning if references were found but selected references are not complete', async () => {
+            const children = jest.fn(({ warning }) => <div>{warning}</div>);
+            render(
+                <CoreAdminContext
+                    dataProvider={testDataProvider({
+                        getList: () =>
+                            // @ts-ignore
+                            Promise.resolve({
+                                data: [{ id: 1, name: 'foo' }],
+                                total: 1,
+                            }),
+                        getMany: () => Promise.resolve({ data: [] }),
+                    })}
+                >
                     <Form
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
                                 {...defaultProps}
                                 // Avoid global collision in useGetMany with queriesToCall
-                                basePath="/products"
                                 resource="products"
                                 input={{ value: [1, 2] }}
                             >
@@ -325,27 +243,28 @@ describe('useReferenceArrayInputController', () => {
                         )}
                     />
                 </CoreAdminContext>
-            </Provider>
-        );
-        await waitFor(() => {
-            expect(
-                screen.queryByText('ra.input.references.many_missing')
-            ).not.toBeNull();
+            );
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('ra.input.references.many_missing')
+                ).not.toBeNull();
+            });
         });
-    });
 
-    it('should set warning if references were found but selected references are empty', async () => {
-        const children = jest.fn(({ warning }) => <div>{warning}</div>);
-        const store = createAdminStore({
-            initialState: {
-                admin: { resources: { tags: { data: { 5: {}, 6: {} } } } },
-            },
-        });
-        render(
-            <Provider store={store}>
+        it('should set warning if references were found but selected references are empty', async () => {
+            const children = jest.fn(({ warning }) => <div>{warning}</div>);
+            render(
                 <CoreAdminContext
                     dataProvider={testDataProvider({
-                        getList: () => Promise.resolve({ data: [], total: 0 }),
+                        getList: () =>
+                            // @ts-ignore
+                            Promise.resolve({
+                                data: [],
+                                total: 0,
+                            }),
+                        getMany: () =>
+                            // @ts-ignore
+                            Promise.resolve({ data: [{ id: 5 }, { id: 6 }] }),
                     })}
                 >
                     <Form
@@ -363,40 +282,23 @@ describe('useReferenceArrayInputController', () => {
                         )}
                     />
                 </CoreAdminContext>
-            </Provider>
-        );
-        await waitFor(() => {
-            expect(
-                screen.queryByText('ra.input.references.many_missing')
-            ).not.toBeNull();
+            );
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('ra.input.references.many_missing')
+                ).not.toBeNull();
+            });
         });
-    });
 
-    it('should not set warning if all references were found', async () => {
-        const children = jest.fn(({ warning }) => <div>{warning}</div>);
-        const store = createAdminStore({
-            initialState: {
-                admin: {
-                    resources: {
-                        tags: {
-                            data: {
-                                1: {
-                                    id: 1,
-                                },
-                                2: {
-                                    id: 2,
-                                },
-                            },
-                        },
-                    },
-                },
-            },
-        });
-        render(
-            <Provider store={store}>
+        it('should not set warning if all references were found', async () => {
+            const children = jest.fn(({ warning }) => <div>{warning}</div>);
+            render(
                 <CoreAdminContext
                     dataProvider={testDataProvider({
                         getList: () => Promise.resolve({ data: [], total: 0 }),
+                        getMany: () =>
+                            // @ts-ignore
+                            Promise.resolve({ data: [{ id: 1 }, { id: 2 }] }),
                     })}
                 >
                     <Form
@@ -411,16 +313,16 @@ describe('useReferenceArrayInputController', () => {
                         )}
                     />
                 </CoreAdminContext>
-            </Provider>
-        );
-        await waitFor(() => {
-            expect(
-                screen.queryByText('ra.input.references.many_missing')
-            ).toBeNull();
+            );
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('ra.input.references.many_missing')
+                ).toBeNull();
+            });
         });
     });
 
-    it('should call getList on mount with default fetch values', async () => {
+    it('should call getList on mount with default params', async () => {
         const children = jest.fn(() => <div />);
         const dataProvider = testDataProvider({
             // @ts-ignore
@@ -576,342 +478,222 @@ describe('useReferenceArrayInputController', () => {
         });
     });
 
-    it('should call crudGetMany on mount if value is set', async () => {
+    it('should call getMany on mount if value is set', async () => {
         const children = jest.fn(() => <div />);
-        const store = createAdminStore({
-            initialState: {
-                admin: { resources: { tags: { data: { 5: {}, 6: {} } } } },
-            },
+        const dataProvider = testDataProvider({
+            // @ts-ignore
+            getMany: jest
+                .fn()
+                .mockResolvedValue(
+                    Promise.resolve({ data: [{ id: 5 }, { id: 6 }] })
+                ),
         });
-        const dispatch = jest.spyOn(store, 'dispatch');
         render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                input={{ value: [5, 6] }}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <ReferenceArrayInputController
+                            {...defaultProps}
+                            input={{ value: [5, 6] }}
+                        >
+                            {children}
+                        </ReferenceArrayInputController>
+                    )}
+                />
+            </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(dispatch).toHaveBeenCalledWith({
-                type: CRUD_GET_MANY,
-                meta: {
-                    resource: 'tags',
-                },
-                payload: { ids: [5, 6] },
+            expect(dataProvider.getMany).toHaveBeenCalledWith('tags', {
+                ids: [5, 6],
             });
         });
     });
 
-    it('should not call crudGetMany when calling setFilter', async () => {
+    it('should not call getMany when calling setFilter', async () => {
         const children = jest.fn(({ setFilter }) => (
             <button aria-label="Filter" onClick={() => setFilter('bar')} />
         ));
-        const store = createAdminStore({
-            initialState: {
-                admin: { resources: { tags: { data: { 5: {} } } } },
-            },
-        });
-        const dispatch = jest.spyOn(store, 'dispatch');
         const dataProvider = testDataProvider({
             // @ts-ignore
             getList: jest
                 .fn()
                 .mockResolvedValue(Promise.resolve({ data: [], total: 0 })),
+            // @ts-ignore
+            getMany: jest
+                .fn()
+                .mockResolvedValue(Promise.resolve({ data: [{ id: 5 }] })),
         });
         render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                input={{ value: [5] }}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <ReferenceArrayInputController
+                            {...defaultProps}
+                            input={{ value: [5] }}
+                        >
+                            {children}
+                        </ReferenceArrayInputController>
+                    )}
+                />
+            </CoreAdminContext>
         );
 
         fireEvent.click(screen.getByLabelText('Filter'));
 
         await waitFor(() => {
             expect(dataProvider.getList).toHaveBeenCalledTimes(2);
-            expect(
-                dispatch.mock.calls.filter(
-                    call => call[0].type === CRUD_GET_MANY
-                ).length
-            ).toEqual(1);
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
         });
     });
 
-    it('should not call crudGetMany when props other than input are changed from outside', async () => {
+    it('should not call getMany when props other than input are changed from outside', async () => {
         const children = jest.fn(() => <div />);
-        const store = createAdminStore({
-            initialState: {
-                admin: { resources: { tags: { data: { 5: {} } } } },
-            },
-        });
-        const dispatch = jest.spyOn(store, 'dispatch');
         const dataProvider = testDataProvider({
             // @ts-ignore
             getList: jest
                 .fn()
                 .mockResolvedValue(Promise.resolve({ data: [], total: 0 })),
+            // @ts-ignore
+            getMany: jest
+                .fn()
+                .mockResolvedValue(Promise.resolve({ data: [{ id: 5 }] })),
         });
         const { rerender } = render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                input={{ value: [5] }}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <ReferenceArrayInputController
+                            {...defaultProps}
+                            input={{ value: [5] }}
+                        >
+                            {children}
+                        </ReferenceArrayInputController>
+                    )}
+                />
+            </CoreAdminContext>
         );
 
         rerender(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                input={{ value: [5] }}
-                                filter={{ permanentFilter: 'bar' }}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <ReferenceArrayInputController
+                            {...defaultProps}
+                            input={{ value: [5] }}
+                            filter={{ permanentFilter: 'bar' }}
+                        >
+                            {children}
+                        </ReferenceArrayInputController>
+                    )}
+                />
+            </CoreAdminContext>
         );
 
         await waitFor(() => {
             expect(dataProvider.getList).toHaveBeenCalledTimes(2);
-            expect(
-                dispatch.mock.calls.filter(
-                    call => call[0].type === CRUD_GET_MANY
-                ).length
-            ).toEqual(1);
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
         });
 
         rerender(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                input={{ value: [5] }}
-                                filter={{ permanentFilter: 'bar' }}
-                                sort={{ field: 'foo', order: 'ASC' }}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <ReferenceArrayInputController
+                            {...defaultProps}
+                            input={{ value: [5] }}
+                            filter={{ permanentFilter: 'bar' }}
+                            sort={{ field: 'foo', order: 'ASC' }}
+                        >
+                            {children}
+                        </ReferenceArrayInputController>
+                    )}
+                />
+            </CoreAdminContext>
         );
 
         await waitFor(() => {
             expect(dataProvider.getList).toHaveBeenCalledTimes(3);
-            expect(
-                dispatch.mock.calls.filter(
-                    call => call[0].type === CRUD_GET_MANY
-                ).length
-            ).toEqual(1);
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
         });
 
         rerender(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                input={{ value: [5] }}
-                                filter={{ permanentFilter: 'bar' }}
-                                sort={{ field: 'foo', order: 'ASC' }}
-                                perPage={42}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <ReferenceArrayInputController
+                            {...defaultProps}
+                            input={{ value: [5] }}
+                            filter={{ permanentFilter: 'bar' }}
+                            sort={{ field: 'foo', order: 'ASC' }}
+                            perPage={42}
+                        >
+                            {children}
+                        </ReferenceArrayInputController>
+                    )}
+                />
+            </CoreAdminContext>
         );
 
         await waitFor(() => {
             expect(dataProvider.getList).toHaveBeenCalledTimes(4);
-            expect(
-                dispatch.mock.calls.filter(
-                    call => call[0].type === CRUD_GET_MANY
-                ).length
-            ).toEqual(1);
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
         });
     });
 
-    it('should call crudGetMany when input value changes only with the additional input values', async () => {
+    it('should call getMany when input value changes', async () => {
         const children = jest.fn(() => <div />);
-        const store = createAdminStore({
-            initialState: {
-                admin: { resources: { tags: { data: {} } } },
-            },
-        });
-        const dispatch = jest.spyOn(store, 'dispatch');
         const dataProvider = testDataProvider({
             // @ts-ignore
             getList: jest
                 .fn()
                 .mockResolvedValue(Promise.resolve({ data: [], total: 0 })),
+            getMany: jest.fn().mockResolvedValue({ data: [] }),
         });
         const { rerender } = render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                input={{ value: [5] }}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <ReferenceArrayInputController
+                            {...defaultProps}
+                            input={{ value: [5] }}
+                        >
+                            {children}
+                        </ReferenceArrayInputController>
+                    )}
+                />
+            </CoreAdminContext>
         );
-
         await waitFor(() => {
-            expect(dispatch).toHaveBeenCalledWith({
-                type: CRUD_GET_MANY,
-                meta: {
-                    resource: 'tags',
-                },
-                payload: { ids: [5] },
+            expect(dataProvider.getMany).toHaveBeenCalledWith('tags', {
+                ids: [5],
             });
         });
         rerender(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                input={{ value: [5, 6] }}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <ReferenceArrayInputController
+                            {...defaultProps}
+                            input={{ value: [5, 6] }}
+                        >
+                            {children}
+                        </ReferenceArrayInputController>
+                    )}
+                />
+            </CoreAdminContext>
         );
-
         await waitFor(() => {
-            expect(dispatch).toHaveBeenCalledWith({
-                type: CRUD_GET_MANY,
-                meta: {
-                    resource: 'tags',
-                },
-                payload: { ids: [6] },
+            expect(dataProvider.getMany).toHaveBeenCalledWith('tags', {
+                ids: [5, 6],
             });
-        });
-    });
-
-    it('should not call crudGetMany when already fetched input value changes', async () => {
-        const children = jest.fn(() => <div />);
-        const store = createAdminStore({
-            initialState: {
-                admin: { resources: { tags: { data: { 5: {}, 6: {} } } } },
-            },
-        });
-        const dispatch = jest.spyOn(store, 'dispatch');
-        const dataProvider = testDataProvider({
-            // @ts-ignore
-            getList: jest
-                .fn()
-                .mockResolvedValue(Promise.resolve({ data: [], total: 0 })),
-        });
-        const { rerender } = render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                input={{ value: [5, 6] }}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
-                </CoreAdminContext>
-            </Provider>
-        );
-        await waitFor(() => {
-            expect(dispatch).toHaveBeenCalledWith({
-                type: CRUD_GET_MANY,
-                meta: {
-                    resource: 'tags',
-                },
-                payload: { ids: [5, 6] },
-            });
-        });
-        rerender(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                input={{ value: [5, 6] }}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
-                </CoreAdminContext>
-            </Provider>
-        );
-
-        await waitFor(() => {
-            expect(
-                dispatch.mock.calls.filter(
-                    call => call[0].type === CRUD_GET_MANY
-                ).length
-            ).toEqual(1);
         });
     });
 
@@ -920,7 +702,7 @@ describe('useReferenceArrayInputController', () => {
             setPage,
             setPerPage,
             setSortForList,
-        }: ReferenceArrayInputControllerChildrenFuncParams): React.ReactElement => {
+        }): React.ReactElement => {
             const handleSetPage = () => {
                 setPage(2);
             };
@@ -943,11 +725,6 @@ describe('useReferenceArrayInputController', () => {
             );
         };
 
-        const store = createAdminStore({
-            initialState: {
-                admin: { resources: { tags: { data: { 5: {}, 6: {} } } } },
-            },
-        });
         const dataProvider = testDataProvider({
             // @ts-ignore
             getList: jest
@@ -955,21 +732,19 @@ describe('useReferenceArrayInputController', () => {
                 .mockResolvedValue(Promise.resolve({ data: [], total: 0 })),
         });
         render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                input={{ value: [5, 6] }}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <ReferenceArrayInputController
+                            {...defaultProps}
+                            input={{ value: [5, 6] }}
+                        >
+                            {children}
+                        </ReferenceArrayInputController>
+                    )}
+                />
+            </CoreAdminContext>
         );
 
         fireEvent.click(screen.getByLabelText('setPage'));
@@ -1020,42 +795,31 @@ describe('useReferenceArrayInputController', () => {
 
     it('should call its children with the correct resource', () => {
         const children = jest.fn(() => null);
-        const store = createAdminStore({
-            initialState: {
-                admin: { resources: { tags: { data: { 1: {}, 2: {} } } } },
-            },
-        });
         render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                input={{ value: [1, 2] }}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <ReferenceArrayInputController
+                            {...defaultProps}
+                            input={{ value: [1, 2] }}
+                        >
+                            {children}
+                        </ReferenceArrayInputController>
+                    )}
+                />
+            </CoreAdminContext>
         );
-        expect(children.mock.calls[0][0].resource).toEqual('posts');
+        expect(children).toHaveBeenCalledWith(
+            expect.objectContaining({ resource: 'posts' })
+        );
     });
 
     describe('enableGetChoices', () => {
         it('should not fetch possible values using getList on load but only when enableGetChoices returns true', async () => {
             const children = jest.fn().mockReturnValue(<div />);
-            await new Promise(resolve => setTimeout(resolve, 100)); // empty the query deduplication in useQueryWithStore
             const enableGetChoices = jest.fn().mockImplementation(({ q }) => {
                 return q ? q.length > 2 : false;
-            });
-            const store = createAdminStore({
-                initialState: {
-                    admin: { resources: { tags: { data: {} } } },
-                },
             });
             const dataProvider = testDataProvider({
                 getList: jest
@@ -1063,22 +827,20 @@ describe('useReferenceArrayInputController', () => {
                     .mockResolvedValue(Promise.resolve({ data: [], total: 0 })),
             });
             render(
-                <Provider store={store}>
-                    <CoreAdminContext dataProvider={dataProvider}>
-                        <Form
-                            onSubmit={jest.fn()}
-                            render={() => (
-                                <ReferenceArrayInputController
-                                    {...defaultProps}
-                                    allowEmpty
-                                    enableGetChoices={enableGetChoices}
-                                >
-                                    {children}
-                                </ReferenceArrayInputController>
-                            )}
-                        />
-                    </CoreAdminContext>
-                </Provider>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Form
+                        onSubmit={jest.fn()}
+                        render={() => (
+                            <ReferenceArrayInputController
+                                {...defaultProps}
+                                allowEmpty
+                                enableGetChoices={enableGetChoices}
+                            >
+                                {children}
+                            </ReferenceArrayInputController>
+                        )}
+                    />
+                </CoreAdminContext>
             );
 
             // not call on start
@@ -1109,55 +871,50 @@ describe('useReferenceArrayInputController', () => {
 
         it('should fetch current value using getMany even if enableGetChoices is returning false', async () => {
             const children = jest.fn(() => <div />);
-
-            const store = createAdminStore({
-                initialState: {
-                    admin: { resources: { tags: { data: { 5: {}, 6: {} } } } },
-                },
+            const dataProvider = testDataProvider({
+                // @ts-ignore
+                getList: jest
+                    .fn()
+                    .mockResolvedValue(Promise.resolve({ data: [], total: 0 })),
+                // @ts-ignore
+                getMany: jest
+                    .fn()
+                    .mockResolvedValue({ data: [{ id: 5 }, { id: 6 }] }),
             });
-            const dispatch = jest.spyOn(store, 'dispatch');
             render(
-                <Provider store={store}>
-                    <CoreAdminContext dataProvider={testDataProvider()}>
-                        <Form
-                            onSubmit={jest.fn()}
-                            render={() => (
-                                <ReferenceArrayInputController
-                                    {...defaultProps}
-                                    input={{ value: [5, 6] }}
-                                    enableGetChoices={() => false}
-                                >
-                                    {children}
-                                </ReferenceArrayInputController>
-                            )}
-                        />
-                    </CoreAdminContext>
-                </Provider>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Form
+                        onSubmit={jest.fn()}
+                        render={() => (
+                            <ReferenceArrayInputController
+                                {...defaultProps}
+                                input={{ value: [5, 6] }}
+                                enableGetChoices={() => false}
+                            >
+                                {children}
+                            </ReferenceArrayInputController>
+                        )}
+                    />
+                </CoreAdminContext>
             );
             await waitFor(() => {
-                expect(dispatch).toHaveBeenCalledWith({
-                    type: CRUD_GET_MANY,
-                    meta: {
-                        resource: 'tags',
-                    },
-                    payload: { ids: [5, 6] },
+                expect(dataProvider.getMany).toHaveBeenCalledWith('tags', {
+                    ids: [5, 6],
                 });
             });
-            expect(dispatch).toHaveBeenCalledTimes(5);
         });
 
-        it('should set loading to false if enableGetChoices returns false', async () => {
+        it('should set isLoading to false if enableGetChoices returns false', async () => {
             const children = jest.fn().mockReturnValue(<div />);
             await new Promise(resolve => setTimeout(resolve, 100)); // empty the query deduplication in useQueryWithStore
             const enableGetChoices = jest.fn().mockImplementation(({ q }) => {
                 return false;
             });
-            const queryClient = new QueryClient();
-            renderWithRedux(
+            render(
                 <Form
                     onSubmit={jest.fn()}
                     render={() => (
-                        <QueryClientProvider client={queryClient}>
+                        <CoreAdminContext dataProvider={testDataProvider()}>
                             <ReferenceArrayInputController
                                 {...defaultProps}
                                 allowEmpty
@@ -1165,14 +922,15 @@ describe('useReferenceArrayInputController', () => {
                             >
                                 {children}
                             </ReferenceArrayInputController>
-                        </QueryClientProvider>
+                        </CoreAdminContext>
                     )}
-                />,
-                { admin: { resources: { tags: { data: {} } } } }
+                />
             );
 
             await waitFor(() => {
-                expect(children.mock.calls[0][0].loading).toEqual(false);
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({ isLoading: false })
+                );
             });
         });
     });
