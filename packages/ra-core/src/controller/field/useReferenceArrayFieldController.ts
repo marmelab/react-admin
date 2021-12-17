@@ -6,7 +6,6 @@ import { ListControllerResult, useList } from '../list';
 import { useNotify } from '../../sideEffect';
 
 export interface UseReferenceArrayFieldControllerParams {
-    basePath?: string;
     filter?: any;
     page?: number;
     perPage?: number;
@@ -27,8 +26,7 @@ const defaultSort = { field: null, order: null };
  *
  * @example
  *
- * const { data, error, isFetching, isLoading, referenceBasePath } = useReferenceArrayFieldController({
- *      basePath: 'resource';
+ * const { data, error, isFetching, isLoading } = useReferenceArrayFieldController({
  *      record: { referenceIds: ['id1', 'id2']};
  *      reference: 'reference';
  *      resource: 'resource';
@@ -36,7 +34,6 @@ const defaultSort = { field: null, order: null };
  * });
  *
  * @param {Object} props
- * @param {string} props.basePath basepath to current resource
  * @param {Object} props.record The current resource record
  * @param {string} props.reference The linked resource name
  * @param {string} props.resource The current resource name
