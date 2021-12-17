@@ -6,7 +6,6 @@ import classnames from 'classnames';
 import get from 'lodash/get';
 import { Typography } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
-import { useSelector } from 'react-redux';
 import {
     useReference,
     UseReferenceResult,
@@ -16,7 +15,6 @@ import {
     RecordContextProvider,
     Record,
     useRecordContext,
-    ReduxState,
 } from 'ra-core';
 
 import { LinearProgress } from '../layout';
@@ -71,15 +69,6 @@ import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
 export const ReferenceField: FC<ReferenceFieldProps> = props => {
     const { source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
-    const isReferenceDeclared = useSelector<ReduxState, boolean>(
-        state => typeof state.admin.resources[props.reference] !== 'undefined'
-    );
-
-    if (!isReferenceDeclared) {
-        throw new Error(
-            `You must declare a <Resource name="${props.reference}"> in order to use a <ReferenceField reference="${props.reference}">`
-        );
-    }
 
     return get(record, source) == null ? (
         emptyText ? (
@@ -132,6 +121,9 @@ export interface ReferenceFieldProps<RecordType extends Record = Record>
     resource?: string;
     source: string;
     translateChoice?: Function | boolean;
+    /**
+     * @deprecated use link instead
+     */
     linkType?: LinkToType;
     link?: LinkToType;
 }
