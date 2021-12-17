@@ -2,7 +2,6 @@ import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
 import {
-    DataProviderContext,
     RecordContextProvider,
     CoreAdminContext,
     testDataProvider,
@@ -10,9 +9,8 @@ import {
 } from 'ra-core';
 import { QueryClient } from 'react-query';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { renderWithRedux } from 'ra-test';
 
-import { ReferenceField, ReferenceFieldView } from './ReferenceField';
+import { ReferenceField } from './ReferenceField';
 import { TextField } from './TextField';
 const theme = createTheme({});
 

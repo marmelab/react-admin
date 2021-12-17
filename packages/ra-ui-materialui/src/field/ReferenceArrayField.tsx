@@ -2,7 +2,6 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { cloneElement, FC, memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import {
     ListContextProvider,
     useListContext,
@@ -12,7 +11,6 @@ import {
     FilterPayload,
     ResourceContextProvider,
     useRecordContext,
-    ReduxState,
 } from 'ra-core';
 
 import { fieldPropTypes, PublicFieldProps, InjectedFieldProps } from './types';
@@ -91,16 +89,6 @@ export const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
     if (React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'
-        );
-    }
-
-    const isReferenceDeclared = useSelector<ReduxState, boolean>(
-        state => typeof state.admin.resources[props.reference] !== 'undefined'
-    );
-
-    if (!isReferenceDeclared) {
-        throw new Error(
-            `You must declare a <Resource name="${props.reference}"> in order to use a <ReferenceArrayField reference="${props.reference}">`
         );
     }
 
