@@ -196,8 +196,6 @@ ReferenceArrayInput.defaultProps = {
 
 const sanitizeRestProps = ({
     basePath,
-    crudGetMany,
-    crudGetMatching,
     filterToQuery,
     perPage,
     reference,

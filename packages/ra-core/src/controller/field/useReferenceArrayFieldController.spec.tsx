@@ -31,7 +31,7 @@ describe('<useReferenceArrayFieldController />', () => {
     afterEach(async () => {
         // @ts-ignore
         dataProvider.getMany.mockClear();
-        // wait for the getMAnyAggregate batch to resolve
+        // wait for the getManyAggregate batch to resolve
         await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
     });
 
