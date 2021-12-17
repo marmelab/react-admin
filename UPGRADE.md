@@ -1,6 +1,6 @@
 # Upgrade to 4.0
 
-## The Way To Providing Custom Routes Has Changed
+## The Way To Define Custom Routes Has Changed
 
 Custom routes used to be provided to the `Admin` component through the `customRoutes` prop. This was awkward to use as you had to provide an array of `<Route>` elements. Besides, we had to provide the `<RouteWithoutLayout>` component to support custom routes rendered without the `<Layout>` and keep TypeScript happy.
 
@@ -143,6 +143,16 @@ For queries:
 +   }
 +);
 +return <>{data.map(record => <span key={record.id}>{record.title}</span>)}</>;
+
+// useGetMany
+-const { data, loading } = useGetMany(
+-   'posts',
+-   [123, 456],
+-);
++const { data, isLoading } = useGetMany(
++   'posts',
++   { ids: [123, 456] }
++);
 ```
 
 For mutations:
@@ -172,6 +182,7 @@ To upgrade, check every instance of your code of the following hooks:
 
 - `useGetOne`
 - `useGetList`
+- `useGetMany`
 - `useUpdate`
 
 And update the calls. If you're using TypeScript, your code won't compile until you properly upgrade the calls. 
@@ -515,26 +526,6 @@ const CommentGrid = () => {
 };
 ```
 
-## `<Card>` Is Now Rendered By Inner Components
-
-The page components (`<List>`, `<Show>`, etc.) used to render a `<Card>` around their child. It's now the responsibility of the child to render the `<Card>` itself. If you only use react-admin components, you don't need to change anything. But if you use custom layout components, you need to wrap them inside a `<Card>`.
-
-```diff
-+import { Card } from '@mui/material';
-
-const MyShowLayout = () => {
-    const record useRecordContext();
-    return (
-+       <Card>
-            <Stack>
-                <TextField source="title" />
-                <TextField source="author" />
-            </Stack>
-+       </Card>
-    );
-}
-```
-
 ## Redux-Saga Was Removed
 
 The use of sagas has been deprecated for a while. React-admin v4 doesn't support them anymore. That means that the Redux actions don't include meta parameters anymore to trigger sagas, the Redux store doesn't include the saga middleware, and the saga-based side effects were removed.
@@ -546,6 +537,11 @@ If you still relied on sagas, you have to port your saga code to react `useEffec
 ## Removed Deprecated Elements
 
 - Removed `<BulkDeleteAction>` (use `<BulkDeleteButton>` instead)
+- Removed `<ReferenceFieldController>` (use `useReferenceFieldController` instead)
+- Removed `<ReferenceArrayFieldController>` (use `useReferenceArrayFieldController` instead)
+- Removed `<ReferenceManyFieldController>` (use `useReferenceManyFieldController` instead)
+- Removed `<ReferenceInputController>` (use `useReferenceInputController` instead)
+- Removed `<ReferenceArrayInputController>` (use `useReferenceArrayInputController` instead)
 - Removed declarative side effects in dataProvider hooks (e.g. `{ onSuccess: { refresh: true } }`). Use function side effects instead (e.g. `{ onSuccess: () => { refresh(); } }`)
 
 ## Removed connected-react-router
@@ -645,43 +641,6 @@ const MyCustomField = () => (
 -MyCustomField.defaultProps = {
 -    addLabel: true
 -};
-```
-
-## Removed The `aside` Prop From `<Show>`
-
-To add a sidebar to a `<Show>` component, you can no longer use the `<Show aside>` prop. But `<Show>` has evolved to accept many children, and render a `<div style={{ display: 'flex" }}>`. So adding a sidebar becomes more natural:
-
-```diff
-export const PostShow = () => (
--    <Show aside={<PostShowAside />}>
-+    <Show>
-        <SimpleShowLayout>
-            <TextField source="title" />
-        </SimpleShowLayout>
-+       <PostShowAside />
-    </Show>
-);
-```
-
-If you want more control over the relative widths of the two children, use layout components like material-ui's `<Grid>`:
-
-```jsx
- import { Grid } from '@mui/material';
-
-export const PostShow = () => (
-    <Show>
-        <Grid container>
-            <Grid item xs={8}>
-                <SimpleShowLayout>
-                    <TextField source="title" />
-                </SimpleShowLayout>
-            </Grid>
-            <Grid item xs={4}>
-               <PostShowAside />
-            </Grid>
-        </Grid>
-    </Show>
-);
 ```
 
 ## Removed `loading` and `loaded` Data Provider State Variables
