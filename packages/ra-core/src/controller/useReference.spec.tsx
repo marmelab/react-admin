@@ -213,4 +213,20 @@ describe('useReference', () => {
             });
         });
     });
+
+    it('should deduplicated repeated ids', async () => {
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseReference {...defaultProps} id={1} />
+                <UseReference {...defaultProps} id={1} />
+                <UseReference {...defaultProps} id={2} />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
+            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
+                ids: [1, 2],
+            });
+        });
+    });
 });

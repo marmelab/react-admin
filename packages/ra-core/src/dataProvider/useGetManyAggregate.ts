@@ -91,6 +91,7 @@ export const useGetManyAggregate = <RecordType extends Record = Record>(
                     );
                 });
             },
+            retry: false,
             ...options,
         }
     );
