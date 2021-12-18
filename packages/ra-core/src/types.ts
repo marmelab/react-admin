@@ -145,8 +145,8 @@ export interface GetListResult<RecordType extends Record = Record> {
     validUntil?: ValidUntil;
 }
 
-export interface GetOneParams {
-    id: Identifier;
+export interface GetOneParams<RecordType extends Record = Record> {
+    id: RecordType['id'];
 }
 export interface GetOneResult<RecordType extends Record = Record> {
     data: RecordType;

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Identifier, Record } from '../types';
+import { Record } from '../types';
 import useMutation, { MutationOptions, Mutation } from './useMutation';
 
 /**
@@ -50,7 +50,7 @@ import useMutation, { MutationOptions, Mutation } from './useMutation';
  */
 const useDelete = <RecordType extends Record = Record>(
     resource?: string,
-    id?: Identifier,
+    id?: RecordType['id'],
     previousData: any = {},
     options?: MutationOptions
 ): UseDeleteHookValue<RecordType> => {
@@ -62,7 +62,7 @@ const useDelete = <RecordType extends Record = Record>(
     const deleteOne = useCallback(
         (
             resource?: string | Partial<Mutation> | Event,
-            id?: Identifier | Partial<MutationOptions>,
+            id?: RecordType['id'] | Partial<MutationOptions>,
             previousData?: any,
             options?: MutationOptions
         ) => {
@@ -71,7 +71,7 @@ const useDelete = <RecordType extends Record = Record>(
                     type: 'delete',
                     resource,
                     payload: {
-                        id: id as Identifier,
+                        id: id as RecordType['id'],
                         previousData,
                     },
                 };
@@ -92,7 +92,7 @@ const useDelete = <RecordType extends Record = Record>(
 type UseDeleteHookValue<RecordType extends Record = Record> = [
     (
         resource?: string | Partial<Mutation> | Event,
-        id?: Identifier | Partial<MutationOptions>,
+        id?: RecordType['id'] | Partial<MutationOptions>,
         previousData?: RecordType,
         options?: MutationOptions
     ) => void | Promise<any>,

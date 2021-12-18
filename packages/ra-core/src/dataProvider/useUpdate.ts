@@ -385,7 +385,7 @@ export const useUpdate = <RecordType extends Record = Record>(
 
 export interface UseUpdateMutateParams<RecordType extends Record = Record> {
     resource?: string;
-    id?: Identifier;
+    id?: RecordType['id'];
     data?: Partial<RecordType>;
     previousData?: any;
 }

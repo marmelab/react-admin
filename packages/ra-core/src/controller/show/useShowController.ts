@@ -3,7 +3,7 @@ import { UseQueryOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
 import useVersion from '../useVersion';
-import { Record, Identifier } from '../../types';
+import { Record } from '../../types';
 import { useGetOne, Refetch } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { useNotify, useRedirect, useRefresh } from '../../sideEffect';
@@ -103,7 +103,7 @@ export const useShowController = <RecordType extends Record = Record>(
 
 export interface ShowControllerProps<RecordType extends Record = Record> {
     disableAuthentication?: boolean;
-    id?: Identifier;
+    id?: RecordType['id'];
     queryOptions?: UseQueryOptions<RecordType>;
     resource?: string;
 }

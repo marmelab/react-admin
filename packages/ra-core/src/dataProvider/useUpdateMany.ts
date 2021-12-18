@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Identifier, Record } from '../types';
+import { Record } from '../types';
 import useMutation, { MutationOptions, Mutation } from './useMutation';
 
 /**
@@ -50,7 +50,7 @@ import useMutation, { MutationOptions, Mutation } from './useMutation';
  */
 const useUpdateMany = <RecordType extends Record = Record>(
     resource?: string,
-    ids?: Identifier[],
+    ids?: RecordType['id'][],
     data?: Partial<RecordType>,
     options?: MutationOptions
 ): UseUpdateManyHookValue<RecordType> => {
@@ -62,7 +62,7 @@ const useUpdateMany = <RecordType extends Record = Record>(
     const updateMany = useCallback(
         (
             resource?: string | Partial<Mutation> | Event,
-            ids?: Identifier[] | Partial<MutationOptions>,
+            ids?: RecordType['id'][] | Partial<MutationOptions>,
             data?: Partial<RecordType>,
             options?: MutationOptions
         ) => {
@@ -71,7 +71,7 @@ const useUpdateMany = <RecordType extends Record = Record>(
                     type: 'updateMany',
                     resource,
                     payload: {
-                        ids: ids as Identifier[],
+                        ids: ids as RecordType['id'][],
                         data,
                     },
                 };
@@ -92,12 +92,12 @@ const useUpdateMany = <RecordType extends Record = Record>(
 type UseUpdateManyHookValue<RecordType extends Record = Record> = [
     (
         resource?: string | Partial<Mutation> | Event,
-        ids?: Identifier[] | Partial<MutationOptions>,
+        ids?: RecordType['id'][] | Partial<MutationOptions>,
         data?: Partial<RecordType>,
         options?: MutationOptions
     ) => void | Promise<any>,
     {
-        data?: Identifier[];
+        data?: RecordType['id'][];
         total?: number;
         error?: any;
         loading: boolean;
