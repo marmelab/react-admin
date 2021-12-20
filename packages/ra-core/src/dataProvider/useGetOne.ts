@@ -42,7 +42,7 @@ import useDataProvider from './useDataProvider';
  */
 export const useGetOne = <RecordType extends Record = Record>(
     resource: string,
-    { id }: GetOneParams,
+    { id }: GetOneParams<RecordType>,
     options?: UseQueryOptions<RecordType>
 ): UseGetOneHookValue<RecordType> => {
     const dataProvider = useDataProvider();

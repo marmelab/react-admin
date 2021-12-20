@@ -7,13 +7,7 @@ import { useNotify } from '../../sideEffect';
 import { useGetList, Refetch } from '../../dataProvider';
 import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
 import { defaultExporter } from '../../export';
-import {
-    FilterPayload,
-    SortPayload,
-    Identifier,
-    Record,
-    Exporter,
-} from '../../types';
+import { FilterPayload, SortPayload, Record, Exporter } from '../../types';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import useRecordSelection from '../useRecordSelection';
 import { useListParams } from './useListParams';
@@ -198,14 +192,14 @@ export interface ListControllerResult<RecordType extends Record = Record> {
     hideFilter: (filterName: string) => void;
     isFetching: boolean;
     isLoading: boolean;
-    onSelect: (ids: Identifier[]) => void;
-    onToggleItem: (id: Identifier) => void;
+    onSelect: (ids: RecordType['id'][]) => void;
+    onToggleItem: (id: RecordType['id']) => void;
     onUnselectItems: () => void;
     page: number;
     perPage: number;
     refetch: Refetch;
     resource: string;
-    selectedIds: Identifier[];
+    selectedIds: RecordType['id'][];
     setFilters: (
         filters: any,
         displayedFilters: any,

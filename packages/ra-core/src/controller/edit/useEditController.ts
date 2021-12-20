@@ -6,7 +6,6 @@ import { useAuthenticated } from '../../auth';
 import useVersion from '../useVersion';
 import {
     Record,
-    Identifier,
     MutationMode,
     OnSuccess,
     OnFailure,
@@ -220,7 +219,7 @@ export const useEditController = <RecordType extends Record = Record>(
 
 export interface EditControllerProps<RecordType extends Record = Record> {
     disableAuthentication?: boolean;
-    id?: Identifier;
+    id?: RecordType['id'];
     mutationMode?: MutationMode;
     mutationOptions?: UseMutationOptions<
         RecordType,

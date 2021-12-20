@@ -143,7 +143,7 @@ const useGetManyReference = (
 };
 
 interface DataSelectorResult<RecordType extends Record = Record> {
-    ids: Identifier[];
+    ids: RecordType['id'][];
     allRecords: RecordMap<RecordType>;
 }
 
