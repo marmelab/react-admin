@@ -10,7 +10,6 @@ import useDataProvider from './useDataProvider';
 import useMutation, { UseMutationValue } from './useMutation';
 import withDataProvider from './withDataProvider';
 import useGetMany from './useGetMany';
-import useGetManyReference from './useGetManyReference';
 import useUpdateMany from './useUpdateMany';
 import useCreate from './useCreate';
 import useDelete from './useDelete';
@@ -21,6 +20,7 @@ import useIsAutomaticRefreshEnabled from './useIsAutomaticRefreshEnabled';
 export * from './testDataProvider';
 export * from './useGetOne';
 export * from './useGetList';
+export * from './useGetManyReference';
 export * from './useQueryWithStore';
 export * from './useQuery';
 export * from './useUpdate';
@@ -40,7 +40,6 @@ export {
     useDataProvider,
     useMutation,
     useGetMany,
-    useGetManyReference,
     useUpdateMany,
     useCreate,
     useDelete,
