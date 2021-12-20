@@ -82,6 +82,20 @@ export const useGetManyAggregate = <RecordType extends Record = Record>(
                 })
             ),
         {
+            placeholderData: () => {
+                const records = ids.map(id =>
+                    queryClient.getQueryData<RecordType>([
+                        resource,
+                        'getOne',
+                        String(id),
+                    ])
+                );
+                if (records.some(record => record === undefined)) {
+                    return undefined;
+                } else {
+                    return records;
+                }
+            },
             onSuccess: data => {
                 // optimistically populate the getOne cache
                 data.forEach(record => {
