@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-
-import { AutocompleteInput } from './AutocompleteInput';
 import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
+
+import { AutocompleteInput } from './AutocompleteInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
+import { InsideReferenceInput } from './AutocompleteInput.stories';
 
 describe('<AutocompleteInput />', () => {
     const defaultProps = {
@@ -804,5 +805,27 @@ describe('<AutocompleteInput />', () => {
         fireEvent.blur(input);
         fireEvent.focus(input);
         expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
+    });
+
+    it('should work inside a ReferenceInput field', async () => {
+        render(<InsideReferenceInput />);
+        await waitFor(() => {
+            expect(
+                (screen.getByRole('textbox') as HTMLInputElement).value
+            ).toBe('Leo Tolstoy');
+        });
+        screen.getByRole('textbox').focus();
+        fireEvent.click(screen.getByLabelText('Clear value'));
+        await waitFor(() => {
+            expect(screen.getByText('Victor Hugo'));
+            expect(screen.getByText('Leo Tolstoy'));
+        });
+        fireEvent.change(screen.getByRole('textbox'), {
+            target: { value: 'Vic' },
+        });
+        await waitFor(() => {
+            expect(screen.getByText('Victor Hugo'));
+            expect(screen.queryByText('Leo Tolstoy')).toBeNull();
+        });
     });
 });
