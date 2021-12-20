@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { AutocompleteInput } from './AutocompleteInput';
 import { Form } from 'react-final-form';
-import { TestTranslationProvider } from 'ra-core';
+import { FormDataConsumer, TestTranslationProvider } from 'ra-core';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
+import { renderWithRedux } from 'ra-test';
+import { SimpleForm } from '../form';
 
 describe('<AutocompleteInput />', () => {
     // Fix document.createRange is not a function error on fireEvent usage (Fixed in jsdom v16.0.0)
@@ -922,5 +925,42 @@ describe('<AutocompleteInput />', () => {
         fireEvent.click(getByLabelText('ra.action.clear_input_value'));
 
         expect(queryByText('New Kid On The Block')).not.toBeNull();
+    });
+
+    it("should allow to edit the input if it's inside a FormDataConsumer", () => {
+        const { getByLabelText } = renderWithRedux(
+            <SimpleForm validateOnBlur basePath="/posts" resource="posts">
+                <FormDataConsumer>
+                    {({ formData, ...rest }) => {
+                        return (
+                            <AutocompleteInput
+                                label="Id"
+                                choices={[
+                                    {
+                                        name: 'General Practitioner',
+                                        id: 'GeneralPractitioner',
+                                    },
+                                    {
+                                        name: 'Physiotherapist',
+                                        id: 'Physiotherapist',
+                                    },
+                                    {
+                                        name: 'Clinical Pharmacist',
+                                        id: 'ClinicalPharmacist',
+                                    },
+                                ]}
+                                source="id"
+                            />
+                        );
+                    }}
+                </FormDataConsumer>
+            </SimpleForm>
+        );
+        const input = getByLabelText('Id', {
+            selector: 'input',
+        }) as HTMLInputElement;
+        fireEvent.focus(input);
+        userEvent.type(input, 'Hello World!');
+        expect(input.value).toEqual('Hello World!');
     });
 });
