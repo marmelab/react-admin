@@ -8,7 +8,6 @@ import { FormDataConsumer, TestTranslationProvider } from 'ra-core';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import { renderWithRedux } from 'ra-test';
 import { SimpleForm } from '../form';
-import { Create } from '../detail';
 
 describe('<AutocompleteInput />', () => {
     // Fix document.createRange is not a function error on fireEvent usage (Fixed in jsdom v16.0.0)
