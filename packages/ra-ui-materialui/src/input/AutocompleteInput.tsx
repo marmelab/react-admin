@@ -323,8 +323,6 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                 ? inputText(getChoiceText(selectedItem).props.record)
                 : getChoiceText(selectedItem)
         );
-
-        inputEl.current.blur();
     }, [
         input.value,
         handleFilterChange,
@@ -332,6 +330,10 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         getChoiceText,
         inputText,
     ]);
+
+    useEffect(() => {
+        inputEl.current.blur();
+    }, [input.value]);
 
     // This function ensures that the suggestion list stay aligned to the
     // input element even if it moves (because user scrolled for example)
