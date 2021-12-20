@@ -326,6 +326,8 @@ const sanitizeRestProps = ({
     crudGetOInputWithOptionsPropsne,
     defaultValue,
     disableValue,
+    emptyText,
+    enableGetChoices,
     filter,
     filterToQuery,
     formClassName,
