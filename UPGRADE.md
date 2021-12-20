@@ -143,6 +143,27 @@ For queries:
 +   }
 +);
 +return <>{data.map(record => <span key={record.id}>{record.title}</span>)}</>;
+
+// useGetManyReference
+-const { data, ids, loading } = useGetManyReference(
+-   'comments',
+-   'post_id',
+-   123,
+-   { page: 1, perPage: 10 },
+-   { field: 'published_at', order: 'DESC' }
+-   'posts'
+-);
+-return <>{ids.map(id => <span key={id}>{data[id].title}</span>)}</>;
++const { data, isLoading } = useGetManyReference(
++   'comments',
++   {
++       target: 'post_id',
++       id: 123,
++       pagination: { page: 1, perPage: 10 },
++       sort: { field: 'published_at', order: 'DESC' }
++   }
++);
++return <>{data.map(record => <span key={record.id}>{record.title}</span>)}</>;
 ```
 
 For mutations:
@@ -172,6 +193,7 @@ To upgrade, check every instance of your code of the following hooks:
 
 - `useGetOne`
 - `useGetList`
+- `useGetManyReference`
 - `useUpdate`
 
 And update the calls. If you're using TypeScript, your code won't compile until you properly upgrade the calls. 
@@ -535,6 +557,12 @@ const MyShowLayout = () => {
 }
 ```
 
+## Removed the `oneToMany` Reducer
+
+React-admin no longer relies on Redux to fetch one-to-many relationships. Instead, the cache of previously fetched relationships is managed by react-query.
+
+If you need to get the records related to the current one via a one-to-many relationship (e.g. to fetch all the books of a given author), you can use the `useGetManyReference` hook instead.
+
 ## Redux-Saga Was Removed
 
 The use of sagas has been deprecated for a while. React-admin v4 doesn't support them anymore. That means that the Redux actions don't include meta parameters anymore to trigger sagas, the Redux store doesn't include the saga middleware, and the saga-based side effects were removed.
@@ -546,6 +574,7 @@ If you still relied on sagas, you have to port your saga code to react `useEffec
 ## Removed Deprecated Elements
 
 - Removed `<BulkDeleteAction>` (use `<BulkDeleteButton>` instead)
+- Removed `<ReferenceManyFieldController>` (use `useReferenceManyFieldController` instead)
 - Removed declarative side effects in dataProvider hooks (e.g. `{ onSuccess: { refresh: true } }`). Use function side effects instead (e.g. `{ onSuccess: () => { refresh(); } }`)
 
 ## Removed connected-react-router
