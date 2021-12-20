@@ -332,6 +332,7 @@ const sanitizeRestProps = ({
     filterToQuery,
     formClassName,
     initializeForm,
+    initialValue,
     input,
     isRequired,
     label,
