@@ -81,12 +81,7 @@ export const useUpdate = <RecordType extends Record = Record>(
     const { mutationMode = 'pessimistic', ...reactMutationOptions } = options;
     const mode = useRef<MutationMode>(mutationMode);
     const paramsRef = useRef<Partial<UpdateParams<RecordType>>>({});
-    const rollbackData = useRef<{
-        previousGetOne?: any;
-        previousGetList?: any;
-        previousGetMany?: any;
-        previousGetManyReference?: any;
-    }>({});
+    const rollbackData = useRef<RollbackData>([]);
 
     const updateCache = async ({ resource, id, data }) => {
         // hack: only way to tell react-query not to fetch this query for the next 5 seconds
@@ -168,7 +163,7 @@ export const useUpdate = <RecordType extends Record = Record>(
                     const userContext =
                         (await reactMutationOptions.onMutate(variables)) || {};
                     return {
-                        ...rollbackData.current,
+                        rollbackData: rollbackData.current,
                         // @ts-ignore
                         ...userContext,
                     };
@@ -179,38 +174,16 @@ export const useUpdate = <RecordType extends Record = Record>(
             onError: (
                 error: unknown,
                 variables: Partial<UseUpdateMutateParams<RecordType>> = {},
-                context: {
-                    previousGetOne: any;
-                    previousGetList: any;
-                    previousGetMany: any;
-                    previousGetManyReference: any;
-                }
+                context: { rollbackData: RollbackData }
             ) => {
-                const {
-                    resource: callTimeResource = resource,
-                    id: callTimeId = id,
-                } = variables;
                 if (
                     mode.current === 'optimistic' ||
                     mode.current === 'undoable'
                 ) {
                     // If the mutation fails, use the context returned from onMutate to roll back
-                    queryClient.setQueryData(
-                        [callTimeResource, 'getOne', String(callTimeId)],
-                        context.previousGetOne
-                    );
-                    queryClient.setQueriesData(
-                        [callTimeResource, 'getList'],
-                        context.previousGetList
-                    );
-                    queryClient.setQueriesData(
-                        [callTimeResource, 'getMany'],
-                        context.previousGetMany
-                    );
-                    queryClient.setQueriesData(
-                        [callTimeResource, 'getManyReference'],
-                        context.previousGetManyReference
-                    );
+                    context.rollbackData.forEach(({ key, value }) => {
+                        queryClient.setQueryData(key, value);
+                    });
                 }
 
                 if (reactMutationOptions.onError) {
@@ -253,34 +226,16 @@ export const useUpdate = <RecordType extends Record = Record>(
                 data: RecordType,
                 error: unknown,
                 variables: Partial<UseUpdateMutateParams<RecordType>> = {},
-                context: unknown
+                context: { rollbackData: RollbackData }
             ) => {
-                const {
-                    resource: callTimeResource = resource,
-                    id: callTimeId = id,
-                } = variables;
                 if (
                     mode.current === 'optimistic' ||
                     mode.current === 'undoable'
                 ) {
                     // Always refetch after error or success:
-                    queryClient.invalidateQueries([
-                        callTimeResource,
-                        'getOne',
-                        String(callTimeId),
-                    ]);
-                    queryClient.invalidateQueries([
-                        callTimeResource,
-                        'getList',
-                    ]);
-                    queryClient.invalidateQueries([
-                        callTimeResource,
-                        'getMany',
-                    ]);
-                    queryClient.invalidateQueries([
-                        callTimeResource,
-                        'getManyReference',
-                    ]);
+                    context.rollbackData.forEach(({ key }) => {
+                        queryClient.invalidateQueries(key);
+                    });
                 }
 
                 if (reactMutationOptions.onSettled) {
@@ -332,38 +287,45 @@ export const useUpdate = <RecordType extends Record = Record>(
         // except we do it in a mutate wrapper instead of the onMutate callback
         // to have access to success side effects
 
-        // Cancel any outgoing re-fetches (so they don't overwrite our optimistic update)
-        await queryClient.cancelQueries([
+        const previousRecord = queryClient.getQueryData<RecordType>([
             callTimeResource,
             'getOne',
             String(callTimeId),
         ]);
-        await queryClient.cancelQueries([callTimeResource, 'getList']);
 
         // Snapshot the previous values
-        const previousGetOne: RecordType = queryClient.getQueryData([
-            callTimeResource,
-            'getOne',
-            String(callTimeId),
-        ]);
-        const previousGetList = queryClient.getQueriesData([
-            callTimeResource,
-            'getList',
-        ]);
-        const previousGetMany = queryClient.getQueriesData([
-            callTimeResource,
-            'getMany',
-        ]);
-        const previousGetManyReference = queryClient.getQueriesData([
-            callTimeResource,
-            'getManyReference',
-        ]);
-        rollbackData.current = {
-            previousGetOne,
-            previousGetList,
-            previousGetMany,
-            previousGetManyReference,
-        };
+        rollbackData.current = [
+            {
+                key: [callTimeResource, 'getOne', String(callTimeId)],
+                value: previousRecord,
+            },
+            {
+                key: [callTimeResource, 'getList'],
+                value: queryClient.getQueriesData([
+                    callTimeResource,
+                    'getList',
+                ]),
+            },
+            {
+                key: [callTimeResource, 'getMany'],
+                value: queryClient.getQueriesData([
+                    callTimeResource,
+                    'getMany',
+                ]),
+            },
+            {
+                key: [callTimeResource, 'getManyReference'],
+                value: queryClient.getQueriesData([
+                    callTimeResource,
+                    'getManyReference',
+                ]),
+            },
+        ];
+
+        // Cancel any outgoing re-fetches (so they don't overwrite our optimistic update)
+        await rollbackData.current.forEach(({ key }) =>
+            queryClient.cancelQueries(key)
+        );
 
         // Optimistically update to the new value in getOne
         await updateCache({
@@ -377,7 +339,7 @@ export const useUpdate = <RecordType extends Record = Record>(
             setTimeout(
                 () =>
                     onSuccess(
-                        previousGetOne,
+                        previousRecord,
                         { resource: callTimeResource, ...callTimeParams },
                         rollbackData.current
                     ),
@@ -388,7 +350,7 @@ export const useUpdate = <RecordType extends Record = Record>(
             setTimeout(
                 () =>
                     reactMutationOptions.onSuccess(
-                        previousGetOne,
+                        previousRecord,
                         { resource: callTimeResource, ...callTimeParams },
                         rollbackData.current
                     ),
@@ -400,40 +362,21 @@ export const useUpdate = <RecordType extends Record = Record>(
             // call the mutate without success side effects
             return mutation.mutate(
                 { resource: callTimeResource, ...callTimeParams },
-                {
-                    onSettled,
-                    onError,
-                }
+                { onSettled, onError }
             );
         } else {
             // undoable mutation: register the mutation for later
             undoableEventEmitter.once('end', ({ isUndo }) => {
                 if (isUndo) {
                     // rollback
-                    queryClient.setQueryData(
-                        [callTimeResource, 'getOne', String(callTimeId)],
-                        rollbackData.current.previousGetOne
-                    );
-                    queryClient.setQueriesData(
-                        [callTimeResource, 'getList'],
-                        rollbackData.current.previousGetList
-                    );
-                    queryClient.setQueriesData(
-                        [callTimeResource, 'getMany'],
-                        rollbackData.current.previousGetMany
-                    );
-                    queryClient.setQueriesData(
-                        [callTimeResource, 'getManyReference'],
-                        rollbackData.current.previousGetManyReference
-                    );
+                    rollbackData.current.forEach(({ key, value }) => {
+                        queryClient.setQueryData(key, value);
+                    });
                 } else {
                     // call the mutate without success side effects
                     mutation.mutate(
                         { resource: callTimeResource, ...callTimeParams },
-                        {
-                            onSettled,
-                            onError,
-                        }
+                        { onSettled, onError }
                     );
                 }
             });
@@ -442,6 +385,8 @@ export const useUpdate = <RecordType extends Record = Record>(
 
     return [update, mutation];
 };
+
+type RollbackData = { key: any[]; value: any }[];
 
 export interface UseUpdateMutateParams<RecordType extends Record = Record> {
     resource?: string;
