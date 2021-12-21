@@ -360,10 +360,7 @@ export const useUpdateMany = <RecordType extends Record = Record>(
             // call the mutate without success side effects
             return mutation.mutate(
                 { resource: callTimeResource, ...callTimeParams },
-                {
-                    onSettled,
-                    onError,
-                }
+                { onSettled, onError }
             );
         } else {
             // undoable mutation: register the mutation for later
@@ -377,10 +374,7 @@ export const useUpdateMany = <RecordType extends Record = Record>(
                     // call the mutate without success side effects
                     mutation.mutate(
                         { resource: callTimeResource, ...callTimeParams },
-                        {
-                            onSettled,
-                            onError,
-                        }
+                        { onSettled, onError }
                     );
                 }
             });
