@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import { TestContext } from 'ra-test';
+import { CoreAdminContext, testDataProvider } from 'ra-core';
+import { ThemeProvider, createTheme } from '@mui/material';
 
 import { ArrayField } from './ArrayField';
 import { NumberField } from './NumberField';
@@ -17,19 +18,27 @@ describe('<ArrayField />', () => {
         </Datagrid>
     );
 
+    const Wrapper = ({ children }) => (
+        <ThemeProvider theme={createTheme()}>
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                {children}
+            </CoreAdminContext>
+        </ThemeProvider>
+    );
+
     it('should not fail for empty records', () => {
         render(
-            <TestContext>
+            <Wrapper>
                 <ArrayField source="arr" resource="posts" record={{ id: 123 }}>
                     <DummyIterator />
                 </ArrayField>
-            </TestContext>
+            </Wrapper>
         );
     });
 
     it('should render the underlying iterator component', () => {
         const { queryByText } = render(
-            <TestContext>
+            <Wrapper>
                 <ArrayField
                     source="arr"
                     resource="posts"
@@ -43,7 +52,7 @@ describe('<ArrayField />', () => {
                 >
                     <DummyIterator />
                 </ArrayField>
-            </TestContext>
+            </Wrapper>
         );
 
         // Test the datagrid know about the fields
@@ -60,7 +69,7 @@ describe('<ArrayField />', () => {
 
     it('should render the alternative empty component', () => {
         const { queryByText } = render(
-            <TestContext>
+            <Wrapper>
                 <ArrayField
                     source="arr"
                     resource="posts"
@@ -73,7 +82,7 @@ describe('<ArrayField />', () => {
                         <NumberField source="id" />
                     </Datagrid>
                 </ArrayField>
-            </TestContext>
+            </Wrapper>
         );
         expect(queryByText('No posts')).not.toBeNull();
     });

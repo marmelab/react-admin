@@ -1,38 +1,53 @@
 import * as React from 'react';
-import { render, act, fireEvent, waitFor } from '@testing-library/react';
+import { FC } from 'react';
+import {
+    act,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+} from '@testing-library/react';
 import expect from 'expect';
+import { Provider } from 'react-redux';
 
 import Query from './Query';
-import { CoreAdmin, Resource } from '../core';
-import { renderWithRedux, TestContext } from 'ra-test';
-import DataProviderContext from './DataProviderContext';
+import { createAdminStore, CoreAdminContext, Resource } from '../core';
+import { testDataProvider } from '../dataProvider';
 import { showNotification } from '../actions';
 import { useNotify, useRefresh } from '../sideEffect';
 
 describe('Query', () => {
     it('should render its child', () => {
-        const { getByTestId } = renderWithRedux(
-            <Query type="getList" resource="bar">
-                {() => <div data-testid="test">Hello</div>}
-            </Query>
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <Query type="getList" resource="bar">
+                    {() => <div data-testid="test">Hello</div>}
+                </Query>
+            </CoreAdminContext>
         );
-        expect(getByTestId('test').textContent).toBe('Hello');
+        expect(screen.getByTestId('test').textContent).toBe('Hello');
     });
 
     it('should dispatch a fetch action when mounting', () => {
-        let dispatchSpy;
+        const store = createAdminStore({});
+        let dispatch = jest.spyOn(store, 'dispatch');
         const myPayload = {};
-        act(() => {
-            const result = renderWithRedux(
-                <Query type="getList" resource="myresource" payload={myPayload}>
-                    {() => <div>Hello</div>}
-                </Query>
-            );
 
-            dispatchSpy = result.dispatch;
-        });
+        render(
+            <Provider store={store}>
+                <CoreAdminContext dataProvider={testDataProvider()}>
+                    <Query
+                        type="getList"
+                        resource="myresource"
+                        payload={myPayload}
+                    >
+                        {() => <div>Hello</div>}
+                    </Query>
+                </CoreAdminContext>
+            </Provider>
+        );
 
-        const action = dispatchSpy.mock.calls[0][0];
+        const action = dispatch.mock.calls[0][0];
         expect(action.type).toEqual('CUSTOM_FETCH');
         expect(action.payload).toEqual(myPayload);
         expect(action.meta.resource).toEqual('myresource');
@@ -40,14 +55,18 @@ describe('Query', () => {
 
     it('should set the loading state to loading when mounting', () => {
         const myPayload = {};
-        const { getByText } = renderWithRedux(
-            <Query type="getList" resource="myresource" payload={myPayload}>
-                {({ loading }) => (
-                    <div className={loading ? 'loading' : 'idle'}>Hello</div>
-                )}
-            </Query>
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <Query type="getList" resource="myresource" payload={myPayload}>
+                    {({ loading }) => (
+                        <div className={loading ? 'loading' : 'idle'}>
+                            Hello
+                        </div>
+                    )}
+                </Query>
+            </CoreAdminContext>
         );
-        expect(getByText('Hello').className).toEqual('loading');
+        expect(screen.getByText('Hello').className).toEqual('loading');
     });
 
     it('should update the data state after a success response', async () => {
@@ -66,16 +85,12 @@ describe('Query', () => {
                 )}
             </Query>
         );
-        let getByTestId;
-        act(() => {
-            const res = render(
-                <CoreAdmin dataProvider={dataProvider}>
-                    <Resource name="foo" list={Foo} />
-                </CoreAdmin>
-            );
-            getByTestId = res.getByTestId;
-        });
-        const testElement = getByTestId('test');
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Resource name="foo" list={Foo} />
+            </CoreAdminContext>
+        );
+        const testElement = screen.getByTestId('test');
         expect(testElement.textContent).toBe('no data');
         expect(testElement.className).toEqual('loading');
 
@@ -104,16 +119,12 @@ describe('Query', () => {
                 )}
             </Query>
         );
-        let getByTestId;
-        act(() => {
-            const res = render(
-                <CoreAdmin dataProvider={dataProvider}>
-                    <Resource name="foo" list={Foo} />
-                </CoreAdmin>
-            );
-            getByTestId = res.getByTestId;
-        });
-        const testElement = getByTestId('test');
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Resource name="foo" list={Foo} />
+            </CoreAdminContext>
+        );
+        const testElement = screen.getByTestId('test');
         expect(testElement.className).toEqual('loading');
         expect(testElement.textContent).toBe('no data');
 
@@ -142,16 +153,13 @@ describe('Query', () => {
                 )}
             </Query>
         );
-        let getByTestId;
-        act(() => {
-            const res = render(
-                <CoreAdmin dataProvider={dataProvider}>
-                    <Resource name="foo" list={Foo} />
-                </CoreAdmin>
-            );
-            getByTestId = res.getByTestId;
-        });
-        const testElement = getByTestId('test');
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Resource name="foo" list={Foo} />
+            </CoreAdminContext>
+        );
+
+        const testElement = screen.getByTestId('test');
         expect(testElement.textContent).toBe('no data');
         expect(testElement.className).toEqual('loading');
 
@@ -162,30 +170,32 @@ describe('Query', () => {
     });
 
     it('should dispatch a new fetch action when updating', () => {
-        let dispatchSpy;
+        const store = createAdminStore({});
+        let dispatch = jest.spyOn(store, 'dispatch');
         const myPayload = {};
         const { rerender } = render(
-            <TestContext>
-                {({ store }) => {
-                    dispatchSpy = jest.spyOn(store, 'dispatch');
-                    return (
-                        <Query
-                            type="getList"
-                            resource="myresource"
-                            payload={myPayload}
-                        >
-                            {() => <div>Hello</div>}
-                        </Query>
-                    );
-                }}
-            </TestContext>
+            <Provider store={store}>
+                <CoreAdminContext dataProvider={testDataProvider()}>
+                    <Query
+                        type="getList"
+                        resource="myresource"
+                        payload={myPayload}
+                    >
+                        {() => <div>Hello</div>}
+                    </Query>
+                </CoreAdminContext>
+            </Provider>
         );
-        expect(dispatchSpy.mock.calls.length).toEqual(3);
+        expect(dispatch.mock.calls.length).toEqual(3);
         const mySecondPayload = { foo: 1 };
         act(() => {
             rerender(
-                <TestContext>
-                    {() => (
+                <Provider store={store}>
+                    <CoreAdminContext
+                        dataProvider={() =>
+                            Promise.resolve({ data: [], total: 0 })
+                        }
+                    >
                         <Query
                             type="getList"
                             resource="myresource"
@@ -193,66 +203,64 @@ describe('Query', () => {
                         >
                             {() => <div>Hello</div>}
                         </Query>
-                    )}
-                </TestContext>
+                    </CoreAdminContext>
+                </Provider>
             );
         });
-        expect(dispatchSpy.mock.calls.length).toEqual(6);
-        const action = dispatchSpy.mock.calls[3][0];
+        expect(dispatch.mock.calls.length).toEqual(6);
+        const action = dispatch.mock.calls[3][0];
         expect(action.type).toEqual('CUSTOM_FETCH');
         expect(action.payload).toEqual(mySecondPayload);
         expect(action.meta.resource).toEqual('myresource');
     });
 
     it('should not dispatch a new fetch action when updating with the same query props', () => {
-        let dispatchSpy;
-        const { rerender } = render(
-            <TestContext>
-                {({ store }) => {
-                    dispatchSpy = jest.spyOn(store, 'dispatch');
-                    const myPayload = {
-                        foo: {
-                            bar: 1,
-                        },
-                    };
-                    return (
-                        <Query
-                            type="getList"
-                            resource="myresource"
-                            payload={myPayload}
-                        >
-                            {() => <div>Hello</div>}
-                        </Query>
-                    );
-                }}
-            </TestContext>
+        const store = createAdminStore({});
+        let dispatch = jest.spyOn(store, 'dispatch');
+        const dataProvider = {
+            getList: () => Promise.resolve({ data: [], total: 0 }),
+        };
+        const Wrapper: FC = ({ children }) => (
+            <Provider store={store}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    {children}
+                </CoreAdminContext>
+            </Provider>
         );
-        expect(dispatchSpy.mock.calls.length).toEqual(3);
-        act(() => {
-            const myPayload = {
-                foo: {
-                    bar: 1,
-                },
-            };
-            rerender(
-                <TestContext>
-                    {() => (
-                        <Query
-                            type="getList"
-                            resource="myresource"
-                            payload={myPayload}
-                        >
-                            {() => <div>Hello</div>}
-                        </Query>
-                    )}
-                </TestContext>
-            );
-        });
-        expect(dispatchSpy.mock.calls.length).toEqual(3);
+        const { rerender } = render(
+            <Query
+                type="getList"
+                resource="myresource"
+                payload={{
+                    foo: {
+                        bar: 1,
+                    },
+                }}
+            >
+                {() => <div>Hello</div>}
+            </Query>,
+            { wrapper: Wrapper }
+        );
+        expect(dispatch.mock.calls.length).toEqual(3);
+        rerender(
+            <Query
+                type="getList"
+                resource="myresource"
+                payload={{
+                    foo: {
+                        bar: 1,
+                    },
+                }}
+            >
+                {() => <div>Hello</div>}
+            </Query>
+        );
+        expect(dispatch.mock.calls.length).toEqual(3);
     });
 
     it('supports onSuccess function for side effects', async () => {
-        let dispatchSpy;
+        const store = createAdminStore({});
+        let dispatch = jest.spyOn(store, 'dispatch');
         const dataProvider = {
             getList: jest.fn(() =>
                 Promise.resolve({ data: [{ id: 1, foo: 'bar' }], total: 42 })
@@ -267,7 +275,7 @@ describe('Query', () => {
                     resource="foo"
                     options={{
                         onSuccess: () => {
-                            notify('Youhou!', { type: 'info' });
+                            notify('Youhou!');
                         },
                     }}
                 >
@@ -282,29 +290,30 @@ describe('Query', () => {
                 </Query>
             );
         };
+
         act(() => {
             render(
-                <DataProviderContext.Provider value={dataProvider}>
-                    <TestContext>
-                        {({ store }) => {
-                            dispatchSpy = jest.spyOn(store, 'dispatch');
-                            return <Foo />;
-                        }}
-                    </TestContext>
-                </DataProviderContext.Provider>
+                <Provider store={store}>
+                    <CoreAdminContext dataProvider={dataProvider}>
+                        <Foo />
+                    </CoreAdminContext>
+                </Provider>
             );
         });
 
         await waitFor(() => {
-            expect(dispatchSpy).toHaveBeenCalledWith(
+            expect(dispatch).toHaveBeenCalledWith(
                 showNotification('Youhou!', 'info')
             );
         });
+
+        dispatch.mockRestore();
     });
 
     it('supports onFailure function for side effects', async () => {
         jest.spyOn(console, 'error').mockImplementationOnce(() => {});
-        let dispatchSpy;
+        const store = createAdminStore({});
+        let dispatch = jest.spyOn(store, 'dispatch');
         const dataProvider = {
             getList: jest.fn(() =>
                 Promise.reject({ message: 'provider error' })
@@ -336,26 +345,26 @@ describe('Query', () => {
         };
         act(() => {
             render(
-                <DataProviderContext.Provider value={dataProvider}>
-                    <TestContext>
-                        {({ store }) => {
-                            dispatchSpy = jest.spyOn(store, 'dispatch');
-                            return <Foo />;
-                        }}
-                    </TestContext>
-                </DataProviderContext.Provider>
+                <Provider store={store}>
+                    <CoreAdminContext dataProvider={dataProvider}>
+                        <Foo />
+                    </CoreAdminContext>
+                </Provider>
             );
         });
 
         await waitFor(() => {
-            expect(dispatchSpy).toHaveBeenCalledWith(
+            expect(dispatch).toHaveBeenCalledWith(
                 showNotification('Damn!', 'warning')
             );
         });
+
+        dispatch.mockRestore();
     });
 
     it('should fetch again when refreshing', async () => {
-        let dispatchSpy;
+        const store = createAdminStore({});
+        let dispatch = jest.spyOn(store, 'dispatch');
 
         const dataProvider = {
             mytype: jest.fn(() => Promise.resolve({ data: { foo: 'bar' } })),
@@ -364,44 +373,35 @@ describe('Query', () => {
         const Button = () => {
             const refresh = useRefresh();
             return (
-                <button data-testid="test" onClick={refresh}>
+                <button data-testid="test" onClick={() => refresh()}>
                     Click me
                 </button>
             );
         };
 
-        let getByTestId;
-        act(() => {
-            const res = render(
-                <DataProviderContext.Provider value={dataProvider}>
-                    <TestContext enableReducers>
-                        {({ store, history }) => {
-                            dispatchSpy = jest.spyOn(store, 'dispatch');
-                            return (
-                                <Query type="mytype" resource="foo">
-                                    {() => <Button />}
-                                </Query>
-                            );
-                        }}
-                    </TestContext>
-                </DataProviderContext.Provider>
-            );
-            getByTestId = res.getByTestId;
-        });
+        render(
+            <Provider store={store}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Query type="mytype" resource="foo">
+                        {() => <Button />}
+                    </Query>
+                </CoreAdminContext>
+            </Provider>
+        );
 
         await waitFor(() => {
-            expect(dispatchSpy).toHaveBeenCalledWith({
+            expect(dispatch).toHaveBeenCalledWith({
                 type: 'CUSTOM_FETCH',
                 payload: undefined,
                 meta: { resource: 'foo' },
             });
         });
-        dispatchSpy.mockClear(); // clear initial fetch
+        dispatch.mockClear(); // clear initial fetch
 
-        const testElement = getByTestId('test');
+        const testElement = screen.getByTestId('test');
         fireEvent.click(testElement);
         await waitFor(() => {
-            expect(dispatchSpy).toHaveBeenCalledWith({
+            expect(dispatch).toHaveBeenCalledWith({
                 type: 'CUSTOM_FETCH',
                 payload: undefined,
                 meta: { resource: 'foo' },
@@ -410,17 +410,21 @@ describe('Query', () => {
     });
 
     it('should allow custom dataProvider methods without resource', () => {
+        const store = createAdminStore({});
+        let dispatch = jest.spyOn(store, 'dispatch');
         const dataProvider = {
             mytype: jest.fn(() => Promise.resolve({ data: { foo: 'bar' } })),
         };
 
         const myPayload = {};
-        const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <Query type="mytype" payload={myPayload}>
-                    {() => <div />}
-                </Query>
-            </DataProviderContext.Provider>
+        render(
+            <Provider store={store}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Query type="mytype" payload={myPayload}>
+                        {() => <div />}
+                    </Query>
+                </CoreAdminContext>
+            </Provider>
         );
         const action = dispatch.mock.calls[0][0];
         expect(action.type).toEqual('CUSTOM_FETCH');

@@ -35,6 +35,7 @@ const englishMessages: TranslationMessages = {
             update: 'Update',
             move_up: 'Move up',
             move_down: 'Move down',
+            open: 'Open',
         },
         boolean: {
             true: 'Yes',

@@ -98,7 +98,11 @@ CreateView.propTypes = {
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
     record: PropTypes.object,
-    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
     resource: PropTypes.string,
     save: PropTypes.func,
     title: PropTypes.node,

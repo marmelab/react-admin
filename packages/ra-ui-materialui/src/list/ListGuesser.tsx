@@ -6,12 +6,14 @@ import {
     getElementsFromRecords,
     InferredElement,
     ListContextProvider,
+    useListContext,
     useResourceContext,
+    Record,
+    ListControllerProps,
 } from 'ra-core';
 
 import { ListView, ListViewProps } from './ListView';
 import { listFieldTypes } from './listFieldTypes';
-import { ListProps } from '../types';
 
 /**
  * List component rendering a <Datagrid> based on the result of the
@@ -33,23 +35,23 @@ import { ListProps } from '../types';
  *     </Admin>
  * );
  */
-export const ListGuesser = (props: ListProps) => {
-    const controllerProps = useListController(props);
+export const ListGuesser = <RecordType extends Record = Record>() => {
+    const controllerProps = useListController<RecordType>();
     return (
         <ListContextProvider value={controllerProps}>
-            <ListViewGuesser {...props} {...controllerProps} />
+            <ListViewGuesser {...controllerProps} />
         </ListContextProvider>
     );
 };
 
 const ListViewGuesser = (props: Omit<ListViewProps, 'children'>) => {
-    const { ids, data } = props;
-    const resource = useResourceContext(props);
+    const { data } = useListContext(props);
+    const resource = useResourceContext();
     const [inferredChild, setInferredChild] = useState(null);
     useEffect(() => {
-        if (ids.length > 0 && data && !inferredChild) {
+        if (data && data.length > 0 && !inferredChild) {
             const inferredElements = getElementsFromRecords(
-                ids.map(id => data[id]),
+                data,
                 listFieldTypes
             );
             const inferredChild = new InferredElement(
@@ -73,7 +75,7 @@ ${inferredChild.getRepresentation()}
                 );
             setInferredChild(inferredChild.getElement());
         }
-    }, [data, ids, inferredChild, resource]);
+    }, [data, inferredChild, resource]);
 
     return <ListView {...props}>{inferredChild}</ListView>;
 };

@@ -74,16 +74,15 @@ export const NewNote = ({
         if (showStatus) {
             data.status = status;
         }
-        update(
-            reference,
-            ((record && record.id) as unknown) as Identifier,
-            {
+        update(reference, {
+            id: ((record && record.id) as unknown) as Identifier,
+            data: {
                 last_seen: date,
                 status,
                 nb_notes: record.nb_notes + 1,
             },
-            record
-        );
+            previousData: record,
+        });
         create(resource, data, {
             onSuccess: () => {
                 setText('');

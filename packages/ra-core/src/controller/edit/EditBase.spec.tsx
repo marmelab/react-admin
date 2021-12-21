@@ -47,7 +47,7 @@ describe('EditBase', () => {
                     <EditBase
                         {...defaultProps}
                         mutationMode="pessimistic"
-                        onSuccess={onSuccess}
+                        mutationOptions={{ onSuccess }}
                     >
                         <Child />
                     </EditBase>
@@ -91,7 +91,7 @@ describe('EditBase', () => {
                     <EditBase
                         {...defaultProps}
                         mutationMode="pessimistic"
-                        onSuccess={onSuccess}
+                        mutationOptions={{ onSuccess }}
                     >
                         <>
                             <SetOnSuccess />
@@ -113,7 +113,7 @@ describe('EditBase', () => {
             update: (_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } }),
         } as unknown) as DataProvider;
-        const onFailure = jest.fn();
+        const onError = jest.fn();
 
         const Child = () => {
             const saveContext = useSaveContext();
@@ -130,7 +130,7 @@ describe('EditBase', () => {
                     <EditBase
                         {...defaultProps}
                         mutationMode="pessimistic"
-                        onFailure={onFailure}
+                        mutationOptions={{ onError }}
                     >
                         <Child />
                     </EditBase>
@@ -138,7 +138,7 @@ describe('EditBase', () => {
             </QueryClientProvider>
         );
 
-        expect(onFailure).toHaveBeenCalledWith({ message: 'test' });
+        expect(onError).toHaveBeenCalledWith({ message: 'test' });
     });
 
     it('should allow to override the onFailure function', () => {
@@ -147,7 +147,7 @@ describe('EditBase', () => {
             update: (_, { id, data, previousData }) =>
                 Promise.resolve({ data: { id, ...previousData, ...data } }),
         } as unknown) as DataProvider;
-        const onFailure = jest.fn();
+        const onError = jest.fn();
         const onFailureOverride = jest.fn();
 
         const SetOnSuccess = () => {
@@ -174,7 +174,7 @@ describe('EditBase', () => {
                     <EditBase
                         {...defaultProps}
                         mutationMode="pessimistic"
-                        onFailure={onFailure}
+                        mutationOptions={{ onError }}
                     >
                         <>
                             <SetOnSuccess />

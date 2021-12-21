@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useMemo } from 'react';
-import RichTextInput from 'ra-input-rich-text';
+import { RichTextInput } from 'ra-input-rich-text';
 import {
     ArrayInput,
     AutocompleteInput,

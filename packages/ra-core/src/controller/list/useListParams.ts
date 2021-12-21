@@ -3,7 +3,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce';
 import pickBy from 'lodash/pickBy';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import queryReducer, {
     SET_FILTER,
@@ -77,7 +77,7 @@ export const useListParams = ({
 }: ListParamsOptions): [Parameters, Modifiers] => {
     const dispatch = useDispatch();
     const location = useLocation();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [localParams, setLocalParams] = useState(defaultParams);
     const params = useSelector(
         (reduxState: ReduxState) =>
@@ -134,16 +134,22 @@ export const useListParams = ({
                     setLocalParams(tempParams.current);
                 } else {
                     // the useEffect above will apply the changes to the params in the redux state
-                    history.push({
-                        search: `?${stringify({
-                            ...tempParams.current,
-                            filter: JSON.stringify(tempParams.current.filter),
-                            displayedFilters: JSON.stringify(
-                                tempParams.current.displayedFilters
-                            ),
-                        })}`,
-                        state: { _scrollToTop: action.type === SET_PAGE },
-                    });
+                    navigate(
+                        {
+                            search: `?${stringify({
+                                ...tempParams.current,
+                                filter: JSON.stringify(
+                                    tempParams.current.filter
+                                ),
+                                displayedFilters: JSON.stringify(
+                                    tempParams.current.displayedFilters
+                                ),
+                            })}`,
+                        },
+                        {
+                            state: { _scrollToTop: action.type === SET_PAGE },
+                        }
+                    );
                 }
                 tempParams.current = undefined;
             }, 0);

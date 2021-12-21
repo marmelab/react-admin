@@ -6,9 +6,9 @@ import ReferenceManyFieldController from './ReferenceManyFieldController';
 import { renderWithRedux } from 'ra-test';
 
 describe('<ReferenceManyFieldController />', () => {
-    it('should set loaded to false when related records are not yet fetched', async () => {
-        const ComponentToTest = ({ loaded }: { loaded?: boolean }) => {
-            return <div>loaded: {loaded.toString()}</div>;
+    it('should set isLoading to true when related records are not yet fetched', async () => {
+        const ComponentToTest = ({ isLoading }: { isLoading?: boolean }) => {
+            return <div>isLoading: {isLoading.toString()}</div>;
         };
 
         const { queryByText } = renderWithRedux(
@@ -40,15 +40,15 @@ describe('<ReferenceManyFieldController />', () => {
             }
         );
 
-        expect(queryByText('loaded: false')).not.toBeNull();
+        expect(queryByText('isLoading: true')).not.toBeNull();
         await waitFor(() => {
-            expect(queryByText('loaded: true')).not.toBeNull();
+            expect(queryByText('isLoading: false')).not.toBeNull();
         });
     });
 
-    it('should set loaded to true when related records have been fetched and there are no results', async () => {
-        const ComponentToTest = ({ loaded }: { loaded?: boolean }) => {
-            return <div>loaded: {loaded.toString()}</div>;
+    it('should set isLoading to false when related records have been fetched and there are no results', async () => {
+        const ComponentToTest = ({ isLoading }: { isLoading?: boolean }) => {
+            return <div>isLoading: {isLoading.toString()}</div>;
         };
 
         const { queryByText } = renderWithRedux(
@@ -86,15 +86,15 @@ describe('<ReferenceManyFieldController />', () => {
             }
         );
 
-        expect(queryByText('loaded: false')).not.toBeNull();
+        expect(queryByText('isLoading: true')).not.toBeNull();
         await waitFor(() => {
-            expect(queryByText('loaded: true')).not.toBeNull();
+            expect(queryByText('isLoading: false')).not.toBeNull();
         });
     });
 
-    it('should set loaded to true when related records have been fetched and there are results', async () => {
-        const ComponentToTest = ({ loaded }: { loaded?: boolean }) => {
-            return <div>loaded: {loaded.toString()}</div>;
+    it('should set isLoading to false when related records have been fetched and there are results', async () => {
+        const ComponentToTest = ({ isLoading }: { isLoading?: boolean }) => {
+            return <div>isLoading: {isLoading.toString()}</div>;
         };
 
         const { queryByText } = renderWithRedux(
@@ -132,9 +132,9 @@ describe('<ReferenceManyFieldController />', () => {
             }
         );
 
-        expect(queryByText('loaded: false')).not.toBeNull();
+        expect(queryByText('isLoading: true')).not.toBeNull();
         await waitFor(() => {
-            expect(queryByText('loaded: true')).not.toBeNull();
+            expect(queryByText('isLoading: false')).not.toBeNull();
         });
     });
 
@@ -194,12 +194,12 @@ describe('<ReferenceManyFieldController />', () => {
         });
     });
 
-    it('should pass data and ids to children function', async () => {
+    it('should pass data to children function', async () => {
         const children = jest.fn().mockReturnValue('children');
-        const data = {
-            1: { id: 1, title: 'hello' },
-            2: { id: 2, title: 'world' },
-        };
+        const data = [
+            { id: 1, title: 'hello' },
+            { id: 2, title: 'world' },
+        ];
         renderWithRedux(
             <ReferenceManyFieldController
                 resource="foo"
@@ -236,7 +236,6 @@ describe('<ReferenceManyFieldController />', () => {
         );
         await waitFor(() => {
             expect(children.mock.calls[0][0].data).toEqual(data);
-            expect(children.mock.calls[0][0].ids).toEqual([1, 2]);
         });
     });
 
@@ -277,11 +276,10 @@ describe('<ReferenceManyFieldController />', () => {
             }
         );
         await waitFor(() => {
-            expect(children.mock.calls[0][0].data).toEqual({
-                'abc-1': { id: 'abc-1', title: 'hello' },
-                'abc-2': { id: 'abc-2', title: 'world' },
-            });
-            expect(children.mock.calls[0][0].ids).toEqual(['abc-1', 'abc-2']);
+            expect(children.mock.calls[0][0].data).toEqual([
+                { id: 'abc-1', title: 'hello' },
+                { id: 'abc-2', title: 'world' },
+            ]);
         });
     });
 
@@ -343,13 +341,13 @@ describe('<ReferenceManyFieldController />', () => {
                 },
             ]);
 
-            expect(children.mock.calls[0][0].data).toEqual({
-                1: {
+            expect(children.mock.calls[0][0].data).toEqual([
+                {
                     post_id: 1,
                     id: 1,
                     body: 'Hello!',
                 },
-            });
+            ]);
         });
     });
 

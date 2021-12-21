@@ -40,14 +40,17 @@ const StyledGrid = styled(Grid)({
 });
 
 const CategoryGrid = () => {
-    const { data, ids } = useListContext<Category>();
-    return ids ? (
+    const { data, isLoading } = useListContext<Category>();
+    if (isLoading) {
+        return null;
+    }
+    return (
         <StyledGrid container spacing={2} className={classes.root}>
-            {ids.map(id => (
-                <Grid key={id} xs={12} sm={6} md={4} lg={3} xl={2} item>
+            {data.map(record => (
+                <Grid key={record.id} xs={12} sm={6} md={4} lg={3} xl={2} item>
                     <Card>
                         <CardMedia
-                            image={`https://marmelab.com/posters/${data[id].name}-1.jpeg`}
+                            image={`https://marmelab.com/posters/${record.name}-1.jpeg`}
                             className={classes.media}
                         />
                         <CardContent className={classes.title}>
@@ -56,23 +59,23 @@ const CategoryGrid = () => {
                                 component="h2"
                                 align="center"
                             >
-                                {inflection.humanize(data[id].name)}
+                                {inflection.humanize(record.name)}
                             </Typography>
                         </CardContent>
                         <CardActions
                             classes={{ spacing: classes.actionSpacer }}
                         >
-                            <LinkToRelatedProducts record={data[id]} />
+                            <LinkToRelatedProducts record={record} />
                             <EditButton
                                 basePath="/categories"
-                                record={data[id]}
+                                record={record}
                             />
                         </CardActions>
                     </Card>
                 </Grid>
             ))}
         </StyledGrid>
-    ) : null;
+    );
 };
 
 const CategoryList = () => (

@@ -6,17 +6,16 @@ import { useSafeSetState, removeEmpty } from '../../util';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../sideEffect';
 import { Record, SortPayload, RecordMap } from '../../types';
-import { ListControllerProps } from '../list';
+import { ListControllerResult } from '../list';
 import usePaginationState from '../usePaginationState';
 import useSelectionState from '../useSelectionState';
 import useSortState from '../useSortState';
 import { useResourceContext } from '../../core';
 
-interface Options {
+export interface UseReferenceManyFieldControllerParams {
     basePath?: string;
     data?: RecordMap;
     filter?: any;
-    ids?: any[];
     loaded?: boolean;
     page?: number;
     perPage?: number;
@@ -67,15 +66,14 @@ const defaultFilter = {};
  * @returns {ReferenceManyProps} The reference many props
  */
 const useReferenceManyFieldController = (
-    props: Options
-): ListControllerProps => {
+    props: UseReferenceManyFieldControllerParams
+): ListControllerResult => {
     const {
         reference,
         record,
         target,
         filter = defaultFilter,
         source,
-        basePath,
         page: initialPage,
         perPage: initialPerPage,
         sort: initialSort = { field: 'id', order: 'DESC' },
@@ -180,34 +178,31 @@ const useReferenceManyFieldController = (
                     typeof error === 'string'
                         ? error
                         : error.message || 'ra.notification.http_error',
-                    'warning',
                     {
-                        _:
-                            typeof error === 'string'
-                                ? error
-                                : error && error.message
-                                ? error.message
-                                : undefined,
+                        type: 'warning',
+                        messageArgs: {
+                            _:
+                                typeof error === 'string'
+                                    ? error
+                                    : error && error.message
+                                    ? error.message
+                                    : undefined,
+                        },
                     }
                 ),
         }
     );
 
     return {
-        basePath: basePath
-            ? basePath.replace(resource, reference)
-            : `/${reference}`,
         currentSort: sort,
-        data,
+        data: ids.map(id => data[id]),
         defaultTitle: null,
         displayedFilters,
         error,
         filterValues,
-        hasCreate: false,
         hideFilter,
-        ids,
-        loaded,
-        loading,
+        isFetching: loading,
+        isLoading: !loaded,
         onSelect,
         onToggleItem,
         onUnselectItems,

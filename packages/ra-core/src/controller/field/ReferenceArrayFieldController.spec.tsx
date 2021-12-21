@@ -7,7 +7,7 @@ import { renderWithRedux } from 'ra-test';
 import { waitFor } from '@testing-library/react';
 
 describe('<ReferenceArrayFieldController />', () => {
-    it('should set the loaded prop to false when related records are not yet fetched', () => {
+    it('should set the isLoading prop to true when related records are not yet fetched', () => {
         const children = jest.fn().mockReturnValue('child');
 
         renderWithRedux(
@@ -30,17 +30,15 @@ describe('<ReferenceArrayFieldController />', () => {
             }
         );
         expect(children.mock.calls[0][0]).toMatchObject({
-            basePath: '/bar',
             currentSort: { field: 'id', order: 'ASC' },
-            loaded: false,
-            loading: true,
-            data: {},
-            ids: [1, 2],
+            isFetching: true,
+            isLoading: true,
+            data: [undefined, undefined],
             error: null,
         });
     });
 
-    it('should set the loaded prop to false when at least one related record is not found', () => {
+    it('should set the isLoading prop to true when at least one related record is not found', () => {
         const children = jest.fn().mockReturnValue('child');
 
         renderWithRedux(
@@ -69,17 +67,16 @@ describe('<ReferenceArrayFieldController />', () => {
         );
 
         expect(children.mock.calls[0][0]).toMatchObject({
-            basePath: '/bar',
             currentSort: { field: 'id', order: 'ASC' },
-            loaded: false,
-            loading: true,
-            data: {
-                2: {
+            isFetching: true,
+            isLoading: true,
+            data: [
+                undefined,
+                {
                     id: 2,
                     title: 'hello',
                 },
-            },
-            ids: [1, 2],
+            ],
             error: null,
         });
     });
@@ -109,15 +106,13 @@ describe('<ReferenceArrayFieldController />', () => {
             }
         );
         expect(children.mock.calls[0][0]).toMatchObject({
-            basePath: '/bar',
             currentSort: { field: 'id', order: 'ASC' },
-            loaded: true,
-            loading: true,
-            data: {
-                1: { id: 1, title: 'hello' },
-                2: { id: 2, title: 'world' },
-            },
-            ids: [1, 2],
+            isFetching: true,
+            isLoading: false,
+            data: [
+                { id: 1, title: 'hello' },
+                { id: 2, title: 'world' },
+            ],
             error: null,
         });
     });
@@ -147,15 +142,13 @@ describe('<ReferenceArrayFieldController />', () => {
             }
         );
         expect(children.mock.calls[0][0]).toMatchObject({
-            basePath: '/bar',
             currentSort: { field: 'id', order: 'ASC' },
-            loaded: true,
-            loading: true,
-            data: {
-                'abc-1': { id: 'abc-1', title: 'hello' },
-                'abc-2': { id: 'abc-2', title: 'world' },
-            },
-            ids: ['abc-1', 'abc-2'],
+            isFetching: true,
+            isLoading: false,
+            data: [
+                { id: 'abc-1', title: 'hello' },
+                { id: 'abc-2', title: 'world' },
+            ],
             error: null,
         });
     });
@@ -228,14 +221,10 @@ describe('<ReferenceArrayFieldController />', () => {
         await waitFor(() => {
             expect(children).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    basePath: '/bar',
                     currentSort: { field: 'id', order: 'ASC' },
-                    loaded: true,
-                    loading: true,
-                    data: {
-                        2: { id: 2, title: 'world' },
-                    },
-                    ids: [2],
+                    isFetching: false,
+                    isLoading: false,
+                    data: [{ id: 2, title: 'world' }],
                     error: null,
                 })
             );
@@ -272,16 +261,14 @@ describe('<ReferenceArrayFieldController />', () => {
         await waitFor(() => {
             expect(children).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    basePath: '/bar',
                     currentSort: { field: 'id', order: 'ASC' },
-                    loaded: true,
-                    loading: true,
-                    data: {
-                        1: { id: 1, items: ['one', 'two'] },
-                        3: { id: 3, items: 'four' },
-                        4: { id: 4, items: ['five'] },
-                    },
-                    ids: [1, 3, 4],
+                    isFetching: false,
+                    isLoading: false,
+                    data: [
+                        { id: 1, items: ['one', 'two'] },
+                        { id: 3, items: 'four' },
+                        { id: 4, items: ['five'] },
+                    ],
                     error: null,
                 })
             );

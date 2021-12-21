@@ -8,11 +8,10 @@ import { ListControllerResult } from './useListController';
  * List components do in react-admin (e.g. <Datagrid>, <FilterForm>, <Pagination>).
  *
  * @typedef {Object} ListControllerProps
- * @prop {Object}   data an id-based dictionary of the list data, e.g. { 123: { id: 123, title: 'hello world' }, 456: { ... } }
- * @prop {Array}    ids an array listing the ids of the records in the list, e.g. [123, 456, ...]
+ * @prop {Array}    data an array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }]
  * @prop {integer}  total the total number of results for the current filters, excluding pagination. Useful to build the pagination controls. e.g. 23
- * @prop {boolean}  loaded boolean that is false until the data is available
- * @prop {boolean}  loading boolean that is true on mount, and false once the data was fetched
+ * @prop {boolean}  isFetching boolean that is true on mount, and false once the data was fetched
+ * @prop {boolean}  isLoading boolean that is false until the data is available
  * @prop {integer}  page the current page. Starts at 1
  * @prop {Function} setPage a callback to change the page, e.g. setPage(3)
  * @prop {integer}  perPage the number of results per page. Defaults to 25
@@ -28,7 +27,6 @@ import { ListControllerResult } from './useListController';
  * @prop {Function} onSelect callback to change the list of selected rows, e.g. onSelect([456, 789])
  * @prop {Function} onToggleItem callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
  * @prop {Function} onUnselectItems callback to clear the selection, e.g. onUnselectItems();
- * @prop {string}   basePath deduced from the location, useful for action buttons
  * @prop {string}   defaultTitle the translated title based on the resource, e.g. 'Posts'
  * @prop {string}   resource the resource name, deduced from the location. e.g. 'posts'
  * @prop {Function} refetch a function for triggering a refetch of the list data
@@ -60,11 +58,9 @@ export const ListContext = createContext<ListControllerResult>({
     defaultTitle: null,
     displayedFilters: null,
     filterValues: null,
-    hasCreate: null,
     hideFilter: null,
-    ids: null,
-    loaded: null,
-    loading: null,
+    isFetching: null,
+    isLoading: null,
     onSelect: null,
     onToggleItem: null,
     onUnselectItems: null,
@@ -72,7 +68,7 @@ export const ListContext = createContext<ListControllerResult>({
     perPage: null,
     refetch: null,
     resource: null,
-    selectedIds: null,
+    selectedIds: undefined,
     setFilters: null,
     setPage: null,
     setPerPage: null,

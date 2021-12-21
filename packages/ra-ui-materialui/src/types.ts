@@ -2,67 +2,51 @@ import { ReactElement, ReactNode, ElementType } from 'react';
 import { SxProps } from '@mui/system';
 import {
     Identifier,
-    Exporter,
-    SortPayload,
-    FilterPayload,
     Record as RaRecord,
-    ResourceComponentProps,
-    ResourceComponentPropsWithId,
     MutationMode,
     OnSuccess,
     OnFailure,
+    TransformData,
+    UpdateParams,
 } from 'ra-core';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
-export interface ListProps extends ResourceComponentProps {
-    actions?: ReactElement | false;
-    aside?: ReactElement;
-    bulkActionButtons?: ReactElement | false;
-    classes?: any;
-    className?: string;
-    component?: ElementType;
-    empty?: ReactElement | false;
-    exporter?: Exporter | false;
-    filter?: FilterPayload;
-    filterDefaultValues?: object;
-    filters?: ReactElement | ReactElement[];
-    pagination?: ReactElement | false;
-    perPage?: number;
-    sort?: SortPayload;
-    syncWithLocation?: boolean;
-    title?: string | ReactElement;
-}
-
-export interface EditProps<RecordType extends RaRecord = RaRecord>
-    extends ResourceComponentPropsWithId {
+export interface EditProps<RecordType extends RaRecord = RaRecord> {
     actions?: ReactElement | false;
     aside?: ReactElement;
     classes?: any;
     className?: string;
     component?: ElementType;
+    id?: Identifier;
     mutationMode?: MutationMode;
-    onSuccess?: OnSuccess;
-    onFailure?: OnFailure;
     queryOptions?: UseQueryOptions<RecordType>;
-    transform?: (data: RaRecord) => RaRecord | Promise<RaRecord>;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        unknown,
+        UpdateParams<RecordType>
+    >;
+    resource?: string;
+    transform?: TransformData;
     title?: string | ReactElement;
 }
 
-export interface CreateProps extends ResourceComponentProps {
+export interface CreateProps<RecordType extends RaRecord = RaRecord> {
     actions?: ReactElement | false;
     aside?: ReactElement;
     classes?: any;
     className?: string;
     component?: ElementType;
-    record?: Partial<RaRecord>;
+    record?: Partial<RecordType>;
+    resource?: string;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
-    transform?: (data: RaRecord) => RaRecord | Promise<RaRecord>;
+    transform?: TransformData;
     title?: string | ReactElement;
 }
 
 export interface ShowProps<RecordType extends RaRecord = RaRecord> {
     actions?: ReactElement | false;
+    aside?: ReactElement;
     children: ReactNode;
     className?: string;
     component?: ElementType;

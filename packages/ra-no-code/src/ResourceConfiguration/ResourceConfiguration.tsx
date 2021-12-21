@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+import { styled } from '@mui/material/styles';
 import {
     Avatar,
     Card,
@@ -16,8 +17,9 @@ import {
     FormWithRedirect,
     RecordContextProvider,
     SaveContextProvider,
-} from 'ra-core';
-import { SaveButton, TextInput } from 'ra-ui-materialui';
+    SaveButton,
+    TextInput,
+} from 'react-admin';
 import {
     ResourceConfiguration,
     FieldConfiguration,
@@ -63,11 +65,8 @@ const StyledCard = styled(Card)(({ theme }) => ({
     },
 }));
 
-export const ResourceConfigurationPage = ({
-    resource,
-}: {
-    resource: string;
-}) => {
+export const ResourceConfigurationPage = () => {
+    const { resource } = useParams<'resource'>();
     const [resourceConfiguration, actions] = useResourceConfiguration(resource);
     const [activeField, setActiveField] = useState<FieldConfiguration>();
 

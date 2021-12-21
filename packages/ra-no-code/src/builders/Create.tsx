@@ -1,19 +1,18 @@
 import React from 'react';
-import { useResourceContext } from 'ra-core';
 import {
     Create as RaCreate,
-    CreateProps,
     SimpleForm,
     SimpleFormProps,
-} from 'ra-ui-materialui';
+    useResourceContext,
+} from 'react-admin';
 import { getInputFromFieldDefinition } from './getInputFromFieldDefinition';
 import {
     useResourceConfiguration,
     useResourcesConfiguration,
 } from '../ResourceConfiguration';
 
-export const Create = (props: CreateProps) => (
-    <RaCreate {...props}>
+export const Create = () => (
+    <RaCreate>
         <CreateForm />
     </RaCreate>
 );

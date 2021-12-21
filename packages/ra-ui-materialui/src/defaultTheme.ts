@@ -2,6 +2,9 @@ import { ThemeOptions } from '@mui/material';
 
 export const defaultTheme = {
     palette: {
+        background: {
+            default: '#fafafb',
+        },
         secondary: {
             light: '#6ec6ff',
             main: '#2196f3',

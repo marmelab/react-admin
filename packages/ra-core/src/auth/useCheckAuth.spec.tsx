@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import expect from 'expect';
 import { render, waitFor } from '@testing-library/react';
 
-import useCheckAuth from './useCheckAuth';
+import { useCheckAuth } from './useCheckAuth';
 import AuthContext from './AuthContext';
 import useLogout from './useLogout';
 import useNotify from '../sideEffect/useNotify';

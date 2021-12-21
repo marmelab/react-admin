@@ -55,7 +55,7 @@ const Root = styled('div')(({ theme }) => ({
     },
 }));
 
-interface Props extends EditProps {
+interface Props extends EditProps<Review> {
     onCancel: () => void;
 }
 
@@ -98,7 +98,7 @@ const ReviewEdit = ({ onCancel, ...props }: Props) => {
                     <StarRatingField formClassName={classes.inlineField} />
                     <TextInput
                         source="comment"
-                        rowsMax={15}
+                        rowsmax={15}
                         multiline
                         fullWidth
                     />

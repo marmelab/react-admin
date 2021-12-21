@@ -26,7 +26,7 @@ import {
  * };
  *
  * const MyListView = () => {
- *     const { data, ids, filterValues, setFilters } = useListContext();
+ *     const { data, filterValues, setFilters } = useListContext();
  *     // or, to rerender only when filters change but not data
  *     const { filterValues, setFilters } = useListFilterContext();
  * }

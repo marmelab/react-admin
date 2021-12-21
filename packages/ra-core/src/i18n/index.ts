@@ -1,5 +1,4 @@
 import translate from './translate';
-import { TranslationContext } from './TranslationContext';
 import TranslationProvider, {
     TranslationProviderProps,
 } from './TranslationProvider';
@@ -14,7 +13,6 @@ const withTranslate = translate;
 export {
     translate, // deprecated
     withTranslate, // deprecated
-    TranslationContext,
     TranslationProvider,
     TestTranslationProvider,
     useLocale,

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import inflection from 'inflection';
 import { Card, CardContent } from '@mui/material';
 import LocalOfferIcon from '@mui/icons-material/LocalOfferOutlined';
@@ -14,36 +13,26 @@ import {
 
 import { Category } from '../types';
 
-const PREFIX = 'Aside';
-
-const classes = {
-    root: `${PREFIX}-root`,
-};
-
-const StyledCard = styled(Card)(({ theme }) => ({
-    [`&.${classes.root}`]: {
-        [theme.breakpoints.up('sm')]: {
-            width: '15em',
-            marginRight: '1em',
-            overflow: 'initial',
-        },
-        [theme.breakpoints.down('md')]: {
-            display: 'none',
-        },
-    },
-}));
-
 const Aside = () => {
-    const { data, ids } = useGetList<Category>(
-        'categories',
-        { page: 1, perPage: 100 },
-        { field: 'name', order: 'ASC' },
-        {}
-    );
+    const { data } = useGetList<Category>('categories', {
+        pagination: { page: 1, perPage: 100 },
+        sort: { field: 'name', order: 'ASC' },
+    });
 
     return (
-        <StyledCard className={classes.root}>
-            <CardContent>
+        <Card
+            sx={{
+                display: {
+                    xs: 'none',
+                    md: 'block',
+                },
+                order: -1,
+                width: '15em',
+                mr: 2,
+                alignSelf: 'flex-start',
+            }}
+        >
+            <CardContent sx={{ pt: 1 }}>
                 <FilterLiveSearch />
 
                 <FilterList
@@ -126,18 +115,17 @@ const Aside = () => {
                     label="resources.products.filters.categories"
                     icon={<LocalOfferIcon />}
                 >
-                    {ids &&
-                        data &&
-                        ids.map((id: any) => (
+                    {data &&
+                        data.map((record: any) => (
                             <FilterListItem
-                                label={inflection.humanize(data[id].name)}
-                                key={data[id].id}
-                                value={{ category_id: data[id].id }}
+                                label={inflection.humanize(record.name)}
+                                key={record.id}
+                                value={{ category_id: record.id }}
                             />
                         ))}
                 </FilterList>
             </CardContent>
-        </StyledCard>
+        </Card>
     );
 };
 

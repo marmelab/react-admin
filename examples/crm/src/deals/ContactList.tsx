@@ -30,19 +30,19 @@ const Root = styled('ul')({
 });
 
 export const ContactList = () => {
-    const { ids, data, loaded } = useListContext();
+    const { data, isLoading } = useListContext();
 
-    if (!loaded) return <div style={{ height: '2em' }} />;
+    if (isLoading) return <div style={{ height: '2em' }} />;
     return (
         <Root className={classes.ul}>
-            {ids.map(id => (
-                <li key={id} className={classes.li}>
+            {data.map(contact => (
+                <li key={contact.id} className={classes.li}>
                     <Link
                         component={RouterLink}
-                        to={`/contacts/${id}`}
+                        to={`/contacts/${contact.id}`}
                         variant="subtitle1"
                     >
-                        {data[id].first_name} {data[id].last_name}
+                        {contact.first_name} {contact.last_name}
                     </Link>
                 </li>
             ))}

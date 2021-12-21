@@ -1,16 +1,10 @@
 import { useCallback } from 'react';
 
-import useGetList from '../../dataProvider/useGetList';
+import { useGetList } from '../../dataProvider/useGetList';
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
-import {
-    PaginationPayload,
-    Record,
-    RecordMap,
-    Identifier,
-    SortPayload,
-} from '../../types';
-import { ListControllerProps } from '../list';
+import { PaginationPayload, Record, SortPayload } from '../../types';
+import { ListControllerResult } from '../list';
 import useReference from '../useReference';
 import usePaginationState from '../usePaginationState';
 import { useSortState } from '..';
@@ -65,7 +59,6 @@ export const useReferenceInputController = (
     props: Option
 ): ReferenceInputValue => {
     const {
-        basePath,
         input,
         page: initialPage = 1,
         perPage: initialPerPage = 25,
@@ -117,17 +110,17 @@ export const useReferenceInputController = (
 
     // fetch possible values
     const {
-        ids: possibleValuesIds,
-        data: possibleValuesData,
+        data: possibleValuesData = [],
         total: possibleValuesTotal,
-        loaded: possibleValuesLoaded,
-        loading: possibleValuesLoading,
+        isFetching: possibleValuesFetching,
+        isLoading: possibleValuesLoading,
         error: possibleValuesError,
         refetch: refetchGetList,
-    } = useGetList(reference, pagination, sort, filterValues, {
-        action: 'CUSTOM_QUERY',
-        enabled: enableGetChoices ? enableGetChoices(filterValues) : true,
-    });
+    } = useGetList(
+        reference,
+        { pagination, sort, filter: filterValues },
+        { enabled: enableGetChoices ? enableGetChoices(filterValues) : true }
+    );
 
     // fetch current value
     const {
@@ -140,25 +133,23 @@ export const useReferenceInputController = (
         id: input.value,
         reference,
     });
-
     // add current value to possible sources
-    let finalIds: Identifier[],
-        finalData: RecordMap<Record>,
-        finalTotal: number;
-    if (!referenceRecord || possibleValuesIds.includes(input.value)) {
-        finalIds = possibleValuesIds;
+    let finalData: Record[], finalTotal: number;
+    if (
+        !referenceRecord ||
+        possibleValuesData.find(record => record.id === input.value)
+    ) {
         finalData = possibleValuesData;
         finalTotal = possibleValuesTotal;
     } else {
-        finalIds = [input.value, ...possibleValuesIds];
-        finalData = { [input.value]: referenceRecord, ...possibleValuesData };
+        finalData = [referenceRecord, ...possibleValuesData];
         finalTotal = possibleValuesTotal + 1;
     }
 
     // overall status
     const dataStatus = getDataStatus({
         input,
-        matchingReferences: Object.keys(finalData).map(id => finalData[id]),
+        matchingReferences: finalData,
         referenceRecord,
         translate,
     });
@@ -171,14 +162,11 @@ export const useReferenceInputController = (
     return {
         // should match the ListContext shape
         possibleValues: {
-            basePath,
             data: finalData,
-            ids: finalIds,
             total: finalTotal,
             error: possibleValuesError,
-            loaded: possibleValuesLoaded,
-            loading: possibleValuesLoading,
-            hasCreate: false,
+            isFetching: possibleValuesFetching,
+            isLoading: possibleValuesLoading,
             page,
             setPage,
             perPage,
@@ -209,12 +197,12 @@ export const useReferenceInputController = (
             loading: dataStatus.waiting,
             warning: dataStatus.warning,
         },
-        choices: finalIds.map(id => finalData[id]),
+        choices: finalData,
         // kept for backwards compatibility
         // @deprecated to be removed in 4.0
         error: dataStatus.error,
-        loading: possibleValuesLoading || referenceLoading,
-        loaded: possibleValuesLoaded && referenceLoaded,
+        isFetching: possibleValuesFetching && !referenceLoaded,
+        isLoading: possibleValuesLoading || referenceLoading,
         filter: filterValues,
         refetch,
         setFilter,
@@ -230,7 +218,7 @@ const hideFilter = () => {};
 const showFilter = () => {};
 
 export interface ReferenceInputValue {
-    possibleValues: ListControllerProps;
+    possibleValues: ListControllerResult;
     referenceRecord: {
         data?: Record;
         loaded: boolean;
@@ -245,8 +233,8 @@ export interface ReferenceInputValue {
     };
     choices: Record[];
     error?: string;
-    loaded: boolean;
-    loading: boolean;
+    isFetching: boolean;
+    isLoading: boolean;
     pagination: PaginationPayload;
     setFilter: (filter: string) => void;
     filter: any;

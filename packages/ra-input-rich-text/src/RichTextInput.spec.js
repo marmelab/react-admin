@@ -3,7 +3,7 @@ import debounce from 'lodash/debounce';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import { Form } from 'react-final-form';
 
-import RichTextInput from './index';
+import { RichTextInput } from './RichTextInput';
 
 let container;
 

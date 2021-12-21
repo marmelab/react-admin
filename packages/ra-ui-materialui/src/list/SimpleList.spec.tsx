@@ -1,34 +1,22 @@
 import * as React from 'react';
-import { render, waitFor, within } from '@testing-library/react';
-import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
+import { screen, waitFor, within } from '@testing-library/react';
 import { ListContext, ResourceContextProvider } from 'ra-core';
+import { renderWithRedux } from 'ra-test';
 
 import { SimpleList } from './SimpleList';
 import { TextField } from '../field';
 
-const renderWithRouter = children => {
-    const history = createMemoryHistory();
-
-    return {
-        history,
-        ...render(<Router history={history}>{children}</Router>),
-    };
-};
-
 describe('<SimpleList />', () => {
     it('should render a list of items which provide a record context', async () => {
-        const { getByText } = renderWithRouter(
+        renderWithRedux(
             <ResourceContextProvider value="posts">
                 <ListContext.Provider
                     value={{
-                        loaded: true,
-                        loading: false,
-                        ids: [1, 2],
-                        data: {
-                            1: { id: 1, title: 'foo' },
-                            2: { id: 2, title: 'bar' },
-                        },
+                        isLoading: false,
+                        data: [
+                            { id: 1, title: 'foo' },
+                            { id: 2, title: 'bar' },
+                        ],
                         total: 2,
                         resource: 'posts',
                     }}
@@ -43,10 +31,10 @@ describe('<SimpleList />', () => {
 
         await waitFor(() => {
             expect(
-                within(getByText('1').closest('li')).queryByText('foo')
+                within(screen.getByText('1').closest('li')).queryByText('foo')
             ).not.toBeNull();
             expect(
-                within(getByText('2').closest('li')).queryByText('bar')
+                within(screen.getByText('2').closest('li')).queryByText('bar')
             ).not.toBeNull();
         });
     });
@@ -73,17 +61,15 @@ describe('<SimpleList />', () => {
     ])(
         'should render %s links for each item',
         async (_, link, expectedUrls) => {
-            const { getByText } = renderWithRouter(
+            renderWithRedux(
                 <ResourceContextProvider value="posts">
                     <ListContext.Provider
                         value={{
-                            loaded: true,
-                            loading: false,
-                            ids: [1, 2],
-                            data: {
-                                1: { id: 1, title: 'foo' },
-                                2: { id: 2, title: 'bar' },
-                            },
+                            isLoading: false,
+                            data: [
+                                { id: 1, title: 'foo' },
+                                { id: 2, title: 'bar' },
+                            ],
                             total: 2,
                             resource: 'posts',
                         }}
@@ -98,10 +84,10 @@ describe('<SimpleList />', () => {
             );
 
             await waitFor(() => {
-                expect(getByText('1').closest('a').href).toEqual(
+                expect(screen.getByText('1').closest('a').href).toEqual(
                     expectedUrls[0]
                 );
-                expect(getByText('2').closest('a').href).toEqual(
+                expect(screen.getByText('2').closest('a').href).toEqual(
                     expectedUrls[1]
                 );
             });
@@ -109,17 +95,15 @@ describe('<SimpleList />', () => {
     );
 
     it('should not render links if linkType is false', async () => {
-        const { getByText } = renderWithRouter(
+        renderWithRedux(
             <ResourceContextProvider value="posts">
                 <ListContext.Provider
                     value={{
-                        loaded: true,
-                        loading: false,
-                        ids: [1, 2],
-                        data: {
-                            1: { id: 1, title: 'foo' },
-                            2: { id: 2, title: 'bar' },
-                        },
+                        isLoading: false,
+                        data: [
+                            { id: 1, title: 'foo' },
+                            { id: 2, title: 'bar' },
+                        ],
                         total: 2,
                         resource: 'posts',
                     }}
@@ -134,8 +118,8 @@ describe('<SimpleList />', () => {
         );
 
         await waitFor(() => {
-            expect(getByText('1').closest('a')).toBeNull();
-            expect(getByText('2').closest('a')).toBeNull();
+            expect(screen.getByText('1').closest('a')).toBeNull();
+            expect(screen.getByText('2').closest('a')).toBeNull();
         });
     });
 });

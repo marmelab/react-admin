@@ -44,12 +44,12 @@ export const CompanyShow = () => (
 );
 
 const CompanyShowContent = () => {
-    const { record, loaded } = useShowContext<Company>();
+    const { record, isLoading } = useShowContext<Company>();
     const [value, setValue] = useState(0);
     const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
     };
-    if (!loaded || !record) return null;
+    if (isLoading || !record) return null;
     return (
         <Box mt={2} display="flex">
             <Box flex="1">
@@ -145,52 +145,49 @@ const TabPanel = (props: TabPanelProps) => {
 };
 
 const ContactsIterator = () => {
-    const { data, ids, loaded } = useListContext<Contact>();
+    const { data, isLoading } = useListContext<Contact>();
     const record = useRecordContext();
+    if (isLoading) return null;
 
     const now = Date.now();
-    if (!loaded) return null;
     return (
         <Box>
             <List>
-                {ids.map(id => {
-                    const contact = data[id];
-                    return (
-                        <ListItem
-                            button
-                            key={id}
-                            component={RouterLink}
-                            to={`/contacts/${id}/show`}
-                        >
-                            <ListItemAvatar>
-                                <Avatar record={contact} />
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={`${contact.first_name} ${contact.last_name}`}
-                                secondary={
-                                    <>
-                                        {contact.title}{' '}
-                                        <TagsList record={contact} />
-                                    </>
-                                }
-                            />
-                            <ListItemSecondaryAction>
-                                <Typography
-                                    variant="body2"
-                                    color="textSecondary"
-                                    component="span"
-                                >
-                                    last activity{' '}
-                                    {formatDistance(
-                                        new Date(contact.last_seen),
-                                        now
-                                    )}{' '}
-                                    ago <Status status={contact.status} />
-                                </Typography>
-                            </ListItemSecondaryAction>
-                        </ListItem>
-                    );
-                })}
+                {data.map(contact => (
+                    <ListItem
+                        button
+                        key={contact.id}
+                        component={RouterLink}
+                        to={`/contacts/${contact.id}/show`}
+                    >
+                        <ListItemAvatar>
+                            <Avatar record={contact} />
+                        </ListItemAvatar>
+                        <ListItemText
+                            primary={`${contact.first_name} ${contact.last_name}`}
+                            secondary={
+                                <>
+                                    {contact.title}{' '}
+                                    <TagsList record={contact} />
+                                </>
+                            }
+                        />
+                        <ListItemSecondaryAction>
+                            <Typography
+                                variant="body2"
+                                color="textSecondary"
+                                component="span"
+                            >
+                                last activity{' '}
+                                {formatDistance(
+                                    new Date(contact.last_seen),
+                                    now
+                                )}{' '}
+                                ago <Status status={contact.status} />
+                            </Typography>
+                        </ListItemSecondaryAction>
+                    </ListItem>
+                ))}
             </List>
             <Box textAlign="center" mt={1}>
                 <CreateRelatedContactButton record={record} />
@@ -202,10 +199,8 @@ const ContactsIterator = () => {
 const CreateRelatedContactButton = ({ record }: any) => (
     <Button
         component={RouterLink}
-        to={{
-            pathname: '/contacts/create',
-            state: { record: { company_id: record.id } },
-        }}
+        to="/contacts/create"
+        state={{ record: { company_id: record.id } }}
         color="primary"
         variant="contained"
         size="small"
@@ -216,56 +211,50 @@ const CreateRelatedContactButton = ({ record }: any) => (
 );
 
 const DealsIterator = () => {
-    const { data, ids, loaded } = useListContext<Deal>();
+    const { data, isLoading } = useListContext<Deal>();
+    if (isLoading) return null;
 
     const now = Date.now();
-    if (!loaded) return null;
     return (
         <Box>
             <List>
-                {ids.map(id => {
-                    const deal = data[id];
-                    return (
-                        <ListItem
-                            button
-                            key={id}
-                            component={RouterLink}
-                            to={`/deals/${id}/show`}
-                        >
-                            <ListItemText
-                                primary={deal.name}
-                                secondary={
-                                    <>
-                                        {/* @ts-ignore */}
-                                        {stageNames[deal.stage]},{' '}
-                                        {deal.amount.toLocaleString('en-US', {
-                                            notation: 'compact',
-                                            style: 'currency',
-                                            currency: 'USD',
-                                            currencyDisplay: 'narrowSymbol',
-                                            minimumSignificantDigits: 3,
-                                        })}
-                                        , {deal.type}
-                                    </>
-                                }
-                            />
-                            <ListItemSecondaryAction>
-                                <Typography
-                                    variant="body2"
-                                    color="textSecondary"
-                                    component="span"
-                                >
-                                    last activity{' '}
-                                    {formatDistance(
-                                        new Date(deal.updated_at),
-                                        now
-                                    )}{' '}
-                                    ago{' '}
-                                </Typography>
-                            </ListItemSecondaryAction>
-                        </ListItem>
-                    );
-                })}
+                {data.map(deal => (
+                    <ListItem
+                        button
+                        key={deal.id}
+                        component={RouterLink}
+                        to={`/deals/${deal.id}/show`}
+                    >
+                        <ListItemText
+                            primary={deal.name}
+                            secondary={
+                                <>
+                                    {/* @ts-ignore */}
+                                    {stageNames[deal.stage]},{' '}
+                                    {deal.amount.toLocaleString('en-US', {
+                                        notation: 'compact',
+                                        style: 'currency',
+                                        currency: 'USD',
+                                        currencyDisplay: 'narrowSymbol',
+                                        minimumSignificantDigits: 3,
+                                    })}
+                                    , {deal.type}
+                                </>
+                            }
+                        />
+                        <ListItemSecondaryAction>
+                            <Typography
+                                variant="body2"
+                                color="textSecondary"
+                                component="span"
+                            >
+                                last activity{' '}
+                                {formatDistance(new Date(deal.updated_at), now)}{' '}
+                                ago{' '}
+                            </Typography>
+                        </ListItemSecondaryAction>
+                    </ListItem>
+                ))}
             </List>
         </Box>
     );

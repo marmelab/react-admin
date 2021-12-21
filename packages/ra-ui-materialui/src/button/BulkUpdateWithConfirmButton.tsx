@@ -5,6 +5,7 @@ import ActionUpdate from '@mui/icons-material/Update';
 import inflection from 'inflection';
 import { alpha, styled } from '@mui/material/styles';
 import {
+    useListContext,
     useTranslate,
     useUpdateMany,
     useRefresh,
@@ -28,6 +29,7 @@ export const BulkUpdateWithConfirmButton = (
     const unselectAll = useUnselectAll();
     const resource = useResourceContext(props);
     const [isOpen, setOpen] = useState(false);
+    const { selectedIds } = useListContext(props);
 
     const {
         basePath,
@@ -38,11 +40,11 @@ export const BulkUpdateWithConfirmButton = (
         label = 'ra.action.update',
         mutationMode = 'pessimistic',
         onClick,
-        selectedIds,
         onSuccess = () => {
             refresh();
-            notify('ra.notification.updated', 'info', {
-                smart_count: selectedIds.length,
+            notify('ra.notification.updated', {
+                type: 'info',
+                messageArgs: { smart_count: selectedIds.length },
             });
             unselectAll(resource);
         },
@@ -51,14 +53,16 @@ export const BulkUpdateWithConfirmButton = (
                 typeof error === 'string'
                     ? error
                     : error.message || 'ra.notification.http_error',
-                'warning',
                 {
-                    _:
-                        typeof error === 'string'
-                            ? error
-                            : error && error.message
-                            ? error.message
-                            : undefined,
+                    type: 'warning',
+                    messageArgs: {
+                        _:
+                            typeof error === 'string'
+                                ? error
+                                : error && error.message
+                                ? error.message
+                                : undefined,
+                    },
                 }
             );
             setOpen(false);

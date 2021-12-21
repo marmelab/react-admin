@@ -24,40 +24,44 @@ const initialDeals: DealsByColumn = stages.reduce(
     {}
 );
 
-const getDealsByColumn = (
-    ids: Identifier[],
-    data: RecordMap<Deal>
-): DealsByColumn => {
+const getDealsByColumn = (data: Deal[]): DealsByColumn => {
     // group deals by column
-    const columns = ids.reduce(
-        (acc, id) => {
-            acc[data[id].stage].push(id);
+    const columns = data.reduce(
+        (acc, record) => {
+            acc[record.stage].push(record);
             return acc;
         },
         stages.reduce((obj, stage) => ({ ...obj, [stage]: [] }), {} as any)
     );
     // order each column by index
     stages.forEach(stage => {
-        columns[stage] = columns[stage].sort(
-            (a: Identifier, b: Identifier) => data[a].index - data[b].index
-        );
+        columns[stage] = columns[stage]
+            .sort(
+                (recordA: Deal, recordB: Deal) => recordA.index - recordB.index
+            )
+            .map((deal: Deal) => deal.id);
     });
     return columns;
 };
 
+const indexById = (data: Deal[]): RecordMap<Deal> =>
+    data.reduce((obj, record) => ({ ...obj, [record.id]: record }), {});
+
 export const DealListContent = () => {
     const {
-        data,
-        ids,
-        loaded,
+        data: unorderedDeals,
+        isLoading,
         page,
         perPage,
         currentSort,
         filterValues,
     } = useListContext<Deal>();
 
+    const [data, setData] = useState<RecordMap<Deal>>(
+        isLoading ? {} : indexById(unorderedDeals)
+    );
     const [deals, setDeals] = useState<DealsByColumn>(
-        loaded ? getDealsByColumn(ids, data) : initialDeals
+        isLoading ? initialDeals : getDealsByColumn(unorderedDeals)
     );
     // we use the raw dataProvider to avoid too many updates to the Redux store after updates (which would create junk)
     const dataProvider = useContext(DataProviderContext);
@@ -75,15 +79,16 @@ export const DealListContent = () => {
 
     // update deals by columns when the dataProvider response updates
     useEffect(() => {
-        if (!loaded) return;
-        const newDeals = getDealsByColumn(ids, data);
+        if (isLoading) return;
+        const newDeals = getDealsByColumn(unorderedDeals);
         if (isEqual(deals, newDeals)) {
             return;
         }
         setDeals(newDeals);
-    }, [data, ids, loaded]); // eslint-disable-line react-hooks/exhaustive-deps
+        setData(indexById(unorderedDeals));
+    }, [unorderedDeals, isLoading]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    if (!loaded) return null;
+    if (isLoading) return null;
 
     const onDragEnd: OnDragEndResponder = async result => {
         const { destination, source, draggableId } = result;

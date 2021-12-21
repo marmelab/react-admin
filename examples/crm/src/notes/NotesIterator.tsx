@@ -24,16 +24,16 @@ export const NotesIterator = ({
     showStatus?: boolean;
     reference: 'contacts' | 'deals';
 }) => {
-    const { data, ids, loaded } = useListContext();
-    if (!loaded) return null;
+    const { data, isLoading } = useListContext();
+    if (isLoading) return null;
     return (
         <>
             <NewNote showStatus={showStatus} reference={reference} />
             <Root className={classes.root}>
-                {ids.map((id, index) => (
+                {data.map((note, index) => (
                     <Note
-                        note={data[id]}
-                        isLast={index === ids.length - 1}
+                        note={note}
+                        isLast={index === data.length - 1}
                         showStatus={showStatus}
                         reference={reference}
                         key={index}

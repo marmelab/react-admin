@@ -9,12 +9,14 @@ import sanitizeEmptyValues from './sanitizeEmptyValues';
 import getFormInitialValues from './getFormInitialValues';
 import {
     FormContextValue,
+    FormGroupSubscriber,
     Record as RaRecord,
     OnSuccess,
     OnFailure,
 } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
-import { setAutomaticRefresh } from '../actions/uiActions';
+import { setAutomaticRefresh } from '../actions';
+import { useRecordContext, OptionalRecordContextProvider } from '../controller';
 import { FormContextProvider } from './FormContextProvider';
 import submitErrorsMutators from './submitErrorsMutators';
 import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
@@ -55,7 +57,6 @@ const FormWithRedirect = ({
     initialValuesEqual,
     keepDirtyOnReinitialize = true,
     mutators = defaultMutators,
-    record,
     render,
     save,
     saving,
@@ -67,6 +68,7 @@ const FormWithRedirect = ({
     sanitizeEmptyValues: shouldSanitizeEmptyValues = true,
     ...props
 }: FormWithRedirectProps) => {
+    const record = useRecordContext(props);
     const redirect = useRef(props.redirect);
     const onSave = useRef(save);
     const formGroups = useRef<{ [key: string]: string[] }>({});
@@ -103,9 +105,29 @@ const FormWithRedirect = ({
         [save]
     );
 
+    const subscribers = useRef<{
+        [key: string]: FormGroupSubscriber[];
+    }>({});
+
     const formContextValue = useMemo<FormContextValue>(
         () => ({
             setOnSave,
+            /**
+             * Register a subscriber function for the specified group. The subscriber
+             * will be called whenever the group content changes (fields added or removed).
+             */
+            subscribe: (group, subscriber) => {
+                if (!subscribers.current[group]) {
+                    subscribers.current[group] = [];
+                }
+                subscribers.current[group].push(subscriber);
+
+                return () => {
+                    subscribers.current[group] = subscribers.current[
+                        group
+                    ].filter(s => s !== subscriber);
+                };
+            },
             getGroupFields: name => formGroups.current[name] || [],
             registerGroup: name => {
                 formGroups.current[name] = formGroups.current[name] || [];
@@ -115,9 +137,18 @@ const FormWithRedirect = ({
             },
             registerField: (source, group) => {
                 if (group) {
-                    const fields = new Set(formGroups.current[group] || []);
-                    fields.add(source);
-                    formGroups.current[group] = Array.from(fields);
+                    if (!(formGroups.current[group] || []).includes(source)) {
+                        formGroups.current[group] = [
+                            ...(formGroups.current[group] || []),
+                            source,
+                        ];
+                        // Notify subscribers that the group fields have changed
+                        if (subscribers.current[group]) {
+                            subscribers.current[group].forEach(subscriber =>
+                                subscriber()
+                            );
+                        }
+                    }
                 }
             },
             unregisterField: (source, group) => {
@@ -128,6 +159,13 @@ const FormWithRedirect = ({
                         const fields = new Set(formGroups.current[group]);
                         fields.delete(source);
                         formGroups.current[group] = Array.from(fields);
+
+                        // Notify subscribers that the group fields have changed
+                        if (subscribers.current[group]) {
+                            subscribers.current[group].forEach(subscriber =>
+                                subscriber()
+                            );
+                        }
                     }
                 }
             },
@@ -158,38 +196,40 @@ const FormWithRedirect = ({
     };
 
     return (
-        <FormContextProvider value={formContextValue}>
-            <Form
-                key={`${version}_${record?.id || ''}`} // support for refresh button
-                debug={debug}
-                decorators={decorators}
-                destroyOnUnregister={destroyOnUnregister}
-                form={form}
-                initialValues={finalInitialValues}
-                initialValuesEqual={initialValuesEqual}
-                keepDirtyOnReinitialize={keepDirtyOnReinitialize}
-                mutators={finalMutators} // necessary for ArrayInput
-                onSubmit={submit}
-                subscription={subscription} // don't redraw entire form each time one field changes
-                validate={validate}
-                validateOnBlur={validateOnBlur}
-                render={formProps => (
-                    // @ts-ignore Ignored because of a weird error about the active prop
-                    <FormView
-                        {...props}
-                        {...formProps}
-                        key={`${version}_${record?.id || ''}`} // support for refresh button
-                        record={record}
-                        setRedirect={setRedirect}
-                        saving={formProps.submitting || saving}
-                        render={render}
-                        save={save}
-                        warnWhenUnsavedChanges={warnWhenUnsavedChanges}
-                        formRootPathname={formRootPathname}
-                    />
-                )}
-            />
-        </FormContextProvider>
+        <OptionalRecordContextProvider value={record}>
+            <FormContextProvider value={formContextValue}>
+                <Form
+                    key={`${version}_${record?.id || ''}`} // support for refresh button
+                    debug={debug}
+                    decorators={decorators}
+                    destroyOnUnregister={destroyOnUnregister}
+                    form={form}
+                    initialValues={finalInitialValues}
+                    initialValuesEqual={initialValuesEqual}
+                    keepDirtyOnReinitialize={keepDirtyOnReinitialize}
+                    mutators={finalMutators} // necessary for ArrayInput
+                    onSubmit={submit}
+                    subscription={subscription} // don't redraw entire form each time one field changes
+                    validate={validate}
+                    validateOnBlur={validateOnBlur}
+                    render={formProps => (
+                        // @ts-ignore Ignored because of a weird error about the active prop
+                        <FormView
+                            {...props}
+                            {...formProps}
+                            key={`${version}_${record?.id || ''}`} // support for refresh button
+                            record={record}
+                            setRedirect={setRedirect}
+                            saving={formProps.submitting || saving}
+                            render={render}
+                            save={save}
+                            warnWhenUnsavedChanges={warnWhenUnsavedChanges}
+                            formRootPathname={formRootPathname}
+                        />
+                    )}
+                />
+            </FormContextProvider>
+        </OptionalRecordContextProvider>
     );
 };
 
@@ -216,7 +256,7 @@ export type FormWithRedirectSave = (
 export interface FormWithRedirectOwnProps {
     defaultValue?: any;
     formRootPathname?: string;
-    record?: RaRecord;
+    record?: Partial<RaRecord>;
     redirect?: RedirectionSideEffect;
     render: FormWithRedirectRender;
     save?: FormWithRedirectSave;

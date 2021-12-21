@@ -202,7 +202,10 @@ export const FileInput = (
 };
 
 FileInput.propTypes = {
-    accept: PropTypes.string,
+    accept: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.string),
+    ]),
     children: PropTypes.element,
     className: PropTypes.string,
     id: PropTypes.string,
@@ -242,14 +245,14 @@ const StyledLabeled = styled(Labeled, { name: PREFIX })(({ theme }) => ({
     [`&.${FileInputClasses.root}`]: { width: '100%' },
 }));
 
-export interface FileInputProps {
-    accept?: string;
+export interface FileInputProps
+    extends Pick<
+        DropzoneOptions,
+        'accept' | 'multiple' | 'maxSize' | 'minSize'
+    > {
     children?: ReactNode;
     labelMultiple?: string;
     labelSingle?: string;
-    maxSize?: number;
-    minSize?: number;
-    multiple?: boolean;
     placeholder?: ReactNode;
 }
 

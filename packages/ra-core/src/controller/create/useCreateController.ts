@@ -2,7 +2,9 @@ import { useCallback, MutableRefObject } from 'react';
 // @ts-ignore
 import { parse } from 'query-string';
 import { useLocation } from 'react-router-dom';
+import { Location } from 'history';
 
+import { useAuthenticated } from '../../auth';
 import { useCreate } from '../../dataProvider';
 import {
     useNotify,
@@ -49,20 +51,23 @@ export const useCreateController = <
     props: CreateControllerProps = {}
 ): CreateControllerResult<RecordType> => {
     const {
-        record = {},
-        successMessage,
+        disableAuthentication,
         onSuccess,
         onFailure,
+        record,
+        successMessage,
         transform,
     } = props;
 
+    useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
     const { hasEdit, hasShow } = useResourceDefinition(props);
     const location = useLocation();
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
-    const recordToUse = getRecord(location, record);
+    const recordToUse =
+        record ?? getRecordFromLocation(location) ?? emptyRecord;
     const version = useVersion();
 
     if (process.env.NODE_ENV !== 'production' && successMessage) {
@@ -113,9 +118,7 @@ export const useCreateController = <
                                           'ra.notification.created',
                                       {
                                           type: 'info',
-                                          messageArgs: {
-                                              smart_count: 1,
-                                          },
+                                          messageArgs: { smart_count: 1 },
                                       }
                                   );
                                   redirect(
@@ -190,12 +193,13 @@ export const useCreateController = <
 export interface CreateControllerProps<
     RecordType extends Omit<Record, 'id'> = Record
 > {
+    disableAuthentication?: boolean;
     record?: Partial<RecordType>;
     resource?: string;
     onSuccess?: OnSuccess;
     onFailure?: OnFailure;
-    transform?: TransformData;
     successMessage?: string;
+    transform?: TransformData;
 }
 
 export interface CreateControllerResult<
@@ -230,7 +234,12 @@ export interface CreateControllerResult<
     version: number;
 }
 
-export const getRecord = ({ state, search }, record: any = {}) => {
+const emptyRecord = {};
+/**
+ * Get the initial record from the location, whether it comes from the location
+ * state or is serialized in the url search part.
+ */
+export const getRecordFromLocation = ({ state, search }: Location) => {
     if (state && state.record) {
         return state.record;
     }
@@ -252,7 +261,7 @@ export const getRecord = ({ state, search }, record: any = {}) => {
             );
         }
     }
-    return record;
+    return null;
 };
 
 const getDefaultRedirectRoute = (hasShow, hasEdit) => {

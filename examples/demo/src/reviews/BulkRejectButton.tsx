@@ -29,20 +29,17 @@ const BulkRejectButton = (props: BulkActionProps) => {
             action: CRUD_UPDATE_MANY,
             mutationMode: 'undoable',
             onSuccess: () => {
-                notify(
-                    'resources.reviews.notification.approved_success',
-                    'info',
-                    {},
-                    true
-                );
+                notify('resources.reviews.notification.approved_success', {
+                    type: 'info',
+                    undoable: true,
+                });
                 refresh();
                 unselectAll();
             },
             onFailure: () => {
-                notify(
-                    'resources.reviews.notification.approved_error',
-                    'warning'
-                );
+                notify('resources.reviews.notification.approved_error', {
+                    type: 'warning',
+                });
             },
         }
     );

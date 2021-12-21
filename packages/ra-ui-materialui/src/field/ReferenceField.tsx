@@ -289,7 +289,7 @@ export const ReferenceFieldClasses = {
     link: `${PREFIX}-link`,
 };
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+const Root = styled('span', { name: PREFIX })(({ theme }) => ({
     [`& .${ReferenceFieldClasses.link}`]: {
         color: theme.palette.primary.main,
     },

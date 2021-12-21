@@ -35,7 +35,6 @@ export const EditContext = createContext<EditControllerResult>({
     resource: null,
     save: null,
     saving: null,
-    successMessage: null,
     version: null,
 });
 

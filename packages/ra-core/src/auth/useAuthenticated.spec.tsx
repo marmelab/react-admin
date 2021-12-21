@@ -1,13 +1,13 @@
 import * as React from 'react';
 import expect from 'expect';
-import { waitFor } from '@testing-library/react';
-
-import Authenticated from './Authenticated';
-import AuthContext from './AuthContext';
-import { renderWithRedux } from 'ra-test';
-import { showNotification } from '../actions/notificationActions';
+import { render, screen, waitFor } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import Authenticated from './Authenticated';
+import { showNotification } from '../actions';
+import { CoreAdminContext, createAdminStore } from '../core';
+import { testDataProvider } from '../dataProvider';
 
 describe('useAuthenticated', () => {
     const Foo = () => <div>Foo</div>;
@@ -20,12 +20,19 @@ describe('useAuthenticated', () => {
             checkError: () => Promise.reject('bad method'),
             getPermissions: () => Promise.reject('bad method'),
         };
-        const { dispatch } = renderWithRedux(
-            <AuthContext.Provider value={authProvider}>
-                <Authenticated>
-                    <Foo />
-                </Authenticated>
-            </AuthContext.Provider>
+        const store = createAdminStore();
+        const dispatch = jest.spyOn(store, 'dispatch');
+        render(
+            <Provider store={store}>
+                <CoreAdminContext
+                    authProvider={authProvider}
+                    dataProvider={testDataProvider()}
+                >
+                    <Authenticated>
+                        <Foo />
+                    </Authenticated>
+                </CoreAdminContext>
+            </Provider>
         );
         expect(authProvider.checkAuth).toBeCalledTimes(1);
         expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({});
@@ -40,14 +47,22 @@ describe('useAuthenticated', () => {
             checkError: () => Promise.reject('bad method'),
             getPermissions: () => Promise.reject('bad method'),
         };
+        const store = createAdminStore();
+        const dispatch = jest.spyOn(store, 'dispatch');
+
         const FooWrapper = props => (
-            <AuthContext.Provider value={authProvider}>
-                <Authenticated {...props}>
-                    <Foo />
-                </Authenticated>
-            </AuthContext.Provider>
+            <Provider store={store}>
+                <CoreAdminContext
+                    authProvider={authProvider}
+                    dataProvider={testDataProvider()}
+                >
+                    <Authenticated {...props}>
+                        <Foo />
+                    </Authenticated>
+                </CoreAdminContext>
+            </Provider>
         );
-        const { rerender, dispatch } = renderWithRedux(<FooWrapper />);
+        const { rerender } = render(<FooWrapper />);
         rerender(<FooWrapper authParams={{ foo: 'bar' }} />);
         expect(authProvider.checkAuth).toBeCalledTimes(2);
         expect(authProvider.checkAuth.mock.calls[1][0]).toEqual({ foo: 'bar' });
@@ -55,12 +70,29 @@ describe('useAuthenticated', () => {
     });
 
     it('should not block rendering by default', async () => {
-        const { dispatch, queryByText } = renderWithRedux(
-            <Authenticated>
-                <Foo />
-            </Authenticated>
+        const authProvider = {
+            login: () => Promise.reject('bad method'),
+            logout: () => Promise.reject('bad method'),
+            checkAuth: jest.fn().mockResolvedValue(''),
+            checkError: () => Promise.reject('bad method'),
+            getPermissions: () => Promise.reject('bad method'),
+        };
+        const store = createAdminStore();
+        const dispatch = jest.spyOn(store, 'dispatch');
+
+        render(
+            <Provider store={store}>
+                <CoreAdminContext
+                    authProvider={authProvider}
+                    dataProvider={testDataProvider()}
+                >
+                    <Authenticated>
+                        <Foo />
+                    </Authenticated>
+                </CoreAdminContext>
+            </Provider>
         );
-        expect(queryByText('Foo')).toBeDefined();
+        expect(screen.queryByText('Foo')).toBeDefined();
         await waitFor(() => {
             expect(dispatch).toHaveBeenCalledTimes(0);
         });
@@ -74,36 +106,54 @@ describe('useAuthenticated', () => {
             checkError: jest.fn().mockResolvedValue(''),
             getPermissions: jest.fn().mockResolvedValue(''),
         };
-
+        const store = createAdminStore();
+        const dispatch = jest.spyOn(store, 'dispatch');
         const history = createMemoryHistory();
 
-        const { dispatch } = renderWithRedux(
-            <Router history={history}>
-                <AuthContext.Provider value={authProvider}>
-                    <Authenticated>
-                        <Foo />
-                    </Authenticated>
-                </AuthContext.Provider>
-            </Router>
+        const Login = () => {
+            const location = useLocation();
+
+            return (
+                <div aria-label="nextPathname">
+                    {location.state.nextPathname}
+                </div>
+            );
+        };
+
+        render(
+            <Provider store={store}>
+                <CoreAdminContext
+                    authProvider={authProvider}
+                    dataProvider={testDataProvider()}
+                    history={history}
+                >
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={
+                                <Authenticated>
+                                    <Foo />
+                                </Authenticated>
+                            }
+                        />
+                        <Route path="/login" element={<Login />} />
+                    </Routes>
+                </CoreAdminContext>
+            </Provider>
         );
         await waitFor(() => {
             expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({});
             expect(authProvider.logout.mock.calls[0][0]).toEqual({});
             expect(dispatch).toHaveBeenCalledTimes(2);
             expect(dispatch.mock.calls[0][0]).toEqual(
-                showNotification('ra.auth.auth_check_error', 'warning', {
-                    messageArgs: {},
-                    undoable: false,
-                })
+                showNotification('ra.auth.auth_check_error', 'warning')
             );
             expect(dispatch.mock.calls[1][0]).toEqual({
                 type: 'RA/CLEAR_STATE',
             });
-            expect(history.location.pathname).toEqual('/login');
-            expect(history.location.state).toEqual({
-                nextPathname: '/',
-                nextSearch: '',
-            });
+            expect(screen.getByLabelText('nextPathname').innerHTML).toEqual(
+                '/'
+            );
         });
     });
 });

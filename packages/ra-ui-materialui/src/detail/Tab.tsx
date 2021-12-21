@@ -10,7 +10,7 @@ import classnames from 'classnames';
 import { FieldWithLabel } from './FieldWithLabel';
 
 /**
- * Tab element for the SimpleShowLayout.
+ * Tab element for the TabbedShowLayout.
  *
  * The `<Tab>` component accepts the following props:
  *

@@ -115,6 +115,8 @@ export const SelectInput = (props: SelectInputProps) => {
         emptyValue,
         format,
         helperText,
+        isFetching,
+        isLoading,
         label,
         loaded,
         loading,
@@ -178,14 +180,16 @@ export const SelectInput = (props: SelectInputProps) => {
     ]);
 
     const handleChange = useCallback(
-        async (event: React.ChangeEvent<HTMLSelectElement>, newItem) => {
-            if (newItem) {
-                const value = getChoiceValue(newItem);
-                input.onChange(value);
-                return;
+        async (eventOrChoice: any) => {
+            // We might receive an event from the mui component
+            // In this case, it will be the choice id
+            // eslint-disable-next-line eqeqeq
+            if (eventOrChoice?.target?.value != undefined) {
+                input.onChange(eventOrChoice.target.value);
+            } else {
+                // Or we might receive a choice directly, for instance a newly created one
+                input.onChange(getChoiceValue(eventOrChoice));
             }
-
-            input.onChange(event);
         },
         [input, getChoiceValue]
     );
@@ -202,7 +206,8 @@ export const SelectInput = (props: SelectInputProps) => {
         onCreate,
         optionText,
     });
-    if (loading) {
+
+    if (isLoading) {
         return (
             <Labeled
                 id={id}

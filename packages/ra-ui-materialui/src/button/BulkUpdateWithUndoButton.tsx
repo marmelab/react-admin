@@ -35,12 +35,11 @@ export const BulkUpdateWithUndoButton = (
         icon = defaultIcon,
         onClick,
         onSuccess = () => {
-            notify(
-                'ra.notification.updated',
-                'info',
-                { smart_count: selectedIds.length },
-                true
-            );
+            notify('ra.notification.updated', {
+                type: 'info',
+                messageArgs: { smart_count: selectedIds.length },
+                undoable: true,
+            });
             unselectAll(resource);
             refresh();
         },
@@ -49,14 +48,16 @@ export const BulkUpdateWithUndoButton = (
                 typeof error === 'string'
                     ? error
                     : error.message || 'ra.notification.http_error',
-                'warning',
                 {
-                    _:
-                        typeof error === 'string'
-                            ? error
-                            : error && error.message
-                            ? error.message
-                            : undefined,
+                    type: 'warning',
+                    messageArgs: {
+                        _:
+                            typeof error === 'string'
+                                ? error
+                                : error && error.message
+                                ? error.message
+                                : undefined,
+                    },
                 }
             );
             refresh();

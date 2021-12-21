@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { useState, useCallback } from 'react';
-import { fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import omit from 'lodash/omit';
 import expect from 'expect';
+import { Provider } from 'react-redux';
 
-import { renderWithRedux } from 'ra-test';
 import ReferenceInputController from './ReferenceInputController';
-import { DataProviderContext } from '../../dataProvider';
+import { createAdminStore, CoreAdminContext } from '../../core';
 
 describe('<ReferenceInputController />', () => {
     const defaultProps = {
@@ -34,42 +34,43 @@ describe('<ReferenceInputController />', () => {
         ),
     };
 
+    afterEach(() => {
+        dataProvider.getMany.mockClear();
+        dataProvider.getList.mockClear();
+    });
+
     it('should fetch possible values using getList', async () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
-        const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <ReferenceInputController {...defaultProps}>
                     {children}
                 </ReferenceInputController>
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
 
         await waitFor(() => {
-            expect(dispatch).toBeCalledTimes(5);
-            expect(dispatch.mock.calls[0][0]).toEqual({
-                type: 'CUSTOM_QUERY',
-                payload: {
-                    filter: {
-                        q: '',
-                    },
-                    pagination: {
-                        page: 1,
-                        perPage: 25,
-                    },
-                    sort: {
-                        field: 'id',
-                        order: 'DESC',
-                    },
+            expect(dataProvider.getList).toBeCalledTimes(1);
+            expect(dataProvider.getList).toBeCalledWith('posts', {
+                filter: {
+                    q: '',
                 },
-                meta: { resource: 'posts' },
+                pagination: {
+                    page: 1,
+                    perPage: 25,
+                },
+                sort: {
+                    field: 'id',
+                    order: 'DESC',
+                },
             });
         });
     });
 
     it('should allow getList pagination and sorting customization', async () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
-        const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <ReferenceInputController
                     {...{
                         ...defaultProps,
@@ -80,35 +81,31 @@ describe('<ReferenceInputController />', () => {
                 >
                     {children}
                 </ReferenceInputController>
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
 
         await waitFor(() => {
-            expect(dispatch).toBeCalledTimes(5);
-            expect(dispatch.mock.calls[0][0]).toEqual({
-                type: 'CUSTOM_QUERY',
-                payload: {
-                    filter: {
-                        q: '',
-                    },
-                    pagination: {
-                        page: 5,
-                        perPage: 10,
-                    },
-                    sort: {
-                        field: 'title',
-                        order: 'ASC',
-                    },
+            expect(dataProvider.getList).toBeCalledTimes(1);
+            expect(dataProvider.getList).toBeCalledWith('posts', {
+                filter: {
+                    q: '',
                 },
-                meta: { resource: 'posts' },
+                pagination: {
+                    page: 5,
+                    perPage: 10,
+                },
+                sort: {
+                    field: 'title',
+                    order: 'ASC',
+                },
             });
         });
     });
 
     it('should fetch current value using getMany', async () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
-        const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <ReferenceInputController
                     {...{
                         ...defaultProps,
@@ -117,45 +114,47 @@ describe('<ReferenceInputController />', () => {
                 >
                     {children}
                 </ReferenceInputController>
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
 
         await waitFor(() => {
-            expect(dispatch).toBeCalledTimes(10); // 5 for getList, 5 for getMany
-            expect(dispatch.mock.calls[5][0]).toEqual({
-                type: 'RA/CRUD_GET_MANY',
-                payload: { ids: [1] },
-                meta: { resource: 'posts' },
-            });
+            expect(dataProvider.getList).toBeCalledTimes(1);
+            expect(dataProvider.getMany).toBeCalledTimes(1);
+            expect(dataProvider.getMany).toBeCalledWith('posts', { ids: [1] });
         });
     });
 
     it('should pass possibleValues and record to child', async () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <ReferenceInputController
-                    {...{
-                        ...defaultProps,
-                        input: { value: 1 } as any,
-                        loading: true,
-                        sort: { field: 'title', order: 'ASC' },
-                    }}
-                >
-                    {children}
-                </ReferenceInputController>
-            </DataProviderContext.Provider>,
-            {
+        const store = createAdminStore({
+            initialState: {
                 admin: {
                     resources: { posts: { data: { 1: { id: 1 } } } },
                 },
-            }
+            },
+        });
+        render(
+            <Provider store={store}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceInputController
+                        {...{
+                            ...defaultProps,
+                            input: { value: 1 } as any,
+                            loading: true,
+                            sort: { field: 'title', order: 'ASC' },
+                        }}
+                    >
+                        {children}
+                    </ReferenceInputController>
+                </CoreAdminContext>
+            </Provider>
         );
 
         await waitFor(() => {
             expect(
                 omit(children.mock.calls[0][0], [
                     'onChange',
+                    'refetch',
                     'setPagination',
                     'setFilter',
                     'setSort',
@@ -170,34 +169,24 @@ describe('<ReferenceInputController />', () => {
                     'possibleValues.showFilter',
                 ])
             ).toEqual({
-                refetch: expect.any(Function),
                 possibleValues: {
-                    basePath: '/comments',
                     currentSort: {
                         field: 'title',
                         order: 'ASC',
                     },
-                    data: {
-                        '1': {
-                            id: 1,
-                        },
-                    },
+                    data: [{ id: 1 }],
                     displayedFilters: [],
                     error: null,
                     filterValues: {
                         q: '',
                     },
-                    hasCreate: false,
-
-                    ids: [1],
-                    loaded: false,
-                    loading: true,
+                    isFetching: true,
+                    isLoading: true,
                     page: 1,
                     perPage: 25,
                     refetch: expect.any(Function),
                     resource: 'comments',
                     selectedIds: [],
-
                     total: NaN,
                 },
                 referenceRecord: {
@@ -205,8 +194,8 @@ describe('<ReferenceInputController />', () => {
                         id: 1,
                     },
                     error: null,
-                    loaded: true,
                     loading: true,
+                    loaded: true,
                     refetch: expect.any(Function),
                 },
                 dataStatus: {
@@ -217,8 +206,8 @@ describe('<ReferenceInputController />', () => {
                 choices: [{ id: 1 }],
                 error: null,
                 filter: { q: '' },
-                loaded: false,
-                loading: true,
+                isFetching: false,
+                isLoading: true,
                 pagination: { page: 1, perPage: 25 },
                 sort: { field: 'title', order: 'ASC' },
                 warning: null,
@@ -240,7 +229,6 @@ describe('<ReferenceInputController />', () => {
                     <ReferenceInputController
                         {...{
                             ...defaultProps,
-                            loading: true,
                             sort,
                         }}
                     >
@@ -249,51 +237,43 @@ describe('<ReferenceInputController />', () => {
                 </>
             );
         };
-        const { getByLabelText, dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <Component />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
 
         await waitFor(() => {
-            expect(dispatch).toBeCalledTimes(5);
-            expect(dispatch.mock.calls[0][0]).toEqual({
-                type: 'CUSTOM_QUERY',
-                payload: {
-                    filter: {
-                        q: '',
-                    },
-                    pagination: {
-                        page: 1,
-                        perPage: 25,
-                    },
-                    sort: {
-                        field: 'title',
-                        order: 'ASC',
-                    },
+            expect(dataProvider.getList).toBeCalledTimes(1);
+            expect(dataProvider.getList).toHaveBeenCalledWith('posts', {
+                filter: {
+                    q: '',
                 },
-                meta: { resource: 'posts' },
+                pagination: {
+                    page: 1,
+                    perPage: 25,
+                },
+                sort: {
+                    field: 'title',
+                    order: 'ASC',
+                },
             });
         });
-        fireEvent.click(getByLabelText('Change sort'));
+        fireEvent.click(screen.getByLabelText('Change sort'));
         await waitFor(() => {
-            expect(dispatch).toBeCalledTimes(10);
-            expect(dispatch.mock.calls[5][0]).toEqual({
-                type: 'CUSTOM_QUERY',
-                payload: {
-                    filter: {
-                        q: '',
-                    },
-                    pagination: {
-                        page: 1,
-                        perPage: 25,
-                    },
-                    sort: {
-                        field: 'body',
-                        order: 'DESC',
-                    },
+            expect(dataProvider.getList).toBeCalledTimes(2);
+            expect(dataProvider.getList).toHaveBeenCalledWith('posts', {
+                filter: {
+                    q: '',
                 },
-                meta: { resource: 'posts' },
+                pagination: {
+                    page: 1,
+                    perPage: 25,
+                },
+                sort: {
+                    field: 'body',
+                    order: 'DESC',
+                },
             });
         });
     });
@@ -304,36 +284,38 @@ describe('<ReferenceInputController />', () => {
             const enableGetChoices = jest.fn().mockImplementation(({ q }) => {
                 return q.length > 2;
             });
-            const { dispatch } = renderWithRedux(
-                <DataProviderContext.Provider value={dataProvider}>
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
                     <ReferenceInputController
                         {...defaultProps}
                         enableGetChoices={enableGetChoices}
                     >
                         {children}
                     </ReferenceInputController>
-                </DataProviderContext.Provider>
+                </CoreAdminContext>
             );
 
             // not call on start
             await waitFor(() => {
-                expect(dispatch).not.toHaveBeenCalled();
+                expect(dataProvider.getList).toBeCalledTimes(0);
+                expect(enableGetChoices).toHaveBeenCalledWith({ q: '' });
             });
-            expect(enableGetChoices).toHaveBeenCalledWith({ q: '' });
 
             const { setFilter } = children.mock.calls[0][0];
             setFilter('hello world');
 
             await waitFor(() => {
-                expect(dispatch).toHaveBeenCalledTimes(5);
+                expect(dataProvider.getList).toBeCalledTimes(1);
+                expect(enableGetChoices).toHaveBeenCalledWith({
+                    q: 'hello world',
+                });
             });
-            expect(enableGetChoices).toHaveBeenCalledWith({ q: 'hello world' });
         });
 
         it('should fetch current value using getMany even if enableGetChoices is returning false', async () => {
             const children = jest.fn().mockReturnValue(<p>child</p>);
-            const { dispatch } = renderWithRedux(
-                <DataProviderContext.Provider value={dataProvider}>
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
                     <ReferenceInputController
                         {...{
                             ...defaultProps,
@@ -343,16 +325,12 @@ describe('<ReferenceInputController />', () => {
                     >
                         {children}
                     </ReferenceInputController>
-                </DataProviderContext.Provider>
+                </CoreAdminContext>
             );
 
             await waitFor(() => {
-                expect(dispatch).toBeCalledTimes(5); // 0 for getList, 5 for getMany
-                expect(dispatch.mock.calls[0][0]).toEqual({
-                    type: 'RA/CRUD_GET_MANY',
-                    payload: { ids: [1] },
-                    meta: { resource: 'posts' },
-                });
+                expect(dataProvider.getList).toBeCalledTimes(0);
+                expect(dataProvider.getMany).toBeCalledTimes(1);
             });
         });
     });

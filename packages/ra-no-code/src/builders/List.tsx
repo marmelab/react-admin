@@ -1,11 +1,10 @@
 import React from 'react';
-import { useResourceContext } from 'ra-core';
 import {
     Datagrid as RaDatagrid,
     DatagridProps,
     List as RaList,
-    ListProps,
-} from 'ra-ui-materialui';
+    useResourceContext,
+} from 'react-admin';
 
 import {
     useResourceConfiguration,
@@ -13,8 +12,8 @@ import {
 } from '../ResourceConfiguration';
 import { getFieldFromFieldDefinition } from './getFieldFromFieldDefinition';
 
-export const List = (props: ListProps) => (
-    <RaList {...props}>
+export const List = () => (
+    <RaList>
         <Datagrid />
     </RaList>
 );

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
@@ -32,7 +32,7 @@ const useLogin = (): Login => {
     const authProvider = useAuthProvider();
     const location = useLocation();
     const locationState = location.state as any;
-    const history = useHistory();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const nextPathName = locationState && locationState.nextPathname;
     const nextSearch = locationState && locationState.nextSearch;
@@ -45,19 +45,19 @@ const useLogin = (): Login => {
                     ? pathName
                     : nextPathName + nextSearch ||
                       defaultAuthParams.afterLoginUrl;
-                history.push(redirectUrl);
+                navigate(redirectUrl);
                 return ret;
             }),
-        [authProvider, history, nextPathName, nextSearch, dispatch]
+        [authProvider, navigate, nextPathName, nextSearch, dispatch]
     );
 
     const loginWithoutProvider = useCallback(
         (_, __) => {
             dispatch(resetNotification());
-            history.push(defaultAuthParams.afterLoginUrl);
+            navigate(defaultAuthParams.afterLoginUrl);
             return Promise.resolve();
         },
-        [history, dispatch]
+        [navigate, dispatch]
     );
 
     return authProvider ? login : loginWithoutProvider;

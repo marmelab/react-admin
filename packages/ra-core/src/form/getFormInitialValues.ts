@@ -4,7 +4,7 @@ import { Record } from '../types';
 export default function getFormInitialValues(
     initialValues: any,
     defaultValue: DefaultValue,
-    record: Record
+    record: Partial<Record>
 ) {
     if (typeof defaultValue !== 'undefined') {
         console.warn(

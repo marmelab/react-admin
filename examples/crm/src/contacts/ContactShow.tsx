@@ -21,8 +21,8 @@ export const ContactShow = () => (
 );
 
 const ContactShowContent = () => {
-    const { record, loaded } = useShowContext<Contact>();
-    if (!loaded || !record) return null;
+    const { record, isLoading } = useShowContext<Contact>();
+    if (isLoading || !record) return null;
     return (
         <Box mt={2} display="flex">
             <Box flex="1">

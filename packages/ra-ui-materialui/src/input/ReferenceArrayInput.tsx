@@ -137,6 +137,7 @@ export const ReferenceArrayInput = ({
             // ReferenceArrayInput.setSort had a different signature than the one from ListContext.
             // In order to not break backward compatibility, we added this temporary setSortForList in the
             // ReferenceArrayInputContext
+            // FIXME in 4.0
             setSort: controllerProps.setSortForList,
         }),
         [controllerProps]
@@ -158,6 +159,7 @@ export const ReferenceArrayInput = ({
                         choices={controllerProps.choices}
                         loaded={controllerProps.loaded}
                         loading={controllerProps.loading}
+                        isLoading={controllerProps.isLoading}
                         setFilter={controllerProps.setFilter}
                         setPagination={controllerProps.setPagination}
                         setSort={controllerProps.setSort}
@@ -220,6 +222,7 @@ export interface ReferenceArrayInputViewProps {
     label?: string;
     loaded: boolean;
     loading: boolean;
+    isLoading: boolean;
     meta: FieldMetaState<any>;
     onChange: any;
     options?: any;
@@ -243,6 +246,7 @@ export const ReferenceArrayInputView = ({
     input,
     loaded,
     loading,
+    isLoading,
     isRequired,
     label,
     meta,
@@ -283,6 +287,7 @@ export const ReferenceArrayInputView = ({
         label: translatedLabel,
         loaded,
         loading,
+        isLoading,
         meta: {
             ...meta,
             helperText: warning || false,

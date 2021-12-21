@@ -104,10 +104,10 @@ const exporter = (records, fetchRelatedRecords) =>
     });
 
 const CommentPagination = () => {
-    const { loading, ids, page, perPage, total, setPage } = useListContext();
+    const { isLoading, data, page, perPage, total, setPage } = useListContext();
     const translate = useTranslate();
     const nbPages = Math.ceil(total / perPage) || 1;
-    if (!loading && (total === 0 || (ids && !ids.length))) {
+    if (!isLoading && (total === 0 || (data && !data.length))) {
         return <PaginationLimit />;
     }
 
@@ -141,25 +141,26 @@ const CommentPagination = () => {
 };
 
 const CommentGrid = () => {
-    const { ids, data } = useListContext();
+    const { data } = useListContext();
     const translate = useTranslate();
 
+    if (!data) return null;
     return (
         <Root spacing={2} container>
-            {ids.map(id => (
-                <Grid item key={id} sm={12} md={6} lg={4}>
+            {data.map(record => (
+                <Grid item key={record.id} sm={12} md={6} lg={4}>
                     <Card className={classes.card}>
                         <CardHeader
                             className="comment"
                             title={
                                 <TextField
-                                    record={data[id]}
+                                    record={record}
                                     source="author.name"
                                 />
                             }
                             subheader={
                                 <DateField
-                                    record={data[id]}
+                                    record={record}
                                     source="created_at"
                                 />
                             }
@@ -170,14 +171,14 @@ const CommentGrid = () => {
                             }
                         />
                         <CardContent className={classes.cardContent}>
-                            <TextField record={data[id]} source="body" />
+                            <TextField record={record} source="body" />
                         </CardContent>
                         <CardContent className={classes.cardLink}>
                             <Typography component="span" variant="body2">
                                 {translate('comment.list.about')}&nbsp;
                             </Typography>
                             <ReferenceField
-                                record={data[id]}
+                                record={record}
                                 source="post_id"
                                 reference="posts"
                             >
@@ -188,8 +189,8 @@ const CommentGrid = () => {
                             </ReferenceField>
                         </CardContent>
                         <CardActions className={classes.cardActions}>
-                            <EditButton record={data[id]} />
-                            <ShowButton record={data[id]} />
+                            <EditButton record={record} />
+                            <ShowButton record={record} />
                         </CardActions>
                     </Card>
                 </Grid>

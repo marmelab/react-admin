@@ -90,10 +90,10 @@ const CoreAdmin = (props: AdminProps) => {
     const {
         appLayout,
         authProvider,
+        basename,
         catchAll,
         children,
         customReducers,
-        customRoutes = [],
         dashboard,
         dataProvider,
         disableTelemetry,
@@ -112,6 +112,7 @@ const CoreAdmin = (props: AdminProps) => {
     return (
         <CoreAdminContext
             authProvider={authProvider}
+            basename={basename}
             dataProvider={dataProvider}
             i18nProvider={i18nProvider}
             queryClient={queryClient}
@@ -121,7 +122,6 @@ const CoreAdmin = (props: AdminProps) => {
         >
             <CoreAdminUI
                 layout={appLayout || layout}
-                customRoutes={customRoutes}
                 dashboard={dashboard}
                 disableTelemetry={disableTelemetry}
                 menu={menu}

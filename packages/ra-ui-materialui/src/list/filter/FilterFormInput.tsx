@@ -39,6 +39,7 @@ export const FilterFormInput = props => {
                 record: emptyRecord,
                 variant,
                 margin,
+                size: 'small',
                 helperText: false,
                 // ignore defaultValue in Field because it was already set in Form (via mergedInitialValuesWithDefaultValues)
                 defaultValue: undefined,

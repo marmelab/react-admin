@@ -12,11 +12,9 @@ import {
 import PropTypes from 'prop-types';
 import { ResponsiveStyleValue, SxProps } from '@mui/system';
 import { styled } from '@mui/material/styles';
-import { Card, Divider } from '@mui/material';
-import { Route } from 'react-router-dom';
-import { useRouteMatch } from 'react-router-dom';
+import { Divider } from '@mui/material';
+import { Outlet, Routes, Route } from 'react-router-dom';
 import {
-    escapePath,
     Record,
     useRecordContext,
     OptionalRecordContextProvider,
@@ -30,9 +28,9 @@ import {
 /**
  * Layout for a Show view showing fields grouped in tabs and laid out in a single column.
  *
- * It pulls the record from the RecordContext. It renders a material-ui `<Card>`
- * containing a set of `<Tabs>`, each of which contains a list of record fields
- * in a single-column layout (via material-ui's `<Stack>` component).
+ * It pulls the record from the RecordContext. It renders a set of `<Tabs>`,
+ * each of which contains a list of record fields in a single-column layout
+ * (via material-ui's `<Stack>` component).
  * `<TabbedShowLayout>` delegates the actual rendering of fields to its children,
  * which should be `<Tab>` components.
  * `<Tab>` wraps each field inside a <Labeled> component to add a label.
@@ -71,7 +69,7 @@ import {
  * @param {TabbedShowLayoutProps} props
  * @param {string} props.className A className to apply to the page content.
  * @param {ElementType} props.component The component to use as root component (div by default).
- * @param {ReactNode} props.divider An optional divider btween each field, passed to `<Stack>`.
+ * @param {ReactNode} props.divider An optional divider between each field, passed to `<Stack>`.
  * @param {number} props.spacing The spacing to use between each field, passed to `<Stack>`. Defaults to 1.
  * @param {Object} props.sx Custom style object.
  * @param {boolean} props.syncWithLocation Whether to update the URL when the tab changes. Defaults to true.
@@ -81,7 +79,6 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
     const {
         children,
         className,
-        component: Component = Root,
         spacing,
         divider,
         syncWithLocation = true,
@@ -89,7 +86,6 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
         value,
         ...rest
     } = props;
-    const match = useRouteMatch();
     const record = useRecordContext(props);
     const nonNullChildren = Children.toArray(children).filter(
         child => child !== null
@@ -105,52 +101,78 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
     if (!record) {
         return null;
     }
+
+    const renderTabHeaders = () =>
+        cloneElement(
+            tabs,
+            {
+                onChange: handleTabChange,
+                syncWithLocation,
+                value: tabValue,
+            },
+            nonNullChildren
+        );
+
     return (
         <OptionalRecordContextProvider value={props.record}>
-            <Component className={className} {...sanitizeRestProps(rest)}>
-                {cloneElement(
-                    tabs,
-                    {
-                        syncWithLocation,
-                        onChange: handleTabChange,
-                        value: tabValue,
-                    },
-                    nonNullChildren
-                )}
-
-                <Divider />
-                <div className={TabbedShowLayoutClasses.content}>
-                    {Children.map(nonNullChildren, (tab, index) =>
-                        tab && isValidElement(tab) ? (
-                            syncWithLocation ? (
-                                <Route
-                                    exact
-                                    path={escapePath(
-                                        getShowLayoutTabFullPath(
+            <Root className={className} {...sanitizeRestProps(rest)}>
+                {syncWithLocation ? (
+                    <Routes>
+                        <Route
+                            path="/*"
+                            element={
+                                <>
+                                    {renderTabHeaders()}
+                                    <Divider />
+                                    <div
+                                        className={
+                                            TabbedShowLayoutClasses.content
+                                        }
+                                    >
+                                        <Outlet />
+                                    </div>
+                                </>
+                            }
+                        >
+                            {Children.map(nonNullChildren, (tab, index) =>
+                                isValidElement(tab) ? (
+                                    <Route
+                                        path={getShowLayoutTabFullPath(
                                             tab,
-                                            index,
-                                            match.url
-                                        )
-                                    )}
-                                    render={() =>
-                                        cloneElement(tab, {
+                                            index
+                                        )}
+                                        element={cloneElement(tab, {
                                             context: 'content',
                                             spacing,
                                             divider,
-                                        })
-                                    }
-                                />
-                            ) : tabValue === index ? (
-                                cloneElement(tab, {
+                                        })}
+                                    />
+                                ) : null
+                            )}
+                        </Route>
+                    </Routes>
+                ) : (
+                    <>
+                        {renderTabHeaders()}
+                        <Divider />
+                        <div className={TabbedShowLayoutClasses.content}>
+                            {Children.map(nonNullChildren, (tab, index) => {
+                                if (
+                                    !isValidElement(tab) ||
+                                    tabValue !== index
+                                ) {
+                                    return null;
+                                }
+                                return cloneElement(tab, {
                                     context: 'content',
                                     spacing,
                                     divider,
-                                })
-                            ) : null
-                        ) : null
-                    )}
-                </div>
-            </Component>
+                                });
+                            })}
+                        </div>
+                    </>
+                )}
+            </Root>
         </OptionalRecordContextProvider>
     );
 };
@@ -158,9 +180,9 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
 export interface TabbedShowLayoutProps {
     children: ReactNode;
     className?: string;
-    component?: ElementType;
     divider?: ReactNode;
     record?: Record;
+    rootPath?: string;
     spacing?: ResponsiveStyleValue<number | string>;
     sx?: SxProps;
     syncWithLocation?: boolean;
@@ -171,7 +193,6 @@ export interface TabbedShowLayoutProps {
 TabbedShowLayout.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
-    component: PropTypes.elementType,
     record: PropTypes.object,
     spacing: PropTypes.any,
     sx: PropTypes.any,
@@ -188,7 +209,7 @@ export const TabbedShowLayoutClasses = {
     content: `${PREFIX}-content`,
 };
 
-const Root = styled(Card, { name: PREFIX })(({ theme }) => ({
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
     flex: 1,
     [`& .${TabbedShowLayoutClasses.content}`]: {
         padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
@@ -196,8 +217,6 @@ const Root = styled(Card, { name: PREFIX })(({ theme }) => ({
 }));
 
 const sanitizeRestProps = ({
-    children,
-    className,
     record,
     resource,
     basePath,

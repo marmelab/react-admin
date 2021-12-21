@@ -91,7 +91,7 @@ describe('Create Page', () => {
                 value: 'Annamarie Mayer',
             },
         ]);
-        cy.get('div[role="listbox"] li').trigger('click');
+        cy.get('[role="option"]').trigger('click');
         cy.get(CreatePage.elements.input('authors[0].role')).should(
             el => expect(el).to.exist
         );

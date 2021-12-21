@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { Children, cloneElement, FC, memo, ReactElement } from 'react';
+import { cloneElement, FC, memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import {
@@ -16,7 +16,6 @@ import {
 } from 'ra-core';
 
 import { fieldPropTypes, PublicFieldProps, InjectedFieldProps } from './types';
-import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { LinearProgress } from '../layout';
 
 /**
@@ -119,7 +118,7 @@ export const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
     return (
         <ResourceContextProvider value={reference}>
             <ListContextProvider value={controllerProps}>
-                <PureReferenceArrayFieldView {...props} {...controllerProps} />
+                <PureReferenceArrayFieldView {...props} />
             </ListContextProvider>
         </ResourceContextProvider>
     );
@@ -128,7 +127,6 @@ export const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
 ReferenceArrayField.propTypes = {
     ...fieldPropTypes,
     addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
     className: PropTypes.string,
     children: PropTypes.element.isRequired,
     label: PropTypes.string,
@@ -148,7 +146,6 @@ export interface ReferenceArrayFieldProps
     extends PublicFieldProps,
         InjectedFieldProps {
     children: ReactElement;
-
     filter?: FilterPayload;
     page?: number;
     pagination?: ReactElement;
@@ -166,33 +163,22 @@ export interface ReferenceArrayFieldViewProps
         ListControllerProps {}
 
 export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props => {
-    const {
-        children,
-        pagination,
-        className,
-        resource,
-        reference,
-        ...rest
-    } = props;
+    const { children, pagination, className } = props;
 
-    const { loaded } = useListContext(props);
+    const { isLoading, total } = useListContext(props);
 
     return (
-        <Root>
-            {!loaded ? (
+        <Root className={className}>
+            {isLoading ? (
                 <LinearProgress
                     className={ReferenceArrayFieldClasses.progress}
                 />
             ) : (
                 <>
-                    {cloneElement(Children.only(children), {
-                        ...sanitizeFieldRestProps(rest),
-                        className,
-                        resource,
-                    })}
+                    {children}
                     {pagination &&
-                        props.total !== undefined &&
-                        cloneElement(pagination, sanitizeFieldRestProps(rest))}
+                        total !== undefined &&
+                        cloneElement(pagination)}
                 </>
             )}
         </Root>
@@ -200,11 +186,7 @@ export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props =
 };
 
 ReferenceArrayFieldView.propTypes = {
-    basePath: PropTypes.string,
     className: PropTypes.string,
-    data: PropTypes.any,
-    ids: PropTypes.array,
-    loaded: PropTypes.bool,
     children: PropTypes.element.isRequired,
     reference: PropTypes.string.isRequired,
 };

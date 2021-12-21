@@ -1,5 +1,341 @@
 # Upgrade to 4.0
 
+## The Way To Providing Custom Routes Has Changed
+
+Custom routes used to be provided to the `Admin` component through the `customRoutes` prop. This was awkward to use as you had to provide an array of `<Route>` elements. Besides, we had to provide the `<RouteWithoutLayout>` component to support custom routes rendered without the `<Layout>` and keep TypeScript happy.
+
+As we upgraded to react-router v6 (more on that later), we had to come up with another way to support custom routes.
+
+Meet the `<CustomRoutes>` component. You you can pass it as a child of `<Admin>`, just like a `<Resource>`. It accepts react-router `<Route>` as its children (and only that). You can specify whether the custom routes it contains should be rendered with the `<Layout>` or not by setting the `noLayout` prop. It's `false` by default.
+
+```diff
+-import { Admin, Resource, RouteWithoutLayout } from 'react-admin';
++import { Admin, CustomRoutes, Resource } from 'react-admin';
+
+const MyAdmin = () => (
+    <Admin
+-       customRoutes={[
+-           <Route path="/custom" component={MyCustomRoute} />,
+-           <RouteWithoutLayout path="/custom2" component={MyCustomRoute2} />,
+-       ]}
+    >
++       <CustomRoutes>
++           <Route path="/custom" element={<MyCustomRoute />} />
++       </CustomRoutes>
++       <CustomRoutes noLayout>
++           <Route path="/custom2" element={<MyCustomRoute2 />} />
++       </CustomRoutes>
+        <Resource name="posts" />
+    </Admin>
+)
+```
+
+Note that `<CustomRoutes>` handles `null` elements and fragments correctly, so you can check for any condition before returning one of its children:
+
+```jsx
+    const MyAdmin = () => {
+        const condition = useGetConditionFromSomewhere();
+    
+        return (
+            <Admin>
+                <CustomRoutes>
+                    <Route path="/custom" element={<MyCustomRoute />} />
+                    {condition
+                        ? (
+                              <>
+                                  <Route path="/a_path" element={<ARoute />} />
+                                  <Route path="/another_path" element={<AnotherRoute />} />
+                              </>
+                          )
+                        : null}
+                </CustomRoutes>
+            </Admin>
+        );
+    }
+```
+
+## Admin Child Function Result Has Changed
+
+In order to define the resources and their views according to users permissions, we used to support a function as a child of `<Admin>`. Just like the `customRoutes`, this function had to return an array of elements.
+
+You can now return a fragment and this fragment may contains `null` elements. Besides, if you don't need to check the permissions for a resource, you may even include it as a direct child of `<Admin>`.
+
+```diff
+<Admin>
+-    {permissions => [
+-       <Resource name="posts" {...posts} />,
+-       <Resource name="comments" {...comments} />,
+-       permissions ? <Resource name="users" {...users} /> : null,
+-       <Resource name="tags" {...tags} />,
+-   ]}
++   <Resource name="posts" {...posts} />
++   <Resource name="comments" {...comments} />
++   <Resource name="tags" {...tags} />
++   {permissions => (
++       <>
++           {permissions ? <Resource name="users" {...users} /> : null}
++       </> 
++   )}
+</Admin>
+```
+
+Last thing, you can return any element supported by `<Admin>`, including the new `<CustomRoutes>`:
+
+```jsx
+import { Admin, Resource, CustomRoutes } from 'react-admin';
+
+const MyAdmin = () => (
+    <Admin>
+        <Resource name="posts" {...posts} />
+        {permissions => (
+            <>
+                {permissions ? <Resource name="users" {...posts} /> : null}
+                <CustomRoutes>
+                    {permissions ? <Route path="/a_path" element={<ARoute />} /> : null}
+                    <Route path="/another_path" element={<AnotherRoute />} />
+                </CustomRoutes>
+            </>
+        )}
+    </Admin>
+)
+```
+
+## React Router Upgraded to v6
+
+This should be mostly transparent for you unless:
+
+- you had custom routes: see [https://reactrouter.com/docs/en/v6/upgrading/v5#advantages-of-route-element](https://reactrouter.com/docs/en/v6/upgrading/v5#advantages-of-route-element) to upgrade.
+- you used `useHistory` to navigate: see [https://reactrouter.com/docs/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory](https://reactrouter.com/docs/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory) to upgrade.
+- you had custom components similar to our `TabbedForm` or `TabbedShowLayout` (declaring multiple sub routes): see [https://reactrouter.com/docs/en/v6/upgrading/v5](https://reactrouter.com/docs/en/v6/upgrading/v5) to upgrade.
+
+## Changed Signature Of Data Provider Hooks
+
+Specialized data provider hooks (like `useGetList` and `useUpdate`) have a new signature. There are 2 changes:
+
+- `loading` is renamed to `isLoading`
+- the hook signature now reflects the dataProvider signature (so every hook now takes 2 arguments, `resource` and `params`).
+
+For queries:
+
+```diff
+// useGetOne
+-const { data, loading } = useGetOne(
+-   'posts',
+-   123,
+-);
++const { data, isLoading } = useGetOne(
++   'posts',
++   { id: 123 }
++);
+
+// useGetList
+-const { data, ids, loading } = useGetList(
+-   'posts',
+-   { page: 1, perPage: 10 },
+-   { field: 'published_at', order: 'DESC' },
+-);
+-return <>{ids.map(id => <span key={id}>{data[id].title}</span>)}</>;
++const { data, isLoading } = useGetList(
++   'posts',
++   {
++      pagination: { page: 1, perPage: 10 },
++      sort: { field: 'published_at', order: 'DESC' },
++   }
++);
++return <>{data.map(record => <span key={record.id}>{record.title}</span>)}</>;
+```
+
+For mutations:
+
+```diff
+-const [update, { loading }] = useUpdate(
+-   'posts',
+-   123,
+-   { likes: 12 },
+-   { id: 123, title: "hello, world", likes: 122 }
+-);
+-update(resource, id, data, previousData, options);
++const [update, { isLoading }] = useUpdate(
++   'posts',
++   {
++       id: 123,
++       data: { likes: 12 },
++       previousData: { id: 123, title: "hello, world", likes: 122 }
++   }
++);
++update(resource, { id, data, previousData }, options);
+```
+
+This new signature should be easier to learn and use.
+
+To upgrade, check every instance of your code of the following hooks:
+
+- `useGetOne`
+- `useGetList`
+- `useUpdate`
+
+And update the calls. If you're using TypeScript, your code won't compile until you properly upgrade the calls. 
+
+These hooks are now powered by react-query, so the state argument contains way more than just `isLoading` (`reset`, `status`, `refetch`, etc.). Check the [`useQuery`](https://react-query.tanstack.com/reference/useQuery) and the [`useMutation`](https://react-query.tanstack.com/reference/useMutation) documentation on the react-query website for more details. 
+
+## Mutation Callbacks Can No Longer Be Used As Event Handlers
+
+In 3.0, you could use a mutation callback in an event handler, e.g. a click handler on a button. This is no longer possible, so you'll have to call the callback manually inside a handler function:
+
+```diff
+const IncreaseLikeButton = ({ record }) => {
+    const diff = { likes: record.likes + 1 };
+    const [update, { isLoading, error }] = useUpdate('likes', { id: record.id, data: diff, previousData: record });
+    if (error) { return <p>ERROR</p>; }
+-   return <button disabled={isLoading} onClick={update}>Like</button>;
++   return <button disabled={isLoading} onClick={() => update()}>Like</button>;
+};
+```
+
+TypeScript will complain if you don't.
+
+Note that your code will be more readable if you pass the mutation parameters to the mutation callback instead of the mutation hook, e.g.
+
+```diff
+const IncreaseLikeButton = ({ record }) => {
+    const diff = { likes: record.likes + 1 };
+-   const [update, { isLoading, error }] = useUpdate('likes', { id: record.id, data: diff, previousData: record });
++   const [update, { isLoading, error }] = useUpdate();
++   const handleClick = () => {
++       update('likes', { id: record.id, data: diff, previousData: record });
++   };
+    if (error) { return <p>ERROR</p>; }
+-   return <button disabled={isLoading} onClick={update}>Like</button>;
++   return <button disabled={isLoading} onClick={handleClick}>Like</button>;
+};
+```
+
+## `onSuccess` And `onFailure` Props Have Moved
+
+If you need to override the success or failure side effects of a component, you now have to use the `queryOptions` (for query side effects) or `mutationOptions` (for mutation side effects).
+
+For instance, here is how to override the side eggects for the `getOne` query in a `<Show>` component: 
+
+```diff
+const PostShow = () => {
+    const onSuccess = () => {
+        // do something
+    };
+    const onFailure = () => {
+        // do something
+    };
+    return (
+        <Show 
+-           onSuccess={onSuccess}
+-           onFailure={onFailure}
++           queryOptions={{
++               onSuccess: onSuccess,
++               onError: onFailure
++           }}
+        >
+            <SimpleShowLayout>
+                <TextField source="title" />
+            </SimpleShowLayout>
+        </Show>
+    );
+};
+```
+
+Here is how to customize side effects on the `update` mutation in `<Edit>`:
+
+```diff
+const PostEdit = () => {
+    const onSuccess = () => {
+        // do something
+    };
+    const onFailure = () => {
+        // do something
+    };
+    return (
+        <Edit 
+-           onSuccess={onSuccess}
+-           onFailure={onFailure}
++           mutationOptions={{
++               onSuccess: onSuccess,
++               onError: onFailure
++           }}
+        >
+            <SimpleForm>
+                <TextInput source="title" />
+            </SimpleForm>
+        </Show>
+    );
+};
+```
+
+Note that the `onFailure` prop was renamed to `onError` in the options, to match the react-query convention.
+
+**Tip**: `<Edit>` also has a `queryOption` prop allowing you to specify custom success and error side effects for the `getOne` query.
+
+The change concerns the following components:
+
+- `useEditController`
+- `<Edit>`
+- `<EditBase>`
+- `<SaveButton>`
+- `useShowController`
+- `<Show>`
+- `<ShowBase>`
+
+## `onSuccess` Callback On DataProvider Hooks And Components Has A New Signature
+
+The `onSuccess` callback used to receive the *response* from the dataProvider. On specialized hooks, it now receives the `data` property of the response instead. 
+
+```diff
+const [update] = useUpdate();
+const handleClick = () => {
+    update(
+        'posts',
+        { id: 123, data: { likes: 12 } },
+        {
+-           onSuccess: ({ data }) => {
++           onSuccess: (data) => {
+                // do something with data
+            }
+        }
+    );
+};
+```
+
+The change concerns the following components:
+
+- `useUpdate`
+- `useEditController`
+- `<Edit>`
+- `<EditBase>`
+- `<SaveButton>`
+- `useGetOne`
+- `useShowController`
+- `<Show>`
+- `<ShowBase>`
+
+## `<Edit successMessage>` Prop Was Removed
+
+This prop has been deprecated for a long time. Replace it with a custom success handler in the `mutationOptions`:
+
+```diff
+-import { Edit, SimpleForm } from 'react-admin';
++import { Edit, SimpleForm, useNotify } from 'react-admin';
+
+const PostEdit = () => {
++   const notify = useNotify();
++   const onSuccess = () => notify('Post updated successfully');
+    return (
+-       <Edit successMessage="Post updated successfully">
++       <Edit mutationOptions={{ onSuccess }}>
+            <SimpleForm>
+                ...
+            </SimpleForm>
+        </Edit>
+    );
+};
+```
+
 ## No More Prop Injection In Page Components
 
 Page components (`<List>`, `<Show>`, etc.) used to expect to receive props (route parameters, permissions, resource name). These components don't receive any props anymore by default. They use hooks to get the props they need from contexts or route state.  
@@ -80,13 +416,103 @@ As we removed the props injection, we enabled this synchronization by default fo
 
 However, if you had multiple `<List>` components inside used a single page, or if you used `<List>` outside of a `<Resource>`, you now have to explicitly opt out the synchronization of the list parameters with the browser location:
 
-```dif
+```diff
 const MyList = () => (
 -    <List>
 +    <List disableSyncWithLocation>
         // ...
     </List>
 )
+```
+
+## No More props injection in custom Pagination and Empty components
+
+The `<List>` component renders a Pagination component when there are records to display, and an Empty component otherwise. You can customize these components by passing your own with the `pagination`and `empty`props. 
+
+`<List>` used to inject `ListContext` props (`data`, `isLoaded`, etc.) to these Pagination component. In v4, the component rendered by `<List>` no longer receive these props. They must grab them from the ListContext instead.
+
+This means you'll have to do a few changes if you use a custom Pagination component in a List:
+
+```diff
+import { Button, Toolbar } from '@material-ui/core';
+import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronRight from '@material-ui/icons/ChevronRight';
++import { useListContext } from 'react-admin';
+
+-const PostPagination = (props) => {
++const PostPagination = () => {
+-   const { page, perPage, total, setPage } = props;
++   const { page, perPage, total, setPage } = useListContext();
+    const nbPages = Math.ceil(total / perPage) || 1;
+    return (
+        nbPages > 1 &&
+            <Toolbar>
+                {page > 1 &&
+                    <Button color="primary" key="prev" onClick={() => setPage(page - 1)}>
+                        <ChevronLeft />
+                        Prev
+                    </Button>
+                }
+                {page !== nbPages &&
+                    <Button color="primary" key="next" onClick={() => setPage(page + 1)}>
+                        Next
+                        <ChevronRight />
+                    </Button>
+                }
+            </Toolbar>
+    );
+}
+
+export const PostList = () => (
+    <List pagination={<PostPagination />}>
+        ...
+    </List>
+);
+```
+
+## `useListContext` No Longer Returns An `ids` Prop
+
+The `ListContext` used to return two props for the list data: `data` and `ids`. To render the list data, you had to iterate over the `ids`. 
+
+Starting with react-admin v4, `useListContext` only returns a `data` prop, and it is now an array. This means you have to update all your code that relies on `ids` from a `ListContext`. Here is an example for a custom list iterator using cards:
+
+```diff
+import * as React from 'react';
+import { useListContext, List, TextField, DateField, ReferenceField, EditButton } from 'react-admin';
+import { Card, CardActions, CardContent, CardHeader, Avatar } from '@material-ui/core';
+import PersonIcon from '@material-ui/icons/Person';
+
+const CommentGrid = () => {
+-   const { data, ids, loading } = useListContext();
++   const { data, isLoading } = useListContext();
+-   if (loading) return null;
++   if (isLoading) return null;
+    return (
+        <div style={{ margin: '1em' }}>
+-       {ids.map(id =>
++       {data.map(record =>
+-           <Card key={id} style={cardStyle}>
++           <Card key={record.id} style={cardStyle}>
+                <CardHeader
+-                   title={<TextField record={data[id]} source="author.name" />}
++                   title={<TextField record={record} source="author.name" />}
+-                   subheader={<DateField record={data[id]} source="created_at" />}
++                   subheader={<DateField record={record} source="created_at" />}
+                    avatar={<Avatar icon={<PersonIcon />} />}
+                />
+                <CardContent>
+-                   <TextField record={data[id]} source="body" />
++                   <TextField record={record} source="body" />
+                </CardContent>
+                <CardActions style={{ textAlign: 'right' }}>
+-                   <EditButton resource="posts" record={data[id]} />
++                   <EditButton resource="posts" record={record} />
+                </CardActions>
+            </Card>
+        )}
+        </div>
+    );
+};
 ```
 
 ## `<Card>` Is Now Rendered By Inner Components
@@ -129,18 +555,17 @@ If you were dispatching `connected-react-router` actions to navigate, you'll now
 ```diff
 -import { useDispatch } from 'react-redux';
 -import { push } from 'connected-react-router';
-+import { useHistory } from 'react-router';
++import { useNavigate } from 'react-router';
 
 const MyComponent = () => {
 -    const dispatch = useDispatch();
-+    const history = useHistory();
++    const navigate = useNavigate();
 
     const myHandler = () => {
 -        dispatch(push('/my-url'));
-+        history.push('/my-url');
++        navigate('/my-url');
     }
 }
-
 ```
 
 ## Removed the undoable prop in Favor of mutationMode
@@ -269,7 +694,7 @@ The dataProvider hooks (`useGetOne`, etc) return the request state. The `loading
 ```diff
 const BookDetail = ({ id }) => {
 -   const { data, error, loaded } = useGetOne('books', id);
-+   const { data, error, isLoading } = useGetOne('books', id);
++   const { data, error, isLoading } = useGetOne('books', { id });
 -   if (!loaded) {
 +   if (isLoading) {
         return <Loading />;
@@ -289,32 +714,9 @@ const BookDetail = ({ id }) => {
 };
 ```
 
+In general, you should use `isLoading`. It's false as long as the data has never been loaded (whether from the dataProvider or from the cache).
+
 The new props are actually returned by react-query's `useQuery` hook. Check [their documentation](https://react-query.tanstack.com/reference/useQuery) for more information.
-
-## Page Components No Longer Accept `onSuccess` and `onFailure` Props
-
-Prior to 4.0, the page components (`<List>`, `<Show>`, etc.) used to accept props for success and failure side effects. They now accept a generic `queryOptions` prop, which is passed to the underlying react-query `useQuery` call. 
-
-This options object accepts `onSuccess` and `onError` fields, so you can migrate your code as follows:
-
-```diff
-const PostShow = () => {
-    const onSuccess = () => {
-        // do something
-    };
-    const onFailure = () => {
-        // do something
-    };
-    return (
--       <Show {...props} onSuccess={onSuccess} onFailure={onFailure}>
-+       <Show {...props} queryOptions={{ onSuccess: onSuccess, onError: onFailure }}>
-            <SimpleShowLayout>
-                <TextField source="title" />
-            </SimpleShowLayout>
-        </Show>
-    );
-};
-```
 
 ## Unit Tests for Data Provider Dependent Components Need A QueryClientContext
 
@@ -325,7 +727,7 @@ If you were using components dependent on the dataProvider hooks in isolation (e
 
 // this component relies on dataProvider hooks
 const BookDetail = ({ id }) => {
-    const { data, error, isLoading } = useGetOne('books', id);
+    const { data, error, isLoading } = useGetOne('books', { id });
     if (isLoading) {
         return <Loading />;
     }
@@ -352,6 +754,29 @@ test('MyComponent', () => {
     // ...
 });
 ```
+
+## AutocompleteInput Now Uses Material UI Autocomplete
+
+We migrated the `AutocompleteInput` so that it leverages Material UI [`<Autocomplete>`](https://mui.com/components/autocomplete/). If you relied on [Downshift](https://www.downshift-js.com/) options, you'll have to update your component.
+
+Besides, some props supported by the previous implementation aren't anymore:
+- `clearAlwaysVisible`: the clear button is now always visible, either while hovering the input or when it has focus. You can hide it using the `<Autocomplete>` `disableClearable` prop though.
+- `resettable`: Removed for the same reason as `clearAlwaysVisible`
+
+## `useAuthenticated` Signature has Changed
+
+`useAuthenticated` uses to accept only the parameters passed to the `authProvider.checkAuth` function. It now accepts an option object with two properties:
+- `enabled`: whether it should check for an authenticated user
+- `params`: the parameters to pass to `checkAuth`
+
+```diff
+- useAuthenticated('permissions.posts.can_create');
++ useAuthenticated({ params: 'permissions.posts.can_create' })
+```
+
+## `useGetMainList` Was Removed
+
+`useGetMainList` was a modified version of `useGetList` designed to keep previous data on screen upon navigation. As [this is now supported natively by react-query](https://react-query.tanstack.com/guides/paginated-queries#better-paginated-queries-with-keeppreviousdata), this hook is no longer necessary and has been removed. Use `useGetList()` instead.
 
 # Upgrade to 3.0
 

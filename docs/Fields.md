@@ -45,7 +45,7 @@ React-admin Field components also accept a `record` prop. This allows you to use
 // { id: 123, title: "Hello, world", author: "John Doe", body: "..." }
 
 const PostShow = ({ id }) => {
-    const { data, isLoading } = useGetOne('books', id);
+    const { data, isLoading } = useGetOne('books', { id });
     if (isLoading) return <span>Loading</span>; 
     return (
         <dl>
@@ -988,7 +988,7 @@ Also, you can filter the query used to populate the possible values. Use the `fi
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component fetches a list of referenced records by lookup in an associative table, and passes the records down to its child component, which must be an iterator component.
 
-For instance, here is how to fetch the authors related to a book record by matching book.id to book_authors.post_id, then matching book_authors.author_id to authors.id, and then display the author last_name for each, in a `<ChipField>`:
+For instance, here is how to fetch the authors related to a book record by matching `book.id` to `book_authors.post_id`, then matching `book_authors.author_id` to `authors.id`, and then display the author last_name for each, in a `<ChipField>`:
 
 ```jsx
 import * as React from 'react';
@@ -1621,7 +1621,7 @@ import { Link } from 'react-router-dom';
 
 const AuthorField = () => {
     const post = useRecordContext(props);
-    const { data, isLoading } = useGetOne('users', post.user_id);
+    const { data, isLoading } = useGetOne('users', { id: post.user_id });
     const userShowPage = linkToRecord('/users', post.user_id, 'show');
 
     return isLoading ? null : <Link to={userShowPage}>{data.username}</Link>;

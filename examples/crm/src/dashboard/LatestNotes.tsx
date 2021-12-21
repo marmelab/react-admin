@@ -44,46 +44,40 @@ export const LatestNotes = () => {
     const { identity } = useGetIdentity();
     const {
         data: contactNotesData,
-        ids: contactNotesIds,
-        loaded: contactNotesLoaded,
+        isLoading: contactNotesLoading,
     } = useGetList(
         'contactNotes',
-        { page: 1, perPage: 5 },
-        { field: 'date', order: 'DESC' },
-        { sales_id: identity?.id },
+        {
+            pagination: { page: 1, perPage: 5 },
+            sort: { field: 'date', order: 'DESC' },
+            filter: { sales_id: identity?.id },
+        },
         { enabled: Number.isInteger(identity?.id) }
     );
-    const {
-        data: dealNotesData,
-        ids: dealNotesIds,
-        loaded: dealNotesLoaded,
-    } = useGetList(
+    const { data: dealNotesData, isLoading: dealNotesLoading } = useGetList(
         'dealNotes',
-        { page: 1, perPage: 5 },
-        { field: 'date', order: 'DESC' },
-        { sales_id: identity?.id },
+        {
+            pagination: { page: 1, perPage: 5 },
+            sort: { field: 'date', order: 'DESC' },
+            filter: { sales_id: identity?.id },
+        },
         { enabled: Number.isInteger(identity?.id) }
     );
-    if (!contactNotesLoaded || !dealNotesLoaded) {
+    if (contactNotesLoading || dealNotesLoading) {
         return null;
     }
     // TypeScript guards
-    if (
-        !contactNotesIds ||
-        !contactNotesData ||
-        !dealNotesIds ||
-        !dealNotesData
-    ) {
+    if (!contactNotesData || !dealNotesData) {
         return null;
     }
 
     const allNotes = ([] as any[])
         .concat(
-            contactNotesIds.map(id => ({
-                ...contactNotesData[id],
+            contactNotesData.map(note => ({
+                ...note,
                 type: 'contactNote',
             })),
-            dealNotesIds.map(id => ({ ...dealNotesData[id], type: 'dealNote' }))
+            dealNotesData.map(note => ({ ...note, type: 'dealNote' }))
         )
         .sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf())
         .slice(0, 5);

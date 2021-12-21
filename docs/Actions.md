@@ -281,8 +281,8 @@ import * as React from "react";
 import { useUpdate, Button } from 'react-admin';
 
 const ApproveButton = ({ record }) => {
-    const [approve, { loading }] = useUpdate('comments', record.id, { isApproved: true }, record);
-    return <Button label="Approve" onClick={approve} disabled={loading} />;
+    const [approve, { isLoading }] = useUpdate('comments', { id: record.id, data: { isApproved: true }, previousData: record });
+    return <Button label="Approve" onClick={approve} disabled={isLoading} />;
 };
 ```
 
@@ -291,30 +291,32 @@ The specialized hooks based on `useQuery` (`useGetList`, `useGetOne`, `useGetMan
 **Tip**: If you use TypeScript, you can specify the record type for more type safety:
 
 ```jsx
-const { data, loaded } = useGetOne<Product>('products', 123);
+const { data, isLoading } = useGetOne<Product>('products', { id: 123 });
 //        \- type of data is Product
 ```
 
 ### `useGetList`
 
+This hook calls `dataProvider.getList()` when the component mounts. 
+
 ```jsx
 // syntax
-const { data, ids, total, loading, loaded, error, refetch } = useGetList(resource, pagination, sort, filter, options);
+const { data, total, isFetching, isLoading, error, refetch } = useGetList(resource, { pagination, sort, filter }, options);
 
 // example
 import { useGetList } from 'react-admin';
+
 const LatestNews = () => {
-    const { data, ids, loading, error } = useGetList(
+    const { data, isLoading, error } = useGetList(
         'posts',
-        { page: 1, perPage: 10 },
-        { field: 'published_at', order: 'DESC' }
+        { pagination: { page: 1, perPage: 10 }, sort: { field: 'published_at', order: 'DESC' } }
     );
-    if (loading) { return <Loading />; }
+    if (isLoading) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>
-            {ids.map(id =>
-                <li key={id}>{data[id].title}</li>
+            {data.map(record =>
+                <li key={record.id}>{record.title}</li>
             )}
         </ul>
     );
@@ -323,15 +325,18 @@ const LatestNews = () => {
 
 ### `useGetOne`
 
+This hook calls `dataProvider.getOne()` when the component mounts. 
+
 ```jsx
 // syntax
-const { data, loading, loaded, error, refetch } = useGetOne(resource, id, options);
+const { data, isFetching, isLoading, error, refetch } = useGetOne(resource, { id }, options);
 
 // example
 import { useGetOne } from 'react-admin';
+
 const UserProfile = ({ record }) => {
-    const { data, loading, error } = useGetOne('users', record.id);
-    if (loading) { return <Loading />; }
+    const { data, isLoading, error } = useGetOne('users', { id: record.id });
+    if (isLoading) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return <div>User {data.username}</div>;
 };
@@ -422,7 +427,7 @@ const LikeButton = ({ record }) => {
     const like = { postId: record.id };
     const [create, { loading, error }] = useCreate('likes', like);
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={create}>Like</button>;
+    return <button disabled={loading} onClick={() => create()}>Like</button>;
 };
 ```
 
@@ -430,13 +435,16 @@ const LikeButton = ({ record }) => {
 
 ```jsx
 // syntax
-const [update, { data, loading, loaded, error }] = useUpdate(resource, id, data, previousData, options);
+const [update, { data, isLoading, error }] = useUpdate(resource, { id, data, previousData }, options);
 ```
 
-The `update()` method can be called in 3 different ways:
- - with the same parameters as the `useUpdate()` hook: `update(resource, id, data, previousData, options)`
- - with the same syntax as `useMutation`: `update({ resource, payload: { id, data, previousData } }, options)`
- - with no parameter (if they were already passed to useUpdate()): `update()`
+The `update()` method can be called with the same parameters as the hook:
+
+```jsx
+update(resource, { id, data, previousData }, options);
+```
+
+This means the parameters can be passed either when calling the hook, or when calling the callback.
 
 ```jsx
 // set params when calling the update callback
@@ -444,12 +452,12 @@ import { useUpdate } from 'react-admin';
 
 const IncreaseLikeButton = ({ record }) => {
     const diff = { likes: record.likes + 1 };
-    const [update, { loading, error }] = useUpdate();
+    const [update, { isLoading, error }] = useUpdate();
     const handleClick = () => {
-        update('likes', record.id, diff, record)
+        update('likes', { id: record.id, data: diff, previousData: record })
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={handleClick}>Like</button>;
+    return <button disabled={isLoading} onClick={handleClick}>Like</button>;
 };
 
 // or set params when calling the hook
@@ -457,9 +465,9 @@ import { useUpdate } from 'react-admin';
 
 const IncreaseLikeButton = ({ record }) => {
     const diff = { likes: record.likes + 1 };
-    const [update, { loading, error }] = useUpdate('likes', record.id, diff, record);
+    const [update, { isLoading, error }] = useUpdate('likes', { id: record.id, data: diff, previousData: record });
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={update}>Like</button>;
+    return <button disabled={isLoading} onClick={update}>Like</button>;
 };
 ```
 
@@ -573,19 +581,17 @@ const BulkDeletePostsButton = ({ selectedIds }) => {
 `useQuery` and all its corresponding specialized hooks support an `enabled` option. This is useful if you need to have a query executed only when a condition is met. For example, in the following example, we only fetch the categories if we have at least one post:
 ```jsx
 // fetch posts
-const { ids, data: posts, loading: isLoading } = useGetList(
+const { data: posts, isLoading } = useGetList(
     'posts',
-    { page: 1, perPage: 20 },
-    { field: 'name', order: 'ASC' },
-    {}
+    { pagination: { page: 1, perPage: 20 }, sort: { field: 'name', order: 'ASC' } },
 );
 
 // then fetch categories for these posts
-const { data: categories, loading: isLoadingCategories } = useGetMany(
+const { data: categories, isLoading: isLoadingCategories } = useGetMany(
     'categories',
-    ids.map(id=> posts[id].category_id),
+    posts.map(post => posts.category_id),
     // run only if the first query returns non-empty result
-    { enabled: ids.length > 0 }
+    { enabled: !isLoading && posts.length > 0 }
 );
 ```
 
@@ -884,21 +890,19 @@ import { useUpdate, useNotify, useRedirect, Button } from 'react-admin';
 const ApproveButton = ({ record }) => {
     const notify = useNotify();
     const redirect = useRedirect();
-    const [approve, { loading }] = useUpdate(
+    const [approve, { isLoading }] = useUpdate(
         'comments',
-        record.id,
-        { isApproved: true },
-        record,
+        { id: record.id, data: { isApproved: true }, previousData: record },
         {
             mutationMode: 'undoable',
             onSuccess: () => {
                 redirect('/comments');
                 notify('Comment approved', { undoable: true });
             },
-            onFailure: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
+            onError: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
         }
     );
-    return <Button label="Approve" onClick={approve} disabled={loading} />;
+    return <Button label="Approve" onClick={approve} disabled={isLoading} />;
 };
 ```
 
@@ -919,10 +923,9 @@ import { useUpdate, useNotify, useRedirect, Button } from 'react-admin';
 const ApproveButton = ({ record }) => {
     const notify = useNotify();
     const redirect = useRedirect();
-    const [approve, { loading }] = useUpdate(
+    const [approve, { isLoading }] = useUpdate(
         'comments',
-        record.id,
-        { isApproved: true },
+        { id: record.id, data: { isApproved: true } },
         {
 +           action: 'MY_CUSTOM_ACTION',
             mutationMode: 'undoable',
@@ -930,10 +933,10 @@ const ApproveButton = ({ record }) => {
                 redirect('/comments');
                 notify('Comment approved', { undoable: true });
             },
-            onFailure: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
+            onError: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
         }
     );
-    return <Button label="Approve" onClick={approve} disabled={loading} />;
+    return <Button label="Approve" onClick={approve} disabled={isLoading} />;
 };
 ```
 
@@ -941,7 +944,7 @@ const ApproveButton = ({ record }) => {
 
 ## Legacy Components: `<Query>`, `<Mutation>`, and `withDataProvider`
 
-Before react had hooks, react-admin used render props and higher order components to provide the same functionality. Legacy code will likely contain instances of `<Query>`, `<Mutation>`, and `withDataProvider`. Their syntax, which is identical to their hook counterpart, is illustrated below.
+Before React had hooks, react-admin used render props and higher order components to provide the same functionality. Legacy code will likely contain instances of `<Query>`, `<Mutation>`, and `withDataProvider`. Their syntax, which is identical to their hook counterpart, is illustrated below.
 
 You can fetch and display a user profile using the `<Query>` component, which uses render props:
 

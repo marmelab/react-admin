@@ -5,6 +5,7 @@ node_modules
 lib
 esm
 es6
+dist
 docs/_site/
 docs/.jekyll-metadata
 docs/.jekyll-cache
@@ -13,3 +14,5 @@ examples/**/static
 examples/**/dist
 cypress/videos
 cypress/screenshots
+/public
+/storybook-static

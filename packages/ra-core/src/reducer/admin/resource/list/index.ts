@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 import cachedRequests from './cachedRequests';
 import expanded from './expanded';
-import ids from './ids';
 import loadedOnce from './loadedOnce';
 import params from './params';
 import selectedIds from './selectedIds';
@@ -19,7 +18,6 @@ export default combineReducers({
      */
     cachedRequests: cachedRequests || defaultReducer,
     expanded: expanded || defaultReducer,
-    ids: ids || defaultReducer,
     loadedOnce: loadedOnce || defaultReducer,
     params: params || defaultReducer,
     selectedIds: selectedIds || defaultReducer,

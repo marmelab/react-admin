@@ -8,7 +8,7 @@ import {
     ReferenceField,
     TextField,
     UrlField,
-} from 'ra-ui-materialui';
+} from 'react-admin';
 import {
     FieldConfiguration,
     ResourceConfigurationMap,

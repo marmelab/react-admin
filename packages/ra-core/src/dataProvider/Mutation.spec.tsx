@@ -54,7 +54,7 @@ describe('Mutation', () => {
                     resource="foo"
                     options={{
                         onSuccess: () => {
-                            notify('Youhou!', { type: 'info' });
+                            notify('Youhou!');
                         },
                     }}
                 >

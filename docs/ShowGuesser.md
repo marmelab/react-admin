@@ -30,7 +30,7 @@ It also dumps the components it has guessed in the console, where you can copy i
 
 `<ShowGuesser>` doesn't expose any prop, as it's not designed to be customized. You should replace it with a custom `<Show>` component as soon as you need to customize it.
 
-React-admin provides guessers for the `List` view ([`<ListGuesser>`](./List.md#the-listguesser-component)), the `Edit` view ([`<EditGuesser>`](./CreateEdit.md#the-editguesser-component)), and the `Show` view (`ShowGuesser`).
+React-admin provides guessers for the `List` view ([`<ListGuesser>`](./ListGuesser.md)), the `Edit` view ([`<EditGuesser>`](./CreateEdit.md#the-editguesser-component)), and the `Show` view (`ShowGuesser`).
 
 **Tip**: Do not use the guessers in production. They are slower than manually-defined components, because they have to infer types based on the content. Besides, the guesses are not always perfect.
 

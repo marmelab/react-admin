@@ -69,12 +69,11 @@ const useDeleteWithUndoController = (
             onSuccess !== undefined
                 ? onSuccess
                 : () => {
-                      notify(
-                          'ra.notification.deleted',
-                          'info',
-                          { smart_count: 1 },
-                          true
-                      );
+                      notify('ra.notification.deleted', {
+                          type: 'info',
+                          messageArgs: { smart_count: 1 },
+                          undoable: true,
+                      });
                       redirect(redirectTo, basePath || `/${resource}`);
                       refresh();
                   },
@@ -86,14 +85,16 @@ const useDeleteWithUndoController = (
                           typeof error === 'string'
                               ? error
                               : error.message || 'ra.notification.http_error',
-                          'warning',
                           {
-                              _:
-                                  typeof error === 'string'
-                                      ? error
-                                      : error && error.message
-                                      ? error.message
-                                      : undefined,
+                              type: 'warning',
+                              messageArgs: {
+                                  _:
+                                      typeof error === 'string'
+                                          ? error
+                                          : error && error.message
+                                          ? error.message
+                                          : undefined,
+                              },
                           }
                       );
                       refresh();

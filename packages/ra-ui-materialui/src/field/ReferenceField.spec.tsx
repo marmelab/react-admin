@@ -1,7 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, waitFor } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import { screen, waitFor } from '@testing-library/react';
 import { DataProviderContext, RecordContextProvider } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { renderWithRedux } from 'ra-test';
@@ -15,7 +14,7 @@ describe('<ReferenceField />', () => {
 
     describe('Progress bar', () => {
         it("should not display a loader on mount if the reference is not in the store and a second hasn't passed yet", async () => {
-            const { queryByRole, container } = renderWithRedux(
+            renderWithRedux(
                 <ThemeProvider theme={theme}>
                     <ReferenceFieldView
                         record={record}
@@ -31,13 +30,12 @@ describe('<ReferenceField />', () => {
                 </ThemeProvider>
             );
             await new Promise(resolve => setTimeout(resolve, 500));
-            expect(queryByRole('progressbar')).toBeNull();
-            const links = container.getElementsByTagName('a');
-            expect(links).toHaveLength(0);
+            expect(screen.queryByRole('progressbar')).toBeNull();
+            expect(screen.queryAllByRole('link')).toHaveLength(0);
         });
 
         it('should display a loader on mount if the reference is not in the store and a second has passed', async () => {
-            const { queryByRole, container } = renderWithRedux(
+            renderWithRedux(
                 <ThemeProvider theme={theme}>
                     <ReferenceFieldView
                         record={record}
@@ -53,26 +51,23 @@ describe('<ReferenceField />', () => {
                 </ThemeProvider>
             );
             await new Promise(resolve => setTimeout(resolve, 1001));
-            expect(queryByRole('progressbar')).not.toBeNull();
-            const links = container.getElementsByTagName('a');
-            expect(links).toHaveLength(0);
+            expect(screen.queryByRole('progressbar')).not.toBeNull();
+            expect(screen.queryAllByRole('link')).toHaveLength(0);
         });
 
         it('should not display a loader on mount if the reference is in the store', () => {
-            const { queryByRole, container } = renderWithRedux(
-                <MemoryRouter>
-                    <ThemeProvider theme={theme}>
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
-                            basePath="/comments"
-                        >
-                            <TextField source="title" />
-                        </ReferenceField>
-                    </ThemeProvider>
-                </MemoryRouter>,
+            renderWithRedux(
+                <ThemeProvider theme={theme}>
+                    <ReferenceField
+                        record={record}
+                        resource="comments"
+                        source="postId"
+                        reference="posts"
+                        basePath="/comments"
+                    >
+                        <TextField source="title" />
+                    </ReferenceField>
+                </ThemeProvider>,
                 {
                     admin: {
                         resources: {
@@ -83,9 +78,8 @@ describe('<ReferenceField />', () => {
                     },
                 }
             );
-            expect(queryByRole('progressbar')).toBeNull();
-            const links = container.getElementsByTagName('a');
-            expect(links).toHaveLength(1);
+            expect(screen.queryByRole('progressbar')).toBeNull();
+            expect(screen.queryAllByRole('link')).toHaveLength(1);
         });
 
         it('should not display a loader if the dataProvider query completes', async () => {
@@ -94,22 +88,20 @@ describe('<ReferenceField />', () => {
                     Promise.resolve({ data: [{ id: 123, title: 'foo' }] })
                 ),
             };
-            const { queryByRole, container } = renderWithRedux(
+            renderWithRedux(
                 // @ts-ignore-line
                 <DataProviderContext.Provider value={dataProvider}>
-                    <MemoryRouter>
-                        <ThemeProvider theme={theme}>
-                            <ReferenceField
-                                record={record}
-                                resource="comments"
-                                source="postId"
-                                reference="posts"
-                                basePath="/comments"
-                            >
-                                <TextField source="title" />
-                            </ReferenceField>
-                        </ThemeProvider>
-                    </MemoryRouter>
+                    <ThemeProvider theme={theme}>
+                        <ReferenceField
+                            record={record}
+                            resource="comments"
+                            source="postId"
+                            reference="posts"
+                            basePath="/comments"
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </ThemeProvider>
                 </DataProviderContext.Provider>,
                 {
                     admin: {
@@ -120,16 +112,15 @@ describe('<ReferenceField />', () => {
                 }
             );
             await new Promise(resolve => setTimeout(resolve, 10));
-            expect(queryByRole('progressbar')).toBeNull();
-            const links = container.getElementsByTagName('a');
-            expect(links).toHaveLength(1);
+            expect(screen.queryByRole('progressbar')).toBeNull();
+            expect(screen.queryAllByRole('link')).toHaveLength(1);
         });
 
         it('should not display a loader if the dataProvider query completes without finding the reference', async () => {
             const dataProvider = {
                 getMany: jest.fn(() => Promise.resolve({ data: [] })),
             };
-            const { queryByRole, container } = renderWithRedux(
+            renderWithRedux(
                 // @ts-ignore-line
                 <DataProviderContext.Provider value={dataProvider}>
                     <ThemeProvider theme={theme}>
@@ -147,9 +138,8 @@ describe('<ReferenceField />', () => {
                 { admin: { resources: { posts: { data: {} } } } }
             );
             await new Promise(resolve => setTimeout(resolve, 10));
-            expect(queryByRole('progressbar')).toBeNull();
-            const links = container.getElementsByTagName('a');
-            expect(links).toHaveLength(0);
+            expect(screen.queryByRole('progressbar')).toBeNull();
+            expect(screen.queryAllByRole('link')).toHaveLength(0);
         });
 
         it('should not display a loader if the dataProvider query fails', async () => {
@@ -157,7 +147,7 @@ describe('<ReferenceField />', () => {
             const dataProvider = {
                 getMany: jest.fn(() => Promise.reject(new Error())),
             };
-            const { queryByRole, container } = renderWithRedux(
+            renderWithRedux(
                 // @ts-ignore-line
                 <DataProviderContext.Provider value={dataProvider}>
                     <ThemeProvider theme={theme}>
@@ -175,14 +165,13 @@ describe('<ReferenceField />', () => {
                 { admin: { resources: { posts: { data: {} } } } }
             );
             await new Promise(resolve => setTimeout(resolve, 10));
-            expect(queryByRole('progressbar')).toBeNull();
-            const links = container.getElementsByTagName('a');
-            expect(links).toHaveLength(0);
+            expect(screen.queryByRole('progressbar')).toBeNull();
+            expect(screen.queryAllByRole('link')).toHaveLength(0);
         });
     });
 
     it('should display the emptyText if the field is empty', () => {
-        const { getByText } = renderWithRedux(
+        renderWithRedux(
             <ThemeProvider theme={theme}>
                 <ReferenceField
                     record={{ id: 123 }}
@@ -197,15 +186,44 @@ describe('<ReferenceField />', () => {
             </ThemeProvider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
-        expect(getByText('EMPTY')).not.toBeNull();
+        expect(screen.getByText('EMPTY')).not.toBeNull();
     });
 
     it('should use the reference from the store if available', () => {
-        const { container, getByText } = renderWithRedux(
-            <MemoryRouter>
+        renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <ReferenceField
+                    record={record}
+                    resource="comments"
+                    source="postId"
+                    reference="posts"
+                    basePath="/comments"
+                >
+                    <TextField source="title" />
+                </ReferenceField>
+            </ThemeProvider>,
+            {
+                admin: {
+                    resources: {
+                        posts: {
+                            data: { 123: { id: 123, title: 'hello' } },
+                        },
+                    },
+                },
+            }
+        );
+        expect(screen.getByText('hello')).not.toBeNull();
+        expect(screen.queryAllByRole('link')).toHaveLength(1);
+        expect(screen.queryByRole('link').getAttribute('href')).toBe(
+            '/posts/123'
+        );
+    });
+
+    it('should use record from RecordContext', () => {
+        renderWithRedux(
+            <RecordContextProvider value={record}>
                 <ThemeProvider theme={theme}>
                     <ReferenceField
-                        record={record}
                         resource="comments"
                         source="postId"
                         reference="posts"
@@ -214,7 +232,7 @@ describe('<ReferenceField />', () => {
                         <TextField source="title" />
                     </ReferenceField>
                 </ThemeProvider>
-            </MemoryRouter>,
+            </RecordContextProvider>,
             {
                 admin: {
                     resources: {
@@ -225,42 +243,11 @@ describe('<ReferenceField />', () => {
                 },
             }
         );
-        expect(getByText('hello')).not.toBeNull();
-        const links = container.getElementsByTagName('a');
-        expect(links).toHaveLength(1);
-        expect(links.item(0).href).toBe('http://localhost/posts/123');
-    });
-
-    it('should use record from RecordContext', () => {
-        const { container, getByText } = renderWithRedux(
-            <MemoryRouter>
-                <RecordContextProvider value={record}>
-                    <ThemeProvider theme={theme}>
-                        <ReferenceField
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
-                            basePath="/comments"
-                        >
-                            <TextField source="title" />
-                        </ReferenceField>
-                    </ThemeProvider>
-                </RecordContextProvider>
-            </MemoryRouter>,
-            {
-                admin: {
-                    resources: {
-                        posts: {
-                            data: { 123: { id: 123, title: 'hello' } },
-                        },
-                    },
-                },
-            }
+        expect(screen.getByText('hello')).not.toBeNull();
+        expect(screen.queryAllByRole('link')).toHaveLength(1);
+        expect(screen.queryByRole('link').getAttribute('href')).toBe(
+            '/posts/123'
         );
-        expect(getByText('hello')).not.toBeNull();
-        const links = container.getElementsByTagName('a');
-        expect(links).toHaveLength(1);
-        expect(links.item(0).href).toBe('http://localhost/posts/123');
     });
 
     it('should call the dataProvider for the related record', async () => {
@@ -272,19 +259,17 @@ describe('<ReferenceField />', () => {
         const { dispatch } = renderWithRedux(
             // @ts-ignore-line
             <DataProviderContext.Provider value={dataProvider}>
-                <MemoryRouter>
-                    <ThemeProvider theme={theme}>
-                        <ReferenceField
-                            record={record}
-                            resource="comments"
-                            source="postId"
-                            reference="posts"
-                            basePath="/comments"
-                        >
-                            <TextField source="title" />
-                        </ReferenceField>
-                    </ThemeProvider>
-                </MemoryRouter>
+                <ThemeProvider theme={theme}>
+                    <ReferenceField
+                        record={record}
+                        resource="comments"
+                        source="postId"
+                        reference="posts"
+                        basePath="/comments"
+                    >
+                        <TextField source="title" />
+                    </ReferenceField>
+                </ThemeProvider>
             </DataProviderContext.Provider>,
             { admin: { resources: { posts: { data: {} } } } }
         );
@@ -300,7 +285,7 @@ describe('<ReferenceField />', () => {
         const dataProvider = {
             getMany: jest.fn(() => Promise.reject('boo')),
         };
-        const { queryByRole } = renderWithRedux(
+        renderWithRedux(
             // @ts-ignore-line
             <DataProviderContext.Provider value={dataProvider}>
                 <ThemeProvider theme={theme}>
@@ -318,7 +303,9 @@ describe('<ReferenceField />', () => {
             { admin: { resources: { posts: { data: {} } } } }
         );
         await waitFor(() => {
-            const ErrorIcon = queryByRole('presentation', { hidden: true });
+            const ErrorIcon = screen.queryByRole('presentation', {
+                hidden: true,
+            });
             expect(ErrorIcon).not.toBeNull();
             expect(ErrorIcon.getAttribute('aria-errormessage')).toBe('boo');
         });
@@ -385,32 +372,31 @@ describe('<ReferenceField />', () => {
 
     describe('ReferenceFieldView', () => {
         it('should render a link to specified resourceLinkPath', () => {
-            const { container } = render(
-                <MemoryRouter>
-                    <ThemeProvider theme={theme}>
-                        <ReferenceFieldView
-                            record={record}
-                            source="postId"
-                            referenceRecord={{ id: 123, title: 'foo' }}
-                            reference="posts"
-                            resource="comments"
-                            resourceLinkPath="/posts/123"
-                            basePath="/comments"
-                            loaded={true}
-                            loading={false}
-                        >
-                            <TextField source="title" />
-                        </ReferenceFieldView>
-                    </ThemeProvider>
-                </MemoryRouter>
+            renderWithRedux(
+                <ThemeProvider theme={theme}>
+                    <ReferenceFieldView
+                        record={record}
+                        source="postId"
+                        referenceRecord={{ id: 123, title: 'foo' }}
+                        reference="posts"
+                        resource="comments"
+                        resourceLinkPath="/posts/123"
+                        basePath="/comments"
+                        loaded={true}
+                        loading={false}
+                    >
+                        <TextField source="title" />
+                    </ReferenceFieldView>
+                </ThemeProvider>
             );
-            const links = container.getElementsByTagName('a');
-            expect(links).toHaveLength(1);
-            expect(links.item(0).href).toBe('http://localhost/posts/123');
+            expect(screen.queryAllByRole('link')).toHaveLength(1);
+            expect(screen.queryByRole('link').getAttribute('href')).toBe(
+                '/posts/123'
+            );
         });
 
         it('should render no link when resourceLinkPath is not specified', () => {
-            const { container } = render(
+            renderWithRedux(
                 <ThemeProvider theme={theme}>
                     <ReferenceFieldView
                         record={record}
@@ -426,32 +412,30 @@ describe('<ReferenceField />', () => {
                     </ReferenceFieldView>
                 </ThemeProvider>
             );
-            const links = container.getElementsByTagName('a');
-            expect(links).toHaveLength(0);
+            expect(screen.queryAllByRole('link')).toHaveLength(0);
         });
 
         it('should work without basePath', () => {
-            const { container } = render(
-                <MemoryRouter>
-                    <ThemeProvider theme={theme}>
-                        <ReferenceFieldView
-                            record={record}
-                            source="postId"
-                            referenceRecord={{ id: 123, title: 'foo' }}
-                            reference="posts"
-                            resource="comments"
-                            resourceLinkPath="/posts/123"
-                            loaded={true}
-                            loading={false}
-                        >
-                            <TextField source="title" />
-                        </ReferenceFieldView>
-                    </ThemeProvider>
-                </MemoryRouter>
+            renderWithRedux(
+                <ThemeProvider theme={theme}>
+                    <ReferenceFieldView
+                        record={record}
+                        source="postId"
+                        referenceRecord={{ id: 123, title: 'foo' }}
+                        reference="posts"
+                        resource="comments"
+                        resourceLinkPath="/posts/123"
+                        loaded={true}
+                        loading={false}
+                    >
+                        <TextField source="title" />
+                    </ReferenceFieldView>
+                </ThemeProvider>
             );
-            const links = container.getElementsByTagName('a');
-            expect(links).toHaveLength(1);
-            expect(links.item(0).href).toBe('http://localhost/posts/123');
+            expect(screen.queryAllByRole('link')).toHaveLength(1);
+            expect(screen.queryByRole('link').getAttribute('href')).toBe(
+                '/posts/123'
+            );
         });
     });
 });

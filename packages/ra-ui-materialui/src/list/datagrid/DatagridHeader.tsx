@@ -6,7 +6,6 @@ import {
     useResourceContext,
     Identifier,
     Record,
-    RecordMap,
     SortPayload,
     useTranslate,
 } from 'ra-core';
@@ -34,7 +33,6 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
     const {
         currentSort,
         data,
-        ids,
         onSelect,
         selectedIds,
         setSort,
@@ -59,26 +57,33 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
     const updateSort = setSort ? updateSortCallback : null;
 
     const handleSelectAll = useCallback(
-        event => {
-            if (event.target.checked) {
-                const all = ids.concat(
-                    selectedIds.filter(id => !ids.includes(id))
-                );
-                onSelect(
-                    isRowSelectable
-                        ? all.filter(id => isRowSelectable(data[id]))
-                        : all
-                );
-            } else {
-                onSelect([]);
-            }
-        },
-        [data, ids, onSelect, isRowSelectable, selectedIds]
+        event =>
+            onSelect(
+                event.target.checked
+                    ? selectedIds.concat(
+                          data
+                              .filter(
+                                  record => !selectedIds.includes(record.id)
+                              )
+                              .filter(record =>
+                                  isRowSelectable
+                                      ? isRowSelectable(record)
+                                      : true
+                              )
+                              .map(record => record.id)
+                      )
+                    : []
+            ),
+        [data, onSelect, isRowSelectable, selectedIds]
     );
 
-    const selectableIds = isRowSelectable
-        ? ids.filter(id => isRowSelectable(data[id]))
-        : ids;
+    const selectableIds = Array.isArray(data)
+        ? isRowSelectable
+            ? data
+                  .filter(record => isRowSelectable(record))
+                  .map(record => record.id)
+            : data.map(record => record.id)
+        : [];
 
     return (
         <TableHead className={classnames(className, DatagridClasses.thead)}>
@@ -122,7 +127,10 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                 {Children.map(children, (field, index) =>
                     isValidElement(field) ? (
                         <DatagridHeaderCell
-                            className={DatagridClasses.headerCell}
+                            className={classnames(
+                                DatagridClasses.headerCell,
+                                `column-${(field.props as any).source}`
+                            )}
                             currentSort={currentSort}
                             field={field}
                             isSorting={
@@ -148,10 +156,9 @@ DatagridHeader.propTypes = {
         field: PropTypes.string,
         order: PropTypes.string,
     }),
-    data: PropTypes.any,
+    data: PropTypes.arrayOf(PropTypes.any),
     hasExpand: PropTypes.bool,
     hasBulkActions: PropTypes.bool,
-    ids: PropTypes.arrayOf(PropTypes.any),
     isRowSelectable: PropTypes.func,
     isRowExpandable: PropTypes.func,
     onSelect: PropTypes.func,
@@ -171,8 +178,7 @@ export interface DatagridHeaderProps<RecordType extends Record = Record> {
     size?: 'medium' | 'small';
     // can be injected when using the component without context
     currentSort?: SortPayload;
-    data?: RecordMap<RecordType>;
-    ids?: Identifier[];
+    data?: RecordType[];
     onSelect?: (ids: Identifier[]) => void;
     onToggleItem?: (id: Identifier) => void;
     resource?: string;

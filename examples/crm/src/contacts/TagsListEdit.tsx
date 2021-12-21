@@ -31,23 +31,20 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
     const [newTagName, setNewTagName] = useState('');
     const [newTagColor, setNewTagColor] = useState(colors[0]);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [version, setVersion] = useState(0); // used to force the refresh of useGetList without refreshing the whole page
     const [disabled, setDisabled] = useState(false);
 
-    const { data: allTags, ids } = useGetList(
-        'tags',
-        { page: 1, perPage: 10 },
-        { field: 'name', order: 'ASC' },
-        {},
-        { version } as any // FIXME UseDataProviderOptions don't allow [key: string]: any
-    );
+    const { data: allTags, refetch, isLoading } = useGetList('tags', {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: 'name', order: 'ASC' },
+    });
     const { data: tags, loaded } = useGetMany('tags', record.tags, {
         enabled: record.tags && record.tags.length > 0,
     });
     const [update] = useUpdate();
     const [create] = useCreate();
 
-    const unselectedTagIds = ids && ids.filter(id => !record.tags.includes(id));
+    const unselectedTags =
+        allTags && allTags.filter(tag => !record.tags.includes(tag.id));
 
     const handleOpen = (event: React.MouseEvent<HTMLDivElement>) => {
         setAnchorEl(event.currentTarget);
@@ -61,12 +58,20 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
         const tags: Identifier[] = record.tags.filter(
             (tagId: Identifier) => tagId !== id
         );
-        update('contacts', record.id, { tags }, record);
+        update('contacts', {
+            id: record.id,
+            data: { tags },
+            previousData: record,
+        });
     };
 
     const handleAddTag = (id: Identifier) => {
         const tags: Identifier[] = [...record.tags, id];
-        update('contacts', record.id, { tags }, record);
+        update('contacts', {
+            id: record.id,
+            data: { tags },
+            previousData: record,
+        });
         setAnchorEl(null);
     };
 
@@ -92,16 +97,18 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
                 onSuccess: ({ data }) => {
                     update(
                         'contacts',
-                        record.id,
-                        { tags: [...record.tags, data.id] },
-                        record,
+                        {
+                            id: record.id,
+                            data: { tags: [...record.tags, data.id] },
+                            previousData: record,
+                        },
                         {
                             onSuccess: () => {
                                 setNewTagName('');
                                 setNewTagColor(colors[0]);
                                 setOpen(false);
 
-                                setVersion(v => v + 1);
+                                refetch();
                             },
                         }
                     );
@@ -110,7 +117,7 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
         );
     };
 
-    if (!loaded || !tags) return null;
+    if (!loaded || isLoading) return null;
     return (
         <>
             {tags.map(tag => (
@@ -139,17 +146,17 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
                 onClose={handleClose}
                 anchorEl={anchorEl}
             >
-                {unselectedTagIds?.map(id => (
-                    <MenuItem key={id} onClick={() => handleAddTag(id)}>
+                {unselectedTags?.map(tag => (
+                    <MenuItem key={tag.id} onClick={() => handleAddTag(tag.id)}>
                         <Chip
                             size="small"
                             variant="outlined"
-                            label={allTags && allTags[id].name}
+                            label={tag.name}
                             style={{
-                                backgroundColor: allTags && allTags[id].color,
+                                backgroundColor: tag.color,
                                 border: 0,
                             }}
-                            onClick={() => handleAddTag(id)}
+                            onClick={() => handleAddTag(tag.id)}
                         />
                     </MenuItem>
                 ))}

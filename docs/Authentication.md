@@ -104,6 +104,14 @@ const authProvider = {
                 throw new Error('Network error')
             });
     },
+    checkAuth: () => {
+        // Required for the authentication to work
+        return Promise.resolve();
+    },
+    getPermissions: () => {
+        // Required for the authentication to work
+        return Promise.resolve();
+    },
     // ...
 };
 
@@ -370,7 +378,7 @@ React-admin uses the `fullName` and the `avatar` (an image source, or a data-uri
 import { useGetIdentity, useGetOne } from 'react-admin';
 
 const PostDetail = ({ id }) => {
-    const { data: post, loading: postLoading } = useGetOne('posts', id);
+    const { data: post, isLoading: postLoading } = useGetOne('posts', { id });
     const { identity, loading: identityLoading } = useGetIdentity();
     if (postLoading || identityLoading) return <>Loading...</>;
     if (!post.lockedBy || post.lockedBy === identity.id) {
@@ -387,9 +395,7 @@ const PostDetail = ({ id }) => {
 
 Some applications may require fine-grained permissions to enable or disable access to certain features depending on user permissions. Since there are many possible strategies (single role, multiple roles or rights, ACLs, etc.), react-admin delegates the permission logic to `authProvider.getPermissions()`.
 
-By default, a react-admin app doesn't require any special permission on list, create, edit, and show pages. However, react-admin calls the `authProvider.getPermissions()` method before navigating to these pages, and passes the result to the main page component (`<List>`, `<Edit>`, etc.). You can then tweak the content of these pages based on permissions.
-
-Additionally, in custom pages, you can call the `usePermissions()` hook to grab the user permissions.
+By default, a react-admin app only requires users to be logged in for the list, create, edit, and show pages. However, should you need to customize the views according to the users permissions, you can call the [`usePermissions()`](#usepermissions-hook) hook to grab them. This works for custom pages too.
 
 ### User Permissions
 
@@ -447,9 +453,9 @@ export default {
 ```
 {% endraw %}
 
-### Getting User Permissions In CRUD Pages
+### Getting User Permissions
 
-If you need to check the permissions in any of the default react-admin views, you can use the `usePermissions` hook:
+If you need to check the permissions in any of the default react-admin views or in custom spage, you can use the [`usePermissions()`](#usepermissions-hook) hook:
 
 Here is an example of a `Create` view with a conditional Input based on permissions:
 
@@ -472,9 +478,7 @@ export const UserCreate = () => {
 ```
 {% endraw %}
 
-### Getting User Permissions In Custom Pages
-
-In custom pages, react-admin doesn't call `authProvider.getPermissions()`. It's up to you to call it yourself, using [the `usePermissions()` hook](#usepermissions-hook):
+It works in custom pages too:
 
 ```jsx
 // in src/MyPage.js
@@ -630,7 +634,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useLogin, useNotify, Notification, defaultTheme } from 'react-admin';
 import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
 const MyLoginPage = ({ theme }) => {
     const [email, setEmail] = useState('');
@@ -646,7 +650,7 @@ const MyLoginPage = ({ theme }) => {
     };
 
     return (
-        <ThemeProvider theme={createMuiTheme(defaultTheme)}>
+        <ThemeProvider theme={createTheme(defaultTheme)}>
             <form onSubmit={submit}>
                 <input
                     name="email"
@@ -705,11 +709,15 @@ const MyPage = () => {
 export default MyPage;
 ```
 
-If you call `useAuthenticated()` with a parameter, this parameter is passed to the `authProvider` call as second parameter. that allows you to add authentication logic depending on the context of the call:
+`useAuthenticated` accepts an options object as its only argument, with the following properties:
+- `enabled`: whether it should check for an authenticated user (`true` by default)
+- `params`: the parameters to pass to `checkAuth`
+
+If you call `useAuthenticated()` with a `params` option, those parameters are passed to the `authProvider.checkAuth` call. That allows you to add authentication logic depending on the context of the call:
 
 ```jsx
 const MyPage = () => {
-    useAuthenticated({ foo: 'bar' }); // calls authProvider.checkAuth({ foo: 'bar' })
+    useAuthenticated({ params: foo: 'bar' } }); // calls authProvider.checkAuth({ foo: 'bar' })
     return (
         <div>
             ...
@@ -799,7 +807,7 @@ Here is an example Edit component, which falls back to a Show component is the r
 import { useGetIdentity, useGetOne } from 'react-admin';
 
 const PostDetail = ({ id }) => {
-    const { data: post, loading: postLoading } = useGetOne('posts', id);
+    const { data: post, isLoading: postLoading } = useGetOne('posts', { id });
     const { identity, loading: identityLoading } = useGetIdentity();
     if (postLoading || identityLoading) return <>Loading...</>;
     if (!post.lockedBy || post.lockedBy === identity.id) {
@@ -814,7 +822,7 @@ const PostDetail = ({ id }) => {
 
 ### `usePermissions()` Hook
 
-You might want to check user permissions inside a [custom page](./Admin.md#customroutes). That's the purpose of the `usePermissions()` hook, which calls the `authProvider.getPermissions()` method on mount, and returns the result when available:
+You might want to check user permissions inside a [custom page](./Admin.md#adding-custom-pages). That's the purpose of the `usePermissions()` hook, which calls the `authProvider.getPermissions()` method on mount, and returns the result when available:
 
 ```jsx
 // in src/MyPage.js
@@ -946,7 +954,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useLogin, useNotify, Notification, defaultTheme } from 'react-admin';
 import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
 const MyLoginPage = ({ theme }) => {
     const [email, setEmail] = useState('');
@@ -961,7 +969,7 @@ const MyLoginPage = ({ theme }) => {
     };
 
     return (
-        <ThemeProvider theme={createMuiTheme(defaultTheme)}>
+        <ThemeProvider theme={createTheme(defaultTheme)}>
             <form onSubmit={submit}>
                 <input
                     name="email"
@@ -1017,30 +1025,32 @@ export default MyLogoutButton;
 
 ### Restricting Access to Resources or Views
 
-Permissions can be useful to restrict access to resources or their views. To do so, you must use a function as the `<Admin>` only child. React-admin will call this function with the permissions returned by the `authProvider`.
+Permissions can be useful to restrict access to resources or their views. To do so, you must pass a function as a child of the `<Admin>`  component. React-admin will call this function with the permissions returned by the `authProvider`. Note that you can only provide one of such function child.
 
 ```jsx
 <Admin
     dataProvider={dataProvider}
     authProvider={authProvider}
 >
-    {permissions => [
-        // Restrict access to the edit and remove views to admin only
-        <Resource
-            name="customers"
-            list={VisitorList}
-            edit={permissions === 'admin' ? VisitorEdit : null}
-            icon={VisitorIcon}
-        />,
-        // Only include the categories resource for admin users
-        permissions === 'admin'
-            ? <Resource name="categories" list={CategoryList} edit={CategoryEdit} icon={CategoryIcon} />
-            : null,
-    ]}
+    {permissions => (
+        <>
+            {/* Restrict access to the edit view to admin only */}
+            <Resource
+                name="customers"
+                list={VisitorList}
+                edit={permissions === 'admin' ? VisitorEdit : null}
+                icon={VisitorIcon}
+            />
+            {/* Only include the categories resource for admin users */}
+            {permissions === 'admin'
+                ? <Resource name="categories" list={CategoryList} edit={CategoryEdit} icon={CategoryIcon} />
+                : null}
+        </>
+    )}
 </Admin>
 ```
 
-Note that the function returns an array of React elements. This is required to avoid having to wrap them in a container element which would prevent the `Admin` from working.
+Note that the function may return as many fragments as you need.
 
 **Tip**: Even if that's possible, be careful when completely excluding a resource (like with the `categories` resource in this example) as it will prevent you to reference this resource in the other resource views, too.
 
@@ -1165,5 +1175,33 @@ const Menu = ({ onMenuClick, logout }) => {
             {logout}
         </div>
     );
+}
+```
+
+### Allowing Anonymous Access to Custom Views
+
+You might have custom views that leverage react-admin components or hooks such as:
+
+- `Create`, `CreateBase` `CreateController` and `useCreateController`
+- `Edit`, `EditBase`, `EditController` and `useEditController`
+- `List`, `ListBase`, `ListController` and `useListController`
+- `Show`, `ShowBase`, `ShowController` and `useShowController`
+
+By default, they all redirect anonymous users to the login page. You can disable this behavior by passing the `disableAuthentication` boolean prop:
+
+```jsx
+const MostRecentComments = () => {
+    const { data, loaded } = useListController({
+        disableAuthentication: true,
+        resource: 'comments',
+        sort: { field: 'created_at', order: 'desc' },
+        perPage: 10
+    });
+
+    if (!loaded) {
+        return null;
+    }
+
+    return <CommentsList comments={data} />
 }
 ```

@@ -87,10 +87,10 @@ const Admin = (props: AdminProps) => {
     const {
         appLayout,
         authProvider,
+        basename,
         catchAll,
         children,
         customReducers,
-        customRoutes = [],
         dashboard,
         dataProvider,
         disableTelemetry,
@@ -127,6 +127,7 @@ const Admin = (props: AdminProps) => {
     return (
         <AdminContext
             authProvider={authProvider}
+            basename={basename}
             dataProvider={dataProvider}
             i18nProvider={i18nProvider}
             history={history}
@@ -135,7 +136,6 @@ const Admin = (props: AdminProps) => {
         >
             <AdminUI
                 layout={appLayout || layout}
-                customRoutes={customRoutes}
                 dashboard={dashboard}
                 disableTelemetry={disableTelemetry}
                 menu={menu}

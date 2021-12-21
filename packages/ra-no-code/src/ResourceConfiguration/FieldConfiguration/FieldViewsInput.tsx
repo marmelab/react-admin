@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CheckboxGroupInput, FieldProps } from 'ra-ui-materialui';
+import { CheckboxGroupInput, FieldProps } from 'react-admin';
 
 export const FieldViewsInput = (props: FieldProps) => (
     <CheckboxGroupInput

@@ -5,7 +5,7 @@ title: "WithRecord"
 
 # `WithRecord`
 
-`<WithRecord>` grabs the current record from the `RecordContext`. It's the render prop version of [the `useRecordContext` hook](./useContextProvider.md). 
+`<WithRecord>` grabs the current record from the `RecordContext`. It's the render prop version of [the `useRecordContext` hook](./useRecordContext.md). 
 
 ## Usage
 

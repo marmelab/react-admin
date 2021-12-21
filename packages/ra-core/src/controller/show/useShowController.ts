@@ -1,8 +1,9 @@
 import { useParams } from 'react-router-dom';
 import { UseQueryOptions } from 'react-query';
 
+import { useAuthenticated } from '../../auth';
 import useVersion from '../useVersion';
-import { Record, Identifier } from '../../types';
+import { Record } from '../../types';
 import { useGetOne, Refetch } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { useNotify, useRedirect, useRefresh } from '../../sideEffect';
@@ -43,29 +44,43 @@ import { useResourceContext, useGetResourceLabel } from '../../core';
 export const useShowController = <RecordType extends Record = Record>(
     props: ShowControllerProps<RecordType> = {}
 ): ShowControllerResult<RecordType> => {
-    const { id: propsId, queryOptions = {} } = props;
+    const { disableAuthentication, id: propsId, queryOptions = {} } = props;
+
+    useAuthenticated({ enabled: !disableAuthentication });
+
     const resource = useResourceContext(props);
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
     const version = useVersion();
-    const { id: routeId } = useParams<{ id?: string }>();
+    const { id: routeId } = useParams<'id'>();
     const id = propsId || decodeURIComponent(routeId);
 
     const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
         RecordType
-    >(resource, id, {
-        onError: () => {
-            notify('ra.notification.item_doesnt_exist', {
-                type: 'warning',
-            });
-            redirect('list', `/${resource}`);
-            refresh();
-        },
-        retry: false,
-        ...queryOptions,
-    });
+    >(
+        resource,
+        { id },
+        {
+            onError: () => {
+                notify('ra.notification.item_doesnt_exist', {
+                    type: 'warning',
+                });
+                redirect('list', `/${resource}`);
+                refresh();
+            },
+            retry: false,
+            ...queryOptions,
+        }
+    );
+
+    // eslint-disable-next-line eqeqeq
+    if (record && record.id && record.id != id) {
+        throw new Error(
+            `useShowController: Fetched record's id attribute (${record.id}) must match the requested 'id' (${id})`
+        );
+    }
 
     const getResourceLabel = useGetResourceLabel();
     const defaultTitle = translate('ra.page.show', {
@@ -87,7 +102,8 @@ export const useShowController = <RecordType extends Record = Record>(
 };
 
 export interface ShowControllerProps<RecordType extends Record = Record> {
-    id?: Identifier;
+    disableAuthentication?: boolean;
+    id?: RecordType['id'];
     queryOptions?: UseQueryOptions<RecordType>;
     resource?: string;
 }

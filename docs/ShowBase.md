@@ -12,7 +12,7 @@ The `<ShowBase>` component handles the headless logic of the Show page:
 - it creates a `ShowContext` and a `RecordContext`,
 - it renders its child component
 
-Contrary to `<Show>`, it does not render the page layout, so no title and actions.
+Contrary to `<Show>`, it does not render the page layout, so no title, no actions, and no `<Card>`.
 
 ## Usage
 
@@ -60,7 +60,7 @@ const App = () => (
 ## Props
 
 * [`children`](#layout) the components that actually render something
-* [`queryOptions`](#query-client-options): options to pass to the react-query client
+* [`queryOptions`](#client-query-options): options to pass to the react-query client
 
 ## Client Query Options
 

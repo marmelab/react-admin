@@ -53,8 +53,8 @@ const extractShowContextProps = ({
     record,
     data,
     defaultTitle,
-    loaded,
-    loading,
+    isFetching,
+    isLoading,
     resource,
     version,
 }: any) => ({
@@ -64,8 +64,8 @@ const extractShowContextProps = ({
     record: record || data,
     data: record || data,
     defaultTitle,
-    loaded,
-    loading,
+    isFetching,
+    isLoading,
     resource,
     version,
 });

@@ -9,7 +9,7 @@ import {
     EditButton,
     useTranslate,
     NumberField,
-    Identifier,
+    useListContext,
 } from 'react-admin';
 
 import AvatarField from './AvatarField';
@@ -50,35 +50,26 @@ const Root = styled('div')(({ theme }) => ({
     },
 }));
 
-interface Props {
-    ids?: Identifier[];
-    data?: { [key: string]: Customer };
-    basePath?: string;
-}
-
-const MobileGrid = ({ ids, data, basePath }: Props) => {
+const MobileGrid = () => {
     const translate = useTranslate();
+    const { data, isLoading } = useListContext<Customer>();
 
-    if (!ids || !data) {
+    if (isLoading || data.length === 0) {
         return null;
     }
 
     return (
         <Root className={classes.root}>
-            {ids.map(id => (
-                <Card key={id} className={classes.card}>
+            {data.map(record => (
+                <Card key={record.id} className={classes.card}>
                     <CardHeader
                         title={
                             <div className={classes.cardTitleContent}>
-                                <h2>{`${data[id].first_name} ${data[id].last_name}`}</h2>
-                                <EditButton
-                                    resource="visitors"
-                                    basePath={basePath}
-                                    record={data[id]}
-                                />
+                                <h2>{`${record.first_name} ${record.last_name}`}</h2>
+                                <EditButton record={record} />
                             </div>
                         }
-                        avatar={<AvatarField record={data[id]} size="45" />}
+                        avatar={<AvatarField record={record} size="45" />}
                     />
                     <CardContent className={classes.cardContent}>
                         <div>
@@ -86,16 +77,16 @@ const MobileGrid = ({ ids, data, basePath }: Props) => {
                                 'resources.customers.fields.last_seen_gte'
                             )}
                             &nbsp;
-                            <DateField record={data[id]} source="last_seen" />
+                            <DateField record={record} source="last_seen" />
                         </div>
                         <div>
                             {translate(
                                 'resources.commands.name',
-                                data[id].nb_commands || 1
+                                record.nb_commands || 1
                             )}
                             &nbsp;:&nbsp;
                             <NumberField
-                                record={data[id]}
+                                record={record}
                                 source="nb_commands"
                                 label="resources.customers.fields.commands"
                             />
@@ -106,15 +97,15 @@ const MobileGrid = ({ ids, data, basePath }: Props) => {
                             )}
                             &nbsp; :{' '}
                             <ColoredNumberField
-                                record={data[id]}
+                                record={record}
                                 source="total_spent"
                                 options={{ style: 'currency', currency: 'USD' }}
                             />
                         </div>
                     </CardContent>
-                    {data[id].groups && data[id].groups.length > 0 && (
+                    {record.groups && record.groups.length > 0 && (
                         <CardContent className={classes.cardContent}>
-                            <SegmentsField record={data[id]} />
+                            <SegmentsField record={record} />
                         </CardContent>
                     )}
                 </Card>

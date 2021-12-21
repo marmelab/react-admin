@@ -1,25 +1,14 @@
-import { isValidElement, ReactElement, useEffect, useMemo } from 'react';
-import { Location } from 'history';
+import { isValidElement, useEffect, useMemo } from 'react';
+import { UseQueryOptions } from 'react-query';
 
+import { useAuthenticated } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../sideEffect';
-import { useGetMainList, Refetch } from '../../dataProvider';
+import { useGetList, Refetch } from '../../dataProvider';
 import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
-import { CRUD_GET_LIST } from '../../actions';
 import { defaultExporter } from '../../export';
-import {
-    FilterPayload,
-    SortPayload,
-    RecordMap,
-    Identifier,
-    Record,
-    Exporter,
-} from '../../types';
-import {
-    useResourceContext,
-    useResourceDefinition,
-    useGetResourceLabel,
-} from '../../core';
+import { FilterPayload, SortPayload, Record, Exporter } from '../../types';
+import { useResourceContext, useGetResourceLabel } from '../../core';
 import useRecordSelection from '../useRecordSelection';
 import { useListParams } from './useListParams';
 
@@ -41,9 +30,10 @@ import { useListParams } from './useListParams';
  * }
  */
 export const useListController = <RecordType extends Record = Record>(
-    props: ListControllerProps = {}
+    props: ListControllerProps<RecordType> = {}
 ): ListControllerResult<RecordType> => {
     const {
+        disableAuthentication,
         exporter = defaultExporter,
         filterDefaultValues,
         sort = defaultSort,
@@ -51,9 +41,10 @@ export const useListController = <RecordType extends Record = Record>(
         filter,
         debounce = 500,
         disableSyncWithLocation,
+        queryOptions,
     } = props;
+    useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
-    const { hasCreate } = useResourceDefinition(props);
 
     if (!resource) {
         throw new Error(
@@ -84,57 +75,47 @@ export const useListController = <RecordType extends Record = Record>(
      * We want the list of ids to be always available for optimistic rendering,
      * and therefore we need a custom action (CRUD_GET_LIST) that will be used.
      */
-    const {
-        ids,
-        data,
-        total,
-        error,
-        loading,
-        loaded,
-        refetch,
-    } = useGetMainList<RecordType>(
+    const { data, total, error, isLoading, isFetching, refetch } = useGetList<
+        RecordType
+    >(
         resource,
         {
-            page: query.page,
-            perPage: query.perPage,
+            pagination: {
+                page: query.page,
+                perPage: query.perPage,
+            },
+            sort: { field: query.sort, order: query.order },
+            filter: { ...query.filter, ...filter },
         },
-        { field: query.sort, order: query.order },
-        { ...query.filter, ...filter },
         {
-            action: CRUD_GET_LIST,
-            onFailure: error =>
-                notify(
-                    typeof error === 'string'
-                        ? error
-                        : error.message || 'ra.notification.http_error',
-                    'warning',
-                    {
-                        _:
-                            typeof error === 'string'
-                                ? error
-                                : error && error.message
-                                ? error.message
-                                : undefined,
-                    }
-                ),
+            keepPreviousData: true,
+            retry: false,
+            onError: error =>
+                notify(error?.message || 'ra.notification.http_error', {
+                    type: 'warning',
+                    messageArgs: {
+                        _: error?.message,
+                    },
+                }),
+            ...queryOptions,
         }
     );
 
-    const totalPages = Math.ceil(total / query.perPage) || 1;
-
+    // change page if there is no data
     useEffect(() => {
+        const totalPages = Math.ceil(total / query.perPage) || 1;
         if (
             query.page <= 0 ||
-            (!loading && query.page > 1 && ids.length === 0)
+            (!isFetching && query.page > 1 && data.length === 0)
         ) {
             // Query for a page that doesn't exist, set page to 1
             queryModifiers.setPage(1);
-        } else if (!loading && query.page > totalPages) {
+        } else if (!isFetching && query.page > totalPages) {
             // Query for a page out of bounds, set page to the last existing page
             // It occurs when deleting the last element of the last page
             queryModifiers.setPage(totalPages);
         }
-    }, [loading, query.page, ids, queryModifiers, total, totalPages]);
+    }, [isFetching, query.page, query.perPage, data, queryModifiers, total]);
 
     const currentSort = useMemo(
         () => ({
@@ -158,11 +139,9 @@ export const useListController = <RecordType extends Record = Record>(
         exporter,
         filter,
         filterValues: query.filterValues,
-        hasCreate,
         hideFilter: queryModifiers.hideFilter,
-        ids,
-        loaded: loaded || ids.length > 0,
-        loading,
+        isFetching,
+        isLoading,
         onSelect: selectionModifiers.select,
         onToggleItem: selectionModifiers.toggle,
         onUnselectItems: selectionModifiers.clearSelection,
@@ -180,23 +159,20 @@ export const useListController = <RecordType extends Record = Record>(
     };
 };
 
-export interface ListControllerProps {
-    // the props you can change
+export interface ListControllerProps<RecordType extends Record = Record> {
+    debounce?: number;
+    disableAuthentication?: boolean;
+    /**
+     * Whether to disable the synchronization of the list parameters with the current location (URL search parameters)
+     */
+    disableSyncWithLocation?: boolean;
+    exporter?: Exporter | false;
     filter?: FilterPayload;
-    filters?: ReactElement | ReactElement[];
     filterDefaultValues?: object;
     perPage?: number;
-    sort?: SortPayload;
-    exporter?: Exporter | false;
-    // the props managed by react-admin
-    debounce?: number;
-    location?: Location;
-    path?: string;
+    queryOptions?: UseQueryOptions<{ data: RecordType[]; total: number }>;
     resource?: string;
-    // Whether to disable the synchronization of the list parameters
-    // with the current location (URL search parameters)
-    disableSyncWithLocation?: boolean;
-    [key: string]: any;
+    sort?: SortPayload;
 }
 
 const defaultSort = {
@@ -206,26 +182,24 @@ const defaultSort = {
 
 export interface ListControllerResult<RecordType extends Record = Record> {
     currentSort: SortPayload;
-    data: RecordMap<RecordType>;
+    data: RecordType[];
     defaultTitle?: string;
     displayedFilters: any;
     error?: any;
     exporter?: Exporter | false;
     filter?: FilterPayload;
     filterValues: any;
-    hasCreate?: boolean;
     hideFilter: (filterName: string) => void;
-    ids: Identifier[];
-    loading: boolean;
-    loaded: boolean;
-    onSelect: (ids: Identifier[]) => void;
-    onToggleItem: (id: Identifier) => void;
+    isFetching: boolean;
+    isLoading: boolean;
+    onSelect: (ids: RecordType['id'][]) => void;
+    onToggleItem: (id: RecordType['id']) => void;
     onUnselectItems: () => void;
     page: number;
     perPage: number;
     refetch: Refetch;
     resource: string;
-    selectedIds: Identifier[];
+    selectedIds: RecordType['id'][];
     setFilters: (
         filters: any,
         displayedFilters: any,
@@ -247,11 +221,9 @@ export const injectedProps = [
     'error',
     'exporter',
     'filterValues',
-    'hasCreate',
     'hideFilter',
-    'ids',
-    'loading',
-    'loaded',
+    'isFetching',
+    'isLoading',
     'onSelect',
     'onToggleItem',
     'onUnselectItems',

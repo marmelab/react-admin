@@ -10,6 +10,7 @@ import {
     DialogContent,
     DialogActions,
 } from '@mui/material';
+import { useQueryClient } from 'react-query';
 
 import { ReferenceInput, SelectInput, useTranslate } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
@@ -31,7 +32,7 @@ const Root = styled('div')({
 
 const PostReferenceInput = props => {
     const translate = useTranslate();
-
+    const queryClient = useQueryClient();
     const { change } = useForm();
 
     const [showCreateDialog, setShowCreateDialog] = useState(false);
@@ -67,10 +68,11 @@ const PostReferenceInput = props => {
         post => {
             setShowCreateDialog(false);
             setNewPostId(post.id);
-            setVersion(previous => previous + 1);
             change('post_id', post.id);
+            queryClient.invalidateQueries(['posts', 'getList']);
+            setVersion(previous => previous + 1);
         },
-        [setShowCreateDialog, setNewPostId, change]
+        [setShowCreateDialog, setNewPostId, change, queryClient]
     );
 
     return (

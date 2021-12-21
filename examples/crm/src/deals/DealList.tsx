@@ -10,7 +10,7 @@ import {
     TopToolbar,
     useGetIdentity,
 } from 'react-admin';
-import { Route } from 'react-router';
+import { matchPath, useLocation } from 'react-router';
 
 import { DealListContent } from './DealListContent';
 import { DealCreate } from './DealCreate';
@@ -32,6 +32,10 @@ const StyledTopToolbar = styled(TopToolbar)(({ theme }) => ({
 
 export const DealList = () => {
     const { identity } = useGetIdentity();
+    const location = useLocation();
+    const matchCreate = matchPath('/deals/create', location.pathname);
+    const matchShow = matchPath('/deals/:id/show', location.pathname);
+
     return identity ? (
         <>
             <List
@@ -45,12 +49,8 @@ export const DealList = () => {
             >
                 <DealListContent />
             </List>
-            <Route path="/deals/create">
-                {({ match }) => <DealCreate open={!!match} />}
-            </Route>
-            <Route path="/deals/:id/show">
-                {({ match }) => (!!match ? <DealShow open={!!match} /> : null)}
-            </Route>
+            <DealCreate open={!!matchCreate} />
+            <DealShow open={!!matchShow} id={matchShow?.params.id} />
         </>
     ) : null;
 };
