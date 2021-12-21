@@ -5,6 +5,7 @@ import {
     UseMutationOptions,
     UseMutationResult,
     MutateOptions,
+    QueryKey,
 } from 'react-query';
 
 import useDataProvider from './useDataProvider';
@@ -182,10 +183,8 @@ export const useUpdate = <RecordType extends Record = Record>(
                     mode.current === 'undoable'
                 ) {
                     // If the mutation fails, use the context returned from onMutate to roll back
-                    context.rollbackData.forEach(({ key, value }) => {
-                        value.forEach(([queryKey, queryValue]) =>
-                            queryClient.setQueryData(queryKey, queryValue)
-                        );
+                    context.rollbackData.forEach(([key, value]) => {
+                        queryClient.setQueryData(key, value);
                     });
                 }
 
@@ -236,7 +235,7 @@ export const useUpdate = <RecordType extends Record = Record>(
                     mode.current === 'undoable'
                 ) {
                     // Always refetch after error or success:
-                    context.rollbackData.forEach(({ key }) => {
+                    context.rollbackData.forEach(([key]) => {
                         queryClient.invalidateQueries(key);
                     });
                 }
@@ -302,10 +301,13 @@ export const useUpdate = <RecordType extends Record = Record>(
             [callTimeResource, 'getList'],
             [callTimeResource, 'getMany'],
             [callTimeResource, 'getManyReference'],
-        ].map(key => ({ key, value: queryClient.getQueriesData(key) }));
+        ].reduce(
+            (prev, curr) => prev.concat(queryClient.getQueriesData(curr)),
+            [] as RollbackData
+        );
 
         // Cancel any outgoing re-fetches (so they don't overwrite our optimistic update)
-        await rollbackData.current.map(({ key }) =>
+        await rollbackData.current.map(([key]) =>
             queryClient.cancelQueries(key)
         );
 
@@ -351,10 +353,8 @@ export const useUpdate = <RecordType extends Record = Record>(
             undoableEventEmitter.once('end', ({ isUndo }) => {
                 if (isUndo) {
                     // rollback
-                    rollbackData.current.forEach(({ key, value }) => {
-                        value.forEach(([queryKey, queryValue]) =>
-                            queryClient.setQueryData(queryKey, queryValue)
-                        );
+                    rollbackData.current.forEach(([key, value]) => {
+                        queryClient.setQueryData(key, value);
                     });
                 } else {
                     // call the mutate without success side effects
@@ -370,7 +370,7 @@ export const useUpdate = <RecordType extends Record = Record>(
     return [update, mutation];
 };
 
-type RollbackData = { key: any[]; value: any }[];
+type RollbackData = [key: QueryKey, value: any][];
 
 export interface UseUpdateMutateParams<RecordType extends Record = Record> {
     resource?: string;
