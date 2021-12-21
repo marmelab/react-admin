@@ -63,7 +63,7 @@ const defaultFilter = {};
  * @param {number} props.perPage the number of item per page
  * @param {Object} props.sort the sort to apply to the referenced records
  *
- * @returns {ReferenceManyProps} The reference many props
+ * @returns {ListControllerResult} The reference many props
  */
 export const useReferenceManyFieldController = (
     props: UseReferenceManyFieldControllerParams

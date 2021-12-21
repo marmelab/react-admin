@@ -2,9 +2,8 @@ import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import isEqual from 'lodash/isEqual';
 
 import { Record, SortPayload, Identifier } from '../../types';
-import { useGetManyAggregate } from '../../dataProvider';
+import { useGetList, useGetManyAggregate } from '../../dataProvider';
 import { FieldInputProps, useForm } from 'react-final-form';
-import { useGetList } from '../../dataProvider/useGetList';
 import { useTranslate } from '../../i18n';
 import { getStatusForArrayInput as getDataStatus } from './referenceDataStatus';
 import { useResourceContext } from '../../core';
@@ -38,7 +37,7 @@ import { ReferenceArrayInputContextValue } from './ReferenceArrayInputContext';
  * @return {Object} controllerProps Fetched data and callbacks for the ReferenceArrayInput components
  */
 export const useReferenceArrayInputController = (
-    props: UseReferenceArrayInputPArams
+    props: UseReferenceArrayInputParams
 ): ReferenceArrayInputContextValue & Omit<ListControllerResult, 'setSort'> => {
     const {
         filter: defaultFilter,
@@ -304,7 +303,7 @@ const mergeReferences = (ref1: Record[], ref2: Record[]): Record[] => {
     return res;
 };
 
-export interface UseReferenceArrayInputPArams {
+export interface UseReferenceArrayInputParams {
     basePath?: string;
     filter?: any;
     filterToQuery?: (filter: any) => any;

@@ -41,7 +41,7 @@ const defaultSort = { field: null, order: null };
  *
  * @param {Props} props
  *
- * @returns {ReferenceArrayProps} The reference props
+ * @returns {ListControllerResult} The reference props
  */
 export const useReferenceArrayFieldController = (
     props: UseReferenceArrayFieldControllerParams

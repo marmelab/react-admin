@@ -110,7 +110,7 @@ This should be mostly transparent for you unless:
 
 ## Changed Signature Of Data Provider Hooks
 
-Specialized data provider hooks (like `useGetList` and `useUpdate`) have a new signature. There are 2 changes:
+Specialized data provider hooks (like `useGetOne`, `useGetList`, `useGetMany` and `useUpdate`) have a new signature. There are 2 changes:
 
 - `loading` is renamed to `isLoading`
 - the hook signature now reflects the dataProvider signature (so every hook now takes 2 arguments, `resource` and `params`).

@@ -55,6 +55,7 @@ export const useGetMany = <RecordType extends Record = Record>(
     const { ids } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
+
     return useQuery<RecordType[], Error, RecordType[]>(
         [resource, 'getMany', { ids: ids.map(id => String(id)) }],
         () =>
