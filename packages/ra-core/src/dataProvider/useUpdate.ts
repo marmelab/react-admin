@@ -91,77 +91,52 @@ export const useUpdate = <RecordType extends Record = Record>(
     const updateCache = async ({ resource, id, data }) => {
         // hack: only way to tell react-query not to fetch this query for the next 5 seconds
         // because setQueryData doesn't accept a stale time option
-        const updatedAt =
-            mode.current === 'undoable' ? Date.now() + 1000 * 5 : Date.now();
-        await queryClient.setQueryData(
+        const now = Date.now();
+        const updatedAt = mode.current === 'undoable' ? now + 5 * 1000 : now;
+
+        const updateColl = (old: RecordType[]) => {
+            if (!old) return;
+            const index = old.findIndex(
+                // eslint-disable-next-line eqeqeq
+                record => record.id == id
+            );
+            if (index === -1) {
+                return old;
+            }
+            return [
+                ...old.slice(0, index),
+                { ...old[index], ...data },
+                ...old.slice(index + 1),
+            ];
+        };
+
+        type GetListResult = { data?: RecordType[]; total?: number };
+
+        queryClient.setQueryData(
             [resource, 'getOne', String(id)],
-            (old: RecordType) => ({
-                ...old,
-                ...data,
-            }),
+            (record: RecordType) => ({ ...record, ...data }),
             { updatedAt }
         );
         queryClient.setQueriesData(
             [resource, 'getList'],
-            (old: { data?: RecordType[]; total?: number }) => {
-                if (!old || !old.data) return;
-                const index = old.data?.findIndex(
-                    // eslint-disable-next-line eqeqeq
-                    record => record.id == id
-                );
-                if (index === -1) {
-                    return old;
-                }
-                return {
-                    data: [
-                        ...old.data.slice(0, index),
-                        { ...old.data[index], ...data },
-                        ...old.data.slice(index + 1),
-                    ],
-                    total: old.total,
-                };
-            },
+            (res: GetListResult) =>
+                res && res.data
+                    ? { data: updateColl(res.data), total: res.total }
+                    : res,
             { updatedAt }
         );
         queryClient.setQueriesData(
             [resource, 'getMany'],
-            (old: RecordType[]) => {
-                if (!old || old.length === 0) return;
-                const index = old.findIndex(
-                    // eslint-disable-next-line eqeqeq
-                    record => record.id == id
-                );
-                if (index === -1) {
-                    return old;
-                }
-                return [
-                    ...old.slice(0, index),
-                    { ...old[index], ...data },
-                    ...old.slice(index + 1),
-                ];
-            },
+            (coll: RecordType[]) =>
+                coll && coll.length > 0 ? updateColl(coll) : coll,
             { updatedAt }
         );
         queryClient.setQueriesData(
             [resource, 'getManyReference'],
-            (old: { data?: RecordType[]; total?: number }) => {
-                if (!old || !old.data) return;
-                const index = old.data?.findIndex(
-                    // eslint-disable-next-line eqeqeq
-                    record => record.id == id
-                );
-                if (index === -1) {
-                    return old;
-                }
-                return {
-                    data: [
-                        ...old.data.slice(0, index),
-                        { ...old.data[index], ...data },
-                        ...old.data.slice(index + 1),
-                    ],
-                    total: old.total,
-                };
-            },
+            (res: GetListResult) =>
+                res && res.data
+                    ? { data: updateColl(res.data), total: res.total }
+                    : res,
             { updatedAt }
         );
     };
