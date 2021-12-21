@@ -548,11 +548,15 @@ const CommentGrid = () => {
 };
 ```
 
-## Removed the `oneToMany` Reducer
+## Removed Reducers
 
-React-admin no longer relies on Redux to fetch one-to-many relationships. Instead, the cache of previously fetched relationships is managed by react-query.
+React-admin no longer relies on Redux to fetch relationships. Instead, the cache of previously fetched relationships is managed by react-query.
 
-If you need to get the records related to the current one via a one-to-many relationship (e.g. to fetch all the books of a given author), you can use the `useGetManyReference` hook instead.
+If you need to get the records related to the current one via a one-to-many relationship (e.g. to fetch all the books of a given author), you can use the `useGetManyReference` hook instead of the `oneToMany` reducer.
+
+If you need to get possible values for a relatinoship, use the `useGetList` hook instead of the `possibleValues` reducer.
+
+Besides, the `loadedOnce` reducer, used internally for the previous version of the List page logic, is no longer necessary and has been removed.
 
 ## Redux-Saga Was Removed
 
