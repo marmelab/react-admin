@@ -9,7 +9,7 @@ import {
 
 import useDataProvider from './useDataProvider';
 import undoableEventEmitter from './undoableEventEmitter';
-import { Identifier, Record, UpdateParams, MutationMode } from '../types';
+import { Record, UpdateParams, MutationMode } from '../types';
 
 /**
  * Get a callback to call the dataProvider.update() method, the result and the loading state.
@@ -235,7 +235,7 @@ export const useUpdate = <RecordType extends Record = Record>(
                     queryClient.setQueriesData(
                         [callTimeResource, 'getManyReference'],
                         context.previousGetManyReference
-                      );
+                    );
                 }
 
                 if (reactMutationOptions.onError) {
