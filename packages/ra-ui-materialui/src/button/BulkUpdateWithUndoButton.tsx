@@ -9,7 +9,6 @@ import {
     useRefresh,
     useNotify,
     useUnselectAll,
-    CRUD_UPDATE_MANY,
     useResourceContext,
     useListContext,
 } from 'ra-core';
@@ -43,7 +42,7 @@ export const BulkUpdateWithUndoButton = (
             unselectAll(resource);
             refresh();
         },
-        onFailure = error => {
+        onError = (error: Error | string) => {
             notify(
                 typeof error === 'string'
                     ? error
@@ -65,14 +64,12 @@ export const BulkUpdateWithUndoButton = (
         ...rest
     } = props;
 
-    const [updateMany, { loading }] = useUpdateMany(
+    const [updateMany, { isLoading }] = useUpdateMany(
         resource,
-        selectedIds,
-        data,
+        { ids: selectedIds, data },
         {
-            action: CRUD_UPDATE_MANY,
             onSuccess,
-            onFailure,
+            onError,
             mutationMode: 'undoable',
         }
     );
@@ -89,7 +86,7 @@ export const BulkUpdateWithUndoButton = (
             onClick={handleClick}
             label={label}
             className={BulkUpdateWithUndoButtonClasses.updateButton}
-            disabled={loading}
+            disabled={isLoading}
             {...sanitizeRestProps(rest)}
         >
             {icon}

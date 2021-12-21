@@ -8,7 +8,6 @@ import {
     useNotify,
     useRefresh,
     useUnselectAll,
-    CRUD_UPDATE_MANY,
     BulkActionProps,
     Identifier,
 } from 'react-admin';
@@ -21,12 +20,10 @@ const BulkAcceptButton = (props: BulkActionProps) => {
     const refresh = useRefresh();
     const unselectAll = useUnselectAll('reviews');
 
-    const [approve, { loading }] = useUpdateMany(
+    const [updateMany, { isLoading }] = useUpdateMany(
         'reviews',
-        selectedIds,
-        { status: 'accepted' },
+        { ids: selectedIds, data: { status: 'accepted' } },
         {
-            action: CRUD_UPDATE_MANY,
             mutationMode: 'undoable',
             onSuccess: () => {
                 notify('resources.reviews.notification.approved_success', {
@@ -36,7 +33,7 @@ const BulkAcceptButton = (props: BulkActionProps) => {
                 refresh();
                 unselectAll();
             },
-            onFailure: () => {
+            onError: () => {
                 notify('resources.reviews.notification.approved_error', {
                     type: 'warning',
                 });
@@ -47,8 +44,8 @@ const BulkAcceptButton = (props: BulkActionProps) => {
     return (
         <Button
             label="resources.reviews.action.accept"
-            onClick={approve}
-            disabled={loading}
+            onClick={() => updateMany()}
+            disabled={isLoading}
         >
             <ThumbUp />
         </Button>
