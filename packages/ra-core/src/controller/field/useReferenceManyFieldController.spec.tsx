@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
 
+import { testDataProvider } from '../../dataProvider/testDataProvider';
+import { CoreAdminContext } from '../../core';
 import { useReferenceManyFieldController } from './useReferenceManyFieldController';
-import { renderWithRedux } from 'ra-test';
 
 const ReferenceManyFieldController = props => {
     const { children, page = 1, perPage = 25, ...rest } = props;
@@ -15,90 +16,31 @@ const ReferenceManyFieldController = props => {
     return children(controllerProps);
 };
 
-describe('<ReferenceManyFieldController />', () => {
+describe('useReferenceManyFieldController', () => {
     it('should set isLoading to true when related records are not yet fetched', async () => {
         const ComponentToTest = ({ isLoading }: { isLoading?: boolean }) => {
             return <div>isLoading: {isLoading.toString()}</div>;
         };
-
-        const { queryByText } = renderWithRedux(
-            <ReferenceManyFieldController
-                resource="foo"
-                source="items"
-                reference="bar"
-                target="foo_id"
-                basePath=""
-            >
-                {props => <ComponentToTest {...props} />}
-            </ReferenceManyFieldController>,
-            {
-                admin: {
-                    resources: {
-                        bar: {
-                            data: {
-                                1: { id: 1, title: 'hello' },
-                                2: { id: 2, title: 'world' },
-                            },
-                        },
-                    },
-                    references: {
-                        oneToMany: {
-                            'foo_bar@fooId_barId': {},
-                        },
-                    },
-                },
-            }
-        );
-
-        expect(queryByText('isLoading: true')).not.toBeNull();
-        await waitFor(() => {
-            expect(queryByText('isLoading: false')).not.toBeNull();
+        const dataProvider = testDataProvider({
+            getManyReference: () => Promise.resolve({ data: [], total: 0 }),
         });
-    });
 
-    it('should set isLoading to false when related records have been fetched and there are no results', async () => {
-        const ComponentToTest = ({ isLoading }: { isLoading?: boolean }) => {
-            return <div>isLoading: {isLoading.toString()}</div>;
-        };
-
-        const { queryByText } = renderWithRedux(
-            <ReferenceManyFieldController
-                resource="foo"
-                source="items"
-                reference="bar"
-                target="foo_id"
-                basePath=""
-                record={{
-                    id: 'fooId',
-                    source: 'barId',
-                }}
-            >
-                {props => <ComponentToTest {...props} />}
-            </ReferenceManyFieldController>,
-            {
-                admin: {
-                    resources: {
-                        bar: {
-                            data: {
-                                1: { id: 1, title: 'hello' },
-                                2: { id: 2, title: 'world' },
-                            },
-                        },
-                    },
-                    references: {
-                        oneToMany: {
-                            'foo_bar@fooId_barId': {
-                                ids: [],
-                            },
-                        },
-                    },
-                },
-            }
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ReferenceManyFieldController
+                    resource="foo"
+                    source="items"
+                    reference="bar"
+                    target="foo_id"
+                >
+                    {props => <ComponentToTest {...props} />}
+                </ReferenceManyFieldController>
+            </CoreAdminContext>
         );
 
-        expect(queryByText('isLoading: true')).not.toBeNull();
+        expect(screen.queryByText('isLoading: true')).not.toBeNull();
         await waitFor(() => {
-            expect(queryByText('isLoading: false')).not.toBeNull();
+            expect(screen.queryByText('isLoading: false')).not.toBeNull();
         });
     });
 
@@ -106,321 +48,184 @@ describe('<ReferenceManyFieldController />', () => {
         const ComponentToTest = ({ isLoading }: { isLoading?: boolean }) => {
             return <div>isLoading: {isLoading.toString()}</div>;
         };
+        const dataProvider = testDataProvider({
+            getManyReference: () =>
+                Promise.resolve({
+                    data: [
+                        { id: 1, title: 'hello' },
+                        { id: 2, title: 'world' },
+                    ],
+                    total: 2,
+                }) as any,
+        });
 
-        const { queryByText } = renderWithRedux(
-            <ReferenceManyFieldController
-                resource="foo"
-                source="items"
-                reference="bar"
-                target="foo_id"
-                basePath=""
-                record={{
-                    id: 'fooId',
-                    source: 'barId',
-                }}
-            >
-                {props => <ComponentToTest {...props} />}
-            </ReferenceManyFieldController>,
-            {
-                admin: {
-                    resources: {
-                        bar: {
-                            data: {
-                                1: { id: 1, title: 'hello' },
-                                2: { id: 2, title: 'world' },
-                            },
-                        },
-                    },
-                    references: {
-                        oneToMany: {
-                            'foo_bar@fooId_barId': {
-                                ids: [1, 2],
-                            },
-                        },
-                    },
-                },
-            }
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ReferenceManyFieldController
+                    resource="foo"
+                    source="items"
+                    reference="bar"
+                    target="foo_id"
+                >
+                    {props => <ComponentToTest {...props} />}
+                </ReferenceManyFieldController>
+            </CoreAdminContext>
         );
 
-        expect(queryByText('isLoading: true')).not.toBeNull();
+        expect(screen.queryByText('isLoading: true')).not.toBeNull();
         await waitFor(() => {
-            expect(queryByText('isLoading: false')).not.toBeNull();
+            expect(screen.queryByText('isLoading: false')).not.toBeNull();
         });
     });
 
     it('should call dataProvider.getManyReferences on mount', async () => {
-        const children = jest.fn().mockReturnValue('children');
-        const { dispatch } = renderWithRedux(
-            <ReferenceManyFieldController
-                resource="foo"
-                source="items"
-                reference="bar"
-                target="foo_id"
-                basePath=""
-                record={{
-                    id: 'fooId',
-                    source: 'barId',
-                }}
-            >
-                {children}
-            </ReferenceManyFieldController>,
-            {
-                admin: {
-                    resources: {
-                        bar: {
-                            data: {
-                                1: { id: 1, title: 'hello' },
-                                2: { id: 2, title: 'world' },
-                            },
-                        },
-                    },
-                    references: {
-                        oneToMany: {
-                            'foo_bar@fooId_barId': {
-                                ids: [1, 2],
-                            },
-                        },
-                    },
-                },
-            }
+        const dataProvider = testDataProvider({
+            getManyReference: jest
+                .fn()
+                .mockResolvedValue({ data: [], total: 0 }),
+        });
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ReferenceManyFieldController
+                    resource="authors"
+                    source="id"
+                    record={{ id: 123, name: 'James Joyce' }}
+                    reference="books"
+                    target="author_id"
+                >
+                    {() => 'null'}
+                </ReferenceManyFieldController>
+            </CoreAdminContext>
         );
+
         await waitFor(() => {
-            expect(dispatch.mock.calls[0]).toEqual([
+            expect(dataProvider.getManyReference).toHaveBeenCalledWith(
+                'books',
                 {
-                    meta: {
-                        relatedTo: 'foo_bar@foo_id_undefined',
-                        resource: 'bar',
-                    },
-                    payload: {
-                        filter: {},
-                        id: undefined,
-                        pagination: { page: 1, perPage: 25 },
-                        sort: { field: 'id', order: 'DESC' },
-                        target: 'foo_id',
-                    },
-                    type: 'RA/CRUD_GET_MANY_REFERENCE',
-                },
-            ]);
+                    id: 123,
+                    target: 'author_id',
+                    pagination: { page: 1, perPage: 25 },
+                    sort: { field: 'id', order: 'DESC' },
+                    filter: {},
+                }
+            );
         });
     });
 
     it('should pass data to children function', async () => {
         const children = jest.fn().mockReturnValue('children');
-        const data = [
-            { id: 1, title: 'hello' },
-            { id: 2, title: 'world' },
-        ];
-        renderWithRedux(
-            <ReferenceManyFieldController
-                resource="foo"
-                reference="bar"
-                target="fooId"
-                basePath=""
-                record={{
-                    id: 'fooId',
-                    source: 'barId',
-                }}
-                source="source"
-            >
-                {children}
-            </ReferenceManyFieldController>,
-            {
-                admin: {
-                    resources: {
-                        bar: {
-                            data: {
-                                1: { id: 1, title: 'hello' },
-                                2: { id: 2, title: 'world' },
-                            },
-                        },
-                    },
-                    references: {
-                        oneToMany: {
-                            'foo_bar@fooId_barId': {
-                                ids: [1, 2],
-                            },
-                        },
-                    },
-                },
-            }
-        );
-        await waitFor(() => {
-            expect(children.mock.calls[0][0].data).toEqual(data);
+        const dataProvider = testDataProvider({
+            getManyReference: () =>
+                Promise.resolve({
+                    data: [
+                        { id: 1, title: 'hello' },
+                        { id: 2, title: 'world' },
+                    ],
+                    total: 2,
+                }) as any,
         });
-    });
 
-    it('should support record with string identifier', async () => {
-        const children = jest.fn().mockReturnValue('children');
-        renderWithRedux(
-            <ReferenceManyFieldController
-                resource="foo"
-                reference="bar"
-                target="fooId"
-                basePath=""
-                record={{
-                    id: 'fooId',
-                    source: 'barId',
-                }}
-                source="source"
-            >
-                {children}
-            </ReferenceManyFieldController>,
-            {
-                admin: {
-                    resources: {
-                        bar: {
-                            data: {
-                                'abc-1': { id: 'abc-1', title: 'hello' },
-                                'abc-2': { id: 'abc-2', title: 'world' },
-                            },
-                        },
-                    },
-                    references: {
-                        oneToMany: {
-                            'foo_bar@fooId_barId': {
-                                ids: ['abc-1', 'abc-2'],
-                            },
-                        },
-                    },
-                },
-            }
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ReferenceManyFieldController
+                    resource="authors"
+                    source="id"
+                    record={{ id: 123, name: 'James Joyce' }}
+                    reference="books"
+                    target="author_id"
+                >
+                    {children}
+                </ReferenceManyFieldController>
+            </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(children.mock.calls[0][0].data).toEqual([
-                { id: 'abc-1', title: 'hello' },
-                { id: 'abc-2', title: 'world' },
-            ]);
+            expect(children).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    data: [
+                        { id: 1, title: 'hello' },
+                        { id: 2, title: 'world' },
+                    ],
+                })
+            );
         });
     });
 
     it('should support custom source', async () => {
-        const children = jest.fn(({ data }) =>
-            data && data.length > 0 ? data.length : null
+        const dataProvider = testDataProvider({
+            getManyReference: jest
+                .fn()
+                .mockResolvedValue({ data: [], total: 0 }),
+        });
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ReferenceManyFieldController
+                    resource="authors"
+                    source="uniqueName"
+                    record={{
+                        id: 123,
+                        uniqueName: 'jamesjoyce256',
+                        name: 'James Joyce',
+                    }}
+                    reference="books"
+                    target="author_id"
+                >
+                    {() => 'null'}
+                </ReferenceManyFieldController>
+            </CoreAdminContext>
         );
 
-        const { dispatch } = renderWithRedux(
-            <ReferenceManyFieldController
-                resource="posts"
-                reference="comments"
-                target="post_id"
-                basePath=""
-                record={{ id: 'not me', customId: 1 }}
-                source="customId"
-            >
-                {children}
-            </ReferenceManyFieldController>,
-            {
-                admin: {
-                    references: {
-                        oneToMany: {
-                            'posts_comments@post_id_1': {
-                                ids: [1],
-                                total: 1,
-                            },
-                        },
-                    },
-                    resources: {
-                        comments: {
-                            data: {
-                                1: {
-                                    post_id: 1,
-                                    id: 1,
-                                    body: 'Hello!',
-                                },
-                            },
-                        },
-                    },
-                },
-            }
-        );
         await waitFor(() => {
-            expect(dispatch.mock.calls[0]).toEqual([
+            expect(dataProvider.getManyReference).toHaveBeenCalledWith(
+                'books',
                 {
-                    meta: {
-                        relatedTo: 'posts_comments@post_id_1',
-                        resource: 'comments',
-                    },
-                    payload: {
-                        filter: {},
-                        id: 1,
-                        pagination: { page: 1, perPage: 25 },
-                        sort: { field: 'id', order: 'DESC' },
-                        target: 'post_id',
-                    },
-                    type: 'RA/CRUD_GET_MANY_REFERENCE',
-                },
-            ]);
-
-            expect(children.mock.calls[0][0].data).toEqual([
-                {
-                    post_id: 1,
-                    id: 1,
-                    body: 'Hello!',
-                },
-            ]);
+                    id: 'jamesjoyce256',
+                    target: 'author_id',
+                    pagination: { page: 1, perPage: 25 },
+                    sort: { field: 'id', order: 'DESC' },
+                    filter: {},
+                }
+            );
         });
     });
 
     it('should call crudGetManyReference when its props changes', async () => {
+        const dataProvider = testDataProvider({
+            getManyReference: jest
+                .fn()
+                .mockResolvedValue({ data: [], total: 0 }),
+        });
         const ControllerWrapper = props => (
-            <ReferenceManyFieldController
-                record={{ id: 1 }}
-                resource="foo"
-                reference="bar"
-                target="foo_id"
-                basePath=""
-                source="id"
-                {...props}
-            >
-                {() => 'null'}
-            </ReferenceManyFieldController>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ReferenceManyFieldController
+                    resource="authors"
+                    source="id"
+                    record={{ id: 123, name: 'James Joyce' }}
+                    sort={props.sort}
+                    reference="books"
+                    target="author_id"
+                >
+                    {() => 'null'}
+                </ReferenceManyFieldController>
+            </CoreAdminContext>
         );
 
-        const { rerender, dispatch } = renderWithRedux(<ControllerWrapper />, {
-            admin: {
-                resources: {
-                    bar: {},
-                    foo: {},
-                },
-            },
-        });
-        expect(dispatch).toBeCalledTimes(3); // CRUD_GET_MANY_REFERENCE, CRUD_GET_MANY_REFERENCE_LOADING, FETCH_START
+        const { rerender } = render(<ControllerWrapper />);
+        expect(dataProvider.getManyReference).toBeCalledTimes(1);
         rerender(<ControllerWrapper sort={{ field: 'id', order: 'ASC' }} />);
-        expect(dispatch).toBeCalledTimes(6);
         await waitFor(() => {
-            expect(dispatch.mock.calls[0]).toEqual([
+            expect(dataProvider.getManyReference).toBeCalledTimes(2);
+            expect(dataProvider.getManyReference).toHaveBeenCalledWith(
+                'books',
                 {
-                    meta: {
-                        relatedTo: 'foo_bar@foo_id_1',
-                        resource: 'bar',
-                    },
-                    payload: {
-                        filter: {},
-                        id: 1,
-                        pagination: { page: 1, perPage: 25 },
-                        sort: { field: 'id', order: 'DESC' },
-                        target: 'foo_id',
-                    },
-                    type: 'RA/CRUD_GET_MANY_REFERENCE',
-                },
-            ]);
-
-            expect(dispatch.mock.calls[3]).toEqual([
-                {
-                    meta: {
-                        relatedTo: 'foo_bar@foo_id_1',
-                        resource: 'bar',
-                    },
-                    payload: {
-                        filter: {},
-                        id: 1,
-                        pagination: { page: 1, perPage: 25 },
-                        sort: { field: 'id', order: 'ASC' },
-                        target: 'foo_id',
-                    },
-                    type: 'RA/CRUD_GET_MANY_REFERENCE',
-                },
-            ]);
+                    id: 123,
+                    target: 'author_id',
+                    pagination: { page: 1, perPage: 25 },
+                    sort: { field: 'id', order: 'ASC' },
+                    filter: {},
+                }
+            );
         });
     });
 });

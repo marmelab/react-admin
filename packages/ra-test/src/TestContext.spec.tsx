@@ -12,7 +12,6 @@ const primedStore = {
         loading: 0,
         notifications: [],
         references: {
-            oneToMany: {},
             possibleValues: {},
         },
         resources: {},

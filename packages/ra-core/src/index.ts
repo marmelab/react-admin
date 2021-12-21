@@ -23,12 +23,5 @@ export {
     getPossibleReferenceValues,
 } from './reducer';
 
-export {
-    getIds,
-    getReferences,
-    getReferencesByIds,
-    nameRelatedTo,
-} from './reducer/admin/references/oneToMany';
-
 export * from './sideEffect';
 export * from './types';

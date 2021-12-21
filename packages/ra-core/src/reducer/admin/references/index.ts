@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import oneToMany from './oneToMany';
 import possibleValues, {
     getPossibleReferences as pvGetPossibleReferences,
     getPossibleReferenceValues as pvGetPossibleReferenceValues,
@@ -15,7 +14,6 @@ export default combineReducers({
      *
      * @see https://stackoverflow.com/questions/43375079/redux-warning-only-appearing-in-tests
      */
-    oneToMany: oneToMany || defaultReducer,
     possibleValues: possibleValues || defaultReducer,
 });
 

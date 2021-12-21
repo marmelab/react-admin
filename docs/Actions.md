@@ -369,27 +369,29 @@ const PostTags = ({ record }) => {
 
 ```jsx
 // syntax
-const { data, ids, total, loading, loaded, error, refetch } = useGetManyReference(resource, target, id, pagination, sort, filter, referencingResource, options);
+const { data, total, isFetching, isLoading, error, refetch } = useGetManyReference(resource, { target, id, pagination, sort, filter }, options);
 
 // example
 import { useGetManyReference } from 'react-admin';
-const PostComments = ({ post_id }) => {
-    const { data, ids, loading, error } = useGetManyReference(
+
+const PostComments = ({ record }) => {
+    // fetch all comments related to the current record
+    const { data, isLoading, error } = useGetManyReference(
         'comments',
-        'post_id',
-        post_id,
-        { page: 1, perPage: 10 },
-        { field: 'published_at', order: 'DESC' },
-        {},
-        'posts',
+        { 
+            target: 'post_id',
+            id: record.id,
+            pagination: { page: 1, perPage: 10 },
+            sort: { field: 'published_at', order: 'DESC' }
+        }
     );
-    if (loading) { return <Loading />; }
+    if (isLoading) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>
-            {ids.map(id =>
-                <li key={id}>{data[id].body}</li>
-            )}
+            {data.map(comment => (
+                <li key={comment.id}>{comment.body}</li>
+            ))}
         </ul>
     );
 };

@@ -153,6 +153,27 @@ For queries:
 +   'posts',
 +   { ids: [123, 456] }
 +);
+
+// useGetManyReference
+-const { data, ids, loading } = useGetManyReference(
+-   'comments',
+-   'post_id',
+-   123,
+-   { page: 1, perPage: 10 },
+-   { field: 'published_at', order: 'DESC' }
+-   'posts'
+-);
+-return <>{ids.map(id => <span key={id}>{data[id].title}</span>)}</>;
++const { data, isLoading } = useGetManyReference(
++   'comments',
++   {
++       target: 'post_id',
++       id: 123,
++       pagination: { page: 1, perPage: 10 },
++       sort: { field: 'published_at', order: 'DESC' }
++   }
++);
++return <>{data.map(record => <span key={record.id}>{record.title}</span>)}</>;
 ```
 
 For mutations:
@@ -183,6 +204,7 @@ To upgrade, check every instance of your code of the following hooks:
 - `useGetOne`
 - `useGetList`
 - `useGetMany`
+- `useGetManyReference`
 - `useUpdate`
 
 And update the calls. If you're using TypeScript, your code won't compile until you properly upgrade the calls. 
@@ -525,6 +547,12 @@ const CommentGrid = () => {
     );
 };
 ```
+
+## Removed the `oneToMany` Reducer
+
+React-admin no longer relies on Redux to fetch one-to-many relationships. Instead, the cache of previously fetched relationships is managed by react-query.
+
+If you need to get the records related to the current one via a one-to-many relationship (e.g. to fetch all the books of a given author), you can use the `useGetManyReference` hook instead.
 
 ## Redux-Saga Was Removed
 

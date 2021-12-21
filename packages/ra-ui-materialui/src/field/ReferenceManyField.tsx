@@ -63,7 +63,6 @@ import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
  */
 export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
     const {
-        basePath,
         children,
         filter,
         page = 1,
@@ -93,7 +92,6 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
     }
 
     const controllerProps = useReferenceManyFieldController({
-        basePath,
         filter,
         page,
         perPage,
@@ -129,7 +127,6 @@ export interface ReferenceManyFieldProps
 
 ReferenceManyField.propTypes = {
     addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
     filter: PropTypes.object,
