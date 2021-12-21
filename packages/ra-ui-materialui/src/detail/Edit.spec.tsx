@@ -285,7 +285,7 @@ describe('<Edit />', () => {
                         title: 'ipsum',
                     },
                     { data: { id: 123, title: 'ipsum' }, resource: 'foo' },
-                    { rollbackData: [] }
+                    { snapshot: [] }
                 );
             });
         });
@@ -338,7 +338,7 @@ describe('<Edit />', () => {
                         title: 'ipsum',
                     },
                     { data: { id: 123, title: 'ipsum' }, resource: 'foo' },
-                    { rollbackData: [] }
+                    { snapshot: [] }
                 );
                 expect(onSuccess).not.toHaveBeenCalled();
             });
@@ -385,7 +385,7 @@ describe('<Edit />', () => {
                 expect(onError).toHaveBeenCalledWith(
                     { message: 'not good' },
                     { data: { id: 123, title: 'ipsum' }, resource: 'foo' },
-                    { rollbackData: [] }
+                    { snapshot: [] }
                 );
             });
         });
@@ -438,7 +438,7 @@ describe('<Edit />', () => {
                         message: 'not good',
                     },
                     { data: { id: 123, title: 'ipsum' }, resource: 'foo' },
-                    { rollbackData: [] }
+                    { snapshot: [] }
                 );
                 expect(onError).not.toHaveBeenCalled();
             });

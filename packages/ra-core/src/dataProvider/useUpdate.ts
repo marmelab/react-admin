@@ -82,7 +82,7 @@ export const useUpdate = <RecordType extends Record = Record>(
     const { mutationMode = 'pessimistic', ...reactMutationOptions } = options;
     const mode = useRef<MutationMode>(mutationMode);
     const paramsRef = useRef<Partial<UpdateParams<RecordType>>>({});
-    const rollbackData = useRef<RollbackData>([]);
+    const snapshot = useRef<Snapshot>([]);
 
     const updateCache = ({ resource, id, data }) => {
         // hack: only way to tell react-query not to fetch this query for the next 5 seconds
@@ -164,26 +164,26 @@ export const useUpdate = <RecordType extends Record = Record>(
                     const userContext =
                         (await reactMutationOptions.onMutate(variables)) || {};
                     return {
-                        rollbackData: rollbackData.current,
+                        snapshot: snapshot.current,
                         // @ts-ignore
                         ...userContext,
                     };
                 } else {
                     // Return a context object with the snapshot value
-                    return { rollbackData: rollbackData.current };
+                    return { snapshot: snapshot.current };
                 }
             },
             onError: (
                 error: unknown,
                 variables: Partial<UseUpdateMutateParams<RecordType>> = {},
-                context: { rollbackData: RollbackData }
+                context: { snapshot: Snapshot }
             ) => {
                 if (
                     mode.current === 'optimistic' ||
                     mode.current === 'undoable'
                 ) {
-                    // If the mutation fails, use the context returned from onMutate to roll back
-                    context.rollbackData.forEach(([key, value]) => {
+                    // If the mutation fails, use the context returned from onMutate to rollback
+                    context.snapshot.forEach(([key, value]) => {
                         queryClient.setQueryData(key, value);
                     });
                 }
@@ -228,14 +228,14 @@ export const useUpdate = <RecordType extends Record = Record>(
                 data: RecordType,
                 error: unknown,
                 variables: Partial<UseUpdateMutateParams<RecordType>> = {},
-                context: { rollbackData: RollbackData }
+                context: { snapshot: Snapshot }
             ) => {
                 if (
                     mode.current === 'optimistic' ||
                     mode.current === 'undoable'
                 ) {
                     // Always refetch after error or success:
-                    context.rollbackData.forEach(([key]) => {
+                    context.snapshot.forEach(([key]) => {
                         queryClient.invalidateQueries(key);
                     });
                 }
@@ -295,21 +295,34 @@ export const useUpdate = <RecordType extends Record = Record>(
             String(callTimeId),
         ]);
 
-        // Snapshot the previous values
-        rollbackData.current = [
+        const queryKeys = [
             [callTimeResource, 'getOne', String(callTimeId)],
             [callTimeResource, 'getList'],
             [callTimeResource, 'getMany'],
             [callTimeResource, 'getManyReference'],
-        ].reduce(
+        ];
+
+        /**
+         * Snapshot the previous values via queryClient.getQueriesData()
+         *
+         * The snapshotData ref will contain an array of tuples [query key, associated data]
+         *
+         * @example
+         * [
+         *   [['posts', 'getOne', '1'], { id: 1, title: 'Hello' }],
+         *   [['posts', 'getList'], { data: [{ id: 1, title: 'Hello' }], total: 1 }],
+         *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
+         * ]
+         *
+         * @see https://react-query.tanstack.com/reference/QueryClient#queryclientgetqueriesdata
+         */
+        snapshot.current = queryKeys.reduce(
             (prev, curr) => prev.concat(queryClient.getQueriesData(curr)),
-            [] as RollbackData
+            [] as Snapshot
         );
 
         // Cancel any outgoing re-fetches (so they don't overwrite our optimistic update)
-        await rollbackData.current.map(([key]) =>
-            queryClient.cancelQueries(key)
-        );
+        await snapshot.current.map(([key]) => queryClient.cancelQueries(key));
 
         // Optimistically update to the new value in getOne
         updateCache({
@@ -325,7 +338,7 @@ export const useUpdate = <RecordType extends Record = Record>(
                     onSuccess(
                         previousRecord,
                         { resource: callTimeResource, ...callTimeParams },
-                        { rollbackData: rollbackData.current }
+                        { snapshot: snapshot.current }
                     ),
                 0
             );
@@ -336,7 +349,7 @@ export const useUpdate = <RecordType extends Record = Record>(
                     reactMutationOptions.onSuccess(
                         previousRecord,
                         { resource: callTimeResource, ...callTimeParams },
-                        { rollbackData: rollbackData.current }
+                        { snapshot: snapshot.current }
                     ),
                 0
             );
@@ -353,7 +366,7 @@ export const useUpdate = <RecordType extends Record = Record>(
             undoableEventEmitter.once('end', ({ isUndo }) => {
                 if (isUndo) {
                     // rollback
-                    rollbackData.current.forEach(([key, value]) => {
+                    snapshot.current.forEach(([key, value]) => {
                         queryClient.setQueryData(key, value);
                     });
                 } else {
@@ -370,7 +383,7 @@ export const useUpdate = <RecordType extends Record = Record>(
     return [update, mutation];
 };
 
-type RollbackData = [key: QueryKey, value: any][];
+type Snapshot = [key: QueryKey, value: any][];
 
 export interface UseUpdateMutateParams<RecordType extends Record = Record> {
     resource?: string;
