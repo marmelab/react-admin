@@ -183,7 +183,9 @@ export const useUpdate = <RecordType extends Record = Record>(
                 ) {
                     // If the mutation fails, use the context returned from onMutate to roll back
                     context.rollbackData.forEach(({ key, value }) => {
-                        queryClient.setQueryData(key, value);
+                        value.forEach(([queryKey, queryValue]) =>
+                            queryClient.setQueryData(queryKey, queryValue)
+                        );
                     });
                 }
 
@@ -300,7 +302,7 @@ export const useUpdate = <RecordType extends Record = Record>(
             [callTimeResource, 'getList'],
             [callTimeResource, 'getMany'],
             [callTimeResource, 'getManyReference'],
-        ].map(key => ({ key, value: queryClient.getQueryData(key) }));
+        ].map(key => ({ key, value: queryClient.getQueriesData(key) }));
 
         // Cancel any outgoing re-fetches (so they don't overwrite our optimistic update)
         await rollbackData.current.map(({ key }) =>
@@ -350,7 +352,9 @@ export const useUpdate = <RecordType extends Record = Record>(
                 if (isUndo) {
                     // rollback
                     rollbackData.current.forEach(({ key, value }) => {
-                        queryClient.setQueryData(key, value);
+                        value.forEach(([queryKey, queryValue]) =>
+                            queryClient.setQueryData(queryKey, queryValue)
+                        );
                     });
                 } else {
                     // call the mutate without success side effects
