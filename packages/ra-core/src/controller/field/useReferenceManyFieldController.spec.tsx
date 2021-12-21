@@ -4,7 +4,7 @@ import expect from 'expect';
 
 import { testDataProvider } from '../../dataProvider/testDataProvider';
 import { CoreAdminContext } from '../../core';
-import useReferenceManyFieldController from './useReferenceManyFieldController';
+import { useReferenceManyFieldController } from './useReferenceManyFieldController';
 
 const ReferenceManyFieldController = props => {
     const { children, page = 1, perPage = 25, ...rest } = props;
