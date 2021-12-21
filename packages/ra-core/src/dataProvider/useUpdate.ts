@@ -167,9 +167,10 @@ export const useUpdate = <RecordType extends Record = Record>(
                         // @ts-ignore
                         ...userContext,
                     };
+                } else {
+                    // Return a context object with the snapshot value
+                    return { rollbackData: rollbackData.current };
                 }
-                // Return a context object with the snapshot value
-                return rollbackData.current;
             },
             onError: (
                 error: unknown,
@@ -295,32 +296,11 @@ export const useUpdate = <RecordType extends Record = Record>(
 
         // Snapshot the previous values
         rollbackData.current = [
-            {
-                key: [callTimeResource, 'getOne', String(callTimeId)],
-                value: previousRecord,
-            },
-            {
-                key: [callTimeResource, 'getList'],
-                value: queryClient.getQueriesData([
-                    callTimeResource,
-                    'getList',
-                ]),
-            },
-            {
-                key: [callTimeResource, 'getMany'],
-                value: queryClient.getQueriesData([
-                    callTimeResource,
-                    'getMany',
-                ]),
-            },
-            {
-                key: [callTimeResource, 'getManyReference'],
-                value: queryClient.getQueriesData([
-                    callTimeResource,
-                    'getManyReference',
-                ]),
-            },
-        ];
+            [callTimeResource, 'getOne', String(callTimeId)],
+            [callTimeResource, 'getList'],
+            [callTimeResource, 'getMany'],
+            [callTimeResource, 'getManyReference'],
+        ].map(key => ({ key, value: queryClient.getQueryData(key) }));
 
         // Cancel any outgoing re-fetches (so they don't overwrite our optimistic update)
         await rollbackData.current.forEach(({ key }) =>
@@ -341,7 +321,7 @@ export const useUpdate = <RecordType extends Record = Record>(
                     onSuccess(
                         previousRecord,
                         { resource: callTimeResource, ...callTimeParams },
-                        rollbackData.current
+                        { rollbackData: rollbackData.current }
                     ),
                 0
             );
@@ -352,7 +332,7 @@ export const useUpdate = <RecordType extends Record = Record>(
                     reactMutationOptions.onSuccess(
                         previousRecord,
                         { resource: callTimeResource, ...callTimeParams },
-                        rollbackData.current
+                        { rollbackData: rollbackData.current }
                     ),
                 0
             );
