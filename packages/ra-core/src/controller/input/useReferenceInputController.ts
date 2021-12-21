@@ -139,7 +139,7 @@ export const useReferenceInputController = (
         !referenceRecord ||
         possibleValuesData.find(record => record.id === input.value)
     ) {
-        finalData = possibleValuesData;
+        finalData = [...possibleValuesData];
         finalTotal = possibleValuesTotal;
     } else {
         finalData = [referenceRecord, ...possibleValuesData];
