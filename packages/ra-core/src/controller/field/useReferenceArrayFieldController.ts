@@ -1,12 +1,11 @@
 import get from 'lodash/get';
 
 import { Record, SortPayload } from '../../types';
-import { useGetMany } from '../../dataProvider';
+import { useGetManyAggregate } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';
 import { useNotify } from '../../sideEffect';
 
-interface Option {
-    basePath?: string;
+export interface UseReferenceArrayFieldControllerParams {
     filter?: any;
     page?: number;
     perPage?: number;
@@ -27,8 +26,7 @@ const defaultSort = { field: null, order: null };
  *
  * @example
  *
- * const { data, error, isFetching, isLoading, referenceBasePath } = useReferenceArrayFieldController({
- *      basePath: 'resource';
+ * const { data, error, isFetching, isLoading } = useReferenceArrayFieldController({
  *      record: { referenceIds: ['id1', 'id2']};
  *      reference: 'reference';
  *      resource: 'resource';
@@ -36,7 +34,6 @@ const defaultSort = { field: null, order: null };
  * });
  *
  * @param {Object} props
- * @param {string} props.basePath basepath to current resource
  * @param {Object} props.record The current resource record
  * @param {string} props.reference The linked resource name
  * @param {string} props.resource The current resource name
@@ -44,10 +41,10 @@ const defaultSort = { field: null, order: null };
  *
  * @param {Props} props
  *
- * @returns {ReferenceArrayProps} The reference props
+ * @returns {ListControllerResult} The reference props
  */
-const useReferenceArrayFieldController = (
-    props: Option
+export const useReferenceArrayFieldController = (
+    props: UseReferenceArrayFieldControllerParams
 ): ListControllerResult => {
     const {
         filter = defaultFilter,
@@ -60,11 +57,11 @@ const useReferenceArrayFieldController = (
     } = props;
     const notify = useNotify();
     const ids = get(record, source) || emptyArray;
-    const { data, error, loading, loaded, refetch } = useGetMany(
+    const { data, error, isLoading, isFetching, refetch } = useGetManyAggregate(
         reference,
-        ids,
+        { ids },
         {
-            onFailure: error =>
+            onError: error =>
                 notify(
                     typeof error === 'string'
                         ? error
@@ -88,8 +85,8 @@ const useReferenceArrayFieldController = (
         data,
         error,
         filter,
-        isFetching: loading,
-        isLoading: !loaded,
+        isFetching,
+        isLoading,
         page,
         perPage,
         sort,
@@ -102,5 +99,3 @@ const useReferenceArrayFieldController = (
         resource: reference,
     };
 };
-
-export default useReferenceArrayFieldController;

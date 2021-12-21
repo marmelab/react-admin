@@ -84,6 +84,7 @@ export const useUpdate = <RecordType extends Record = Record>(
     const rollbackData = useRef<{
         previousGetOne?: any;
         previousGetList?: any;
+        previousGetMany?: any;
         previousGetManyReference?: any;
     }>({});
 
@@ -119,6 +120,25 @@ export const useUpdate = <RecordType extends Record = Record>(
                     ],
                     total: old.total,
                 };
+            },
+            { updatedAt }
+        );
+        queryClient.setQueriesData(
+            [resource, 'getMany'],
+            (old: RecordType[]) => {
+                if (!old || old.length === 0) return;
+                const index = old.findIndex(
+                    // eslint-disable-next-line eqeqeq
+                    record => record.id == id
+                );
+                if (index === -1) {
+                    return old;
+                }
+                return [
+                    ...old.slice(0, index),
+                    { ...old[index], ...data },
+                    ...old.slice(index + 1),
+                ];
             },
             { updatedAt }
         );
@@ -187,6 +207,7 @@ export const useUpdate = <RecordType extends Record = Record>(
                 context: {
                     previousGetOne: any;
                     previousGetList: any;
+                    previousGetMany: any;
                     previousGetManyReference: any;
                 }
             ) => {
@@ -208,9 +229,13 @@ export const useUpdate = <RecordType extends Record = Record>(
                         context.previousGetList
                     );
                     queryClient.setQueriesData(
-                        [callTimeResource, 'getList'],
-                        context.previousGetManyReference
+                        [callTimeResource, 'getMany'],
+                        context.previousGetMany
                     );
+                    queryClient.setQueriesData(
+                        [callTimeResource, 'getManyReference'],
+                        context.previousGetManyReference
+                      );
                 }
 
                 if (reactMutationOptions.onError) {
@@ -272,6 +297,10 @@ export const useUpdate = <RecordType extends Record = Record>(
                     queryClient.invalidateQueries([
                         callTimeResource,
                         'getList',
+                    ]);
+                    queryClient.invalidateQueries([
+                        callTimeResource,
+                        'getMany',
                     ]);
                     queryClient.invalidateQueries([
                         callTimeResource,
@@ -346,6 +375,10 @@ export const useUpdate = <RecordType extends Record = Record>(
             callTimeResource,
             'getList',
         ]);
+        const previousGetMany = queryClient.getQueriesData([
+            callTimeResource,
+            'getMany',
+        ]);
         const previousGetManyReference = queryClient.getQueriesData([
             callTimeResource,
             'getManyReference',
@@ -353,6 +386,7 @@ export const useUpdate = <RecordType extends Record = Record>(
         rollbackData.current = {
             previousGetOne,
             previousGetList,
+            previousGetMany,
             previousGetManyReference,
         };
 
@@ -408,6 +442,10 @@ export const useUpdate = <RecordType extends Record = Record>(
                     queryClient.setQueriesData(
                         [callTimeResource, 'getList'],
                         rollbackData.current.previousGetList
+                    );
+                    queryClient.setQueriesData(
+                        [callTimeResource, 'getMany'],
+                        rollbackData.current.previousGetMany
                     );
                     queryClient.setQueriesData(
                         [callTimeResource, 'getManyReference'],

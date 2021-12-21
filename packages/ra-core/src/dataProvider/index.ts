@@ -9,7 +9,6 @@ import undoableEventEmitter from './undoableEventEmitter';
 import useDataProvider from './useDataProvider';
 import useMutation, { UseMutationValue } from './useMutation';
 import withDataProvider from './withDataProvider';
-import useGetMany from './useGetMany';
 import useUpdateMany from './useUpdateMany';
 import useCreate from './useCreate';
 import useDelete from './useDelete';
@@ -20,6 +19,8 @@ import useIsAutomaticRefreshEnabled from './useIsAutomaticRefreshEnabled';
 export * from './testDataProvider';
 export * from './useGetOne';
 export * from './useGetList';
+export * from './useGetMany';
+export * from './useGetManyAggregate';
 export * from './useGetManyReference';
 export * from './useQueryWithStore';
 export * from './useQuery';
@@ -39,7 +40,6 @@ export {
     undoableEventEmitter,
     useDataProvider,
     useMutation,
-    useGetMany,
     useUpdateMany,
     useCreate,
     useDelete,

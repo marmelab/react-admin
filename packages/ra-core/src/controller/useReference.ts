@@ -1,24 +1,24 @@
 import { Record } from '../types';
-import { Refetch, useGetMany } from '../dataProvider';
+import { Refetch, useGetManyAggregate } from '../dataProvider';
 
-interface Option {
+interface UseReferenceProps {
     id: string;
     reference: string;
 }
 
-export interface UseReferenceProps {
-    loading: boolean;
-    loaded: boolean;
+export interface UseReferenceResult {
+    isLoading: boolean;
+    isFetching: boolean;
     referenceRecord?: Record;
     error?: any;
     refetch: Refetch;
 }
 
 /**
- * @typedef ReferenceProps
+ * @typedef UseReferenceResult
  * @type {Object}
- * @property {boolean} loading: boolean indicating if the reference is loading
- * @property {boolean} loaded: boolean indicating if the reference has loaded
+ * @property {boolean} isFetching: boolean indicating if the reference is loading
+ * @property {boolean} isLoading: boolean indicating if the reference has loaded
  * @property {Object} referenceRecord: the referenced record.
  */
 
@@ -30,7 +30,7 @@ export interface UseReferenceProps {
  *
  * @example
  *
- * const { loading, loaded, referenceRecord } = useReference({
+ * const { isLoading, referenceRecord } = useReference({
  *     id: 7,
  *     reference: 'users',
  * });
@@ -39,19 +39,24 @@ export interface UseReferenceProps {
  * @param {string} option.reference The linked resource name
  * @param {string} option.id The id of the reference
  *
- * @returns {ReferenceProps} The reference record
+ * @returns {UseReferenceResult} The reference record
  */
-export const useReference = ({ reference, id }: Option): UseReferenceProps => {
-    const { data, error, loading, loaded, refetch } = useGetMany(reference, [
-        id,
-    ]);
+export const useReference = ({
+    reference,
+    id,
+}: UseReferenceProps): UseReferenceResult => {
+    const {
+        data,
+        error,
+        isLoading,
+        isFetching,
+        refetch,
+    } = useGetManyAggregate(reference, { ids: [id] });
     return {
-        referenceRecord: error ? undefined : data[0],
+        referenceRecord: error ? undefined : data ? data[0] : undefined,
         refetch,
         error,
-        loading,
-        loaded,
+        isLoading,
+        isFetching,
     };
 };
-
-export default useReference;
