@@ -11,9 +11,6 @@ const primedStore = {
     admin: {
         loading: 0,
         notifications: [],
-        references: {
-            possibleValues: {},
-        },
         resources: {},
         ui: {
             viewVersion: 1,

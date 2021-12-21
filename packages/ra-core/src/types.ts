@@ -349,7 +349,6 @@ export interface ReduxState {
                     };
                     expanded: Identifier[];
                     ids: Identifier[];
-                    loadedOnce: boolean;
                     params: any;
                     selectedIds: Identifier[];
                     total: number;
@@ -359,9 +358,6 @@ export interface ReduxState {
                     [key: number]: Date;
                 };
             };
-        };
-        references: {
-            possibleValues: any;
         };
         loading: number;
         customQueries: {
