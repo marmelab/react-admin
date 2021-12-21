@@ -361,9 +361,7 @@ export interface ReduxState {
             };
         };
         references: {
-            oneToMany: {
-                [relatedTo: string]: { ids: Identifier[]; total: number };
-            };
+            possibleValues: any;
         };
         loading: number;
         customQueries: {
