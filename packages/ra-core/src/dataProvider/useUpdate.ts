@@ -83,7 +83,7 @@ export const useUpdate = <RecordType extends Record = Record>(
     const paramsRef = useRef<Partial<UpdateParams<RecordType>>>({});
     const rollbackData = useRef<RollbackData>([]);
 
-    const updateCache = async ({ resource, id, data }) => {
+    const updateCache = ({ resource, id, data }) => {
         // hack: only way to tell react-query not to fetch this query for the next 5 seconds
         // because setQueryData doesn't accept a stale time option
         const now = Date.now();
@@ -303,12 +303,12 @@ export const useUpdate = <RecordType extends Record = Record>(
         ].map(key => ({ key, value: queryClient.getQueryData(key) }));
 
         // Cancel any outgoing re-fetches (so they don't overwrite our optimistic update)
-        await rollbackData.current.forEach(({ key }) =>
+        await rollbackData.current.map(({ key }) =>
             queryClient.cancelQueries(key)
         );
 
         // Optimistically update to the new value in getOne
-        await updateCache({
+        updateCache({
             resource: callTimeResource,
             id: callTimeId,
             data: callTimeData,
