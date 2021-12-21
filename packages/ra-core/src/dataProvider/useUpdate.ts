@@ -84,6 +84,7 @@ export const useUpdate = <RecordType extends Record = Record>(
     const rollbackData = useRef<{
         previousGetOne?: any;
         previousGetList?: any;
+        previousGetMany?: any;
     }>({});
 
     const updateCache = async ({ resource, id, data }) => {
@@ -118,6 +119,25 @@ export const useUpdate = <RecordType extends Record = Record>(
                     ],
                     total: old.total,
                 };
+            },
+            { updatedAt }
+        );
+        queryClient.setQueriesData(
+            [resource, 'getMany'],
+            (old: RecordType[]) => {
+                if (!old || old.length === 0) return;
+                const index = old.findIndex(
+                    // eslint-disable-next-line eqeqeq
+                    record => record.id == id
+                );
+                if (index === -1) {
+                    return old;
+                }
+                return [
+                    ...old.slice(0, index),
+                    { ...old[index], ...data },
+                    ...old.slice(index + 1),
+                ];
             },
             { updatedAt }
         );
@@ -161,7 +181,11 @@ export const useUpdate = <RecordType extends Record = Record>(
             onError: (
                 error: unknown,
                 variables: Partial<UseUpdateMutateParams<RecordType>> = {},
-                context: { previousGetOne: any; previousGetList: any }
+                context: {
+                    previousGetOne: any;
+                    previousGetList: any;
+                    previousGetMany: any;
+                }
             ) => {
                 const {
                     resource: callTimeResource = resource,
@@ -179,6 +203,10 @@ export const useUpdate = <RecordType extends Record = Record>(
                     queryClient.setQueriesData(
                         [callTimeResource, 'getList'],
                         context.previousGetList
+                    );
+                    queryClient.setQueriesData(
+                        [callTimeResource, 'getMany'],
+                        context.previousGetMany
                     );
                 }
 
@@ -241,6 +269,10 @@ export const useUpdate = <RecordType extends Record = Record>(
                     queryClient.invalidateQueries([
                         callTimeResource,
                         'getList',
+                    ]);
+                    queryClient.invalidateQueries([
+                        callTimeResource,
+                        'getMany',
                     ]);
                 }
 
@@ -311,7 +343,15 @@ export const useUpdate = <RecordType extends Record = Record>(
             callTimeResource,
             'getList',
         ]);
-        rollbackData.current = { previousGetOne, previousGetList };
+        const previousGetMany = queryClient.getQueriesData([
+            callTimeResource,
+            'getMany',
+        ]);
+        rollbackData.current = {
+            previousGetOne,
+            previousGetList,
+            previousGetMany,
+        };
 
         // Optimistically update to the new value in getOne
         await updateCache({
@@ -365,6 +405,10 @@ export const useUpdate = <RecordType extends Record = Record>(
                     queryClient.setQueriesData(
                         [callTimeResource, 'getList'],
                         rollbackData.current.previousGetList
+                    );
+                    queryClient.setQueriesData(
+                        [callTimeResource, 'getMany'],
+                        rollbackData.current.previousGetMany
                     );
                 } else {
                     // call the mutate without success side effects

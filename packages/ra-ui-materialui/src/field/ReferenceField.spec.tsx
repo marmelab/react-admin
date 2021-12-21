@@ -1,11 +1,16 @@
 import * as React from 'react';
 import expect from 'expect';
-import { screen, waitFor } from '@testing-library/react';
-import { DataProviderContext, RecordContextProvider } from 'ra-core';
+import { render, screen, waitFor } from '@testing-library/react';
+import {
+    RecordContextProvider,
+    CoreAdminContext,
+    testDataProvider,
+    useGetMany,
+} from 'ra-core';
+import { QueryClient } from 'react-query';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { renderWithRedux } from 'ra-test';
 
-import { ReferenceField, ReferenceFieldView } from './ReferenceField';
+import { ReferenceField } from './ReferenceField';
 import { TextField } from './TextField';
 const theme = createTheme({});
 
@@ -14,19 +19,32 @@ describe('<ReferenceField />', () => {
 
     describe('Progress bar', () => {
         it("should not display a loader on mount if the reference is not in the store and a second hasn't passed yet", async () => {
-            renderWithRedux(
+            const dataProvider = testDataProvider({
+                getMany: jest.fn().mockImplementation(
+                    () =>
+                        new Promise(resolve =>
+                            setTimeout(
+                                () =>
+                                    resolve({
+                                        data: [{ id: 123, title: 'foo' }],
+                                    }),
+                                1500
+                            )
+                        )
+                ),
+            });
+            render(
                 <ThemeProvider theme={theme}>
-                    <ReferenceFieldView
-                        record={record}
-                        resource="comments"
-                        source="postId"
-                        reference="posts"
-                        basePath="/comments"
-                        loaded={false}
-                        loading={true}
-                    >
-                        <TextField source="title" />
-                    </ReferenceFieldView>
+                    <CoreAdminContext dataProvider={dataProvider}>
+                        <ReferenceField
+                            record={record}
+                            resource="comments"
+                            source="postId"
+                            reference="posts"
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </CoreAdminContext>
                 </ThemeProvider>
             );
             await new Promise(resolve => setTimeout(resolve, 500));
@@ -35,19 +53,32 @@ describe('<ReferenceField />', () => {
         });
 
         it('should display a loader on mount if the reference is not in the store and a second has passed', async () => {
-            renderWithRedux(
+            const dataProvider = testDataProvider({
+                getMany: jest.fn().mockImplementation(
+                    () =>
+                        new Promise(resolve =>
+                            setTimeout(
+                                () =>
+                                    resolve({
+                                        data: [{ id: 123, title: 'foo' }],
+                                    }),
+                                1500
+                            )
+                        )
+                ),
+            });
+            render(
                 <ThemeProvider theme={theme}>
-                    <ReferenceFieldView
-                        record={record}
-                        resource="comments"
-                        source="postId"
-                        reference="posts"
-                        basePath="/comments"
-                        loaded={false}
-                        loading={true}
-                    >
-                        <TextField source="title" />
-                    </ReferenceFieldView>
+                    <CoreAdminContext dataProvider={dataProvider}>
+                        <ReferenceField
+                            record={record}
+                            resource="comments"
+                            source="postId"
+                            reference="posts"
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </CoreAdminContext>
                 </ThemeProvider>
             );
             await new Promise(resolve => setTimeout(resolve, 1001));
@@ -55,87 +86,111 @@ describe('<ReferenceField />', () => {
             expect(screen.queryAllByRole('link')).toHaveLength(0);
         });
 
-        it('should not display a loader on mount if the reference is in the store', () => {
-            renderWithRedux(
-                <ThemeProvider theme={theme}>
-                    <ReferenceField
-                        record={record}
-                        resource="comments"
-                        source="postId"
-                        reference="posts"
-                        basePath="/comments"
-                    >
-                        <TextField source="title" />
-                    </ReferenceField>
-                </ThemeProvider>,
-                {
-                    admin: {
-                        resources: {
-                            posts: {
-                                data: { 123: { id: 123, title: 'hello' } },
-                            },
-                        },
-                    },
-                }
-            );
-            expect(screen.queryByRole('progressbar')).toBeNull();
-            expect(screen.queryAllByRole('link')).toHaveLength(1);
-        });
-
-        it('should not display a loader if the dataProvider query completes', async () => {
-            const dataProvider = {
-                getMany: jest.fn(() =>
-                    Promise.resolve({ data: [{ id: 123, title: 'foo' }] })
-                ),
+        it('should not display a loader on mount if the reference was already fetched', async () => {
+            const dataProvider = testDataProvider({
+                getMany: jest.fn().mockResolvedValue({
+                    data: [{ id: 123, title: 'foo' }],
+                }),
+            });
+            // we need to keep the same querry client between rerenders
+            const queryClient = new QueryClient();
+            const FecthGetMany = () => {
+                useGetMany('posts', { ids: [123] });
+                return <span>dummy</span>;
             };
-            renderWithRedux(
-                // @ts-ignore-line
-                <DataProviderContext.Provider value={dataProvider}>
-                    <ThemeProvider theme={theme}>
+            const { rerender } = render(
+                <CoreAdminContext
+                    dataProvider={dataProvider}
+                    queryClient={queryClient}
+                >
+                    <FecthGetMany />
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
+            });
+            const slowDataProvider = testDataProvider({
+                getMany: jest.fn().mockImplementation(
+                    () =>
+                        new Promise(resolve =>
+                            setTimeout(
+                                () =>
+                                    resolve({
+                                        data: [{ id: 123, title: 'foo' }],
+                                    }),
+                                1500
+                            )
+                        )
+                ),
+            });
+            rerender(
+                <ThemeProvider theme={theme}>
+                    <CoreAdminContext
+                        dataProvider={slowDataProvider}
+                        queryClient={queryClient}
+                    >
                         <ReferenceField
                             record={record}
                             resource="comments"
                             source="postId"
                             reference="posts"
-                            basePath="/comments"
                         >
                             <TextField source="title" />
                         </ReferenceField>
-                    </ThemeProvider>
-                </DataProviderContext.Provider>,
-                {
-                    admin: {
-                        resources: {
-                            posts: { data: {} },
-                        },
-                    },
-                }
+                    </CoreAdminContext>
+                </ThemeProvider>
             );
-            await new Promise(resolve => setTimeout(resolve, 10));
+            await new Promise(resolve => setTimeout(resolve, 500));
+            expect(screen.queryByRole('progressbar')).toBeNull();
+            expect(screen.queryAllByRole('link')).toHaveLength(1);
+        });
+
+        it('should not display a loader after the dataProvider query completes', async () => {
+            const dataProvider = testDataProvider({
+                getMany: jest.fn().mockResolvedValue({
+                    data: [{ id: 123, title: 'foo' }],
+                }),
+            });
+            render(
+                <ThemeProvider theme={theme}>
+                    <CoreAdminContext dataProvider={dataProvider}>
+                        <ReferenceField
+                            record={record}
+                            resource="comments"
+                            source="postId"
+                            reference="posts"
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </CoreAdminContext>
+                </ThemeProvider>
+            );
+            await waitFor(() =>
+                expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
+            );
             expect(screen.queryByRole('progressbar')).toBeNull();
             expect(screen.queryAllByRole('link')).toHaveLength(1);
         });
 
         it('should not display a loader if the dataProvider query completes without finding the reference', async () => {
-            const dataProvider = {
-                getMany: jest.fn(() => Promise.resolve({ data: [] })),
-            };
-            renderWithRedux(
-                // @ts-ignore-line
-                <DataProviderContext.Provider value={dataProvider}>
-                    <ThemeProvider theme={theme}>
+            const dataProvider = testDataProvider({
+                getMany: jest.fn().mockResolvedValue({
+                    data: [],
+                }),
+            });
+            render(
+                <ThemeProvider theme={theme}>
+                    <CoreAdminContext dataProvider={dataProvider}>
                         <ReferenceField
                             record={record}
                             resource="comments"
                             source="postId"
                             reference="posts"
-                            basePath="/comments"
                         >
                             <TextField source="title" />
                         </ReferenceField>
-                    </ThemeProvider>
-                </DataProviderContext.Provider>,
-                { admin: { resources: { posts: { data: {} } } } }
+                    </CoreAdminContext>
+                </ThemeProvider>
             );
             await new Promise(resolve => setTimeout(resolve, 10));
             expect(screen.queryByRole('progressbar')).toBeNull();
@@ -143,26 +198,23 @@ describe('<ReferenceField />', () => {
         });
 
         it('should not display a loader if the dataProvider query fails', async () => {
-            jest.spyOn(console, 'error').mockImplementationOnce(() => {});
-            const dataProvider = {
-                getMany: jest.fn(() => Promise.reject(new Error())),
-            };
-            renderWithRedux(
-                // @ts-ignore-line
-                <DataProviderContext.Provider value={dataProvider}>
-                    <ThemeProvider theme={theme}>
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            const dataProvider = testDataProvider({
+                getMany: jest.fn().mockRejectedValue(new Error()),
+            });
+            render(
+                <ThemeProvider theme={theme}>
+                    <CoreAdminContext dataProvider={dataProvider}>
                         <ReferenceField
                             record={record}
                             resource="comments"
                             source="postId"
                             reference="posts"
-                            basePath="/comments"
                         >
                             <TextField source="title" />
                         </ReferenceField>
-                    </ThemeProvider>
-                </DataProviderContext.Provider>,
-                { admin: { resources: { posts: { data: {} } } } }
+                    </CoreAdminContext>
+                </ThemeProvider>
             );
             await new Promise(resolve => setTimeout(resolve, 10));
             expect(screen.queryByRole('progressbar')).toBeNull();
@@ -171,271 +223,160 @@ describe('<ReferenceField />', () => {
     });
 
     it('should display the emptyText if the field is empty', () => {
-        renderWithRedux(
+        render(
             <ThemeProvider theme={theme}>
-                <ReferenceField
-                    record={{ id: 123 }}
-                    resource="comments"
-                    source="postId"
-                    reference="posts"
-                    basePath="/comments"
-                    emptyText="EMPTY"
-                >
-                    <TextField source="title" />
-                </ReferenceField>
-            </ThemeProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
-        );
-        expect(screen.getByText('EMPTY')).not.toBeNull();
-    });
-
-    it('should use the reference from the store if available', () => {
-        renderWithRedux(
-            <ThemeProvider theme={theme}>
-                <ReferenceField
-                    record={record}
-                    resource="comments"
-                    source="postId"
-                    reference="posts"
-                    basePath="/comments"
-                >
-                    <TextField source="title" />
-                </ReferenceField>
-            </ThemeProvider>,
-            {
-                admin: {
-                    resources: {
-                        posts: {
-                            data: { 123: { id: 123, title: 'hello' } },
-                        },
-                    },
-                },
-            }
-        );
-        expect(screen.getByText('hello')).not.toBeNull();
-        expect(screen.queryAllByRole('link')).toHaveLength(1);
-        expect(screen.queryByRole('link').getAttribute('href')).toBe(
-            '/posts/123'
-        );
-    });
-
-    it('should use record from RecordContext', () => {
-        renderWithRedux(
-            <RecordContextProvider value={record}>
-                <ThemeProvider theme={theme}>
-                    <ReferenceField
-                        resource="comments"
-                        source="postId"
-                        reference="posts"
-                        basePath="/comments"
-                    >
-                        <TextField source="title" />
-                    </ReferenceField>
-                </ThemeProvider>
-            </RecordContextProvider>,
-            {
-                admin: {
-                    resources: {
-                        posts: {
-                            data: { 123: { id: 123, title: 'hello' } },
-                        },
-                    },
-                },
-            }
-        );
-        expect(screen.getByText('hello')).not.toBeNull();
-        expect(screen.queryAllByRole('link')).toHaveLength(1);
-        expect(screen.queryByRole('link').getAttribute('href')).toBe(
-            '/posts/123'
-        );
-    });
-
-    it('should call the dataProvider for the related record', async () => {
-        const dataProvider = {
-            getMany: jest.fn(() =>
-                Promise.resolve({ data: [{ id: 123, title: 'foo' }] })
-            ),
-        };
-        const { dispatch } = renderWithRedux(
-            // @ts-ignore-line
-            <DataProviderContext.Provider value={dataProvider}>
-                <ThemeProvider theme={theme}>
-                    <ReferenceField
-                        record={record}
-                        resource="comments"
-                        source="postId"
-                        reference="posts"
-                        basePath="/comments"
-                    >
-                        <TextField source="title" />
-                    </ReferenceField>
-                </ThemeProvider>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
-        );
-        await waitFor(() => {
-            const action = dispatch.mock.calls[0][0];
-            expect(action.type).toBe('RA/CRUD_GET_MANY');
-            expect(action.payload).toEqual({ ids: [123] });
-        });
-    });
-
-    it('should display an error icon if the dataProvider call fails', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
-        const dataProvider = {
-            getMany: jest.fn(() => Promise.reject('boo')),
-        };
-        renderWithRedux(
-            // @ts-ignore-line
-            <DataProviderContext.Provider value={dataProvider}>
-                <ThemeProvider theme={theme}>
-                    <ReferenceField
-                        record={record}
-                        resource="comments"
-                        source="postId"
-                        reference="posts"
-                        basePath="/comments"
-                    >
-                        <TextField source="title" />
-                    </ReferenceField>
-                </ThemeProvider>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
-        );
-        await waitFor(() => {
-            const ErrorIcon = screen.queryByRole('presentation', {
-                hidden: true,
-            });
-            expect(ErrorIcon).not.toBeNull();
-            expect(ErrorIcon.getAttribute('aria-errormessage')).toBe('boo');
-        });
-    });
-
-    it('should throw an error if used without a Resource for the reference', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
-        class ErrorBoundary extends React.Component<
-            {
-                onError?: (
-                    error: Error,
-                    info: { componentStack: string }
-                ) => void;
-            },
-            { error: Error | null }
-        > {
-            constructor(props) {
-                super(props);
-                this.state = { error: null };
-            }
-
-            static getDerivedStateFromError(error) {
-                // Update state so the next render will show the fallback UI.
-                return { error };
-            }
-
-            componentDidCatch(error, errorInfo) {
-                // You can also log the error to an error reporting service
-                this.props.onError(error, errorInfo);
-            }
-
-            render() {
-                if (this.state.error) {
-                    // You can render any custom fallback UI
-                    return <h1>Something went wrong.</h1>;
-                }
-
-                return this.props.children;
-            }
-        }
-        const onError = jest.fn();
-        renderWithRedux(
-            <ErrorBoundary onError={onError}>
-                <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={testDataProvider()}>
                     <ReferenceField
                         record={{ id: 123 }}
                         resource="comments"
                         source="postId"
                         reference="posts"
-                        basePath="/comments"
+                        emptyText="EMPTY"
                     >
                         <TextField source="title" />
                     </ReferenceField>
-                </ThemeProvider>
-            </ErrorBoundary>,
-            { admin: { resources: { comments: { data: {} } } } }
+                </CoreAdminContext>
+            </ThemeProvider>
         );
-        await waitFor(() => {
-            expect(onError.mock.calls[0][0].message).toBe(
-                'You must declare a <Resource name="posts"> in order to use a <ReferenceField reference="posts">'
-            );
-        });
+        expect(screen.getByText('EMPTY')).not.toBeNull();
     });
 
-    describe('ReferenceFieldView', () => {
-        it('should render a link to specified resourceLinkPath', () => {
-            renderWithRedux(
-                <ThemeProvider theme={theme}>
-                    <ReferenceFieldView
-                        record={record}
-                        source="postId"
-                        referenceRecord={{ id: 123, title: 'foo' }}
-                        reference="posts"
-                        resource="comments"
-                        resourceLinkPath="/posts/123"
-                        basePath="/comments"
-                        loaded={true}
-                        loading={false}
-                    >
-                        <TextField source="title" />
-                    </ReferenceFieldView>
-                </ThemeProvider>
-            );
-            expect(screen.queryAllByRole('link')).toHaveLength(1);
-            expect(screen.queryByRole('link').getAttribute('href')).toBe(
-                '/posts/123'
-            );
+    it('should use record from RecordContext', async () => {
+        const dataProvider = testDataProvider({
+            getMany: jest.fn().mockResolvedValue({
+                data: [{ id: 123, title: 'foo' }],
+            }),
         });
+        render(
+            <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <RecordContextProvider value={record}>
+                        <ReferenceField
+                            resource="comments"
+                            source="postId"
+                            reference="posts"
+                        >
+                            <TextField source="title" />
+                        </ReferenceField>
+                    </RecordContextProvider>
+                </CoreAdminContext>
+            </ThemeProvider>
+        );
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(screen.queryByRole('progressbar')).toBeNull();
+        expect(screen.getByText('foo')).not.toBeNull();
+        expect(screen.queryAllByRole('link')).toHaveLength(1);
+        expect(screen.queryByRole('link').getAttribute('href')).toBe(
+            '#/posts/123'
+        );
+    });
 
-        it('should render no link when resourceLinkPath is not specified', () => {
-            renderWithRedux(
-                <ThemeProvider theme={theme}>
-                    <ReferenceFieldView
-                        record={record}
-                        source="fooId"
-                        referenceRecord={{ id: 123, title: 'foo' }}
-                        reference="bar"
-                        basePath="/foo"
-                        resourceLinkPath={false}
-                        loaded={true}
-                        loading={false}
-                    >
-                        <TextField source="title" />
-                    </ReferenceFieldView>
-                </ThemeProvider>
-            );
-            expect(screen.queryAllByRole('link')).toHaveLength(0);
+    it('should call the dataProvider for the related record', async () => {
+        const dataProvider = testDataProvider({
+            getMany: jest.fn().mockResolvedValue({
+                data: [{ id: 123, title: 'foo' }],
+            }),
         });
-
-        it('should work without basePath', () => {
-            renderWithRedux(
-                <ThemeProvider theme={theme}>
-                    <ReferenceFieldView
+        render(
+            <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceField
                         record={record}
-                        source="postId"
-                        referenceRecord={{ id: 123, title: 'foo' }}
-                        reference="posts"
                         resource="comments"
-                        resourceLinkPath="/posts/123"
-                        loaded={true}
-                        loading={false}
+                        source="postId"
+                        reference="posts"
                     >
                         <TextField source="title" />
-                    </ReferenceFieldView>
-                </ThemeProvider>
-            );
-            expect(screen.queryAllByRole('link')).toHaveLength(1);
-            expect(screen.queryByRole('link').getAttribute('href')).toBe(
-                '/posts/123'
-            );
+                    </ReferenceField>
+                </CoreAdminContext>
+            </ThemeProvider>
+        );
+        await waitFor(() =>
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
+        );
+        expect(screen.getByText('foo')).not.toBeNull();
+    });
+
+    it('should display an error icon if the dataProvider call fails', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        const dataProvider = testDataProvider({
+            getMany: jest.fn().mockRejectedValue(new Error('boo')),
         });
+        render(
+            <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceField
+                        record={record}
+                        resource="comments"
+                        source="postId"
+                        reference="posts"
+                    >
+                        <TextField source="title" />
+                    </ReferenceField>
+                </CoreAdminContext>
+            </ThemeProvider>
+        );
+        await new Promise(resolve => setTimeout(resolve, 10));
+        const ErrorIcon = screen.queryByRole('presentation', {
+            hidden: true,
+        });
+        expect(ErrorIcon).not.toBeNull();
+        expect(ErrorIcon.getAttribute('aria-errormessage')).toBe('boo');
+    });
+
+    it('should render a link to specified link type', async () => {
+        const dataProvider = testDataProvider({
+            getMany: jest.fn().mockResolvedValue({
+                data: [{ id: 123, title: 'foo' }],
+            }),
+        });
+        render(
+            <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceField
+                        record={record}
+                        resource="comments"
+                        source="postId"
+                        reference="posts"
+                        link="show"
+                    >
+                        <TextField source="title" />
+                    </ReferenceField>
+                </CoreAdminContext>
+            </ThemeProvider>
+        );
+        await waitFor(() =>
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
+        );
+        expect(screen.queryByRole('link').getAttribute('href')).toBe(
+            '#/posts/123/show'
+        );
+    });
+
+    it('should render no link when link is false', async () => {
+        const dataProvider = testDataProvider({
+            getMany: jest.fn().mockResolvedValue({
+                data: [{ id: 123, title: 'foo' }],
+            }),
+        });
+        render(
+            <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ReferenceField
+                        record={record}
+                        resource="comments"
+                        source="postId"
+                        reference="posts"
+                        link={false}
+                    >
+                        <TextField source="title" />
+                    </ReferenceField>
+                </CoreAdminContext>
+            </ThemeProvider>
+        );
+        await waitFor(() =>
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
+        );
+        expect(screen.queryAllByRole('link')).toHaveLength(0);
     });
 });

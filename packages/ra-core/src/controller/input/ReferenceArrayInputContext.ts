@@ -20,8 +20,8 @@ export interface ReferenceArrayInputContextValue {
     choices: Record[];
     error?: any;
     warning?: any;
-    loading: boolean;
-    loaded: boolean;
+    isLoading?: boolean;
+    isFetching?: boolean;
     setFilter: (filter: any) => void;
     setPagination: (pagination: PaginationPayload) => void;
     setSort: (sort: SortPayload) => void;

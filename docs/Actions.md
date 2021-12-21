@@ -346,13 +346,14 @@ const UserProfile = ({ record }) => {
 
 ```jsx
 // syntax
-const { data, loading, loaded, error, refetch } = useGetMany(resource, ids, options);
+const { data, isFetching, isLoading, error, refetch } = useGetMany(resource, { ids }, options);
 
 // example
 import { useGetMany } from 'react-admin';
+
 const PostTags = ({ record }) => {
-    const { data, loading, error } = useGetMany('tags', record.tagIds);
-    if (loading) { return <Loading />; }
+    const { data, isLoading, error } = useGetMany('tags', { ids: record.tagIds });
+    if (isLoading) { return <Loading />; }
     if (error) { return <p>ERROR</p>; }
     return (
          <ul>

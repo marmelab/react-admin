@@ -33,8 +33,8 @@ const extractReferenceArrayInputContextProps = <
 >({
     choices,
     error,
-    loaded,
-    loading,
+    isFetching,
+    isLoading,
     setFilter,
     setPagination,
     setSort,
@@ -43,8 +43,8 @@ const extractReferenceArrayInputContextProps = <
 }: T) => ({
     choices,
     error,
-    loaded,
-    loading,
+    isFetching,
+    isLoading,
     setFilter,
     setPagination,
     setSort,

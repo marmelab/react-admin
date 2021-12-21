@@ -6,17 +6,15 @@ import classnames from 'classnames';
 import get from 'lodash/get';
 import { Typography } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
-import { useSelector } from 'react-redux';
 import {
     useReference,
-    UseReferenceProps,
+    UseReferenceResult,
     getResourceLinkPath,
     LinkToType,
     ResourceContextProvider,
     RecordContextProvider,
     Record,
     useRecordContext,
-    ReduxState,
 } from 'ra-core';
 
 import { LinearProgress } from '../layout';
@@ -71,15 +69,6 @@ import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
 export const ReferenceField: FC<ReferenceFieldProps> = props => {
     const { source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
-    const isReferenceDeclared = useSelector<ReduxState, boolean>(
-        state => typeof state.admin.resources[props.reference] !== 'undefined'
-    );
-
-    if (!isReferenceDeclared) {
-        throw new Error(
-            `You must declare a <Resource name="${props.reference}"> in order to use a <ReferenceField reference="${props.reference}">`
-        );
-    }
 
     return get(record, source) == null ? (
         emptyText ? (
@@ -132,6 +121,9 @@ export interface ReferenceFieldProps<RecordType extends Record = Record>
     resource?: string;
     source: string;
     translateChoice?: Function | boolean;
+    /**
+     * @deprecated use link instead
+     */
     linkType?: LinkToType;
     link?: LinkToType;
 }
@@ -181,8 +173,8 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
         children,
         className,
         error,
-        loaded,
-        loading,
+        isFetching,
+        isLoading,
         record,
         reference,
         referenceRecord,
@@ -206,7 +198,7 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
             /* eslint-enable */
         );
     }
-    if (!loaded) {
+    if (isLoading) {
         return <LinearProgress />;
     }
     if (!referenceRecord) {
@@ -257,7 +249,7 @@ ReferenceFieldView.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.element,
     className: PropTypes.string,
-    loading: PropTypes.bool,
+    isLoading: PropTypes.bool,
     record: PropTypes.any,
     reference: PropTypes.string,
     referenceRecord: PropTypes.any,
@@ -273,7 +265,7 @@ ReferenceFieldView.propTypes = {
 export interface ReferenceFieldViewProps
     extends PublicFieldProps,
         InjectedFieldProps,
-        UseReferenceProps {
+        UseReferenceResult {
     reference: string;
     resource?: string;
     translateChoice?: Function | boolean;

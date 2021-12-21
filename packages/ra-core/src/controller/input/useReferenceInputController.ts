@@ -5,7 +5,7 @@ import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
 import { PaginationPayload, Record, SortPayload } from '../../types';
 import { ListControllerResult } from '../list';
-import useReference from '../useReference';
+import { useReference } from '../useReference';
 import usePaginationState from '../usePaginationState';
 import { useSortState } from '..';
 import useFilterState from '../useFilterState';
@@ -56,7 +56,7 @@ const defaultFilter = {};
  * });
  */
 export const useReferenceInputController = (
-    props: Option
+    props: UseReferenceInputControllerParams
 ): ReferenceInputValue => {
     const {
         input,
@@ -127,8 +127,8 @@ export const useReferenceInputController = (
         referenceRecord,
         refetch: refetchReference,
         error: referenceError,
-        loading: referenceLoading,
-        loaded: referenceLoaded,
+        isLoading: referenceLoading,
+        isFetching: referenceFetching,
     } = useReference({
         id: input.value,
         reference,
@@ -139,7 +139,7 @@ export const useReferenceInputController = (
         !referenceRecord ||
         possibleValuesData.find(record => record.id === input.value)
     ) {
-        finalData = possibleValuesData;
+        finalData = [...possibleValuesData];
         finalTotal = possibleValuesTotal;
     } else {
         finalData = [referenceRecord, ...possibleValuesData];
@@ -187,8 +187,8 @@ export const useReferenceInputController = (
         },
         referenceRecord: {
             data: referenceRecord,
-            loaded: referenceLoaded,
-            loading: referenceLoading,
+            isLoading: referenceLoading,
+            isFetching: referenceFetching,
             error: referenceError,
             refetch: refetchReference,
         },
@@ -201,7 +201,7 @@ export const useReferenceInputController = (
         // kept for backwards compatibility
         // @deprecated to be removed in 4.0
         error: dataStatus.error,
-        isFetching: possibleValuesFetching && !referenceLoaded,
+        isFetching: possibleValuesFetching || referenceFetching,
         isLoading: possibleValuesLoading || referenceLoading,
         filter: filterValues,
         refetch,
@@ -221,8 +221,8 @@ export interface ReferenceInputValue {
     possibleValues: ListControllerResult;
     referenceRecord: {
         data?: Record;
-        loaded: boolean;
-        loading: boolean;
+        isLoading: boolean;
+        isFetching: boolean;
         error?: any;
         refetch: Refetch;
     };
@@ -245,7 +245,7 @@ export interface ReferenceInputValue {
     refetch: Refetch;
 }
 
-interface Option {
+export interface UseReferenceInputControllerParams {
     allowEmpty?: boolean;
     basePath?: string;
     filter?: any;

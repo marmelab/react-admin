@@ -33,13 +33,20 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [disabled, setDisabled] = useState(false);
 
-    const { data: allTags, refetch, isLoading } = useGetList('tags', {
-        pagination: { page: 1, perPage: 10 },
-        sort: { field: 'name', order: 'ASC' },
-    });
-    const { data: tags, loaded } = useGetMany('tags', record.tags, {
-        enabled: record.tags && record.tags.length > 0,
-    });
+    const { data: allTags, refetch, isLoading: isLoadingAllTags } = useGetList(
+        'tags',
+        {
+            pagination: { page: 1, perPage: 10 },
+            sort: { field: 'name', order: 'ASC' },
+        }
+    );
+    const { data: tags, isLoading: isLoadingRecordTags } = useGetMany(
+        'tags',
+        { ids: record.tags },
+        {
+            enabled: record.tags && record.tags.length > 0,
+        }
+    );
     const [update] = useUpdate();
     const [create] = useCreate();
 
@@ -117,10 +124,10 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
         );
     };
 
-    if (!loaded || isLoading) return null;
+    if (!isLoadingRecordTags || isLoadingAllTags) return null;
     return (
         <>
-            {tags.map(tag => (
+            {tags?.map(tag => (
                 <Box mt={1} mb={1} key={tag.id}>
                     <Chip
                         size="small"

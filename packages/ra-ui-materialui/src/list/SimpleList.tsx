@@ -112,7 +112,7 @@ export const SimpleList = <RecordType extends Record = Record>(
         <Root className={className} {...sanitizeListRestProps(rest)}>
             {data.map((record, rowIndex) => (
                 <RecordContextProvider key={record.id} value={record}>
-                    <ListItem>
+                    <ListItem disablePadding>
                         <LinkOrNot
                             linkType={linkType}
                             resource={resource}

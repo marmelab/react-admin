@@ -2,8 +2,18 @@ import * as React from 'react';
 import { waitFor } from '@testing-library/react';
 import expect from 'expect';
 
-import ReferenceManyFieldController from './ReferenceManyFieldController';
+import { useReferenceManyFieldController } from './useReferenceManyFieldController';
 import { renderWithRedux } from 'ra-test';
+
+const ReferenceManyFieldController = props => {
+    const { children, page = 1, perPage = 25, ...rest } = props;
+    const controllerProps = useReferenceManyFieldController({
+        page,
+        perPage,
+        ...rest,
+    });
+    return children(controllerProps);
+};
 
 describe('<ReferenceManyFieldController />', () => {
     it('should set isLoading to true when related records are not yet fetched', async () => {
