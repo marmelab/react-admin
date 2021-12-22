@@ -72,7 +72,7 @@ describe('<FileInput />', () => {
         const file = createFile('cats.gif', 1234, 'image/gif');
         fireEvent.drop(getByTestId('dropzone'), createDataTransfer([file]));
         // Required because react-dropzone handle drag & drop operations asynchronously
-        await new Promise(resolve => setImmediate(resolve));
+        await new Promise(resolve => setTimeout(resolve));
 
         fireEvent.click(getByLabelText('Save'));
 
@@ -113,7 +113,7 @@ describe('<FileInput />', () => {
             createDataTransfer([file1, file2])
         );
         // Required because react-dropzone handle drag & drop operations asynchronously
-        await new Promise(resolve => setImmediate(resolve));
+        await new Promise(resolve => setTimeout(resolve));
 
         fireEvent.click(getByLabelText('Save'));
 
@@ -408,7 +408,7 @@ describe('<FileInput />', () => {
             const file = createFile('cats.gif', 1234, 'image/gif');
             fireEvent.drop(getByTestId('dropzone'), createDataTransfer([file]));
             // Required because react-dropzone handle drag & drop operations asynchronously
-            await new Promise(resolve => setImmediate(resolve));
+            await new Promise(resolve => setTimeout(resolve));
 
             const previewImage = queryByRole('image');
             expect(previewImage).not.toBeNull();

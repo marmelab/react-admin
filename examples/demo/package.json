@@ -26,7 +26,7 @@
         "react-redux": "^7.1.0",
         "react-router": "^5.1.0",
         "react-router-dom": "^5.1.0",
-        "react-scripts": "^4.0.3",
+        "react-scripts": "^5.0.0",
         "recharts": "^1.8.5",
         "redux-saga": "^1.0.0"
     },

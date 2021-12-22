@@ -342,7 +342,7 @@ describe('<SelectArrayInput />', () => {
         fireEvent.mouseDown(select);
 
         fireEvent.click(getByText('ra.action.create'));
-        await new Promise(resolve => setImmediate(resolve));
+        await new Promise(resolve => setTimeout(resolve));
         input.blur();
         // 2 because there is both the chip for the new selected item and the option (event if hidden)
         expect(queryAllByText(newChoice.name).length).toEqual(2);
@@ -381,7 +381,7 @@ describe('<SelectArrayInput />', () => {
         fireEvent.mouseDown(select);
 
         fireEvent.click(getByText('ra.action.create'));
-        await new Promise(resolve => setImmediate(resolve));
+        await new Promise(resolve => setTimeout(resolve));
         input.blur();
 
         await waitFor(() => {
