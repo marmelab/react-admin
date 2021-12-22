@@ -322,7 +322,9 @@ export const useUpdate = <RecordType extends Record = Record>(
         );
 
         // Cancel any outgoing re-fetches (so they don't overwrite our optimistic update)
-        await snapshot.current.map(([key]) => queryClient.cancelQueries(key));
+        await Promise.all(
+            snapshot.current.map(([key]) => queryClient.cancelQueries(key))
+        );
 
         // Optimistically update to the new value
         updateCache({
