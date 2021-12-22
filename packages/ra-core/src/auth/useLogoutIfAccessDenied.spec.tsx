@@ -220,16 +220,20 @@ describe('useLogoutIfAccessDenied', () => {
     });
 
     it('should notify if passed an error with a message that makes the authProvider throw', async () => {
-        const { queryByText } = renderInRouter(
-            <AuthContext.Provider value={authProvider}>
-                <TestComponent error={new Error('Test message')} />
-            </AuthContext.Provider>
+        render(
+            <Route
+                path="/"
+                element={<TestComponent error={new Error('Test message')} />}
+            />,
+            {
+                wrapper: TestWrapper,
+            }
         );
         await waitFor(() => {
             expect(authProvider.logout).toHaveBeenCalledTimes(1);
             expect(notify).toHaveBeenCalledTimes(1);
             expect(notify.mock.calls[0][0]).toEqual('Test message');
-            expect(queryByText('logged in')).toBeNull();
+            expect(screen.queryByText('logged in')).toBeNull();
         });
     });
 
