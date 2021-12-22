@@ -3,7 +3,6 @@ import {
     ChangeEvent,
     Children,
     cloneElement,
-    ElementType,
     isValidElement,
     ReactElement,
     ReactNode,

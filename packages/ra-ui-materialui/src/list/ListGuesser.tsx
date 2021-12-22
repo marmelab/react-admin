@@ -9,7 +9,6 @@ import {
     useListContext,
     useResourceContext,
     Record,
-    ListControllerProps,
 } from 'ra-core';
 
 import { ListView, ListViewProps } from './ListView';

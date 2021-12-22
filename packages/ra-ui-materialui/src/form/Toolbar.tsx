@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { Children, isValidElement, ReactElement, FC, ReactNode } from 'react';
+import { Children, isValidElement, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import {
     Toolbar as MuiToolbar,
