@@ -1,6 +1,6 @@
 {
     "name": "simple",
-    "version": "3.19.4",
+    "version": "3.19.5",
     "private": true,
     "scripts": {
         "dev": "./node_modules/.bin/webpack-dev-server --progress --color --hot --watch --mode development",
@@ -11,13 +11,13 @@
     "dependencies": {
         "@material-ui/core": "^4.12.1",
         "@material-ui/icons": "^4.11.2",
-        "ra-data-fakerest": "^3.19.4",
-        "ra-i18n-polyglot": "^3.19.4",
-        "ra-input-rich-text": "^3.19.4",
-        "ra-language-english": "^3.19.4",
-        "ra-language-french": "^3.19.4",
+        "ra-data-fakerest": "^3.19.5",
+        "ra-i18n-polyglot": "^3.19.5",
+        "ra-input-rich-text": "^3.19.5",
+        "ra-language-english": "^3.19.5",
+        "ra-language-french": "^3.19.5",
         "react": "^17.0.0",
-        "react-admin": "^3.19.4",
+        "react-admin": "^3.19.5",
         "react-dom": "^17.0.0"
     },
     "devDependencies": {
