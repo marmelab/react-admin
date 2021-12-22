@@ -285,7 +285,7 @@ describe('<Edit />', () => {
                         title: 'ipsum',
                     },
                     { data: { id: 123, title: 'ipsum' }, resource: 'foo' },
-                    {}
+                    { snapshot: [] }
                 );
             });
         });
@@ -338,14 +338,14 @@ describe('<Edit />', () => {
                         title: 'ipsum',
                     },
                     { data: { id: 123, title: 'ipsum' }, resource: 'foo' },
-                    {}
+                    { snapshot: [] }
                 );
                 expect(onSuccess).not.toHaveBeenCalled();
             });
         });
     });
 
-    describe('onFailure prop', () => {
+    describe('onError prop', () => {
         it('should allow to override the default error side effects', async () => {
             jest.spyOn(console, 'error').mockImplementationOnce(() => {});
             const dataProvider = {
@@ -385,7 +385,7 @@ describe('<Edit />', () => {
                 expect(onError).toHaveBeenCalledWith(
                     { message: 'not good' },
                     { data: { id: 123, title: 'ipsum' }, resource: 'foo' },
-                    {}
+                    { snapshot: [] }
                 );
             });
         });
@@ -438,7 +438,7 @@ describe('<Edit />', () => {
                         message: 'not good',
                     },
                     { data: { id: 123, title: 'ipsum' }, resource: 'foo' },
-                    {}
+                    { snapshot: [] }
                 );
                 expect(onError).not.toHaveBeenCalled();
             });

@@ -470,7 +470,7 @@ const IncreaseLikeButton = ({ record }) => {
     const diff = { likes: record.likes + 1 };
     const [update, { isLoading, error }] = useUpdate('likes', { id: record.id, data: diff, previousData: record });
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={update}>Like</button>;
+    return <button disabled={isLoading} onClick={() => update()}>Like</button>;
 };
 ```
 
@@ -478,34 +478,35 @@ const IncreaseLikeButton = ({ record }) => {
 
 ```jsx
 // syntax
-const [updateMany, { data, loading, loaded, error }] = useUpdateMany(resource, ids, data, options);
+const [updateMany, { data, isFetching, isLoading, error }] = useUpdateMany(resource, { ids, data }, options);
 ```
 
-The `updateMany()` function can be called in 3 different ways:
- - with the same parameters as the `useUpdateMany()` hook: `update(resource, ids, data, options)`
- - with the same syntax as `useMutation`: `update({ resource, payload: { ids, data } }, options)`
- - with no parameter (if they were already passed to `useUpdateMany()`): `updateMany()`
+The `updateMany()` method can be called with the same parameters as the hook:
+
+```jsx
+updateMany(resource, { ids, data }, options);
+```
 
 ```jsx
 // set params when calling the updateMany callback
 import { useUpdateMany } from 'react-admin';
 
 const BulkResetViewsButton = ({ selectedIds }) => {
-    const [updateMany, { loading, error }] = useUpdateMany();
+    const [updateMany, { isLoading, error }] = useUpdateMany();
     const handleClick = () => {
-        updateMany('posts', selectedIds, { views: 0 });
+        updateMany('posts', { ids: selectedIds, data: { views: 0 } });
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={handleClick}>Reset views</button>;
+    return <button disabled={isLoading} onClick={handleClick}>Reset views</button>;
 };
 
 // set params when calling the hook
 import { useUpdateMany } from 'react-admin';
 
 const BulkResetViewsButton = ({ selectedIds }) => {
-    const [updateMany, { loading, error }] = useUpdateMany('posts', selectedIds, { views: 0 });
+    const [updateMany, { isLoading, error }] = useUpdateMany('posts', { ids: selectedIds, data: { views: 0 } });
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={updateMany}>Reset views</button>;
+    return <button disabled={isLoading} onClick={() => updateMany()}>Reset views</button>;
 };
 ```
 

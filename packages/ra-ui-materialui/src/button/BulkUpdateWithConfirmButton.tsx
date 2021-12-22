@@ -11,7 +11,6 @@ import {
     useRefresh,
     useNotify,
     useUnselectAll,
-    CRUD_UPDATE_MANY,
     useResourceContext,
     MutationMode,
 } from 'ra-core';
@@ -48,7 +47,7 @@ export const BulkUpdateWithConfirmButton = (
             });
             unselectAll(resource);
         },
-        onFailure = error => {
+        onError = (error: Error | string) => {
             notify(
                 typeof error === 'string'
                     ? error
@@ -70,14 +69,12 @@ export const BulkUpdateWithConfirmButton = (
         ...rest
     } = props;
 
-    const [updateMany, { loading }] = useUpdateMany(
+    const [updateMany, { isLoading }] = useUpdateMany(
         resource,
-        selectedIds,
-        data,
+        { ids: selectedIds, data },
         {
-            action: CRUD_UPDATE_MANY,
             onSuccess,
-            onFailure,
+            onError,
             mutationMode,
         }
     );
@@ -111,7 +108,7 @@ export const BulkUpdateWithConfirmButton = (
             </StyledButton>
             <Confirm
                 isOpen={isOpen}
-                loading={loading}
+                loading={isLoading}
                 title={confirmTitle}
                 content={confirmContent}
                 translateOptions={{
