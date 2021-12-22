@@ -3,7 +3,6 @@ import { FunctionComponent, ReactElement } from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { Form, useFormState } from 'react-final-form';
 import { renderWithRedux } from 'ra-test';
-import { RecordContextProvider } from '../controller';
 import FormWithRedirect from './FormWithRedirect';
 import useInput, { InputProps } from './useInput';
 import { required } from './validate';
