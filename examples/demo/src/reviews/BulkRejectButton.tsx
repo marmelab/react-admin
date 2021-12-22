@@ -6,7 +6,6 @@ import {
     Button,
     useUpdateMany,
     useNotify,
-    useRefresh,
     useUnselectAll,
     BulkActionProps,
     Identifier,
@@ -17,7 +16,6 @@ const noSelection: Identifier[] = [];
 const BulkRejectButton = (props: BulkActionProps) => {
     const { selectedIds = noSelection } = props;
     const notify = useNotify();
-    const refresh = useRefresh();
     const unselectAll = useUnselectAll('reviews');
 
     const [updateMany, { isLoading }] = useUpdateMany(
@@ -30,7 +28,6 @@ const BulkRejectButton = (props: BulkActionProps) => {
                     type: 'info',
                     undoable: true,
                 });
-                refresh();
                 unselectAll();
             },
             onError: () => {

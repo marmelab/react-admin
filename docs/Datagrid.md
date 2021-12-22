@@ -224,25 +224,24 @@ const CustomResetViewsButton = () => {
     const refresh = useRefresh();
     const notify = useNotify();
     const unselectAll = useUnselectAll();
-    const [updateMany, { loading }] = useUpdateMany(
+    const [updateMany, { isLoading }] = useUpdateMany(
         'posts',
-        selectedIds,
-        { views: 0 },
+        { ids: selectedIds, data: { views: 0 } },
         {
             onSuccess: () => {
                 refresh();
                 notify('Posts updated');
                 unselectAll('posts');
             },
-            onFailure: error => notify('Error: posts not updated', { type: 'warning' }),
+            onError: error => notify('Error: posts not updated', { type: 'warning' }),
         }
     );
 
     return (
         <Button
             label="simple.action.resetViews"
-            disabled={loading}
-            onClick={updateMany}
+            disabled={isLoading}
+            onClick={() => updateMany}
         >
             <VisibilityOff />
         </Button>
@@ -262,8 +261,8 @@ import {
     Confirm,
     useListContext,
     useUpdateMany,
-    useRefresh,
     useNotify,
+    useRefresh,
     useUnselectAll,
 } from 'react-admin';
 
@@ -273,17 +272,16 @@ const CustomResetViewsButton = () => {
     const refresh = useRefresh();
     const notify = useNotify();
     const unselectAll = useUnselectAll();
-    const [updateMany, { loading }] = useUpdateMany(
+    const [updateMany, { isLoading }] = useUpdateMany(
         'posts',
-        selectedIds,
-        { views: 0 },
+        { ids: selectedIds, data: { views: 0 } },
         {
             onSuccess: () => {
                 refresh();
                 notify('Posts updated');
                 unselectAll('posts');
             },
-            onFailure: error => notify('Error: posts not updated', { type: 'warning' }),
+            onError: error => notify('Error: posts not updated', { type: 'warning' }),
         }
     );
     const handleClick = () => setOpen(true);
@@ -299,7 +297,7 @@ const CustomResetViewsButton = () => {
             <Button label="Reset Views" onClick={handleClick} />
             <Confirm
                 isOpen={open}
-                loading={loading}
+                loading={isLoading}
                 title="Update View Count"
                 content="Are you sure you want to reset the views for these items?"
                 onConfirm={handleConfirm}
@@ -325,10 +323,10 @@ export default CustomResetViewsButton;
 import * as React from "react";
 import {
     Button,
--    Confirm,
+-   Confirm,
     useListContext,
     useUpdateMany,
-    useRefresh,
+-   useRefresh,
     useNotify,
     useUnselectAll,
 } from 'react-admin';
@@ -336,21 +334,20 @@ import { VisibilityOff } from '@mui/icons-material';
 
 const CustomResetViewsButton = () => {
     const { selectedIds } = useListContext();
-    const refresh = useRefresh();
+-   const refresh = useRefresh();
     const notify = useNotify();
     const unselectAll = useUnselectAll();
-    const [updateMany, { loading }] = useUpdateMany(
+    const [updateMany, { isLoading }] = useUpdateMany(
         'posts',
-        selectedIds,
-        { views: 0 },
+        { ids: selectedIds, data: { views: 0 } },
         {
             onSuccess: () => {
-                refresh();
+-               refresh();
 -               notify('Posts updated');
 +               notify('Posts updated', { undoable: true }); // the last argument forces the display of 'undo' in the notification
                 unselectAll('posts');
             },
-            onFailure: error => notify('Error: posts not updated', { type: 'warning' }),
+            onError: error => notify('Error: posts not updated', { type: 'warning' }),
 +           mutationMode: 'undoable'
         }
     );
@@ -358,7 +355,7 @@ const CustomResetViewsButton = () => {
     return (
         <Button
             label="simple.action.resetViews"
-            disabled={loading}
+            disabled={isLoading}
             onClick={updateMany}
         >
             <VisibilityOff />
