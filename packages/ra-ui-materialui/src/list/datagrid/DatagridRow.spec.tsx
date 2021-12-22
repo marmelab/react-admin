@@ -181,7 +181,7 @@ describe('<DatagridRow />', () => {
                 </DatagridRow>
             );
             fireEvent.click(getByText('hello'));
-            await new Promise(setImmediate); // waitFor one tick
+            await new Promise(resolve => setTimeout(resolve)); // waitFor one tick
             expect(history.location.pathname).toEqual('/bar/foo');
         });
 

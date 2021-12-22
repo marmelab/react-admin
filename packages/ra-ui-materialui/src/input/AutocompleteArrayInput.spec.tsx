@@ -787,7 +787,7 @@ describe('<AutocompleteArrayInput />', () => {
         input.focus();
         fireEvent.change(input, { target: { value: 'New Kid On The Block' } });
         fireEvent.click(getByText('ra.action.create_item'));
-        await new Promise(resolve => setImmediate(resolve));
+        await new Promise(resolve => setTimeout(resolve));
         rerender(
             <Form
                 validateOnBlur
@@ -819,7 +819,7 @@ describe('<AutocompleteArrayInput />', () => {
                     name: filter,
                 };
                 choices.push(newChoice);
-                setImmediate(() => resolve(newChoice));
+                setTimeout(() => resolve(newChoice));
             });
         };
 
@@ -845,7 +845,7 @@ describe('<AutocompleteArrayInput />', () => {
         input.focus();
         fireEvent.change(input, { target: { value: 'New Kid On The Block' } });
         fireEvent.click(getByText('ra.action.create_item'));
-        await new Promise(resolve => setImmediate(resolve));
+        await new Promise(resolve => setTimeout(resolve));
         rerender(
             <Form
                 validateOnBlur
@@ -905,7 +905,7 @@ describe('<AutocompleteArrayInput />', () => {
         fireEvent.change(input, { target: { value: 'New Kid On The Block' } });
         fireEvent.click(getByText('ra.action.create_item'));
         fireEvent.click(getByText('Get the kid'));
-        await new Promise(resolve => setImmediate(resolve));
+        await new Promise(resolve => setTimeout(resolve));
         rerender(
             <Form
                 validateOnBlur

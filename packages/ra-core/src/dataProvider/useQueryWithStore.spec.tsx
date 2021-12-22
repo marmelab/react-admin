@@ -55,7 +55,7 @@ describe('useQueryWithStore', () => {
         expect(callArgs.error).toBeNull();
         expect(callArgs.total).toBeNull();
 
-        await new Promise(resolve => setImmediate(resolve)); // wait for useEffect
+        await new Promise(resolve => setTimeout(resolve)); // wait for useEffect
         callArgs = callback.mock.calls[1][0];
         expect(callArgs.loading).toEqual(false);
         expect(callArgs.loaded).toEqual(false);
@@ -78,7 +78,7 @@ describe('useQueryWithStore', () => {
         expect(callArgs.total).toBeNull();
 
         callback.mockClear();
-        await new Promise(resolve => setImmediate(resolve)); // wait for useEffect
+        await new Promise(resolve => setTimeout(resolve)); // wait for useEffect
         callArgs = callback.mock.calls[0][0];
         expect(callArgs.data).toBeUndefined();
         expect(callArgs.loading).toEqual(true);
@@ -117,7 +117,7 @@ describe('useQueryWithStore', () => {
         expect(callArgs.total).toBeNull();
 
         callback.mockClear();
-        await new Promise(resolve => setImmediate(resolve)); // wait for useEffect
+        await new Promise(resolve => setTimeout(resolve)); // wait for useEffect
         callArgs = callback.mock.calls[0][0];
         expect(callArgs.loading).toEqual(false);
         expect(callArgs.loaded).toEqual(false);
@@ -147,7 +147,7 @@ describe('useQueryWithStore', () => {
         expect(callArgs.error).toBeNull();
         expect(callArgs.total).toBeNull();
         callback.mockClear();
-        await new Promise(resolve => setImmediate(resolve)); // dataProvider Promise returns result on next tick
+        await new Promise(resolve => setTimeout(resolve)); // dataProvider Promise returns result on next tick
         callArgs = callback.mock.calls[1][0];
         expect(callArgs.data).toEqual({
             id: 1,

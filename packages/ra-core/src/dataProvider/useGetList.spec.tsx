@@ -143,7 +143,7 @@ describe('useGetList', () => {
                 })
             ),
         };
-        await new Promise(setImmediate); // empty the query deduplication in useQueryWithStore
+        await new Promise(resolve => setTimeout(resolve)); // empty the query deduplication in useQueryWithStore
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetList callback={hookValue} />
@@ -245,7 +245,7 @@ describe('useGetList', () => {
         const dataProvider = {
             getList: jest.fn(() => Promise.reject(new Error('failed'))),
         };
-        await new Promise(setImmediate); // empty the query deduplication in useQueryWithStore
+        await new Promise(resolve => setTimeout(resolve)); // empty the query deduplication in useQueryWithStore
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetList callback={hookValue} />
@@ -284,7 +284,7 @@ describe('useGetList', () => {
                     })
                 ),
         };
-        await new Promise(setImmediate); // empty the query deduplication in useQueryWithStore
+        await new Promise(resolve => setTimeout(resolve)); // empty the query deduplication in useQueryWithStore
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetList options={{ onSuccess: onSuccess1 }} />
@@ -320,7 +320,7 @@ describe('useGetList', () => {
         const dataProvider = {
             getList: jest.fn(() => Promise.reject(new Error('failed'))),
         };
-        await new Promise(setImmediate); // empty the query deduplication in useQueryWithStore
+        await new Promise(resolve => setTimeout(resolve)); // empty the query deduplication in useQueryWithStore
         renderWithRedux(
             <DataProviderContext.Provider value={dataProvider}>
                 <UseGetList options={{ onFailure }} />

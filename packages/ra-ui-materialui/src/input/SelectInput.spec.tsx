@@ -532,7 +532,7 @@ describe('<SelectInput />', () => {
         fireEvent.mouseDown(select);
 
         fireEvent.click(getByText('ra.action.create'));
-        await new Promise(resolve => setImmediate(resolve));
+        await new Promise(resolve => setTimeout(resolve));
         input.blur();
 
         expect(
@@ -574,7 +574,7 @@ describe('<SelectInput />', () => {
         fireEvent.mouseDown(select);
 
         fireEvent.click(getByText('ra.action.create'));
-        await new Promise(resolve => setImmediate(resolve));
+        await new Promise(resolve => setTimeout(resolve));
         input.blur();
 
         await waitFor(() => {
