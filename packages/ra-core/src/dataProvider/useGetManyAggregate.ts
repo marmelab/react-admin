@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import {
     QueryClient,
     useQueryClient,
@@ -66,6 +67,20 @@ export const useGetManyAggregate = <RecordType extends Record = Record>(
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const { ids } = params;
+    const placeholderData = useMemo(() => {
+        const records = ids.map(id =>
+            queryClient.getQueryData<RecordType>([
+                resource,
+                'getOne',
+                String(id),
+            ])
+        );
+        if (records.some(record => record === undefined)) {
+            return undefined;
+        } else {
+            return records;
+        }
+    }, [ids, queryClient, resource]);
 
     return useQuery<RecordType[], Error, RecordType[]>(
         [resource, 'getMany', { ids: ids.map(id => String(id)) }],
@@ -82,20 +97,7 @@ export const useGetManyAggregate = <RecordType extends Record = Record>(
                 })
             ),
         {
-            placeholderData: () => {
-                const records = ids.map(id =>
-                    queryClient.getQueryData<RecordType>([
-                        resource,
-                        'getOne',
-                        String(id),
-                    ])
-                );
-                if (records.some(record => record === undefined)) {
-                    return undefined;
-                } else {
-                    return records;
-                }
-            },
+            placeholderData,
             onSuccess: data => {
                 // optimistically populate the getOne cache
                 data.forEach(record => {
