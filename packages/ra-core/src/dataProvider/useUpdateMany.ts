@@ -357,7 +357,7 @@ export const useUpdateMany = <RecordType extends Record = Record>(
         }
 
         if (mode.current === 'optimistic') {
-            // call the mutate without success side effects
+            // call the mutate method without success side effects
             return mutation.mutate(
                 { resource: callTimeResource, ...callTimeParams },
                 { onSettled, onError }
@@ -371,7 +371,7 @@ export const useUpdateMany = <RecordType extends Record = Record>(
                         queryClient.setQueryData(key, value);
                     });
                 } else {
-                    // call the mutate without success side effects
+                    // call the mutate method without success side effects
                     mutation.mutate(
                         { resource: callTimeResource, ...callTimeParams },
                         { onSettled, onError }

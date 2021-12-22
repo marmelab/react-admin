@@ -481,7 +481,7 @@ const IncreaseLikeButton = ({ record }) => {
 const [updateMany, { data, isFetching, isLoading, error }] = useUpdateMany(resource, { ids, data }, options);
 ```
 
-The `update()` method can be called with the same parameters as the hook:
+The `updateMany()` method can be called with the same parameters as the hook:
 
 ```jsx
 updateMany(resource, { ids, data }, options);
