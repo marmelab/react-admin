@@ -179,6 +179,7 @@ For queries:
 For mutations:
 
 ```diff
+// useUpdate
 -const [update, { loading }] = useUpdate(
 -   'posts',
 -   123,
@@ -195,6 +196,22 @@ For mutations:
 +   }
 +);
 +update(resource, { id, data, previousData }, options);
+
+// useUpdateMany
+-const [updateMany, { loading }] = useUpdateMany(
+-   'posts',
+-   [123, 456],
+-   { likes: 12 },
+-);
+-updateMany(resource, id, data, previousData, options);
++const [updateMany, { isLoading }] = useUpdateMany(
++   'posts',
++   {
++       ids: [123, 456],
++       data: { likes: 12 },
++   }
++);
++updateMany(resource, { ids, data }, options);
 ```
 
 This new signature should be easier to learn and use.
@@ -206,6 +223,7 @@ To upgrade, check every instance of your code of the following hooks:
 - `useGetMany`
 - `useGetManyReference`
 - `useUpdate`
+- `useUpdateMany`
 
 And update the calls. If you're using TypeScript, your code won't compile until you properly upgrade the calls. 
 
