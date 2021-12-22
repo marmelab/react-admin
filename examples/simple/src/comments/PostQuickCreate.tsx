@@ -49,14 +49,18 @@ const PostQuickCreate = ({ onCancel, onSave, ...props }) => {
 
     const handleSave = useCallback(
         values => {
-            create('posts', values, {
-                onSuccess: ({ data }) => {
-                    onSave(data);
-                },
-                onFailure: error => {
-                    notify(error.message, 'error');
-                },
-            });
+            create(
+                'posts',
+                { data: values },
+                {
+                    onSuccess: data => {
+                        onSave(data);
+                    },
+                    onError: (error: Error) => {
+                        notify(error.message, 'error');
+                    },
+                }
+            );
         },
         [create, notify, onSave]
     );

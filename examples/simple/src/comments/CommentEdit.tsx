@@ -71,19 +71,18 @@ const inputText = record =>
 const CreatePost = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
-    const [create] = useCreate('posts');
+    const [create] = useCreate();
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         create(
+            'posts',
             {
-                payload: {
-                    data: {
-                        title: value,
-                    },
+                data: {
+                    title: value,
                 },
             },
             {
-                onSuccess: ({ data }) => {
+                onSuccess: data => {
                     setValue('');
                     const choice = data;
                     onCreate(choice);

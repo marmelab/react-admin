@@ -73,21 +73,15 @@ const TagReferenceInput = ({
 const CreateTag = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
-    const [create] = useCreate('tags');
+    const [create] = useCreate();
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         create(
+            'tags',
+            { data: { name: { en: value } } },
+
             {
-                payload: {
-                    data: {
-                        name: {
-                            en: value,
-                        },
-                    },
-                },
-            },
-            {
-                onSuccess: ({ data }) => {
+                onSuccess: data => {
                     setValue('');
                     const choice = data;
                     onCreate(choice);
