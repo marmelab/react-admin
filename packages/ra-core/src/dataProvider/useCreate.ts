@@ -105,15 +105,19 @@ export const useCreate = <RecordType extends Record = Record>(
     );
 
     const create = (
-        resource?: string,
-        params?: Partial<CreateParams<Partial<RecordType>>>,
-        options?: MutateOptions<
+        callTimeResource: string = resource,
+        callTimeParams: Partial<CreateParams<RecordType>> = {},
+        createOptions?: MutateOptions<
             RecordType,
             unknown,
             Partial<UseCreateMutateParams<RecordType>>,
             unknown
         >
-    ) => mutation.mutate({ resource, data: params.data }, options);
+    ) =>
+        mutation.mutate(
+            { resource: callTimeResource, ...callTimeParams },
+            createOptions
+        );
 
     return [create, mutation];
 };
