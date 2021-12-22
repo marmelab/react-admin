@@ -29,7 +29,6 @@ export default ({ customReducers = {}, initialState }: Params = {}) => {
                           loading: 0,
                           resources: {},
                           customQueries: {},
-                          references: { possibleValues: {} },
                       },
                   },
             action
