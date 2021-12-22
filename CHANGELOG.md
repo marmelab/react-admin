@@ -1,6 +1,13 @@
 # Changelog
 
-# v3.19.4
+## v3.19.5
+
+* Fix `<Autocomplete>` fails when used inside a `<FormDataConsumer>` ([#7013](https://github.com/marmelab/react-admin/pull/7013)) ([WiXSL](https://github.com/WiXSL))
+* Fix `updateMany` throws an error for undefined ID in `ra-data-graphql-simple` ([#7002](https://github.com/marmelab/react-admin/pull/7002)) ([djhi](https://github.com/djhi))
+* Fix warning for unrecognized `enableGetChoices` prop when using `<SelectInput>` as child of `<ReferenceInput>` ([#6999](https://github.com/marmelab/react-admin/pull/6999)) ([ZachSelindh](https://github.com/ZachSelindh))
+* [Doc] Fix typos ([#7012](https://github.com/marmelab/react-admin/pull/7012)) ([WiXSL](https://github.com/WiXSL))
+
+## v3.19.4
 
 * Fix list `<FilterButton>` is not accessible ([#6967](https://github.com/marmelab/react-admin/pull/6967)) ([WiXSL](https://github.com/WiXSL))
 * Fix incorrect `exporter` when switching resource ([#6989](https://github.com/marmelab/react-admin/pull/6989)) ([WiXSL](https://github.com/WiXSL))
