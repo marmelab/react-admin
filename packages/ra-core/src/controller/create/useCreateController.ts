@@ -85,7 +85,7 @@ export const useCreateController = <
         setTransform,
     } = useSaveModifiers({ onSuccess, onFailure, transform });
 
-    const [create, { loading: saving }] = useCreate(resource);
+    const [create, { isLoading: saving }] = useCreate();
 
     const save = useCallback(
         (
@@ -105,14 +105,14 @@ export const useCreateController = <
                     : data
             ).then(data =>
                 create(
-                    { payload: { data } },
+                    resource,
+                    { data },
                     {
-                        action: CRUD_CREATE,
                         onSuccess: onSuccessFromSave
                             ? onSuccessFromSave
                             : onSuccessRef.current
                             ? onSuccessRef.current
-                            : ({ data: newRecord }) => {
+                            : newRecord => {
                                   notify(
                                       successMessage ||
                                           'ra.notification.created',
@@ -128,11 +128,11 @@ export const useCreateController = <
                                       newRecord
                                   );
                               },
-                        onFailure: onFailureFromSave
+                        onError: onFailureFromSave
                             ? onFailureFromSave
                             : onFailureRef.current
                             ? onFailureRef.current
-                            : error => {
+                            : (error: Error) => {
                                   notify(
                                       typeof error === 'string'
                                           ? error
