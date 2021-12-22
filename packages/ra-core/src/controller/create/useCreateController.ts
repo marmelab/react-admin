@@ -3,6 +3,7 @@ import { useCallback, MutableRefObject } from 'react';
 import { parse } from 'query-string';
 import { useLocation } from 'react-router-dom';
 import { Location } from 'history';
+import { UseMutationOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
 import { useCreate } from '../../dataProvider';
@@ -19,9 +20,7 @@ import {
     useSaveModifiers,
 } from '../saveModifiers';
 import { useTranslate } from '../../i18n';
-import useVersion from '../useVersion';
-import { CRUD_CREATE } from '../../actions';
-import { Record, OnSuccess, OnFailure } from '../../types';
+import { Record, OnSuccess, OnFailure, CreateParams } from '../../types';
 import {
     useResourceContext,
     useResourceDefinition,
@@ -52,11 +51,10 @@ export const useCreateController = <
 ): CreateControllerResult<RecordType> => {
     const {
         disableAuthentication,
-        onSuccess,
-        onFailure,
         record,
         successMessage,
         transform,
+        mutationOptions = {},
     } = props;
 
     useAuthenticated({ enabled: !disableAuthentication });
@@ -68,7 +66,7 @@ export const useCreateController = <
     const redirect = useRedirect();
     const recordToUse =
         record ?? getRecordFromLocation(location) ?? emptyRecord;
-    const version = useVersion();
+    const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
 
     if (process.env.NODE_ENV !== 'production' && successMessage) {
         console.log(
@@ -83,9 +81,13 @@ export const useCreateController = <
         setOnFailure,
         transformRef,
         setTransform,
-    } = useSaveModifiers({ onSuccess, onFailure, transform });
+    } = useSaveModifiers({ onSuccess, onFailure: onError, transform });
 
-    const [create, { isLoading: saving }] = useCreate();
+    const [create, { isLoading: saving }] = useCreate(
+        resource,
+        undefined,
+        otherMutationOptions
+    );
 
     const save = useCallback(
         (
@@ -172,8 +174,8 @@ export const useCreateController = <
     });
 
     return {
-        loading: false,
-        loaded: true,
+        isFetching: false,
+        isLoading: false,
         saving,
         defaultTitle,
         onFailureRef,
@@ -186,7 +188,6 @@ export const useCreateController = <
         resource,
         record: recordToUse,
         redirect: getDefaultRedirectRoute(hasShow, hasEdit),
-        version,
     };
 };
 
@@ -196,8 +197,11 @@ export interface CreateControllerProps<
     disableAuthentication?: boolean;
     record?: Partial<RecordType>;
     resource?: string;
-    onSuccess?: OnSuccess;
-    onFailure?: OnFailure;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        unknown,
+        CreateParams<RecordType>
+    >;
     successMessage?: string;
     transform?: TransformData;
 }
@@ -209,8 +213,8 @@ export interface CreateControllerResult<
     // @deprecated - to be removed in 4.0d
     data?: RecordType;
     defaultTitle: string;
-    loading: boolean;
-    loaded: boolean;
+    isFetching: boolean;
+    isLoading: boolean;
     onSuccessRef: MutableRefObject<OnSuccess>;
     onFailureRef: MutableRefObject<OnFailure>;
     transformRef: MutableRefObject<TransformData>;
@@ -231,7 +235,6 @@ export interface CreateControllerResult<
     record?: Partial<RecordType>;
     redirect: RedirectionSideEffect;
     resource: string;
-    version: number;
 }
 
 const emptyRecord = {};

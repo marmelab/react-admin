@@ -4,10 +4,9 @@ import {
     Identifier,
     Record as RaRecord,
     MutationMode,
-    OnSuccess,
-    OnFailure,
     TransformData,
     UpdateParams,
+    CreateParams,
 } from 'ra-core';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
@@ -38,8 +37,11 @@ export interface CreateProps<RecordType extends RaRecord = RaRecord> {
     component?: ElementType;
     record?: Partial<RecordType>;
     resource?: string;
-    onSuccess?: OnSuccess;
-    onFailure?: OnFailure;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        unknown,
+        CreateParams<RecordType>
+    >;
     transform?: TransformData;
     title?: string | ReactElement;
 }

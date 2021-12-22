@@ -89,7 +89,6 @@ Create.propTypes = {
     record: PropTypes.object,
     hasList: PropTypes.bool,
     successMessage: PropTypes.string,
-    onSuccess: PropTypes.func,
-    onFailure: PropTypes.func,
+    mutationOptions: PropTypes.object,
     transform: PropTypes.func,
 };
