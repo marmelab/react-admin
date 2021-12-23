@@ -100,8 +100,7 @@ You can customize the `<Create>` and `<Edit>` components using the following pro
 * [`component`](#component)
 * [`undoable`](#undoable) (`<Edit>` only) (deprecated)
 * [`mutationMode`](#mutationmode) (`<Edit>` only) 
-* [`onSuccess`](#onsuccess)
-* [`onFailure`](#onfailure)
+* [`mutationOptions](#mutationoptions)
 * [`transform`](#transform)
 * [`successMessage`](#success-message) (deprecated - use `onSuccess` instead)
 
@@ -387,9 +386,11 @@ const PostEdit = () => (
 );
 ```
 
-### `onSuccess`
+### `mutationOptions`
 
-By default, when the save action succeeds, react-admin shows a notification, and redirects to another page. You can override this behavior and pass custom side effects by providing a function as `onSuccess` prop:
+You can customize the options you pass to react-query's `useMutation` hook, e.g. to override succes or error side effects, by setting the `mutationOptions` prop.
+
+Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to another page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 
 ```jsx
 import * as React from 'react';
@@ -407,7 +408,7 @@ const PostEdit = () => {
     };
 
     return (
-        <Edit onSuccess={onSuccess}>
+        <Edit mutationProps={{ onSuccess }}>
             <SimpleForm>
                 ...
             </SimpleForm>
@@ -457,7 +458,7 @@ const PostEdit = () => {
     };
 
     return (
-        <Edit onSuccess={onSuccess} mutationMode="pessimistic">
+        <Edit mutationProps={{ onSuccess }} mutationMode="pessimistic">
             <SimpleForm>
                 ...
             </SimpleForm>
@@ -470,11 +471,7 @@ const PostEdit = () => {
 
 **Tip**: If you want to have different success side effects based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save and redirect to the list", and another to "save and display an empty form"), you can set the `onSuccess` prop on the `<SaveButton>` component, too.
 
-### `onFailure`
-
-By default, when the save action fails at the dataProvider level, react-admin shows an error notification. On an Edit page with `mutationMode` set to `undoable` or `optimistic`, it refreshes the page, too.
-
-You can override this behavior and pass custom side effects by providing a function as `onFailure` prop:
+Similarly, you can override the failure side effects with an `onError` otion. By default, when the save action fails at the dataProvider level, react-admin shows an error notification. On an Edit page with `mutationMode` set to `undoable` or `optimistic`, it refreshes the page, too.
 
 ```jsx
 import * as React from 'react';
@@ -485,14 +482,14 @@ const PostEdit = () => {
     const refresh = useRefresh();
     const redirect = useRedirect();
 
-    const onFailure = (error) => {
+    const onError = (error) => {
         notify(`Could not edit post: ${error.message}`);
         redirect('/posts');
         refresh();
     };
 
     return (
-        <Edit onFailure={onFailure}>
+        <Edit mutationProps={{ onError }}>
             <SimpleForm>
                 ...
             </SimpleForm>
@@ -501,9 +498,9 @@ const PostEdit = () => {
 }
 ```
 
-The `onFailure` function receives the error from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
+The `onError` function receives the error from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
 
-The default `onFailure` function is:
+The default `onError` function is:
 
 ```jsx
 // for the <Create> component:

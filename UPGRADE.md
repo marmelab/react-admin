@@ -179,6 +179,18 @@ For queries:
 For mutations:
 
 ```diff
+// useCreate
+-const [create, { loading }] = useCreate(
+-   'posts',
+-   { title: 'hello, world!' },
+-);
+-create(resource, data, options);
++const [create, { isLoading }] = useCreate(
++   'posts',
++   { data: { title: 'hello, world!' } }
++);
++create(resource, { data }, options);
+
 // useUpdate
 -const [update, { loading }] = useUpdate(
 -   'posts',
@@ -222,6 +234,7 @@ To upgrade, check every instance of your code of the following hooks:
 - `useGetList`
 - `useGetMany`
 - `useGetManyReference`
+- `useCreate`
 - `useUpdate`
 - `useUpdateMany`
 
@@ -319,12 +332,42 @@ const PostEdit = () => {
 };
 ```
 
+Here is how to customize side effects on the `create` mutation in `<Create>`:
+
+```diff
+const PostCreate = () => {
+    const onSuccess = () => {
+        // do something
+    };
+    const onFailure = () => {
+        // do something
+    };
+    return (
+        <Create 
+-           onSuccess={onSuccess}
+-           onFailure={onFailure}
++           mutationOptions={{
++               onSuccess: onSuccess,
++               onError: onFailure
++           }}
+        >
+            <SimpleForm>
+                <TextInput source="title" />
+            </SimpleForm>
+        </Create>
+    );
+};
+```
+
 Note that the `onFailure` prop was renamed to `onError` in the options, to match the react-query convention.
 
 **Tip**: `<Edit>` also has a `queryOption` prop allowing you to specify custom success and error side effects for the `getOne` query.
 
 The change concerns the following components:
 
+- `useCreateController`
+- `<Create>`
+- `<CreateBase>`
 - `useEditController`
 - `<Edit>`
 - `<EditBase>`
@@ -355,6 +398,10 @@ const handleClick = () => {
 
 The change concerns the following components:
 
+- `useCreate`
+- `useCreateController`
+- `<Create>`
+- `<CreateBase>`
 - `useUpdate`
 - `useEditController`
 - `<Edit>`
