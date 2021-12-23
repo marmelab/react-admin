@@ -4,6 +4,7 @@ import {
     useQueryClient,
     useQuery,
     UseQueryOptions,
+    hashQueryKey,
 } from 'react-query';
 import union from 'lodash/union';
 
@@ -66,21 +67,19 @@ export const useGetManyAggregate = <RecordType extends Record = Record>(
 ): UseGetManyHookValue<RecordType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
+    const queryCache = queryClient.getQueryCache();
     const { ids } = params;
     const placeholderData = useMemo(() => {
-        const records = ids.map(id =>
-            queryClient.getQueryData<RecordType>([
-                resource,
-                'getOne',
-                String(id),
-            ])
-        );
+        const records = ids.map(id => {
+            const queryHash = hashQueryKey([resource, 'getOne', String(id)]);
+            return queryCache.get<RecordType>(queryHash)?.state?.data;
+        });
         if (records.some(record => record === undefined)) {
             return undefined;
         } else {
             return records;
         }
-    }, [ids, queryClient, resource]);
+    }, [ids, queryCache, resource]);
 
     return useQuery<RecordType[], Error, RecordType[]>(
         [resource, 'getMany', { ids: ids.map(id => String(id)) }],
