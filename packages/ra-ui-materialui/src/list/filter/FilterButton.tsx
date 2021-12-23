@@ -99,7 +99,7 @@ const FilterButton = (props: FilterButtonProps): JSX.Element => {
                         resource={resource}
                         onShow={handleShow}
                         autoFocus={index === 0}
-                        disabled={filterElement.props.disabled}
+                        disabled={filterElement.props.disabled || false}
                     />
                 ))}
             </Menu>
