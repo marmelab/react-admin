@@ -3,6 +3,7 @@ import { useCallback, MutableRefObject } from 'react';
 import { parse } from 'query-string';
 import { useLocation } from 'react-router-dom';
 import { Location } from 'history';
+import { UseMutationOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
 import { useCreate } from '../../dataProvider';
@@ -20,8 +21,7 @@ import {
 } from '../saveModifiers';
 import { useTranslate } from '../../i18n';
 import useVersion from '../useVersion';
-import { CRUD_CREATE } from '../../actions';
-import { Record, OnSuccess, OnFailure } from '../../types';
+import { Record, OnSuccess, OnFailure, CreateParams } from '../../types';
 import {
     useResourceContext,
     useResourceDefinition,
@@ -52,11 +52,10 @@ export const useCreateController = <
 ): CreateControllerResult<RecordType> => {
     const {
         disableAuthentication,
-        onSuccess,
-        onFailure,
         record,
         successMessage,
         transform,
+        mutationOptions = {},
     } = props;
 
     useAuthenticated({ enabled: !disableAuthentication });
@@ -69,6 +68,7 @@ export const useCreateController = <
     const recordToUse =
         record ?? getRecordFromLocation(location) ?? emptyRecord;
     const version = useVersion();
+    const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
 
     if (process.env.NODE_ENV !== 'production' && successMessage) {
         console.log(
@@ -83,9 +83,13 @@ export const useCreateController = <
         setOnFailure,
         transformRef,
         setTransform,
-    } = useSaveModifiers({ onSuccess, onFailure, transform });
+    } = useSaveModifiers({ onSuccess, onFailure: onError, transform });
 
-    const [create, { loading: saving }] = useCreate(resource);
+    const [create, { isLoading: saving }] = useCreate(
+        resource,
+        undefined,
+        otherMutationOptions
+    );
 
     const save = useCallback(
         (
@@ -105,14 +109,14 @@ export const useCreateController = <
                     : data
             ).then(data =>
                 create(
-                    { payload: { data } },
+                    resource,
+                    { data },
                     {
-                        action: CRUD_CREATE,
                         onSuccess: onSuccessFromSave
                             ? onSuccessFromSave
                             : onSuccessRef.current
                             ? onSuccessRef.current
-                            : ({ data: newRecord }) => {
+                            : newRecord => {
                                   notify(
                                       successMessage ||
                                           'ra.notification.created',
@@ -128,11 +132,11 @@ export const useCreateController = <
                                       newRecord
                                   );
                               },
-                        onFailure: onFailureFromSave
+                        onError: onFailureFromSave
                             ? onFailureFromSave
                             : onFailureRef.current
                             ? onFailureRef.current
-                            : error => {
+                            : (error: Error) => {
                                   notify(
                                       typeof error === 'string'
                                           ? error
@@ -172,8 +176,8 @@ export const useCreateController = <
     });
 
     return {
-        loading: false,
-        loaded: true,
+        isFetching: false,
+        isLoading: false,
         saving,
         defaultTitle,
         onFailureRef,
@@ -196,8 +200,11 @@ export interface CreateControllerProps<
     disableAuthentication?: boolean;
     record?: Partial<RecordType>;
     resource?: string;
-    onSuccess?: OnSuccess;
-    onFailure?: OnFailure;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        unknown,
+        CreateParams<RecordType>
+    >;
     successMessage?: string;
     transform?: TransformData;
 }
@@ -209,8 +216,8 @@ export interface CreateControllerResult<
     // @deprecated - to be removed in 4.0d
     data?: RecordType;
     defaultTitle: string;
-    loading: boolean;
-    loaded: boolean;
+    isFetching: boolean;
+    isLoading: boolean;
     onSuccessRef: MutableRefObject<OnSuccess>;
     onFailureRef: MutableRefObject<OnFailure>;
     transformRef: MutableRefObject<TransformData>;

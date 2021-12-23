@@ -401,13 +401,15 @@ const PostComments = ({ record }) => {
 
 ```jsx
 // syntax
-const [create, { data, loading, loaded, error }] = useCreate(resource, data, options);
+const [create, { data, isFetching, isLoading, error }] = useCreate(resource, { data }, options);
 ```
 
-The `create()` function can be called in 3 different ways:
- - with the same parameters as the `useCreate()` hook: `create(resource, data, options)`
- - with the same syntax as `useMutation`: `create({ resource, payload: { data } }, options)`
- - with no parameter (if they were already passed to `useCreate()`): `create()`
+The `create()` method can be called with the same parameters as the hook:
+
+```jsx
+create(resource, { data }, options);
+```
+
 
 ```jsx
 // set params when calling the update callback
@@ -415,12 +417,12 @@ import { useCreate } from 'react-admin';
 
 const LikeButton = ({ record }) => {
     const like = { postId: record.id };
-    const [create, { loading, error }] = useCreate();
+    const [create, { isLoading, error }] = useCreate();
     const handleClick = () => {
-        create('likes', like)
+        create('likes', { data: like })
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={handleClick}>Like</button>;
+    return <button disabled={isLoading} onClick={handleClick}>Like</button>;
 };
 
 // set params when calling the hook
@@ -428,9 +430,9 @@ import { useCreate } from 'react-admin';
 
 const LikeButton = ({ record }) => {
     const like = { postId: record.id };
-    const [create, { loading, error }] = useCreate('likes', like);
+    const [create, { isLoading, error }] = useCreate('likes', { data: like });
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={() => create()}>Like</button>;
+    return <button disabled={isLoading} onClick={() => create()}>Like</button>;
 };
 ```
 

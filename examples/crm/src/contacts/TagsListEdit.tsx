@@ -24,7 +24,7 @@ import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import EditIcon from '@mui/icons-material/Edit';
 
 import { colors } from '../tags/colors';
-import { Contact } from '../types';
+import { Contact, Tag } from '../types';
 
 export const TagsListEdit = ({ record }: { record: Contact }) => {
     const [open, setOpen] = useState(false);
@@ -33,22 +33,21 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [disabled, setDisabled] = useState(false);
 
-    const { data: allTags, refetch, isLoading: isLoadingAllTags } = useGetList(
-        'tags',
-        {
-            pagination: { page: 1, perPage: 10 },
-            sort: { field: 'name', order: 'ASC' },
-        }
-    );
-    const { data: tags, isLoading: isLoadingRecordTags } = useGetMany(
+    const { data: allTags, refetch, isLoading: isLoadingAllTags } = useGetList<
+        Tag
+    >('tags', {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: 'name', order: 'ASC' },
+    });
+    const { data: tags, isLoading: isLoadingRecordTags } = useGetMany<Tag>(
         'tags',
         { ids: record.tags },
         {
             enabled: record.tags && record.tags.length > 0,
         }
     );
-    const [update] = useUpdate();
-    const [create] = useCreate();
+    const [update] = useUpdate<Contact>();
+    const [create] = useCreate<Tag>();
 
     const unselectedTags =
         allTags && allTags.filter(tag => !record.tags.includes(tag.id));
@@ -99,14 +98,14 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
         setDisabled(true);
         create(
             'tags',
-            { name: newTagName, color: newTagColor },
+            { data: { name: newTagName, color: newTagColor } },
             {
-                onSuccess: ({ data }) => {
+                onSuccess: tag => {
                     update(
                         'contacts',
                         {
                             id: record.id,
-                            data: { tags: [...record.tags, data.id] },
+                            data: { tags: [...record.tags, tag.id] },
                             previousData: record,
                         },
                         {
