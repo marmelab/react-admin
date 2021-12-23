@@ -53,7 +53,10 @@ const useRedirect = () => {
             state: object = {}
         ) => {
             if (!redirectTo) {
-                if (locationRef.current.state || locationRef.current.search) {
+                if (
+                    Object.keys(locationRef.current.state).length !== 0 ||
+                    locationRef.current.search
+                ) {
                     navigate(
                         {
                             ...locationRef.current,
