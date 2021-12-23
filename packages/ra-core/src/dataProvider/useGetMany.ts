@@ -3,6 +3,7 @@ import {
     UseQueryOptions,
     UseQueryResult,
     useQueryClient,
+    hashQueryKey,
 } from 'react-query';
 
 import { Record, GetManyParams } from '../types';
@@ -55,6 +56,7 @@ export const useGetMany = <RecordType extends Record = Record>(
     const { ids } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
+    const queryCache = queryClient.getQueryCache();
 
     return useQuery<RecordType[], Error, RecordType[]>(
         [resource, 'getMany', { ids: ids.map(id => String(id)) }],
@@ -64,13 +66,14 @@ export const useGetMany = <RecordType extends Record = Record>(
                 .then(({ data }) => data),
         {
             placeholderData: () => {
-                const records = ids.map(id =>
-                    queryClient.getQueryData<RecordType>([
+                const records = ids.map(id => {
+                    const queryHash = hashQueryKey([
                         resource,
                         'getOne',
                         String(id),
-                    ])
-                );
+                    ]);
+                    return queryCache.get<RecordType>(queryHash)?.state?.data;
+                });
                 if (records.some(record => record === undefined)) {
                     return undefined;
                 } else {
