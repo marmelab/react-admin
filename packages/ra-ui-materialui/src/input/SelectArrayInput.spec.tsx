@@ -390,6 +390,49 @@ describe('<SelectArrayInput />', () => {
         });
     });
 
+    it('should support creation of a new choice with nested optionText', async () => {
+        const choices = [
+            { id: 'programming', name: { en: 'Programming' } },
+            { id: 'lifestyle', name: { en: 'Lifestyle' } },
+            { id: 'photography', name: { en: 'Photography' } },
+        ];
+        const newChoice = {
+            id: 'js_fatigue',
+            name: { en: 'New Kid On The Block' },
+        };
+
+        const { getByLabelText, getByRole, getByText, queryAllByText } = render(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectArrayInput
+                        {...defaultProps}
+                        choices={choices}
+                        onCreate={() => {
+                            choices.push(newChoice);
+                            return newChoice;
+                        }}
+                        optionText="name.en"
+                    />
+                )}
+            />
+        );
+
+        const input = getByLabelText(
+            'resources.posts.fields.categories'
+        ) as HTMLInputElement;
+        input.focus();
+        const select = getByRole('button');
+        fireEvent.mouseDown(select);
+
+        fireEvent.click(getByText('ra.action.create'));
+        await new Promise(resolve => setTimeout(resolve));
+        input.blur();
+        // 2 because there is both the chip for the new selected item and the option (event if hidden)
+        expect(queryAllByText(newChoice.name.en).length).toEqual(2);
+    });
+
     it('should support creation of a new choice through the create element', async () => {
         const choices = [...defaultProps.choices];
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
