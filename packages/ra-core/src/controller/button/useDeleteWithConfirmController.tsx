@@ -84,42 +84,46 @@ const useDeleteWithConfirmController = <RecordType extends Record = Record>(
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
-    const [deleteOne, { isLoading }] = useDelete<RecordType>(resource, null, {
-        onSuccess: deletedRecord => {
-            setOpen(false);
+    const [deleteOne, { isLoading }] = useDelete<RecordType>(
+        resource,
+        undefined,
+        {
+            onSuccess: deletedRecord => {
+                setOpen(false);
 
-            notify('ra.notification.deleted', {
-                type: 'info',
-                messageArgs: { smart_count: 1 },
-                undoable: mutationMode === 'undoable',
-            });
-            redirect(redirectTo, basePath || `/${resource}`);
-            refresh();
-        },
-        onError: (error: Error) => {
-            setOpen(false);
+                notify('ra.notification.deleted', {
+                    type: 'info',
+                    messageArgs: { smart_count: 1 },
+                    undoable: mutationMode === 'undoable',
+                });
+                redirect(redirectTo, basePath || `/${resource}`);
+                refresh();
+            },
+            onError: (error: Error) => {
+                setOpen(false);
 
-            notify(
-                typeof error === 'string'
-                    ? error
-                    : error.message || 'ra.notification.http_error',
-                {
-                    type: 'warning',
-                    messageArgs: {
-                        _:
-                            typeof error === 'string'
-                                ? error
-                                : error && error.message
-                                ? error.message
-                                : undefined,
-                    },
-                }
-            );
-            refresh();
-        },
-        mutationMode,
-        ...mutationOptions,
-    });
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : error.message || 'ra.notification.http_error',
+                    {
+                        type: 'warning',
+                        messageArgs: {
+                            _:
+                                typeof error === 'string'
+                                    ? error
+                                    : error && error.message
+                                    ? error.message
+                                    : undefined,
+                        },
+                    }
+                );
+                refresh();
+            },
+            mutationMode,
+            ...mutationOptions,
+        }
+    );
 
     const handleDialogOpen = e => {
         setOpen(true);
