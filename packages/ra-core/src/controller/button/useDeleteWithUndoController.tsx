@@ -6,6 +6,7 @@ import {
     useRefresh,
     useNotify,
     useRedirect,
+    useUnselect,
     RedirectionSideEffect,
 } from '../../sideEffect';
 import { Record, DeleteParams } from '../../types';
@@ -60,6 +61,7 @@ const useDeleteWithUndoController = <RecordType extends Record = Record>(
     } = props;
     const resource = useResourceContext(props);
     const notify = useNotify();
+    const unselect = useUnselect();
     const redirect = useRedirect();
     const refresh = useRefresh();
 
@@ -73,6 +75,7 @@ const useDeleteWithUndoController = <RecordType extends Record = Record>(
                     messageArgs: { smart_count: 1 },
                     undoable: true,
                 });
+                unselect(resource, [record.id]);
                 redirect(redirectTo, basePath || `/${resource}`);
                 refresh();
             },

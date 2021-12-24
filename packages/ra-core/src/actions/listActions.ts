@@ -59,6 +59,23 @@ export const toggleListItem = (
     meta: { resource },
 });
 
+export const UNSELECT_LIST_ITEMS = 'RA/UNSELECT_LIST_ITEMS';
+
+export interface UnselectListItemsAction {
+    readonly type: typeof UNSELECT_LIST_ITEMS;
+    readonly payload: any;
+    readonly meta: { resource: string };
+}
+
+export const unselectListItems = (
+    resource: string,
+    ids: Identifier[]
+): UnselectListItemsAction => ({
+    type: UNSELECT_LIST_ITEMS,
+    payload: ids,
+    meta: { resource },
+});
+
 export const TOGGLE_LIST_ITEM_EXPAND = 'RA/TOGGLE_LIST_ITEM_EXPAND';
 
 export interface ToggleListItemExpandAction {

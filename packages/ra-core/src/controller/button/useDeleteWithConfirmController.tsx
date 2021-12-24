@@ -11,6 +11,7 @@ import {
     useRefresh,
     useNotify,
     useRedirect,
+    useUnselect,
     RedirectionSideEffect,
 } from '../../sideEffect';
 import { Record, MutationMode, DeleteParams } from '../../types';
@@ -82,6 +83,7 @@ const useDeleteWithConfirmController = <RecordType extends Record = Record>(
     const resource = useResourceContext(props);
     const [open, setOpen] = useState(false);
     const notify = useNotify();
+    const unselect = useUnselect();
     const redirect = useRedirect();
     const refresh = useRefresh();
     const [deleteOne, { isLoading }] = useDelete<RecordType>(
@@ -90,12 +92,12 @@ const useDeleteWithConfirmController = <RecordType extends Record = Record>(
         {
             onSuccess: deletedRecord => {
                 setOpen(false);
-
                 notify('ra.notification.deleted', {
                     type: 'info',
                     messageArgs: { smart_count: 1 },
                     undoable: mutationMode === 'undoable',
                 });
+                unselect(resource, [record.id]);
                 redirect(redirectTo, basePath || `/${resource}`);
                 refresh();
             },
