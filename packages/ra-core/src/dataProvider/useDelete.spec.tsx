@@ -1,41 +1,17 @@
 import * as React from 'react';
-import { renderWithRedux } from 'ra-test';
-import { waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import expect from 'expect';
 
-import { DataProvider, Record } from '../types';
-import DataProviderContext from './DataProviderContext';
+import { CoreAdminContext } from '../core';
+import { Record } from '../types';
+import { testDataProvider } from './testDataProvider';
 import { useDelete } from './useDelete';
 
 describe('useDelete', () => {
-    it('returns a callback that can be used with deleteOne arguments', () => {
-        const dataProvider: Partial<DataProvider> = {
+    it('returns a callback that can be used with deleteOne arguments', async () => {
+        const dataProvider = testDataProvider({
             delete: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
-        };
-        let localDeleteOne;
-        const Dummy = () => {
-            const [deleteOne] = useDelete();
-            localDeleteOne = deleteOne;
-            return <span />;
-        };
-
-        renderWithRedux(
-            // @ts-expect-error
-            <DataProviderContext.Provider value={dataProvider}>
-                <Dummy />
-            </DataProviderContext.Provider>
-        );
-        localDeleteOne('foo', 1, { id: 1, bar: 'bar' });
-        expect(dataProvider.delete).toHaveBeenCalledWith('foo', {
-            id: 1,
-            previousData: { id: 1, bar: 'bar' },
         });
-    });
-
-    it('returns a callback that can be used with mutation payload', () => {
-        const dataProvider: Partial<DataProvider> = {
-            delete: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
-        };
         let localDeleteOne;
         const Dummy = () => {
             const [deleteOne] = useDelete();
@@ -43,71 +19,76 @@ describe('useDelete', () => {
             return <span />;
         };
 
-        renderWithRedux(
-            // @ts-expect-error
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <Dummy />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
-        localDeleteOne({
-            type: 'delete',
-            resource: 'foo',
-            payload: {
+        localDeleteOne('foo', { id: 1, previousData: { id: 1, bar: 'bar' } });
+        await waitFor(() => {
+            expect(dataProvider.delete).toHaveBeenCalledWith('foo', {
                 id: 1,
                 previousData: { id: 1, bar: 'bar' },
-            },
-        });
-        expect(dataProvider.delete).toHaveBeenCalledWith('foo', {
-            id: 1,
-            previousData: { id: 1, bar: 'bar' },
+            });
         });
     });
 
-    it('returns a callback that can be used with no arguments', () => {
-        const dataProvider: Partial<DataProvider> = {
+    it('returns a callback that can be used with no arguments', async () => {
+        const dataProvider = testDataProvider({
             delete: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
-        };
+        });
         let localDeleteOne;
         const Dummy = () => {
-            const [deleteOne] = useDelete('foo', 1, { id: 1, bar: 'bar' });
+            const [deleteOne] = useDelete('foo', {
+                id: 1,
+                previousData: { id: 1, bar: 'bar' },
+            });
             localDeleteOne = deleteOne;
             return <span />;
         };
 
-        renderWithRedux(
-            // @ts-expect-error
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <Dummy />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
         localDeleteOne();
-        expect(dataProvider.delete).toHaveBeenCalledWith('foo', {
-            id: 1,
-            previousData: { id: 1, bar: 'bar' },
+        await waitFor(() => {
+            expect(dataProvider.delete).toHaveBeenCalledWith('foo', {
+                id: 1,
+                previousData: { id: 1, bar: 'bar' },
+            });
         });
     });
 
-    it('merges hook call time and callback call time queries', () => {
-        const dataProvider: Partial<DataProvider> = {
+    it('uses call time params over hook time params', async () => {
+        const dataProvider = testDataProvider({
             delete: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
-        };
+        });
         let localDeleteOne;
         const Dummy = () => {
-            const [deleteOne] = useDelete('foo', 1, { id: 1, bar: 'bar' });
+            const [deleteOne] = useDelete('foo', {
+                id: 1,
+                previousData: { id: 1, bar: 'bar' },
+            });
             localDeleteOne = deleteOne;
             return <span />;
         };
 
-        renderWithRedux(
-            // @ts-expect-error
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <Dummy />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
-        localDeleteOne({ payload: { previousData: { foo: 456 } } });
-        expect(dataProvider.delete).toHaveBeenCalledWith('foo', {
+        localDeleteOne('foo', {
             id: 1,
-            previousData: { id: 1, bar: 'bar', foo: 456 },
+            previousData: { foo: 456 },
+        });
+        await waitFor(() => {
+            expect(dataProvider.delete).toHaveBeenCalledWith('foo', {
+                id: 1,
+                previousData: { foo: 456 },
+            });
         });
     });
 
@@ -115,11 +96,11 @@ describe('useDelete', () => {
         interface Product extends Record {
             sku: string;
         }
-        const dataProvider: Partial<DataProvider> = {
+        const dataProvider = testDataProvider({
             delete: jest.fn(() =>
                 Promise.resolve({ data: { id: 1, sku: 'abc' } } as any)
             ),
-        };
+        });
         let localDeleteOne;
         let sku;
         const Dummy = () => {
@@ -128,16 +109,92 @@ describe('useDelete', () => {
             sku = data && data.sku;
             return <span />;
         };
-        renderWithRedux(
-            // @ts-expect-error
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <Dummy />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
-        expect(sku).toBeNull();
-        localDeleteOne('products', 1, { id: 1, sku: 'bcd' });
+        expect(sku).toBeUndefined();
+        localDeleteOne('products', {
+            id: 1,
+            previousData: { id: 1, sku: 'bcd' },
+        });
         await waitFor(() => {
             expect(sku).toEqual('abc');
+        });
+    });
+
+    describe('pessimistic mode', () => {
+        it('should execute success side effects on success', async () => {
+            const onSuccess = jest.fn();
+            const dataProvider = testDataProvider({
+                delete: () => Promise.resolve({ data: { id: 1 } } as any),
+            });
+            let localDeleteOne;
+            const Dummy = () => {
+                const [deleteOne] = useDelete(
+                    'foo',
+                    {
+                        id: 1,
+                        previousData: { id: 1, bar: 'bar' },
+                    },
+                    { onSuccess }
+                );
+                localDeleteOne = deleteOne;
+                return <span />;
+            };
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Dummy />
+                </CoreAdminContext>
+            );
+            localDeleteOne('foo', {
+                id: 1,
+                previousData: { foo: 456 },
+            });
+            await waitFor(() => {
+                expect(onSuccess).toHaveBeenCalledWith(
+                    { id: 1 },
+                    { id: 1, previousData: { foo: 456 }, resource: 'foo' },
+                    { snapshot: [] }
+                );
+            });
+        });
+        it('should execute error side effects on error', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            const onError = jest.fn();
+            const dataProvider = testDataProvider({
+                delete: () => Promise.reject(new Error('not good')),
+            });
+            let localDeleteOne;
+            const Dummy = () => {
+                const [deleteOne] = useDelete(
+                    'foo',
+                    {
+                        id: 1,
+                        previousData: { id: 1, bar: 'bar' },
+                    },
+                    { onError }
+                );
+                localDeleteOne = deleteOne;
+                return <span />;
+            };
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Dummy />
+                </CoreAdminContext>
+            );
+            localDeleteOne('foo', {
+                id: 1,
+                previousData: { foo: 456 },
+            });
+            await waitFor(() => {
+                expect(onError).toHaveBeenCalledWith(
+                    new Error('not good'),
+                    { id: 1, previousData: { foo: 456 }, resource: 'foo' },
+                    { snapshot: [] }
+                );
+            });
         });
     });
 });
