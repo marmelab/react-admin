@@ -516,34 +516,35 @@ const BulkResetViewsButton = ({ selectedIds }) => {
 
 ```jsx
 // syntax
-const [deleteOne, { data, loading, loaded, error }] = useDelete(resource, id, previousData, options);
+const [deleteOne, { data, loading, loaded, error }] = useDelete(resource, { id, previousData }, options);
 ```
 
-The `deleteOne()` function can be called in 3 different ways:
- - with the same parameters as the `useDelete()` hook: `deleteOne(resource, id, previousData, options)`
- - with the same syntax as `useMutation`: `deleteOne({ resource, payload: { id, previousData } }, options)`
- - with no parameter (if they were already passed to `useDelete()`): `deleteOne()`
+The `deleteOne()` method can be called with the same parameters as the hook:
+
+```jsx
+deleteOne(resource, { ids, previousData }, options);
+```
 
 ```jsx
 // set params when calling the deleteOne callback
 import { useDelete } from 'react-admin';
 
 const DeleteButton = ({ record }) => {
-    const [deleteOne, { loading, error }] = useDelete();
+    const [deleteOne, { isLoading, error }] = useDelete();
     const handleClick = () => {
-        deleteOne('likes', record.id, record)
+        deleteOne('likes', { id: record.id }, record)
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={handleClick}>Delete</button>;
+    return <button disabled={isLoading} onClick={handleClick}>Delete</div>;
 };
 
 // set params when calling the hook
 import { useDelete } from 'react-admin';
 
 const DeleteButton = ({ record }) => {
-    const [deleteOne, { loading, error }] = useDelete('likes', record.id, record);
+    const [deleteOne, { isLoading, error }] = useDelete('likes', { id: record.id }, record);
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={deleteOne}>Delete</button>;
+    return <button disabled={isLoading} onClick={() => deleteOne()}>Delete</button>;
 };
 ```
 

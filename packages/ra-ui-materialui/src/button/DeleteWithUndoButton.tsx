@@ -5,18 +5,20 @@ import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import ActionDelete from '@mui/icons-material/Delete';
 import classnames from 'classnames';
+import { UseMutationOptions } from 'react-query';
 import {
     Record,
     RedirectionSideEffect,
     useDeleteWithUndoController,
-    OnSuccess,
-    OnFailure,
+    DeleteParams,
     useResourceContext,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
 
-export const DeleteWithUndoButton = (props: DeleteWithUndoButtonProps) => {
+export const DeleteWithUndoButton = <RecordType extends Record = Record>(
+    props: DeleteWithUndoButtonProps<RecordType>
+) => {
     const {
         label = 'ra.action.delete',
         className,
@@ -25,26 +27,24 @@ export const DeleteWithUndoButton = (props: DeleteWithUndoButtonProps) => {
         record,
         basePath,
         redirect = 'list',
-        onSuccess,
-        onFailure,
+        mutationOptions,
         ...rest
     } = props;
 
     const resource = useResourceContext(props);
-    const { loading, handleDelete } = useDeleteWithUndoController({
+    const { isLoading, handleDelete } = useDeleteWithUndoController({
         record,
         resource,
         basePath,
         redirect,
         onClick,
-        onSuccess,
-        onFailure,
+        mutationOptions,
     });
 
     return (
         <StyledButton
             onClick={handleDelete}
-            disabled={loading}
+            disabled={isLoading}
             label={label}
             className={classnames(
                 'ra-delete-button',
@@ -59,13 +59,16 @@ export const DeleteWithUndoButton = (props: DeleteWithUndoButtonProps) => {
     );
 };
 
-interface Props {
+const defaultIcon = <ActionDelete />;
+
+export interface DeleteWithUndoButtonProps<RecordType extends Record = Record>
+    extends Omit<ButtonProps, 'record'> {
     basePath?: string;
     className?: string;
     icon?: ReactElement;
     label?: string;
     onClick?: ReactEventHandler<any>;
-    record?: Record;
+    record?: RecordType;
     redirect?: RedirectionSideEffect;
     resource?: string;
     // May be injected by Toolbar - sanitized in Button
@@ -75,13 +78,12 @@ interface Props {
     pristine?: boolean;
     saving?: boolean;
     submitOnEnter?: boolean;
-    onSuccess?: OnSuccess;
-    onFailure?: OnFailure;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        unknown,
+        DeleteParams<RecordType>
+    >;
 }
-
-const defaultIcon = <ActionDelete />;
-
-export type DeleteWithUndoButtonProps = Props & ButtonProps;
 
 DeleteWithUndoButton.propTypes = {
     basePath: PropTypes.string,

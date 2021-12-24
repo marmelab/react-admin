@@ -201,9 +201,9 @@ export interface CreateResult<RecordType extends Record = Record> {
     validUntil?: ValidUntil;
 }
 
-export interface DeleteParams {
+export interface DeleteParams<RecordType extends Record = Record> {
     id: Identifier;
-    previousData?: Record;
+    previousData?: RecordType;
 }
 export interface DeleteResult<RecordType extends Record = Record> {
     data: RecordType;

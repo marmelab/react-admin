@@ -114,7 +114,7 @@ export const Note = ({
 
     const [update, { isLoading }] = useUpdate();
 
-    const [handleDelete] = useDelete(resource, note.id, note, {
+    const [handleDelete] = useDelete(resource, { id: note.id }, note, {
         mutationMode: 'undoable',
         onSuccess: () => {
             notify('Note deleted', { type: 'info', undoable: true });

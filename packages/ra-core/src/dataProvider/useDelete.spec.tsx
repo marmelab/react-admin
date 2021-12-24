@@ -5,7 +5,7 @@ import expect from 'expect';
 
 import { DataProvider, Record } from '../types';
 import DataProviderContext from './DataProviderContext';
-import useDelete from './useDelete';
+import { useDelete } from './useDelete';
 
 describe('useDelete', () => {
     it('returns a callback that can be used with deleteOne arguments', () => {
