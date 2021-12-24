@@ -86,46 +86,7 @@ const useDeleteWithConfirmController = <RecordType extends Record = Record>(
     const unselect = useUnselect();
     const redirect = useRedirect();
     const refresh = useRefresh();
-    const [deleteOne, { isLoading }] = useDelete<RecordType>(
-        resource,
-        undefined,
-        {
-            onSuccess: deletedRecord => {
-                setOpen(false);
-                notify('ra.notification.deleted', {
-                    type: 'info',
-                    messageArgs: { smart_count: 1 },
-                    undoable: mutationMode === 'undoable',
-                });
-                unselect(resource, [record.id]);
-                redirect(redirectTo, basePath || `/${resource}`);
-                refresh();
-            },
-            onError: (error: Error) => {
-                setOpen(false);
-
-                notify(
-                    typeof error === 'string'
-                        ? error
-                        : error.message || 'ra.notification.http_error',
-                    {
-                        type: 'warning',
-                        messageArgs: {
-                            _:
-                                typeof error === 'string'
-                                    ? error
-                                    : error && error.message
-                                    ? error.message
-                                    : undefined,
-                        },
-                    }
-                );
-                refresh();
-            },
-            mutationMode,
-            ...mutationOptions,
-        }
-    );
+    const [deleteOne, { isLoading }] = useDelete<RecordType>();
 
     const handleDialogOpen = e => {
         setOpen(true);
@@ -140,12 +101,64 @@ const useDeleteWithConfirmController = <RecordType extends Record = Record>(
     const handleDelete = useCallback(
         event => {
             event.stopPropagation();
-            deleteOne(resource, { id: record.id, previousData: record });
+            deleteOne(
+                resource,
+                { id: record.id, previousData: record },
+                {
+                    onSuccess: () => {
+                        setOpen(false);
+                        notify('ra.notification.deleted', {
+                            type: 'info',
+                            messageArgs: { smart_count: 1 },
+                            undoable: mutationMode === 'undoable',
+                        });
+                        unselect(resource, [record.id]);
+                        redirect(redirectTo, basePath || `/${resource}`);
+                        refresh();
+                    },
+                    onError: (error: Error) => {
+                        setOpen(false);
+
+                        notify(
+                            typeof error === 'string'
+                                ? error
+                                : error.message || 'ra.notification.http_error',
+                            {
+                                type: 'warning',
+                                messageArgs: {
+                                    _:
+                                        typeof error === 'string'
+                                            ? error
+                                            : error && error.message
+                                            ? error.message
+                                            : undefined,
+                                },
+                            }
+                        );
+                        refresh();
+                    },
+                    mutationMode,
+                    ...mutationOptions,
+                }
+            );
             if (typeof onClick === 'function') {
                 onClick(event);
             }
         },
-        [deleteOne, onClick, record, resource]
+        [
+            basePath,
+            deleteOne,
+            mutationMode,
+            mutationOptions,
+            notify,
+            onClick,
+            record,
+            redirect,
+            redirectTo,
+            refresh,
+            resource,
+            unselect,
+        ]
     );
 
     return {
