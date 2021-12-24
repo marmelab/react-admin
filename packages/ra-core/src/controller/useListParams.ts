@@ -215,15 +215,19 @@ const useListParams = ({
     const filterValues = query.filter || emptyObject;
     const displayedFilterValues = query.displayedFilters || emptyObject;
 
-    const debouncedSetFilters = lodashDebounce((filter, displayedFilters) => {
-        changeParams({
-            type: SET_FILTER,
-            payload: {
-                filter: removeEmpty(filter),
-                displayedFilters,
-            },
-        });
-    }, debounce);
+    const debouncedSetFilters = lodashDebounce(
+        (filter, displayedFilters) => {
+            changeParams({
+                type: SET_FILTER,
+                payload: {
+                    filter: removeEmpty(filter),
+                    displayedFilters,
+                },
+            });
+        },
+        debounce,
+        { leading: true, trailing: false }
+    );
 
     const setFilters = useCallback(
         (filter, displayedFilters, debounce = true) =>
