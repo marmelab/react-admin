@@ -17,7 +17,7 @@ import { Identifier } from '..';
  * Get a callback to call the dataProvider.updateMany() method, the result and the loading state.
  *
  * @param {string} resource
- * @param {Params} params The updateMany parameters { ids, data, previousData }
+ * @param {Params} params The updateMany parameters { ids, data }
  * @param {Object} options Options object to pass to the queryClient.
  * May include side effects to be executed upon success or failure, e.g. { onSuccess: { refresh: true } }
  * May include a mutation mode (optimistic/pessimistic/undoable), e.g. { mutationMode: 'undoable' }
@@ -25,7 +25,6 @@ import { Identifier } from '..';
  * @typedef Params
  * @prop params.ids The resource identifiers, e.g. [123, 456]
  * @prop params.data The updates to merge into the record, e.g. { views: 10 }
- * @prop params.previousData The record before the update is applied
  *
  * @returns The current mutation state. Destructure as [updateMany, { data, error, isLoading }].
  *

@@ -9,7 +9,6 @@ import undoableEventEmitter from './undoableEventEmitter';
 import useDataProvider from './useDataProvider';
 import useMutation, { UseMutationValue } from './useMutation';
 import withDataProvider from './withDataProvider';
-import useDeleteMany from './useDeleteMany';
 import useRefreshWhenVisible from './useRefreshWhenVisible';
 import useIsAutomaticRefreshEnabled from './useIsAutomaticRefreshEnabled';
 
@@ -25,6 +24,7 @@ export * from './useCreate';
 export * from './useUpdate';
 export * from './useUpdateMany';
 export * from './useDelete';
+export * from './useDeleteMany';
 
 export type { Options } from './fetch';
 export type { QueryProps, UseMutationValue, MutationProps };
@@ -40,7 +40,6 @@ export {
     undoableEventEmitter,
     useDataProvider,
     useMutation,
-    useDeleteMany,
     useRefreshWhenVisible,
     withDataProvider,
     useIsAutomaticRefreshEnabled,
