@@ -1,11 +1,23 @@
 import * as React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
 import expect from 'expect';
 
 import { CoreAdminContext } from '../core';
 import { Record } from '../types';
 import { testDataProvider } from './testDataProvider';
 import { useDelete } from './useDelete';
+import {
+    ErrorCase as ErrorCasePessimistic,
+    SuccessCase as SuccessCasePessimistic,
+} from './useDelete.pessimistic.stories';
+import {
+    ErrorCase as ErrorCaseOptimistic,
+    SuccessCase as SuccessCaseOptimistic,
+} from './useDelete.optimistic.stories';
+import {
+    ErrorCase as ErrorCaseUndoable,
+    SuccessCase as SuccessCaseUndoable,
+} from './useDelete.undoable.stories';
 
 describe('useDelete', () => {
     it('returns a callback that can be used with deleteOne arguments', async () => {
@@ -124,8 +136,8 @@ describe('useDelete', () => {
         });
     });
 
-    describe('pessimistic mode', () => {
-        it('should execute success side effects on success', async () => {
+    describe('mutationOptions', () => {
+        it('when pessimistic, executes success side effects on success', async () => {
             const onSuccess = jest.fn();
             const dataProvider = testDataProvider({
                 delete: () => Promise.resolve({ data: { id: 1 } } as any),
@@ -160,7 +172,7 @@ describe('useDelete', () => {
                 );
             });
         });
-        it('should execute error side effects on error', async () => {
+        it('when pessimistic, executes error side effects on error', async () => {
             jest.spyOn(console, 'error').mockImplementation(() => {});
             const onError = jest.fn();
             const dataProvider = testDataProvider({
@@ -194,6 +206,157 @@ describe('useDelete', () => {
                     { id: 1, previousData: { foo: 456 }, resource: 'foo' },
                     { snapshot: [] }
                 );
+            });
+        });
+    });
+
+    describe('mutationMode', () => {
+        it('when pessimistic, displays result and success side effects when dataProvider promise resolves', async () => {
+            jest.spyOn(console, 'log').mockImplementation(() => {});
+            render(<SuccessCasePessimistic />);
+            screen.getByText('Delete first post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(screen.queryByText('Hello')).not.toBeNull();
+                expect(screen.queryByText('World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello')).toBeNull();
+                expect(screen.queryByText('World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+        it('when pessimistic, displays error and error side effects when dataProvider promise rejects', async () => {
+            jest.spyOn(console, 'log').mockImplementation(() => {});
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            render(<ErrorCasePessimistic />);
+            screen.getByText('Delete first post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(screen.queryByText('something went wrong')).toBeNull();
+                expect(screen.queryByText('Hello')).not.toBeNull();
+                expect(screen.queryByText('World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(
+                    screen.queryByText('something went wrong')
+                ).not.toBeNull();
+                expect(screen.queryByText('Hello')).not.toBeNull();
+                expect(screen.queryByText('World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+        it('when optimistic, displays result and success side effects right away', async () => {
+            jest.spyOn(console, 'log').mockImplementation(() => {});
+            render(<SuccessCaseOptimistic />);
+            await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
+            screen.getByText('Delete first post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello')).toBeNull();
+                expect(screen.queryByText('World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello')).toBeNull();
+                expect(screen.queryByText('World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+        it('when optimistic, displays error and error side effects when dataProvider promise rejects', async () => {
+            jest.spyOn(console, 'log').mockImplementation(() => {});
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            render(<ErrorCaseOptimistic />);
+            await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
+            screen.getByText('Delete first post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello')).toBeNull();
+                expect(screen.queryByText('World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(
+                    screen.queryByText('something went wrong')
+                ).not.toBeNull();
+                expect(screen.queryByText('Hello')).not.toBeNull();
+                expect(screen.queryByText('World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+        it('when undoable, displays result and success side effects right away and fetched on confirm', async () => {
+            jest.spyOn(console, 'log').mockImplementation(() => {});
+            render(<SuccessCaseUndoable />);
+            await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
+            screen.getByText('Delete first post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello')).toBeNull();
+                expect(screen.queryByText('World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+            screen.getByText('Confirm').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello')).toBeNull();
+                expect(screen.queryByText('World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello')).toBeNull();
+                expect(screen.queryByText('World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+        it('when undoable, displays result and success side effects right away and reverts on cancel', async () => {
+            jest.spyOn(console, 'log').mockImplementation(() => {});
+            render(<SuccessCaseUndoable />);
+            await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
+            screen.getByText('Delete first post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello')).toBeNull();
+                expect(screen.queryByText('World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+            screen.getByText('Cancel').click();
+            await waitFor(() => {
+                expect(screen.queryByText('Hello')).not.toBeNull();
+                expect(screen.queryByText('World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+        it('when undoable, displays result and success side effects right away and reverts on error', async () => {
+            jest.spyOn(console, 'log').mockImplementation(() => {});
+            jest.spyOn(console, 'error').mockImplementation(() => {});
+            render(<ErrorCaseUndoable />);
+            await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
+            screen.getByText('Delete first post').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello')).toBeNull();
+                expect(screen.queryByText('World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
+            screen.getByText('Confirm').click();
+            await waitFor(() => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello')).toBeNull();
+                expect(screen.queryByText('World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).not.toBeNull();
+            });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(screen.queryByText('Hello')).not.toBeNull();
+                expect(screen.queryByText('World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
             });
         });
     });

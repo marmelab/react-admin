@@ -159,7 +159,10 @@ const ErrorCore = () => {
             {
                 mutationMode: 'undoable',
                 onSuccess: () => setSuccess('success'),
-                onError: e => setError(e),
+                onError: e => {
+                    setError(e);
+                    setSuccess('');
+                },
             }
         );
         setNotification(true);

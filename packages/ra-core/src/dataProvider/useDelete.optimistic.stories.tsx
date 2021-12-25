@@ -129,7 +129,10 @@ const ErrorCore = () => {
             {
                 mutationMode: 'optimistic',
                 onSuccess: () => setSuccess('success'),
-                onError: e => setError(e),
+                onError: e => {
+                    setError(e);
+                    setSuccess('');
+                },
             }
         );
     };
