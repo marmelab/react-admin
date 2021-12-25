@@ -92,7 +92,7 @@ describe('useDelete', () => {
         });
     });
 
-    it('returns a state typed based on the parametric type', async () => {
+    it('returns data typed based on the parametric type', async () => {
         interface Product extends Record {
             sku: string;
         }
