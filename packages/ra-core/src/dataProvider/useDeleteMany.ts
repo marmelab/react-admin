@@ -119,7 +119,9 @@ export const useDeleteMany = <RecordType extends Record = Record>(
                 return recordWasFound
                     ? {
                           data: newCollection,
-                          total: res.total - 1,
+                          total:
+                              res.total -
+                              (res.data.length - newCollection.length),
                       }
                     : res;
             },
@@ -140,7 +142,9 @@ export const useDeleteMany = <RecordType extends Record = Record>(
                 return recordWasFound
                     ? {
                           data: newCollection,
-                          total: res.total - 1,
+                          total:
+                              res.total -
+                              (res.data.length - newCollection.length),
                       }
                     : res;
             },
