@@ -50,7 +50,7 @@ import { Record, DeleteManyParams, MutationMode } from '../types';
  *         deleteMany('posts', { ids: selectedIds })
  *     }
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={isLoading} onClick={deleteMany}>Delete selected posts</button>;
+ *     return <button disabled={isLoading} onClick={handleClick}>Delete selected posts</button>;
  * };
  *
  * @example // set params when calling the hook
@@ -59,8 +59,11 @@ import { Record, DeleteManyParams, MutationMode } from '../types';
  *
  * const BulkDeletePostsButton = ({ selectedIds }) => {
  *     const [deleteMany, { isLoading, error }] = useDeleteMany('posts', { ids: selectedIds });
+ *     const handleClick = () => {
+ *         deleteMany()
+ *     }
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={isLoading} onClick={() => deleteMany()}>Delete selected posts</button>;
+ *     return <button disabled={isLoading} onClick={handleClick}>Delete selected posts</button>;
  * };
  *
  * @example // TypeScript

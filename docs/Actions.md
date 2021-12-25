@@ -431,8 +431,11 @@ import { useCreate } from 'react-admin';
 const LikeButton = ({ record }) => {
     const like = { postId: record.id };
     const [create, { isLoading, error }] = useCreate('likes', { data: like });
+    const handleClick = () => {
+        create()
+    }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={() => create()}>Like</button>;
+    return <button disabled={isLoading} onClick={handleClick}>Like</button>;
 };
 ```
 
@@ -471,8 +474,11 @@ import { useUpdate } from 'react-admin';
 const IncreaseLikeButton = ({ record }) => {
     const diff = { likes: record.likes + 1 };
     const [update, { isLoading, error }] = useUpdate('likes', { id: record.id, data: diff, previousData: record });
+    const handleClick = () => {
+        update()
+    }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={() => update()}>Like</button>;
+    return <button disabled={isLoading} onClick={handleClick}>Like</button>;
 };
 ```
 
@@ -507,8 +513,11 @@ import { useUpdateMany } from 'react-admin';
 
 const BulkResetViewsButton = ({ selectedIds }) => {
     const [updateMany, { isLoading, error }] = useUpdateMany('posts', { ids: selectedIds, data: { views: 0 } });
+    const handleClick = () => {
+        updateMany();
+    }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={() => updateMany()}>Reset views</button>;
+    return <button disabled={isLoading} onClick={handleClick}>Reset views</button>;
 };
 ```
 
@@ -516,13 +525,13 @@ const BulkResetViewsButton = ({ selectedIds }) => {
 
 ```jsx
 // syntax
-const [deleteOne, { data, loading, loaded, error }] = useDelete(resource, { id, previousData }, options);
+const [deleteOne, { data, isFetching, isLoading, error }] = useDelete(resource, { id, previousData }, options);
 ```
 
 The `deleteOne()` method can be called with the same parameters as the hook:
 
 ```jsx
-deleteOne(resource, { ids, previousData }, options);
+deleteOne(resource, { id, previousData }, options);
 ```
 
 ```jsx
@@ -532,7 +541,7 @@ import { useDelete } from 'react-admin';
 const DeleteButton = ({ record }) => {
     const [deleteOne, { isLoading, error }] = useDelete();
     const handleClick = () => {
-        deleteOne('likes', { id: record.id }, record)
+        deleteOne('likes', { id: record.id , previousData: record })
     }
     if (error) { return <p>ERROR</p>; }
     return <button disabled={isLoading} onClick={handleClick}>Delete</div>;
@@ -542,9 +551,12 @@ const DeleteButton = ({ record }) => {
 import { useDelete } from 'react-admin';
 
 const DeleteButton = ({ record }) => {
-    const [deleteOne, { isLoading, error }] = useDelete('likes', { id: record.id }, record);
+    const [deleteOne, { isLoading, error }] = useDelete('likes', { id: record.id, previousData: record });
+    const handleClick = () => {
+        deleteOne()
+    }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={() => deleteOne()}>Delete</button>;
+    return <button disabled={isLoading} onClick={handleClick}>Delete</button>;
 };
 ```
 
@@ -552,34 +564,38 @@ const DeleteButton = ({ record }) => {
 
 ```jsx
 // syntax
-const [deleteMany, { data, loading, loaded, error }] = useDeleteMany(resource, ids, options);
+const [deleteMany, { data, isFetching, isLoading, error }] = useDeleteMany(resource, { ids }, options);
 ```
 
-The `deleteMany()` function can be called in 3 different ways:
- - with the same parameters as the `useDeleteMany()` hook: `deleteMany(resource, ids, options)`
- - with the same syntax as `useMutation`: `deleteMany({ resource, payload: { ids } }, options)`
- - with no parameter (if they were already passed to `useDeleteMany()`): `deleteMany()`
+The `deleteMany()` method can be called with the same parameters as the hook:
+
+```jsx
+deleteMany(resource, { ids }, options);
+```
 
 ```jsx
 // set params when calling the dleteMany callback
 import { useDeleteMany } from 'react-admin';
 
 const BulkDeletePostsButton = ({ selectedIds }) => {
-    const [deleteMany, { loading, error }] = useDeleteMany();
+    const [deleteMany, { isLoading, error }] = useDeleteMany();
     const handleClick = () => {
-        deleteMany('posts', selectedIds)
+        deleteMany('posts', { ids: selectedIds })
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={deleteMany}>Delete selected posts</button>;
+    return <button disabled={isLoading} onClick={handleClick}>Delete selected posts</button>;
 };
 
 // set params when calling the hook
 import { useDeleteMany } from 'react-admin';
 
 const BulkDeletePostsButton = ({ selectedIds }) => {
-    const [deleteMany, { loading, error }] = useDeleteMany('posts', selectedIds);
+    const [deleteMany, { isLoading, error }] = useDeleteMany('posts', { ids: selectedIds });
+    const handleClick = () => {
+        deleteMany()
+    }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={loading} onClick={deleteMany}>Delete selected posts</button>;
+    return <button disabled={isLoading} onClick={handleClick}>Delete selected posts</button>;
 };
 ```
 
