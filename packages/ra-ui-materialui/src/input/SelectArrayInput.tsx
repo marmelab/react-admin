@@ -172,9 +172,15 @@ const SelectArrayInput = (props: SelectArrayInputProps) => {
     const finalChoices =
         create || onCreate ? [...choices, createItem] : choices;
 
-    const renderMenuItemOption = useCallback(choice => getChoiceText(choice), [
-        getChoiceText,
-    ]);
+    const renderMenuItemOption = useCallback(
+        choice =>
+            !!createItem &&
+            choice?.id === createItem.id &&
+            typeof optionText === 'function'
+                ? createItem.name
+                : getChoiceText(choice),
+        [createItem, getChoiceText, optionText]
+    );
 
     const renderMenuItem = useCallback(
         choice => {
