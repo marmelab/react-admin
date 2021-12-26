@@ -967,4 +967,63 @@ describe('<AutocompleteArrayInput />', () => {
         expect(getByText('Programming')).not.toBeNull();
         expect(getByText('ra.action.create')).not.toBeNull();
     });
+
+    it('should support creation of a new choice through the onCreate event when optionText is a function', async () => {
+        const choices = [
+            { id: 'ang', name: 'Angular' },
+            { id: 'rea', name: 'React' },
+        ];
+        const handleCreate = filter => {
+            const newChoice = {
+                id: 'js_fatigue',
+                name: filter,
+            };
+            choices.push(newChoice);
+            return newChoice;
+        };
+
+        const { getByLabelText, getByText, queryByText, rerender } = render(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
+                render={() => (
+                    <AutocompleteArrayInput
+                        source="language"
+                        resource="posts"
+                        choices={choices}
+                        onCreate={handleCreate}
+                        optionText={choice => `The choice is ${choice.name}`}
+                    />
+                )}
+            />
+        );
+
+        const input = getByLabelText('resources.posts.fields.language', {
+            selector: 'input',
+        }) as HTMLInputElement;
+        input.focus();
+        fireEvent.change(input, { target: { value: 'New Kid On The Block' } });
+        fireEvent.click(getByText('ra.action.create_item'));
+        await new Promise(resolve => setTimeout(resolve));
+        rerender(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
+                render={() => (
+                    <AutocompleteArrayInput
+                        source="language"
+                        resource="posts"
+                        resettable
+                        choices={choices}
+                        onCreate={handleCreate}
+                        optionText={choice => `The choice is ${choice.name}`}
+                    />
+                )}
+            />
+        );
+
+        expect(
+            queryByText('The choice is New Kid On The Block')
+        ).not.toBeNull();
+    });
 });
