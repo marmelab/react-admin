@@ -924,4 +924,47 @@ describe('<AutocompleteArrayInput />', () => {
 
         expect(queryByText('New Kid On The Block')).not.toBeNull();
     });
+
+    it('should use optionText with a function value as text identifier when a create element is passed', () => {
+        const choices = [
+            { id: 't', foobar: 'Technical' },
+            { id: 'p', foobar: 'Programming' },
+        ];
+        const newChoice = { id: 'js_fatigue', foobar: 'New Kid On The Block' };
+
+        const Create = () => {
+            const context = useCreateSuggestionContext();
+            const handleClick = () => {
+                choices.push(newChoice);
+                context.onCreate(newChoice);
+            };
+
+            return <button onClick={handleClick}>Get the kid</button>;
+        };
+
+        const { getByLabelText, getByText, queryAllByRole } = render(
+            <Form
+                onSubmit={jest.fn()}
+                render={() => (
+                    <AutocompleteArrayInput
+                        {...defaultProps}
+                        create={<Create />}
+                        optionText={choice => choice.foobar}
+                        choices={choices}
+                    />
+                )}
+            />
+        );
+
+        fireEvent.focus(
+            getByLabelText('resources.posts.fields.tags', {
+                selector: 'input',
+            })
+        );
+
+        expect(queryAllByRole('option')).toHaveLength(3);
+        expect(getByText('Technical')).not.toBeNull();
+        expect(getByText('Programming')).not.toBeNull();
+        expect(getByText('ra.action.create')).not.toBeNull();
+    });
 });
