@@ -992,7 +992,7 @@ describe('<AutocompleteArrayInput />', () => {
                         resource="posts"
                         choices={choices}
                         onCreate={handleCreate}
-                        optionText={choice => `The choice is ${choice.name}`}
+                        optionText={choice => `Choice is ${choice.name}`}
                     />
                 )}
             />
@@ -1003,7 +1003,7 @@ describe('<AutocompleteArrayInput />', () => {
         }) as HTMLInputElement;
         input.focus();
         fireEvent.change(input, { target: { value: 'New Kid On The Block' } });
-        fireEvent.click(getByText('ra.action.create_item'));
+        fireEvent.click(getByText('Choice is ra.action.create_item'));
         await new Promise(resolve => setTimeout(resolve));
         rerender(
             <Form
@@ -1016,14 +1016,12 @@ describe('<AutocompleteArrayInput />', () => {
                         resettable
                         choices={choices}
                         onCreate={handleCreate}
-                        optionText={choice => `The choice is ${choice.name}`}
+                        optionText={choice => `Choice is ${choice.name}`}
                     />
                 )}
             />
         );
 
-        expect(
-            queryByText('The choice is New Kid On The Block')
-        ).not.toBeNull();
+        expect(queryByText('Choice is New Kid On The Block')).not.toBeNull();
     });
 });
