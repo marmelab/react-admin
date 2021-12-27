@@ -408,7 +408,6 @@ describe('useListController', () => {
                 showFilter: undefined,
                 total: undefined,
                 totalPages: undefined,
-                version: undefined,
             });
         });
     });

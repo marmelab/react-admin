@@ -130,7 +130,6 @@ EditView.propTypes = {
     resource: PropTypes.string,
     save: PropTypes.func,
     title: PropTypes.node,
-    version: PropTypes.number,
     onSuccess: PropTypes.func,
     onFailure: PropTypes.func,
     setOnSuccess: PropTypes.func,

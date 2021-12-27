@@ -219,7 +219,6 @@ const sanitizeRestProps = ({
     record,
     resource,
     basePath,
-    version,
     initialValues,
     staticContext,
     translate,

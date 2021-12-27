@@ -113,7 +113,7 @@ const CreatePost = () => {
 
 const CommentEdit = props => {
     const controllerProps = useEditController(props);
-    const { resource, record, redirect, save, version } = controllerProps;
+    const { resource, record, redirect, save } = controllerProps;
 
     return (
         <EditContextProvider value={controllerProps}>
@@ -133,7 +133,6 @@ const CommentEdit = props => {
                             resource={resource}
                             record={record}
                             save={save}
-                            version={version}
                             warnWhenUnsavedChanges
                         >
                             <TextInput disabled source="id" fullWidth />

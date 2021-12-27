@@ -21,7 +21,6 @@ describe('FormWithRedirect', () => {
                 save={jest.fn()}
                 redirect={false}
                 saving={false}
-                version={0}
                 render={renderProp}
             />
         );
@@ -34,7 +33,6 @@ describe('FormWithRedirect', () => {
                 save={jest.fn()}
                 redirect={false}
                 saving={false}
-                version={0}
                 render={renderProp}
                 record={{ id: 1, name: 'Foo' }}
             />
@@ -53,7 +51,6 @@ describe('FormWithRedirect', () => {
                 save={jest.fn()}
                 redirect={false}
                 saving={false}
-                version={0}
                 render={renderProp}
                 record={{ id: 1 }}
             />
@@ -73,7 +70,6 @@ describe('FormWithRedirect', () => {
                 save={jest.fn()}
                 redirect={false}
                 saving={false}
-                version={0}
                 render={renderProp}
                 record={{ id: 1 }}
             />
@@ -96,7 +92,6 @@ describe('FormWithRedirect', () => {
                 save={jest.fn()}
                 redirect={false}
                 saving={false}
-                version={0}
                 record={{ id: 1, name: 'Foo' }}
                 render={renderProp}
             />
@@ -110,7 +105,6 @@ describe('FormWithRedirect', () => {
                 save={jest.fn()}
                 redirect={false}
                 saving={false}
-                version={0}
                 record={{ id: 1, name: 'Foo', anotherServerAddedProp: 'Bar' }}
                 render={renderProp}
             />
@@ -130,7 +124,6 @@ describe('FormWithRedirect', () => {
                 save={jest.fn()}
                 redirect={false}
                 saving={false}
-                version={0}
                 record={{ id: 1, name: 'Foo' }}
                 render={renderProp}
             />
@@ -144,7 +137,6 @@ describe('FormWithRedirect', () => {
                 save={jest.fn()}
                 redirect={false}
                 saving={false}
-                version={0}
                 record={{
                     id: 2,
                     name: undefined,
@@ -168,7 +160,6 @@ describe('FormWithRedirect', () => {
                 save={jest.fn()}
                 redirect={false}
                 saving={false}
-                version={0}
                 record={{ id: 1, name: 'Foo' }}
                 render={renderProp}
             />
@@ -182,7 +173,6 @@ describe('FormWithRedirect', () => {
                 save={jest.fn()}
                 redirect={false}
                 saving={false}
-                version={0}
                 record={{
                     id: 2,
                     name: undefined,

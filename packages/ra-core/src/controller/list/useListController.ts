@@ -240,7 +240,6 @@ export const injectedProps = [
     'showFilter',
     'total',
     'totalPages',
-    'version',
 ];
 
 /**

@@ -38,7 +38,6 @@ const PostReferenceInput = props => {
     const [showCreateDialog, setShowCreateDialog] = useState(false);
     const [showPreviewDialog, setShowPreviewDialog] = useState(false);
     const [newPostId, setNewPostId] = useState('');
-    const [version, setVersion] = useState(0);
 
     const handleNewClick = useCallback(
         event => {
@@ -70,14 +69,13 @@ const PostReferenceInput = props => {
             setNewPostId(post.id);
             change('post_id', post.id);
             queryClient.invalidateQueries(['posts', 'getList']);
-            setVersion(previous => previous + 1);
         },
         [setShowCreateDialog, setNewPostId, change, queryClient]
     );
 
     return (
         <Root>
-            <ReferenceInput key={version} {...props} defaultValue={newPostId}>
+            <ReferenceInput {...props} defaultValue={newPostId}>
                 <SelectInput optionText="title" />
             </ReferenceInput>
             <Button

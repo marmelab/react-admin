@@ -11,7 +11,7 @@ import { createAdminStore, ReduxState } from 'ra-core';
 export const defaultStore = {
     admin: {
         resources: {},
-        ui: { viewVersion: 1 },
+        ui: {},
         notifications: [],
     },
 };

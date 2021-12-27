@@ -259,7 +259,6 @@ export interface FormWithRedirectOwnProps {
     save?: FormWithRedirectSave;
     sanitizeEmptyValues?: boolean;
     saving?: boolean;
-    version?: number;
     warnWhenUnsavedChanges?: boolean;
 }
 

@@ -12,9 +12,7 @@ const primedStore = {
         loading: 0,
         notifications: [],
         resources: {},
-        ui: {
-            viewVersion: 1,
-        },
+        ui: {},
         customQueries: {},
     },
 };
@@ -90,7 +88,6 @@ describe('TestContext.js', () => {
                     ...primedStore.admin,
                     ui: {
                         ...primedStore.admin.ui,
-                        viewVersion: 2,
                     },
                 },
             });

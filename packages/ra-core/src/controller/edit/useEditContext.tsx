@@ -65,7 +65,6 @@ const extractEditContextProps = ({
     save,
     saving,
     successMessage,
-    version,
 }: any) => ({
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
@@ -85,5 +84,4 @@ const extractEditContextProps = ({
     save,
     saving,
     successMessage,
-    version,
 });

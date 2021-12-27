@@ -67,7 +67,6 @@ const extractCreateContextProps = ({
     save,
     saving,
     successMessage,
-    version,
 }: any) => ({
     record,
     defaultTitle,
@@ -84,5 +83,4 @@ const extractCreateContextProps = ({
     save,
     saving,
     successMessage,
-    version,
 });
