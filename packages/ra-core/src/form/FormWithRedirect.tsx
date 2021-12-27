@@ -63,7 +63,6 @@ const FormWithRedirect = ({
     subscription = defaultSubscription,
     validate,
     validateOnBlur,
-    version,
     warnWhenUnsavedChanges,
     sanitizeEmptyValues: shouldSanitizeEmptyValues = true,
     ...props
@@ -199,7 +198,6 @@ const FormWithRedirect = ({
         <OptionalRecordContextProvider value={record}>
             <FormContextProvider value={formContextValue}>
                 <Form
-                    key={`${version}_${record?.id || ''}`} // support for refresh button
                     debug={debug}
                     decorators={decorators}
                     destroyOnUnregister={destroyOnUnregister}
@@ -217,7 +215,6 @@ const FormWithRedirect = ({
                         <FormView
                             {...props}
                             {...formProps}
-                            key={`${version}_${record?.id || ''}`} // support for refresh button
                             record={record}
                             setRedirect={setRedirect}
                             saving={formProps.submitting || saving}

@@ -23,7 +23,7 @@ export const ShowView = (props: ShowViewProps) => {
         ...rest
     } = props;
 
-    const { defaultTitle, record, version } = useShowContext(props);
+    const { defaultTitle, record } = useShowContext(props);
     const { hasEdit } = useResourceDefinition(props);
 
     const finalActions =
@@ -35,7 +35,6 @@ export const ShowView = (props: ShowViewProps) => {
     return (
         <Root
             className={classnames('show-page', ShowClasses.root, className)}
-            key={version}
             {...sanitizeRestProps(rest)}
         >
             <TitleForRecord

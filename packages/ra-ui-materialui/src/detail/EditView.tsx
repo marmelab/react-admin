@@ -35,7 +35,6 @@ export const EditView = (props: EditViewProps) => {
         resource,
         save,
         saving,
-        version,
     } = useEditContext(props);
 
     const finalActions =
@@ -86,7 +85,6 @@ export const EditView = (props: EditViewProps) => {
                                     : children.props.save,
                             saving,
                             mutationMode,
-                            version,
                         })
                     ) : (
                         <CardContent>&nbsp;</CardContent>
@@ -96,7 +94,6 @@ export const EditView = (props: EditViewProps) => {
                     React.cloneElement(aside, {
                         record,
                         resource,
-                        version,
                         save:
                             typeof children.props.save === 'undefined'
                                 ? save
