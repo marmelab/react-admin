@@ -1,13 +1,10 @@
 import { useContext, useMemo } from 'react';
-import { Dispatch } from 'redux';
-import { useDispatch, useStore } from 'react-redux';
 
 import DataProviderContext from './DataProviderContext';
 import defaultDataProvider from './defaultDataProvider';
-import { ReduxState, DataProvider, DataProviderProxy } from '../types';
+import validateResponseFormat from './validateResponseFormat';
+import { DataProvider, DataProviderProxy } from '../types';
 import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
-import { getDataProviderCallArguments } from './getDataProviderCallArguments';
-import { doQuery } from './performQuery';
 
 /**
  * Hook for getting a dataProvider
@@ -104,11 +101,9 @@ const useDataProvider = <
         TDataProvider
     > = DataProviderProxy<TDataProvider>
 >(): TDataProviderProxy => {
-    const dispatch = useDispatch() as Dispatch;
     const dataProvider = ((useContext(DataProviderContext) ||
         defaultDataProvider) as unknown) as TDataProvider;
 
-    const store = useStore<ReduxState>();
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
 
     const dataProviderProxy = useMemo(() => {
@@ -118,72 +113,46 @@ const useDataProvider = <
                     return;
                 }
                 return (...args) => {
-                    const {
-                        resource,
-                        payload,
-                        allArguments,
-                        options,
-                    } = getDataProviderCallArguments(args);
-
                     const type = name.toString();
-                    const {
-                        action = 'CUSTOM_FETCH',
-                        onSuccess = undefined,
-                        onFailure = undefined,
-                        mutationMode = 'pessimistic',
-                        enabled = true,
-                        ...rest
-                    } = options || {};
 
                     if (typeof dataProvider[type] !== 'function') {
                         throw new Error(
                             `Unknown dataProvider function: ${type}`
                         );
                     }
-                    if (onSuccess && typeof onSuccess !== 'function') {
-                        throw new Error(
-                            'The onSuccess option must be a function'
-                        );
-                    }
-                    if (onFailure && typeof onFailure !== 'function') {
-                        throw new Error(
-                            'The onFailure option must be a function'
-                        );
-                    }
-                    if (mutationMode === 'undoable' && !onSuccess) {
-                        throw new Error(
-                            'You must pass an onSuccess callback calling notify() to use the undoable mode'
-                        );
-                    }
-                    if (typeof enabled !== 'boolean') {
-                        throw new Error('The enabled option must be a boolean');
-                    }
 
-                    if (enabled === false) {
-                        return Promise.resolve({});
+                    try {
+                        return dataProvider[type]
+                            .apply(dataProvider, args)
+                            .then(response => {
+                                if (process.env.NODE_ENV !== 'production') {
+                                    validateResponseFormat(response, type);
+                                }
+                                return response;
+                            })
+                            .catch(error => {
+                                if (process.env.NODE_ENV !== 'production') {
+                                    console.error(error);
+                                }
+                                return logoutIfAccessDenied(error).then(
+                                    loggedOut => {
+                                        if (loggedOut) return;
+                                        throw error;
+                                    }
+                                );
+                            });
+                    } catch (e) {
+                        if (process.env.NODE_ENV !== 'production') {
+                            console.error(e);
+                        }
+                        throw new Error(
+                            'The dataProvider threw an error. It should return a rejected Promise instead.'
+                        );
                     }
-
-                    const params = {
-                        resource,
-                        type,
-                        payload,
-                        action,
-                        onFailure,
-                        onSuccess,
-                        rest,
-                        mutationMode,
-                        // these ones are passed down because of the rules of hooks
-                        dataProvider,
-                        store,
-                        dispatch,
-                        logoutIfAccessDenied,
-                        allArguments,
-                    };
-                    return doQuery(params);
                 };
             },
         });
-    }, [dataProvider, dispatch, logoutIfAccessDenied, store]);
+    }, [dataProvider, logoutIfAccessDenied]);
 
     return (dataProviderProxy as unknown) as TDataProviderProxy;
 };
