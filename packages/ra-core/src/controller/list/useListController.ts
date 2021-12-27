@@ -4,7 +4,7 @@ import { UseQueryOptions } from 'react-query';
 import { useAuthenticated } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../sideEffect';
-import { useGetList, Refetch } from '../../dataProvider';
+import { useGetList, UseGetListHookValue } from '../../dataProvider';
 import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
 import { defaultExporter } from '../../export';
 import { FilterPayload, SortPayload, Record, Exporter } from '../../types';
@@ -197,7 +197,7 @@ export interface ListControllerResult<RecordType extends Record = Record> {
     onUnselectItems: () => void;
     page: number;
     perPage: number;
-    refetch: Refetch;
+    refetch: UseGetListHookValue<RecordType>['refetch'];
     resource: string;
     selectedIds: RecordType['id'][];
     setFilters: (

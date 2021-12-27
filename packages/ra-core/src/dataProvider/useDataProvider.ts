@@ -95,7 +95,7 @@ import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
  * // - CRUD_GET_ONE_SUCCESS
  * // - FETCH_END
  */
-const useDataProvider = <
+export const useDataProvider = <
     TDataProvider extends DataProvider = DataProvider
 >(): TDataProvider => {
     const dataProvider = ((useContext(DataProviderContext) ||
@@ -153,5 +153,3 @@ const useDataProvider = <
 
     return dataProviderProxy;
 };
-
-export default useDataProvider;

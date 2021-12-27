@@ -6,7 +6,7 @@ import {
 } from 'react-query';
 
 import { Record, GetManyReferenceParams } from '../types';
-import useDataProvider from './useDataProvider';
+import { useDataProvider } from './useDataProvider';
 
 /**
  * Call the dataProvider.getManyReference() method and return the resolved result

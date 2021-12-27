@@ -8,7 +8,7 @@ import {
     QueryKey,
 } from 'react-query';
 
-import useDataProvider from './useDataProvider';
+import { useDataProvider } from './useDataProvider';
 import undoableEventEmitter from './undoableEventEmitter';
 import { Record, UpdateParams, MutationMode } from '../types';
 

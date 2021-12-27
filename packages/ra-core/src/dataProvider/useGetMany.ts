@@ -7,7 +7,7 @@ import {
 } from 'react-query';
 
 import { Record, GetManyParams } from '../types';
-import useDataProvider from './useDataProvider';
+import { useDataProvider } from './useDataProvider';
 
 /**
  * Call the dataProvider.getMany() method and return the resolved result

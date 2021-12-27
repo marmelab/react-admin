@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { useGetList } from '../../dataProvider/useGetList';
+import { useGetList, UseGetManyHookValue } from '../../dataProvider';
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
 import { PaginationPayload, Record, SortPayload } from '../../types';
@@ -11,7 +11,6 @@ import { useSortState } from '..';
 import useFilterState from '../useFilterState';
 import useSelectionState from '../useSelectionState';
 import { useResourceContext } from '../../core';
-import { Refetch } from '../../dataProvider';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
@@ -55,9 +54,9 @@ const defaultFilter = {};
  *      filterToQuery: searchText => ({ title: searchText })
  * });
  */
-export const useReferenceInputController = (
+export const useReferenceInputController = <RecordType extends Record = Record>(
     props: UseReferenceInputControllerParams
-): ReferenceInputValue => {
+): ReferenceInputValue<RecordType> => {
     const {
         input,
         page: initialPage = 1,
@@ -116,7 +115,7 @@ export const useReferenceInputController = (
         isLoading: possibleValuesLoading,
         error: possibleValuesError,
         refetch: refetchGetList,
-    } = useGetList(
+    } = useGetList<RecordType>(
         reference,
         { pagination, sort, filter: filterValues },
         { enabled: enableGetChoices ? enableGetChoices(filterValues) : true }
@@ -129,12 +128,12 @@ export const useReferenceInputController = (
         error: referenceError,
         isLoading: referenceLoading,
         isFetching: referenceFetching,
-    } = useReference({
+    } = useReference<RecordType>({
         id: input.value,
         reference,
     });
     // add current value to possible sources
-    let finalData: Record[], finalTotal: number;
+    let finalData: RecordType[], finalTotal: number;
     if (
         !referenceRecord ||
         possibleValuesData.find(record => record.id === input.value)
@@ -182,7 +181,7 @@ export const useReferenceInputController = (
             onSelect,
             onToggleItem,
             onUnselectItems,
-            refetch,
+            refetch: refetchGetList,
             resource,
         },
         referenceRecord: {
@@ -217,21 +216,21 @@ export const useReferenceInputController = (
 const hideFilter = () => {};
 const showFilter = () => {};
 
-export interface ReferenceInputValue {
-    possibleValues: ListControllerResult;
+export interface ReferenceInputValue<RecordType extends Record = Record> {
+    possibleValues: ListControllerResult<RecordType>;
     referenceRecord: {
         data?: Record;
         isLoading: boolean;
         isFetching: boolean;
         error?: any;
-        refetch: Refetch;
+        refetch: UseGetManyHookValue<RecordType>['refetch'];
     };
     dataStatus: {
         error?: any;
         loading: boolean;
         warning?: string;
     };
-    choices: Record[];
+    choices: RecordType[];
     error?: string;
     isFetching: boolean;
     isLoading: boolean;
@@ -242,7 +241,7 @@ export interface ReferenceInputValue {
     setSort: (sort: SortPayload) => void;
     sort: SortPayload;
     warning?: string;
-    refetch: Refetch;
+    refetch: () => void;
 }
 
 export interface UseReferenceInputControllerParams {

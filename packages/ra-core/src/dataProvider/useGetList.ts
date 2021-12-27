@@ -6,7 +6,7 @@ import {
 } from 'react-query';
 
 import { Record, GetListParams } from '../types';
-import useDataProvider from './useDataProvider';
+import { useDataProvider } from './useDataProvider';
 
 /**
  * Call the dataProvider.getList() method and return the resolved result

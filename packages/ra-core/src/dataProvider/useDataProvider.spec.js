@@ -4,7 +4,7 @@ import { act, fireEvent } from '@testing-library/react';
 import expect from 'expect';
 
 import { renderWithRedux } from 'ra-test';
-import useDataProvider from './useDataProvider';
+import { useDataProvider } from './useDataProvider';
 import { useUpdate } from './useUpdate';
 import { DataProviderContext } from '../dataProvider';
 import { useRefresh } from '../sideEffect';

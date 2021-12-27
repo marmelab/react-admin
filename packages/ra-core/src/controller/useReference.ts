@@ -1,17 +1,17 @@
 import { Record } from '../types';
-import { Refetch, useGetManyAggregate } from '../dataProvider';
+import { UseGetManyHookValue, useGetManyAggregate } from '../dataProvider';
 
 interface UseReferenceProps {
     id: string;
     reference: string;
 }
 
-export interface UseReferenceResult {
+export interface UseReferenceResult<RecordType extends Record = Record> {
     isLoading: boolean;
     isFetching: boolean;
-    referenceRecord?: Record;
+    referenceRecord?: RecordType;
     error?: any;
-    refetch: Refetch;
+    refetch: UseGetManyHookValue<RecordType>['refetch'];
 }
 
 /**
@@ -41,17 +41,13 @@ export interface UseReferenceResult {
  *
  * @returns {UseReferenceResult} The reference record
  */
-export const useReference = ({
+export const useReference = <RecordType extends Record = Record>({
     reference,
     id,
-}: UseReferenceProps): UseReferenceResult => {
-    const {
-        data,
-        error,
-        isLoading,
-        isFetching,
-        refetch,
-    } = useGetManyAggregate(reference, { ids: [id] });
+}: UseReferenceProps): UseReferenceResult<RecordType> => {
+    const { data, error, isLoading, isFetching, refetch } = useGetManyAggregate<
+        RecordType
+    >(reference, { ids: [id] });
     return {
         referenceRecord: error ? undefined : data ? data[0] : undefined,
         refetch,

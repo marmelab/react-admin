@@ -7,7 +7,7 @@ import {
     MutateOptions,
 } from 'react-query';
 
-import useDataProvider from './useDataProvider';
+import { useDataProvider } from './useDataProvider';
 import { Record, CreateParams } from '../types';
 
 /**

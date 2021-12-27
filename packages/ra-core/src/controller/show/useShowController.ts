@@ -3,7 +3,7 @@ import { UseQueryOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
 import { Record } from '../../types';
-import { useGetOne, useRefresh, Refetch } from '../../dataProvider';
+import { useGetOne, useRefresh, UseGetOneHookValue } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { useNotify, useRedirect } from '../../sideEffect';
 import { useResourceContext, useGetResourceLabel } from '../../core';
@@ -115,5 +115,5 @@ export interface ShowControllerResult<RecordType extends Record = Record> {
     isLoading: boolean;
     resource: string;
     record?: RecordType;
-    refetch: Refetch;
+    refetch: UseGetOneHookValue<RecordType>['refetch'];
 }

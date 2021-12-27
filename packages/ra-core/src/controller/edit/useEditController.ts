@@ -15,7 +15,12 @@ import {
     useRedirect,
     RedirectionSideEffect,
 } from '../../sideEffect';
-import { useGetOne, useUpdate, useRefresh, Refetch } from '../../dataProvider';
+import {
+    useGetOne,
+    useUpdate,
+    useRefresh,
+    UseGetOneHookValue,
+} from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import {
@@ -255,7 +260,7 @@ export interface EditControllerResult<RecordType extends Record = Record> {
     setOnFailure: SetOnFailure;
     setTransform: SetTransformData;
     record?: RecordType;
-    refetch: Refetch;
+    refetch: UseGetOneHookValue<RecordType>['refetch'];
     redirect: RedirectionSideEffect;
     resource: string;
 }
