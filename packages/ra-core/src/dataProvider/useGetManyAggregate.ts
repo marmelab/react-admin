@@ -9,7 +9,7 @@ import {
 import union from 'lodash/union';
 
 import { UseGetManyHookValue } from './useGetMany';
-import { Identifier, Record, GetManyParams, DataProviderProxy } from '../types';
+import { Identifier, Record, GetManyParams, DataProvider } from '../types';
 import useDataProvider from './useDataProvider';
 
 /**
@@ -143,7 +143,7 @@ interface GetManyCallArgs {
     ids: Identifier[];
     resolve: (data: any[]) => void;
     reject: (error?: any) => void;
-    dataProvider: DataProviderProxy;
+    dataProvider: DataProvider;
     queryClient: QueryClient;
 }
 

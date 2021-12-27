@@ -3,7 +3,7 @@ import { useContext, useMemo } from 'react';
 import DataProviderContext from './DataProviderContext';
 import defaultDataProvider from './defaultDataProvider';
 import validateResponseFormat from './validateResponseFormat';
-import { DataProvider, DataProviderProxy } from '../types';
+import { DataProvider } from '../types';
 import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
 
 /**
@@ -96,11 +96,8 @@ import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
  * // - FETCH_END
  */
 const useDataProvider = <
-    TDataProvider extends DataProvider = DataProvider,
-    TDataProviderProxy extends DataProviderProxy<
-        TDataProvider
-    > = DataProviderProxy<TDataProvider>
->(): TDataProviderProxy => {
+    TDataProvider extends DataProvider = DataProvider
+>(): TDataProvider => {
     const dataProvider = ((useContext(DataProviderContext) ||
         defaultDataProvider) as unknown) as TDataProvider;
 
@@ -154,7 +151,7 @@ const useDataProvider = <
         });
     }, [dataProvider, logoutIfAccessDenied]);
 
-    return (dataProviderProxy as unknown) as TDataProviderProxy;
+    return dataProviderProxy;
 };
 
 export default useDataProvider;
