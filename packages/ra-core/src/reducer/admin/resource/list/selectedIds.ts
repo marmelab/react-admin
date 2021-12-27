@@ -4,10 +4,9 @@ import {
     SetListSelectedIdsAction,
     TOGGLE_LIST_ITEM,
     ToggleListItemAction,
-    CRUD_DELETE_SUCCESS,
-    CrudDeleteSuccessAction,
+    UNSELECT_LIST_ITEMS,
+    UnselectListItemsAction,
 } from '../../../../actions';
-import { DELETE, DELETE_MANY } from '../../../../core';
 import { Identifier } from '../../../../types';
 
 const initialState = [];
@@ -17,12 +16,7 @@ type State = Identifier[];
 type ActionTypes =
     | SetListSelectedIdsAction
     | ToggleListItemAction
-    | CrudDeleteSuccessAction
-    | {
-          type: 'DELETE_ACTION';
-          meta: { optimistic: true; fetch: string };
-          payload: any;
-      }
+    | UnselectListItemsAction
     | {
           type: 'OTHER_ACTION';
           meta: any;
@@ -47,30 +41,20 @@ const selectedIdsReducer: Reducer<State> = (
             return [...previousState, action.payload];
         }
     }
-    if (action.type === CRUD_DELETE_SUCCESS) {
-        const index = previousState.indexOf(action.payload.data.id);
-        if (index > -1) {
-            return [
-                ...previousState.slice(0, index),
-                ...previousState.slice(index + 1),
-            ];
-        }
-    }
-
-    if (action.meta && action.meta.optimistic) {
-        if (action.meta.fetch === DELETE) {
-            const index = previousState.indexOf(action.payload.id);
-            if (index === -1) {
-                return previousState;
+    if (action.type === UNSELECT_LIST_ITEMS) {
+        const ids = action.payload;
+        if (!ids || ids.length === 0) return previousState;
+        let newState = [...previousState];
+        ids.forEach(id => {
+            const index = newState.indexOf(id);
+            if (index > -1) {
+                newState = [
+                    ...previousState.slice(0, index),
+                    ...previousState.slice(index + 1),
+                ];
             }
-            return [
-                ...previousState.slice(0, index),
-                ...previousState.slice(index + 1),
-            ];
-        }
-        if (action.meta.fetch === DELETE_MANY) {
-            return previousState.filter(id => !action.payload.ids.includes(id));
-        }
+        });
+        return newState;
     }
 
     return action.meta && action.meta.unselectAll

@@ -215,7 +215,7 @@ For mutations:
 -   [123, 456],
 -   { likes: 12 },
 -);
--updateMany(resource, id, data, previousData, options);
+-updateMany(resource, ids, data, options);
 +const [updateMany, { isLoading }] = useUpdateMany(
 +   'posts',
 +   {
@@ -224,6 +224,37 @@ For mutations:
 +   }
 +);
 +updateMany(resource, { ids, data }, options);
+
+// useDelete
+-const [deleteOne, { loading }] = useDelete(
+-   'posts',
+-   123,
+-   { id: 123, title: "hello, world", likes: 122 }
+-);
+-deleteOne(resource, id, previousData, options);
++const [deleteOne, { isLoading }] = useDelete(
++   'posts',
++   {
++       id: 123,
++       previousData: { id: 123, title: "hello, world", likes: 122 }
++   }
++);
++deleteOne(resource, { id, previousData }, options);
+
+// useDeleteMany
+-const [deleteMany, { loading }] = useDeleteMany(
+-   'posts',
+-   [123, 456],
+-);
+-deleteMany(resource, ids, options);
++const [deleteMany, { isLoading }] = useDeleteMany(
++   'posts',
++   {
++       ids: [123, 456],
++   }
++);
++deleteMany(resource, { ids }, options);
+
 ```
 
 This new signature should be easier to learn and use.
@@ -237,6 +268,8 @@ To upgrade, check every instance of your code of the following hooks:
 - `useCreate`
 - `useUpdate`
 - `useUpdateMany`
+- `useDelete`
+- `useDeleteMany`
 
 And update the calls. If you're using TypeScript, your code won't compile until you properly upgrade the calls. 
 
@@ -257,6 +290,14 @@ const IncreaseLikeButton = ({ record }) => {
 ```
 
 TypeScript will complain if you don't.
+
+To upgrade, check every instance of your code of the following hooks:
+
+- `useCreate`
+- `useUpdate`
+- `useUpdateMany`
+- `useDelete`
+- `useDeleteMany`
 
 Note that your code will be more readable if you pass the mutation parameters to the mutation callback instead of the mutation hook, e.g.
 
@@ -375,6 +416,10 @@ The change concerns the following components:
 - `useShowController`
 - `<Show>`
 - `<ShowBase>`
+- `useDeleteWithUndoController`
+- `useDeleteWithConfirmController`
+- `<DeleteButton>`
+- `<BulkDeleteButton>`
 
 ## `onSuccess` Callback On DataProvider Hooks And Components Has A New Signature
 
@@ -411,6 +456,12 @@ The change concerns the following components:
 - `useShowController`
 - `<Show>`
 - `<ShowBase>`
+- `useDelete`
+- `useDeleteWithUndoController`
+- `useDeleteWithConfirmController`
+- `<DeleteButton>`
+- `useDeleteMany`
+- `<BulkDeleteButton>`
 
 ## `<Edit successMessage>` Prop Was Removed
 

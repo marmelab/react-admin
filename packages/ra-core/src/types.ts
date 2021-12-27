@@ -111,10 +111,10 @@ export type DataProvider = {
         params: UpdateParams
     ) => Promise<UpdateResult<RecordType>>;
 
-    updateMany: (
+    updateMany: <RecordType extends Record = Record>(
         resource: string,
         params: UpdateManyParams
-    ) => Promise<UpdateManyResult>;
+    ) => Promise<UpdateManyResult<RecordType>>;
 
     create: <RecordType extends Record = Record>(
         resource: string,
@@ -123,13 +123,13 @@ export type DataProvider = {
 
     delete: <RecordType extends Record = Record>(
         resource: string,
-        params: DeleteParams
+        params: DeleteParams<RecordType>
     ) => Promise<DeleteResult<RecordType>>;
 
-    deleteMany: (
+    deleteMany: <RecordType extends Record = Record>(
         resource: string,
-        params: DeleteManyParams
-    ) => Promise<DeleteManyResult>;
+        params: DeleteManyParams<RecordType>
+    ) => Promise<DeleteManyResult<RecordType>>;
 
     [key: string]: any;
 };
@@ -188,8 +188,8 @@ export interface UpdateManyParams<T = any> {
     ids: Identifier[];
     data: T;
 }
-export interface UpdateManyResult {
-    data?: Identifier[];
+export interface UpdateManyResult<RecordType extends Record = Record> {
+    data?: RecordType['id'][];
     validUntil?: ValidUntil;
 }
 
@@ -201,19 +201,19 @@ export interface CreateResult<RecordType extends Record = Record> {
     validUntil?: ValidUntil;
 }
 
-export interface DeleteParams {
+export interface DeleteParams<RecordType extends Record = Record> {
     id: Identifier;
-    previousData?: Record;
+    previousData?: RecordType;
 }
 export interface DeleteResult<RecordType extends Record = Record> {
     data: RecordType;
 }
 
-export interface DeleteManyParams {
-    ids: Identifier[];
+export interface DeleteManyParams<RecordType extends Record = Record> {
+    ids: RecordType['id'][];
 }
-export interface DeleteManyResult {
-    data?: Identifier[];
+export interface DeleteManyResult<RecordType extends Record = Record> {
+    data?: RecordType['id'][];
 }
 
 export type DataProviderResult<RecordType extends Record = Record> =
@@ -281,6 +281,12 @@ export type DataProviderProxy<
         options?: UseDataProviderOptions
     ) => Promise<UpdateResult<RecordType>>;
 
+    updateMany: <RecordType extends Record = Record>(
+        resource: string,
+        params: UpdateManyParams,
+        options?: UseDataProviderOptions
+    ) => Promise<UpdateManyResult<RecordType>>;
+
     create: <RecordType extends Record = Record>(
         resource: string,
         params: CreateParams
@@ -290,6 +296,11 @@ export type DataProviderProxy<
         resource: string,
         params: DeleteParams
     ) => Promise<DeleteResult<RecordType>>;
+
+    deleteMany: <RecordType extends Record = Record>(
+        resource: string,
+        params: DeleteManyParams<RecordType>
+    ) => Promise<DeleteManyResult<RecordType>>;
 };
 
 export type MutationMode = 'pessimistic' | 'optimistic' | 'undoable';
