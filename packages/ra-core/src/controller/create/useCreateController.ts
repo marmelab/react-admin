@@ -20,7 +20,6 @@ import {
     useSaveModifiers,
 } from '../saveModifiers';
 import { useTranslate } from '../../i18n';
-import useVersion from '../useVersion';
 import { Record, OnSuccess, OnFailure, CreateParams } from '../../types';
 import {
     useResourceContext,
@@ -67,7 +66,6 @@ export const useCreateController = <
     const redirect = useRedirect();
     const recordToUse =
         record ?? getRecordFromLocation(location) ?? emptyRecord;
-    const version = useVersion();
     const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
 
     if (process.env.NODE_ENV !== 'production' && successMessage) {
@@ -190,7 +188,6 @@ export const useCreateController = <
         resource,
         record: recordToUse,
         redirect: getDefaultRedirectRoute(hasShow, hasEdit),
-        version,
     };
 };
 
@@ -238,7 +235,6 @@ export interface CreateControllerResult<
     record?: Partial<RecordType>;
     redirect: RedirectionSideEffect;
     resource: string;
-    version: number;
 }
 
 const emptyRecord = {};

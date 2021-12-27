@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 
 import useDataProvider from './useDataProvider';
-import useVersion from '../controller/useVersion';
 import getFetchType from './getFetchType';
 import { useSafeSetState } from '../util/hooks';
 import { ReduxState, OnSuccess, OnFailure, DataProvider } from '../types';
@@ -122,14 +121,12 @@ export const useQueryWithStore = <
     isDataLoaded: (data: any) => boolean = defaultIsDataLoaded
 ): UseQueryWithStoreValue => {
     const { type, resource, payload } = query;
-    const version = useVersion(); // used to allow force reload
     // used to force a refetch without relying on version
     // which might trigger other queries as well
     const [innerVersion, setInnerVersion] = useState(0);
     const requestSignature = JSON.stringify({
         query,
         options,
-        version,
         innerVersion,
     });
     const requestSignatureRef = useRef(requestSignature);

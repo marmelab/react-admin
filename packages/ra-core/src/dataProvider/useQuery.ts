@@ -3,7 +3,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useSafeSetState } from '../util/hooks';
 import { OnSuccess, OnFailure } from '../types';
 import useDataProvider from './useDataProvider';
-import useVersion from '../controller/useVersion';
 import { DataProviderQuery, Refetch } from './useQueryWithStore';
 
 /**
@@ -73,7 +72,6 @@ export const useQuery = (
     options: UseQueryOptions = { onSuccess: undefined }
 ): UseQueryValue => {
     const { type, resource, payload } = query;
-    const version = useVersion(); // used to allow force reload
     // used to force a refetch without relying on version
     // which might trigger other queries as well
     const [innerVersion, setInnerVersion] = useState(0);
@@ -85,7 +83,6 @@ export const useQuery = (
     const requestSignature = JSON.stringify({
         query,
         options,
-        version,
         innerVersion,
     });
     const [state, setState] = useSafeSetState<UseQueryValue>({

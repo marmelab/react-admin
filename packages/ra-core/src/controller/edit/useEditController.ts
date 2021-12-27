@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
-import useVersion from '../useVersion';
 import {
     Record,
     MutationMode,
@@ -66,7 +65,6 @@ export const useEditController = <RecordType extends Record = Record>(
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
-    const version = useVersion();
     const { id: routeId } = useParams<'id'>();
     const id = propsId || decodeURIComponent(routeId);
     const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
@@ -212,7 +210,6 @@ export const useEditController = <RecordType extends Record = Record>(
         setOnSuccess,
         setTransform,
         transformRef,
-        version,
     };
 };
 
@@ -261,7 +258,6 @@ export interface EditControllerResult<RecordType extends Record = Record> {
     refetch: Refetch;
     redirect: RedirectionSideEffect;
     resource: string;
-    version: number;
 }
 
 const DefaultRedirect = 'list';

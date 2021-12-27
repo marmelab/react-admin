@@ -2,7 +2,6 @@ import { useParams } from 'react-router-dom';
 import { UseQueryOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
-import useVersion from '../useVersion';
 import { Record } from '../../types';
 import { useGetOne, useRefresh, Refetch } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
@@ -53,7 +52,6 @@ export const useShowController = <RecordType extends Record = Record>(
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
-    const version = useVersion();
     const { id: routeId } = useParams<'id'>();
     const id = propsId || decodeURIComponent(routeId);
 
@@ -97,7 +95,6 @@ export const useShowController = <RecordType extends Record = Record>(
         record,
         refetch,
         resource,
-        version,
     };
 };
 
@@ -119,5 +116,4 @@ export interface ShowControllerResult<RecordType extends Record = Record> {
     resource: string;
     record?: RecordType;
     refetch: Refetch;
-    version: number;
 }
