@@ -1,7 +1,7 @@
 import { useCallback, ReactEventHandler } from 'react';
 import { UseMutationOptions } from 'react-query';
 
-import { useDelete, useRefresh } from '../../dataProvider';
+import { useDelete } from '../../dataProvider';
 import {
     useNotify,
     useRedirect,
@@ -62,7 +62,6 @@ const useDeleteWithUndoController = <RecordType extends Record = Record>(
     const notify = useNotify();
     const unselect = useUnselect();
     const redirect = useRedirect();
-    const refresh = useRefresh();
     const [deleteOne, { isLoading }] = useDelete<RecordType>();
 
     const handleDelete = useCallback(
@@ -80,7 +79,6 @@ const useDeleteWithUndoController = <RecordType extends Record = Record>(
                         });
                         unselect(resource, [record.id]);
                         redirect(redirectTo, basePath || `/${resource}`);
-                        refresh();
                     },
                     onError: (error: Error) => {
                         notify(
@@ -99,7 +97,6 @@ const useDeleteWithUndoController = <RecordType extends Record = Record>(
                                 },
                             }
                         );
-                        refresh();
                     },
                     mutationMode: 'undoable',
                     ...mutationOptions,
@@ -118,7 +115,6 @@ const useDeleteWithUndoController = <RecordType extends Record = Record>(
             record,
             redirect,
             redirectTo,
-            refresh,
             resource,
             unselect,
         ]
