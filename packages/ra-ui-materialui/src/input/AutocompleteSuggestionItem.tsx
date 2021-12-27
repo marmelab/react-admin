@@ -54,10 +54,15 @@ const AutocompleteSuggestionItem = (
     } = props;
     const classes = useStyles(props);
     const isHighlighted = highlightedIndex === index;
-    const suggestionText =
-        'id' in suggestion && suggestion.id === createValue
-            ? suggestion.name
-            : getSuggestionText(suggestion);
+    let suggestionText = getSuggestionText(suggestion);
+    if (
+        suggestionText === undefined &&
+        'id' in suggestion &&
+        suggestion.id === createValue
+    ) {
+        suggestionText = suggestion.name;
+    }
+
     let matches;
     let parts;
 
