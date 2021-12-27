@@ -1,9 +1,7 @@
 import { combineReducers } from 'redux';
-import cachedRequests from './cachedRequests';
 import expanded from './expanded';
 import params from './params';
 import selectedIds from './selectedIds';
-import total from './total';
 
 const defaultReducer = () => null;
 
@@ -15,9 +13,7 @@ export default combineReducers({
      *
      * @see https://stackoverflow.com/questions/43375079/redux-warning-only-appearing-in-tests
      */
-    cachedRequests: cachedRequests || defaultReducer,
     expanded: expanded || defaultReducer,
     params: params || defaultReducer,
     selectedIds: selectedIds || defaultReducer,
-    total: total || defaultReducer,
 });

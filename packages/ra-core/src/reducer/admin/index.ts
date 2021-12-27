@@ -5,7 +5,6 @@ import resources, {
 } from './resource';
 import notifications from './notifications';
 import ui from './ui';
-import customQueries from './customQueries';
 
 const defaultReducer = () => null;
 
@@ -18,7 +17,6 @@ export default combineReducers({
      * @see https://stackoverflow.com/questions/43375079/redux-warning-only-appearing-in-tests
      */
     resources: resources || defaultReducer,
-    customQueries: customQueries || defaultReducer,
     notifications: notifications || defaultReducer,
     ui: ui || defaultReducer,
 });
