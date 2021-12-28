@@ -1,19 +1,16 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen } from '@testing-library/react';
-import { refreshView } from 'ra-core';
 
+import { showNotification } from 'ra-core';
 import TestContext, { defaultStore } from './TestContext';
-
 import { WithDataProvider } from './TestContext.stories';
 
 const primedStore = {
     admin: {
-        loading: 0,
         notifications: [],
         resources: {},
         ui: {},
-        customQueries: {},
     },
 };
 
@@ -80,15 +77,13 @@ describe('TestContext.js', () => {
             );
             expect(testStore.getState()).toEqual(primedStore);
 
-            testStore.dispatch(refreshView());
+            testStore.dispatch(showNotification('here'));
 
             expect(testStore.getState()).toEqual({
                 ...primedStore,
                 admin: {
                     ...primedStore.admin,
-                    ui: {
-                        ...primedStore.admin.ui,
-                    },
+                    notifications: [{ message: 'here', type: 'info' }],
                 },
             });
         });
@@ -105,7 +100,7 @@ describe('TestContext.js', () => {
             );
             expect(testStore.getState()).toEqual(defaultStore);
 
-            testStore.dispatch(refreshView());
+            testStore.dispatch(showNotification('here'));
 
             expect(testStore.getState()).toEqual(defaultStore);
         });

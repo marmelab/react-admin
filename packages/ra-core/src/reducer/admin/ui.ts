@@ -2,21 +2,19 @@ import { Reducer } from 'redux';
 import {
     TOGGLE_SIDEBAR,
     ToggleSidebarAction,
+    SET_SIDEBAR_VISIBILITY,
+    SetSidebarVisibilityAction,
     START_OPTIMISTIC_MODE,
     StartOptimisticModeAction,
     STOP_OPTIMISTIC_MODE,
     StopOptimisticModeAction,
 } from '../../actions';
-import {
-    SET_AUTOMATIC_REFRESH,
-    SetAutomaticRefreshAction,
-} from '../../actions/uiActions';
 
 type ActionTypes =
     | ToggleSidebarAction
+    | SetSidebarVisibilityAction
     | StartOptimisticModeAction
     | StopOptimisticModeAction
-    | SetAutomaticRefreshAction
     | { type: 'OTHER_ACTION' };
 
 export interface UIState {
@@ -49,10 +47,10 @@ const uiReducer: Reducer<UIState> = (
                 ...previousState,
                 sidebarOpen: !previousState.sidebarOpen,
             };
-        case SET_AUTOMATIC_REFRESH:
+        case SET_SIDEBAR_VISIBILITY:
             return {
                 ...previousState,
-                automaticRefreshEnabled: action.payload,
+                sidebarOpen: action.payload,
             };
         case START_OPTIMISTIC_MODE:
             return { ...previousState, optimistic: true };

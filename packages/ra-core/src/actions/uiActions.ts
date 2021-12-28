@@ -21,15 +21,3 @@ export const setSidebarVisibility = (
     type: SET_SIDEBAR_VISIBILITY,
     payload: isOpen,
 });
-
-export const SET_AUTOMATIC_REFRESH = 'RA/SET_AUTOMATIC_REFRESH';
-
-export interface SetAutomaticRefreshAction {
-    readonly type: typeof SET_AUTOMATIC_REFRESH;
-    readonly payload: boolean;
-}
-
-export const setAutomaticRefresh = (enabled: boolean) => ({
-    type: SET_AUTOMATIC_REFRESH,
-    payload: enabled,
-});

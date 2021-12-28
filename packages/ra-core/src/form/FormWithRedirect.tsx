@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { useRef, useCallback, useEffect, useMemo } from 'react';
+import { useRef, useCallback, useMemo } from 'react';
 import { Form, FormProps, FormRenderProps } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
-import { useDispatch } from 'react-redux';
 
 import useResetSubmitErrors from './useResetSubmitErrors';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
@@ -15,7 +14,6 @@ import {
     OnFailure,
 } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
-import { setAutomaticRefresh } from '../actions';
 import { useRecordContext, OptionalRecordContextProvider } from '../controller';
 import { FormContextProvider } from './FormContextProvider';
 import submitErrorsMutators from './submitErrorsMutators';
@@ -296,12 +294,7 @@ const FormView = ({
 }: FormViewProps) => {
     useResetSubmitErrors();
     useWarnWhenUnsavedChanges(warnWhenUnsavedChanges, formRootPathname);
-    const dispatch = useDispatch();
-    const { redirect, handleSubmit, pristine } = props;
-
-    useEffect(() => {
-        dispatch(setAutomaticRefresh(pristine));
-    }, [dispatch, pristine]);
+    const { redirect, handleSubmit } = props;
 
     /**
      * We want to let developers define the redirection target from inside the form,

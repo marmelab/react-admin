@@ -1,9 +1,10 @@
 import * as React from 'react';
+import { screen, render, waitFor } from '@testing-library/react';
 
-import { renderWithRedux } from 'ra-test';
+import { CoreAdminContext } from '../core';
+import { testDataProvider } from '../dataProvider';
 import FormWithRedirect from './FormWithRedirect';
 import useInput from './useInput';
-import { waitFor } from '@testing-library/dom';
 
 describe('FormWithRedirect', () => {
     const Input = props => {
@@ -16,29 +17,37 @@ describe('FormWithRedirect', () => {
         const renderProp = jest.fn(() => (
             <Input source="name" initialValue="Bar" />
         ));
-        const { getByDisplayValue, rerender } = renderWithRedux(
-            <FormWithRedirect
-                save={jest.fn()}
-                redirect={false}
-                saving={false}
-                render={renderProp}
-            />
+        const { rerender } = render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    redirect={false}
+                    saving={false}
+                    render={renderProp}
+                />
+            </CoreAdminContext>
         );
 
-        expect(renderProp.mock.calls[0][0].pristine).toEqual(true);
-        expect(getByDisplayValue('Bar')).not.toBeNull();
+        expect(renderProp).toHaveBeenLastCalledWith(
+            expect.objectContaining({ pristine: true })
+        );
+        expect(screen.getByDisplayValue('Bar')).not.toBeNull();
 
         rerender(
-            <FormWithRedirect
-                save={jest.fn()}
-                redirect={false}
-                saving={false}
-                render={renderProp}
-                record={{ id: 1, name: 'Foo' }}
-            />
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    redirect={false}
+                    saving={false}
+                    render={renderProp}
+                    record={{ id: 1, name: 'Foo' }}
+                />
+            </CoreAdminContext>
         );
 
-        expect(renderProp.mock.calls[1][0].pristine).toEqual(true);
+        expect(renderProp).toHaveBeenLastCalledWith(
+            expect.objectContaining({ pristine: true })
+        );
         expect(renderProp).toHaveBeenCalledTimes(2);
     });
 
@@ -46,18 +55,21 @@ describe('FormWithRedirect', () => {
         const renderProp = jest.fn(() => (
             <Input source="name" initialValue="Bar" />
         ));
-        const { getByDisplayValue } = renderWithRedux(
-            <FormWithRedirect
-                save={jest.fn()}
-                redirect={false}
-                saving={false}
-                render={renderProp}
-                record={{ id: 1 }}
-            />
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    redirect={false}
+                    saving={false}
+                    render={renderProp}
+                    record={{ id: 1 }}
+                />
+            </CoreAdminContext>
         );
 
-        expect(renderProp.mock.calls[0][0].pristine).toEqual(true);
-        expect(getByDisplayValue('Bar')).not.toBeNull();
+        expect(renderProp).toHaveBeenLastCalledWith(
+            expect.objectContaining({ pristine: true })
+        );
         expect(renderProp).toHaveBeenCalledTimes(1);
     });
 
@@ -65,18 +77,22 @@ describe('FormWithRedirect', () => {
         const renderProp = jest.fn(() => (
             <Input source="name" defaultValue="Bar" />
         ));
-        const { getByDisplayValue } = renderWithRedux(
-            <FormWithRedirect
-                save={jest.fn()}
-                redirect={false}
-                saving={false}
-                render={renderProp}
-                record={{ id: 1 }}
-            />
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    redirect={false}
+                    saving={false}
+                    render={renderProp}
+                    record={{ id: 1 }}
+                />
+            </CoreAdminContext>
         );
 
-        expect(renderProp.mock.calls[1][0].pristine).toEqual(false);
-        expect(getByDisplayValue('Bar')).not.toBeNull();
+        expect(renderProp).toHaveBeenLastCalledWith(
+            expect.objectContaining({ pristine: false })
+        );
+        expect(screen.getByDisplayValue('Bar')).not.toBeNull();
         // 4 times because the first initialization with an empty value
         // triggers a change on the input which has a defaultValue
         // This is expected and identical to what FinalForm does (https://final-form.org/docs/final-form/types/FieldConfig#defaultvalue)
@@ -87,31 +103,43 @@ describe('FormWithRedirect', () => {
         const renderProp = jest.fn(() => (
             <Input source="name" defaultValue="Bar" />
         ));
-        const { getByDisplayValue, rerender } = renderWithRedux(
-            <FormWithRedirect
-                save={jest.fn()}
-                redirect={false}
-                saving={false}
-                record={{ id: 1, name: 'Foo' }}
-                render={renderProp}
-            />
+        const { rerender } = render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    redirect={false}
+                    saving={false}
+                    record={{ id: 1, name: 'Foo' }}
+                    render={renderProp}
+                />
+            </CoreAdminContext>
         );
 
-        expect(renderProp.mock.calls[0][0].pristine).toEqual(true);
-        expect(getByDisplayValue('Foo')).not.toBeNull();
+        expect(renderProp).toHaveBeenLastCalledWith(
+            expect.objectContaining({ pristine: true })
+        );
+        expect(screen.getByDisplayValue('Foo')).not.toBeNull();
 
         rerender(
-            <FormWithRedirect
-                save={jest.fn()}
-                redirect={false}
-                saving={false}
-                record={{ id: 1, name: 'Foo', anotherServerAddedProp: 'Bar' }}
-                render={renderProp}
-            />
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    redirect={false}
+                    saving={false}
+                    record={{
+                        id: 1,
+                        name: 'Foo',
+                        anotherServerAddedProp: 'Bar',
+                    }}
+                    render={renderProp}
+                />
+            </CoreAdminContext>
         );
 
-        expect(renderProp.mock.calls[1][0].pristine).toEqual(true);
-        expect(getByDisplayValue('Foo')).not.toBeNull();
+        expect(renderProp).toHaveBeenLastCalledWith(
+            expect.objectContaining({ pristine: true })
+        );
+        expect(screen.getByDisplayValue('Foo')).not.toBeNull();
         expect(renderProp).toHaveBeenCalledTimes(2);
     });
 
@@ -119,71 +147,85 @@ describe('FormWithRedirect', () => {
         const renderProp = jest.fn(() => (
             <Input source="name" defaultValue="Bar" />
         ));
-        const { getByDisplayValue, rerender } = renderWithRedux(
-            <FormWithRedirect
-                save={jest.fn()}
-                redirect={false}
-                saving={false}
-                record={{ id: 1, name: 'Foo' }}
-                render={renderProp}
-            />
+        const { rerender } = render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    redirect={false}
+                    saving={false}
+                    record={{ id: 1, name: 'Foo' }}
+                    render={renderProp}
+                />
+            </CoreAdminContext>
         );
 
-        expect(renderProp.mock.calls[0][0].pristine).toEqual(true);
-        expect(getByDisplayValue('Foo')).not.toBeNull();
+        expect(renderProp).toHaveBeenLastCalledWith(
+            expect.objectContaining({ pristine: true })
+        );
+        expect(screen.getByDisplayValue('Foo')).not.toBeNull();
 
         rerender(
-            <FormWithRedirect
-                save={jest.fn()}
-                redirect={false}
-                saving={false}
-                record={{
-                    id: 2,
-                    name: undefined,
-                    anotherServerAddedProp: 'Bazinga',
-                }}
-                render={renderProp}
-            />
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    redirect={false}
+                    saving={false}
+                    record={{
+                        id: 2,
+                        name: undefined,
+                        anotherServerAddedProp: 'Bazinga',
+                    }}
+                    render={renderProp}
+                />
+            </CoreAdminContext>
         );
 
         expect(renderProp).toHaveBeenCalledTimes(3);
-        expect(renderProp.mock.calls[2][0].pristine).toEqual(false);
-        expect(getByDisplayValue('Bar')).not.toBeNull();
+        expect(renderProp).toHaveBeenLastCalledWith(
+            expect.objectContaining({ pristine: false })
+        );
+        expect(screen.getByDisplayValue('Bar')).not.toBeNull();
     });
 
     it('Does not make the form dirty when reinitialized from a different record with a missing field and this field has an initialValue', async () => {
         const renderProp = jest.fn(() => (
             <Input source="name" initialValue="Bar" />
         ));
-        const { getByDisplayValue, rerender } = renderWithRedux(
-            <FormWithRedirect
-                save={jest.fn()}
-                redirect={false}
-                saving={false}
-                record={{ id: 1, name: 'Foo' }}
-                render={renderProp}
-            />
+        const { rerender } = render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    redirect={false}
+                    saving={false}
+                    record={{ id: 1, name: 'Foo' }}
+                    render={renderProp}
+                />
+            </CoreAdminContext>
         );
 
-        expect(renderProp.mock.calls[0][0].pristine).toEqual(true);
-        expect(getByDisplayValue('Foo')).not.toBeNull();
+        expect(renderProp).toHaveBeenLastCalledWith(
+            expect.objectContaining({ pristine: true })
+        );
+        expect(screen.getByDisplayValue('Foo')).not.toBeNull();
 
         rerender(
-            <FormWithRedirect
-                save={jest.fn()}
-                redirect={false}
-                saving={false}
-                record={{
-                    id: 2,
-                    name: undefined,
-                    anotherServerAddedProp: 'Bazinga',
-                }}
-                render={renderProp}
-            />
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <FormWithRedirect
+                    save={jest.fn()}
+                    redirect={false}
+                    saving={false}
+                    record={{
+                        id: 2,
+                        name: undefined,
+                        anotherServerAddedProp: 'Bazinga',
+                    }}
+                    render={renderProp}
+                />
+            </CoreAdminContext>
         );
 
         await waitFor(() => {
-            expect(getByDisplayValue('Bar')).not.toBeNull();
+            expect(screen.getByDisplayValue('Bar')).not.toBeNull();
         });
         expect(
             renderProp.mock.calls[renderProp.mock.calls.length - 1][0].pristine
