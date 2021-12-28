@@ -5,7 +5,6 @@ import reducer from './ui';
 describe('ui reducer', () => {
     const defaultState = {
         sidebarOpen: false,
-        optimistic: false,
     };
     it('should return hidden sidebar by default', () => {
         expect(reducer(undefined, { type: 'foo' })).toEqual(defaultState);

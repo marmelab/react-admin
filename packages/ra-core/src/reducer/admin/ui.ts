@@ -4,22 +4,15 @@ import {
     ToggleSidebarAction,
     SET_SIDEBAR_VISIBILITY,
     SetSidebarVisibilityAction,
-    START_OPTIMISTIC_MODE,
-    StartOptimisticModeAction,
-    STOP_OPTIMISTIC_MODE,
-    StopOptimisticModeAction,
 } from '../../actions';
 
 type ActionTypes =
     | ToggleSidebarAction
     | SetSidebarVisibilityAction
-    | StartOptimisticModeAction
-    | StopOptimisticModeAction
     | { type: 'OTHER_ACTION' };
 
 export interface UIState {
     readonly sidebarOpen: boolean;
-    readonly optimistic: boolean;
 }
 
 // Match the medium breakpoint defined in the material-ui theme
@@ -34,7 +27,6 @@ const isDesktop = (): boolean =>
 
 const defaultState: UIState = {
     sidebarOpen: isDesktop(),
-    optimistic: false,
 };
 
 const uiReducer: Reducer<UIState> = (
@@ -52,10 +44,6 @@ const uiReducer: Reducer<UIState> = (
                 ...previousState,
                 sidebarOpen: action.payload,
             };
-        case START_OPTIMISTIC_MODE:
-            return { ...previousState, optimistic: true };
-        case STOP_OPTIMISTIC_MODE:
-            return { ...previousState, optimistic: false };
         default:
             return previousState;
     }
