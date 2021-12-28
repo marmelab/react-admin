@@ -196,6 +196,7 @@ const FormWithRedirect = ({
         <OptionalRecordContextProvider value={record}>
             <FormContextProvider value={formContextValue}>
                 <Form
+                    key={record?.id || ''}
                     debug={debug}
                     decorators={decorators}
                     destroyOnUnregister={destroyOnUnregister}

@@ -28,10 +28,10 @@ describe('FormWithRedirect', () => {
             </CoreAdminContext>
         );
 
+        expect(screen.getByDisplayValue('Bar')).not.toBeNull();
         expect(renderProp).toHaveBeenLastCalledWith(
             expect.objectContaining({ pristine: true })
         );
-        expect(screen.getByDisplayValue('Bar')).not.toBeNull();
 
         rerender(
             <CoreAdminContext dataProvider={testDataProvider()}>
@@ -45,6 +45,7 @@ describe('FormWithRedirect', () => {
             </CoreAdminContext>
         );
 
+        expect(screen.getByDisplayValue('Foo')).not.toBeNull();
         expect(renderProp).toHaveBeenLastCalledWith(
             expect.objectContaining({ pristine: true })
         );
@@ -67,6 +68,7 @@ describe('FormWithRedirect', () => {
             </CoreAdminContext>
         );
 
+        expect(screen.getByDisplayValue('Bar')).not.toBeNull();
         expect(renderProp).toHaveBeenLastCalledWith(
             expect.objectContaining({ pristine: true })
         );
@@ -89,11 +91,11 @@ describe('FormWithRedirect', () => {
             </CoreAdminContext>
         );
 
+        expect(screen.getByDisplayValue('Bar')).not.toBeNull();
         expect(renderProp).toHaveBeenLastCalledWith(
             expect.objectContaining({ pristine: false })
         );
-        expect(screen.getByDisplayValue('Bar')).not.toBeNull();
-        // 4 times because the first initialization with an empty value
+        // twice because the first initialization with an empty value
         // triggers a change on the input which has a defaultValue
         // This is expected and identical to what FinalForm does (https://final-form.org/docs/final-form/types/FieldConfig#defaultvalue)
         expect(renderProp).toHaveBeenCalledTimes(2);
@@ -115,10 +117,10 @@ describe('FormWithRedirect', () => {
             </CoreAdminContext>
         );
 
+        expect(screen.getByDisplayValue('Foo')).not.toBeNull();
         expect(renderProp).toHaveBeenLastCalledWith(
             expect.objectContaining({ pristine: true })
         );
-        expect(screen.getByDisplayValue('Foo')).not.toBeNull();
 
         rerender(
             <CoreAdminContext dataProvider={testDataProvider()}>
@@ -136,10 +138,10 @@ describe('FormWithRedirect', () => {
             </CoreAdminContext>
         );
 
+        expect(screen.getByDisplayValue('Foo')).not.toBeNull();
         expect(renderProp).toHaveBeenLastCalledWith(
             expect.objectContaining({ pristine: true })
         );
-        expect(screen.getByDisplayValue('Foo')).not.toBeNull();
         expect(renderProp).toHaveBeenCalledTimes(2);
     });
 
@@ -159,10 +161,10 @@ describe('FormWithRedirect', () => {
             </CoreAdminContext>
         );
 
+        expect(screen.getByDisplayValue('Foo')).not.toBeNull();
         expect(renderProp).toHaveBeenLastCalledWith(
             expect.objectContaining({ pristine: true })
         );
-        expect(screen.getByDisplayValue('Foo')).not.toBeNull();
 
         rerender(
             <CoreAdminContext dataProvider={testDataProvider()}>
@@ -180,11 +182,11 @@ describe('FormWithRedirect', () => {
             </CoreAdminContext>
         );
 
-        expect(renderProp).toHaveBeenCalledTimes(3);
+        expect(screen.getByDisplayValue('Bar')).not.toBeNull();
         expect(renderProp).toHaveBeenLastCalledWith(
             expect.objectContaining({ pristine: false })
         );
-        expect(screen.getByDisplayValue('Bar')).not.toBeNull();
+        expect(renderProp).toHaveBeenCalledTimes(3);
     });
 
     it('Does not make the form dirty when reinitialized from a different record with a missing field and this field has an initialValue', async () => {
@@ -203,10 +205,10 @@ describe('FormWithRedirect', () => {
             </CoreAdminContext>
         );
 
+        expect(screen.getByDisplayValue('Foo')).not.toBeNull();
         expect(renderProp).toHaveBeenLastCalledWith(
             expect.objectContaining({ pristine: true })
         );
-        expect(screen.getByDisplayValue('Foo')).not.toBeNull();
 
         rerender(
             <CoreAdminContext dataProvider={testDataProvider()}>
