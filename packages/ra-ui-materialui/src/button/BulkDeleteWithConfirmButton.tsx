@@ -50,6 +50,7 @@ export const BulkDeleteWithConfirmButton = (
                     messageArgs: { smart_count: selectedIds.length },
                 });
                 unselectAll(resource);
+                setOpen(false);
             },
             onError: (error: Error) => {
                 notify(

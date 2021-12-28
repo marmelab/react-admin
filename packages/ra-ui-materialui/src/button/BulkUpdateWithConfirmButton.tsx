@@ -46,6 +46,7 @@ export const BulkUpdateWithConfirmButton = (
                 messageArgs: { smart_count: selectedIds.length },
             });
             unselectAll(resource);
+            setOpen(false);
         },
         onError = (error: Error | string) => {
             notify(
