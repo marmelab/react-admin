@@ -4,6 +4,8 @@ import useAuthProvider from './useAuthProvider';
 import useLogout from './useLogout';
 import { useNotify } from '../sideEffect';
 import { useHistory } from 'react-router';
+import { fetchEnd } from '../actions';
+import { useDispatch } from 'react-redux';
 
 let timer;
 
@@ -43,6 +45,8 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
     const logout = useLogout();
     const notify = useNotify();
     const history = useHistory();
+    const dispatch = useDispatch();
+
     const logoutIfAccessDenied = useCallback(
         (error?: any, disableNotification?: boolean) =>
             authProvider
@@ -92,12 +96,13 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                     if (logoutUser) {
                         logout({}, redirectTo);
                     } else {
+                        dispatch(fetchEnd());
                         history.push(redirectTo);
                     }
 
                     return true;
                 }),
-        [authProvider, logout, notify, history]
+        [authProvider, logout, notify, history, dispatch]
     );
     return authProvider
         ? logoutIfAccessDenied
