@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
 import expect from 'expect';
-import { render, waitFor } from '@testing-library/react';
+import { waitFor } from '@testing-library/react';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
@@ -10,6 +10,7 @@ import AuthContext from './AuthContext';
 import useLogout from './useLogout';
 import useNotify from '../sideEffect/useNotify';
 import { AuthProvider } from '../types';
+import { renderWithRedux } from 'ra-test';
 
 let loggedIn = true;
 
@@ -62,7 +63,7 @@ useNotify.mockImplementation(() => notify);
 
 function renderInRouter(children) {
     const history = createMemoryHistory();
-    const api = render(<Router history={history}>{children}</Router>);
+    const api = renderWithRedux(<Router history={history}>{children}</Router>);
 
     return {
         ...api,
