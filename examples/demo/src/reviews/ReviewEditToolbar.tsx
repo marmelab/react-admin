@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { SaveButton, DeleteButton, ToolbarProps } from 'react-admin';
 import AcceptButton from './AcceptButton';
 import RejectButton from './RejectButton';
-import { Review } from '../types';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -16,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
+const ReviewEditToolbar = (props: ToolbarProps) => {
     const {
         basePath,
         handleSubmitWithRedirect,
