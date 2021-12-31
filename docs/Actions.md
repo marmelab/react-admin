@@ -52,7 +52,7 @@ const UserProfile = ({ userId }) => {
 
 But the recommended way to query the Data Provider is to use the dataProvider method hooks (like `useGetOne`, see below).
 
-**Tip**: The `dataProvider` returned by the hook is actually a *wrapper* around your Data Provider. This wrapper logs the user out if the dataProvider returns an error, and if the authProvider sees that error as an authentication errir (via `authProvider.checkError()`).
+**Tip**: The `dataProvider` returned by the hook is actually a *wrapper* around your Data Provider. This wrapper logs the user out if the dataProvider returns an error, and if the authProvider sees that error as an authentication error (via `authProvider.checkError()`).
 
 **Tip**: If you use TypeScript, you can specify a record type for more type safety:
 
@@ -66,7 +66,7 @@ dataProvider.getOne<Product>('users', { id: 123 })
 
 ## DataProvider Method Hooks
 
-React-admin provides one hook for each of the Data Provider methods. They are useful shortcuts that make your code more readable and more robust (no more method name passed as string).
+React-admin provides one hook for each of the Data Provider methods. They are useful shortcuts that make your code more readable and more robust.
 
 Their signature is the same as the related dataProvider method, e.g.:
 
@@ -197,7 +197,7 @@ const UserProfile = ({ record }) => {
 
 ## `useGetMany`
 
-This hook calls `dataProvider.getMany()` when the component mounts. It queries the data provider for several records, based on an array of `id`s.
+This hook calls `dataProvider.getMany()` when the component mounts. It queries the data provider for several records, based on an array of `ids`.
 
 ```jsx
 // syntax
@@ -288,7 +288,7 @@ create(
 );
 ```
 
-So, should you pass the parameters when calling the hook, or when executing the callback? It's up to you; but if you have the choice, we recommend to pass the parameters when calling the hook (second example below).
+So, should you pass the parameters when calling the hook, or when executing the callback? It's up to you; but if you have the choice, we recommend passing the parameters when calling the hook (second example below).
 
 ```jsx
 // set params when calling the hook
@@ -341,7 +341,7 @@ update(
 );
 ```
 
-This means the parameters can be passed either when calling the hook, or when calling the callback. It's up to you tp pick the syntax that best suits your component. If you have the choice, we recommend to pass the parameters when calling the hook (second example below).
+This means the parameters can be passed either when calling the hook, or when calling the callback. It's up to you to pick the syntax that best suits your component. If you have the choice, we recommend passing the parameters when calling the hook (second example below).
 
 ```jsx
 // set params when calling the hook
@@ -401,7 +401,7 @@ updateMany(
 );
 ```
 
-So, should you pass the parameters when calling the hook, or when executing the callback? It's up to you; but if you have the choice, we recommend to pass the parameters when calling the hook (second example below).
+So, should you pass the parameters when calling the hook, or when executing the callback? It's up to you; but if you have the choice, we recommend passing the parameters when calling the hook (second example below).
 
 ```jsx
 // set params when calling the hook
@@ -437,7 +437,7 @@ const BulkResetViewsButton = ({ selectedIds }) => {
 
 ## `useDelete`
 
-This hook allows to call `dataProvider.delete()` when the callback is executed, and delete a single record based on its `id`. 
+This hook allows calling `dataProvider.delete()` when the callback is executed and deleting a single record based on its `id`. 
 
 ```jsx
 // syntax
@@ -458,7 +458,7 @@ deleteOne(
 );
 ```
 
-So, should you pass the parameters when calling the hook, or when executing the callback? It's up to you; but if you have the choice, we recommend to pass the parameters when calling the hook (second example below).
+So, should you pass the parameters when calling the hook, or when executing the callback? It's up to you; but if you have the choice, we recommend passing the parameters when calling the hook (second example below).
 
 ```jsx
 // set params when calling the hook
@@ -515,7 +515,7 @@ deleteMany(
 );
 ```
 
-So, should you pass the parameters when calling the hook, or when executing the callback? It's up to you; but if you have the choice, we recommend to pass the parameters when calling the hook (second example below).
+So, should you pass the parameters when calling the hook, or when executing the callback? It's up to you; but if you have the choice, we recommend passing the parameters when calling the hook (second example below).
 
 ```jsx
 // set params when calling the hook
@@ -551,19 +551,19 @@ const BulkDeletePostsButton = ({ selectedIds }) => {
 
 ## React-query
 
-Internally, react-admin uses [react-query](https://react-query.tanstack.com/) to call the dataProvider. When fetching data from the dataProvider in your components, if you can't use any of the dataProvider method hooks, you should use that library, too. It brings a number of benefits:
+Internally, react-admin uses [react-query](https://react-query.tanstack.com/) to call the dataProvider. When fetching data from the dataProvider in your components, if you can't use any of the dataProvider method hooks, you should use that library, too. It brings several benefits:
 
 1. It triggers the loader in the AppBar when the query is running.
 2. It reduces the boilerplate code since you don't need to use `useState`.
 3. It supports a vast array of options
-3. It displays stale data while fetching for up-to-date data, leading to a snappier UI
+3. It displays stale data while fetching up-to-date data, leading to a snappier UI
 
 React-query offers 2 main hooks to interact with the dataProvider:
 
 * [`useQuery`](https://react-query.tanstack.com/reference/useQuery): fetches the dataProvider on mount. This is for *read* queries.
 * [`useMutation`](https://react-query.tanstack.com/reference/useMutation): fetches the dataProvider when you call a callback. This is for *write* queries, and *read* queries that execute on user interaction.
 
-Both these hooks accept a query *key* (identifying the query in the cache), and a query *function* (executing the query and returning a Promise). Internally, react-admin uses an array of arguments as query key.
+Both these hooks accept a query *key* (identifying the query in the cache), and a query *function* (executing the query and returning a Promise). Internally, react-admin uses an array of arguments as the query key.
 
 For instance, the initial code snippet of this chapter can be rewritten with `useQuery` as follows:
 
@@ -592,7 +592,7 @@ const UserProfile = ({ userId }) => {
 };
 ```
 
-Top illustrate the usage of `useMutation`, here is an implementation of an "Approve" button for a comment:
+To illustrate the usage of `useMutation`, here is an implementation of an "Approve" button for a comment:
 
 ```jsx
 import * as React from "react";
@@ -624,13 +624,13 @@ The source of these two variables is [react-query](https://react-query.tanstack.
 
 Let's see how what these variables contain in a typical usage scenario:
 
-1. The user first loads a page. `isLoading` is true, and `isFetching` is also true, because the data was never loaded
+1. The user first loads a page. `isLoading` is true, and `isFetching` is also true because the data was never loaded
 2. The dataProvider returns the data. Both `isLoading` and `isFetching` become false
 3. The user navigates away
-4. The user comes back to the first page, which triggers a new fetch. `isLoading` is false, because the stale data is available, and `isFetching` is true, because the dataProvider is being fetched.
+4. The user comes back to the first page, which triggers a new fetch. `isLoading` is false, because the stale data is available, and `isFetching` is true because the dataProvider is being fetched.
 5. The dataProvider returns the data. Both `isLoading` and `isFetching` become false
 
-Components use the loading state to show a loading indicator when there is no data to show. In the example above, the loading indicator is necessary in step 2, but not in step 4, because you can display the stale data while fresh data is being loaded.
+Components use the loading state to show a loading indicator when there is no data to show. In the example above, the loading indicator is necessary for step 2, but not in step 4, because you can display the stale data while fresh data is being loaded.
 
 ```jsx
 import { useGetOne } from 'react-admin';
@@ -684,7 +684,7 @@ const BanUserButton = ({ userId }) => {
 
 ## Query Options
 
-The data provider method hooks (like `useGetOne`) and react-query's hooks (like `useQuery`) accept a query options object as the last argument. This object can be used to modify the way the query is executed. There are many options that are documented [in the react-query documentation](https://react-query.tanstack.com/reference/useQuery):
+The data provider method hooks (like `useGetOne`) and react-query's hooks (like `useQuery`) accept a query options object as the last argument. This object can be used to modify the way the query is executed. There are many options, all documented [in the react-query documentation](https://react-query.tanstack.com/reference/useQuery):
 
 - `cacheTime`
 - `enabled`
@@ -750,7 +750,7 @@ const PostList = () => (
 );
 ```
 
-## Synchronizing Dependant Queries
+## Synchronizing Dependent Queries
 
 `useQuery` and all its corresponding specialized hooks support an `enabled` option. This is useful if you need to have a query executed only when a condition is met. For example, the following code only fetches the categories if at least one post is already loaded:
 
@@ -803,7 +803,7 @@ const ApproveButton = ({ record }) => {
 };
 ```
 
-React-admin provides the following hooks to handle most common side effects:
+React-admin provides the following hooks to handle the most common side effects:
 
 - [`useNotify`](#usenotify): Return a function to display a notification. 
 - [`useRedirect`](#useredirect): Return a function to redirect the user to another page. 
@@ -812,7 +812,7 @@ React-admin provides the following hooks to handle most common side effects:
 
 ### `useNotify`
 
-This hook returns a function that displays a notification in the bottom of the page.
+This hook returns a function that displays a notification at the bottom of the page.
 
 ```jsx
 import { useNotify } from 'react-admin';
@@ -828,7 +828,7 @@ const NotifyButton = () => {
 
 The callback takes 2 arguments:
 - The message to display
-- an options object with the following keys
+- an `options` object with the following keys
     - The `type` of the notification (`info`, `success` or `warning` - the default is `info`)
     - A `messageArgs` object to pass to the `translate` function (because notification messages are translated if your admin has an `i18nProvider`). It is useful for inserting variables into the translation.
     - An `undoable` boolean. Set it to `true` if the notification should contain an "undo" button
@@ -889,7 +889,7 @@ The callback takes 5 arguments:
  - The page to redirect the user to ('list', 'create', 'edit', 'show', a function or a custom path)
  - The current `basePath`
  - The `id` of the record to redirect to (if any)
- - A record like object to be passed to the first argument, when the first argument is a function
+ - A record-like object to be passed to the first argument, when the first argument is a function
  - A `state` to be set to the location
 
 Here are more examples of `useRedirect` calls: 
@@ -911,7 +911,7 @@ redirect('edit', '/posts', 1, {}, { record: { post_id: record.id } });
 redirect(false);
 ```
 
-Note that `useRedirect` allows redirection to an absolute url outside the current React app.
+Note that `useRedirect` allows redirection to an absolute URL outside the current React app.
 
 ### `useRefresh`
 
@@ -981,9 +981,9 @@ But in most cases, the server returns a successful response, so the user waits f
 
 This is called **pessimistic rendering**, as all users are forced to wait because of the (usually rare) possibility of server failure. 
 
-An alternative mode for mutations is **optimistic rendering**. The idea is to handle the calls to the `dataProvider` on the client side first (i.e. updating entities in the react-query cache), and re-render the screen immediately. The user sees the effect of their action with no delay. Then, react-admin applies the success side effects, and only after that, it triggers the call to the data provider. If the fetch ends with a success, react-admin does nothing more than a refresh to grab the latest data from the server. In most cases, the user sees no difference (the data in the Redux store and the data from the `dataProvider` are the same). If the fetch fails, react-admin shows an error notification, and reverts the mutation.
+An alternative mode for mutations is **optimistic rendering**. The idea is to handle the calls to the `dataProvider` on the client side first (i.e. updating entities in the react-query cache), and re-render the screen immediately. The user sees the effect of their action with no delay. Then, react-admin applies the success side effects, and only after that, it triggers the call to the data provider. If the fetch ends with success, react-admin does nothing more than a refresh to grab the latest data from the server. In most cases, the user sees no difference (the data in the Redux store and the data from the `dataProvider` are the same). If the fetch fails, react-admin shows an error notification and reverts the mutation.
 
-A third mutation mode is called **undoable**. It's like optimistic rendering, but with an added feature: after applying the changes and the side effects locally, react-admin *waits* for a few seconds before triggering the call to the `dataProvider`. During this delay, the end user sees an "undo" button that, when clicked, cancels the call to the `dataProvider` and refreshes the screen.
+A third mutation mode is called **undoable**. It's like optimistic rendering, but with an added feature: after applying the changes and the side effects locally, react-admin *waits* for a few seconds before triggering the call to the `dataProvider`. During this delay, the end-user sees an "undo" button that, when clicked, cancels the call to the `dataProvider` and refreshes the screen.
 
 Here is a quick recap of the three mutation modes:
 
