@@ -146,7 +146,7 @@ This hook calls `dataProvider.getList()` when the component mounts. It's ideal f
 
 ```jsx
 // syntax
-const { data, total, isFetching, isLoading, error, refetch } = useGetList(
+const { data, total, isLoading, error, refetch } = useGetList(
     resource,
     { pagination, sort, filter },
     options
@@ -178,7 +178,7 @@ This hook calls `dataProvider.getOne()` when the component mounts. It queries th
 
 ```jsx
 // syntax
-const { data, isFetching, isLoading, error, refetch } = useGetOne(
+const { data, isLoading, error, refetch } = useGetOne(
     resource,
     { id },
     options
@@ -201,7 +201,7 @@ This hook calls `dataProvider.getMany()` when the component mounts. It queries t
 
 ```jsx
 // syntax
-const { data, isFetching, isLoading, error, refetch } = useGetMany(
+const { data, isLoading, error, refetch } = useGetMany(
     resource,
     { ids },
     options
@@ -233,7 +233,7 @@ This hook calls `dataProvider.getManyReference()` when the component mounts. It 
 
 ```jsx
 // syntax
-const { data, total, isFetching, isLoading, error, refetch } = useGetManyReference(
+const { data, total, isLoading, error, refetch } = useGetManyReference(
     resource,
     { target, id, pagination, sort, filter },
     options
@@ -271,7 +271,7 @@ This hook allows to call `dataProvider.create()` when the callback is executed.
 
 ```jsx
 // syntax
-const [create, { data, isFetching, isLoading, error }] = useCreate(
+const [create, { data, isLoading, error }] = useCreate(
     resource,
     { data },
     options
@@ -384,7 +384,7 @@ This hook allows to call `dataProvider.updateMany()` when the callback is execut
 
 ```jsx
 // syntax
-const [updateMany, { data, isFetching, isLoading, error }] = useUpdateMany(
+const [updateMany, { data, isLoading, error }] = useUpdateMany(
     resource,
     { ids, data },
     options
@@ -441,7 +441,7 @@ This hook allows to call `dataProvider.delete()` when the callback is executed, 
 
 ```jsx
 // syntax
-const [deleteOne, { data, isFetching, isLoading, error }] = useDelete(
+const [deleteOne, { data, isLoading, error }] = useDelete(
     resource,
     { id, previousData },
     options
@@ -498,7 +498,7 @@ This hook allows to call `dataProvider.deleteMany()` when the callback is execut
 
 ```jsx
 // syntax
-const [deleteMany, { data, isFetching, isLoading, error }] = useDeleteMany(
+const [deleteMany, { data, isLoading, error }] = useDeleteMany(
     resource,
     { ids },
     options
@@ -610,6 +610,40 @@ const ApproveButton = ({ record }) => {
 ```
 
 If you want to go beyond data provider method hooks, we recommend that you read [the react-query documentation](https://react-query.tanstack.com/overview).
+
+## `isLoading` vs `isFetching`
+
+Data fetching hooks return two loading state variables: `isLoading` and `isFetching`. Which one should you use?
+
+The short answer is: use `isLoading`. Read on to understand why.
+
+The source of these two variables is [react-query](https://react-query.tanstack.com/guides/queries#query-basics). Here is how they defined these two variables:
+
+- `isLoading`:  The query has no data and is currently fetching
+- `isFetching`: In any state, if the query is fetching at any time (including background refetching) isFetching will be true.
+
+Let's see how what these variables contain in a typical usage scenario:
+
+1. The user first loads a page. `isLoading` is true, and `isFetching` is also true, because the data was never loaded
+2. The dataProvider returns the data. Both `isLoading` and `isFetching` become false
+3. The user navigates away
+4. The user comes back to the first page, which triggers a new fetch. `isLoading` is false, because the stale data is available, and `isFetching` is true, because the dataProvider is being fetched.
+5. The dataProvider returns the data. Both `isLoading` and `isFetching` become false
+
+Components use the loading state to show a loading indicator when there is no data to show. In the example above, the loading indicator is necessary in step 2, but not in step 4, because you can display the stale data while fresh data is being loaded.
+
+```jsx
+import { useGetOne } from 'react-admin';
+
+const UserProfile = ({ record }) => {
+    const { data, isLoading, error } = useGetOne('users', { id: record.id });
+    if (isLoading) { return <Loading />; }
+    if (error) { return <p>ERROR</p>; }
+    return <div>User {data.username}</div>;
+};
+```
+
+As a consequence, you should always use `isLoading` to determine if you need to show a loading indicator.
 
 ## Calling Custom Methods
 
