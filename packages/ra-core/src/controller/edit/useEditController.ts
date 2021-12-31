@@ -96,7 +96,8 @@ export const useEditController = <RecordType extends Record = Record>(
                 redirect('list', `/${resource}`);
                 refresh();
             },
-
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
             retry: false,
             ...queryOptions,
         }
