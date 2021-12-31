@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Fragment, useState, ReactElement } from 'react';
+import { Fragment, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionDelete from '@mui/icons-material/Delete';
 import inflection from 'inflection';
@@ -13,6 +13,7 @@ import {
     useResourceContext,
     useTranslate,
     useUnselectAll,
+    useSafeSetState,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
@@ -33,7 +34,7 @@ export const BulkDeleteWithConfirmButton = (
         ...rest
     } = props;
     const { selectedIds } = useListContext(props);
-    const [isOpen, setOpen] = useState(false);
+    const [isOpen, setOpen] = useSafeSetState(false);
     const notify = useNotify();
     const unselectAll = useUnselectAll();
     const refresh = useRefresh();
