@@ -20,11 +20,13 @@ import {
     FileInput,
     FileField,
     usePermissions,
+    useNotify,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import { useForm, FormSpy } from 'react-final-form';
 
 const SaveAndAddButton = props => {
     const form = useForm();
+    const notify = useNotify();
     return (
         <SaveButton
             {...props}
@@ -43,6 +45,7 @@ const SaveAndAddButton = props => {
                 });
                 form.restart();
                 window.scrollTo(0, 0);
+                notify('ra.notification.created', 'info');
             }}
         />
     );
