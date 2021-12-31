@@ -27,11 +27,11 @@ const SaveAndAddButton = props => {
     const form = useForm();
     return (
         <SaveButton
+            {...props}
             label="post.action.save_and_add"
             redirect={false}
             submitOnEnter={false}
             variant="text"
-            {...props}
             onSuccess={() => {
                 // FIXME for some reason, form.reset() doesn't work here
                 form.getRegisteredFields().forEach(field => {
