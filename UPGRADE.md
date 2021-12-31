@@ -108,6 +108,193 @@ This should be mostly transparent for you unless:
 - you used `useHistory` to navigate: see [https://reactrouter.com/docs/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory](https://reactrouter.com/docs/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory) to upgrade.
 - you had custom components similar to our `TabbedForm` or `TabbedShowLayout` (declaring multiple sub routes): see [https://reactrouter.com/docs/en/v6/upgrading/v5](https://reactrouter.com/docs/en/v6/upgrading/v5) to upgrade.
 
+## `useQuery`, `useMutation`, and `useQueryWithStore` Have Been Removed
+
+React-admin v4 uses react-query rather than Redux for data fetching. The base react-query data fetching hooks (`useQuery`, `useMutation`, and `useQueryWithStore`) are no longer necessary as their functionality is provided by react-query.
+
+If your application code uses these hooks, you have 2 ways to upgrade.
+
+If you're using `useQuery` or `useMutation` to call a regular dataProvider method (like `useGetOne`), then you can use the specialized dataProvider hooks instead:
+
+```diff
+import * as React from "react";
+-import { useQuery } from 'react-admin';
++import { useGetOne } from 'react-admin';
+import { Loading, Error } from '../ui';
+const UserProfile = ({ record }) => {
+-   const { loaded, error, data } = useQuery({
+-       type: 'getOne',
+-       resource: 'users',
+-       payload: { id: record.id }
+-   });
++   const { data, isLoading, error } = useGetOne(
++       'users',
++       { id: record.id }
++   );
+-   if (!loaded) { return <Loading />; }
++   if (isLoading) { return <Loading />; }
+    if (error) { return <Error />; }
+    return <div>User {data.username}</div>;
+};
+```
+
+If you're calling a custom dataProvider method, then you can use react-query's `useQuery`or `useMutation` instead:
+
+```diff
+-import { useMutation } from 'react-admin';
++import { useDataProvider } from 'react-admin';
++import { useMutation } from 'react-query';
+const BanUserButton = ({ userId }) => {
+-   const { loaded, error, data } = useMutation({
+-       type: 'banUser',
+-       payload: userId
+-   });
++   const dataProvider = useDataProvider();
++   const { mutate, isLoading } = useMutation(
++       ['banUser', userId],
++       () => dataProvider.banUser(userId)
++   );
+    return <Button label="Ban" onClick={() => mutate()} disabled={isLoading} />;
+};
+```
+
+Refer to [the react-query documentation](https://react-query.tanstack.com/overview) for more information.
+
+## `<Query>` and `<Mutation>` Have Been Removed
+
+The component version of `useQuery` and `useMutation` have been removed. Use the related hook in your components instead.
+
+```diff
+-import { Query } from 'react-admin';
++import { useGetOne } from 'react-admin';
+
+const UserProfile = ({ record }) => {
+-   return (
+-       <Query type="getOne" resource="users" payload={{ id: record.id }}>
+-           {({ loaded, error, data }) => {
+-               if (!loaded) { return <Loading />; }
+-               if (error) { return <Error />; }
+-               return <div>User {data.username}</div>;
+-           }}
+-       </Query>
+-   );
++   const { data, isLoading, error } = useGetOne(
++       'users',
++       { id: record.id }
++   );
++   if (isLoading) { return <Loading />; }
++   if (error) { return <Error />; }
++   return <div>User {data.username}</div>;
+}
+```
+
+## `useDataProvider` No Longer Accepts Side Effects
+
+`useDataProvider` returns a wrapper around the application `dataProvider` instance. In previous react-admin versions, the wrapper methods used to accept an `options` object, allowing to pass `onSuccess` and `onFailure` callbacks. This is no longer the case - the wrapper returns an object with the same method signatures as the original `dataProvider`.
+
+If you need to call the `dataProvider` and apply side effects, use react-query's `useQuery` or `useMutation` hooks instead.
+
+```diff
+import { useDataProvider } from 'react-admin';
++import { useMutation } from 'react-query';
+
+const BanUserButton = ({ userId }) => {
+    const dataProvider = useDataProvider();
++   const { mutate, isLoading } = useMutation();
+    const handleClick = () => {
+-       dataProvider.banUser(userId, { onSuccess: () => console.log('User banned') });
++       mutate(
++           ['banUser', userId],
++           () => dataProvider.banUser(userId),
++           { onSuccess: () => console.log('User banned') }
++       );
+    }
+    return <Button label="Ban" onClick={handleClick} disabled={isLoading} />;
+};
+```
+
+Refer to [the react-query documentation](https://react-query.tanstack.com/overview) for more information.
+
+## No More Records in Redux State
+
+As Redux is no longer used for data fetching, the Redux state doesn't contain any data cached from the dataProvider anymore. If you relied on `useSelector` to get a record or a list of records, you now have to use the dataProvider hooks to get them. 
+
+```diff
+-import { useSelector } from 'react-redux';
++import { useGetOne } from 'react-admin';
+
+const BookAuthor = ({ record }) => {
+-   const author = useSelector(state =>
+-       state.admin.resources.users.data[record.authorId]
+-   );
++   const { data: author, isLoading, error } = useGetOne(
++       'users',
++       { id: record.authorId }
++   );
++   if (isLoading) { return <Loading />; }
++   if (error) { return <Error />; }
+    return <div>Author {data.username}</div>;
+};
+```
+
+## No More Data Actions
+
+As Redux is no longer used for data fetching, react-admin doesn't dispatch Redux actions like `RA/CRUD_GET_ONE_SUCCESS` and `RA/FETCH_END`. If you relied on these actions for your custom reducers, you must now use react-query `onSuccess` callback or React's `useEffect` instead.
+
+The following actions no longer exist:
+
+- `RA/CRUD_GET_ONE`
+- `RA/CRUD_GET_ONE_LOADING`
+- `RA/CRUD_GET_ONE_FAILURE`
+- `RA/CRUD_GET_ONE_SUCCESS`
+- `RA/CRUD_GET_LIST`
+- `RA/CRUD_GET_LIST_LOADING`
+- `RA/CRUD_GET_LIST_FAILURE`
+- `RA/CRUD_GET_LIST_SUCCESS`
+- `RA/CRUD_GET_ALL`
+- `RA/CRUD_GET_ALL_LOADING`
+- `RA/CRUD_GET_ALL_FAILURE`
+- `RA/CRUD_GET_ALL_SUCCESS`
+- `RA/CRUD_GET_MANY`
+- `RA/CRUD_GET_MANY_LOADING`
+- `RA/CRUD_GET_MANY_FAILURE`
+- `RA/CRUD_GET_MANY_SUCCESS`
+- `RA/CRUD_GET_MANY_REFERENCE`
+- `RA/CRUD_GET_MANY_REFERENCE_LOADING`
+- `RA/CRUD_GET_MANY_REFERENCE_FAILURE`
+- `RA/CRUD_GET_MANY_REFERENCE_SUCCESS`
+- `RA/CRUD_CREATE`
+- `RA/CRUD_CREATE_LOADING`
+- `RA/CRUD_CREATE_FAILURE`
+- `RA/CRUD_CREATE_SUCCESS`
+- `RA/CRUD_UPDATE`
+- `RA/CRUD_UPDATE_LOADING`
+- `RA/CRUD_UPDATE_FAILURE`
+- `RA/CRUD_UPDATE_SUCCESS`
+- `RA/CRUD_UPDATE_MANY`
+- `RA/CRUD_UPDATE_MANY_LOADING`
+- `RA/CRUD_UPDATE_MANY_FAILURE`
+- `RA/CRUD_UPDATE_MANY_SUCCESS`
+- `RA/CRUD_DELETE`
+- `RA/CRUD_DELETE_LOADING`
+- `RA/CRUD_DELETE_FAILURE`
+- `RA/CRUD_DELETE_SUCCESS`
+- `RA/CRUD_DELETE_MANY`
+- `RA/CRUD_DELETE_MANY_LOADING`
+- `RA/CRUD_DELETE_MANY_FAILURE`
+- `RA/CRUD_DELETE_MANY_SUCCESS`
+- `RA/FETCH_START`
+- `RA/FETCH_END`
+- `RA/FETCH_ERROR`
+- `RA/FETCH_CANCEL`
+
+Other actions related to data fetching were also removed:
+
+- `RA/REFRESH_VIEW`
+- `RA/SET_AUTOMATIC_REFRESH`
+- `RA/START_OPTIMISTIC_MODE`
+- `RA/STOP_OPTIMISTIC_MODE`
+
 ## Changed Signature Of Data Provider Hooks
 
 Specialized data provider hooks (like `useGetOne`, `useGetList`, `useGetMany` and `useUpdate`) have a new signature. There are 2 changes:
@@ -274,6 +461,40 @@ To upgrade, check every instance of your code of the following hooks:
 And update the calls. If you're using TypeScript, your code won't compile until you properly upgrade the calls. 
 
 These hooks are now powered by react-query, so the state argument contains way more than just `isLoading` (`reset`, `status`, `refetch`, etc.). Check the [`useQuery`](https://react-query.tanstack.com/reference/useQuery) and the [`useMutation`](https://react-query.tanstack.com/reference/useMutation) documentation on the react-query website for more details. 
+
+## List `ids` Prop And `RecordMap` Type Are Gone
+
+Contrary to `dataProvider.getList`, `useGetList` used to return data under the shape of a record map. This is no longer the case: `useGetList` returns an array of records. 
+
+So the `RecordMap` type is no longer necessary and was removed. TypeScript compilation will fail if you continue using it. You should update your code so that it works with an array of records instead.
+
+```diff
+-import { useGetList, RecordMap } from 'react-admin';
++import { useGetList, Record } from 'react-admin';
+
+const PostListContainer = () => {
+-   const { data, ids, loading } = useGetList(
+-      'posts',
+-      { page: 1, perPage: 10 },
+-      { field: 'published_at', order: 'DESC' },
+-   );
+-   return loading ? null: <PostListDetail data={data} ids={ids} />
++   const { data, isLoading } = useGetList(
++      'posts',
++      {
++         pagination: { page: 1, perPage: 10 },
++         sort: { field: 'published_at', order: 'DESC' },
++      }
++   );
++   return isLoading ? null: <PostListDetail data={data} />
+};
+
+-const PostListDetail = ({ ids, data }: { ids: string[], data: RecordMap }) => {
++const PostListDetail = ({ data }: { data: Record[] }) => {
+-   return <>{ids.map(id => <span key={id}>{data[id].title}</span>)}</>;
++   return <>{data.map(record => <span key={record.id}>{record.title}</span>)}</>;
+};
+```
 
 ## Mutation Callbacks Can No Longer Be Used As Event Handlers
 
@@ -483,6 +704,99 @@ const PostEdit = () => {
         </Edit>
     );
 };
+```
+
+## The `useVersion` Hook Was Removed
+
+React-admin v3 relied on a global `version` variable stored in the Redux state to force page refresh. This is no longer the case, as the refresh functionality is handled by react-query.
+
+If you relied on `useVersion` to provide a component key, you can safely remove the call. The refresh button will force all components relying on a dataProvider query to re-execute.
+
+```diff
+-import { useVersion } from 'react-admin';
+
+const MyComponent = () => {
+-   const version = useVersion();
+    return (
+-       <Card key={version}>
++       <Card>
+            ...
+        </Card>
+    );
+};
+```
+
+And if you relied on a `version` prop to be available in a page context, you can safely remove it.
+
+```diff
+import { useShowContext } from 'react-admin';
+
+const PostDetail = () => {
+-   const { data, version } = useShowContext();
++   const { data } = useShowContext();
+    return (
+-       <Card key={version}>
++       <Card>
+            ...
+        </Card>
+    );
+}
+```
+
+## Application Cache No Longer Uses `validUntil`
+
+React-admin's *application cache* used to reply on the dataProvider returning a `validUntil` property in the response. This is no longer the case, as the cache functionality is handled by react-query. Therefore, you can safely remove the `validUntil` property from your dataProvider response.
+
+```diff
+const dataProvider = {
+    getOne: (resource, { id }) => {
+        return fetch(`/api/${resource}/${id}`)
+            .then(r => r.json())
+            .then(data => {
+-               const validUntil = new Date();
+-               validUntil.setTime(validUntil.getTime() + 5 * 60 * 1000);
+                return { 
+                    data,
+-                   validUntil
+                };
+            }));
+    }
+};
+```
+
+This also implies that the `cacheDataProviderProxy` function was removed.
+
+```diff
+// in src/dataProvider.js
+import simpleRestProvider from 'ra-data-simple-rest';
+-import { cacheDataProviderProxy } from 'react-admin'; 
+
+const dataProvider = simpleRestProvider('http://path.to.my.api/');
+
+-export default cacheDataProviderProxy(dataProvider);
++export default dataProvider;
+```
+
+Instead, you must set up the cache duration at the react-query QueryClient level:
+
+```jsx
+import { QueryClient } from 'react-query';
+import { Admin, Resource } from 'react-admin';
+
+const App = () => {
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                staleTime: 5 * 60 * 1000, // 5 minutes
+            },
+        },
+    });
+    return (
+        <Admin dataProvider={dataProvider} queryClient={queryClient}>
+            <Resource name="posts" />
+        </Admin>
+    );
+}
 ```
 
 ## No More Prop Injection In Page Components
