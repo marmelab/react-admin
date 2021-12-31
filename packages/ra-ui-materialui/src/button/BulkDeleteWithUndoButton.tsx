@@ -32,43 +32,43 @@ export const BulkDeleteWithUndoButton = (
     const unselectAll = useUnselectAll();
     const refresh = useRefresh();
     const resource = useResourceContext(props);
-    const [deleteMany, { isLoading }] = useDeleteMany(
-        resource,
-        { ids: selectedIds },
-        {
-            onSuccess: () => {
-                notify('ra.notification.deleted', {
-                    type: 'info',
-                    messageArgs: { smart_count: selectedIds.length },
-                    undoable: true,
-                });
-                unselectAll(resource);
-            },
-            onError: (error: Error) => {
-                notify(
-                    typeof error === 'string'
-                        ? error
-                        : error.message || 'ra.notification.http_error',
-                    {
-                        type: 'warning',
-                        messageArgs: {
-                            _:
-                                typeof error === 'string'
-                                    ? error
-                                    : error && error.message
-                                    ? error.message
-                                    : undefined,
-                        },
-                    }
-                );
-                refresh();
-            },
-            mutationMode: 'undoable',
-        }
-    );
+    const [deleteMany, { isLoading }] = useDeleteMany();
 
     const handleClick = e => {
-        deleteMany();
+        deleteMany(
+            resource,
+            { ids: selectedIds },
+            {
+                onSuccess: () => {
+                    notify('ra.notification.deleted', {
+                        type: 'info',
+                        messageArgs: { smart_count: selectedIds.length },
+                        undoable: true,
+                    });
+                    unselectAll(resource);
+                },
+                onError: (error: Error) => {
+                    notify(
+                        typeof error === 'string'
+                            ? error
+                            : error.message || 'ra.notification.http_error',
+                        {
+                            type: 'warning',
+                            messageArgs: {
+                                _:
+                                    typeof error === 'string'
+                                        ? error
+                                        : error && error.message
+                                        ? error.message
+                                        : undefined,
+                            },
+                        }
+                    );
+                    refresh();
+                },
+                mutationMode: 'undoable',
+            }
+        );
         if (typeof onClick === 'function') {
             onClick(e);
         }
