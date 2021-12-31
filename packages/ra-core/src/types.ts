@@ -1,6 +1,6 @@
 import { ReactNode, ReactElement, ComponentType } from 'react';
 import { DeprecatedThemeOptions } from '@mui/material';
-import { Location, History } from 'history';
+import { History } from 'history';
 import { QueryClient } from 'react-query';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
@@ -20,12 +20,6 @@ export type Identifier = string | number;
 export interface Record {
     id: Identifier;
     [key: string]: any;
-}
-
-export interface RecordMap<RecordType extends Record = Record> {
-    // Accept strings and numbers as identifiers
-    [id: string]: RecordType;
-    [id: number]: RecordType;
 }
 
 export interface SortPayload {
@@ -267,43 +261,18 @@ export interface ResourceDefinition {
 export interface ReduxState {
     admin: {
         ui: {
-            optimistic: boolean;
             sidebarOpen: boolean;
         };
         resources: {
             [name: string]: {
                 props: ResourceDefinition;
-                data: RecordMap;
                 list: {
-                    cachedRequests?: {
-                        ids: Identifier[];
-                        total: number;
-                        validity: Date;
-                    };
                     expanded: Identifier[];
-                    ids: Identifier[];
                     params: any;
                     selectedIds: Identifier[];
-                    total: number;
-                };
-                validity: {
-                    [key: string]: Date;
-                    [key: number]: Date;
                 };
             };
         };
-        loading: number;
-        references: {
-            oneToMany: {
-                [relatedTo: string]: { ids: Identifier[]; total: number };
-            };
-        };
-        customQueries: {
-            [key: string]: any;
-        };
-    };
-    router: {
-        location: Location;
     };
 
     // leave space for custom reducers

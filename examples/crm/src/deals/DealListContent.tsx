@@ -1,12 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
-import {
-    useMutation,
-    Identifier,
-    useListContext,
-    RecordMap,
-    DataProviderContext,
-} from 'react-admin';
+import { Identifier, useListContext, DataProviderContext } from 'react-admin';
 import { Box } from '@mui/material';
 import { DragDropContext, OnDragEndResponder } from 'react-beautiful-dnd';
 import isEqual from 'lodash/isEqual';
@@ -14,6 +8,11 @@ import isEqual from 'lodash/isEqual';
 import { DealColumn } from './DealColumn';
 import { stages } from './stages';
 import { Deal } from '../types';
+
+export interface RecordMap {
+    [id: number]: Deal;
+    [id: string]: Deal;
+}
 
 interface DealsByColumn {
     [stage: string]: Identifier[];
@@ -44,20 +43,13 @@ const getDealsByColumn = (data: Deal[]): DealsByColumn => {
     return columns;
 };
 
-const indexById = (data: Deal[]): RecordMap<Deal> =>
+const indexById = (data: Deal[]): RecordMap =>
     data.reduce((obj, record) => ({ ...obj, [record.id]: record }), {});
 
 export const DealListContent = () => {
-    const {
-        data: unorderedDeals,
-        isLoading,
-        page,
-        perPage,
-        currentSort,
-        filterValues,
-    } = useListContext<Deal>();
+    const { data: unorderedDeals, isLoading, refetch } = useListContext<Deal>();
 
-    const [data, setData] = useState<RecordMap<Deal>>(
+    const [data, setData] = useState<RecordMap>(
         isLoading ? {} : indexById(unorderedDeals)
     );
     const [deals, setDeals] = useState<DealsByColumn>(
@@ -65,17 +57,6 @@ export const DealListContent = () => {
     );
     // we use the raw dataProvider to avoid too many updates to the Redux store after updates (which would create junk)
     const dataProvider = useContext(DataProviderContext);
-
-    // FIXME: use refetch when available
-    const [refresh] = useMutation({
-        resource: 'deals',
-        type: 'getList',
-        payload: {
-            pagination: { page, perPage },
-            sort: currentSort,
-            filter: filterValues,
-        },
-    });
 
     // update deals by columns when the dataProvider response updates
     useEffect(() => {
@@ -158,7 +139,7 @@ export const DealListContent = () => {
                     }),
                 ]);
 
-                refresh();
+                refetch();
             } else {
                 // deal moved down, e.g
                 // src   dest
@@ -188,7 +169,7 @@ export const DealListContent = () => {
                     }),
                 ]);
 
-                refresh();
+                refetch();
             }
         } else {
             // moving deal across columns
@@ -265,7 +246,7 @@ export const DealListContent = () => {
                 }),
             ]);
 
-            refresh();
+            refetch();
         }
     };
 
