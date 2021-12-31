@@ -9,22 +9,42 @@ Not hitting the server is the best way to improve a web app performance - and it
 
 ## Optimistic Rendering
 
-By default, react-admin stores all the responses from the dataProvider in the Redux store. This allows displaying the cached result first while fetching for the fresh data. **This behavior is automatic and requires no configuration**. 
+By default, react-admin stores all the responses from the dataProvider in a local cache. This allows displaying the cached result first while fetching for the fresh data. This behavior is called **"stale-while-revalidate"**, it is enabled by default and requires no configuration.
 
-The Redux store is like a local replica of the API, organized by resource, and shared between all the data provider methods of a given resource. That means that if the `getList('posts')` response contains a record of id 123, a call to `getOne('posts', { id: 123 })` will use that record immediately.
+This accelerates the rendering of pages visited multiple times. For instance, if the user visits the detail page for a post twice, here is what react-admin does:
 
-For instance, if the end-user displays a list of posts, then clicks on a post in the list to display the list details, here is what react-admin does:
+1. Display the empty detail page
+2. Call `dataProvider.getOne('posts', { id: 123 })`, and store the result in local cache
+3. Re-render the detail page with the data from the dataProvider
+4. The user navigates away, then comes back to the post detail page
+5. Render the detail page immediately using the post from the local cache
+6. Call `dataProvider.getOne('posts', { id: 123 })`, and store the result in local cache
+7. If there is a difference with the previous post, re-render the detail with the data from the dataProvider
+
+In addition, as react-admin knows the *vocabulary* of your data provider, it can reuse data from one call to optimize another. This is called **"optimistic rendering"**, and it is also enabled by default. The optimistic rendering uses the semantics of the `dataProvider` verb. That means that requests for a list (`getList`) also populate the cache for individual records (`getOne`, `getMany`). That also means that write requests (`create`, `udpate`, `updateMany`, `delete`, `deleteMany`) invalidate the list cache - because after an update, for instance, the ordering of items can be changed.
+
+For instance, if the end user displays a list of posts, then clicks on a post in the list to display the list details, here is what react-admin does:
 
 1. Display the empty List
-2. Call `dataProvider.getList('posts')`, and store the result in the Redux store
-3. Re-render the List with the data from the Redux store
-4. When the user clicks on a post, display immediately the post from the Redux store
-5. Call `dataProvider.getOne('posts', { id: 123 })`, and store the result in the Redux store
-6. Re-render the detail with the data from the Redux store
+2. Call `dataProvider.getList('posts')`, and store the result in the local cache, both for the list and for each individual post
+3. Re-render the List with the data from the dataProvider
+4. When the user clicks on a post, render the detail page immediately using the post from the local cache
+5. Call `dataProvider.getOne('posts', { id: 123 })`, and store the result in local cache
+6. If there is a difference with the previous post, re-render the detail with the data from the dataProvider
 
-In step 4, react-admin displays the post *before* fetching it, because it's already in the Redux store from the previous `getList()` call. In most cases, the post from the `getOne()` response is the same as the one from the `getList()` response, so the re-render of step 6 is invisible to the end-user. If the post was modified on the server side between the `getList()` and the `getOne` calls, the end-user will briefly see the outdated version (at step 4), then the up to date version (at step 6).
+In step 4, react-admin displays the post *before* fetching it, because it's already in the cache from the previous `getList()` call. In most cases, the post from the `getOne()` response is the same as the one from the `getList()` response, so the re-render of step 6 doesn't occur. If the post was modified on the server side between the `getList()` and the `getOne` calls, the end-user will briefly see the outdated version (at step 4), then the up-to-date version (at step 6).
 
-Optimistic rendering improves user experience by displaying stale data while getting fresh data from the API, but it does not reduce the ecological footprint of an app, as the web app still makes API requests on every page. 
+A third optimization used by react-admin is to apply mutations locally before sending them to the dataProvider. This is called **"optimistic updates"**, and it is also enabled by default.
+
+For instance, if a user edits a post, then renders the list, here is what react-admin does:
+
+1. Display the post detail page
+2. Upon user submission, update the post that is in the local cache, then call `dataProvider.update('posts', { id: 123, title: 'New title' })`
+3. Re-render the list with the data from the store (without waiting for the dataProvider response).
+
+Optimistic updates allow users to avoid waiting for the server feedback for simple mutations. It works on updates and deletions.
+
+These 3 techniques improve user experience by displaying stale data while getting fresh data from the API. But they do not reduce the ecological footprint of an app, as the web app still makes API requests on every page. 
 
 **Tip**: This design choice explains why react-admin requires that all data provider methods return records of the same shape for a given resource. Otherwise, if the posts returned by `getList()` contain fewer fields than the posts returned by `getOne()`, in the previous scenario, the user will see an incomplete post at step 4.
 
@@ -66,95 +86,32 @@ Finally, if your API uses GraphQL, it probably doesn't offer HTTP caching.
 
 ## Application Cache
 
-React-admin comes with its caching system, called *application cache*, to overcome the limitations if the HTTP cache. **This cache is opt-in** - you have to enable it by including validity information in the `dataProvider` response. But before explaining how to configure it, let's see how it works. 
-
-React-admin already stores responses from the `dataProvider` in the Redux store, for the [optimistic rendering](#optimistic-rendering). The application cache checks if this data is valid, and *skips the call to the `dataProvider` altogether* if it's the case. 
-
-For instance, if the end-user displays a list of posts, then clicks on a post in the list to display the list details, here is what react-admin does:
-
-1. Display the empty List
-2. Call `dataProvider.getList('posts')`, and store the result in the Redux store
-3. Re-render the List with the data from the Redux store
-4. When the user clicks on a post, display immediately the post from the Redux store (optimistic rendering)
-5. Check the post of id 123 is still valid, and as it's the case, end here
-
-The application cache uses the semantics of the `dataProvider` verb. That means that requests for a list (`getList`) also populate the cache for individual records (`getOne`, `getMany`). That also means that write requests (`create`, `udpate`, `updateMany`, `delete`, `deleteMany`) invalidate the list cache - because after an update, for instance, the ordering of items can be changed.
-
-So the application cache uses expiration caching together with a deeper knowledge of the data model, to allow longer expirations without the risk of displaying stale data. It especially fits admins for API backends with a small number of users (because with a large number of users, there is a high chance that a record kept in the client-side cache for a few minutes may be updated on the backend by another user). It also works with GraphQL APIs. 
-
-To enable it, the `dataProvider` response must include a `validUntil` key, containing the date until which the record(s) is (are) valid.
-
-```diff
-// response to getOne('posts', { id: 123 })
-{
-    "data": { "id": 123, "title": "Hello, world" }
-+   "validUntil": new Date('2020-03-02T13:24:05')
-}
-
-// response to getMany('posts', { ids: [123, 124] }
-{
-    "data": [
-        { "id": 123, "title": "Hello, world" },
-        { "id": 124, "title": "Post title 2" },
-    ],
-+   "validUntil": new Date('2020-03-02T13:24:05')
-}
-
-// response to getList('posts')
-{
-    "data": [
-        { "id": 123, "title": "Hello, world" },
-        { "id": 124, "title": "Post title 2" },
-        ...
-
-    ],
-    "total": 45,
-+   "validUntil": new Date('2020-03-02T13:24:05')
-}
-```
-
-To empty the cache, the `dataProvider` can simply omit the `validUntil` key in the response.
-
-**Tip**: As of writing, the `validUntil` key is only taken into account for `getOne`, `getMany`, and `getList`.
-
-It's your responsibility to determine the validity date based on the API response, or based on a fixed time policy.
-
-For instance, to have a `dataProvider` declare responses for `getOne`, `getMany`, and `getList` valid for 5 minutes, you can wrap it in the following proxy:
-
-```js
-// in src/dataProvider.js
-import simpleRestProvider from 'ra-data-simple-rest';
-
-const dataProvider = simpleRestProvider('http://path.to.my.api/');
-
-const cacheDataProviderProxy = (dataProvider, duration =  5 * 60 * 1000) =>
-    new Proxy(dataProvider, {
-        get: (target, name) => (resource, params) => {
-            if (name === 'getOne' || name === 'getMany' || name === 'getList') {
-                return dataProvider[name](resource, params).then(response => {
-                    const validUntil = new Date();
-                    validUntil.setTime(validUntil.getTime() + duration);
-                    response.validUntil = validUntil;
-                    return response;
-                });
-            }
-            return dataProvider[name](resource, params);
-        },
-    });
-
-export default cacheDataProviderProxy(dataProvider);
-```
-
-**Tip**: As caching responses for a fixed period is a common pattern, react-admin exports this `cacheDataProviderProxy` wrapper, so you can write the following instead:
+React-admin uses react-query for data fetching. React-query comes with its own caching system, allowing you to skip API calls completely. React-admin calls this the *application cache*. It's a good way to overcome the limitations if the HTTP cache. **This cache is opt-in** - you have to enable it by setting a custom `queryClient` in your `<Admin>` with a specific `staleTime` option. 
 
 ```jsx
-// in src/dataProvider.js
-import simpleRestProvider from 'ra-data-simple-rest';
-import { cacheDataProviderProxy } from 'react-admin'; 
+import { QueryClient } from 'react-query';
+import { Admin, Resource } from 'react-admin';
 
-const dataProvider = simpleRestProvider('http://path.to.my.api/');
-
-export default cacheDataProviderProxy(dataProvider);
+const App = () => {
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                staleTime: 5 * 60 * 1000, // 5 minutes
+            },
+        },
+    });
+    return (
+        <Admin dataProvider={dataProvider} queryClient={queryClient}>
+            <Resource name="posts" />
+        </Admin>
+    );
+}
 ```
+
+With this setting, all queries will be considered valid for 5 minutes. That means that react-admin *won't refetch* data from the API if the data is already in the cache and younger than 5 minutes.
+
+Check the details about this cache [in the react-query documentation](https://react-query.tanstack.com/guides/caching).
+
+It especially fits admins for API backends with a small number of users (because with a large number of users, there is a high chance that a record kept in the client-side cache for a few minutes may be updated on the backend by another user). It also works with GraphQL APIs. 
 
 Application cache provides a very significant boost for the end-user and saves a large portion of the network traffic. Even a short expiration date (30 seconds or one minute) can speed up a complex admin with a low risk of displaying stale data. Adding an application cache is, therefore, a warmly recommended practice!
