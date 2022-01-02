@@ -138,14 +138,14 @@ const UserProfile = ({ record }) => {
 };
 ```
 
-If you're calling a custom dataProvider method, then you can use react-query's `useQuery`or `useMutation` instead:
+If you're calling a custom dataProvider method, then you can use react-query's `useQuery` or `useMutation` instead:
 
 ```diff
 -import { useMutation } from 'react-admin';
 +import { useDataProvider } from 'react-admin';
 +import { useMutation } from 'react-query';
 const BanUserButton = ({ userId }) => {
--   const { loaded, error, data } = useMutation({
+-   const [mutate, { loading, error, data }] = useMutation({
 -       type: 'banUser',
 -       payload: userId
 -   });
@@ -154,7 +154,8 @@ const BanUserButton = ({ userId }) => {
 +       ['banUser', userId],
 +       () => dataProvider.banUser(userId)
 +   );
-    return <Button label="Ban" onClick={() => mutate()} disabled={isLoading} />;
+-   return <Button label="Ban" onClick={() => mutate()} disabled={loading} />;
++   return <Button label="Ban" onClick={() => mutate()} disabled={isLoading} />;
 };
 ```
 
@@ -195,21 +196,30 @@ const UserProfile = ({ record }) => {
 If you need to call the `dataProvider` and apply side effects, use react-query's `useQuery` or `useMutation` hooks instead.
 
 ```diff
+-import { useState } from 'react';
 import { useDataProvider } from 'react-admin';
 +import { useMutation } from 'react-query';
 
 const BanUserButton = ({ userId }) => {
     const dataProvider = useDataProvider();
 +   const { mutate, isLoading } = useMutation();
+-   const [loading, setLoading] = useState(false);
     const handleClick = () => {
--       dataProvider.banUser(userId, { onSuccess: () => console.log('User banned') });
+-       setLoading(true);
+-       dataProvider.banUser(userId, {
+-           onSuccess: () => {
+-               setLoading(false);
+-               console.log('User banned');
+-           },
+-       });
 +       mutate(
 +           ['banUser', userId],
 +           () => dataProvider.banUser(userId),
 +           { onSuccess: () => console.log('User banned') }
 +       );
     }
-    return <Button label="Ban" onClick={handleClick} disabled={isLoading} />;
+-   return <Button label="Ban" onClick={handleClick} disabled={loading} />;
++   return <Button label="Ban" onClick={handleClick} disabled={isLoading} />;
 };
 ```
 
