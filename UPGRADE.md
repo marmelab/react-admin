@@ -540,7 +540,7 @@ const IncreaseLikeButton = ({ record }) => {
 
 If you need to override the success or failure side effects of a component, you now have to use the `queryOptions` (for query side effects) or `mutationOptions` (for mutation side effects).
 
-For instance, here is how to override the side eggects for the `getOne` query in a `<Show>` component: 
+For instance, here is how to override the side effects for the `getOne` query in a `<Show>` component: 
 
 ```diff
 const PostShow = () => {
