@@ -16,7 +16,7 @@ import { Record, CreateParams } from '../types';
  * @param {string} resource
  * @param {Params} params The create parameters { data }
  * @param {Object} options Options object to pass to the queryClient.
- * May include side effects to be executed upon success or failure, e.g. { onSuccess: { refresh: true } }
+ * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
  *
  * @typedef Params
  * @prop params.data The record to create, e.g. { title: 'hello, world' }

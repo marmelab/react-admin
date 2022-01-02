@@ -18,7 +18,7 @@ import { Record, DeleteManyParams, MutationMode } from '../types';
  * @param {string} resource
  * @param {Params} params The delete parameters { ids }
  * @param {Object} options Options object to pass to the queryClient.
- * May include side effects to be executed upon success or failure, e.g. { onSuccess: { refresh: true } }
+ * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
  * May include a mutation mode (optimistic/pessimistic/undoable), e.g. { mutationMode: 'undoable' }
  *
  * @typedef Params

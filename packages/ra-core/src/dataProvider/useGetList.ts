@@ -24,7 +24,7 @@ import { useDataProvider } from './useDataProvider';
  * @param {string} resource The resource name, e.g. 'posts'
  * @param {Params} params The getList parameters { pagination, sort, filter }
  * @param {Object} options Options object to pass to the queryClient.
- * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh() } }
+ * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
  *
  * @typedef Params
  * @prop params.pagination The request pagination { page, perPage }, e.g. { page: 1, perPage: 10 }
