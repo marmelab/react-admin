@@ -71,10 +71,6 @@ export const useListController = <RecordType extends Record = Record>(
 
     const [selectedIds, selectionModifiers] = useRecordSelection(resource);
 
-    /**
-     * We want the list of ids to be always available for optimistic rendering,
-     * and therefore we need a custom action (CRUD_GET_LIST) that will be used.
-     */
     const { data, total, error, isLoading, isFetching, refetch } = useGetList<
         RecordType
     >(
