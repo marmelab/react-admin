@@ -52,7 +52,6 @@ export const useCreateController = <
     const {
         disableAuthentication,
         record,
-        successMessage,
         transform,
         mutationOptions = {},
     } = props;
@@ -67,12 +66,6 @@ export const useCreateController = <
     const recordToUse =
         record ?? getRecordFromLocation(location) ?? emptyRecord;
     const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
-
-    if (process.env.NODE_ENV !== 'production' && successMessage) {
-        console.log(
-            '<Create successMessage> prop is deprecated, use the onSuccess prop instead.'
-        );
-    }
 
     const {
         onSuccessRef,
@@ -115,14 +108,10 @@ export const useCreateController = <
                             : onSuccessRef.current
                             ? onSuccessRef.current
                             : newRecord => {
-                                  notify(
-                                      successMessage ||
-                                          'ra.notification.created',
-                                      {
-                                          type: 'info',
-                                          messageArgs: { smart_count: 1 },
-                                      }
-                                  );
+                                  notify('ra.notification.created', {
+                                      type: 'info',
+                                      messageArgs: { smart_count: 1 },
+                                  });
                                   redirect(
                                       redirectTo,
                                       `/${resource}`,
@@ -162,7 +151,6 @@ export const useCreateController = <
             onSuccessRef,
             onFailureRef,
             notify,
-            successMessage,
             redirect,
             resource,
         ]
@@ -202,7 +190,6 @@ export interface CreateControllerProps<
         unknown,
         CreateParams<RecordType>
     >;
-    successMessage?: string;
     transform?: TransformData;
 }
 
@@ -231,7 +218,6 @@ export interface CreateControllerResult<
     setOnSuccess: SetOnSuccess;
     setOnFailure: SetOnFailure;
     setTransform: SetTransformData;
-    successMessage?: string;
     record?: Partial<RecordType>;
     redirect: RedirectionSideEffect;
     resource: string;

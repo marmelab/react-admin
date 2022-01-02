@@ -165,7 +165,6 @@ const sanitizeRestProps = ({
     setOnFailure = null,
     setOnSuccess = null,
     setTransform = null,
-    successMessage = null,
     transform = null,
     transformRef = null,
     ...rest
