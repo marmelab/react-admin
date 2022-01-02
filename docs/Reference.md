@@ -85,7 +85,6 @@ title: "Reference"
 * [`<MarkdownInput>`](https://marmelab.com/ra-enterprise/modules/ra-markdown#markdowninput)<img class="icon" src="./img/premium.svg" />
 * [`<Menu>`](./Theming.md#using-a-custom-menu)
 * [`<MultiLevelMenu>`](https://marmelab.com/ra-enterprise/modules/ra-navigation#multilevelmenu-replacing-the-default-menu-by-a-multi-level-one)<img class="icon" src="./img/premium.svg" />
-* [`<Mutation>`](./Actions.md#legacy-components-query-mutation-and-withdataprovider)
 * [`<Notification>`](./Theming.md#notifications)
 * [`<NullableBooleanInput>`](./Inputs.md#booleaninput-and-nullablebooleaninput)
 * [`<NumberField>`](./Fields.md#numberfield)
@@ -93,7 +92,6 @@ title: "Reference"
 * [`<Pagination>`](./List.md#pagination-pagination-component)
 * [`<PasswordInput>`](./Inputs.md#passwordinput)
 * [`<PreferencesSetter>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#preferencessetter-setting-preferences-declaratively)<img class="icon" src="./img/premium.svg" />
-* [`<Query>`](./Actions.md#legacy-components-query-mutation-and-withdataprovider)
 * [`<RadioButtonGroupInput>`](./Inputs.md#radiobuttongroupinput)
 * [`<RealTimeEdit>`](https://marmelab.com/ra-enterprise/modules/ra-realtime#real-time-views-list-edit-show)<img class="icon" src="./img/premium.svg" />
 * [`<RealTimeList>`](https://marmelab.com/ra-enterprise/modules/ra-realtime#real-time-views-list-edit-show)<img class="icon" src="./img/premium.svg" />
@@ -181,13 +179,10 @@ title: "Reference"
 * [`useLogout`](./Authentication.md#uselogout-hook)
 * `useLogoutIfAccessDenied`
 * [`useMediaQuery`](./Theming.md#usemediaquery-hook)
-* [`useMutation`](./Actions.md#usemutation-hook)
 * [`useNotify`](./Actions.md#usenotify)
 * `usePaginationState`
 * [`usePermissions`](./Authentication.md#usepermissions-hook)
 * [`usePreferences`](https://marmelab.com/ra-enterprise/modules/ra-preferences#usepreferences-reading-and-writing-user-preferences)<img class="icon" src="./img/premium.svg" />
-* [`useQuery`](./Actions.md#usequery-hook)
-* [`useQueryWithStore`](./Actions.md#usequerywithstore-hook)
 * [`useRedirect`](./Actions.md#useredirect)
 * `useReference`
 * `useReferenceArrayFieldController`
@@ -209,7 +204,6 @@ title: "Reference"
 * [`useUpdateMany`](./Actions.md#useupdatemany)
 * [`useUnselectAll`](./Actions.md#useunselectall)
 * [`useWarnWhenUnsavedChanges`](./CreateEdit.md#warning-about-unsaved-changes)
-* `useVersion`
 * [`withDataProvider`](./Actions.md#legacy-components-query-mutation-and-withdataprovider)
 * [`withTranslate`](./Translation.md#withtranslate-hoc)
 * [`<WithPermissions>`](./Authentication.md#usepermissions-hook)
