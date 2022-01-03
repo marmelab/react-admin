@@ -76,7 +76,7 @@ export const useGetList = <RecordType extends Record = Record>(
                 // optimistically populate the getOne cache
                 data.forEach(record => {
                     queryClient.setQueryData(
-                        [resource, 'getOne', String(record.id)],
+                        [resource, 'getOne', { id: String(record.id) }],
                         record
                     );
                 });

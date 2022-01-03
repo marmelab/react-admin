@@ -109,7 +109,7 @@ export const useUpdate = <RecordType extends Record = Record>(
         type GetListResult = { data?: RecordType[]; total?: number };
 
         queryClient.setQueryData(
-            [resource, 'getOne', String(id)],
+            [resource, 'getOne', { id: String(id) }],
             (record: RecordType) => ({ ...record, ...data }),
             { updatedAt }
         );
@@ -292,11 +292,11 @@ export const useUpdate = <RecordType extends Record = Record>(
         const previousRecord = queryClient.getQueryData<RecordType>([
             callTimeResource,
             'getOne',
-            String(callTimeId),
+            { id: String(callTimeId) },
         ]);
 
         const queryKeys = [
-            [callTimeResource, 'getOne', String(callTimeId)],
+            [callTimeResource, 'getOne', { id: String(callTimeId) }],
             [callTimeResource, 'getList'],
             [callTimeResource, 'getMany'],
             [callTimeResource, 'getManyReference'],
@@ -309,7 +309,7 @@ export const useUpdate = <RecordType extends Record = Record>(
          *
          * @example
          * [
-         *   [['posts', 'getOne', '1'], { id: 1, title: 'Hello' }],
+         *   [['posts', 'getOne', { id: '1' }], { id: 1, title: 'Hello' }],
          *   [['posts', 'getList'], { data: [{ id: 1, title: 'Hello' }], total: 1 }],
          *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
          * ]

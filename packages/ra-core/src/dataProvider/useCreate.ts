@@ -96,7 +96,7 @@ export const useCreate = <RecordType extends Record = Record>(
             ) => {
                 const { resource: callTimeResource = resource } = variables;
                 queryClient.setQueryData(
-                    [callTimeResource, 'getOne', String(data.id)],
+                    [callTimeResource, 'getOne', { id: String(data.id) }],
                     data
                 );
             },

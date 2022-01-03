@@ -301,7 +301,6 @@ export const useDelete = <RecordType extends Record = Record>(
          *
          * @example
          * [
-         *   [['posts', 'getOne', '1'], { id: 1, title: 'Hello' }],
          *   [['posts', 'getList'], { data: [{ id: 1, title: 'Hello' }], total: 1 }],
          *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
          * ]
