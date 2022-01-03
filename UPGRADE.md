@@ -1209,6 +1209,35 @@ Besides, some props supported by the previous implementation aren't anymore:
 
 `useGetMainList` was a modified version of `useGetList` designed to keep previous data on screen upon navigation. As [this is now supported natively by react-query](https://react-query.tanstack.com/guides/paginated-queries#better-paginated-queries-with-keeppreviousdata), this hook is no longer necessary and has been removed. Use `useGetList()` instead.
 
+## The MUI `<ThemeProvider>` is not set by `<Layout>` anymore
+
+This shouldn't impact your code unless you had a completely custom `<Layout>` component. If you do but still uses the default `<Admin>` component, you can safely remove the `ThemeProvider` from your `Layout`:
+
+```diff
+-import { Container, ThemeProvider } from '@mui/material';
++import { Container } from '@mui/material';
+import { Notification, Error } from 'react-admin';
+import Header from './Header';
+
+const Layout = (props) => {
+-    const { children, theme } = props;
++    const { children } = props;
+    return (
+-        <ThemeProvider theme={theme}>
++        <>
+            <Header />
+            <Container>
+                <main id="main-content">
+                    {children}
+                </main>
+            </Container>
+            <Notification />
+-        </ThemeProvider>
++        </>
+    );
+};
+```
+
 # Upgrade to 3.0
 
 We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.
