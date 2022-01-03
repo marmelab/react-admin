@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { AdminProps } from 'ra-core';
+import { CoreAdminProps } from 'ra-core';
+import { ThemeOptions } from '@mui/material';
 
-import AdminContext from './AdminContext';
-import AdminUI from './AdminUI';
+import { AdminContext } from './AdminContext';
+import { AdminUI } from './AdminUI';
 
 /**
  * Main admin component, entry point to the application.
@@ -83,7 +84,7 @@ import { useEffect, useState } from 'react';
  *     );
  * };
  */
-const Admin = (props: AdminProps) => {
+export const Admin = (props: AdminProps) => {
     const {
         appLayout,
         authProvider,
@@ -133,6 +134,7 @@ const Admin = (props: AdminProps) => {
             history={history}
             customReducers={customReducers}
             initialState={initialState}
+            theme={theme}
         >
             <AdminUI
                 layout={appLayout || layout}
@@ -140,7 +142,6 @@ const Admin = (props: AdminProps) => {
                 disableTelemetry={disableTelemetry}
                 menu={menu}
                 catchAll={catchAll}
-                theme={theme}
                 title={title}
                 loading={loading}
                 loginPage={loginPage}
@@ -154,3 +155,7 @@ const Admin = (props: AdminProps) => {
 };
 
 export default Admin;
+
+export interface AdminProps extends CoreAdminProps {
+    theme?: ThemeOptions;
+}

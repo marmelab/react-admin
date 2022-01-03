@@ -32,7 +32,6 @@ export const CoreAdminRouter = (props: AdminRouterProps) => {
         logout,
         menu,
         ready: Ready,
-        theme,
         title,
     } = props;
 
@@ -45,7 +44,7 @@ export const CoreAdminRouter = (props: AdminRouterProps) => {
             <Routes>
                 {customRoutesWithoutLayout}
                 {oneSecondHasPassed ? (
-                    <Route path="*" element={<LoadingPage theme={theme} />} />
+                    <Route path="*" element={<LoadingPage />} />
                 ) : (
                     <Route path="*" element={null} />
                 )}
@@ -67,7 +66,6 @@ export const CoreAdminRouter = (props: AdminRouterProps) => {
                             dashboard={dashboard}
                             logout={logout}
                             menu={menu}
-                            theme={theme}
                             title={title}
                         >
                             <Routes>

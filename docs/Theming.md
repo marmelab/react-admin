@@ -332,6 +332,34 @@ const App = () => (
 );
 ```
 
+## Changing the Theme Programmatically
+
+React-admin provides the `useSetTheme` hook to update the theme programmatically:
+
+```jsx
+import { defaultTheme, useSetTheme } from 'react-admin';
+import { Button, useTheme } from '@mui/material';
+
+const lightTheme = defaultTheme;
+const darkTheme = {
+    ...defaultTheme,
+    palette: {
+        mode: 'dark',
+    },
+};
+
+const ThemeToggler = () => {
+    const setTheme = useSetTheme();
+    const theme = useTheme();
+
+    return (
+        <Button onClick={() => setTheme(theme.palette.mode === 'dark' ? lightTheme : darkTheme)}>
+            {theme.palette.mode === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+        </Button>
+    );
+}
+```
+
 ## Using a Custom Layout
 
 Instead of the default layout, you can use your own component as the admin layout. Just use the `layout` prop of the `<Admin>` component:

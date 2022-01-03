@@ -30,7 +30,6 @@ export interface AdminUIProps {
     logout?: ComponentType;
     menu?: ComponentType;
     ready?: ComponentType;
-    theme?: object;
     title?: TitleComponent;
 }
 
@@ -49,7 +48,6 @@ const CoreAdminUI = (props: AdminUIProps) => {
         logout,
         menu, // deprecated, use a custom layout instead
         ready = Ready,
-        theme,
         title = 'React Admin',
     } = props;
 
@@ -74,10 +72,7 @@ const CoreAdminUI = (props: AdminUIProps) => {
     return (
         <Routes>
             {LoginPage !== false && LoginPage !== true ? (
-                <Route
-                    path="/login"
-                    element={<LoginPage title={title} theme={theme} />}
-                />
+                <Route path="/login" element={<LoginPage title={title} />} />
             ) : null}
             <Route
                 path="/*"
@@ -90,7 +85,6 @@ const CoreAdminUI = (props: AdminUIProps) => {
                         logout={logoutElement}
                         menu={menu}
                         ready={ready}
-                        theme={theme}
                         title={title}
                     >
                         {children}

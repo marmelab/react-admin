@@ -1,7 +1,4 @@
 import { ReactNode, ReactElement, ComponentType } from 'react';
-import { DeprecatedThemeOptions } from '@mui/material';
-import { History } from 'history';
-import { QueryClient } from 'react-query';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
@@ -298,9 +295,8 @@ export type AdminChildren = RenderResourcesFunction | ReactNode;
 export type TitleComponent = string | ReactElement<any>;
 export type CatchAllComponent = ComponentType<{ title?: TitleComponent }>;
 
-interface LoginComponentProps {
+export interface LoginComponentProps {
     title?: TitleComponent;
-    theme?: object;
 }
 export type LoginComponent = ComponentType<LoginComponentProps>;
 export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;
@@ -313,13 +309,11 @@ export interface CoreLayoutProps {
         logout?: ReactNode;
         hasDashboard?: boolean;
     }>;
-    theme?: DeprecatedThemeOptions;
     title?: TitleComponent;
 }
 
 export type LayoutComponent = ComponentType<CoreLayoutProps>;
 export type LoadingComponent = ComponentType<{
-    theme?: DeprecatedThemeOptions;
     loadingPrimary?: string;
     loadingSecondary?: string;
 }>;
@@ -344,31 +338,6 @@ export interface ResourceProps {
     show?: ComponentType<ShowControllerProps>;
     icon?: ComponentType<any>;
     options?: object;
-}
-
-export interface AdminProps {
-    appLayout?: LayoutComponent;
-    authProvider?: AuthProvider | LegacyAuthProvider;
-    basename?: string;
-    catchAll?: CatchAllComponent;
-    children?: AdminChildren;
-    customReducers?: object;
-    dashboard?: DashboardComponent;
-    dataProvider: DataProvider | LegacyDataProvider;
-    disableTelemetry?: boolean;
-    history?: History;
-    i18nProvider?: I18nProvider;
-    initialState?: InitialState;
-    layout?: LayoutComponent;
-    loading?: ComponentType;
-    locale?: string;
-    loginPage?: LoginComponent | boolean;
-    logoutButton?: ComponentType;
-    menu?: ComponentType;
-    queryClient?: QueryClient;
-    ready?: ComponentType;
-    theme?: DeprecatedThemeOptions;
-    title?: TitleComponent;
 }
 
 export type Exporter = (
