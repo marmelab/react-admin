@@ -1186,11 +1186,12 @@ test('MyComponent', () => {
 });
 ```
 
-## AutocompleteInput Now Uses Material UI Autocomplete
+## AutocompleteInput and AutocompleteArrayInput Now Use Material UI Autocomplete
 
-We migrated the `AutocompleteInput` so that it leverages Material UI [`<Autocomplete>`](https://mui.com/components/autocomplete/). If you relied on [Downshift](https://www.downshift-js.com/) options, you'll have to update your component.
+We migrated both the `AutocompleteInput` and `AutocompleteArrayInput` components so that they leverage Material UI [`<Autocomplete>`](https://mui.com/components/autocomplete/). If you relied on [Downshift](https://www.downshift-js.com/) options, you'll have to update your component.
 
 Besides, some props supported by the previous implementation aren't anymore:
+- `allowDuplicates`: This is not supported by MUI Autocomplete.
 - `clearAlwaysVisible`: the clear button is now always visible, either while hovering the input or when it has focus. You can hide it using the `<Autocomplete>` `disableClearable` prop though.
 - `resettable`: Removed for the same reason as `clearAlwaysVisible`
 
@@ -2460,6 +2461,8 @@ Besides, some props which were applicable to both components did not make sense 
 -   limitChoicesToValue={true}
 />
 ```
+
+Finally, both the `<AutocompleteInput>` and the `<AutocompleteArrayInput>` don't need react-admin specific styles anymore so we removed the theme keys for them: `RaAutocompleteInput` and `RaAutocompleteArrayInput`. To customize their styles, you can either use the [sx](https://mui.com/system/the-sx-prop/#main-content) prop or add a `MuiAutocomplete` key in your [theme](https://mui.com/customization/theme-components/#global-style-overrides).
 
 ## New DataProviderContext Requires Custom App Modification
 

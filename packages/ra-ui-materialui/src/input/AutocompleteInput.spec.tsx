@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Form } from 'react-final-form';
 import { TestTranslationProvider } from 'ra-core';
 
@@ -438,8 +439,10 @@ describe('<AutocompleteInput />', () => {
             />
         );
         const input = screen.getByLabelText('resources.users.fields.role');
-        fireEvent.change(input, { target: { value: 'bar' } });
-        expect(setFilter).toHaveBeenCalledTimes(1);
+        userEvent.type(input, '{selectall}bar');
+        await waitFor(() => {
+            expect(setFilter).toHaveBeenCalledTimes(1);
+        });
         expect(setFilter).toHaveBeenCalledWith('bar');
 
         rerender(

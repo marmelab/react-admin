@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { Resource, required, useCreate } from 'ra-core';
+import { Record, Resource, required, useCreate } from 'ra-core';
 import { createMemoryHistory } from 'history';
 import {
     Dialog,
@@ -13,11 +13,11 @@ import {
 
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
-import { AutocompleteInput } from './AutocompleteInput';
-import { ReferenceInput } from './ReferenceInput';
+import { AutocompleteArrayInput } from './AutocompleteArrayInput';
+import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
-export default { title: 'ra-ui-materialui/input/AutocompleteInput' };
+export default { title: 'ra-ui-materialui/input/AutocompleteArrayInput' };
 
 const dataProvider = {
     getOne: (resource, params) =>
@@ -25,7 +25,7 @@ const dataProvider = {
             data: {
                 id: 1,
                 title: 'War and Peace',
-                author: 1,
+                author: [1, 2],
                 summary:
                     "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
                 year: 1869,
@@ -54,7 +54,7 @@ const BookEdit = () => {
             }}
         >
             <SimpleForm>
-                <AutocompleteInput
+                <AutocompleteArrayInput
                     source="author"
                     choices={choices}
                     validate={required()}
@@ -89,7 +89,7 @@ const BookEditCustomText = () => {
             }}
         >
             <SimpleForm>
-                <AutocompleteInput
+                <AutocompleteArrayInput
                     source="author"
                     optionText="fullName"
                     choices={choices}
@@ -124,7 +124,7 @@ const BookEditCustomTextFunction = () => {
             }}
         >
             <SimpleForm>
-                <AutocompleteInput
+                <AutocompleteArrayInput
                     source="author"
                     optionText={choice => choice?.fullName}
                     choices={choices}
@@ -141,7 +141,7 @@ export const CustomTextFunction = () => (
     </Admin>
 );
 
-const CustomOption = ({ record, ...rest }) => (
+const CustomOption = ({ record, ...rest }: { record?: Record }) => (
     <div {...rest}>
         {record?.fullName}&nbsp;<i>({record?.language})</i>
     </div>
@@ -165,24 +165,25 @@ const BookEditCustomOptions = () => {
             }}
         >
             <SimpleForm>
-                <AutocompleteInput
-                    fullWidth
+                <AutocompleteArrayInput
                     source="author"
                     optionText={<CustomOption />}
-                    inputText={record => record.fullName}
+                    inputText={record =>
+                        `${record.fullName} (${record.language})`
+                    }
                     matchSuggestion={(searchText, record) => {
                         const searchTextLower = searchText.toLowerCase();
-                        const match =
+                        return (
                             record.fullName
                                 .toLowerCase()
                                 .includes(searchTextLower) ||
                             record.language
                                 .toLowerCase()
-                                .includes(searchTextLower);
-
-                        return match;
+                                .includes(searchTextLower)
+                        );
                     }}
                     choices={choices}
+                    fullWidth
                 />
             </SimpleForm>
         </Edit>
@@ -212,7 +213,7 @@ const BookEditWithCreationSupport = () => (
         }}
     >
         <SimpleForm>
-            <AutocompleteInput
+            <AutocompleteArrayInput
                 source="author"
                 choices={choicesForCreationSupport}
                 onCreate={filter => {
@@ -256,7 +257,7 @@ const dataProviderWithAuthors = {
             data: {
                 id: 1,
                 title: 'War and Peace',
-                author: 1,
+                author: [1, 2],
                 summary:
                     "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
                 year: 1869,
@@ -318,9 +319,9 @@ const BookEditWithReference = () => (
         }}
     >
         <SimpleForm>
-            <ReferenceInput reference="authors" source="author" fullWidth>
-                <AutocompleteInput />
-            </ReferenceInput>
+            <ReferenceArrayInput reference="authors" source="author" fullWidth>
+                <AutocompleteArrayInput />
+            </ReferenceArrayInput>
         </SimpleForm>
     </Edit>
 );
@@ -399,8 +400,8 @@ const BookEditWithReferenceAndCreationSupport = () => (
         }}
     >
         <SimpleForm>
-            <ReferenceInput reference="authors" source="author" fullWidth>
-                <AutocompleteInput
+            <ReferenceArrayInput reference="authors" source="author" fullWidth>
+                <AutocompleteArrayInput
                     create={<CreateAuthor />}
                     options={{
                         renderOption: (props, choice) => (
@@ -413,7 +414,7 @@ const BookEditWithReferenceAndCreationSupport = () => (
                         ),
                     }}
                 />
-            </ReferenceInput>
+            </ReferenceArrayInput>
         </SimpleForm>
     </Edit>
 );
