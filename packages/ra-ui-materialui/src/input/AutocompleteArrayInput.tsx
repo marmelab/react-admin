@@ -290,6 +290,8 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
         optionText,
     });
 
+    const createItem = create || onCreate ? getCreateItem() : null;
+
     const handleDelete = useCallback(
         item => () => {
             const newSelectedItems = [...selectedItems];
@@ -410,7 +412,7 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
 
                     const suggestions = [
                         ...getSuggestions(suggestionFilter),
-                        ...(onCreate || create ? [getCreateItem()] : []),
+                        ...(!!createItem ? [createItem] : []),
                     ];
                     return (
                         <div className={classes.container}>
@@ -438,8 +440,9 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                                                     variant === 'outlined',
                                             })}
                                         >
-                                            {selectedItems.map(
-                                                (item, index) => (
+                                            {selectedItems
+                                                .filter(item => !!item)
+                                                .map((item, index) => (
                                                     <Chip
                                                         key={index}
                                                         tabIndex={-1}
@@ -451,8 +454,7 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                                                             item
                                                         )}
                                                     />
-                                                )
-                                            )}
+                                                ))}
                                         </div>
                                     ),
                                     endAdornment: loading && (
@@ -519,7 +521,7 @@ const AutocompleteArrayInput = (props: AutocompleteArrayInputProps) => {
                                 {suggestions.map((suggestion, index) => (
                                     <AutocompleteSuggestionItem
                                         key={getChoiceValue(suggestion)}
-                                        createValue={createValue}
+                                        createValue={createItem?.id}
                                         suggestion={suggestion}
                                         index={index}
                                         highlightedIndex={highlightedIndex}
