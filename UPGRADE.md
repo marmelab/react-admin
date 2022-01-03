@@ -1211,6 +1211,8 @@ Besides, some props supported by the previous implementation aren't anymore:
 
 ## The MUI `<ThemeProvider>` is not set by `<Layout>` anymore
 
+The `<ThemeProvider>` is now set by the `<AdminContext>` component which is rendered by `<Admin>`.
+
 This shouldn't impact your code unless you had a completely custom `<Layout>` component. If you do but still uses the default `<Admin>` component, you can safely remove the `ThemeProvider` from your `Layout`:
 
 ```diff

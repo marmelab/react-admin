@@ -332,7 +332,7 @@ const App = () => (
 );
 ```
 
-## Changing the theme programmatically
+## Changing the Theme Programmatically
 
 React-admin provides the `useSetTheme` hook to update the theme programmatically:
 
