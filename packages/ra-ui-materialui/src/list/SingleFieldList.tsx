@@ -15,8 +15,6 @@ import {
     useListContext,
     useResourceContext,
     Record,
-    RecordMap,
-    Identifier,
     RecordContextProvider,
     ComponentPropType,
 } from 'ra-core';
@@ -133,8 +131,8 @@ export interface SingleFieldListProps<RecordType extends Record = Record>
     children: React.ReactElement;
     // can be injected when using the component without context
     basePath?: string;
-    data?: RecordMap<RecordType>;
-    ids?: Identifier[];
+    data?: RecordType[];
+    total?: number;
     loaded?: boolean;
 }
 

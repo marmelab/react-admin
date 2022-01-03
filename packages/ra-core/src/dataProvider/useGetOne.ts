@@ -1,6 +1,6 @@
 import { Record, GetOneParams } from '../types';
 import { useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
-import useDataProvider from './useDataProvider';
+import { useDataProvider } from './useDataProvider';
 
 /**
  * Call the dataProvider.getOne() method and return the resolved value

@@ -309,7 +309,6 @@ Datagrid.propTypes = {
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     setSort: PropTypes.func,
     total: PropTypes.number,
-    version: PropTypes.number,
     isRowSelectable: PropTypes.func,
     isRowExpandable: PropTypes.func,
 };

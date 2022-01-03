@@ -34,8 +34,6 @@ export const CreateContext = createContext<CreateControllerResult>({
     resource: null,
     save: null,
     saving: null,
-    successMessage: null,
-    version: null,
 });
 
 CreateContext.displayName = 'CreateContext';

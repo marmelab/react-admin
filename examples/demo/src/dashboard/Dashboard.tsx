@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, CSSProperties } from 'react';
-import { useVersion, useDataProvider } from 'react-admin';
+import { useDataProvider } from 'react-admin';
 import { useMediaQuery, Theme } from '@mui/material';
 import { subDays } from 'date-fns';
 
@@ -47,7 +47,6 @@ const VerticalSpacer = () => <span style={{ height: '1em' }} />;
 
 const Dashboard = () => {
     const [state, setState] = useState<State>({});
-    const version = useVersion();
     const dataProvider = useDataProvider();
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
@@ -150,7 +149,7 @@ const Dashboard = () => {
     useEffect(() => {
         fetchOrders();
         fetchReviews();
-    }, [version]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const {
         nbNewOrders,

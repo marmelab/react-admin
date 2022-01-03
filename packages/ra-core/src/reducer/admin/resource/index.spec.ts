@@ -19,7 +19,6 @@ describe('Resources Reducer', () => {
             reducer(
                 {
                     posts: {
-                        data: {},
                         list: {
                             params: {
                                 filter: {},
@@ -28,16 +27,12 @@ describe('Resources Reducer', () => {
                                 perPage: null,
                                 sort: null,
                             },
-                            cachedRequests: {},
                             expanded: [],
-                            total: null,
                             selectedIds: [],
                         },
-                        validity: {},
                         props: { name: 'posts' },
                     },
                     comments: {
-                        data: {},
                         list: {
                             params: {
                                 filter: {},
@@ -46,12 +41,9 @@ describe('Resources Reducer', () => {
                                 perPage: null,
                                 sort: null,
                             },
-                            cachedRequests: {},
                             expanded: [],
-                            total: null,
                             selectedIds: [],
                         },
-                        validity: {},
                         props: { name: 'comments' },
                     },
                 },
@@ -65,7 +57,6 @@ describe('Resources Reducer', () => {
             )
         ).toEqual({
             posts: {
-                data: {},
                 list: {
                     params: {
                         filter: {},
@@ -74,16 +65,12 @@ describe('Resources Reducer', () => {
                         perPage: null,
                         sort: null,
                     },
-                    cachedRequests: {},
                     expanded: [],
-                    total: null,
                     selectedIds: [],
                 },
-                validity: {},
                 props: { name: 'posts' },
             },
             comments: {
-                data: {},
                 list: {
                     params: {
                         filter: {},
@@ -92,16 +79,12 @@ describe('Resources Reducer', () => {
                         perPage: null,
                         sort: null,
                     },
-                    cachedRequests: {},
                     expanded: [],
-                    total: null,
                     selectedIds: [],
                 },
-                validity: {},
                 props: { name: 'comments' },
             },
             users: {
-                data: {},
                 list: {
                     params: {
                         filter: {},
@@ -110,12 +93,9 @@ describe('Resources Reducer', () => {
                         perPage: null,
                         sort: null,
                     },
-                    cachedRequests: {},
                     expanded: [],
-                    total: null,
                     selectedIds: [],
                 },
-                validity: {},
                 props: { name: 'users', options: 'foo' },
             },
         });
@@ -126,7 +106,6 @@ describe('Resources Reducer', () => {
             reducer(
                 {
                     posts: {
-                        data: {},
                         list: {
                             params: {
                                 filter: {},
@@ -135,17 +114,12 @@ describe('Resources Reducer', () => {
                                 perPage: null,
                                 sort: null,
                             },
-
-                            cachedRequests: {},
                             expanded: [],
-                            total: null,
                             selectedIds: [],
                         },
-                        validity: {},
                         props: { name: 'posts' },
                     },
                     comments: {
-                        data: {},
                         list: {
                             params: {
                                 filter: {},
@@ -154,12 +128,9 @@ describe('Resources Reducer', () => {
                                 perPage: null,
                                 sort: null,
                             },
-                            cachedRequests: {},
                             expanded: [],
-                            total: null,
                             selectedIds: [],
                         },
-                        validity: {},
                         props: { name: 'comments' },
                     },
                 },
@@ -170,7 +141,6 @@ describe('Resources Reducer', () => {
             )
         ).toEqual({
             posts: {
-                data: {},
                 list: {
                     params: {
                         filter: {},
@@ -179,12 +149,9 @@ describe('Resources Reducer', () => {
                         perPage: null,
                         sort: null,
                     },
-                    cachedRequests: {},
                     expanded: [],
-                    total: null,
                     selectedIds: [],
                 },
-                validity: {},
                 props: { name: 'posts' },
             },
         });
@@ -195,7 +162,6 @@ describe('Resources Reducer', () => {
             reducer(
                 {
                     posts: {
-                        data: {},
                         list: {
                             params: {
                                 filter: {},
@@ -204,16 +170,12 @@ describe('Resources Reducer', () => {
                                 perPage: null,
                                 sort: null,
                             },
-                            cachedRequests: {},
                             expanded: [],
-                            total: null,
                             selectedIds: [],
                         },
-                        validity: {},
                         props: { name: 'posts' },
                     },
                     comments: {
-                        data: {},
                         list: {
                             params: {
                                 filter: {},
@@ -222,12 +184,9 @@ describe('Resources Reducer', () => {
                                 perPage: null,
                                 sort: null,
                             },
-                            cachedRequests: {},
                             expanded: [],
-                            total: null,
                             selectedIds: [],
                         },
-                        validity: {},
                         props: { name: 'comments' },
                     },
                 },
@@ -246,7 +205,6 @@ describe('Resources Reducer', () => {
             )
         ).toEqual({
             posts: {
-                data: {},
                 list: {
                     params: {
                         filter: { commentable: true },
@@ -255,16 +213,12 @@ describe('Resources Reducer', () => {
                         perPage: null,
                         sort: null,
                     },
-                    cachedRequests: {},
                     expanded: [],
-                    total: null,
                     selectedIds: [],
                 },
-                validity: {},
                 props: { name: 'posts' },
             },
             comments: {
-                data: {},
                 list: {
                     params: {
                         filter: {},
@@ -273,12 +227,9 @@ describe('Resources Reducer', () => {
                         perPage: null,
                         sort: null,
                     },
-                    cachedRequests: {},
                     expanded: [],
-                    total: null,
                     selectedIds: [],
                 },
-                validity: {},
                 props: { name: 'comments' },
             },
         });

@@ -1,43 +1,35 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { useQueryClient } from 'react-query';
 import {
     SimpleShowLayout,
     TextField,
-    ReduxState,
+    ResourceContextProvider,
     Identifier,
     Record,
 } from 'react-admin';
 
-const PostPreview = ({
+const PostPreview = <RecordType extends Record = Record>({
     id,
-    basePath,
     resource,
 }: {
     id: Identifier;
-    basePath: string;
     resource: string;
 }) => {
-    const record = useSelector<ReduxState, Record>(state =>
-        state.admin.resources[resource]
-            ? state.admin.resources[resource].data[id]
-            : null
-    );
-    const version = useSelector<ReduxState, number>(
-        state => state.admin.ui.viewVersion
-    );
-    useSelector<ReduxState>(state => state.admin.loading > 0);
+    const queryClient = useQueryClient();
+    const record = queryClient.getQueryData<RecordType>([
+        resource,
+        'getOne',
+        String(id),
+    ]);
 
     return (
-        <SimpleShowLayout
-            version={version}
-            record={record}
-            basePath={basePath}
-            resource={resource}
-        >
-            <TextField source="id" />
-            <TextField source="title" />
-            <TextField source="teaser" />
-        </SimpleShowLayout>
+        <ResourceContextProvider value={resource}>
+            <SimpleShowLayout record={record}>
+                <TextField source="id" />
+                <TextField source="title" />
+                <TextField source="teaser" />
+            </SimpleShowLayout>
+        </ResourceContextProvider>
     );
 };
 

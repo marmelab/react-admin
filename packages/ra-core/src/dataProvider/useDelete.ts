@@ -8,7 +8,7 @@ import {
     QueryKey,
 } from 'react-query';
 
-import useDataProvider from './useDataProvider';
+import { useDataProvider } from './useDataProvider';
 import undoableEventEmitter from './undoableEventEmitter';
 import { Record, DeleteParams, MutationMode } from '../types';
 
@@ -18,7 +18,7 @@ import { Record, DeleteParams, MutationMode } from '../types';
  * @param {string} resource
  * @param {Params} params The delete parameters { id, previousData }
  * @param {Object} options Options object to pass to the queryClient.
- * May include side effects to be executed upon success or failure, e.g. { onSuccess: { refresh: true } }
+ * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
  * May include a mutation mode (optimistic/pessimistic/undoable), e.g. { mutationMode: 'undoable' }
  *
  * @typedef Params

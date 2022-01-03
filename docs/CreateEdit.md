@@ -102,7 +102,6 @@ You can customize the `<Create>` and `<Edit>` components using the following pro
 * [`mutationMode`](#mutationmode) (`<Edit>` only) 
 * [`mutationOptions](#mutationoptions)
 * [`transform`](#transform)
-* [`successMessage`](#success-message) (deprecated - use `onSuccess` instead)
 
 `<Create>` also accepts a `record` prop, to initialize the form based on a value object.
 
@@ -467,8 +466,6 @@ const PostEdit = () => {
 }
 ```
 
-**Tip**: When you set the `onSuccess` prop, the `successMessage` prop is ignored.
-
 **Tip**: If you want to have different success side effects based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save and redirect to the list", and another to "save and display an empty form"), you can set the `onSuccess` prop on the `<SaveButton>` component, too.
 
 Similarly, you can override the failure side effects with an `onError` otion. By default, when the save action fails at the dataProvider level, react-admin shows an error notification. On an Edit page with `mutationMode` set to `undoable` or `optimistic`, it refreshes the page, too.
@@ -540,20 +537,6 @@ export const UserCreate = (props) => {
 The `transform` function can also return a `Promise`, which allows you to do all sorts of asynchronous calls (e.g. to the `dataProvider`) during the transformation.
 
 **Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on the `<SaveButton>` component, too. See [Altering the Form Values Before Submitting](#altering-the-form-values-before-submitting) for an example.
-
-### Success message
-
-**Deprecated**: use the `onSuccess` prop instead. See [Changing The Success or Failure Notification Message](#changing-the-success-or-failure-notification-message) for the new syntax. 
-
-Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a `successMessage` prop:
-
-```jsx
-const PostEdit = props => (
-    <Edit successMessage="messages.post_saved" {...props}>
-        // ...
-    </Edit>
-);
-```
 
 **Tip**: The message will be translated.
 

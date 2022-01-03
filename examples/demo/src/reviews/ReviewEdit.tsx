@@ -80,7 +80,6 @@ const ReviewEdit = ({ onCancel, ...props }: Props) => {
                     className={classes.form}
                     record={controllerProps.record}
                     save={controllerProps.save}
-                    version={controllerProps.version}
                     redirect="list"
                     resource="reviews"
                     toolbar={<ReviewEditToolbar />}

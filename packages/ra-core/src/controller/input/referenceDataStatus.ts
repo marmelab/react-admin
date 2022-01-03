@@ -1,12 +1,12 @@
 import { Record, Translate } from '../../types';
 import { MatchingReferencesError } from './types';
 
-interface GetStatusForInputParams {
+interface GetStatusForInputParams<RecordType extends Record = Record> {
     input: {
         value: any;
     };
-    matchingReferences: Record[] | MatchingReferencesError;
-    referenceRecord: Record;
+    matchingReferences: RecordType[] | MatchingReferencesError;
+    referenceRecord: RecordType;
     translate: Translate;
 }
 
@@ -15,12 +15,12 @@ const isMatchingReferencesError = (
 ): matchingReferences is MatchingReferencesError =>
     matchingReferences && matchingReferences.error !== undefined;
 
-export const getStatusForInput = ({
+export const getStatusForInput = <RecordType extends Record = Record>({
     input,
     matchingReferences,
     referenceRecord,
     translate = x => x,
-}: GetStatusForInputParams) => {
+}: GetStatusForInputParams<RecordType>) => {
     const matchingReferencesError = isMatchingReferencesError(
         matchingReferences
     )
@@ -59,11 +59,11 @@ export const REFERENCES_STATUS_READY = 'REFERENCES_STATUS_READY';
 export const REFERENCES_STATUS_INCOMPLETE = 'REFERENCES_STATUS_INCOMPLETE';
 export const REFERENCES_STATUS_EMPTY = 'REFERENCES_STATUS_EMPTY';
 
-export const getSelectedReferencesStatus = (
+export const getSelectedReferencesStatus = <RecordType extends Record = Record>(
     input: {
         value: any;
     },
-    referenceRecords: Record[]
+    referenceRecords: RecordType[]
 ) =>
     !input.value || input.value.length === referenceRecords.length
         ? REFERENCES_STATUS_READY
@@ -71,21 +71,21 @@ export const getSelectedReferencesStatus = (
         ? REFERENCES_STATUS_INCOMPLETE
         : REFERENCES_STATUS_EMPTY;
 
-interface GetStatusForArrayInputParams {
+interface GetStatusForArrayInputParams<RecordType extends Record = Record> {
     input: {
         value: any;
     };
-    matchingReferences: Record[] | MatchingReferencesError;
-    referenceRecords: Record[];
+    matchingReferences: RecordType[] | MatchingReferencesError;
+    referenceRecords: RecordType[];
     translate: Translate;
 }
 
-export const getStatusForArrayInput = ({
+export const getStatusForArrayInput = <RecordType extends Record = Record>({
     input,
     matchingReferences,
     referenceRecords,
     translate = x => x,
-}: GetStatusForArrayInputParams) => {
+}: GetStatusForArrayInputParams<RecordType>) => {
     // selectedReferencesDataStatus can be "empty" (no data was found for references from input.value)
     // or "incomplete" (Not all of the reference data was found)
     // or "ready" (all references data was found or there is no references from input.value)

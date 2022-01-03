@@ -56,7 +56,6 @@ const extractShowContextProps = ({
     isFetching,
     isLoading,
     resource,
-    version,
 }: any) => ({
     basePath,
     // Necessary for actions (EditActions) which expect a data prop containing the record
@@ -67,5 +66,4 @@ const extractShowContextProps = ({
     isFetching,
     isLoading,
     resource,
-    version,
 });

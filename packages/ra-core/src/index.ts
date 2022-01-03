@@ -10,7 +10,6 @@ export * from './dataProvider';
 export * from './export';
 export * from './i18n';
 export * from './inference';
-export * from './loading';
 export * from './util';
 export * from './controller';
 export * from './form';

@@ -8,7 +8,6 @@ import { UseMutationOptions } from 'react-query';
 
 import { useDelete } from '../../dataProvider';
 import {
-    useRefresh,
     useNotify,
     useRedirect,
     useUnselect,
@@ -85,7 +84,6 @@ const useDeleteWithConfirmController = <RecordType extends Record = Record>(
     const notify = useNotify();
     const unselect = useUnselect();
     const redirect = useRedirect();
-    const refresh = useRefresh();
     const [deleteOne, { isLoading }] = useDelete<RecordType>();
 
     const handleDialogOpen = e => {
@@ -114,7 +112,6 @@ const useDeleteWithConfirmController = <RecordType extends Record = Record>(
                         });
                         unselect(resource, [record.id]);
                         redirect(redirectTo, basePath || `/${resource}`);
-                        refresh();
                     },
                     onError: (error: Error) => {
                         setOpen(false);
@@ -135,7 +132,6 @@ const useDeleteWithConfirmController = <RecordType extends Record = Record>(
                                 },
                             }
                         );
-                        refresh();
                     },
                     mutationMode,
                     ...mutationOptions,
@@ -155,7 +151,6 @@ const useDeleteWithConfirmController = <RecordType extends Record = Record>(
             record,
             redirect,
             redirectTo,
-            refresh,
             resource,
             unselect,
         ]

@@ -36,9 +36,11 @@ import { ReferenceArrayInputContextValue } from './ReferenceArrayInputContext';
  *
  * @return {Object} controllerProps Fetched data and callbacks for the ReferenceArrayInput components
  */
-export const useReferenceArrayInputController = (
-    props: UseReferenceArrayInputParams
-): ReferenceArrayInputContextValue & Omit<ListControllerResult, 'setSort'> => {
+export const useReferenceArrayInputController = <
+    RecordType extends Record = Record
+>(
+    props: UseReferenceArrayInputParams<RecordType>
+): UseReferenceArrayInputControllerHookValue<RecordType> => {
     const {
         filter: defaultFilter,
         filterToQuery = defaultFilterToQuery,
@@ -62,7 +64,9 @@ export const useReferenceArrayInputController = (
         isLoading: isLoadingGetMany,
         isFetching: isFetchingGetMany,
         refetch: refetchGetMany,
-    } = useGetManyAggregate(reference, { ids: input.value || EmptyArray });
+    } = useGetManyAggregate<RecordType>(reference, {
+        ids: input.value || EmptyArray,
+    });
 
     /**
      * Get the possible values to display as choices (with getList)
@@ -225,7 +229,7 @@ export const useReferenceArrayInputController = (
         isLoading: isLoadingGetList,
         isFetching: isFetchingGetList,
         refetch: refetchGetMatching,
-    } = useGetList(
+    } = useGetList<RecordType>(
         reference,
         { pagination, sort, filter: finalFilter },
         { retry: false, enabled: isGetMatchingEnabled, ...options }
@@ -240,7 +244,7 @@ export const useReferenceArrayInputController = (
             ? finalReferenceRecords
             : matchingReferences;
 
-    const dataStatus = getDataStatus({
+    const dataStatus = getDataStatus<RecordType>({
         input,
         matchingReferences: finalMatchingReferences,
         referenceRecords: finalReferenceRecords,
@@ -291,7 +295,10 @@ export const useReferenceArrayInputController = (
 const EmptyArray = [];
 
 // concatenate and deduplicate two lists of records
-const mergeReferences = (ref1: Record[], ref2: Record[]): Record[] => {
+const mergeReferences = <RecordType extends Record = Record>(
+    ref1: RecordType[],
+    ref2: RecordType[]
+): RecordType[] => {
     const res = [...ref1];
     const ids = ref1.map(ref => ref.id);
     ref2.forEach(ref => {
@@ -303,7 +310,9 @@ const mergeReferences = (ref1: Record[], ref2: Record[]): Record[] => {
     return res;
 };
 
-export interface UseReferenceArrayInputParams {
+export interface UseReferenceArrayInputParams<
+    RecordType extends Record = Record
+> {
     basePath?: string;
     filter?: any;
     filterToQuery?: (filter: any) => any;
@@ -311,12 +320,19 @@ export interface UseReferenceArrayInputParams {
     options?: any;
     page?: number;
     perPage?: number;
-    record?: Record;
+    record?: RecordType;
     reference: string;
     resource?: string;
     sort?: SortPayload;
     source: string;
     enableGetChoices?: (filters: any) => boolean;
 }
+
+export type UseReferenceArrayInputControllerHookValue<
+    RecordType extends Record = Record
+> = ReferenceArrayInputContextValue<RecordType> &
+    Omit<ListControllerResult<RecordType>, 'setSort' | 'refetch'> & {
+        refetch: () => void;
+    };
 
 const defaultFilterToQuery = searchText => ({ q: searchText });

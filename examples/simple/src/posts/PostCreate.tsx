@@ -20,8 +20,36 @@ import {
     FileInput,
     FileField,
     usePermissions,
+    useNotify,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
-import { FormSpy } from 'react-final-form';
+import { useForm, FormSpy } from 'react-final-form';
+
+const SaveAndAddButton = props => {
+    const form = useForm();
+    const notify = useNotify();
+    return (
+        <SaveButton
+            {...props}
+            label="post.action.save_and_add"
+            redirect={false}
+            submitOnEnter={false}
+            variant="text"
+            onSuccess={() => {
+                // FIXME for some reason, form.reset() doesn't work here
+                form.getRegisteredFields().forEach(field => {
+                    if (field.includes('[')) {
+                        // input inside an array input, skipping
+                        return;
+                    }
+                    form.change(field, form.getState().initialValues[field]);
+                });
+                form.restart();
+                window.scrollTo(0, 0);
+                notify('ra.notification.created', 'info');
+            }}
+        />
+    );
+};
 
 const PostCreateToolbar = props => (
     <Toolbar {...props}>
@@ -36,12 +64,7 @@ const PostCreateToolbar = props => (
             submitOnEnter={false}
             variant="text"
         />
-        <SaveButton
-            label="post.action.save_and_add"
-            redirect={false}
-            submitOnEnter={false}
-            variant="text"
-        />
+        <SaveAndAddButton />
         <SaveButton
             label="post.action.save_with_average_note"
             transform={data => ({ ...data, average_note: 10 })}

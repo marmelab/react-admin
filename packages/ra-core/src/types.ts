@@ -1,6 +1,6 @@
 import { ReactNode, ReactElement, ComponentType } from 'react';
 import { DeprecatedThemeOptions } from '@mui/material';
-import { Location, History } from 'history';
+import { History } from 'history';
 import { QueryClient } from 'react-query';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
@@ -20,12 +20,6 @@ export type Identifier = string | number;
 export interface Record {
     id: Identifier;
     [key: string]: any;
-}
-
-export interface RecordMap<RecordType extends Record = Record> {
-    // Accept strings and numbers as identifiers
-    [id: string]: RecordType;
-    [id: number]: RecordType;
 }
 
 export interface SortPayload {
@@ -227,82 +221,6 @@ export type DataProviderResult<RecordType extends Record = Record> =
     | UpdateResult<RecordType>
     | UpdateManyResult;
 
-// This generic function type extracts the parameters of the function passed as its DataProviderMethod generic parameter.
-// It returns another function with the same parameters plus an optional options parameter used by the useDataProvider hook to specify side effects.
-// The returned function has the same result type as the original
-type DataProviderProxyMethod<
-    TDataProviderMethod
-> = TDataProviderMethod extends (...a: any[]) => infer Result
-    ? (
-          // This strange spread usage is required for two reasons
-          // 1. It keeps the named parameters of the original function
-          // 2. It allows to add an optional options parameter as the LAST parameter
-          ...a: [
-              ...Args: Parameters<TDataProviderMethod>,
-              options?: UseDataProviderOptions
-          ]
-      ) => Result
-    : never;
-
-export type DataProviderProxy<
-    TDataProvider extends DataProvider = DataProvider
-> = {
-    [MethodKey in keyof TDataProvider]: DataProviderProxyMethod<
-        TDataProvider[MethodKey]
-    >;
-} & {
-    getList: <RecordType extends Record = Record>(
-        resource: string,
-        params: GetListParams,
-        options?: UseDataProviderOptions
-    ) => Promise<GetListResult<RecordType>>;
-
-    getOne: <RecordType extends Record = Record>(
-        resource: string,
-        params: GetOneParams,
-        options?: UseDataProviderOptions
-    ) => Promise<GetOneResult<RecordType>>;
-
-    getMany: <RecordType extends Record = Record>(
-        resource: string,
-        params: GetManyParams,
-        options?: UseDataProviderOptions
-    ) => Promise<GetManyResult<RecordType>>;
-
-    getManyReference: <RecordType extends Record = Record>(
-        resource: string,
-        params: GetManyReferenceParams,
-        options?: UseDataProviderOptions
-    ) => Promise<GetManyReferenceResult<RecordType>>;
-
-    update: <RecordType extends Record = Record>(
-        resource: string,
-        params: UpdateParams,
-        options?: UseDataProviderOptions
-    ) => Promise<UpdateResult<RecordType>>;
-
-    updateMany: <RecordType extends Record = Record>(
-        resource: string,
-        params: UpdateManyParams,
-        options?: UseDataProviderOptions
-    ) => Promise<UpdateManyResult<RecordType>>;
-
-    create: <RecordType extends Record = Record>(
-        resource: string,
-        params: CreateParams
-    ) => Promise<CreateResult<RecordType>>;
-
-    delete: <RecordType extends Record = Record>(
-        resource: string,
-        params: DeleteParams
-    ) => Promise<DeleteResult<RecordType>>;
-
-    deleteMany: <RecordType extends Record = Record>(
-        resource: string,
-        params: DeleteManyParams<RecordType>
-    ) => Promise<DeleteManyResult<RecordType>>;
-};
-
 export type MutationMode = 'pessimistic' | 'optimistic' | 'undoable';
 export type OnSuccess = (
     response?: any,
@@ -343,40 +261,18 @@ export interface ResourceDefinition {
 export interface ReduxState {
     admin: {
         ui: {
-            automaticRefreshEnabled: boolean;
-            optimistic: boolean;
             sidebarOpen: boolean;
-            viewVersion: number;
         };
         resources: {
             [name: string]: {
                 props: ResourceDefinition;
-                data: RecordMap;
                 list: {
-                    cachedRequests?: {
-                        ids: Identifier[];
-                        total: number;
-                        validity: Date;
-                    };
                     expanded: Identifier[];
-                    ids: Identifier[];
                     params: any;
                     selectedIds: Identifier[];
-                    total: number;
-                };
-                validity: {
-                    [key: string]: Date;
-                    [key: number]: Date;
                 };
             };
         };
-        loading: number;
-        customQueries: {
-            [key: string]: any;
-        };
-    };
-    router: {
-        location: Location;
     };
 
     // leave space for custom reducers
@@ -482,7 +378,7 @@ export type Exporter = (
         field: string,
         resource: string
     ) => Promise<any>,
-    dataProvider: DataProviderProxy,
+    dataProvider: DataProvider,
     resource?: string
 ) => void | Promise<void>;
 

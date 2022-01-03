@@ -135,7 +135,6 @@ ListView.propTypes = {
     showFilter: PropTypes.func,
     title: TitlePropType,
     total: PropTypes.number,
-    version: PropTypes.number,
 };
 
 export interface ListViewProps {

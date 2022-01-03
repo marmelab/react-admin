@@ -16,8 +16,10 @@ import { PaginationPayload, Record, SortPayload } from '../../types';
  */
 export const ReferenceArrayInputContext = createContext(undefined);
 
-export interface ReferenceArrayInputContextValue {
-    choices: Record[];
+export interface ReferenceArrayInputContextValue<
+    RecordType extends Record = Record
+> {
+    choices: RecordType[];
     error?: any;
     warning?: any;
     isLoading?: boolean;

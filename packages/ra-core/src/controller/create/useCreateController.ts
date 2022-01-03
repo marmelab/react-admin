@@ -20,7 +20,6 @@ import {
     useSaveModifiers,
 } from '../saveModifiers';
 import { useTranslate } from '../../i18n';
-import useVersion from '../useVersion';
 import { Record, OnSuccess, OnFailure, CreateParams } from '../../types';
 import {
     useResourceContext,
@@ -53,7 +52,6 @@ export const useCreateController = <
     const {
         disableAuthentication,
         record,
-        successMessage,
         transform,
         mutationOptions = {},
     } = props;
@@ -67,14 +65,7 @@ export const useCreateController = <
     const redirect = useRedirect();
     const recordToUse =
         record ?? getRecordFromLocation(location) ?? emptyRecord;
-    const version = useVersion();
     const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
-
-    if (process.env.NODE_ENV !== 'production' && successMessage) {
-        console.log(
-            '<Create successMessage> prop is deprecated, use the onSuccess prop instead.'
-        );
-    }
 
     const {
         onSuccessRef,
@@ -117,14 +108,10 @@ export const useCreateController = <
                             : onSuccessRef.current
                             ? onSuccessRef.current
                             : newRecord => {
-                                  notify(
-                                      successMessage ||
-                                          'ra.notification.created',
-                                      {
-                                          type: 'info',
-                                          messageArgs: { smart_count: 1 },
-                                      }
-                                  );
+                                  notify('ra.notification.created', {
+                                      type: 'info',
+                                      messageArgs: { smart_count: 1 },
+                                  });
                                   redirect(
                                       redirectTo,
                                       `/${resource}`,
@@ -164,7 +151,6 @@ export const useCreateController = <
             onSuccessRef,
             onFailureRef,
             notify,
-            successMessage,
             redirect,
             resource,
         ]
@@ -190,7 +176,6 @@ export const useCreateController = <
         resource,
         record: recordToUse,
         redirect: getDefaultRedirectRoute(hasShow, hasEdit),
-        version,
     };
 };
 
@@ -205,7 +190,6 @@ export interface CreateControllerProps<
         unknown,
         CreateParams<RecordType>
     >;
-    successMessage?: string;
     transform?: TransformData;
 }
 
@@ -234,11 +218,9 @@ export interface CreateControllerResult<
     setOnSuccess: SetOnSuccess;
     setOnFailure: SetOnFailure;
     setTransform: SetTransformData;
-    successMessage?: string;
     record?: Partial<RecordType>;
     redirect: RedirectionSideEffect;
     resource: string;
-    version: number;
 }
 
 const emptyRecord = {};

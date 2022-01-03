@@ -25,7 +25,6 @@ import { CreateView } from './CreateView';
  * - actions
  * - aside
  * - component
- * - successMessage
  * - title
  *
  * @example
@@ -88,7 +87,6 @@ Create.propTypes = {
     title: PropTypes.node,
     record: PropTypes.object,
     hasList: PropTypes.bool,
-    successMessage: PropTypes.string,
     mutationOptions: PropTypes.object,
     transform: PropTypes.func,
 };

@@ -1,11 +1,9 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { parsePath } from 'history';
 
 import { Identifier, Record } from '../types';
 import resolveRedirectTo from '../util/resolveRedirectTo';
-import { refreshView } from '../actions/uiActions';
 
 type RedirectToFunction = (
     basePath?: string,
@@ -28,13 +26,12 @@ export type RedirectionSideEffect = string | boolean | RedirectToFunction;
  * redirect('edit', '/posts', 123);
  * // redirect to edit view with state data
  * redirect('edit', '/comment', 123, {}, { record: { post_id: record.id } });
- * // do not redirect (resets the record form)
+ * // do not redirect
  * redirect(false);
  * // redirect to the result of a function
  * redirect((redirectTo, basePath, id, data) => ...)
  */
 const useRedirect = () => {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
     // Ensure this doesn't rerender too much
     const location = useLocation();
@@ -53,20 +50,6 @@ const useRedirect = () => {
             state: object = {}
         ) => {
             if (!redirectTo) {
-                if (locationRef.current.state || locationRef.current.search) {
-                    navigate(
-                        {
-                            ...locationRef.current,
-                            search: undefined,
-                        },
-                        {
-                            state,
-                            replace: true,
-                        }
-                    );
-                } else {
-                    dispatch(refreshView());
-                }
                 return;
             }
 
@@ -89,7 +72,7 @@ const useRedirect = () => {
                 );
             }
         },
-        [dispatch, navigate]
+        [navigate]
     );
 };
 

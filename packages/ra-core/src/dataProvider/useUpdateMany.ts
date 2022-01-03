@@ -8,7 +8,7 @@ import {
     QueryKey,
 } from 'react-query';
 
-import useDataProvider from './useDataProvider';
+import { useDataProvider } from './useDataProvider';
 import undoableEventEmitter from './undoableEventEmitter';
 import { Record, UpdateManyParams, MutationMode } from '../types';
 import { Identifier } from '..';
@@ -19,7 +19,7 @@ import { Identifier } from '..';
  * @param {string} resource
  * @param {Params} params The updateMany parameters { ids, data }
  * @param {Object} options Options object to pass to the queryClient.
- * May include side effects to be executed upon success or failure, e.g. { onSuccess: { refresh: true } }
+ * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
  * May include a mutation mode (optimistic/pessimistic/undoable), e.g. { mutationMode: 'undoable' }
  *
  * @typedef Params
@@ -62,7 +62,7 @@ import { Identifier } from '..';
  * const BulkResetViewsButton = ({ selectedIds }) => {
  *     const [updateMany, { isLoading, error }] = useUpdateMany('posts', { ids: selectedIds, data: { views: 0 } });
  *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={isLoading} onClick={updateMany}>Reset views</button>;
+ *     return <button disabled={isLoading} onClick={() => updateMany()}>Reset views</button>;
  * };
  */
 export const useUpdateMany = <RecordType extends Record = Record>(

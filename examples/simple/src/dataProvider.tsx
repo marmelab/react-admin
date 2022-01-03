@@ -1,5 +1,4 @@
 import fakeRestProvider from 'ra-data-fakerest';
-import { cacheDataProviderProxy } from 'react-admin';
 
 import data from './data';
 import addUploadFeature from './addUploadFeature';
@@ -43,4 +42,4 @@ interface ResponseError extends Error {
     status?: number;
 }
 
-export default cacheDataProviderProxy(delayedDataProvider);
+export default delayedDataProvider;

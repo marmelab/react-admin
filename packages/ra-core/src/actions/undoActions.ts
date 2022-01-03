@@ -29,23 +29,3 @@ export interface CompleteAction {
 export const complete = (): CompleteAction => ({
     type: COMPLETE,
 });
-
-export const START_OPTIMISTIC_MODE = 'RA/START_OPTIMISTIC_MODE';
-
-export interface StartOptimisticModeAction {
-    readonly type: typeof START_OPTIMISTIC_MODE;
-}
-
-export const startOptimisticMode = (): StartOptimisticModeAction => ({
-    type: START_OPTIMISTIC_MODE,
-});
-
-export const STOP_OPTIMISTIC_MODE = 'RA/STOP_OPTIMISTIC_MODE';
-
-export interface StopOptimisticModeAction {
-    readonly type: typeof STOP_OPTIMISTIC_MODE;
-}
-
-export const stopOptimisticMode = (): StopOptimisticModeAction => ({
-    type: STOP_OPTIMISTIC_MODE,
-});

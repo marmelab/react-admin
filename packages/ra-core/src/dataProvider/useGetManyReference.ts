@@ -6,7 +6,7 @@ import {
 } from 'react-query';
 
 import { Record, GetManyReferenceParams } from '../types';
-import useDataProvider from './useDataProvider';
+import { useDataProvider } from './useDataProvider';
 
 /**
  * Call the dataProvider.getManyReference() method and return the resolved result
@@ -24,7 +24,7 @@ import useDataProvider from './useDataProvider';
  * @param {string} resource The resource name, e.g. 'posts'
  * @param {Params} params The getManyReference parameters { target, id, pagination, sort, filter }
  * @param {Object} options Options object to pass to the queryClient.
- * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh() } }
+ * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
  *
  * @typedef Params
  * @prop params.target The target resource key, e.g. 'post_id'

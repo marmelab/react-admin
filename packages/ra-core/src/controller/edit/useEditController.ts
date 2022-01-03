@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
-import useVersion from '../useVersion';
 import {
     Record,
     MutationMode,
@@ -14,10 +13,14 @@ import {
 import {
     useNotify,
     useRedirect,
-    useRefresh,
     RedirectionSideEffect,
 } from '../../sideEffect';
-import { useGetOne, useUpdate, Refetch } from '../../dataProvider';
+import {
+    useGetOne,
+    useUpdate,
+    useRefresh,
+    UseGetOneHookValue,
+} from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import {
@@ -67,7 +70,6 @@ export const useEditController = <RecordType extends Record = Record>(
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
-    const version = useVersion();
     const { id: routeId } = useParams<'id'>();
     const id = propsId || decodeURIComponent(routeId);
     const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
@@ -94,7 +96,8 @@ export const useEditController = <RecordType extends Record = Record>(
                 redirect('list', `/${resource}`);
                 refresh();
             },
-
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
             retry: false,
             ...queryOptions,
         }
@@ -213,7 +216,6 @@ export const useEditController = <RecordType extends Record = Record>(
         setOnSuccess,
         setTransform,
         transformRef,
-        version,
     };
 };
 
@@ -259,10 +261,9 @@ export interface EditControllerResult<RecordType extends Record = Record> {
     setOnFailure: SetOnFailure;
     setTransform: SetTransformData;
     record?: RecordType;
-    refetch: Refetch;
+    refetch: UseGetOneHookValue<RecordType>['refetch'];
     redirect: RedirectionSideEffect;
     resource: string;
-    version: number;
 }
 
 const DefaultRedirect = 'list';
