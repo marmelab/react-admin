@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { CoreAdminProps } from 'ra-core';
-import { defaultTheme, ThemeProvider } from 'ra-ui-materialui';
 import { ThemeOptions } from '@mui/material';
 
 import { AdminContext } from './AdminContext';
@@ -106,7 +105,7 @@ export const Admin = (props: AdminProps) => {
         logoutButton,
         menu, // deprecated, use a custom layout instead
         ready,
-        theme = defaultTheme,
+        theme,
         title = 'React Admin',
     } = props;
 
@@ -127,32 +126,31 @@ export const Admin = (props: AdminProps) => {
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <AdminContext
-                authProvider={authProvider}
-                basename={basename}
-                dataProvider={dataProvider}
-                i18nProvider={i18nProvider}
-                history={history}
-                customReducers={customReducers}
-                initialState={initialState}
+        <AdminContext
+            authProvider={authProvider}
+            basename={basename}
+            dataProvider={dataProvider}
+            i18nProvider={i18nProvider}
+            history={history}
+            customReducers={customReducers}
+            initialState={initialState}
+            theme={theme}
+        >
+            <AdminUI
+                layout={appLayout || layout}
+                dashboard={dashboard}
+                disableTelemetry={disableTelemetry}
+                menu={menu}
+                catchAll={catchAll}
+                title={title}
+                loading={loading}
+                loginPage={loginPage}
+                logout={authProvider ? logoutButton : undefined}
+                ready={ready}
             >
-                <AdminUI
-                    layout={appLayout || layout}
-                    dashboard={dashboard}
-                    disableTelemetry={disableTelemetry}
-                    menu={menu}
-                    catchAll={catchAll}
-                    title={title}
-                    loading={loading}
-                    loginPage={loginPage}
-                    logout={authProvider ? logoutButton : undefined}
-                    ready={ready}
-                >
-                    {children}
-                </AdminUI>
-            </AdminContext>
-        </ThemeProvider>
+                {children}
+            </AdminUI>
+        </AdminContext>
     );
 };
 
