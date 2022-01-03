@@ -15,7 +15,6 @@ import {
     useListContext,
     useResourceContext,
     Record,
-    Identifier,
     RecordContextProvider,
     ComponentPropType,
 } from 'ra-core';
