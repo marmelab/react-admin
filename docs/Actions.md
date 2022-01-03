@@ -734,6 +734,7 @@ We won't re-explain all these options here, but we'll focus on the most useful o
 
 **Tip**: In react-admin components that use the data provider method hooks, you can override the query options using the `queryOptions` prop, and the mutation options using the `mutationOptions` prop. For instance, to log the dataProvider calls, in the `<List>` component, you can do the following:
 
+{% raw %}
 ```jsx
 import { List; Datagrid, TextField } from 'react-admin';
 
@@ -749,6 +750,7 @@ const PostList = () => (
     </List>
 );
 ```
+{% endraw %}
 
 ## Synchronizing Dependent Queries
 

@@ -357,6 +357,7 @@ const BookShow = () => (
 
 You can also split the list of fields into two stacks, and use the `<SimpleShowLayout>` in the main panel:
 
+{% raw %}
 ```jsx
 import { Show, SimpleShowLayout, TextField, DateField, WithRecord } from 'react-admin';
 import StarIcon from '@mui/icons-material/Star';
@@ -384,6 +385,7 @@ const BookShow = () => (
     </Show>
 );
 ```
+{% endraw %}
 
 ## Third-Party Show Components
 
