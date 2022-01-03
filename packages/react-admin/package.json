@@ -25,6 +25,8 @@
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
+        "react": "^16.9.0 || ^17.0.0",
+        "react-dom": "^16.9.0 || ^17.0.0",
         "rimraf": "^2.6.3"
     },
     "peerDependencies": {
