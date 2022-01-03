@@ -83,6 +83,7 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
                         filter={filterElement}
                         resource={resource}
                         onShow={handleShow}
+                        disabled={filterElement.props.disabled || false}
                     />
                 ))}
             </Menu>
