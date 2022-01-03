@@ -387,7 +387,7 @@ const BookShow = () => (
 ```
 {% endraw %}
 
-## Third-Party Show Components
+## Third-Party Components
 
 You can find components for react-admin in third-party repositories.
 

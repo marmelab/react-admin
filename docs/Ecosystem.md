@@ -21,7 +21,7 @@ See the [List](./ListTutorial.md#third-party-components) page.
 
 ## Show Related Components
 
-See the [Show](./Show.md#third-party-components) page.
+See the [Show](./ShowTutorial.md#third-party-components) page.
 
 ## Fields
 
