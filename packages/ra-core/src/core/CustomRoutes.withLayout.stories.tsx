@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Route } from 'react-router';
-import Admin from './CoreAdmin';
+import { CoreAdmin } from './CoreAdmin';
 import { useAuthenticated, useLogin } from '../auth';
 import { CustomRoutes } from './CustomRoutes';
 import { Resource } from './Resource';
@@ -18,7 +18,7 @@ export const WithLayoutCustomRoute = (argsOrProps, context) => {
     const history = context?.history || argsOrProps.history;
 
     return (
-        <Admin
+        <CoreAdmin
             authProvider={authProvider}
             dataProvider={dataProvider}
             history={history}
@@ -29,7 +29,7 @@ export const WithLayoutCustomRoute = (argsOrProps, context) => {
                 <Route path="/custom" element={<CustomWithLayout />} />
             </CustomRoutes>
             <Resource name="posts" list={PostList} />
-        </Admin>
+        </CoreAdmin>
     );
 };
 
