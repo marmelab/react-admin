@@ -1,5 +1,16 @@
 # Changelog
 
+## v3.19.6
+
+* Fix loading indicator keeps spinning on permissions error when `logoutUser` is false ([#7044](https://github.com/marmelab/react-admin/pull/#7044)) ([WiXSL](https://github.com/WiXSL))
+* Fix `redirect=false` after save doesn't clear the form ([#7041](https://github.com/marmelab/react-admin/pull/#7041)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<SelectArrayInput optionText>` function not fully supported with create item ([#7039](https://github.com/marmelab/react-admin/pull/#7039)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<AutocompleteArrayInput optionText>` function not supported with create item set ([#7038](https://github.com/marmelab/react-admin/pull/#7038)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<SelectInput optionText>` for create ([#7031](https://github.com/marmelab/react-admin/pull/#7031)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<SelectArrayInput optionText>` for create ([#7030](https://github.com/marmelab/react-admin/pull/#7030)) ([WiXSL](https://github.com/WiXSL))
+* [Demo] Fix typescript error ([#7045](https://github.com/marmelab/react-admin/pull/#7045)) ([WiXSL](https://github.com/WiXSL))
+* [Demo] Update Create-React-App to V5 ([#7022](https://github.com/marmelab/react-admin/pull/#7022)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## v3.19.5
 
 * Fix `<Autocomplete>` fails when used inside a `<FormDataConsumer>` ([#7013](https://github.com/marmelab/react-admin/pull/7013)) ([WiXSL](https://github.com/WiXSL))
