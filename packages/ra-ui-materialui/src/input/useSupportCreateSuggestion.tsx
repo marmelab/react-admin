@@ -60,7 +60,7 @@ export const useSupportCreateSuggestion = (
                 handleChange(item);
             },
         }),
-        [filter, handleChange] // eslint-disable-line
+        [handleChange]
     );
 
     return {

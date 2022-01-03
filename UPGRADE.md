@@ -2431,6 +2431,8 @@ Besides, some props which were applicable to both components did not make sense 
 />
 ```
 
+Finally, both the `<AutocompleteInput>` and the `<AutocompleteArrayInput>` don't need react-admin specific styles anymore so we removed the theme keys for them: `RaAutocompleteInput` and `RaAutocompleteArrayInput`. To customize their styles, you can either use the [sx](https://mui.com/system/the-sx-prop/#main-content) prop or add a `MuiAutocomplete` key in your [theme](https://mui.com/customization/theme-components/#global-style-overrides).
+
 ## New DataProviderContext Requires Custom App Modification
 
 The new dataProvider-related hooks (`useQuery`, `useMutation`, `useDataProvider`, etc.) grab the `dataProvider` instance from a new React context. If you use the `<Admin>` component, your app will continue to work and there is nothing to do, as `<Admin>` now provides that context. But if you use a Custom App, you'll need to set the value of that new `DataProvider` context:

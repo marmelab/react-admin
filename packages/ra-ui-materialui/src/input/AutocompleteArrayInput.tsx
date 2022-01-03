@@ -61,5 +61,5 @@ import { AutocompleteInput } from './AutocompleteInput';
  * <AutocompleteArrayInput source="gender" choices={choices} translateChoice={false}/>
  */
 export const AutocompleteArrayInput = props => (
-    <AutocompleteInput multiple {...props} />
+    <AutocompleteInput {...props} multiple />
 );
