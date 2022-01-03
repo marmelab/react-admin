@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CoreAdminProps } from 'ra-core';
 import { defaultTheme, ThemeProvider } from 'ra-ui-materialui';
-import { DeprecatedThemeOptions } from '@mui/material';
+import { ThemeOptions } from '@mui/material';
 
 import { AdminContext } from './AdminContext';
 import { AdminUI } from './AdminUI';
@@ -159,5 +159,5 @@ export const Admin = (props: AdminProps) => {
 export default Admin;
 
 export interface AdminProps extends CoreAdminProps {
-    theme?: DeprecatedThemeOptions;
+    theme?: ThemeOptions;
 }

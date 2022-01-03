@@ -1,6 +1,6 @@
 import { createContext } from 'react';
-import { DeprecatedThemeOptions } from '@mui/material';
+import { ThemeOptions } from '@mui/material';
 
 export const ThemeContext = createContext<ThemeSetter>(null);
 
-export type ThemeSetter = (theme: DeprecatedThemeOptions) => void;
+export type ThemeSetter = (theme: ThemeOptions) => void;

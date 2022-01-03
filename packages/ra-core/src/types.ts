@@ -1,6 +1,4 @@
 import { ReactNode, ReactElement, ComponentType } from 'react';
-import { History } from 'history';
-import { QueryClient } from 'react-query';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
@@ -340,30 +338,6 @@ export interface ResourceProps {
     show?: ComponentType<ShowControllerProps>;
     icon?: ComponentType<any>;
     options?: object;
-}
-
-export interface CoreAdminProps {
-    appLayout?: LayoutComponent;
-    authProvider?: AuthProvider | LegacyAuthProvider;
-    basename?: string;
-    catchAll?: CatchAllComponent;
-    children?: AdminChildren;
-    customReducers?: object;
-    dashboard?: DashboardComponent;
-    dataProvider: DataProvider | LegacyDataProvider;
-    disableTelemetry?: boolean;
-    history?: History;
-    i18nProvider?: I18nProvider;
-    initialState?: InitialState;
-    layout?: LayoutComponent;
-    loading?: ComponentType;
-    locale?: string;
-    loginPage?: LoginComponent | boolean;
-    logoutButton?: ComponentType;
-    menu?: ComponentType;
-    queryClient?: QueryClient;
-    ready?: ComponentType;
-    title?: TitleComponent;
 }
 
 export type Exporter = (

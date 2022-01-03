@@ -6,9 +6,16 @@ import {
     ThemeProvider as MuiThemeProvider,
     Theme,
 } from '@mui/material/styles';
-import { DeprecatedThemeOptions } from '@mui/material';
+import { ThemeOptions } from '@mui/material';
 import { ThemeContext, ThemeSetter } from './ThemeContext';
 
+/**
+ * This components sets up a React context that provides a function to set the
+ * Material-UI theme. It also wraps the children in a Material-UI ThemeProvider.
+ * @param props
+ * @param props.children The children of the component.
+ * @param props.theme The initial theme.
+ */
 export const ThemeProvider = ({
     children,
     theme: themeOverride,
@@ -24,12 +31,10 @@ export const ThemeProvider = ({
 
 export interface ThemeProviderProps {
     children: ReactNode;
-    theme: DeprecatedThemeOptions;
+    theme: ThemeOptions;
 }
 
-const useTheme = (
-    themeOverride?: DeprecatedThemeOptions
-): [Theme, ThemeSetter] => {
+const useTheme = (themeOverride?: ThemeOptions): [Theme, ThemeSetter] => {
     const themeProp = useRef(themeOverride);
     const [theme, setInnerTheme] = useState(() => createTheme(themeOverride));
 
@@ -41,7 +46,7 @@ const useTheme = (
     }, [themeOverride, themeProp, setInnerTheme]);
 
     const setTheme = useCallback(
-        (theme: DeprecatedThemeOptions) => {
+        (theme: ThemeOptions) => {
             setInnerTheme(createTheme(theme));
         },
         [setInnerTheme]
