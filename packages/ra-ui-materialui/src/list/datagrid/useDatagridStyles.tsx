@@ -1,4 +1,9 @@
 import { styled } from '@mui/material';
+// FIXME: The following import is necessary to avoid a TS error at compilation time:
+// The inferred type of 'DatagridRoot' cannot be named without a reference to '.pnpm/@emotion+styled@11.6.0/node_modules/@emotion/styled'. This is likely not portable. A type annotation is necessary.
+// This may be an issue for styled components users: https://mui.com/guides/styled-engine/#how-to-switch-to-styled-components
+// eslint-disable-next-line
+import styledEmotion from '@emotion/styled';
 
 const PREFIX = 'RaDatagrid';
 

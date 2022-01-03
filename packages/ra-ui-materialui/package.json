@@ -26,6 +26,8 @@
     "devDependencies": {
         "@mui/icons-material": "^5.0.1",
         "@mui/material": "^5.0.2",
+        "@mui/system": "^5.0.2",
+        "@emotion/styled": "^11.6.0",
         "@testing-library/react": "^11.2.3",
         "@types/query-string": "5.1.0",
         "cross-env": "^5.2.0",
