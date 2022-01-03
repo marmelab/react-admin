@@ -642,18 +642,14 @@ In that case, set the `translateChoice` prop to `false`.
 <AutocompleteInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
-If you want to limit the initial choices shown to the current value only, you can set the `limitChoicesToValue` prop.
-
 When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set).
 Ex. `<AutocompleteInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character has been entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
 
-`<AutocompleteInput>` renders a [material-ui `<Autocomplete>` component](https://mui.com/components/autocomplete/). Use the `options` attribute to override any of the `<Autocomplete>` attributes:
+`<AutocompleteInput>` renders a [material-ui `<Autocomplete>` component](https://mui.com/components/autocomplete/) and it accepts the `<Autocomplete>` props:
 
 {% raw %}
 ```jsx
-<AutocompleteInput source="category" options={{
-    color: 'secondary',
-}} />
+<AutocompleteInput source="category" size="large" />
 ```
 {% endraw %}
 
@@ -1406,13 +1402,11 @@ However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the 
 When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set).
 Ex. `<AutocompleteArrayInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character has been entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
 
-Lastly, `<AutocompleteArrayInput>` renders a [material-ui `<Autocomplete>` component](https://mui.com/components/autocomplete/). Use the `options` attribute to override any of the `<Autocomplete>` attributes:
+Lastly, `<AutocompleteArrayInput>` renders a [material-ui `<Autocomplete>` component](https://mui.com/components/autocomplete/) and accepts the `<Autocomplete>` props:
 
 {% raw %}
 ```jsx
-<AutocompleteArrayInput source="category" options={{
-    color: 'secondary',
-}} />
+<AutocompleteArrayInput source="category" limitTags={2} />
 ```
 {% endraw %}
 
@@ -1427,17 +1421,6 @@ import { AutocompleteArrayInput, ReferenceArrayInput } from 'react-admin';
     <AutocompleteArrayInput />
 </ReferenceArrayInput>
 ```
-
-If you need to override the props of the suggestion's container (a `Popper` element), you can specify them using the `options.suggestionsContainerProps`. For example:
-
-{% raw %}
-```jsx
-<AutocompleteArrayInput source="category" options={{
-    suggestionsContainerProps: {
-        disablePortal: true,
-}}} />
-```
-{% endraw %}
 
 **Tip**: `<ReferenceArrayInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceArrayInput>`](#referencearrayinput) doesn't cover your need), you'll have to [write your own Input component](#writing-your-own-input-component) based on [material-ui-chip-input](https://github.com/TeamWertarbyte/material-ui-chip-input).
 
