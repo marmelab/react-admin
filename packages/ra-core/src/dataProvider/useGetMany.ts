@@ -70,7 +70,7 @@ export const useGetMany = <RecordType extends Record = Record>(
                     const queryHash = hashQueryKey([
                         resource,
                         'getOne',
-                        String(id),
+                        { id: String(id) },
                     ]);
                     return queryCache.get<RecordType>(queryHash)?.state?.data;
                 });
@@ -84,7 +84,7 @@ export const useGetMany = <RecordType extends Record = Record>(
                 // optimistically populate the getOne cache
                 data.forEach(record => {
                     queryClient.setQueryData(
-                        [resource, 'getOne', String(record.id)],
+                        [resource, 'getOne', { id: String(record.id) }],
                         record
                     );
                 });

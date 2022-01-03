@@ -575,7 +575,7 @@ import { useDataProvider, Loading, Error } from 'react-admin';
 const UserProfile = ({ userId }) => {
     const dataProvider = useDataProvider();
     const { data, isLoading, error } = useQuery(
-        ['user', 'getOne', userId], 
+        ['users', 'getOne', { id: userId }], 
         () => dataProvider.getOne('users', { id: userId })
     );
 

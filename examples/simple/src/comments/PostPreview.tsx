@@ -19,7 +19,7 @@ const PostPreview = <RecordType extends Record = Record>({
     const record = queryClient.getQueryData<RecordType>([
         resource,
         'getOne',
-        String(id),
+        { id: String(id) },
     ]);
 
     return (

@@ -116,7 +116,7 @@ export const useUpdateMany = <RecordType extends Record = Record>(
 
         ids.forEach(id =>
             queryClient.setQueryData(
-                [resource, 'getOne', String(id)],
+                [resource, 'getOne', { id: String(id) }],
                 (record: RecordType) => ({ ...record, ...data }),
                 { updatedAt }
             )
@@ -309,7 +309,7 @@ export const useUpdateMany = <RecordType extends Record = Record>(
          *
          * @example
          * [
-         *   [['posts', 'getOne', '1'], { id: 1, title: 'Hello' }],
+         *   [['posts', 'getOne', { id: '1' }], { id: 1, title: 'Hello' }],
          *   [['posts', 'getList'], { data: [{ id: 1, title: 'Hello' }], total: 1 }],
          *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
          * ]

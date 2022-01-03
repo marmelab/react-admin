@@ -71,7 +71,11 @@ export const useGetManyAggregate = <RecordType extends Record = Record>(
     const { ids } = params;
     const placeholderData = useMemo(() => {
         const records = ids.map(id => {
-            const queryHash = hashQueryKey([resource, 'getOne', String(id)]);
+            const queryHash = hashQueryKey([
+                resource,
+                'getOne',
+                { id: String(id) },
+            ]);
             return queryCache.get<RecordType>(queryHash)?.state?.data;
         });
         if (records.some(record => record === undefined)) {
@@ -101,7 +105,7 @@ export const useGetManyAggregate = <RecordType extends Record = Record>(
                 // optimistically populate the getOne cache
                 data.forEach(record => {
                     queryClient.setQueryData(
-                        [resource, 'getOne', String(record.id)],
+                        [resource, 'getOne', { id: String(record.id) }],
                         record
                     );
                 });
