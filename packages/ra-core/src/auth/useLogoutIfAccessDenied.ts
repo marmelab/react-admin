@@ -43,6 +43,7 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
     const logout = useLogout();
     const notify = useNotify();
     const history = useHistory();
+
     const logoutIfAccessDenied = useCallback(
         (error?: any, disableNotification?: boolean) =>
             authProvider
