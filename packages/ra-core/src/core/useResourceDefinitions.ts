@@ -19,7 +19,7 @@ import {
  * //   hasShow: true,
  * //   hasCreate: true,
  * //   options: {},
- * //   icon: <PostIcon />,
+ * //   icon: PostIcon,
  * // }
  */
 export const useResourceDefinitions = (): ResourceDefinitions =>

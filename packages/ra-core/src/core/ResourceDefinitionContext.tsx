@@ -37,8 +37,13 @@ export const ResourceDefinitionContext = createContext<
  *     );
  * };
  */
-export const ResourceDefinitionContextProvider = ({ children }) => {
-    const [definitions, setState] = useState<ResourceDefinitions>({});
+export const ResourceDefinitionContextProvider = ({
+    definitions: defaultDefinitions = {},
+    children,
+}) => {
+    const [definitions, setState] = useState<ResourceDefinitions>(
+        defaultDefinitions
+    );
 
     const setDefinition = (config: ResourceDefinition) => {
         setState(prev =>

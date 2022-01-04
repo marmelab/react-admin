@@ -6,7 +6,25 @@ import { useResourceContext } from './useResourceContext';
 import { ResourceDefinition } from '../types';
 
 /**
- * Hook which returns the definition of the requested resource
+ * Hook to get the definition of a given resource
+ *
+ * @example // Get the current resource definition (based on ResourceContext)
+ *
+ * const definition = useResourceDefinition();
+ * console.log(definition);
+ * // {
+ * //   name: 'posts',
+ * //   hasList: true,
+ * //   hasEdit: true,
+ * //   hasShow: true,
+ * //   hasCreate: true,
+ * //   options: {},
+ * //   icon: PostIcon,
+ * // }
+ *
+ * @example // Pass a resource prop to check a different ressource definition
+ *
+ * const definition = useResourceDefinition({ resource: 'posts' });
  */
 export const useResourceDefinition = (
     props?: UseResourceDefinitionOptions
