@@ -853,7 +853,7 @@ const App = () => (
 );
 ```
 
-**Tip**: You can generate the menu items for each of the resources by reading the Resource configurations from the Redux store: 
+**Tip**: You can generate the menu items for each of the resources by reading the Resource configurations context: 
 
 ```jsx
 // in src/Menu.js
