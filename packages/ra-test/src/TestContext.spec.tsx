@@ -11,6 +11,7 @@ const primedStore = {
         notifications: [],
         resources: {},
         ui: {},
+        selectedIds: {},
     },
 };
 

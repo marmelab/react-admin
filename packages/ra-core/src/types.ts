@@ -270,6 +270,9 @@ export interface ReduxState {
                 };
             };
         };
+        selectedIds: {
+            [name: string]: Identifier[];
+        };
     };
 
     // leave space for custom reducers

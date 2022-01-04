@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
 import expanded from './expanded';
 import params from './params';
-import selectedIds from './selectedIds';
 
 const defaultReducer = () => null;
 
@@ -15,5 +14,4 @@ export default combineReducers({
      */
     expanded: expanded || defaultReducer,
     params: params || defaultReducer,
-    selectedIds: selectedIds || defaultReducer,
 });

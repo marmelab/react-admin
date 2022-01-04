@@ -5,6 +5,7 @@ import resources, {
 } from './resource';
 import notifications from './notifications';
 import ui from './ui';
+import { selectedIdsReducer } from './selectedIds';
 
 const defaultReducer = () => null;
 
@@ -19,6 +20,7 @@ export default combineReducers({
     resources: resources || defaultReducer,
     notifications: notifications || defaultReducer,
     ui: ui || defaultReducer,
+    selectedIds: selectedIdsReducer || defaultReducer,
 });
 
 export const getResources = state => resourceGetResources(state.resources);
