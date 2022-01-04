@@ -12,6 +12,7 @@ import {
 } from '../dataProvider';
 import createAdminStore from './createAdminStore';
 import TranslationProvider from '../i18n/TranslationProvider';
+import { ResourceDefinitionContextProvider } from './ResourceDefinitionContext';
 import {
     AuthProvider,
     LegacyAuthProvider,
@@ -92,7 +93,9 @@ React-admin requires a valid dataProvider function to work.`);
                                 history={finalHistory}
                                 basename={basename}
                             >
-                                {children}
+                                <ResourceDefinitionContextProvider>
+                                    {children}
+                                </ResourceDefinitionContextProvider>
                             </HistoryRouter>
                         </TranslationProvider>
                     </QueryClientProvider>

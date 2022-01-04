@@ -7,7 +7,7 @@ import { Form } from 'react-final-form';
 import { useReferenceArrayInputController } from './useReferenceArrayInputController';
 import { CoreAdminContext } from '../../core';
 import { testDataProvider } from '../../dataProvider';
-import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
+import { SORT_ASC } from '../list/queryReducer';
 
 const ReferenceArrayInputController = props => {
     const { children, ...rest } = props;

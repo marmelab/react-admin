@@ -260,14 +260,19 @@ export interface ReduxState {
         ui: {
             sidebarOpen: boolean;
         };
-        resources: {
+        expandedRows: {
+            [name: string]: Identifier[];
+        };
+        selectedIds: {
+            [name: string]: Identifier[];
+        };
+        listParams: {
             [name: string]: {
-                props: ResourceDefinition;
-                list: {
-                    expanded: Identifier[];
-                    params: any;
-                    selectedIds: Identifier[];
-                };
+                sort: string;
+                order: string;
+                page: number;
+                perPage: number;
+                filter: any;
             };
         };
     };

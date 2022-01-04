@@ -39,8 +39,7 @@ describe('<Edit />', () => {
                         <FakeForm />
                     </Edit>
                 </DataProviderContext.Provider>
-            </QueryClientProvider>,
-            { admin: { resources: { foo: { data: {} } } } }
+            </QueryClientProvider>
         );
         await waitFor(() => {
             expect(queryAllByText('lorem')).toHaveLength(1);

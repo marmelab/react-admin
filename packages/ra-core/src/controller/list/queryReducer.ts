@@ -1,9 +1,9 @@
 import { Reducer } from 'redux';
 import set from 'lodash/set';
 
-import removeEmpty from '../../../../util/removeEmpty';
-import removeKey from '../../../../util/removeKey';
-import { ListParams } from '../../../../actions';
+import removeEmpty from '../../util/removeEmpty';
+import removeKey from '../../util/removeKey';
+import { ListParams } from '../../actions';
 
 export const SET_SORT = 'SET_SORT';
 export const SORT_ASC = 'ASC';
@@ -51,7 +51,7 @@ type ActionTypes =
 /**
  * This reducer is for the react-router query string, NOT for redux.
  */
-const queryReducer: Reducer<ListParams> = (
+export const queryReducer: Reducer<ListParams> = (
     previousState,
     action: ActionTypes
 ) => {

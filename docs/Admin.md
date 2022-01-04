@@ -217,21 +217,22 @@ import * as React from 'react';
 import { createElement } from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
-import { MenuItemLink, getResources } from 'react-admin';
+import { MenuItemLink, useResourceDefinitions } from 'react-admin';
 import LabelIcon from '@material-ui/icons/Label';
 
 const Menu = ({ onMenuClick, logout }) => {
     const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
     const open = useSelector(state => state.admin.ui.sidebarOpen);
-    const resources = useSelector(getResources);
+    const resources = useResourceDefinitions();
+    
     return (
         <div>
-            {resources.map(resource => (
+            {Object.keys(resources).map(name => (
                 <MenuItemLink
-                    key={resource.name}
-                    to={`/${resource.name}`}
-                    primaryText={resource.options && resource.options.label || resource.name}
-                    leftIcon={createElement(resource.icon)}
+                    key={name}
+                    to={`/${name}`}
+                    primaryText={resources[name].options && resources[name].options.label || name}
+                    leftIcon={createElement(resources[name].icon)}
                     onClick={onMenuClick}
                     sidebarIsOpen={open}
                 />
@@ -296,7 +297,7 @@ For more details on predefined themes and custom themes, refer to the [Material 
 
 ## `layout`
 
-If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. If you use material UI fields and inputs, it should contain a `<ThemeProvider>` element. And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
+If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. 
 
 Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point, and check [the Theming documentation](./Theming.md#using-a-custom-layout) for examples.
 

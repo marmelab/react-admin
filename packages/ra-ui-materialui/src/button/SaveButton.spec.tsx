@@ -248,8 +248,7 @@ describe('<SaveButton />', () => {
                         </Edit>
                     </DataProviderContext.Provider>
                 </QueryClientProvider>
-            </ThemeProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </ThemeProvider>
         );
         // waitFor for the dataProvider.getOne() return
         await waitFor(() => {
@@ -298,8 +297,7 @@ describe('<SaveButton />', () => {
                         </Edit>
                     </DataProviderContext.Provider>
                 </QueryClientProvider>
-            </ThemeProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </ThemeProvider>
         );
         // waitFor for the dataProvider.getOne() return
         await waitFor(() => {
@@ -352,8 +350,7 @@ describe('<SaveButton />', () => {
                         </Edit>
                     </DataProviderContext.Provider>
                 </QueryClientProvider>
-            </ThemeProvider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </ThemeProvider>
         );
         // waitFor for the dataProvider.getOne() return
         await waitFor(() => {

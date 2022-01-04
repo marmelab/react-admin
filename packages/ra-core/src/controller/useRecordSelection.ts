@@ -25,9 +25,7 @@ const useRecordSelection = (
     const dispatch = useDispatch();
     const selectedIds = useSelector<ReduxState, Identifier[]>(
         (reduxState: ReduxState) =>
-            reduxState.admin.resources[resource]
-                ? reduxState.admin.resources[resource].list.selectedIds
-                : defaultRecords,
+            reduxState.admin.selectedIds[resource] || defaultRecords,
         shallowEqual
     );
     const selectionModifiers = useMemo(

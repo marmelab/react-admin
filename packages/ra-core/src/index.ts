@@ -1,8 +1,7 @@
 import createAppReducer from './reducer';
 import adminReducer from './reducer/admin';
-import queryReducer from './reducer/admin/resource/list/queryReducer';
 
-export { createAppReducer, adminReducer, queryReducer };
+export { createAppReducer, adminReducer };
 export * from './core';
 export * from './actions';
 export * from './auth';
@@ -14,7 +13,7 @@ export * from './util';
 export * from './controller';
 export * from './form';
 
-export { getResources, getReferenceResource, getNotification } from './reducer';
+export { getNotification } from './reducer';
 
 export * from './sideEffect';
 export * from './types';

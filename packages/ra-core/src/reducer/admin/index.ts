@@ -1,10 +1,11 @@
-import { combineReducers } from 'redux';
-import resources, {
-    getResources as resourceGetResources,
-    getReferenceResource as resourceGetReferenceResource,
-} from './resource';
+import { combineReducers, Reducer } from 'redux';
+
 import notifications from './notifications';
 import ui from './ui';
+import { selectedIds } from './selectedIds';
+import { expandedRows } from './expandedRows';
+import { listParams } from './listParams';
+import { ReduxState } from '../../types';
 
 const defaultReducer = () => null;
 
@@ -16,13 +17,9 @@ export default combineReducers({
      *
      * @see https://stackoverflow.com/questions/43375079/redux-warning-only-appearing-in-tests
      */
-    resources: resources || defaultReducer,
     notifications: notifications || defaultReducer,
     ui: ui || defaultReducer,
-});
-
-export const getResources = state => resourceGetResources(state.resources);
-
-export const getReferenceResource = (state, props) => {
-    return resourceGetReferenceResource(state.resources, props);
-};
+    selectedIds: selectedIds || defaultReducer,
+    expandedRows: expandedRows || defaultReducer,
+    listParams: listParams || defaultReducer,
+}) as Reducer<ReduxState['admin']>;
