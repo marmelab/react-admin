@@ -267,7 +267,7 @@ You can build your own distribution of react-admin by combining different packag
 
 None of us like to update the code of our apps just because an underlying library has published a breaking change. React-admin does its best to avoid losing developers' time.
 
-Some of the components may have a weird API. That's probably for historical reasons. We prefer to keep the backward compatibility as high as possible - sometimes at the cost of API consistency.
+Some components may have a weird API. That's probably for historical reasons. We prefer to keep the backward compatibility as high as possible - sometimes at the cost of API consistency.
 
 The code of some components may seem convoluted for no apparent reason. It's probably that the component has to support both the old and the new syntax.
 

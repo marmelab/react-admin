@@ -905,7 +905,7 @@ redirect('edit', '/posts', 1);
 redirect('create', '/posts');
 // redirect to the result of a function
 redirect((redirectTo, basePath, id, data) => { 
-    return  data.hasComments ? '/comments' : '/posts';
+    return data.hasComments ? '/comments' : '/posts';
 }, '/posts', 1, { hasComments: true });
 // redirect to edit view with state data
 redirect('edit', '/posts', 1, {}, { record: { post_id: record.id } });

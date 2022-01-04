@@ -134,13 +134,13 @@ Read more about the [Architecture choices](./Architecture.md).
 The [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise) <img class="icon" src="./img/premium.svg" /> offers additional features and services for react-admin:
 
 - Save weeks of development thanks to the **Private Modules**, valid on an unlimited number of domains and projects.
-  - `ra-preferences`: Persist user preferences (language, theme, filters, datagrid columns, sidebar position, etc) in local storage.
+  - `ra-preferences`: Persist user preferences (language, theme, filters, datagrid columns, sidebar position, etc.) in local storage.
   - `ra-navigation`: Multi-level menu and breadcrumb, with the ability to define a custom path for your resources.
   - `ra-realtime`: Display live notifications, auto-update content on the screen, lock content when editing, with adapters for real-time backends.
   - `ra-editable-datagrid`: Edit data directly in the list view, for better productivity. Excel-like editing experience.
   - `ra-form-layout`: New form layouts for complex data entry tasks (accordion, wizard, etc.)
   - `ra-relationships`: Visualize and edit complex relationships, including many-to-many relationships.
-  - `ra-tree`: Edit and visualize tree structures. Reorganize by drag and drop. Adapts to any data structure on the backend (parent_id, children, nested sets, etc).
+  - `ra-tree`: Edit and visualize tree structures. Reorganize by drag and drop. Adapts to any data structure on the backend (parent_id, children, nested sets, etc.).
   - `ra-tour`: Guided tours for react-admin applications. Step-by-step instructions, Material-ui skin.
   - `ra-markdown`: Read Markdown data, and edit it using a WYSIWYG editor in your admin
 - Get **Support** from experienced react and react-admin developers, who will help you find the right information and troubleshoot your bugs.

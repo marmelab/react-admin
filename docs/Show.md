@@ -92,7 +92,7 @@ export const PostShow = () => (
 );
 ```
 
-You can also pass a React element as child, so as to build a custom layout. Check [Building a custom Show Layout](./ShowTutorial.md#building-a-custom-layout) for more details.
+You can also pass a React element as child, to build a custom layout. Check [Building a custom Show Layout](./ShowTutorial.md#building-a-custom-layout) for more details.
 
 ## Page Title
 

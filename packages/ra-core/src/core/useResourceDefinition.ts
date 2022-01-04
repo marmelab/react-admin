@@ -22,7 +22,7 @@ import { ResourceDefinition } from '../types';
  * //   icon: PostIcon,
  * // }
  *
- * @example // Pass a resource prop to check a different ressource definition
+ * @example // Pass a resource prop to check a different resource definition
  *
  * const definition = useResourceDefinition({ resource: 'posts' });
  */
