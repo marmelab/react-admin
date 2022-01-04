@@ -1,9 +1,11 @@
-import { combineReducers } from 'redux';
+import { combineReducers, Reducer } from 'redux';
+
 import notifications from './notifications';
 import ui from './ui';
 import { selectedIds } from './selectedIds';
 import { expandedRows } from './expandedRows';
 import { listParams } from './listParams';
+import { ReduxState } from '../../types';
 
 const defaultReducer = () => null;
 
@@ -20,4 +22,4 @@ export default combineReducers({
     selectedIds: selectedIds || defaultReducer,
     expandedRows: expandedRows || defaultReducer,
     listParams: listParams || defaultReducer,
-});
+}) as Reducer<ReduxState['admin']>;
