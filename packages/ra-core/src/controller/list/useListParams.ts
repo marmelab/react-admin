@@ -13,7 +13,7 @@ import queryReducer, {
     SET_PER_PAGE,
     SET_SORT,
     SORT_ASC,
-} from '../../reducer/admin/resource/list/queryReducer';
+} from './queryReducer';
 import { changeListParams, ListParams } from '../../actions';
 import { SortPayload, ReduxState, FilterPayload } from '../../types';
 import removeEmpty from '../../util/removeEmpty';

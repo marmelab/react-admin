@@ -1,8 +1,7 @@
 import createAppReducer from './reducer';
 import adminReducer from './reducer/admin';
-import queryReducer from './reducer/admin/resource/list/queryReducer';
 
-export { createAppReducer, adminReducer, queryReducer };
+export { createAppReducer, adminReducer };
 export * from './core';
 export * from './actions';
 export * from './auth';

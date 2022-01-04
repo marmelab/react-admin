@@ -1,5 +1,5 @@
 import expect from 'expect';
-import queryReducer, { SORT_ASC, SORT_DESC } from './queryReducer';
+import { queryReducer, SORT_ASC, SORT_DESC } from './queryReducer';
 
 describe('Query Reducer', () => {
     describe('SET_PAGE action', () => {

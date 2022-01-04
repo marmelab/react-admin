@@ -5,7 +5,7 @@ import { useAuthenticated } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../sideEffect';
 import { useGetList, UseGetListHookValue } from '../../dataProvider';
-import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
+import { SORT_ASC } from './queryReducer';
 import { defaultExporter } from '../../export';
 import { FilterPayload, SortPayload, Record, Exporter } from '../../types';
 import { useResourceContext, useGetResourceLabel } from '../../core';

@@ -15,7 +15,7 @@ import {
 } from './useListController';
 import { CoreAdminContext, createAdminStore } from '../../core';
 import { CRUD_CHANGE_LIST_PARAMS } from '../../actions';
-import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
+import { SORT_ASC } from './queryReducer';
 
 describe('useListController', () => {
     const defaultProps = {

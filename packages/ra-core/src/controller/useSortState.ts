@@ -1,9 +1,6 @@
 import { useReducer, useEffect, useRef, useCallback } from 'react';
 
-import {
-    SORT_ASC,
-    SORT_DESC,
-} from '../reducer/admin/resource/list/queryReducer';
+import { SORT_ASC, SORT_DESC } from './list/queryReducer';
 import { SortPayload } from '../types';
 
 export interface SortProps {
