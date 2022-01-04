@@ -5,8 +5,6 @@ import {
     UnregisterResourceAction,
 } from '../../../actions';
 
-import list from './list';
-
 const initialState = {};
 
 type ActionTypes =
@@ -18,7 +16,6 @@ export default (previousState = initialState, action: ActionTypes) => {
     if (action.type === REGISTER_RESOURCE) {
         const resourceState = {
             props: action.payload,
-            list: list(undefined, action),
         };
         return {
             ...previousState,
@@ -48,7 +45,6 @@ export default (previousState = initialState, action: ActionTypes) => {
                 action.meta.resource === resource
                     ? {
                           props: previousState[resource].props,
-                          list: list(previousState[resource].list, action),
                       }
                     : previousState[resource],
         }),

@@ -19,27 +19,9 @@ describe('Resources Reducer', () => {
             reducer(
                 {
                     posts: {
-                        list: {
-                            params: {
-                                filter: {},
-                                order: null,
-                                page: 1,
-                                perPage: null,
-                                sort: null,
-                            },
-                        },
                         props: { name: 'posts' },
                     },
                     comments: {
-                        list: {
-                            params: {
-                                filter: {},
-                                order: null,
-                                page: 1,
-                                perPage: null,
-                                sort: null,
-                            },
-                        },
                         props: { name: 'comments' },
                     },
                 },
@@ -53,39 +35,12 @@ describe('Resources Reducer', () => {
             )
         ).toEqual({
             posts: {
-                list: {
-                    params: {
-                        filter: {},
-                        order: null,
-                        page: 1,
-                        perPage: null,
-                        sort: null,
-                    },
-                },
                 props: { name: 'posts' },
             },
             comments: {
-                list: {
-                    params: {
-                        filter: {},
-                        order: null,
-                        page: 1,
-                        perPage: null,
-                        sort: null,
-                    },
-                },
                 props: { name: 'comments' },
             },
             users: {
-                list: {
-                    params: {
-                        filter: {},
-                        order: null,
-                        page: 1,
-                        perPage: null,
-                        sort: null,
-                    },
-                },
                 props: { name: 'users', options: 'foo' },
             },
         });
@@ -96,27 +51,9 @@ describe('Resources Reducer', () => {
             reducer(
                 {
                     posts: {
-                        list: {
-                            params: {
-                                filter: {},
-                                order: null,
-                                page: 1,
-                                perPage: null,
-                                sort: null,
-                            },
-                        },
                         props: { name: 'posts' },
                     },
                     comments: {
-                        list: {
-                            params: {
-                                filter: {},
-                                order: null,
-                                page: 1,
-                                perPage: null,
-                                sort: null,
-                            },
-                        },
                         props: { name: 'comments' },
                     },
                 },
@@ -127,86 +64,7 @@ describe('Resources Reducer', () => {
             )
         ).toEqual({
             posts: {
-                list: {
-                    params: {
-                        filter: {},
-                        order: null,
-                        page: 1,
-                        perPage: null,
-                        sort: null,
-                    },
-                },
                 props: { name: 'posts' },
-            },
-        });
-    });
-
-    it('should call inner reducers for each resource when action has a resource meta', () => {
-        expect(
-            reducer(
-                {
-                    posts: {
-                        list: {
-                            params: {
-                                filter: {},
-                                order: null,
-                                page: 1,
-                                perPage: null,
-                                sort: null,
-                            },
-                        },
-                        props: { name: 'posts' },
-                    },
-                    comments: {
-                        list: {
-                            params: {
-                                filter: {},
-                                order: null,
-                                page: 1,
-                                perPage: null,
-                                sort: null,
-                            },
-                        },
-                        props: { name: 'comments' },
-                    },
-                },
-                {
-                    // @ts-ignore
-                    type: CRUD_CHANGE_LIST_PARAMS,
-                    meta: { resource: 'posts' },
-                    payload: {
-                        filter: { commentable: true },
-                        order: null,
-                        page: 1,
-                        perPage: null,
-                        sort: null,
-                    },
-                }
-            )
-        ).toEqual({
-            posts: {
-                list: {
-                    params: {
-                        filter: { commentable: true },
-                        order: null,
-                        page: 1,
-                        perPage: null,
-                        sort: null,
-                    },
-                },
-                props: { name: 'posts' },
-            },
-            comments: {
-                list: {
-                    params: {
-                        filter: {},
-                        order: null,
-                        page: 1,
-                        perPage: null,
-                        sort: null,
-                    },
-                },
-                props: { name: 'comments' },
             },
         });
     });

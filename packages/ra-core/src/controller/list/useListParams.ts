@@ -81,9 +81,7 @@ export const useListParams = ({
     const [localParams, setLocalParams] = useState(defaultParams);
     const params = useSelector(
         (reduxState: ReduxState) =>
-            reduxState.admin.resources[resource]
-                ? reduxState.admin.resources[resource].list.params
-                : defaultParams,
+            reduxState.admin.listParams[resource] || defaultParams,
         shallowEqual
     );
     const tempParams = useRef<ListParams>();

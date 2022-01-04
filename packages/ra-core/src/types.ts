@@ -276,6 +276,15 @@ export interface ReduxState {
         selectedIds: {
             [name: string]: Identifier[];
         };
+        listParams: {
+            [name: string]: {
+                sort: string;
+                order: string;
+                page: number;
+                perPage: number;
+                filter: any;
+            };
+        };
     };
 
     // leave space for custom reducers
