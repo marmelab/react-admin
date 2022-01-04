@@ -809,6 +809,56 @@ const App = () => {
 }
 ```
 
+## Custom Menus Should Get Resource Definition From Context
+
+React-admin used to store the definitino of each resource (its name, icon, label, etc.) in the Redux state. This is no longer the case, as the resource definition is now stored in a custom  context.
+
+If you relied on the `useResourceDefinition` hook, this change shouldn't affect you.
+
+If you need to access the definitions of all resources, however, you must upgrade your code, and use the new `useResourceDefinitions` hook.
+
+The most common use case is when you override the default `<Menu>` component:
+
+```diff
+// in src/Menu.js
+import * as React from 'react';
+import { createElement } from 'react';
+-import { useSelector } from 'react-redux';
+import { useMediaQuery } from '@material-ui/core';
+-import { DashboardMenuItem, Menu, MenuItemLink, getResources } from 'react-admin';
++import { DashboardMenuItem, Menu, MenuItemLink, useResourceDefinitions } from 'react-admin';
+import DefaultIcon from '@material-ui/icons/ViewList';
+import LabelIcon from '@material-ui/icons/Label';
+
+export const Menu = (props) => {
+-   const resources = useSelector(getResources);
++   const resourcesDefinitions = useResourceDefinitions();
++   const resources = Object.keys(resourcesDefinitions).map(name => resourcesDefinitions[name]);
+    const open = useSelector(state => state.admin.ui.sidebarOpen);
+    return (
+        <Menu {...props}>
+            <DashboardMenuItem />
+            {resources.map(resource => (
+                <MenuItemLink
+                    key={resource.name}
+                    to={`/${resource.name}`}
+                    primaryText={
+                        (resource.options && resource.options.label) ||
+                        resource.name
+                    }
+                    leftIcon={
+                        resource.icon ? <resource.icon /> : <DefaultIcon />
+                    }
+                    onClick={props.onMenuClick}
+                    sidebarIsOpen={open}
+                />
+            ))}
+            {/* add your custom menus here */}
+        </Menu>
+    );
+};
+```
+
 ## No More Prop Injection In Page Components
 
 Page components (`<List>`, `<Show>`, etc.) used to expect to receive props (route parameters, permissions, resource name). These components don't receive any props anymore by default. They use hooks to get the props they need from contexts or route state.  
@@ -990,13 +1040,79 @@ const CommentGrid = () => {
 
 ## Removed Reducers
 
-React-admin no longer relies on Redux to fetch relationships. Instead, the cache of previously fetched relationships is managed by react-query.
+If your code used `useSelector` to read the react-admin application state, it will likely break. React-admin v4 uses Redux much less than v3, and the shape of the Redux state has changed.
+
+React-admin no longer uses Redux for **data fetching**. Instead, it uses react-query. If you used to read data from the Redux store (which was a bad practice by the way), you'll have to use specialized data provider hooks instead.
+
+```diff
+import * as React from "react";
+-import { useSelector } from 'react-redux';
++import { useGetOne } from 'react-admin';
+import { Loading, Error } from '../ui';
+
+const UserProfile = ({ record }) => {
+-   const data = useSelector(state => state.resources.users.data[record.id]);
++   const { data, isLoading, error } = useGetOne(
++       'users',
++       { id: record.id }
++   );
++   if (isLoading) { return <Loading />; }
++   if (error) { return <Error />; }
+    return <div>User {data.username}</div>;
+};
+```
+
+Besides, the `loadedOnce` reducer, used internally for the previous version of the List page logic, is no longer necessary and has been removed.
+
+React-admin no longer relies on Redux to fetch **relationships**. Instead, the cache of previously fetched relationships is managed by react-query.
 
 If you need to get the records related to the current one via a one-to-many relationship (e.g. to fetch all the books of a given author), you can use the `useGetManyReference` hook instead of the `oneToMany` reducer.
 
 If you need to get possible values for a relationship, use the `useGetList` hook instead of the `possibleValues` reducer.
 
-Besides, the `loadedOnce` reducer, used internally for the previous version of the List page logic, is no longer necessary and has been removed.
+React-admin no longer uses Redux for **resource definitions**. Instead, it uses a custom context. If you used the `useResourceDefinition` hook, this change is backwards compatible. But if you used to read the Redux state directly, you'll have to upgrade your code. This often happens for custom menus, using the `getResources` selector:
+
+```diff
+// in src/Menu.js
+import * as React from 'react';
+import { createElement } from 'react';
+-import { useSelector } from 'react-redux';
+import { useMediaQuery } from '@material-ui/core';
+-import { DashboardMenuItem, Menu, MenuItemLink, getResources } from 'react-admin';
++import { DashboardMenuItem, Menu, MenuItemLink, useResourceDefinitions } from 'react-admin';
+import DefaultIcon from '@material-ui/icons/ViewList';
+import LabelIcon from '@material-ui/icons/Label';
+
+export const Menu = (props) => {
+-   const resources = useSelector(getResources);
++   const resourcesDefinitions = useResourceDefinitions();
++   const resources = Object.keys(resourcesDefinitions).map(name => resourcesDefinitions[name]);
+    const open = useSelector(state => state.admin.ui.sidebarOpen);
+    return (
+        <Menu {...props}>
+            <DashboardMenuItem />
+            {resources.map(resource => (
+                <MenuItemLink
+                    key={resource.name}
+                    to={`/${resource.name}`}
+                    primaryText={
+                        (resource.options && resource.options.label) ||
+                        resource.name
+                    }
+                    leftIcon={
+                        resource.icon ? <resource.icon /> : <DefaultIcon />
+                    }
+                    onClick={props.onMenuClick}
+                    sidebarIsOpen={open}
+                />
+            ))}
+            {/* add your custom menus here */}
+        </Menu>
+    );
+};
+```
+
+Reducers for the **list parameters** (current sort & filters, selected ids, expanded rows) have moved up to the root reducer (so they don't need the resource to be registered first). This shouldn't impact you if you used the react-admin hooks (`useListParams`, `useSelection`) to read the state.
 
 ## Redux-Saga Was Removed
 

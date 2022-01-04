@@ -16,18 +16,7 @@ const render = element =>
     renderWithRedux(
         <table>
             <tbody>{element}</tbody>
-        </table>,
-        {
-            admin: {
-                resources: {
-                    posts: {
-                        list: {
-                            expanded: [],
-                        },
-                    },
-                },
-            },
-        }
+        </table>
     );
 
 describe('<DatagridRow />', () => {

@@ -9,7 +9,6 @@ import { WithDataProvider } from './TestContext.stories';
 const primedStore = {
     admin: {
         notifications: [],
-        resources: {},
         ui: {},
         selectedIds: {},
         expandedRows: {},

@@ -1,8 +1,5 @@
 import { combineReducers, Reducer } from 'redux';
-import admin, {
-    getResources as adminGetResources,
-    getReferenceResource as adminGetReferenceResource,
-} from './admin';
+import admin from './admin';
 export { getNotification } from './admin/notifications';
 
 interface CustomReducers {
@@ -14,7 +11,3 @@ export default (customReducers: CustomReducers) =>
         admin,
         ...customReducers,
     });
-
-export const getResources = state => adminGetResources(state.admin);
-export const getReferenceResource = (state, props) =>
-    adminGetReferenceResource(state.admin, props);

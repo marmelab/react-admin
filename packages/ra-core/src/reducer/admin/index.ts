@@ -1,8 +1,4 @@
 import { combineReducers } from 'redux';
-import resources, {
-    getResources as resourceGetResources,
-    getReferenceResource as resourceGetReferenceResource,
-} from './resource';
 import notifications from './notifications';
 import ui from './ui';
 import { selectedIds } from './selectedIds';
@@ -19,16 +15,9 @@ export default combineReducers({
      *
      * @see https://stackoverflow.com/questions/43375079/redux-warning-only-appearing-in-tests
      */
-    resources: resources || defaultReducer,
     notifications: notifications || defaultReducer,
     ui: ui || defaultReducer,
     selectedIds: selectedIds || defaultReducer,
     expandedRows: expandedRows || defaultReducer,
     listParams: listParams || defaultReducer,
 });
-
-export const getResources = state => resourceGetResources(state.resources);
-
-export const getReferenceResource = (state, props) => {
-    return resourceGetReferenceResource(state.resources, props);
-};

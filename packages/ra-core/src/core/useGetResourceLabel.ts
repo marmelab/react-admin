@@ -1,6 +1,6 @@
 import inflection from 'inflection';
-import { useStore } from 'react-redux';
-import { getResources } from '../reducer';
+
+import { useResourceDefinitions } from './useResourceDefinitions';
 import { useTranslate } from '../i18n';
 
 /**
@@ -9,14 +9,14 @@ import { useTranslate } from '../i18n';
  * @returns {GetResourceLabel} A function which takes a resource name and an optional number indicating the number of items (used for pluralization) and returns a translated string.
  * @example
  * const Menu = () => {
- *     const resources = useSelector(getResources, shallowEqual);
+ *     const resources = useResourceDefinitions();
  *     const getResourceLabel = useGetResourceLabel();
  *
  *     return (
  *         <ul>
- *             {resources.map(resource => (
- *                 <li key={resource.name}>
- *                     {getResourceLabel(resource.name, 2)}
+ *             {Object.keys(resources).map(name => (
+ *                 <li key={name}>
+ *                     {getResourceLabel(name, 2)}
  *                 </li>
  *             ))}
  *         </ul>
@@ -24,13 +24,11 @@ import { useTranslate } from '../i18n';
  * }
  */
 export const useGetResourceLabel = (): GetResourceLabel => {
-    const store = useStore();
     const translate = useTranslate();
+    const definitions = useResourceDefinitions();
 
     return (resource: string, count = 2): string => {
-        const resourceDefinition = getResources(store.getState()).find(
-            r => r?.name === resource
-        );
+        const resourceDefinition = definitions[resource];
 
         const label = translate(`resources.${resource}.name`, {
             smart_count: count,

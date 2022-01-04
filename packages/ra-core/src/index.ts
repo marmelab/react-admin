@@ -14,7 +14,7 @@ export * from './util';
 export * from './controller';
 export * from './form';
 
-export { getResources, getReferenceResource, getNotification } from './reducer';
+export { getNotification } from './reducer';
 
 export * from './sideEffect';
 export * from './types';
