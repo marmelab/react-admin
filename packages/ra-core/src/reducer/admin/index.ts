@@ -5,7 +5,8 @@ import resources, {
 } from './resource';
 import notifications from './notifications';
 import ui from './ui';
-import { selectedIdsReducer } from './selectedIds';
+import { selectedIds } from './selectedIds';
+import { expandedRows } from './expandedRows';
 
 const defaultReducer = () => null;
 
@@ -20,7 +21,8 @@ export default combineReducers({
     resources: resources || defaultReducer,
     notifications: notifications || defaultReducer,
     ui: ui || defaultReducer,
-    selectedIds: selectedIdsReducer || defaultReducer,
+    selectedIds: selectedIds || defaultReducer,
+    expandedRows: expandedRows || defaultReducer,
 });
 
 export const getResources = state => resourceGetResources(state.resources);

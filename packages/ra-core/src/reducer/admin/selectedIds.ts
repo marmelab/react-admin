@@ -25,7 +25,7 @@ type ActionTypes =
           payload: any;
       };
 
-export const selectedIdsReducer: Reducer<State> = (
+export const selectedIds: Reducer<State> = (
     previousState: State = initialState,
     action: ActionTypes
 ) => {

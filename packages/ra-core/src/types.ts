@@ -270,6 +270,9 @@ export interface ReduxState {
                 };
             };
         };
+        expandedRows: {
+            [name: string]: Identifier[];
+        };
         selectedIds: {
             [name: string]: Identifier[];
         };

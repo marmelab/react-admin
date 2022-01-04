@@ -12,6 +12,7 @@ const primedStore = {
         resources: {},
         ui: {},
         selectedIds: {},
+        expandedRows: {},
     },
 };
 
