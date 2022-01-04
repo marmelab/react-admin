@@ -1,6 +1,6 @@
 # React-admin Simple Example
 
-This is the application we use for our end to end tests, and for reproducing bugs via CodeSandbox.
+This is the application we use for our end-to-end tests, and for reproducing bugs via CodeSandbox.
 
 ## How to run
 

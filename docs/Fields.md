@@ -38,7 +38,7 @@ const PurpleTextField = ({ source }) => {
 ```
 {% endraw %}
 
-React-admin Field components also accept a `record` prop. This allows you to use them outside of a `RecordContext`, or to use another `record` than the one in the current context.
+React-admin Field components also accept a `record` prop. This allows you to use them outside a `RecordContext`, or to use another `record` than the one in the current context.
 
 ```jsx
 // a post looks like
@@ -310,7 +310,7 @@ import { ImageField } from 'react-admin';
 </div>
 ```
 
-This field is also often used within the [<ImageInput />](./Inputs.md#imageinput) component to display a preview.
+This field is also often used within the [`<ImageInput />`](./Inputs.md#imageinput) component to display a preview.
 
 #### Properties
 
@@ -373,7 +373,7 @@ import { FileField } from 'react-admin';
 </div>
 ```
 
-This field is also often used within an [<FileInput />](./Inputs.md#fileinput) component to display preview.
+This field is also often used within a [\<FileInput /\>](./Inputs.md#fileinput) component to display preview.
 
 #### Properties
 

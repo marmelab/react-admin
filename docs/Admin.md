@@ -666,7 +666,7 @@ const App = () => (
 export default App;
 ```
 
-When a user browses to `/register`, the `<Register>` component will appear outside of the defined Layout, leaving you the freedom to design the screen the way you want.
+When a user browses to `/register`, the `<Register>` component will appear outside the defined Layout, leaving you the freedom to design the screen the way you want.
 
 **Tip**: Custom routes can be [a `<Redirect>` route](https://reacttraining.com/react-router/web/api/Redirect), too.
 

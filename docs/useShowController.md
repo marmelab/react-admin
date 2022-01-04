@@ -122,7 +122,7 @@ The default `onError` function is:
 
 By default, `useShowController` reads the resource name from the resource context, and the record id from the browser location.
 
-But by passing `resource` and `id` props, you can run the controller logic outside of these contexts:
+But by passing `resource` and `id` props, you can run the controller logic outside these contexts:
 
 ```jsx
 import { useShowController } from 'react-admin';

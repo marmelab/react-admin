@@ -58,7 +58,7 @@ Note that `<CustomRoutes>` handles `null` elements and fragments correctly, so y
 
 In order to define the resources and their views according to users permissions, we used to support a function as a child of `<Admin>`. Just like the `customRoutes`, this function had to return an array of elements.
 
-You can now return a fragment and this fragment may contains `null` elements. Besides, if you don't need to check the permissions for a resource, you may even include it as a direct child of `<Admin>`.
+You can now return a fragment and this fragment may contain `null` elements. Besides, if you don't need to check the permissions for a resource, you may even include it as a direct child of `<Admin>`.
 
 ```diff
 <Admin>
@@ -811,7 +811,7 @@ const App = () => {
 
 ## Custom Menus Should Get Resource Definition From Context
 
-React-admin used to store the definitino of each resource (its name, icon, label, etc.) in the Redux state. This is no longer the case, as the resource definition is now stored in a custom  context.
+React-admin used to store the definition of each resource (its name, icon, label, etc.) in the Redux state. This is no longer the case, as the resource definition is now stored in a custom context.
 
 If you relied on the `useResourceDefinition` hook, this change shouldn't affect you.
 
@@ -1233,7 +1233,7 @@ const MyCustomField = () => (
 
 ## Removed `loading` and `loaded` Data Provider State Variables
 
-The dataProvider hooks (`useGetOne`, etc) return the request state. The `loading` and `loaded` state variables were changed to `isLoading` and `isFetching` respectively. The meaning has changed, too:
+The dataProvider hooks (`useGetOne`, etc.) return the request state. The `loading` and `loaded` state variables were changed to `isLoading` and `isFetching` respectively. The meaning has changed, too:
 
 - `loading` is now `isFetching`
 - `loaded` is now `!isLoading`

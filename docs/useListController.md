@@ -34,15 +34,15 @@ const MyList = () => {
 `useListController` expects one object as parameter. All keys are optional.
 
 * [`debounce`](./List.md#debounce): debounce time in ms for the setFilters callbacks
-* [`disableAuthentication`](./List.md#disableAuthentication): set to true to allow anonymous access to the list
-* [`disableSyncWithLocation`](./List.md#disableSyncWithLocation): set to true to have more than one list per page
+* [`disableAuthentication`](./List.md#disableauthentication): set to true to allow anonymous access to the list
+* [`disableSyncWithLocation`](./List.md#disablesyncwithlocation): set to true to have more than one list per page
 * [`exporter`](./List.md#exporter): exporter function
 * [`filter`](./List.md#filter-permanent-filter): permanent filter, forced over the user filter
-* [`filterDefaultValues`](./List.md#filterDefaultValues): default values for the filter form
+* [`filterDefaultValues`](./List.md#filterdefaultvalues): default values for the filter form
 * [`perPage`](./List.md#perpage-pagination-size): number of results per page
-* [`queryOptions`](./List.md#queryOptions): react-query options for the useQuery call
+* [`queryOptions`](./List.md#queryoptions): react-query options for the useQuery call
 * [`resource`](./List.md#resource): resource name, e.g. 'posts' ; defaults to the current resource context
-* [`sort`](./List.md#sort-default-sort-field-order), current sort value, e.g. { field: 'published_at', order: 'DESC' }
+* [`sort`](./List.md#sort-default-sort-field--order), current sort value, e.g. { field: 'published_at', order: 'DESC' }
 
 Here are their default values:
 
@@ -53,17 +53,29 @@ import {
     ListContextProvider
 } from 'react-admin';
 
-const MyList = () => {
+const MyList = ({
+    debounce = 500,
+    disableAuthentication = false,
+    disableSyncWithLocation = false,
+    exporter = defaultExporter,
+    filter = undefined,
+    filterDefaultValues = undefined,
+    perPage = 10,
+    queryOptions = undefined,
+    resource = '',
+    sort = { field: 'id', order: 'DESC' },
+}) => {
     const listContext = useListController({
-        debounce = 500,
-        disableAuthentication = false,
-        disableSyncWithLocation = false,
-        exporter = defaultExporter,
-        filter = undefined,
-        filterDefaultValues = undefined,        perPage = 10,
-        queryOptions = undefined,
-        resource = '',
-        sort = { field: 'id', order: 'DESC' },.
+        debounce,
+        disableAuthentication,
+        disableSyncWithLocation,
+        exporter,
+        filter,
+        filterDefaultValues,
+        perPage,
+        queryOptions,
+        resource,
+        sort,
     });
     return (
         <ListContextProvider value={listContext}>
@@ -77,7 +89,7 @@ const MyList = () => {
 
 The return value of `useListController` has the following shape:
 
-```jsx
+```js
 const {
     // fetched data
     data, // an array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }]

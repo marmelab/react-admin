@@ -178,7 +178,7 @@ const BookShow = () => (
 
 ## Controlled Mode
 
-By default, `<SimpleShowLayout>` reads the record from the `ResourceContext`. But by passing a `record` prop, you can render the component outside of a `ResourceContext`.
+By default, `<SimpleShowLayout>` reads the record from the `ResourceContext`. But by passing a `record` prop, you can render the component outside a `ResourceContext`.
 
 {% raw %}
 ```jsx
