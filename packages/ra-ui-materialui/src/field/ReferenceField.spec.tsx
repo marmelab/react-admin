@@ -92,7 +92,7 @@ describe('<ReferenceField />', () => {
                     data: [{ id: 123, title: 'foo' }],
                 }),
             });
-            // we need to keep the same querry client between rerenders
+            // we need to keep the same query client between rerenders
             const queryClient = new QueryClient();
             const FecthGetMany = () => {
                 useGetMany('posts', { ids: [123] });

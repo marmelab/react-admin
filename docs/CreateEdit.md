@@ -437,7 +437,7 @@ The default `onSuccess` function is:
 }
 ```
 
-To learn more about built-in side effect hooks like `useNotify`, `useRedirect` and `useRefresh`, check the [Querying the API documentation](./Actions.md#handling-side-effects-in-usedataprovider).
+To learn more about built-in side effect hooks like `useNotify`, `useRedirect` and `useRefresh`, check the [Querying the API documentation](./Actions.md#success-and-error-side-effects).
 
 **Tip**: When you use `mutationMode="pessimistic"`, the `onSuccess` function receives the response from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is the created/edited record (see [the dataProvider documentation for details](./DataProviders.md#response-format)). You can use that response in the success side effects: 
 
@@ -2178,7 +2178,7 @@ export const UserEdit = ({ permissions }) =>
 
 ### Changing The Success or Failure Notification Message
 
-Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a custom success side effect function as [the `<Edit onSuccess>` prop](#onsuccess):
+Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a custom success side effect function as [the `<Edit onSuccess>` prop](#changing-the-success-or-failure-notification-message):
 
 ```jsx
 import { Edit, useNotify, useRedirect } from 'react-admin';

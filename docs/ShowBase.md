@@ -59,7 +59,7 @@ const App = () => (
 
 ## Props
 
-* [`children`](#layout) the components that actually render something
+* `children` the components that actually render something
 * [`queryOptions`](#client-query-options): options to pass to the react-query client
 
 ## Client Query Options

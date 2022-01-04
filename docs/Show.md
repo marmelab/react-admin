@@ -56,7 +56,6 @@ That's enough to display the post show view:
 ## Props
 
 * [`actions`](#actions): override the actions toolbar with a custom component
-* [`aside`](#aside): A component to render as a sidebar of the show view
 * `className`: passed to the root component
 * [`children`](#layout): the components that render the record fields
 * [`component`](#root-component): overrides the root component

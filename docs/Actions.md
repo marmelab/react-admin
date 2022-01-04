@@ -787,7 +787,7 @@ const ApproveButton = ({ record }) => {
     const redirect = useRedirect();
     const [approve, { isLoading }] = useUpdate(
         'comments',
-        { id: record.id, data: { isApproved: true } }
+        { id: record.id, data: { isApproved: true } },
         {
             onSuccess: (data) => {
                 // success side effects go here
