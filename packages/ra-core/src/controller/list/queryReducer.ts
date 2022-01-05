@@ -1,9 +1,7 @@
 import { Reducer } from 'redux';
-import set from 'lodash/set';
 
-import removeEmpty from '../../util/removeEmpty';
-import removeKey from '../../util/removeKey';
 import { ListParams } from '../../actions';
+import { FilterItem } from '../../types';
 
 export const SET_SORT = 'SET_SORT';
 export const SORT_ASC = 'ASC';
@@ -12,7 +10,7 @@ export const SORT_DESC = 'DESC';
 export const SET_PAGE = 'SET_PAGE';
 export const SET_PER_PAGE = 'SET_PER_PAGE';
 
-export const SET_FILTER = 'SET_FILTER';
+export const SET_FILTERS = 'SET_FILTERS';
 export const SHOW_FILTER = 'SHOW_FILTER';
 export const HIDE_FILTER = 'HIDE_FILTER';
 
@@ -33,9 +31,9 @@ type ActionTypes =
           payload: number;
       }
     | {
-          type: typeof SET_FILTER;
+          type: typeof SET_FILTERS;
           payload: {
-              filter: any;
+              filters: FilterItem[];
               displayedFilters?: { [key: string]: boolean };
           };
       }
@@ -78,11 +76,11 @@ export const queryReducer: Reducer<ListParams> = (
         case SET_PER_PAGE:
             return { ...previousState, page: 1, perPage: action.payload };
 
-        case SET_FILTER: {
+        case SET_FILTERS: {
             return {
                 ...previousState,
                 page: 1,
-                filter: action.payload.filter,
+                filters: action.payload.filters,
                 displayedFilters: action.payload.displayedFilters
                     ? action.payload.displayedFilters
                     : previousState.displayedFilters,
@@ -99,14 +97,17 @@ export const queryReducer: Reducer<ListParams> = (
             }
             return {
                 ...previousState,
-                filter:
+                filters:
                     typeof action.payload.defaultValue !== 'undefined'
-                        ? set(
-                              previousState.filter,
-                              action.payload.filterName,
-                              action.payload.defaultValue
-                          )
-                        : previousState.filter,
+                        ? [
+                              ...previousState.filters,
+                              {
+                                  field: action.payload.filterName,
+                                  operator: '=',
+                                  value: action.payload.defaultValue,
+                              },
+                          ]
+                        : previousState.filters,
                 // we don't use lodash.set() for displayed filters
                 // to avoid problems with compound filter names (e.g. 'author.name')
                 displayedFilters: {
@@ -119,8 +120,8 @@ export const queryReducer: Reducer<ListParams> = (
         case HIDE_FILTER: {
             return {
                 ...previousState,
-                filter: removeEmpty(
-                    removeKey(previousState.filter, action.payload)
+                filters: previousState.filters.filter(
+                    f => f.field !== action.payload
                 ),
                 // we don't use lodash.set() for displayed filters
                 // to avoid problems with compound filter names (e.g. 'author.name')

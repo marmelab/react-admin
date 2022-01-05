@@ -57,19 +57,39 @@ export const useGetList = <RecordType extends Record = Record>(
     const {
         pagination = { page: 1, perPage: 25 },
         sort = { field: 'id', order: 'DESC' },
-        filter = {},
+        filters = [],
+        filter,
     } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
+    const filterObject =
+        filter ||
+        filters.reduce((acc, curr) => {
+            acc[curr.field] = curr.value;
+            return acc;
+        }, {});
+    const filterArray =
+        filters ||
+        Object.keys(filter).map(field => ({
+            field,
+            operator: '=',
+            value: filter[field],
+        }));
     const result = useQuery<
         { data: RecordType[]; total: number },
         Error,
         { data: RecordType[]; total: number }
     >(
-        [resource, 'getList', { pagination, sort, filter }],
+        [resource, 'getList', { pagination, sort, filters }],
         () =>
             dataProvider
-                .getList<RecordType>(resource, { pagination, sort, filter })
+                .getList<RecordType>(resource, {
+                    pagination,
+                    sort,
+                    filters: filterArray,
+                    // FIXME: remove this when we remove the deprecated filter prop
+                    filter: filterObject,
+                })
                 .then(({ data, total }) => ({ data, total })),
         {
             onSuccess: ({ data }) => {

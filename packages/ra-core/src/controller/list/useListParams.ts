@@ -6,7 +6,7 @@ import pickBy from 'lodash/pickBy';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import queryReducer, {
-    SET_FILTER,
+    SET_FILTERS,
     HIDE_FILTER,
     SHOW_FILTER,
     SET_PAGE,
@@ -15,7 +15,12 @@ import queryReducer, {
     SORT_ASC,
 } from './queryReducer';
 import { changeListParams, ListParams } from '../../actions';
-import { SortPayload, ReduxState, FilterPayload } from '../../types';
+import {
+    SortPayload,
+    ReduxState,
+    FilterPayload,
+    FilterItem,
+} from '../../types';
 import removeEmpty from '../../util/removeEmpty';
 
 /**
@@ -78,10 +83,9 @@ export const useListParams = ({
     const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
-    const [localParams, setLocalParams] = useState(defaultParams);
-    const params = useSelector(
-        (reduxState: ReduxState) =>
-            reduxState.admin.listParams[resource] || defaultParams,
+    const [localParams, setLocalParams] = useState<ListParams>();
+    const params = useSelector<ReduxState, ListParams>(
+        reduxState => reduxState.admin.listParams[resource],
         shallowEqual
     );
     const tempParams = useRef<ListParams>();
@@ -105,7 +109,15 @@ export const useListParams = ({
             getQuery({
                 queryFromLocation,
                 params: disableSyncWithLocation ? localParams : params,
-                filterDefaultValues,
+                filterDefaultValues:
+                    filterDefaultValues &&
+                    (Array.isArray(filterDefaultValues)
+                        ? filterDefaultValues
+                        : Object.keys(filterDefaultValues).map(name => ({
+                              field: name,
+                              operator: '=',
+                              value: filterDefaultValues[name],
+                          }))),
                 sort,
                 perPage,
             }),
@@ -136,8 +148,8 @@ export const useListParams = ({
                         {
                             search: `?${stringify({
                                 ...tempParams.current,
-                                filter: JSON.stringify(
-                                    tempParams.current.filter
+                                filters: JSON.stringify(
+                                    tempParams.current.filters
                                 ),
                                 displayedFilters: JSON.stringify(
                                     tempParams.current.displayedFilters
@@ -177,27 +189,27 @@ export const useListParams = ({
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
-    const filterValues = query.filter || emptyObject;
+    const filterValues = query.filters || emptyArray;
     const displayedFilterValues = query.displayedFilters || emptyObject;
 
-    const debouncedSetFilters = lodashDebounce((filter, displayedFilters) => {
+    const debouncedSetFilters = lodashDebounce((filters, displayedFilters) => {
         changeParams({
-            type: SET_FILTER,
+            type: SET_FILTERS,
             payload: {
-                filter: removeEmpty(filter),
+                filters: removeEmpty(filters),
                 displayedFilters,
             },
         });
     }, debounce);
 
     const setFilters = useCallback(
-        (filter, displayedFilters, debounce = true) =>
+        (filters: FilterItem[], displayedFilters: string[], debounce = true) =>
             debounce
-                ? debouncedSetFilters(filter, displayedFilters)
+                ? debouncedSetFilters(filters, displayedFilters)
                 : changeParams({
-                      type: SET_FILTER,
+                      type: SET_FILTERS,
                       payload: {
-                          filter: removeEmpty(filter),
+                          filters: removeEmpty(filters),
                           displayedFilters,
                       },
                   }),
@@ -240,15 +252,6 @@ export const useListParams = ({
     ];
 };
 
-export const validQueryParams = [
-    'page',
-    'perPage',
-    'sort',
-    'order',
-    'filter',
-    'displayedFilters',
-];
-
 const parseObject = (query, field) => {
     if (query[field] && typeof query[field] === 'string') {
         try {
@@ -259,13 +262,36 @@ const parseObject = (query, field) => {
     }
 };
 
+export const validQueryParams = [
+    'page',
+    'perPage',
+    'sort',
+    'order',
+    'filters',
+    'displayedFilters',
+    // @FIXME: remove in v5
+    'filter',
+];
+
 export const parseQueryFromLocation = ({ search }): Partial<ListParams> => {
     const query = pickBy(
         parse(search),
         (v, k) => validQueryParams.indexOf(k) !== -1
     );
-    parseObject(query, 'filter');
+    parseObject(query, 'filters');
     parseObject(query, 'displayedFilters');
+    if (!query.filters && query.filter && typeof query.filter === 'string') {
+        // @FIXME: remove in v5
+        try {
+            const filterObject = JSON.parse(query.filter);
+            query.filters = Object.keys(filterObject).map(name => ({
+                field: name,
+                operator: '=',
+                value: filterObject[name],
+            }));
+        } catch (err) {}
+        delete query.filter;
+    }
     return query;
 };
 
@@ -275,18 +301,17 @@ export const parseQueryFromLocation = ({ search }): Partial<ListParams> => {
  * User params come from the Redux store as the params props. By default,
  * this object is:
  *
- * { filter: {}, order: null, page: 1, perPage: null, sort: null }
+ * { filters: [], order: null, page: 1, perPage: null, sort: null }
  *
  * To check if the user has custom params, we must compare the params
  * to these initial values.
  *
  * @param {Object} params
  */
-export const hasCustomParams = (params: ListParams) => {
+export const hasCustomParams = (params?: ListParams) => {
     return (
         params &&
-        params.filter &&
-        (Object.keys(params.filter).length > 0 ||
+        ((params.filters && params.filters.length > 0) ||
             params.order != null ||
             params.page !== 1 ||
             params.perPage != null ||
@@ -306,13 +331,19 @@ export const getQuery = ({
     filterDefaultValues,
     sort,
     perPage,
-}) => {
+}: {
+    queryFromLocation: Partial<ListParams>;
+    params?: ListParams;
+    filterDefaultValues?: FilterItem[];
+    sort: SortPayload;
+    perPage: number;
+}): ListParams => {
     const query: Partial<ListParams> =
         Object.keys(queryFromLocation).length > 0
             ? queryFromLocation
             : hasCustomParams(params)
             ? { ...params }
-            : { filter: filterDefaultValues || {} };
+            : { filters: filterDefaultValues || [] };
 
     if (!query.sort) {
         query.sort = sort.field;
@@ -349,7 +380,7 @@ export interface ListParamsOptions {
     perPage?: number;
     sort?: SortPayload;
     // default value for a filter when displayed but not yet set
-    filterDefaultValues?: FilterPayload;
+    filterDefaultValues?: FilterItem[] | FilterPayload;
     debounce?: number;
     // Whether to disable the synchronization of the list parameters with
     // the current location (URL search parameters)
@@ -357,10 +388,8 @@ export interface ListParamsOptions {
 }
 
 interface Parameters extends ListParams {
-    filterValues: object;
-    displayedFilters: {
-        [key: string]: boolean;
-    };
+    filterValues: FilterItem[];
+    displayedFilters: { [key: string]: boolean };
     requestSignature: any[];
 }
 
@@ -369,16 +398,15 @@ interface Modifiers {
     setPage: (page: number) => void;
     setPerPage: (pageSize: number) => void;
     setSort: (sort: string, order?: string) => void;
-    setFilters: (filters: any, displayedFilters: any) => void;
+    setFilters: (filters: FilterItem[], displayedFilters: string[]) => void;
     hideFilter: (filterName: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
 }
 
 const emptyObject = {};
+const emptyArray = [];
 
 const defaultSort = {
     field: 'id',
     order: SORT_ASC,
 };
-
-const defaultParams = {};

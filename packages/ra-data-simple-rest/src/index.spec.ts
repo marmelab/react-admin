@@ -1,3 +1,5 @@
+import { stringify } from 'query-string';
+
 import simpleClient from '.';
 
 describe('Data Simple REST Client', () => {
@@ -13,7 +15,7 @@ describe('Data Simple REST Client', () => {
             const client = simpleClient('http://localhost:3000', httpClient);
 
             await client.getList('posts', {
-                filter: {},
+                filters: [],
                 pagination: {
                     page: 1,
                     perPage: 10,
@@ -54,7 +56,7 @@ describe('Data Simple REST Client', () => {
             );
 
             const result = await client.getList('posts', {
-                filter: {},
+                filters: [],
                 pagination: {
                     page: 1,
                     perPage: 10,
@@ -67,7 +69,54 @@ describe('Data Simple REST Client', () => {
 
             expect(result.total).toEqual(42);
         });
+
+        it('should set the filter param depending on the operator', async () => {
+            const httpClient = jest.fn(() =>
+                Promise.resolve({
+                    headers: new Headers({
+                        'content-range': '0/4-8',
+                    }),
+                })
+            );
+            const client = simpleClient('http://localhost:3000', httpClient);
+
+            await client.getList('posts', {
+                filters: [
+                    { field: 'title', operator: '=', value: 'foo' },
+                    { field: 'status', operator: 'neq', value: 'draft' },
+                    { field: 'tags', operator: 'in', value: ['foo', 'bar'] },
+                    { field: 'age', operator: 'gte', value: 5 },
+                ],
+                pagination: {
+                    page: 1,
+                    perPage: 10,
+                },
+                sort: {
+                    field: 'title',
+                    order: 'desc',
+                },
+            });
+
+            expect(httpClient).toHaveBeenCalledWith(
+                `http://localhost:3000/posts?${stringify({
+                    filter: JSON.stringify({
+                        title: 'foo',
+                        status_neq: 'draft',
+                        tags_in: ['foo', 'bar'],
+                        age_gte: 5,
+                    }),
+                })}&range=%5B0%2C9%5D&sort=%5B%22title%22%2C%22desc%22%5D`,
+                {
+                    headers: {
+                        map: {
+                            range: 'posts=0-9',
+                        },
+                    },
+                }
+            );
+        });
     });
+
     describe('delete', () => {
         it('should set the `Content-Type` header to `text/plain`', async () => {
             const httpClient = jest.fn().mockResolvedValue({ json: { id: 1 } });

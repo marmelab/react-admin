@@ -7,7 +7,13 @@ import { useNotify } from '../../sideEffect';
 import { useGetList, UseGetListHookValue } from '../../dataProvider';
 import { SORT_ASC } from './queryReducer';
 import { defaultExporter } from '../../export';
-import { FilterPayload, SortPayload, Record, Exporter } from '../../types';
+import {
+    FilterItem,
+    FilterPayload,
+    SortPayload,
+    Record,
+    Exporter,
+} from '../../types';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import useRecordSelection from '../useRecordSelection';
 import { useListParams } from './useListParams';
@@ -81,7 +87,7 @@ export const useListController = <RecordType extends Record = Record>(
                 perPage: query.perPage,
             },
             sort: { field: query.sort, order: query.order },
-            filter: { ...query.filter, ...filter },
+            filters: [...query.filters, ...getFilterItems(filter)],
         },
         {
             keepPreviousData: true,
@@ -163,7 +169,7 @@ export interface ListControllerProps<RecordType extends Record = Record> {
      */
     disableSyncWithLocation?: boolean;
     exporter?: Exporter | false;
-    filter?: FilterPayload;
+    filter?: FilterItem[] | FilterPayload;
     filterDefaultValues?: object;
     perPage?: number;
     queryOptions?: UseQueryOptions<{ data: RecordType[]; total: number }>;
@@ -184,7 +190,7 @@ export interface ListControllerResult<RecordType extends Record = Record> {
     error?: any;
     exporter?: Exporter | false;
     filter?: FilterPayload;
-    filterValues: any;
+    filterValues: FilterItem[];
     hideFilter: (filterName: string) => void;
     isFetching: boolean;
     isLoading: boolean;
@@ -237,6 +243,20 @@ export const injectedProps = [
     'total',
     'totalPages',
 ];
+
+const getFilterItems = (
+    filters: FilterItem[] | FilterPayload
+): FilterItem[] => {
+    if (Array.isArray(filters)) {
+        return filters;
+    }
+
+    return Object.keys(filters).map(key => ({
+        field: key,
+        operator: '=',
+        value: filters[key],
+    }));
+};
 
 /**
  * Select the props injected by the useListController hook

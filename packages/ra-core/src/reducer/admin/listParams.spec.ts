@@ -14,8 +14,8 @@ describe('listParams reducer', () => {
                             order: 'DESC',
                             page: 1,
                             perPage: 10,
-                            filter: {},
-                            displayedFilters: [],
+                            filters: [],
+                            displayedFilters: {},
                         },
                     },
                     changeListParams('foo', {
@@ -23,8 +23,8 @@ describe('listParams reducer', () => {
                         order: 'ASC',
                         page: 1,
                         perPage: 10,
-                        filter: {},
-                        displayedFilters: [],
+                        filters: [],
+                        displayedFilters: {},
                     })
                 )
             ).toEqual({
@@ -33,8 +33,8 @@ describe('listParams reducer', () => {
                     order: 'ASC',
                     page: 1,
                     perPage: 10,
-                    filter: {},
-                    displayedFilters: [],
+                    filters: [],
+                    displayedFilters: {},
                 },
             });
         });
@@ -48,8 +48,8 @@ describe('listParams reducer', () => {
                         order: 'ASC',
                         page: 1,
                         perPage: 10,
-                        filter: {},
-                        displayedFilters: [],
+                        filters: [],
+                        displayedFilters: {},
                     })
                 )
             ).toEqual({
@@ -58,8 +58,8 @@ describe('listParams reducer', () => {
                     order: 'ASC',
                     page: 1,
                     perPage: 10,
-                    filter: {},
-                    displayedFilters: [],
+                    filters: [],
+                    displayedFilters: {},
                 },
             });
         });
@@ -72,8 +72,8 @@ describe('listParams reducer', () => {
                             order: 'DESC',
                             page: 1,
                             perPage: 10,
-                            filter: {},
-                            displayedFilters: [],
+                            filters: [],
+                            displayedFilters: {},
                         },
                     },
                     changeListParams('foo', {
@@ -81,8 +81,8 @@ describe('listParams reducer', () => {
                         order: 'ASC',
                         page: 1,
                         perPage: 10,
-                        filter: {},
-                        displayedFilters: [],
+                        filters: [],
+                        displayedFilters: {},
                     })
                 )
             ).toEqual({
@@ -91,16 +91,16 @@ describe('listParams reducer', () => {
                     order: 'DESC',
                     page: 1,
                     perPage: 10,
-                    filter: {},
-                    displayedFilters: [],
+                    filters: [],
+                    displayedFilters: {},
                 },
                 foo: {
                     sort: 'id',
                     order: 'ASC',
                     page: 1,
                     perPage: 10,
-                    filter: {},
-                    displayedFilters: [],
+                    filters: [],
+                    displayedFilters: {},
                 },
             });
         });

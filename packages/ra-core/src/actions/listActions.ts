@@ -1,4 +1,4 @@
-import { Identifier } from '../types';
+import { Identifier, FilterItem } from '../types';
 
 export const CRUD_CHANGE_LIST_PARAMS = 'RA/CRUD_CHANGE_LIST_PARAMS';
 
@@ -7,8 +7,8 @@ export interface ListParams {
     order: string;
     page: number;
     perPage: number;
-    filter: any;
-    displayedFilters: any;
+    filters: FilterItem[];
+    displayedFilters: { [key: string]: boolean };
 }
 
 export interface ChangeListParamsAction {

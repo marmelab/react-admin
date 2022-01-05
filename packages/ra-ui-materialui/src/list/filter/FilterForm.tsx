@@ -189,7 +189,14 @@ export const FilterForm = props => {
                             if (pristine || invalid) {
                                 return;
                             }
-                            setFilters(values, displayedFilters);
+                            setFilters(
+                                Object.keys(values).map(name => ({
+                                    field: name,
+                                    operator: '=',
+                                    value: values[name],
+                                })),
+                                displayedFilters
+                            );
                         }}
                     />
                     <FilterFormBase

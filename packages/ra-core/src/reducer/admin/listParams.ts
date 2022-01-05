@@ -1,8 +1,10 @@
 import { Reducer } from 'redux';
+
 import {
     CRUD_CHANGE_LIST_PARAMS,
     ChangeListParamsAction,
 } from '../../actions/listActions';
+import { FilterItem } from '../../types';
 
 const defaultState = {};
 
@@ -12,8 +14,8 @@ export interface State {
         order: string;
         page: number;
         perPage: number;
-        filter: any;
-        displayedFilters: any;
+        filters: FilterItem[];
+        displayedFilters: { [key: string]: boolean };
     };
 }
 

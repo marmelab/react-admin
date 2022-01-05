@@ -125,11 +125,22 @@ export type DataProvider = {
     [key: string]: any;
 };
 
-export interface GetListParams {
-    pagination: PaginationPayload;
-    sort: SortPayload;
-    filter: any;
+export interface FilterItem {
+    field: string;
+    operator: string;
+    value: any;
 }
+
+export interface GetListParams {
+    pagination?: PaginationPayload;
+    sort?: SortPayload;
+    /**
+     * @deprecated use filters instead
+     */
+    filter?: { [key: string]: string };
+    filters?: FilterItem[];
+}
+
 export interface GetListResult<RecordType extends Record = Record> {
     data: RecordType[];
     total: number;
@@ -272,7 +283,8 @@ export interface ReduxState {
                 order: string;
                 page: number;
                 perPage: number;
-                filter: any;
+                filters: FilterItem[];
+                displayedFilters: { [key: string]: boolean };
             };
         };
     };
