@@ -4,9 +4,26 @@
 <ul><div>App Configuration</div>
   <li {% if page.path contains 'Admin.md' %} class="active" {% endif %}><a class="nav-link" href="./Admin.html"><code>&lt;Admin&gt;</code></a></li>
   <li {% if page.path contains 'Resource.md' %} class="active" {% endif %}><a class="nav-link" href="./Resource.html"><code>&lt;Resource&gt;</code></a></li>
-  <li {% if page.path contains 'DataProviders.md' %} class="active" {% endif %}><a class="nav-link" href="./DataProviders.html">Data Providers</a></li>
   <li {% if page.path contains 'Authentication.md' %} class="active" {% endif %}><a class="nav-link" href="./Authentication.html">Auth Providers</a></li>
   <li {% if page.path contains 'Translation.md' %} class="active" {% endif %}><a class="nav-link" href="./Translation.html">Translation & i18n</a></li>
+</ul>
+
+<ul><div>Data Provider and API Calls</div>
+  <li {% if page.path contains 'DataProviderIntroduction.md' %} class="active" {% endif %}><a class="nav-link" href="./DataProviderIntroduction.html">Introduction</a></li>
+  <li {% if page.path contains 'DataProviderList.md' %} class="active" {% endif %}><a class="nav-link" href="./DataProviderList.html">Supported backends</a></li>
+  <li {% if page.path contains 'DataProviders.md' %} class="active" {% endif %}><a class="nav-link" href="./DataProviders.html">Setting Up</a></li>
+  <li {% if page.path contains 'DataProviderWriting.md' %} class="active" {% endif %}><a class="nav-link" href="./DataProviderWriting.html">Writing A Data Provider</a></li>
+  <li {% if page.path contains 'Actions.md' %} class="active" {% endif %}><a class="nav-link" href="./Actions.html">Querying the API</a></li>
+  <li {% if page.path contains 'useDataProvider.md' %} class="active" {% endif %}><a class="nav-link" href="./useDataProvider.html"><code>useDataProvider</code></a></li>
+  <li {% if page.path contains 'useGetList.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetList.html"><code>useGetList</code></a></li>
+  <li {% if page.path contains 'useGetOne.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetOne.html"><code>useGetOne</code></a></li>
+  <li {% if page.path contains 'useGetMany.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetMany.html"><code>useGetMany</code></a></li>
+  <li {% if page.path contains 'useGetManyReference.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetManyReference.html"><code>useGetManyReference</code></a></li>
+  <li {% if page.path contains 'useCreate.md' %} class="active" {% endif %}><a class="nav-link" href="./useCreate.html"><code>useCreate</code></a></li>
+  <li {% if page.path contains 'useUpdate.md' %} class="active" {% endif %}><a class="nav-link" href="./useUpdate.html"><code>useUpdate</code></a></li>
+  <li {% if page.path contains 'useUpdateMany.md' %} class="active" {% endif %}><a class="nav-link" href="./useUpdateMany.html"><code>useUpdateMany</code></a></li>
+  <li {% if page.path contains 'useDelete.md' %} class="active" {% endif %}><a class="nav-link" href="./useDelete.html"><code>useDelete</code></a></li>
+  <li {% if page.path contains 'useDeleteMany.md' %} class="active" {% endif %}><a class="nav-link" href="./useDeleteMany.html"><code>useDeleteMany</code></a></li>
 </ul>
 
 <ul><div>List Page</div>
@@ -29,6 +46,7 @@
   <li {% if page.path contains 'useList.md' %} class="active" {% endif %}><a class="nav-link" href="./useList.html"><code>useList</code></a></li>
   <li {% if page.path contains 'useListContext.md' %} class="active" {% endif %}><a class="nav-link" href="./useListContext.html"><code>useListContext</code></a></li>
   <li {% if page.path contains 'useListController.md' %} class="active" {% endif %}><a class="nav-link" href="./useListController.html"><code>useListController</code></a></li>
+  <li {% if page.path contains 'useUnselectAll.md' %} class="active" {% endif %}><a class="nav-link" href="./useUnselectAll.html"><code>useUnselectAll</code></a></li>
 </ul>
 
 <ul><div>Show Page</div>
@@ -46,6 +64,9 @@
 <ul><div>Common</div>
   <li {% if page.path contains 'WithRecord.md' %} class="active" {% endif %}><a class="nav-link" href="./WithRecord.html"><code>&lt;WithRecord&gt;</code></a></li>
   <li {% if page.path contains 'useRecordContext.md' %} class="active" {% endif %}><a class="nav-link" href="./useRecordContext.html"><code>useRecordContext</code></a></li>
+  <li {% if page.path contains 'useNotify.md' %} class="active" {% endif %}><a class="nav-link" href="./useNotify.html"><code>useNotify</code></a></li>
+  <li {% if page.path contains 'useRedirect.md' %} class="active" {% endif %}><a class="nav-link" href="./useRedirect.html"><code>useRedirect</code></a></li>
+  <li {% if page.path contains 'useRefresh.md' %} class="active" {% endif %}><a class="nav-link" href="./useRefresh.html"><code>useRefresh</code></a></li>
 </ul>
 
 <ul><div>View Configuration</div>
@@ -62,7 +83,6 @@
 </ul>
 
 <ul><div>Recipes</div>
-  <li {% if page.path contains 'Actions.md' %} class="active" {% endif %}><a class="nav-link" href="./Actions.html">Querying the API</a></li>
   <li {% if page.path contains 'Theming.md' %} class="active" {% endif %}><a class="nav-link" href="./Theming.html">Theming</a></li>
   <li {% if page.path contains 'Caching.md' %} class="active" {% endif %}><a class="nav-link" href="./Caching.html">Caching</a></li>
   <li {% if page.path contains 'CustomApp.md' %} class="active" {% endif %}><a class="nav-link" href="./CustomApp.html">Including in Another App</a></li>

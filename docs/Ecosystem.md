@@ -47,7 +47,7 @@ See the [Auth Provider](./Authentication.md#available-providers) page. Here is a
 
 ## Data Providers
 
-See the [Data Provider](./DataProviders.md#available-providers) page.
+See the [Data Provider Backends](./DataProviderList.md) page.
 
 ## User Interface
 

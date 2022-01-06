@@ -5,64 +5,26 @@ title: "Querying the API"
 
 # Querying the API
 
-Admin interfaces often have to query the API beyond CRUD requests. For instance, a user profile page may need to get the User object based on a user id. Or, users may want to "Approve" a comment by pressing a button, and this action should update the `is_approved` property and save the updated record in one click.
+React-admin provides special hooks to emit read and write queries to the [`dataProvider`](./DataProviders.md), which in turn sends requests to your API. Under the hood, it uses [react-query](https://react-query.tanstack.com/) to call the `dataProvider` and cache the results.
 
-React-admin provides special hooks to emit read and write queries to the [`dataProvider`](./DataProviders.md), which in turn sends requests to your API.
+## Getting The `dataProvider` Instance
 
-## `useDataProvider`
-
-React-admin stores the `dataProvider` object in a React context, so it's available from anywhere in your application code. The `useDataProvider` hook exposes the Data Provider to let you call it directly.
+React-admin stores the `dataProvider` object in a React context, so it's available from anywhere in your application code. The `useDataProvider` hook grabs the Data Provider from that context, so you can call it directly.
 
 For instance, here is how to query the Data Provider for the current user profile:
 
 ```jsx
-import { useState, useEffect } from 'react';
 import { useDataProvider } from 'react-admin';
-import { Loading, Error } from './MyComponents';
 
-const UserProfile = ({ userId }) => {
+const MyComponent = () => {
     const dataProvider = useDataProvider();
-    const [user, setUser] = useState();
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState();
-    useEffect(() => {
-        dataProvider.getOne('users', { id: userId })
-            .then(({ data }) => {
-                setUser(data);
-                setLoading(false);
-            })
-            .catch(error => {
-                setError(error);
-                setLoading(false);
-            })
-    }, []);
-
-    if (loading) return <Loading />;
-    if (error) return <Error />;
-    if (!user) return null;
-
-    return (
-        <ul>
-            <li>Name: {user.name}</li>
-            <li>Email: {user.email}</li>
-        </ul>
-    )
-};
+    // ...
+}
 ```
 
-But the recommended way to query the Data Provider is to use the dataProvider method hooks (like `useGetOne`, see below).
+Refer to [the `useDataProvider` hook documentation](./useDataProvider.md) for more information.
 
-**Tip**: The `dataProvider` returned by the hook is actually a *wrapper* around your Data Provider. This wrapper logs the user out if the dataProvider returns an error, and if the authProvider sees that error as an authentication error (via `authProvider.checkError()`).
-
-**Tip**: If you use TypeScript, you can specify a record type for more type safety:
-
-```jsx
-dataProvider.getOne<Product>('users', { id: 123 })
-    .then(({ data }) => {
-        //     \- type of data is Product
-        // ...
-    })
-```
+**Tip**: The `dataProvider` returned by the hook is actually a *wrapper* around your Data Provider. This wrapper logs the user out if the `dataProvider` returns an error, and if the `authProvider` sees that error as an authentication error (via `authProvider.checkError()`).
 
 ## DataProvider Method Hooks
 
@@ -71,10 +33,11 @@ React-admin provides one hook for each of the Data Provider methods. They are us
 Their signature is the same as the related dataProvider method, e.g.:
 
 ```jsx
-useGetOne(resource, { id }); // calls dataProvider.getOne(resource, { id })
+// calls dataProvider.getOne(resource, { id })
+const { data, isLoading, error } = useGetOne(resource, { id });
 ```
 
-The previous example greatly benefits from the `useGetOne` hook, which handles loading and error states, and offers a concise way to call the Data Provider:
+For instance, here is how to fetch one record from the API using the `useGetOne` hook:
 
 ```jsx
 import { useGetOne } from 'react-admin';
@@ -105,18 +68,18 @@ const { data, isLoading } = useGetOne<Product>('products', { id: 123 });
 
 The query hooks execute on mount. They return an object with the following properties: `{ data, isLoading, error }`. Query hooks are:
 
-* [`useGetList`](#usegetlist)
-* [`useGetOne`](#usegetone)
-* [`useGetMany`](#usegetmany)
-* [`useGetManyReference`](#usegetmanyreference)
+* [`useGetList`](./useGetList.md)
+* [`useGetOne`](./useGetOne.md)
+* [`useGetMany`](./useGetMany.md)
+* [`useGetManyReference`](./useGetManyReference.md)
 
 The mutation hooks execute the query when you call a callback. They return an array with the following items: `[mutate, { data, isLoading, error }]`. Mutation hooks are:
 
-* [`useCreate`](#usecreate)
-* [`useUpdate`](#useupdate)
-* [`useUpdateMany`](#useupdatemany)
-* [`useDelete`](#usedelete)
-* [`useDeleteMany`](#usedeletemany)
+* [`useCreate`](./useCreate.md)
+* [`useUpdate`](./useUpdate.md)
+* [`useUpdateMany`](./useUpdateMany.md)
+* [`useDelete`](./useDelete.md)
+* [`useDeleteMany`](./useDeleteMany.md)
 
 For instance, here is an example using `useUpdate()`:
 
@@ -140,416 +103,7 @@ const { data: user, isLoading, error } = useGetOne(
 );
 ```
 
-## `useGetList`
-
-This hook calls `dataProvider.getList()` when the component mounts. It's ideal for getting a list of records. It supports filtering, sorting, and pagination.
-
-```jsx
-// syntax
-const { data, total, isLoading, error, refetch } = useGetList(
-    resource,
-    { pagination, sort, filter },
-    options
-);
-
-// example
-import { useGetList } from 'react-admin';
-
-const LatestNews = () => {
-    const { data, isLoading, error } = useGetList(
-        'posts',
-        { pagination: { page: 1, perPage: 10 }, sort: { field: 'published_at', order: 'DESC' } }
-    );
-    if (isLoading) { return <Loading />; }
-    if (error) { return <p>ERROR</p>; }
-    return (
-        <ul>
-            {data.map(record =>
-                <li key={record.id}>{record.title}</li>
-            )}
-        </ul>
-    );
-};
-```
-
-## `useGetOne`
-
-This hook calls `dataProvider.getOne()` when the component mounts. It queries the data provider for a single record, based on its `id`.
-
-```jsx
-// syntax
-const { data, isLoading, error, refetch } = useGetOne(
-    resource,
-    { id },
-    options
-);
-
-// example
-import { useGetOne } from 'react-admin';
-
-const UserProfile = ({ record }) => {
-    const { data, isLoading, error } = useGetOne('users', { id: record.id });
-    if (isLoading) { return <Loading />; }
-    if (error) { return <p>ERROR</p>; }
-    return <div>User {data.username}</div>;
-};
-```
-
-## `useGetMany`
-
-This hook calls `dataProvider.getMany()` when the component mounts. It queries the data provider for several records, based on an array of `ids`.
-
-```jsx
-// syntax
-const { data, isLoading, error, refetch } = useGetMany(
-    resource,
-    { ids },
-    options
-);
-
-// example
-import { useGetMany } from 'react-admin';
-
-const PostTags = ({ record }) => {
-    const { data, isLoading, error } = useGetMany(
-        'tags',
-        { ids: record.tagIds }
-    );
-    if (isLoading) { return <Loading />; }
-    if (error) { return <p>ERROR</p>; }
-    return (
-         <ul>
-             {data.map(tag => (
-                 <li key={tag.id}>{tag.name}</li>
-             ))}
-         </ul>
-     );
-};
-```
-
-## `useGetManyReference`
-
-This hook calls `dataProvider.getManyReference()` when the component mounts. It queries the data provider for a list of records related to another one (e.g. all the comments for a post). It supports filtering, sorting, and pagination.
-
-```jsx
-// syntax
-const { data, total, isLoading, error, refetch } = useGetManyReference(
-    resource,
-    { target, id, pagination, sort, filter },
-    options
-);
-
-// example
-import { useGetManyReference } from 'react-admin';
-
-const PostComments = ({ record }) => {
-    // fetch all comments related to the current record
-    const { data, isLoading, error } = useGetManyReference(
-        'comments',
-        { 
-            target: 'post_id',
-            id: record.id,
-            pagination: { page: 1, perPage: 10 },
-            sort: { field: 'published_at', order: 'DESC' }
-        }
-    );
-    if (isLoading) { return <Loading />; }
-    if (error) { return <p>ERROR</p>; }
-    return (
-        <ul>
-            {data.map(comment => (
-                <li key={comment.id}>{comment.body}</li>
-            ))}
-        </ul>
-    );
-};
-```
-
-## `useCreate`
-
-This hook allows to call `dataProvider.create()` when the callback is executed. 
-
-```jsx
-// syntax
-const [create, { data, isLoading, error }] = useCreate(
-    resource,
-    { data },
-    options
-);
-```
-
-The `create()` method can be called with the same parameters as the hook:
-
-```jsx
-create(
-    resource,
-    { data },
-    options
-);
-```
-
-So, should you pass the parameters when calling the hook, or when executing the callback? It's up to you; but if you have the choice, we recommend passing the parameters when calling the hook (second example below).
-
-```jsx
-// set params when calling the hook
-import { useCreate } from 'react-admin';
-
-const LikeButton = ({ record }) => {
-    const like = { postId: record.id };
-    const [create, { isLoading, error }] = useCreate('likes', { data: like });
-    const handleClick = () => {
-        create()
-    }
-    if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Like</button>;
-};
-
-// set params when calling the create callback
-import { useCreate } from 'react-admin';
-
-const LikeButton = ({ record }) => {
-    const like = { postId: record.id };
-    const [create, { isLoading, error }] = useCreate();
-    const handleClick = () => {
-        create('likes', { data: like })
-    }
-    if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Like</button>;
-};
-```
-
-## `useUpdate`
-
-This hook allows to call `dataProvider.update()` when the callback is executed, and update a single record based on its `id` and a `data` argument. 
-
-```jsx
-// syntax
-const [update, { data, isLoading, error }] = useUpdate(
-    resource,
-    { id, data, previousData },
-    options
-);
-```
-
-The `update()` method can be called with the same parameters as the hook:
-
-```jsx
-update(
-    resource,
-    { id, data, previousData },
-    options
-);
-```
-
-This means the parameters can be passed either when calling the hook, or when calling the callback. It's up to you to pick the syntax that best suits your component. If you have the choice, we recommend passing the parameters when calling the hook (second example below).
-
-```jsx
-// set params when calling the hook
-import { useUpdate } from 'react-admin';
-
-const IncreaseLikeButton = ({ record }) => {
-    const diff = { likes: record.likes + 1 };
-    const [update, { isLoading, error }] = useUpdate(
-        'likes',
-        { id: record.id, data: diff, previousData: record }
-    );
-    const handleClick = () => {
-        update()
-    }
-    if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Like</button>;
-};
-
-// set params when calling the update callback
-import { useUpdate } from 'react-admin';
-
-const IncreaseLikeButton = ({ record }) => {
-    const diff = { likes: record.likes + 1 };
-    const [update, { isLoading, error }] = useUpdate();
-    const handleClick = () => {
-        update(
-            'likes',
-            { id: record.id, data: diff, previousData: record }
-        )
-    }
-    if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Like</button>;
-};
-```
-
-## `useUpdateMany`
-
-This hook allows to call `dataProvider.updateMany()` when the callback is executed, and update an array of records based on their `ids` and a `data` argument. 
-
-
-```jsx
-// syntax
-const [updateMany, { data, isLoading, error }] = useUpdateMany(
-    resource,
-    { ids, data },
-    options
-);
-```
-
-The `updateMany()` method can be called with the same parameters as the hook:
-
-```jsx
-updateMany(
-    resource,
-    { ids, data },
-    options
-);
-```
-
-So, should you pass the parameters when calling the hook, or when executing the callback? It's up to you; but if you have the choice, we recommend passing the parameters when calling the hook (second example below).
-
-```jsx
-// set params when calling the hook
-import { useUpdateMany } from 'react-admin';
-
-const BulkResetViewsButton = ({ selectedIds }) => {
-    const [updateMany, { isLoading, error }] = useUpdateMany(
-        'posts',
-        { ids: selectedIds, data: { views: 0 } }
-    );
-    const handleClick = () => {
-        updateMany();
-    }
-    if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Reset views</button>;
-};
-
-// set params when calling the updateMany callback
-import { useUpdateMany } from 'react-admin';
-
-const BulkResetViewsButton = ({ selectedIds }) => {
-    const [updateMany, { isLoading, error }] = useUpdateMany();
-    const handleClick = () => {
-        updateMany(
-            'posts',
-            { ids: selectedIds, data: { views: 0 } }
-        );
-    }
-    if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Reset views</button>;
-};
-```
-
-## `useDelete`
-
-This hook allows calling `dataProvider.delete()` when the callback is executed and deleting a single record based on its `id`. 
-
-```jsx
-// syntax
-const [deleteOne, { data, isLoading, error }] = useDelete(
-    resource,
-    { id, previousData },
-    options
-);
-```
-
-The `deleteOne()` method can be called with the same parameters as the hook:
-
-```jsx
-deleteOne(
-    resource,
-    { id, previousData },
-    options
-);
-```
-
-So, should you pass the parameters when calling the hook, or when executing the callback? It's up to you; but if you have the choice, we recommend passing the parameters when calling the hook (second example below).
-
-```jsx
-// set params when calling the hook
-import { useDelete } from 'react-admin';
-
-const DeleteButton = ({ record }) => {
-    const [deleteOne, { isLoading, error }] = useDelete(
-        'likes',
-        { id: record.id, previousData: record }
-    );
-    const handleClick = () => {
-        deleteOne();
-    }
-    if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Delete</button>;
-};
-
-// set params when calling the deleteOne callback
-import { useDelete } from 'react-admin';
-
-const DeleteButton = ({ record }) => {
-    const [deleteOne, { isLoading, error }] = useDelete();
-    const handleClick = () => {
-        deleteOne(
-            'likes',
-            { id: record.id , previousData: record }
-        );
-    }
-    if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Delete</div>;
-};
-```
-
-## `useDeleteMany`
-
-This hook allows to call `dataProvider.deleteMany()` when the callback is executed, and delete an array of records based on their `ids`. 
-
-```jsx
-// syntax
-const [deleteMany, { data, isLoading, error }] = useDeleteMany(
-    resource,
-    { ids },
-    options
-);
-```
-
-The `deleteMany()` method can be called with the same parameters as the hook:
-
-```jsx
-deleteMany(
-    resource,
-    { ids },
-    options
-);
-```
-
-So, should you pass the parameters when calling the hook, or when executing the callback? It's up to you; but if you have the choice, we recommend passing the parameters when calling the hook (second example below).
-
-```jsx
-// set params when calling the hook
-import { useDeleteMany } from 'react-admin';
-
-const BulkDeletePostsButton = ({ selectedIds }) => {
-    const [deleteMany, { isLoading, error }] = useDeleteMany(
-        'posts',
-        { ids: selectedIds }
-    );
-    const handleClick = () => {
-        deleteMany()
-    }
-    if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Delete selected posts</button>;
-};
-
-// set params when calling the deleteMany callback
-import { useDeleteMany } from 'react-admin';
-
-const BulkDeletePostsButton = ({ selectedIds }) => {
-    const [deleteMany, { isLoading, error }] = useDeleteMany();
-    const handleClick = () => {
-        deleteMany(
-            'posts',
-            { ids: selectedIds }
-        )
-    }
-    if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Delete selected posts</button>;
-};
-```
-
-## React-query
+## `useQuery` and `useMutation`
 
 Internally, react-admin uses [react-query](https://react-query.tanstack.com/) to call the dataProvider. When fetching data from the dataProvider in your components, if you can't use any of the dataProvider method hooks, you should use that library, too. It brings several benefits:
 
@@ -646,6 +200,8 @@ const UserProfile = ({ record }) => {
 As a consequence, you should always use `isLoading` to determine if you need to show a loading indicator.
 
 ## Calling Custom Methods
+
+Admin interfaces often have to query the API beyond CRUD requests. For instance, a user profile page may need to get the User object based on a user id. Or, users may want to "Approve" a comment by pressing a button, and this action should update the `is_approved` property and save the updated record in one click.
 
 Your dataProvider may contain custom methods, e.g. for calling RPC endpoints on your API. `useQuery` and `use%Mutation` are especially useful for calling these methods.
 
@@ -754,7 +310,9 @@ const PostList = () => (
 
 ## Synchronizing Dependent Queries
 
-`useQuery` and all its corresponding specialized hooks support an `enabled` option. This is useful if you need to have a query executed only when a condition is met. For example, the following code only fetches the categories if at least one post is already loaded:
+All Data Provider hooks support an `enabled` option. This is useful if you need to have a query executed only when a condition is met. 
+
+For example, the following code only fetches the categories if at least one post is already loaded:
 
 ```jsx
 // fetch posts
@@ -807,148 +365,10 @@ const ApproveButton = ({ record }) => {
 
 React-admin provides the following hooks to handle the most common side effects:
 
-- [`useNotify`](#usenotify): Return a function to display a notification. 
-- [`useRedirect`](#useredirect): Return a function to redirect the user to another page. 
-- [`useRefresh`](#userefresh): Return a function to force a rerender of the current view (equivalent to pressing the Refresh button).
-- [`useUnselectAll`](#useunselectall): Return a function to unselect all lines in the current `Datagrid`. 
-
-### `useNotify`
-
-This hook returns a function that displays a notification at the bottom of the page.
-
-```jsx
-import { useNotify } from 'react-admin';
-
-const NotifyButton = () => {
-    const notify = useNotify();
-    const handleClick = () => {
-        notify(`Comment approved`, { type: 'success' });
-    }
-    return <button onClick={handleClick}>Notify</button>;
-};
-```
-
-The callback takes 2 arguments:
-- The message to display
-- an `options` object with the following keys
-    - The `type` of the notification (`info`, `success` or `warning` - the default is `info`)
-    - A `messageArgs` object to pass to the `translate` function (because notification messages are translated if your admin has an `i18nProvider`). It is useful for inserting variables into the translation.
-    - An `undoable` boolean. Set it to `true` if the notification should contain an "undo" button
-    - An `autoHideDuration` number. Set it to `0` if the notification should not be dismissible.
-    - A `multiLine` boolean. Set it to `true` if the notification message should be shown in more than one line.
-
-Here are more examples of `useNotify` calls: 
-
-```js
-// notify a warning
-notify(`This is a warning`, 'warning');
-// pass translation arguments
-notify('item.created', { type: 'info', messageArgs: { resource: 'post' } });
-// send an undoable notification
-notify('Element updated', { type: 'info', undoable: true });
-```
-
-**Tip**: When using `useNotify` as a side effect for an `undoable` mutation, you MUST set the `undoable` option to `true`, otherwise the "undo" button will not appear, and the actual update will never occur.
-
-```jsx
-import * as React from 'react';
-import { useNotify, Edit, SimpleForm } from 'react-admin';
-
-const PostEdit = () => {
-    const notify = useNotify();
-
-    const onSuccess = () => {
-        notify('Changes saved`', { undoable: true });
-    };
-
-    return (
-        <Edit mutationMode="undoable" onSuccess={onSuccess}>
-            <SimpleForm>
-                ...
-            </SimpleForm>
-        </Edit>
-    );
-}
-```
-
-### `useRedirect`
-
-This hook returns a function that redirects the user to another page.
-
-```jsx
-import { useRedirect } from 'react-admin';
-
-const DashboardButton = () => {
-    const redirect = useRedirect();
-    const handleClick = () => {
-        redirect('/dashboard');
-    }
-    return <button onClick={handleClick}>Dashboard</button>;
-};
-```
-
-The callback takes 5 arguments:
- - The page to redirect the user to ('list', 'create', 'edit', 'show', a function or a custom path)
- - The current `basePath`
- - The `id` of the record to redirect to (if any)
- - A record-like object to be passed to the first argument, when the first argument is a function
- - A `state` to be set to the location
-
-Here are more examples of `useRedirect` calls: 
-
-```jsx
-// redirect to the post list page
-redirect('list', '/posts');
-// redirect to the edit page of a post:
-redirect('edit', '/posts', 1);
-// redirect to the post creation page:
-redirect('create', '/posts');
-// redirect to the result of a function
-redirect((redirectTo, basePath, id, data) => { 
-    return data.hasComments ? '/comments' : '/posts';
-}, '/posts', 1, { hasComments: true });
-// redirect to edit view with state data
-redirect('edit', '/posts', 1, {}, { record: { post_id: record.id } });
-// do not redirect (resets the record form)
-redirect(false);
-```
-
-Note that `useRedirect` allows redirection to an absolute URL outside the current React app.
-
-### `useRefresh`
-
-This hook returns a function that forces a refetch of all the active queries, and a rerender of the current view when the data has changed.
-
-```jsx
-import { useRefresh } from 'react-admin';
-
-const RefreshButton = () => {
-    const refresh = useRefresh();
-    const handleClick = () => {
-        refresh();
-    }
-    return <button onClick={handleClick}>Refresh</button>;
-};
-```
-
-The callback takes 1 argument:
- - `hard`: when set to true, the callback empties the cache, too
-
-### `useUnselectAll`
-
-This hook returns a function that unselects all lines in the current `Datagrid`. Pass the name of the resource as argument.
-
-```jsx
-import { useUnselectAll } from 'react-admin';
-
-const UnselectAllButton = () => {
-    const unselectAll = useUnselectAll();
-    const handleClick = () => {
-        unselectAll('posts');
-    }
-    return <button onClick={handleClick}>Unselect all</button>;
-};
-```
+- [`useNotify`](./useNotify.md): Return a function to display a notification. 
+- [`useRedirect`](./useRedirect.md): Return a function to redirect the user to another page. 
+- [`useRefresh`](./useRefresh.md): Return a function to force a rerender of the current view (equivalent to pressing the Refresh button).
+- [`useUnselectAll`](./useUnselectAll.md): Return a function to unselect all lines in the current `Datagrid`. 
 
 ## Optimistic Rendering and Undo
 
@@ -1032,14 +452,14 @@ As you can see in this example, you need to tweak the notification for undoable 
 
 The following hooks accept a `mutationMode` option:
 
-* [`useUpdate`](#useupdate)
-* [`useUpdateMany`](#useupdatemany)
-* [`useDelete`](#usedelete)
-* [`useDeleteMany`](#usedeletemany)
+* [`useUpdate`](./useUpdate.md)
+* [`useUpdateMany`](./useUpdateMany.md)
+* [`useDelete`](./useDelete.md)
+* [`useDeleteMany`](./useDeleteMany.md)
 
 ## Querying The API With `fetch`
 
-data Provider method hooks, `useQuery` and `useMutation` are "the react-admin way" to query the API. But nothing prevents you from using `fetch` if you want. For instance, when you don't want to add some routing logic to the data provider for an RPC method on your API, that makes perfect sense.
+Data Provider method hooks are "the react-admin way" to query the API. But nothing prevents you from using `fetch` if you want. For instance, when you don't want to add some routing logic to the data provider for an RPC method on your API, that makes perfect sense.
 
 There is no special react-admin sauce in that case. Here is an example implementation of calling `fetch` in a component:
 
@@ -1078,4 +498,4 @@ const ApproveButton = ({ record }) => {
 export default ApproveButton;
 ```
 
-**TIP**: APIs often require a bit of HTTP plumbing to deal with authentication, query parameters, encoding, headers, etc. It turns out you probably already have a function that maps from a REST request to an HTTP request: your [Data Provider](./DataProviders.md). So it's often better to use `useDataProvider` instead of `fetch`.
+**Tip**: APIs often require a bit of HTTP plumbing to deal with authentication, query parameters, encoding, headers, etc. It turns out you probably already have a function that maps from a REST request to an HTTP request: your [Data Provider](./DataProviders.md). So it's often better to use `useDataProvider` instead of `fetch`.

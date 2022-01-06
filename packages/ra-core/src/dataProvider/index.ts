@@ -5,6 +5,7 @@ import * as fetchUtils from './fetch';
 import undoableEventEmitter from './undoableEventEmitter';
 import withDataProvider from './withDataProvider';
 
+export * from './defaultDataProvider';
 export * from './testDataProvider';
 export * from './useDataProvider';
 export * from './useLoading';
