@@ -143,9 +143,7 @@ interface Props {
     tooltipProps?: TooltipProps;
 }
 
-export type MenuItemLinkProps = Props &
-    LinkProps &
-    MenuItemProps<'li', { button?: true }>; // HACK: https://github.com/mui-org/material-ui/issues/16245
+export type MenuItemLinkProps = Props & LinkProps & MenuItemProps<'li'>;
 
 MenuItemLink.propTypes = {
     className: PropTypes.string,
