@@ -106,7 +106,7 @@ export const useGetManyAggregate = <RecordType extends Record = Record>(
                 data.forEach(record => {
                     queryClient.setQueryData(
                         [resource, 'getOne', { id: String(record.id) }],
-                        record
+                        oldRecord => oldRecord ?? record
                     );
                 });
             },
