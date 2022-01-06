@@ -18,3 +18,5 @@ const UnselectAllButton = () => {
     return <button onClick={handleClick}>Unselect all</button>;
 };
 ```
+
+The resource can be passed to the `useUnselectAll` hook or to the `unselectAll` callback; it is up to you.

@@ -452,10 +452,10 @@ As you can see in this example, you need to tweak the notification for undoable 
 
 The following hooks accept a `mutationMode` option:
 
-* [`useUpdate`](#useupdate)
-* [`useUpdateMany`](#useupdatemany)
-* [`useDelete`](#usedelete)
-* [`useDeleteMany`](#usedeletemany)
+* [`useUpdate`](./useUpdate.md)
+* [`useUpdateMany`](./useUpdateMany.md)
+* [`useDelete`](./useDelete.md)
+* [`useDeleteMany`](./useDeleteMany.md)
 
 ## Querying The API With `fetch`
 

@@ -26,7 +26,7 @@ update(
 );
 ```
 
-This means the parameters can be passed either when calling the hook, or when calling the callback. It's up to you to pick the syntax that best suits your component. If you have the choice, we recommend passing the parameters when calling the hook (second example below).
+This means the parameters can be passed either when calling the hook, or when calling the callback. It's up to you to pick the syntax that best suits your component. If you have the choice, we recommend passing the parameters when calling the `update` callback (second example below).
 
 ```jsx
 // set params when calling the hook

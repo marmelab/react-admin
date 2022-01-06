@@ -7,7 +7,7 @@ title: "Supported Data Provider Backends"
 
 Thanks to the Data Provider architecture, react-admin supports a lot of API backends. Check the list below for open-source packages developed and maintained by the core team and developers from the react-admin community. 
 
-If you can't find a Data Provider for your backend below, no worries! [Writing a Data Provider](./DataProvidderWriting.md) takes a couple hours, and won't prevent you from using react-admin.
+If you can't find a Data Provider for your backend below, no worries! [Writing a Data Provider](./DataProviderWriting.md) takes a couple of hours, and won't prevent you from using react-admin.
 
 * **[AWS Amplify](https://docs.amplify.aws)**: [MrHertal/react-admin-amplify](https://github.com/MrHertal/react-admin-amplify)
 * **[Blitz-js](https://blitzjs.com/docs)**: [theapexlab/ra-data-blitz](https://github.com/theapexlab/ra-data-blitz)

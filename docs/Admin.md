@@ -63,7 +63,9 @@ const dataProvider = {
 }
 ```
 
-The `dataProvider` is also the ideal place to add custom HTTP headers, authentication, etc. The [Data Providers Chapter](./DataProviders.md) of the documentation lists available data providers, and explains how to build your own.
+Check [the Data Provider documentation](./DataProviderIntroduction.md) for more details.
+
+The `dataProvider` is also the ideal place to add custom HTTP headers, authentication, etc. The [Data Providers Backends ](./DataProviderList.md) chapters lists available data providers, and you can learn how to build your own in the [Writing a Data Provider](./DataProviderWriting.md) chapter.
 
 ## `authProvider`
 

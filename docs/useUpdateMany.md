@@ -27,7 +27,7 @@ updateMany(
 );
 ```
 
-So, should you pass the parameters when calling the hook, or when executing the callback? It's up to you; but if you have the choice, we recommend passing the parameters when calling the hook (second example below).
+So, should you pass the parameters when calling the hook, or when executing the callback? It's up to you; but if you have the choice, we recommend passing the parameters when calling the `updateMany` callback (second example below).
 
 ```jsx
 // set params when calling the hook

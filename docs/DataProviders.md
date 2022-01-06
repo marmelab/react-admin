@@ -341,23 +341,23 @@ import { Admin, Resource } from 'react-admin';
 import { PostCreate, PostEdit, PostList } from './posts';
 
 const App = () => {
-  // start with an empty data provider
-  const [dataProvider, setDataProvider] = useState(null);
+    // start with an empty data provider
+    const [dataProvider, setDataProvider] = useState(null);
 
-  // initialize on mount
-  useEffect(() => {
-    buildHasuraProvider({ clientOptions: { uri: 'http://localhost:8080/v1/graphql' } })
-      .then(() => setDataProvider(() => dataProvider));
-  }, []);
+    // initialize on mount
+    useEffect(() => {
+        buildHasuraProvider({ clientOptions: { uri: 'http://localhost:8080/v1/graphql' } })
+            .then(() => setDataProvider(() => dataProvider));
+    }, []);
 
-  // hide the admin until the data provider is ready
-  if (!dataProvider) return <p>Loading...</p>;
+    // hide the admin until the data provider is ready
+    if (!dataProvider) return <p>Loading...</p>;
 
-  return (
-    <Admin dataProvider={dataProvider}>
-       <Resource name="Post" list={PostList} edit={PostEdit} create={PostCreate} />
-    </Admin>
-  );
+    return (
+        <Admin dataProvider={dataProvider}>
+            <Resource name="Post" list={PostList} edit={PostEdit} create={PostCreate} />
+        </Admin>
+    );
 };
 
 export default App;
