@@ -7,6 +7,7 @@ import {
     HtmlHTMLAttributes,
     ReactNode,
 } from 'react';
+import { Button } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useListContext, useResourceContext } from 'ra-core';
 import { Form, FormRenderProps, FormSpy } from 'react-final-form';
@@ -25,6 +26,8 @@ export const FilterFormBase = (props: FilterFormProps) => {
         filters,
         variant,
         initialValues,
+        filterOnSubmit,
+        handleSubmit,
         ...rest
     } = props;
     const resource = useResourceContext(props);
@@ -56,8 +59,9 @@ export const FilterFormBase = (props: FilterFormProps) => {
     return (
         <StyledForm
             className={classnames(className, FilterFormClasses.form)}
+            style={{ pointerEvents: filterOnSubmit ? undefined : 'none' }}
             {...sanitizeRestProps(rest)}
-            onSubmit={handleSubmit}
+            onSubmit={filterOnSubmit ? handleSubmit : handleSubmitNoop}
         >
             {getShownFilters().map((filterElement: JSX.Element) => (
                 <FilterFormInput
@@ -69,12 +73,17 @@ export const FilterFormBase = (props: FilterFormProps) => {
                     margin={filterElement.props.margin || margin}
                 />
             ))}
+            {filterOnSubmit && (
+                <Button type="submit" sx={{ '&.MuiButton-root': { mb: 1 } }}>
+                    Filter
+                </Button>
+            )}
             <div className={FilterFormClasses.clearFix} />
         </StyledForm>
     );
 };
 
-const handleSubmit = event => {
+const handleSubmitNoop = event => {
     event.preventDefault();
     return false;
 };
@@ -132,6 +141,7 @@ export interface FilterFormProps
     setFilters: (filters: any, displayedFilters: any) => void;
     displayedFilters: any;
     filters: ReactNode[];
+    filterOnSubmit?: boolean;
     initialValues?: any;
     margin?: 'none' | 'normal' | 'dense';
     variant?: 'standard' | 'outlined' | 'filled';
@@ -163,6 +173,7 @@ export const FilterForm = props => {
         classes: classesOverride,
         filters: filtersProps,
         initialValues,
+        filterOnSubmit = false,
         ...rest
     } = props;
 
@@ -176,7 +187,23 @@ export const FilterForm = props => {
         filters
     );
 
-    return (
+    return filterOnSubmit ? (
+        <Form
+            onSubmit={values => {
+                setFilters(values, displayedFilters);
+            }}
+            initialValues={mergedInitialValuesWithDefaultValues}
+            mutators={{ ...arrayMutators }}
+            render={formProps => (
+                <FilterFormBase
+                    {...formProps}
+                    {...rest}
+                    filterOnSubmit
+                    filters={filters}
+                />
+            )}
+        />
+    ) : (
         <Form
             onSubmit={handleFinalFormSubmit}
             initialValues={mergedInitialValuesWithDefaultValues}
@@ -222,7 +249,6 @@ const StyledForm = styled('form', { name: PREFIX })(({ theme }) => ({
         display: 'flex',
         alignItems: 'flex-end',
         flexWrap: 'wrap',
-        pointerEvents: 'none',
     },
 
     [`& .${FilterFormClasses.clearFix}`]: { clear: 'right' },

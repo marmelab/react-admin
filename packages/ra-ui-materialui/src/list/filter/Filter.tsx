@@ -62,6 +62,7 @@ export const Filter = (props: FilterProps) => {
                 displayedFilters={displayedFilters}
                 initialValues={filterValues}
                 setFilters={setFilters}
+                filterOnSubmit={props.filterOnSubmit}
                 {...sanitizeListRestProps(rest)}
             />
         );
@@ -87,4 +88,5 @@ export interface FilterProps {
     children: ReactNode;
     context?: 'form' | 'button';
     variant?: string;
+    filterOnSubmit?: boolean;
 }

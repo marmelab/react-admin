@@ -10,12 +10,12 @@ import { FilterForm } from './filter';
 import { FilterContext } from './FilterContext';
 
 export const ListToolbar: FC<ListToolbarProps> = memo(props => {
-    const { filters, actions, ...rest } = props;
+    const { filters, actions, filterOnSubmit, ...rest } = props;
 
     return Array.isArray(filters) ? (
         <FilterContext.Provider value={filters}>
             <Root className={ListToolbarClasses.toolbar}>
-                <FilterForm />
+                <FilterForm filterOnSubmit={filterOnSubmit} />
                 <span />
                 {actions &&
                     React.cloneElement(actions, {
@@ -29,6 +29,7 @@ export const ListToolbar: FC<ListToolbarProps> = memo(props => {
             {filters &&
                 React.cloneElement(filters, {
                     ...rest,
+                    filterOnSubmit,
                     context: 'form',
                 })}
             <span />
@@ -59,6 +60,7 @@ export interface ListToolbarProps
     exporter?: Exporter | false;
     filters?: ReactElement | ReactElement[];
     hasCreate?: boolean;
+    filterOnSubmit?: boolean;
 }
 
 const PREFIX = 'RaListToolbar';

@@ -25,6 +25,7 @@ export const ListView = <RecordType extends Record = Record>(
         actions = defaultActions,
         aside,
         filters,
+        filterOnSubmit,
         bulkActionButtons,
         emptyWhileLoading,
         hasCreate,
@@ -53,6 +54,7 @@ export const ListView = <RecordType extends Record = Record>(
             {(filters || actions) && (
                 <ListToolbar
                     filters={filters}
+                    filterOnSubmit={filterOnSubmit}
                     actions={actions}
                     hasCreate={hasCreate}
                 />
@@ -151,6 +153,7 @@ export interface ListViewProps {
     empty?: ReactElement | false;
     emptyWhileLoading?: boolean;
     filters?: ReactElement | ReactElement[];
+    filterOnSubmit?: boolean;
     hasCreate?: boolean;
     pagination?: ReactElement | false;
     title?: string | ReactElement;
