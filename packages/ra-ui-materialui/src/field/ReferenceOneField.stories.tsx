@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import {
     CoreAdminContext,
     RecordContextProvider,
@@ -9,38 +10,27 @@ import { createMemoryHistory } from 'history';
 import { ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 
-import { TextField, DateField } from '../field';
+import { TextField } from '../field';
 import { ReferenceOneField } from './ReferenceOneField';
 import { SimpleShowLayout } from '../detail/SimpleShowLayout';
 import { Datagrid } from '../list/datagrid/Datagrid';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceOneField' };
 
-const dataProvider = {
-    getManyReference: (resource, params) => {
-        console.log('getManyReference', resource, params);
-        return Promise.resolve({
-            data: [
-                {
-                    id: 1,
-                    body:
-                        'James Joyce was an Irish novelist, poet and short story writer.',
-                    published_at: '2022-01-12T11:23:00',
-                },
-            ],
+const defaultDataProvider = {
+    getManyReference: () =>
+        Promise.resolve({
+            data: [{ id: 1, ISBN: '9780393966473', genre: 'novel' }],
             total: 1,
-        });
-    },
+        }),
 } as any;
 
 const history = createMemoryHistory({ initialEntries: ['/books/1/show'] });
 
-const Wrapper = ({ children }) => (
+const Wrapper = ({ children, dataProvider = defaultDataProvider }) => (
     <CoreAdminContext dataProvider={dataProvider} history={history}>
-        <ResourceContextProvider value="authors">
-            <RecordContextProvider
-                value={{ id: 1, first_name: 'James', last_name: 'Joyce' }}
-            >
+        <ResourceContextProvider value="books">
+            <RecordContextProvider value={{ id: 1, title: 'War and Peace' }}>
                 {children}
             </RecordContextProvider>
         </ResourceContextProvider>
@@ -49,36 +39,125 @@ const Wrapper = ({ children }) => (
 
 export const Basic = () => (
     <Wrapper>
-        <ReferenceOneField reference="bios" target="id">
-            <TextField source="body" />
+        <ReferenceOneField reference="book_details" target="book_id">
+            <TextField source="ISBN" />
         </ReferenceOneField>
     </Wrapper>
 );
 
-export const Multiple = () => (
-    <Wrapper>
-        <h3>Author</h3>
-        <TextField source="first_name" />
-        &nbsp;
-        <TextField source="last_name" />
-        <h3>Bio</h3>
-        <ReferenceOneField reference="bios" target="id">
-            <TextField source="body" />
-        </ReferenceOneField>
-        <h3>Bio published at</h3>
-        <ReferenceOneField reference="bios" target="id">
-            <DateField source="published_at" />
+const slowDataProvider = {
+    getManyReference: (resource, params) =>
+        new Promise(resolve => {
+            setTimeout(
+                () =>
+                    resolve({
+                        data: [{ id: 1, ISBN: '9780393966473' }],
+                        total: 1,
+                    }),
+                1500
+            );
+        }),
+} as any;
+
+export const Loading = () => (
+    <Wrapper dataProvider={slowDataProvider}>
+        <ReferenceOneField reference="book_details" target="book_id">
+            <TextField source="ISBN" />
         </ReferenceOneField>
     </Wrapper>
 );
+
+const emptyDataProvider = {
+    getManyReference: (resource, params) =>
+        Promise.resolve({
+            data: [],
+            total: 0,
+        }),
+} as any;
+
+export const Empty = () => (
+    <Wrapper dataProvider={emptyDataProvider}>
+        <ReferenceOneField
+            reference="book_details"
+            target="book_id"
+            emptyText="no detail"
+        >
+            <TextField source="ISBN" />
+        </ReferenceOneField>
+    </Wrapper>
+);
+
+export const Link = () => (
+    <Wrapper>
+        <ReferenceOneField
+            reference="book_details"
+            target="book_id"
+            link="show"
+        >
+            <TextField source="ISBN" />
+        </ReferenceOneField>
+    </Wrapper>
+);
+
+export const Multiple = () => {
+    const [calls, setCalls] = useState([]);
+    const dataProviderWithLogging = {
+        getManyReference: (resource, params) => {
+            setCalls(calls =>
+                calls.concat({ type: 'getManyReference', resource, params })
+            );
+            return Promise.resolve({
+                data: [
+                    {
+                        id: 1,
+                        ISBN: '9780393966473',
+                        genre: 'novel',
+                    },
+                ],
+                total: 1,
+            });
+        },
+    } as any;
+    return (
+        <Wrapper dataProvider={dataProviderWithLogging}>
+            <div style={{ display: 'flex', paddingLeft: '1em' }}>
+                <div>
+                    <h3>Title</h3>
+                    <TextField source="title" />
+                    <h3>ISBN</h3>
+                    <ReferenceOneField
+                        reference="book_details"
+                        target="book_id"
+                    >
+                        <TextField source="ISBN" />
+                    </ReferenceOneField>
+                    <h3>Genre</h3>
+                    <ReferenceOneField
+                        reference="book_details"
+                        target="book_id"
+                    >
+                        <TextField source="genre" />
+                    </ReferenceOneField>
+                </div>
+                <div style={{ color: '#ccc', paddingLeft: '2em' }}>
+                    <p>Number of calls: {calls.length}</p>
+                    <pre>{JSON.stringify(calls, null, 2)}</pre>
+                </div>
+            </div>
+        </Wrapper>
+    );
+};
 
 export const InShowLayout = () => (
     <Wrapper>
         <SimpleShowLayout>
-            <TextField source="first_name" />
-            <TextField source="last_name" />
-            <ReferenceOneField label="Bio" reference="bios" target="id">
-                <TextField source="body" />
+            <TextField source="title" />
+            <ReferenceOneField
+                label="ISBN"
+                reference="book_details"
+                target="book_id"
+            >
+                <TextField source="ISBN" />
             </ReferenceOneField>
         </SimpleShowLayout>
     </Wrapper>
@@ -90,8 +169,8 @@ const ListWrapper = ({ children }) => (
             <ListContextProvider
                 value={{
                     total: 1,
-                    data: [{ id: 1, first_name: 'James', last_name: 'Joyce' }],
-                    currentSort: { field: 'first_name', order: 'ASC' },
+                    data: [{ id: 1, title: 'War and Peace' }],
+                    currentSort: { field: 'title', order: 'ASC' },
                 }}
             >
                 {children}
@@ -103,10 +182,13 @@ const ListWrapper = ({ children }) => (
 export const InDatagrid = () => (
     <ListWrapper>
         <Datagrid>
-            <TextField source="first_name" />
-            <TextField source="last_name" />
-            <ReferenceOneField label="Bio" reference="bios" target="id">
-                <TextField source="body" />
+            <TextField source="title" />
+            <ReferenceOneField
+                label="ISBN"
+                reference="book_details"
+                target="book_id"
+            >
+                <TextField source="ISBN" />
             </ReferenceOneField>
         </Datagrid>
     </ListWrapper>
