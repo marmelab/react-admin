@@ -103,7 +103,7 @@ export const ContactAside = ({ record, link = 'edit' }: any) => (
         <Box mb={3}>
             <Typography variant="subtitle2">Tags</Typography>
             <Divider />
-            <TagsListEdit record={record} />
+            <TagsListEdit />
         </Box>
 
         <ReferenceManyField

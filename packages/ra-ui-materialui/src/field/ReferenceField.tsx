@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { Children, cloneElement, FC, memo, ReactElement } from 'react';
+import { FC, memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import get from 'lodash/get';
 import { Typography } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -19,7 +18,6 @@ import {
 
 import { LinearProgress } from '../layout';
 import { Link } from '../Link';
-import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
 
 /**
@@ -169,21 +167,12 @@ const stopPropagation = e => e.stopPropagation();
 
 export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
     const {
-        basePath,
         children,
         className,
         error,
-        isFetching,
         isLoading,
-        record,
-        reference,
         referenceRecord,
-        refetch,
-        resource,
         resourceLinkPath,
-        source,
-        translateChoice = false,
-        ...rest
     } = props;
 
     if (error) {
@@ -211,21 +200,10 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
                 <RecordContextProvider value={referenceRecord}>
                     <Link
                         to={resourceLinkPath as string}
-                        className={className}
+                        className={`${ReferenceFieldClasses.link} ${className}`}
                         onClick={stopPropagation}
                     >
-                        {cloneElement(Children.only(children), {
-                            className: classnames(
-                                children.props.className,
-                                ReferenceFieldClasses.link // force color override for Typography components
-                            ),
-                            record: referenceRecord,
-                            refetch,
-                            resource: reference,
-                            basePath,
-                            translateChoice,
-                            ...sanitizeFieldRestProps(rest),
-                        })}
+                        {children}
                     </Link>
                 </RecordContextProvider>
             </Root>
@@ -234,13 +212,7 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
 
     return (
         <RecordContextProvider value={referenceRecord}>
-            {cloneElement(Children.only(children), {
-                record: referenceRecord,
-                resource: reference,
-                basePath,
-                translateChoice,
-                ...sanitizeFieldRestProps(rest),
-            })}
+            {children}
         </RecordContextProvider>
     );
 };
@@ -282,7 +254,5 @@ export const ReferenceFieldClasses = {
 };
 
 const Root = styled('span', { name: PREFIX })(({ theme }) => ({
-    [`& .${ReferenceFieldClasses.link}`]: {
-        color: theme.palette.primary.main,
-    },
+    [`& .${ReferenceFieldClasses.link}`]: {},
 }));

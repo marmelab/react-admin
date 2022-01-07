@@ -7,6 +7,7 @@ import {
     useUpdate,
     useGetList,
     Identifier,
+    useRecordContext,
 } from 'react-admin';
 import {
     Chip,
@@ -26,7 +27,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import { colors } from '../tags/colors';
 import { Contact, Tag } from '../types';
 
-export const TagsListEdit = ({ record }: { record: Contact }) => {
+export const TagsListEdit = () => {
+    const record = useRecordContext<Contact>();
     const [open, setOpen] = useState(false);
     const [newTagName, setNewTagName] = useState('');
     const [newTagColor, setNewTagColor] = useState(colors[0]);
@@ -42,9 +44,7 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
     const { data: tags, isLoading: isLoadingRecordTags } = useGetMany<Tag>(
         'tags',
         { ids: record.tags },
-        {
-            enabled: record.tags && record.tags.length > 0,
-        }
+        { enabled: record && record.tags && record.tags.length > 0 }
     );
     const [update] = useUpdate<Contact>();
     const [create] = useCreate<Tag>();
@@ -123,7 +123,7 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
         );
     };
 
-    if (!isLoadingRecordTags || isLoadingAllTags) return null;
+    if (isLoadingRecordTags || isLoadingAllTags) return null;
     return (
         <>
             {tags?.map(tag => (

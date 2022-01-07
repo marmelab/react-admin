@@ -127,6 +127,8 @@ const AuthorShow = () => (
 );
 ```
 
+`<ArrayField>` creates a `ListContext` with the embedded records, so you can use any component relying on this context (`<Datagrid>`, `<SimpleList>`, etc.).
+
 ## `<ReferenceField>`
 
 This field fetches a many-to-one relationship, e.g. the author of a book, when using a foreign key.
@@ -162,6 +164,8 @@ const BookShow = () => (
 ```
 
 `<ReferenceField>` uses the current `record` (a book in this example) to read the id of the reference using the foreign key (`author_id`). Then, it uses `dataProvider.getOne('authors', { id })` fetch the related author.
+
+`<ReferenceField>` creates a `RecordContext` with the reference record, so you can use any component relying on this context (`<TextField>`, `<SimpleShowLayout>`, etc.).
 
 **Tip**: You don't need to worry about the fact that this components calls `<ReferenceField>` twice on the same table. React-admin will only make one call to the API.
 
@@ -225,6 +229,8 @@ const AuthorShow = () => (
 
 `<ReferenceManyField>` uses the current `record` (an author in this example) to build a filter for the list of books on the foreign key field (`author_id`). Then, it uses `dataProvider.getManyReference('books', { target: 'author_id', id: book.id })` fetch the related books.
 
+`<ReferenceManyField>` creates a `ListContext` with the related records, so you can use any component relying on this context (`<Datagrid>`, `<SimpleList>`, etc.).
+
 **Tip**: For many APIs, there is no difference between `dataProvider.getList()` and `dataProvider.getManyReference()`. The latter is a specialized version of the former, with a predefined `filter`. But some APIs expose related records as a subroute, and therefore need a special method to fetch them. For instance, the boks of an author can be exposed via the following endpoint: 
 
 ```
@@ -270,6 +276,8 @@ const AuthorShow = () => (
 ```
 
 `<ReferenceArrayField>` reads the list of `book_ids` in the current `record` (an author in this example). Then, it uses `dataProvider.getMany('books', { ids })` fetch the related books.
+
+`<ReferenceArrayField>` creates a `ListContext` with the related records, so you can use any component relying on this context (`<Datagrid>`, `<SimpleList>`, etc.).
 
 You can also use it in a List page:
 
@@ -359,6 +367,8 @@ const BookShow = props => (
 );
 ```
 
+`<ReferenceManyToManyField>` creates a `ListContext` with the related records, so you can use any component relying on this context (`<Datagrid>`, `<SimpleList>`, etc.).
+
 ## `<ReferenceOneField>`
 
 This field fetches a one-to-one relationship, e.g. the details of a book, when using a foreign key.
@@ -396,6 +406,8 @@ const AuthorShow = () => (
 ```
 
 `<ReferenceOneField>` behaves like `<ReferenceManyField>`: it uses the current `record` (a book in this example) to build a filter for the book details with the same the foreign key (`book_id`). Then, it uses `dataProvider.getManyReference('book_details', { target: 'book_id', id: book.id })` fetch the related details, and takes the first one.
+
+`<ReferenceOneField>` creates a `RecordContext` with the reference record, so you can use any component relying on this context (`<TextField>`, `<SimpleShowLayout>`, etc.).
 
 **Tip**: As with `<ReferenceField>`, you can call `<ReferenceOneField>` as many times as you need in the same component, react-admin will only make one call to `dataProvider.getManyReference()`.
 

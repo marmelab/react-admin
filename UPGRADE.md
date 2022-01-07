@@ -993,6 +993,29 @@ export const PostList = () => (
 );
 ```
 
+## No More Props Injection In `<ReferenceField>`
+
+`<ReferenceField>` creates a `RecordContext` for the reference record, and this allows using any of react-admin's Field components. It also used to pass many props to the underlying component (including the current `record`), but this is no longer the case. If you need to access the `record` in a child of `<ReferenceField>`, you need to use the `useRecordContext` hook instead.
+
+```diff
+const PostShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField source="title" />
+            <ReferenceField source="author_id" reference="users">
+                <NameField />
+            </ReferenceField>
+        </SimpleShowLayout>
+    </Show>
+);
+
+-const NameField = ({ record }) => {
++const NameField = () => {
++   const { record } = useRecordContext();
+    return <span>{record?.name}</span>;
+};
+```
+
 ## `useListContext` No Longer Returns An `ids` Prop
 
 The `ListContext` used to return two props for the list data: `data` and `ids`. To render the list data, you had to iterate over the `ids`. 
