@@ -24,11 +24,11 @@ To fetch the books of an author with react-admin, you can use:
 
 - [`<ReferenceManyField>`](#referencemanyfield) when the API uses a foreign key (e.g. each book has an `author_id` field)
 - [`<ReferenceArrayField>`](#referencearrayfield) when the API uses an array of foreign keys (e.g. each author has a `book_ids` field)
-- [`<ArrayField>`](#arrayfield) when the API embeds an array of records (e.g. each author has an `books` field)
+- [`<ArrayField>`](#arrayfield) when the API embeds an array of records (e.g. each author has a `books` field)
 
 ## Many-To-One
 
-On the other hand, **many-to-one relationships** are the opposite of one-to-many relationships (e.g. each book has one author). To fetch the the author of a book, you can use:
+On the other hand, **many-to-one relationships** are the opposite of one-to-many relationships (e.g. each book has one author). To fetch the author of a book, you can use:
 
 - [`<ReferenceField>`](#referencefield) when the API uses a foreign key (e.g. each book has an `author_id` field)
 - [Deep Field Source](#deep-field-source), when the API embeds the related record (e.g. each book has an `author` field containing an object)
@@ -37,7 +37,7 @@ Other kinds of relationships often reduce to one-to-many relationships.
 
 ## One-To-One
 
-For instance, **one-to-one relationships** (e.g. a book has one book_detail) are a special type of one-to-many relationship with a cardinality of 1. To fetch the details of a book, you can use:
+For instance, **one-to-one relationships** (e.g. a book has one `book_detail`) are a special type of one-to-many relationship with a cardinality of 1. To fetch the details of a book, you can use:
 
 - [`<ReferenceOneField>`](#referenceonefield) when the API uses a foreign key (e.g. each `book_detail` has a `book_id` field)
 - [`<ReferenceField>`](#referencefield) when the API uses a reverse foreign key (e.g. each `book` has a `book_detail_id` field)
@@ -167,7 +167,7 @@ const BookShow = () => (
 
 `<ReferenceField>` creates a `RecordContext` with the reference record, so you can use any component relying on this context (`<TextField>`, `<SimpleShowLayout>`, etc.).
 
-**Tip**: You don't need to worry about the fact that this components calls `<ReferenceField>` twice on the same table. React-admin will only make one call to the API.
+**Tip**: You don't need to worry about the fact that these components calls `<ReferenceField>` twice on the same table. React-admin will only make one call to the API.
 
 This is fine, but what if you need to display the author details for a list of books?
 
@@ -231,7 +231,7 @@ const AuthorShow = () => (
 
 `<ReferenceManyField>` creates a `ListContext` with the related records, so you can use any component relying on this context (`<Datagrid>`, `<SimpleList>`, etc.).
 
-**Tip**: For many APIs, there is no difference between `dataProvider.getList()` and `dataProvider.getManyReference()`. The latter is a specialized version of the former, with a predefined `filter`. But some APIs expose related records as a subroute, and therefore need a special method to fetch them. For instance, the boks of an author can be exposed via the following endpoint: 
+**Tip**: For many APIs, there is no difference between `dataProvider.getList()` and `dataProvider.getManyReference()`. The latter is a specialized version of the former, with a predefined `filter`. But some APIs expose related records as a sub-route, and therefore need a special method to fetch them. For instance, the books of an author can be exposed via the following endpoint: 
 
 ```
 GET /authors/:id/books
@@ -405,7 +405,7 @@ const AuthorShow = () => (
 );
 ```
 
-`<ReferenceOneField>` behaves like `<ReferenceManyField>`: it uses the current `record` (a book in this example) to build a filter for the book details with the same the foreign key (`book_id`). Then, it uses `dataProvider.getManyReference('book_details', { target: 'book_id', id: book.id })` fetch the related details, and takes the first one.
+`<ReferenceOneField>` behaves like `<ReferenceManyField>`: it uses the current `record` (a book in this example) to build a filter for the book details with the foreign key (`book_id`). Then, it uses `dataProvider.getManyReference('book_details', { target: 'book_id', id: book.id })` to fetch the related details, and takes the first one.
 
 `<ReferenceOneField>` creates a `RecordContext` with the reference record, so you can use any component relying on this context (`<TextField>`, `<SimpleShowLayout>`, etc.).
 
