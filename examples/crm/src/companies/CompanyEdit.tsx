@@ -6,7 +6,6 @@ import {
     SimpleForm,
     TextInput,
     SelectInput,
-    useRecordContext,
     required,
 } from 'react-admin';
 import { Box, CardContent, Divider } from '@mui/material';
