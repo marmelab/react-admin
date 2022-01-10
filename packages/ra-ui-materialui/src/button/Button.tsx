@@ -162,6 +162,7 @@ export const sanitizeButtonRestProps = ({
     saving,
     submitOnEnter,
     mutationMode,
+    hasCreate,
     ...rest
 }: any) => rest;
 
