@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { ReferenceArrayField, SingleFieldList, ChipField } from 'react-admin';
+import {
+    ReferenceArrayField,
+    SingleFieldList,
+    ChipField,
+    useRecordContext,
+} from 'react-admin';
 
 import { Contact } from '../types';
 
@@ -16,15 +21,20 @@ const StyledReferenceArrayField = styled(ReferenceArrayField)({
     },
 });
 
-const ColoredChipField = ({ record, ...props }: any) =>
-    record ? (
+const ColoredChipField = (props: any) => {
+    const record = useRecordContext();
+    if (!record) {
+        return null;
+    }
+    return (
         <ChipField
             record={record}
             {...props}
             style={{ backgroundColor: record.color, border: 0 }}
             component="span"
         />
-    ) : null;
+    );
+};
 
 export const TagsList = ({ record }: { record: Contact }) => {
     if (!record) return null;

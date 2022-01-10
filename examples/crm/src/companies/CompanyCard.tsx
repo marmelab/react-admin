@@ -72,7 +72,7 @@ export const CompanyCard = ({ record }: { record: Company }) => {
         >
             <Paper className={classes.paper} elevation={elevation}>
                 <div className={classes.identity}>
-                    <CompanyAvatar record={record} />
+                    <CompanyAvatar />
                     <div className={classes.name}>
                         <Typography variant="subtitle2">
                             {record.name}
