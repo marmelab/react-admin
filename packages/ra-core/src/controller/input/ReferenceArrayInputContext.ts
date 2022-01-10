@@ -27,5 +27,4 @@ export interface ReferenceArrayInputContextValue<
     setFilter: (filter: any) => void;
     setPagination: (pagination: PaginationPayload) => void;
     setSort: (sort: SortPayload) => void;
-    setSortForList: (sort: string, order?: string) => void;
 }

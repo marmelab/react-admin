@@ -49,7 +49,7 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                         : 'ASC'
                     : event.currentTarget.dataset.order;
 
-            setSort(newField, newOrder);
+            setSort({ field: newField, order: newOrder });
         },
         [currentSort.field, currentSort.order, setSort]
     );
