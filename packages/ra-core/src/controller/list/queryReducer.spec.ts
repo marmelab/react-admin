@@ -5,9 +5,7 @@ describe('Query Reducer', () => {
     describe('SET_PAGE action', () => {
         it('should update the page', () => {
             const updatedState = queryReducer(
-                {
-                    page: 1,
-                },
+                { page: 1 },
                 {
                     type: 'SET_PAGE',
                     payload: 2,
@@ -188,7 +186,7 @@ describe('Query Reducer', () => {
                 {},
                 {
                     type: 'SET_SORT',
-                    payload: { sort: 'foo' },
+                    payload: { field: 'foo' },
                 }
             );
             expect(updatedState).toEqual({
@@ -202,7 +200,7 @@ describe('Query Reducer', () => {
                 {},
                 {
                     type: 'SET_SORT',
-                    payload: { sort: 'foo', order: SORT_DESC },
+                    payload: { field: 'foo', order: SORT_DESC },
                 }
             );
             expect(updatedState).toEqual({
@@ -220,7 +218,7 @@ describe('Query Reducer', () => {
                 },
                 {
                     type: 'SET_SORT',
-                    payload: { sort: 'foo' },
+                    payload: { field: 'foo' },
                 }
             );
             expect(updatedState).toEqual({
@@ -238,7 +236,7 @@ describe('Query Reducer', () => {
                 },
                 {
                     type: 'SET_SORT',
-                    payload: { sort: 'foo', order: SORT_DESC },
+                    payload: { field: 'foo', order: SORT_DESC },
                 }
             );
             expect(updatedState).toEqual({
