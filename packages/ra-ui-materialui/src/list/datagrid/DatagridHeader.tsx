@@ -183,7 +183,7 @@ export interface DatagridHeaderProps<RecordType extends Record = Record> {
     onToggleItem?: (id: Identifier) => void;
     resource?: string;
     selectedIds?: Identifier[];
-    setSort?: (sort: string, order?: string) => void;
+    setSort?: (sort: SortPayload) => void;
 }
 
 DatagridHeader.displayName = 'DatagridHeader';

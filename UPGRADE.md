@@ -1063,7 +1063,7 @@ const CommentGrid = () => {
 
 ## `setSort()` Signature Changed
 
-Some react-admin components have access to a `setSort()` callback to sort the current list of items. This callback is also presenty in the `ListContext`. Its signature has changed:
+Some react-admin components have access to a `setSort()` callback to sort the current list of items. This callback is also present in the `ListContext`. Its signature has changed:
 
 ```diff
 -setSort(field: string, order: 'ASC' | 'DESC');
