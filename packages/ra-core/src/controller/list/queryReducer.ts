@@ -22,7 +22,10 @@ const oppositeOrder = direction =>
 type ActionTypes =
     | {
           type: typeof SET_SORT;
-          payload: { sort: string; order?: typeof SORT_ASC | typeof SORT_DESC };
+          payload: {
+              field: string;
+              order?: typeof SORT_ASC | typeof SORT_DESC;
+          };
       }
     | {
           type: typeof SET_PAGE;
@@ -57,7 +60,7 @@ export const queryReducer: Reducer<ListParams> = (
 ) => {
     switch (action.type) {
         case SET_SORT:
-            if (action.payload.sort === previousState.sort) {
+            if (action.payload.field === previousState.sort) {
                 return {
                     ...previousState,
                     order: oppositeOrder(previousState.order),
@@ -67,7 +70,7 @@ export const queryReducer: Reducer<ListParams> = (
 
             return {
                 ...previousState,
-                sort: action.payload.sort,
+                sort: action.payload.field,
                 order: action.payload.order || SORT_ASC,
                 page: 1,
             };

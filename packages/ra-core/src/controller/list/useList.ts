@@ -81,13 +81,13 @@ export const useList = <RecordType extends Record = Record>(
     });
 
     // sort logic
-    const { sort, setSort: setSortObject } = useSortState(initialSort);
+    const { sort, setSort: setSortState } = useSortState(initialSort);
     const setSort = useCallback(
-        (field: string, order = 'ASC') => {
-            setSortObject({ field, order });
+        (sort: SortPayload) => {
+            setSortState(sort);
             setPage(1);
         },
-        [setPage, setSortObject]
+        [setPage, setSortState]
     );
 
     // selection logic

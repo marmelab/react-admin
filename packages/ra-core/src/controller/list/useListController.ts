@@ -203,7 +203,7 @@ export interface ListControllerResult<RecordType extends Record = Record> {
     ) => void;
     setPage: (page: number) => void;
     setPerPage: (page: number) => void;
-    setSort: (sort: string, order?: string) => void;
+    setSort: (sort: SortPayload) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
     total: number;
 }

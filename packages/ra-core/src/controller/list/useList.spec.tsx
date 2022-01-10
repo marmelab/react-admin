@@ -96,7 +96,11 @@ describe('<useList />', () => {
             const listContext = useListContext();
 
             return (
-                <button onClick={() => listContext.setSort('title', 'ASC')}>
+                <button
+                    onClick={() =>
+                        listContext.setSort({ field: 'title', order: 'ASC' })
+                    }
+                >
                     Sort by title ASC
                 </button>
             );

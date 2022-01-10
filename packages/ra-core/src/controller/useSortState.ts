@@ -4,27 +4,23 @@ import { SORT_ASC, SORT_DESC } from './list/queryReducer';
 import { SortPayload } from '../types';
 
 export interface SortProps {
-    setSortField: (field: string) => void;
-    setSortOrder: (order: string) => void;
-    setSort: (sort: SortPayload, order?: string) => void;
+    setSortField: (field: SortPayload['field']) => void;
+    setSortOrder: (order: SortPayload['order']) => void;
+    setSort: (sort: SortPayload) => void;
     sort: SortPayload;
 }
 
-interface Action {
-    type: 'SET_SORT' | 'SET_SORT_FIELD' | 'SET_SORT_ORDER';
-    payload: {
-        sort?: SortPayload;
-        field?: string;
-        order?: string;
-    };
-}
+type Action =
+    | { type: 'SET_SORT'; payload: SortPayload }
+    | { type: 'SET_SORT_FIELD'; payload: SortPayload['field'] }
+    | { type: 'SET_SORT_ORDER'; payload: SortPayload['order'] };
 
 const sortReducer = (state: SortPayload, action: Action): SortPayload => {
     switch (action.type) {
         case 'SET_SORT':
-            return action.payload.sort;
+            return action.payload;
         case 'SET_SORT_FIELD': {
-            const { field } = action.payload;
+            const field = action.payload;
             const order =
                 state.field === field
                     ? state.order === SORT_ASC
@@ -34,7 +30,7 @@ const sortReducer = (state: SortPayload, action: Action): SortPayload => {
             return { field, order };
         }
         case 'SET_SORT_ORDER': {
-            const { order } = action.payload;
+            const order = action.payload;
             return {
                 ...state,
                 order,
@@ -107,23 +103,23 @@ const useSortState = (initialSort: SortPayload = defaultSort): SortProps => {
             isFirstRender.current = false;
             return;
         }
-        dispatch({ type: 'SET_SORT', payload: { sort: initialSort } });
+        dispatch({ type: 'SET_SORT', payload: initialSort });
     }, [initialSort.field, initialSort.order]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return {
         setSort: useCallback(
             (sort: SortPayload) =>
-                dispatch({ type: 'SET_SORT', payload: { sort } }),
+                dispatch({ type: 'SET_SORT', payload: sort }),
             [dispatch]
         ),
         setSortField: useCallback(
             (field: string) =>
-                dispatch({ type: 'SET_SORT_FIELD', payload: { field } }),
+                dispatch({ type: 'SET_SORT_FIELD', payload: field }),
             [dispatch]
         ),
         setSortOrder: useCallback(
             (order: string) =>
-                dispatch({ type: 'SET_SORT_ORDER', payload: { order } }),
+                dispatch({ type: 'SET_SORT_ORDER', payload: order }),
             [dispatch]
         ),
         sort,

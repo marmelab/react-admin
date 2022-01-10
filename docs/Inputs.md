@@ -2055,7 +2055,7 @@ In addition to the `ReferenceArrayInputContext`, `<ReferenceArrayInput>` also se
 
 ### `useReferenceArrayInputContext`
 
-The [`<ReferenceArrayInput>`](#referencearrayinput) component take care of fetching the data, and put that data in a context called `ReferenceArrayInputContext` so that it’s available for its descendants. This context also stores filters, pagination, sort state, and provides callbacks to update them.
+The [`<ReferenceArrayInput>`](#referencearrayinput) component takes care of fetching the data, and putting that data in a context called `ReferenceArrayInputContext` so that it’s available for its descendants. This context also stores filters, pagination, sort state, and provides callbacks to update them.
 
 Any component descendant of `<ReferenceArrayInput>` can grab information from the `ReferenceArrayInputContext` using the `useReferenceArrayInputContext` hook. Here is what it returns:
 
@@ -2069,7 +2069,6 @@ const {
     setFilter, // a callback to update the filters, e.g. setFilters({ q: 'query' })
     setPagination, // a callback to change the pagination, e.g. setPagination({ page: 2, perPage: 50 })
     setSort, // a callback to change the sort, e.g. setSort({ field: 'name', order: 'DESC' })
-    setSortForList, // a callback to set the sort with the same signature as the one from the ListContext. This is required to avoid breaking backward compatibility and will be removed in v4
 } = useReferenceArrayInputContext();
 ```
 

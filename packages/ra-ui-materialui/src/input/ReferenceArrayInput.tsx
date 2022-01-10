@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement, useMemo } from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     getFieldLabelTranslationArgs,
@@ -131,23 +131,11 @@ export const ReferenceArrayInput = ({
         input,
     });
 
-    const listContext = useMemo(
-        () => ({
-            ...controllerProps,
-            // ReferenceArrayInput.setSort had a different signature than the one from ListContext.
-            // In order to not break backward compatibility, we added this temporary setSortForList in the
-            // ReferenceArrayInputContext
-            // FIXME in 4.0
-            setSort: controllerProps.setSortForList,
-        }),
-        [controllerProps]
-    );
-
     const translate = useTranslate();
     return (
         <ResourceContextProvider value={props.reference}>
             <ReferenceArrayInputContextProvider value={controllerProps}>
-                <ListContextProvider value={listContext}>
+                <ListContextProvider value={controllerProps}>
                     <ReferenceArrayInputView
                         id={id}
                         input={input}
@@ -226,7 +214,7 @@ export interface ReferenceArrayInputViewProps {
     resource?: string;
     setFilter: (v: string) => void;
     setPagination: (pagination: PaginationPayload) => void;
-    setSort: (sort: SortPayload, order?: string) => void;
+    setSort: (sort: SortPayload) => void;
     source: string;
     translate: Translate;
     warning?: string;

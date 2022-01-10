@@ -10,7 +10,7 @@ import { ListControllerResult } from './useListController';
  *
  * @typedef {Object} ListSortContextValue
  * @prop {Object}   currentSort a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
- * @prop {Function} setSort a callback to change the sort, e.g. setSort('name', 'ASC')
+ * @prop {Function} setSort a callback to change the sort, e.g. setSort({ field: 'name', order: 'ASC' })
  * @prop {string}   resource the resource name, deduced from the location. e.g. 'posts'
  *
  * @typedef Props
