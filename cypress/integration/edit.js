@@ -91,6 +91,8 @@ describe('Edit Page', () => {
             EditPostTagsPage.navigate();
             EditPostTagsPage.gotoTab(3);
 
+            cy.wait(250);
+
             // Music is selected by default
             cy.get(
                 EditPostTagsPage.elements.input('tags', 'reference-array-input')

@@ -40,7 +40,7 @@ const StyledCreate = styled(Create)({
 const ProductCreate = (props: CreateProps) => {
     return (
         <StyledCreate {...props}>
-            <TabbedForm>
+            <TabbedForm initialValues={{ sales: 0 }}>
                 <FormTab label="resources.products.tabs.image">
                     <TextInput
                         autoFocus
