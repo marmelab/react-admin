@@ -92,6 +92,7 @@ export const ListActions = (props: ListActionsProps) => {
             resource,
             displayedFilters,
             filterValues,
+            filtersProp,
             showFilter,
             filters,
             total,
