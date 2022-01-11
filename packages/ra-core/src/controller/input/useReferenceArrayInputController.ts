@@ -123,26 +123,22 @@ export const useReferenceArrayInputController = <
 
     // sort logic
     const sortRef = useRef(initialSort);
-    const { sort, setSort } = useSortState(initialSort);
+    const { sort, setSort: setSortState } = useSortState(initialSort);
 
-    // ReferenceArrayInput.setSort had a different signature than the one from ListContext.
-    // In order to not break backward compatibility, we added this temporary setSortForList in the
-    // ReferenceArrayInputContext
-    // FIXME remove in 4.0
-    const setSortForList = useCallback(
-        (field: string, order: string = 'ASC') => {
-            setSort({ field, order });
+    const setSort = useCallback(
+        (sort: SortPayload) => {
+            setSortState(sort);
             setPage(1);
         },
-        [setPage, setSort]
+        [setPage, setSortState]
     );
 
     // Ensure sort can be updated through props too, not just by using the setSort function
     useEffect(() => {
         if (!isEqual(initialSort, sortRef.current)) {
-            setSort(initialSort);
+            setSortState(initialSort);
         }
-    }, [setSort, initialSort]);
+    }, [setSortState, initialSort]);
 
     // Ensure pagination can be updated through props too, not just by using the setPagination function
     const paginationRef = useRef({ initialPage, initialPerPage });
@@ -285,7 +281,6 @@ export const useReferenceArrayInputController = <
         setPagination,
         setPerPage,
         setSort,
-        setSortForList,
         showFilter,
         warning: dataStatus.warning,
         total,

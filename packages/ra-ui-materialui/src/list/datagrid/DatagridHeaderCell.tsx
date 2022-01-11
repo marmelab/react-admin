@@ -52,7 +52,6 @@ export const DatagridHeaderCell = (
                             (field.props.sortBy || field.props.source)
                         }
                         direction={currentSort.order === 'ASC' ? 'asc' : 'desc'}
-                        data-sort={field.props.sortBy || field.props.source} // @deprecated. Use data-field instead.
                         data-field={field.props.sortBy || field.props.source}
                         data-order={field.props.sortByOrder || 'ASC'}
                         onClick={updateSort}
@@ -80,7 +79,7 @@ DatagridHeaderCell.propTypes = {
     className: PropTypes.string,
     field: PropTypes.element,
     currentSort: PropTypes.shape({
-        sort: PropTypes.string,
+        field: PropTypes.string,
         order: PropTypes.string,
     }).isRequired,
     isSorting: PropTypes.bool,

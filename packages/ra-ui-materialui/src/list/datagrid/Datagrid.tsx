@@ -343,7 +343,7 @@ export interface DatagridProps<RecordType extends Record = Record>
     isLoading?: boolean;
     onSelect?: (ids: Identifier[]) => void;
     onToggleItem?: (id: Identifier) => void;
-    setSort?: (sort: string, order?: string) => void;
+    setSort?: (sort: SortPayload) => void;
     selectedIds?: Identifier[];
     total?: number;
 }

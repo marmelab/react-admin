@@ -545,7 +545,7 @@ import { useListSortContext, useTranslate } from 'react-admin';
 
 const SortButton = ({ fields }) => {
     // currentSort is an object { field, order } containing the current sort
-    // setSort is a callback (field, order) => void allowing to change the sort field and order
+    // setSort is a callback ({ field, order }) => void allowing to change the sort field and order
     const { currentSort, setSort } = useListSortContext();
     // rely on the translations to display labels like 'Sort by sales descending'
     const translate = useTranslate();
@@ -561,12 +561,10 @@ const SortButton = ({ fields }) => {
     };
     const handleChangeSort = (event) => {
         const field = event.currentTarget.dataset.sort;
-        setSort(
+        setSort({
             field,
-            field === currentSort.field
-                ? inverseOrder(currentSort.order)
-                : 'ASC'
-        );
+            order: field === currentSort.field ? inverseOrder(currentSort.order) : 'ASC'
+        });
         setAnchorEl(null);
     };
 

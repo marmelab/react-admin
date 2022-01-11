@@ -2,6 +2,7 @@ import { Identifier } from '../types';
 
 export const CRUD_CHANGE_LIST_PARAMS = 'RA/CRUD_CHANGE_LIST_PARAMS';
 
+// Serializable list params (for the query string)
 export interface ListParams {
     sort: string;
     order: string;

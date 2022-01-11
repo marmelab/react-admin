@@ -1061,6 +1061,37 @@ const CommentGrid = () => {
 };
 ```
 
+## `setSort()` Signature Changed
+
+Some react-admin components have access to a `setSort()` callback to sort the current list of items. This callback is also present in the `ListContext`. Its signature has changed:
+
+```diff
+-setSort(field: string, order: 'ASC' | 'DESC');
++setSort({ field: string, order: 'ASC' | 'DESC' });
+```
+
+This impacts your code if you built a custom sort component:
+
+```diff
+const SortButton = () => {
+    const { currentSort, setSort } = useListContext();
+    const handleChangeSort = (event) => {
+        const field = event.currentTarget.dataset.sort;
+-       setSort(
+-           field,
+-           field === currentSort.field ? inverseOrder(currentSort.order) : 'ASC',
+-       });
++       setSort({
++           field,
++           order: field === currentSort.field ? inverseOrder(currentSort.order) : 'ASC',
++       });
+        setAnchorEl(null);
+    };
+
+    // ...
+};
+```
+
 ## Removed Reducers
 
 If your code used `useSelector` to read the react-admin application state, it will likely break. React-admin v4 uses Redux much less than v3, and the shape of the Redux state has changed.

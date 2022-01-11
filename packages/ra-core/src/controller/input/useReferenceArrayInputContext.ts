@@ -38,7 +38,6 @@ const extractReferenceArrayInputContextProps = <
     setFilter,
     setPagination,
     setSort,
-    setSortForList,
     warning,
 }: T) => ({
     choices,
@@ -48,6 +47,5 @@ const extractReferenceArrayInputContextProps = <
     setFilter,
     setPagination,
     setSort,
-    setSortForList,
     warning,
 });

@@ -81,13 +81,13 @@ export const useReferenceInputController = <RecordType extends Record = Record>(
     } = usePaginationState({ page: initialPage, perPage: initialPerPage });
 
     // sort logic
-    const { sort, setSort: setSortObject } = useSortState(sortOverride);
+    const { sort, setSort: setSortState } = useSortState(sortOverride);
     const setSort = useCallback(
-        (field: string, order: string = 'ASC') => {
-            setSortObject({ field, order });
+        (sort: SortPayload) => {
+            setSortState(sort);
             setPage(1);
         },
-        [setPage, setSortObject]
+        [setPage, setSortState]
     );
 
     // filter logic
@@ -208,7 +208,7 @@ export const useReferenceInputController = <RecordType extends Record = Record>(
         pagination,
         setPagination,
         sort,
-        setSort: setSortObject,
+        setSort,
         warning: dataStatus.warning,
     };
 };

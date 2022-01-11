@@ -694,7 +694,7 @@ describe('useReferenceArrayInputController', () => {
         const children = ({
             setPage,
             setPerPage,
-            setSortForList,
+            setSort,
         }): React.ReactElement => {
             const handleSetPage = () => {
                 setPage(2);
@@ -703,7 +703,7 @@ describe('useReferenceArrayInputController', () => {
                 setPerPage(50);
             };
             const handleSetSort = () => {
-                setSortForList('name', SORT_ASC);
+                setSort({ field: 'name', order: SORT_ASC });
             };
 
             return (
