@@ -1,0 +1,59 @@
+---
+layout: default
+title: "The BooleanField Component"
+---
+
+# `<BooleanField>`
+
+Displays a boolean value as a check.
+
+```jsx
+import { BooleanField } from 'react-admin';
+
+<BooleanField source="commentable" />
+```
+
+![BooleanField](./img/boolean-field.png)
+
+## Properties
+
+| Prop              | Required | Type             | Default                    | Description                       |
+| ----------------- | -------- | ---------------- | -------------------------- | -------------------------------------------------------------------- |
+| `valueLabelTrue`  | Optional | string           | 'true'                     | Aria label for the truthy value   |
+| `valueLabelFalse` | Optional | string           | 'false'                    | Aria label for the falsy value    |
+| `TrueIcon`        | Optional | SvgIconComponent | `@material-ui/icons/Done`  | Icon to show for the truthy value |
+| `FalseIcon`       | Optional | SvgIconComponent | `@material-ui/icons/Clear` | Icon to show for the falsy value  |
+| `looseValue`      | Optional | boolean          | `false`                    | If `true` the field's value is not evaluated strictly as a `boolean` |
+
+`<BooleanField>` also accepts the [common field props](./Fields.md#common-field-props).
+
+## CSS API
+
+| Rule name  | Description                 |
+| ---------- | --------------------------- |
+| `root`     | Applied to the root element |
+
+To override the style of all instances of `<BooleanField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaBooleanField` key.
+
+## Usage
+
+The `<BooleanField>` includes a tooltip text for accessibility (or to query in "end to end" tests). By default, it is the translated value ('true' or 'false' in English).
+
+If you need to override it, you can use the `valueLabelTrue` and `valueLabelFalse` props, which both accept a string. These strings may be translation keys:
+
+```jsx
+// English labels
+<BooleanField source="published" valueLabelTrue="Has been published" valueLabelFalse="Has not been published yet" />
+
+// Translation keys
+<BooleanField source="published" valueLabelTrue="myapp.published.true" valueLabelFalse="myapp.published.false" />
+```
+
+You can customize the icons to show by setting the `TrueIcon` and `FalseIcon` props which accept a SvgIcon type.
+
+```jsx
+import AlarmOnIcon from '@material-ui/icons/AlarmOn';
+import AlarmOffIcon from '@material-ui/icons/AlarmOff';
+
+<BooleanField source="alarm" TrueIcon={AlarmOnIcon} FalseIcon={AlarmOffIcon} />
+```
