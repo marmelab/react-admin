@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement, SyntheticEvent, ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import {
     Button as MuiButton,
@@ -134,10 +134,7 @@ interface Props {
     variant?: string;
     // May be injected by Toolbar
     basePath?: string;
-    handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
-    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
     invalid?: boolean;
-    onSave?: (values: object, redirect: RedirectionSideEffect) => void;
     saving?: boolean;
     submitOnEnter?: boolean;
     pristine?: boolean;
@@ -151,10 +148,7 @@ export type ButtonProps = Props & MuiButtonProps;
 export const sanitizeButtonRestProps = ({
     // The next props are injected by Toolbar
     basePath,
-    handleSubmit,
-    handleSubmitWithRedirect,
     invalid,
-    onSave,
     pristine,
     record,
     redirect,

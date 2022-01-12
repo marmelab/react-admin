@@ -1,4 +1,5 @@
-import React, { cloneElement, ReactElement, SyntheticEvent } from 'react';
+import * as React from 'react';
+import { cloneElement, MouseEventHandler, ReactElement } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Button, { ButtonProps } from '@mui/material/Button';
@@ -6,21 +7,17 @@ import CircularProgress from '@mui/material/CircularProgress';
 import ContentSave from '@mui/icons-material/Save';
 import classnames from 'classnames';
 import {
-    HandleSubmitWithRedirect,
     MutationMode,
     OnSuccess,
     OnFailure,
     Record,
-    RedirectionSideEffect,
     TransformData,
-    useFormContext,
-    useNotify,
+    useGetFormValues,
     useSaveContext,
     useTranslate,
 } from 'ra-core';
 
 import { sanitizeButtonRestProps } from './Button';
-import { FormRenderProps } from 'react-final-form';
 
 /**
  * Submit button for resource forms (Edit and Create).
@@ -62,100 +59,56 @@ import { FormRenderProps } from 'react-final-form';
 export const SaveButton = (props: SaveButtonProps) => {
     const {
         className,
+        icon = defaultIcon,
         invalid,
         label = 'ra.action.save',
-        disabled,
-        redirect,
-        saving,
-        submitOnEnter,
-        variant = 'contained',
-        icon = defaultIcon,
         onClick,
-        handleSubmitWithRedirect,
-        onSave,
-        onSuccess,
         onFailure,
+        onSuccess,
+        saving,
+        disabled = saving,
+        submitOnEnter,
         transform,
+        variant = 'contained',
         ...rest
     } = props;
-
-    const notify = useNotify();
     const translate = useTranslate();
-    const formContext = useFormContext();
-    const { setOnSuccess, setOnFailure, setTransform } = useSaveContext(props);
+    const getFormValues = useGetFormValues();
+    const saveContext = useSaveContext();
+    const hasSideEffects = !!onSuccess || !!onFailure || !!transform;
+    const type = !submitOnEnter || hasSideEffects ? 'button' : 'submit';
 
-    const handleClick = event => {
-        // deprecated: use onSuccess and transform instead of onSave
-        if (typeof onSave === 'function') {
-            if (process.env.NODE_ENV !== 'production') {
-                console.warn(
-                    '<SaveButton onSave> prop is deprecated, use the onSuccess prop instead.'
-                );
-                if (!formContext || !formContext.setOnSave) {
-                    console.warn(
-                        'Using <SaveButton> outside a FormContext is deprecated.'
-                    );
-                }
-            }
-            if (formContext && formContext.setOnSave) {
-                formContext.setOnSave(onSave);
-            }
-        } else {
-            if (
-                process.env.NODE_ENV !== 'production' &&
-                (!formContext || !formContext.setOnSave)
-            ) {
-                console.warn(
-                    'Using <SaveButton> outside a FormContext is deprecated.'
-                );
-            }
-
-            if (formContext && formContext.setOnSave) {
-                // we reset to the Form default save function
-                formContext.setOnSave();
-            }
-        }
-        if (onSuccess) {
-            setOnSuccess(onSuccess);
-        }
-        if (onFailure) {
-            setOnFailure(onFailure);
-        }
-        if (transform) {
-            setTransform(transform);
-        }
-        if (saving) {
-            // prevent double submission
-            event.preventDefault();
-        } else {
-            if (invalid) {
-                notify('ra.message.invalid_form', { type: 'warning' });
-            }
-            // always submit form explicitly regardless of button type
-            if (event) {
-                event.preventDefault();
-            }
-            handleSubmitWithRedirect(redirect);
-        }
-
-        if (typeof onClick === 'function') {
+    const handleClick: MouseEventHandler<HTMLButtonElement> = event => {
+        if (onClick) {
             onClick(event);
+        }
+        console.log('defaultPrevented', event.defaultPrevented);
+        if (event.defaultPrevented) {
+            return;
+        }
+
+        if (hasSideEffects) {
+            console.log({ hasSideEffects });
+            event.preventDefault();
+            const values = getFormValues();
+            saveContext?.save(values, {
+                onSuccess,
+                onFailure,
+                transform,
+            });
         }
     };
 
-    const type = submitOnEnter ? 'submit' : 'button';
     const displayedLabel = label && translate(label, { _: label });
     return (
         <StyledButton
             className={classnames(SaveButtonClasses.button, className)}
             variant={variant}
             type={type}
-            onClick={handleClick}
-            // TODO: find a way to display the loading state (LoadingButton from mui Lab?)
-            // This is because the "default" color does not exist anymore
             color="primary"
             aria-label={displayedLabel}
             disabled={disabled}
+            onClick={handleClick}
             {...sanitizeButtonRestProps(rest)}
         >
             {saving ? (
@@ -182,26 +135,18 @@ const defaultIcon = <ContentSave />;
 interface Props {
     classes?: object;
     className?: string;
-    handleSubmitWithRedirect?:
-        | HandleSubmitWithRedirect
-        | FormRenderProps['handleSubmit'];
-    // @deprecated
-    onSave?: (values: object, redirect: RedirectionSideEffect) => void;
-    onSuccess?: OnSuccess;
-    onFailure?: OnFailure;
-    transform?: TransformData;
+    disabled?: boolean;
     icon?: ReactElement;
     invalid?: boolean;
     label?: string;
-    onClick?: () => void;
-    disabled?: boolean;
-    redirect?: RedirectionSideEffect;
+    onSuccess?: OnSuccess;
+    onFailure?: OnFailure;
+    transform?: TransformData;
     saving?: boolean;
     submitOnEnter?: boolean;
     variant?: string;
     // May be injected by Toolbar - sanitized in Button
     basePath?: string;
-    handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
     record?: Record;
     resource?: string;
     mutationMode?: MutationMode;
@@ -212,16 +157,8 @@ export type SaveButtonProps = Props & ButtonProps;
 SaveButton.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object,
-    handleSubmitWithRedirect: PropTypes.func,
-    // @deprecated
-    onSave: PropTypes.func,
     invalid: PropTypes.bool,
     label: PropTypes.string,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     variant: PropTypes.oneOf(['text', 'outlined', 'contained']),

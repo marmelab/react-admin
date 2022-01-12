@@ -3,7 +3,7 @@ import { screen, render, waitFor } from '@testing-library/react';
 
 import { CoreAdminContext } from '../core';
 import { testDataProvider } from '../dataProvider';
-import FormWithRedirect from './FormWithRedirect';
+import { FormWithRedirect } from './FormWithRedirect';
 import useInput from './useInput';
 
 describe('FormWithRedirect', () => {

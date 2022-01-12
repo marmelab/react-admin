@@ -304,9 +304,12 @@ describe('<Edit />', () => {
                     <span>{record.title}</span>
                     <button
                         onClick={() =>
-                            save({ ...record, title: 'ipsum' }, undefined, {
-                                onSuccess: onSuccessSave,
-                            })
+                            save(
+                                { ...record, title: 'ipsum' },
+                                {
+                                    onSuccess: onSuccessSave,
+                                }
+                            )
                         }
                     >
                         Update
@@ -405,9 +408,12 @@ describe('<Edit />', () => {
                     <span>{record.title}</span>
                     <button
                         onClick={() =>
-                            save({ ...record, title: 'ipsum' }, undefined, {
-                                onFailure: onFailureSave,
-                            })
+                            save(
+                                { ...record, title: 'ipsum' },
+                                {
+                                    onFailure: onFailureSave,
+                                }
+                            )
                         }
                     >
                         Update
@@ -523,9 +529,12 @@ describe('<Edit />', () => {
                     <span>{record.title}</span>
                     <button
                         onClick={() =>
-                            save({ ...record, title: 'ipsum' }, undefined, {
-                                transform: transformSave,
-                            })
+                            save(
+                                { ...record, title: 'ipsum' },
+                                {
+                                    transform: transformSave,
+                                }
+                            )
                         }
                     >
                         Update

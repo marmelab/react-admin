@@ -1,11 +1,6 @@
 import * as React from 'react';
 import { createMemoryHistory } from 'history';
-import {
-    minLength,
-    required,
-    SaveContextProvider,
-    SideEffectContextProvider,
-} from 'ra-core';
+import { minLength, required, SaveContextProvider } from 'ra-core';
 import { CoreAdminContext, testDataProvider } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
@@ -26,7 +21,6 @@ describe('<TabbedForm />', () => {
         saving: false,
         setOnFailure: jest.fn(),
     };
-    const sideEffectValue = {};
 
     it('should display the tabs', () => {
         const history = createMemoryHistory();
@@ -37,12 +31,10 @@ describe('<TabbedForm />', () => {
             >
                 <ThemeProvider theme={createTheme(defaultTheme)}>
                     <SaveContextProvider value={saveContextValue}>
-                        <SideEffectContextProvider value={sideEffectValue}>
-                            <TabbedForm>
-                                <FormTab label="tab1" />
-                                <FormTab label="tab2" />
-                            </TabbedForm>
-                        </SideEffectContextProvider>
+                        <TabbedForm>
+                            <FormTab label="tab1" />
+                            <FormTab label="tab2" />
+                        </TabbedForm>
                     </SaveContextProvider>
                 </ThemeProvider>
             </CoreAdminContext>
@@ -65,15 +57,10 @@ describe('<TabbedForm />', () => {
             >
                 <ThemeProvider theme={createTheme(defaultTheme)}>
                     <SaveContextProvider value={saveContextValue}>
-                        <SideEffectContextProvider value={sideEffectValue}>
-                            <TabbedForm
-                                submitOnEnter={false}
-                                toolbar={<Toolbar />}
-                            >
-                                <FormTab label="tab1" />
-                                <FormTab label="tab2" />
-                            </TabbedForm>
-                        </SideEffectContextProvider>
+                        <TabbedForm submitOnEnter={false} toolbar={<Toolbar />}>
+                            <FormTab label="tab1" />
+                            <FormTab label="tab2" />
+                        </TabbedForm>
                     </SaveContextProvider>
                 </ThemeProvider>
             </CoreAdminContext>
@@ -88,12 +75,10 @@ describe('<TabbedForm />', () => {
             >
                 <ThemeProvider theme={createTheme(defaultTheme)}>
                     <SaveContextProvider value={saveContextValue}>
-                        <SideEffectContextProvider value={sideEffectValue}>
-                            <TabbedForm submitOnEnter toolbar={<Toolbar />}>
-                                <FormTab label="tab1" />
-                                <FormTab label="tab2" />
-                            </TabbedForm>
-                        </SideEffectContextProvider>
+                        <TabbedForm submitOnEnter toolbar={<Toolbar />}>
+                            <FormTab label="tab1" />
+                            <FormTab label="tab2" />
+                        </TabbedForm>
                     </SaveContextProvider>
                 </ThemeProvider>
             </CoreAdminContext>

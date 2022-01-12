@@ -225,6 +225,7 @@ export type OnSuccess = (
     context?: any
 ) => void;
 export type OnFailure = (error?: any, variables?: any, context?: any) => void;
+export type TransformData = (data: any) => any | Promise<any>;
 
 export interface UseDataProviderOptions {
     action?: string;

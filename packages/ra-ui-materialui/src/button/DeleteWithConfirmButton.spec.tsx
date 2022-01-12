@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { screen, render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
-import { CoreAdminContext, testDataProvider } from 'ra-core';
+import { CoreAdminContext, MutationMode, testDataProvider } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
@@ -14,17 +14,14 @@ const theme = createTheme();
 
 const invalidButtonDomProps = {
     basePath: '',
-    handleSubmit: jest.fn(),
-    handleSubmitWithRedirect: jest.fn(),
     invalid: false,
-    onSave: jest.fn(),
     pristine: false,
     record: { id: 123, foo: 'bar' },
     redirect: 'list',
     resource: 'posts',
     saving: false,
     submitOnEnter: true,
-    mutationMode: 'pessimistic',
+    mutationMode: 'pessimistic' as MutationMode,
 };
 
 describe('<DeleteWithConfirmButton />', () => {
@@ -52,7 +49,7 @@ describe('<DeleteWithConfirmButton />', () => {
         resource: 'posts',
         location: {},
         match: {},
-        mutationMode: 'pessimistic',
+        mutationMode: 'pessimistic' as MutationMode,
     };
 
     it('should allow to override the resource', async () => {

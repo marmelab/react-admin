@@ -17,5 +17,5 @@ import { useIsFetching, useIsMutating } from 'react-query';
 export const useLoading = () => {
     const isFetching = useIsFetching();
     const isMutating = useIsMutating();
-    return isFetching || isMutating;
+    return isFetching > 0 || isMutating > 0;
 };

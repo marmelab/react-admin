@@ -122,6 +122,7 @@ const sanitizeRestProps = ({
     isLoading = null,
     location = null,
     match = null,
+    mutationOptions = null,
     onFailure = null,
     onFailureRef = null,
     onSuccess = null,

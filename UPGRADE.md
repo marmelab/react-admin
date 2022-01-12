@@ -1411,6 +1411,23 @@ const Layout = (props) => {
 };
 ```
 
+## Form Submissions and Side Effects are Easier
+
+We previously had a complex solution for having multiple submit buttons: a SaveContext providing side effects modifiers and refs to the current ones, and also a redirect prop. However, this was redundant and confusing as the `save` function provided by our mutation hooks also accepted side effect override at call time. It was even more confusing when adding custom or multiple `<SaveButton>` as those received two submission related functions: `handleSubmit` and `handleSubmitWithRedirect`.
+
+Besides, our solution prevented the native browser submit on enter feature and this was an accessibility issue for some users such as Japanese people.
+
+The new solution leverage the fact that we already make the `save` function available through context (`useSaveContext`) and users can get the current form values, call the save function directly and override any of the side effects as they usually do with mutation hooks.
+
+We also added side effects props on the SaveButton to make most common cases possible and avoid gotchas such as preventing default event.
+
+If you relied on `handleSubmit` or `handleSubmitWithRedirect`, you can now use the `SaveButton` and override any of the side effect props: `onSuccess`, `onFailure` or `transform`.
+
+The `FormWithRedirect`, `SimpleForm` and `TabbedForm` don't have a `redirect` prop anymore. You should handle redirection either:
+- in the submit handler if you provided a custom one, leveraging the `useRedirect` hook
+- at the `Create` or `Edit` level as they now accept a `redirect` prop
+- in the `SaveButton` side effects props (`onSuccess` or `onFailure`), leveraging the `useRedirect` hook
+
 # Upgrade to 3.0
 
 We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.

@@ -4,13 +4,6 @@ import FormDataConsumer, {
     FormDataConsumerRenderParams,
 } from './FormDataConsumer';
 import FormField from './FormField';
-import FormWithRedirect, {
-    FormWithRedirectProps,
-    FormWithRedirectRender,
-    FormWithRedirectRenderProps,
-    FormWithRedirectSave,
-    HandleSubmitWithRedirect,
-} from './FormWithRedirect';
 import useInput, { InputProps, UseInputValue } from './useInput';
 import ValidationError, { ValidationErrorProps } from './ValidationError';
 import useInitializeFormWithRecord from './useInitializeFormWithRecord';
@@ -32,11 +25,6 @@ export type {
     ChoicesInputProps,
     FormDataConsumerRender,
     FormDataConsumerRenderParams,
-    FormWithRedirectProps,
-    FormWithRedirectRenderProps,
-    FormWithRedirectRender,
-    FormWithRedirectSave,
-    HandleSubmitWithRedirect,
     InputProps,
     UseInputValue,
     OptionTextElement,
@@ -49,7 +37,6 @@ export {
     addField,
     FormDataConsumer,
     FormField,
-    FormWithRedirect,
     sanitizeEmptyValues,
     submitErrorsMutators,
     useChoices,
@@ -60,13 +47,12 @@ export {
     useResetSubmitErrors,
     ValidationError,
 };
+export * from './FormWithRedirect';
 export { isRequired } from './FormField';
 export * from './validate';
 export * from './constants';
-export * from './FormContextProvider';
-export * from './FormContext';
-export * from './useFormContext';
 export * from './FormGroupContext';
 export * from './FormGroupContextProvider';
 export * from './useFormGroup';
 export * from './useFormGroupContext';
+export * from './useGetFormValues';

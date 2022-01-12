@@ -214,9 +214,12 @@ describe('useCreateController', () => {
             </Provider>
         );
         await act(async () =>
-            saveCallback({ foo: 'bar' }, undefined, {
-                onSuccess: onSuccessSave,
-            })
+            saveCallback(
+                { foo: 'bar' },
+                {
+                    onSuccess: onSuccessSave,
+                }
+            )
         );
         expect(onSuccess).not.toHaveBeenCalled();
         expect(onSuccessSave).toHaveBeenCalled();
@@ -286,9 +289,12 @@ describe('useCreateController', () => {
             </Provider>
         );
         await act(async () =>
-            saveCallback({ foo: 'bar' }, undefined, {
-                onFailure: onFailureSave,
-            })
+            saveCallback(
+                { foo: 'bar' },
+                {
+                    onFailure: onFailureSave,
+                }
+            )
         );
         expect(onError).not.toHaveBeenCalled();
         expect(onFailureSave).toHaveBeenCalled();
@@ -357,9 +363,12 @@ describe('useCreateController', () => {
             </CoreAdminContext>
         );
         await act(async () =>
-            saveCallback({ foo: 'bar' }, undefined, {
-                transform: transformSave,
-            })
+            saveCallback(
+                { foo: 'bar' },
+                {
+                    transform: transformSave,
+                }
+            )
         );
         expect(transform).not.toHaveBeenCalled();
         expect(transformSave).toHaveBeenCalledWith({ foo: 'bar' });

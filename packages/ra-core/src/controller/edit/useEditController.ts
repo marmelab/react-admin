@@ -1,4 +1,4 @@
-import { useCallback, MutableRefObject } from 'react';
+import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
@@ -8,6 +8,7 @@ import {
     MutationMode,
     OnSuccess,
     OnFailure,
+    TransformData,
     UpdateParams,
 } from '../../types';
 import {
@@ -23,13 +24,7 @@ import {
 } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { useResourceContext, useGetResourceLabel } from '../../core';
-import {
-    SetOnSuccess,
-    SetOnFailure,
-    TransformData,
-    SetTransformData,
-    useSaveModifiers,
-} from '../saveModifiers';
+import { SaveHandler } from '../saveContext';
 
 /**
  * Prepare data for the Edit view.
@@ -60,9 +55,10 @@ export const useEditController = <RecordType extends Record = Record>(
         disableAuthentication,
         id: propsId,
         mutationMode = 'undoable',
-        transform,
-        queryOptions = {},
         mutationOptions = {},
+        queryOptions = {},
+        redirect: redirectTo = DefaultRedirect,
+        transform,
     } = props;
     useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
@@ -73,15 +69,6 @@ export const useEditController = <RecordType extends Record = Record>(
     const { id: routeId } = useParams<'id'>();
     const id = propsId || decodeURIComponent(routeId);
     const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
-
-    const {
-        onSuccessRef,
-        setOnSuccess,
-        onFailureRef,
-        setOnFailure,
-        transformRef,
-        setTransform,
-    } = useSaveModifiers({ onSuccess, onFailure: onError, transform });
 
     const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
         RecordType
@@ -126,7 +113,6 @@ export const useEditController = <RecordType extends Record = Record>(
     const save = useCallback(
         (
             data: Partial<RecordType>,
-            redirectTo = DefaultRedirect,
             {
                 onSuccess: onSuccessFromSave,
                 onFailure: onFailureFromSave,
@@ -136,8 +122,8 @@ export const useEditController = <RecordType extends Record = Record>(
             Promise.resolve(
                 transformFromSave
                     ? transformFromSave(data)
-                    : transformRef.current
-                    ? transformRef.current(data)
+                    : transform
+                    ? transform(data)
                     : data
             ).then((data: Partial<RecordType>) =>
                 update(
@@ -146,8 +132,8 @@ export const useEditController = <RecordType extends Record = Record>(
                     {
                         onSuccess: onSuccessFromSave
                             ? onSuccessFromSave
-                            : onSuccessRef.current
-                            ? onSuccessRef.current
+                            : onSuccess
+                            ? onSuccess
                             : () => {
                                   notify('ra.notification.updated', {
                                       type: 'info',
@@ -163,8 +149,8 @@ export const useEditController = <RecordType extends Record = Record>(
                               },
                         onError: onFailureFromSave
                             ? onFailureFromSave
-                            : onFailureRef.current
-                            ? onFailureRef.current
+                            : onError
+                            ? onError
                             : (error: Error | string) => {
                                   notify(
                                       typeof error === 'string'
@@ -188,14 +174,15 @@ export const useEditController = <RecordType extends Record = Record>(
                 )
             ),
         [
-            transformRef,
-            update,
-            onSuccessRef,
-            onFailureRef,
-            notify,
-            redirect,
-            resource,
             mutationMode,
+            notify,
+            onError,
+            onSuccess,
+            redirect,
+            redirectTo,
+            resource,
+            transform,
+            update,
         ]
     );
 
@@ -204,18 +191,12 @@ export const useEditController = <RecordType extends Record = Record>(
         error,
         isFetching,
         isLoading,
-        onFailureRef,
-        onSuccessRef,
         record,
         redirect: DefaultRedirect,
         refetch,
         resource,
         save,
         saving,
-        setOnFailure,
-        setOnSuccess,
-        setTransform,
-        transformRef,
     };
 };
 
@@ -231,6 +212,7 @@ export interface EditControllerProps<RecordType extends Record = Record> {
     onFailure?: OnFailure;
     onSuccess?: OnSuccess;
     queryOptions?: UseQueryOptions<RecordType>;
+    redirect?: RedirectionSideEffect;
     resource?: string;
     transform?: TransformData;
     [key: string]: any;
@@ -244,22 +226,8 @@ export interface EditControllerResult<RecordType extends Record = Record> {
     defaultTitle: string;
     isFetching: boolean;
     isLoading: boolean;
-    onSuccessRef: MutableRefObject<OnSuccess>;
-    onFailureRef: MutableRefObject<OnFailure>;
-    transformRef: MutableRefObject<TransformData>;
-    save: (
-        data: Partial<Record>,
-        redirect?: RedirectionSideEffect,
-        callbacks?: {
-            onSuccess?: OnSuccess;
-            onFailure?: OnFailure;
-            transform?: TransformData;
-        }
-    ) => void;
+    save: SaveHandler;
     saving: boolean;
-    setOnSuccess: SetOnSuccess;
-    setOnFailure: SetOnFailure;
-    setTransform: SetTransformData;
     record?: RecordType;
     refetch: UseGetOneHookValue<RecordType>['refetch'];
     redirect: RedirectionSideEffect;

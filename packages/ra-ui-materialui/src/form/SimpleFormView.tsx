@@ -13,13 +13,11 @@ export const SimpleFormView = ({
     className,
     component: Component = CardContentInner,
     handleSubmit,
-    handleSubmitWithRedirect,
     invalid,
     margin,
     mutationMode,
     pristine,
     record,
-    redirect,
     resource,
     saving,
     submitOnEnter = true,
@@ -30,6 +28,7 @@ export const SimpleFormView = ({
 }: SimpleFormViewProps): ReactElement => (
     <form
         className={classnames('simple-form', className)}
+        onSubmit={handleSubmit}
         {...sanitizeRestProps(rest)}
     >
         <Component>
@@ -51,13 +50,10 @@ export const SimpleFormView = ({
         {toolbar &&
             React.cloneElement(toolbar, {
                 basePath,
-                handleSubmitWithRedirect,
-                handleSubmit,
                 invalid,
                 mutationMode,
                 pristine,
                 record,
-                redirect,
                 resource,
                 saving,
                 submitOnEnter,
@@ -70,19 +66,12 @@ SimpleFormView.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
-    handleSubmit: PropTypes.func, // passed by react-final-form
     invalid: PropTypes.bool,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     pristine: PropTypes.bool,
     // @ts-ignore
     record: PropTypes.object,
     resource: PropTypes.string,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
-    save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.oneOfType([PropTypes.element, PropTypes.oneOf([false])]),
