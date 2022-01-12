@@ -114,8 +114,11 @@ export const FileInput = (
 
     const onRemove = file => async () => {
         if (onSubmitRemove) {
-            const isSuccess = await onSubmitRemove(file);
-            if (!isSuccess) return;
+            try {
+                await validateFileRemoval(file);
+            } catch(e) {
+                return;
+            }
         }
         if (multiple) {
             const filteredFiles = files.filter(
