@@ -251,7 +251,7 @@ describe('<FileInput />', () => {
         });
     });
 
-    describe('should stop to remove file field onSubmitReview return false', () => {
+    describe('should call validateFileRemoval on removal to allow developers to conditionally prevent the removal', () => {
         it('normal function', async () => {
             const onSubmit = jest.fn();
 
@@ -268,7 +268,9 @@ describe('<FileInput />', () => {
                         <form onSubmit={handleSubmit}>
                             <FileInput
                                 {...defaultProps}
-                                onSubmitRemove={file => false}
+                                validateFileRemoval={file => {
+                                    throw Error('Cancel Removal Action');
+                                }}
                             >
                                 <FileField source="src" title="title" />
                             </FileInput>
@@ -309,7 +311,9 @@ describe('<FileInput />', () => {
                         <form onSubmit={handleSubmit}>
                             <FileInput
                                 {...defaultProps}
-                                onSubmitRemove={async file => false}
+                                validateFileRemoval={async file => {
+                                    throw Error('Cancel Removal Action');
+                                }}
                             >
                                 <FileField source="src" title="title" />
                             </FileInput>
@@ -332,53 +336,9 @@ describe('<FileInput />', () => {
                 },
             });
         });
-        it('error occurs', async done => {
-            const onSubmit = jest.fn();
-            // NOTE: We couldn't handle UnhandledPromiseRejection and make
-            // ErrorBoundary method of https://github.com/testing-library/react-testing-library/issues/828#issuecomment-729860950 work,
-            // so make mimic methods to read final states when process force exit by errors instead of throw new Error.
-            const errorMockFn = jest.fn(() => {
-                fireEvent.click(getByLabelText('Save'));
-                expect(onSubmit.mock.calls[0][0]).toEqual({
-                    image: {
-                        src: 'test.png',
-                        title: 'cats',
-                    },
-                });
-                // NOTE: Mimicking throw Error.The done method finish process even if having waitFor not resolved.
-                done();
-                return true;
-            });
-            const { getByLabelText, getByTitle } = render(
-                <Form
-                    initialValues={{
-                        image: {
-                            src: 'test.png',
-                            title: 'cats',
-                        },
-                    }}
-                    onSubmit={onSubmit}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <FileInput
-                                {...defaultProps}
-                                onSubmitRemove={errorMockFn}
-                            >
-                                <FileField source="src" title="title" />
-                            </FileInput>
-                            <button type="submit" aria-label="Save" />
-                        </form>
-                    )}
-                />
-            );
-
-            const fileDom = getByTitle('cats');
-            expect(fileDom).not.toBeNull();
-            fireEvent.click(getByLabelText('ra.action.delete'));
-        });
     });
 
-    describe('should continue to remove file field onSubmitReview return true', () => {
+    describe('should continue to remove file field validateFileRemoval without Promise rejected.', () => {
         it('normal function', async () => {
             const onSubmit = jest.fn();
 
@@ -395,7 +355,7 @@ describe('<FileInput />', () => {
                         <form onSubmit={handleSubmit}>
                             <FileInput
                                 {...defaultProps}
-                                onSubmitRemove={file => true}
+                                validateFileRemoval={file => true}
                             >
                                 <FileField source="src" title="title" />
                             </FileInput>
@@ -431,7 +391,7 @@ describe('<FileInput />', () => {
                         <form onSubmit={handleSubmit}>
                             <FileInput
                                 {...defaultProps}
-                                onSubmitRemove={async file => true}
+                                validateFileRemoval={async file => true}
                             >
                                 <FileField source="src" title="title" />
                             </FileInput>
