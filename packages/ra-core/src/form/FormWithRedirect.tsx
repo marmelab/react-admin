@@ -6,15 +6,10 @@ import arrayMutators from 'final-form-arrays';
 import useResetSubmitErrors from './useResetSubmitErrors';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
 import getFormInitialValues from './getFormInitialValues';
-import {
-    FormContextValue,
-    FormGroupSubscriber,
-    Record as RaRecord,
-    OnSuccess,
-    OnFailure,
-} from '../types';
+import { Record as RaRecord, OnSuccess, OnFailure } from '../types';
 import { RedirectionSideEffect } from '../sideEffect';
 import { useRecordContext, OptionalRecordContextProvider } from '../controller';
+import { FormContextValue } from './FormContext';
 import { FormContextProvider } from './FormContextProvider';
 import submitErrorsMutators from './submitErrorsMutators';
 import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
@@ -68,7 +63,6 @@ const FormWithRedirect = ({
     const record = useRecordContext(props);
     const redirect = useRef(props.redirect);
     const onSave = useRef(save);
-    const formGroups = useRef<{ [key: string]: string[] }>({});
     const finalMutators = useMemo(
         () =>
             mutators === defaultMutators
@@ -102,70 +96,9 @@ const FormWithRedirect = ({
         [save]
     );
 
-    const subscribers = useRef<{
-        [key: string]: FormGroupSubscriber[];
-    }>({});
-
     const formContextValue = useMemo<FormContextValue>(
         () => ({
             setOnSave,
-            /**
-             * Register a subscriber function for the specified group. The subscriber
-             * will be called whenever the group content changes (fields added or removed).
-             */
-            subscribe: (group, subscriber) => {
-                if (!subscribers.current[group]) {
-                    subscribers.current[group] = [];
-                }
-                subscribers.current[group].push(subscriber);
-
-                return () => {
-                    subscribers.current[group] = subscribers.current[
-                        group
-                    ].filter(s => s !== subscriber);
-                };
-            },
-            getGroupFields: name => formGroups.current[name] || [],
-            registerGroup: name => {
-                formGroups.current[name] = formGroups.current[name] || [];
-            },
-            unregisterGroup: name => {
-                delete formGroups[name];
-            },
-            registerField: (source, group) => {
-                if (group) {
-                    if (!(formGroups.current[group] || []).includes(source)) {
-                        formGroups.current[group] = [
-                            ...(formGroups.current[group] || []),
-                            source,
-                        ];
-                        // Notify subscribers that the group fields have changed
-                        if (subscribers.current[group]) {
-                            subscribers.current[group].forEach(subscriber =>
-                                subscriber()
-                            );
-                        }
-                    }
-                }
-            },
-            unregisterField: (source, group) => {
-                if (group) {
-                    if (!formGroups.current[group]) {
-                        console.warn(`Invalid form group ${group}`);
-                    } else {
-                        const fields = new Set(formGroups.current[group]);
-                        fields.delete(source);
-                        formGroups.current[group] = Array.from(fields);
-
-                        // Notify subscribers that the group fields have changed
-                        if (subscribers.current[group]) {
-                            subscribers.current[group].forEach(subscriber =>
-                                subscriber()
-                            );
-                        }
-                    }
-                }
-            },
         }),
         [setOnSave]
     );

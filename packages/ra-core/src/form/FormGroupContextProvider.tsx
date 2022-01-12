@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactNode, useEffect } from 'react';
 import { FormGroupContext } from './FormGroupContext';
-import { useFormContext } from './useFormContext';
+import { useFormGroups } from './useFormGroups';
 
 /**
  * This provider allows its input children to register to a specific group.
@@ -54,25 +54,25 @@ export const FormGroupContextProvider = ({
     children: ReactNode;
     name: string;
 }) => {
-    const formContext = useFormContext();
+    const formGroups = useFormGroups();
 
     useEffect(() => {
         if (
-            !formContext ||
-            !formContext.registerGroup ||
-            !formContext.unregisterGroup
+            !formGroups ||
+            !formGroups.registerGroup ||
+            !formGroups.unregisterGroup
         ) {
             console.warn(
                 `The FormGroupContextProvider can only be used inside a FormContext such as provided by the SimpleForm and TabbedForm components`
             );
             return;
         }
-        formContext.registerGroup(name);
+        formGroups.registerGroup(name);
 
         return () => {
-            formContext.unregisterGroup(name);
+            formGroups.unregisterGroup(name);
         };
-    }, [formContext, name]);
+    }, [formGroups, name]);
 
     return (
         <FormGroupContext.Provider value={name}>
