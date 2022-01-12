@@ -82,13 +82,11 @@ export const SaveButton = (props: SaveButtonProps) => {
         if (onClick) {
             onClick(event);
         }
-        console.log('defaultPrevented', event.defaultPrevented);
         if (event.defaultPrevented) {
             return;
         }
 
         if (hasSideEffects) {
-            console.log({ hasSideEffects });
             event.preventDefault();
             const values = getFormValues();
             saveContext?.save(values, {
@@ -109,6 +107,7 @@ export const SaveButton = (props: SaveButtonProps) => {
             aria-label={displayedLabel}
             disabled={disabled}
             onClick={handleClick}
+            // TODO: find a way to display the loading state (LoadingButton from mui Lab?)
             {...sanitizeButtonRestProps(rest)}
         >
             {saving ? (

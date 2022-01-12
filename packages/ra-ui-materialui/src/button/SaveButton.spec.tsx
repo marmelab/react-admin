@@ -12,7 +12,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { QueryClientProvider, QueryClient } from 'react-query';
 
 import { SaveButton } from './SaveButton';
-import { SimpleForm } from '../form';
+import { SimpleForm, Toolbar } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
 
@@ -137,6 +137,166 @@ describe('<SaveButton />', () => {
 
         fireEvent.click(getByLabelText('ra.action.save'));
         expect(onSubmit).not.toHaveBeenCalled();
+    });
+
+    it('should allow to override the onSuccess side effects', async () => {
+        const dataProvider = ({
+            getOne: () =>
+                Promise.resolve({
+                    data: { id: 123, title: 'lorem' },
+                }),
+            update: (_, { data }) => Promise.resolve({ data }),
+        } as unknown) as DataProvider;
+        const onSuccess = jest.fn();
+        const EditToolbar = props => (
+            <Toolbar {...props}>
+                <SaveButton onSuccess={onSuccess} />
+            </Toolbar>
+        );
+        const {
+            queryByDisplayValue,
+            getByLabelText,
+            getByText,
+        } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <QueryClientProvider client={new QueryClient()}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <Edit {...defaultEditProps}>
+                            <SimpleForm toolbar={<EditToolbar />}>
+                                <TextInput source="title" />
+                            </SimpleForm>
+                        </Edit>
+                    </DataProviderContext.Provider>
+                </QueryClientProvider>
+            </ThemeProvider>
+        );
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
+            expect(queryByDisplayValue('lorem')).toBeDefined();
+        });
+        // change one input to enable the SaveButton (which is disabled when the form is pristine)
+        fireEvent.change(getByLabelText('resources.posts.fields.title'), {
+            target: { value: 'ipsum' },
+        });
+        fireEvent.click(getByText('ra.action.save'));
+        await waitFor(() => {
+            expect(onSuccess).toHaveBeenCalledWith(
+                {
+                    id: 123,
+                    title: 'ipsum',
+                },
+                { data: { id: 123, title: 'ipsum' }, resource: 'posts' },
+                { snapshot: [] }
+            );
+        });
+    });
+
+    it('should allow to override the onFailure side effects', async () => {
+        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+        const dataProvider = ({
+            getOne: () =>
+                Promise.resolve({
+                    data: { id: 123, title: 'lorem' },
+                }),
+            update: () => Promise.reject({ message: 'not good' }),
+        } as unknown) as DataProvider;
+        const onFailure = jest.fn();
+        const EditToolbar = props => (
+            <Toolbar {...props}>
+                <SaveButton onFailure={onFailure} />
+            </Toolbar>
+        );
+        const {
+            queryByDisplayValue,
+            getByLabelText,
+            getByText,
+        } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <QueryClientProvider client={new QueryClient()}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <Edit {...defaultEditProps}>
+                            <SimpleForm toolbar={<EditToolbar />}>
+                                <TextInput source="title" />
+                            </SimpleForm>
+                        </Edit>
+                    </DataProviderContext.Provider>
+                </QueryClientProvider>
+            </ThemeProvider>
+        );
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
+            expect(queryByDisplayValue('lorem')).toBeDefined();
+        });
+        // change one input to enable the SaveButton (which is disabled when the form is pristine)
+        fireEvent.change(getByLabelText('resources.posts.fields.title'), {
+            target: { value: 'ipsum' },
+        });
+        fireEvent.click(getByText('ra.action.save'));
+        await waitFor(() => {
+            expect(onFailure).toHaveBeenCalledWith(
+                {
+                    message: 'not good',
+                },
+                { data: { id: 123, title: 'ipsum' }, resource: 'posts' },
+                { snapshot: [] }
+            );
+        });
+    });
+
+    it('should allow to transform the record before save', async () => {
+        const update = jest
+            .fn()
+            .mockImplementationOnce((_, { data }) => Promise.resolve({ data }));
+        const dataProvider = ({
+            getOne: () =>
+                Promise.resolve({
+                    data: { id: 123, title: 'lorem' },
+                }),
+            update,
+        } as unknown) as DataProvider;
+        const transform = jest.fn().mockImplementationOnce(data => ({
+            ...data,
+            transformed: true,
+        }));
+        const EditToolbar = props => (
+            <Toolbar {...props}>
+                <SaveButton transform={transform} />
+            </Toolbar>
+        );
+        const {
+            queryByDisplayValue,
+            getByLabelText,
+            getByText,
+        } = renderWithRedux(
+            <ThemeProvider theme={theme}>
+                <QueryClientProvider client={new QueryClient()}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <Edit {...defaultEditProps}>
+                            <SimpleForm toolbar={<EditToolbar />}>
+                                <TextInput source="title" />
+                            </SimpleForm>
+                        </Edit>
+                    </DataProviderContext.Provider>
+                </QueryClientProvider>
+            </ThemeProvider>
+        );
+        // waitFor for the dataProvider.getOne() return
+        await waitFor(() => {
+            expect(queryByDisplayValue('lorem')).toBeDefined();
+        });
+        // change one input to enable the SaveButton (which is disabled when the form is pristine)
+        fireEvent.change(getByLabelText('resources.posts.fields.title'), {
+            target: { value: 'ipsum' },
+        });
+        fireEvent.click(getByText('ra.action.save'));
+        await waitFor(() => {
+            expect(transform).toHaveBeenCalledWith({ id: 123, title: 'ipsum' });
+            expect(update).toHaveBeenCalledWith('posts', {
+                id: '123',
+                data: { id: 123, title: 'ipsum', transformed: true },
+                previousData: { id: 123, title: 'lorem' },
+            });
+        });
     });
 
     const defaultEditProps = {
