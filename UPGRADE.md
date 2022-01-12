@@ -1459,6 +1459,23 @@ const PostCreateToolbar = props => {
 };
 ```
 
+The form components `save` prop has been renamed to `onSubmit`:
+
+```diff
+const MyComponent = () => {
+    const handleSave = () => {
+
+    }
+
+    return (
+-        <SimpleForm save={handleSave}>
++        <SimpleForm onSubmit={handleSave}>
+            <TextInput source="name" />
+        </SimpleForm>
+    )
+}
+```
+
 # Upgrade to 3.0
 
 We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.

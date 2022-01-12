@@ -1974,10 +1974,7 @@ const VisitorForm = props => (
                 </Box>
                 <Toolbar>
                     <Box display="flex" justifyContent="space-between" width="100%">
-                        <SaveButton
-                            saving={formProps.saving}
-                            handleSubmitWithRedirect={formProps.handleSubmitWithRedirect}
-                        />
+                        <SaveButton saving={formProps.saving} />
                         <DeleteButton record={formProps.record} />
                     </Box>
                 </Toolbar>
