@@ -5,6 +5,9 @@ import {
     isValidElement,
     ReactElement,
     useContext,
+    useEffect,
+    useMemo,
+    useRef,
     useState,
 } from 'react';
 import { Identifier, OptionText, useTranslate } from 'ra-core';
@@ -40,29 +43,35 @@ export const useSupportCreateSuggestion = (
     } = options;
     const translate = useTranslate();
     const [renderOnCreate, setRenderOnCreate] = useState(false);
-    const [filterValue, setFilterValue] = useState(filter);
+    const filterRef = useRef(filter);
 
-    const context = {
-        filter: filterValue,
-        onCancel: () => setRenderOnCreate(false),
-        onCreate: item => {
-            setRenderOnCreate(false);
-            handleChange(item);
-        },
-    };
+    useEffect(() => {
+        if (filterRef.current !== filter && filter !== '') {
+            filterRef.current = filter;
+        }
+    }, [filter]);
+
+    const context = useMemo(
+        () => ({
+            filter: filterRef.current,
+            onCancel: () => setRenderOnCreate(false),
+            onCreate: item => {
+                setRenderOnCreate(false);
+                handleChange(item);
+            },
+        }),
+        [handleChange]
+    );
 
     return {
-        getCreateItem: filterValue => {
-            if (filterValue) {
-                setFilterValue(filterValue);
-            }
+        getCreateItem: () => {
             if (typeof optionText !== 'string') {
                 return {
                     id: createValue,
                     name:
-                        (filterValue ?? filter) && createItemLabel
+                        filter && createItemLabel
                             ? translate(createItemLabel, {
-                                  item: filterValue ?? filter,
+                                  item: filter,
                                   _: createItemLabel,
                               })
                             : translate(createLabel, { _: createLabel }),
@@ -73,9 +82,9 @@ export const useSupportCreateSuggestion = (
                     id: createValue,
                 },
                 optionText,
-                (filterValue ?? filter) && createItemLabel
+                filter && createItemLabel
                     ? translate(createItemLabel, {
-                          item: filterValue ?? filter,
+                          item: filter,
                           _: createItemLabel,
                       })
                     : translate(createLabel, { _: createLabel })

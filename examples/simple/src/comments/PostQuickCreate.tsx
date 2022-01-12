@@ -2,16 +2,15 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import {
     SaveButton,
     SimpleForm,
     TextInput,
     Toolbar,
     required,
-    ReduxState,
     useCreate,
     useNotify,
+    useLoading,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import CancelButton from './PostQuickCreateCancelButton';
@@ -43,20 +42,22 @@ PostQuickCreateToolbar.propTypes = {
 const PostQuickCreate = ({ onCancel, onSave, ...props }) => {
     const [create] = useCreate();
     const notify = useNotify();
-    const submitting = useSelector<ReduxState, boolean>(
-        state => state.admin.loading > 0
-    );
+    const submitting = useLoading();
 
     const handleSave = useCallback(
         values => {
-            create('posts', values, {
-                onSuccess: ({ data }) => {
-                    onSave(data);
-                },
-                onFailure: error => {
-                    notify(error.message, 'error');
-                },
-            });
+            create(
+                'posts',
+                { data: values },
+                {
+                    onSuccess: data => {
+                        onSave(data);
+                    },
+                    onError: (error: Error) => {
+                        notify(error.message, 'error');
+                    },
+                }
+            );
         },
         [create, notify, onSave]
     );

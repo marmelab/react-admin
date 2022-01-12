@@ -56,7 +56,6 @@ That's enough to display the post show view:
 ## Props
 
 * [`actions`](#actions): override the actions toolbar with a custom component
-* [`aside`](#aside): A component to render as a sidebar of the show view
 * `className`: passed to the root component
 * [`children`](#layout): the components that render the record fields
 * [`component`](#root-component): overrides the root component
@@ -93,7 +92,7 @@ export const PostShow = () => (
 );
 ```
 
-You can also pass a React element as child, so as to build a custom layout. Check [Building a custom Show Layout](./ShowTutorial.md#building-a-custom-layout) for more details.
+You can also pass a React element as child, to build a custom layout. Check [Building a custom Show Layout](./ShowTutorial.md#building-a-custom-layout) for more details.
 
 ## Page Title
 
@@ -184,7 +183,7 @@ const PostShow = props => {
 }
 ```
 
-The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
+The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
 
 The default `onError` function is:
 

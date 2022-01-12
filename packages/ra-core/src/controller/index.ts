@@ -1,23 +1,19 @@
 import useRecordSelection from './useRecordSelection';
-import useVersion from './useVersion';
 import useExpanded from './useExpanded';
 import useFilterState from './useFilterState';
 import useSortState, { SortProps } from './useSortState';
 import usePaginationState, { PaginationHookResult } from './usePaginationState';
 
-import useReference, { UseReferenceProps } from './useReference';
 import { useCheckMinimumRequiredProps } from './checkMinimumRequiredProps';
 
-export type { PaginationHookResult, SortProps, UseReferenceProps };
+export type { PaginationHookResult, SortProps };
 
 export {
     useCheckMinimumRequiredProps,
     useRecordSelection,
-    useVersion,
     useExpanded,
     useFilterState,
     usePaginationState,
-    useReference,
     useSortState,
 };
 
@@ -31,3 +27,4 @@ export * from './record';
 export * from './SaveContext';
 export * from './saveModifiers';
 export * from './show';
+export * from './useReference';

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
+import { useRecordContext } from 'react-admin';
 
 const PREFIX = 'LogoField';
 
@@ -19,14 +20,13 @@ const sizeInPixel = {
 };
 
 export const LogoField = ({
-    record,
     source,
     size = 'medium',
 }: {
-    record?: { logo: string; name: string };
     source?: string;
     size?: 'small' | 'medium';
 }) => {
+    const record = useRecordContext<{ logo: string; name: string }>();
     if (!record) return null;
     return (
         <StyledImage

@@ -253,7 +253,7 @@ export default ScrollableTabbedShowLayout;
 
 ## Controlled Mode
 
-By default, `<TabbedShowLayout>` reads the record from the `ResourceContext`. But by passing a `record` prop, you can render the component outside of a `ResourceContext`.
+By default, `<TabbedShowLayout>` reads the record from the `ResourceContext`. But by passing a `record` prop, you can render the component outside a `ResourceContext`.
 
 {% raw %}
 ```jsx

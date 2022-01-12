@@ -49,7 +49,7 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                         : 'ASC'
                     : event.currentTarget.dataset.order;
 
-            setSort(newField, newOrder);
+            setSort({ field: newField, order: newOrder });
         },
         [currentSort.field, currentSort.order, setSort]
     );
@@ -183,7 +183,7 @@ export interface DatagridHeaderProps<RecordType extends Record = Record> {
     onToggleItem?: (id: Identifier) => void;
     resource?: string;
     selectedIds?: Identifier[];
-    setSort?: (sort: string, order?: string) => void;
+    setSort?: (sort: SortPayload) => void;
 }
 
 DatagridHeader.displayName = 'DatagridHeader';

@@ -50,38 +50,6 @@ describe('getSuggestions', () => {
         ).toEqual([{ id: 1, value: '**one' }]);
     });
 
-    it('should filter choices according to the currently selected values if selectedItem is an array', () => {
-        expect(
-            getSuggestions({
-                ...defaultOptions,
-                selectedItem: [choices[0]],
-            })('')
-        ).toEqual(choices.slice(1));
-    });
-
-    it('should not filter choices according to the currently selected value if selectedItem is not an array and limitChoicesToValue is false', () => {
-        expect(
-            getSuggestions({
-                ...defaultOptions,
-                limitChoicesToValue: false,
-                selectedItem: choices[0],
-            })('o') // should not filter 'two'
-        ).toEqual([
-            { id: 2, value: 'two' },
-            { id: 3, value: 'three' },
-        ]);
-    });
-
-    it('should filter choices according to the currently selected value if selectedItem is not an array and limitChoicesToValue is true', () => {
-        expect(
-            getSuggestions({
-                ...defaultOptions,
-                limitChoicesToValue: true,
-                selectedItem: choices[0],
-            })('one')
-        ).toEqual([choices[0]]);
-    });
-
     it('should add emptySuggestion if allowEmpty is true', () => {
         expect(
             getSuggestions({
@@ -118,6 +86,7 @@ describe('getSuggestions', () => {
                 allowCreate: true,
             })('one')
         ).toEqual([
+            { id: 1, value: 'one' },
             { id: 2, value: 'two' },
             { id: 3, value: 'three' },
         ]);
@@ -134,6 +103,8 @@ describe('getSuggestions', () => {
                 allowCreate: true,
             })('')
         ).toEqual([
+            { id: 1, value: 'one' },
+            { id: 2, value: 'two' },
             { id: 3, value: 'three' },
             { id: '@@create', value: 'ra.action.create' },
         ]);

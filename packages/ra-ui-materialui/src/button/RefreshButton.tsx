@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { ReactElement, MouseEvent, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 import NavigationRefresh from '@mui/icons-material/Refresh';
-import { refreshView } from 'ra-core';
+import { useRefresh } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
 
@@ -14,16 +13,16 @@ export const RefreshButton = (props: RefreshButtonProps) => {
         onClick,
         ...rest
     } = props;
-    const dispatch = useDispatch();
+    const refresh = useRefresh();
     const handleClick = useCallback(
         event => {
             event.preventDefault();
-            dispatch(refreshView());
+            refresh();
             if (typeof onClick === 'function') {
                 onClick(event);
             }
         },
-        [dispatch, onClick]
+        [refresh, onClick]
     );
 
     return (

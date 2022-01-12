@@ -72,7 +72,7 @@ const {
     setPerPage, // a callback to change the number of results per page, e.g. setPerPage(25)
     // sorting
     currentSort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
-    setSort, // a callback to change the sort, e.g. setSort('name', 'ASC')
+    setSort, // a callback to change the sort, e.g. setSort({ field: 'name', orfer: 'ASC' })
     // filtering
     filterValues, // a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
     displayedFilters, // a dictionary of the displayed filters, e.g. { title: true, nationality: true }
@@ -97,7 +97,7 @@ You can find many usage examples of `useListContext` in the documentation, inclu
 
 - [Adding a Side Component with `<List actions>`](./List.md#aside-side-component)
 - [Building a Custom Actions Bar via `<List actions>`](./List.md#actions)
-- [Building a Custom Empty Page  via `<List empty>`](./List.md#empty-empty-page-component)
+- [Building a Custom Empty Page via `<List empty>`](./List.md#empty-empty-page-component)
 - [Building a Custom Filter](./FilteringTutorial.md#building-a-custom-filter)
 - [Building a Custom Sort Control](./ListTutorial.md#building-a-custom-sort-control)
 - [Building a Custom Pagination Control](./ListTutorial.md#building-a-custom-pagination)

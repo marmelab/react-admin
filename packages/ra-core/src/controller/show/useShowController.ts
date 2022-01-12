@@ -2,11 +2,10 @@ import { useParams } from 'react-router-dom';
 import { UseQueryOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
-import useVersion from '../useVersion';
-import { Record, Identifier } from '../../types';
-import { useGetOne, Refetch } from '../../dataProvider';
+import { Record } from '../../types';
+import { useGetOne, useRefresh, UseGetOneHookValue } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
-import { useNotify, useRedirect, useRefresh } from '../../sideEffect';
+import { useNotify, useRedirect } from '../../sideEffect';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 
 /**
@@ -53,7 +52,6 @@ export const useShowController = <RecordType extends Record = Record>(
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
-    const version = useVersion();
     const { id: routeId } = useParams<'id'>();
     const id = propsId || decodeURIComponent(routeId);
 
@@ -97,13 +95,12 @@ export const useShowController = <RecordType extends Record = Record>(
         record,
         refetch,
         resource,
-        version,
     };
 };
 
 export interface ShowControllerProps<RecordType extends Record = Record> {
     disableAuthentication?: boolean;
-    id?: Identifier;
+    id?: RecordType['id'];
     queryOptions?: UseQueryOptions<RecordType>;
     resource?: string;
 }
@@ -118,6 +115,5 @@ export interface ShowControllerResult<RecordType extends Record = Record> {
     isLoading: boolean;
     resource: string;
     record?: RecordType;
-    refetch: Refetch;
-    version: number;
+    refetch: UseGetOneHookValue<RecordType>['refetch'];
 }

@@ -1,9 +1,24 @@
 import * as React from 'react';
 import { ComponentType } from 'react';
+import { QueryClient } from 'react-query';
+import { History } from 'history';
 
 import CoreAdminContext from './CoreAdminContext';
 import CoreAdminUI from './CoreAdminUI';
-import { AdminProps } from '../types';
+import {
+    AuthProvider,
+    LegacyAuthProvider,
+    CatchAllComponent,
+    AdminChildren,
+    DashboardComponent,
+    DataProvider,
+    LegacyDataProvider,
+    I18nProvider,
+    InitialState,
+    LayoutComponent,
+    LoginComponent,
+    TitleComponent,
+} from '../types';
 
 export type ChildrenFunction = () => ComponentType[];
 
@@ -86,7 +101,7 @@ export type ChildrenFunction = () => ComponentType[];
  *     );
  * };
  */
-const CoreAdmin = (props: AdminProps) => {
+export const CoreAdmin = (props: CoreAdminProps) => {
     const {
         appLayout,
         authProvider,
@@ -106,7 +121,6 @@ const CoreAdmin = (props: AdminProps) => {
         loginPage,
         logoutButton,
         menu, // deprecated, use a custom layout instead
-        theme,
         title = 'React Admin',
     } = props;
     return (
@@ -126,7 +140,6 @@ const CoreAdmin = (props: AdminProps) => {
                 disableTelemetry={disableTelemetry}
                 menu={menu}
                 catchAll={catchAll}
-                theme={theme}
                 title={title}
                 loading={loading}
                 loginPage={loginPage}
@@ -138,4 +151,26 @@ const CoreAdmin = (props: AdminProps) => {
     );
 };
 
-export default CoreAdmin;
+export interface CoreAdminProps {
+    appLayout?: LayoutComponent;
+    authProvider?: AuthProvider | LegacyAuthProvider;
+    basename?: string;
+    catchAll?: CatchAllComponent;
+    children?: AdminChildren;
+    customReducers?: object;
+    dashboard?: DashboardComponent;
+    dataProvider: DataProvider | LegacyDataProvider;
+    disableTelemetry?: boolean;
+    history?: History;
+    i18nProvider?: I18nProvider;
+    initialState?: InitialState;
+    layout?: LayoutComponent;
+    loading?: ComponentType;
+    locale?: string;
+    loginPage?: LoginComponent | boolean;
+    logoutButton?: ComponentType;
+    menu?: ComponentType;
+    queryClient?: QueryClient;
+    ready?: ComponentType;
+    title?: TitleComponent;
+}

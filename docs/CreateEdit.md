@@ -100,10 +100,8 @@ You can customize the `<Create>` and `<Edit>` components using the following pro
 * [`component`](#component)
 * [`undoable`](#undoable) (`<Edit>` only) (deprecated)
 * [`mutationMode`](#mutationmode) (`<Edit>` only) 
-* [`onSuccess`](#onsuccess)
-* [`onFailure`](#onfailure)
+* [`mutationOptions](#mutationoptions)
 * [`transform`](#transform)
-* [`successMessage`](#success-message) (deprecated - use `onSuccess` instead)
 
 `<Create>` also accepts a `record` prop, to initialize the form based on a value object.
 
@@ -387,9 +385,11 @@ const PostEdit = () => (
 );
 ```
 
-### `onSuccess`
+### `mutationOptions`
 
-By default, when the save action succeeds, react-admin shows a notification, and redirects to another page. You can override this behavior and pass custom side effects by providing a function as `onSuccess` prop:
+You can customize the options you pass to react-query's `useMutation` hook, e.g. to override succes or error side effects, by setting the `mutationOptions` prop.
+
+Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to another page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 
 ```jsx
 import * as React from 'react';
@@ -407,7 +407,7 @@ const PostEdit = () => {
     };
 
     return (
-        <Edit onSuccess={onSuccess}>
+        <Edit mutationProps={{ onSuccess }}>
             <SimpleForm>
                 ...
             </SimpleForm>
@@ -437,9 +437,9 @@ The default `onSuccess` function is:
 }
 ```
 
-To learn more about built-in side effect hooks like `useNotify`, `useRedirect` and `useRefresh`, check the [Querying the API documentation](./Actions.md#handling-side-effects-in-usedataprovider).
+To learn more about built-in side effect hooks like `useNotify`, `useRedirect` and `useRefresh`, check the [Querying the API documentation](./Actions.md#success-and-error-side-effects).
 
-**Tip**: When you use `mutationMode="pessimistic"`, the `onSuccess` function receives the response from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is the created/edited record (see [the dataProvider documentation for details](./DataProviders.md#response-format)). You can use that response in the success side effects: 
+**Tip**: When you use `mutationMode="pessimistic"`, the `onSuccess` function receives the response from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is the created/edited record (see [the dataProvider documentation for details](./DataProviderWriting.md#response-format)). You can use that response in the success side effects: 
 
 ```jsx
 import * as React from 'react';
@@ -457,7 +457,7 @@ const PostEdit = () => {
     };
 
     return (
-        <Edit onSuccess={onSuccess} mutationMode="pessimistic">
+        <Edit mutationProps={{ onSuccess }} mutationMode="pessimistic">
             <SimpleForm>
                 ...
             </SimpleForm>
@@ -466,15 +466,9 @@ const PostEdit = () => {
 }
 ```
 
-**Tip**: When you set the `onSuccess` prop, the `successMessage` prop is ignored.
-
 **Tip**: If you want to have different success side effects based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save and redirect to the list", and another to "save and display an empty form"), you can set the `onSuccess` prop on the `<SaveButton>` component, too.
 
-### `onFailure`
-
-By default, when the save action fails at the dataProvider level, react-admin shows an error notification. On an Edit page with `mutationMode` set to `undoable` or `optimistic`, it refreshes the page, too.
-
-You can override this behavior and pass custom side effects by providing a function as `onFailure` prop:
+Similarly, you can override the failure side effects with an `onError` otion. By default, when the save action fails at the dataProvider level, react-admin shows an error notification. On an Edit page with `mutationMode` set to `undoable` or `optimistic`, it refreshes the page, too.
 
 ```jsx
 import * as React from 'react';
@@ -485,14 +479,14 @@ const PostEdit = () => {
     const refresh = useRefresh();
     const redirect = useRedirect();
 
-    const onFailure = (error) => {
+    const onError = (error) => {
         notify(`Could not edit post: ${error.message}`);
         redirect('/posts');
         refresh();
     };
 
     return (
-        <Edit onFailure={onFailure}>
+        <Edit mutationProps={{ onError }}>
             <SimpleForm>
                 ...
             </SimpleForm>
@@ -501,9 +495,9 @@ const PostEdit = () => {
 }
 ```
 
-The `onFailure` function receives the error from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
+The `onError` function receives the error from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
 
-The default `onFailure` function is:
+The default `onError` function is:
 
 ```jsx
 // for the <Create> component:
@@ -543,20 +537,6 @@ export const UserCreate = (props) => {
 The `transform` function can also return a `Promise`, which allows you to do all sorts of asynchronous calls (e.g. to the `dataProvider`) during the transformation.
 
 **Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on the `<SaveButton>` component, too. See [Altering the Form Values Before Submitting](#altering-the-form-values-before-submitting) for an example.
-
-### Success message
-
-**Deprecated**: use the `onSuccess` prop instead. See [Changing The Success or Failure Notification Message](#changing-the-success-or-failure-notification-message) for the new syntax. 
-
-Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a `successMessage` prop:
-
-```jsx
-const PostEdit = props => (
-    <Edit successMessage="messages.post_saved" {...props}>
-        // ...
-    </Edit>
-);
-```
 
 **Tip**: The message will be translated.
 
@@ -1245,7 +1225,7 @@ export const UserCreate = () => (
 );
 ```
 
-**Tip**: The props you pass to `<SimpleForm>` and `<TabbedForm>` are passed to the [<Form>](https://final-form.org/docs/react-final-form/api/Form) of `react-final-form`.
+**Tip**: The props you pass to `<SimpleForm>` and `<TabbedForm>` are passed to the [\<Form\>](https://final-form.org/docs/react-final-form/api/Form) of `react-final-form`.
 
 **Tip**: The `validate` function can return a promise for asynchronous validation. See [the Server-Side Validation section](#server-side-validation) below.
 
@@ -2198,7 +2178,7 @@ export const UserEdit = ({ permissions }) =>
 
 ### Changing The Success or Failure Notification Message
 
-Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a custom success side effect function as [the `<Edit onSuccess>` prop](#onsuccess):
+Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a custom success side effect function as [the `<Edit onSuccess>` prop](#changing-the-success-or-failure-notification-message):
 
 ```jsx
 import { Edit, useNotify, useRedirect } from 'react-admin';

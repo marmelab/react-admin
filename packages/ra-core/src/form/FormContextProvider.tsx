@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { FormContextValue } from '../types';
-import { FormContext } from './FormContext';
+import { FormContext, FormContextValue } from './FormContext';
+import { FormGroupsProvider } from './FormGroupsProvider';
 
 /**
  * Provides utilities to Form children, allowing them to change the default save function or register inputs to a group.
@@ -15,4 +15,8 @@ export const FormContextProvider = ({
 }: {
     children: ReactNode;
     value: FormContextValue;
-}) => <FormContext.Provider value={value}>{children}</FormContext.Provider>;
+}) => (
+    <FormContext.Provider value={value}>
+        <FormGroupsProvider>{children}</FormGroupsProvider>
+    </FormContext.Provider>
+);

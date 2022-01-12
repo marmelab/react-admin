@@ -4,16 +4,10 @@ import { UseQueryOptions } from 'react-query';
 import { useAuthenticated } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../sideEffect';
-import { useGetList, Refetch } from '../../dataProvider';
-import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
+import { useGetList, UseGetListHookValue } from '../../dataProvider';
+import { SORT_ASC } from './queryReducer';
 import { defaultExporter } from '../../export';
-import {
-    FilterPayload,
-    SortPayload,
-    Identifier,
-    Record,
-    Exporter,
-} from '../../types';
+import { FilterPayload, SortPayload, Record, Exporter } from '../../types';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import useRecordSelection from '../useRecordSelection';
 import { useListParams } from './useListParams';
@@ -77,10 +71,6 @@ export const useListController = <RecordType extends Record = Record>(
 
     const [selectedIds, selectionModifiers] = useRecordSelection(resource);
 
-    /**
-     * We want the list of ids to be always available for optimistic rendering,
-     * and therefore we need a custom action (CRUD_GET_LIST) that will be used.
-     */
     const { data, total, error, isLoading, isFetching, refetch } = useGetList<
         RecordType
     >(
@@ -198,14 +188,14 @@ export interface ListControllerResult<RecordType extends Record = Record> {
     hideFilter: (filterName: string) => void;
     isFetching: boolean;
     isLoading: boolean;
-    onSelect: (ids: Identifier[]) => void;
-    onToggleItem: (id: Identifier) => void;
+    onSelect: (ids: RecordType['id'][]) => void;
+    onToggleItem: (id: RecordType['id']) => void;
     onUnselectItems: () => void;
     page: number;
     perPage: number;
-    refetch: Refetch;
+    refetch: UseGetListHookValue<RecordType>['refetch'];
     resource: string;
-    selectedIds: Identifier[];
+    selectedIds: RecordType['id'][];
     setFilters: (
         filters: any,
         displayedFilters: any,
@@ -213,7 +203,7 @@ export interface ListControllerResult<RecordType extends Record = Record> {
     ) => void;
     setPage: (page: number) => void;
     setPerPage: (page: number) => void;
-    setSort: (sort: string, order?: string) => void;
+    setSort: (sort: SortPayload) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
     total: number;
 }
@@ -246,7 +236,6 @@ export const injectedProps = [
     'showFilter',
     'total',
     'totalPages',
-    'version',
 ];
 
 /**

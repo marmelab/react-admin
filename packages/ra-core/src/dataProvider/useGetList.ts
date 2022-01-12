@@ -6,7 +6,7 @@ import {
 } from 'react-query';
 
 import { Record, GetListParams } from '../types';
-import useDataProvider from './useDataProvider';
+import { useDataProvider } from './useDataProvider';
 
 /**
  * Call the dataProvider.getList() method and return the resolved result
@@ -24,7 +24,7 @@ import useDataProvider from './useDataProvider';
  * @param {string} resource The resource name, e.g. 'posts'
  * @param {Params} params The getList parameters { pagination, sort, filter }
  * @param {Object} options Options object to pass to the queryClient.
- * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh() } }
+ * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
  *
  * @typedef Params
  * @prop params.pagination The request pagination { page, perPage }, e.g. { page: 1, perPage: 10 }
@@ -76,8 +76,8 @@ export const useGetList = <RecordType extends Record = Record>(
                 // optimistically populate the getOne cache
                 data.forEach(record => {
                     queryClient.setQueryData(
-                        [resource, 'getOne', String(record.id)],
-                        record
+                        [resource, 'getOne', { id: String(record.id) }],
+                        oldRecord => oldRecord ?? record
                     );
                 });
             },

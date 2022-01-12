@@ -106,7 +106,7 @@ const PostShow = props => {
 }
 ```
 
-The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
+The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
 
 The default `onError` function is:
 
@@ -122,7 +122,7 @@ The default `onError` function is:
 
 By default, `useShowController` reads the resource name from the resource context, and the record id from the browser location.
 
-But by passing `resource` and `id` props, you can run the controller logic outside of these contexts:
+But by passing `resource` and `id` props, you can run the controller logic outside these contexts:
 
 ```jsx
 import { useShowController } from 'react-admin';

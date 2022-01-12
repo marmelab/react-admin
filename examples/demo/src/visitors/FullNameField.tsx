@@ -2,7 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { memo } from 'react';
 
-import { FieldProps } from 'react-admin';
+import { FieldProps, useRecordContext } from 'react-admin';
 import AvatarField from './AvatarField';
 import { Customer } from '../types';
 
@@ -32,8 +32,8 @@ interface Props extends FieldProps<Customer> {
 }
 
 const FullNameField = (props: Props) => {
-    const { record, size } = props;
-
+    const { size } = props;
+    const record = useRecordContext<Customer>();
     return record ? (
         <Root className={classes.root}>
             <AvatarField

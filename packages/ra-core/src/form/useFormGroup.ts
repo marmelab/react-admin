@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import isEqual from 'lodash/isEqual';
 import { FieldState } from 'final-form';
 import { useForm } from 'react-final-form';
-import { useFormContext } from './useFormContext';
+import { useFormGroups } from './useFormGroups';
 
 type FormGroupState = {
     dirty: boolean;
@@ -57,7 +57,7 @@ type FormGroupState = {
  */
 export const useFormGroup = (name: string): FormGroupState => {
     const form = useForm();
-    const formContext = useFormContext();
+    const formGroups = useFormGroups();
     const [state, setState] = useState<FormGroupState>({
         dirty: false,
         errors: undefined,
@@ -68,7 +68,7 @@ export const useFormGroup = (name: string): FormGroupState => {
     });
 
     const updateGroupState = useCallback(() => {
-        const fields = formContext.getGroupFields(name);
+        const fields = formGroups.getGroupFields(name);
         const fieldStates = fields
             .map(field => {
                 return form.getFieldState(field);
@@ -83,12 +83,12 @@ export const useFormGroup = (name: string): FormGroupState => {
 
             return oldState;
         });
-    }, [form, formContext, name]);
+    }, [form, formGroups, name]);
 
     useEffect(() => {
         // Whenever the group content changes (input are added or removed)
         // we must update its state
-        const unsubscribe = formContext.subscribe(name, () => {
+        const unsubscribe = formGroups.subscribe(name, () => {
             updateGroupState();
         });
         const unsubscribeFinalForm = form.subscribe(
@@ -108,7 +108,7 @@ export const useFormGroup = (name: string): FormGroupState => {
             unsubscribe();
             unsubscribeFinalForm();
         };
-    }, [form, formContext, name, updateGroupState]);
+    }, [form, formGroups, name, updateGroupState]);
 
     return state;
 };

@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { useCallback, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import NavigationRefresh from '@mui/icons-material/Refresh';
-import { refreshView, useTranslate } from 'ra-core';
+import { useRefresh, useTranslate } from 'ra-core';
 
 export const RefreshIconButton = (props: RefreshIconButtonProps) => {
     const {
@@ -15,17 +14,17 @@ export const RefreshIconButton = (props: RefreshIconButtonProps) => {
         className,
         ...rest
     } = props;
-    const dispatch = useDispatch();
+    const refresh = useRefresh();
     const translate = useTranslate();
     const handleClick = useCallback(
         event => {
             event.preventDefault();
-            dispatch(refreshView());
+            refresh();
             if (typeof onClick === 'function') {
                 onClick(event);
             }
         },
-        [dispatch, onClick]
+        [refresh, onClick]
     );
 
     return (

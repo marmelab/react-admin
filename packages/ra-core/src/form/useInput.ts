@@ -9,7 +9,7 @@ import get from 'lodash/get';
 import { Validator, composeValidators } from './validate';
 import isRequired from './isRequired';
 import { useFormGroupContext } from './useFormGroupContext';
-import { useFormContext } from './useFormContext';
+import { useFormGroups } from './useFormGroups';
 import { useRecordContext } from '../controller';
 
 export interface InputProps<T = any>
@@ -52,19 +52,19 @@ const useInput = ({
 }: InputProps): UseInputValue => {
     const finalName = name || source;
     const formGroupName = useFormGroupContext();
-    const formContext = useFormContext();
+    const formGroups = useFormGroups();
     const record = useRecordContext();
 
     useEffect(() => {
-        if (!formContext || !formGroupName) {
+        if (!formGroups || !formGroupName) {
             return;
         }
-        formContext.registerField(source, formGroupName);
+        formGroups.registerField(source, formGroupName);
 
         return () => {
-            formContext.unregisterField(source, formGroupName);
+            formGroups.unregisterField(source, formGroupName);
         };
-    }, [formContext, formGroupName, source]);
+    }, [formGroups, formGroupName, source]);
 
     const sanitizedValidate = Array.isArray(validate)
         ? composeValidators(validate)

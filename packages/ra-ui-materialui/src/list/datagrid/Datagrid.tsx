@@ -309,7 +309,6 @@ Datagrid.propTypes = {
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     setSort: PropTypes.func,
     total: PropTypes.number,
-    version: PropTypes.number,
     isRowSelectable: PropTypes.func,
     isRowExpandable: PropTypes.func,
 };
@@ -344,7 +343,7 @@ export interface DatagridProps<RecordType extends Record = Record>
     isLoading?: boolean;
     onSelect?: (ids: Identifier[]) => void;
     onToggleItem?: (id: Identifier) => void;
-    setSort?: (sort: string, order?: string) => void;
+    setSort?: (sort: SortPayload) => void;
     selectedIds?: Identifier[];
     total?: number;
 }

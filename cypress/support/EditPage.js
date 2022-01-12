@@ -12,7 +12,7 @@ export default url => ({
                 return `.ra-input-${name} label`;
             }
             if (type === 'reference-array-input') {
-                return `.ra-input div[role=combobox] input`;
+                return `.ra-input div[role=combobox]`;
             }
             return `.edit-page [name='${name}']`;
         },

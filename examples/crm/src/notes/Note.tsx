@@ -114,17 +114,25 @@ export const Note = ({
 
     const [update, { isLoading }] = useUpdate();
 
-    const [handleDelete] = useDelete(resource, note.id, note, {
-        mutationMode: 'undoable',
-        onSuccess: () => {
-            notify('Note deleted', { type: 'info', undoable: true });
-            update(reference, {
-                id: record.id,
-                data: { nb_notes: record.nb_notes - 1 },
-                previousData: record,
-            });
-        },
-    });
+    const [deleteNote] = useDelete(
+        resource,
+        { id: note.id, previousData: note },
+        {
+            mutationMode: 'undoable',
+            onSuccess: () => {
+                notify('Note deleted', { type: 'info', undoable: true });
+                update(reference, {
+                    id: record.id,
+                    data: { nb_notes: record.nb_notes - 1 },
+                    previousData: record,
+                });
+            },
+        }
+    );
+
+    const handleDelete = () => {
+        deleteNote();
+    };
 
     const handleEnterEditMode = () => {
         setEditing(true);

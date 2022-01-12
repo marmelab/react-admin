@@ -63,12 +63,13 @@ const SortButton = (props: SortButtonProps) => {
         event: React.MouseEvent<HTMLLIElement, MouseEvent>
     ) => {
         const field = event.currentTarget.dataset.sort;
-        setSort(
+        setSort({
             field,
-            field === currentSort.field
-                ? inverseOrder(currentSort.order)
-                : 'ASC'
-        );
+            order:
+                field === currentSort.field
+                    ? inverseOrder(currentSort.order)
+                    : 'ASC',
+        });
         setAnchorEl(null);
     };
 

@@ -3,21 +3,18 @@ import {
     HtmlHTMLAttributes,
     ComponentType,
     createElement,
-    FunctionComponent,
     ReactNode,
     useRef,
     useEffect,
-    useMemo,
 } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Card, Avatar } from '@mui/material';
-import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import LockIcon from '@mui/icons-material/Lock';
 import { useNavigate } from 'react-router-dom';
-import { useCheckAuth, TitleComponent } from 'ra-core';
+import { LoginComponentProps, useCheckAuth } from 'ra-core';
 
-import { defaultTheme } from '../defaultTheme';
 import { Notification as DefaultNotification } from '../layout';
 import { LoginForm as DefaultLoginForm } from './LoginForm';
 
@@ -39,24 +36,13 @@ import { LoginForm as DefaultLoginForm } from './LoginForm';
  *        </Admin>
  *     );
  */
-export const Login: FunctionComponent<LoginProps> = props => {
-    const { theme, ...rest } = props;
-    const muiTheme = useMemo(() => createTheme(theme), [theme]);
-    return (
-        <ThemeProvider theme={muiTheme}>
-            <LoginContainer {...rest} />
-        </ThemeProvider>
-    );
-};
-
-const LoginContainer = props => {
+export const Login = (props: LoginProps) => {
     const {
         title,
         classes: classesOverride,
         className,
         children,
         notification,
-        staticContext,
         backgroundImage,
         ...rest
     } = props;
@@ -116,14 +102,13 @@ const LoginContainer = props => {
 };
 
 export interface LoginProps
-    extends Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'> {
+    extends Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'>,
+        LoginComponentProps {
     backgroundImage?: string;
     children?: ReactNode;
     classes?: object;
     className?: string;
     notification?: ComponentType;
-    theme?: object;
-    title?: TitleComponent;
 }
 
 const PREFIX = 'RaLogin';
@@ -166,11 +151,9 @@ Login.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
     className: PropTypes.string,
-    theme: PropTypes.object,
 };
 
 Login.defaultProps = {
-    theme: defaultTheme,
     children: <DefaultLoginForm />,
     notification: DefaultNotification,
 };

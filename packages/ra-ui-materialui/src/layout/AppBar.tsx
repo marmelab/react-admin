@@ -22,7 +22,7 @@ import { HideOnScroll } from './HideOnScroll';
  * The AppBar component renders a custom MuiAppBar.
  *
  * @param {Object} props
- * @param {ReactNode} props.children React node/s to be render as children of the AppBar
+ * @param {ReactNode} props.children React node/s to be rendered as children of the AppBar
  * @param {Object} props.classes CSS class names
  * @param {string} props.className CSS class applied to the MuiAppBar component
  * @param {string} props.color The color of the AppBar

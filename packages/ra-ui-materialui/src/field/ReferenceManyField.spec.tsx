@@ -1,14 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { CoreAdminContext, testDataProvider } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import {
-    ReferenceManyField,
-    ReferenceManyFieldView,
-} from './ReferenceManyField';
+import { ReferenceManyFieldView } from './ReferenceManyField';
 import { TextField } from './TextField';
 import { SingleFieldList } from '../list/SingleFieldList';
 
@@ -129,73 +126,5 @@ describe('<ReferenceManyField />', () => {
         expect(links[1].textContent).toEqual('world');
         expect(links[0].getAttribute('href')).toEqual('/posts/1');
         expect(links[1].getAttribute('href')).toEqual('/posts/2');
-    });
-
-    it('should throw an error if used without a Resource for the reference', async () => {
-        jest.spyOn(console, 'error').mockImplementation(() => {});
-        class ErrorBoundary extends React.Component<
-            {
-                onError?: (
-                    error: Error,
-                    info: { componentStack: string }
-                ) => void;
-            },
-            { error: Error | null }
-        > {
-            constructor(props) {
-                super(props);
-                this.state = { error: null };
-            }
-
-            static getDerivedStateFromError(error) {
-                // Update state so the next render will show the fallback UI.
-                return { error };
-            }
-
-            componentDidCatch(error, errorInfo) {
-                // You can also log the error to an error reporting service
-                this.props.onError(error, errorInfo);
-            }
-
-            render() {
-                if (this.state.error) {
-                    // You can render any custom fallback UI
-                    return <h1>Something went wrong.</h1>;
-                }
-
-                return this.props.children;
-            }
-        }
-        const onError = jest.fn();
-        render(
-            <CoreAdminContext
-                dataProvider={testDataProvider()}
-                initialState={{
-                    admin: { resources: { comments: { data: {} } } },
-                }}
-            >
-                <ErrorBoundary onError={onError}>
-                    <ThemeProvider theme={theme}>
-                        <ReferenceManyField
-                            record={{ id: 123 }}
-                            resource="comments"
-                            target="postId"
-                            reference="posts"
-                            basePath="/comments"
-                        >
-                            <SingleFieldList>
-                                <TextField source="title" />
-                            </SingleFieldList>
-                        </ReferenceManyField>
-                    </ThemeProvider>
-                </ErrorBoundary>
-                ,
-            </CoreAdminContext>
-        );
-        await waitFor(() => {
-            expect(onError.mock.calls[0][0].message).toBe(
-                'You must declare a <Resource name="posts"> in order to use a <ReferenceManyField reference="posts">'
-            );
-        });
     });
 });

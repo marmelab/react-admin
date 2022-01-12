@@ -59,7 +59,7 @@ const App = () => (
 
 ## Props
 
-* [`children`](#layout) the components that actually render something
+* `children` the components that actually render something
 * [`queryOptions`](#client-query-options): options to pass to the react-query client
 
 ## Client Query Options
@@ -95,7 +95,7 @@ const PostShow = props => {
 }
 ```
 
-The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
+The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
 
 The default `onError` function is:
 

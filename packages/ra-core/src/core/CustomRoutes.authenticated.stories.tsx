@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Route } from 'react-router';
-import Admin from './CoreAdmin';
+import { CoreAdmin } from './CoreAdmin';
 import { useAuthenticated, useLogin } from '../auth';
 import { CustomRoutes } from './CustomRoutes';
 import { Resource } from './Resource';
@@ -17,7 +17,7 @@ export default {
 export const AuthenticatedCustomRoute = (argsOrProps, context) => {
     const history = context?.history || argsOrProps.history;
     return (
-        <Admin
+        <CoreAdmin
             authProvider={authProvider}
             dataProvider={dataProvider}
             history={history}
@@ -30,7 +30,7 @@ export const AuthenticatedCustomRoute = (argsOrProps, context) => {
                 />
             </CustomRoutes>
             <Resource name="posts" list={PostList} />
-        </Admin>
+        </CoreAdmin>
     );
 };
 

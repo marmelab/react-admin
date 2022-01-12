@@ -9,11 +9,9 @@ import {
     useRefresh,
     useNotify,
     useUnselectAll,
-    CRUD_DELETE_MANY,
     useResourceContext,
     useListContext,
 } from 'ra-core';
-import { useQueryClient } from 'react-query';
 
 import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
@@ -29,63 +27,48 @@ export const BulkDeleteWithUndoButton = (
         ...rest
     } = props;
     const { selectedIds } = useListContext(props);
-    const queryClient = useQueryClient();
 
     const notify = useNotify();
     const unselectAll = useUnselectAll();
     const refresh = useRefresh();
     const resource = useResourceContext(props);
-    const [deleteMany, { loading }] = useDeleteMany(resource, selectedIds, {
-        action: CRUD_DELETE_MANY,
-        onSuccess: () => {
-            notify('ra.notification.deleted', {
-                type: 'info',
-                messageArgs: { smart_count: selectedIds.length },
-                undoable: true,
-            });
-            unselectAll(resource);
-            // FIXME: Remove when useDeleteMany is migrated to react-query
-            queryClient.setQueriesData(
-                [resource, 'getList'],
-                (old: { data?: any[]; total?: number }) => {
-                    if (!old || !old.data) return;
-                    const newData = old.data.filter(
-                        record => !selectedIds.includes(record.id)
-                    );
-                    if (newData.length === old.data.length) {
-                        return old;
-                    }
-                    return {
-                        data: newData,
-                        total: newData.length,
-                    };
-                }
-            );
-        },
-        onFailure: error => {
-            notify(
-                typeof error === 'string'
-                    ? error
-                    : error.message || 'ra.notification.http_error',
-                {
-                    type: 'warning',
-                    messageArgs: {
-                        _:
-                            typeof error === 'string'
-                                ? error
-                                : error && error.message
-                                ? error.message
-                                : undefined,
-                    },
-                }
-            );
-            refresh();
-        },
-        mutationMode: 'undoable',
-    });
+    const [deleteMany, { isLoading }] = useDeleteMany();
 
     const handleClick = e => {
-        deleteMany();
+        deleteMany(
+            resource,
+            { ids: selectedIds },
+            {
+                onSuccess: () => {
+                    notify('ra.notification.deleted', {
+                        type: 'info',
+                        messageArgs: { smart_count: selectedIds.length },
+                        undoable: true,
+                    });
+                    unselectAll(resource);
+                },
+                onError: (error: Error) => {
+                    notify(
+                        typeof error === 'string'
+                            ? error
+                            : error.message || 'ra.notification.http_error',
+                        {
+                            type: 'warning',
+                            messageArgs: {
+                                _:
+                                    typeof error === 'string'
+                                        ? error
+                                        : error && error.message
+                                        ? error.message
+                                        : undefined,
+                            },
+                        }
+                    );
+                    refresh();
+                },
+                mutationMode: 'undoable',
+            }
+        );
         if (typeof onClick === 'function') {
             onClick(e);
         }
@@ -96,7 +79,7 @@ export const BulkDeleteWithUndoButton = (
             onClick={handleClick}
             label={label}
             className={BulkDeleteWithUndoButtonClasses.deleteButton}
-            disabled={loading}
+            disabled={isLoading}
             {...sanitizeRestProps(rest)}
         >
             {icon}

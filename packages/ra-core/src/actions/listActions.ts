@@ -2,6 +2,7 @@ import { Identifier } from '../types';
 
 export const CRUD_CHANGE_LIST_PARAMS = 'RA/CRUD_CHANGE_LIST_PARAMS';
 
+// Serializable list params (for the query string)
 export interface ListParams {
     sort: string;
     order: string;
@@ -56,6 +57,23 @@ export const toggleListItem = (
 ): ToggleListItemAction => ({
     type: TOGGLE_LIST_ITEM,
     payload: id,
+    meta: { resource },
+});
+
+export const UNSELECT_LIST_ITEMS = 'RA/UNSELECT_LIST_ITEMS';
+
+export interface UnselectListItemsAction {
+    readonly type: typeof UNSELECT_LIST_ITEMS;
+    readonly payload: any;
+    readonly meta: { resource: string };
+}
+
+export const unselectListItems = (
+    resource: string,
+    ids: Identifier[]
+): UnselectListItemsAction => ({
+    type: UNSELECT_LIST_ITEMS,
+    payload: ids,
     meta: { resource },
 });
 

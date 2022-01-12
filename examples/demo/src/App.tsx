@@ -4,7 +4,6 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import { Route } from 'react-router';
 
 import authProvider from './authProvider';
-import themeReducer from './themeReducer';
 import { Login, Layout } from './layout';
 import { Dashboard } from './dashboard';
 import englishMessages from './i18n/en';
@@ -35,7 +34,6 @@ const App = () => {
             dataProvider={dataProviderFactory(
                 process.env.REACT_APP_DATA_PROVIDER || ''
             )}
-            customReducers={{ theme: themeReducer }}
             authProvider={authProvider}
             dashboard={Dashboard}
             loginPage={Login}

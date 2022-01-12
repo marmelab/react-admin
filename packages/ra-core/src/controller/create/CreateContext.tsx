@@ -25,8 +25,8 @@ export const CreateContext = createContext<CreateControllerResult>({
     onFailureRef: null,
     onSuccessRef: null,
     transformRef: null,
-    loaded: null,
-    loading: null,
+    isFetching: null,
+    isLoading: null,
     redirect: null,
     setOnFailure: null,
     setOnSuccess: null,
@@ -34,8 +34,6 @@ export const CreateContext = createContext<CreateControllerResult>({
     resource: null,
     save: null,
     saving: null,
-    successMessage: null,
-    version: null,
 });
 
 CreateContext.displayName = 'CreateContext';

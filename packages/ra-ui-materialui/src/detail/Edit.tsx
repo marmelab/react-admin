@@ -25,7 +25,6 @@ import { EditView } from './EditView';
  * - actions
  * - aside
  * - component
- * - successMessage
  * - title
  * - mutationMode
  *
@@ -91,7 +90,6 @@ Edit.propTypes = {
     queryOptions: PropTypes.object,
     mutationOptions: PropTypes.object,
     resource: PropTypes.string,
-    successMessage: PropTypes.string,
     title: PropTypes.node,
     transform: PropTypes.func,
 };

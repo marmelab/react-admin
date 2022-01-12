@@ -1,12 +1,12 @@
 # Upgrade to 4.0
 
-## The Way To Providing Custom Routes Has Changed
+## The Way To Define Custom Routes Has Changed
 
 Custom routes used to be provided to the `Admin` component through the `customRoutes` prop. This was awkward to use as you had to provide an array of `<Route>` elements. Besides, we had to provide the `<RouteWithoutLayout>` component to support custom routes rendered without the `<Layout>` and keep TypeScript happy.
 
 As we upgraded to react-router v6 (more on that later), we had to come up with another way to support custom routes.
 
-Meet the `<CustomRoutes>` component. You you can pass it as a child of `<Admin>`, just like a `<Resource>`. It accepts react-router `<Route>` as its children (and only that). You can specify whether the custom routes it contains should be rendered with the `<Layout>` or not by setting the `noLayout` prop. It's `false` by default.
+Meet the `<CustomRoutes>` component. You can pass it as a child of `<Admin>`, just like a `<Resource>`. It accepts react-router `<Route>` as its children (and only that). You can specify whether the custom routes it contains should be rendered with the `<Layout>` or not by setting the `noLayout` prop. It's `false` by default.
 
 ```diff
 -import { Admin, Resource, RouteWithoutLayout } from 'react-admin';
@@ -58,7 +58,7 @@ Note that `<CustomRoutes>` handles `null` elements and fragments correctly, so y
 
 In order to define the resources and their views according to users permissions, we used to support a function as a child of `<Admin>`. Just like the `customRoutes`, this function had to return an array of elements.
 
-You can now return a fragment and this fragment may contains `null` elements. Besides, if you don't need to check the permissions for a resource, you may even include it as a direct child of `<Admin>`.
+You can now return a fragment and this fragment may contain `null` elements. Besides, if you don't need to check the permissions for a resource, you may even include it as a direct child of `<Admin>`.
 
 ```diff
 <Admin>
@@ -108,9 +108,206 @@ This should be mostly transparent for you unless:
 - you used `useHistory` to navigate: see [https://reactrouter.com/docs/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory](https://reactrouter.com/docs/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory) to upgrade.
 - you had custom components similar to our `TabbedForm` or `TabbedShowLayout` (declaring multiple sub routes): see [https://reactrouter.com/docs/en/v6/upgrading/v5](https://reactrouter.com/docs/en/v6/upgrading/v5) to upgrade.
 
+## `useQuery`, `useMutation`, and `useQueryWithStore` Have Been Removed
+
+React-admin v4 uses react-query rather than Redux for data fetching. The base react-query data fetching hooks (`useQuery`, `useMutation`, and `useQueryWithStore`) are no longer necessary as their functionality is provided by react-query.
+
+If your application code uses these hooks, you have 2 ways to upgrade.
+
+If you're using `useQuery` or `useMutation` to call a regular dataProvider method (like `useGetOne`), then you can use the specialized dataProvider hooks instead:
+
+```diff
+import * as React from "react";
+-import { useQuery } from 'react-admin';
++import { useGetOne } from 'react-admin';
+import { Loading, Error } from '../ui';
+const UserProfile = ({ record }) => {
+-   const { loaded, error, data } = useQuery({
+-       type: 'getOne',
+-       resource: 'users',
+-       payload: { id: record.id }
+-   });
++   const { data, isLoading, error } = useGetOne(
++       'users',
++       { id: record.id }
++   );
+-   if (!loaded) { return <Loading />; }
++   if (isLoading) { return <Loading />; }
+    if (error) { return <Error />; }
+    return <div>User {data.username}</div>;
+};
+```
+
+If you're calling a custom dataProvider method, then you can use react-query's `useQuery` or `useMutation` instead:
+
+```diff
+-import { useMutation } from 'react-admin';
++import { useDataProvider } from 'react-admin';
++import { useMutation } from 'react-query';
+const BanUserButton = ({ userId }) => {
+-   const [mutate, { loading, error, data }] = useMutation({
+-       type: 'banUser',
+-       payload: userId
+-   });
++   const dataProvider = useDataProvider();
++   const { mutate, isLoading } = useMutation(
++       ['banUser', userId],
++       () => dataProvider.banUser(userId)
++   );
+-   return <Button label="Ban" onClick={() => mutate()} disabled={loading} />;
++   return <Button label="Ban" onClick={() => mutate()} disabled={isLoading} />;
+};
+```
+
+Refer to [the react-query documentation](https://react-query.tanstack.com/overview) for more information.
+
+## `<Query>` and `<Mutation>` Have Been Removed
+
+The component version of `useQuery` and `useMutation` have been removed. Use the related hook in your components instead.
+
+```diff
+-import { Query } from 'react-admin';
++import { useGetOne } from 'react-admin';
+
+const UserProfile = ({ record }) => {
+-   return (
+-       <Query type="getOne" resource="users" payload={{ id: record.id }}>
+-           {({ loaded, error, data }) => {
+-               if (!loaded) { return <Loading />; }
+-               if (error) { return <Error />; }
+-               return <div>User {data.username}</div>;
+-           }}
+-       </Query>
+-   );
++   const { data, isLoading, error } = useGetOne(
++       'users',
++       { id: record.id }
++   );
++   if (isLoading) { return <Loading />; }
++   if (error) { return <Error />; }
++   return <div>User {data.username}</div>;
+}
+```
+
+## `useDataProvider` No Longer Accepts Side Effects
+
+`useDataProvider` returns a wrapper around the application `dataProvider` instance. In previous react-admin versions, the wrapper methods used to accept an `options` object, allowing to pass `onSuccess` and `onFailure` callbacks. This is no longer the case - the wrapper returns an object with the same method signatures as the original `dataProvider`.
+
+If you need to call the `dataProvider` and apply side effects, use react-query's `useQuery` or `useMutation` hooks instead.
+
+```diff
+-import { useState } from 'react';
+import { useDataProvider } from 'react-admin';
++import { useMutation } from 'react-query';
+
+const BanUserButton = ({ userId }) => {
+    const dataProvider = useDataProvider();
++   const { mutate, isLoading } = useMutation();
+-   const [loading, setLoading] = useState(false);
+    const handleClick = () => {
+-       setLoading(true);
+-       dataProvider.banUser(userId, {
+-           onSuccess: () => {
+-               setLoading(false);
+-               console.log('User banned');
+-           },
+-       });
++       mutate(
++           ['banUser', userId],
++           () => dataProvider.banUser(userId),
++           { onSuccess: () => console.log('User banned') }
++       );
+    }
+-   return <Button label="Ban" onClick={handleClick} disabled={loading} />;
++   return <Button label="Ban" onClick={handleClick} disabled={isLoading} />;
+};
+```
+
+Refer to [the react-query documentation](https://react-query.tanstack.com/overview) for more information.
+
+## No More Records in Redux State
+
+As Redux is no longer used for data fetching, the Redux state doesn't contain any data cached from the dataProvider anymore. If you relied on `useSelector` to get a record or a list of records, you now have to use the dataProvider hooks to get them. 
+
+```diff
+-import { useSelector } from 'react-redux';
++import { useGetOne } from 'react-admin';
+
+const BookAuthor = ({ record }) => {
+-   const author = useSelector(state =>
+-       state.admin.resources.users.data[record.authorId]
+-   );
++   const { data: author, isLoading, error } = useGetOne(
++       'users',
++       { id: record.authorId }
++   );
++   if (isLoading) { return <Loading />; }
++   if (error) { return <Error />; }
+    return <div>Author {data.username}</div>;
+};
+```
+
+## No More Data Actions
+
+As Redux is no longer used for data fetching, react-admin doesn't dispatch Redux actions like `RA/CRUD_GET_ONE_SUCCESS` and `RA/FETCH_END`. If you relied on these actions for your custom reducers, you must now use react-query `onSuccess` callback or React's `useEffect` instead.
+
+The following actions no longer exist:
+
+- `RA/CRUD_GET_ONE`
+- `RA/CRUD_GET_ONE_LOADING`
+- `RA/CRUD_GET_ONE_FAILURE`
+- `RA/CRUD_GET_ONE_SUCCESS`
+- `RA/CRUD_GET_LIST`
+- `RA/CRUD_GET_LIST_LOADING`
+- `RA/CRUD_GET_LIST_FAILURE`
+- `RA/CRUD_GET_LIST_SUCCESS`
+- `RA/CRUD_GET_ALL`
+- `RA/CRUD_GET_ALL_LOADING`
+- `RA/CRUD_GET_ALL_FAILURE`
+- `RA/CRUD_GET_ALL_SUCCESS`
+- `RA/CRUD_GET_MANY`
+- `RA/CRUD_GET_MANY_LOADING`
+- `RA/CRUD_GET_MANY_FAILURE`
+- `RA/CRUD_GET_MANY_SUCCESS`
+- `RA/CRUD_GET_MANY_REFERENCE`
+- `RA/CRUD_GET_MANY_REFERENCE_LOADING`
+- `RA/CRUD_GET_MANY_REFERENCE_FAILURE`
+- `RA/CRUD_GET_MANY_REFERENCE_SUCCESS`
+- `RA/CRUD_CREATE`
+- `RA/CRUD_CREATE_LOADING`
+- `RA/CRUD_CREATE_FAILURE`
+- `RA/CRUD_CREATE_SUCCESS`
+- `RA/CRUD_UPDATE`
+- `RA/CRUD_UPDATE_LOADING`
+- `RA/CRUD_UPDATE_FAILURE`
+- `RA/CRUD_UPDATE_SUCCESS`
+- `RA/CRUD_UPDATE_MANY`
+- `RA/CRUD_UPDATE_MANY_LOADING`
+- `RA/CRUD_UPDATE_MANY_FAILURE`
+- `RA/CRUD_UPDATE_MANY_SUCCESS`
+- `RA/CRUD_DELETE`
+- `RA/CRUD_DELETE_LOADING`
+- `RA/CRUD_DELETE_FAILURE`
+- `RA/CRUD_DELETE_SUCCESS`
+- `RA/CRUD_DELETE_MANY`
+- `RA/CRUD_DELETE_MANY_LOADING`
+- `RA/CRUD_DELETE_MANY_FAILURE`
+- `RA/CRUD_DELETE_MANY_SUCCESS`
+- `RA/FETCH_START`
+- `RA/FETCH_END`
+- `RA/FETCH_ERROR`
+- `RA/FETCH_CANCEL`
+
+Other actions related to data fetching were also removed:
+
+- `RA/REFRESH_VIEW`
+- `RA/SET_AUTOMATIC_REFRESH`
+- `RA/START_OPTIMISTIC_MODE`
+- `RA/STOP_OPTIMISTIC_MODE`
+
 ## Changed Signature Of Data Provider Hooks
 
-Specialized data provider hooks (like `useGetList` and `useUpdate`) have a new signature. There are 2 changes:
+Specialized data provider hooks (like `useGetOne`, `useGetList`, `useGetMany` and `useUpdate`) have a new signature. There are 2 changes:
 
 - `loading` is renamed to `isLoading`
 - the hook signature now reflects the dataProvider signature (so every hook now takes 2 arguments, `resource` and `params`).
@@ -143,11 +340,55 @@ For queries:
 +   }
 +);
 +return <>{data.map(record => <span key={record.id}>{record.title}</span>)}</>;
+
+// useGetMany
+-const { data, loading } = useGetMany(
+-   'posts',
+-   [123, 456],
+-);
++const { data, isLoading } = useGetMany(
++   'posts',
++   { ids: [123, 456] }
++);
+
+// useGetManyReference
+-const { data, ids, loading } = useGetManyReference(
+-   'comments',
+-   'post_id',
+-   123,
+-   { page: 1, perPage: 10 },
+-   { field: 'published_at', order: 'DESC' }
+-   'posts'
+-);
+-return <>{ids.map(id => <span key={id}>{data[id].title}</span>)}</>;
++const { data, isLoading } = useGetManyReference(
++   'comments',
++   {
++       target: 'post_id',
++       id: 123,
++       pagination: { page: 1, perPage: 10 },
++       sort: { field: 'published_at', order: 'DESC' }
++   }
++);
++return <>{data.map(record => <span key={record.id}>{record.title}</span>)}</>;
 ```
 
 For mutations:
 
 ```diff
+// useCreate
+-const [create, { loading }] = useCreate(
+-   'posts',
+-   { title: 'hello, world!' },
+-);
+-create(resource, data, options);
++const [create, { isLoading }] = useCreate(
++   'posts',
++   { data: { title: 'hello, world!' } }
++);
++create(resource, { data }, options);
+
+// useUpdate
 -const [update, { loading }] = useUpdate(
 -   'posts',
 -   123,
@@ -164,6 +405,53 @@ For mutations:
 +   }
 +);
 +update(resource, { id, data, previousData }, options);
+
+// useUpdateMany
+-const [updateMany, { loading }] = useUpdateMany(
+-   'posts',
+-   [123, 456],
+-   { likes: 12 },
+-);
+-updateMany(resource, ids, data, options);
++const [updateMany, { isLoading }] = useUpdateMany(
++   'posts',
++   {
++       ids: [123, 456],
++       data: { likes: 12 },
++   }
++);
++updateMany(resource, { ids, data }, options);
+
+// useDelete
+-const [deleteOne, { loading }] = useDelete(
+-   'posts',
+-   123,
+-   { id: 123, title: "hello, world", likes: 122 }
+-);
+-deleteOne(resource, id, previousData, options);
++const [deleteOne, { isLoading }] = useDelete(
++   'posts',
++   {
++       id: 123,
++       previousData: { id: 123, title: "hello, world", likes: 122 }
++   }
++);
++deleteOne(resource, { id, previousData }, options);
+
+// useDeleteMany
+-const [deleteMany, { loading }] = useDeleteMany(
+-   'posts',
+-   [123, 456],
+-);
+-deleteMany(resource, ids, options);
++const [deleteMany, { isLoading }] = useDeleteMany(
++   'posts',
++   {
++       ids: [123, 456],
++   }
++);
++deleteMany(resource, { ids }, options);
+
 ```
 
 This new signature should be easier to learn and use.
@@ -172,11 +460,51 @@ To upgrade, check every instance of your code of the following hooks:
 
 - `useGetOne`
 - `useGetList`
+- `useGetMany`
+- `useGetManyReference`
+- `useCreate`
 - `useUpdate`
+- `useUpdateMany`
+- `useDelete`
+- `useDeleteMany`
 
 And update the calls. If you're using TypeScript, your code won't compile until you properly upgrade the calls. 
 
 These hooks are now powered by react-query, so the state argument contains way more than just `isLoading` (`reset`, `status`, `refetch`, etc.). Check the [`useQuery`](https://react-query.tanstack.com/reference/useQuery) and the [`useMutation`](https://react-query.tanstack.com/reference/useMutation) documentation on the react-query website for more details. 
+
+## List `ids` Prop And `RecordMap` Type Are Gone
+
+Contrary to `dataProvider.getList`, `useGetList` used to return data under the shape of a record map. This is no longer the case: `useGetList` returns an array of records. 
+
+So the `RecordMap` type is no longer necessary and was removed. TypeScript compilation will fail if you continue using it. You should update your code so that it works with an array of records instead.
+
+```diff
+-import { useGetList, RecordMap } from 'react-admin';
++import { useGetList, Record } from 'react-admin';
+
+const PostListContainer = () => {
+-   const { data, ids, loading } = useGetList(
+-      'posts',
+-      { page: 1, perPage: 10 },
+-      { field: 'published_at', order: 'DESC' },
+-   );
+-   return loading ? null: <PostListDetail data={data} ids={ids} />
++   const { data, isLoading } = useGetList(
++      'posts',
++      {
++         pagination: { page: 1, perPage: 10 },
++         sort: { field: 'published_at', order: 'DESC' },
++      }
++   );
++   return isLoading ? null: <PostListDetail data={data} />
+};
+
+-const PostListDetail = ({ ids, data }: { ids: string[], data: RecordMap }) => {
++const PostListDetail = ({ data }: { data: Record[] }) => {
+-   return <>{ids.map(id => <span key={id}>{data[id].title}</span>)}</>;
++   return <>{data.map(record => <span key={record.id}>{record.title}</span>)}</>;
+};
+```
 
 ## Mutation Callbacks Can No Longer Be Used As Event Handlers
 
@@ -194,7 +522,15 @@ const IncreaseLikeButton = ({ record }) => {
 
 TypeScript will complain if you don't.
 
-Note that your code will be more readable if you pass the mutation parameters to the mutation callback instaed of the mutation hook, e.g.
+To upgrade, check every instance of your code of the following hooks:
+
+- `useCreate`
+- `useUpdate`
+- `useUpdateMany`
+- `useDelete`
+- `useDeleteMany`
+
+Note that your code will be more readable if you pass the mutation parameters to the mutation callback instead of the mutation hook, e.g.
 
 ```diff
 const IncreaseLikeButton = ({ record }) => {
@@ -214,7 +550,7 @@ const IncreaseLikeButton = ({ record }) => {
 
 If you need to override the success or failure side effects of a component, you now have to use the `queryOptions` (for query side effects) or `mutationOptions` (for mutation side effects).
 
-For instance, here is how to override the side eggects for the `getOne` query in a `<Show>` component: 
+For instance, here is how to override the side effects for the `getOne` query in a `<Show>` component: 
 
 ```diff
 const PostShow = () => {
@@ -268,12 +604,42 @@ const PostEdit = () => {
 };
 ```
 
+Here is how to customize side effects on the `create` mutation in `<Create>`:
+
+```diff
+const PostCreate = () => {
+    const onSuccess = () => {
+        // do something
+    };
+    const onFailure = () => {
+        // do something
+    };
+    return (
+        <Create 
+-           onSuccess={onSuccess}
+-           onFailure={onFailure}
++           mutationOptions={{
++               onSuccess: onSuccess,
++               onError: onFailure
++           }}
+        >
+            <SimpleForm>
+                <TextInput source="title" />
+            </SimpleForm>
+        </Create>
+    );
+};
+```
+
 Note that the `onFailure` prop was renamed to `onError` in the options, to match the react-query convention.
 
 **Tip**: `<Edit>` also has a `queryOption` prop allowing you to specify custom success and error side effects for the `getOne` query.
 
 The change concerns the following components:
 
+- `useCreateController`
+- `<Create>`
+- `<CreateBase>`
 - `useEditController`
 - `<Edit>`
 - `<EditBase>`
@@ -281,6 +647,10 @@ The change concerns the following components:
 - `useShowController`
 - `<Show>`
 - `<ShowBase>`
+- `useDeleteWithUndoController`
+- `useDeleteWithConfirmController`
+- `<DeleteButton>`
+- `<BulkDeleteButton>`
 
 ## `onSuccess` Callback On DataProvider Hooks And Components Has A New Signature
 
@@ -304,6 +674,10 @@ const handleClick = () => {
 
 The change concerns the following components:
 
+- `useCreate`
+- `useCreateController`
+- `<Create>`
+- `<CreateBase>`
 - `useUpdate`
 - `useEditController`
 - `<Edit>`
@@ -313,6 +687,12 @@ The change concerns the following components:
 - `useShowController`
 - `<Show>`
 - `<ShowBase>`
+- `useDelete`
+- `useDeleteWithUndoController`
+- `useDeleteWithConfirmController`
+- `<DeleteButton>`
+- `useDeleteMany`
+- `<BulkDeleteButton>`
 
 ## `<Edit successMessage>` Prop Was Removed
 
@@ -332,6 +712,149 @@ const PostEdit = () => {
                 ...
             </SimpleForm>
         </Edit>
+    );
+};
+```
+
+## The `useVersion` Hook Was Removed
+
+React-admin v3 relied on a global `version` variable stored in the Redux state to force page refresh. This is no longer the case, as the refresh functionality is handled by react-query.
+
+If you relied on `useVersion` to provide a component key, you can safely remove the call. The refresh button will force all components relying on a dataProvider query to re-execute.
+
+```diff
+-import { useVersion } from 'react-admin';
+
+const MyComponent = () => {
+-   const version = useVersion();
+    return (
+-       <Card key={version}>
++       <Card>
+            ...
+        </Card>
+    );
+};
+```
+
+And if you relied on a `version` prop to be available in a page context, you can safely remove it.
+
+```diff
+import { useShowContext } from 'react-admin';
+
+const PostDetail = () => {
+-   const { data, version } = useShowContext();
++   const { data } = useShowContext();
+    return (
+-       <Card key={version}>
++       <Card>
+            ...
+        </Card>
+    );
+}
+```
+
+## Application Cache No Longer Uses `validUntil`
+
+React-admin's *application cache* used to reply on the dataProvider returning a `validUntil` property in the response. This is no longer the case, as the cache functionality is handled by react-query. Therefore, you can safely remove the `validUntil` property from your dataProvider response.
+
+```diff
+const dataProvider = {
+    getOne: (resource, { id }) => {
+        return fetch(`/api/${resource}/${id}`)
+            .then(r => r.json())
+            .then(data => {
+-               const validUntil = new Date();
+-               validUntil.setTime(validUntil.getTime() + 5 * 60 * 1000);
+                return { 
+                    data,
+-                   validUntil
+                };
+            }));
+    }
+};
+```
+
+This also implies that the `cacheDataProviderProxy` function was removed.
+
+```diff
+// in src/dataProvider.js
+import simpleRestProvider from 'ra-data-simple-rest';
+-import { cacheDataProviderProxy } from 'react-admin'; 
+
+const dataProvider = simpleRestProvider('http://path.to.my.api/');
+
+-export default cacheDataProviderProxy(dataProvider);
++export default dataProvider;
+```
+
+Instead, you must set up the cache duration at the react-query QueryClient level:
+
+```jsx
+import { QueryClient } from 'react-query';
+import { Admin, Resource } from 'react-admin';
+
+const App = () => {
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                staleTime: 5 * 60 * 1000, // 5 minutes
+            },
+        },
+    });
+    return (
+        <Admin dataProvider={dataProvider} queryClient={queryClient}>
+            <Resource name="posts" />
+        </Admin>
+    );
+}
+```
+
+## Custom Menus Should Get Resource Definition From Context
+
+React-admin used to store the definition of each resource (its name, icon, label, etc.) in the Redux state. This is no longer the case, as the resource definition is now stored in a custom context.
+
+If you relied on the `useResourceDefinition` hook, this change shouldn't affect you.
+
+If you need to access the definitions of all resources, however, you must upgrade your code, and use the new `useResourceDefinitions` hook.
+
+The most common use case is when you override the default `<Menu>` component:
+
+```diff
+// in src/Menu.js
+import * as React from 'react';
+import { createElement } from 'react';
+-import { useSelector } from 'react-redux';
+import { useMediaQuery } from '@material-ui/core';
+-import { DashboardMenuItem, Menu, MenuItemLink, getResources } from 'react-admin';
++import { DashboardMenuItem, Menu, MenuItemLink, useResourceDefinitions } from 'react-admin';
+import DefaultIcon from '@material-ui/icons/ViewList';
+import LabelIcon from '@material-ui/icons/Label';
+
+export const Menu = (props) => {
+-   const resources = useSelector(getResources);
++   const resourcesDefinitions = useResourceDefinitions();
++   const resources = Object.keys(resourcesDefinitions).map(name => resourcesDefinitions[name]);
+    const open = useSelector(state => state.admin.ui.sidebarOpen);
+    return (
+        <Menu {...props}>
+            <DashboardMenuItem />
+            {resources.map(resource => (
+                <MenuItemLink
+                    key={resource.name}
+                    to={`/${resource.name}`}
+                    primaryText={
+                        (resource.options && resource.options.label) ||
+                        resource.name
+                    }
+                    leftIcon={
+                        resource.icon ? <resource.icon /> : <DefaultIcon />
+                    }
+                    onClick={props.onMenuClick}
+                    sidebarIsOpen={open}
+                />
+            ))}
+            {/* add your custom menus here */}
+        </Menu>
     );
 };
 ```
@@ -429,7 +952,7 @@ const MyList = () => (
 
 The `<List>` component renders a Pagination component when there are records to display, and an Empty component otherwise. You can customize these components by passing your own with the `pagination`and `empty`props. 
 
-`<List>` used to inject `ListContext` props (`data`, `isLoaded`, etc.) to these Pagination component. In v4, the component rendered by `<List>` no longer receive these props. They must grab them from the ListContext instead.
+`<List>` used to inject `ListContext` props (`data`, `isLoaded`, etc.) to the Pagination component. In v4, the component rendered by `<List>` no longer receive these props. They must grab them from the ListContext instead.
 
 This means you'll have to do a few changes if you use a custom Pagination component in a List:
 
@@ -468,6 +991,29 @@ export const PostList = () => (
         ...
     </List>
 );
+```
+
+## No More Props Injection In `<ReferenceField>`
+
+`<ReferenceField>` creates a `RecordContext` for the reference record, and this allows using any of react-admin's Field components. It also used to pass many props to the underlying component (including the current `record`), but this is no longer the case. If you need to access the `record` in a child of `<ReferenceField>`, you need to use the `useRecordContext` hook instead.
+
+```diff
+const PostShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField source="title" />
+            <ReferenceField source="author_id" reference="users">
+                <NameField />
+            </ReferenceField>
+        </SimpleShowLayout>
+    </Show>
+);
+
+-const NameField = ({ record }) => {
++const NameField = () => {
++   const { record } = useRecordContext();
+    return <span>{record?.name}</span>;
+};
 ```
 
 ## `useListContext` No Longer Returns An `ids` Prop
@@ -515,25 +1061,112 @@ const CommentGrid = () => {
 };
 ```
 
-## `<Card>` Is Now Rendered By Inner Components
+## `setSort()` Signature Changed
 
-The page components (`<List>`, `<Show>`, etc.) used to render a `<Card>` around their child. It's now the responsibility of the child to render the `<Card>` itself. If you only use react-admin components, you don't need to change anything. But if you use custom layout components, you need to wrap them inside a `<Card>`.
+Some react-admin components have access to a `setSort()` callback to sort the current list of items. This callback is also present in the `ListContext`. Its signature has changed:
 
 ```diff
-+import { Card } from '@mui/material';
-
-const MyShowLayout = () => {
-    const record useRecordContext();
-    return (
-+       <Card>
-            <Stack>
-                <TextField source="title" />
-                <TextField source="author" />
-            </Stack>
-+       </Card>
-    );
-}
+-setSort(field: string, order: 'ASC' | 'DESC');
++setSort({ field: string, order: 'ASC' | 'DESC' });
 ```
+
+This impacts your code if you built a custom sort component:
+
+```diff
+const SortButton = () => {
+    const { currentSort, setSort } = useListContext();
+    const handleChangeSort = (event) => {
+        const field = event.currentTarget.dataset.sort;
+-       setSort(
+-           field,
+-           field === currentSort.field ? inverseOrder(currentSort.order) : 'ASC',
+-       });
++       setSort({
++           field,
++           order: field === currentSort.field ? inverseOrder(currentSort.order) : 'ASC',
++       });
+        setAnchorEl(null);
+    };
+
+    // ...
+};
+```
+
+## Removed Reducers
+
+If your code used `useSelector` to read the react-admin application state, it will likely break. React-admin v4 uses Redux much less than v3, and the shape of the Redux state has changed.
+
+React-admin no longer uses Redux for **data fetching**. Instead, it uses react-query. If you used to read data from the Redux store (which was a bad practice by the way), you'll have to use specialized data provider hooks instead.
+
+```diff
+import * as React from "react";
+-import { useSelector } from 'react-redux';
++import { useGetOne } from 'react-admin';
+import { Loading, Error } from '../ui';
+
+const UserProfile = ({ record }) => {
+-   const data = useSelector(state => state.resources.users.data[record.id]);
++   const { data, isLoading, error } = useGetOne(
++       'users',
++       { id: record.id }
++   );
++   if (isLoading) { return <Loading />; }
++   if (error) { return <Error />; }
+    return <div>User {data.username}</div>;
+};
+```
+
+Besides, the `loadedOnce` reducer, used internally for the previous version of the List page logic, is no longer necessary and has been removed.
+
+React-admin no longer relies on Redux to fetch **relationships**. Instead, the cache of previously fetched relationships is managed by react-query.
+
+If you need to get the records related to the current one via a one-to-many relationship (e.g. to fetch all the books of a given author), you can use the `useGetManyReference` hook instead of the `oneToMany` reducer.
+
+If you need to get possible values for a relationship, use the `useGetList` hook instead of the `possibleValues` reducer.
+
+React-admin no longer uses Redux for **resource definitions**. Instead, it uses a custom context. If you used the `useResourceDefinition` hook, this change is backwards compatible. But if you used to read the Redux state directly, you'll have to upgrade your code. This often happens for custom menus, using the `getResources` selector:
+
+```diff
+// in src/Menu.js
+import * as React from 'react';
+import { createElement } from 'react';
+-import { useSelector } from 'react-redux';
+import { useMediaQuery } from '@material-ui/core';
+-import { DashboardMenuItem, Menu, MenuItemLink, getResources } from 'react-admin';
++import { DashboardMenuItem, Menu, MenuItemLink, useResourceDefinitions } from 'react-admin';
+import DefaultIcon from '@material-ui/icons/ViewList';
+import LabelIcon from '@material-ui/icons/Label';
+
+export const Menu = (props) => {
+-   const resources = useSelector(getResources);
++   const resourcesDefinitions = useResourceDefinitions();
++   const resources = Object.keys(resourcesDefinitions).map(name => resourcesDefinitions[name]);
+    const open = useSelector(state => state.admin.ui.sidebarOpen);
+    return (
+        <Menu {...props}>
+            <DashboardMenuItem />
+            {resources.map(resource => (
+                <MenuItemLink
+                    key={resource.name}
+                    to={`/${resource.name}`}
+                    primaryText={
+                        (resource.options && resource.options.label) ||
+                        resource.name
+                    }
+                    leftIcon={
+                        resource.icon ? <resource.icon /> : <DefaultIcon />
+                    }
+                    onClick={props.onMenuClick}
+                    sidebarIsOpen={open}
+                />
+            ))}
+            {/* add your custom menus here */}
+        </Menu>
+    );
+};
+```
+
+Reducers for the **list parameters** (current sort & filters, selected ids, expanded rows) have moved up to the root reducer (so they don't need the resource to be registered first). This shouldn't impact you if you used the react-admin hooks (`useListParams`, `useSelection`) to read the state.
 
 ## Redux-Saga Was Removed
 
@@ -546,6 +1179,11 @@ If you still relied on sagas, you have to port your saga code to react `useEffec
 ## Removed Deprecated Elements
 
 - Removed `<BulkDeleteAction>` (use `<BulkDeleteButton>` instead)
+- Removed `<ReferenceFieldController>` (use `useReferenceFieldController` instead)
+- Removed `<ReferenceArrayFieldController>` (use `useReferenceArrayFieldController` instead)
+- Removed `<ReferenceManyFieldController>` (use `useReferenceManyFieldController` instead)
+- Removed `<ReferenceInputController>` (use `useReferenceInputController` instead)
+- Removed `<ReferenceArrayInputController>` (use `useReferenceArrayInputController` instead)
 - Removed declarative side effects in dataProvider hooks (e.g. `{ onSuccess: { refresh: true } }`). Use function side effects instead (e.g. `{ onSuccess: () => { refresh(); } }`)
 
 ## Removed connected-react-router
@@ -647,46 +1285,9 @@ const MyCustomField = () => (
 -};
 ```
 
-## Removed The `aside` Prop From `<Show>`
-
-To add a sidebar to a `<Show>` component, you can no longer use the `<Show aside>` prop. But `<Show>` has evolved to accept many children, and render a `<div style={{ display: 'flex" }}>`. So adding a sidebar becomes more natural:
-
-```diff
-export const PostShow = () => (
--    <Show aside={<PostShowAside />}>
-+    <Show>
-        <SimpleShowLayout>
-            <TextField source="title" />
-        </SimpleShowLayout>
-+       <PostShowAside />
-    </Show>
-);
-```
-
-If you want more control over the relative widths of the two children, use layout components like material-ui's `<Grid>`:
-
-```jsx
- import { Grid } from '@mui/material';
-
-export const PostShow = () => (
-    <Show>
-        <Grid container>
-            <Grid item xs={8}>
-                <SimpleShowLayout>
-                    <TextField source="title" />
-                </SimpleShowLayout>
-            </Grid>
-            <Grid item xs={4}>
-               <PostShowAside />
-            </Grid>
-        </Grid>
-    </Show>
-);
-```
-
 ## Removed `loading` and `loaded` Data Provider State Variables
 
-The dataProvider hooks (`useGetOne`, etc) return the request state. The `loading` and `loaded` state variables were changed to `isLoading` and `isFetching` respectively. The meaning has changed, too:
+The dataProvider hooks (`useGetOne`, etc.) return the request state. The `loading` and `loaded` state variables were changed to `isLoading` and `isFetching` respectively. The meaning has changed, too:
 
 - `loading` is now `isFetching`
 - `loaded` is now `!isLoading`
@@ -755,11 +1356,12 @@ test('MyComponent', () => {
 });
 ```
 
-## AutocompleteInput Now Uses Material UI Autocomplete
+## AutocompleteInput and AutocompleteArrayInput Now Use Material UI Autocomplete
 
-We migrated the `AutocompleteInput` so that it leverages Material UI [`<Autocomplete>`](https://mui.com/components/autocomplete/). If you relied on [Downshift](https://www.downshift-js.com/) options, you'll have to update your component.
+We migrated both the `AutocompleteInput` and `AutocompleteArrayInput` components so that they leverage Material UI [`<Autocomplete>`](https://mui.com/components/autocomplete/). If you relied on [Downshift](https://www.downshift-js.com/) options, you'll have to update your component.
 
 Besides, some props supported by the previous implementation aren't anymore:
+- `allowDuplicates`: This is not supported by MUI Autocomplete.
 - `clearAlwaysVisible`: the clear button is now always visible, either while hovering the input or when it has focus. You can hide it using the `<Autocomplete>` `disableClearable` prop though.
 - `resettable`: Removed for the same reason as `clearAlwaysVisible`
 
@@ -777,6 +1379,37 @@ Besides, some props supported by the previous implementation aren't anymore:
 ## `useGetMainList` Was Removed
 
 `useGetMainList` was a modified version of `useGetList` designed to keep previous data on screen upon navigation. As [this is now supported natively by react-query](https://react-query.tanstack.com/guides/paginated-queries#better-paginated-queries-with-keeppreviousdata), this hook is no longer necessary and has been removed. Use `useGetList()` instead.
+
+## The MUI `<ThemeProvider>` is not set by `<Layout>` anymore
+
+The `<ThemeProvider>` is now set by the `<AdminContext>` component which is rendered by `<Admin>`.
+
+This shouldn't impact your code unless you had a completely custom `<Layout>` component. If you do but still uses the default `<Admin>` component, you can safely remove the `ThemeProvider` from your `Layout`:
+
+```diff
+-import { Container, ThemeProvider } from '@mui/material';
++import { Container } from '@mui/material';
+import { Notification, Error } from 'react-admin';
+import Header from './Header';
+
+const Layout = (props) => {
+-    const { children, theme } = props;
++    const { children } = props;
+    return (
+-        <ThemeProvider theme={theme}>
++        <>
+            <Header />
+            <Container>
+                <main id="main-content">
+                    {children}
+                </main>
+            </Container>
+            <Notification />
+-        </ThemeProvider>
++        </>
+    );
+};
+```
 
 # Upgrade to 3.0
 
@@ -1998,6 +2631,8 @@ Besides, some props which were applicable to both components did not make sense 
 -   limitChoicesToValue={true}
 />
 ```
+
+Finally, both the `<AutocompleteInput>` and the `<AutocompleteArrayInput>` don't need react-admin specific styles anymore so we removed the theme keys for them: `RaAutocompleteInput` and `RaAutocompleteArrayInput`. To customize their styles, you can either use the [sx](https://mui.com/system/the-sx-prop/#main-content) prop or add a `MuiAutocomplete` key in your [theme](https://mui.com/customization/theme-components/#global-style-overrides).
 
 ## New DataProviderContext Requires Custom App Modification
 

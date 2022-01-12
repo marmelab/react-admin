@@ -99,7 +99,7 @@ This example results in:
 
 ![Visitor List with customized CSS classes](./img/list_with_customized_css.png)
 
-Take a look at a component documentation and source code to know which classes are available for styling. For instance, you can have a look at the [Datagrid CSS documentation](./List.md#datagrid-css-api).
+Take a look at a component documentation and source code to know which classes are available for styling. For instance, you can have a look at the [Datagrid CSS documentation](./Datagrid.md#sx-css-api).
 
 If you need more control over the HTML code, you can also create your own [Field](./Fields.md#writing-your-own-field-component) and [Input](./Inputs.md#writing-your-own-input-component) components.
 
@@ -330,6 +330,34 @@ const App = () => (
         // ...
     </Admin>
 );
+```
+
+## Changing the Theme Programmatically
+
+React-admin provides the `useSetTheme` hook to update the theme programmatically:
+
+```jsx
+import { defaultTheme, useSetTheme } from 'react-admin';
+import { Button, useTheme } from '@mui/material';
+
+const lightTheme = defaultTheme;
+const darkTheme = {
+    ...defaultTheme,
+    palette: {
+        mode: 'dark',
+    },
+};
+
+const ThemeToggler = () => {
+    const setTheme = useSetTheme();
+    const theme = useTheme();
+
+    return (
+        <Button onClick={() => setTheme(theme.palette.mode === 'dark' ? lightTheme : darkTheme)}>
+            {theme.palette.mode === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+        </Button>
+    );
+}
 ```
 
 ## Using a Custom Layout
@@ -740,7 +768,7 @@ export default MyAppBar;
 
 Take note that this uses *material-ui's `<AppBar>`* instead of *react-admin's `<AppBar>`*. To use this custom `AppBar` component, pass it as prop to a custom `Layout`, as explained in the previous section.
 
-To make it easier to customize, we export some of the components and hooks used by the `<AppBar>`:
+To make it easier to customize, we export some components and hooks used by the `<AppBar>`:
 
 - `<LoadingIndicator>`: A `CircularProgress` bound to the dataProvider activity.
 - `<SidebarToggleButton>`: An `IconButton` used to toggle the `<Sidebar>`.
@@ -825,7 +853,7 @@ const App = () => (
 );
 ```
 
-**Tip**: You can generate the menu items for each of the resources by reading the Resource configurations from the Redux store: 
+**Tip**: You can generate the menu items for each of the resources by reading the Resource configurations context: 
 
 ```jsx
 // in src/Menu.js
@@ -833,26 +861,26 @@ import * as React from 'react';
 import { createElement } from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
-import { DashboardMenuItem, Menu, MenuItemLink, getResources } from 'react-admin';
+import { DashboardMenuItem, Menu, MenuItemLink, useResourceDefinitions } from 'react-admin';
 import DefaultIcon from '@material-ui/icons/ViewList';
 import LabelIcon from '@material-ui/icons/Label';
 
 export const Menu = (props) => {
-    const resources = useSelector(getResources);
+    const resources = useResourceDefinitions()
     const open = useSelector(state => state.admin.ui.sidebarOpen);
     return (
         <Menu {...props}>
             <DashboardMenuItem />
-            {resources.map(resource => (
+            {Object.keys(resources).map(name => (
                 <MenuItemLink
-                    key={resource.name}
-                    to={`/${resource.name}`}
+                    key={name}
+                    to={`/${name}`}
                     primaryText={
-                        (resource.options && resource.options.label) ||
-                        resource.name
+                        (resources[name].options && resources[name].options.label) ||
+                        name
                     }
                     leftIcon={
-                        resource.icon ? <resource.icon /> : <DefaultIcon />
+                        resources[name].icon ? <resource.icon /> : <DefaultIcon />
                     }
                     onClick={props.onMenuClick}
                     sidebarIsOpen={open}

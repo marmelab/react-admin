@@ -3,10 +3,14 @@ import { styled } from '@mui/material/styles';
 import { Fragment } from 'react';
 import MuiToolbar from '@mui/material/Toolbar';
 
-import { SaveButton, DeleteButton, ToolbarProps } from 'react-admin';
+import {
+    SaveButton,
+    DeleteButton,
+    ToolbarProps,
+    useRecordContext,
+} from 'react-admin';
 import AcceptButton from './AcceptButton';
 import RejectButton from './RejectButton';
-import { Review } from '../types';
 
 const PREFIX = 'ReviewEditToolbar';
 
@@ -22,15 +26,16 @@ const StyledMuiToolbar = styled(MuiToolbar)(({ theme }) => ({
     },
 }));
 
-const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
+const ReviewEditToolbar = (props: ToolbarProps) => {
     const {
         basePath,
         handleSubmitWithRedirect,
         invalid,
-        record,
         resource,
         saving,
     } = props;
+
+    const record = useRecordContext();
 
     if (!record) return null;
     return (

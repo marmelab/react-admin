@@ -112,7 +112,7 @@ export const ArrayField: FC<ArrayFieldProps> = memo(props => {
                 setPerPage: null,
                 setSort: null,
                 showFilter: null,
-                total: null,
+                total: data.length,
             }}
         >
             {cloneElement(Children.only(children), {

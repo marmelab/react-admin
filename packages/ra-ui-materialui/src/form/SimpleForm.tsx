@@ -62,7 +62,6 @@ SimpleForm.propTypes = {
     submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.oneOfType([PropTypes.element, PropTypes.oneOf([false])]),
     validate: PropTypes.func,
-    version: PropTypes.number,
     sanitizeEmptyValues: PropTypes.bool,
 };
 

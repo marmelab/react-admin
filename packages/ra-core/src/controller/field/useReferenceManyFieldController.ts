@@ -5,18 +5,14 @@ import isEqual from 'lodash/isEqual';
 import { useSafeSetState, removeEmpty } from '../../util';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../sideEffect';
-import { Record, SortPayload, RecordMap } from '../../types';
+import { Record, SortPayload } from '../../types';
 import { ListControllerResult } from '../list';
 import usePaginationState from '../usePaginationState';
 import useSelectionState from '../useSelectionState';
 import useSortState from '../useSortState';
-import { useResourceContext } from '../../core';
 
 export interface UseReferenceManyFieldControllerParams {
-    basePath?: string;
-    data?: RecordMap;
     filter?: any;
-    loaded?: boolean;
     page?: number;
     perPage?: number;
     record?: Record;
@@ -25,7 +21,6 @@ export interface UseReferenceManyFieldControllerParams {
     sort?: SortPayload;
     source?: string;
     target: string;
-    total?: number;
 }
 
 const defaultFilter = {};
@@ -38,7 +33,7 @@ const defaultFilter = {};
  *
  * @example
  *
- * const { loaded, referenceRecord, resourceLinkPath } = useReferenceManyFieldController({
+ * const { isLoading, referenceRecord, resourceLinkPath } = useReferenceManyFieldController({
  *     resource
  *     reference: 'users',
  *     record: {
@@ -58,14 +53,13 @@ const defaultFilter = {};
  * @param {string} props.target The target resource key
  * @param {Object} props.filter The filter applied on the recorded records list
  * @param {string} props.source The key of the linked resource identifier
- * @param {string} props.basePath basepath to current resource
  * @param {number} props.page the page number
  * @param {number} props.perPage the number of item per page
  * @param {Object} props.sort the sort to apply to the referenced records
  *
- * @returns {ReferenceManyProps} The reference many props
+ * @returns {ListControllerResult} The reference many props
  */
-const useReferenceManyFieldController = (
+export const useReferenceManyFieldController = (
     props: UseReferenceManyFieldControllerParams
 ): ListControllerResult => {
     const {
@@ -78,7 +72,6 @@ const useReferenceManyFieldController = (
         perPage: initialPerPage,
         sort: initialSort = { field: 'id', order: 'DESC' },
     } = props;
-    const resource = useResourceContext(props);
     const notify = useNotify();
 
     // pagination logic
@@ -88,13 +81,13 @@ const useReferenceManyFieldController = (
     });
 
     // sort logic
-    const { sort, setSort: setSortObject } = useSortState(initialSort);
+    const { sort, setSort: setSortState } = useSortState(initialSort);
     const setSort = useCallback(
-        (field: string, order: string = 'ASC') => {
-            setSortObject({ field, order });
+        (sort: SortPayload) => {
+            setSortState(sort);
             setPage(1);
         },
-        [setPage, setSortObject]
+        [setPage, setSortState]
     );
 
     // selection logic
@@ -155,25 +148,24 @@ const useReferenceManyFieldController = (
         }
     });
 
-    const referenceId = get(record, source);
     const {
         data,
-        ids,
         total,
         error,
-        loading,
-        loaded,
+        isFetching,
+        isLoading,
         refetch,
     } = useGetManyReference(
         reference,
-        target,
-        referenceId,
-        { page, perPage },
-        sort,
-        filterValues,
-        resource,
         {
-            onFailure: error =>
+            target,
+            id: get(record, source),
+            pagination: { page, perPage },
+            sort,
+            filter: filterValues,
+        },
+        {
+            onError: error =>
                 notify(
                     typeof error === 'string'
                         ? error
@@ -195,14 +187,14 @@ const useReferenceManyFieldController = (
 
     return {
         currentSort: sort,
-        data: ids.map(id => data[id]),
+        data,
         defaultTitle: null,
         displayedFilters,
         error,
         filterValues,
         hideFilter,
-        isFetching: loading,
-        isLoading: !loaded,
+        isFetching,
+        isLoading,
         onSelect,
         onToggleItem,
         onUnselectItems,
@@ -219,5 +211,3 @@ const useReferenceManyFieldController = (
         total,
     };
 };
-
-export default useReferenceManyFieldController;

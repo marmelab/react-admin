@@ -71,19 +71,18 @@ const inputText = record =>
 const CreatePost = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
-    const [create] = useCreate('posts');
+    const [create] = useCreate();
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         create(
+            'posts',
             {
-                payload: {
-                    data: {
-                        title: value,
-                    },
+                data: {
+                    title: value,
                 },
             },
             {
-                onSuccess: ({ data }) => {
+                onSuccess: data => {
                     setValue('');
                     const choice = data;
                     onCreate(choice);
@@ -114,7 +113,7 @@ const CreatePost = () => {
 
 const CommentEdit = props => {
     const controllerProps = useEditController(props);
-    const { resource, record, redirect, save, version } = controllerProps;
+    const { resource, record, redirect, save } = controllerProps;
 
     return (
         <EditContextProvider value={controllerProps}>
@@ -134,7 +133,6 @@ const CommentEdit = props => {
                             resource={resource}
                             record={record}
                             save={save}
-                            version={version}
                             warnWhenUnsavedChanges
                         >
                             <TextInput disabled source="id" fullWidth />

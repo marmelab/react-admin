@@ -7,6 +7,7 @@ import {
     useUpdate,
     useGetList,
     Identifier,
+    useRecordContext,
 } from 'react-admin';
 import {
     Chip,
@@ -24,24 +25,29 @@ import ControlPointIcon from '@mui/icons-material/ControlPoint';
 import EditIcon from '@mui/icons-material/Edit';
 
 import { colors } from '../tags/colors';
-import { Contact } from '../types';
+import { Contact, Tag } from '../types';
 
-export const TagsListEdit = ({ record }: { record: Contact }) => {
+export const TagsListEdit = () => {
+    const record = useRecordContext<Contact>();
     const [open, setOpen] = useState(false);
     const [newTagName, setNewTagName] = useState('');
     const [newTagColor, setNewTagColor] = useState(colors[0]);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [disabled, setDisabled] = useState(false);
 
-    const { data: allTags, refetch, isLoading } = useGetList('tags', {
+    const { data: allTags, refetch, isLoading: isLoadingAllTags } = useGetList<
+        Tag
+    >('tags', {
         pagination: { page: 1, perPage: 10 },
         sort: { field: 'name', order: 'ASC' },
     });
-    const { data: tags, loaded } = useGetMany('tags', record.tags, {
-        enabled: record.tags && record.tags.length > 0,
-    });
-    const [update] = useUpdate();
-    const [create] = useCreate();
+    const { data: tags, isLoading: isLoadingRecordTags } = useGetMany<Tag>(
+        'tags',
+        { ids: record.tags },
+        { enabled: record && record.tags && record.tags.length > 0 }
+    );
+    const [update] = useUpdate<Contact>();
+    const [create] = useCreate<Tag>();
 
     const unselectedTags =
         allTags && allTags.filter(tag => !record.tags.includes(tag.id));
@@ -92,14 +98,14 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
         setDisabled(true);
         create(
             'tags',
-            { name: newTagName, color: newTagColor },
+            { data: { name: newTagName, color: newTagColor } },
             {
-                onSuccess: ({ data }) => {
+                onSuccess: tag => {
                     update(
                         'contacts',
                         {
                             id: record.id,
-                            data: { tags: [...record.tags, data.id] },
+                            data: { tags: [...record.tags, tag.id] },
                             previousData: record,
                         },
                         {
@@ -117,10 +123,10 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
         );
     };
 
-    if (!loaded || isLoading) return null;
+    if (isLoadingRecordTags || isLoadingAllTags) return null;
     return (
         <>
-            {tags.map(tag => (
+            {tags?.map(tag => (
                 <Box mt={1} mb={1} key={tag.id}>
                     <Chip
                         size="small"

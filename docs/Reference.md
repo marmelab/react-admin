@@ -22,9 +22,9 @@ title: "Reference"
 * [`<BreadcrumbItem>`](https://marmelab.com/ra-enterprise/modules/ra-navigation#the-breadcrumbitem-component)<img class="icon" src="./img/premium.svg" />
 * [`<BooleanField>`](./Fields.md#booleanfield)
 * [`<BooleanInput>`](./Inputs.md#booleaninput-and-nullablebooleaninput)
-* [`<BulkDeleteButton>`](./List.md#bulkactionbuttons)
-* [`<BulkExportButton>`](./List.md#bulkactionbuttons)
-* [`<BulkUpdateButton>`](./List.md#bulkactionbuttons)
+* [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton)
+* [`<BulkExportButton>`](./Buttons.md#bulkexportbutton)
+* [`<BulkUpdateButton>`](./Buttons.md#bulkupdatebutton)
 * [`<Calendar>`](https://marmelab.com/ra-enterprise/modules/ra-calendar#calendar)<img class="icon" src="./img/premium.svg" />
 * [`<CheckboxGroupInput>`](./Inputs.md#checkboxgroupinput)
 * [`<ChipField>`](./Fields.md#chipfield)
@@ -36,12 +36,12 @@ title: "Reference"
 * [`<CreateButton>`](./Buttons.md#createbutton)
 * [`<CreateDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog--editdialog)<img class="icon" src="./img/premium.svg" />
 * [`<DashboardMenuItem>`](./Theming.md#using-a-custom-menu)
-* [`<Datagrid>`](./List.md#the-datagrid-component)
-* [`<DatagridBody>`](./List.md#body-element)
-* [`<DatagridRow>`](./List.md#body-element)
+* [`<Datagrid>`](./Datagrid.md)
+* [`<DatagridBody>`](./Datagrid.md#body)
+* [`<DatagridRow>`](./Datagrid.md#body)
 * `<DatagridCell>`
 * `<DatagridHeaderCell>`
-* [`<DatagridHeader>`](./List.md#header-element)
+* [`<DatagridHeader>`](./Datagrid.md#header)
 * [`<DateField>`](./Fields.md#datefield)
 * [`<DateInput>`](./Inputs.md#dateinput)
 * [`<DateTimeInput>`](./Inputs.md#datetimeinput)
@@ -59,10 +59,10 @@ title: "Reference"
 * [`<FileInput>`](./Inputs.md#fileinput)
 * [`<Filter>`](./List.md#filters-filter-inputs)
 * [`<FilterButton>`](./Buttons.md#filterbutton)
-* [`<FilterForm>`](./List.md#custom-filter-form)
-* [`<FilterList>`](./List.md#the-filterlist-sidebar)
-* [`<FilterListItem>`](./List.md#the-filterlist-sidebar)
-* [`<FilterLiveSearch>`](./List.md#live-search)
+* [`<FilterForm>`](./FilterForm.md)
+* [`<FilterList>`](./FilterList.md)
+* [`<FilterListItem>`](./FilterList.md#children)
+* [`<FilterLiveSearch>`](./FilterLiveSearch.md)
 * [`<FilterWithSave>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#savedquerieslist-and-filterwithsave-store-user-queries-in-preferences)<img class="icon" src="./img/premium.svg" />
 * [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs)
 * [`<FormTab>`](./CreateEdit.md#the-tabbedform-component)
@@ -77,15 +77,14 @@ title: "Reference"
 * [`<LinearProgress>`](./Theming.md#linearprogress)
 * [`<Logout>`](./Theming.md#using-a-custom-logout-button)
 * [`linkToRecord`](./Fields.md#linking-to-other-records)
-* [`<List>`](./List.md#the-list-component)
-* [`<ListBase>`](./List.md#the-listbase-component)
-* [`<ListGuesser>`](./List.md#the-listguesser-component)
+* [`<List>`](./List.md#usage)
+* [`<ListBase>`](./ListBase.md#usage)
+* [`<ListGuesser>`](./ListGuesser.md#usage)
 * [`<ListButton>`](./Buttons.md#listbutton)
 * [`<MarkdownField>`](https://marmelab.com/ra-enterprise/modules/ra-markdown#markdownfield)<img class="icon" src="./img/premium.svg" />
 * [`<MarkdownInput>`](https://marmelab.com/ra-enterprise/modules/ra-markdown#markdowninput)<img class="icon" src="./img/premium.svg" />
 * [`<Menu>`](./Theming.md#using-a-custom-menu)
 * [`<MultiLevelMenu>`](https://marmelab.com/ra-enterprise/modules/ra-navigation#multilevelmenu-replacing-the-default-menu-by-a-multi-level-one)<img class="icon" src="./img/premium.svg" />
-* [`<Mutation>`](./Actions.md#legacy-components-query-mutation-and-withdataprovider)
 * [`<Notification>`](./Theming.md#notifications)
 * [`<NullableBooleanInput>`](./Inputs.md#booleaninput-and-nullablebooleaninput)
 * [`<NumberField>`](./Fields.md#numberfield)
@@ -93,7 +92,6 @@ title: "Reference"
 * [`<Pagination>`](./List.md#pagination-pagination-component)
 * [`<PasswordInput>`](./Inputs.md#passwordinput)
 * [`<PreferencesSetter>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#preferencessetter-setting-preferences-declaratively)<img class="icon" src="./img/premium.svg" />
-* [`<Query>`](./Actions.md#legacy-components-query-mutation-and-withdataprovider)
 * [`<RadioButtonGroupInput>`](./Inputs.md#radiobuttongroupinput)
 * [`<RealTimeEdit>`](https://marmelab.com/ra-enterprise/modules/ra-realtime#real-time-views-list-edit-show)<img class="icon" src="./img/premium.svg" />
 * [`<RealTimeList>`](https://marmelab.com/ra-enterprise/modules/ra-realtime#real-time-views-list-edit-show)<img class="icon" src="./img/premium.svg" />
@@ -114,7 +112,7 @@ title: "Reference"
 * `<SaveButton>`
 * [`<SavedFilterList>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#savedquerieslist-and-filterwithsave-store-user-queries-in-preferences)<img class="icon" src="./img/premium.svg" />
 * [`<Search>`](https://marmelab.com/ra-enterprise/modules/ra-search#the-search-component)<img class="icon" src="./img/premium.svg" />
-* [`<SearchInput>`](./List.md#full-text-search)
+* [`<SearchInput>`](./FilteringTutorial.md#searchinput)
 * [`<SelectArrayInput>`](./Inputs.md#selectarrayinput)
 * [`<SelectColumnsButton>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#selectcolumnsbutton-store-datagrid-columns-in-preferences)<img class="icon" src="./img/premium.svg" />
 * [`<SelectField>`](./Fields.md#selectfield)
@@ -126,9 +124,9 @@ title: "Reference"
 * [`<SidebarOpenPreferenceSync>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#sidebaropenpreferencesync-store-the-sidebar-openclose-state-in-preferences)<img class="icon" src="./img/premium.svg" />
 * [`<SimpleForm>`](./CreateEdit.md#the-simpleform-component)
 * [`<SimpleFormIterator>`](./Inputs.md#arrayinput)
-* [`<SimpleList>`](./List.md#the-simplelist-component)
+* [`<SimpleList>`](./SimpleList.md)
 * [`<SimpleShowLayout>`](./SimpleShowLayout.md#simpleshowlayout)
-* [`<SingleFieldList>`](./List.md#the-singlefieldlist-component)
+* [`<SingleFieldList>`](./SingleFieldList.md)
 * [`<SortButton>`](./Buttons.md#sortbutton)
 * `<Tab>`
 * [`<TabbedForm>`](./CreateEdit.md#the-tabbedform-component)
@@ -154,25 +152,25 @@ title: "Reference"
 * [`useAuthState`](./Authentication.md#useauthstate-hook)
 * `useCheckAuth`
 * `useChoices`
-* [`useCreate`](./Actions.md#usecreate)
+* [`useCreate`](./useCreate.md)
 * [`useCreateController`](./CreateEdit.md#usecreatecontroller)
-* [`useDataProvider`](./Actions.md#usedataprovider-hook)
-* [`useDelete`](./Actions.md#usedelete)
-* [`useDeleteMany`](./Actions.md#usedeletemany)
+* [`useDataProvider`](./useDataProvider.md#usedataprovider)
+* [`useDelete`](./useDelete.md)
+* [`useDeleteMany`](./useDeleteMany.md)
 * [`useEditController`](./CreateEdit.md#useeditcontroller)
 * `useFilterState`
 * [`useGetIdentity`](./Authentication.md#usegetidentity-hook)
-* [`useGetList`](./Actions.md#usegetlist)
-* [`useGetMany`](./Actions.md#usegetmany)
-* [`useGetManyReference`](./Actions.md#usegetmanyreference)
-* [`useGetOne`](./Actions.md#usegetone)
+* [`useGetList`](./useGetList.md)
+* [`useGetMany`](./useGetMany.md)
+* [`useGetManyReference`](./useGetManyReference.md)
+* [`useGetOne`](./useGetOne.md)
 * [`useGetPermissions`](./Authentication.md#usegetpermissions-hook)
 * [`useHasLock`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
 * [`useHasLocks`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
 * [`useInput`](./Inputs.md#the-useinput-hook)
-* [`useList`](./List.md#uselist)
-* [`useListContext`](./List.md#uselistcontext)
-* [`useListController`](./List.md#uselistcontroller)
+* [`useList`](./useList.md)
+* [`useListContext`](./useList.md#return-value)
+* [`useListController`](./useListController.md)
 * `useListParams`
 * `useLoading`
 * [`useLocale`](./Translation.md#uselocale-getting-the-current-locale)
@@ -181,20 +179,17 @@ title: "Reference"
 * [`useLogout`](./Authentication.md#uselogout-hook)
 * `useLogoutIfAccessDenied`
 * [`useMediaQuery`](./Theming.md#usemediaquery-hook)
-* [`useMutation`](./Actions.md#usemutation-hook)
-* [`useNotify`](./Actions.md#usenotify)
+* [`useNotify`](./useNotify.md)
 * `usePaginationState`
 * [`usePermissions`](./Authentication.md#usepermissions-hook)
 * [`usePreferences`](https://marmelab.com/ra-enterprise/modules/ra-preferences#usepreferences-reading-and-writing-user-preferences)<img class="icon" src="./img/premium.svg" />
-* [`useQuery`](./Actions.md#usequery-hook)
-* [`useQueryWithStore`](./Actions.md#usequerywithstore-hook)
-* [`useRedirect`](./Actions.md#useredirect)
+* [`useRedirect`](./useRedirect.md)
 * `useReference`
 * `useReferenceArrayFieldController`
 * `useReferenceArrayInputController`
 * `useReferenceInputController`
 * `useReferenceManyFieldController`
-* [`useRefresh`](./Actions.md#userefresh)
+* [`useRefresh`](./useRefresh.md)
 * [`useResourceAppLocation`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useresourceapplocation-access-current-resource-app-location)<img class="icon" src="./img/premium.svg" />
 * [`useSearch`](https://marmelab.com/ra-enterprise/modules/ra-search#the-usesearch-hook)<img class="icon" src="./img/premium.svg" />
 * [`useSetLocale`](./Translation.md#usesetlocale-changing-locale-at-runtime)
@@ -204,12 +199,11 @@ title: "Reference"
 * `useSuggestions`
 * [`useTour`](https://marmelab.com/ra-enterprise/modules/ra-tour)<img class="icon" src="./img/premium.svg" />
 * [`useTranslate`](./Translation.md#usetranslate-hook)
-* [`useUpdate`](./Actions.md#useupdate)
+* [`useUpdate`](./useUpdate.md)
 * `useUpdateLoading`
-* [`useUpdateMany`](./Actions.md#useupdatemany)
-* [`useUnselectAll`](./Actions.md#useunselectall)
+* [`useUpdateMany`](./useUpdateMany.md)
+* [`useUnselectAll`](./useUnselectAll.md)
 * [`useWarnWhenUnsavedChanges`](./CreateEdit.md#warning-about-unsaved-changes)
-* `useVersion`
 * [`withDataProvider`](./Actions.md#legacy-components-query-mutation-and-withdataprovider)
 * [`withTranslate`](./Translation.md#withtranslate-hoc)
 * [`<WithPermissions>`](./Authentication.md#usepermissions-hook)

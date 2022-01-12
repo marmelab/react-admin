@@ -66,14 +66,6 @@ interface EventListProps {
     basePath?: string;
 }
 
-const StyledStepper = styled(Stepper)({
-    '&': {
-        background: 'none',
-        border: 'none',
-        marginLeft: '0.3em',
-    },
-});
-
 const EventList = ({ record, basePath }: EventListProps) => {
     const translate = useTranslate();
     const locale = useLocale();
@@ -188,7 +180,12 @@ const EventList = ({ record, basePath }: EventListProps) => {
                     </CardContent>
                 </Card>
             </Box>
-            <StyledStepper orientation="vertical">
+            <Stepper
+                orientation="vertical"
+                sx={{
+                    ml: 3.5,
+                }}
+            >
                 {events.map(event => (
                     <Step
                         key={`${event.type}-${event.data.id}`}
@@ -237,7 +234,7 @@ const EventList = ({ record, basePath }: EventListProps) => {
                         </StepContent>
                     </Step>
                 ))}
-            </StyledStepper>
+            </Stepper>
         </>
     );
 };

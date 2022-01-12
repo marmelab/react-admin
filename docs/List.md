@@ -169,7 +169,7 @@ React-admin provides several List layout components:
 - [`<SimpleList>`](./SimpleList.md) displays records in a list without many details
 - [`<SingleFieldList>`](./SingleFieldList.md) displays records inline, showing one field per record 
 - [`<EditableDatagrid>`](./EditableDatagrid.md) displays records in a table AND lets users edit them inline
-- [`<Tree>`](./Tree.md) displays records in a tree structure
+- [`<Tree>`](./TreeWithDetails.md) displays records in a tree structure
 - [`<Calendar>`](./Calendar.md) displays event records in a calendar
 
 To use an alternative layout, switch the `<List>` child component:
@@ -502,7 +502,7 @@ You can also display filters as a sidebar:
 
 ![`<FilterList>` sidebar](./img/filter-sidebar.gif)
 
-For more details about customizing filters, see the [Filtering the List](./FilteringTheList.md) section. 
+For more details about customizing filters, see the [Filtering the List](./FilteringTutorial.md#filtering-the-list) section. 
 
 ## `filter`: Permanent Filter
 
@@ -579,7 +579,7 @@ export const PostList = () => (
 );
 ```
 
-See [Paginating the List](#PaginationTutorial.md) for details.
+See [Paginating the List](./ListTutorial.md#building-a-custom-pagination) for details.
 
 ## `perPage`: Pagination Size 
 
@@ -624,7 +624,7 @@ const PostList = () => {
 ```
 {% endraw %}
 
-The `onError` function receives the error from the dataProvider call (`dataProvider.getList()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
+The `onError` function receives the error from the dataProvider call (`dataProvider.getList()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
 
 ## `resource`
 
@@ -654,7 +654,7 @@ export const PostList = () => (
 
 `sort` defines the *default* sort order ; the list remains sortable by clicking on column headers.
 
-For more details on list sort, see the [Sorting The List](#sorting-the-list) section below. 
+For more details on list sort, see the [Sorting The List](./ListTutorial.md#sorting-the-list) section below. 
 
 ## `title`
 

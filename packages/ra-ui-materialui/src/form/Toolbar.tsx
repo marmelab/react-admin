@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { Children, isValidElement, ReactElement, FC, ReactNode } from 'react';
+import { Children, isValidElement, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import {
     Toolbar as MuiToolbar,
@@ -51,7 +51,9 @@ import { SaveButton, DeleteButton } from '../button';
  * @prop {string} width Apply to the mobile or desktop classes depending on its value. Pass `xs` to display the mobile version.
  *
  */
-export const Toolbar: FC<ToolbarProps> = props => {
+export const Toolbar = <RecordType extends Partial<Record> = Partial<Record>>(
+    props: ToolbarProps<RecordType>
+) => {
     const {
         alwaysEnableSaveButton,
         basePath,
@@ -108,6 +110,7 @@ export const Toolbar: FC<ToolbarProps> = props => {
                     {record && typeof record.id !== 'undefined' && (
                         <DeleteButton
                             basePath={basePath}
+                            // @ts-ignore
                             record={record}
                             resource={resource}
                             mutationMode={mutationMode}
@@ -163,7 +166,6 @@ export interface ToolbarProps<RecordType extends Partial<Record> = Record>
     children?: ReactNode;
     alwaysEnableSaveButton?: boolean;
     className?: string;
-
     handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
     handleSubmit?: FormRenderProps['handleSubmit'];
     invalid?: boolean;

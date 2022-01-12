@@ -26,7 +26,6 @@ export const CreateView = (props: CreateViewProps) => {
         resource,
         save,
         saving,
-        version,
     } = useCreateContext(props);
 
     return (
@@ -63,7 +62,6 @@ export const CreateView = (props: CreateViewProps) => {
                                 ? save
                                 : children.props.save,
                         saving,
-                        version,
                     })}
                 </Content>
                 {aside &&
@@ -75,7 +73,6 @@ export const CreateView = (props: CreateViewProps) => {
                                 ? save
                                 : children.props.save,
                         saving,
-                        version,
                     })}
             </div>
         </Root>
@@ -121,8 +118,8 @@ const sanitizeRestProps = ({
     hasList = null,
     hasShow = null,
     history = null,
-    loaded = null,
-    loading = null,
+    isFetching = null,
+    isLoading = null,
     location = null,
     match = null,
     onFailure = null,
