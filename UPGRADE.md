@@ -1423,10 +1423,41 @@ We also added side effects props on the SaveButton to make most common cases pos
 
 If you relied on `handleSubmit` or `handleSubmitWithRedirect`, you can now use the `SaveButton` and override any of the side effect props: `onSuccess`, `onFailure` or `transform`.
 
-The `FormWithRedirect`, `SimpleForm` and `TabbedForm` don't have a `redirect` prop anymore. You should handle redirection either:
+The `FormWithRedirect`, `SimpleForm`, `TabbedForm` and `SaveButton` don't have a `redirect` prop anymore. You should handle redirection either:
 - in the submit handler if you provided a custom one, leveraging the `useRedirect` hook
 - at the `Create` or `Edit` level as they now accept a `redirect` prop
 - in the `SaveButton` side effects props (`onSuccess` or `onFailure`), leveraging the `useRedirect` hook
+
+If you had the `redirect` prop set on the form component, move it to `Create` or `Edit` component:
+
+```diff
+-<Create>
++<Create redirect="edit">
+-    <SimpleForm redirect="edit">
++    <SimpleForm>
+        <TextInput source="name">
+    </SimpleForm>
+</Create>
+```
+
+If you had the `redirect` prop set on the `SaveButton`, provide a `onSuccess` prop:
+
+```diff
+const PostCreateToolbar = props => {
++    const redirect = useRedirect();    
+    return (
+        <Toolbar {...props}>
+            <SaveButton
+                label="post.action.save_and_edit"
+-                redirect="edit"
++                onSuccess={data => {
++                    redirect('edit', '/posts', data.id)
++                }}
+            />
+        </Toolbar>
+    );
+};
+```
 
 # Upgrade to 3.0
 
