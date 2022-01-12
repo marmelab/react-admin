@@ -8,6 +8,7 @@ import {
     DeleteButton,
     ToolbarProps,
     useRecordContext,
+    useRedirect,
 } from 'react-admin';
 import AcceptButton from './AcceptButton';
 import RejectButton from './RejectButton';
@@ -27,15 +28,10 @@ const StyledMuiToolbar = styled(MuiToolbar)(({ theme }) => ({
 }));
 
 const ReviewEditToolbar = (props: ToolbarProps) => {
-    const {
-        basePath,
-        handleSubmitWithRedirect,
-        invalid,
-        resource,
-        saving,
-    } = props;
+    const { basePath, invalid, resource, saving } = props;
+    const redirect = useRedirect();
 
-    const record = useRecordContext();
+    const record = useRecordContext(props);
 
     if (!record) return null;
     return (
@@ -48,10 +44,11 @@ const ReviewEditToolbar = (props: ToolbarProps) => {
             ) : (
                 <Fragment>
                     <SaveButton
-                        handleSubmitWithRedirect={handleSubmitWithRedirect}
                         invalid={invalid}
                         saving={saving}
-                        redirect="list"
+                        onSuccess={() => {
+                            redirect('list', '/reviews');
+                        }}
                         submitOnEnter={true}
                     />
                     <DeleteButton
