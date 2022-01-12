@@ -765,7 +765,7 @@ This custom Edit view has no action buttons or aside component - it's up to you 
 
 ## The `<SimpleForm>` component
 
-The `<SimpleForm>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, to be called with the updated record as an argument when the user submits the form.
+The `<SimpleForm>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, which is passed to the `form` `onSubmit` prop.
 
 The `<SimpleForm>` renders its child components line by line (within `<div>` components). It accepts Input and Field components as children. It relies on [react-final-form](https://github.com/final-form/react-final-form) for form handling.
 
@@ -1674,8 +1674,6 @@ export const PostEdit = () => (
 Here are the props received by the `Toolbar` component when passed as the `toolbar` prop of the `SimpleForm` or `TabbedForm` components:
 
 * `alwaysEnableSaveButton`: Force enabling the `<SaveButton>`. If it's not defined, the `<SaveButton>` will be enabled using the `pristine` prop (disabled if pristine, enabled otherwise).
-* `handleSubmitWithRedirect`: The function to call in order to submit the form. It accepts a single parameter overriding the form's default redirect.
-* `handleSubmit` which is the same prop as in [react-final-form](https://final-form.org/docs/react-final-form/types/FormRenderProps#handlesubmit)
 * `invalid`: A boolean indicating whether the form is invalid
 * `pristine`: A boolean indicating whether the form is pristine (eg: no inputs have been changed yet)
 * `redirect`: The default form's redirect
@@ -1701,9 +1699,9 @@ To override the style of all instances of `<Toolbar>` components using the [mate
 
 **Tip**: Don't forget to also set the `redirect` prop of the Form component to handle submission by the `ENTER` key.
 
-**Tip**: To alter the form values before submitting, you should use the `handleSubmit` prop. See [Altering the Form Values before Submitting](#altering-the-form-values-before-submitting) for more information and examples.
+**Tip**: To alter the form values before submitting, you should use the `transform` prop on the `SaveButton`. See [Altering the Form Values before Submitting](#altering-the-form-values-before-submitting) for more information and examples.
 
-**Tip**: If you want to include a custom `Button` in a `<Toolbar>` that doesn't render a react-admin `<Button>`, the props injected by `<Toolbar>` to its children (`handleSubmit`, `handleSubmitWithRedirect`, `onSave`, `invalid`, `pristine`, `saving`, and `submitOnEnter`) will cause React warnings. You'll need to wrap your custom `Button` in another component and ignore the injected props, as follows:
+**Tip**: If you want to include a custom `Button` in a `<Toolbar>` that doesn't render a react-admin `<Button>`, the props injected by `<Toolbar>` to its children (`invalid`, `pristine`, `saving`, and `submitOnEnter`) will cause React warnings. You'll need to wrap your custom `Button` in another component and ignore the injected props, as follows:
 
 ```jsx
 import * as React from "react";
@@ -1712,9 +1710,6 @@ import Button from '@material-ui/core/Button';
 const CustomButton = props => <Button label="My Custom Button" {...props} />
 
 const ToolbarCustomButton = ({
-  handleSubmit,
-  handleSubmitWithRedirect,
-  onSave,
   invalid,
   pristine,
   saving,
@@ -2281,51 +2276,6 @@ const dataProvider = {
     },
 }
 ```
-
-### Using `onSave` To Alter the Form Submission Behavior
-
-**Deprecated**: use the `<SaveButton onSuccess>` prop instead.
-
-React-admin provides a way to override the data provider call executed upon submission, and its side effects, in the `<SaveButton>`. It's called `onSave`, and here is how you would use it:
-
-```jsx
-import * as React from 'react';
-import { useCallback } from 'react';
-import {
-    SaveButton,
-    Toolbar,
-    useCreate,
-    useRedirect,
-    useNotify,
-} from 'react-admin';
-
-const SaveWithNoteButton = props => {
-    const [create] = useCreate('posts');
-    const redirectTo = useRedirect();
-    const notify = useNotify();
-    const { basePath } = props;
-    const handleSave = useCallback(
-        (values, redirect) => {
-            create(
-                {
-                    payload: { data: { ...values, average_note: 10 } },
-                },
-                {
-                    onSuccess: ({ data: newRecord }) => {
-                        notify('ra.notification.created', { messageArgs: { smart_count: 1 } });
-                        redirectTo(redirect, basePath, newRecord.id, newRecord);
-                    },
-                }
-            );
-        },
-        [create, notify, redirectTo, basePath]
-    );
-    // set onSave props instead of handleSubmitWithRedirect
-    return <SaveButton {...props} onSave={handleSave} />;
-};
-```
-
-The `onSave` value should be a function expecting 2 arguments: the form values to save, and the redirection to perform.
 
 ### Grouping Inputs
 
