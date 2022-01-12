@@ -64,59 +64,80 @@ export const validatePasswords = ({
     return errors;
 };
 
-const VisitorCreate = () => (
-    <Create>
-        <StyledSimpleForm validate={validatePasswords}>
-            <SectionTitle label="resources.customers.fieldGroups.identity" />
-            <TextInput
-                autoFocus
-                source="first_name"
-                formClassName={classes.first_name}
-                validate={requiredValidate}
-            />
-            <TextInput
-                source="last_name"
-                formClassName={classes.last_name}
-                validate={requiredValidate}
-            />
-            <TextInput
-                type="email"
-                source="email"
-                validation={{ email: true }}
-                fullWidth
-                formClassName={classes.email}
-                validate={[required(), email()]}
-            />
-            <DateInput source="birthday" />
-            <Separator />
-            <SectionTitle label="resources.customers.fieldGroups.address" />
-            <TextInput
-                source="address"
-                formClassName={classes.address}
-                multiline
-                fullWidth
-                helperText={false}
-            />
-            <TextInput
-                source="zipcode"
-                formClassName={classes.zipcode}
-                helperText={false}
-            />
-            <TextInput
-                source="city"
-                formClassName={classes.city}
-                helperText={false}
-            />
-            <Separator />
-            <SectionTitle label="resources.customers.fieldGroups.password" />
-            <PasswordInput source="password" formClassName={classes.password} />
-            <PasswordInput
-                source="confirm_password"
-                formClassName={classes.confirm_password}
-            />
-        </StyledSimpleForm>
-    </Create>
-);
+const VisitorCreate = () => {
+    const date = new Date();
+
+    return (
+        <Create>
+            <StyledSimpleForm
+                // Here for the GQL provider
+                initialValues={{
+                    birthday: date,
+                    first_seen: date,
+                    last_seen: date,
+                    has_ordered: false,
+                    latest_purchase: date,
+                    has_newsletter: false,
+                    groups: [],
+                    nb_commands: 0,
+                    total_spent: 0,
+                }}
+                validate={validatePasswords}
+            >
+                <SectionTitle label="resources.customers.fieldGroups.identity" />
+                <TextInput
+                    autoFocus
+                    source="first_name"
+                    formClassName={classes.first_name}
+                    validate={requiredValidate}
+                />
+                <TextInput
+                    source="last_name"
+                    formClassName={classes.last_name}
+                    validate={requiredValidate}
+                />
+                <TextInput
+                    type="email"
+                    source="email"
+                    validation={{ email: true }}
+                    fullWidth
+                    formClassName={classes.email}
+                    validate={[required(), email()]}
+                />
+                <DateInput source="birthday" />
+                <Separator />
+                <SectionTitle label="resources.customers.fieldGroups.address" />
+                <TextInput
+                    source="address"
+                    formClassName={classes.address}
+                    multiline
+                    fullWidth
+                    helperText={false}
+                />
+                <TextInput
+                    source="zipcode"
+                    formClassName={classes.zipcode}
+                    helperText={false}
+                />
+                <TextInput
+                    source="city"
+                    formClassName={classes.city}
+                    helperText={false}
+                />
+                <Separator />
+                <SectionTitle label="resources.customers.fieldGroups.password" />
+                <PasswordInput
+                    source="password"
+                    formClassName={classes.password}
+                />
+                <PasswordInput
+                    source="confirm_password"
+                    formClassName={classes.confirm_password}
+                />
+            </StyledSimpleForm>
+        </Create>
+    );
+};
 
 const requiredValidate = [required()];
 

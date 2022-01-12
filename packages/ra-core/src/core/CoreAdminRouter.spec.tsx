@@ -66,13 +66,6 @@ describe('<CoreAdminRouter>', () => {
     });
 
     describe('With children returned from a function as children', () => {
-        beforeEach(() => {
-            jest.useFakeTimers();
-        });
-        afterEach(() => {
-            jest.useRealTimers();
-        });
-
         it('should render resources and custom routes with and without layout', async () => {
             const history = createMemoryHistory();
             render(
@@ -112,8 +105,6 @@ describe('<CoreAdminRouter>', () => {
             history.push('/foo');
             expect(screen.queryByText('Layout')).toBeNull();
             expect(screen.getByText('Foo')).not.toBeNull();
-            // Wait for the function child to resolve
-            jest.advanceTimersByTime(100);
             history.push('/bar');
             await waitFor(() => {
                 expect(screen.queryByText('Layout')).not.toBeNull();
@@ -176,6 +167,7 @@ describe('<CoreAdminRouter>', () => {
         });
 
         it('should return loading while the function child is not resolved', async () => {
+            jest.useFakeTimers();
             const authProvider = {
                 login: jest.fn().mockResolvedValue(''),
                 logout: jest.fn().mockResolvedValue(''),
@@ -212,6 +204,7 @@ describe('<CoreAdminRouter>', () => {
             history.push('/foo');
             expect(screen.queryByText('Loading')).toBeNull();
             expect(screen.queryByText('Custom')).not.toBeNull();
+            jest.useRealTimers();
         });
     });
 });
