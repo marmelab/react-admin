@@ -103,9 +103,9 @@ It also supports [all the other `<Button>` props](#button).
 
 #### `sx`: CSS API
 
-| Rule name                    | Description                                                        |
-|------------------------------|--------------------------------------------------------------------|
-| `& .RaCreateButton-floating` | Applied to the underlying `MuiFab` component used in small screens |
+| Rule name                   | Description                                                        |
+|-----------------------------|--------------------------------------------------------------------|
+| `&.RaCreateButton-floating` | Applied to the underlying `MuiFab` component used in small screens |
 
 To override the style of all instances of `<CreateButton>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaCreateButton` key.
 
