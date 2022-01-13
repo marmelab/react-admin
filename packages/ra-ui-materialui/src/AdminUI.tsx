@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { createElement } from 'react';
-import { CoreAdminUI, AdminUIProps } from 'ra-core';
+import { createElement, ComponentType } from 'react';
+import { CoreAdminUI, CoreAdminUIProps } from 'ra-core';
 import {
     Layout as DefaultLayout,
     LoadingPage,
@@ -15,6 +15,10 @@ export const AdminUI = ({ notification, ...props }: AdminUIProps) => (
         {createElement(notification)}
     </>
 );
+
+export interface AdminUIProps extends CoreAdminUIProps {
+    notification?: ComponentType;
+}
 
 AdminUI.defaultProps = {
     layout: DefaultLayout,

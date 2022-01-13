@@ -1,12 +1,12 @@
 import CoreAdminContext, { AdminContextProps } from './CoreAdminContext';
-import CoreAdminUI, { AdminUIProps } from './CoreAdminUI';
 import createAdminStore from './createAdminStore';
 
 export * from './CoreAdmin';
+export * from './CoreAdminUI';
 export * from './CoreAdminRouter';
 export * from './CustomRoutes';
 export * from './Resource';
 
-export type { AdminContextProps, AdminUIProps };
+export type { AdminContextProps };
 
-export { CoreAdminContext, CoreAdminUI, createAdminStore };
+export { CoreAdminContext, createAdminStore };

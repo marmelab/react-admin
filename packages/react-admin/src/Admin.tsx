@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ComponentType } from 'react';
 import { CoreAdminProps } from 'ra-core';
 import { AdminUI, AdminContext } from 'ra-ui-materialui';
 import { ThemeOptions } from '@mui/material';
@@ -104,6 +105,7 @@ export const Admin = (props: AdminProps) => {
         loginPage,
         logoutButton,
         menu, // deprecated, use a custom layout instead
+        notification,
         ready,
         theme,
         title = 'React Admin',
@@ -146,6 +148,7 @@ export const Admin = (props: AdminProps) => {
                 loading={loading}
                 loginPage={loginPage}
                 logout={authProvider ? logoutButton : undefined}
+                notification={notification}
                 ready={ready}
             >
                 {children}
@@ -162,4 +165,5 @@ export default Admin;
 
 export interface AdminProps extends CoreAdminProps {
     theme?: ThemeOptions;
+    notification?: ComponentType;
 }
