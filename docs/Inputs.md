@@ -78,42 +78,6 @@ Then you can display a text input to edit the author first name as follows:
 
 **Tip**: For compatibility reasons, input components also accept the `defaultValue` prop - which is simply copied as the `initialValue` prop.
 
-## Basic Inputs
-
-### `<BooleanInput>`
-### `<NullableBooleanInput>`
-### `<DateInput>`
-### `<DateTimeInput>`
-### `<ImageInput>`
-### `<FileInput>`
-### `<MarkdownInput>`
-### `<NumberInput>`
-### `<PasswordInput>`
-### `<RichTextInput>`
-### `<TextInput>`
-
-## Choice Inputs
-
-### `<AutocompleteInput>`
-### `<RadioButtonGroupInput>`
-### `<SelectInput>`
-
-## Array Inputs
-
-### `<ArrayInput>`
-### `<AutocompleteArrayInput>`
-### `<CheckboxGroupInput>`
-### `<DualListInput>`
-### `<SelectArrayInput>`
-
-## Reference Inputs 
-
-### `<ReferenceArrayInput>`
-### `<ReferenceInput>`
-### `<ReferenceManyToManyInput>`
-
-## Translatable Inputs
-
 ## Recipes 
 
 ### Transforming Input Value to/from Record

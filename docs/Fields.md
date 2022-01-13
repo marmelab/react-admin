@@ -125,35 +125,6 @@ import { FunctionField } from 'react-admin';
 
 **Tip**: If your interface has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.md#translating-resource-and-field-names) for details.
 
-## Basic Fields
-
-### `<BooleanField>`
-### `<ChipField>`
-### `<DateField>`
-### `<EmailField>`
-### `<FunctionField>`
-### `<ImageField>`
-### `<FileField>`
-### `<MarkdownField>`
-### `<NumberField>`
-### `<RichTextField>`
-### `<TextField>`
-### `<UrlField>`
-
-## Choice Fields
-### `<SelectField>`
-
-## Array Fields
-### `<ArrayField>`
-
-## Reference Fields
-### `<ReferenceField>`
-### `<ReferenceManyField>`
-### `<ReferenceManyToManyField>`
-### `<ReferenceArrayField>`
-
-## Translatable Fields
-
 ## Recipes
 
 ### Styling Fields
