@@ -5,7 +5,6 @@ title: "The ReferenceArrayInput Component"
 
 # `<ReferenceArrayInput>`
 
-
 Use `<ReferenceArrayInput>` to edit an array of reference values, i.e. to let users choose a list of values (usually foreign keys) from another REST endpoint.
 
 `<ReferenceArrayInput>` fetches the related resources (using `dataProvider.getMany()`) as well as possible resources (using `dataProvider.getList()`) in the reference endpoint.
