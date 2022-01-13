@@ -674,13 +674,13 @@ The title can be either a string or an element of your own.
 
 The `<List>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
-| Rule name                        | Description                                                                              |
-| -------------------------------- | ---------------------------------------------------------------------------------------- |
-| `&.RaList-root`                  | Alternative to using `className`. Applied to the root element                            |
-| `& .RaList-actions`              | Applied to the actions container                                                         |
-| `& .RaList-main`                 | Applied to the main container                                                            |
-| `& .RaList-content`              | Applied to the child component inside the main container                                 |
-| `& .RaList-noResults`            | Applied to the component shown when there is no result                                   |
+| Rule name             | Description                                                                              |
+| --------------------- | ---------------------------------------------------------------------------------------- |
+| `& .RaList-root`      | Alternative to using `className`. Applied to the root element                            |
+| `& .RaList-actions`   | Applied to the actions container                                                         |
+| `& .RaList-main`      | Applied to the main container                                                            |
+| `& .RaList-content`   | Applied to the child component inside the main container                                 |
+| `& .RaList-noResults` | Applied to the component shown when there is no result                                   |
 
 Here is an example:
 

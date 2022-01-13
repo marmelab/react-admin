@@ -685,8 +685,6 @@ The `<Datagrid>` component accepts the usual `className` prop. You can also over
 | `& .RaDatagrid-expandedPanel`  | Applied to each expandable panel                 |
 | `& .RaDatagrid-checkbox`       | Applied to each checkbox cell                    |
 
-You can customize the `<Datagrid>` styles by passing a `classes` object as prop, through `useStyles()`. 
-
 For instance, here is how you can leverage these styles to implement zebra stripes (a.k.a. alternate row styles)
 
 {% raw %}
