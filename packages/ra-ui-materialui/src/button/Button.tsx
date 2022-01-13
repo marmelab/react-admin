@@ -14,7 +14,7 @@ import { styled } from '@mui/material/styles';
 import classnames from 'classnames';
 import {
     MutationMode,
-    Record,
+    RaRecord,
     RedirectionSideEffect,
     useTranslate,
 } from 'ra-core';
@@ -138,7 +138,7 @@ interface Props {
     saving?: boolean;
     submitOnEnter?: boolean;
     pristine?: boolean;
-    record?: Record;
+    record?: RaRecord;
     resource?: string;
     mutationMode?: MutationMode;
 }

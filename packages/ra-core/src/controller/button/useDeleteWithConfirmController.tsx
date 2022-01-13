@@ -13,7 +13,7 @@ import {
     RedirectionSideEffect,
 } from '../../sideEffect';
 import { useNotify } from '../../notification';
-import { Record, MutationMode, DeleteParams } from '../../types';
+import { RaRecord, MutationMode, DeleteParams } from '../../types';
 import { useResourceContext } from '../../core';
 
 /**
@@ -68,8 +68,8 @@ import { useResourceContext } from '../../core';
  *     );
  * };
  */
-const useDeleteWithConfirmController = <RecordType extends Record = Record>(
-    props: UseDeleteWithConfirmControllerParams<RecordType>
+const useDeleteWithConfirmController = <RaRecordType extends RaRecord = any>(
+    props: UseDeleteWithConfirmControllerParams<RaRecordType>
 ): UseDeleteWithConfirmControllerReturn => {
     const {
         record,
@@ -84,7 +84,7 @@ const useDeleteWithConfirmController = <RecordType extends Record = Record>(
     const notify = useNotify();
     const unselect = useUnselect();
     const redirect = useRedirect();
-    const [deleteOne, { isLoading }] = useDelete<RecordType>();
+    const [deleteOne, { isLoading }] = useDelete<RaRecordType>();
 
     const handleDialogOpen = e => {
         setOpen(true);
@@ -166,19 +166,19 @@ const useDeleteWithConfirmController = <RecordType extends Record = Record>(
 };
 
 export interface UseDeleteWithConfirmControllerParams<
-    RecordType extends Record = Record
+    RaRecordType extends RaRecord = any
 > {
     basePath?: string;
     mutationMode?: MutationMode;
-    record?: RecordType;
+    record?: RaRecordType;
     redirect?: RedirectionSideEffect;
     // @deprecated. This hook get the resource from the context
     resource?: string;
     onClick?: ReactEventHandler<any>;
     mutationOptions?: UseMutationOptions<
-        RecordType,
+        RaRecordType,
         unknown,
-        DeleteParams<RecordType>
+        DeleteParams<RaRecordType>
     >;
 }
 

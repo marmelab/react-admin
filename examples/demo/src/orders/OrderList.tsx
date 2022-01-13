@@ -8,7 +8,7 @@ import {
     DatagridProps,
     DateField,
     DateInput,
-    Record,
+    RaRecord,
     List,
     ListContextProvider,
     NullableBooleanInput,
@@ -100,9 +100,9 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
     const isXSmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('sm')
     );
-    const [ordered, setOrdered] = useState<Record[]>([]);
-    const [delivered, setDelivered] = useState<Record[]>([]);
-    const [cancelled, setCancelled] = useState<Record[]>([]);
+    const [ordered, setOrdered] = useState<RaRecord[]>([]);
+    const [delivered, setDelivered] = useState<RaRecord[]>([]);
+    const [cancelled, setCancelled] = useState<RaRecord[]>([]);
     const totals = useGetTotals(filterValues) as any;
 
     useEffect(() => {

@@ -2,7 +2,7 @@ import { ReactElement, ReactNode, ElementType } from 'react';
 import { SxProps } from '@mui/system';
 import {
     Identifier,
-    Record as RaRecord,
+    RaRecord,
     MutationMode,
     TransformData,
     UpdateParams,
@@ -11,7 +11,7 @@ import {
 } from 'ra-core';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
-export interface EditProps<RecordType extends RaRecord = RaRecord> {
+export interface EditProps<RaRecordType extends RaRecord = any> {
     actions?: ReactElement | false;
     aside?: ReactElement;
     classes?: any;
@@ -19,11 +19,11 @@ export interface EditProps<RecordType extends RaRecord = RaRecord> {
     component?: ElementType;
     id?: Identifier;
     mutationMode?: MutationMode;
-    queryOptions?: UseQueryOptions<RecordType>;
+    queryOptions?: UseQueryOptions<RaRecordType>;
     mutationOptions?: UseMutationOptions<
-        RecordType,
+        RaRecordType,
         unknown,
-        UpdateParams<RecordType>
+        UpdateParams<RaRecordType>
     >;
     redirect?: RedirectionSideEffect;
     resource?: string;
@@ -31,25 +31,25 @@ export interface EditProps<RecordType extends RaRecord = RaRecord> {
     title?: string | ReactElement;
 }
 
-export interface CreateProps<RecordType extends RaRecord = RaRecord> {
+export interface CreateProps<RaRecordType extends RaRecord = any> {
     actions?: ReactElement | false;
     aside?: ReactElement;
     classes?: any;
     className?: string;
     component?: ElementType;
-    record?: Partial<RecordType>;
+    record?: Partial<RaRecordType>;
     redirect?: RedirectionSideEffect;
     resource?: string;
     mutationOptions?: UseMutationOptions<
-        RecordType,
+        RaRecordType,
         unknown,
-        CreateParams<RecordType>
+        CreateParams<RaRecordType>
     >;
     transform?: TransformData;
     title?: string | ReactElement;
 }
 
-export interface ShowProps<RecordType extends RaRecord = RaRecord> {
+export interface ShowProps<RaRecordType extends RaRecord = any> {
     actions?: ReactElement | false;
     aside?: ReactElement;
     children: ReactNode;
@@ -57,7 +57,7 @@ export interface ShowProps<RecordType extends RaRecord = RaRecord> {
     component?: ElementType;
     emptyWhileLoading?: boolean;
     id?: Identifier;
-    queryOptions?: UseQueryOptions<RecordType>;
+    queryOptions?: UseQueryOptions<RaRecordType>;
     resource?: string;
     title?: string | ReactElement;
     sx?: SxProps;

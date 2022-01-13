@@ -1,7 +1,7 @@
 import { useContext, useMemo } from 'react';
 import defaults from 'lodash/defaults';
 
-import { Record } from '../../types';
+import { RaRecord } from '../../types';
 import { CreateContext } from './CreateContext';
 import { CreateControllerResult } from './useCreateController';
 
@@ -23,12 +23,12 @@ import { CreateControllerResult } from './useCreateController';
  *
  */
 export const useCreateContext = <
-    RecordType extends Omit<Record, 'id'> = Omit<Record, 'id'>
+    RaRecordType extends Omit<RaRecord, 'id'> = Omit<RaRecord, 'id'>
 >(
-    props?: Partial<CreateControllerResult<RecordType>>
-): Partial<CreateControllerResult<RecordType>> => {
-    const context = useContext<CreateControllerResult<RecordType>>(
-        // Can't find a way to specify the RecordType when CreateContext is declared
+    props?: Partial<CreateControllerResult<RaRecordType>>
+): Partial<CreateControllerResult<RaRecordType>> => {
+    const context = useContext<CreateControllerResult<RaRecordType>>(
+        // Can't find a way to specify the RaRecordType when CreateContext is declared
         // @ts-ignore
         CreateContext
     );

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { ListBase, ListControllerProps, Record } from 'ra-core';
+import { ListBase, ListControllerProps, RaRecord } from 'ra-core';
 
 import { TitlePropType } from '../layout/Title';
 
@@ -58,7 +58,7 @@ import { ListViewProps } from '.';
  *     </List>
  * );
  */
-export const List = <RecordType extends Record = Record>({
+export const List = <RaRecordType extends RaRecord = any>({
     debounce,
     disableAuthentication,
     disableSyncWithLocation,
@@ -70,8 +70,8 @@ export const List = <RecordType extends Record = Record>({
     resource,
     sort,
     ...rest
-}: ListProps<RecordType>): ReactElement => (
-    <ListBase<RecordType>
+}: ListProps<RaRecordType>): ReactElement => (
+    <ListBase<RaRecordType>
         debounce={debounce}
         disableAuthentication={disableAuthentication}
         disableSyncWithLocation={disableSyncWithLocation}
@@ -83,12 +83,12 @@ export const List = <RecordType extends Record = Record>({
         resource={resource}
         sort={sort}
     >
-        <ListView<RecordType> {...rest} />
+        <ListView<RaRecordType> {...rest} />
     </ListBase>
 );
 
-export interface ListProps<RecordType extends Record = Record>
-    extends ListControllerProps<RecordType>,
+export interface ListProps<RaRecordType extends RaRecord = any>
+    extends ListControllerProps<RaRecordType>,
         ListViewProps {}
 
 List.propTypes = {

@@ -21,13 +21,13 @@ import {
     UrlField,
     useShowController,
     useLocale,
-    Record,
+    RaRecord,
 } from 'react-admin';
 import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
 import PostTitle from './PostTitle';
 
-const CreateRelatedComment = ({ record }: { record?: Record }) => (
+const CreateRelatedComment = ({ record }: { record?: RaRecord }) => (
     <Button
         component={Link}
         to={{

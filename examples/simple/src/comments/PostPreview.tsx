@@ -5,10 +5,10 @@ import {
     TextField,
     ResourceContextProvider,
     Identifier,
-    Record,
+    RaRecord,
 } from 'react-admin';
 
-const PostPreview = <RecordType extends Record = Record>({
+const PostPreview = <RaRecordType extends RaRecord = any>({
     id,
     resource,
 }: {
@@ -16,7 +16,7 @@ const PostPreview = <RecordType extends Record = Record>({
     resource: string;
 }) => {
     const queryClient = useQueryClient();
-    const record = queryClient.getQueryData<RecordType>([
+    const record = queryClient.getQueryData<RaRecordType>([
         resource,
         'getOne',
         { id: String(id) },

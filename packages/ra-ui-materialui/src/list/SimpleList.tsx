@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom';
 import {
     Identifier,
     linkToRecord,
-    Record,
+    RaRecord,
     RecordContextProvider,
     sanitizeListRestProps,
     useListContext,
@@ -61,8 +61,8 @@ import { SimpleListLoading } from './SimpleListLoading';
  *     </List>
  * );
  */
-export const SimpleList = <RecordType extends Record = Record>(
-    props: SimpleListProps<RecordType>
+export const SimpleList = <RaRecordType extends RaRecord = any>(
+    props: SimpleListProps<RaRecordType>
 ) => {
     const {
         className,
@@ -78,7 +78,7 @@ export const SimpleList = <RecordType extends Record = Record>(
         rowStyle,
         ...rest
     } = props;
-    const { data, isLoading, total } = useListContext<RecordType>(props);
+    const { data, isLoading, total } = useListContext<RaRecordType>(props);
     const resource = useResourceContext(props);
 
     if (isLoading === true) {
@@ -94,8 +94,8 @@ export const SimpleList = <RecordType extends Record = Record>(
     }
 
     const renderAvatar = (
-        record: RecordType,
-        avatarCallback: FunctionToElement<RecordType>
+        record: RaRecordType,
+        avatarCallback: FunctionToElement<RaRecordType>
     ) => {
         const avatarValue = avatarCallback(record, record.id);
         if (
@@ -204,27 +204,27 @@ SimpleList.propTypes = {
     rowStyle: PropTypes.func,
 };
 
-export type FunctionToElement<RecordType extends Record = Record> = (
-    record: RecordType,
+export type FunctionToElement<RaRecordType extends RaRecord = any> = (
+    record: RaRecordType,
     id: Identifier
 ) => ReactNode;
 
-export interface SimpleListProps<RecordType extends Record = Record>
+export interface SimpleListProps<RaRecordType extends RaRecord = any>
     extends Omit<ListProps, 'classes'> {
     className?: string;
     hasBulkActions?: boolean;
-    leftAvatar?: FunctionToElement<RecordType>;
-    leftIcon?: FunctionToElement<RecordType>;
-    primaryText?: FunctionToElement<RecordType> | ReactElement;
+    leftAvatar?: FunctionToElement<RaRecordType>;
+    leftIcon?: FunctionToElement<RaRecordType>;
+    primaryText?: FunctionToElement<RaRecordType> | ReactElement;
     linkType?: string | FunctionLinkType | boolean;
-    rightAvatar?: FunctionToElement<RecordType>;
-    rightIcon?: FunctionToElement<RecordType>;
-    secondaryText?: FunctionToElement<RecordType> | ReactElement;
-    tertiaryText?: FunctionToElement<RecordType> | ReactElement;
-    rowStyle?: (record: Record, index: number) => any;
+    rightAvatar?: FunctionToElement<RaRecordType>;
+    rightIcon?: FunctionToElement<RaRecordType>;
+    secondaryText?: FunctionToElement<RaRecordType> | ReactElement;
+    tertiaryText?: FunctionToElement<RaRecordType> | ReactElement;
+    rowStyle?: (record: RaRecordType, index: number) => any;
     // can be injected when using the component without context
     resource?: string;
-    data?: RecordType[];
+    data?: RaRecordType[];
     isLoading?: boolean;
     isLoaded?: boolean;
     total?: number;
@@ -279,13 +279,13 @@ const LinkOrNot = (
     );
 };
 
-export type FunctionLinkType = (record: Record, id: Identifier) => string;
+export type FunctionLinkType = (record: RaRecord, id: Identifier) => string;
 
 export interface LinkOrNotProps {
     linkType?: string | FunctionLinkType | boolean;
     resource: string;
     id: Identifier;
-    record: Record;
+    record: RaRecord;
     children: ReactNode;
 }
 

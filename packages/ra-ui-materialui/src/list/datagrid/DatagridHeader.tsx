@@ -5,7 +5,7 @@ import {
     useListContext,
     useResourceContext,
     Identifier,
-    Record,
+    RaRecord,
     SortPayload,
     useTranslate,
 } from 'ra-core';
@@ -164,17 +164,17 @@ DatagridHeader.propTypes = {
     setSort: PropTypes.func,
 };
 
-export interface DatagridHeaderProps<RecordType extends Record = Record> {
+export interface DatagridHeaderProps<RaRecordType extends RaRecord = any> {
     children?: React.ReactNode;
     className?: string;
     hasExpand?: boolean;
     hasBulkActions?: boolean;
-    isRowSelectable?: (record: Record) => boolean;
-    isRowExpandable?: (record: Record) => boolean;
+    isRowSelectable?: (record: RaRecordType) => boolean;
+    isRowExpandable?: (record: RaRecordType) => boolean;
     size?: 'medium' | 'small';
     // can be injected when using the component without context
     sort?: SortPayload;
-    data?: RecordType[];
+    data?: RaRecordType[];
     onSelect?: (ids: Identifier[]) => void;
     onToggleItem?: (id: Identifier) => void;
     resource?: string;

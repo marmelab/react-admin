@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ReactNode } from 'react';
 import { useListController, ListControllerProps } from './useListController';
 import { ResourceContextProvider } from '../../core';
-import { Record } from '../../types';
+import { RaRecord } from '../../types';
 import { ListContextProvider } from './ListContextProvider';
 
 /**
@@ -39,12 +39,12 @@ import { ListContextProvider } from './ListContextProvider';
  *     </ListBase>
  * );
  */
-export const ListBase = <RecordType extends Record = Record>({
+export const ListBase = <RaRecordType extends RaRecord = any>({
     children,
     ...props
-}: ListControllerProps<RecordType> & { children: ReactNode }) => (
+}: ListControllerProps<RaRecordType> & { children: ReactNode }) => (
     <ResourceContextProvider value={props.resource}>
-        <ListContextProvider value={useListController<RecordType>(props)}>
+        <ListContextProvider value={useListController<RaRecordType>(props)}>
             {children}
         </ListContextProvider>
     </ResourceContextProvider>

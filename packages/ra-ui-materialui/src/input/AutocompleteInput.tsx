@@ -22,7 +22,7 @@ import {
 import {
     ChoicesInputProps,
     FieldTitle,
-    Record,
+    RaRecord,
     UseChoicesOptions,
     useInput,
     useSuggestions,
@@ -444,7 +444,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 renderOption={(props, record) => {
                     if (isValidElement(optionText)) {
                         return cloneElement(optionText, {
-                            record: record as Record,
+                            record: record as RaRecord,
                             ...props,
                         });
                     }
@@ -459,7 +459,7 @@ If you provided a React element for the optionText prop, you must also provide t
 
 // @ts-ignore
 export interface AutocompleteInputProps<
-    OptionType extends any = Record,
+    OptionType extends any = RaRecord,
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
     SupportCreate extends boolean | undefined = false
@@ -492,7 +492,7 @@ const useSelectedChoice = (
     const selectedChoiceRef = useRef(
         getSelectedItems(choices, value, optionValue, multiple)
     );
-    const [selectedChoice, setSelectedChoice] = useState<Record | Record[]>(
+    const [selectedChoice, setSelectedChoice] = useState<RaRecord | RaRecord[]>(
         () => getSelectedItems(choices, value, optionValue, multiple)
     );
 

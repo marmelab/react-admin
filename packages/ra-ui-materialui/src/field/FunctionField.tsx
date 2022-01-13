@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useMemo } from 'react';
-import { Record, useRecordContext } from 'ra-core';
+import { RaRecord, useRecordContext } from 'ra-core';
 import PropTypes from 'prop-types';
 import Typography, { TypographyProps } from '@mui/material/Typography';
 
@@ -17,8 +17,8 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *     render={record => record && `${record.first_name} ${record.last_name}`}
  * />
  */
-export const FunctionField = <RecordType extends Record = Record>(
-    props: FunctionFieldProps<RecordType>
+export const FunctionField = <RaRecordType extends RaRecord = any>(
+    props: FunctionFieldProps<RaRecordType>
 ) => {
     const { className, source = '', render, ...rest } = props;
     const record = useRecordContext(props);
@@ -49,9 +49,9 @@ FunctionField.propTypes = {
     render: PropTypes.func.isRequired,
 };
 
-export interface FunctionFieldProps<RecordType extends Record = Record>
+export interface FunctionFieldProps<RaRecordType extends RaRecord = any>
     extends PublicFieldProps,
-        InjectedFieldProps<RecordType>,
+        InjectedFieldProps<RaRecordType>,
         Omit<TypographyProps, 'textAlign'> {
-    render: (record?: RecordType, source?: string) => any;
+    render: (record?: RaRecordType, source?: string) => any;
 }

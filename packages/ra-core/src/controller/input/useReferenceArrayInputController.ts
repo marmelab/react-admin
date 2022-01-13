@@ -1,7 +1,7 @@
 import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import isEqual from 'lodash/isEqual';
 
-import { Record, SortPayload, Identifier } from '../../types';
+import { RaRecord, SortPayload, Identifier } from '../../types';
 import { useGetList, useGetManyAggregate } from '../../dataProvider';
 import { FieldInputProps, useForm } from 'react-final-form';
 import { useTranslate } from '../../i18n';
@@ -37,10 +37,10 @@ import { ReferenceArrayInputContextValue } from './ReferenceArrayInputContext';
  * @return {Object} controllerProps Fetched data and callbacks for the ReferenceArrayInput components
  */
 export const useReferenceArrayInputController = <
-    RecordType extends Record = Record
+    RaRecordType extends RaRecord = any
 >(
-    props: UseReferenceArrayInputParams<RecordType>
-): UseReferenceArrayInputControllerHookValue<RecordType> => {
+    props: UseReferenceArrayInputParams<RaRecordType>
+): UseReferenceArrayInputControllerHookValue<RaRecordType> => {
     const {
         filter: defaultFilter,
         filterToQuery = defaultFilterToQuery,
@@ -64,7 +64,7 @@ export const useReferenceArrayInputController = <
         isLoading: isLoadingGetMany,
         isFetching: isFetchingGetMany,
         refetch: refetchGetMany,
-    } = useGetManyAggregate<RecordType>(reference, {
+    } = useGetManyAggregate<RaRecordType>(reference, {
         ids: input.value || EmptyArray,
     });
 
@@ -225,7 +225,7 @@ export const useReferenceArrayInputController = <
         isLoading: isLoadingGetList,
         isFetching: isFetchingGetList,
         refetch: refetchGetMatching,
-    } = useGetList<RecordType>(
+    } = useGetList<RaRecordType>(
         reference,
         { pagination, sort, filter: finalFilter },
         { retry: false, enabled: isGetMatchingEnabled, ...options }
@@ -240,7 +240,7 @@ export const useReferenceArrayInputController = <
             ? finalReferenceRecords
             : matchingReferences;
 
-    const dataStatus = getDataStatus<RecordType>({
+    const dataStatus = getDataStatus<RaRecordType>({
         input,
         matchingReferences: finalMatchingReferences,
         referenceRecords: finalReferenceRecords,
@@ -290,10 +290,10 @@ export const useReferenceArrayInputController = <
 const EmptyArray = [];
 
 // concatenate and deduplicate two lists of records
-const mergeReferences = <RecordType extends Record = Record>(
-    ref1: RecordType[],
-    ref2: RecordType[]
-): RecordType[] => {
+const mergeReferences = <RaRecordType extends RaRecord = any>(
+    ref1: RaRecordType[],
+    ref2: RaRecordType[]
+): RaRecordType[] => {
     const res = [...ref1];
     const ids = ref1.map(ref => ref.id);
     ref2.forEach(ref => {
@@ -306,7 +306,7 @@ const mergeReferences = <RecordType extends Record = Record>(
 };
 
 export interface UseReferenceArrayInputParams<
-    RecordType extends Record = Record
+    RaRecordType extends RaRecord = any
 > {
     basePath?: string;
     filter?: any;
@@ -315,7 +315,7 @@ export interface UseReferenceArrayInputParams<
     options?: any;
     page?: number;
     perPage?: number;
-    record?: RecordType;
+    record?: RaRecordType;
     reference: string;
     resource?: string;
     sort?: SortPayload;
@@ -324,9 +324,9 @@ export interface UseReferenceArrayInputParams<
 }
 
 export type UseReferenceArrayInputControllerHookValue<
-    RecordType extends Record = Record
-> = ReferenceArrayInputContextValue<RecordType> &
-    Omit<ListControllerResult<RecordType>, 'setSort' | 'refetch'> & {
+    RaRecordType extends RaRecord = any
+> = ReferenceArrayInputContextValue<RaRecordType> &
+    Omit<ListControllerResult<RaRecordType>, 'setSort' | 'refetch'> & {
         refetch: () => void;
     };
 

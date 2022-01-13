@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { useGetList, UseGetManyHookValue } from '../../dataProvider';
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
-import { PaginationPayload, Record, SortPayload } from '../../types';
+import { PaginationPayload, RaRecord, SortPayload } from '../../types';
 import { ListControllerResult } from '../list';
 import { useReference } from '../useReference';
 import usePaginationState from '../usePaginationState';
@@ -54,9 +54,11 @@ const defaultFilter = {};
  *      filterToQuery: searchText => ({ title: searchText })
  * });
  */
-export const useReferenceInputController = <RecordType extends Record = Record>(
+export const useReferenceInputController = <
+    RaRecordType extends RaRecord = any
+>(
     props: UseReferenceInputControllerParams
-): ReferenceInputValue<RecordType> => {
+): ReferenceInputValue<RaRecordType> => {
     const {
         input,
         page: initialPage = 1,
@@ -115,7 +117,7 @@ export const useReferenceInputController = <RecordType extends Record = Record>(
         isLoading: possibleValuesLoading,
         error: possibleValuesError,
         refetch: refetchGetList,
-    } = useGetList<RecordType>(
+    } = useGetList<RaRecordType>(
         reference,
         { pagination, sort, filter: filterValues },
         { enabled: enableGetChoices ? enableGetChoices(filterValues) : true }
@@ -128,12 +130,12 @@ export const useReferenceInputController = <RecordType extends Record = Record>(
         error: referenceError,
         isLoading: referenceLoading,
         isFetching: referenceFetching,
-    } = useReference<RecordType>({
+    } = useReference<RaRecordType>({
         id: input.value,
         reference,
     });
     // add current value to possible sources
-    let finalData: RecordType[], finalTotal: number;
+    let finalData: RaRecordType[], finalTotal: number;
     if (
         !referenceRecord ||
         possibleValuesData.find(record => record.id === input.value)
@@ -216,21 +218,21 @@ export const useReferenceInputController = <RecordType extends Record = Record>(
 const hideFilter = () => {};
 const showFilter = () => {};
 
-export interface ReferenceInputValue<RecordType extends Record = Record> {
-    possibleValues: ListControllerResult<RecordType>;
+export interface ReferenceInputValue<RaRecordType extends RaRecord = any> {
+    possibleValues: ListControllerResult<RaRecordType>;
     referenceRecord: {
-        data?: Record;
+        data?: RaRecord;
         isLoading: boolean;
         isFetching: boolean;
         error?: any;
-        refetch: UseGetManyHookValue<RecordType>['refetch'];
+        refetch: UseGetManyHookValue<RaRecordType>['refetch'];
     };
     dataStatus: {
         error?: any;
         loading: boolean;
         warning?: string;
     };
-    choices: RecordType[];
+    choices: RaRecordType[];
     error?: string;
     isFetching: boolean;
     isLoading: boolean;
@@ -252,7 +254,7 @@ export interface UseReferenceInputControllerParams {
     input?: any;
     page?: number;
     perPage?: number;
-    record?: Record;
+    record?: RaRecord;
     reference: string;
     // @deprecated ignored
     referenceSource?: typeof defaultReferenceSource;

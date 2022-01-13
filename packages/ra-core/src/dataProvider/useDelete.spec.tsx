@@ -3,7 +3,7 @@ import { screen, render, waitFor } from '@testing-library/react';
 import expect from 'expect';
 
 import { CoreAdminContext } from '../core';
-import { Record } from '../types';
+import { RaRecord } from '../types';
 import { testDataProvider } from './testDataProvider';
 import { useDelete } from './useDelete';
 import {
@@ -105,7 +105,7 @@ describe('useDelete', () => {
     });
 
     it('returns data typed based on the parametric type', async () => {
-        interface Product extends Record {
+        interface Product extends RaRecord {
             sku: string;
         }
         const dataProvider = testDataProvider({

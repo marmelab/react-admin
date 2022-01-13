@@ -1,4 +1,4 @@
-import { Record } from 'ra-core';
+import { RaRecord } from 'ra-core';
 
 import generateCustomers from './customers';
 import generateCategories from './categories';
@@ -9,12 +9,12 @@ import generateReviews from './reviews';
 import finalize from './finalize';
 
 export interface Db {
-    customers: Record[];
-    categories: Record[];
-    products: Record[];
-    commands: Record[];
-    invoices: Record[];
-    reviews: Record[];
+    customers: RaRecord[];
+    categories: RaRecord[];
+    products: RaRecord[];
+    commands: RaRecord[];
+    invoices: RaRecord[];
+    reviews: RaRecord[];
 }
 
 export default (options = { serializeDate: true }): Db => {

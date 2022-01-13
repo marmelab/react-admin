@@ -12,7 +12,7 @@ import {
     LinkToType,
     ResourceContextProvider,
     RecordContextProvider,
-    Record,
+    RaRecord,
     useRecordContext,
 } from 'ra-core';
 
@@ -111,9 +111,9 @@ ReferenceField.defaultProps = {
     link: 'edit',
 };
 
-export interface ReferenceFieldProps<RecordType extends Record = Record>
+export interface ReferenceFieldProps<RaRecordType extends RaRecord = any>
     extends PublicFieldProps,
-        InjectedFieldProps<RecordType> {
+        InjectedFieldProps<RaRecordType> {
     children: ReactElement;
     reference: string;
     resource?: string;

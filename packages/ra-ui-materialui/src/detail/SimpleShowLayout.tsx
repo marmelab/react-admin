@@ -6,7 +6,7 @@ import { ResponsiveStyleValue, SxProps } from '@mui/system';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import {
-    Record,
+    RaRecord,
     useRecordContext,
     OptionalRecordContextProvider,
 } from 'ra-core';
@@ -92,7 +92,7 @@ export interface SimpleShowLayoutProps {
     children: ReactNode;
     className?: string;
     divider?: ReactNode;
-    record?: Record;
+    record?: RaRecord;
     spacing?: ResponsiveStyleValue<number | string>;
     sx?: SxProps;
 }

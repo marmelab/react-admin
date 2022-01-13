@@ -1,14 +1,14 @@
 import { ReactElement } from 'react';
-import { Record } from 'ra-core';
+import { RaRecord } from 'ra-core';
 import PropTypes from 'prop-types';
 import { TableCellProps } from '@mui/material/TableCell';
 
 type TextAlign = TableCellProps['align'];
 type SortOrder = 'ASC' | 'DESC';
 
-export interface FieldProps<RecordType extends Record = Record>
+export interface FieldProps<RaRecordType extends RaRecord = any>
     extends PublicFieldProps,
-        InjectedFieldProps<RecordType> {}
+        InjectedFieldProps<RaRecordType> {}
 
 export interface PublicFieldProps {
     addLabel?: boolean;
@@ -27,9 +27,9 @@ export interface PublicFieldProps {
 }
 
 // Props injected by react-admin
-export interface InjectedFieldProps<RecordType extends Record = Record> {
+export interface InjectedFieldProps<RaRecordType extends RaRecord = any> {
     basePath?: string;
-    record?: RecordType;
+    record?: RaRecordType;
     resource?: string;
 }
 

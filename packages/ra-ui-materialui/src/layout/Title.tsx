@@ -2,7 +2,7 @@ import * as React from 'react';
 import { cloneElement, ReactElement } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
-import { useTranslate, Record, warning } from 'ra-core';
+import { useTranslate, RaRecord, warning } from 'ra-core';
 
 export const Title = ({
     className,
@@ -50,6 +50,6 @@ Title.propTypes = {
 export interface TitleProps {
     className?: string;
     defaultTitle?: string;
-    record?: Record;
+    record?: RaRecord;
     title?: string | ReactElement;
 }

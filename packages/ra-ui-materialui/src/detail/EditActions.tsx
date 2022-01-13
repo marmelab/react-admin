@@ -1,7 +1,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 
-import { Record, useEditContext, useResourceDefinition } from 'ra-core';
+import { RaRecord, useEditContext, useResourceDefinition } from 'ra-core';
 import { ShowButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
 
@@ -52,7 +52,7 @@ const sanitizeRestProps = ({
 
 export interface EditActionsProps {
     className?: string;
-    data?: Record;
+    data?: RaRecord;
     hasCreate?: boolean;
     hasEdit?: boolean;
     hasList?: boolean;

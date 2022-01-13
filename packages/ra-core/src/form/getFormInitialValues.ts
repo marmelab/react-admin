@@ -1,10 +1,10 @@
 import merge from 'lodash/merge';
-import { Record } from '../types';
+import { RaRecord } from '../types';
 
 export default function getFormInitialValues(
     initialValues: any,
     defaultValue: DefaultValue,
-    record: Partial<Record>
+    record: Partial<RaRecord>
 ) {
     if (typeof defaultValue !== 'undefined') {
         console.warn(
@@ -36,5 +36,5 @@ function getValues(values, record) {
 interface DefaultValueObject {
     [key: string]: any;
 }
-type DefaultValueFunction = (record: Record) => DefaultValueObject;
+type DefaultValueFunction = (record: RaRecord) => DefaultValueObject;
 type DefaultValue = DefaultValueObject | DefaultValueFunction;

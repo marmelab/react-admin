@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 
-import { Record } from '../../types';
+import { RaRecord } from '../../types';
 import { RecordContextProvider } from '../record/RecordContext';
 import { CreateContext } from './CreateContext';
 import { CreateControllerResult } from './useCreateController';
@@ -39,7 +39,7 @@ export const CreateContextProvider = ({
 }) => (
     <CreateContext.Provider value={value}>
         <SaveContextProvider value={usePickSaveContext(value)}>
-            <RecordContextProvider<Partial<Record>>
+            <RecordContextProvider<Partial<RaRecord>>
                 value={value && value.record}
             >
                 {children}

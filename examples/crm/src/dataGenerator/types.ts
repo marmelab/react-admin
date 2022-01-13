@@ -1,4 +1,4 @@
-import { Record } from 'react-admin';
+import { RaRecord } from 'react-admin';
 import { Company, Contact, ContactNote, Deal, Tag } from '../types';
 
 export interface Db {
@@ -6,8 +6,8 @@ export interface Db {
     contacts: Contact[];
     contactNotes: ContactNote[];
     deals: Deal[];
-    dealNotes: Record[];
-    sales: Record[];
+    dealNotes: RaRecord[];
+    sales: RaRecord[];
     tags: Tag[];
-    tasks: Record[];
+    tasks: RaRecord[];
 }

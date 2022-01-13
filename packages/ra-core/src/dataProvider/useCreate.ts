@@ -8,7 +8,7 @@ import {
 } from 'react-query';
 
 import { useDataProvider } from './useDataProvider';
-import { Record, CreateParams } from '../types';
+import { RaRecord, CreateParams } from '../types';
 
 /**
  * Get a callback to call the dataProvider.create() method, the result and the loading state.
@@ -66,33 +66,33 @@ import { Record, CreateParams } from '../types';
  * const [create, { data }] = useCreate<Product>('products', { data: product });
  *                    \-- data is Product
  */
-export const useCreate = <RecordType extends Record = Record>(
+export const useCreate = <RaRecordType extends RaRecord = any>(
     resource?: string,
     params: Partial<CreateParams> = {},
-    options: UseCreateOptions<RecordType> = {}
-): UseCreateResult<RecordType> => {
+    options: UseCreateOptions<RaRecordType> = {}
+): UseCreateResult<RaRecordType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const paramsRef = useRef<Partial<CreateParams<RecordType>>>(params);
+    const paramsRef = useRef<Partial<CreateParams<RaRecordType>>>(params);
 
     const mutation = useMutation<
-        RecordType,
+        RaRecordType,
         unknown,
-        Partial<UseCreateMutateParams<RecordType>>
+        Partial<UseCreateMutateParams<RaRecordType>>
     >(
         ({
             resource: callTimeResource = resource,
             data: callTimeData = paramsRef.current.data,
         } = {}) =>
             dataProvider
-                .create<RecordType>(callTimeResource, {
+                .create<RaRecordType>(callTimeResource, {
                     data: callTimeData,
                 })
                 .then(({ data }) => data),
         {
             onSuccess: (
-                data: RecordType,
-                variables: Partial<UseCreateMutateParams<RecordType>> = {}
+                data: RaRecordType,
+                variables: Partial<UseCreateMutateParams<RaRecordType>> = {}
             ) => {
                 const { resource: callTimeResource = resource } = variables;
                 queryClient.setQueryData(
@@ -106,11 +106,11 @@ export const useCreate = <RecordType extends Record = Record>(
 
     const create = (
         callTimeResource: string = resource,
-        callTimeParams: Partial<CreateParams<RecordType>> = {},
+        callTimeParams: Partial<CreateParams<RaRecordType>> = {},
         createOptions?: MutateOptions<
-            RecordType,
+            RaRecordType,
             unknown,
-            Partial<UseCreateMutateParams<RecordType>>,
+            Partial<UseCreateMutateParams<RaRecordType>>,
             unknown
         >
     ) =>
@@ -122,34 +122,34 @@ export const useCreate = <RecordType extends Record = Record>(
     return [create, mutation];
 };
 
-export interface UseCreateMutateParams<RecordType extends Record = Record> {
+export interface UseCreateMutateParams<RaRecordType extends RaRecord = any> {
     resource?: string;
-    data?: Partial<RecordType>;
+    data?: Partial<RaRecordType>;
 }
 
 export type UseCreateOptions<
-    RecordType extends Record = Record
+    RaRecordType extends RaRecord = any
 > = UseMutationOptions<
-    RecordType,
+    RaRecordType,
     unknown,
-    Partial<UseCreateMutateParams<RecordType>>
+    Partial<UseCreateMutateParams<RaRecordType>>
 >;
 
-export type UseCreateResult<RecordType extends Record = Record> = [
+export type UseCreateResult<RaRecordType extends RaRecord = any> = [
     (
         resource?: string,
-        params?: Partial<CreateParams<Partial<RecordType>>>,
+        params?: Partial<CreateParams<Partial<RaRecordType>>>,
         options?: MutateOptions<
-            RecordType,
+            RaRecordType,
             unknown,
-            Partial<UseCreateMutateParams<RecordType>>,
+            Partial<UseCreateMutateParams<RaRecordType>>,
             unknown
         >
     ) => void,
     UseMutationResult<
-        RecordType,
+        RaRecordType,
         unknown,
-        Partial<UseCreateMutateParams<RecordType>>,
+        Partial<UseCreateMutateParams<RaRecordType>>,
         unknown
     >
 ];

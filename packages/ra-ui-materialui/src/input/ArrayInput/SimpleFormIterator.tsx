@@ -13,7 +13,7 @@ import { FormHelperText, styled } from '@mui/material';
 import classNames from 'classnames';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
-import { Record, ValidationError } from 'ra-core';
+import { RaRecord, ValidationError } from 'ra-core';
 import { FieldArrayRenderProps } from 'react-final-form-arrays';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { CSSTransitionProps } from 'react-transition-group/CSSTransition';
@@ -233,7 +233,7 @@ export interface SimpleFormIteratorProps
         error?: any;
         submitFailed?: boolean;
     };
-    record?: Record;
+    record?: RaRecord;
     removeButton?: ReactElement;
     reOrderButtons?: ReactElement;
     resource?: string;

@@ -34,7 +34,7 @@ const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
     const redirect = useRedirect();
     const notify = useNotify();
 
-    const record = useRecordContext(props);
+    const record = useRecordContext<Review>(props);
 
     if (!record) return null;
     return (

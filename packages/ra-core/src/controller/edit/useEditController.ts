@@ -3,7 +3,12 @@ import { useParams } from 'react-router-dom';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
-import { Record, MutationMode, TransformData, UpdateParams } from '../../types';
+import {
+    RaRecord,
+    MutationMode,
+    TransformData,
+    UpdateParams,
+} from '../../types';
 import { useRedirect, RedirectionSideEffect } from '../../sideEffect';
 import { useNotify } from '../../notification';
 import {
@@ -38,9 +43,9 @@ import { SaveHandler } from '../saveContext';
  *     return <EditView {...controllerProps} {...props} />;
  * }
  */
-export const useEditController = <RecordType extends Record = Record>(
-    props: EditControllerProps<RecordType> = {}
-): EditControllerResult<RecordType> => {
+export const useEditController = <RaRecordType extends RaRecord = any>(
+    props: EditControllerProps<RaRecordType> = {}
+): EditControllerResult<RaRecordType> => {
     const {
         disableAuthentication,
         id: propsId,
@@ -61,7 +66,7 @@ export const useEditController = <RecordType extends Record = Record>(
     const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
 
     const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
-        RecordType
+        RaRecordType
     >(
         resource,
         { id },
@@ -94,7 +99,7 @@ export const useEditController = <RecordType extends Record = Record>(
         record,
     });
 
-    const [update, { isLoading: saving }] = useUpdate<RecordType>(
+    const [update, { isLoading: saving }] = useUpdate<RaRecordType>(
         resource,
         { id, previousData: record },
         { ...otherMutationOptions, mutationMode }
@@ -102,7 +107,7 @@ export const useEditController = <RecordType extends Record = Record>(
 
     const save = useCallback(
         (
-            data: Partial<RecordType>,
+            data: Partial<RaRecordType>,
             {
                 onSuccess: onSuccessFromSave,
                 onError: onErrorFromSave,
@@ -115,7 +120,7 @@ export const useEditController = <RecordType extends Record = Record>(
                     : transform
                     ? transform(data)
                     : data
-            ).then((data: Partial<RecordType>) =>
+            ).then((data: Partial<RaRecordType>) =>
                 update(
                     resource,
                     { data },
@@ -190,34 +195,34 @@ export const useEditController = <RecordType extends Record = Record>(
     };
 };
 
-export interface EditControllerProps<RecordType extends Record = Record> {
+export interface EditControllerProps<RaRecordType extends RaRecord = any> {
     disableAuthentication?: boolean;
-    id?: RecordType['id'];
+    id?: RaRecordType['id'];
     mutationMode?: MutationMode;
     mutationOptions?: UseMutationOptions<
-        RecordType,
+        RaRecordType,
         unknown,
-        UpdateParams<RecordType>
+        UpdateParams<RaRecordType>
     >;
-    queryOptions?: UseQueryOptions<RecordType>;
+    queryOptions?: UseQueryOptions<RaRecordType>;
     redirect?: RedirectionSideEffect;
     resource?: string;
     transform?: TransformData;
     [key: string]: any;
 }
 
-export interface EditControllerResult<RecordType extends Record = Record> {
+export interface EditControllerResult<RaRecordType extends RaRecord = any> {
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
-    data?: RecordType;
+    data?: RaRecordType;
     error?: any;
     defaultTitle: string;
     isFetching: boolean;
     isLoading: boolean;
     save: SaveHandler;
     saving: boolean;
-    record?: RecordType;
-    refetch: UseGetOneHookValue<RecordType>['refetch'];
+    record?: RaRecordType;
+    refetch: UseGetOneHookValue<RaRecordType>['refetch'];
     redirect: RedirectionSideEffect;
     resource: string;
 }

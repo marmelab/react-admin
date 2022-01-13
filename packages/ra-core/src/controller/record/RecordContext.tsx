@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createContext, ReactNode } from 'react';
-import { Record } from '../../types';
+import { RaRecord } from '../../types';
 
 /**
  * Context to store a record.
@@ -8,7 +8,7 @@ import { Record } from '../../types';
  * @see RecordContextProvider
  * @see useRecordContext
  */
-export const RecordContext = createContext<Record | Omit<Record, 'id'>>(
+export const RecordContext = createContext<RaRecord | Omit<RaRecord, 'id'>>(
     undefined
 );
 
@@ -37,15 +37,15 @@ RecordContext.displayName = 'RecordContext';
  * };
  */
 export const RecordContextProvider = <
-    RecordType extends Record | Omit<Record, 'id'> = Record
+    RaRecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord
 >({
     children,
     value,
-}: RecordContextProviderProps<RecordType>) => (
+}: RecordContextProviderProps<RaRecordType>) => (
     <RecordContext.Provider value={value}>{children}</RecordContext.Provider>
 );
 
-export interface RecordContextProviderProps<RecordType> {
+export interface RecordContextProviderProps<RaRecordType> {
     children: ReactNode;
-    value?: RecordType;
+    value?: RaRecordType;
 }

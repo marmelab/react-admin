@@ -1,7 +1,7 @@
 import { useContext, useMemo } from 'react';
 import defaults from 'lodash/defaults';
 
-import { Record } from '../../types';
+import { RaRecord } from '../../types';
 import { EditContext } from './EditContext';
 import { EditControllerResult } from './useEditController';
 
@@ -22,12 +22,12 @@ import { EditControllerResult } from './useEditController';
  * @see useEditController for how it is filled
  *
  */
-export const useEditContext = <RecordType extends Record = Record>(
-    props?: Partial<EditControllerResult<RecordType>>
-): Partial<EditControllerResult<RecordType>> => {
-    // Can't find a way to specify the RecordType when EditContext is declared
+export const useEditContext = <RaRecordType extends RaRecord = any>(
+    props?: Partial<EditControllerResult<RaRecordType>>
+): Partial<EditControllerResult<RaRecordType>> => {
+    // Can't find a way to specify the RaRecordType when EditContext is declared
     // @ts-ignore
-    const context = useContext<EditControllerResult<RecordType>>(EditContext);
+    const context = useContext<EditControllerResult<RaRecordType>>(EditContext);
 
     // Props take precedence over the context
     return useMemo(

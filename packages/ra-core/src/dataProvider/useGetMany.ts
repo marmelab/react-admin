@@ -6,7 +6,7 @@ import {
     hashQueryKey,
 } from 'react-query';
 
-import { Record, GetManyParams } from '../types';
+import { RaRecord, GetManyParams } from '../types';
 import { useDataProvider } from './useDataProvider';
 
 /**
@@ -48,21 +48,21 @@ import { useDataProvider } from './useDataProvider';
  *     )}</ul>;
  * };
  */
-export const useGetMany = <RecordType extends Record = Record>(
+export const useGetMany = <RaRecordType extends RaRecord = any>(
     resource: string,
     params: Partial<GetManyParams> = {},
-    options?: UseQueryOptions<RecordType[], Error>
-): UseGetManyHookValue<RecordType> => {
+    options?: UseQueryOptions<RaRecordType[], Error>
+): UseGetManyHookValue<RaRecordType> => {
     const { ids } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const queryCache = queryClient.getQueryCache();
 
-    return useQuery<RecordType[], Error, RecordType[]>(
+    return useQuery<RaRecordType[], Error, RaRecordType[]>(
         [resource, 'getMany', { ids: ids.map(id => String(id)) }],
         () =>
             dataProvider
-                .getMany<RecordType>(resource, { ids })
+                .getMany<RaRecordType>(resource, { ids })
                 .then(({ data }) => data),
         {
             placeholderData: () => {
@@ -72,7 +72,7 @@ export const useGetMany = <RecordType extends Record = Record>(
                         'getOne',
                         { id: String(id) },
                     ]);
-                    return queryCache.get<RecordType>(queryHash)?.state?.data;
+                    return queryCache.get<RaRecordType>(queryHash)?.state?.data;
                 });
                 if (records.some(record => record === undefined)) {
                     return undefined;
@@ -96,5 +96,5 @@ export const useGetMany = <RecordType extends Record = Record>(
 };
 
 export type UseGetManyHookValue<
-    RecordType extends Record = Record
-> = UseQueryResult<RecordType[], Error>;
+    RaRecordType extends RaRecord = any
+> = UseQueryResult<RaRecordType[], Error>;

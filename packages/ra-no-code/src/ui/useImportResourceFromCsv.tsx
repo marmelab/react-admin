@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { parse } from 'papaparse';
-import { getValuesFromRecords, Record, useDataProvider } from 'react-admin';
+import { getValuesFromRecords, RaRecord, useDataProvider } from 'react-admin';
 import set from 'lodash/set';
 
 import {
@@ -54,9 +54,9 @@ export const useImportResourceFromCsv = (): [boolean, ImportResource] => {
     return [parsing, importResource];
 };
 
-const parseCSV = (file: File): Promise<{ data: Record[]; meta: any }> =>
+const parseCSV = (file: File): Promise<{ data: RaRecord[]; meta: any }> =>
     new Promise((resolve, reject) => {
-        parse<Record>(file, {
+        parse<RaRecord>(file, {
             header: true,
             skipEmptyLines: true,
             complete: async ({ data, meta }) => {
@@ -77,9 +77,9 @@ type ImportResource = (
 }>;
 
 const sanitizeRecords = (
-    records: Record[],
+    records: RaRecord[],
     { fields }: { fields: string[] }
-): Record[] => {
+): RaRecord[] => {
     const values = getValuesFromRecords(records);
     return fields.reduce(
         (newRecords, field) => sanitizeRecord(newRecords, values, field),

@@ -7,7 +7,7 @@ import {
     ReactElement,
     ReactNode,
 } from 'react';
-import { useTranslatableContext, Record } from 'ra-core';
+import { useTranslatableContext, RaRecord } from 'ra-core';
 import { Labeled } from '../input';
 
 /**
@@ -80,7 +80,7 @@ export type TranslatableFieldsTabContentProps = {
     formGroupKeyPrefix?: string;
     groupKey: string;
     locale: string;
-    record: Record;
+    record: RaRecord;
     resource: string;
 };
 

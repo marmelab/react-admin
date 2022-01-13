@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { UseMutationOptions } from 'react-query';
 import {
-    Record,
+    RaRecord,
     RedirectionSideEffect,
     MutationMode,
     DeleteParams,
@@ -50,8 +50,8 @@ import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
  *     return <Edit actions={<EditActions />} {...props} />;
  * };
  */
-export const DeleteButton = <RecordType extends Record = Record>(
-    props: DeleteButtonProps<RecordType>
+export const DeleteButton = <RaRecordType extends RaRecord = any>(
+    props: DeleteButtonProps<RaRecordType>
 ) => {
     const { mutationMode = 'undoable', record, ...rest } = props;
     if (!record || record.id == null) {
@@ -60,9 +60,9 @@ export const DeleteButton = <RecordType extends Record = Record>(
 
     return mutationMode === 'undoable' ? (
         // @ts-ignore I looked for the error for one hour without finding it
-        <DeleteWithUndoButton<RecordType> record={record} {...rest} />
+        <DeleteWithUndoButton<RaRecordType> record={record} {...rest} />
     ) : (
-        <DeleteWithConfirmButton<RecordType>
+        <DeleteWithConfirmButton<RaRecordType>
             // @ts-ignore I looked for the error for one hour without finding it
             mutationMode={mutationMode}
             record={record}
@@ -71,7 +71,7 @@ export const DeleteButton = <RecordType extends Record = Record>(
     );
 };
 
-export interface DeleteButtonProps<RecordType extends Record = Record>
+export interface DeleteButtonProps<RaRecordType extends RaRecord = any>
     extends Omit<ButtonProps, 'record'> {
     basePath?: string;
     classes?: object;
@@ -81,7 +81,7 @@ export interface DeleteButtonProps<RecordType extends Record = Record>
     icon?: ReactElement;
     label?: string;
     mutationMode?: MutationMode;
-    record?: RecordType;
+    record?: RaRecordType;
     redirect?: RedirectionSideEffect;
     resource?: string;
     // May be injected by Toolbar
@@ -90,9 +90,9 @@ export interface DeleteButtonProps<RecordType extends Record = Record>
     saving?: boolean;
     submitOnEnter?: boolean;
     mutationOptions?: UseMutationOptions<
-        RecordType,
+        RaRecordType,
         unknown,
-        DeleteParams<RecordType>
+        DeleteParams<RaRecordType>
     >;
 }
 

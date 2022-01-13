@@ -11,7 +11,7 @@ import { useRedirect, RedirectionSideEffect } from '../../sideEffect';
 import { useNotify } from '../../notification';
 import { SaveHandler } from '../saveContext';
 import { useTranslate } from '../../i18n';
-import { Record, CreateParams, TransformData } from '../../types';
+import { RaRecord, CreateParams, TransformData } from '../../types';
 import {
     useResourceContext,
     useResourceDefinition,
@@ -36,10 +36,10 @@ import {
  * }
  */
 export const useCreateController = <
-    RecordType extends Omit<Record, 'id'> = Record
+    RaRecordType extends Omit<RaRecord, 'id'> = RaRecord
 >(
     props: CreateControllerProps = {}
-): CreateControllerResult<RecordType> => {
+): CreateControllerResult<RaRecordType> => {
     const {
         disableAuthentication,
         record,
@@ -69,7 +69,7 @@ export const useCreateController = <
 
     const save = useCallback(
         (
-            data: Partial<Record>,
+            data: Partial<RaRecord>,
             {
                 onSuccess: onSuccessFromSave,
                 onError: onErrorFromSave,
@@ -160,32 +160,32 @@ export const useCreateController = <
 };
 
 export interface CreateControllerProps<
-    RecordType extends Omit<Record, 'id'> = Record
+    RaRecordType extends Omit<RaRecord, 'id'> = RaRecord
 > {
     disableAuthentication?: boolean;
-    record?: Partial<RecordType>;
+    record?: Partial<RaRecordType>;
     redirect?: RedirectionSideEffect;
     resource?: string;
     mutationOptions?: UseMutationOptions<
-        RecordType,
+        RaRecordType,
         unknown,
-        CreateParams<RecordType>
+        CreateParams<RaRecordType>
     >;
     transform?: TransformData;
 }
 
 export interface CreateControllerResult<
-    RecordType extends Omit<Record, 'id'> = Record
+    RaRecordType extends Omit<RaRecord, 'id'> = RaRecord
 > {
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
-    data?: RecordType;
+    data?: RaRecordType;
     defaultTitle: string;
     isFetching: boolean;
     isLoading: boolean;
     save: SaveHandler;
     saving: boolean;
-    record?: Partial<RecordType>;
+    record?: Partial<RaRecordType>;
     redirect: RedirectionSideEffect;
     resource: string;
 }

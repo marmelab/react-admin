@@ -3,7 +3,7 @@ import { cloneElement, memo, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { TableBody, TableBodyProps } from '@mui/material';
 import classnames from 'classnames';
-import { Identifier, Record } from 'ra-core';
+import { Identifier, RaRecord } from 'ra-core';
 
 import { DatagridClasses } from './useDatagridStyles';
 import DatagridRow, { PureDatagridRow, RowClickFunction } from './DatagridRow';
@@ -103,7 +103,7 @@ export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
         | FC<{
               basePath: string;
               id: Identifier;
-              record: Record;
+              record: RaRecord;
               resource: string;
           }>;
     hasBulkActions?: boolean;
@@ -112,13 +112,13 @@ export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
         id: Identifier,
         event: React.TouchEvent | React.MouseEvent
     ) => void;
-    record?: Record;
+    record?: RaRecord;
     resource?: string;
     row?: ReactElement;
     rowClick?: string | RowClickFunction;
-    rowStyle?: (record: Record, index: number) => any;
+    rowStyle?: (record: RaRecord, index: number) => any;
     selectedIds?: Identifier[];
-    isRowSelectable?: (record: Record) => boolean;
+    isRowSelectable?: (record: RaRecord) => boolean;
 }
 
 // trick material-ui Table into thinking this is one of the child type it supports

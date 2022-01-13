@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Children, ReactElement, ReactNode } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { FormWithRedirectRenderProps, MutationMode, Record } from 'ra-core';
+import { FormWithRedirectRenderProps, MutationMode, RaRecord } from 'ra-core';
 import { CardContentInner } from '../layout';
 import { Toolbar } from './Toolbar';
 import { FormInput } from './FormInput';
@@ -87,7 +87,7 @@ export interface SimpleFormViewProps extends FormWithRedirectRenderProps {
     component?: React.ComponentType<any>;
     margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
-    record?: Partial<Record>;
+    record?: Partial<RaRecord>;
     resource?: string;
     toolbar?: ReactElement | false;
     variant?: 'standard' | 'outlined' | 'filled';

@@ -1,7 +1,7 @@
 import { useContext, useMemo } from 'react';
 import defaults from 'lodash/defaults';
 
-import { Record } from '../../types';
+import { RaRecord } from '../../types';
 import { ShowContext } from './ShowContext';
 import { ShowControllerResult } from './useShowController';
 
@@ -22,12 +22,12 @@ import { ShowControllerResult } from './useShowController';
  * @see useShowController for how it is filled
  *
  */
-export const useShowContext = <RecordType extends Record = Record>(
-    props?: Partial<ShowControllerResult<RecordType>>
-): Partial<ShowControllerResult<RecordType>> => {
-    // Can't find a way to specify the RecordType when ShowContext is declared
+export const useShowContext = <RaRecordType extends RaRecord = any>(
+    props?: Partial<ShowControllerResult<RaRecordType>>
+): Partial<ShowControllerResult<RaRecordType>> => {
+    // Can't find a way to specify the RaRecordType when ShowContext is declared
     // @ts-ignore
-    const context = useContext<ShowControllerResult<RecordType>>(ShowContext);
+    const context = useContext<ShowControllerResult<RaRecordType>>(ShowContext);
 
     // Props take precedence over the context
     return useMemo(

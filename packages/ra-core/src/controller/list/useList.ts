@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import { removeEmpty, useSafeSetState } from '../../util';
-import { FilterPayload, Record, SortPayload } from '../../types';
+import { FilterPayload, RaRecord, SortPayload } from '../../types';
 import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
 import useSelectionState from '../useSelectionState';
@@ -39,7 +39,7 @@ const refetch = () => {
  * };
  *
  * @param {UseListOptions} props
- * @param {Record[]} props.data An array of records
+ * @param {RaRecord[]} props.data An array of records
  * @param {Boolean} props.isFetching: Optional. A boolean indicating whether the data is being loaded
  * @param {Boolean} props.isLoading: Optional. A boolean indicating whether the data has been loaded at least once
  * @param {Error | String} props.error: Optional. The error if any occurred while loading the data
@@ -48,9 +48,9 @@ const refetch = () => {
  * @param {Number} props.perPage: Optional. The initial page size
  * @param {SortPayload} props.sort: Optional. The initial sort (field and order)
  */
-export const useList = <RecordType extends Record = Record>(
-    props: UseListOptions<RecordType>
-): UseListValue<RecordType> => {
+export const useList = <RaRecordType extends RaRecord = any>(
+    props: UseListOptions<RaRecordType>
+): UseListValue<RaRecordType> => {
     const {
         data,
         error,
@@ -67,7 +67,7 @@ export const useList = <RecordType extends Record = Record>(
     const [loadingState, setLoadingState] = useSafeSetState<boolean>(isLoading);
 
     const [finalItems, setFinalItems] = useSafeSetState<{
-        data?: RecordType[];
+        data?: RaRecordType[];
         total: number;
     }>(() => ({
         data,
@@ -243,8 +243,8 @@ export const useList = <RecordType extends Record = Record>(
     };
 };
 
-export interface UseListOptions<RecordType extends Record = Record> {
-    data?: RecordType[];
+export interface UseListOptions<RaRecordType extends RaRecord = any> {
+    data?: RaRecordType[];
     error?: any;
     filter?: FilterPayload;
     isFetching?: boolean;
@@ -255,8 +255,8 @@ export interface UseListOptions<RecordType extends Record = Record> {
 }
 
 export type UseListValue<
-    RecordType extends Record = Record
-> = ListControllerResult<RecordType>;
+    RaRecordType extends RaRecord = any
+> = ListControllerResult<RaRecordType>;
 
 const defaultFilter = {};
 const defaultSort = { field: null, order: null };

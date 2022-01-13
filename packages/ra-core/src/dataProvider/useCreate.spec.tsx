@@ -2,7 +2,7 @@ import * as React from 'react';
 import { render, waitFor } from '@testing-library/react';
 import expect from 'expect';
 
-import { Record } from '../types';
+import { RaRecord } from '../types';
 import { testDataProvider } from './testDataProvider';
 import { useCreate } from './useCreate';
 import { CoreAdminContext } from '../core';
@@ -81,7 +81,7 @@ describe('useCreate', () => {
     });
 
     it('returns a state typed based on the parametric type', async () => {
-        interface Product extends Record {
+        interface Product extends RaRecord {
             sku: string;
         }
         const dataProvider = testDataProvider({

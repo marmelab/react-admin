@@ -9,7 +9,7 @@ import {
 import union from 'lodash/union';
 
 import { UseGetManyHookValue } from './useGetMany';
-import { Identifier, Record, GetManyParams, DataProvider } from '../types';
+import { Identifier, RaRecord, GetManyParams, DataProvider } from '../types';
 import { useDataProvider } from './useDataProvider';
 
 /**
@@ -60,11 +60,11 @@ import { useDataProvider } from './useDataProvider';
  *      );
  * };
  */
-export const useGetManyAggregate = <RecordType extends Record = Record>(
+export const useGetManyAggregate = <RaRecordType extends RaRecord = any>(
     resource: string,
     params: GetManyParams,
-    options: UseQueryOptions<RecordType[], Error> = {}
-): UseGetManyHookValue<RecordType> => {
+    options: UseQueryOptions<RaRecordType[], Error> = {}
+): UseGetManyHookValue<RaRecordType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const queryCache = queryClient.getQueryCache();
@@ -76,7 +76,7 @@ export const useGetManyAggregate = <RecordType extends Record = Record>(
                 'getOne',
                 { id: String(id) },
             ]);
-            return queryCache.get<RecordType>(queryHash)?.state?.data;
+            return queryCache.get<RaRecordType>(queryHash)?.state?.data;
         });
         if (records.some(record => record === undefined)) {
             return undefined;
@@ -85,7 +85,7 @@ export const useGetManyAggregate = <RecordType extends Record = Record>(
         }
     }, [ids, queryCache, resource]);
 
-    return useQuery<RecordType[], Error, RecordType[]>(
+    return useQuery<RaRecordType[], Error, RaRecordType[]>(
         [resource, 'getMany', { ids: ids.map(id => String(id)) }],
         () =>
             new Promise((resolve, reject) =>

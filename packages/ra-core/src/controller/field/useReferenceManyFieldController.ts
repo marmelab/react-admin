@@ -5,7 +5,7 @@ import isEqual from 'lodash/isEqual';
 import { useSafeSetState, removeEmpty } from '../../util';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
-import { Record, SortPayload } from '../../types';
+import { RaRecord, SortPayload } from '../../types';
 import { ListControllerResult } from '../list';
 import usePaginationState from '../usePaginationState';
 import useSelectionState from '../useSelectionState';
@@ -15,7 +15,7 @@ export interface UseReferenceManyFieldControllerParams {
     filter?: any;
     page?: number;
     perPage?: number;
-    record?: Record;
+    record?: RaRecord;
     reference: string;
     resource: string;
     sort?: SortPayload;

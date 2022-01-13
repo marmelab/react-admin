@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { ShowBase, ResourceContextProvider, Record } from 'ra-core';
+import { ShowBase, ResourceContextProvider, RaRecord } from 'ra-core';
 
 import { ShowProps } from '../types';
 import { ShowView } from './ShowView';
@@ -58,14 +58,14 @@ import { ShowView } from './ShowView';
  *
  * @see ShowView for the actual rendering
  */
-export const Show = <RecordType extends Record = Record>({
+export const Show = <RaRecordType extends RaRecord = any>({
     id,
     resource,
     queryOptions,
     ...rest
-}: ShowProps<RecordType>): ReactElement => (
+}: ShowProps<RaRecordType>): ReactElement => (
     <ResourceContextProvider value={resource}>
-        <ShowBase<RecordType> id={id} queryOptions={queryOptions}>
+        <ShowBase<RaRecordType> id={id} queryOptions={queryOptions}>
             <ShowView {...rest} />
         </ShowBase>
     </ResourceContextProvider>

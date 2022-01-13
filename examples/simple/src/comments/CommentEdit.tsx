@@ -21,7 +21,7 @@ import {
     TextInput,
     Title,
     minLength,
-    Record,
+    RaRecord,
     ShowButton,
     TopToolbar,
     useCreateSuggestionContext,
@@ -45,7 +45,7 @@ const Root = styled('div')({
     },
 });
 
-const LinkToRelatedPost = ({ record }: { record?: Record }) => (
+const LinkToRelatedPost = ({ record }: { record?: RaRecord }) => (
     <RaLink to={`/posts/${record?.post_id}`}>
         <Typography variant="caption" color="inherit" align="right">
             See related post
@@ -53,7 +53,7 @@ const LinkToRelatedPost = ({ record }: { record?: Record }) => (
     </RaLink>
 );
 
-const OptionRenderer = ({ record, ...rest }: { record?: Record }) => {
+const OptionRenderer = ({ record, ...rest }: { record?: RaRecord }) => {
     return record.id === '@@ra-create' ? (
         <div {...rest}>{record.name}</div>
     ) : (

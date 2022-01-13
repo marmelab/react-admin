@@ -1,8 +1,8 @@
 /* eslint react/jsx-key: off */
 import * as React from 'react';
-import { Record, useTranslate } from 'react-admin';
+import { RaRecord, useTranslate } from 'react-admin';
 
-const UserTitle = ({ record }: { record?: Record }) => {
+const UserTitle = ({ record }: { record?: RaRecord }) => {
     const translate = useTranslate();
     return (
         <span>

@@ -9,7 +9,7 @@ import {
     TextField,
     BooleanField,
     useTranslate,
-    Record,
+    RaRecord,
 } from 'react-admin';
 
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
@@ -49,7 +49,7 @@ const Root = styled('div')(({ theme }) => ({
 }));
 
 interface MobileGridProps {
-    data?: Record[];
+    data?: RaRecord[];
 }
 
 const MobileGrid = (props: MobileGridProps) => {

@@ -14,7 +14,7 @@ import {
     sanitizeListRestProps,
     useListContext,
     useResourceContext,
-    Record,
+    RaRecord,
     RecordContextProvider,
     ComponentPropType,
 } from 'ra-core';
@@ -122,7 +122,7 @@ SingleFieldList.propTypes = {
     resource: PropTypes.string,
 };
 
-export interface SingleFieldListProps<RecordType extends Record = Record>
+export interface SingleFieldListProps<RaRecordType extends RaRecord = any>
     extends HtmlHTMLAttributes<HTMLDivElement> {
     className?: string;
 
@@ -131,7 +131,7 @@ export interface SingleFieldListProps<RecordType extends Record = Record>
     children: React.ReactElement;
     // can be injected when using the component without context
     basePath?: string;
-    data?: RecordType[];
+    data?: RaRecordType[];
     total?: number;
     loaded?: boolean;
 }

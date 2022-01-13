@@ -7,7 +7,7 @@ import { useNotify } from '../../notification';
 import { useGetList, UseGetListHookValue } from '../../dataProvider';
 import { SORT_ASC } from './queryReducer';
 import { defaultExporter } from '../../export';
-import { FilterPayload, SortPayload, Record, Exporter } from '../../types';
+import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import useRecordSelection from '../useRecordSelection';
 import { useListParams } from './useListParams';
@@ -29,9 +29,9 @@ import { useListParams } from './useListParams';
  *     return <ListView {...controllerProps} {...props} />;
  * }
  */
-export const useListController = <RecordType extends Record = Record>(
-    props: ListControllerProps<RecordType> = {}
-): ListControllerResult<RecordType> => {
+export const useListController = <RaRecordType extends RaRecord = any>(
+    props: ListControllerProps<RaRecordType> = {}
+): ListControllerResult<RaRecordType> => {
     const {
         disableAuthentication,
         exporter = defaultExporter,
@@ -72,7 +72,7 @@ export const useListController = <RecordType extends Record = Record>(
     const [selectedIds, selectionModifiers] = useRecordSelection(resource);
 
     const { data, total, error, isLoading, isFetching, refetch } = useGetList<
-        RecordType
+        RaRecordType
     >(
         resource,
         {
@@ -155,7 +155,7 @@ export const useListController = <RecordType extends Record = Record>(
     };
 };
 
-export interface ListControllerProps<RecordType extends Record = Record> {
+export interface ListControllerProps<RaRecordType extends RaRecord = any> {
     debounce?: number;
     disableAuthentication?: boolean;
     /**
@@ -166,7 +166,7 @@ export interface ListControllerProps<RecordType extends Record = Record> {
     filter?: FilterPayload;
     filterDefaultValues?: object;
     perPage?: number;
-    queryOptions?: UseQueryOptions<{ data: RecordType[]; total: number }>;
+    queryOptions?: UseQueryOptions<{ data: RaRecordType[]; total: number }>;
     resource?: string;
     sort?: SortPayload;
 }
@@ -176,9 +176,9 @@ const defaultSort = {
     order: SORT_ASC,
 };
 
-export interface ListControllerResult<RecordType extends Record = Record> {
+export interface ListControllerResult<RaRecordType extends RaRecord = any> {
     sort: SortPayload;
-    data: RecordType[];
+    data: RaRecordType[];
     defaultTitle?: string;
     displayedFilters: any;
     error?: any;
@@ -188,14 +188,14 @@ export interface ListControllerResult<RecordType extends Record = Record> {
     hideFilter: (filterName: string) => void;
     isFetching: boolean;
     isLoading: boolean;
-    onSelect: (ids: RecordType['id'][]) => void;
-    onToggleItem: (id: RecordType['id']) => void;
+    onSelect: (ids: RaRecordType['id'][]) => void;
+    onToggleItem: (id: RaRecordType['id']) => void;
     onUnselectItems: () => void;
     page: number;
     perPage: number;
-    refetch: UseGetListHookValue<RecordType>['refetch'];
+    refetch: UseGetListHookValue<RaRecordType>['refetch'];
     resource: string;
-    selectedIds: RecordType['id'][];
+    selectedIds: RaRecordType['id'][];
     setFilters: (
         filters: any,
         displayedFilters: any,

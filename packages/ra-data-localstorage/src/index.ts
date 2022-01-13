@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import fakeRestProvider from 'ra-data-fakerest';
-import { DataProvider, Record } from 'ra-core';
+import { DataProvider, RaRecord } from 'ra-core';
 import pullAt from 'lodash/pullAt';
 
 /**
@@ -55,9 +55,9 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
 
     return {
         // read methods are just proxies to FakeRest
-        getList: <RecordType extends Record = Record>(resource, params) =>
+        getList: <RaRecordType extends RaRecord = any>(resource, params) =>
             baseDataProvider
-                .getList<RecordType>(resource, params)
+                .getList<RaRecordType>(resource, params)
                 .catch(error => {
                     if (error.code === 1) {
                         // undefined collection error: hide the error and return an empty list instead
@@ -66,16 +66,16 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
                         throw error;
                     }
                 }),
-        getOne: <RecordType extends Record = Record>(resource, params) =>
-            baseDataProvider.getOne<RecordType>(resource, params),
-        getMany: <RecordType extends Record = Record>(resource, params) =>
-            baseDataProvider.getMany<RecordType>(resource, params),
-        getManyReference: <RecordType extends Record = Record>(
+        getOne: <RaRecordType extends RaRecord = any>(resource, params) =>
+            baseDataProvider.getOne<RaRecordType>(resource, params),
+        getMany: <RaRecordType extends RaRecord = any>(resource, params) =>
+            baseDataProvider.getMany<RaRecordType>(resource, params),
+        getManyReference: <RaRecordType extends RaRecord = any>(
             resource,
             params
         ) =>
             baseDataProvider
-                .getManyReference<RecordType>(resource, params)
+                .getManyReference<RaRecordType>(resource, params)
                 .catch(error => {
                     if (error.code === 1) {
                         // undefined collection error: hide the error and return an empty list instead
@@ -86,7 +86,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
                 }),
 
         // update methods need to persist changes in localStorage
-        update: <RecordType extends Record = Record>(resource, params) => {
+        update: <RaRecordType extends RaRecord = any>(resource, params) => {
             updateLocalStorage(() => {
                 const index = data[resource].findIndex(
                     record => record.id == params.id
@@ -96,7 +96,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
                     ...params.data,
                 };
             });
-            return baseDataProvider.update<RecordType>(resource, params);
+            return baseDataProvider.update<RaRecordType>(resource, params);
         },
         updateMany: (resource, params) => {
             updateLocalStorage(() => {
@@ -112,10 +112,10 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
             });
             return baseDataProvider.updateMany(resource, params);
         },
-        create: <RecordType extends Record = Record>(resource, params) => {
+        create: <RaRecordType extends RaRecord = any>(resource, params) => {
             // we need to call the fakerest provider first to get the generated id
             return baseDataProvider
-                .create<RecordType>(resource, params)
+                .create<RaRecordType>(resource, params)
                 .then(response => {
                     updateLocalStorage(() => {
                         if (!data.hasOwnProperty(resource)) {
@@ -126,14 +126,14 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
                     return response;
                 });
         },
-        delete: <RecordType extends Record = Record>(resource, params) => {
+        delete: <RaRecordType extends RaRecord = any>(resource, params) => {
             updateLocalStorage(() => {
                 const index = data[resource].findIndex(
                     record => record.id == params.id
                 );
                 pullAt(data[resource], [index]);
             });
-            return baseDataProvider.delete<RecordType>(resource, params);
+            return baseDataProvider.delete<RaRecordType>(resource, params);
         },
         deleteMany: (resource, params) => {
             updateLocalStorage(() => {

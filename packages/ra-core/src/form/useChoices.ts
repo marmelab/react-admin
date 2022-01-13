@@ -2,11 +2,11 @@ import { ReactElement, isValidElement, cloneElement, useCallback } from 'react';
 import get from 'lodash/get';
 
 import { useTranslate } from '../i18n';
-import { Record } from '../types';
+import { RaRecord } from '../types';
 import { InputProps } from '.';
 
 export type OptionTextElement = ReactElement<{
-    record: Record;
+    record: RaRecord;
 }>;
 export type OptionTextFunc = (choice: any) => string | OptionTextElement;
 export type OptionText = OptionTextElement | OptionTextFunc | string;

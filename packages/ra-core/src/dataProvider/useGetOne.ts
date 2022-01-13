@@ -1,4 +1,4 @@
-import { Record, GetOneParams } from '../types';
+import { RaRecord, GetOneParams } from '../types';
 import { useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
 import { useDataProvider } from './useDataProvider';
 
@@ -40,25 +40,25 @@ import { useDataProvider } from './useDataProvider';
  *     return <div>User {data.username}</div>;
  * };
  */
-export const useGetOne = <RecordType extends Record = Record>(
+export const useGetOne = <RaRecordType extends RaRecord = any>(
     resource: string,
-    { id }: GetOneParams<RecordType>,
-    options?: UseQueryOptions<RecordType>
-): UseGetOneHookValue<RecordType> => {
+    { id }: GetOneParams<RaRecordType>,
+    options?: UseQueryOptions<RaRecordType>
+): UseGetOneHookValue<RaRecordType> => {
     const dataProvider = useDataProvider();
-    return useQuery<RecordType, unknown, RecordType>(
+    return useQuery<RaRecordType, unknown, RaRecordType>(
         // Sometimes the id comes as a string (e.g. when read from the URL in a Show view).
         // Sometimes the id comes as a number (e.g. when read from a Record in useGetList response).
         // As the react-query cache is type-sensitive, we always stringify the identifier to get a match
         [resource, 'getOne', { id: String(id) }],
         () =>
             dataProvider
-                .getOne<RecordType>(resource, { id })
+                .getOne<RaRecordType>(resource, { id })
                 .then(({ data }) => data),
         options
     );
 };
 
 export type UseGetOneHookValue<
-    RecordType extends Record = Record
-> = UseQueryResult<RecordType>;
+    RaRecordType extends RaRecord = any
+> = UseQueryResult<RaRecordType>;

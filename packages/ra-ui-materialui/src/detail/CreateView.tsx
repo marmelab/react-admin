@@ -3,8 +3,9 @@ import { Children, cloneElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { Card } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { CreateControllerProps, useCreateContext } from 'ra-core';
+import { RaRecord, CreateControllerProps, useCreateContext } from 'ra-core';
 import classnames from 'classnames';
+
 import { CreateProps } from '../types';
 import { TitleForRecord } from '../layout';
 
@@ -79,9 +80,9 @@ export const CreateView = (props: CreateViewProps) => {
     );
 };
 
-interface CreateViewProps
-    extends CreateProps,
-        Omit<CreateControllerProps, 'resource'> {
+interface CreateViewProps<RaRecordType extends RaRecord = any>
+    extends CreateProps<RaRecordType>,
+        Omit<CreateControllerProps<RaRecordType>, 'resource'> {
     children: ReactElement;
 }
 

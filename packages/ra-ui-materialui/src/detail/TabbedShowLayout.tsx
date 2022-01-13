@@ -14,7 +14,7 @@ import { styled } from '@mui/material/styles';
 import { Divider } from '@mui/material';
 import { Outlet, Routes, Route } from 'react-router-dom';
 import {
-    Record,
+    RaRecord,
     useRecordContext,
     OptionalRecordContextProvider,
 } from 'ra-core';
@@ -180,7 +180,7 @@ export interface TabbedShowLayoutProps {
     children: ReactNode;
     className?: string;
     divider?: ReactNode;
-    record?: Record;
+    record?: RaRecord;
     rootPath?: string;
     spacing?: ResponsiveStyleValue<number | string>;
     sx?: SxProps;

@@ -9,7 +9,7 @@ import {
     Theme,
 } from '@mui/material';
 import classnames from 'classnames';
-import { Record, MutationMode } from 'ra-core';
+import { RaRecord, MutationMode } from 'ra-core';
 
 import { SaveButton, DeleteButton } from '../button';
 
@@ -50,8 +50,10 @@ import { SaveButton, DeleteButton } from '../button';
  * @prop {string} width Apply to the mobile or desktop classes depending on its value. Pass `xs` to display the mobile version.
  *
  */
-export const Toolbar = <RecordType extends Partial<Record> = Partial<Record>>(
-    props: ToolbarProps<RecordType>
+export const Toolbar = <
+    RaRecordType extends Partial<RaRecord> = Partial<RaRecord>
+>(
+    props: ToolbarProps<RaRecordType>
 ) => {
     const {
         alwaysEnableSaveButton,
@@ -144,7 +146,7 @@ export const Toolbar = <RecordType extends Partial<Record> = Partial<Record>>(
     );
 };
 
-export interface ToolbarProps<RecordType extends Partial<Record> = Record>
+export interface ToolbarProps<RaRecordType extends Partial<RaRecord> = any>
     extends Omit<MuiToolbarProps, 'classes'> {
     children?: ReactNode;
     alwaysEnableSaveButton?: boolean;
@@ -155,7 +157,7 @@ export interface ToolbarProps<RecordType extends Partial<Record> = Record>
     saving?: boolean;
     submitOnEnter?: boolean;
     basePath?: string;
-    record?: RecordType;
+    record?: RaRecordType;
     resource?: string;
     validating?: boolean;
 }

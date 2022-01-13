@@ -2,13 +2,13 @@ import { useCallback, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { parsePath } from 'history';
 
-import { Identifier, Record } from '../types';
+import { Identifier, RaRecord } from '../types';
 import resolveRedirectTo from '../util/resolveRedirectTo';
 
 type RedirectToFunction = (
     basePath?: string,
     id?: Identifier,
-    data?: Record,
+    data?: RaRecord,
     state?: object
 ) => string;
 
@@ -46,7 +46,7 @@ const useRedirect = () => {
             redirectTo: RedirectionSideEffect,
             basePath: string = '',
             id?: Identifier,
-            data?: Partial<Record>,
+            data?: Partial<RaRecord>,
             state: object = {}
         ) => {
             if (!redirectTo) {
