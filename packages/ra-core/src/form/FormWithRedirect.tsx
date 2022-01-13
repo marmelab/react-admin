@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useRef, useMemo } from 'react';
+import { SyntheticEvent, useRef, useMemo } from 'react';
 import { Form, FormProps, FormRenderProps } from 'react-final-form';
 import arrayMutators from 'final-form-arrays';
 
@@ -7,6 +7,7 @@ import useResetSubmitErrors from './useResetSubmitErrors';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
 import getFormInitialValues from './getFormInitialValues';
 import { Record as RaRecord } from '../types';
+import { useNotify } from '../sideEffect';
 import { useSaveContext, SaveHandler } from '../controller';
 import { useRecordContext, OptionalRecordContextProvider } from '../controller';
 import submitErrorsMutators from './submitErrorsMutators';
@@ -165,12 +166,33 @@ interface FormViewProps
 
 const FormView = ({
     formRootPathname,
+    handleSubmit: formHandleSubmit,
     render,
     warnWhenUnsavedChanges,
     ...props
 }: FormViewProps) => {
     useResetSubmitErrors();
     useWarnWhenUnsavedChanges(warnWhenUnsavedChanges, formRootPathname);
+    const notify = useNotify();
 
-    return <FormGroupsProvider>{render(props)}</FormGroupsProvider>;
+    const handleSubmit = (
+        event?: Partial<
+            Pick<
+                SyntheticEvent<Element, Event>,
+                'preventDefault' | 'stopPropagation'
+            >
+        >
+    ) => {
+        if (props.invalid) {
+            notify('ra.message.invalid_form', { type: 'warning' });
+        }
+
+        return formHandleSubmit(event);
+    };
+
+    return (
+        <FormGroupsProvider>
+            {render({ ...props, handleSubmit })}
+        </FormGroupsProvider>
+    );
 };
