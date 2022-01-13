@@ -8,6 +8,7 @@ import {
     DeleteButton,
     ToolbarProps,
     useRecordContext,
+    useNotify,
     useRedirect,
 } from 'react-admin';
 import AcceptButton from './AcceptButton';
@@ -30,6 +31,7 @@ const StyledMuiToolbar = styled(MuiToolbar)(({ theme }) => ({
 const ReviewEditToolbar = (props: ToolbarProps) => {
     const { basePath, invalid, resource, saving } = props;
     const redirect = useRedirect();
+    const notify = useNotify();
 
     const record = useRecordContext(props);
 
@@ -47,6 +49,11 @@ const ReviewEditToolbar = (props: ToolbarProps) => {
                         invalid={invalid}
                         saving={saving}
                         onSuccess={() => {
+                            notify('ra.notification.updated', {
+                                type: 'info',
+                                messageArgs: { smart_count: 1 },
+                                undoable: true,
+                            });
                             redirect('list', '/reviews');
                         }}
                         submitOnEnter={true}
