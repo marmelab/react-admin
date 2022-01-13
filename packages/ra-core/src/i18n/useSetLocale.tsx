@@ -1,7 +1,7 @@
 import { useContext, useCallback } from 'react';
 
 import { TranslationContext } from './TranslationContext';
-import { useNotify } from '../sideEffect';
+import { useNotify } from '../notification';
 
 /**
  * Set the current locale using the TranslationContext

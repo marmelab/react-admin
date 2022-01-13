@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { CoreAdminContext, AdminContextProps } from 'ra-core';
-import { defaultTheme, ThemeProvider } from 'ra-ui-materialui';
 
-import { defaultI18nProvider } from './defaultI18nProvider';
+import { defaultTheme } from './defaultTheme';
+import { ThemeProvider } from './layout/Theme';
 
 export const AdminContext = (props: AdminContextProps) => {
     const { theme = defaultTheme, ...rest } = props;
@@ -11,9 +11,6 @@ export const AdminContext = (props: AdminContextProps) => {
             <CoreAdminContext {...rest} />
         </ThemeProvider>
     );
-};
-AdminContext.defaultProps = {
-    i18nProvider: defaultI18nProvider,
 };
 
 AdminContext.displayName = 'AdminContext';

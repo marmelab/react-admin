@@ -29,6 +29,7 @@ export interface AdminUIProps {
     loginPage?: LoginComponent | boolean;
     logout?: ComponentType;
     menu?: ComponentType;
+    notification?: ComponentType;
     ready?: ComponentType;
     title?: TitleComponent;
 }

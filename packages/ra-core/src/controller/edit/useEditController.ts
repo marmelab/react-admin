@@ -10,11 +10,9 @@ import {
     OnFailure,
     UpdateParams,
 } from '../../types';
-import {
-    useNotify,
-    useRedirect,
-    RedirectionSideEffect,
-} from '../../sideEffect';
+import { useRedirect, RedirectionSideEffect } from '../../sideEffect';
+import { useNotify } from '../../notification';
+
 import {
     useGetOne,
     useUpdate,

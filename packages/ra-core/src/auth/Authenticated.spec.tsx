@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { createMemoryHistory } from 'history';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { CoreAdminContext, createAdminStore } from '../core';
-import { showNotification } from '../actions';
+import { useNotificationContext } from '../notification';
 import Authenticated from './Authenticated';
 import { testDataProvider } from '../dataProvider';
 
@@ -63,6 +63,16 @@ describe('<Authenticated>', () => {
                 </div>
             );
         };
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
         render(
             <Provider store={store}>
                 <CoreAdminContext
@@ -70,6 +80,7 @@ describe('<Authenticated>', () => {
                     dataProvider={testDataProvider()}
                     history={history}
                 >
+                    <Notification />
                     <Routes>
                         <Route
                             path="/"
@@ -87,11 +98,15 @@ describe('<Authenticated>', () => {
         await waitFor(() => {
             expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({});
             expect(authProvider.logout.mock.calls[0][0]).toEqual({});
-            expect(dispatch).toHaveBeenCalledTimes(2);
-            expect(dispatch.mock.calls[0][0]).toEqual(
-                showNotification('ra.auth.auth_check_error', 'warning')
-            );
-            expect(dispatch.mock.calls[1][0]).toEqual({
+            expect(dispatch).toHaveBeenCalledTimes(1);
+            expect(notificationsSpy).toEqual([
+                {
+                    message: 'ra.auth.auth_check_error',
+                    type: 'warning',
+                    notificationOptions: {},
+                },
+            ]);
+            expect(dispatch.mock.calls[0][0]).toEqual({
                 type: 'RA/CLEAR_STATE',
             });
             expect(screen.getByLabelText('nextPathname').innerHTML).toEqual(

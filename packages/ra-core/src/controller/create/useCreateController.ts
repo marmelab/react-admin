@@ -7,11 +7,8 @@ import { UseMutationOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
 import { useCreate } from '../../dataProvider';
-import {
-    useNotify,
-    useRedirect,
-    RedirectionSideEffect,
-} from '../../sideEffect';
+import { useRedirect, RedirectionSideEffect } from '../../sideEffect';
+import { useNotify } from '../../notification';
 import {
     SetOnSuccess,
     SetOnFailure,

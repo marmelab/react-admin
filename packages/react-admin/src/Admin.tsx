@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { CoreAdminProps } from 'ra-core';
+import { AdminUI, AdminContext } from 'ra-ui-materialui';
 import { ThemeOptions } from '@mui/material';
 
-import { AdminContext } from './AdminContext';
-import { AdminUI } from './AdminUI';
+import { defaultI18nProvider } from './defaultI18nProvider';
 
 /**
  * Main admin component, entry point to the application.
@@ -152,6 +152,10 @@ export const Admin = (props: AdminProps) => {
             </AdminUI>
         </AdminContext>
     );
+};
+
+Admin.defaultProps = {
+    i18nProvider: defaultI18nProvider,
 };
 
 export default Admin;

@@ -1,7 +1,7 @@
 import { useContext, useMemo } from 'react';
 
 import DataProviderContext from './DataProviderContext';
-import defaultDataProvider from './defaultDataProvider';
+import { defaultDataProvider } from './defaultDataProvider';
 import validateResponseFormat from './validateResponseFormat';
 import { DataProvider } from '../types';
 import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
