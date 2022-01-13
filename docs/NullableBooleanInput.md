@@ -53,6 +53,6 @@ The `<NullableBooleanInput>` component accepts the usual `className` prop. You c
 
 | Rule name                         | Description                                                   |
 |-----------------------------------|---------------------------------------------------------------|
-| `& .RaNullableBooleanInput.input` | Applied to the underlying Material UI's `TextField` component |
+| `& .RaNullableBooleanInput-input` | Applied to the underlying Material UI's `TextField` component |
 
 To override the style of all instances of `<NullableBooleanInput>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaNullableBooleanInput` key.

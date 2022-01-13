@@ -198,8 +198,8 @@ The `<SimpleShowLayout>` component accepts the usual `className` prop but you ca
 
 | Rule name                     | Description                                             |
 |-------------------------------|---------------------------------------------------------|
-| `& .RaSimpleShowLayout.stack` | Applied to the `<Stack>` element                        |
-| `& .RaSimpleShowLayout.row`   | Applied to each child of the stack (i.e. to each field) |
+| `& .RaSimpleShowLayout-stack` | Applied to the `<Stack>` element                        |
+| `& .RaSimpleShowLayout-row`   | Applied to each child of the stack (i.e. to each field) |
 
 To override the style of all instances of `<SimpleShowLayout>` using the [material-ui style overrides](https://mui.com/customization/theme-components/), use the `RaSimpleShowLayout` key.
 

@@ -275,7 +275,7 @@ The `<TabbedShowLayout>` component accepts the usual `className` prop but you ca
 
 | Rule name                       | Description                                              |
 |---------------------------------| ---------------------------------------------------------|
-| `& .RaTabbedShowLayout.content` | Applied to the content zone (under the tabs)             |
+| `& .RaTabbedShowLayout-content` | Applied to the content zone (under the tabs)             |
 
 To override the style of all instances of `<TabbedShowLayout>` using the [material-ui style overrides](https://mui.com/customization/theme-components/), use the `RaTabbedShowLayout` key.
 

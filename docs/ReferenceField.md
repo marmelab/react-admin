@@ -48,7 +48,7 @@ The `<ReferenceField>` component accepts the usual `className` prop. You can als
 
 | Rule name                  | Description                   |
 |----------------------------|-------------------------------|
-| `& .RaReferenceField.link` | Applied to each child element |
+| `& .RaReferenceField-link` | Applied to each child element |
 
 To override the style of all instances of `<ReferenceField>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaReferenceField` key.
 

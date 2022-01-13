@@ -105,7 +105,7 @@ It also supports [all the other `<Button>` props](#button).
 
 | Rule name                    | Description                                                        |
 |------------------------------|--------------------------------------------------------------------|
-| `& .RaCreateButton.floating` | Applied to the underlying `MuiFab` component used in small screens |
+| `& .RaCreateButton-floating` | Applied to the underlying `MuiFab` component used in small screens |
 
 To override the style of all instances of `<CreateButton>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaCreateButton` key.
 
@@ -267,9 +267,9 @@ This button is an internal component used by react-admin in [the Filter button/f
 
 #### `sx`: CSS API
 
-| Rule name                | Description                                                   |
-|--------------------------|---------------------------------------------------------------|
-| `& .RaFilterButton.root` | Alternative to using `className`. Applied to the root element |
+| Rule name                 | Description                                                   |
+|---------------------------|---------------------------------------------------------------|
+| `&.RaFilterButton-root`   | Alternative to using `className`. Applied to the root element |
 
 To override the style of all instances of `<FilterButton>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaFilterButton` key.
 
@@ -327,12 +327,12 @@ Other props are passed down to [the underlying material-ui `<Button>`](https://m
 
 | Rule name                    | Description                                                                                     |
 |------------------------------|-------------------------------------------------------------------------------------------------|
-| `& .RaButton.button`         | Applied to the underlying `MuiButton` component                                                 |
-| `& .RaButton.label`          | Applied to the Button's label when `alignIcon` prop is 'left'                                   |
-| `& .RaButton.labelRightIcon` | Applied to the Button's label when `alignIcon` prop is 'left'                                   |
-| `& .RaButton.smallIcon`      | Applied to the Button's `children` when `size` prop is `small` and `alignIcon` prop is 'right'  |
-| `& .RaButton.mediumIcon`     | Applied to the Button's `children` when `size` prop is `medium` and `alignIcon` prop is 'right' |
-| `& .RaButton.largeIcon`      | Applied to the Button's `children` when `size` prop is `large` and `alignIcon` prop is 'right'  |
+| `& .RaButton-button`         | Applied to the underlying `MuiButton` component                                                 |
+| `& .RaButton-label`          | Applied to the Button's label when `alignIcon` prop is 'left'                                   |
+| `& .RaButton-labelRightIcon` | Applied to the Button's label when `alignIcon` prop is 'left'                                   |
+| `& .RaButton-smallIcon`      | Applied to the Button's `children` when `size` prop is `small` and `alignIcon` prop is 'right'  |
+| `& .RaButton-mediumIcon`     | Applied to the Button's `children` when `size` prop is `medium` and `alignIcon` prop is 'right' |
+| `& .RaButton-largeIcon`      | Applied to the Button's `children` when `size` prop is `large` and `alignIcon` prop is 'right'  |
 
 To override the style of all instances of `<Button>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaButton` key.
 
@@ -343,7 +343,7 @@ To override the style of all instances of `<Button>` using the [material-ui styl
 
 | Rule name                                       | Description                                     |
 |-------------------------------------------------|-------------------------------------------------|
-| `& .RaSkipNavigationButton.skipToContentButton` | Applied to the underlying `MuiButton` component |
+| `& .RaSkipNavigationButton-skipToContentButton` | Applied to the underlying `MuiButton` component |
 
 To override the style of all instances of `<SkipNavigationButton>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaSkipNavigationButton` key.
 
@@ -416,11 +416,11 @@ See [The theming documentation](./Theming.md#menuitemlink) for more details.
 
 #### `sx`: CSS API
 
-| Rule name                  | Description                                                         |
-|----------------------------|---------------------------------------------------------------------|
-| `& .RaMenuItemLink.root`   | Alternative to using `className`. Applied to the root element       |
-| `& .RaMenuItemLink.active` | Applied to the underlying `MuiMenuItem`'s `activeClassName` prop    |
-| `& .RaMenuItemLink.icon`   | Applied to the `ListItemIcon` component when `leftIcon` prop is set |
+| Rule name                   | Description                                                         |
+|-----------------------------|---------------------------------------------------------------------|
+| `&.RaMenuItemLink-root`     | Alternative to using `className`. Applied to the root element       |
+| `& .RaMenuItemLink-active`  | Applied to the underlying `MuiMenuItem`'s `activeClassName` prop    |
+| `& .RaMenuItemLink-icon`    | Applied to the `ListItemIcon` component when `leftIcon` prop is set |
 
 To override the style of all instances of `<MenuItemLink>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaMenuItemLink` key.
 
@@ -437,8 +437,8 @@ To override the style of all instances of `<MenuItemLink>` using the [material-u
 
 | Rule name                  | Description                                                                                                                              |
 |----------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| `& .RaUserMenu.user`       | Alternative to using `className`. Applied to the root element                                                                            |
-| `& .RaUserMenu.userButton` | Applied to the underlying `MuiButton` component when `useGetIdentity().loaded` is `true` and `useGetIdentity().identity.fullName` is set |
-| `& .RaUserMenu.avatar`     | Applied to the underlying `MuiAvatar` component when `useGetIdentity().avatar` is `true`                                                 |
+| `& .RaUserMenu-user`       | Alternative to using `className`. Applied to the root element                                                                            |
+| `& .RaUserMenu-userButton` | Applied to the underlying `MuiButton` component when `useGetIdentity().loaded` is `true` and `useGetIdentity().identity.fullName` is set |
+| `& .RaUserMenu-avatar`     | Applied to the underlying `MuiAvatar` component when `useGetIdentity().avatar` is `true`                                                 |
 
 To override the style of all instances of `<UserMenu>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaUserMenu` key.

@@ -266,8 +266,8 @@ The `<SelectArrayInput>` component accepts the usual `className` prop. You can a
 
 | Rule name                     | Description                                                                        |
 |-------------------------------|------------------------------------------------------------------------------------|
-| `& .RaSelectArrayInput.root`  | Applied to the root element                                                        |
-| `& .RaSelectArrayInput.chip`  | Applied to each Material UI's `Chip` component used as selected item               |
-| `& .RaSelectArrayInput.chips` | Applied to the container of Material UI's `Chip` components used as selected items |
+| `&.RaSelectArrayInput-root`   | Applied to the root element                                                        |
+| `& .RaSelectArrayInput-chip`  | Applied to each Material UI's `Chip` component used as selected item               |
+| `& .RaSelectArrayInput-chips` | Applied to the container of Material UI's `Chip` components used as selected items |
 
 To override the style of all instances of `<SelectArrayInput>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaSelectArrayInput` key.

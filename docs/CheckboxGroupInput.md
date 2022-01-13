@@ -103,7 +103,7 @@ The `<CheckboxGroupInput>` component accepts the usual `className` prop. You can
 
 | Rule name                       | Description                                                   |
 |---------------------------------|---------------------------------------------------------------|
-| `& .RaCheckboxGroupInput.root`  | Applied to the root element                                   |
-| `& .RaCheckboxGroupInput.label` | Applied to the underlying Material UI's `FormLabel` component |
+| `&.RaCheckboxGroupInput-root`   | Applied to the root element                                   |
+| `& .RaCheckboxGroupInput-label` | Applied to the underlying Material UI's `FormLabel` component |
 
 To override the style of all instances of `<CheckboxGroupInput>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaCheckboxGroupInput` key.

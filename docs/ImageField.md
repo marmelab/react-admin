@@ -35,8 +35,8 @@ The `<ImageField>` component accepts the usual `className` prop. You can also ov
 
 | Rule name               | Description                                                                    |
 |-------------------------|--------------------------------------------------------------------------------|
-| `& .RaImageField.list`  | Applied to the underlying `<ul>` component when `sourceValue` prop is an array |
-| `& .RaImageField.image` | Applied to each underlying `<img>` component                                   |
+| `& .RaImageField-list`  | Applied to the underlying `<ul>` component when `sourceValue` prop is an array |
+| `& .RaImageField-image` | Applied to each underlying `<img>` component                                   |
 
 To override the style of all instances of `<ImageField>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaImageField` key.
 

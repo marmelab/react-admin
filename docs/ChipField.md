@@ -11,9 +11,9 @@ Displays a value inside a ["Chip"](https://material-ui.com/components/chips), wh
 
 The `<ChipField>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
-| Rule name             | Description                                              |
-|-----------------------| -------------------------------------------------------- |
-| `& .RaChipField.chip` | Applied to the underlying Material UI's `Chip` component |
+| Rule name            | Description                                              |
+|----------------------|----------------------------------------------------------|
+| `&.RaChipField-chip` | Applied to the underlying Material UI's `Chip` component |
 
 To override the style of all instances of `<ChipField>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaChipField` key.
 

@@ -274,6 +274,6 @@ The `<SelectInput>` component accepts the usual `className` prop. You can also o
 
 | Rule name                | Description                                               |
 |--------------------------|-----------------------------------------------------------|
-| `& .RaSelectInput.input` | Applied to the underlying `ResettableTextField` component |
+| `& .RaSelectInput-input` | Applied to the underlying `ResettableTextField` component |
 
 To override the style of all instances of `<SelectInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaSelectInput` key.
