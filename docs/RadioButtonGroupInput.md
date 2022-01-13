@@ -113,4 +113,4 @@ The `<RadioButtonGroupInput>` component accepts the usual `className` prop. You 
 |------------------------------------|---------------------------------------------------------------|
 | `& .RaRadioButtonGroupInput.label` | Applied to the underlying Material UI's `FormLabel` component |
 
-To override the style of all instances of `<RadioButtonGroupInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaRadioButtonGroupInput` key.
+To override the style of all instances of `<RadioButtonGroupInput>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaRadioButtonGroupInput` key.
