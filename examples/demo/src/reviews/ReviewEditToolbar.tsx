@@ -11,6 +11,7 @@ import {
 } from 'react-admin';
 import AcceptButton from './AcceptButton';
 import RejectButton from './RejectButton';
+import { Review } from '../types';
 
 const PREFIX = 'ReviewEditToolbar';
 
@@ -35,7 +36,7 @@ const ReviewEditToolbar = (props: ToolbarProps) => {
         saving,
     } = props;
 
-    const record = useRecordContext();
+    const record = useRecordContext<Review>();
 
     if (!record) return null;
     return (
