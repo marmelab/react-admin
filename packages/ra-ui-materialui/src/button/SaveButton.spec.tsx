@@ -191,7 +191,7 @@ describe('<SaveButton />', () => {
         });
     });
 
-    it('should allow to override the onFailure side effects', async () => {
+    it('should allow to override the onError side effects', async () => {
         jest.spyOn(console, 'error').mockImplementationOnce(() => {});
         const dataProvider = ({
             getOne: () =>
@@ -200,10 +200,10 @@ describe('<SaveButton />', () => {
                 }),
             update: () => Promise.reject({ message: 'not good' }),
         } as unknown) as DataProvider;
-        const onFailure = jest.fn();
+        const onError = jest.fn();
         const EditToolbar = props => (
             <Toolbar {...props}>
-                <SaveButton onFailure={onFailure} />
+                <SaveButton onError={onError} />
             </Toolbar>
         );
         const {
@@ -233,7 +233,7 @@ describe('<SaveButton />', () => {
         });
         fireEvent.click(getByText('ra.action.save'));
         await waitFor(() => {
-            expect(onFailure).toHaveBeenCalledWith(
+            expect(onError).toHaveBeenCalledWith(
                 {
                     message: 'not good',
                 },

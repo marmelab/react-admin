@@ -262,7 +262,7 @@ describe('useCreateController', () => {
         expect(notify).toBeUndefined();
     });
 
-    it('should allow the save onFailure option to override the failure side effects override', async () => {
+    it('should allow the save onError option to override the failure side effects override', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;
         const dataProvider = testDataProvider({
@@ -270,7 +270,7 @@ describe('useCreateController', () => {
             create: () => Promise.reject({ message: 'not good' }),
         });
         const onError = jest.fn();
-        const onFailureSave = jest.fn();
+        const onErrorSave = jest.fn();
         const store = createAdminStore();
         const dispatch = jest.spyOn(store, 'dispatch');
         render(
@@ -292,12 +292,12 @@ describe('useCreateController', () => {
             saveCallback(
                 { foo: 'bar' },
                 {
-                    onFailure: onFailureSave,
+                    onError: onErrorSave,
                 }
             )
         );
         expect(onError).not.toHaveBeenCalled();
-        expect(onFailureSave).toHaveBeenCalled();
+        expect(onErrorSave).toHaveBeenCalled();
         const notify = dispatch.mock.calls.find(
             params => params[0].type === 'RA/SHOW_NOTIFICATION'
         );

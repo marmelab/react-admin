@@ -652,6 +652,26 @@ The change concerns the following components:
 - `<DeleteButton>`
 - `<BulkDeleteButton>`
 
+It also affects the `save` callback returned by the `useSaveContext` hook:
+
+```diff
+const MyButton = () => {
+    const { save, saving } = useSaveContext();
+    const notify = useNotify();
+
+    const handleClick = () => {
+        save({ value: 123 }, {
+-            onFailure: (error) => {
++            onError: (error) => {
+                notify(error.message, { type: 'error' });
+            },
+        });
+    };
+
+    return <button onClick={handleClick}>Save</button>
+}
+```
+
 ## `onSuccess` Callback On DataProvider Hooks And Components Has A New Signature
 
 The `onSuccess` callback used to receive the *response* from the dataProvider. On specialized hooks, it now receives the `data` property of the response instead. 

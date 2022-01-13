@@ -515,7 +515,7 @@ The default `onError` function is:
 }
 ```
 
-**Tip**: If you want to have different failure side effects based on the button clicked by the user, you can set the `onFailure` prop on the `<SaveButton>` component, too.
+**Tip**: If you want to have different failure side effects based on the button clicked by the user, you can set the `onError` prop on the `<SaveButton>` component, too.
 
 ### `transform`
 
@@ -723,7 +723,7 @@ const MyEdit = props => {
     const {
         basePath, // deduced from the location, useful for action buttons
         defaultTitle, // the translated title based on the resource, e.g. 'Post #123'
-        error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onFailure` side effect.
+        error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onError` side effect.
         loaded, // boolean that is false until the record is available
         loading, // boolean that is true on mount, and false once the record was fetched
         record, // record fetched via dataProvider.getOne() based on the id from the location
@@ -2216,7 +2216,7 @@ import { Edit, useNotify, useRedirect } from 'react-admin';
 const PostEdit = () => {
     const notify = useNotify();
     const redirect = useRedirect();
-    const onFailure = (error) => {
+    const onError = (error) => {
         if (error.code == 123) {
             notify('Could not save changes: concurrent edition in progress', { type: 'warning' });
         } else {
@@ -2225,14 +2225,14 @@ const PostEdit = () => {
         redirect('list', props.basePath);
     }
     return (
-        <Edit onFailure={onFailure}>
+        <Edit onError={onError}>
             ...
         </Edit>
     );
 }
 ```
 
-If the form has several save buttons, you can also pass a custom `onSuccess` or `onFailure` function to the `<SaveButton>` components, to have a different message and/or redirection depending on the submit button clicked.
+If the form has several save buttons, you can also pass a custom `onSuccess` or `onError` function to the `<SaveButton>` components, to have a different message and/or redirection depending on the submit button clicked.
 
 **Tip**: The notify message will be translated.
 

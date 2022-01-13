@@ -20,7 +20,7 @@ describe('useEditController', () => {
 
     const saveContextValue = {
         save: jest.fn(),
-        setOnFailure: jest.fn(),
+        setonError: jest.fn(),
     };
 
     it('should call the dataProvider.getOne() function on mount', async () => {
@@ -564,7 +564,7 @@ describe('useEditController', () => {
         });
     });
 
-    it('should allow the save onFailure option to override the failure side effects override', async () => {
+    it('should allow the save onError option to override the failure side effects override', async () => {
         jest.spyOn(console, 'error').mockImplementationOnce(() => {});
         let saveCallback;
         const dataProvider = ({
@@ -572,7 +572,7 @@ describe('useEditController', () => {
             update: () => Promise.reject({ message: 'not good' }),
         } as unknown) as DataProvider;
         const onError = jest.fn();
-        const onFailureSave = jest.fn();
+        const onErrorSave = jest.fn();
         const store = createAdminStore();
         const dispatch = jest.spyOn(store, 'dispatch');
         render(
@@ -597,12 +597,12 @@ describe('useEditController', () => {
             saveCallback(
                 { foo: 'bar' },
                 {
-                    onFailure: onFailureSave,
+                    onError: onErrorSave,
                 }
             )
         );
         expect(onError).not.toHaveBeenCalled();
-        expect(onFailureSave).toHaveBeenCalled();
+        expect(onErrorSave).toHaveBeenCalled();
         const notify = dispatch.mock.calls.find(
             params => params[0].type === 'RA/SHOW_NOTIFICATION'
         );

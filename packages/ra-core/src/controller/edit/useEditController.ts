@@ -7,7 +7,7 @@ import {
     Record,
     MutationMode,
     OnSuccess,
-    OnFailure,
+    onError,
     TransformData,
     UpdateParams,
 } from '../../types';
@@ -115,7 +115,7 @@ export const useEditController = <RecordType extends Record = Record>(
             data: Partial<RecordType>,
             {
                 onSuccess: onSuccessFromSave,
-                onFailure: onFailureFromSave,
+                onError: onErrorFromSave,
                 transform: transformFromSave,
             } = {}
         ) =>
@@ -147,8 +147,8 @@ export const useEditController = <RecordType extends Record = Record>(
                                       data
                                   );
                               },
-                        onError: onFailureFromSave
-                            ? onFailureFromSave
+                        onError: onErrorFromSave
+                            ? onErrorFromSave
                             : onError
                             ? onError
                             : (error: Error | string) => {
@@ -209,7 +209,7 @@ export interface EditControllerProps<RecordType extends Record = Record> {
         unknown,
         UpdateParams<RecordType>
     >;
-    onFailure?: OnFailure;
+    onError?: onError;
     onSuccess?: OnSuccess;
     queryOptions?: UseQueryOptions<RecordType>;
     redirect?: RedirectionSideEffect;

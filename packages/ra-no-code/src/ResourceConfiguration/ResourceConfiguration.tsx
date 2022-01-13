@@ -75,7 +75,7 @@ export const ResourceConfigurationPage = () => {
     };
     const saveContext = {
         save,
-        setOnFailure: () => {},
+        setonError: () => {},
         setOnSuccess: () => {},
     };
 

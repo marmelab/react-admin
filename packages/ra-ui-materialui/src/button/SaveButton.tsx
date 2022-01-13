@@ -10,7 +10,7 @@ import { useForm } from 'react-final-form';
 import {
     MutationMode,
     OnSuccess,
-    OnFailure,
+    onError,
     Record,
     TransformData,
     useSaveContext,
@@ -31,7 +31,7 @@ import { sanitizeButtonRestProps } from './Button';
  * @prop {string|boolean} redirect Override of the default redirect in case of success. Can be 'list', 'show', 'edit' (for create views), or false (to stay on the creation form).
  * @prop {function} onSave (deprecated)
  * @prop {function} onSuccess Callback to execute instead of the default success side effects. Receives the dataProvider response as argument.
- * @prop {function} onFailure Callback to execute instead of the default error side effects. Receives the dataProvider error response as argument.
+ * @prop {function} onError Callback to execute instead of the default error side effects. Receives the dataProvider error response as argument.
  * @prop {function} transform Callback to execute before calling the dataProvider. Receives the data from the form, must return that transformed data. Can be asynchronous (and return a Promise)
  *
  * @param {Props} props
@@ -55,7 +55,7 @@ export const SaveButton = (props: SaveButtonProps) => {
         invalid,
         label = 'ra.action.save',
         onClick,
-        onFailure,
+        onError,
         onSuccess,
         saving,
         disabled = saving,
@@ -67,7 +67,7 @@ export const SaveButton = (props: SaveButtonProps) => {
     const translate = useTranslate();
     const form = useForm();
     const saveContext = useSaveContext();
-    const hasSideEffects = !!onSuccess || !!onFailure || !!transform;
+    const hasSideEffects = !!onSuccess || !!onError || !!transform;
     const type = !submitOnEnter || hasSideEffects ? 'button' : 'submit';
 
     const handleClick: MouseEventHandler<HTMLButtonElement> = event => {
@@ -83,7 +83,7 @@ export const SaveButton = (props: SaveButtonProps) => {
             const values = form.getState().values;
             saveContext?.save(values, {
                 onSuccess,
-                onFailure,
+                onError,
                 transform,
             });
         }
@@ -131,7 +131,7 @@ interface Props {
     invalid?: boolean;
     label?: string;
     onSuccess?: OnSuccess;
-    onFailure?: OnFailure;
+    onError?: onError;
     transform?: TransformData;
     saving?: boolean;
     submitOnEnter?: boolean;

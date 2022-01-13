@@ -182,7 +182,7 @@ describe('EditBase', () => {
         expect(onSuccess).not.toHaveBeenCalled();
     });
 
-    it('should allow to override the onFailure function', async () => {
+    it('should allow to override the onError function', async () => {
         const dataProvider = testDataProvider({
             getOne: () =>
                 // @ts-ignore
@@ -234,7 +234,7 @@ describe('EditBase', () => {
         });
     });
 
-    it('should allow to override the onFailure function at call time', async () => {
+    it('should allow to override the onError function at call time', async () => {
         const dataProvider = testDataProvider({
             getOne: () =>
                 // @ts-ignore
@@ -244,7 +244,7 @@ describe('EditBase', () => {
             ),
         });
         const onError = jest.fn();
-        const onFailureOverride = jest.fn();
+        const onErrorOverride = jest.fn();
 
         const Child = () => {
             const saveContext = useSaveContext();
@@ -253,7 +253,7 @@ describe('EditBase', () => {
             const handleClick = () => {
                 saveContext.save(
                     { test: 'test' },
-                    { onFailure: onFailureOverride }
+                    { onError: onErrorOverride }
                 );
             };
 
@@ -282,7 +282,7 @@ describe('EditBase', () => {
         getByLabelText('save').click();
 
         await waitFor(() => {
-            expect(onFailureOverride).toHaveBeenCalledWith(
+            expect(onErrorOverride).toHaveBeenCalledWith(
                 { message: 'test' },
                 { data: { test: 'test' }, resource: 'posts' },
                 { snapshot: [] }

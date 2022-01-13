@@ -22,22 +22,22 @@ const defaultParams = {};
 
 const TestComponent = ({
     params = defaultParams,
-    logoutOnFailure = true,
+    logoutonError = true,
     redirectTo = defaultAuthParams.loginUrl,
     disableNotification = false,
 }: {
     params?: any;
-    logoutOnFailure?: boolean;
+    logoutonError?: boolean;
     redirectTo?: string;
     disableNotification?: boolean;
 }) => {
     const [authenticated, setAuthenticated] = useState(true);
     const checkAuth = useCheckAuth();
     useEffect(() => {
-        checkAuth(params, logoutOnFailure, redirectTo, disableNotification)
+        checkAuth(params, logoutonError, redirectTo, disableNotification)
             .then(() => setAuthenticated(true))
             .catch(error => setAuthenticated(false));
-    }, [params, logoutOnFailure, redirectTo, disableNotification, checkAuth]);
+    }, [params, logoutonError, redirectTo, disableNotification, checkAuth]);
     return <div>{authenticated ? 'authenticated' : 'not authenticated'}</div>;
 };
 
@@ -88,12 +88,12 @@ describe('useCheckAuth', () => {
         });
     });
 
-    it('should not logout if has no credentials and passed logoutOnFailure as false', async () => {
+    it('should not logout if has no credentials and passed logoutonError as false', async () => {
         const { queryByText } = render(
             <AuthContext.Provider value={authProvider}>
                 <TestComponent
                     params={{ token: false }}
-                    logoutOnFailure={false}
+                    logoutonError={false}
                 />
             </AuthContext.Provider>
         );

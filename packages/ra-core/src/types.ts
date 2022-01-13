@@ -224,7 +224,7 @@ export type OnSuccess = (
     variables?: any,
     context?: any
 ) => void;
-export type OnFailure = (error?: any, variables?: any, context?: any) => void;
+export type onError = (error?: any, variables?: any, context?: any) => void;
 export type TransformData = (data: any) => any | Promise<any>;
 
 export interface UseDataProviderOptions {
@@ -233,7 +233,7 @@ export interface UseDataProviderOptions {
     meta?: object;
     mutationMode?: MutationMode;
     onSuccess?: OnSuccess;
-    onFailure?: OnFailure;
+    onError?: onError;
     enabled?: boolean;
 }
 

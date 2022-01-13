@@ -134,7 +134,7 @@ describe('CreateBase', () => {
         expect(onSuccess).not.toHaveBeenCalled();
     });
 
-    it('should allow to override the onFailure function', async () => {
+    it('should allow to override the onError function', async () => {
         const dataProvider = testDataProvider({
             create: jest.fn((_, { data }) =>
                 Promise.reject({ message: 'test' })
@@ -170,7 +170,7 @@ describe('CreateBase', () => {
         });
     });
 
-    it('should allow to override the onFailure function at call time', async () => {
+    it('should allow to override the onError function at call time', async () => {
         const dataProvider = testDataProvider({
             create: jest.fn((_, { data }) =>
                 Promise.reject({ message: 'test' })
@@ -185,7 +185,7 @@ describe('CreateBase', () => {
             const handleClick = () => {
                 saveContext.save(
                     { test: 'test' },
-                    { onFailure: onErrorOverride }
+                    { onError: onErrorOverride }
                 );
             };
 

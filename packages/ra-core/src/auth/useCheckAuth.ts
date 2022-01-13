@@ -48,12 +48,12 @@ export const useCheckAuth = (): CheckAuth => {
     const checkAuth = useCallback(
         (
             params: any = {},
-            logoutOnFailure = true,
+            logoutonError = true,
             redirectTo = defaultAuthParams.loginUrl,
             disableNotification = false
         ) =>
             authProvider.checkAuth(params).catch(error => {
-                if (logoutOnFailure) {
+                if (logoutonError) {
                     logout(
                         {},
                         error && error.redirectTo
@@ -84,7 +84,7 @@ const checkAuthWithoutAuthProvider = () => Promise.resolve();
  * Logs the user out on failure.
  *
  * @param {Object} params The parameters to pass to the authProvider
- * @param {boolean} logoutOnFailure Whether the user should be logged out if the authProvider fails to authenticate them. True by default.
+ * @param {boolean} logoutonError Whether the user should be logged out if the authProvider fails to authenticate them. True by default.
  * @param {string} redirectTo The login form url. Defaults to '/login'
  * @param {boolean} disableNotification Avoid showing a notification after the user is logged out. false by default.
  *
@@ -92,7 +92,7 @@ const checkAuthWithoutAuthProvider = () => Promise.resolve();
  */
 export type CheckAuth = (
     params?: any,
-    logoutOnFailure?: boolean,
+    logoutonError?: boolean,
     redirectTo?: string,
     /** @deprecated to disable the notification, authProvider.checkAuth() should return an object with an error property set to true */
     disableNotification?: boolean

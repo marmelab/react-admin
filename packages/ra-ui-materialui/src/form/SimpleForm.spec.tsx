@@ -12,7 +12,7 @@ describe('<SimpleForm />', () => {
     const saveContextValue = {
         save: jest.fn(),
         saving: false,
-        setOnFailure: jest.fn(),
+        setonError: jest.fn(),
     };
 
     it('should embed a form with given component children', () => {

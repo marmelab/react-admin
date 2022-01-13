@@ -75,7 +75,7 @@ export const useCreateController = <
             data: Partial<Record>,
             {
                 onSuccess: onSuccessFromSave,
-                onFailure: onFailureFromSave,
+                onError: onErrorFromSave,
                 transform: transformFromSave,
             } = {}
         ) => {
@@ -106,8 +106,8 @@ export const useCreateController = <
                                       newRecord
                                   );
                               },
-                        onError: onFailureFromSave
-                            ? onFailureFromSave
+                        onError: onErrorFromSave
+                            ? onErrorFromSave
                             : onError
                             ? onError
                             : (error: Error) => {

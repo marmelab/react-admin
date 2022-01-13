@@ -102,7 +102,7 @@ const sanitizeRestProps = ({
     label,
     selectedIds,
     onSuccess,
-    onFailure,
+    onError,
     ...rest
 }: Omit<BulkUpdateWithUndoButtonProps, 'resource' | 'icon' | 'data'>) => rest;
 
@@ -112,7 +112,7 @@ export interface BulkUpdateWithUndoButtonProps
     icon?: ReactElement;
     data: any;
     onSuccess?: () => void;
-    onFailure?: (error: any) => void;
+    onError?: (error: any) => void;
 }
 
 BulkUpdateWithUndoButton.propTypes = {

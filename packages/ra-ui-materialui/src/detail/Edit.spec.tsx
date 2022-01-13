@@ -392,7 +392,7 @@ describe('<Edit />', () => {
             });
         });
 
-        it('should be overridden by onFailure save option', async () => {
+        it('should be overridden by onError save option', async () => {
             jest.spyOn(console, 'error').mockImplementationOnce(() => {});
             const dataProvider = {
                 getOne: () =>
@@ -402,7 +402,7 @@ describe('<Edit />', () => {
                 update: () => Promise.reject({ message: 'not good' }),
             } as any;
             const onError = jest.fn();
-            const onFailureSave = jest.fn();
+            const onErrorSave = jest.fn();
             const FakeForm = ({ record, save }) => (
                 <>
                     <span>{record.title}</span>
@@ -411,7 +411,7 @@ describe('<Edit />', () => {
                             save(
                                 { ...record, title: 'ipsum' },
                                 {
-                                    onFailure: onFailureSave,
+                                    onError: onErrorSave,
                                 }
                             )
                         }
@@ -438,7 +438,7 @@ describe('<Edit />', () => {
             });
             fireEvent.click(getByText('Update'));
             await waitFor(() => {
-                expect(onFailureSave).toHaveBeenCalledWith(
+                expect(onErrorSave).toHaveBeenCalledWith(
                     {
                         message: 'not good',
                     },

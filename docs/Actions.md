@@ -441,7 +441,7 @@ const ApproveButton = ({ record }) => {
 -               notify('Comment approved');
 +               notify('Comment approved', { undoable: true });
             },
-            onFailure: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
+            onError: (error) => notify(`Error: ${error.message}`, { type: 'warning' }),
         }
     );
     return <Button label="Approve" onClick={() => approve()} disabled={isLoading} />;
