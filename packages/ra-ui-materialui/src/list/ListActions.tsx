@@ -57,7 +57,6 @@ export const ListActions = (props: ListActionsProps) => {
         sort,
         displayedFilters,
         filterValues,
-        selectedIds,
         showFilter,
         total,
     } = useListContext(props);
@@ -97,7 +96,7 @@ export const ListActions = (props: ListActionsProps) => {
             filters,
             total,
             className,
-            currentSort,
+            sort,
             exporter,
             hasCreate,
         ]
