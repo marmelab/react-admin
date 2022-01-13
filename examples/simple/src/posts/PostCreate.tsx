@@ -41,48 +41,54 @@ const PostCreateToolbar = props => {
                 label="post.action.save_and_show"
                 submitOnEnter={false}
                 variant="text"
-                onSuccess={data => {
-                    notify('ra.notification.created', {
-                        type: 'info',
-                        messageArgs: { smart_count: 1 },
-                    });
-                    redirect('show', '/posts', data.id);
+                mutationOptions={{
+                    onSuccess: data => {
+                        notify('ra.notification.created', {
+                            type: 'info',
+                            messageArgs: { smart_count: 1 },
+                        });
+                        redirect('show', '/posts', data.id);
+                    },
                 }}
             />
             <SaveButton
                 label="post.action.save_and_add"
                 submitOnEnter={false}
                 variant="text"
-                onSuccess={() => {
-                    // FIXME for some reason, form.reset() doesn't work here
-                    form.getRegisteredFields().forEach(field => {
-                        if (field.includes('[')) {
-                            // input inside an array input, skipping
-                            return;
-                        }
-                        form.change(
-                            field,
-                            form.getState().initialValues[field]
-                        );
-                    });
-                    form.restart();
-                    window.scrollTo(0, 0);
-                    notify('ra.notification.created', {
-                        type: 'info',
-                        messageArgs: { smart_count: 1 },
-                    });
+                mutationOptions={{
+                    onSuccess: () => {
+                        // FIXME for some reason, form.reset() doesn't work here
+                        form.getRegisteredFields().forEach(field => {
+                            if (field.includes('[')) {
+                                // input inside an array input, skipping
+                                return;
+                            }
+                            form.change(
+                                field,
+                                form.getState().initialValues[field]
+                            );
+                        });
+                        form.restart();
+                        window.scrollTo(0, 0);
+                        notify('ra.notification.created', {
+                            type: 'info',
+                            messageArgs: { smart_count: 1 },
+                        });
+                    },
                 }}
             />
             <SaveButton
                 label="post.action.save_with_average_note"
                 submitOnEnter={false}
                 variant="text"
-                onSuccess={data => {
-                    notify('ra.notification.created', {
-                        type: 'info',
-                        messageArgs: { smart_count: 1 },
-                    });
-                    redirect('show', '/posts', data.id);
+                mutationOptions={{
+                    onSuccess: data => {
+                        notify('ra.notification.created', {
+                            type: 'info',
+                            messageArgs: { smart_count: 1 },
+                        });
+                        redirect('show', '/posts', data.id);
+                    },
                 }}
                 transform={data => ({ ...data, average_note: 10 })}
             />

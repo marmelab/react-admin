@@ -24,22 +24,26 @@ const UserEditToolbar = ({ permissions, ...props }) => {
         <Toolbar {...props}>
             <SaveButton
                 label="user.action.save_and_show"
-                onSuccess={data => {
-                    notify('ra.notification.created', 'info', {
-                        smart_count: 1,
-                    });
-                    redirect('show', data.id, data);
+                mutationOptions={{
+                    onSuccess: data => {
+                        notify('ra.notification.created', 'info', {
+                            smart_count: 1,
+                        });
+                        redirect('show', data.id, data);
+                    },
                 }}
                 submitOnEnter={true}
             />
             {permissions === 'admin' && (
                 <SaveButton
                     label="user.action.save_and_add"
-                    onSuccess={data => {
-                        notify('ra.notification.created', 'info', {
-                            smart_count: 1,
-                        });
-                        redirect(false);
+                    mutationOptions={{
+                        onSuccess: data => {
+                            notify('ra.notification.created', 'info', {
+                                smart_count: 1,
+                            });
+                            redirect(false);
+                        },
                     }}
                     submitOnEnter={false}
                     variant="text"

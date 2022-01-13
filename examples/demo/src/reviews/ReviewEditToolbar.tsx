@@ -13,6 +13,7 @@ import {
 } from 'react-admin';
 import AcceptButton from './AcceptButton';
 import RejectButton from './RejectButton';
+import { Review } from '../types';
 
 const PREFIX = 'ReviewEditToolbar';
 
@@ -28,7 +29,7 @@ const StyledMuiToolbar = styled(MuiToolbar)(({ theme }) => ({
     },
 }));
 
-const ReviewEditToolbar = (props: ToolbarProps) => {
+const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
     const { basePath, invalid, resource, saving } = props;
     const redirect = useRedirect();
     const notify = useNotify();
@@ -48,13 +49,15 @@ const ReviewEditToolbar = (props: ToolbarProps) => {
                     <SaveButton
                         invalid={invalid}
                         saving={saving}
-                        onSuccess={() => {
-                            notify('ra.notification.updated', {
-                                type: 'info',
-                                messageArgs: { smart_count: 1 },
-                                undoable: true,
-                            });
-                            redirect('list', '/reviews');
+                        mutationOptions={{
+                            onSuccess: () => {
+                                notify('ra.notification.updated', {
+                                    type: 'info',
+                                    messageArgs: { smart_count: 1 },
+                                    undoable: true,
+                                });
+                                redirect('list', '/reviews');
+                            },
                         }}
                         submitOnEnter={true}
                     />

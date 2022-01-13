@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { cloneElement, MouseEventHandler, ReactElement } from 'react';
+import { UseMutationOptions } from 'react-query';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Button, { ButtonProps } from '@mui/material/Button';
@@ -8,11 +9,11 @@ import ContentSave from '@mui/icons-material/Save';
 import classnames from 'classnames';
 import { useForm } from 'react-final-form';
 import {
+    CreateParams,
     MutationMode,
-    OnSuccess,
-    onError,
     Record,
     TransformData,
+    UpdateParams,
     useSaveContext,
     useTranslate,
 } from 'ra-core';
@@ -48,15 +49,16 @@ import { sanitizeButtonRestProps } from './Button';
  *     return <SaveButton {...props} onSuccess={onSuccess} />;
  * }
  */
-export const SaveButton = (props: SaveButtonProps) => {
+export const SaveButton = <RecordType extends Record = Record>(
+    props: SaveButtonProps<RecordType>
+) => {
     const {
         className,
         icon = defaultIcon,
         invalid,
         label = 'ra.action.save',
         onClick,
-        onError,
-        onSuccess,
+        mutationOptions,
         saving,
         disabled = saving,
         submitOnEnter,
@@ -67,7 +69,7 @@ export const SaveButton = (props: SaveButtonProps) => {
     const translate = useTranslate();
     const form = useForm();
     const saveContext = useSaveContext();
-    const hasSideEffects = !!onSuccess || !!onError || !!transform;
+    const hasSideEffects = !!mutationOptions || !!transform;
     const type = !submitOnEnter || hasSideEffects ? 'button' : 'submit';
 
     const handleClick: MouseEventHandler<HTMLButtonElement> = event => {
@@ -82,8 +84,7 @@ export const SaveButton = (props: SaveButtonProps) => {
             event.preventDefault();
             const values = form.getState().values;
             saveContext?.save(values, {
-                onSuccess,
-                onError,
+                ...mutationOptions,
                 transform,
             });
         }
@@ -123,15 +124,18 @@ export const SaveButton = (props: SaveButtonProps) => {
 
 const defaultIcon = <ContentSave />;
 
-interface Props {
+interface Props<RecordType extends Record = Record> {
     classes?: object;
     className?: string;
     disabled?: boolean;
     icon?: ReactElement;
     invalid?: boolean;
     label?: string;
-    onSuccess?: OnSuccess;
-    onError?: onError;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        unknown,
+        CreateParams<RecordType> | UpdateParams<RecordType>
+    >;
     transform?: TransformData;
     saving?: boolean;
     submitOnEnter?: boolean;
@@ -143,7 +147,10 @@ interface Props {
     mutationMode?: MutationMode;
 }
 
-export type SaveButtonProps = Props & ButtonProps;
+export type SaveButtonProps<RecordType extends Record = Record> = Props<
+    RecordType
+> &
+    ButtonProps;
 
 SaveButton.propTypes = {
     className: PropTypes.string,

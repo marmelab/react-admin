@@ -150,7 +150,7 @@ describe('<SaveButton />', () => {
         const onSuccess = jest.fn();
         const EditToolbar = props => (
             <Toolbar {...props}>
-                <SaveButton onSuccess={onSuccess} />
+                <SaveButton mutationOptions={{ onSuccess }} />
             </Toolbar>
         );
         const {
@@ -203,7 +203,7 @@ describe('<SaveButton />', () => {
         const onError = jest.fn();
         const EditToolbar = props => (
             <Toolbar {...props}>
-                <SaveButton onError={onError} />
+                <SaveButton mutationOptions={{ onError }} />
             </Toolbar>
         );
         const {
