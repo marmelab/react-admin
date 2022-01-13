@@ -892,12 +892,12 @@ You can use the `<Datagrid>` component to display data that you've fetched yours
 ```jsx
 import { useGetList, Datagrid, TextField } from 'react-admin';
 
-const currentSort = { field: 'id', order: 'DESC' };
+const sort = { field: 'id', order: 'DESC' };
 
 const MyCustomList = () => {
     const { data, total, isLoading } = useGetList('books', {
         pagination: { page: 1, perPage: 10 },
-        sort: currentSort,
+        sort,
     });
 
     return (
@@ -905,7 +905,7 @@ const MyCustomList = () => {
             data={data}
             total={total}
             isLoading={isLoading}
-            currentSort={currentSort}
+            sort={sort}
             bulkActionButtons={false}
         >
             <TextField source="id" />
@@ -926,12 +926,12 @@ import {
     TextField
 } from 'react-admin';
 
-const currentSort = { field: 'id', order: 'DESC' };
+const sort = { field: 'id', order: 'DESC' };
 
 const MyCustomList = () => {
     const { data, isLoading } = useGetList('books', {
         pagination: { page: 1, perPage: 10 },
-        sort: currentSort,
+        sort,
     });
     const listContext = useList({ data, isLoading });
 

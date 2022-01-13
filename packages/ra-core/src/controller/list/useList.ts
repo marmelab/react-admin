@@ -217,7 +217,7 @@ export const useList = <RecordType extends Record = Record>(
     }, [isLoading, loadingState, setLoadingState]);
 
     return {
-        currentSort: sort,
+        sort,
         data: finalItems.data,
         defaultTitle: '',
         error,

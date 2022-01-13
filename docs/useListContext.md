@@ -71,7 +71,7 @@ const {
     setPage, // a callback to change the page, e.g. setPage(3)
     setPerPage, // a callback to change the number of results per page, e.g. setPerPage(25)
     // sorting
-    currentSort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
+    sort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
     setSort, // a callback to change the sort, e.g. setSort({ field: 'name', orfer: 'ASC' })
     // filtering
     filterValues, // a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }

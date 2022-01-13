@@ -51,7 +51,7 @@ describe('<useReferenceArrayFieldController />', () => {
         );
         expect(children).toHaveBeenCalledWith(
             expect.objectContaining({
-                currentSort: { field: 'id', order: 'ASC' },
+                sort: { field: 'id', order: 'ASC' },
                 isFetching: true,
                 isLoading: true,
                 data: undefined,
@@ -79,7 +79,7 @@ describe('<useReferenceArrayFieldController />', () => {
         );
         expect(children).toHaveBeenCalledWith(
             expect.objectContaining({
-                currentSort: { field: 'id', order: 'ASC' },
+                sort: { field: 'id', order: 'ASC' },
                 isFetching: false,
                 isLoading: false,
                 data: [
@@ -111,7 +111,7 @@ describe('<useReferenceArrayFieldController />', () => {
         );
         expect(children).toHaveBeenCalledWith(
             expect.objectContaining({
-                currentSort: { field: 'id', order: 'ASC' },
+                sort: { field: 'id', order: 'ASC' },
                 isFetching: false,
                 isLoading: false,
                 data: [{ id: 1, title: 'bar1' }],
@@ -150,7 +150,7 @@ describe('<useReferenceArrayFieldController />', () => {
         );
         expect(children).toHaveBeenCalledWith(
             expect.objectContaining({
-                currentSort: { field: 'id', order: 'ASC' },
+                sort: { field: 'id', order: 'ASC' },
                 isFetching: false,
                 isLoading: false,
                 data: [

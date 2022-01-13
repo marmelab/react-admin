@@ -17,7 +17,7 @@ describe('<ReferenceInput />', () => {
             setPage: () => {},
             perPage: 25,
             setPerPage: () => {},
-            currentSort: {},
+            sort: {},
             setSort: () => {},
             filterValues: {},
             displayedFilters: [],

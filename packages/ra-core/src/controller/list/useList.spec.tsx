@@ -39,7 +39,7 @@ describe('<useList />', () => {
 
         expect(callback).toHaveBeenCalledWith(
             expect.objectContaining({
-                currentSort: { field: 'id', order: 'ASC' },
+                sort: { field: 'id', order: 'ASC' },
                 isFetching: false,
                 isLoading: false,
                 data: [{ id: 2, title: 'world' }],
@@ -70,7 +70,7 @@ describe('<useList />', () => {
         await waitFor(() => {
             expect(callback).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    currentSort: { field: 'id', order: 'ASC' },
+                    sort: { field: 'id', order: 'ASC' },
                     isFetching: false,
                     isLoading: false,
                     data: [
@@ -119,7 +119,7 @@ describe('<useList />', () => {
         await waitFor(() => {
             expect(callback).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    currentSort: { field: 'title', order: 'DESC' },
+                    sort: { field: 'title', order: 'DESC' },
                     isFetching: false,
                     isLoading: false,
                     data: [
@@ -136,7 +136,7 @@ describe('<useList />', () => {
         await waitFor(() => {
             expect(callback).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    currentSort: { field: 'title', order: 'ASC' },
+                    sort: { field: 'title', order: 'ASC' },
                     isFetching: false,
                     isLoading: false,
                     data: [
@@ -175,7 +175,7 @@ describe('<useList />', () => {
         await waitFor(() => {
             expect(callback).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    currentSort: { field: 'id', order: 'ASC' },
+                    sort: { field: 'id', order: 'ASC' },
                     isFetching: false,
                     isLoading: false,
                     data: [
@@ -219,7 +219,7 @@ describe('<useList />', () => {
 
         expect(callback).toHaveBeenCalledWith(
             expect.objectContaining({
-                currentSort: { field: 'id', order: 'ASC' },
+                sort: { field: 'id', order: 'ASC' },
                 isFetching: true,
                 isLoading: false,
                 data: [{ id: 2, title: 'world' }],

@@ -170,7 +170,7 @@ const ListWrapper = ({ children }) => (
                 value={{
                     total: 1,
                     data: [{ id: 1, title: 'War and Peace' }],
-                    currentSort: { field: 'title', order: 'ASC' },
+                    sort: { field: 'title', order: 'ASC' },
                 }}
             >
                 {children}
