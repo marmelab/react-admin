@@ -18,7 +18,7 @@ import { FileField } from 'react-admin';
 </div>
 ```
 
-This field is also often used within a [`<FileInput />`](./Inputs.md#fileinput) component to display preview.
+This field is also often used within a [`<FileInput />`](./FileInput.md) component to display preview.
 
 ## Properties
 

@@ -18,7 +18,7 @@ import { ImageField } from 'react-admin';
 </div>
 ```
 
-This field is also often used within the [`<ImageInput />`](./Inputs.md#imageinput) component to display a preview.
+This field is also often used within the [`<ImageInput />`](./ImageInput.md) component to display a preview.
 
 ## Properties
 
