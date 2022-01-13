@@ -269,13 +269,13 @@ const StaticPostShow = () => (
 
 When passed a `record`, `<TabbedShowLayout>` creates a `RecordContext` with the given record.
 
-## CSS API
+## `sx`: CSS API
 
 The `<TabbedShowLayout>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
-| Rule name   | Description                                              |
-| ----------- | ---------------------------------------------------------|
-| `content`   | Applied to the content zone (under the tabs)             |
+| Rule name                       | Description                                              |
+|---------------------------------| ---------------------------------------------------------|
+| `& .RaTabbedShowLayout.content` | Applied to the content zone (under the tabs)             |
 
 To override the style of all instances of `<TabbedShowLayout>` using the [material-ui style overrides](https://mui.com/customization/theme-components/), use the `RaTabbedShowLayout` key.
 

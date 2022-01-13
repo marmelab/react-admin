@@ -17,21 +17,23 @@ import { BooleanField } from 'react-admin';
 
 ## Properties
 
-| Prop              | Required | Type             | Default                    | Description                       |
-| ----------------- | -------- | ---------------- | -------------------------- | -------------------------------------------------------------------- |
-| `valueLabelTrue`  | Optional | string           | 'true'                     | Aria label for the truthy value   |
-| `valueLabelFalse` | Optional | string           | 'false'                    | Aria label for the falsy value    |
-| `TrueIcon`        | Optional | SvgIconComponent | `@material-ui/icons/Done`  | Icon to show for the truthy value |
-| `FalseIcon`       | Optional | SvgIconComponent | `@material-ui/icons/Clear` | Icon to show for the falsy value  |
+| Prop              | Required | Type             | Default                    | Description                                                          |
+| ----------------- | -------- | ---------------- | -------------------------- |----------------------------------------------------------------------|
+| `valueLabelTrue`  | Optional | string           | 'true'                     | Aria label for the truthy value                                      |
+| `valueLabelFalse` | Optional | string           | 'false'                    | Aria label for the falsy value                                       |
+| `TrueIcon`        | Optional | SvgIconComponent | `@material-ui/icons/Done`  | Icon to show for the truthy value                                    |
+| `FalseIcon`       | Optional | SvgIconComponent | `@material-ui/icons/Clear` | Icon to show for the falsy value                                     |
 | `looseValue`      | Optional | boolean          | `false`                    | If `true` the field's value is not evaluated strictly as a `boolean` |
 
 `<BooleanField>` also accepts the [common field props](./Fields.md#common-field-props).
 
-## CSS API
+## `sx`: CSS API
 
-| Rule name  | Description                 |
-| ---------- | --------------------------- |
-| `root`     | Applied to the root element |
+The `<BooleanField>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+
+| Rule name                | Description                 |
+|--------------------------|-----------------------------|
+| `& .RaBooleanField.root` | Applied to the root element |
 
 To override the style of all instances of `<BooleanField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaBooleanField` key.
 

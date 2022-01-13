@@ -192,14 +192,14 @@ const StaticPostShow = () => (
 
 When passed a `record`, `<SimpleShowLayout>` creates a `RecordContext` with the given record.
 
-## CSS API
+## `sx`: CSS API
 
 The `<SimpleShowLayout>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
-| Rule name   | Description                                              |
-| ----------- | ---------------------------------------------------------|
-| `stack`     | Applied to the `<Stack>` element                         |
-| `row`       | Applied to each child of the stack (i.e. to each field)  |
+| Rule name                     | Description                                             |
+|-------------------------------|---------------------------------------------------------|
+| `& .RaSimpleShowLayout.stack` | Applied to the `<Stack>` element                        |
+| `& .RaSimpleShowLayout.row`   | Applied to each child of the stack (i.e. to each field) |
 
 To override the style of all instances of `<SimpleShowLayout>` using the [material-ui style overrides](https://mui.com/customization/theme-components/), use the `RaSimpleShowLayout` key.
 
