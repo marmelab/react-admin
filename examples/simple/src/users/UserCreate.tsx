@@ -9,28 +9,45 @@ import {
     TextInput,
     Toolbar,
     required,
+    useNotify,
     usePermissions,
+    useRedirect,
 } from 'react-admin';
 
 import Aside from './Aside';
 
-const UserEditToolbar = ({ permissions, ...props }) => (
-    <Toolbar {...props}>
-        <SaveButton
-            label="user.action.save_and_show"
-            redirect="show"
-            submitOnEnter={true}
-        />
-        {permissions === 'admin' && (
+const UserEditToolbar = ({ permissions, ...props }) => {
+    const notify = useNotify();
+    const redirect = useRedirect();
+
+    return (
+        <Toolbar {...props}>
             <SaveButton
-                label="user.action.save_and_add"
-                redirect={false}
-                submitOnEnter={false}
-                variant="text"
+                label="user.action.save_and_show"
+                onSuccess={data => {
+                    notify('ra.notification.created', 'info', {
+                        smart_count: 1,
+                    });
+                    redirect('show', data.id, data);
+                }}
+                submitOnEnter={true}
             />
-        )}
-    </Toolbar>
-);
+            {permissions === 'admin' && (
+                <SaveButton
+                    label="user.action.save_and_add"
+                    onSuccess={data => {
+                        notify('ra.notification.created', 'info', {
+                            smart_count: 1,
+                        });
+                        redirect(false);
+                    }}
+                    submitOnEnter={false}
+                    variant="text"
+                />
+            )}
+        </Toolbar>
+    );
+};
 
 const isValidName = async value =>
     new Promise<string>(resolve =>

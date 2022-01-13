@@ -37,8 +37,7 @@ describe('FormWithRedirect', () => {
         rerender(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <FormWithRedirect
-                    save={jest.fn()}
-                    redirect={false}
+                    onSubmit={jest.fn()}
                     saving={false}
                     render={renderProp}
                     record={{ id: 1, name: 'Foo' }}
@@ -123,8 +122,7 @@ describe('FormWithRedirect', () => {
         rerender(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <FormWithRedirect
-                    save={jest.fn()}
-                    redirect={false}
+                    onSubmit={jest.fn()}
                     saving={false}
                     record={{
                         id: 1,
@@ -166,8 +164,7 @@ describe('FormWithRedirect', () => {
         rerender(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <FormWithRedirect
-                    save={jest.fn()}
-                    redirect={false}
+                    onSubmit={jest.fn()}
                     saving={false}
                     record={{
                         id: 2,

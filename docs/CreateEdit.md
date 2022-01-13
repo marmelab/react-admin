@@ -1503,7 +1503,7 @@ export const UserCreate = () => {
 
     return (
         <Create>
-            <SimpleForm save={save}>
+            <SimpleForm onSubmit={save}>
                 <TextInput label="First Name" source="firstName" />
                 <TextInput label="Age" source="age" />
             </SimpleForm>

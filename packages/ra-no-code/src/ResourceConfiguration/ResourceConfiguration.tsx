@@ -100,7 +100,7 @@ export const ResourceConfigurationPage = () => {
         <RecordContextProvider value={resourceConfiguration}>
             <SaveContextProvider value={saveContext}>
                 <FormWithRedirect
-                    save={save}
+                    onSubmit={save}
                     initialValues={resourceConfiguration}
                     render={({ handleSubmit }) => (
                         <StyledCard>

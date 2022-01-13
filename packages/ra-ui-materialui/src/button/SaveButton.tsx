@@ -36,14 +36,6 @@ import { sanitizeButtonRestProps } from './Button';
  *
  * @param {Props} props
  *
- * @example // with custom redirection
- *
- * <SaveButton label="post.action.save_and_edit" redirect="edit" />
- *
- * @example // with no redirection
- *
- * <SaveButton label="post.action.save_and_add" redirect={false} />
- *
  * @example // with custom success side effect
  *
  * const MySaveButton = props => {

@@ -34,8 +34,8 @@ const StyledCreate = styled(Create)({
 
 export const CompanyCreate = (props: CreateProps) => {
     return (
-        <StyledCreate {...props} actions={false}>
-            <SimpleForm component={CustomLayout} redirect="show">
+        <StyledCreate {...props} actions={false} redirect="show">
+            <SimpleForm component={CustomLayout}>
                 <TextInput source="name" validate={required()} fullWidth />
                 <SelectInput
                     source="sector"
