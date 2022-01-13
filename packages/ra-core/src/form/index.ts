@@ -55,4 +55,3 @@ export * from './FormGroupContext';
 export * from './FormGroupContextProvider';
 export * from './useFormGroup';
 export * from './useFormGroupContext';
-export * from './useGetFormValues';

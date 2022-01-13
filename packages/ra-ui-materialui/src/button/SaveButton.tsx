@@ -6,13 +6,13 @@ import Button, { ButtonProps } from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import ContentSave from '@mui/icons-material/Save';
 import classnames from 'classnames';
+import { useForm } from 'react-final-form';
 import {
     MutationMode,
     OnSuccess,
     OnFailure,
     Record,
     TransformData,
-    useGetFormValues,
     useSaveContext,
     useTranslate,
 } from 'ra-core';
@@ -73,7 +73,7 @@ export const SaveButton = (props: SaveButtonProps) => {
         ...rest
     } = props;
     const translate = useTranslate();
-    const getFormValues = useGetFormValues();
+    const form = useForm();
     const saveContext = useSaveContext();
     const hasSideEffects = !!onSuccess || !!onFailure || !!transform;
     const type = !submitOnEnter || hasSideEffects ? 'button' : 'submit';
@@ -88,7 +88,7 @@ export const SaveButton = (props: SaveButtonProps) => {
 
         if (hasSideEffects) {
             event.preventDefault();
-            const values = getFormValues();
+            const values = form.getState().values;
             saveContext?.save(values, {
                 onSuccess,
                 onFailure,
