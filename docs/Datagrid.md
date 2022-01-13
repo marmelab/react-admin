@@ -664,7 +664,7 @@ export const PostList = () => (
 
 ## `sx`: CSS API
 
-The `-Datagrid` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property. This property accepts the following subclasses:
+The `<Datagrid>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property. This property accepts the following subclasses:
 
 | Rule name                      | Description                                      |
 | ------------------------------ | ------------------------------------------------ |
