@@ -35,7 +35,7 @@ The `<BooleanField>` component accepts the usual `className` prop. You can also 
 |--------------------------|-----------------------------|
 | `& .RaBooleanField.root` | Applied to the root element |
 
-To override the style of all instances of `<BooleanField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaBooleanField` key.
+To override the style of all instances of `<BooleanField>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaBooleanField` key.
 
 ## Usage
 

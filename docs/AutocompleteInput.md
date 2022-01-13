@@ -253,6 +253,6 @@ const CreateCategory = () => {
 ```
 {% endraw %}
 
-## CSS API
+## `sx`: CSS API
 
 This component doesn't apply any custom styles on top of [material-ui `<Autocomplete>` component](https://mui.com/components/autocomplete/). Refer to their documentation to know its CSS API.

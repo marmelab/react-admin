@@ -53,13 +53,15 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 
 Note that the image upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#handling-file-uploads) for base64 encoding data by extending the REST Client.
 
-## CSS API
+## `sx`: CSS API
 
-| Rule name       | Description                                          |
-| --------------- | ---------------------------------------------------- |
-| `root`          | Styles pass to the underlying `FileInput` component  |
-| `dropZone`      | Styles pass to the underlying `FileInput` component  |
-| `preview`       | Styles pass to the underlying `FileInput` component  |
-| `removeButton`  | Styles pass to the underlying `FileInput` component  |
+The `<ImageInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
-To override the style of all instances of `<ImageInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaImageInput` key.
+| Rule name                      | Description                                         |
+|--------------------------------|-----------------------------------------------------|
+| `& .RaImageInput.root`         | Styles pass to the underlying `FileInput` component |
+| `& .RaImageInput.dropZone`     | Styles pass to the underlying `FileInput` component |
+| `& .RaImageInput.preview`      | Styles pass to the underlying `FileInput` component |
+| `& .RaImageInput.removeButton` | Styles pass to the underlying `FileInput` component |
+
+To override the style of all instances of `<ImageInput>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaImageInput` key.

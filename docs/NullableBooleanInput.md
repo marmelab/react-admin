@@ -47,10 +47,12 @@ import { NullableBooleanInput } from 'react-admin';
 
 `<NullableBooleanInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
-## CSS API
+## `sx`: CSS API
 
-| Rule name  | Description                                                   |
-| ---------- | ------------------------------------------------------------- |
-| `input`    | Applied to the underlying Material UI's `TextField` component |
+The `<NullableBooleanInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
-To override the style of all instances of `<NullableBooleanInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaNullableBooleanInput` key.
+| Rule name                         | Description                                                   |
+|-----------------------------------|---------------------------------------------------------------|
+| `& .RaNullableBooleanInput.input` | Applied to the underlying Material UI's `TextField` component |
+
+To override the style of all instances of `<NullableBooleanInput>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaNullableBooleanInput` key.

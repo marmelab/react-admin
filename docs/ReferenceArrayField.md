@@ -47,13 +47,15 @@ export const PostList = () => (
 
 `<ReferenceArrayField>` also accepts the [common field props](./Fields.md#common-field-props), except `emptyText` (use the child `empty` prop instead).
 
-## CSS API
+## `sx`: CSS API
 
-| Rule name  | Description                                                                            |
-| ---------- | -------------------------------------------------------------------------------------- |
-| `progress` | Applied to the Material UI's `LinearProgress` component while `loaded` prop is `false` |
+The `<ReferenceArrayField>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
-To override the style of all instances of `<ReferenceArrayField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaReferenceArrayField` key.
+| Rule name                           | Description                                                                              |
+|-------------------------------------|------------------------------------------------------------------------------------------|
+| `& .RaReferenceArrayField.progress` | Applied to the Material UI's `LinearProgress` component while `isLoading` prop is `true` |
+
+To override the style of all instances of `<ReferenceArrayField>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaReferenceArrayField` key.
 
 ## Usage
 

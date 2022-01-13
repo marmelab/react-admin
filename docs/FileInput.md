@@ -53,13 +53,15 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 
 Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#handling-file-uploads) for base64 encoding data by extending the REST Client.
 
-## CSS API
+## `sx`: CSS API
 
-| Rule name       | Description                                                                       |
-| --------------- | --------------------------------------------------------------------------------- |
-| `root`          | Applied to the underlying `Labeled` component                                     |
-| `dropZone`      | Applied to the main container of the component                                    |
-| `preview`       | Applied to each children                                                          |
-| `removeButton`  | Applied to each of the Material UI's `IconButton` component used as remove button |
+The `<FileInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
-To override the style of all instances of `<FileInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaFileInput` key.
+| Rule name                     | Description                                                                       |
+|-------------------------------|-----------------------------------------------------------------------------------|
+| `& .RaFileInput.root`         | Applied to the underlying `Labeled` component                                     |
+| `& .RaFileInput.dropZone`     | Applied to the main container of the component                                    |
+| `& .RaFileInput.preview`      | Applied to each children                                                          |
+| `& .RaFileInput.removeButton` | Applied to each of the Material UI's `IconButton` component used as remove button |
+
+To override the style of all instances of `<FileInput>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaFileInput` key.

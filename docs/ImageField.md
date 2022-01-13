@@ -29,14 +29,16 @@ This field is also often used within the [`<ImageInput />`](./Inputs.md#imageinp
 
 `<ImageField>` also accepts the [common field props](./Fields.md#common-field-props).
 
-## CSS API
+## `sx`: CSS API
 
-| Rule name  | Description                                                                    |
-| ---------- | ------------------------------------------------------------------------------ |
-| `list`     | Applied to the underlying `<ul>` component when `sourceValue` prop is an array |
-| `image`    | Applied to each underlying `<img>` component                                   |
+The `<ImageField>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
-To override the style of all instances of `<ImageField>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaImageField` key.
+| Rule name               | Description                                                                    |
+|-------------------------|--------------------------------------------------------------------------------|
+| `& .RaImageField.list`  | Applied to the underlying `<ul>` component when `sourceValue` prop is an array |
+| `& .RaImageField.image` | Applied to each underlying `<img>` component                                   |
+
+To override the style of all instances of `<ImageField>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaImageField` key.
 
 ## Usage
 
