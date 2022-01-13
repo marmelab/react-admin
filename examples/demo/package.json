@@ -3,8 +3,8 @@
     "version": "3.0.0",
     "private": true,
     "dependencies": {
-        "@mui/material": "^5.0.2",
         "@mui/icons-material": "^5.0.1",
+        "@mui/material": "^5.0.2",
         "@types/inflection": "^1.5.28",
         "@types/recharts": "^1.8.10",
         "data-generator-retail": "^4.0.0-alpha.0",

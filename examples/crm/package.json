@@ -3,8 +3,8 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
-        "@mui/material": "^5.0.2",
         "@mui/icons-material": "^5.0.1",
+        "@mui/material": "^5.0.2",
         "@nivo/bar": "^0.67.0",
         "@nivo/core": "^0.67.0",
         "date-fns": "^2.19.0",
