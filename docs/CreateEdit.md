@@ -102,6 +102,7 @@ You can customize the `<Create>` and `<Edit>` components using the following pro
 * [`mutationMode`](#mutationmode) (`<Edit>` only) 
 * [`mutationOptions](#mutationoptions)
 * [`transform`](#transform)
+* [`redirect`](#redirection-after-submission)
 
 `<Create>` also accepts a `record` prop, to initialize the form based on a value object.
 
@@ -779,7 +780,6 @@ Here are all the props you can set on the `<SimpleForm>` component:
 * [`initialValues`](#default-values)
 * [`validate`](#validation)
 * [`submitOnEnter`](#submit-on-enter)
-* [`redirect`](#redirection-after-submission)
 * [`toolbar`](#toolbar)
 * [`variant`](#variant)
 * [`margin`](#margin)
@@ -850,7 +850,6 @@ Here are all the props accepted by the `<TabbedForm>` component:
 * [`initialValues`](#default-values)
 * [`validate`](#validation)
 * [`submitOnEnter`](#submit-on-enter)
-* [`redirect`](#redirection-after-submission)
 * [`tabs`](#tabbedformtabs)
 * [`toolbar`](#toolbar)
 * [`variant`](#variant)
@@ -1539,12 +1538,12 @@ By default:
 - Submitting the form in the `<Create>` view redirects to the `<Edit>` view
 - Submitting the form in the `<Edit>` view redirects to the `<List>` view
 
-You can customize the redirection by setting the `redirect` prop of the form component. Possible values are "edit", "show", "list", and `false` to disable redirection. You may also specify a custom path such as `/my-custom-route`. For instance, to redirect to the `<Show>` view after edition:
+You can customize the redirection by setting the `redirect` prop on the `<Create>` or `<Edit>` components. Possible values are "edit", "show", "list", and `false` to disable redirection. You may also specify a custom path such as `/my-custom-route`. For instance, to redirect to the `<Show>` view after edition:
 
 ```jsx
 export const PostEdit = () => (
-    <Edit>
-        <SimpleForm redirect="show">
+    <Edit redirect="show">
+        <SimpleForm>
             ...
         </SimpleForm>
     </Edit>
@@ -1558,8 +1557,8 @@ You can also pass a custom route (e.g. "/home") or a function as `redirect` prop
 const redirect = (basePath, id, data) => `/author/${data.author_id}/show`;
 
 export const PostEdit = () => (
-    <Edit>
-        <SimpleForm redirect={redirect}>
+    <Edit redirect={redirect}>
+        <SimpleForm>
             // ...
         </SimpleForm>
     </Edit>
@@ -1583,31 +1582,40 @@ The most common use case is to display two submit buttons in the `<Create>` view
 
 ![Form toolbar](./img/form-toolbar.png)
 
-For that use case, use the `<SaveButton>` component with a custom `redirect` prop:
+For that use case, use the `<SaveButton>` component with a custom `onSuccess` prop:
 
 ```jsx
 import * as React from "react";
-import { Create, SimpleForm, SaveButton, Toolbar } from 'react-admin';
+import { Create, SimpleForm, SaveButton, Toolbar, useRedirect } from 'react-admin';
 
-const PostCreateToolbar = props => (
-    <Toolbar {...props} >
-        <SaveButton
-            label="post.action.save_and_show"
-            redirect="show"
-            submitOnEnter={true}
-        />
-        <SaveButton
-            label="post.action.save_and_add"
-            redirect={false}
-            submitOnEnter={false}
-            variant="text"
-        />
-    </Toolbar>
-);
+const PostCreateToolbar = props => {
+    const redirect = useRedirect();
+    const notify = useNotify();
+    return (
+        <Toolbar {...props} >
+            <SaveButton
+                label="post.action.save_and_show"
+                submitOnEnter={true}
+            />
+            <SaveButton
+                label="post.action.save_and_add"
+                onSuccess={data => {
+                    notify('ra.notification.created', {
+                        type: 'info',
+                        messageArgs: { smart_count: 1 },
+                    });
+                    redirect(false);
+                }}
+                submitOnEnter={false}
+                variant="text"
+            />
+        </Toolbar>
+    );
+};
 
 export const PostCreate = () => (
-    <Create>
-        <SimpleForm toolbar={<PostCreateToolbar />} redirect="show">
+    <Create redirect="show">
+        <SimpleForm toolbar={<PostCreateToolbar />}>
             ...
         </SimpleForm>
     </Create>
@@ -1676,7 +1684,6 @@ Here are the props received by the `Toolbar` component when passed as the `toolb
 * `alwaysEnableSaveButton`: Force enabling the `<SaveButton>`. If it's not defined, the `<SaveButton>` will be enabled using the `pristine` prop (disabled if pristine, enabled otherwise).
 * `invalid`: A boolean indicating whether the form is invalid
 * `pristine`: A boolean indicating whether the form is pristine (eg: no inputs have been changed yet)
-* `redirect`: The default form's redirect
 * `saving`: A boolean indicating whether a save operation is ongoing.
 * `submitOnEnter`: A boolean indicating whether the form should be submitted when pressing `enter`
 * `width`: A string apply to the mobile or desktop classes depending on its value. Pass `xs` to display the mobile version.
@@ -1696,8 +1703,6 @@ The `<Toolbar>` accepts the usual `className` prop, but you can override many cl
 To override the style of all instances of `<Toolbar>` components using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaToolbar` key.
 
 **Tip**: Use react-admin's `<Toolbar>` component instead of material-ui's `<Toolbar>` component. The former builds upon the latter and adds support for an alternative mobile layout (and is therefore responsive).
-
-**Tip**: Don't forget to also set the `redirect` prop of the Form component to handle submission by the `ENTER` key.
 
 **Tip**: To alter the form values before submitting, you should use the `transform` prop on the `SaveButton`. See [Altering the Form Values before Submitting](#altering-the-form-values-before-submitting) for more information and examples.
 
@@ -1984,7 +1989,7 @@ const VisitorForm = props => (
 );
 ```
 
-This custom form layout component uses the `FormWithRedirect` component, which wraps react-final-form's `Form` component to handle redirection logic. It also uses react-admin's `<SaveButton>` and a `<DeleteButton>`.
+This custom form layout component uses the `FormWithRedirect` component, which wraps react-final-form's `Form` component. It also uses react-admin's `<SaveButton>` and a `<DeleteButton>`.
 
 **Tip**: When `Input` components have a `resource` prop, they use it to determine the input label. `<SimpleForm>` and `<TabbedForm>` inject this `resource` prop to `Input` components automatically. When you use a custom form layout, pass the `resource` prop manually - unless the `Input` has a `label` prop.
 
@@ -2112,26 +2117,36 @@ Here is an example inside a `Create` view with a `SimpleForm` and a custom `Tool
 
 {% raw %}
 ```jsx
-const UserCreateToolbar = ({ permissions, ...props }) =>
-    <Toolbar {...props}>
-        <SaveButton
-            label="user.action.save_and_show"
-            redirect="show"
-            submitOnEnter={true}
-        />
-        {permissions === 'admin' &&
+const UserCreateToolbar = ({ permissions, ...props }) => {
+    const notify = useNotify();
+    const redirect = useRedirect();
+    return (
+        <Toolbar {...props}>
             <SaveButton
-                label="user.action.save_and_add"
-                redirect={false}
-                submitOnEnter={false}
-                variant="text"
-            />}
-    </Toolbar>;
+                label="user.action.save_and_show"            
+                submitOnEnter={true}
+            />
+            {permissions === 'admin' &&
+                <SaveButton
+                    label="user.action.save_and_add"
+                    onSuccess={data => {
+                        notify('ra.notification.created', {
+                            type: 'info',
+                            messageArgs: { smart_count: 1 },
+                        });
+                        redirect(false);
+                    }}
+                    submitOnEnter={false}
+                    variant="text"
+                />}
+        </Toolbar>
+    );
+};
 
 export const UserCreate = () => {
     const { permissions } = useGetPermissions();
     return (
-        <Create>
+        <Create redirect="show">
             <SimpleForm
                 toolbar={<UserCreateToolbar permissions={permissions} />}
                 initialValues={{ role: 'user' }}

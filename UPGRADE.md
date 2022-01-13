@@ -1413,15 +1413,62 @@ const Layout = (props) => {
 
 ## Form Submissions and Side Effects are Easier
 
-We previously had a complex solution for having multiple submit buttons: a SaveContext providing side effects modifiers and refs to the current ones, and also a redirect prop. However, this was redundant and confusing as the `save` function provided by our mutation hooks also accepted side effect override at call time. It was even more confusing when adding custom or multiple `<SaveButton>` as those received two submission related functions: `handleSubmit` and `handleSubmitWithRedirect`.
+We previously had a complex solution for having multiple submit buttons: a `SaveContext` providing side effects modifiers and refs to the current ones. However, this was redundant and confusing as the `save` function provided by our mutation hooks also accept side effect override at call time.
+
+We also supported a redirect prop both on the form component and on the `<SaveButton>`. It was even more confusing when adding custom or multiple `<SaveButton>` as those received two submission related functions: `handleSubmit` and `handleSubmitWithRedirect`.
 
 Besides, our solution prevented the native browser submit on enter feature and this was an accessibility issue for some users such as Japanese people.
 
-The new solution leverage the fact that we already make the `save` function available through context (`useSaveContext`) and users can get the current form values, call the save function directly and override any of the side effects as they usually do with mutation hooks.
+The new solution leverage the fact that we already have the `save` function available through context (`useSaveContext`). You can get the current form values using [final-form hooks](https://final-form.org/docs/react-final-form/api/useFormState), call the `save` function directly and override any of the side effects as you usually do with mutation hooks.
 
-We also added side effects props on the SaveButton to make most common cases possible and avoid gotchas such as preventing default event.
+### `<SaveButton>` Props and Behavior Have Changed
+
+The `<SaveButton>` already accepted the `onSuccess`, `onFailure` and `transform` props to handle multiple submit buttons. We removed the `handleSubmit` and `handleSubmitWithRedirect` props completely. Instead, when provided any of the side effects props, the `<SaveButton>` will render a simple button and will call the `save` function with them. It also take care of preventing the default form submit.
 
 If you relied on `handleSubmit` or `handleSubmitWithRedirect`, you can now use the `SaveButton` and override any of the side effect props: `onSuccess`, `onFailure` or `transform`.
+
+### The `save` Function Signature Changed
+
+The `save` function signature no longer take a redirection side effect as the second argument. Instead, it only receive the data and an object for side effects (which was the third argument before):
+
+```diff
+const MyCustomCreate = () => {
+    const createControllerProps = useCreateController();
+    const notify = useNotify();
++    const redirect = useRedirect();
+
+    const handleSubmit = (values) => {
+-        createControllerProps.save(values, 'show', {
++        createControllerProps.save(values, {
+            onSuccess: (data) => {
+                notify('Success');
++                redirect('show', '/posts', data.id);
+            }
+        })
+    }
+
+    return (
+        <CreateContextProvider value={createControllerProps}>
+            <Form
+                onSubmit={handleSubmit}
+                render={formProps => (
+                    <form onSubmit={props.handleSubmit}>
+                        ...
+                    </form>
+                )}
+            />
+        </CreateContextProvider>
+    )
+}
+```
+
+### `<FormContext>`, `<FormContextProvider>` and `useFormContext` Have Been Removed
+
+As the `save` and `saving` properties were already available through the `<SaveContext>` component and its `useSaveContext` hook, we removed the `<FormContext>`, `<FormContextProvider>` components as well the `useFormContext` hook.
+
+The functions around form groups management we extracted into the `<FormGroupsProvider>` component and `useFormGroups` hook.
+
+### The `redirect` prop Has Been Removed From `FormWithRedirect`, `SimpleForm`, `TabbedForm` and `SaveButton`
 
 The `FormWithRedirect`, `SimpleForm`, `TabbedForm` and `SaveButton` don't have a `redirect` prop anymore. You should handle redirection either:
 - in the submit handler if you provided a custom one, leveraging the `useRedirect` hook
@@ -1444,13 +1491,19 @@ If you had the `redirect` prop set on the `SaveButton`, provide a `onSuccess` pr
 
 ```diff
 const PostCreateToolbar = props => {
-+    const redirect = useRedirect();    
++    const notify = useNotify();
++    const redirect = useRedirect();
     return (
         <Toolbar {...props}>
             <SaveButton
                 label="post.action.save_and_edit"
 -                redirect="edit"
 +                onSuccess={data => {
++                    notify('ra.notification.updated', {
++                        type: 'info',
++                        messageArgs: { smart_count: 1 },
++                        undoable: true,
++                    });
 +                    redirect('edit', '/posts', data.id)
 +                }}
             />
@@ -1459,7 +1512,7 @@ const PostCreateToolbar = props => {
 };
 ```
 
-The form components `save` prop has been renamed to `onSubmit`:
+### The Form Components `save` Prop Has Been Renamed to `onSubmit`:
 
 ```diff
 const MyComponent = () => {
