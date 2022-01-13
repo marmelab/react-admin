@@ -61,7 +61,7 @@ That's enough to display the post show view:
 * [`component`](#root-component): overrides the root component
 * [`emptyWhileLoading`](#loading-state)
 * [`queryOptions`](#client-query-options): options to pass to the react-query client
-* [`sx`](#css-api): Override the styles
+* [`sx`](#sx-css-api): Override the styles
 * [`title`](#page-title)
 
 ## Layout

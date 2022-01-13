@@ -30,7 +30,7 @@ const PostShow = () => (
 * [`divider`](#divider): optional element to render between each field
 * [`record`](#controlled-mode): can be injected when outside a RecordContext 
 * [`spacing`](#spacing): optional integer to set the spacing between the fields
-* [`sx`](#css-api): Override the styles
+* [`sx`](#sx-css-api): Override the styles
 
 Additional props are passed to the root component (`<div>`).
 

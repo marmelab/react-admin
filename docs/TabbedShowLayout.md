@@ -59,7 +59,7 @@ export const PostShow = () => (
 * [`divider`](#divider): optional element to render between each field
 * [`record`](#controlled-mode): can be injected when outside a RecordContext 
 * [`spacing`](#spacing): optional integer to set the spacing between the fields
-* [`sx`](#css-api): Override the styles
+* [`sx`](#sx-css-api): Override the styles
 * [`syncWithLocation`](#sync-tabs-with-location): optional boolean to disable storing the active tab in the url
 * [`tabs`](#custom-tab-component): custom Tabs component
 
