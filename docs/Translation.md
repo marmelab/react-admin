@@ -704,8 +704,8 @@ This solution is all-or-nothing: you can't silence only *some* missing translati
 
 Some of your records may contain fields that are translated in multiple languages. It's common, in such cases, to offer an interface allowing admin users to see and edit each translation. React-admin provides 2 components for that:
 
-- To display translatable fields, use the [`<TranslatableFields>`](./Fields.md#translatable-fields) component
-- To edit translatable fields, use the [`<TranslatableInputs>`](./Inputs.md#translatable-inputs) component
+- To display translatable fields, use the [`<TranslatableFields>`](./TranslatableFields.md) component
+- To edit translatable fields, use the [`<TranslatableInputs>`](./TranslatableInputs.md) component
 
 They both expect the translatable values to have the following structure:
 
