@@ -343,9 +343,9 @@ To override the style of all instances of `<Button>` using the [material-ui styl
 
 | Rule name                                       | Description                                     |
 |-------------------------------------------------|-------------------------------------------------|
-| `& .RaSkipNavigationButton-skipToContentButton` | Applied to the underlying `MuiButton` component |
+| `&.RaSkipToContentButton-skipToContentButton` | Applied to the underlying `MuiButton` component |
 
-To override the style of all instances of `<SkipNavigationButton>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaSkipNavigationButton` key.
+To override the style of all instances of `<SkipNavigationButton>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaSkipToContentButton` key.
 
 ### `<MenuItemLink>`
 
