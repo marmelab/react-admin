@@ -77,6 +77,61 @@ describe('EditBase', () => {
             ),
         });
         const onSuccess = jest.fn();
+
+        const Child = () => {
+            const saveContext = useSaveContext();
+            const record = useRecordContext();
+
+            const handleClick = () => {
+                saveContext.save({ test: 'test' });
+            };
+
+            return (
+                <>
+                    <p>{record?.test}</p>
+                    <button aria-label="save" onClick={handleClick} />
+                </>
+            );
+        };
+        const { getByLabelText } = render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <EditBase
+                    {...defaultProps}
+                    mutationMode="pessimistic"
+                    mutationOptions={{ onSuccess }}
+                >
+                    <Child />
+                </EditBase>
+            </CoreAdminContext>
+        );
+
+        await waitFor(() => {
+            screen.getByText('previous');
+        });
+        getByLabelText('save').click();
+
+        await waitFor(() => {
+            expect(onSuccess).toHaveBeenCalledWith(
+                {
+                    id: 12,
+                    test: 'test',
+                },
+                { data: { test: 'test' }, resource: 'posts' },
+                { snapshot: [] }
+            );
+        });
+    });
+
+    it('should allow to override the onSuccess function at call time', async () => {
+        const dataProvider = testDataProvider({
+            getOne: () =>
+                // @ts-ignore
+                Promise.resolve({ data: { id: 12, test: 'previous' } }),
+            update: jest.fn((_, { id, data, previousData }) =>
+                Promise.resolve({ data: { id, ...previousData, ...data } })
+            ),
+        });
+        const onSuccess = jest.fn();
         const onSuccessOverride = jest.fn();
 
         const Child = () => {
@@ -137,6 +192,58 @@ describe('EditBase', () => {
             ),
         });
         const onError = jest.fn();
+
+        const Child = () => {
+            const saveContext = useSaveContext();
+            const record = useRecordContext();
+
+            const handleClick = () => {
+                saveContext.save({ test: 'test' });
+            };
+
+            return (
+                <>
+                    <p>{record?.test}</p>
+                    <button aria-label="save" onClick={handleClick} />
+                </>
+            );
+        };
+        const { getByLabelText } = render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <EditBase
+                    {...defaultProps}
+                    mutationMode="pessimistic"
+                    mutationOptions={{ onError }}
+                >
+                    <Child />
+                </EditBase>
+            </CoreAdminContext>
+        );
+
+        await waitFor(() => {
+            screen.getByText('previous');
+        });
+        getByLabelText('save').click();
+
+        await waitFor(() => {
+            expect(onError).toHaveBeenCalledWith(
+                { message: 'test' },
+                { data: { test: 'test' }, resource: 'posts' },
+                { snapshot: [] }
+            );
+        });
+    });
+
+    it('should allow to override the onFailure function at call time', async () => {
+        const dataProvider = testDataProvider({
+            getOne: () =>
+                // @ts-ignore
+                Promise.resolve({ data: { id: 12, test: 'previous' } }),
+            update: jest.fn((_, { id, data, previousData }) =>
+                Promise.reject({ message: 'test' })
+            ),
+        });
+        const onError = jest.fn();
         const onFailureOverride = jest.fn();
 
         const Child = () => {
@@ -185,6 +292,64 @@ describe('EditBase', () => {
     });
 
     it('should allow to override the transform function', async () => {
+        const dataProvider = testDataProvider({
+            getOne: () =>
+                // @ts-ignore
+                Promise.resolve({ data: { id: 12, test: 'previous' } }),
+            update: jest.fn((_, { id, data, previousData }) =>
+                Promise.resolve({ data: { id, ...previousData, ...data } })
+            ),
+        });
+        const transform = jest.fn(data => ({
+            ...data,
+            test: 'test transformed',
+        }));
+
+        const Child = () => {
+            const saveContext = useSaveContext();
+            const record = useRecordContext();
+
+            const handleClick = () => {
+                saveContext.save({ test: 'test' });
+            };
+
+            return (
+                <>
+                    <p>{record?.test}</p>
+                    <button aria-label="save" onClick={handleClick} />
+                </>
+            );
+        };
+        const { getByLabelText } = render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <EditBase
+                    {...defaultProps}
+                    mutationMode="pessimistic"
+                    transform={transform}
+                >
+                    <Child />
+                </EditBase>
+            </CoreAdminContext>
+        );
+
+        await waitFor(() => {
+            screen.getByText('previous');
+        });
+        getByLabelText('save').click();
+
+        await waitFor(() => {
+            expect(transform).toHaveBeenCalledWith({ test: 'test' });
+        });
+        await waitFor(() => {
+            expect(dataProvider.update).toHaveBeenCalledWith('posts', {
+                id: defaultProps.id,
+                data: { test: 'test transformed' },
+                previousData: { id: 12, test: 'previous' },
+            });
+        });
+    });
+
+    it('should allow to override the transform function at call time', async () => {
         const dataProvider = testDataProvider({
             getOne: () =>
                 // @ts-ignore

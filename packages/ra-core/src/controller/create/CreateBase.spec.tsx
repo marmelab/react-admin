@@ -58,6 +58,45 @@ describe('CreateBase', () => {
             ),
         });
         const onSuccess = jest.fn();
+
+        const Child = () => {
+            const saveContext = useSaveContext();
+
+            const handleClick = () => {
+                saveContext.save({ test: 'test' });
+            };
+
+            return <button aria-label="save" onClick={handleClick} />;
+        };
+        const { getByLabelText } = render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <CreateBase {...defaultProps} mutationOptions={{ onSuccess }}>
+                    <Child />
+                </CreateBase>
+            </CoreAdminContext>
+        );
+
+        getByLabelText('save').click();
+
+        await waitFor(() => {
+            expect(onSuccess).toHaveBeenCalledWith(
+                {
+                    id: 1,
+                    test: 'test',
+                },
+                { data: { test: 'test' }, resource: 'posts' },
+                undefined
+            );
+        });
+    });
+
+    it('should allow to override the onSuccess function at call time', async () => {
+        const dataProvider = testDataProvider({
+            create: jest.fn((_, { data }) =>
+                Promise.resolve({ data: { id: 1, ...data } })
+            ),
+        });
+        const onSuccess = jest.fn();
         const onSuccessOverride = jest.fn();
 
         const Child = () => {
@@ -102,6 +141,42 @@ describe('CreateBase', () => {
             ),
         });
         const onError = jest.fn();
+
+        const Child = () => {
+            const saveContext = useSaveContext();
+
+            const handleClick = () => {
+                saveContext.save({ test: 'test' });
+            };
+
+            return <button aria-label="save" onClick={handleClick} />;
+        };
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <CreateBase {...defaultProps} mutationOptions={{ onError }}>
+                    <Child />
+                </CreateBase>
+            </CoreAdminContext>
+        );
+
+        screen.getByLabelText('save').click();
+
+        await waitFor(() => {
+            expect(onError).toHaveBeenCalledWith(
+                { message: 'test' },
+                { data: { test: 'test' }, resource: 'posts' },
+                undefined
+            );
+        });
+    });
+
+    it('should allow to override the onFailure function at call time', async () => {
+        const dataProvider = testDataProvider({
+            create: jest.fn((_, { data }) =>
+                Promise.reject({ message: 'test' })
+            ),
+        });
+        const onError = jest.fn();
         const onErrorOverride = jest.fn();
 
         const Child = () => {
@@ -137,6 +212,45 @@ describe('CreateBase', () => {
     });
 
     it('should allow to override the transform function', async () => {
+        const dataProvider = testDataProvider({
+            create: jest.fn((_, { data }) =>
+                Promise.resolve({ data: { id: 1, ...data } })
+            ),
+        });
+        const transform = jest
+            .fn()
+            .mockReturnValueOnce({ test: 'test transformed' });
+
+        const Child = () => {
+            const saveContext = useSaveContext();
+
+            const handleClick = () => {
+                saveContext.save({ test: 'test' });
+            };
+
+            return <button aria-label="save" onClick={handleClick} />;
+        };
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <CreateBase {...defaultProps} transform={transform}>
+                    <Child />
+                </CreateBase>
+            </CoreAdminContext>
+        );
+
+        screen.getByLabelText('save').click();
+
+        await waitFor(() => {
+            expect(transform).toHaveBeenCalledWith({ test: 'test' });
+        });
+        await waitFor(() => {
+            expect(dataProvider.create).toHaveBeenCalledWith('posts', {
+                data: { test: 'test transformed' },
+            });
+        });
+    });
+
+    it('should allow to override the transform function at call time', async () => {
         const dataProvider = testDataProvider({
             create: jest.fn((_, { data }) =>
                 Promise.resolve({ data: { id: 1, ...data } })
