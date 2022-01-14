@@ -243,10 +243,10 @@ const CreateTag = () => {
             <form onSubmit={handleSubmit}>
                 <DialogContent>
                     <TextField
-                      label="New tag"
-                      value={value}
-                      onChange={event => setValue(event.target.value)}
-                      autoFocus
+                        label="New tag"
+                        value={value}
+                        onChange={event => setValue(event.target.value)}
+                        autoFocus
                     />
                 </DialogContent>
                 <DialogActions>
