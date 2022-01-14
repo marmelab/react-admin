@@ -3,7 +3,6 @@ import get from 'lodash/get';
 
 import { useTranslate } from '../i18n';
 import { RaRecord } from '../types';
-import { InputProps } from '.';
 
 export type OptionTextElement = ReactElement<{
     record: RaRecord;
@@ -11,17 +10,10 @@ export type OptionTextElement = ReactElement<{
 export type OptionTextFunc = (choice: any) => string | OptionTextElement;
 export type OptionText = OptionTextElement | OptionTextFunc | string;
 
-export interface ChoicesInputProps<T = any>
-    extends Omit<InputProps<T>, 'source'> {
-    // Optional as choices inputs can be used inside Reference inputs which inject the source
-    source?: string;
-
-    // Optional as choices inputs can be used inside Reference inputs which inject the choices
-    choices?: object[];
-}
-
 export interface ChoicesProps {
     choices: object[];
+    isFetching?: boolean;
+    isLoading?: boolean;
     optionValue?: string;
     optionText?: OptionText;
     translateChoice?: boolean;
@@ -45,7 +37,7 @@ export interface UseChoicesOptions {
  * - getChoiceText: Returns the choice text or a React element
  * - getChoiceValue: Returns the choice value
  */
-const useChoices = ({
+export const useChoices = ({
     optionText = 'name',
     optionValue = 'id',
     disableValue = 'disabled',
@@ -86,5 +78,3 @@ const useChoices = ({
         getDisableValue,
     };
 };
-
-export default useChoices;
