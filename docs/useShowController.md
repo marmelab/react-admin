@@ -110,7 +110,7 @@ The `onError` function receives the error from the dataProvider call (`dataProvi
 
 The default `onError` function is:
 
-```jsx
+```js
 (error) => {
     notify('ra.notification.item_doesnt_exist', { type: 'warning' });
     redirect('list', basePath);

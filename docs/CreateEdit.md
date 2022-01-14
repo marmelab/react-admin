@@ -407,7 +407,7 @@ const PostEdit = () => {
     };
 
     return (
-        <Edit mutationProps={{ onSuccess }}>
+        <Edit mutationOptions={{ onSuccess }}>
             <SimpleForm>
                 ...
             </SimpleForm>
@@ -420,7 +420,7 @@ By default, the `<Edit>` view runs updates in `mutationMode="undoable"`, which m
 
 The default `onSuccess` function is:
 
-```jsx
+```js
 // for the <Create> component:
 () => {
     notify('ra.notification.created', { messageArgs: { smart_count: 1 } });
@@ -457,7 +457,7 @@ const PostEdit = () => {
     };
 
     return (
-        <Edit mutationProps={{ onSuccess }} mutationMode="pessimistic">
+        <Edit mutationOptions={{ onSuccess }} mutationMode="pessimistic">
             <SimpleForm>
                 ...
             </SimpleForm>
@@ -486,7 +486,7 @@ const PostEdit = () => {
     };
 
     return (
-        <Edit mutationProps={{ onError }}>
+        <Edit mutationOptions={{ onError }}>
             <SimpleForm>
                 ...
             </SimpleForm>
@@ -722,7 +722,7 @@ const MyEdit = props => {
     const {
         basePath, // deduced from the location, useful for action buttons
         defaultTitle, // the translated title based on the resource, e.g. 'Post #123'
-        error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onFailure` side effect.
+        error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onError` side effect.
         loaded, // boolean that is false until the record is available
         loading, // boolean that is true on mount, and false once the record was fetched
         record, // record fetched via dataProvider.getOne() based on the id from the location
@@ -1481,34 +1481,30 @@ The form can be validated by the server after its submission. In order to displa
 ```jsx
 import * as React from 'react';
 import { useCallback } from 'react';
-import { Create, SimpleForm, TextInput, useMutation } from 'react-admin';
+import { Create, SimpleForm, TextInput, useCreate } from 'react-admin';
 
-export const UserCreate = () => {
-    const [mutate] = useMutation();
+const UserCreate = () => {
+    const [create] = useCreate();
     const save = useCallback(
-        async (values) => {
-            try {
-                await mutate({
-                    type: 'create',
-                    resource: 'users',
-                    payload: { data: values },
-                }, { returnPromise: true });
-            } catch (error) {
-                if (error.body.errors) {
-                    return error.body.errors;
-                }
-            }
-        },
-        [mutate],
+      async values => {
+          try {
+              await create('users', { data: values });
+          } catch (error) {
+              if (error.body.errors) {
+                  return error.body.errors;
+              }
+          }
+      },
+      [create]
     );
 
     return (
-        <Create>
-            <SimpleForm save={save}>
-                <TextInput label="First Name" source="firstName" />
-                <TextInput label="Age" source="age" />
-            </SimpleForm>
-        </Create>
+      <Create>
+          <SimpleForm save={save}>
+              <TextInput label="First Name" source="firstName" />
+              <TextInput label="Age" source="age" />
+          </SimpleForm>
+      </Create>
     );
 };
 ```
@@ -2209,7 +2205,7 @@ import { Edit, useNotify, useRedirect } from 'react-admin';
 const PostEdit = () => {
     const notify = useNotify();
     const redirect = useRedirect();
-    const onFailure = (error) => {
+    const onError = (error) => {
         if (error.code == 123) {
             notify('Could not save changes: concurrent edition in progress', { type: 'warning' });
         } else {
@@ -2218,7 +2214,7 @@ const PostEdit = () => {
         redirect('list', props.basePath);
     }
     return (
-        <Edit onFailure={onFailure}>
+        <Edit mutationOptions={{ onError }}>
             ...
         </Edit>
     );
@@ -2300,25 +2296,28 @@ import {
 } from 'react-admin';
 
 const SaveWithNoteButton = props => {
-    const [create] = useCreate('posts');
+    const [create] = useCreate();
     const redirectTo = useRedirect();
     const notify = useNotify();
     const { basePath } = props;
     const handleSave = useCallback(
-        (values, redirect) => {
-            create(
-                {
-                    payload: { data: { ...values, average_note: 10 } },
+      (values, redirect) => {
+          create(
+            'posts',
+            {
+                data: { ...values, average_note: 10 },
+            },
+            {
+                onSuccess: ({ data: newRecord }) => {
+                    notify('ra.notification.created', {
+                        messageArgs: { smart_count: 1 },
+                    });
+                    redirectTo(redirect, basePath, newRecord.id, newRecord);
                 },
-                {
-                    onSuccess: ({ data: newRecord }) => {
-                        notify('ra.notification.created', { messageArgs: { smart_count: 1 } });
-                        redirectTo(redirect, basePath, newRecord.id, newRecord);
-                    },
-                }
-            );
-        },
-        [create, notify, redirectTo, basePath]
+            }
+          );
+      },
+      [create, notify, redirectTo, basePath]
     );
     // set onSave props instead of handleSubmitWithRedirect
     return <SaveButton {...props} onSave={handleSave} />;

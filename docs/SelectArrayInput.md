@@ -181,13 +181,14 @@ const PostCreate = () => {
 Use the `create` prop when you want a more polished or complex UI. For example a Material UI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
 
 {% raw %}
-```js
+```jsx
 import {
     SelectArrayInput,
     Create,
     ReferenceArrayInput,
     SimpleForm,
     TextInput,
+    useCreate,
     useCreateSuggestionContext
 } from 'react-admin';
 
@@ -217,44 +218,43 @@ const PostCreate = () => {
 const CreateTag = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
-    const [create] = useCreate('tags');
+    const [create] = useCreate();
 
-    const handleSubmit = (event) => {
+    const handleSubmit = event => {
         event.preventDefault();
         create(
-            {
-                payload: {
-                    data: {
-                        title: value,
-                    },
-                },
-            },
-            {
-                onSuccess: ({ data }) => {
-                    setValue('');
-                    onCreate(data);
-                },
-            }
+          'tags',
+          {
+              data: {
+                  title: value,
+              },
+          },
+          {
+              onSuccess: ({ data }) => {
+                  setValue('');
+                  onCreate(data);
+              },
+          }
         );
     };
 
     return (
-        <Dialog open onClose={onCancel}>
-            <form onSubmit={handleSubmit}>
-                <DialogContent>
-                    <TextField
-                        label="New tag"
-                        value={value}
-                        onChange={event => setValue(event.target.value)}
-                        autoFocus
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button type="submit">Save</Button>
-                    <Button onClick={onCancel}>Cancel</Button>
-                </DialogActions>
-            </form>
-        </Dialog>
+      <Dialog open onClose={onCancel}>
+          <form onSubmit={handleSubmit}>
+              <DialogContent>
+                  <TextField
+                    label="New tag"
+                    value={value}
+                    onChange={event => setValue(event.target.value)}
+                    autoFocus
+                  />
+              </DialogContent>
+              <DialogActions>
+                  <Button type="submit">Save</Button>
+                  <Button onClick={onCancel}>Cancel</Button>
+              </DialogActions>
+          </form>
+      </Dialog>
     );
 };
 ```

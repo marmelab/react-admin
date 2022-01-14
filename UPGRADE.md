@@ -1572,13 +1572,9 @@ Here's how to migrate the *Altering the Form Values before Submitting* example f
 import * as React from 'react';
 import { useCallback } from 'react';
 import { useForm } from 'react-final-form';
-import { SaveButton, Toolbar, useCreate, useRedirect } from 'react-admin';
+import { SaveButton, Toolbar } from 'react-admin';
 
 const SaveWithNoteButton = ({ handleSubmit, handleSubmitWithRedirect, ...props }) => {
-    const [create] = useCreate('posts');
-    const redirectTo = useRedirect();
-    const { basePath, redirect } = props;
-
     const form = useForm();
 
     const handleClick = useCallback(() => {
@@ -1611,7 +1607,7 @@ import {
 } from 'react-admin';
 
 const SaveWithNoteButton = props => {
-    const [create] = useCreate('posts');
+    const [create] = useCreate();
     const redirectTo = useRedirect();
     const notify = useNotify();
     const { basePath } = props;
@@ -1619,6 +1615,7 @@ const SaveWithNoteButton = props => {
     const handleSave = useCallback(
         (values, redirect) => {
             create(
+                'posts',
                 {
                     payload: { data: { ...values, average_note: 10 } },
                 },
