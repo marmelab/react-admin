@@ -12,17 +12,14 @@ export const SimpleFormView = ({
     className,
     component: Component = CardContentInner,
     handleSubmit,
-    invalid,
     margin,
     mutationMode,
-    pristine,
     record,
     resource,
     saving,
     submitOnEnter = true,
     toolbar = DefaultToolbar,
     variant,
-    validating,
     ...rest
 }: SimpleFormViewProps): ReactElement => (
     <form
@@ -47,14 +44,11 @@ export const SimpleFormView = ({
         </Component>
         {toolbar &&
             React.cloneElement(toolbar, {
-                invalid,
                 mutationMode,
-                pristine,
                 record,
                 resource,
                 saving,
                 submitOnEnter,
-                validating,
             })}
     </form>
 );
@@ -90,30 +84,4 @@ export interface SimpleFormViewProps extends FormWithRedirectRenderProps {
     __versions?: any; // react-final-form internal prop, missing in their type
 }
 
-const sanitizeRestProps = ({
-    active,
-    dirty,
-    dirtyFields,
-    dirtyFieldsSinceLastSubmit,
-    dirtySinceLastSubmit,
-    error,
-    errors,
-    form,
-    hasSubmitErrors,
-    hasValidationErrors,
-    initialValues,
-    modified = null,
-    modifiedSinceLastSubmit,
-    save = null,
-    submitError,
-    submitErrors,
-    submitFailed,
-    submitSucceeded,
-    submitting,
-    touched = null,
-    valid,
-    values,
-    visited = null,
-    __versions = null,
-    ...props
-}) => props;
+const sanitizeRestProps = ({ save = null, ...props }) => props;

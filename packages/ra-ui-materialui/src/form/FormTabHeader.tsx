@@ -5,7 +5,6 @@ import { Link, useLocation } from 'react-router-dom';
 import MuiTab from '@mui/material/Tab';
 import classnames from 'classnames';
 import { useTranslate, useFormGroup } from 'ra-core';
-import { useFormState } from 'react-final-form';
 import { TabbedFormClasses } from './TabbedFormView';
 
 export const FormTabHeader = ({
@@ -18,7 +17,6 @@ export const FormTabHeader = ({
 }: FormTabHeaderProps): ReactElement => {
     const translate = useTranslate();
     const location = useLocation();
-    const { submitFailed } = useFormState(UseFormStateOptions);
     const formGroup = useFormGroup(value.toString());
     const propsForLink = {
         component: Link,
@@ -34,8 +32,8 @@ export const FormTabHeader = ({
             icon={icon}
             className={classnames('form-tab', className, {
                 [TabbedFormClasses.errorTabButton]:
-                    formGroup.invalid && (formGroup.touched || submitFailed),
-                error: formGroup.invalid && (formGroup.touched || submitFailed),
+                    formGroup.invalid && formGroup.touched,
+                error: formGroup.invalid && formGroup.touched,
             })}
             {...(syncWithLocation ? propsForLink : {})} // to avoid TypeScript screams, see https://github.com/mui-org/material-ui/issues/9106#issuecomment-451270521
             id={`tabheader-${value}`}
@@ -43,12 +41,6 @@ export const FormTabHeader = ({
             {...rest}
         />
     );
-};
-
-const UseFormStateOptions = {
-    subscription: {
-        submitFailed: true,
-    },
 };
 
 interface FormTabHeaderProps {

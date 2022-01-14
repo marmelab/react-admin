@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import classnames from 'classnames';
 import { RaRecord, MutationMode } from 'ra-core';
+import { useFormState } from 'react-hook-form';
 
 import { SaveButton, DeleteButton } from '../button';
 
@@ -59,24 +60,20 @@ export const Toolbar = <
         alwaysEnableSaveButton,
         children,
         className,
-        invalid,
-        pristine,
         record,
         resource,
-        saving,
         submitOnEnter = true,
         mutationMode,
-        validating,
         ...rest
     } = props;
 
     const isXs = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
-
+    const { isDirty, isValidating } = useFormState();
     // Use form pristine and validating to enable or disable the save button
     // if alwaysEnableSaveButton is undefined
     const disabled = !valueOrDefault(
         alwaysEnableSaveButton,
-        !pristine && !validating
+        isDirty && !isValidating
     );
 
     return (
@@ -96,8 +93,6 @@ export const Toolbar = <
                 <div className={ToolbarClasses.defaultToolbar}>
                     <SaveButton
                         disabled={disabled}
-                        invalid={invalid}
-                        saving={saving || validating}
                         submitOnEnter={submitOnEnter}
                     />
                     {record && typeof record.id !== 'undefined' && (
@@ -113,8 +108,6 @@ export const Toolbar = <
                 Children.map(children, (button: ReactElement) =>
                     button && isValidElement<any>(button)
                         ? React.cloneElement(button, {
-                              invalid,
-                              pristine,
                               record: valueOrDefault(
                                   button.props.record,
                                   record
@@ -123,7 +116,6 @@ export const Toolbar = <
                                   button.props.resource,
                                   resource
                               ),
-                              saving,
                               submitOnEnter: valueOrDefault(
                                   button.props.submitOnEnter,
                                   submitOnEnter
@@ -145,26 +137,18 @@ export interface ToolbarProps<RecordType extends Partial<RaRecord> = any>
     children?: ReactNode;
     alwaysEnableSaveButton?: boolean;
     className?: string;
-    invalid?: boolean;
     mutationMode?: MutationMode;
-    pristine?: boolean;
-    saving?: boolean;
     submitOnEnter?: boolean;
     record?: RecordType;
     resource?: string;
-    validating?: boolean;
 }
 
 Toolbar.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
-    invalid: PropTypes.bool,
-    pristine: PropTypes.bool,
     record: PropTypes.any,
     resource: PropTypes.string,
-    saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
-    validating: PropTypes.bool,
 };
 
 const PREFIX = 'RaToolbar';
