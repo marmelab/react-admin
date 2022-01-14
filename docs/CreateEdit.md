@@ -766,7 +766,7 @@ This custom Edit view has no action buttons or aside component - it's up to you 
 
 ## The `<SimpleForm>` component
 
-The `<SimpleForm>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, which is passed to the `form` `onSubmit` prop.
+The `<SimpleForm>` component reads the `record` from the `RecordContext`. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, which is passed to the `form` `onSubmit` prop.
 
 The `<SimpleForm>` renders its child components line by line (within `<div>` components). It accepts Input and Field components as children. It relies on [react-final-form](https://github.com/final-form/react-final-form) for form handling.
 
@@ -838,7 +838,7 @@ const PostEdit = () => (
 
 ## The `<TabbedForm>` component
 
-Just like `<SimpleForm>`, `<TabbedForm>` receives the `record` prop, renders the actual form, and handles form validation on submit. However, the `<TabbedForm>` component renders inputs grouped by tab. The tabs are set by using `<FormTab>` components, which expect a `label` and an `icon` prop.
+Just like `<SimpleForm>`, `<TabbedForm>` reads the `record` from the `RecordContext`, renders the actual form, and handles form validation on submit. However, the `<TabbedForm>` component renders inputs grouped by tab. The tabs are set by using `<FormTab>` components, which expect a `label` and an `icon` prop.
 
 ![tabbed form](./img/tabbed-form.gif)
 
