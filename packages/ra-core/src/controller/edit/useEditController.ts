@@ -3,12 +3,7 @@ import { useParams } from 'react-router-dom';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
-import {
-    Record,
-    MutationMode,
-    TransformData,
-    UpdateParams,
-} from '../../types';
+import { Record, MutationMode, TransformData, UpdateParams } from '../../types';
 import {
     useNotify,
     useRedirect,
