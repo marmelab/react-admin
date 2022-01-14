@@ -149,7 +149,7 @@ describe('useReferenceInputController', () => {
             expect(children).toHaveBeenCalledWith(
                 expect.objectContaining({
                     possibleValues: {
-                        currentSort: {
+                        sort: {
                             field: 'title',
                             order: 'ASC',
                         },

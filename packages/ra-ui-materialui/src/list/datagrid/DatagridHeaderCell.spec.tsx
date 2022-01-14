@@ -14,7 +14,7 @@ describe('<DatagridHeaderCell />', () => {
                     <tr>
                         <DatagridHeaderCell
                             resource="posts"
-                            currentSort={{ field: 'title', order: 'ASC' }}
+                            sort={{ field: 'title', order: 'ASC' }}
                             field={<Field source="title" label={<Label />} />}
                             updateSort={() => true}
                         />
@@ -45,7 +45,7 @@ describe('<DatagridHeaderCell />', () => {
                         <tr>
                             <DatagridHeaderCell
                                 resource="posts"
-                                currentSort={{ field: 'title', order: 'ASC' }}
+                                sort={{ field: 'title', order: 'ASC' }}
                                 field={<Field source="title" />}
                                 updateSort={() => true}
                             />
@@ -65,7 +65,7 @@ describe('<DatagridHeaderCell />', () => {
                         <tr>
                             <DatagridHeaderCell
                                 resource="posts"
-                                currentSort={{ field: 'title', order: 'ASC' }}
+                                sort={{ field: 'title', order: 'ASC' }}
                                 field={<Field sortBy="title" />}
                                 updateSort={() => true}
                             />
@@ -85,7 +85,7 @@ describe('<DatagridHeaderCell />', () => {
                         <tr>
                             <DatagridHeaderCell
                                 resource="posts"
-                                currentSort={{ field: 'title', order: 'ASC' }}
+                                sort={{ field: 'title', order: 'ASC' }}
                                 field={
                                     <Field sortBy="title" sortByOrder="DESC" />
                                 }
@@ -105,7 +105,7 @@ describe('<DatagridHeaderCell />', () => {
                         <tr>
                             <DatagridHeaderCell
                                 resource="posts"
-                                currentSort={{ field: 'title', order: 'ASC' }}
+                                sort={{ field: 'title', order: 'ASC' }}
                                 field={<Field source="title" />}
                                 updateSort={() => true}
                             />
@@ -123,7 +123,7 @@ describe('<DatagridHeaderCell />', () => {
                         <tr>
                             <DatagridHeaderCell
                                 resource="posts"
-                                currentSort={{ field: 'title', order: 'ASC' }}
+                                sort={{ field: 'title', order: 'ASC' }}
                                 field={<Field />}
                                 updateSort={() => true}
                             />
@@ -141,7 +141,7 @@ describe('<DatagridHeaderCell />', () => {
                         <tr>
                             <DatagridHeaderCell
                                 resource="posts"
-                                currentSort={{ field: 'title', order: 'ASC' }}
+                                sort={{ field: 'title', order: 'ASC' }}
                                 field={
                                     <Field source="title" sortable={false} />
                                 }
@@ -161,7 +161,7 @@ describe('<DatagridHeaderCell />', () => {
                         <tr>
                             <DatagridHeaderCell
                                 resource="posts"
-                                currentSort={{ field: 'title', order: 'ASC' }}
+                                sort={{ field: 'title', order: 'ASC' }}
                                 updateSort={() => true}
                                 field={<Field />}
                                 className="blue"

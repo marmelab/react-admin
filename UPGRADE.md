@@ -1061,6 +1061,47 @@ const CommentGrid = () => {
 };
 ```
 
+## `currentSort` Renamed To `sort`
+
+If one of your components displays the curent sort order, it probably uses the injected `currentSort` prop (or reads it from the `ListContext`). This prop has been renamed to `sort` in v4.
+
+Upgrade your code by replacing `currentSort` with `sort`:
+
+```diff
+import { useListContext } from 'react-admin';
+
+const BookListIterator = () => {
+-    const { data, loading, currentSort } = useListContext();
++    const { data, isLoading, sort } = useListContext();
+
+    if (loading) return <Loading />;
+    if (data.length === 0) return <p>No data</p>;
+
+    return (<>
+-       <div>Books sorted by {currentSort.field}</div>
++       <div>Books sorted by {sort.field}</div>
+        <ul>
+            {data.map(book =>
+                <li key={book.id}>{book.title}</li>
+            )}
+        </ul>
+    </>);
+};
+```
+
+The same happens for `<Datagrid>`: when used in standalone, it used to accept a `currentSort` prop, but now it only accepts a `sort` prop.
+
+
+```diff
+-<Datagrid data={data} currentSort={{ field: 'id', order: 'DESC' }}>
++<Datagrid data={data} sort={{ field: 'id', order: 'DESC' }}>
+    <TextField source="id" />
+    <TextField source="title" />
+    <TextField source="author" />
+    <TextField source="year" />
+</Datagrid>
+```
+
 ## `setSort()` Signature Changed
 
 Some react-admin components have access to a `setSort()` callback to sort the current list of items. This callback is also present in the `ListContext`. Its signature has changed:
@@ -1074,16 +1115,16 @@ This impacts your code if you built a custom sort component:
 
 ```diff
 const SortButton = () => {
-    const { currentSort, setSort } = useListContext();
+    const { sort, setSort } = useListContext();
     const handleChangeSort = (event) => {
         const field = event.currentTarget.dataset.sort;
 -       setSort(
 -           field,
--           field === currentSort.field ? inverseOrder(currentSort.order) : 'ASC',
+-           field === sort.field ? inverseOrder(sort.order) : 'ASC',
 -       });
 +       setSort({
 +           field,
-+           order: field === currentSort.field ? inverseOrder(currentSort.order) : 'ASC',
++           order: field === sort.field ? inverseOrder(sort.order) : 'ASC',
 +       });
         setAnchorEl(null);
     };

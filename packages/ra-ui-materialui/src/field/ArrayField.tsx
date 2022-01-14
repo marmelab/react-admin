@@ -94,7 +94,7 @@ export const ArrayField: FC<ArrayFieldProps> = memo(props => {
                 data,
                 basePath,
                 selectedIds: [],
-                currentSort: { field: null, order: null },
+                sort: { field: null, order: null },
                 displayedFilters: null,
                 filterValues: null,
                 hasCreate: null,
@@ -119,7 +119,7 @@ export const ArrayField: FC<ArrayFieldProps> = memo(props => {
                 data,
                 isLoading: false,
                 basePath,
-                currentSort: { field: null, order: null },
+                sort: { field: null, order: null },
                 resource,
                 ...rest,
             })}

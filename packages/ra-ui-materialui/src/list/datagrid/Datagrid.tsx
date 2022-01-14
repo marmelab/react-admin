@@ -82,12 +82,12 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  *
  * @example // Usage outside of a <List> or a <ReferenceManyField>.
  *
- * const currentSort = { field: 'published_at', order: 'DESC' };
+ * const sort = { field: 'published_at', order: 'DESC' };
  *
  * export const MyCustomList = (props) => {
  *     const { data, total, isLoading } = useGetList(
  *         'posts',
- *         { pagination: { page: 1, perPage: 10 }, sort: currentSort }
+ *         { pagination: { page: 1, perPage: 10 }, sort: sort }
  *     );
  *
  *     return (
@@ -95,7 +95,7 @@ const defaultBulkActionButtons = <BulkDeleteButton />;
  *             data={data}
  *             total={total}
  *             isLoading={isLoading}
- *             currentSort={currentSort}
+ *             sort={sort}
  *             selectedIds={[]}
  *             setSort={() => {
  *                 console.log('set sort');
@@ -134,7 +134,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
     } = props;
 
     const {
-        currentSort,
+        sort,
         data,
         isLoading,
         onSelect,
@@ -242,7 +242,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                         header,
                         {
                             children,
-                            currentSort,
+                            sort,
                             data,
                             hasExpand: !!expand,
                             hasBulkActions,
@@ -289,7 +289,7 @@ Datagrid.propTypes = {
     bulkActionButtons: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
-    currentSort: PropTypes.exact({
+    sort: PropTypes.exact({
         field: PropTypes.string,
         order: PropTypes.string,
     }),
@@ -338,7 +338,7 @@ export interface DatagridProps<RecordType extends Record = Record>
     size?: 'medium' | 'small';
     // can be injected when using the component without context
     basePath?: string;
-    currentSort?: SortPayload;
+    sort?: SortPayload;
     data?: RecordType[];
     isLoading?: boolean;
     onSelect?: (ids: Identifier[]) => void;
