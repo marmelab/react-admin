@@ -2301,23 +2301,23 @@ const SaveWithNoteButton = props => {
     const notify = useNotify();
     const { basePath } = props;
     const handleSave = useCallback(
-      (values, redirect) => {
-          create(
-            'posts',
-            {
-                data: { ...values, average_note: 10 },
-            },
-            {
-                onSuccess: ({ data: newRecord }) => {
-                    notify('ra.notification.created', {
-                        messageArgs: { smart_count: 1 },
-                    });
-                    redirectTo(redirect, basePath, newRecord.id, newRecord);
+        (values, redirect) => {
+            create(
+                'posts',
+                {
+                    data: { ...values, average_note: 10 },
                 },
-            }
-          );
-      },
-      [create, notify, redirectTo, basePath]
+                {
+                    onSuccess: ({ data: newRecord }) => {
+                        notify('ra.notification.created', {
+                            messageArgs: { smart_count: 1 },
+                        });
+                        redirectTo(redirect, basePath, newRecord.id, newRecord);
+                    },
+                }
+            );
+        },
+        [create, notify, redirectTo, basePath]
     );
     // set onSave props instead of handleSubmitWithRedirect
     return <SaveButton {...props} onSave={handleSave} />;
