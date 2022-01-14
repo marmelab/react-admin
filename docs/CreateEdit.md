@@ -1486,7 +1486,7 @@ import { Create, SimpleForm, TextInput, useCreate } from 'react-admin';
 export const UserCreate = () => {
     const [create] = useCreate();
     const save = useCallback(
-      async values => {
+        async values => {
             try {
                 await create('users', { data: values });
             } catch (error) {
