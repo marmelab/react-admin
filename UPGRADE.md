@@ -1804,7 +1804,7 @@ Data Provider methods used to return records with a generic `Record` type, unles
 
 We've renamed that type to `RaRecord` to avoid any confusion.
 
-If you've declared custom Record types, you'll need to upgrade your codea s follows:
+If you've declared custom Record types, you'll need to upgrade your code as follows:
 
 ```diff
 -import { Record } from 'react-admin';
