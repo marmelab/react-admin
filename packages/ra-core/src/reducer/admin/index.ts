@@ -1,6 +1,5 @@
 import { combineReducers, Reducer } from 'redux';
 
-import notifications from './notifications';
 import ui from './ui';
 import { selectedIds } from './selectedIds';
 import { expandedRows } from './expandedRows';
@@ -17,7 +16,6 @@ export default combineReducers({
      *
      * @see https://stackoverflow.com/questions/43375079/redux-warning-only-appearing-in-tests
      */
-    notifications: notifications || defaultReducer,
     ui: ui || defaultReducer,
     selectedIds: selectedIds || defaultReducer,
     expandedRows: expandedRows || defaultReducer,

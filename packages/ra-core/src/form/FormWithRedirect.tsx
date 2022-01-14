@@ -7,7 +7,7 @@ import useResetSubmitErrors from './useResetSubmitErrors';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
 import getFormInitialValues from './getFormInitialValues';
 import { Record as RaRecord } from '../types';
-import { useNotify } from '../sideEffect';
+import { useNotify } from '../notification';
 import { useSaveContext, SaveHandler } from '../controller';
 import { useRecordContext, OptionalRecordContextProvider } from '../controller';
 import submitErrorsMutators from './submitErrorsMutators';

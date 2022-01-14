@@ -8,11 +8,11 @@ import { UseMutationOptions } from 'react-query';
 
 import { useDelete } from '../../dataProvider';
 import {
-    useNotify,
     useRedirect,
     useUnselect,
     RedirectionSideEffect,
 } from '../../sideEffect';
+import { useNotify } from '../../notification';
 import { Record, MutationMode, DeleteParams } from '../../types';
 import { useResourceContext } from '../../core';
 

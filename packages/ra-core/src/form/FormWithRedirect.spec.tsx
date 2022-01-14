@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { fireEvent, screen, render, waitFor } from '@testing-library/react';
 
 import { CoreAdminContext } from '../core';
 import { testDataProvider } from '../dataProvider';
-import { getNotification } from '../reducer';
 import { FormWithRedirect } from './FormWithRedirect';
+import { useNotificationContext } from '../notification';
 import useInput from './useInput';
 import { required } from './validate';
 
@@ -228,8 +227,10 @@ describe('FormWithRedirect', () => {
 
     it('Displays a notification on submit when invalid', async () => {
         const Notification = () => {
-            const notification = useSelector(getNotification);
-            return <p>{notification?.message}</p>;
+            const { notifications } = useNotificationContext();
+            return notifications.length > 0 ? (
+                <div>{notifications[0].message}</div>
+            ) : null;
         };
 
         render(

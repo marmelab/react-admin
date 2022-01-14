@@ -14,7 +14,6 @@ import { CoreLayoutProps, ReduxState } from 'ra-core';
 import { AppBar as DefaultAppBar, AppBarProps } from './AppBar';
 import { Sidebar as DefaultSidebar } from './Sidebar';
 import { Menu as DefaultMenu, MenuProps } from './Menu';
-import { Notification as DefaultNotification } from './Notification';
 import { Error, ErrorProps } from './Error';
 import { SkipNavigationButton } from '../button';
 
@@ -27,7 +26,6 @@ export const Layout = (props: LayoutProps) => {
         error: errorComponent,
         logout,
         menu: Menu = DefaultMenu,
-        notification: Notification = DefaultNotification,
         sidebar: Sidebar = DefaultSidebar,
         title,
         ...rest
@@ -43,45 +41,36 @@ export const Layout = (props: LayoutProps) => {
     };
 
     return (
-        <>
-            <StyledLayout
-                className={classnames('layout', LayoutClasses.root, className)}
-                {...rest}
-            >
-                <SkipNavigationButton />
-                <div className={LayoutClasses.appFrame}>
-                    <AppBar logout={logout} open={open} title={title} />
-                    <main className={LayoutClasses.contentWithSidebar}>
-                        <Sidebar>
-                            <Menu hasDashboard={!!dashboard} />
-                        </Sidebar>
-                        <div
-                            id="main-content"
-                            className={LayoutClasses.content}
+        <StyledLayout
+            className={classnames('layout', LayoutClasses.root, className)}
+            {...rest}
+        >
+            <SkipNavigationButton />
+            <div className={LayoutClasses.appFrame}>
+                <AppBar logout={logout} open={open} title={title} />
+                <main className={LayoutClasses.contentWithSidebar}>
+                    <Sidebar>
+                        <Menu hasDashboard={!!dashboard} />
+                    </Sidebar>
+                    <div id="main-content" className={LayoutClasses.content}>
+                        <ErrorBoundary
+                            onError={handleError}
+                            fallbackRender={({ error, resetErrorBoundary }) => (
+                                <Error
+                                    error={error}
+                                    errorComponent={errorComponent}
+                                    errorInfo={errorInfo}
+                                    resetErrorBoundary={resetErrorBoundary}
+                                    title={title}
+                                />
+                            )}
                         >
-                            <ErrorBoundary
-                                onError={handleError}
-                                fallbackRender={({
-                                    error,
-                                    resetErrorBoundary,
-                                }) => (
-                                    <Error
-                                        error={error}
-                                        errorComponent={errorComponent}
-                                        errorInfo={errorInfo}
-                                        resetErrorBoundary={resetErrorBoundary}
-                                        title={title}
-                                    />
-                                )}
-                            >
-                                {children}
-                            </ErrorBoundary>
-                        </div>
-                    </main>
-                </div>
-            </StyledLayout>
-            <Notification />
-        </>
+                            {children}
+                        </ErrorBoundary>
+                    </div>
+                </main>
+            </div>
+        </StyledLayout>
     );
 };
 
@@ -93,7 +82,6 @@ export interface LayoutProps
     className?: string;
     error?: ComponentType<ErrorProps>;
     menu?: ComponentType<MenuProps>;
-    notification?: ComponentType;
     sidebar?: ComponentType<{ children: ReactNode }>;
 }
 

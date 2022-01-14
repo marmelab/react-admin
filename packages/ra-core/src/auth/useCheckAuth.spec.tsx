@@ -6,12 +6,12 @@ import { render, waitFor } from '@testing-library/react';
 import { useCheckAuth } from './useCheckAuth';
 import AuthContext from './AuthContext';
 import useLogout from './useLogout';
-import useNotify from '../sideEffect/useNotify';
+import { useNotify } from '../notification/useNotify';
 import { AuthProvider } from '../types';
 import { defaultAuthParams } from './useAuthProvider';
 
 jest.mock('./useLogout');
-jest.mock('../sideEffect/useNotify');
+jest.mock('../notification/useNotify');
 
 const logout = jest.fn();
 useLogout.mockImplementation(() => logout);

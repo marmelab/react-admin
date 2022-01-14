@@ -19,7 +19,7 @@ export type ChildrenFunction = () => ComponentType[];
 
 const DefaultLayout = ({ children }: CoreLayoutProps) => <>{children}</>;
 
-export interface AdminUIProps {
+export interface CoreAdminUIProps {
     catchAll?: CatchAllComponent;
     children?: AdminChildren;
     dashboard?: DashboardComponent;
@@ -33,10 +33,7 @@ export interface AdminUIProps {
     title?: TitleComponent;
 }
 
-// for BC
-export type CoreAdminUIProps = AdminUIProps;
-
-const CoreAdminUI = (props: AdminUIProps) => {
+export const CoreAdminUI = (props: CoreAdminUIProps) => {
     const {
         catchAll = Noop,
         children,
@@ -96,5 +93,3 @@ const CoreAdminUI = (props: AdminUIProps) => {
 };
 
 const Noop = () => null;
-
-export default CoreAdminUI;

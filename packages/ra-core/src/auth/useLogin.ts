@@ -1,9 +1,8 @@
 import { useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
+import { useNotificationContext } from '../notification';
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
-import { resetNotification } from '../actions/notificationActions';
 
 /**
  * Get a callback for calling the authProvider.login() method
@@ -33,14 +32,14 @@ const useLogin = (): Login => {
     const location = useLocation();
     const locationState = location.state as any;
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const { resetNotifications } = useNotificationContext();
     const nextPathName = locationState && locationState.nextPathname;
     const nextSearch = locationState && locationState.nextSearch;
 
     const login = useCallback(
         (params: any = {}, pathName) =>
             authProvider.login(params).then(ret => {
-                dispatch(resetNotification());
+                resetNotifications();
                 const redirectUrl = pathName
                     ? pathName
                     : nextPathName + nextSearch ||
@@ -48,16 +47,16 @@ const useLogin = (): Login => {
                 navigate(redirectUrl);
                 return ret;
             }),
-        [authProvider, navigate, nextPathName, nextSearch, dispatch]
+        [authProvider, navigate, nextPathName, nextSearch, resetNotifications]
     );
 
     const loginWithoutProvider = useCallback(
         (_, __) => {
-            dispatch(resetNotification());
+            resetNotifications();
             navigate(defaultAuthParams.afterLoginUrl);
             return Promise.resolve();
         },
-        [navigate, dispatch]
+        [navigate, resetNotifications]
     );
 
     return authProvider ? login : loginWithoutProvider;

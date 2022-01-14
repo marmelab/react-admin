@@ -12,8 +12,7 @@ export * from './inference';
 export * from './util';
 export * from './controller';
 export * from './form';
-
-export { getNotification } from './reducer';
+export * from './notification';
 
 export * from './sideEffect';
 export * from './types';

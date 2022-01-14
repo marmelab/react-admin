@@ -1,5 +1,5 @@
 import { DataProvider } from '../types';
-import defaultDataProvider from './defaultDataProvider';
+import { defaultDataProvider } from './defaultDataProvider';
 
 export type DataProviderMatcher = (resource: string) => DataProvider;
 

@@ -3,7 +3,7 @@ import { UseQueryOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
 import { useTranslate } from '../../i18n';
-import { useNotify } from '../../sideEffect';
+import { useNotify } from '../../notification';
 import { useGetList, UseGetListHookValue } from '../../dataProvider';
 import { SORT_ASC } from './queryReducer';
 import { defaultExporter } from '../../export';

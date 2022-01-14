@@ -4,11 +4,8 @@ import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
 import { Record, MutationMode, TransformData, UpdateParams } from '../../types';
-import {
-    useNotify,
-    useRedirect,
-    RedirectionSideEffect,
-} from '../../sideEffect';
+import { useRedirect, RedirectionSideEffect } from '../../sideEffect';
+import { useNotify } from '../../notification';
 import {
     useGetOne,
     useUpdate,

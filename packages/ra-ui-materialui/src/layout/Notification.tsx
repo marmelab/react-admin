@@ -2,15 +2,11 @@ import * as React from 'react';
 import { styled, Theme } from '@mui/material/styles';
 import { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
 import { Button, Snackbar, SnackbarProps } from '@mui/material';
 import classnames from 'classnames';
 
 import {
-    hideNotification,
-    getNotification,
-    undo,
-    complete,
+    useNotificationContext,
     undoableEventEmitter,
     useTranslate,
 } from 'ra-core';
@@ -24,54 +20,66 @@ export const Notification = (props: NotificationProps) => {
         multiLine = false,
         ...rest
     } = props;
+    const { notifications, takeNotification } = useNotificationContext();
     const [open, setOpen] = useState(false);
-    const notification = useSelector(getNotification);
-    const dispatch = useDispatch();
+    const [messageInfo, setMessageInfo] = React.useState(undefined);
     const translate = useTranslate();
 
     useEffect(() => {
-        setOpen(!!notification);
-    }, [notification]);
+        if (notifications.length && !messageInfo) {
+            // Set a new snack when we don't have an active one
+            setMessageInfo(takeNotification());
+            setOpen(true);
+        } else if (notifications.length && messageInfo && open) {
+            // Close an active snack when a new one is added
+            setOpen(false);
+        }
+    }, [notifications, messageInfo, open, takeNotification]);
 
     const handleRequestClose = useCallback(() => {
         setOpen(false);
     }, [setOpen]);
 
     const handleExited = useCallback(() => {
-        if (notification && notification.undoable) {
-            dispatch(complete());
+        if (messageInfo && messageInfo.notificationOptions.undoable) {
             undoableEventEmitter.emit('end', { isUndo: false });
         }
-        dispatch(hideNotification());
-    }, [dispatch, notification]);
+        setMessageInfo(undefined);
+    }, [messageInfo]);
 
     const handleUndo = useCallback(() => {
-        dispatch(undo());
         undoableEventEmitter.emit('end', { isUndo: true });
-    }, [dispatch]);
+        setOpen(false);
+    }, []);
 
-    if (!notification) return null;
+    if (!messageInfo) return null;
 
     return (
         <Snackbar
             open={open}
             message={
-                notification.message &&
-                translate(notification.message, notification.messageArgs)
+                messageInfo.message &&
+                translate(
+                    messageInfo.message,
+                    messageInfo.notificationOptions.messageArgs
+                )
             }
-            autoHideDuration={notification.autoHideDuration || autoHideDuration}
-            disableWindowBlurListener={notification.undoable}
+            autoHideDuration={
+                messageInfo.notificationOptions.autoHideDuration ||
+                autoHideDuration
+            }
+            disableWindowBlurListener={messageInfo.notificationOptions.undoable}
             TransitionProps={{ onExited: handleExited }}
             onClose={handleRequestClose}
             ContentProps={{
                 className: classnames(
-                    NotificationClasses[notification.type || type],
+                    NotificationClasses[messageInfo.type || type],
                     className,
                     { [NotificationClasses.multiLine]: multiLine }
                 ),
             }}
             action={
-                notification.undoable ? (
+                messageInfo.notificationOptions.undoable ? (
                     <StyledButton
                         color="primary"
                         className={NotificationClasses.undo}

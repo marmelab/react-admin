@@ -9,10 +9,12 @@ import { AuthContext, convertLegacyAuthProvider } from '../auth';
 import {
     DataProviderContext,
     convertLegacyDataProvider,
+    defaultDataProvider,
 } from '../dataProvider';
 import createAdminStore from './createAdminStore';
 import TranslationProvider from '../i18n/TranslationProvider';
 import { ResourceDefinitionContextProvider } from './ResourceDefinitionContext';
+import { NotificationContextProvider } from '../notification';
 import {
     AuthProvider,
     LegacyAuthProvider,
@@ -32,7 +34,7 @@ export interface AdminContextProps {
     children?: AdminChildren;
     customReducers?: object;
     dashboard?: DashboardComponent;
-    dataProvider: DataProvider | LegacyDataProvider;
+    dataProvider?: DataProvider | LegacyDataProvider;
     queryClient?: QueryClient;
     history?: History;
     i18nProvider?: I18nProvider;
@@ -88,16 +90,18 @@ React-admin requires a valid dataProvider function to work.`);
             <AuthContext.Provider value={finalAuthProvider}>
                 <DataProviderContext.Provider value={finalDataProvider}>
                     <QueryClientProvider client={finalQueryClient}>
-                        <TranslationProvider i18nProvider={i18nProvider}>
-                            <HistoryRouter
-                                history={finalHistory}
-                                basename={basename}
-                            >
-                                <ResourceDefinitionContextProvider>
-                                    {children}
-                                </ResourceDefinitionContextProvider>
-                            </HistoryRouter>
-                        </TranslationProvider>
+                        <NotificationContextProvider>
+                            <TranslationProvider i18nProvider={i18nProvider}>
+                                <HistoryRouter
+                                    history={finalHistory}
+                                    basename={basename}
+                                >
+                                    <ResourceDefinitionContextProvider>
+                                        {children}
+                                    </ResourceDefinitionContextProvider>
+                                </HistoryRouter>
+                            </TranslationProvider>
+                        </NotificationContextProvider>
                     </QueryClientProvider>
                 </DataProviderContext.Provider>
             </AuthContext.Provider>
@@ -118,6 +122,10 @@ React-admin requires a valid dataProvider function to work.`);
     } else {
         return renderCore();
     }
+};
+
+CoreAdminContext.defaultProps = {
+    dataProvider: defaultDataProvider,
 };
 
 export default CoreAdminContext;

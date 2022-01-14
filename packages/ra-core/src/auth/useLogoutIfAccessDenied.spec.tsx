@@ -7,7 +7,7 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 import AuthContext from './AuthContext';
 import useLogout from './useLogout';
-import useNotify from '../sideEffect/useNotify';
+import { useNotify } from '../notification/useNotify';
 import { AuthProvider } from '../types';
 
 let loggedIn = true;
@@ -48,7 +48,7 @@ const TestComponent = ({
 };
 
 jest.mock('./useLogout');
-jest.mock('../sideEffect/useNotify');
+jest.mock('../notification/useNotify');
 
 //@ts-expect-error
 useLogout.mockImplementation(() => {

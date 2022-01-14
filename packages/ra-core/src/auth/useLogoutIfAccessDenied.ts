@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import useAuthProvider from './useAuthProvider';
 import useLogout from './useLogout';
-import { useNotify } from '../sideEffect';
+import { useNotify } from '../notification';
 import { useNavigate } from 'react-router';
 
 let timer;

@@ -3,7 +3,7 @@ import get from 'lodash/get';
 import { Record, SortPayload } from '../../types';
 import { useGetManyAggregate } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';
-import { useNotify } from '../../sideEffect';
+import { useNotify } from '../../notification';
 
 export interface UseReferenceArrayFieldControllerParams {
     filter?: any;
