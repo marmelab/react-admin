@@ -65,17 +65,17 @@ import { Identifier } from '..';
  *     return <button disabled={isLoading} onClick={() => updateMany()}>Reset views</button>;
  * };
  */
-export const useUpdateMany = <RaRecordType extends RaRecord = any>(
+export const useUpdateMany = <RecordType extends RaRecord = any>(
     resource?: string,
-    params: Partial<UpdateManyParams<Partial<RaRecordType>>> = {},
-    options: UseUpdateManyOptions<RaRecordType> = {}
-): UseUpdateManyResult<RaRecordType> => {
+    params: Partial<UpdateManyParams<Partial<RecordType>>> = {},
+    options: UseUpdateManyOptions<RecordType> = {}
+): UseUpdateManyResult<RecordType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const { ids, data } = params;
     const { mutationMode = 'pessimistic', ...reactMutationOptions } = options;
     const mode = useRef<MutationMode>(mutationMode);
-    const paramsRef = useRef<Partial<UpdateManyParams<Partial<RaRecordType>>>>(
+    const paramsRef = useRef<Partial<UpdateManyParams<Partial<RecordType>>>>(
         {}
     );
     const snapshot = useRef<Snapshot>([]);
@@ -94,7 +94,7 @@ export const useUpdateMany = <RaRecordType extends RaRecord = any>(
         const updatedAt =
             mode.current === 'undoable' ? Date.now() + 1000 * 5 : Date.now();
 
-        const updateColl = (old: RaRecordType[]) => {
+        const updateColl = (old: RecordType[]) => {
             if (!old) return;
             let newCollection = [...old];
             ids.forEach(id => {
@@ -112,12 +112,12 @@ export const useUpdateMany = <RaRecordType extends RaRecord = any>(
             return newCollection;
         };
 
-        type GetListResult = { data?: RaRecordType[]; total?: number };
+        type GetListResult = { data?: RecordType[]; total?: number };
 
         ids.forEach(id =>
             queryClient.setQueryData(
                 [resource, 'getOne', { id: String(id) }],
-                (record: RaRecordType) => ({ ...record, ...data }),
+                (record: RecordType) => ({ ...record, ...data }),
                 { updatedAt }
             )
         );
@@ -131,7 +131,7 @@ export const useUpdateMany = <RaRecordType extends RaRecord = any>(
         );
         queryClient.setQueriesData(
             [resource, 'getMany'],
-            (coll: RaRecordType[]) =>
+            (coll: RecordType[]) =>
                 coll && coll.length > 0 ? updateColl(coll) : coll,
             { updatedAt }
         );
@@ -146,9 +146,9 @@ export const useUpdateMany = <RaRecordType extends RaRecord = any>(
     };
 
     const mutation = useMutation<
-        Array<RaRecordType['id']>,
+        Array<RecordType['id']>,
         unknown,
-        Partial<UseUpdateManyMutateParams<RaRecordType>>
+        Partial<UseUpdateManyMutateParams<RecordType>>
     >(
         ({
             resource: callTimeResource = resource,
@@ -164,7 +164,7 @@ export const useUpdateMany = <RaRecordType extends RaRecord = any>(
         {
             ...reactMutationOptions,
             onMutate: async (
-                variables: Partial<UseUpdateManyMutateParams<RaRecordType>>
+                variables: Partial<UseUpdateManyMutateParams<RecordType>>
             ) => {
                 if (reactMutationOptions.onMutate) {
                     const userContext =
@@ -181,9 +181,7 @@ export const useUpdateMany = <RaRecordType extends RaRecord = any>(
             },
             onError: (
                 error: unknown,
-                variables: Partial<
-                    UseUpdateManyMutateParams<RaRecordType>
-                > = {},
+                variables: Partial<UseUpdateManyMutateParams<RecordType>> = {},
                 context: { snapshot: Snapshot }
             ) => {
                 if (
@@ -206,10 +204,8 @@ export const useUpdateMany = <RaRecordType extends RaRecord = any>(
                 // call-time error callback is executed by react-query
             },
             onSuccess: (
-                data: Array<RaRecordType['id']>,
-                variables: Partial<
-                    UseUpdateManyMutateParams<RaRecordType>
-                > = {},
+                data: Array<RecordType['id']>,
+                variables: Partial<UseUpdateManyMutateParams<RecordType>> = {},
                 context: unknown
             ) => {
                 if (mode.current === 'pessimistic') {
@@ -235,11 +231,9 @@ export const useUpdateMany = <RaRecordType extends RaRecord = any>(
                 }
             },
             onSettled: (
-                data: Array<RaRecordType['id']>,
+                data: Array<RecordType['id']>,
                 error: unknown,
-                variables: Partial<
-                    UseUpdateManyMutateParams<RaRecordType>
-                > = {},
+                variables: Partial<UseUpdateManyMutateParams<RecordType>> = {},
                 context: { snapshot: Snapshot }
             ) => {
                 if (
@@ -266,11 +260,11 @@ export const useUpdateMany = <RaRecordType extends RaRecord = any>(
 
     const updateMany = async (
         callTimeResource: string = resource,
-        callTimeParams: Partial<UpdateManyParams<RaRecordType>> = {},
+        callTimeParams: Partial<UpdateManyParams<RecordType>> = {},
         updateOptions: MutateOptions<
-            Array<RaRecordType['id']>,
+            Array<RecordType['id']>,
             unknown,
-            Partial<UseUpdateManyMutateParams<RaRecordType>>,
+            Partial<UseUpdateManyMutateParams<RecordType>>,
             unknown
         > & { mutationMode?: MutationMode } = {}
     ) => {
@@ -393,40 +387,36 @@ export const useUpdateMany = <RaRecordType extends RaRecord = any>(
 
 type Snapshot = [key: QueryKey, value: any][];
 
-export interface UseUpdateManyMutateParams<
-    RaRecordType extends RaRecord = any
-> {
+export interface UseUpdateManyMutateParams<RecordType extends RaRecord = any> {
     resource?: string;
-    ids?: Array<RaRecordType['id']>;
-    data?: Partial<RaRecordType>;
+    ids?: Array<RecordType['id']>;
+    data?: Partial<RecordType>;
     previousData?: any;
 }
 
 export type UseUpdateManyOptions<
-    RaRecordType extends RaRecord = any
+    RecordType extends RaRecord = any
 > = UseMutationOptions<
-    Array<RaRecordType['id']>,
+    Array<RecordType['id']>,
     unknown,
-    Partial<UseUpdateManyMutateParams<RaRecordType>>
+    Partial<UseUpdateManyMutateParams<RecordType>>
 > & { mutationMode?: MutationMode };
 
-export type UseUpdateManyResult<RaRecordType extends RaRecord = any> = [
+export type UseUpdateManyResult<RecordType extends RaRecord = any> = [
     (
         resource?: string,
-        params?: Partial<UpdateManyParams<RaRecordType>>,
+        params?: Partial<UpdateManyParams<RecordType>>,
         options?: MutateOptions<
-            Array<RaRecordType['id']>,
+            Array<RecordType['id']>,
             unknown,
-            Partial<UseUpdateManyMutateParams<RaRecordType>>,
+            Partial<UseUpdateManyMutateParams<RecordType>>,
             unknown
         > & { mutationMode?: MutationMode }
     ) => Promise<void>,
     UseMutationResult<
-        Array<RaRecordType['id']>,
+        Array<RecordType['id']>,
         unknown,
-        Partial<
-            UpdateManyParams<Partial<RaRecordType>> & { resource?: string }
-        >,
+        Partial<UpdateManyParams<Partial<RecordType>> & { resource?: string }>,
         unknown
     >
 ];

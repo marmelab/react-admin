@@ -313,7 +313,7 @@ Datagrid.propTypes = {
     isRowExpandable: PropTypes.func,
 };
 
-export interface DatagridProps<RaRecordType extends RaRecord = any>
+export interface DatagridProps<RecordType extends RaRecord = any>
     extends Omit<TableProps, 'size' | 'classes' | 'onSelect'> {
     body?: ReactElement | ComponentType;
     className?: string;
@@ -323,23 +323,23 @@ export interface DatagridProps<RaRecordType extends RaRecord = any>
         | FC<{
               basePath: string;
               id: Identifier;
-              record: RaRecordType;
+              record: RecordType;
               resource: string;
           }>;
     hasBulkActions?: boolean;
     header?: ReactElement | ComponentType;
     hover?: boolean;
     empty?: ReactElement;
-    isRowSelectable?: (record: RaRecordType) => boolean;
-    isRowExpandable?: (record: RaRecordType) => boolean;
+    isRowSelectable?: (record: RecordType) => boolean;
+    isRowExpandable?: (record: RecordType) => boolean;
     optimized?: boolean;
     rowClick?: string | RowClickFunction;
-    rowStyle?: (record: RaRecordType, index: number) => any;
+    rowStyle?: (record: RecordType, index: number) => any;
     size?: 'medium' | 'small';
     // can be injected when using the component without context
     basePath?: string;
     sort?: SortPayload;
-    data?: RaRecordType[];
+    data?: RecordType[];
     isLoading?: boolean;
     onSelect?: (ids: Identifier[]) => void;
     onToggleItem?: (id: Identifier) => void;

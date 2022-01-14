@@ -19,8 +19,8 @@ import {
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
 
-export const DeleteWithConfirmButton = <RaRecordType extends RaRecord = any>(
-    props: DeleteWithConfirmButtonProps<RaRecordType>
+export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
+    props: DeleteWithConfirmButtonProps<RecordType>
 ) => {
     const {
         basePath,
@@ -98,9 +98,8 @@ export const DeleteWithConfirmButton = <RaRecordType extends RaRecord = any>(
 
 const defaultIcon = <ActionDelete />;
 
-export interface DeleteWithConfirmButtonProps<
-    RaRecordType extends RaRecord = any
-> extends Omit<ButtonProps, 'record'> {
+export interface DeleteWithConfirmButtonProps<RecordType extends RaRecord = any>
+    extends Omit<ButtonProps, 'record'> {
     basePath?: string;
     className?: string;
     confirmTitle?: string;
@@ -109,7 +108,7 @@ export interface DeleteWithConfirmButtonProps<
     label?: string;
     mutationMode?: MutationMode;
     onClick?: ReactEventHandler<any>;
-    record?: RaRecordType;
+    record?: RecordType;
     redirect?: RedirectionSideEffect;
     resource?: string;
     // May be injected by Toolbar - sanitized in Button
@@ -118,9 +117,9 @@ export interface DeleteWithConfirmButtonProps<
     saving?: boolean;
     submitOnEnter?: boolean;
     mutationOptions?: UseMutationOptions<
-        RaRecordType,
+        RecordType,
         unknown,
-        DeleteParams<RaRecordType>
+        DeleteParams<RecordType>
     >;
 }
 

@@ -17,9 +17,9 @@ import { PaginationPayload, RaRecord, SortPayload } from '../../types';
 export const ReferenceArrayInputContext = createContext(undefined);
 
 export interface ReferenceArrayInputContextValue<
-    RaRecordType extends RaRecord = any
+    RecordType extends RaRecord = any
 > {
-    choices: RaRecordType[];
+    choices: RecordType[];
     error?: any;
     warning?: any;
     isLoading?: boolean;

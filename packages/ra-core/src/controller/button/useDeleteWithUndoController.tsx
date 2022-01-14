@@ -48,8 +48,8 @@ import { useResourceContext } from '../../core';
  *     );
  * };
  */
-const useDeleteWithUndoController = <RaRecordType extends RaRecord = any>(
-    props: UseDeleteWithUndoControllerParams<RaRecordType>
+const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
+    props: UseDeleteWithUndoControllerParams<RecordType>
 ): UseDeleteWithUndoControllerReturn => {
     const {
         record,
@@ -62,7 +62,7 @@ const useDeleteWithUndoController = <RaRecordType extends RaRecord = any>(
     const notify = useNotify();
     const unselect = useUnselect();
     const redirect = useRedirect();
-    const [deleteOne, { isLoading }] = useDelete<RaRecordType>();
+    const [deleteOne, { isLoading }] = useDelete<RecordType>();
 
     const handleDelete = useCallback(
         event => {
@@ -124,18 +124,18 @@ const useDeleteWithUndoController = <RaRecordType extends RaRecord = any>(
 };
 
 export interface UseDeleteWithUndoControllerParams<
-    RaRecordType extends RaRecord = any
+    RecordType extends RaRecord = any
 > {
     basePath?: string;
-    record?: RaRecordType;
+    record?: RecordType;
     redirect?: RedirectionSideEffect;
     // @deprecated. This hook get the resource from the context
     resource?: string;
     onClick?: ReactEventHandler<any>;
     mutationOptions?: UseMutationOptions<
-        RaRecordType,
+        RecordType,
         unknown,
-        DeleteParams<RaRecordType>
+        DeleteParams<RecordType>
     >;
 }
 

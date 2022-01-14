@@ -31,20 +31,20 @@ import { RecordContext } from './RecordContext';
  * @returns {RaRecord} A record object
  */
 export const useRecordContext = <
-    RaRecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord
 >(
-    props?: UseRecordContextParams<RaRecordType>
-): RaRecordType => {
-    // Can't find a way to specify the RaRecordType when CreateContext is declared
+    props?: UseRecordContextParams<RecordType>
+): RecordType => {
+    // Can't find a way to specify the RecordType when CreateContext is declared
     // @ts-ignore
-    const context = useContext<RaRecordType>(RecordContext);
+    const context = useContext<RecordType>(RecordContext);
 
     return (props && props.record) || context;
 };
 
 export interface UseRecordContextParams<
-    RaRecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord
 > {
-    record?: RaRecordType;
+    record?: RecordType;
     [key: string]: any;
 }

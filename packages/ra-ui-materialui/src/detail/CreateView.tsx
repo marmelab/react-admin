@@ -80,9 +80,9 @@ export const CreateView = (props: CreateViewProps) => {
     );
 };
 
-interface CreateViewProps<RaRecordType extends RaRecord = any>
-    extends CreateProps<RaRecordType>,
-        Omit<CreateControllerProps<RaRecordType>, 'resource'> {
+interface CreateViewProps<RecordType extends RaRecord = any>
+    extends CreateProps<RecordType>,
+        Omit<CreateControllerProps<RecordType>, 'resource'> {
     children: ReactElement;
 }
 

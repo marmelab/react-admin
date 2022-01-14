@@ -53,11 +53,11 @@ import { useDataProvider } from './useDataProvider';
  *     )}</ul>;
  * };
  */
-export const useGetManyReference = <RaRecordType extends RaRecord = any>(
+export const useGetManyReference = <RecordType extends RaRecord = any>(
     resource: string,
     params: Partial<GetManyReferenceParams> = {},
-    options?: UseQueryOptions<{ data: RaRecordType[]; total: number }, Error>
-): UseGetManyReferenceHookValue<RaRecordType> => {
+    options?: UseQueryOptions<{ data: RecordType[]; total: number }, Error>
+): UseGetManyReferenceHookValue<RecordType> => {
     const {
         target,
         id,
@@ -68,9 +68,9 @@ export const useGetManyReference = <RaRecordType extends RaRecord = any>(
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const result = useQuery<
-        { data: RaRecordType[]; total: number },
+        { data: RecordType[]; total: number },
         Error,
-        { data: RaRecordType[]; total: number }
+        { data: RecordType[]; total: number }
     >(
         [
             resource,
@@ -79,7 +79,7 @@ export const useGetManyReference = <RaRecordType extends RaRecord = any>(
         ],
         () =>
             dataProvider
-                .getManyReference<RaRecordType>(resource, {
+                .getManyReference<RecordType>(resource, {
                     target,
                     id,
                     pagination,
@@ -107,9 +107,9 @@ export const useGetManyReference = <RaRecordType extends RaRecord = any>(
               data: result.data?.data,
               total: result.data?.total,
           }
-        : result) as UseQueryResult<RaRecordType[], Error> & { total?: number };
+        : result) as UseQueryResult<RecordType[], Error> & { total?: number };
 };
 
 export type UseGetManyReferenceHookValue<
-    RaRecordType extends RaRecord = any
-> = UseQueryResult<RaRecordType[], Error> & { total?: number };
+    RecordType extends RaRecord = any
+> = UseQueryResult<RecordType[], Error> & { total?: number };

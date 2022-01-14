@@ -122,7 +122,7 @@ SingleFieldList.propTypes = {
     resource: PropTypes.string,
 };
 
-export interface SingleFieldListProps<RaRecordType extends RaRecord = any>
+export interface SingleFieldListProps<RecordType extends RaRecord = any>
     extends HtmlHTMLAttributes<HTMLDivElement> {
     className?: string;
 
@@ -131,7 +131,7 @@ export interface SingleFieldListProps<RaRecordType extends RaRecord = any>
     children: React.ReactElement;
     // can be injected when using the component without context
     basePath?: string;
-    data?: RaRecordType[];
+    data?: RecordType[];
     total?: number;
     loaded?: boolean;
 }

@@ -36,10 +36,10 @@ import { RaRecord } from '../../types';
  *     </CreateBase>
  * );
  */
-export const CreateBase = <RaRecordType extends RaRecord = any>({
+export const CreateBase = <RecordType extends RaRecord = any>({
     children,
     ...props
-}: CreateControllerProps<RaRecordType> & { children: ReactNode }) => (
+}: CreateControllerProps<RecordType> & { children: ReactNode }) => (
     <CreateContextProvider value={useCreateController(props)}>
         {children}
     </CreateContextProvider>

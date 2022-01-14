@@ -14,14 +14,14 @@ import { useRecordContext } from './useRecordContext';
  *   </Show>
  * );
  */
-export const WithRecord = <RaRecordType extends RaRecord>({
+export const WithRecord = <RecordType extends RaRecord>({
     render,
-}: WithRecordProps<RaRecordType>) => {
-    const record = useRecordContext<RaRecordType>();
+}: WithRecordProps<RecordType>) => {
+    const record = useRecordContext<RecordType>();
     return record ? render(record) : null;
 };
 
-export interface WithRecordProps<RaRecordType extends RaRecord> {
-    render: (record: RaRecordType) => ReactElement;
+export interface WithRecordProps<RecordType extends RaRecord> {
+    render: (record: RecordType) => ReactElement;
     label?: string;
 }

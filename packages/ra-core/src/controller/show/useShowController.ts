@@ -41,9 +41,9 @@ import { useResourceContext, useGetResourceLabel } from '../../core';
  *     return <ShowView {...controllerProps} />;
  * };
  */
-export const useShowController = <RaRecordType extends RaRecord = any>(
-    props: ShowControllerProps<RaRecordType> = {}
-): ShowControllerResult<RaRecordType> => {
+export const useShowController = <RecordType extends RaRecord = any>(
+    props: ShowControllerProps<RecordType> = {}
+): ShowControllerResult<RecordType> => {
     const { disableAuthentication, id: propsId, queryOptions = {} } = props;
 
     useAuthenticated({ enabled: !disableAuthentication });
@@ -57,7 +57,7 @@ export const useShowController = <RaRecordType extends RaRecord = any>(
     const id = propsId || decodeURIComponent(routeId);
 
     const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
-        RaRecordType
+        RecordType
     >(
         resource,
         { id },
@@ -99,22 +99,22 @@ export const useShowController = <RaRecordType extends RaRecord = any>(
     };
 };
 
-export interface ShowControllerProps<RaRecordType extends RaRecord = any> {
+export interface ShowControllerProps<RecordType extends RaRecord = any> {
     disableAuthentication?: boolean;
-    id?: RaRecordType['id'];
-    queryOptions?: UseQueryOptions<RaRecordType>;
+    id?: RecordType['id'];
+    queryOptions?: UseQueryOptions<RecordType>;
     resource?: string;
 }
 
-export interface ShowControllerResult<RaRecordType extends RaRecord = any> {
+export interface ShowControllerResult<RecordType extends RaRecord = any> {
     defaultTitle: string;
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
-    data?: RaRecordType;
+    data?: RecordType;
     error?: any;
     isFetching: boolean;
     isLoading: boolean;
     resource: string;
-    record?: RaRecordType;
-    refetch: UseGetOneHookValue<RaRecordType>['refetch'];
+    record?: RecordType;
+    refetch: UseGetOneHookValue<RecordType>['refetch'];
 }

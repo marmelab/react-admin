@@ -43,9 +43,9 @@ import { SaveHandler } from '../saveContext';
  *     return <EditView {...controllerProps} {...props} />;
  * }
  */
-export const useEditController = <RaRecordType extends RaRecord = any>(
-    props: EditControllerProps<RaRecordType> = {}
-): EditControllerResult<RaRecordType> => {
+export const useEditController = <RecordType extends RaRecord = any>(
+    props: EditControllerProps<RecordType> = {}
+): EditControllerResult<RecordType> => {
     const {
         disableAuthentication,
         id: propsId,
@@ -66,7 +66,7 @@ export const useEditController = <RaRecordType extends RaRecord = any>(
     const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
 
     const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
-        RaRecordType
+        RecordType
     >(
         resource,
         { id },
@@ -99,7 +99,7 @@ export const useEditController = <RaRecordType extends RaRecord = any>(
         record,
     });
 
-    const [update, { isLoading: saving }] = useUpdate<RaRecordType>(
+    const [update, { isLoading: saving }] = useUpdate<RecordType>(
         resource,
         { id, previousData: record },
         { ...otherMutationOptions, mutationMode }
@@ -107,7 +107,7 @@ export const useEditController = <RaRecordType extends RaRecord = any>(
 
     const save = useCallback(
         (
-            data: Partial<RaRecordType>,
+            data: Partial<RecordType>,
             {
                 onSuccess: onSuccessFromSave,
                 onError: onErrorFromSave,
@@ -120,7 +120,7 @@ export const useEditController = <RaRecordType extends RaRecord = any>(
                     : transform
                     ? transform(data)
                     : data
-            ).then((data: Partial<RaRecordType>) =>
+            ).then((data: Partial<RecordType>) =>
                 update(
                     resource,
                     { data },
@@ -195,34 +195,34 @@ export const useEditController = <RaRecordType extends RaRecord = any>(
     };
 };
 
-export interface EditControllerProps<RaRecordType extends RaRecord = any> {
+export interface EditControllerProps<RecordType extends RaRecord = any> {
     disableAuthentication?: boolean;
-    id?: RaRecordType['id'];
+    id?: RecordType['id'];
     mutationMode?: MutationMode;
     mutationOptions?: UseMutationOptions<
-        RaRecordType,
+        RecordType,
         unknown,
-        UpdateParams<RaRecordType>
+        UpdateParams<RecordType>
     >;
-    queryOptions?: UseQueryOptions<RaRecordType>;
+    queryOptions?: UseQueryOptions<RecordType>;
     redirect?: RedirectionSideEffect;
     resource?: string;
     transform?: TransformData;
     [key: string]: any;
 }
 
-export interface EditControllerResult<RaRecordType extends RaRecord = any> {
+export interface EditControllerResult<RecordType extends RaRecord = any> {
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
-    data?: RaRecordType;
+    data?: RecordType;
     error?: any;
     defaultTitle: string;
     isFetching: boolean;
     isLoading: boolean;
     save: SaveHandler;
     saving: boolean;
-    record?: RaRecordType;
-    refetch: UseGetOneHookValue<RaRecordType>['refetch'];
+    record?: RecordType;
+    refetch: UseGetOneHookValue<RecordType>['refetch'];
     redirect: RedirectionSideEffect;
     resource: string;
 }

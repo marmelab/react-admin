@@ -51,9 +51,9 @@ import { SaveButton, DeleteButton } from '../button';
  *
  */
 export const Toolbar = <
-    RaRecordType extends Partial<RaRecord> = Partial<RaRecord>
+    RecordType extends Partial<RaRecord> = Partial<RaRecord>
 >(
-    props: ToolbarProps<RaRecordType>
+    props: ToolbarProps<RecordType>
 ) => {
     const {
         alwaysEnableSaveButton,
@@ -146,7 +146,7 @@ export const Toolbar = <
     );
 };
 
-export interface ToolbarProps<RaRecordType extends Partial<RaRecord> = any>
+export interface ToolbarProps<RecordType extends Partial<RaRecord> = any>
     extends Omit<MuiToolbarProps, 'classes'> {
     children?: ReactNode;
     alwaysEnableSaveButton?: boolean;
@@ -157,7 +157,7 @@ export interface ToolbarProps<RaRecordType extends Partial<RaRecord> = any>
     saving?: boolean;
     submitOnEnter?: boolean;
     basePath?: string;
-    record?: RaRecordType;
+    record?: RecordType;
     resource?: string;
     validating?: boolean;
 }

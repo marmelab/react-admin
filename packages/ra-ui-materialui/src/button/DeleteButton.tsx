@@ -50,8 +50,8 @@ import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
  *     return <Edit actions={<EditActions />} {...props} />;
  * };
  */
-export const DeleteButton = <RaRecordType extends RaRecord = any>(
-    props: DeleteButtonProps<RaRecordType>
+export const DeleteButton = <RecordType extends RaRecord = any>(
+    props: DeleteButtonProps<RecordType>
 ) => {
     const { mutationMode = 'undoable', record, ...rest } = props;
     if (!record || record.id == null) {
@@ -60,9 +60,9 @@ export const DeleteButton = <RaRecordType extends RaRecord = any>(
 
     return mutationMode === 'undoable' ? (
         // @ts-ignore I looked for the error for one hour without finding it
-        <DeleteWithUndoButton<RaRecordType> record={record} {...rest} />
+        <DeleteWithUndoButton<RecordType> record={record} {...rest} />
     ) : (
-        <DeleteWithConfirmButton<RaRecordType>
+        <DeleteWithConfirmButton<RecordType>
             // @ts-ignore I looked for the error for one hour without finding it
             mutationMode={mutationMode}
             record={record}
@@ -71,7 +71,7 @@ export const DeleteButton = <RaRecordType extends RaRecord = any>(
     );
 };
 
-export interface DeleteButtonProps<RaRecordType extends RaRecord = any>
+export interface DeleteButtonProps<RecordType extends RaRecord = any>
     extends Omit<ButtonProps, 'record'> {
     basePath?: string;
     classes?: object;
@@ -81,7 +81,7 @@ export interface DeleteButtonProps<RaRecordType extends RaRecord = any>
     icon?: ReactElement;
     label?: string;
     mutationMode?: MutationMode;
-    record?: RaRecordType;
+    record?: RecordType;
     redirect?: RedirectionSideEffect;
     resource?: string;
     // May be injected by Toolbar
@@ -90,9 +90,9 @@ export interface DeleteButtonProps<RaRecordType extends RaRecord = any>
     saving?: boolean;
     submitOnEnter?: boolean;
     mutationOptions?: UseMutationOptions<
-        RaRecordType,
+        RecordType,
         unknown,
-        DeleteParams<RaRecordType>
+        DeleteParams<RecordType>
     >;
 }
 

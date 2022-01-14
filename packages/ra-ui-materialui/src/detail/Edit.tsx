@@ -56,11 +56,11 @@ import { EditView } from './EditView';
  * );
  * export default App;
  */
-export const Edit = <RaRecordType extends RaRecord = any>(
-    props: EditProps<RaRecordType> & { children: ReactElement }
+export const Edit = <RecordType extends RaRecord = any>(
+    props: EditProps<RecordType> & { children: ReactElement }
 ): ReactElement => {
     useCheckMinimumRequiredProps('Edit', ['children'], props);
-    const controllerProps = useEditController<RaRecordType>(props);
+    const controllerProps = useEditController<RecordType>(props);
     const body = (
         <EditContextProvider value={controllerProps}>
             <EditView {...props} {...controllerProps} />

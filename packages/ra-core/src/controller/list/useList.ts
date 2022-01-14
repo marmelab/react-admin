@@ -48,9 +48,9 @@ const refetch = () => {
  * @param {Number} props.perPage: Optional. The initial page size
  * @param {SortPayload} props.sort: Optional. The initial sort (field and order)
  */
-export const useList = <RaRecordType extends RaRecord = any>(
-    props: UseListOptions<RaRecordType>
-): UseListValue<RaRecordType> => {
+export const useList = <RecordType extends RaRecord = any>(
+    props: UseListOptions<RecordType>
+): UseListValue<RecordType> => {
     const {
         data,
         error,
@@ -67,7 +67,7 @@ export const useList = <RaRecordType extends RaRecord = any>(
     const [loadingState, setLoadingState] = useSafeSetState<boolean>(isLoading);
 
     const [finalItems, setFinalItems] = useSafeSetState<{
-        data?: RaRecordType[];
+        data?: RecordType[];
         total: number;
     }>(() => ({
         data,
@@ -243,8 +243,8 @@ export const useList = <RaRecordType extends RaRecord = any>(
     };
 };
 
-export interface UseListOptions<RaRecordType extends RaRecord = any> {
-    data?: RaRecordType[];
+export interface UseListOptions<RecordType extends RaRecord = any> {
+    data?: RecordType[];
     error?: any;
     filter?: FilterPayload;
     isFetching?: boolean;
@@ -255,8 +255,8 @@ export interface UseListOptions<RaRecordType extends RaRecord = any> {
 }
 
 export type UseListValue<
-    RaRecordType extends RaRecord = any
-> = ListControllerResult<RaRecordType>;
+    RecordType extends RaRecord = any
+> = ListControllerResult<RecordType>;
 
 const defaultFilter = {};
 const defaultSort = { field: null, order: null };

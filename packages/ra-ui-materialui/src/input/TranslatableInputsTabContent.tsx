@@ -72,13 +72,13 @@ export const TranslatableInputsTabContent = (
 };
 
 export type TranslatableInputsTabContentProps<
-    RaRecordType extends RaRecord | Omit<RaRecord, 'id'> = any
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = any
 > = {
     basePath?: string;
     children: ReactNode;
     groupKey?: string;
     locale: string;
-    record?: RaRecordType;
+    record?: RecordType;
     resource?: string;
     margin?: 'none' | 'normal' | 'dense';
     variant?: 'standard' | 'outlined' | 'filled';

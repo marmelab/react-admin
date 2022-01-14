@@ -68,8 +68,8 @@ import { useResourceContext } from '../../core';
  *     );
  * };
  */
-const useDeleteWithConfirmController = <RaRecordType extends RaRecord = any>(
-    props: UseDeleteWithConfirmControllerParams<RaRecordType>
+const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
+    props: UseDeleteWithConfirmControllerParams<RecordType>
 ): UseDeleteWithConfirmControllerReturn => {
     const {
         record,
@@ -84,7 +84,7 @@ const useDeleteWithConfirmController = <RaRecordType extends RaRecord = any>(
     const notify = useNotify();
     const unselect = useUnselect();
     const redirect = useRedirect();
-    const [deleteOne, { isLoading }] = useDelete<RaRecordType>();
+    const [deleteOne, { isLoading }] = useDelete<RecordType>();
 
     const handleDialogOpen = e => {
         setOpen(true);
@@ -166,19 +166,19 @@ const useDeleteWithConfirmController = <RaRecordType extends RaRecord = any>(
 };
 
 export interface UseDeleteWithConfirmControllerParams<
-    RaRecordType extends RaRecord = any
+    RecordType extends RaRecord = any
 > {
     basePath?: string;
     mutationMode?: MutationMode;
-    record?: RaRecordType;
+    record?: RecordType;
     redirect?: RedirectionSideEffect;
     // @deprecated. This hook get the resource from the context
     resource?: string;
     onClick?: ReactEventHandler<any>;
     mutationOptions?: UseMutationOptions<
-        RaRecordType,
+        RecordType,
         unknown,
-        DeleteParams<RaRecordType>
+        DeleteParams<RecordType>
     >;
 }
 

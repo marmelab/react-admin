@@ -60,11 +60,11 @@ import { useDataProvider } from './useDataProvider';
  *      );
  * };
  */
-export const useGetManyAggregate = <RaRecordType extends RaRecord = any>(
+export const useGetManyAggregate = <RecordType extends RaRecord = any>(
     resource: string,
     params: GetManyParams,
-    options: UseQueryOptions<RaRecordType[], Error> = {}
-): UseGetManyHookValue<RaRecordType> => {
+    options: UseQueryOptions<RecordType[], Error> = {}
+): UseGetManyHookValue<RecordType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const queryCache = queryClient.getQueryCache();
@@ -76,7 +76,7 @@ export const useGetManyAggregate = <RaRecordType extends RaRecord = any>(
                 'getOne',
                 { id: String(id) },
             ]);
-            return queryCache.get<RaRecordType>(queryHash)?.state?.data;
+            return queryCache.get<RecordType>(queryHash)?.state?.data;
         });
         if (records.some(record => record === undefined)) {
             return undefined;
@@ -85,7 +85,7 @@ export const useGetManyAggregate = <RaRecordType extends RaRecord = any>(
         }
     }, [ids, queryCache, resource]);
 
-    return useQuery<RaRecordType[], Error, RaRecordType[]>(
+    return useQuery<RecordType[], Error, RecordType[]>(
         [resource, 'getMany', { ids: ids.map(id => String(id)) }],
         () =>
             new Promise((resolve, reject) =>

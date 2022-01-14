@@ -55,9 +55,9 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
 
     return {
         // read methods are just proxies to FakeRest
-        getList: <RaRecordType extends RaRecord = any>(resource, params) =>
+        getList: <RecordType extends RaRecord = any>(resource, params) =>
             baseDataProvider
-                .getList<RaRecordType>(resource, params)
+                .getList<RecordType>(resource, params)
                 .catch(error => {
                     if (error.code === 1) {
                         // undefined collection error: hide the error and return an empty list instead
@@ -66,16 +66,16 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
                         throw error;
                     }
                 }),
-        getOne: <RaRecordType extends RaRecord = any>(resource, params) =>
-            baseDataProvider.getOne<RaRecordType>(resource, params),
-        getMany: <RaRecordType extends RaRecord = any>(resource, params) =>
-            baseDataProvider.getMany<RaRecordType>(resource, params),
-        getManyReference: <RaRecordType extends RaRecord = any>(
+        getOne: <RecordType extends RaRecord = any>(resource, params) =>
+            baseDataProvider.getOne<RecordType>(resource, params),
+        getMany: <RecordType extends RaRecord = any>(resource, params) =>
+            baseDataProvider.getMany<RecordType>(resource, params),
+        getManyReference: <RecordType extends RaRecord = any>(
             resource,
             params
         ) =>
             baseDataProvider
-                .getManyReference<RaRecordType>(resource, params)
+                .getManyReference<RecordType>(resource, params)
                 .catch(error => {
                     if (error.code === 1) {
                         // undefined collection error: hide the error and return an empty list instead
@@ -86,7 +86,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
                 }),
 
         // update methods need to persist changes in localStorage
-        update: <RaRecordType extends RaRecord = any>(resource, params) => {
+        update: <RecordType extends RaRecord = any>(resource, params) => {
             updateLocalStorage(() => {
                 const index = data[resource].findIndex(
                     record => record.id == params.id
@@ -96,7 +96,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
                     ...params.data,
                 };
             });
-            return baseDataProvider.update<RaRecordType>(resource, params);
+            return baseDataProvider.update<RecordType>(resource, params);
         },
         updateMany: (resource, params) => {
             updateLocalStorage(() => {
@@ -112,10 +112,10 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
             });
             return baseDataProvider.updateMany(resource, params);
         },
-        create: <RaRecordType extends RaRecord = any>(resource, params) => {
+        create: <RecordType extends RaRecord = any>(resource, params) => {
             // we need to call the fakerest provider first to get the generated id
             return baseDataProvider
-                .create<RaRecordType>(resource, params)
+                .create<RecordType>(resource, params)
                 .then(response => {
                     updateLocalStorage(() => {
                         if (!data.hasOwnProperty(resource)) {
@@ -126,14 +126,14 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
                     return response;
                 });
         },
-        delete: <RaRecordType extends RaRecord = any>(resource, params) => {
+        delete: <RecordType extends RaRecord = any>(resource, params) => {
             updateLocalStorage(() => {
                 const index = data[resource].findIndex(
                     record => record.id == params.id
                 );
                 pullAt(data[resource], [index]);
             });
-            return baseDataProvider.delete<RaRecordType>(resource, params);
+            return baseDataProvider.delete<RecordType>(resource, params);
         },
         deleteMany: (resource, params) => {
             updateLocalStorage(() => {

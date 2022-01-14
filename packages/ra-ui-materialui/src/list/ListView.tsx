@@ -18,7 +18,7 @@ const defaultPagination = <DefaultPagination />;
 const defaultEmpty = <Empty />;
 const DefaultComponent = Card;
 
-export const ListView = <RaRecordType extends RaRecord = any>(
+export const ListView = <RecordType extends RaRecord = any>(
     props: ListViewProps
 ) => {
     const {
@@ -42,7 +42,7 @@ export const ListView = <RaRecordType extends RaRecord = any>(
         total,
         isLoading,
         filterValues,
-    } = useListContext<RaRecordType>(props);
+    } = useListContext<RecordType>(props);
 
     if (!children || (!data && isLoading && emptyWhileLoading)) {
         return null;

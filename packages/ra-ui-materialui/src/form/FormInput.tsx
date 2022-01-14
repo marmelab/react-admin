@@ -8,9 +8,9 @@ import { RaRecord } from 'ra-core';
 import { Labeled } from '../input/Labeled';
 
 export const FormInput = <
-    RaRecordType extends RaRecord | Omit<RaRecord, 'id'> = any
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = any
 >(
-    props: FormInputProps<RaRecordType>
+    props: FormInputProps<RecordType>
 ) => {
     const { input, ...rest } = props;
 
@@ -67,7 +67,7 @@ FormInput.propTypes = {
 };
 
 export interface FormInputProps<
-    RaRecordType extends RaRecord | Omit<RaRecord, 'id'> = any
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = any
 > extends HtmlHTMLAttributes<HTMLDivElement> {
     basePath: string;
     input: ReactElement<{
@@ -77,7 +77,7 @@ export interface FormInputProps<
         [key: string]: unknown;
     }>;
     margin?: 'none' | 'normal' | 'dense';
-    record?: RaRecordType;
+    record?: RecordType;
     resource?: string;
     variant?: 'standard' | 'outlined' | 'filled';
 }

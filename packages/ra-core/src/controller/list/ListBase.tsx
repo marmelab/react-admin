@@ -39,12 +39,12 @@ import { ListContextProvider } from './ListContextProvider';
  *     </ListBase>
  * );
  */
-export const ListBase = <RaRecordType extends RaRecord = any>({
+export const ListBase = <RecordType extends RaRecord = any>({
     children,
     ...props
-}: ListControllerProps<RaRecordType> & { children: ReactNode }) => (
+}: ListControllerProps<RecordType> & { children: ReactNode }) => (
     <ResourceContextProvider value={props.resource}>
-        <ListContextProvider value={useListController<RaRecordType>(props)}>
+        <ListContextProvider value={useListController<RecordType>(props)}>
             {children}
         </ListContextProvider>
     </ResourceContextProvider>

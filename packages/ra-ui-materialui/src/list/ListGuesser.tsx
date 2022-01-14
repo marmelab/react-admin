@@ -34,8 +34,8 @@ import { listFieldTypes } from './listFieldTypes';
  *     </Admin>
  * );
  */
-export const ListGuesser = <RaRecordType extends RaRecord = any>() => {
-    const controllerProps = useListController<RaRecordType>();
+export const ListGuesser = <RecordType extends RaRecord = any>() => {
+    const controllerProps = useListController<RecordType>();
     return (
         <ListContextProvider value={controllerProps}>
             <ListViewGuesser {...controllerProps} />

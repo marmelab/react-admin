@@ -16,8 +16,8 @@ import {
 
 import { Button, ButtonProps } from './Button';
 
-export const DeleteWithUndoButton = <RaRecordType extends RaRecord = any>(
-    props: DeleteWithUndoButtonProps<RaRecordType>
+export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
+    props: DeleteWithUndoButtonProps<RecordType>
 ) => {
     const {
         label = 'ra.action.delete',
@@ -61,14 +61,14 @@ export const DeleteWithUndoButton = <RaRecordType extends RaRecord = any>(
 
 const defaultIcon = <ActionDelete />;
 
-export interface DeleteWithUndoButtonProps<RaRecordType extends RaRecord = any>
+export interface DeleteWithUndoButtonProps<RecordType extends RaRecord = any>
     extends Omit<ButtonProps, 'record'> {
     basePath?: string;
     className?: string;
     icon?: ReactElement;
     label?: string;
     onClick?: ReactEventHandler<any>;
-    record?: RaRecordType;
+    record?: RecordType;
     redirect?: RedirectionSideEffect;
     resource?: string;
     // May be injected by Toolbar - sanitized in Button
@@ -77,9 +77,9 @@ export interface DeleteWithUndoButtonProps<RaRecordType extends RaRecord = any>
     saving?: boolean;
     submitOnEnter?: boolean;
     mutationOptions?: UseMutationOptions<
-        RaRecordType,
+        RecordType,
         unknown,
-        DeleteParams<RaRecordType>
+        DeleteParams<RecordType>
     >;
 }
 

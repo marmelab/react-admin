@@ -111,9 +111,9 @@ ReferenceField.defaultProps = {
     link: 'edit',
 };
 
-export interface ReferenceFieldProps<RaRecordType extends RaRecord = any>
+export interface ReferenceFieldProps<RecordType extends RaRecord = any>
     extends PublicFieldProps,
-        InjectedFieldProps<RaRecordType> {
+        InjectedFieldProps<RecordType> {
     children: ReactElement;
     reference: string;
     resource?: string;

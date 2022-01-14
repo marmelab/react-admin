@@ -49,11 +49,11 @@ import { useDataProvider } from './useDataProvider';
  *     )}</ul>;
  * };
  */
-export const useGetList = <RaRecordType extends RaRecord = any>(
+export const useGetList = <RecordType extends RaRecord = any>(
     resource: string,
     params: Partial<GetListParams> = {},
-    options?: UseQueryOptions<{ data: RaRecordType[]; total: number }, Error>
-): UseGetListHookValue<RaRecordType> => {
+    options?: UseQueryOptions<{ data: RecordType[]; total: number }, Error>
+): UseGetListHookValue<RecordType> => {
     const {
         pagination = { page: 1, perPage: 25 },
         sort = { field: 'id', order: 'DESC' },
@@ -62,14 +62,14 @@ export const useGetList = <RaRecordType extends RaRecord = any>(
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const result = useQuery<
-        { data: RaRecordType[]; total: number },
+        { data: RecordType[]; total: number },
         Error,
-        { data: RaRecordType[]; total: number }
+        { data: RecordType[]; total: number }
     >(
         [resource, 'getList', { pagination, sort, filter }],
         () =>
             dataProvider
-                .getList<RaRecordType>(resource, { pagination, sort, filter })
+                .getList<RecordType>(resource, { pagination, sort, filter })
                 .then(({ data, total }) => ({ data, total })),
         {
             onSuccess: ({ data }) => {
@@ -91,9 +91,9 @@ export const useGetList = <RaRecordType extends RaRecord = any>(
               data: result.data?.data,
               total: result.data?.total,
           }
-        : result) as UseQueryResult<RaRecordType[], Error> & { total?: number };
+        : result) as UseQueryResult<RecordType[], Error> & { total?: number };
 };
 
 export type UseGetListHookValue<
-    RaRecordType extends RaRecord = any
-> = UseQueryResult<RaRecordType[], Error> & { total?: number };
+    RecordType extends RaRecord = any
+> = UseQueryResult<RecordType[], Error> & { total?: number };

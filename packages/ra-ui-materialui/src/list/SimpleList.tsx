@@ -61,8 +61,8 @@ import { SimpleListLoading } from './SimpleListLoading';
  *     </List>
  * );
  */
-export const SimpleList = <RaRecordType extends RaRecord = any>(
-    props: SimpleListProps<RaRecordType>
+export const SimpleList = <RecordType extends RaRecord = any>(
+    props: SimpleListProps<RecordType>
 ) => {
     const {
         className,
@@ -78,7 +78,7 @@ export const SimpleList = <RaRecordType extends RaRecord = any>(
         rowStyle,
         ...rest
     } = props;
-    const { data, isLoading, total } = useListContext<RaRecordType>(props);
+    const { data, isLoading, total } = useListContext<RecordType>(props);
     const resource = useResourceContext(props);
 
     if (isLoading === true) {
@@ -94,8 +94,8 @@ export const SimpleList = <RaRecordType extends RaRecord = any>(
     }
 
     const renderAvatar = (
-        record: RaRecordType,
-        avatarCallback: FunctionToElement<RaRecordType>
+        record: RecordType,
+        avatarCallback: FunctionToElement<RecordType>
     ) => {
         const avatarValue = avatarCallback(record, record.id);
         if (
@@ -204,27 +204,27 @@ SimpleList.propTypes = {
     rowStyle: PropTypes.func,
 };
 
-export type FunctionToElement<RaRecordType extends RaRecord = any> = (
-    record: RaRecordType,
+export type FunctionToElement<RecordType extends RaRecord = any> = (
+    record: RecordType,
     id: Identifier
 ) => ReactNode;
 
-export interface SimpleListProps<RaRecordType extends RaRecord = any>
+export interface SimpleListProps<RecordType extends RaRecord = any>
     extends Omit<ListProps, 'classes'> {
     className?: string;
     hasBulkActions?: boolean;
-    leftAvatar?: FunctionToElement<RaRecordType>;
-    leftIcon?: FunctionToElement<RaRecordType>;
-    primaryText?: FunctionToElement<RaRecordType> | ReactElement;
+    leftAvatar?: FunctionToElement<RecordType>;
+    leftIcon?: FunctionToElement<RecordType>;
+    primaryText?: FunctionToElement<RecordType> | ReactElement;
     linkType?: string | FunctionLinkType | boolean;
-    rightAvatar?: FunctionToElement<RaRecordType>;
-    rightIcon?: FunctionToElement<RaRecordType>;
-    secondaryText?: FunctionToElement<RaRecordType> | ReactElement;
-    tertiaryText?: FunctionToElement<RaRecordType> | ReactElement;
-    rowStyle?: (record: RaRecordType, index: number) => any;
+    rightAvatar?: FunctionToElement<RecordType>;
+    rightIcon?: FunctionToElement<RecordType>;
+    secondaryText?: FunctionToElement<RecordType> | ReactElement;
+    tertiaryText?: FunctionToElement<RecordType> | ReactElement;
+    rowStyle?: (record: RecordType, index: number) => any;
     // can be injected when using the component without context
     resource?: string;
-    data?: RaRecordType[];
+    data?: RecordType[];
     isLoading?: boolean;
     isLoaded?: boolean;
     total?: number;

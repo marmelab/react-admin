@@ -66,33 +66,33 @@ import { RaRecord, CreateParams } from '../types';
  * const [create, { data }] = useCreate<Product>('products', { data: product });
  *                    \-- data is Product
  */
-export const useCreate = <RaRecordType extends RaRecord = any>(
+export const useCreate = <RecordType extends RaRecord = any>(
     resource?: string,
     params: Partial<CreateParams> = {},
-    options: UseCreateOptions<RaRecordType> = {}
-): UseCreateResult<RaRecordType> => {
+    options: UseCreateOptions<RecordType> = {}
+): UseCreateResult<RecordType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const paramsRef = useRef<Partial<CreateParams<RaRecordType>>>(params);
+    const paramsRef = useRef<Partial<CreateParams<RecordType>>>(params);
 
     const mutation = useMutation<
-        RaRecordType,
+        RecordType,
         unknown,
-        Partial<UseCreateMutateParams<RaRecordType>>
+        Partial<UseCreateMutateParams<RecordType>>
     >(
         ({
             resource: callTimeResource = resource,
             data: callTimeData = paramsRef.current.data,
         } = {}) =>
             dataProvider
-                .create<RaRecordType>(callTimeResource, {
+                .create<RecordType>(callTimeResource, {
                     data: callTimeData,
                 })
                 .then(({ data }) => data),
         {
             onSuccess: (
-                data: RaRecordType,
-                variables: Partial<UseCreateMutateParams<RaRecordType>> = {}
+                data: RecordType,
+                variables: Partial<UseCreateMutateParams<RecordType>> = {}
             ) => {
                 const { resource: callTimeResource = resource } = variables;
                 queryClient.setQueryData(
@@ -106,11 +106,11 @@ export const useCreate = <RaRecordType extends RaRecord = any>(
 
     const create = (
         callTimeResource: string = resource,
-        callTimeParams: Partial<CreateParams<RaRecordType>> = {},
+        callTimeParams: Partial<CreateParams<RecordType>> = {},
         createOptions?: MutateOptions<
-            RaRecordType,
+            RecordType,
             unknown,
-            Partial<UseCreateMutateParams<RaRecordType>>,
+            Partial<UseCreateMutateParams<RecordType>>,
             unknown
         >
     ) =>
@@ -122,34 +122,34 @@ export const useCreate = <RaRecordType extends RaRecord = any>(
     return [create, mutation];
 };
 
-export interface UseCreateMutateParams<RaRecordType extends RaRecord = any> {
+export interface UseCreateMutateParams<RecordType extends RaRecord = any> {
     resource?: string;
-    data?: Partial<RaRecordType>;
+    data?: Partial<RecordType>;
 }
 
 export type UseCreateOptions<
-    RaRecordType extends RaRecord = any
+    RecordType extends RaRecord = any
 > = UseMutationOptions<
-    RaRecordType,
+    RecordType,
     unknown,
-    Partial<UseCreateMutateParams<RaRecordType>>
+    Partial<UseCreateMutateParams<RecordType>>
 >;
 
-export type UseCreateResult<RaRecordType extends RaRecord = any> = [
+export type UseCreateResult<RecordType extends RaRecord = any> = [
     (
         resource?: string,
-        params?: Partial<CreateParams<Partial<RaRecordType>>>,
+        params?: Partial<CreateParams<Partial<RecordType>>>,
         options?: MutateOptions<
-            RaRecordType,
+            RecordType,
             unknown,
-            Partial<UseCreateMutateParams<RaRecordType>>,
+            Partial<UseCreateMutateParams<RecordType>>,
             unknown
         >
     ) => void,
     UseMutationResult<
-        RaRecordType,
+        RecordType,
         unknown,
-        Partial<UseCreateMutateParams<RaRecordType>>,
+        Partial<UseCreateMutateParams<RecordType>>,
         unknown
     >
 ];

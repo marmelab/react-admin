@@ -48,21 +48,21 @@ import { useDataProvider } from './useDataProvider';
  *     )}</ul>;
  * };
  */
-export const useGetMany = <RaRecordType extends RaRecord = any>(
+export const useGetMany = <RecordType extends RaRecord = any>(
     resource: string,
     params: Partial<GetManyParams> = {},
-    options?: UseQueryOptions<RaRecordType[], Error>
-): UseGetManyHookValue<RaRecordType> => {
+    options?: UseQueryOptions<RecordType[], Error>
+): UseGetManyHookValue<RecordType> => {
     const { ids } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const queryCache = queryClient.getQueryCache();
 
-    return useQuery<RaRecordType[], Error, RaRecordType[]>(
+    return useQuery<RecordType[], Error, RecordType[]>(
         [resource, 'getMany', { ids: ids.map(id => String(id)) }],
         () =>
             dataProvider
-                .getMany<RaRecordType>(resource, { ids })
+                .getMany<RecordType>(resource, { ids })
                 .then(({ data }) => data),
         {
             placeholderData: () => {
@@ -72,7 +72,7 @@ export const useGetMany = <RaRecordType extends RaRecord = any>(
                         'getOne',
                         { id: String(id) },
                     ]);
-                    return queryCache.get<RaRecordType>(queryHash)?.state?.data;
+                    return queryCache.get<RecordType>(queryHash)?.state?.data;
                 });
                 if (records.some(record => record === undefined)) {
                     return undefined;
@@ -96,5 +96,5 @@ export const useGetMany = <RaRecordType extends RaRecord = any>(
 };
 
 export type UseGetManyHookValue<
-    RaRecordType extends RaRecord = any
-> = UseQueryResult<RaRecordType[], Error>;
+    RecordType extends RaRecord = any
+> = UseQueryResult<RecordType[], Error>;

@@ -34,11 +34,11 @@ import { EditContextProvider } from './EditContextProvider';
  *     </EditBase>
  * );
  */
-export const EditBase = <RaRecordType extends RaRecord = any>({
+export const EditBase = <RecordType extends RaRecord = any>({
     children,
     ...props
-}: { children: ReactNode } & EditControllerProps<RaRecordType>) => (
-    <EditContextProvider value={useEditController<RaRecordType>(props)}>
+}: { children: ReactNode } & EditControllerProps<RecordType>) => (
+    <EditContextProvider value={useEditController<RecordType>(props)}>
         {children}
     </EditContextProvider>
 );

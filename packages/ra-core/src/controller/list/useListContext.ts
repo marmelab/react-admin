@@ -91,9 +91,9 @@ import { RaRecord } from '../../types';
  *     );
  * }
  */
-export const useListContext = <RaRecordType extends RaRecord = any>(
+export const useListContext = <RecordType extends RaRecord = any>(
     props?: any
-): ListControllerResult<RaRecordType> => {
+): ListControllerResult<RecordType> => {
     const context = useContext(ListContext);
     // Props take precedence over the context
     // @ts-ignore

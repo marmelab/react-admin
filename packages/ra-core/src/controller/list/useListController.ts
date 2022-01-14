@@ -29,9 +29,9 @@ import { useListParams } from './useListParams';
  *     return <ListView {...controllerProps} {...props} />;
  * }
  */
-export const useListController = <RaRecordType extends RaRecord = any>(
-    props: ListControllerProps<RaRecordType> = {}
-): ListControllerResult<RaRecordType> => {
+export const useListController = <RecordType extends RaRecord = any>(
+    props: ListControllerProps<RecordType> = {}
+): ListControllerResult<RecordType> => {
     const {
         disableAuthentication,
         exporter = defaultExporter,
@@ -72,7 +72,7 @@ export const useListController = <RaRecordType extends RaRecord = any>(
     const [selectedIds, selectionModifiers] = useRecordSelection(resource);
 
     const { data, total, error, isLoading, isFetching, refetch } = useGetList<
-        RaRecordType
+        RecordType
     >(
         resource,
         {
@@ -155,7 +155,7 @@ export const useListController = <RaRecordType extends RaRecord = any>(
     };
 };
 
-export interface ListControllerProps<RaRecordType extends RaRecord = any> {
+export interface ListControllerProps<RecordType extends RaRecord = any> {
     debounce?: number;
     disableAuthentication?: boolean;
     /**
@@ -166,7 +166,7 @@ export interface ListControllerProps<RaRecordType extends RaRecord = any> {
     filter?: FilterPayload;
     filterDefaultValues?: object;
     perPage?: number;
-    queryOptions?: UseQueryOptions<{ data: RaRecordType[]; total: number }>;
+    queryOptions?: UseQueryOptions<{ data: RecordType[]; total: number }>;
     resource?: string;
     sort?: SortPayload;
 }

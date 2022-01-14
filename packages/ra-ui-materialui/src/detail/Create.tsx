@@ -55,11 +55,11 @@ import { CreateView } from './CreateView';
  * );
  * export default App;
  */
-export const Create = <RaRecordType extends RaRecord = any>(
-    props: CreateProps<RaRecordType> & { children: ReactElement }
+export const Create = <RecordType extends RaRecord = any>(
+    props: CreateProps<RecordType> & { children: ReactElement }
 ): ReactElement => {
     useCheckMinimumRequiredProps('Create', ['children'], props);
-    const controllerProps = useCreateController<RaRecordType>(props);
+    const controllerProps = useCreateController<RecordType>(props);
     const body = (
         <CreateContextProvider value={controllerProps}>
             <CreateView {...props} {...controllerProps} />

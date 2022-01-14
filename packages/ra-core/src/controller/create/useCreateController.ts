@@ -36,10 +36,10 @@ import {
  * }
  */
 export const useCreateController = <
-    RaRecordType extends Omit<RaRecord, 'id'> = RaRecord
+    RecordType extends Omit<RaRecord, 'id'> = RaRecord
 >(
     props: CreateControllerProps = {}
-): CreateControllerResult<RaRecordType> => {
+): CreateControllerResult<RecordType> => {
     const {
         disableAuthentication,
         record,
@@ -160,32 +160,32 @@ export const useCreateController = <
 };
 
 export interface CreateControllerProps<
-    RaRecordType extends Omit<RaRecord, 'id'> = RaRecord
+    RecordType extends Omit<RaRecord, 'id'> = RaRecord
 > {
     disableAuthentication?: boolean;
-    record?: Partial<RaRecordType>;
+    record?: Partial<RecordType>;
     redirect?: RedirectionSideEffect;
     resource?: string;
     mutationOptions?: UseMutationOptions<
-        RaRecordType,
+        RecordType,
         unknown,
-        CreateParams<RaRecordType>
+        CreateParams<RecordType>
     >;
     transform?: TransformData;
 }
 
 export interface CreateControllerResult<
-    RaRecordType extends Omit<RaRecord, 'id'> = RaRecord
+    RecordType extends Omit<RaRecord, 'id'> = RaRecord
 > {
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
-    data?: RaRecordType;
+    data?: RecordType;
     defaultTitle: string;
     isFetching: boolean;
     isLoading: boolean;
     save: SaveHandler;
     saving: boolean;
-    record?: Partial<RaRecordType>;
+    record?: Partial<RecordType>;
     redirect: RedirectionSideEffect;
     resource: string;
 }

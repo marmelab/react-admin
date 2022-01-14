@@ -6,9 +6,9 @@ import { TableCellProps } from '@mui/material/TableCell';
 type TextAlign = TableCellProps['align'];
 type SortOrder = 'ASC' | 'DESC';
 
-export interface FieldProps<RaRecordType extends RaRecord = any>
+export interface FieldProps<RecordType extends RaRecord = any>
     extends PublicFieldProps,
-        InjectedFieldProps<RaRecordType> {}
+        InjectedFieldProps<RecordType> {}
 
 export interface PublicFieldProps {
     addLabel?: boolean;
@@ -27,9 +27,9 @@ export interface PublicFieldProps {
 }
 
 // Props injected by react-admin
-export interface InjectedFieldProps<RaRecordType extends RaRecord = any> {
+export interface InjectedFieldProps<RecordType extends RaRecord = any> {
     basePath?: string;
-    record?: RaRecordType;
+    record?: RecordType;
     resource?: string;
 }
 

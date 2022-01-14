@@ -17,8 +17,8 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *     render={record => record && `${record.first_name} ${record.last_name}`}
  * />
  */
-export const FunctionField = <RaRecordType extends RaRecord = any>(
-    props: FunctionFieldProps<RaRecordType>
+export const FunctionField = <RecordType extends RaRecord = any>(
+    props: FunctionFieldProps<RecordType>
 ) => {
     const { className, source = '', render, ...rest } = props;
     const record = useRecordContext(props);
@@ -49,9 +49,9 @@ FunctionField.propTypes = {
     render: PropTypes.func.isRequired,
 };
 
-export interface FunctionFieldProps<RaRecordType extends RaRecord = any>
+export interface FunctionFieldProps<RecordType extends RaRecord = any>
     extends PublicFieldProps,
-        InjectedFieldProps<RaRecordType>,
+        InjectedFieldProps<RecordType>,
         Omit<TypographyProps, 'textAlign'> {
-    render: (record?: RaRecordType, source?: string) => any;
+    render: (record?: RecordType, source?: string) => any;
 }

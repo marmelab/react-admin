@@ -58,14 +58,14 @@ import { ShowView } from './ShowView';
  *
  * @see ShowView for the actual rendering
  */
-export const Show = <RaRecordType extends RaRecord = any>({
+export const Show = <RecordType extends RaRecord = any>({
     id,
     resource,
     queryOptions,
     ...rest
-}: ShowProps<RaRecordType>): ReactElement => (
+}: ShowProps<RecordType>): ReactElement => (
     <ResourceContextProvider value={resource}>
-        <ShowBase<RaRecordType> id={id} queryOptions={queryOptions}>
+        <ShowBase<RecordType> id={id} queryOptions={queryOptions}>
             <ShowView {...rest} />
         </ShowBase>
     </ResourceContextProvider>

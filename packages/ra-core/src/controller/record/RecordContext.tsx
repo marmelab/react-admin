@@ -37,15 +37,15 @@ RecordContext.displayName = 'RecordContext';
  * };
  */
 export const RecordContextProvider = <
-    RaRecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord
 >({
     children,
     value,
-}: RecordContextProviderProps<RaRecordType>) => (
+}: RecordContextProviderProps<RecordType>) => (
     <RecordContext.Provider value={value}>{children}</RecordContext.Provider>
 );
 
-export interface RecordContextProviderProps<RaRecordType> {
+export interface RecordContextProviderProps<RecordType> {
     children: ReactNode;
-    value?: RaRecordType;
+    value?: RecordType;
 }

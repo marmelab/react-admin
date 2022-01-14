@@ -78,50 +78,50 @@ export type LegacyAuthProvider = (
  */
 
 export type DataProvider = {
-    getList: <RaRecordType extends RaRecord = any>(
+    getList: <RecordType extends RaRecord = any>(
         resource: string,
         params: GetListParams
-    ) => Promise<GetListResult<RaRecordType>>;
+    ) => Promise<GetListResult<RecordType>>;
 
-    getOne: <RaRecordType extends RaRecord = any>(
+    getOne: <RecordType extends RaRecord = any>(
         resource: string,
         params: GetOneParams
-    ) => Promise<GetOneResult<RaRecordType>>;
+    ) => Promise<GetOneResult<RecordType>>;
 
-    getMany: <RaRecordType extends RaRecord = any>(
+    getMany: <RecordType extends RaRecord = any>(
         resource: string,
         params: GetManyParams
-    ) => Promise<GetManyResult<RaRecordType>>;
+    ) => Promise<GetManyResult<RecordType>>;
 
-    getManyReference: <RaRecordType extends RaRecord = any>(
+    getManyReference: <RecordType extends RaRecord = any>(
         resource: string,
         params: GetManyReferenceParams
-    ) => Promise<GetManyReferenceResult<RaRecordType>>;
+    ) => Promise<GetManyReferenceResult<RecordType>>;
 
-    update: <RaRecordType extends RaRecord = any>(
+    update: <RecordType extends RaRecord = any>(
         resource: string,
         params: UpdateParams
-    ) => Promise<UpdateResult<RaRecordType>>;
+    ) => Promise<UpdateResult<RecordType>>;
 
-    updateMany: <RaRecordType extends RaRecord = any>(
+    updateMany: <RecordType extends RaRecord = any>(
         resource: string,
         params: UpdateManyParams
-    ) => Promise<UpdateManyResult<RaRecordType>>;
+    ) => Promise<UpdateManyResult<RecordType>>;
 
-    create: <RaRecordType extends RaRecord = any>(
+    create: <RecordType extends RaRecord = any>(
         resource: string,
         params: CreateParams
-    ) => Promise<CreateResult<RaRecordType>>;
+    ) => Promise<CreateResult<RecordType>>;
 
-    delete: <RaRecordType extends RaRecord = any>(
+    delete: <RecordType extends RaRecord = any>(
         resource: string,
-        params: DeleteParams<RaRecordType>
-    ) => Promise<DeleteResult<RaRecordType>>;
+        params: DeleteParams<RecordType>
+    ) => Promise<DeleteResult<RecordType>>;
 
-    deleteMany: <RaRecordType extends RaRecord = any>(
+    deleteMany: <RecordType extends RaRecord = any>(
         resource: string,
-        params: DeleteManyParams<RaRecordType>
-    ) => Promise<DeleteManyResult<RaRecordType>>;
+        params: DeleteManyParams<RecordType>
+    ) => Promise<DeleteManyResult<RecordType>>;
 
     [key: string]: any;
 };
@@ -131,25 +131,25 @@ export interface GetListParams {
     sort: SortPayload;
     filter: any;
 }
-export interface GetListResult<RaRecordType extends RaRecord = any> {
-    data: RaRecordType[];
+export interface GetListResult<RecordType extends RaRecord = any> {
+    data: RecordType[];
     total: number;
     validUntil?: ValidUntil;
 }
 
-export interface GetOneParams<RaRecordType extends RaRecord = any> {
-    id: RaRecordType['id'];
+export interface GetOneParams<RecordType extends RaRecord = any> {
+    id: RecordType['id'];
 }
-export interface GetOneResult<RaRecordType extends RaRecord = any> {
-    data: RaRecordType;
+export interface GetOneResult<RecordType extends RaRecord = any> {
+    data: RecordType;
     validUntil?: ValidUntil;
 }
 
 export interface GetManyParams {
     ids: Identifier[];
 }
-export interface GetManyResult<RaRecordType extends RaRecord = any> {
-    data: RaRecordType[];
+export interface GetManyResult<RecordType extends RaRecord = any> {
+    data: RecordType[];
     validUntil?: ValidUntil;
 }
 
@@ -160,8 +160,8 @@ export interface GetManyReferenceParams {
     sort: SortPayload;
     filter: any;
 }
-export interface GetManyReferenceResult<RaRecordType extends RaRecord = any> {
-    data: RaRecordType[];
+export interface GetManyReferenceResult<RecordType extends RaRecord = any> {
+    data: RecordType[];
     total: number;
     validUntil?: ValidUntil;
 }
@@ -171,8 +171,8 @@ export interface UpdateParams<T = any> {
     data: Partial<T>;
     previousData: T;
 }
-export interface UpdateResult<RaRecordType extends RaRecord = any> {
-    data: RaRecordType;
+export interface UpdateResult<RecordType extends RaRecord = any> {
+    data: RecordType;
     validUntil?: ValidUntil;
 }
 
@@ -180,43 +180,43 @@ export interface UpdateManyParams<T = any> {
     ids: Identifier[];
     data: T;
 }
-export interface UpdateManyResult<RaRecordType extends RaRecord = any> {
-    data?: RaRecordType['id'][];
+export interface UpdateManyResult<RecordType extends RaRecord = any> {
+    data?: RecordType['id'][];
     validUntil?: ValidUntil;
 }
 
 export interface CreateParams<T = any> {
     data: T;
 }
-export interface CreateResult<RaRecordType extends RaRecord = any> {
-    data: RaRecordType;
+export interface CreateResult<RecordType extends RaRecord = any> {
+    data: RecordType;
     validUntil?: ValidUntil;
 }
 
-export interface DeleteParams<RaRecordType extends RaRecord = any> {
+export interface DeleteParams<RecordType extends RaRecord = any> {
     id: Identifier;
-    previousData?: RaRecordType;
+    previousData?: RecordType;
 }
-export interface DeleteResult<RaRecordType extends RaRecord = any> {
-    data: RaRecordType;
-}
-
-export interface DeleteManyParams<RaRecordType extends RaRecord = any> {
-    ids: RaRecordType['id'][];
-}
-export interface DeleteManyResult<RaRecordType extends RaRecord = any> {
-    data?: RaRecordType['id'][];
+export interface DeleteResult<RecordType extends RaRecord = any> {
+    data: RecordType;
 }
 
-export type DataProviderResult<RaRecordType extends RaRecord = any> =
-    | CreateResult<RaRecordType>
-    | DeleteResult<RaRecordType>
+export interface DeleteManyParams<RecordType extends RaRecord = any> {
+    ids: RecordType['id'][];
+}
+export interface DeleteManyResult<RecordType extends RaRecord = any> {
+    data?: RecordType['id'][];
+}
+
+export type DataProviderResult<RecordType extends RaRecord = any> =
+    | CreateResult<RecordType>
+    | DeleteResult<RecordType>
     | DeleteManyResult
-    | GetListResult<RaRecordType>
-    | GetManyResult<RaRecordType>
-    | GetManyReferenceResult<RaRecordType>
-    | GetOneResult<RaRecordType>
-    | UpdateResult<RaRecordType>
+    | GetListResult<RecordType>
+    | GetManyResult<RecordType>
+    | GetManyReferenceResult<RecordType>
+    | GetOneResult<RecordType>
+    | UpdateResult<RecordType>
     | UpdateManyResult;
 
 export type MutationMode = 'pessimistic' | 'optimistic' | 'undoable';

@@ -6,12 +6,12 @@ interface UseReferenceProps {
     reference: string;
 }
 
-export interface UseReferenceResult<RaRecordType extends RaRecord = any> {
+export interface UseReferenceResult<RecordType extends RaRecord = any> {
     isLoading: boolean;
     isFetching: boolean;
-    referenceRecord?: RaRecordType;
+    referenceRecord?: RecordType;
     error?: any;
-    refetch: UseGetManyHookValue<RaRecordType>['refetch'];
+    refetch: UseGetManyHookValue<RecordType>['refetch'];
 }
 
 /**
@@ -41,12 +41,12 @@ export interface UseReferenceResult<RaRecordType extends RaRecord = any> {
  *
  * @returns {UseReferenceResult} The reference record
  */
-export const useReference = <RaRecordType extends RaRecord = any>({
+export const useReference = <RecordType extends RaRecord = any>({
     reference,
     id,
-}: UseReferenceProps): UseReferenceResult<RaRecordType> => {
+}: UseReferenceProps): UseReferenceResult<RecordType> => {
     const { data, error, isLoading, isFetching, refetch } = useGetManyAggregate<
-        RaRecordType
+        RecordType
     >(reference, { ids: [id] });
     return {
         referenceRecord: error ? undefined : data ? data[0] : undefined,

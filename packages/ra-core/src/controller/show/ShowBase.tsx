@@ -34,11 +34,11 @@ import { ShowContextProvider } from './ShowContextProvider';
  *     </ShowBase>
  * );
  */
-export const ShowBase = <RaRecordType extends RaRecord = any>({
+export const ShowBase = <RecordType extends RaRecord = any>({
     children,
     ...props
-}: { children: ReactElement } & ShowControllerProps<RaRecordType>) => (
-    <ShowContextProvider value={useShowController<RaRecordType>(props)}>
+}: { children: ReactElement } & ShowControllerProps<RecordType>) => (
+    <ShowContextProvider value={useShowController<RecordType>(props)}>
         {children}
     </ShowContextProvider>
 );

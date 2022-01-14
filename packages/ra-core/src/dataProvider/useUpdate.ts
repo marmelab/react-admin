@@ -71,17 +71,17 @@ import { RaRecord, UpdateParams, MutationMode } from '../types';
  * const [update, { data }] = useUpdate<Product>('products', { id, data: diff, previousData: product });
  *                    \-- data is Product
  */
-export const useUpdate = <RaRecordType extends RaRecord = any>(
+export const useUpdate = <RecordType extends RaRecord = any>(
     resource?: string,
-    params: Partial<UpdateParams<RaRecordType>> = {},
-    options: UseUpdateOptions<RaRecordType> = {}
-): UseUpdateResult<RaRecordType> => {
+    params: Partial<UpdateParams<RecordType>> = {},
+    options: UseUpdateOptions<RecordType> = {}
+): UseUpdateResult<RecordType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const { id, data } = params;
     const { mutationMode = 'pessimistic', ...reactMutationOptions } = options;
     const mode = useRef<MutationMode>(mutationMode);
-    const paramsRef = useRef<Partial<UpdateParams<RaRecordType>>>(params);
+    const paramsRef = useRef<Partial<UpdateParams<RecordType>>>(params);
     const snapshot = useRef<Snapshot>([]);
 
     const updateCache = ({ resource, id, data }) => {
@@ -90,7 +90,7 @@ export const useUpdate = <RaRecordType extends RaRecord = any>(
         const now = Date.now();
         const updatedAt = mode.current === 'undoable' ? now + 5 * 1000 : now;
 
-        const updateColl = (old: RaRecordType[]) => {
+        const updateColl = (old: RecordType[]) => {
             if (!old) return;
             const index = old.findIndex(
                 // eslint-disable-next-line eqeqeq
@@ -106,11 +106,11 @@ export const useUpdate = <RaRecordType extends RaRecord = any>(
             ];
         };
 
-        type GetListResult = { data?: RaRecordType[]; total?: number };
+        type GetListResult = { data?: RecordType[]; total?: number };
 
         queryClient.setQueryData(
             [resource, 'getOne', { id: String(id) }],
-            (record: RaRecordType) => ({ ...record, ...data }),
+            (record: RecordType) => ({ ...record, ...data }),
             { updatedAt }
         );
         queryClient.setQueriesData(
@@ -123,7 +123,7 @@ export const useUpdate = <RaRecordType extends RaRecord = any>(
         );
         queryClient.setQueriesData(
             [resource, 'getMany'],
-            (coll: RaRecordType[]) =>
+            (coll: RecordType[]) =>
                 coll && coll.length > 0 ? updateColl(coll) : coll,
             { updatedAt }
         );
@@ -138,9 +138,9 @@ export const useUpdate = <RaRecordType extends RaRecord = any>(
     };
 
     const mutation = useMutation<
-        RaRecordType,
+        RecordType,
         unknown,
-        Partial<UseUpdateMutateParams<RaRecordType>>
+        Partial<UseUpdateMutateParams<RecordType>>
     >(
         ({
             resource: callTimeResource = resource,
@@ -149,7 +149,7 @@ export const useUpdate = <RaRecordType extends RaRecord = any>(
             previousData: callTimePreviousData = paramsRef.current.previousData,
         } = {}) =>
             dataProvider
-                .update<RaRecordType>(callTimeResource, {
+                .update<RecordType>(callTimeResource, {
                     id: callTimeId,
                     data: callTimeData,
                     previousData: callTimePreviousData,
@@ -158,7 +158,7 @@ export const useUpdate = <RaRecordType extends RaRecord = any>(
         {
             ...reactMutationOptions,
             onMutate: async (
-                variables: Partial<UseUpdateMutateParams<RaRecordType>>
+                variables: Partial<UseUpdateMutateParams<RecordType>>
             ) => {
                 if (reactMutationOptions.onMutate) {
                     const userContext =
@@ -175,7 +175,7 @@ export const useUpdate = <RaRecordType extends RaRecord = any>(
             },
             onError: (
                 error: unknown,
-                variables: Partial<UseUpdateMutateParams<RaRecordType>> = {},
+                variables: Partial<UseUpdateMutateParams<RecordType>> = {},
                 context: { snapshot: Snapshot }
             ) => {
                 if (
@@ -198,8 +198,8 @@ export const useUpdate = <RaRecordType extends RaRecord = any>(
                 // call-time error callback is executed by react-query
             },
             onSuccess: (
-                data: RaRecordType,
-                variables: Partial<UseUpdateMutateParams<RaRecordType>> = {},
+                data: RecordType,
+                variables: Partial<UseUpdateMutateParams<RecordType>> = {},
                 context: unknown
             ) => {
                 if (mode.current === 'pessimistic') {
@@ -225,9 +225,9 @@ export const useUpdate = <RaRecordType extends RaRecord = any>(
                 }
             },
             onSettled: (
-                data: RaRecordType,
+                data: RecordType,
                 error: unknown,
-                variables: Partial<UseUpdateMutateParams<RaRecordType>> = {},
+                variables: Partial<UseUpdateMutateParams<RecordType>> = {},
                 context: { snapshot: Snapshot }
             ) => {
                 if (
@@ -254,11 +254,11 @@ export const useUpdate = <RaRecordType extends RaRecord = any>(
 
     const update = async (
         callTimeResource: string = resource,
-        callTimeParams: Partial<UpdateParams<RaRecordType>> = {},
+        callTimeParams: Partial<UpdateParams<RecordType>> = {},
         updateOptions: MutateOptions<
-            RaRecordType,
+            RecordType,
             unknown,
-            Partial<UseUpdateMutateParams<RaRecordType>>,
+            Partial<UseUpdateMutateParams<RecordType>>,
             unknown
         > & { mutationMode?: MutationMode } = {}
     ) => {
@@ -289,7 +289,7 @@ export const useUpdate = <RaRecordType extends RaRecord = any>(
         // except we do it in a mutate wrapper instead of the onMutate callback
         // to have access to success side effects
 
-        const previousRecord = queryClient.getQueryData<RaRecordType>([
+        const previousRecord = queryClient.getQueryData<RecordType>([
             callTimeResource,
             'getOne',
             { id: String(callTimeId) },
@@ -387,36 +387,36 @@ export const useUpdate = <RaRecordType extends RaRecord = any>(
 
 type Snapshot = [key: QueryKey, value: any][];
 
-export interface UseUpdateMutateParams<RaRecordType extends RaRecord = any> {
+export interface UseUpdateMutateParams<RecordType extends RaRecord = any> {
     resource?: string;
-    id?: RaRecordType['id'];
-    data?: Partial<RaRecordType>;
+    id?: RecordType['id'];
+    data?: Partial<RecordType>;
     previousData?: any;
 }
 
 export type UseUpdateOptions<
-    RaRecordType extends RaRecord = any
+    RecordType extends RaRecord = any
 > = UseMutationOptions<
-    RaRecordType,
+    RecordType,
     unknown,
-    Partial<UseUpdateMutateParams<RaRecordType>>
+    Partial<UseUpdateMutateParams<RecordType>>
 > & { mutationMode?: MutationMode };
 
-export type UseUpdateResult<RaRecordType extends RaRecord = any> = [
+export type UseUpdateResult<RecordType extends RaRecord = any> = [
     (
         resource?: string,
-        params?: Partial<UpdateParams<RaRecordType>>,
+        params?: Partial<UpdateParams<RecordType>>,
         options?: MutateOptions<
-            RaRecordType,
+            RecordType,
             unknown,
-            Partial<UseUpdateMutateParams<RaRecordType>>,
+            Partial<UseUpdateMutateParams<RecordType>>,
             unknown
         > & { mutationMode?: MutationMode }
     ) => Promise<void>,
     UseMutationResult<
-        RaRecordType,
+        RecordType,
         unknown,
-        Partial<UpdateParams<RaRecordType> & { resource?: string }>,
+        Partial<UpdateParams<RecordType> & { resource?: string }>,
         unknown
     >
 ];

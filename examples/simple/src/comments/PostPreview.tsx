@@ -8,7 +8,7 @@ import {
     RaRecord,
 } from 'react-admin';
 
-const PostPreview = <RaRecordType extends RaRecord = any>({
+const PostPreview = <RecordType extends RaRecord = any>({
     id,
     resource,
 }: {
@@ -16,7 +16,7 @@ const PostPreview = <RaRecordType extends RaRecord = any>({
     resource: string;
 }) => {
     const queryClient = useQueryClient();
-    const record = queryClient.getQueryData<RaRecordType>([
+    const record = queryClient.getQueryData<RecordType>([
         resource,
         'getOne',
         { id: String(id) },

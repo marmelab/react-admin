@@ -11,7 +11,7 @@ import {
 } from 'ra-core';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
-export interface EditProps<RaRecordType extends RaRecord = any> {
+export interface EditProps<RecordType extends RaRecord = any> {
     actions?: ReactElement | false;
     aside?: ReactElement;
     classes?: any;
@@ -19,11 +19,11 @@ export interface EditProps<RaRecordType extends RaRecord = any> {
     component?: ElementType;
     id?: Identifier;
     mutationMode?: MutationMode;
-    queryOptions?: UseQueryOptions<RaRecordType>;
+    queryOptions?: UseQueryOptions<RecordType>;
     mutationOptions?: UseMutationOptions<
-        RaRecordType,
+        RecordType,
         unknown,
-        UpdateParams<RaRecordType>
+        UpdateParams<RecordType>
     >;
     redirect?: RedirectionSideEffect;
     resource?: string;
@@ -31,25 +31,25 @@ export interface EditProps<RaRecordType extends RaRecord = any> {
     title?: string | ReactElement;
 }
 
-export interface CreateProps<RaRecordType extends RaRecord = any> {
+export interface CreateProps<RecordType extends RaRecord = any> {
     actions?: ReactElement | false;
     aside?: ReactElement;
     classes?: any;
     className?: string;
     component?: ElementType;
-    record?: Partial<RaRecordType>;
+    record?: Partial<RecordType>;
     redirect?: RedirectionSideEffect;
     resource?: string;
     mutationOptions?: UseMutationOptions<
-        RaRecordType,
+        RecordType,
         unknown,
-        CreateParams<RaRecordType>
+        CreateParams<RecordType>
     >;
     transform?: TransformData;
     title?: string | ReactElement;
 }
 
-export interface ShowProps<RaRecordType extends RaRecord = any> {
+export interface ShowProps<RecordType extends RaRecord = any> {
     actions?: ReactElement | false;
     aside?: ReactElement;
     children: ReactNode;
@@ -57,7 +57,7 @@ export interface ShowProps<RaRecordType extends RaRecord = any> {
     component?: ElementType;
     emptyWhileLoading?: boolean;
     id?: Identifier;
-    queryOptions?: UseQueryOptions<RaRecordType>;
+    queryOptions?: UseQueryOptions<RecordType>;
     resource?: string;
     title?: string | ReactElement;
     sx?: SxProps;

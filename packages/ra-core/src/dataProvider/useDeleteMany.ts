@@ -70,17 +70,17 @@ import { RaRecord, DeleteManyParams, MutationMode } from '../types';
  * const [deleteMany, { data }] = useDeleteMany<Product>('products', { ids });
  *                        \-- data is Product
  */
-export const useDeleteMany = <RaRecordType extends RaRecord = any>(
+export const useDeleteMany = <RecordType extends RaRecord = any>(
     resource?: string,
-    params: Partial<DeleteManyParams<RaRecordType>> = {},
-    options: UseDeleteManyOptions<RaRecordType> = {}
-): UseDeleteManyResult<RaRecordType> => {
+    params: Partial<DeleteManyParams<RecordType>> = {},
+    options: UseDeleteManyOptions<RecordType> = {}
+): UseDeleteManyResult<RecordType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const { ids } = params;
     const { mutationMode = 'pessimistic', ...reactMutationOptions } = options;
     const mode = useRef<MutationMode>(mutationMode);
-    const paramsRef = useRef<Partial<DeleteManyParams<RaRecordType>>>({});
+    const paramsRef = useRef<Partial<DeleteManyParams<RecordType>>>({});
     const snapshot = useRef<Snapshot>([]);
 
     const updateCache = ({ resource, ids }) => {
@@ -89,7 +89,7 @@ export const useDeleteMany = <RaRecordType extends RaRecord = any>(
         const now = Date.now();
         const updatedAt = mode.current === 'undoable' ? now + 5 * 1000 : now;
 
-        const updateColl = (old: RaRecordType[]) => {
+        const updateColl = (old: RecordType[]) => {
             if (!old) return;
             let newCollection = [...old];
             ids.forEach(id => {
@@ -108,7 +108,7 @@ export const useDeleteMany = <RaRecordType extends RaRecord = any>(
             return newCollection;
         };
 
-        type GetListResult = { data?: RaRecordType[]; total?: number };
+        type GetListResult = { data?: RecordType[]; total?: number };
 
         queryClient.setQueriesData(
             [resource, 'getList'],
@@ -129,7 +129,7 @@ export const useDeleteMany = <RaRecordType extends RaRecord = any>(
         );
         queryClient.setQueriesData(
             [resource, 'getMany'],
-            (coll: RaRecordType[]) =>
+            (coll: RecordType[]) =>
                 coll && coll.length > 0 ? updateColl(coll) : coll,
             { updatedAt }
         );
@@ -153,23 +153,23 @@ export const useDeleteMany = <RaRecordType extends RaRecord = any>(
     };
 
     const mutation = useMutation<
-        RaRecordType['id'][],
+        RecordType['id'][],
         unknown,
-        Partial<UseDeleteManyMutateParams<RaRecordType>>
+        Partial<UseDeleteManyMutateParams<RecordType>>
     >(
         ({
             resource: callTimeResource = resource,
             ids: callTimeIds = paramsRef.current.ids,
         } = {}) =>
             dataProvider
-                .deleteMany<RaRecordType>(callTimeResource, {
+                .deleteMany<RecordType>(callTimeResource, {
                     ids: callTimeIds,
                 })
                 .then(({ data }) => data),
         {
             ...reactMutationOptions,
             onMutate: async (
-                variables: Partial<UseDeleteManyMutateParams<RaRecordType>>
+                variables: Partial<UseDeleteManyMutateParams<RecordType>>
             ) => {
                 if (reactMutationOptions.onMutate) {
                     const userContext =
@@ -186,9 +186,7 @@ export const useDeleteMany = <RaRecordType extends RaRecord = any>(
             },
             onError: (
                 error: unknown,
-                variables: Partial<
-                    UseDeleteManyMutateParams<RaRecordType>
-                > = {},
+                variables: Partial<UseDeleteManyMutateParams<RecordType>> = {},
                 context: { snapshot: Snapshot }
             ) => {
                 if (
@@ -211,10 +209,8 @@ export const useDeleteMany = <RaRecordType extends RaRecord = any>(
                 // call-time error callback is executed by react-query
             },
             onSuccess: (
-                data: RaRecordType['id'][],
-                variables: Partial<
-                    UseDeleteManyMutateParams<RaRecordType>
-                > = {},
+                data: RecordType['id'][],
+                variables: Partial<UseDeleteManyMutateParams<RecordType>> = {},
                 context: unknown
             ) => {
                 if (mode.current === 'pessimistic') {
@@ -239,11 +235,9 @@ export const useDeleteMany = <RaRecordType extends RaRecord = any>(
                 }
             },
             onSettled: (
-                data: RaRecordType['id'][],
+                data: RecordType['id'][],
                 error: unknown,
-                variables: Partial<
-                    UseDeleteManyMutateParams<RaRecordType>
-                > = {},
+                variables: Partial<UseDeleteManyMutateParams<RecordType>> = {},
                 context: { snapshot: Snapshot }
             ) => {
                 if (
@@ -270,11 +264,11 @@ export const useDeleteMany = <RaRecordType extends RaRecord = any>(
 
     const mutate = async (
         callTimeResource: string = resource,
-        callTimeParams: Partial<DeleteManyParams<RaRecordType>> = {},
+        callTimeParams: Partial<DeleteManyParams<RecordType>> = {},
         updateOptions: MutateOptions<
-            RaRecordType['id'][],
+            RecordType['id'][],
             unknown,
-            Partial<UseDeleteManyMutateParams<RaRecordType>>,
+            Partial<UseDeleteManyMutateParams<RecordType>>,
             unknown
         > & { mutationMode?: MutationMode } = {}
     ) => {
@@ -391,36 +385,34 @@ export const useDeleteMany = <RaRecordType extends RaRecord = any>(
 
 type Snapshot = [key: QueryKey, value: any][];
 
-export interface UseDeleteManyMutateParams<
-    RaRecordType extends RaRecord = any
-> {
+export interface UseDeleteManyMutateParams<RecordType extends RaRecord = any> {
     resource?: string;
-    ids?: RaRecordType['id'][];
+    ids?: RecordType['id'][];
 }
 
 export type UseDeleteManyOptions<
-    RaRecordType extends RaRecord = any
+    RecordType extends RaRecord = any
 > = UseMutationOptions<
-    RaRecordType['id'][],
+    RecordType['id'][],
     unknown,
-    Partial<UseDeleteManyMutateParams<RaRecordType>>
+    Partial<UseDeleteManyMutateParams<RecordType>>
 > & { mutationMode?: MutationMode };
 
-export type UseDeleteManyResult<RaRecordType extends RaRecord = any> = [
+export type UseDeleteManyResult<RecordType extends RaRecord = any> = [
     (
         resource?: string,
-        params?: Partial<DeleteManyParams<RaRecordType>>,
+        params?: Partial<DeleteManyParams<RecordType>>,
         options?: MutateOptions<
-            RaRecordType['id'][],
+            RecordType['id'][],
             unknown,
-            Partial<UseDeleteManyMutateParams<RaRecordType>>,
+            Partial<UseDeleteManyMutateParams<RecordType>>,
             unknown
         > & { mutationMode?: MutationMode }
     ) => Promise<void>,
     UseMutationResult<
-        RaRecordType['id'][],
+        RecordType['id'][],
         unknown,
-        Partial<DeleteManyParams<RaRecordType> & { resource?: string }>,
+        Partial<DeleteManyParams<RecordType> & { resource?: string }>,
         unknown
     >
 ];
