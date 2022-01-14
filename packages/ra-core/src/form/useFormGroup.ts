@@ -1,16 +1,22 @@
 import { useCallback, useEffect, useState } from 'react';
+import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
-import { FieldState } from 'final-form';
-import { useForm } from 'react-final-form';
+import { useFormState } from 'react-hook-form';
 import { useFormGroups } from './useFormGroups';
 
+type FieldState = {
+    name: string;
+    error?: any;
+    isDirty: boolean;
+    isTouched: boolean;
+    isValid: boolean;
+};
+
 type FormGroupState = {
-    dirty: boolean;
     errors: object;
-    invalid: boolean;
-    pristine: boolean;
-    touched: boolean;
-    valid: boolean;
+    isDirty: boolean;
+    isTouched: boolean;
+    isValid: boolean;
 };
 
 /**
@@ -56,22 +62,26 @@ type FormGroupState = {
  * @returns {FormGroupState} The form group state
  */
 export const useFormGroup = (name: string): FormGroupState => {
-    const form = useForm();
+    const { dirtyFields, touchedFields, errors } = useFormState();
     const formGroups = useFormGroups();
     const [state, setState] = useState<FormGroupState>({
-        dirty: false,
         errors: undefined,
-        invalid: false,
-        pristine: true,
-        touched: false,
-        valid: true,
+        isDirty: false,
+        isTouched: false,
+        isValid: false,
     });
 
     const updateGroupState = useCallback(() => {
         const fields = formGroups.getGroupFields(name);
         const fieldStates = fields
-            .map(field => {
-                return form.getFieldState(field);
+            .map<FieldState>(field => {
+                return {
+                    name: field,
+                    error: get(errors, field, undefined),
+                    isDirty: get(dirtyFields, field, false),
+                    isValid: !!get(errors, field, false),
+                    isTouched: get(touchedFields, field, false),
+                };
             })
             .filter(fieldState => fieldState != undefined); // eslint-disable-line
 
@@ -83,32 +93,15 @@ export const useFormGroup = (name: string): FormGroupState => {
 
             return oldState;
         });
-    }, [form, formGroups, name]);
+    }, [dirtyFields, errors, touchedFields, formGroups, name]);
 
     useEffect(() => {
         // Whenever the group content changes (input are added or removed)
         // we must update its state
-        const unsubscribe = formGroups.subscribe(name, () => {
+        return formGroups.subscribe(name, () => {
             updateGroupState();
         });
-        const unsubscribeFinalForm = form.subscribe(
-            () => {
-                updateGroupState();
-            },
-            {
-                errors: true,
-                invalid: true,
-                dirty: true,
-                pristine: true,
-                valid: true,
-                touched: true,
-            }
-        );
-        return () => {
-            unsubscribe();
-            unsubscribeFinalForm();
-        };
-    }, [form, formGroups, name, updateGroupState]);
+    }, [formGroups, name, updateGroupState]);
 
     return state;
 };
@@ -120,7 +113,7 @@ export const useFormGroup = (name: string): FormGroupState => {
  * @returns {FormGroupState} The state of the group.
  */
 export const getFormGroupState = (
-    fieldStates: FieldState<any>[]
+    fieldStates: FieldState[]
 ): FormGroupState => {
     return fieldStates.reduce(
         (acc, fieldState) => {
@@ -131,23 +124,19 @@ export const getFormGroupState = (
             }
 
             const newState = {
-                dirty: acc.dirty || fieldState.dirty,
+                isDirty: acc.isDirty || fieldState.isDirty,
                 errors,
-                invalid: acc.invalid || fieldState.invalid,
-                pristine: acc.pristine && fieldState.pristine,
-                touched: acc.touched || fieldState.touched,
-                valid: acc.valid && fieldState.valid,
+                isTouched: acc.isTouched || fieldState.isTouched,
+                isValid: acc.isValid && fieldState.isValid,
             };
 
             return newState;
         },
         {
-            dirty: false,
+            isDirty: false,
             errors: undefined,
-            invalid: false,
-            pristine: true,
-            valid: true,
-            touched: false,
+            isValid: true,
+            isTouched: false,
         }
     );
 };
