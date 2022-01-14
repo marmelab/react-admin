@@ -29,12 +29,10 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         className,
         formRootPathname,
         handleSubmit,
-        handleSubmitWithRedirect,
         invalid,
         mutationMode,
         pristine,
         record,
-        redirect: defaultRedirect,
         saving,
         submitOnEnter = true,
         syncWithLocation = true,
@@ -58,6 +56,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
     return (
         <Root
             className={classnames('tabbed-form', className)}
+            onSubmit={handleSubmit}
             {...sanitizeRestProps(rest)}
         >
             {cloneElement(
@@ -109,13 +108,10 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                 React.cloneElement(toolbar, {
                     basePath,
                     className: 'toolbar',
-                    handleSubmitWithRedirect,
-                    handleSubmit,
                     invalid,
                     mutationMode,
                     pristine,
                     record,
-                    redirect: defaultRedirect,
                     resource,
                     saving,
                     submitOnEnter,
@@ -130,7 +126,6 @@ TabbedFormView.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
-    handleSubmit: PropTypes.func, // passed by react-final-form
     initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     invalid: PropTypes.bool,
     location: PropTypes.object,
@@ -139,13 +134,7 @@ TabbedFormView.propTypes = {
     pristine: PropTypes.bool,
     // @ts-ignore
     record: PropTypes.object,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
     resource: PropTypes.string,
-    save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     tabs: PropTypes.element,

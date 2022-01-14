@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { fireEvent, screen } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { TranslatableInputs } from './TranslatableInputs';
 import { TextInput } from './TextInput';
 import { FormWithRedirect, required, useTranslatableContext } from 'ra-core';
@@ -28,11 +28,11 @@ const record = {
 
 describe('<TranslatableInputs />', () => {
     it('should display every input for every locale', () => {
-        const save = jest.fn();
+        const handleSubmit = jest.fn();
         renderWithRedux(
             <FormWithRedirect
                 record={record}
-                save={save}
+                onSubmit={handleSubmit}
                 render={() => (
                     <TranslatableInputs locales={['en', 'fr']}>
                         <TextInput source="name" />
@@ -74,7 +74,7 @@ describe('<TranslatableInputs />', () => {
     });
 
     it('should display validation errors and highlight the tab which has invalid inputs', () => {
-        const save = jest.fn();
+        const handleSubmit = jest.fn();
 
         const Selector = () => {
             const {
@@ -102,7 +102,7 @@ describe('<TranslatableInputs />', () => {
 
         renderWithRedux(
             <FormWithRedirect
-                save={save}
+                onSubmit={handleSubmit}
                 render={() => (
                     <TranslatableInputs
                         locales={['en', 'fr']}
@@ -143,12 +143,12 @@ describe('<TranslatableInputs />', () => {
         ).toEqual(true);
     });
 
-    it('should allow to update any input for any locale', () => {
+    it('should allow to update any input for any locale', async () => {
         const save = jest.fn();
         renderWithRedux(
             <FormWithRedirect
                 record={record}
-                save={save}
+                onSubmit={save}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
                         <TranslatableInputs locales={['en', 'fr']}>
@@ -171,8 +171,8 @@ describe('<TranslatableInputs />', () => {
         });
         fireEvent.click(screen.getByText('save'));
 
-        expect(save).toHaveBeenCalledWith(
-            {
+        await waitFor(() => {
+            expect(save).toHaveBeenCalledWith({
                 id: 123,
                 name: {
                     en: 'english name updated',
@@ -188,9 +188,8 @@ describe('<TranslatableInputs />', () => {
                         fr: 'french nested field updated',
                     },
                 },
-            },
-            undefined
-        );
+            });
+        });
     });
 
     it('should allow to customize the locale selector', () => {

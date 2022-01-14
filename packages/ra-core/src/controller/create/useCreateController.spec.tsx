@@ -214,9 +214,12 @@ describe('useCreateController', () => {
             </Provider>
         );
         await act(async () =>
-            saveCallback({ foo: 'bar' }, undefined, {
-                onSuccess: onSuccessSave,
-            })
+            saveCallback(
+                { foo: 'bar' },
+                {
+                    onSuccess: onSuccessSave,
+                }
+            )
         );
         expect(onSuccess).not.toHaveBeenCalled();
         expect(onSuccessSave).toHaveBeenCalled();
@@ -259,7 +262,7 @@ describe('useCreateController', () => {
         expect(notify).toBeUndefined();
     });
 
-    it('should allow the save onFailure option to override the failure side effects override', async () => {
+    it('should allow the save onError option to override the failure side effects override', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;
         const dataProvider = testDataProvider({
@@ -267,7 +270,7 @@ describe('useCreateController', () => {
             create: () => Promise.reject({ message: 'not good' }),
         });
         const onError = jest.fn();
-        const onFailureSave = jest.fn();
+        const onErrorSave = jest.fn();
         const store = createAdminStore();
         const dispatch = jest.spyOn(store, 'dispatch');
         render(
@@ -286,12 +289,15 @@ describe('useCreateController', () => {
             </Provider>
         );
         await act(async () =>
-            saveCallback({ foo: 'bar' }, undefined, {
-                onFailure: onFailureSave,
-            })
+            saveCallback(
+                { foo: 'bar' },
+                {
+                    onError: onErrorSave,
+                }
+            )
         );
         expect(onError).not.toHaveBeenCalled();
-        expect(onFailureSave).toHaveBeenCalled();
+        expect(onErrorSave).toHaveBeenCalled();
         const notify = dispatch.mock.calls.find(
             params => params[0].type === 'RA/SHOW_NOTIFICATION'
         );
@@ -357,9 +363,12 @@ describe('useCreateController', () => {
             </CoreAdminContext>
         );
         await act(async () =>
-            saveCallback({ foo: 'bar' }, undefined, {
-                transform: transformSave,
-            })
+            saveCallback(
+                { foo: 'bar' },
+                {
+                    transform: transformSave,
+                }
+            )
         );
         expect(transform).not.toHaveBeenCalled();
         expect(transformSave).toHaveBeenCalledWith({ foo: 'bar' });

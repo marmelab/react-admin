@@ -9,8 +9,7 @@ import {
     Theme,
 } from '@mui/material';
 import classnames from 'classnames';
-import { Record, RedirectionSideEffect, MutationMode } from 'ra-core';
-import { FormRenderProps } from 'react-final-form';
+import { Record, MutationMode } from 'ra-core';
 
 import { SaveButton, DeleteButton } from '../button';
 
@@ -59,12 +58,9 @@ export const Toolbar = <RecordType extends Partial<Record> = Partial<Record>>(
         basePath,
         children,
         className,
-        handleSubmit,
-        handleSubmitWithRedirect,
         invalid,
         pristine,
         record,
-        redirect,
         resource,
         saving,
         submitOnEnter = true,
@@ -98,12 +94,8 @@ export const Toolbar = <RecordType extends Partial<Record> = Partial<Record>>(
             {Children.count(children) === 0 ? (
                 <div className={ToolbarClasses.defaultToolbar}>
                     <SaveButton
-                        handleSubmitWithRedirect={
-                            handleSubmitWithRedirect || handleSubmit
-                        }
                         disabled={disabled}
                         invalid={invalid}
-                        redirect={redirect}
                         saving={saving || validating}
                         submitOnEnter={submitOnEnter}
                     />
@@ -125,15 +117,6 @@ export const Toolbar = <RecordType extends Partial<Record> = Partial<Record>>(
                                   button.props.basePath,
                                   basePath
                               ),
-                              handleSubmit: valueOrDefault(
-                                  button.props.handleSubmit,
-                                  handleSubmit
-                              ),
-                              handleSubmitWithRedirect: valueOrDefault(
-                                  button.props.handleSubmitWithRedirect,
-                                  handleSubmitWithRedirect
-                              ),
-                              onSave: button.props.onSave,
                               invalid,
                               pristine,
                               record: valueOrDefault(
@@ -166,14 +149,11 @@ export interface ToolbarProps<RecordType extends Partial<Record> = Record>
     children?: ReactNode;
     alwaysEnableSaveButton?: boolean;
     className?: string;
-    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
-    handleSubmit?: FormRenderProps['handleSubmit'];
     invalid?: boolean;
     mutationMode?: MutationMode;
     pristine?: boolean;
     saving?: boolean;
     submitOnEnter?: boolean;
-    redirect?: RedirectionSideEffect;
     basePath?: string;
     record?: RecordType;
     resource?: string;
@@ -184,16 +164,9 @@ Toolbar.propTypes = {
     basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
-    handleSubmit: PropTypes.func,
-    handleSubmitWithRedirect: PropTypes.func,
     invalid: PropTypes.bool,
     pristine: PropTypes.bool,
     record: PropTypes.any,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
     resource: PropTypes.string,
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,

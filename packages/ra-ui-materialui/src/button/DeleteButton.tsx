@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement, SyntheticEvent } from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { UseMutationOptions } from 'react-query';
 import {
@@ -85,8 +85,6 @@ export interface DeleteButtonProps<RecordType extends Record = Record>
     redirect?: RedirectionSideEffect;
     resource?: string;
     // May be injected by Toolbar
-    handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
-    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
     invalid?: boolean;
     pristine?: boolean;
     saving?: boolean;

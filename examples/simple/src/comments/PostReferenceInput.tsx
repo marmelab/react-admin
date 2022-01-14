@@ -110,7 +110,6 @@ const PostReferenceInput = props => {
                                 <DialogContent>
                                     <PostPreview
                                         id={values.post_id}
-                                        basePath="/posts"
                                         resource="posts"
                                     />
                                 </DialogContent>

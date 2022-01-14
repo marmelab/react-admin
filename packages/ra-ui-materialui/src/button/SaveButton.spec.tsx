@@ -4,15 +4,15 @@ import expect from 'expect';
 import {
     DataProviderContext,
     DataProvider,
-    SaveContextProvider,
-    FormContextProvider,
+    FormWithRedirect,
+    MutationMode,
 } from 'ra-core';
 import { renderWithRedux, TestContext } from 'ra-test';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { QueryClientProvider, QueryClient } from 'react-query';
 
 import { SaveButton } from './SaveButton';
-import { Toolbar, SimpleForm } from '../form';
+import { SimpleForm, Toolbar } from '../form';
 import { Edit } from '../detail';
 import { TextInput } from '../input';
 
@@ -20,46 +20,26 @@ const theme = createTheme();
 
 const invalidButtonDomProps = {
     basePath: '',
-    handleSubmit: jest.fn(),
-    handleSubmitWithRedirect: jest.fn(),
     invalid: false,
-    onSave: jest.fn(),
     disabled: true,
     pristine: false,
     record: { id: 123, foo: 'bar' },
-    redirect: 'list',
     resource: 'posts',
     saving: false,
     submitOnEnter: true,
-    mutationMode: 'pessimistic',
+    mutationMode: 'pessimistic' as MutationMode,
 };
 
 describe('<SaveButton />', () => {
-    const saveContextValue = {
-        save: jest.fn(),
-        saving: false,
-        setOnFailure: jest.fn(),
-    };
-    const formContextValue = {
-        setOnSave: jest.fn(),
-        registerGroup: jest.fn(),
-        unregisterField: jest.fn(),
-        unregisterGroup: jest.fn(),
-        registerField: jest.fn(),
-        getGroupFields: jest.fn(),
-    };
-
     it('should render as submit type with no DOM errors', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
         const { getByLabelText } = render(
             <TestContext>
                 <ThemeProvider theme={theme}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <FormContextProvider value={formContextValue}>
-                            <SaveButton {...invalidButtonDomProps} />
-                        </FormContextProvider>
-                    </SaveContextProvider>
+                    <FormWithRedirect
+                        render={() => <SaveButton {...invalidButtonDomProps} />}
+                    />
                 </ThemeProvider>
             </TestContext>
         );
@@ -76,11 +56,9 @@ describe('<SaveButton />', () => {
         const { getByLabelText } = render(
             <TestContext>
                 <ThemeProvider theme={theme}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <FormContextProvider value={formContextValue}>
-                            <SaveButton disabled={true} />
-                        </FormContextProvider>
-                    </SaveContextProvider>
+                    <FormWithRedirect
+                        render={() => <SaveButton disabled={true} />}
+                    />
                 </ThemeProvider>
             </TestContext>
         );
@@ -91,11 +69,9 @@ describe('<SaveButton />', () => {
         const { getByLabelText } = render(
             <TestContext>
                 <ThemeProvider theme={theme}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <FormContextProvider value={formContextValue}>
-                            <SaveButton submitOnEnter />
-                        </FormContextProvider>
-                    </SaveContextProvider>
+                    <FormWithRedirect
+                        render={() => <SaveButton submitOnEnter />}
+                    />
                 </ThemeProvider>
             </TestContext>
         );
@@ -108,11 +84,9 @@ describe('<SaveButton />', () => {
         const { getByLabelText } = render(
             <TestContext>
                 <ThemeProvider theme={theme}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <FormContextProvider value={formContextValue}>
-                            <SaveButton submitOnEnter={false} />
-                        </FormContextProvider>
-                    </SaveContextProvider>
+                    <FormWithRedirect
+                        render={() => <SaveButton submitOnEnter={false} />}
+                    />
                 </ThemeProvider>
             </TestContext>
         );
@@ -127,14 +101,14 @@ describe('<SaveButton />', () => {
         const { getByLabelText } = render(
             <TestContext>
                 <ThemeProvider theme={theme}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <FormContextProvider value={formContextValue}>
-                            <SaveButton
-                                handleSubmitWithRedirect={onSubmit}
-                                saving={false}
-                            />
-                        </FormContextProvider>
-                    </SaveContextProvider>
+                    <FormWithRedirect
+                        onSubmit={onSubmit}
+                        render={({ handleSubmit }) => (
+                            <form onSubmit={handleSubmit}>
+                                <SaveButton submitOnEnter />
+                            </form>
+                        )}
+                    />
                 </ThemeProvider>
             </TestContext>
         );
@@ -149,14 +123,14 @@ describe('<SaveButton />', () => {
         const { getByLabelText } = render(
             <TestContext>
                 <ThemeProvider theme={theme}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <FormContextProvider value={formContextValue}>
-                            <SaveButton
-                                handleSubmitWithRedirect={onSubmit}
-                                saving
-                            />
-                        </FormContextProvider>
-                    </SaveContextProvider>
+                    <FormWithRedirect
+                        onSubmit={onSubmit}
+                        render={({ handleSubmit }) => (
+                            <form onSubmit={handleSubmit}>
+                                <SaveButton saving submitOnEnter />
+                            </form>
+                        )}
+                    />
                 </ThemeProvider>
             </TestContext>
         );
@@ -164,60 +138,6 @@ describe('<SaveButton />', () => {
         fireEvent.click(getByLabelText('ra.action.save'));
         expect(onSubmit).not.toHaveBeenCalled();
     });
-
-    it('should show a notification if the form is not valid', () => {
-        const onSubmit = jest.fn();
-        let dispatchSpy;
-
-        const { getByLabelText } = render(
-            <TestContext>
-                {({ store }) => {
-                    dispatchSpy = jest.spyOn(store, 'dispatch');
-                    return (
-                        <ThemeProvider theme={theme}>
-                            <SaveContextProvider value={saveContextValue}>
-                                <FormContextProvider value={formContextValue}>
-                                    <SaveButton
-                                        handleSubmitWithRedirect={onSubmit}
-                                        invalid
-                                    />
-                                </FormContextProvider>
-                            </SaveContextProvider>
-                        </ThemeProvider>
-                    );
-                }}
-            </TestContext>
-        );
-
-        fireEvent.click(getByLabelText('ra.action.save'));
-        expect(dispatchSpy).toHaveBeenCalledWith({
-            payload: {
-                message: 'ra.message.invalid_form',
-                type: 'warning',
-            },
-            type: 'RA/SHOW_NOTIFICATION',
-        });
-        expect(onSubmit).toHaveBeenCalled();
-    });
-
-    const defaultEditProps = {
-        basePath: '',
-        id: '123',
-        resource: 'posts',
-        location: {
-            pathname: '/customers/123',
-            search: '',
-            state: {},
-            hash: '',
-        },
-        match: {
-            params: { id: 123 },
-            isExact: true,
-            path: '/customers/123',
-            url: '/customers/123',
-        },
-        mutationMode: 'pessimistic',
-    };
 
     it('should allow to override the onSuccess side effects', async () => {
         const dataProvider = ({
@@ -230,7 +150,7 @@ describe('<SaveButton />', () => {
         const onSuccess = jest.fn();
         const EditToolbar = props => (
             <Toolbar {...props}>
-                <SaveButton onSuccess={onSuccess} />
+                <SaveButton mutationOptions={{ onSuccess }} />
             </Toolbar>
         );
         const {
@@ -260,14 +180,18 @@ describe('<SaveButton />', () => {
         });
         fireEvent.click(getByText('ra.action.save'));
         await waitFor(() => {
-            expect(onSuccess).toHaveBeenCalledWith({
-                id: 123,
-                title: 'ipsum',
-            });
+            expect(onSuccess).toHaveBeenCalledWith(
+                {
+                    id: 123,
+                    title: 'ipsum',
+                },
+                { data: { id: 123, title: 'ipsum' }, resource: 'posts' },
+                { snapshot: [] }
+            );
         });
     });
 
-    it('should allow to override the onFailure side effects', async () => {
+    it('should allow to override the onError side effects', async () => {
         jest.spyOn(console, 'error').mockImplementationOnce(() => {});
         const dataProvider = ({
             getOne: () =>
@@ -276,10 +200,10 @@ describe('<SaveButton />', () => {
                 }),
             update: () => Promise.reject({ message: 'not good' }),
         } as unknown) as DataProvider;
-        const onFailure = jest.fn();
+        const onError = jest.fn();
         const EditToolbar = props => (
             <Toolbar {...props}>
-                <SaveButton onFailure={onFailure} />
+                <SaveButton mutationOptions={{ onError }} />
             </Toolbar>
         );
         const {
@@ -309,9 +233,13 @@ describe('<SaveButton />', () => {
         });
         fireEvent.click(getByText('ra.action.save'));
         await waitFor(() => {
-            expect(onFailure).toHaveBeenCalledWith({
-                message: 'not good',
-            });
+            expect(onError).toHaveBeenCalledWith(
+                {
+                    message: 'not good',
+                },
+                { data: { id: 123, title: 'ipsum' }, resource: 'posts' },
+                { snapshot: [] }
+            );
         });
     });
 
@@ -370,6 +298,25 @@ describe('<SaveButton />', () => {
             });
         });
     });
+
+    const defaultEditProps = {
+        basePath: '',
+        id: '123',
+        resource: 'posts',
+        location: {
+            pathname: '/customers/123',
+            search: '',
+            state: {},
+            hash: '',
+        },
+        match: {
+            params: { id: 123 },
+            isExact: true,
+            path: '/customers/123',
+            url: '/customers/123',
+        },
+        mutationMode: 'pessimistic' as MutationMode,
+    };
 
     it('should disable <SaveButton/> if an input is being validated asynchronously', async () => {
         const dataProvider = ({
