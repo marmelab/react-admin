@@ -63,7 +63,6 @@ export const ExportButton = (props: ExportButtonProps) => {
             }
         },
         [
-            sort,
             dataProvider,
             exporter,
             filter,
