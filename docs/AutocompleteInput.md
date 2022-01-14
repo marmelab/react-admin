@@ -181,6 +181,7 @@ import {
     ReferenceInput,
     SimpleForm,
     TextInput,
+    useCreate,
     useCreateSuggestionContext
 } from 'react-admin';
 
@@ -210,16 +211,15 @@ const PostCreate = () => {
 const CreateCategory = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
-    const [create] = useCreate('categories');
+    const [create] = useCreate();
 
-    const handleSubmit = (event) => {
+    const handleSubmit = event => {
         event.preventDefault();
         create(
+            'categories',
             {
-                payload: {
-                    data: {
-                        title: value,
-                    },
+                data: {
+                    title: value,
                 },
             },
             {

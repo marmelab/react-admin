@@ -190,13 +190,14 @@ const PostCreate = () => {
 Use the `create` prop when you want a more polished or complex UI. For example a Material UI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
 
 {% raw %}
-```js
+```jsx
 import {
     AutocompleteArrayInput,
     Create,
     ReferenceArrayInput,
     SimpleForm,
     TextInput,
+    useCreate,
     useCreateSuggestionContext
 } from 'react-admin';
 
@@ -226,17 +227,16 @@ const PostCreate = () => {
 const CreateTag = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
-    const [create] = useCreate('tags');
+    const [create] = useCreate();
 
-    const handleSubmit = (event) => {
+    const handleSubmit = event => {
         event.preventDefault();
         create(
+            'tags',
             {
-                payload: {
-                    data: {
-                        title: value,
-                    },
-                },
+                data: {
+                    title: value,
+                },                
             },
             {
                 onSuccess: ({ data }) => {
