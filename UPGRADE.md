@@ -716,6 +716,26 @@ const PostEdit = () => {
 };
 ```
 
+## `useNotify` Now Takes An Options Object
+
+When a component has to display a notification, developers may want to tweak the type, duration, translatino arguments, or the ability to undo the action. The callback returned by `useNotify()` used to accept a long series of argument, but the syntax wasn't very intuitive. To improve the developer experience, these options are now part of an `options` object, passed as second argument.
+
+```diff
+```jsx
+import { useNotify } from 'react-admin';
+
+const NotifyButton = () => {
+    const notify = useNotify();
+    const handleClick = () => {
+-       notify(`Comment approved`, 'success', undefined, true);
++       notify(`Comment approved`, { type: 'success', undoable: true });
+    }
+    return <button onClick={handleClick}>Notify</button>;
+};
+```
+
+Check [the `useNotify`documentation](https://marmelab.com/react-admin/useNotify.html) for more information.
+
 ## The `useVersion` Hook Was Removed
 
 React-admin v3 relied on a global `version` variable stored in the Redux state to force page refresh. This is no longer the case, as the refresh functionality is handled by react-query.
@@ -1168,6 +1188,24 @@ export const Menu = (props) => {
 
 Reducers for the **list parameters** (current sort & filters, selected ids, expanded rows) have moved up to the root reducer (so they don't need the resource to be registered first). This shouldn't impact you if you used the react-admin hooks (`useListParams`, `useSelection`) to read the state.
 
+React-admin no longer uses Redux for **notifications**. Instead, it uses a custom context. This change is backwards compatible, as the APIs for the `useNotify` and the `<Notification>` component are the same. If you used to `dispatch` a `showNotification` action, you'll have to use the `useNotify` hook instead:
+
+```diff
+-import { useDispatch } from 'react-redux';
+-import { showNotification } from 'react-admin';
++import { useNotify } from 'react-admin';
+
+const NotifyButton = () => {
+-   const dispatch = useDispatch();
++   const notify = useNotify();
+    const handleClick = () => {
+-       dispatch(showNotification('Comment approved', 'success'));
++       notify('Comment approved', { type: 'success' });
+    }
+    return <button onClick={handleClick}>Notify</button>;
+};
+```
+
 ## Redux-Saga Was Removed
 
 The use of sagas has been deprecated for a while. React-admin v4 doesn't support them anymore. That means that the Redux actions don't include meta parameters anymore to trigger sagas, the Redux store doesn't include the saga middleware, and the saga-based side effects were removed.
@@ -1408,6 +1446,58 @@ const Layout = (props) => {
 -        </ThemeProvider>
 +        </>
     );
+};
+```
+
+## The `<Notification>` Component Is Included By `<Admin>` Rather Than `<Layout>`
+
+If you customized the `<Notification>` component (e.g. to tweak the delay after which a notification disappears), you passed your custom notification component to the `<Layout>` component. The `<Notification>` is now included by the `<Admin>` component, which facilitates custom layouts and login screens. As a consequence, you'll need to move your custom notification component to the `<Admin>` component.
+
+```diff
+// in src/MyNotification.js
+import { Notification } from 'react-admin';
+
+export const MyNotification = props => (
+    <Notification {...props} autoHideDuration={5000} />
+);
+
+// in src/MyLayout.js
+-import { Layout } from 'react-admin';
+-import { MyNotification } from './MyNotification';
+
+-export const MyLayout = props => (
+-   <Layout {...props} notification={MyNotification} />
+-);
+
+// in src/App.js
+-import { MyLayout } from './MyLayout';
++import { MyNotification } from './MyNotification';
+import dataProvider from './dataProvider';
+
+const App = () => (
+-   <Admin layout={MyLayout} dataProvider={dataProvider}>
++   <Admin notification={MyNotification} dataProvider={dataProvider}>
+        // ...
+    </Admin>
+);
+```
+
+If you had a custom Layout and/or Login component, you no longer need to include the `<Notification>` component.
+
+```diff
+-import { Notification } from 'react-admin';
+
+export const MyLayout = ({
+    children,
+    dashboard,
+    logout,
+    title,
+}) => {
+    // ...
+    return (<>
+        // ...
+-       <Notification />
+    </>);
 };
 ```
 
