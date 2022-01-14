@@ -138,63 +138,6 @@ describe('<SaveButton />', () => {
         expect(onSubmit).not.toHaveBeenCalled();
     });
 
-    it('should show a notification if the form is not valid', () => {
-        const onSubmit = jest.fn();
-        let notificationsSpy;
-        const Notification = () => {
-            const { notifications } = useNotificationContext();
-            React.useEffect(() => {
-                notificationsSpy = notifications;
-            }, [notifications]);
-            return null;
-        };
-
-        const { getByLabelText } = render(
-            <AdminContext>
-                <Notification />
-                <ThemeProvider theme={theme}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <FormContextProvider value={formContextValue}>
-                            <SaveButton
-                                handleSubmitWithRedirect={onSubmit}
-                                invalid
-                            />
-                        </FormContextProvider>
-                    </SaveContextProvider>
-                </ThemeProvider>
-            </AdminContext>
-        );
-
-        fireEvent.click(getByLabelText('ra.action.save'));
-        expect(notificationsSpy).toEqual([
-            {
-                message: 'ra.message.invalid_form',
-                type: 'warning',
-                notificationOptions: {},
-            },
-        ]);
-        expect(onSubmit).toHaveBeenCalled();
-    });
-
-    const defaultEditProps = {
-        basePath: '',
-        id: '123',
-        resource: 'posts',
-        location: {
-            pathname: '/customers/123',
-            search: '',
-            state: {},
-            hash: '',
-        },
-        match: {
-            params: { id: 123 },
-            isExact: true,
-            path: '/customers/123',
-            url: '/customers/123',
-        },
-        mutationMode: 'pessimistic',
-    };
-
     it('should allow to override the onSuccess side effects', async () => {
         const dataProvider = ({
             getOne: () =>
