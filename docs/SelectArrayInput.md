@@ -239,22 +239,22 @@ const CreateTag = () => {
     };
 
     return (
-      <Dialog open onClose={onCancel}>
-          <form onSubmit={handleSubmit}>
-              <DialogContent>
-                  <TextField
-                    label="New tag"
-                    value={value}
-                    onChange={event => setValue(event.target.value)}
-                    autoFocus
-                  />
-              </DialogContent>
-              <DialogActions>
-                  <Button type="submit">Save</Button>
-                  <Button onClick={onCancel}>Cancel</Button>
-              </DialogActions>
-          </form>
-      </Dialog>
+        <Dialog open onClose={onCancel}>
+            <form onSubmit={handleSubmit}>
+                <DialogContent>
+                    <TextField
+                      label="New tag"
+                      value={value}
+                      onChange={event => setValue(event.target.value)}
+                      autoFocus
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button type="submit">Save</Button>
+                    <Button onClick={onCancel}>Cancel</Button>
+                </DialogActions>
+            </form>
+        </Dialog>
     );
 };
 ```
