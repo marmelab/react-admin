@@ -7,7 +7,7 @@ title: "The Datagrid Component"
 
 ![The `<Datagrid>` component](./img/tutorial_post_list_less_columns.png)
 
-The `Datagrid` component renders a list of records as a table. It is usually used as a descendant of the [`<List>`](List.md#list) and [`<ReferenceManyField>`](./Fields.md#referencemanyfield) components. Outside these components, it must be used inside a `ListContext`.
+The `Datagrid` component renders a list of records as a table. It is usually used as a descendant of the [`<List>`](List.md#list) and [`<ReferenceManyField>`](./ReferenceManyField.md) components. Outside these components, it must be used inside a `ListContext`.
 
 ## Usage
 
@@ -664,7 +664,7 @@ export const PostList = () => (
 
 ## `sx`: CSS API
 
-The `-Datagrid` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property. This property accepts the following subclasses:
+The `<Datagrid>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property. This property accepts the following subclasses:
 
 | Rule name                      | Description                                      |
 | ------------------------------ | ------------------------------------------------ |
@@ -684,8 +684,6 @@ The `-Datagrid` component accepts the usual `className` prop. You can also overr
 | `& .RaDatagrid-expanded`       | Applied to each expanded icon                    |
 | `& .RaDatagrid-expandedPanel`  | Applied to each expandable panel                 |
 | `& .RaDatagrid-checkbox`       | Applied to each checkbox cell                    |
-
-You can customize the `<Datagrid>` styles by passing a `classes` object as prop, through `useStyles()`. 
 
 For instance, here is how you can leverage these styles to implement zebra stripes (a.k.a. alternate row styles)
 

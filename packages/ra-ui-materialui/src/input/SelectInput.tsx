@@ -366,7 +366,7 @@ const sanitizeRestProps = ({
 const PREFIX = 'RaSelectInput';
 
 const classes = {
-    input: `${PREFIX}-inputEnd`,
+    input: `${PREFIX}-input`,
 };
 
 const StyledResettableTextField = styled(ResettableTextField)(({ theme }) => ({
