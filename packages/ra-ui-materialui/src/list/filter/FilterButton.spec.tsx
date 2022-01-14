@@ -49,5 +49,23 @@ describe('<FilterButton />', () => {
             expect(queryByText('Returned')).not.toBeNull();
             expect(queryByText('Name')).toBeNull();
         });
+
+        it('should return disabled filter menu item when "disabled" passed to filter', () => {
+            const hiddenFilter = (
+                <TextInput source="Returned" label="Returned" disabled={true} />
+            );
+            const { getByLabelText } = render(
+                <ThemeProvider theme={theme}>
+                    <FilterButton
+                        {...defaultProps}
+                        filters={defaultProps.filters.concat(hiddenFilter)}
+                    />
+                </ThemeProvider>
+            );
+
+            fireEvent.click(getByLabelText('ra.action.add_filter'));
+
+            expect(getByLabelText('Returned')['disabled']).toEqual(true);
+        });
     });
 });
