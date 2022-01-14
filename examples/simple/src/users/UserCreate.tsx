@@ -29,7 +29,7 @@ const UserEditToolbar = ({ permissions, ...props }) => {
                         notify('ra.notification.created', 'info', {
                             smart_count: 1,
                         });
-                        redirect('show', data.id, data);
+                        redirect('show', '/users', data.id);
                     },
                 }}
                 submitOnEnter={true}
@@ -64,7 +64,10 @@ const UserCreate = () => {
     const { permissions } = usePermissions();
     return (
         <Create aside={<Aside />}>
-            <TabbedForm toolbar={<UserEditToolbar permissions={permissions} />}>
+            <TabbedForm
+                warnWhenUnsavedChanges
+                toolbar={<UserEditToolbar permissions={permissions} />}
+            >
                 <FormTab label="user.form.summary" path="">
                     <TextInput
                         source="name"
