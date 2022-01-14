@@ -9,7 +9,7 @@ import {
     LinkToType,
 } from 'ra-core';
 
-import { PublicFieldProps, InjectedFieldProps } from './types';
+import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
 import { ReferenceFieldView } from './ReferenceField';
 
 /**
@@ -94,7 +94,7 @@ ReferenceOneField.propTypes = {
     addLabel: PropTypes.bool,
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
-    label: PropTypes.string,
+    label: fieldPropTypes.label,
     record: PropTypes.any,
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string,

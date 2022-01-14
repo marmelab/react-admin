@@ -54,10 +54,9 @@ export const ListActions = (props: ListActionsProps) => {
         ...rest
     } = props;
     const {
-        currentSort,
+        sort,
         displayedFilters,
         filterValues,
-        selectedIds,
         showFilter,
         total,
     } = useListContext(props);
@@ -81,7 +80,7 @@ export const ListActions = (props: ListActionsProps) => {
                     <ExportButton
                         disabled={total === 0}
                         resource={resource}
-                        sort={currentSort}
+                        sort={sort}
                         filterValues={filterValues}
                     />
                 )}
@@ -97,7 +96,7 @@ export const ListActions = (props: ListActionsProps) => {
             filters,
             total,
             className,
-            currentSort,
+            sort,
             exporter,
             hasCreate,
         ]
@@ -106,7 +105,7 @@ export const ListActions = (props: ListActionsProps) => {
 
 ListActions.propTypes = {
     className: PropTypes.string,
-    currentSort: PropTypes.any,
+    sort: PropTypes.any,
     displayedFilters: PropTypes.object,
     exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     filters: PropTypes.element,
@@ -125,7 +124,7 @@ ListActions.defaultProps = {
 };
 
 export interface ListActionsProps extends ToolbarProps {
-    currentSort?: SortPayload;
+    sort?: SortPayload;
     className?: string;
     resource?: string;
     filters?: ReactElement<any>;

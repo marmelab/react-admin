@@ -98,7 +98,7 @@ ListView.propTypes = {
     className: PropTypes.string,
     component: ComponentPropType,
     // @ts-ignore-line
-    currentSort: PropTypes.shape({
+    sort: PropTypes.shape({
         field: PropTypes.string.isRequired,
         order: PropTypes.string.isRequired,
     }),

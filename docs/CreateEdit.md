@@ -408,7 +408,7 @@ const PostEdit = () => {
     };
 
     return (
-        <Edit mutationProps={{ onSuccess }}>
+        <Edit mutationOptions={{ onSuccess }}>
             <SimpleForm>
                 ...
             </SimpleForm>
@@ -421,7 +421,7 @@ By default, the `<Edit>` view runs updates in `mutationMode="undoable"`, which m
 
 The default `onSuccess` function is:
 
-```jsx
+```js
 // for the <Create> component:
 () => {
     notify('ra.notification.created', { messageArgs: { smart_count: 1 } });
@@ -458,7 +458,7 @@ const PostEdit = () => {
     };
 
     return (
-        <Edit mutationProps={{ onSuccess }} mutationMode="pessimistic">
+        <Edit mutationOptions={{ onSuccess }} mutationMode="pessimistic">
             <SimpleForm>
                 ...
             </SimpleForm>
@@ -487,7 +487,7 @@ const PostEdit = () => {
     };
 
     return (
-        <Edit mutationProps={{ onError }}>
+        <Edit mutationOptions={{ onError }}>
             <SimpleForm>
                 ...
             </SimpleForm>
@@ -1480,25 +1480,21 @@ The form can be validated by the server after its submission. In order to displa
 ```jsx
 import * as React from 'react';
 import { useCallback } from 'react';
-import { Create, SimpleForm, TextInput, useMutation } from 'react-admin';
+import { Create, SimpleForm, TextInput, useCreate } from 'react-admin';
 
 export const UserCreate = () => {
-    const [mutate] = useMutation();
+    const [create] = useCreate();
     const save = useCallback(
-        async (values) => {
+        async values => {
             try {
-                await mutate({
-                    type: 'create',
-                    resource: 'users',
-                    payload: { data: values },
-                }, { returnPromise: true });
+                await create('users', { data: values });
             } catch (error) {
                 if (error.body.errors) {
                     return error.body.errors;
                 }
             }
         },
-        [mutate],
+        [create]
     );
 
     return (

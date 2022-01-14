@@ -355,7 +355,7 @@ describe('useListController', () => {
                 })
             ).toEqual({
                 basePath: undefined,
-                currentSort: undefined,
+                sort: undefined,
                 data: [4, 5],
                 defaultTitle: undefined,
                 displayedFilters: undefined,

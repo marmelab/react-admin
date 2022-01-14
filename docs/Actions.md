@@ -89,7 +89,7 @@ import { useUpdate, Button } from 'react-admin';
 
 const ApproveButton = ({ record }) => {
     const [approve, { isLoading }] = useUpdate('comments', { id: record.id, data: { isApproved: true }, previousData: record });
-    return <Button label="Approve" onClick={approve} disabled={isLoading} />;
+    return <Button label="Approve" onClick={() => approve()} disabled={isLoading} />;
 };
 ```
 

@@ -71,7 +71,7 @@ const {
     setPage, // a callback to change the page, e.g. setPage(3)
     setPerPage, // a callback to change the number of results per page, e.g. setPerPage(25)
     // sorting
-    currentSort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
+    sort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
     setSort, // a callback to change the sort, e.g. setSort({ field: 'name', orfer: 'ASC' })
     // filtering
     filterValues, // a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
@@ -103,4 +103,4 @@ You can find many usage examples of `useListContext` in the documentation, inclu
 - [Building a Custom Pagination Control](./ListTutorial.md#building-a-custom-pagination)
 - [Building a Custom Iterator](./ListTutorial.md#building-a-custom-iterator)
 
-**Tip**: [`<ReferenceManyField>`](./Fields.md#referencemanyfield), as well as other relationship-related components, also implement a `ListContext`. That means you can use a `<Datagrid>` of a `<Pagination>` inside these components!
+**Tip**: [`<ReferenceManyField>`](./ReferenceManyField.md), as well as other relationship-related components, also implement a `ListContext`. That means you can use a `<Datagrid>` of a `<Pagination>` inside these components!

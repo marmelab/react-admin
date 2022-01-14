@@ -10,10 +10,10 @@ import { Datagrid } from '../list';
 import { SimpleList } from '../list';
 
 describe('<ArrayField />', () => {
-    const currentSort = { field: 'id', order: 'ASC' };
+    const sort = { field: 'id', order: 'ASC' };
 
     const DummyIterator = props => (
-        <Datagrid {...props} currentSort={currentSort}>
+        <Datagrid {...props} sort={sort}>
             <NumberField source="id" />
             <TextField source="foo" />
         </Datagrid>

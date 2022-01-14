@@ -254,7 +254,7 @@ export const useReferenceArrayInputController = <
 
     return {
         choices: dataStatus.choices,
-        currentSort: sort,
+        sort,
         data: matchingReferences,
         displayedFilters,
         error:
