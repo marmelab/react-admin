@@ -1483,7 +1483,7 @@ import * as React from 'react';
 import { useCallback } from 'react';
 import { Create, SimpleForm, TextInput, useCreate } from 'react-admin';
 
-const UserCreate = () => {
+export const UserCreate = () => {
     const [create] = useCreate();
     const save = useCallback(
       async values => {
