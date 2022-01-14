@@ -75,8 +75,6 @@ export const ResourceConfigurationPage = () => {
     };
     const saveContext = {
         save,
-        setonError: () => {},
-        setOnSuccess: () => {},
     };
 
     const handleTabChange = (event, newValue) => {

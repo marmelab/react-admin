@@ -12,7 +12,6 @@ describe('<FormTab label="foo" />', () => {
     const saveContextValue = {
         save: jest.fn(),
         saving: false,
-        setonError: jest.fn(),
     };
 
     it('should display <Toolbar />', () => {

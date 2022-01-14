@@ -50,7 +50,7 @@ describe('useAuthState', () => {
         };
         const { queryByText } = renderWithRedux(
             <AuthContext.Provider value={authProvider}>
-                <UseAuth options={{ logoutonError: false }}>
+                <UseAuth options={{ logoutOnFailure: false }}>
                     {stateInpector}
                 </UseAuth>
             </AuthContext.Provider>

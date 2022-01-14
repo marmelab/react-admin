@@ -33,7 +33,6 @@ describe('<SimpleFormIterator />', () => {
     const saveContextValue = {
         save: jest.fn(),
         saving: false,
-        setonError: jest.fn(),
     };
 
     const Wrapper = ({ children }) => (

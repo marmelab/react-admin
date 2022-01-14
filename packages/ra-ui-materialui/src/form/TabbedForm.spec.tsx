@@ -19,7 +19,6 @@ describe('<TabbedForm />', () => {
     const saveContextValue = {
         save: jest.fn(),
         saving: false,
-        setonError: jest.fn(),
     };
 
     it('should display the tabs', () => {

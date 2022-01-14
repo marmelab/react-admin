@@ -20,7 +20,6 @@ describe('useEditController', () => {
 
     const saveContextValue = {
         save: jest.fn(),
-        setonError: jest.fn(),
     };
 
     it('should call the dataProvider.getOne() function on mount', async () => {

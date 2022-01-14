@@ -121,6 +121,7 @@ EditView.propTypes = {
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
+    mutationOptions: PropTypes.object,
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([
         PropTypes.string,
@@ -130,11 +131,6 @@ EditView.propTypes = {
     resource: PropTypes.string,
     save: PropTypes.func,
     title: PropTypes.node,
-    onSuccess: PropTypes.func,
-    onError: PropTypes.func,
-    setOnSuccess: PropTypes.func,
-    setonError: PropTypes.func,
-    setTransform: PropTypes.func,
 };
 
 const sanitizeRestProps = ({
@@ -150,10 +146,6 @@ const sanitizeRestProps = ({
     isLoading = null,
     location = null,
     match = null,
-    onError = null,
-    onErrorRef = null,
-    onSuccess = null,
-    onSuccessRef = null,
     options = null,
     queryOptions = null,
     mutationOptions = null,
@@ -162,11 +154,7 @@ const sanitizeRestProps = ({
     resource = null,
     save = null,
     saving = null,
-    setonError = null,
-    setOnSuccess = null,
-    setTransform = null,
     transform = null,
-    transformRef = null,
     ...rest
 }) => rest;
 
