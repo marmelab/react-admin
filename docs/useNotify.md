@@ -66,7 +66,7 @@ const PostEdit = () => {
 
 ## `autoHideDuration` Option
 
-You can define a custom delay for hiding for a given notification.
+You can define a custom delay for hiding a given notification.
 
 ```jsx
 import { useNotify } from 'react-admin';
