@@ -1439,7 +1439,7 @@ We also supported a redirect prop both on the form component and on the `<SaveBu
 
 Besides, our solution prevented the native browser submit on enter feature and this was an accessibility issue for some users such as Japanese people.
 
-The new solution leverage the fact that we already have the `save` function available through context (`useSaveContext`). You can get the current form values using [final-form hooks](https://final-form.org/docs/react-final-form/api/useFormState), call the `save` function directly and override any of the side effects as you usually do with mutation hooks.
+The new solution leverage the fact that we already have the `save` function available through context (`useSaveContext`). The following  sections explain in details the necessary changes and how to upgrade if needed.
 
 ### `handleSubmitWithRedirect` No Longer Exist
 
