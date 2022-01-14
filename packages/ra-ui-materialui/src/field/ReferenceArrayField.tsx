@@ -107,7 +107,7 @@ ReferenceArrayField.propTypes = {
     addLabel: PropTypes.bool,
     className: PropTypes.string,
     children: PropTypes.element.isRequired,
-    label: PropTypes.string,
+    label: fieldPropTypes.label,
     record: PropTypes.any,
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string,

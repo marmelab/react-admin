@@ -86,7 +86,7 @@ ReferenceField.propTypes = {
     className: PropTypes.string,
     cellClassName: PropTypes.string,
     headerClassName: PropTypes.string,
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    label: fieldPropTypes.label,
     record: PropTypes.any,
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string,

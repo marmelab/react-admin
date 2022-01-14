@@ -118,7 +118,7 @@ ReferenceManyField.propTypes = {
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
     filter: PropTypes.object,
-    label: PropTypes.string,
+    label: fieldPropTypes.label,
     perPage: PropTypes.number,
     record: PropTypes.any,
     reference: PropTypes.string.isRequired,
