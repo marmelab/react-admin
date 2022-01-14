@@ -44,6 +44,7 @@ It accepts the following props:
 * [`rightAvatar`](#rightavatar)
 * [`rightIcon`](#righticon)
 * [`rowStyle`](#rowstyle)
+* [`divider`](#divider)
 
 ## `leftAvatar`
 
@@ -128,6 +129,10 @@ export const PostList = (props) => (
     </List>
 );
 ```
+
+## `divider`
+
+This optional prop should be a boolean. When setting it to `true` a 1px light border is added to the bottom of the `ListItem`.
 
 ## `secondaryText`
 

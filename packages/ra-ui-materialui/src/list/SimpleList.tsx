@@ -43,6 +43,7 @@ import { SimpleListLoading } from './SimpleListLoading';
  * - rightIcon: same
  * - linkType: 'edit' or 'show', or a function returning 'edit' or 'show' based on the record
  * - rowStyle: function returning a style object based on (record, index)
+ * - divider: add a light border to the bottom of each list item
  *
  * @example // Display all posts as a List
  * const postRowStyle = (record, index) => ({
@@ -76,6 +77,7 @@ export const SimpleList = <RecordType extends Record = Record>(
         secondaryText,
         tertiaryText,
         rowStyle,
+        divider = false,
         ...rest
     } = props;
     const { data, isLoading, total } = useListContext<RecordType>(props);
@@ -112,7 +114,7 @@ export const SimpleList = <RecordType extends Record = Record>(
         <Root className={className} {...sanitizeListRestProps(rest)}>
             {data.map((record, rowIndex) => (
                 <RecordContextProvider key={record.id} value={record}>
-                    <ListItem disablePadding>
+                    <ListItem disablePadding divider>
                         <LinkOrNot
                             linkType={linkType}
                             resource={resource}
@@ -202,6 +204,7 @@ SimpleList.propTypes = {
     secondaryText: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
     tertiaryText: PropTypes.oneOfType([PropTypes.func, PropTypes.element]),
     rowStyle: PropTypes.func,
+    divider: PropTypes.bool,
 };
 
 export type FunctionToElement<RecordType extends Record = Record> = (
@@ -222,6 +225,7 @@ export interface SimpleListProps<RecordType extends Record = Record>
     secondaryText?: FunctionToElement<RecordType> | ReactElement;
     tertiaryText?: FunctionToElement<RecordType> | ReactElement;
     rowStyle?: (record: Record, index: number) => any;
+    divider?: boolean;
     // can be injected when using the component without context
     resource?: string;
     data?: RecordType[];
