@@ -1,17 +1,19 @@
 import * as React from 'react';
-import { SyntheticEvent, useRef, useMemo } from 'react';
-import { Form, FormProps, FormRenderProps } from 'react-final-form';
-import arrayMutators from 'final-form-arrays';
+import { BaseSyntheticEvent, useCallback, useMemo } from 'react';
+import {
+    FormProvider,
+    SubmitHandler,
+    useForm,
+    UseFormProps,
+} from 'react-hook-form';
 
-import useResetSubmitErrors from './useResetSubmitErrors';
-import sanitizeEmptyValues from './sanitizeEmptyValues';
 import getFormInitialValues from './getFormInitialValues';
 import { RaRecord } from '../types';
 import { useNotify } from '../notification';
-import { useSaveContext, SaveHandler } from '../controller';
+import { useSaveContext } from '../controller';
 import { useRecordContext, OptionalRecordContextProvider } from '../controller';
-import submitErrorsMutators from './submitErrorsMutators';
-import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
+import { useWarnWhenUnsavedChanges } from './useWarnWhenUnsavedChanges';
+import { useInitializeFormWithRecord } from './useInitializeFormWithRecord';
 import { FormGroupsProvider } from './FormGroupsProvider';
 
 /**
@@ -39,95 +41,82 @@ import { FormGroupsProvider } from './FormGroupsProvider';
  *
  * @param {Props} props
  */
-export const FormWithRedirect = ({
-    debug,
-    decorators,
-    defaultValue,
-    destroyOnUnregister,
-    form,
-    formRootPathname,
-    initialValues,
-    initialValuesEqual,
-    keepDirtyOnReinitialize = true,
-    mutators = defaultMutators,
-    onSubmit,
-    render,
-    saving,
-    subscription = defaultSubscription,
-    validate,
-    validateOnBlur,
-    warnWhenUnsavedChanges,
-    sanitizeEmptyValues: shouldSanitizeEmptyValues = true,
-    ...props
-}: FormWithRedirectProps) => {
+export const FormWithRedirect = (props: FormWithRedirectProps) => {
+    const {
+        context,
+        criteriaMode = 'firstError',
+        defaultValues,
+        delayError,
+        formRootPathname,
+        mode = 'onSubmit',
+        render,
+        resolver,
+        reValidateMode = 'onChange',
+        onSubmit,
+        shouldFocusError,
+        shouldUnregister,
+        shouldUseNativeValidation,
+        warnWhenUnsavedChanges,
+    } = props;
     const record = useRecordContext(props);
     const saveContext = useSaveContext();
 
-    const onSave = useRef(onSubmit ?? saveContext?.save);
-    const finalMutators = useMemo(
-        () =>
-            mutators === defaultMutators
-                ? mutators
-                : { ...defaultMutators, ...mutators },
-        [mutators]
+    const defaultValuesIncludingRecord = useMemo(
+        () => getFormInitialValues(defaultValues, record),
+        [JSON.stringify({ defaultValues, record })] // eslint-disable-line
     );
 
-    const finalInitialValues = useMemo(
-        () => getFormInitialValues(initialValues, defaultValue, record),
-        [JSON.stringify({ initialValues, defaultValue, record })] // eslint-disable-line
-    );
+    const form = useForm({
+        context,
+        criteriaMode,
+        defaultValues: defaultValuesIncludingRecord,
+        delayError,
+        mode,
+        reValidateMode,
+        resolver,
+        shouldFocusError,
+        shouldUnregister,
+        shouldUseNativeValidation,
+    });
 
-    const handleSubmit = values => {
-        if (shouldSanitizeEmptyValues) {
-            const sanitizedValues = sanitizeEmptyValues(
-                finalInitialValues,
-                values
-            );
-            return onSave.current(sanitizedValues);
-        } else {
-            return onSave.current(values);
-        }
-    };
+    const { isValid } = form.formState;
+
+    const handleSubmit = useCallback(
+        values => {
+            if (onSubmit) {
+                return onSubmit(values);
+            }
+            if (saveContext?.save) {
+                saveContext.save(values);
+            }
+        },
+        [onSubmit, saveContext]
+    );
 
     return (
         <OptionalRecordContextProvider value={record}>
-            <Form
-                key={record?.id || ''}
-                debug={debug}
-                decorators={decorators}
-                destroyOnUnregister={destroyOnUnregister}
-                form={form}
-                initialValues={finalInitialValues}
-                initialValuesEqual={initialValuesEqual}
-                keepDirtyOnReinitialize={keepDirtyOnReinitialize}
-                mutators={finalMutators} // necessary for ArrayInput
-                onSubmit={handleSubmit}
-                subscription={subscription} // don't redraw entire form each time one field changes
-                validate={validate}
-                validateOnBlur={validateOnBlur}
-                render={formProps => (
-                    // @ts-ignore Ignored because of a weird error about the active prop
-                    <FormView
-                        {...props}
-                        {...formProps}
-                        record={record}
-                        saving={formProps.submitting || saving}
-                        render={render}
-                        warnWhenUnsavedChanges={warnWhenUnsavedChanges}
-                        formRootPathname={formRootPathname}
-                    />
-                )}
-            />
+            <FormProvider {...form}>
+                <FormView
+                    {...props}
+                    defaultValues={defaultValues}
+                    handleSubmit={form.handleSubmit(handleSubmit)}
+                    record={record}
+                    render={render}
+                    isValid={isValid}
+                    warnWhenUnsavedChanges={warnWhenUnsavedChanges}
+                    formRootPathname={formRootPathname}
+                />
+            </FormProvider>
         </OptionalRecordContextProvider>
     );
 };
 
 export type FormWithRedirectProps = FormWithRedirectOwnProps &
-    Omit<FormProps, 'onSubmit'>;
+    Omit<UseFormProps, 'onSubmit'>;
 
 export type FormWithRedirectRenderProps = Omit<
     FormViewProps,
-    'children' | 'render' | 'setRedirect'
+    'children' | 'isValid' | 'render' | 'setRedirect'
 >;
 
 export type FormWithRedirectRender = (
@@ -135,55 +124,39 @@ export type FormWithRedirectRender = (
 ) => React.ReactElement<any, any>;
 
 export interface FormWithRedirectOwnProps {
-    defaultValue?: any;
+    defaultValues?: any;
     formRootPathname?: string;
     record?: Partial<RaRecord>;
     render: FormWithRedirectRender;
-    onSubmit?: SaveHandler;
+    onSubmit?: SubmitHandler<Record<string, any>>;
     sanitizeEmptyValues?: boolean;
     saving?: boolean;
     warnWhenUnsavedChanges?: boolean;
 }
 
-const defaultMutators = {
-    ...arrayMutators,
-    ...submitErrorsMutators,
-};
-
-const defaultSubscription = {
-    submitting: true,
-    pristine: true,
-    valid: true,
-    invalid: true,
-    validating: true,
-};
-
-interface FormViewProps
-    extends FormWithRedirectOwnProps,
-        Omit<FormRenderProps, 'render' | 'component'> {
+interface FormViewProps extends FormWithRedirectOwnProps {
+    handleSubmit: (e?: BaseSyntheticEvent) => Promise<void>;
+    isValid: boolean;
     warnWhenUnsavedChanges?: boolean;
 }
 
-const FormView = ({
-    formRootPathname,
-    handleSubmit: formHandleSubmit,
-    render,
-    warnWhenUnsavedChanges,
-    ...props
-}: FormViewProps) => {
-    useResetSubmitErrors();
+const FormView = (props: FormViewProps) => {
+    const {
+        defaultValues,
+        formRootPathname,
+        handleSubmit: formHandleSubmit,
+        isValid,
+        record,
+        render,
+        warnWhenUnsavedChanges,
+        ...rest
+    } = props;
+    useInitializeFormWithRecord(defaultValues, record);
     useWarnWhenUnsavedChanges(warnWhenUnsavedChanges, formRootPathname);
     const notify = useNotify();
 
-    const handleSubmit = (
-        event?: Partial<
-            Pick<
-                SyntheticEvent<Element, Event>,
-                'preventDefault' | 'stopPropagation'
-            >
-        >
-    ) => {
-        if (props.invalid) {
+    const handleSubmit = (event?: BaseSyntheticEvent) => {
+        if (!isValid) {
             notify('ra.message.invalid_form', { type: 'warning' });
         }
 
@@ -192,7 +165,7 @@ const FormView = ({
 
     return (
         <FormGroupsProvider>
-            {render({ ...props, handleSubmit })}
+            {render({ ...rest, handleSubmit })}
         </FormGroupsProvider>
     );
 };

@@ -2,37 +2,37 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import expect from 'expect';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { Form, Field } from 'react-final-form';
+import { useForm, useFormContext, FormProvider } from 'react-hook-form';
 import { MemoryRouter, Route, Routes, useNavigate } from 'react-router-dom';
 
-import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
+import { useWarnWhenUnsavedChanges } from './useWarnWhenUnsavedChanges';
 
-const FormBody = ({ handleSubmit, submitSucceeded }) => {
+const Form = ({ onSubmit }) => {
     useWarnWhenUnsavedChanges(true, '/form');
     const navigate = useNavigate();
+    const form = useFormContext();
+    const { isSubmitSuccessful } = form.formState;
     const onLeave = () => {
         navigate('/somewhere');
     };
     useEffect(() => {
-        if (submitSucceeded) {
+        if (isSubmitSuccessful) {
             setTimeout(() => {
                 navigate('/submitted');
             }, 100);
         }
-    }, [submitSucceeded, navigate]);
+    }, [isSubmitSuccessful, navigate]);
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onSubmit}>
             <label id="firstname-label">First Name</label>
-            <Field
-                name="firstName"
+            <input
+                {...form.register('firstName')}
                 aria-labelledby="firstname-label"
-                component="input"
             />
             <label id="author-label">Author</label>
-            <Field
-                name="author.name"
+            <input
+                {...form.register('author.name')}
                 aria-labelledby="author-label"
-                component="input"
             />
             <button type="button" onClick={() => navigate('/form')}>
                 Root form
@@ -51,18 +51,17 @@ const FormBody = ({ handleSubmit, submitSucceeded }) => {
     );
 };
 
-const FormUnderTest = ({ initialValues = {} }) => {
+const FormUnderTest = ({ defaultValues = {} }) => {
     const onSubmit = () => {
         // The redirection can't happen on submit because final-form keep the form
         // dirty state even after the submit.
         return undefined;
     };
+    const form = useForm();
     return (
-        <Form
-            onSubmit={onSubmit}
-            initialValues={initialValues}
-            component={FormBody}
-        />
+        <FormProvider {...form}>
+            <Form onSubmit={form.handleSubmit(onSubmit)} />
+        </FormProvider>
     );
 };
 

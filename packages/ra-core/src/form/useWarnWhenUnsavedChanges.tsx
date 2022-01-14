@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef } from 'react';
-import { useFormState, UseFormStateParams } from 'react-final-form';
+import { useFormState } from 'react-hook-form';
 import { UNSAFE_NavigationContext, useLocation } from 'react-router-dom';
 import { History, Transition } from 'history';
 import { useTranslate } from '../i18n';
@@ -9,7 +9,7 @@ import { useTranslate } from '../i18n';
  * - If the user confirms, the navigation continues and the changes are lost.
  * - If the user cancels, the navigation is cancelled and the changes are kept.
  */
-const useWarnWhenUnsavedChanges = (
+export const useWarnWhenUnsavedChanges = (
     enable: boolean,
     formRootPathname?: string
 ) => {
@@ -19,13 +19,11 @@ const useWarnWhenUnsavedChanges = (
     const navigator = useContext(UNSAFE_NavigationContext).navigator as History;
     const location = useLocation();
     const translate = useTranslate();
-    const { pristine, submitSucceeded, submitting } = useFormState(
-        UseFormStateSubscription
-    );
+    const { isDirty, isSubmitSuccessful, isSubmitting } = useFormState();
     const initialLocation = useRef(formRootPathname || location.pathname);
 
     useEffect(() => {
-        if (!enable || pristine) return;
+        if (!enable || !isDirty) return;
 
         let unblock = navigator.block((tx: Transition) => {
             const newLocationIsInsideForm = tx.location.pathname.startsWith(
@@ -33,9 +31,9 @@ const useWarnWhenUnsavedChanges = (
             );
 
             if (
-                !submitting &&
+                !isSubmitting &&
                 (newLocationIsInsideForm ||
-                    submitSucceeded ||
+                    isSubmitSuccessful ||
                     window.confirm(translate('ra.message.unsaved_changes')))
             ) {
                 unblock();
@@ -48,22 +46,9 @@ const useWarnWhenUnsavedChanges = (
         enable,
         location,
         navigator,
-        pristine,
-        submitting,
-        submitSucceeded,
+        isDirty,
+        isSubmitting,
+        isSubmitSuccessful,
         translate,
     ]);
 };
-
-const UseFormStateSubscription: UseFormStateParams = {
-    // For some reason, subscribing only to pristine does not rerender when a field become dirty
-    // because it has a defaultValue (not initialValue as setting an initialValue does not make the field dirty)
-    subscription: {
-        pristine: true,
-        dirtyFields: true,
-        submitSucceeded: true,
-        submitting: true,
-    },
-};
-
-export default useWarnWhenUnsavedChanges;
