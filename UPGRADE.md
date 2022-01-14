@@ -718,7 +718,7 @@ const PostEdit = () => {
 
 ## `useNotify` Now Takes An Options Object
 
-When a component has to display a notification, developers may want to tweak the type, duration, translatino arguments, or the ability to undo the action. The callback returned by `useNotify()` used to accept a long series of argument, but the syntax wasn't very intuitive. To improve the developer experience, these options are now part of an `options` object, passed as second argument.
+When a component has to display a notification, developers may want to tweak the type, duration, translation arguments, or the ability to undo the action. The callback returned by `useNotify()` used to accept a long series of argument, but the syntax wasn't very intuitive. To improve the developer experience, these options are now part of an `options` object, passed as second argument.
 
 ```diff
 ```jsx
