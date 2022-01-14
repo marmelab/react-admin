@@ -1939,6 +1939,13 @@ If you've declared custom Record types, you'll need to upgrade your code as foll
 }
 ```
 
+## react-final-form Has Been Replaced By react-hook-form
+
+TODO
+- FormWithRedirect props and render changed
+- useInput signature changed
+- Form components don't clone toolbar anymore (no more prop injection)
+
 # Upgrade to 3.0
 
 We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.
