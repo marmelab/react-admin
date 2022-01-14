@@ -29,10 +29,7 @@ import { sanitizeButtonRestProps } from './Button';
  * @prop {boolean} disabled Disable the button.
  * @prop {string} variant Material-ui variant for the button. Defaults to 'contained'.
  * @prop {ReactElement} icon
- * @prop {string|boolean} redirect Override of the default redirect in case of success. Can be 'list', 'show', 'edit' (for create views), or false (to stay on the creation form).
- * @prop {function} onSave (deprecated)
- * @prop {function} onSuccess Callback to execute instead of the default success side effects. Receives the dataProvider response as argument.
- * @prop {function} onError Callback to execute instead of the default error side effects. Receives the dataProvider error response as argument.
+ * @prop {function} mutationOptions Object of options passed to react-query.
  * @prop {function} transform Callback to execute before calling the dataProvider. Receives the data from the form, must return that transformed data. Can be asynchronous (and return a Promise)
  *
  * @param {Props} props

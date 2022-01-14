@@ -27,6 +27,7 @@ import { EditView } from './EditView';
  * - component
  * - title
  * - mutationMode
+ * - mutationOptions
  *
  * @example
  *

@@ -25,6 +25,7 @@ import { CreateView } from './CreateView';
  * - actions
  * - aside
  * - component
+ * - mutationOptions
  * - title
  *
  * @example
