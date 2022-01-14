@@ -36,7 +36,7 @@ describe('<Datagrid />', () => {
         isFetching: false,
         isLoading: false,
         selectedIds: [],
-        currentSort: { field: 'title', order: 'ASC' },
+        sort: { field: 'title', order: 'ASC' },
         onToggleItem: jest.fn(),
         onSelect: jest.fn(),
     };

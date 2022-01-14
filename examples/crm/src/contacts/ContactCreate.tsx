@@ -20,6 +20,7 @@ const Spacer = () => <Box width={20} component="span" />;
 export const ContactCreate = (props: CreateProps) => (
     <CreateBase
         {...props}
+        redirect="show"
         transform={(data: Contact) => ({
             ...data,
             last_seen: new Date(),
@@ -36,9 +37,8 @@ const ContactCreateContent = () => {
         <Box mt={2} display="flex">
             <Box flex="1">
                 <FormWithRedirect
-                    redirect="show"
                     record={record as any}
-                    save={save}
+                    onSubmit={save}
                     render={formProps => (
                         <Card>
                             <CardContent>

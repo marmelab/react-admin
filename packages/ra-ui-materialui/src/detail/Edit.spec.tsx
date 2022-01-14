@@ -304,9 +304,12 @@ describe('<Edit />', () => {
                     <span>{record.title}</span>
                     <button
                         onClick={() =>
-                            save({ ...record, title: 'ipsum' }, undefined, {
-                                onSuccess: onSuccessSave,
-                            })
+                            save(
+                                { ...record, title: 'ipsum' },
+                                {
+                                    onSuccess: onSuccessSave,
+                                }
+                            )
                         }
                     >
                         Update
@@ -389,7 +392,7 @@ describe('<Edit />', () => {
             });
         });
 
-        it('should be overridden by onFailure save option', async () => {
+        it('should be overridden by onError save option', async () => {
             jest.spyOn(console, 'error').mockImplementationOnce(() => {});
             const dataProvider = {
                 getOne: () =>
@@ -399,15 +402,18 @@ describe('<Edit />', () => {
                 update: () => Promise.reject({ message: 'not good' }),
             } as any;
             const onError = jest.fn();
-            const onFailureSave = jest.fn();
+            const onErrorSave = jest.fn();
             const FakeForm = ({ record, save }) => (
                 <>
                     <span>{record.title}</span>
                     <button
                         onClick={() =>
-                            save({ ...record, title: 'ipsum' }, undefined, {
-                                onFailure: onFailureSave,
-                            })
+                            save(
+                                { ...record, title: 'ipsum' },
+                                {
+                                    onError: onErrorSave,
+                                }
+                            )
                         }
                     >
                         Update
@@ -432,7 +438,7 @@ describe('<Edit />', () => {
             });
             fireEvent.click(getByText('Update'));
             await waitFor(() => {
-                expect(onFailureSave).toHaveBeenCalledWith(
+                expect(onErrorSave).toHaveBeenCalledWith(
                     {
                         message: 'not good',
                     },
@@ -523,9 +529,12 @@ describe('<Edit />', () => {
                     <span>{record.title}</span>
                     <button
                         onClick={() =>
-                            save({ ...record, title: 'ipsum' }, undefined, {
-                                transform: transformSave,
-                            })
+                            save(
+                                { ...record, title: 'ipsum' },
+                                {
+                                    transform: transformSave,
+                                }
+                            )
                         }
                     >
                         Update

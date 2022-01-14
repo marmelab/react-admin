@@ -17,7 +17,7 @@ import { useShowContext, SimpleShowLayout, Show } from 'react-admin';
 const PostShowLayout = () => {
     const {
         defaultTitle, // the translated title based on the resource, e.g. 'Post #123'
-        error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onFailure` side effect.
+        error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onError` side effect.
         isFetching, // boolean that is true on mount, and false once the record was fetched
         isLoading, // boolean that is false until the record is available
         record, // record fetched via dataProvider.getOne() based on the id from the location

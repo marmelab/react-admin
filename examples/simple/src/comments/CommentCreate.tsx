@@ -14,8 +14,8 @@ const now = new Date();
 const defaultSort = { field: 'title', order: 'ASC' };
 
 const CommentCreate = () => (
-    <Create>
-        <SimpleForm redirect={false}>
+    <Create redirect={false}>
+        <SimpleForm>
             <PostReferenceInput
                 source="post_id"
                 reference="posts"

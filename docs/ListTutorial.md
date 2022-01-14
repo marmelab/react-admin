@@ -111,11 +111,11 @@ const BookList = () => {
     const [filter, setFilter] = useState('');
     const [page, setPage] = useState(1);
     const perPage = 10;
-    const currentSort = { field: 'id', order: 'ASC' };
+    const sort = { field: 'id', order: 'ASC' };
     const { data, total, isLoading } = useGetList('books', {
         filter: { q: filter },
         pagination: { page, perPage },
-        sort: currentSort,
+        sort,
     });
     if (isLoading) {
         return <div>Loading...</div>;
@@ -132,7 +132,7 @@ const BookList = () => {
                 margin="dense"
             />
             <Card>
-                <Datagrid data={data} currentSort={currentSort}>
+                <Datagrid data={data} sort={sort}>
                     <TextField source="id" />
                     <TextField source="title" />
                     <TextField source="author" />
@@ -173,11 +173,11 @@ const BookList = () => {
     const [filter, setFilter] = useState('');
     const [page, setPage] = useState(1);
     const perPage = 10;
-    const currentSort = { field: 'id', order: 'ASC' };
+    const sort = { field: 'id', order: 'ASC' };
     const { data, total, isLoading } = useGetList('books', {
         filter: { q: filter },
         pagination: { page, perPage },
-        sort: currentSort,
+        sort,
     });
     if (isLoading) {
         return <div>Loading...</div>;
@@ -186,7 +186,7 @@ const BookList = () => {
     const filterValues = { q: filter };
     const setFilters = filters => setFilter(filters.q);
     return (
-        <ListContextProvider value={{ data, total, page, perPage, setPage, filterValues, setFilters, currentSort }}>
+        <ListContextProvider value={{ data, total, page, perPage, setPage, filterValues, setFilters, sort }}>
             <div>
                 <Title title="Book list" />
                 <FilterForm filters={filters} />
@@ -534,7 +534,7 @@ const SortByViews = () => (
 
 ## Building a Custom Sort Control
 
-When neither the `<Datagrid>` or the `<SortButton>` fit your UI needs, you have to write a custom sort control. As with custom filters, this boils down to grabbing the required data and callbacks from the `ListContext`. Let's use the `<SortButton>` source as an example usage of `currentSort` and `setSort`:
+When neither the `<Datagrid>` or the `<SortButton>` fit your UI needs, you have to write a custom sort control. As with custom filters, this boils down to grabbing the required data and callbacks from the `ListContext`. Let's use the `<SortButton>` source as an example usage of `sort` and `setSort`:
 
 ```jsx
 import * as React from 'react';
@@ -544,9 +544,9 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useListSortContext, useTranslate } from 'react-admin';
 
 const SortButton = ({ fields }) => {
-    // currentSort is an object { field, order } containing the current sort
+    // sort is an object { field, order } containing the current sort
     // setSort is a callback ({ field, order }) => void allowing to change the sort field and order
-    const { currentSort, setSort } = useListSortContext();
+    const { sort, setSort } = useListSortContext();
     // rely on the translations to display labels like 'Sort by sales descending'
     const translate = useTranslate();
     // open/closed state for dropdown
@@ -563,15 +563,15 @@ const SortButton = ({ fields }) => {
         const field = event.currentTarget.dataset.sort;
         setSort({
             field,
-            order: field === currentSort.field ? inverseOrder(currentSort.order) : 'ASC'
+            order: field === sort.field ? inverseOrder(sort.order) : 'ASC'
         });
         setAnchorEl(null);
     };
 
     // English stranslation is 'Sort by %{field} %{order}'
     const buttonLabel = translate('ra.sort.sort_by', {
-        field: translate(`resources.products.fields.${currentSort.field}`),
-        order: translate(`ra.sort.${currentSort.order}`),
+        field: translate(`resources.products.fields.${sort.field}`),
+        order: translate(`ra.sort.${sort.order}`),
     });
 
     return (<>
@@ -603,8 +603,8 @@ const SortButton = ({ fields }) => {
                     {translate(`resources.products.fields.${field}`)}{' '}
                     {translate(
                         `ra.sort.${
-                            currentSort.field === field
-                                ? inverseOrder(currentSort.order)
+                            sort.field === field
+                                ? inverseOrder(sort.order)
                                 : 'ASC'
                         }`
                     )}

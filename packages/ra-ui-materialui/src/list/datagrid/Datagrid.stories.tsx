@@ -57,7 +57,7 @@ const SubWrapper = ({ children }) => {
                         data,
                         total: 4,
                         isLoading: false,
-                        currentSort: { field: 'id', order: 'ASC' },
+                        sort: { field: 'id', order: 'ASC' },
                         selectedIds,
                         onSelect: selectionModifiers.select,
                         onToggleItem: selectionModifiers.toggle,
@@ -285,12 +285,12 @@ export const ColumnStyles = () => (
     </Wrapper>
 );
 
-const currentSort = { field: 'id', order: 'DESC' };
+const sort = { field: 'id', order: 'DESC' };
 
 const MyCustomList = () => {
     const { data, total, isLoading } = useGetList('books', {
         pagination: { page: 1, perPage: 10 },
-        sort: currentSort,
+        sort: sort,
     });
 
     return (
@@ -298,7 +298,7 @@ const MyCustomList = () => {
             data={data}
             total={total}
             isLoading={isLoading}
-            currentSort={currentSort}
+            sort={sort}
             bulkActionButtons={false}
         >
             <TextField source="id" />
@@ -310,7 +310,7 @@ const MyCustomList = () => {
 const MyCustomListInteractive = () => {
     const { data, isLoading } = useGetList('books', {
         pagination: { page: 1, perPage: 10 },
-        sort: currentSort,
+        sort,
     });
     const listContext = useList({ data, isLoading });
 

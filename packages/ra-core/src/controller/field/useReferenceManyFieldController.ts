@@ -186,7 +186,7 @@ export const useReferenceManyFieldController = (
     );
 
     return {
-        currentSort: sort,
+        sort,
         data,
         defaultTitle: null,
         displayedFilters,

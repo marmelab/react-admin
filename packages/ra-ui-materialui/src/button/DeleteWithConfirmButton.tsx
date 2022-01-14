@@ -1,9 +1,4 @@
-import React, {
-    Fragment,
-    ReactEventHandler,
-    ReactElement,
-    SyntheticEvent,
-} from 'react';
+import React, { Fragment, ReactEventHandler, ReactElement } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
@@ -118,8 +113,6 @@ export interface DeleteWithConfirmButtonProps<
     redirect?: RedirectionSideEffect;
     resource?: string;
     // May be injected by Toolbar - sanitized in Button
-    handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
-    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
     invalid?: boolean;
     pristine?: boolean;
     saving?: boolean;

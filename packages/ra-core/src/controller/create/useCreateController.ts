@@ -1,4 +1,4 @@
-import { useCallback, MutableRefObject } from 'react';
+import { useCallback } from 'react';
 // @ts-ignore
 import { parse } from 'query-string';
 import { useLocation } from 'react-router-dom';
@@ -9,15 +9,9 @@ import { useAuthenticated } from '../../auth';
 import { useCreate } from '../../dataProvider';
 import { useRedirect, RedirectionSideEffect } from '../../sideEffect';
 import { useNotify } from '../../notification';
-import {
-    SetOnSuccess,
-    SetOnFailure,
-    TransformData,
-    SetTransformData,
-    useSaveModifiers,
-} from '../saveModifiers';
+import { SaveHandler } from '../saveContext';
 import { useTranslate } from '../../i18n';
-import { Record, OnSuccess, OnFailure, CreateParams } from '../../types';
+import { Record, CreateParams, TransformData } from '../../types';
 import {
     useResourceContext,
     useResourceDefinition,
@@ -49,6 +43,7 @@ export const useCreateController = <
     const {
         disableAuthentication,
         record,
+        redirect: redirectTo,
         transform,
         mutationOptions = {},
     } = props;
@@ -56,6 +51,8 @@ export const useCreateController = <
     useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
     const { hasEdit, hasShow } = useResourceDefinition(props);
+    const finalRedirectTo =
+        redirectTo || getDefaultRedirectRoute(hasShow, hasEdit);
     const location = useLocation();
     const translate = useTranslate();
     const notify = useNotify();
@@ -63,15 +60,6 @@ export const useCreateController = <
     const recordToUse =
         record ?? getRecordFromLocation(location) ?? emptyRecord;
     const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
-
-    const {
-        onSuccessRef,
-        setOnSuccess,
-        onFailureRef,
-        setOnFailure,
-        transformRef,
-        setTransform,
-    } = useSaveModifiers({ onSuccess, onFailure: onError, transform });
 
     const [create, { isLoading: saving }] = useCreate(
         resource,
@@ -82,18 +70,17 @@ export const useCreateController = <
     const save = useCallback(
         (
             data: Partial<Record>,
-            redirectTo = 'list',
             {
                 onSuccess: onSuccessFromSave,
-                onFailure: onFailureFromSave,
+                onError: onErrorFromSave,
                 transform: transformFromSave,
             } = {}
-        ) =>
-            Promise.resolve(
+        ) => {
+            return Promise.resolve(
                 transformFromSave
                     ? transformFromSave(data)
-                    : transformRef.current
-                    ? transformRef.current(data)
+                    : transform
+                    ? transform(data)
                     : data
             ).then(data =>
                 create(
@@ -102,24 +89,24 @@ export const useCreateController = <
                     {
                         onSuccess: onSuccessFromSave
                             ? onSuccessFromSave
-                            : onSuccessRef.current
-                            ? onSuccessRef.current
+                            : onSuccess
+                            ? onSuccess
                             : newRecord => {
                                   notify('ra.notification.created', {
                                       type: 'info',
                                       messageArgs: { smart_count: 1 },
                                   });
                                   redirect(
-                                      redirectTo,
+                                      finalRedirectTo,
                                       `/${resource}`,
                                       newRecord.id,
                                       newRecord
                                   );
                               },
-                        onError: onFailureFromSave
-                            ? onFailureFromSave
-                            : onFailureRef.current
-                            ? onFailureRef.current
+                        onError: onErrorFromSave
+                            ? onErrorFromSave
+                            : onError
+                            ? onError
                             : (error: Error) => {
                                   notify(
                                       typeof error === 'string'
@@ -141,15 +128,17 @@ export const useCreateController = <
                               },
                     }
                 )
-            ),
+            );
+        },
         [
-            transformRef,
             create,
-            onSuccessRef,
-            onFailureRef,
+            finalRedirectTo,
             notify,
+            onError,
+            onSuccess,
             redirect,
             resource,
+            transform,
         ]
     );
 
@@ -163,16 +152,10 @@ export const useCreateController = <
         isLoading: false,
         saving,
         defaultTitle,
-        onFailureRef,
-        onSuccessRef,
-        transformRef,
         save,
-        setOnSuccess,
-        setOnFailure,
-        setTransform,
         resource,
         record: recordToUse,
-        redirect: getDefaultRedirectRoute(hasShow, hasEdit),
+        redirect: finalRedirectTo,
     };
 };
 
@@ -181,6 +164,7 @@ export interface CreateControllerProps<
 > {
     disableAuthentication?: boolean;
     record?: Partial<RecordType>;
+    redirect?: RedirectionSideEffect;
     resource?: string;
     mutationOptions?: UseMutationOptions<
         RecordType,
@@ -199,22 +183,8 @@ export interface CreateControllerResult<
     defaultTitle: string;
     isFetching: boolean;
     isLoading: boolean;
-    onSuccessRef: MutableRefObject<OnSuccess>;
-    onFailureRef: MutableRefObject<OnFailure>;
-    transformRef: MutableRefObject<TransformData>;
-    save: (
-        record: Partial<Record>,
-        redirect: RedirectionSideEffect,
-        callbacks?: {
-            onSuccess?: OnSuccess;
-            onFailure?: OnFailure;
-            transform?: TransformData;
-        }
-    ) => void;
+    save: SaveHandler;
     saving: boolean;
-    setOnSuccess: SetOnSuccess;
-    setOnFailure: SetOnFailure;
-    setTransform: SetTransformData;
     record?: Partial<RecordType>;
     redirect: RedirectionSideEffect;
     resource: string;

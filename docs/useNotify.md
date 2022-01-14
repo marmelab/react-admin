@@ -55,7 +55,7 @@ const PostEdit = () => {
     };
 
     return (
-        <Edit mutationMode="undoable" onSuccess={onSuccess}>
+        <Edit mutationMode="undoable" mutationOptions={{ onSuccess }}>
             <SimpleForm>
                 ...
             </SimpleForm>

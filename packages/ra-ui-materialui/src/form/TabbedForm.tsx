@@ -14,7 +14,7 @@ import {
     Record,
     RedirectionSideEffect,
     OnSuccess,
-    OnFailure,
+    onError,
 } from 'ra-core';
 import get from 'lodash/get';
 
@@ -146,7 +146,7 @@ export interface TabbedFormProps
         redirectTo: RedirectionSideEffect,
         options?: {
             onSuccess?: OnSuccess;
-            onFailure?: OnFailure;
+            onError?: onError;
         }
     ) => void;
     submitOnEnter?: boolean;

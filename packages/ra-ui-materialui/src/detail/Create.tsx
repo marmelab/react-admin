@@ -25,6 +25,7 @@ import { CreateView } from './CreateView';
  * - actions
  * - aside
  * - component
+ * - mutationOptions
  * - title
  *
  * @example
@@ -83,6 +84,11 @@ Create.propTypes = {
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
     resource: PropTypes.string,
     title: PropTypes.node,
     record: PropTypes.object,

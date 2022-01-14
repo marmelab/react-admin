@@ -15,11 +15,11 @@ import {
 } from 'react-admin';
 
 const TagEdit = () => {
-    const { id } = useParams<{ id?: string }>();
+    const { id } = useParams<'id'>();
     return (
         <>
-            <Edit>
-                <SimpleForm redirect="list" warnWhenUnsavedChanges>
+            <Edit redirect="list">
+                <SimpleForm warnWhenUnsavedChanges>
                     <TextField source="id" />
                     <TranslatableInputs locales={['en', 'fr']}>
                         <TextInput source="name" validate={[required()]} />
@@ -32,7 +32,6 @@ const TagEdit = () => {
                     hasShow
                     hasEdit
                     hasList
-                    basePath="/posts"
                     resource="posts"
                     filter={{ tags: [id] }}
                     title=" "

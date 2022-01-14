@@ -140,7 +140,7 @@ const sanitizeRestProps = ({
     filterValues,
     label,
     onSuccess,
-    onFailure,
+    onError,
     ...rest
 }: Omit<
     BulkUpdateWithConfirmButtonProps,
@@ -155,7 +155,7 @@ export interface BulkUpdateWithConfirmButtonProps
     icon?: ReactElement;
     data: any;
     onSuccess?: () => void;
-    onFailure?: (error: any) => void;
+    onError?: (error: any) => void;
     mutationMode?: MutationMode;
 }
 

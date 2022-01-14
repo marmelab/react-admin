@@ -10,7 +10,6 @@ import expect from 'expect';
 import {
     CoreAdminContext,
     SaveContextProvider,
-    SideEffectContextProvider,
     testDataProvider,
 } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -34,17 +33,13 @@ describe('<SimpleFormIterator />', () => {
     const saveContextValue = {
         save: jest.fn(),
         saving: false,
-        setOnFailure: jest.fn(),
     };
-    const sideEffectValue = {};
 
     const Wrapper = ({ children }) => (
         <ThemeProvider theme={theme}>
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <SaveContextProvider value={saveContextValue}>
-                    <SideEffectContextProvider value={sideEffectValue}>
-                        {children}
-                    </SideEffectContextProvider>
+                    {children}
                 </SaveContextProvider>
             </CoreAdminContext>
         </ThemeProvider>

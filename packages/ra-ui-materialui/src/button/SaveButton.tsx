@@ -1,26 +1,24 @@
-import React, { cloneElement, ReactElement, SyntheticEvent } from 'react';
+import * as React from 'react';
+import { cloneElement, MouseEventHandler, ReactElement } from 'react';
+import { UseMutationOptions } from 'react-query';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Button, { ButtonProps } from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import ContentSave from '@mui/icons-material/Save';
 import classnames from 'classnames';
+import { useForm } from 'react-final-form';
 import {
-    HandleSubmitWithRedirect,
+    CreateParams,
     MutationMode,
-    OnSuccess,
-    OnFailure,
     Record,
-    RedirectionSideEffect,
     TransformData,
-    useFormContext,
-    useNotify,
+    UpdateParams,
     useSaveContext,
     useTranslate,
 } from 'ra-core';
 
 import { sanitizeButtonRestProps } from './Button';
-import { FormRenderProps } from 'react-final-form';
 
 /**
  * Submit button for resource forms (Edit and Create).
@@ -31,21 +29,10 @@ import { FormRenderProps } from 'react-final-form';
  * @prop {boolean} disabled Disable the button.
  * @prop {string} variant Material-ui variant for the button. Defaults to 'contained'.
  * @prop {ReactElement} icon
- * @prop {string|boolean} redirect Override of the default redirect in case of success. Can be 'list', 'show', 'edit' (for create views), or false (to stay on the creation form).
- * @prop {function} onSave (deprecated)
- * @prop {function} onSuccess Callback to execute instead of the default success side effects. Receives the dataProvider response as argument.
- * @prop {function} onFailure Callback to execute instead of the default error side effects. Receives the dataProvider error response as argument.
+ * @prop {function} mutationOptions Object of options passed to react-query.
  * @prop {function} transform Callback to execute before calling the dataProvider. Receives the data from the form, must return that transformed data. Can be asynchronous (and return a Promise)
  *
  * @param {Props} props
- *
- * @example // with custom redirection
- *
- * <SaveButton label="post.action.save_and_edit" redirect="edit" />
- *
- * @example // with no redirection
- *
- * <SaveButton label="post.action.save_and_add" redirect={false} />
  *
  * @example // with custom success side effect
  *
@@ -56,106 +43,61 @@ import { FormRenderProps } from 'react-final-form';
  *         notify(`Post "${response.data.title}" saved!`);
  *         redirect('/posts');
  *     };
- *     return <SaveButton {...props} onSuccess={onSuccess} />;
+ *     return <SaveButton {...props} mutationOptions={{ onSuccess }} />;
  * }
  */
-export const SaveButton = (props: SaveButtonProps) => {
+export const SaveButton = <RecordType extends Record = Record>(
+    props: SaveButtonProps<RecordType>
+) => {
     const {
         className,
+        icon = defaultIcon,
         invalid,
         label = 'ra.action.save',
-        disabled,
-        redirect,
-        saving,
-        submitOnEnter,
-        variant = 'contained',
-        icon = defaultIcon,
         onClick,
-        handleSubmitWithRedirect,
-        onSave,
-        onSuccess,
-        onFailure,
+        mutationOptions,
+        saving,
+        disabled = saving,
+        submitOnEnter,
         transform,
+        variant = 'contained',
         ...rest
     } = props;
-
-    const notify = useNotify();
     const translate = useTranslate();
-    const formContext = useFormContext();
-    const { setOnSuccess, setOnFailure, setTransform } = useSaveContext(props);
+    const form = useForm();
+    const saveContext = useSaveContext();
+    const hasSideEffects = !!mutationOptions || !!transform;
+    const type = !submitOnEnter || hasSideEffects ? 'button' : 'submit';
 
-    const handleClick = event => {
-        // deprecated: use onSuccess and transform instead of onSave
-        if (typeof onSave === 'function') {
-            if (process.env.NODE_ENV !== 'production') {
-                console.warn(
-                    '<SaveButton onSave> prop is deprecated, use the onSuccess prop instead.'
-                );
-                if (!formContext || !formContext.setOnSave) {
-                    console.warn(
-                        'Using <SaveButton> outside a FormContext is deprecated.'
-                    );
-                }
-            }
-            if (formContext && formContext.setOnSave) {
-                formContext.setOnSave(onSave);
-            }
-        } else {
-            if (
-                process.env.NODE_ENV !== 'production' &&
-                (!formContext || !formContext.setOnSave)
-            ) {
-                console.warn(
-                    'Using <SaveButton> outside a FormContext is deprecated.'
-                );
-            }
-
-            if (formContext && formContext.setOnSave) {
-                // we reset to the Form default save function
-                formContext.setOnSave();
-            }
-        }
-        if (onSuccess) {
-            setOnSuccess(onSuccess);
-        }
-        if (onFailure) {
-            setOnFailure(onFailure);
-        }
-        if (transform) {
-            setTransform(transform);
-        }
-        if (saving) {
-            // prevent double submission
-            event.preventDefault();
-        } else {
-            if (invalid) {
-                notify('ra.message.invalid_form', { type: 'warning' });
-            }
-            // always submit form explicitly regardless of button type
-            if (event) {
-                event.preventDefault();
-            }
-            handleSubmitWithRedirect(redirect);
-        }
-
-        if (typeof onClick === 'function') {
+    const handleClick: MouseEventHandler<HTMLButtonElement> = event => {
+        if (onClick) {
             onClick(event);
+        }
+        if (event.defaultPrevented) {
+            return;
+        }
+
+        if (hasSideEffects) {
+            event.preventDefault();
+            const values = form.getState().values;
+            saveContext?.save(values, {
+                ...mutationOptions,
+                transform,
+            });
         }
     };
 
-    const type = submitOnEnter ? 'submit' : 'button';
     const displayedLabel = label && translate(label, { _: label });
     return (
         <StyledButton
             className={classnames(SaveButtonClasses.button, className)}
             variant={variant}
             type={type}
-            onClick={handleClick}
-            // TODO: find a way to display the loading state (LoadingButton from mui Lab?)
-            // This is because the "default" color does not exist anymore
             color="primary"
             aria-label={displayedLabel}
             disabled={disabled}
+            onClick={handleClick}
+            // TODO: find a way to display the loading state (LoadingButton from mui Lab?)
             {...sanitizeButtonRestProps(rest)}
         >
             {saving ? (
@@ -179,49 +121,39 @@ export const SaveButton = (props: SaveButtonProps) => {
 
 const defaultIcon = <ContentSave />;
 
-interface Props {
+interface Props<RecordType extends Record = Record> {
     classes?: object;
     className?: string;
-    handleSubmitWithRedirect?:
-        | HandleSubmitWithRedirect
-        | FormRenderProps['handleSubmit'];
-    // @deprecated
-    onSave?: (values: object, redirect: RedirectionSideEffect) => void;
-    onSuccess?: OnSuccess;
-    onFailure?: OnFailure;
-    transform?: TransformData;
+    disabled?: boolean;
     icon?: ReactElement;
     invalid?: boolean;
     label?: string;
-    onClick?: () => void;
-    disabled?: boolean;
-    redirect?: RedirectionSideEffect;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        unknown,
+        CreateParams<RecordType> | UpdateParams<RecordType>
+    >;
+    transform?: TransformData;
     saving?: boolean;
     submitOnEnter?: boolean;
     variant?: string;
     // May be injected by Toolbar - sanitized in Button
     basePath?: string;
-    handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
     record?: Record;
     resource?: string;
     mutationMode?: MutationMode;
 }
 
-export type SaveButtonProps = Props & ButtonProps;
+export type SaveButtonProps<RecordType extends Record = Record> = Props<
+    RecordType
+> &
+    ButtonProps;
 
 SaveButton.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object,
-    handleSubmitWithRedirect: PropTypes.func,
-    // @deprecated
-    onSave: PropTypes.func,
     invalid: PropTypes.bool,
     label: PropTypes.string,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     variant: PropTypes.oneOf(['text', 'outlined', 'contained']),

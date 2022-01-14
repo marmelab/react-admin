@@ -27,6 +27,7 @@ import { EditView } from './EditView';
  * - component
  * - title
  * - mutationMode
+ * - mutationOptions
  *
  * @example
  *
@@ -87,8 +88,13 @@ Edit.propTypes = {
     hasList: PropTypes.bool,
     id: PropTypes.any,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-    queryOptions: PropTypes.object,
     mutationOptions: PropTypes.object,
+    queryOptions: PropTypes.object,
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
     resource: PropTypes.string,
     title: PropTypes.node,
     transform: PropTypes.func,

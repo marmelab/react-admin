@@ -15,14 +15,7 @@ import {
 export const DatagridHeaderCell = (
     props: DatagridHeaderCellProps
 ): JSX.Element => {
-    const {
-        className,
-        field,
-        currentSort,
-        updateSort,
-        isSorting,
-        ...rest
-    } = props;
+    const { className, field, sort, updateSort, isSorting, ...rest } = props;
     const resource = useResourceContext(props);
 
     const translate = useTranslate();
@@ -48,10 +41,10 @@ export const DatagridHeaderCell = (
                 >
                     <TableSortLabel
                         active={
-                            currentSort.field ===
+                            sort.field ===
                             (field.props.sortBy || field.props.source)
                         }
-                        direction={currentSort.order === 'ASC' ? 'asc' : 'desc'}
+                        direction={sort.order === 'ASC' ? 'asc' : 'desc'}
                         data-field={field.props.sortBy || field.props.source}
                         data-order={field.props.sortByOrder || 'ASC'}
                         onClick={updateSort}
@@ -78,7 +71,7 @@ export const DatagridHeaderCell = (
 DatagridHeaderCell.propTypes = {
     className: PropTypes.string,
     field: PropTypes.element,
-    currentSort: PropTypes.shape({
+    sort: PropTypes.shape({
         field: PropTypes.string,
         order: PropTypes.string,
     }).isRequired,
@@ -93,7 +86,7 @@ export interface DatagridHeaderCellProps
     field?: JSX.Element;
     isSorting?: boolean;
     resource: string;
-    currentSort: SortPayload;
+    sort: SortPayload;
     updateSort?: (event: any) => void;
 }
 
@@ -101,8 +94,8 @@ export default memo(
     DatagridHeaderCell,
     (props, nextProps) =>
         props.updateSort === nextProps.updateSort &&
-        props.currentSort.field === nextProps.currentSort.field &&
-        props.currentSort.order === nextProps.currentSort.order &&
+        props.sort.field === nextProps.sort.field &&
+        props.sort.order === nextProps.sort.order &&
         props.isSorting === nextProps.isSorting &&
         props.resource === nextProps.resource
 );

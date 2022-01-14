@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { ReactElement, ReactEventHandler, SyntheticEvent } from 'react';
+import { ReactElement, ReactEventHandler } from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import ActionDelete from '@mui/icons-material/Delete';
@@ -72,8 +72,6 @@ export interface DeleteWithUndoButtonProps<RecordType extends Record = Record>
     redirect?: RedirectionSideEffect;
     resource?: string;
     // May be injected by Toolbar - sanitized in Button
-    handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
-    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
     invalid?: boolean;
     pristine?: boolean;
     saving?: boolean;
