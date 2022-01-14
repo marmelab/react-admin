@@ -24,6 +24,8 @@ jobs:
     - uses: bahmutov/npm-install@v1
       with:
         install-command: yarn --immutable
+    - name: Lint
+      run: make lint        
     - name: Build
       run: make build
 
@@ -39,8 +41,6 @@ jobs:
     - uses: bahmutov/npm-install@v1
       with:
         install-command: yarn --immutable
-    - name: Lint
-      run: make lint
     - name: Unit Tests
       run: make test-unit
       env:
