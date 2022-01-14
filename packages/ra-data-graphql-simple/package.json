@@ -31,6 +31,7 @@
         "watch": "tsup src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
     },
     "dependencies": {
+        "@apollo/client": "^3.3.19",
         "graphql-ast-types-browser": "~1.0.2",
         "lodash": "~4.17.5",
         "pluralize": "~7.0.0",
@@ -45,6 +46,6 @@
         "graphql": "^15.6.0",
         "npm-dts": "^1.3.10",
         "rimraf": "^2.6.3",
-        "tsup": "^5.11.4"
+        "tsup": "^5.11.11"
     }
 }

@@ -305,17 +305,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/generator@npm:^7.11.0":
-  version: 7.11.4
-  resolution: "@babel/generator@npm:7.11.4"
-  dependencies:
-    "@babel/types": ^7.11.0
-    jsesc: ^2.5.1
-    source-map: ^0.5.0
-  checksum: ca4eb5b98a8642cb754ee18c0911a0c88e5a262ac281f4fae0bb2520a7ee81444eee1d5cb5a34ba2554d3bc07b18b03da40273a18e7519b613d8a495185399ee
-  languageName: node
-  linkType: hard
-
 "@babel/generator@npm:^7.12.10":
   version: 7.12.11
   resolution: "@babel/generator@npm:7.12.11"
@@ -1582,7 +1571,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:^7.10.4, @babel/parser@npm:^7.11.0, @babel/parser@npm:^7.7.0":
+"@babel/parser@npm:^7.10.4":
   version: 7.11.4
   resolution: "@babel/parser@npm:7.11.4"
   bin:
@@ -4131,23 +4120,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/traverse@npm:^7.7.0":
-  version: 7.11.0
-  resolution: "@babel/traverse@npm:7.11.0"
-  dependencies:
-    "@babel/code-frame": ^7.10.4
-    "@babel/generator": ^7.11.0
-    "@babel/helper-function-name": ^7.10.4
-    "@babel/helper-split-export-declaration": ^7.11.0
-    "@babel/parser": ^7.11.0
-    "@babel/types": ^7.11.0
-    debug: ^4.1.0
-    globals: ^11.1.0
-    lodash: ^4.17.19
-  checksum: 0519d4a2ed326d4efe13960f397c2d550b23f78528b566fc8d252bcfcbec401a57ef37604fc965fcd3b2c3f66443527da7b69251a7fc8f85e07d5f45d91134b2
-  languageName: node
-  linkType: hard
-
 "@babel/types@npm:^7.0.0, @babel/types@npm:^7.3.0, @babel/types@npm:^7.4.4, @babel/types@npm:^7.8.3":
   version: 7.8.3
   resolution: "@babel/types@npm:7.8.3"
@@ -4159,7 +4131,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/types@npm:^7.10.4, @babel/types@npm:^7.10.5, @babel/types@npm:^7.11.0, @babel/types@npm:^7.7.0":
+"@babel/types@npm:^7.10.4, @babel/types@npm:^7.10.5, @babel/types@npm:^7.11.0":
   version: 7.11.0
   resolution: "@babel/types@npm:7.11.0"
   dependencies:
@@ -4375,6 +4347,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@emotion/cache@npm:^11.7.1":
+  version: 11.7.1
+  resolution: "@emotion/cache@npm:11.7.1"
+  dependencies:
+    "@emotion/memoize": ^0.7.4
+    "@emotion/sheet": ^1.1.0
+    "@emotion/utils": ^1.0.0
+    "@emotion/weak-memoize": ^0.2.5
+    stylis: 4.0.13
+  checksum: d7bf7827e683ba773a503fc9718effc66b1a0a069bd1c16546da178bc0e72e49706d66459e8d3ef13370f4a82e3078b9cf21991ceef6aecc1095e0afdfd737c6
+  languageName: node
+  linkType: hard
+
 "@emotion/core@npm:^10.1.1":
   version: 10.1.1
   resolution: "@emotion/core@npm:10.1.1"
@@ -4427,6 +4412,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@emotion/is-prop-valid@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "@emotion/is-prop-valid@npm:1.1.1"
+  dependencies:
+    "@emotion/memoize": ^0.7.4
+  checksum: 76ab928673a02799be7752e02e781a32ad6eed685564279ca585079b3e623cb4f2c667532423804773e510d00739fa2d500968c1330c6f7d4fab08554e66b2ff
+  languageName: node
+  linkType: hard
+
 "@emotion/memoize@npm:0.7.4":
   version: 0.7.4
   resolution: "@emotion/memoize@npm:0.7.4"
@@ -4461,6 +4455,29 @@ __metadata:
     "@types/react":
       optional: true
   checksum: 597eaf1022afb3792ec0c5a81fc870dafe016eefa2a79b9c6ea4402a3a4b109db37a5786508231d9e38966a50204c4d48fba47789d5cf33da0957443155c022d
+  languageName: node
+  linkType: hard
+
+"@emotion/react@npm:^11.7.1":
+  version: 11.7.1
+  resolution: "@emotion/react@npm:11.7.1"
+  dependencies:
+    "@babel/runtime": ^7.13.10
+    "@emotion/cache": ^11.7.1
+    "@emotion/serialize": ^1.0.2
+    "@emotion/sheet": ^1.1.0
+    "@emotion/utils": ^1.0.0
+    "@emotion/weak-memoize": ^0.2.5
+    hoist-non-react-statics: ^3.3.1
+  peerDependencies:
+    "@babel/core": ^7.0.0
+    react: ">=16.8.0"
+  peerDependenciesMeta:
+    "@babel/core":
+      optional: true
+    "@types/react":
+      optional: true
+  checksum: 4be16c730d887dd27d3f0021b28411154d0e72b4b711973516e0a43a8fbe4008162faf083b4017d7d3edbf2ad968365cf523453705c7197e2bab2f45bfc2370c
   languageName: node
   linkType: hard
 
@@ -4501,6 +4518,13 @@ __metadata:
   version: 1.0.2
   resolution: "@emotion/sheet@npm:1.0.2"
   checksum: f50ebd9eb7e5bafab7f6873c9ee882950e596790367d362f5114377418a3afac119402df523c3b11a27b02e87db4d2d136d23ecdfe6486ca698cf4f12437be6a
+  languageName: node
+  linkType: hard
+
+"@emotion/sheet@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "@emotion/sheet@npm:1.1.0"
+  checksum: 5b13035550a08b5c94e24289eed44f1157cfbdc3465e6fe40c492dd113cc10270241f2d5e28b2ed95d4a6fd7b28e31b2d556a1f0fcd632f9e57fbb429870f2d1
   languageName: node
   linkType: hard
 
@@ -4551,6 +4575,28 @@ __metadata:
     "@types/react":
       optional: true
   checksum: c81791af14766a16257ebd12c6376ee9ddfdebb89972f98882a26f30a17ce844802444b44a3d1a25188f4a53bc48d18f6512a0e4f94ae15d40666885cf8e0053
+  languageName: node
+  linkType: hard
+
+"@emotion/styled@npm:^11.6.0":
+  version: 11.6.0
+  resolution: "@emotion/styled@npm:11.6.0"
+  dependencies:
+    "@babel/runtime": ^7.13.10
+    "@emotion/babel-plugin": ^11.3.0
+    "@emotion/is-prop-valid": ^1.1.1
+    "@emotion/serialize": ^1.0.2
+    "@emotion/utils": ^1.0.0
+  peerDependencies:
+    "@babel/core": ^7.0.0
+    "@emotion/react": ^11.0.0-rc.0
+    react: ">=16.8.0"
+  peerDependenciesMeta:
+    "@babel/core":
+      optional: true
+    "@types/react":
+      optional: true
+  checksum: 8f751f715482e1a4d70f4bbe216544a354f322efe2ddac5562014a217b5824364043c21d1eda203e7607175219be76349be62e4f7f117217eca96a319980f3fe
   languageName: node
   linkType: hard
 
@@ -8405,6 +8451,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:^17.0.8":
+  version: 17.0.8
+  resolution: "@types/node@npm:17.0.8"
+  checksum: f9a40fcfbd1efae8a77aaed269fd6fd7e28eae4c14d999b242676b621f244d83818b3734a4064e1aee4e841e2ae92abf34f9bf3b9fb7d83cc3884b4a25624141
+  languageName: node
+  linkType: hard
+
 "@types/normalize-package-data@npm:^2.4.0":
   version: 2.4.0
   resolution: "@types/normalize-package-data@npm:2.4.0"
@@ -10496,22 +10549,6 @@ __metadata:
     slash: ^1.0.0
     source-map: ^0.5.7
   checksum: 10292649779f8c33d1908f5671c92ca9df036c9e1b9f35f97e7f62c9da9e3a146ee069f94fc401283ce129ba980f34a30339f137c512f3e62ddd354653b2da0e
-  languageName: node
-  linkType: hard
-
-"babel-eslint@npm:^10.1.0":
-  version: 10.1.0
-  resolution: "babel-eslint@npm:10.1.0"
-  dependencies:
-    "@babel/code-frame": ^7.0.0
-    "@babel/parser": ^7.7.0
-    "@babel/traverse": ^7.7.0
-    "@babel/types": ^7.7.0
-    eslint-visitor-keys: ^1.0.0
-    resolve: ^1.12.0
-  peerDependencies:
-    eslint: ">= 4.12.1"
-  checksum: a1596111871ce3615410a2ffb87ab8383b35a8c8e1942b47130cb12bca2578c8eb9d8e56c3c84f44d7abe716684f6794f2e6c1e5b4e6d09f171ae51670be44b9
   languageName: node
   linkType: hard
 
@@ -14839,7 +14876,7 @@ __metadata:
     npm-dts: ^1.3.10
     ra-core: ^4.0.0-alpha.1
     rimraf: ^2.6.3
-    tsup: ^5.11.4
+    tsup: ^5.11.11
   peerDependencies:
     ra-core: ^3.17.2
   languageName: unknown
@@ -15205,6 +15242,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "demo@workspace:examples/demo"
   dependencies:
+    "@apollo/client": ^3.3.19
     "@mui/icons-material": ^5.0.1
     "@mui/material": ^5.0.2
     "@types/classnames": ^2.2.9
@@ -15212,16 +15250,26 @@ __metadata:
     "@types/inflection": ^1.5.28
     "@types/jest": ^26.0.19
     "@types/node": ^12.12.14
+    "@types/prop-types": ^15.6.0
     "@types/query-string": 5.1.0
     "@types/react": ^17.0.20
     "@types/react-dom": ^17.0.9
+    "@types/react-redux": ^7.1.1
     "@types/recharts": ^1.8.10
+    classnames: ~2.2.5
     data-generator-retail: ^4.0.0-alpha.0
+    date-fns: ^1.29.0
     fakerest: ^3.0.0
     fetch-mock: ~9.11.0
+    graphql: ^15.6.0
+    graphql-tag: ^2.12.6
+    inflection: ~1.12.0
     json-graphql-server: ~2.3.0
+    prop-types: ^15.6.1
     proxy-polyfill: ^0.3.0
+    query-string: ^5.1.1
     ra-data-fakerest: ^4.0.0-alpha.0
+    ra-data-graphql: ^4.0.0-alpha.0
     ra-data-graphql-simple: ^4.0.0-alpha.0
     ra-data-simple-rest: ^4.0.0-alpha.0
     ra-i18n-polyglot: ^4.0.0-alpha.0
@@ -15232,6 +15280,7 @@ __metadata:
     react-admin: ^4.0.0-alpha.0
     react-app-polyfill: ^2.0.0
     react-dom: ^17.0.0
+    react-final-form: ^6.5.2
     react-redux: ^7.1.0
     react-router: ^6.0.2
     react-router-dom: ^6.0.2
@@ -15882,6 +15931,7 @@ __metadata:
     "@cypress/webpack-preprocessor": ^5.10.0
     cypress: ^9.1.1
     cypress-plugin-tab: ^1.0.5
+    express: ~4.16.3
   languageName: unknown
   linkType: soft
 
@@ -16937,7 +16987,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-visitor-keys@npm:^1.0.0, eslint-visitor-keys@npm:^1.1.0":
+"eslint-visitor-keys@npm:^1.1.0":
   version: 1.1.0
   resolution: "eslint-visitor-keys@npm:1.1.0"
   checksum: dec16876fb7a5a2636dcf6a68e716c684dcff70e9e0fe0cdebff669be60bf9736793a1c4871b5fca92f320eda84a7f979a5a4e3e58ff0c320c20fec5644dc34f
@@ -18051,7 +18101,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"final-form@npm:^4.20.4":
+"final-form@npm:^4.20.2, final-form@npm:^4.20.4":
   version: 4.20.6
   resolution: "final-form@npm:4.20.6"
   dependencies:
@@ -19468,6 +19518,17 @@ __metadata:
   peerDependencies:
     graphql: ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
   checksum: 44c38d4ae642d8f983485e0e39bfa5fdcbad3e6f02c0cded3efa0d4cff709aab85432f36fffd28beab14ee010205f4a398098fcba9248eb7d0adb6098e63ba2d
+  languageName: node
+  linkType: hard
+
+"graphql-tag@npm:^2.12.6":
+  version: 2.12.6
+  resolution: "graphql-tag@npm:2.12.6"
+  dependencies:
+    tslib: ^2.1.0
+  peerDependencies:
+    graphql: ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+  checksum: 7763a72011bda454ed8ff1a0d82325f43ca6478e4ce4ab8b7910c4c651dd00db553132171c04d80af5d5aebf1ef6a8a9fd53ccfa33b90ddc00aa3d4be6114419
   languageName: node
   linkType: hard
 
@@ -25459,10 +25520,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "no-code@workspace:examples/no-code"
   dependencies:
+    "@mui/material": ^5.0.2
     "@vitejs/plugin-react-refresh": ^1.3.1
     ra-data-local-storage: ^4.0.0-alpha.0
     ra-no-code: ^4.0.0-alpha.0
     react: ^17.0.0
+    react-admin: ^4.0.0-alpha.0
     react-dom: ^17.0.0
     typescript: ^4.4.0
     vite: ^2.1.5
@@ -28927,13 +28990,17 @@ __metadata:
   resolution: "ra-core@workspace:packages/ra-core"
   dependencies:
     "@testing-library/react": ^11.2.3
+    "@types/jest": ^26.0.19
+    "@types/node": ^17.0.8
     "@types/node-polyglot": ^0.4.31
     "@types/query-string": 5.1.0
+    "@types/react": ^17.0.20
     "@types/react-redux": ^7.1.1
     classnames: ~2.2.5
     cross-env: ^5.2.0
     date-fns: ^1.29.0
     eventemitter3: ^3.0.0
+    expect: ^27.4.6
     final-form: ^4.20.4
     final-form-arrays: ^3.0.2
     history: ^5.1.0
@@ -28944,6 +29011,7 @@ __metadata:
     npm-dts: ^1.3.10
     prop-types: ^15.6.1
     query-string: ^5.1.1
+    ra-i18n-polyglot: ^4.0.0-alpha.1
     ra-test: ^4.0.0-alpha.1
     react: ^17.0.0
     react-dom: ^17.0.0
@@ -28956,8 +29024,8 @@ __metadata:
     react-test-renderer: ^16.9.0 || ^17.0.0
     redux: ^3.7.2 || ^4.0.3
     reselect: ~3.0.0
-    rimraf: ^2.6.3
-    tsup: ^5.11.4
+    tsup: ^5.11.11
+    typescript: ^4.4.0
   peerDependencies:
     final-form: ^4.20.2
     final-form-arrays: ^3.0.2
@@ -28981,7 +29049,7 @@ __metadata:
     npm-dts: ^1.3.10
     ra-core: ^4.0.0-alpha.1
     rimraf: ^2.6.3
-    tsup: ^5.11.4
+    tsup: ^5.11.11
   peerDependencies:
     ra-core: ^3.17.2
   languageName: unknown
@@ -28991,6 +29059,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ra-data-graphql-simple@workspace:packages/ra-data-graphql-simple"
   dependencies:
+    "@apollo/client": ^3.3.19
     cross-env: ^5.2.0
     graphql: ^15.6.0
     graphql-ast-types-browser: ~1.0.2
@@ -28999,14 +29068,14 @@ __metadata:
     pluralize: ~7.0.0
     ra-data-graphql: ^4.0.0-alpha.1
     rimraf: ^2.6.3
-    tsup: ^5.11.4
+    tsup: ^5.11.11
   peerDependencies:
     graphql: ^15.6.0
     ra-core: ^4.0.0-alpha.0
   languageName: unknown
   linkType: soft
 
-"ra-data-graphql@^4.0.0-alpha.1, ra-data-graphql@workspace:packages/ra-data-graphql":
+"ra-data-graphql@^4.0.0-alpha.0, ra-data-graphql@^4.0.0-alpha.1, ra-data-graphql@workspace:packages/ra-data-graphql":
   version: 0.0.0-use.local
   resolution: "ra-data-graphql@workspace:packages/ra-data-graphql"
   dependencies:
@@ -29017,7 +29086,7 @@ __metadata:
     npm-dts: ^1.3.10
     pluralize: ~7.0.0
     rimraf: ^2.6.3
-    tsup: ^5.11.4
+    tsup: ^5.11.11
   peerDependencies:
     graphql: ^15.6.0
     ra-core: ^4.0.0-alpha.0
@@ -29033,7 +29102,7 @@ __metadata:
     query-string: ^5.1.1
     ra-core: ^4.0.0-alpha.1
     rimraf: ^2.6.3
-    tsup: ^5.11.4
+    tsup: ^5.11.11
   languageName: unknown
   linkType: soft
 
@@ -29046,7 +29115,7 @@ __metadata:
     npm-dts: ^1.3.10
     ra-data-fakerest: ^4.0.0-alpha.1
     rimraf: ^2.6.3
-    tsup: ^5.11.4
+    tsup: ^5.11.11
   peerDependencies:
     ra-core: ^4.0.0-alpha.0
   languageName: unknown
@@ -29061,7 +29130,7 @@ __metadata:
     query-string: ^5.1.1
     ra-core: ^4.0.0-alpha.1
     rimraf: ^2.6.3
-    tsup: ^5.11.4
+    tsup: ^5.11.11
   peerDependencies:
     ra-core: ^4.0.0-alpha.0
   languageName: unknown
@@ -29076,7 +29145,7 @@ __metadata:
     npm-dts: ^1.3.10
     ra-core: ^4.0.0-alpha.1
     rimraf: ^2.6.3
-    tsup: ^5.11.4
+    tsup: ^5.11.11
   languageName: unknown
   linkType: soft
 
@@ -29085,6 +29154,7 @@ __metadata:
   resolution: "ra-input-rich-text@workspace:packages/ra-input-rich-text"
   dependencies:
     "@mui/material": ^5.0.2
+    "@testing-library/react": ^11.2.3
     "@types/prop-types": ^15.6.0
     "@types/quill": ~1.3.0
     lodash: ~4.17.5
@@ -29093,8 +29163,9 @@ __metadata:
     quill: ~1.3.6
     ra-core: ^4.0.0-alpha.1
     ra-ui-materialui: ^4.0.0-alpha.1
+    react-final-form: ^6.5.7
     rimraf: ^2.6.3
-    tsup: ^5.11.4
+    tsup: ^5.11.11
   peerDependencies:
     "@mui/material": ^5.0.2
     ra-core: ^4.0.0-alpha.0
@@ -29110,7 +29181,7 @@ __metadata:
   dependencies:
     npm-dts: ^1.3.10
     ra-core: ^4.0.0-alpha.1
-    tsup: ^5.11.4
+    tsup: ^5.11.11
   languageName: unknown
   linkType: soft
 
@@ -29120,7 +29191,7 @@ __metadata:
   dependencies:
     npm-dts: ^1.3.10
     ra-core: ^4.0.0-alpha.1
-    tsup: ^5.11.4
+    tsup: ^5.11.11
   languageName: unknown
   linkType: soft
 
@@ -29151,7 +29222,7 @@ __metadata:
     react-router: ^6.0.2
     react-router-dom: ^6.0.2
     rimraf: ^2.6.3
-    tsup: ^5.11.4
+    tsup: ^5.11.11
   peerDependencies:
     react: ^16.9.0 || ^17.0.0
     react-dom: ^16.9.0 || ^17.0.0
@@ -29168,6 +29239,7 @@ __metadata:
     "@types/react-redux": ^7.1.1
     classnames: ~2.2.5
     cross-env: ^5.2.0
+    expect: ^27.4.6
     final-form: ^4.20.4
     history: ^5.1.0
     ignore-styles: ~5.0.1
@@ -29176,12 +29248,13 @@ __metadata:
     ra-core: ^4.0.0-alpha.1
     react: ^17.0.0
     react-dom: ^17.0.0
+    react-query: ^3.32.1
     react-redux: ^7.1.0
     react-router: ^6.0.2
     react-router-dom: ^6.0.2
     react-test-renderer: ^16.9.0 || ^17.0.0
     redux: ^3.7.2 || ^4.0.3
-    tsup: ^5.11.4
+    tsup: ^5.11.11
   peerDependencies:
     history: ^5.1.0
     ra-core: ^4.0.0-alpha.0
@@ -29207,9 +29280,11 @@ __metadata:
     cross-env: ^5.2.0
     css-mediaquery: ^0.1.2
     downshift: 3.2.7
+    expect: ^27.4.6
     file-api: ~0.10.4
     final-form: ^4.20.4
     final-form-arrays: ^3.0.2
+    history: ^5.1.0
     ignore-styles: ~5.0.1
     inflection: ~1.12.0
     jsonexport: ^2.4.1
@@ -29233,7 +29308,7 @@ __metadata:
     react-transition-group: ^4.4.1
     redux: ^3.7.2 || ^4.0.3
     rimraf: ^2.6.3
-    tsup: ^5.11.4
+    tsup: ^5.11.11
   peerDependencies:
     "@mui/icons-material": ^5.0.1
     "@mui/material": ^5.0.2
@@ -29391,6 +29466,7 @@ __metadata:
     "@types/react": ^17.0.20
     "@types/react-beautiful-dnd": ^13.0.0
     "@types/react-dom": ^17.0.9
+    clsx: ^1.1.1
     date-fns: ^2.19.0
     faker: ~5.4.0
     lodash: ~4.17.5
@@ -29400,6 +29476,9 @@ __metadata:
     react-admin: ^4.0.0-alpha.0
     react-beautiful-dnd: ^13.0.0
     react-dom: ^17.0.0
+    react-error-boundary: ^3.1.4
+    react-router: ^6.0.2
+    react-router-dom: ^6.0.2
     react-scripts: ^5.0.0
     rewire: ^5.0.0
     source-map-explorer: ^2.0.0
@@ -29423,7 +29502,6 @@ __metadata:
     "@types/react-redux": ^7.1.1
     "@typescript-eslint/eslint-plugin": ^5.9.1
     "@typescript-eslint/parser": ^5.9.1
-    babel-eslint: ^10.1.0
     cheerio: ~1.0.0-rc.2
     concurrently: ^5.1.0
     cross-env: ^5.2.0
@@ -29432,7 +29510,6 @@ __metadata:
     eslint-config-react-app: ^7.0.0
     eslint-plugin-cypress: ^2.12.1
     eslint-plugin-prettier: ^4.0.0
-    express: ~4.16.3
     full-icu: ~1.3.1
     husky: ^2.3.0
     jest: 26.6.0
@@ -29445,6 +29522,8 @@ __metadata:
     mutationobserver-shim: ^0.3.3
     prettier: ~2.1.1
     raf: ~3.4.1
+    react: ^17.0.0
+    react-dom: ^17.0.0
     ts-jest: ^26.4.4
     typescript: ^4.4.0
     wait-on: ^3.2.0
@@ -29464,8 +29543,10 @@ __metadata:
     "@mui/icons-material": ^5.0.1
     "@mui/material": ^5.0.2
     cross-env: ^5.2.0
+    expect: ^27.4.6
     final-form: ^4.20.4
     final-form-arrays: ^3.0.2
+    history: ^5.1.0
     npm-dts: ^1.3.10
     ra-core: ^4.0.0-alpha.1
     ra-i18n-polyglot: ^4.0.0-alpha.1
@@ -29478,7 +29559,7 @@ __metadata:
     react-router-dom: ^6.0.2
     redux: ^3.7.2 || ^4.0.3
     rimraf: ^2.6.3
-    tsup: ^5.11.4
+    tsup: ^5.11.11
   peerDependencies:
     react: ^16.9.0 || ^17.0.0
     react-dom: ^16.9.0 || ^17.0.0
@@ -29733,7 +29814,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-final-form@npm:^6.5.7":
+"react-final-form@npm:^6.5.2, react-final-form@npm:^6.5.7":
   version: 6.5.7
   resolution: "react-final-form@npm:6.5.7"
   dependencies:
@@ -32200,12 +32281,19 @@ __metadata:
   resolution: "simple@workspace:examples/simple"
   dependencies:
     "@babel/preset-react": ^7.12.10
+    "@emotion/react": ^11.7.1
+    "@emotion/styled": ^11.6.0
     "@mui/icons-material": ^5.0.1
     "@mui/material": ^5.0.2
     "@vitejs/plugin-react-refresh": ^1.3.3
+    final-form: ^4.20.2
     html-loader: ~1.3.0
     html-webpack-plugin: ~4.3.0
     ignore-not-found-export-plugin: ^1.0.1
+    jsonexport: ^2.4.1
+    lodash: ~4.17.5
+    prop-types: ^15.7.2
+    proxy-polyfill: ^0.3.0
     ra-data-fakerest: ^4.0.0-alpha.1
     ra-i18n-polyglot: ^4.0.0-alpha.1
     ra-input-rich-text: ^4.0.0-alpha.1
@@ -32215,6 +32303,10 @@ __metadata:
     react-admin: ^4.0.0-alpha.1
     react-app-polyfill: ^1.0.4
     react-dom: ^17.0.0
+    react-final-form: ^6.5.2
+    react-query: ^3.32.1
+    react-router: ^6.0.2
+    react-router-dom: ^6.0.2
     style-loader: ~1.2.1
     ts-loader: ^8.0.14
     typescript: ^4.4.0
@@ -33384,6 +33476,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"stylis@npm:4.0.13":
+  version: 4.0.13
+  resolution: "stylis@npm:4.0.13"
+  checksum: bd567c440b4f1acf8962b1b3aa7985c4e04d7badfe1e0f1c7ee2a60912de2718973850c524001a3d52f5fc9a0e3dcd204b8bd7e2d47d4934462e9f749fd9c7bc
+  languageName: node
+  linkType: hard
+
 "stylis@npm:^4.0.3":
   version: 4.0.10
   resolution: "stylis@npm:4.0.10"
@@ -34398,9 +34497,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsup@npm:^5.11.4":
-  version: 5.11.4
-  resolution: "tsup@npm:5.11.4"
+"tsup@npm:^5.11.11":
+  version: 5.11.11
+  resolution: "tsup@npm:5.11.11"
   dependencies:
     bundle-require: ^2.1.8
     cac: ^6.7.12
@@ -34417,14 +34516,14 @@ __metadata:
     sucrase: ^3.20.3
     tree-kill: ^1.2.2
   peerDependencies:
-    typescript: ^4.2.3
+    typescript: ^4.1.0
   peerDependenciesMeta:
     typescript:
       optional: true
   bin:
     tsup: dist/cli-default.js
     tsup-node: dist/cli-node.js
-  checksum: 823136f93db536f5883a90548bcbf8b64ed1eb2b1711a76e8495d559fc8a213e75066889264e939df2d24e868a3a7e8e05b165ba6b158ad8e2e02e1a40948117
+  checksum: 663a1a17252a593027212c2fec511b7aed113b770d61cfd6373acaca3c7e4816fbd9a567ab5c8c9a5beef4a25c5ef1e1befa50e5e6ee946f180319dbdb073aab
   languageName: node
   linkType: hard
 
@@ -34459,6 +34558,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tutorial@workspace:examples/tutorial"
   dependencies:
+    "@mui/icons-material": ^5.0.1
     "@mui/material": ^5.0.2
     ra-data-json-server: ^4.0.0-alpha.0
     react: ^17.0.0

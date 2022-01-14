@@ -28,6 +28,7 @@
         "@types/query-string": "5.1.0",
         "@types/react-redux": "^7.1.1",
         "cross-env": "^5.2.0",
+        "expect": "^27.4.6",
         "final-form": "^4.20.4",
         "history": "^5.1.0",
         "ignore-styles": "~5.0.1",
@@ -40,7 +41,7 @@
         "react-router-dom": "^6.0.2",
         "react-test-renderer": "^16.9.0 || ^17.0.0",
         "redux": "^3.7.2 || ^4.0.3",
-        "tsup": "^5.11.4"
+        "tsup": "^5.11.11"
     },
     "peerDependencies": {
         "history": "^5.1.0",
@@ -55,6 +56,7 @@
     "dependencies": {
         "@testing-library/react": "^11.2.3",
         "classnames": "~2.2.5",
-        "lodash": "~4.17.5"
+        "lodash": "~4.17.5",
+        "react-query": "^3.32.1"
     }
 }
