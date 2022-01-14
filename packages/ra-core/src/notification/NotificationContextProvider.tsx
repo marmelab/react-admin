@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 
 import { NotificationPayload } from './types';
 import { NotificationContext } from './NotificationContext';
@@ -23,15 +23,18 @@ export const NotificationContextProvider = ({ children }) => {
         setNotifications([]);
     }, []);
 
+    const contextValue = useMemo(
+        () => ({
+            notifications,
+            addNotification,
+            takeNotification,
+            resetNotifications,
+        }),
+        [notifications] // eslint-disable-line react-hooks/exhaustive-deps
+    );
+
     return (
-        <NotificationContext.Provider
-            value={{
-                notifications,
-                addNotification,
-                takeNotification,
-                resetNotifications,
-            }}
-        >
+        <NotificationContext.Provider value={contextValue}>
             {children}
         </NotificationContext.Provider>
     );
