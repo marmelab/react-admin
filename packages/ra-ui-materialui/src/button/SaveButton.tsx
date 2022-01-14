@@ -43,7 +43,7 @@ import { sanitizeButtonRestProps } from './Button';
  *         notify(`Post "${response.data.title}" saved!`);
  *         redirect('/posts');
  *     };
- *     return <SaveButton {...props} onSuccess={onSuccess} />;
+ *     return <SaveButton {...props} mutationOptions={{ onSuccess }} />;
  * }
  */
 export const SaveButton = <RecordType extends Record = Record>(

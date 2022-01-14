@@ -1599,13 +1599,15 @@ const PostCreateToolbar = props => {
             />
             <SaveButton
                 label="post.action.save_and_add"
-                onSuccess={data => {
-                    notify('ra.notification.created', {
-                        type: 'info',
-                        messageArgs: { smart_count: 1 },
-                    });
-                    redirect(false);
-                }}
+                mutationOptions={{
+                    onSuccess: data => {
+                        notify('ra.notification.created', {
+                            type: 'info',
+                            messageArgs: { smart_count: 1 },
+                        });
+                        redirect(false);
+                    }}
+                }
                 submitOnEnter={false}
                 variant="text"
             />
@@ -2129,12 +2131,14 @@ const UserCreateToolbar = ({ permissions, ...props }) => {
             {permissions === 'admin' &&
                 <SaveButton
                     label="user.action.save_and_add"
-                    onSuccess={data => {
-                        notify('ra.notification.created', {
-                            type: 'info',
-                            messageArgs: { smart_count: 1 },
-                        });
-                        redirect(false);
+                    mutationOptions={{
+                        onSuccess: data => {
+                            notify('ra.notification.created', {
+                                type: 'info',
+                                messageArgs: { smart_count: 1 },
+                            });
+                            redirect(false);
+                        }
                     }}
                     submitOnEnter={false}
                     variant="text"
@@ -2198,7 +2202,7 @@ const PostEdit = () => {
         redirect('list', props.basePath);
     }
     return (
-        <Edit onSuccess={onSuccess}>
+        <Edit mutationOptions={{ onSuccess }}>
             ...
         </Edit>
     );
@@ -2225,7 +2229,7 @@ const PostEdit = () => {
         redirect('list', props.basePath);
     }
     return (
-        <Edit onError={onError}>
+        <Edit mutationOptions={{ onError }}>
             ...
         </Edit>
     );

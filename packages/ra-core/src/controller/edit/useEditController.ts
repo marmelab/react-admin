@@ -209,8 +209,6 @@ export interface EditControllerProps<RecordType extends Record = Record> {
         unknown,
         UpdateParams<RecordType>
     >;
-    onError?: onError;
-    onSuccess?: OnSuccess;
     queryOptions?: UseQueryOptions<RecordType>;
     redirect?: RedirectionSideEffect;
     resource?: string;
