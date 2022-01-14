@@ -6,8 +6,6 @@ import { useAuthenticated } from '../../auth';
 import {
     Record,
     MutationMode,
-    OnSuccess,
-    onError,
     TransformData,
     UpdateParams,
 } from '../../types';
