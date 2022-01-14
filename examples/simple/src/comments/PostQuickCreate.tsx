@@ -64,9 +64,8 @@ const PostQuickCreate = ({ onCancel, onSave, ...props }) => {
 
     return (
         <StyledSimpleForm
-            save={handleSave}
+            onSubmit={handleSave}
             saving={submitting}
-            redirect={false}
             toolbar={
                 <PostQuickCreateToolbar
                     onCancel={onCancel}

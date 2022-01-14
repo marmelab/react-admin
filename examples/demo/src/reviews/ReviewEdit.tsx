@@ -79,8 +79,7 @@ const ReviewEdit = ({ onCancel, ...props }: Props) => {
                 <SimpleForm
                     className={classes.form}
                     record={controllerProps.record}
-                    save={controllerProps.save}
-                    redirect="list"
+                    onSubmit={controllerProps.save}
                     resource="reviews"
                     toolbar={<ReviewEditToolbar />}
                 >

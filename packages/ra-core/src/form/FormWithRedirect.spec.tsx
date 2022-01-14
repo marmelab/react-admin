@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { screen, render, waitFor } from '@testing-library/react';
+import { fireEvent, screen, render, waitFor } from '@testing-library/react';
 
 import { CoreAdminContext } from '../core';
 import { testDataProvider } from '../dataProvider';
-import FormWithRedirect from './FormWithRedirect';
+import { FormWithRedirect } from './FormWithRedirect';
+import { useNotificationContext } from '../notification';
 import useInput from './useInput';
+import { required } from './validate';
 
 describe('FormWithRedirect', () => {
     const Input = props => {
         const { input } = useInput(props);
-
         return <input type="text" {...input} />;
     };
 
@@ -20,8 +21,7 @@ describe('FormWithRedirect', () => {
         const { rerender } = render(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <FormWithRedirect
-                    save={jest.fn()}
-                    redirect={false}
+                    onSubmit={jest.fn()}
                     saving={false}
                     render={renderProp}
                 />
@@ -36,8 +36,7 @@ describe('FormWithRedirect', () => {
         rerender(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <FormWithRedirect
-                    save={jest.fn()}
-                    redirect={false}
+                    onSubmit={jest.fn()}
                     saving={false}
                     render={renderProp}
                     record={{ id: 1, name: 'Foo' }}
@@ -59,8 +58,7 @@ describe('FormWithRedirect', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <FormWithRedirect
-                    save={jest.fn()}
-                    redirect={false}
+                    onSubmit={jest.fn()}
                     saving={false}
                     render={renderProp}
                     record={{ id: 1 }}
@@ -82,8 +80,7 @@ describe('FormWithRedirect', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <FormWithRedirect
-                    save={jest.fn()}
-                    redirect={false}
+                    onSubmit={jest.fn()}
                     saving={false}
                     render={renderProp}
                     record={{ id: 1 }}
@@ -108,8 +105,7 @@ describe('FormWithRedirect', () => {
         const { rerender } = render(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <FormWithRedirect
-                    save={jest.fn()}
-                    redirect={false}
+                    onSubmit={jest.fn()}
                     saving={false}
                     record={{ id: 1, name: 'Foo' }}
                     render={renderProp}
@@ -125,8 +121,7 @@ describe('FormWithRedirect', () => {
         rerender(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <FormWithRedirect
-                    save={jest.fn()}
-                    redirect={false}
+                    onSubmit={jest.fn()}
                     saving={false}
                     record={{
                         id: 1,
@@ -152,8 +147,7 @@ describe('FormWithRedirect', () => {
         const { rerender } = render(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <FormWithRedirect
-                    save={jest.fn()}
-                    redirect={false}
+                    onSubmit={jest.fn()}
                     saving={false}
                     record={{ id: 1, name: 'Foo' }}
                     render={renderProp}
@@ -169,8 +163,7 @@ describe('FormWithRedirect', () => {
         rerender(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <FormWithRedirect
-                    save={jest.fn()}
-                    redirect={false}
+                    onSubmit={jest.fn()}
                     saving={false}
                     record={{
                         id: 2,
@@ -196,8 +189,7 @@ describe('FormWithRedirect', () => {
         const { rerender } = render(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <FormWithRedirect
-                    save={jest.fn()}
-                    redirect={false}
+                    onSubmit={jest.fn()}
                     saving={false}
                     record={{ id: 1, name: 'Foo' }}
                     render={renderProp}
@@ -213,8 +205,7 @@ describe('FormWithRedirect', () => {
         rerender(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <FormWithRedirect
-                    save={jest.fn()}
-                    redirect={false}
+                    onSubmit={jest.fn()}
                     saving={false}
                     record={{
                         id: 2,
@@ -232,5 +223,36 @@ describe('FormWithRedirect', () => {
         expect(
             renderProp.mock.calls[renderProp.mock.calls.length - 1][0].pristine
         ).toEqual(true);
+    });
+
+    it('Displays a notification on submit when invalid', async () => {
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            return notifications.length > 0 ? (
+                <div>{notifications[0].message}</div>
+            ) : null;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <>
+                    <FormWithRedirect
+                        onSubmit={jest.fn()}
+                        render={({ handleSubmit }) => (
+                            <form onSubmit={handleSubmit}>
+                                <Input source="name" validate={required()} />
+                                <button type="submit">Submit</button>
+                            </form>
+                        )}
+                    />
+                    <Notification />
+                </>
+            </CoreAdminContext>
+        );
+
+        fireEvent.click(screen.getByText('Submit'));
+        await waitFor(() => {
+            screen.getByText('ra.message.invalid_form');
+        });
     });
 });

@@ -170,7 +170,7 @@ export const useReferenceInputController = <RecordType extends Record = Record>(
             setPage,
             perPage,
             setPerPage,
-            currentSort: sort,
+            sort,
             setSort,
             filterValues,
             displayedFilters,

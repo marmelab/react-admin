@@ -20,7 +20,7 @@ export const SkipNavigationButton = () => {
     );
 };
 
-const PREFIX = 'RaSkipToContentButton';
+const PREFIX = 'RaSkipNavigationButton';
 
 export const SkipToContentButtonClasses = {
     skipToContentButton: `${PREFIX}-skipToContentButton`,

@@ -5,7 +5,8 @@ import { useAuthenticated } from '../../auth';
 import { Record } from '../../types';
 import { useGetOne, useRefresh, UseGetOneHookValue } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
-import { useNotify, useRedirect } from '../../sideEffect';
+import { useRedirect } from '../../sideEffect';
+import { useNotify } from '../../notification';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 
 /**

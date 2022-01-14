@@ -14,7 +14,6 @@ export const defaultStore = {
         expandedRows: {},
         selectedIds: {},
         listParams: {},
-        notifications: [],
     },
 };
 

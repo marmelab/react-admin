@@ -94,6 +94,7 @@ CreateView.propTypes = {
     defaultTitle: PropTypes.any,
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
+    mutationOptions: PropTypes.object,
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([
         PropTypes.string,
@@ -103,11 +104,6 @@ CreateView.propTypes = {
     resource: PropTypes.string,
     save: PropTypes.func,
     title: PropTypes.node,
-    onSuccess: PropTypes.func,
-    onFailure: PropTypes.func,
-    setOnSuccess: PropTypes.func,
-    setOnFailure: PropTypes.func,
-    setTransform: PropTypes.func,
 };
 
 const sanitizeRestProps = ({
@@ -122,19 +118,12 @@ const sanitizeRestProps = ({
     isLoading = null,
     location = null,
     match = null,
-    onFailure = null,
-    onFailureRef = null,
-    onSuccess = null,
-    onSuccessRef = null,
+    mutationOptions = null,
     options = null,
     permissions = null,
     save = null,
     saving = null,
-    setOnFailure = null,
-    setOnSuccess = null,
-    setTransform = null,
     transform = null,
-    transformRef = null,
     ...rest
 }) => rest;
 

@@ -4,7 +4,7 @@ import { QueryClient } from 'react-query';
 import { History } from 'history';
 
 import CoreAdminContext from './CoreAdminContext';
-import CoreAdminUI from './CoreAdminUI';
+import { CoreAdminUI } from './CoreAdminUI';
 import {
     AuthProvider,
     LegacyAuthProvider,
@@ -19,8 +19,6 @@ import {
     LoginComponent,
     TitleComponent,
 } from '../types';
-
-export type ChildrenFunction = () => ComponentType[];
 
 /**
  * Main admin component, entry point to the application.

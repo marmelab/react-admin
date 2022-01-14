@@ -3,7 +3,7 @@ import { UseQueryOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
 import { useTranslate } from '../../i18n';
-import { useNotify } from '../../sideEffect';
+import { useNotify } from '../../notification';
 import { useGetList, UseGetListHookValue } from '../../dataProvider';
 import { SORT_ASC } from './queryReducer';
 import { defaultExporter } from '../../export';
@@ -127,7 +127,7 @@ export const useListController = <RecordType extends Record = Record>(
     });
 
     return {
-        currentSort,
+        sort: currentSort,
         data,
         defaultTitle,
         displayedFilters: query.displayedFilters,
@@ -177,7 +177,7 @@ const defaultSort = {
 };
 
 export interface ListControllerResult<RecordType extends Record = Record> {
-    currentSort: SortPayload;
+    sort: SortPayload;
     data: RecordType[];
     defaultTitle?: string;
     displayedFilters: any;
@@ -210,7 +210,7 @@ export interface ListControllerResult<RecordType extends Record = Record> {
 
 export const injectedProps = [
     'basePath',
-    'currentSort',
+    'sort',
     'data',
     'defaultTitle',
     'displayedFilters',

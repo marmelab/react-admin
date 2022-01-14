@@ -652,6 +652,26 @@ The change concerns the following components:
 - `<DeleteButton>`
 - `<BulkDeleteButton>`
 
+It also affects the `save` callback returned by the `useSaveContext` hook:
+
+```diff
+const MyButton = () => {
+    const { save, saving } = useSaveContext();
+    const notify = useNotify();
+
+    const handleClick = () => {
+        save({ value: 123 }, {
+-            onFailure: (error) => {
++            onError: (error) => {
+                notify(error.message, { type: 'error' });
+            },
+        });
+    };
+
+    return <button onClick={handleClick}>Save</button>
+}
+```
+
 ## `onSuccess` Callback On DataProvider Hooks And Components Has A New Signature
 
 The `onSuccess` callback used to receive the *response* from the dataProvider. On specialized hooks, it now receives the `data` property of the response instead. 
@@ -715,6 +735,26 @@ const PostEdit = () => {
     );
 };
 ```
+
+## `useNotify` Now Takes An Options Object
+
+When a component has to display a notification, developers may want to tweak the type, duration, translation arguments, or the ability to undo the action. The callback returned by `useNotify()` used to accept a long series of argument, but the syntax wasn't very intuitive. To improve the developer experience, these options are now part of an `options` object, passed as second argument.
+
+```diff
+```jsx
+import { useNotify } from 'react-admin';
+
+const NotifyButton = () => {
+    const notify = useNotify();
+    const handleClick = () => {
+-       notify(`Comment approved`, 'success', undefined, true);
++       notify(`Comment approved`, { type: 'success', undoable: true });
+    }
+    return <button onClick={handleClick}>Notify</button>;
+};
+```
+
+Check [the `useNotify`documentation](https://marmelab.com/react-admin/useNotify.html) for more information.
 
 ## The `useVersion` Hook Was Removed
 
@@ -1061,6 +1101,47 @@ const CommentGrid = () => {
 };
 ```
 
+## `currentSort` Renamed To `sort`
+
+If one of your components displays the curent sort order, it probably uses the injected `currentSort` prop (or reads it from the `ListContext`). This prop has been renamed to `sort` in v4.
+
+Upgrade your code by replacing `currentSort` with `sort`:
+
+```diff
+import { useListContext } from 'react-admin';
+
+const BookListIterator = () => {
+-    const { data, loading, currentSort } = useListContext();
++    const { data, isLoading, sort } = useListContext();
+
+    if (loading) return <Loading />;
+    if (data.length === 0) return <p>No data</p>;
+
+    return (<>
+-       <div>Books sorted by {currentSort.field}</div>
++       <div>Books sorted by {sort.field}</div>
+        <ul>
+            {data.map(book =>
+                <li key={book.id}>{book.title}</li>
+            )}
+        </ul>
+    </>);
+};
+```
+
+The same happens for `<Datagrid>`: when used in standalone, it used to accept a `currentSort` prop, but now it only accepts a `sort` prop.
+
+
+```diff
+-<Datagrid data={data} currentSort={{ field: 'id', order: 'DESC' }}>
++<Datagrid data={data} sort={{ field: 'id', order: 'DESC' }}>
+    <TextField source="id" />
+    <TextField source="title" />
+    <TextField source="author" />
+    <TextField source="year" />
+</Datagrid>
+```
+
 ## `setSort()` Signature Changed
 
 Some react-admin components have access to a `setSort()` callback to sort the current list of items. This callback is also present in the `ListContext`. Its signature has changed:
@@ -1074,16 +1155,16 @@ This impacts your code if you built a custom sort component:
 
 ```diff
 const SortButton = () => {
-    const { currentSort, setSort } = useListContext();
+    const { sort, setSort } = useListContext();
     const handleChangeSort = (event) => {
         const field = event.currentTarget.dataset.sort;
 -       setSort(
 -           field,
--           field === currentSort.field ? inverseOrder(currentSort.order) : 'ASC',
+-           field === sort.field ? inverseOrder(sort.order) : 'ASC',
 -       });
 +       setSort({
 +           field,
-+           order: field === currentSort.field ? inverseOrder(currentSort.order) : 'ASC',
++           order: field === sort.field ? inverseOrder(sort.order) : 'ASC',
 +       });
         setAnchorEl(null);
     };
@@ -1167,6 +1248,24 @@ export const Menu = (props) => {
 ```
 
 Reducers for the **list parameters** (current sort & filters, selected ids, expanded rows) have moved up to the root reducer (so they don't need the resource to be registered first). This shouldn't impact you if you used the react-admin hooks (`useListParams`, `useSelection`) to read the state.
+
+React-admin no longer uses Redux for **notifications**. Instead, it uses a custom context. This change is backwards compatible, as the APIs for the `useNotify` and the `<Notification>` component are the same. If you used to `dispatch` a `showNotification` action, you'll have to use the `useNotify` hook instead:
+
+```diff
+-import { useDispatch } from 'react-redux';
+-import { showNotification } from 'react-admin';
++import { useNotify } from 'react-admin';
+
+const NotifyButton = () => {
+-   const dispatch = useDispatch();
++   const notify = useNotify();
+    const handleClick = () => {
+-       dispatch(showNotification('Comment approved', 'success'));
++       notify('Comment approved', { type: 'success' });
+    }
+    return <button onClick={handleClick}>Notify</button>;
+};
+```
 
 ## Redux-Saga Was Removed
 
@@ -1411,6 +1510,297 @@ const Layout = (props) => {
 };
 ```
 
+## The `<Notification>` Component Is Included By `<Admin>` Rather Than `<Layout>`
+
+If you customized the `<Notification>` component (e.g. to tweak the delay after which a notification disappears), you passed your custom notification component to the `<Layout>` component. The `<Notification>` is now included by the `<Admin>` component, which facilitates custom layouts and login screens. As a consequence, you'll need to move your custom notification component to the `<Admin>` component.
+
+```diff
+// in src/MyNotification.js
+import { Notification } from 'react-admin';
+
+export const MyNotification = props => (
+    <Notification {...props} autoHideDuration={5000} />
+);
+
+// in src/MyLayout.js
+-import { Layout } from 'react-admin';
+-import { MyNotification } from './MyNotification';
+
+-export const MyLayout = props => (
+-   <Layout {...props} notification={MyNotification} />
+-);
+
+// in src/App.js
+-import { MyLayout } from './MyLayout';
++import { MyNotification } from './MyNotification';
+import dataProvider from './dataProvider';
+
+const App = () => (
+-   <Admin layout={MyLayout} dataProvider={dataProvider}>
++   <Admin notification={MyNotification} dataProvider={dataProvider}>
+        // ...
+    </Admin>
+);
+```
+
+If you had a custom Layout and/or Login component, you no longer need to include the `<Notification>` component.
+
+```diff
+-import { Notification } from 'react-admin';
+
+export const MyLayout = ({
+    children,
+    dashboard,
+    logout,
+    title,
+}) => {
+    // ...
+    return (<>
+        // ...
+-       <Notification />
+    </>);
+};
+```
+
+## Form Submissions and Side Effects are Easier
+
+We previously had a complex solution for having multiple submit buttons: a `SaveContext` providing side effects modifiers and refs to the current ones. However, this was redundant and confusing as the `save` function provided by our mutation hooks also accept side effect override at call time.
+
+We also supported a redirect prop both on the form component and on the `<SaveButton>`. It was even more confusing when adding custom or multiple `<SaveButton>` as those received two submission related functions: `handleSubmit` and `handleSubmitWithRedirect`.
+
+Besides, our solution prevented the native browser submit on enter feature and this was an accessibility issue for some users such as Japanese people.
+
+The new solution leverage the fact that we already have the `save` function available through context (`useSaveContext`). The following  sections explain in details the necessary changes and how to upgrade if needed.
+
+### `handleSubmitWithRedirect` No Longer Exist
+
+If you had custom forms using `<FormWithRedirect>`, custom toolbars or buttons, you probably relied on either the `handleSubmit` or `handleSubmitWithRedirect` prop to submit your form (and wonder which one to use).
+
+We now embrace the native behavior of html forms and their buttons so you must render a `<form>` element and set its `onSubmit` prop:
+
+```diff
+const MyForm = () => {
+    return (
+        <Create>
+            <FormWithRedirect
+-                render={({ handleSubmit, ...formProps }) => (
++                render={({ handleSubmit, ...formProps }) => (
+-                    <>
++                    <form onSubmit={handleSubmit}>
+                        <TextInput source="name" />
+-                        <MySaveButton handleSubmit={handleSubmit}>
++                       <MySaveButton />
+-                    </>
++                    </form>
+                )}
+            />
+        </Create>
+    );
+};
+
+-const MySaveButton = ({ handleSubmit }) => (
++const MySaveButton = () => (
+-    <button onClick={handleSubmit}>Save</button>
++    <button type="submit">Save</button>
+);
+```
+
+If you relied on the `handleSubmitWithRedirect` to change the redirection:
+
+```diff
+const MyForm = () => {
+    return (
+        <Create>
+            <FormWithRedirect
+-                render={({ handleSubmitWithRedirect, ...formProps }) => (
++                render={({ handleSubmit, ...formProps }) => (
+-                    <>
++                    <form onSubmit={handleSubmit}>
+                        <TextInput source="name" />
+-                        <MySaveButton handleSubmitWithRedirect={handleSubmitWithRedirect}>
++                       <MySaveButton />
+-                    </>
++                    </form>
+                )}
+            />
+        </Create>
+    );
+};
+
+import { useSaveContext, useRedirect } from 'react-admin';
+import { useForm } from 'react-final-form';
+-const MySaveButton = ({ handleSubmitWithRedirect }) => (
++const MySaveButton = () => {
++    const { save } = useSaveContext();
++    const form = useForm(); 
++    const redirect = useRedirect();
++    const handleClick = (event) => {
++        event.preventDefault(); // Prevent the default form submission
++        const values = form.getState().values;
++        save(values, {
++            onSuccess: (data) => redirect('show', '/posts', data.id)
++        })
++    };
+    return (
+-        <button onClick={() => handleSubmitWithRedirect('show')}>Save</button>
++        <button type="button" onClick={handleClick}>Save</button>
+    );
+);
+```
+
+### `<SaveButton>` Accepts `mutationOptions` Instead of `onSuccess` and `onFailure`
+
+The `<SaveButton>` used to accept the `onSuccess`, `onFailure` and `transform` props to handle multiple submit buttons.
+
+Just like the `Edit` and `Create` components, it now accepts a `mutationOptions` prop which may contain an `onSuccess` and/or `onError` function. It still accept a `transform` prop though.
+
+```diff
+const Toolbar = (props) => {
+    return (
+        <Toolbar>
+            <SaveButton
+-                onSuccess={handleSuccess}
+-                onFailure={handleFailure}
++                mutationOptions={{ onSuccess: handleSuccess, onError: handleFailure }}
+            />
+        </Toolbar>
+    );
+}
+```
+
+
+
+
+We removed the `handleSubmit` and `handleSubmitWithRedirect` props completely. Instead, when provided any of the side effects props, the `<SaveButton>` will render a simple button and will call the `save` function with them. It also take care of preventing the default form submit.
+
+If you relied on `handleSubmit` or `handleSubmitWithRedirect`, you can now use the `SaveButton` and override any of the side effect props: `onSuccess`, `onFailure` or `transform`.
+
+### The `save` Function Signature Changed
+
+The `save` function signature no longer take a redirection side effect as the second argument. Instead, it only receives the data and an options object for side effects (which was the third argument before):
+
+```diff
+const MyCustomCreate = () => {
+    const createControllerProps = useCreateController();
+    const notify = useNotify();
++    const redirect = useRedirect();
+
+    const handleSubmit = (values) => {
+-        createControllerProps.save(values, 'show', {
++        createControllerProps.save(values, {
+            onSuccess: (data) => {
+                notify('Success');
++                redirect('show', '/posts', data.id);
+            }
+        })
+    }
+
+    return (
+        <CreateContextProvider value={createControllerProps}>
+            <Form
+                onSubmit={handleSubmit}
+                render={formProps => (
+                    <form onSubmit={props.handleSubmit}>
+                        ...
+                    </form>
+                )}
+            />
+        </CreateContextProvider>
+    )
+}
+```
+
+### `<FormContext>`, `<FormContextProvider>` and `useFormContext` Have Been Removed
+
+These changes only concerns you if you had custom forms not built with `<FormWithRedirect>`, or custom components relying on the form groups management (accordions or collapsible sections for instance).
+
+As the `save` and `saving` properties are already available through the `<SaveContext>` component and its `useSaveContext` hook, we removed the `<FormContext>`, `<FormContextProvider>` components as well the `useFormContext` hook. The functions around form groups management have been extracted into the `<FormGroupsProvider>` component:
+
+```diff
+const CustomForm = ({ save, ...props }) => {
+-    const formContext = {
+-        save,
+-        saving,
+-        ...form group management functions
+-    }
+    return (
+        <Form
+            {...props}
+            onSubmit={save}
+            render={formProps => (
+-                <FormContextProvider value={formContext}>
++                <FormGroupsProvider>
+                    <form {...formProps}>
+                        ...
+                    </form>
+-                </FormContextProvider>
++                </FormGroupsProvider>
+            )}
+        />
+    );
+};
+```
+
+### The `redirect` prop Has Been Removed From `FormWithRedirect`, `SimpleForm`, `TabbedForm` and `SaveButton`
+
+The `FormWithRedirect`, `SimpleForm`, `TabbedForm` and `SaveButton` don't have a `redirect` prop anymore.
+
+If you had the `redirect` prop set on the form component, move it to `Create` or `Edit` component:
+
+```diff
+-<Create>
++<Create redirect="edit">
+-    <SimpleForm redirect="edit">
++    <SimpleForm>
+        <TextInput source="name">
+    </SimpleForm>
+</Create>
+```
+
+If you had the `redirect` prop set on the `SaveButton`, provide a `onSuccess` prop:
+
+```diff
+const PostCreateToolbar = props => {
++    const notify = useNotify();
++    const redirect = useRedirect();
+    return (
+        <Toolbar {...props}>
+            <SaveButton
+                label="post.action.save_and_edit"
+-                redirect="edit"
++                onSuccess={data => {
++                    notify('ra.notification.updated', {
++                        type: 'info',
++                        messageArgs: { smart_count: 1 },
++                        undoable: true,
++                    });
++                    redirect('edit', '/posts', data.id)
++                }}
+            />
+        </Toolbar>
+    );
+};
+```
+
+### The Form Components `save` Prop Has Been Renamed to `onSubmit`:
+
+This change only matters to you if you used the form components outside of `<Create>` or `<Edit>`.
+
+```diff
+const MyComponent = () => {
+    const handleSave = () => {
+
+    }
+
+    return (
+-        <SimpleForm save={handleSave}>
++        <SimpleForm onSubmit={handleSave}>
+            <TextInput source="name" />
+        </SimpleForm>
+    )
+}
+```
+
 # Upgrade to 3.0
 
 We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.
@@ -1531,13 +1921,9 @@ Here's how to migrate the *Altering the Form Values before Submitting* example f
 import * as React from 'react';
 import { useCallback } from 'react';
 import { useForm } from 'react-final-form';
-import { SaveButton, Toolbar, useCreate, useRedirect } from 'react-admin';
+import { SaveButton, Toolbar } from 'react-admin';
 
 const SaveWithNoteButton = ({ handleSubmit, handleSubmitWithRedirect, ...props }) => {
-    const [create] = useCreate('posts');
-    const redirectTo = useRedirect();
-    const { basePath, redirect } = props;
-
     const form = useForm();
 
     const handleClick = useCallback(() => {
@@ -1570,7 +1956,7 @@ import {
 } from 'react-admin';
 
 const SaveWithNoteButton = props => {
-    const [create] = useCreate('posts');
+    const [create] = useCreate();
     const redirectTo = useRedirect();
     const notify = useNotify();
     const { basePath } = props;
@@ -1578,6 +1964,7 @@ const SaveWithNoteButton = props => {
     const handleSave = useCallback(
         (values, redirect) => {
             create(
+                'posts',
                 {
                     payload: { data: { ...values, average_note: 10 } },
                 },

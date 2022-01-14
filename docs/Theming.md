@@ -375,7 +375,7 @@ const App = () => (
 );
 ```
 
-Your custom layout can extend the default `<Layout>` component if you only want to override the sidebar, the appBar, the menu, the notification component or the error page. For instance:
+Your custom layout can extend the default `<Layout>` component if you only want to override the sidebar, the appBar, the menu or the error page. For instance:
 
 ```jsx
 // in src/MyLayout.js
@@ -383,14 +383,12 @@ import { Layout } from 'react-admin';
 import MyAppBar from './MyAppBar';
 import MySidebar from './MySidebar';
 import MyMenu from './MyMenu';
-import MyNotification from './MyNotification';
 
 const MyLayout = props => <Layout
     {...props}
     appBar={MyAppBar}
     sidebar={MySidebar}
     menu={MyMenu}
-    notification={MyNotification}
 />;
 
 export default MyLayout;
@@ -528,7 +526,6 @@ import { ThemeProvider } from '@material-ui/styles';
 import {
     AppBar,
     Menu,
-    Notification,
     Sidebar,
     setSidebarVisibility,
     ComponentPropType,
@@ -588,7 +585,6 @@ const MyLayout = ({
                         {children}
                     </div>
                 </main>
-                <Notification />
             </div>
         </div>
     );
@@ -606,8 +602,6 @@ MyLayout.propTypes = {
 
 export default MyLayout;
 ```
-
-**Tip**: Don't forget to render a `<Notification>` component in your custom layout, otherwise the undoable updates will never be sent to the server. That's because part of the "undo" logic of react-admin lies in the `<Notification>` component.
 
 ## Adding a Breadcrumb
 
@@ -1026,28 +1020,15 @@ const MyNotification = props => <Notification {...props} autoHideDuration={5000}
 export default MyNotification;
 ```
 
-**Tip**: if you use the `showNotification` action, then you can define `autoHideDuration` per message as the third parameter of the `showNotification` action creator.
-
-To use this custom notification component, pass it to a custom Layout, as explained above:
-
-```jsx
-// in src/MyLayout.js
-import { Layout } from 'react-admin';
-import MyNotification from './MyNotification';
-
-const MyLayout = (props) => <Layout {...props} notification={MyNotification} />;
-
-export default MyLayout;
-```
-
-Then, use this layout in the `<Admin>` `layout` prop:
+To use this custom notification component, pass it to the `<Admin>` component as the `notification` prop:
 
 ```jsx
 // in src/App.js
-import MyLayout from './MyLayout';
+import MyNotification from './MyNotification';
+import dataProvider from './dataProvider';
 
 const App = () => (
-    <Admin layout={MyLayout} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+    <Admin notification={MyNotification} dataProvider={dataProvider}>
         // ...
     </Admin>
 );

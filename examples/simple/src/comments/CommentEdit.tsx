@@ -113,7 +113,7 @@ const CreatePost = () => {
 
 const CommentEdit = props => {
     const controllerProps = useEditController(props);
-    const { resource, record, redirect, save } = controllerProps;
+    const { resource, record, save } = controllerProps;
 
     return (
         <EditContextProvider value={controllerProps}>
@@ -129,10 +129,9 @@ const CommentEdit = props => {
                 <Card className={classes.card}>
                     {record && (
                         <SimpleForm
-                            redirect={redirect}
                             resource={resource}
                             record={record}
-                            save={save}
+                            onSubmit={save}
                             warnWhenUnsavedChanges
                         >
                             <TextInput disabled source="id" fullWidth />

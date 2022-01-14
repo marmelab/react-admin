@@ -14,6 +14,7 @@ import {
 
 import { fieldPropTypes, PublicFieldProps, InjectedFieldProps } from './types';
 import { LinearProgress } from '../layout';
+import { styled } from '@mui/material/styles';
 
 /**
  * A container component that fetches records from another resource specified
@@ -106,7 +107,7 @@ ReferenceArrayField.propTypes = {
     addLabel: PropTypes.bool,
     className: PropTypes.string,
     children: PropTypes.element.isRequired,
-    label: PropTypes.string,
+    label: fieldPropTypes.label,
     record: PropTypes.any,
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string,
@@ -143,15 +144,39 @@ export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props =
     const { children, pagination, className } = props;
     const { isLoading, total } = useListContext(props);
 
-    return isLoading ? (
-        <LinearProgress sx={{ mt: 2 }} />
-    ) : (
-        <span className={className}>
-            {children}
-            {pagination && total !== undefined ? pagination : null}
-        </span>
+    return (
+        <Root>
+            {isLoading ? (
+                <LinearProgress
+                    className={ReferenceArrayFieldClasses.progress}
+                />
+            ) : (
+                <span className={className}>
+                    {children}
+                    {pagination && total !== undefined ? pagination : null}
+                </span>
+            )}
+        </Root>
     );
 };
+
+ReferenceArrayFieldView.propTypes = {
+    className: PropTypes.string,
+    children: PropTypes.element.isRequired,
+    reference: PropTypes.string.isRequired,
+};
+
+const PREFIX = 'RaReferenceArrayField';
+
+export const ReferenceArrayFieldClasses = {
+    progress: `${PREFIX}-progress`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`& .${ReferenceArrayFieldClasses.progress}`]: {
+        marginTop: theme.spacing(2),
+    },
+}));
 
 ReferenceArrayFieldView.propTypes = {
     className: PropTypes.string,

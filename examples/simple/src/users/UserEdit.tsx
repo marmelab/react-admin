@@ -86,7 +86,7 @@ const UserEditForm = ({ save, ...props }: { save?: any }) => {
             defaultValue={{ role: 'user' }}
             toolbar={<UserEditToolbar />}
             {...props}
-            save={newSave}
+            onSubmit={newSave}
         >
             <FormTab label="user.form.summary" path="">
                 {permissions === 'admin' && <TextInput disabled source="id" />}

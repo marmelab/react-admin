@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual';
 
 import { useSafeSetState, removeEmpty } from '../../util';
 import { useGetManyReference } from '../../dataProvider';
-import { useNotify } from '../../sideEffect';
+import { useNotify } from '../../notification';
 import { Record, SortPayload } from '../../types';
 import { ListControllerResult } from '../list';
 import usePaginationState from '../usePaginationState';
@@ -186,7 +186,7 @@ export const useReferenceManyFieldController = (
     );
 
     return {
-        currentSort: sort,
+        sort,
         data,
         defaultTitle: null,
         displayedFilters,

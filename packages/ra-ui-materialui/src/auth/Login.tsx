@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-    HtmlHTMLAttributes,
-    ComponentType,
-    createElement,
-    ReactNode,
-    useRef,
-    useEffect,
-} from 'react';
+import { HtmlHTMLAttributes, ReactNode, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Card, Avatar } from '@mui/material';
@@ -15,7 +8,6 @@ import LockIcon from '@mui/icons-material/Lock';
 import { useNavigate } from 'react-router-dom';
 import { LoginComponentProps, useCheckAuth } from 'ra-core';
 
-import { Notification as DefaultNotification } from '../layout';
 import { LoginForm as DefaultLoginForm } from './LoginForm';
 
 /**
@@ -42,7 +34,6 @@ export const Login = (props: LoginProps) => {
         classes: classesOverride,
         className,
         children,
-        notification,
         backgroundImage,
         ...rest
     } = props;
@@ -96,7 +87,6 @@ export const Login = (props: LoginProps) => {
                 </div>
                 {children}
             </Card>
-            {notification ? createElement(notification) : null}
         </Root>
     );
 };
@@ -108,7 +98,6 @@ export interface LoginProps
     children?: ReactNode;
     classes?: object;
     className?: string;
-    notification?: ComponentType;
 }
 
 const PREFIX = 'RaLogin';
@@ -155,5 +144,4 @@ Login.propTypes = {
 
 Login.defaultProps = {
     children: <DefaultLoginForm />,
-    notification: DefaultNotification,
 };

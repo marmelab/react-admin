@@ -11,13 +11,9 @@ const theme = createTheme();
 
 const invalidButtonDomProps = {
     basePath: '',
-    handleSubmit: jest.fn(),
-    handleSubmitWithRedirect: jest.fn(),
     invalid: false,
-    onSave: jest.fn(),
     pristine: false,
     record: { id: 123, foo: 'bar' },
-    redirect: 'list',
     resource: 'posts',
     saving: false,
     submitOnEnter: true,

@@ -118,7 +118,7 @@ ReferenceManyField.propTypes = {
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
     filter: PropTypes.object,
-    label: PropTypes.string,
+    label: fieldPropTypes.label,
     perPage: PropTypes.number,
     record: PropTypes.any,
     reference: PropTypes.string.isRequired,
@@ -158,7 +158,10 @@ export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => 
 };
 
 export interface ReferenceManyFieldViewProps
-    extends Omit<ReferenceManyFieldProps, 'resource' | 'page' | 'perPage'>,
+    extends Omit<
+            ReferenceManyFieldProps,
+            'resource' | 'page' | 'perPage' | 'sort'
+        >,
         ListControllerResult {
     children: ReactElement;
 }
@@ -166,7 +169,7 @@ export interface ReferenceManyFieldViewProps
 ReferenceManyFieldView.propTypes = {
     children: PropTypes.element,
     className: PropTypes.string,
-    currentSort: PropTypes.exact({
+    sort: PropTypes.exact({
         field: PropTypes.string,
         order: PropTypes.string,
     }),

@@ -117,14 +117,14 @@ build: build-ra-core build-ra-test build-ra-ui-materialui build-ra-data-fakerest
 doc: ## compile doc as html and launch doc web server
 	@yarn doc
 
-serve-github-pages: ## Serve the doc from a Github Pages docker container
+docker-doc: ## run the doc website in a docker container
 	@docker run -it --rm \
 		-p 4000:4000 \
-		-v "${PWD}/docs:/usr/src/app" \
-		starefossen/github-pages:onbuild \
-		jekyll serve \
-			--host=0.0.0.0 \
-			--incremental
+		-v="${PWD}/docs:/site" \
+		bretfisher/jekyll \
+		serve -H 0.0.0.0
+
+serve-github-pages: docker-doc ## Serve the doc from a Github Pages docker container
 
 lint: ## lint the code and check coding conventions
 	@echo "Running linter..."

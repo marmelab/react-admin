@@ -61,7 +61,7 @@ That's enough to display the post show view:
 * [`component`](#root-component): overrides the root component
 * [`emptyWhileLoading`](#loading-state)
 * [`queryOptions`](#client-query-options): options to pass to the react-query client
-* [`sx`](#css-api): Override the styles
+* [`sx`](#sx-css-api): Override the styles
 * [`title`](#page-title)
 
 ## Layout
@@ -272,12 +272,12 @@ const PostShow = props => (
 ```
 {% endraw %}
 
-## CSS API
+## `sx`: CSS API
 
 The `<Show>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name        | Description                                                   |
-| ---------------- | ------------------------------------------------------------- |
+|------------------| ------------------------------------------------------------- |
 | `&.RaShow-root`  | Alternative to using `className`. Applied to the root element |
 | `& .RaShow-main` | Applied to the main container                                 |
 | `& .RaShow-card` | Applied to the `<Card>` element                               |

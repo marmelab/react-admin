@@ -25,7 +25,7 @@ import { Record } from '../../types';
  * @prop {Function} setPage a callback to change the page, e.g. setPage(3)
  * @prop {integer}  perPage the number of results per page. Defaults to 25
  * @prop {Function} setPerPage a callback to change the number of results per page, e.g. setPerPage(25)
- * @prop {Object}   currentSort a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
+ * @prop {Object}   sort a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
  * @prop {Function} setSort a callback to change the sort, e.g. setSort({ field : 'name', order: 'ASC' })
  * @prop {Object}   filterValues a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
  * @prop {Function} setFilters a callback to update the filters, e.g. setFilters(filters, displayedFilters)
@@ -117,7 +117,7 @@ export const useListContext = <RecordType extends Record = Record>(
  */
 const extractListContextProps = ({
     basePath,
-    currentSort,
+    sort,
     data,
     defaultTitle,
     displayedFilters,
@@ -142,7 +142,7 @@ const extractListContextProps = ({
     total,
 }) => ({
     basePath,
-    currentSort,
+    sort,
     data,
     defaultTitle,
     displayedFilters,

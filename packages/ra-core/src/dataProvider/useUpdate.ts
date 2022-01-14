@@ -81,7 +81,7 @@ export const useUpdate = <RecordType extends Record = Record>(
     const { id, data } = params;
     const { mutationMode = 'pessimistic', ...reactMutationOptions } = options;
     const mode = useRef<MutationMode>(mutationMode);
-    const paramsRef = useRef<Partial<UpdateParams<RecordType>>>({});
+    const paramsRef = useRef<Partial<UpdateParams<RecordType>>>(params);
     const snapshot = useRef<Snapshot>([]);
 
     const updateCache = ({ resource, id, data }) => {

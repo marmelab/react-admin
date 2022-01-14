@@ -34,8 +34,12 @@ const StyledEdit = styled(Edit)({
 
 export const CompanyEdit = () => {
     return (
-        <StyledEdit aside={<CompanyAside link="show" />} actions={false}>
-            <SimpleForm component={CustomLayout} redirect="show">
+        <StyledEdit
+            aside={<CompanyAside link="show" />}
+            actions={false}
+            redirect="show"
+        >
+            <SimpleForm component={CustomLayout}>
                 <TextInput source="name" validate={required()} fullWidth />
                 <SelectInput
                     source="sector"

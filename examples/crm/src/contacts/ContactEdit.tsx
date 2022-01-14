@@ -27,8 +27,7 @@ const ContactEditContent = () => {
             <Box flex="1">
                 <FormWithRedirect
                     record={record}
-                    redirect="show"
-                    save={save}
+                    onSubmit={save}
                     render={formProps => (
                         <Card>
                             <CardContent>
@@ -110,7 +109,7 @@ const ContactEditContent = () => {
 };
 
 export const ContactEdit = (props: EditProps) => (
-    <EditBase {...props}>
+    <EditBase {...props} redirect="show">
         <ContactEditContent />
     </EditBase>
 );

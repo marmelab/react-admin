@@ -10,8 +10,8 @@ import {
 } from 'react-admin';
 
 const TagCreate = () => (
-    <Create>
-        <SimpleForm redirect="list">
+    <Create redirect="list">
+        <SimpleForm>
             <TextField source="id" />
             <TranslatableInputs locales={['en', 'fr']}>
                 <TextInput source="name" validate={[required()]} />
