@@ -1487,24 +1487,24 @@ export const UserCreate = () => {
     const [create] = useCreate();
     const save = useCallback(
       async values => {
-          try {
-              await create('users', { data: values });
-          } catch (error) {
-              if (error.body.errors) {
-                  return error.body.errors;
-              }
-          }
-      },
-      [create]
+            try {
+                await create('users', { data: values });
+            } catch (error) {
+                if (error.body.errors) {
+                    return error.body.errors;
+                }
+            }
+        },
+        [create]
     );
 
     return (
-      <Create>
-          <SimpleForm save={save}>
-              <TextInput label="First Name" source="firstName" />
-              <TextInput label="Age" source="age" />
-          </SimpleForm>
-      </Create>
+        <Create>
+            <SimpleForm save={save}>
+                <TextInput label="First Name" source="firstName" />
+                <TextInput label="Age" source="age" />
+            </SimpleForm>
+        </Create>
     );
 };
 ```
