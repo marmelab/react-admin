@@ -1,14 +1,11 @@
-import expect from 'expect';
-import { fireEvent } from '@testing-library/react';
 import * as React from 'react';
-import { renderWithRedux } from 'ra-test';
+import expect from 'expect';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { minLength } from 'ra-core';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { FilterForm, mergeInitialValuesWithDefaultValues } from './FilterForm';
 import { TextInput, SelectInput } from '../../input';
-
-const theme = createTheme({});
+import { AdminContext } from '../../AdminContext';
 
 describe('<FilterForm />', () => {
     const defaultProps = {
@@ -30,17 +27,17 @@ describe('<FilterForm />', () => {
             'customer.name': true,
         };
 
-        const { queryAllByLabelText } = renderWithRedux(
-            <ThemeProvider theme={theme}>
+        render(
+            <AdminContext>
                 <FilterForm
                     {...defaultProps}
                     filters={filters}
                     displayedFilters={displayedFilters}
                 />
-            </ThemeProvider>
+            </AdminContext>
         );
-        expect(queryAllByLabelText('Title')).toHaveLength(1);
-        expect(queryAllByLabelText('Name')).toHaveLength(1);
+        expect(screen.queryAllByLabelText('Title')).toHaveLength(1);
+        expect(screen.queryAllByLabelText('Name')).toHaveLength(1);
     });
 
     it('should change the filter when the user updates an input', () => {
@@ -50,17 +47,17 @@ describe('<FilterForm />', () => {
         };
         const setFilters = jest.fn();
 
-        const { queryByLabelText } = renderWithRedux(
-            <ThemeProvider theme={theme}>
+        render(
+            <AdminContext>
                 <FilterForm
                     {...defaultProps}
                     filters={filters}
                     displayedFilters={displayedFilters}
                     setFilters={setFilters}
                 />
-            </ThemeProvider>
+            </AdminContext>
         );
-        fireEvent.change(queryByLabelText('Title'), {
+        fireEvent.change(screen.queryByLabelText('Title'), {
             target: { value: 'foo' },
         });
         expect(setFilters).toHaveBeenCalledWith(
@@ -82,17 +79,17 @@ describe('<FilterForm />', () => {
         };
         const setFilters = jest.fn();
 
-        const { queryByLabelText } = renderWithRedux(
-            <ThemeProvider theme={theme}>
+        render(
+            <AdminContext>
                 <FilterForm
                     {...defaultProps}
                     filters={filters}
                     displayedFilters={displayedFilters}
                     setFilters={setFilters}
                 />
-            </ThemeProvider>
+            </AdminContext>
         );
-        fireEvent.change(queryByLabelText('Title'), {
+        fireEvent.change(screen.queryByLabelText('Title'), {
             target: { value: 'foo' },
         });
         expect(setFilters).not.toHaveBeenCalled();
@@ -115,19 +112,21 @@ describe('<FilterForm />', () => {
                 test: true,
             };
 
-            const { queryAllByRole, queryByLabelText } = renderWithRedux(
-                <ThemeProvider theme={theme}>
+            render(
+                <AdminContext>
                     <FilterForm
                         {...defaultProps}
                         filters={filters}
                         displayedFilters={displayedFilters}
                     />
-                </ThemeProvider>
+                </AdminContext>
             );
 
-            const select = queryByLabelText('SelectWithUndefinedAllowEmpty');
+            const select = screen.queryByLabelText(
+                'SelectWithUndefinedAllowEmpty'
+            );
             fireEvent.mouseDown(select);
-            const options = queryAllByRole('option');
+            const options = screen.queryAllByRole('option');
             expect(options.length).toEqual(3);
         });
 
@@ -148,18 +147,18 @@ describe('<FilterForm />', () => {
                 test: true,
             };
 
-            const { queryAllByRole, queryByLabelText } = renderWithRedux(
-                <ThemeProvider theme={theme}>
+            render(
+                <AdminContext>
                     <FilterForm
                         {...defaultProps}
                         filters={filters}
                         displayedFilters={displayedFilters}
                     />
-                </ThemeProvider>
+                </AdminContext>
             );
-            const select = queryByLabelText('SelectWithFalseAllowEmpty');
+            const select = screen.queryByLabelText('SelectWithFalseAllowEmpty');
             fireEvent.mouseDown(select);
-            const options = queryAllByRole('option');
+            const options = screen.queryAllByRole('option');
             expect(options.length).toEqual(2);
         });
 
@@ -180,18 +179,18 @@ describe('<FilterForm />', () => {
                 test: true,
             };
 
-            const { queryAllByRole, queryByLabelText } = renderWithRedux(
-                <ThemeProvider theme={theme}>
+            render(
+                <AdminContext>
                     <FilterForm
                         {...defaultProps}
                         filters={filters}
                         displayedFilters={displayedFilters}
                     />
-                </ThemeProvider>
+                </AdminContext>
             );
-            const select = queryByLabelText('SelectWithTrueAllowEmpty');
+            const select = screen.queryByLabelText('SelectWithTrueAllowEmpty');
             fireEvent.mouseDown(select);
-            const options = queryAllByRole('option');
+            const options = screen.queryAllByRole('option');
             expect(options.length).toEqual(3);
         });
     });

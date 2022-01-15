@@ -1,8 +1,14 @@
 import * as React from 'react';
-import { render, waitFor, fireEvent } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
-import { DataProvider, FormWithRedirect, MutationMode } from 'ra-core';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import {
+    CoreAdminContext,
+    FormWithRedirect,
+    MutationMode,
+    required,
+    testDataProvider,
+    useNotificationContext,
+} from 'ra-core';
 
 import { SaveButton } from './SaveButton';
 import { SimpleForm, Toolbar } from '../form';
@@ -10,15 +16,10 @@ import { Edit } from '../detail';
 import { TextInput } from '../input';
 import { AdminContext } from '../AdminContext';
 
-const theme = createTheme();
-
 const invalidButtonDomProps = {
-    invalid: false,
     disabled: true,
-    pristine: false,
     record: { id: 123, foo: 'bar' },
     resource: 'posts',
-    saving: false,
     submitOnEnter: true,
     mutationMode: 'pessimistic' as MutationMode,
 };
@@ -28,12 +29,10 @@ describe('<SaveButton />', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
         const { getByLabelText } = render(
-            <AdminContext>
-                <ThemeProvider theme={theme}>
-                    <FormWithRedirect
-                        render={() => <SaveButton {...invalidButtonDomProps} />}
-                    />
-                </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <FormWithRedirect
+                    render={() => <SaveButton {...invalidButtonDomProps} />}
+                />
             </AdminContext>
         );
 
@@ -47,12 +46,10 @@ describe('<SaveButton />', () => {
 
     it('should render a disabled button', () => {
         const { getByLabelText } = render(
-            <AdminContext>
-                <ThemeProvider theme={theme}>
-                    <FormWithRedirect
-                        render={() => <SaveButton disabled={true} />}
-                    />
-                </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <FormWithRedirect
+                    render={() => <SaveButton disabled={true} />}
+                />
             </AdminContext>
         );
         expect(getByLabelText('ra.action.save')['disabled']).toEqual(true);
@@ -60,12 +57,8 @@ describe('<SaveButton />', () => {
 
     it('should render as submit type when submitOnEnter is true', () => {
         const { getByLabelText } = render(
-            <AdminContext>
-                <ThemeProvider theme={theme}>
-                    <FormWithRedirect
-                        render={() => <SaveButton submitOnEnter />}
-                    />
-                </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <FormWithRedirect render={() => <SaveButton submitOnEnter />} />
             </AdminContext>
         );
         expect(getByLabelText('ra.action.save').getAttribute('type')).toEqual(
@@ -75,12 +68,10 @@ describe('<SaveButton />', () => {
 
     it('should render as button type when submitOnEnter is false', () => {
         const { getByLabelText } = render(
-            <AdminContext>
-                <ThemeProvider theme={theme}>
-                    <FormWithRedirect
-                        render={() => <SaveButton submitOnEnter={false} />}
-                    />
-                </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <FormWithRedirect
+                    render={() => <SaveButton submitOnEnter={false} />}
+                />
             </AdminContext>
         );
 
@@ -89,42 +80,41 @@ describe('<SaveButton />', () => {
         );
     });
 
-    it('should trigger submit action when clicked if no saving is in progress', () => {
+    it('should trigger submit action when clicked if no saving is in progress', async () => {
         const onSubmit = jest.fn();
         const { getByLabelText } = render(
-            <AdminContext>
-                <ThemeProvider theme={theme}>
-                    <FormWithRedirect
-                        onSubmit={onSubmit}
-                        render={({ handleSubmit }) => (
-                            <form onSubmit={handleSubmit}>
-                                <SaveButton submitOnEnter />
-                            </form>
-                        )}
-                    />
-                </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <FormWithRedirect
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <SaveButton submitOnEnter />
+                        </form>
+                    )}
+                />
             </AdminContext>
         );
 
         fireEvent.click(getByLabelText('ra.action.save'));
-        expect(onSubmit).toHaveBeenCalled();
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalled();
+        });
     });
 
     it('should not trigger submit action when clicked if saving is in progress', () => {
         const onSubmit = jest.fn();
 
         const { getByLabelText } = render(
-            <AdminContext>
-                <ThemeProvider theme={theme}>
-                    <FormWithRedirect
-                        onSubmit={onSubmit}
-                        render={({ handleSubmit }) => (
-                            <form onSubmit={handleSubmit}>
-                                <SaveButton saving submitOnEnter />
-                            </form>
-                        )}
-                    />
-                </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <FormWithRedirect
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <SaveButton saving submitOnEnter />
+                        </form>
+                    )}
+                />
             </AdminContext>
         );
 
@@ -133,13 +123,13 @@ describe('<SaveButton />', () => {
     });
 
     it('should allow to override the onSuccess side effects', async () => {
-        const dataProvider = ({
+        const dataProvider = testDataProvider({
             getOne: () =>
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
             update: (_, { data }) => Promise.resolve({ data }),
-        } as unknown) as DataProvider;
+        });
         const onSuccess = jest.fn();
         const EditToolbar = props => (
             <Toolbar {...props}>
@@ -178,13 +168,13 @@ describe('<SaveButton />', () => {
 
     it('should allow to override the onError side effects', async () => {
         jest.spyOn(console, 'error').mockImplementationOnce(() => {});
-        const dataProvider = ({
+        const dataProvider = testDataProvider({
             getOne: () =>
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
             update: () => Promise.reject({ message: 'not good' }),
-        } as unknown) as DataProvider;
+        });
         const onError = jest.fn();
         const EditToolbar = props => (
             <Toolbar {...props}>
@@ -224,13 +214,13 @@ describe('<SaveButton />', () => {
         const update = jest
             .fn()
             .mockImplementationOnce((_, { data }) => Promise.resolve({ data }));
-        const dataProvider = ({
+        const dataProvider = testDataProvider({
             getOne: () =>
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
             update,
-        } as unknown) as DataProvider;
+        });
         const transform = jest.fn().mockImplementationOnce(data => ({
             ...data,
             transformed: true,
@@ -287,16 +277,15 @@ describe('<SaveButton />', () => {
     };
 
     it('should disable <SaveButton/> if an input is being validated asynchronously', async () => {
-        const dataProvider = ({
+        const dataProvider = testDataProvider({
             getOne: () =>
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
-        } as unknown) as DataProvider;
+        });
 
         const validateAsync = async (value, allValues) => {
-            await new Promise(resolve => setTimeout(resolve, 400));
-
+            await new Promise(resolve => setTimeout(resolve, 250));
             if (value === 'ipsum') {
                 return 'Already used!';
             }
@@ -306,7 +295,7 @@ describe('<SaveButton />', () => {
         const { queryByDisplayValue, getByLabelText } = render(
             <AdminContext dataProvider={dataProvider}>
                 <Edit {...defaultEditProps}>
-                    <SimpleForm>
+                    <SimpleForm mode="onChange">
                         <TextInput source="title" validate={validateAsync} />
                     </SimpleForm>
                 </Edit>
@@ -322,11 +311,51 @@ describe('<SaveButton />', () => {
             target: { value: 'ipsum' },
         });
 
-        expect(getByLabelText('ra.action.save')['disabled']).toEqual(true);
-
+        await waitFor(() => {
+            // console.log(getByLabelText('ra.action.save'));
+            expect(getByLabelText('ra.action.save')['disabled']).toEqual(true);
+        });
         // The SaveButton should be enabled again after validation
         await waitFor(() => {
             expect(getByLabelText('ra.action.save')['disabled']).toEqual(false);
+        });
+    });
+
+    it('Displays a notification on save when invalid and is not a submit', async () => {
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            return notifications.length > 0 ? (
+                <div>{notifications[0].message}</div>
+            ) : null;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <>
+                    <FormWithRedirect
+                        onSubmit={jest.fn()}
+                        render={({ handleSubmit }) => (
+                            <form onSubmit={handleSubmit}>
+                                <TextInput
+                                    source="name"
+                                    validate={required()}
+                                />
+                                <SaveButton
+                                    mutationOptions={{
+                                        onSuccess: jest.fn(),
+                                    }}
+                                />
+                            </form>
+                        )}
+                    />
+                    <Notification />
+                </>
+            </CoreAdminContext>
+        );
+
+        fireEvent.click(screen.getByText('ra.action.save'));
+        await waitFor(() => {
+            screen.getByText('ra.message.invalid_form');
         });
     });
 });

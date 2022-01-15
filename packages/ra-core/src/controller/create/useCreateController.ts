@@ -196,8 +196,8 @@ const emptyRecord = {};
  * state or is serialized in the url search part.
  */
 export const getRecordFromLocation = ({ state, search }: Location) => {
-    if (state && state.record) {
-        return state.record;
+    if (state && (state as StateWithRecord).record) {
+        return (state as StateWithRecord).record;
     }
     if (search) {
         try {
@@ -218,6 +218,10 @@ export const getRecordFromLocation = ({ state, search }: Location) => {
         }
     }
     return null;
+};
+
+type StateWithRecord = {
+    record?: Partial<RaRecord>;
 };
 
 const getDefaultRedirectRoute = (hasShow, hasEdit) => {

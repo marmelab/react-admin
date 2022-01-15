@@ -37,7 +37,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         mutationMode,
         record,
         saving,
-        submitOnEnter = true,
         syncWithLocation = true,
         tabs = DefaultTabs,
         toolbar = DefaultToolbar,
