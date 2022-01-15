@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BaseSyntheticEvent, useCallback, useMemo } from 'react';
+import { BaseSyntheticEvent, useCallback, useEffect, useMemo } from 'react';
 import {
     FormProvider,
     SubmitHandler,
@@ -7,14 +7,15 @@ import {
     UseFormProps,
 } from 'react-hook-form';
 
-import getFormInitialValues from './getFormInitialValues';
-import { RaRecord } from '../types';
 import { useNotify } from '../notification';
+import { RaRecord } from '../types';
 import { useSaveContext } from '../controller';
 import { useRecordContext, OptionalRecordContextProvider } from '../controller';
-import { useWarnWhenUnsavedChanges } from './useWarnWhenUnsavedChanges';
-import { useInitializeFormWithRecord } from './useInitializeFormWithRecord';
+import getFormInitialValues from './getFormInitialValues';
 import { FormGroupsProvider } from './FormGroupsProvider';
+import { useInitializeFormWithRecord } from './useInitializeFormWithRecord';
+import { useIsFormInvalid } from './useIsFormInvalid';
+import { useWarnWhenUnsavedChanges } from './useWarnWhenUnsavedChanges';
 
 /**
  * Wrapper around react-final-form's Form to handle redirection on submit,
@@ -48,7 +49,7 @@ export const FormWithRedirect = (props: FormWithRedirectProps) => {
         defaultValues,
         delayError,
         formRootPathname,
-        mode = 'onSubmit',
+        mode = 'onBlur',
         render,
         resolver,
         reValidateMode = 'onChange',
@@ -57,6 +58,7 @@ export const FormWithRedirect = (props: FormWithRedirectProps) => {
         shouldUnregister,
         shouldUseNativeValidation,
         warnWhenUnsavedChanges,
+        ...rest
     } = props;
     const record = useRecordContext(props);
     const saveContext = useSaveContext();
@@ -79,8 +81,6 @@ export const FormWithRedirect = (props: FormWithRedirectProps) => {
         shouldUseNativeValidation,
     });
 
-    const { isValid } = form.formState;
-
     const handleSubmit = useCallback(
         values => {
             if (onSubmit) {
@@ -97,12 +97,11 @@ export const FormWithRedirect = (props: FormWithRedirectProps) => {
         <OptionalRecordContextProvider value={record}>
             <FormProvider {...form}>
                 <FormView
-                    {...props}
+                    {...rest}
                     defaultValues={defaultValues}
                     handleSubmit={form.handleSubmit(handleSubmit)}
                     record={record}
                     render={render}
-                    isValid={isValid}
                     warnWhenUnsavedChanges={warnWhenUnsavedChanges}
                     formRootPathname={formRootPathname}
                 />
@@ -136,7 +135,6 @@ export interface FormWithRedirectOwnProps {
 
 interface FormViewProps extends FormWithRedirectOwnProps {
     handleSubmit: (e?: BaseSyntheticEvent) => Promise<void>;
-    isValid: boolean;
     warnWhenUnsavedChanges?: boolean;
 }
 
@@ -144,28 +142,21 @@ const FormView = (props: FormViewProps) => {
     const {
         defaultValues,
         formRootPathname,
-        handleSubmit: formHandleSubmit,
-        isValid,
         record,
         render,
         warnWhenUnsavedChanges,
         ...rest
     } = props;
-    useInitializeFormWithRecord(defaultValues, record);
-    useWarnWhenUnsavedChanges(warnWhenUnsavedChanges, formRootPathname);
+    const isInvalid = useIsFormInvalid();
     const notify = useNotify();
 
-    const handleSubmit = (event?: BaseSyntheticEvent) => {
-        if (!isValid) {
+    useEffect(() => {
+        if (isInvalid) {
             notify('ra.message.invalid_form', { type: 'warning' });
         }
+    }, [isInvalid, notify]);
+    useInitializeFormWithRecord(defaultValues, record);
+    useWarnWhenUnsavedChanges(warnWhenUnsavedChanges, formRootPathname);
 
-        return formHandleSubmit(event);
-    };
-
-    return (
-        <FormGroupsProvider>
-            {render({ ...rest, handleSubmit })}
-        </FormGroupsProvider>
-    );
+    return <FormGroupsProvider>{render(rest)}</FormGroupsProvider>;
 };

@@ -6,7 +6,7 @@ import { CoreAdminContext } from '../core';
 import { testDataProvider } from '../dataProvider';
 import { FormWithRedirect } from './FormWithRedirect';
 import { useNotificationContext } from '../notification';
-import useInput from './useInput';
+import { useInput } from './useInput';
 import { required } from './validate';
 
 describe('FormWithRedirect', () => {

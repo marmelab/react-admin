@@ -30,6 +30,7 @@ export * from './useChoices';
 export * from './useFormGroup';
 export * from './useFormGroupContext';
 export * from './useInitializeFormWithRecord';
+export * from './useIsFormInvalid';
 export * from './useInput';
 export * from './useSuggestions';
 export * from './useWarnWhenUnsavedChanges';

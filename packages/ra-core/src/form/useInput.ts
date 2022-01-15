@@ -93,14 +93,14 @@ export const useInput = (props: InputProps): UseInputValue => {
         defaultValue: get(record, source, defaultValue),
         rules: {
             validate: async value => {
-                if (!sanitizedValidate) return;
+                if (!sanitizedValidate) return true;
                 const error = await sanitizedValidate(
                     value,
                     formContext.getValues(),
                     props
                 );
 
-                if (!error) return;
+                if (!error) return true;
                 if ((error as ValidationErrorMessageWithArgs).message) {
                     const {
                         message,
@@ -127,7 +127,7 @@ export const useInput = (props: InputProps): UseInputValue => {
         }
     }, [record]);
 
-    // If there is an input prop, this input has already been enhanced by final-form
+    // If there is an field prop, this input has already been enhanced by react-hook-form
     // This is required in for inputs used inside other inputs (such as the SelectInput inside a ReferenceInput)
     if (options.field) {
         return {

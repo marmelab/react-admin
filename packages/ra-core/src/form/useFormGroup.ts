@@ -68,7 +68,7 @@ export const useFormGroup = (name: string): FormGroupState => {
         errors: undefined,
         isDirty: false,
         isTouched: false,
-        isValid: false,
+        isValid: true,
     });
 
     const updateGroupState = useCallback(() => {
@@ -79,7 +79,7 @@ export const useFormGroup = (name: string): FormGroupState => {
                     name: field,
                     error: get(errors, field, undefined),
                     isDirty: get(dirtyFields, field, false),
-                    isValid: !!get(errors, field, false),
+                    isValid: get(errors, field, undefined) == undefined, // eslint-disable-line
                     isTouched: get(touchedFields, field, false),
                 };
             })
@@ -94,6 +94,18 @@ export const useFormGroup = (name: string): FormGroupState => {
             return oldState;
         });
     }, [dirtyFields, errors, touchedFields, formGroups, name]);
+
+    useEffect(
+        () => {
+            updateGroupState();
+        },
+        // eslint-disable-next-line
+        [
+            // eslint-disable-next-line
+            JSON.stringify({ dirtyFields, errors, touchedFields }),
+            updateGroupState,
+        ]
+    );
 
     useEffect(() => {
         // Whenever the group content changes (input are added or removed)
