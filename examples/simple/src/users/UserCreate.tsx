@@ -24,14 +24,6 @@ const UserEditToolbar = ({ permissions, ...props }) => {
         <Toolbar {...props}>
             <SaveButton
                 label="user.action.save_and_show"
-                mutationOptions={{
-                    onSuccess: data => {
-                        notify('ra.notification.created', 'info', {
-                            smart_count: 1,
-                        });
-                        redirect('show', '/users', data.id);
-                    },
-                }}
                 submitOnEnter={true}
             />
             {permissions === 'admin' && (
@@ -39,8 +31,11 @@ const UserEditToolbar = ({ permissions, ...props }) => {
                     label="user.action.save_and_add"
                     mutationOptions={{
                         onSuccess: data => {
-                            notify('ra.notification.created', 'info', {
-                                smart_count: 1,
+                            notify('ra.notification.created', {
+                                type: 'info',
+                                messageArgs: {
+                                    smart_count: 1,
+                                },
                             });
                             redirect(false);
                         },
@@ -63,8 +58,9 @@ const isValidName = async value =>
 const UserCreate = () => {
     const { permissions } = usePermissions();
     return (
-        <Create aside={<Aside />}>
+        <Create aside={<Aside />} redirect="show">
             <TabbedForm
+                mode="onBlur"
                 warnWhenUnsavedChanges
                 toolbar={<UserEditToolbar permissions={permissions} />}
             >
@@ -86,6 +82,7 @@ const UserCreate = () => {
                                 { id: 'user', name: 'User' },
                                 { id: 'user_simple', name: 'UserSimple' },
                             ]}
+                            validate={[required()]}
                         />
                     </FormTab>
                 )}
