@@ -19,7 +19,8 @@ export const useWarnWhenUnsavedChanges = (
     const navigator = useContext(UNSAFE_NavigationContext).navigator as History;
     const location = useLocation();
     const translate = useTranslate();
-    const { isDirty, isSubmitSuccessful, isSubmitting } = useFormState();
+    const { isSubmitSuccessful, isSubmitting, dirtyFields } = useFormState();
+    const isDirty = Object.keys(dirtyFields).length > 0;
     const initialLocation = useRef(formRootPathname || location.pathname);
 
     useEffect(() => {
