@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent, ReactElement } from 'react';
+import { FunctionComponent, ReactElement, useEffect } from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { useFormContext } from 'react-hook-form';
 import { CoreAdminContext } from '../core';
@@ -147,7 +147,7 @@ describe('useInput', () => {
     });
 
     it('does not apply the defaultValue when input has a value of 0', () => {
-        const { queryByDisplayValue } = render(
+        render(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <FormWithRedirect
                     onSubmit={jest.fn()}
@@ -175,11 +175,11 @@ describe('useInput', () => {
                 />
             </CoreAdminContext>
         );
-        expect(queryByDisplayValue('99')).toBeNull();
+        expect(screen.queryByDisplayValue('99')).toBeNull();
     });
 
     it('does not apply the defaultValue when input has a value of 0', () => {
-        const { queryByDisplayValue } = render(
+        render(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <FormWithRedirect
                     onSubmit={jest.fn()}
@@ -207,7 +207,7 @@ describe('useInput', () => {
                 />
             </CoreAdminContext>
         );
-        expect(queryByDisplayValue('99')).toBeNull();
+        expect(screen.queryByDisplayValue('99')).toBeNull();
     });
 
     const BooleanInput = ({
@@ -236,7 +236,7 @@ describe('useInput', () => {
     };
 
     it('does not change the value if the field is of type checkbox and has no value', () => {
-        const { queryByText } = render(
+        render(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <FormWithRedirect
                     onSubmit={jest.fn()}
@@ -245,11 +245,11 @@ describe('useInput', () => {
                 />
             </CoreAdminContext>
         );
-        expect(queryByText('undefined')).not.toBeNull();
+        expect(screen.queryByText('undefined')).not.toBeNull();
     });
 
     it('applies the defaultValue true when the field is of type checkbox and has no value', () => {
-        const { queryByText } = render(
+        render(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <FormWithRedirect
                     onSubmit={jest.fn()}
@@ -263,11 +263,11 @@ describe('useInput', () => {
                 />
             </CoreAdminContext>
         );
-        expect(queryByText('true')).not.toBeNull();
+        expect(screen.queryByText('true')).not.toBeNull();
     });
 
     it('applies the defaultValue false when the field is of type checkbox and has no value', () => {
-        const { queryByText } = render(
+        render(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <FormWithRedirect
                     onSubmit={jest.fn()}
@@ -281,11 +281,11 @@ describe('useInput', () => {
                 />
             </CoreAdminContext>
         );
-        expect(queryByText('false')).not.toBeNull();
+        expect(screen.queryByText('false')).not.toBeNull();
     });
 
     it('does not apply the defaultValue true when the field is of type checkbox and has a value', () => {
-        const { queryByText } = render(
+        render(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <FormWithRedirect
                     record={{ id: 1, is_published: false }}
@@ -299,11 +299,11 @@ describe('useInput', () => {
                 />
             </CoreAdminContext>
         );
-        expect(queryByText('false')).not.toBeNull();
+        expect(screen.queryByText('false')).not.toBeNull();
     });
 
     it('does not apply the defaultValue false when the field is of type checkbox and has a value', () => {
-        const { queryByText } = render(
+        render(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <FormWithRedirect
                     record={{ id: 1, is_published: true }}
@@ -317,13 +317,52 @@ describe('useInput', () => {
                 />
             </CoreAdminContext>
         );
-        expect(queryByText('true')).not.toBeNull();
+        expect(screen.queryByText('true')).not.toBeNull();
     });
 
-    test.todo(
-        'should apply the provided format function before passing the value to the real input'
-    );
-    test.todo(
-        'should apply the provided parse function before applying the value from the real input'
-    );
+    test('should apply the provided format function before passing the value to the real input', () => {
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <FormWithRedirect
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <Input
+                            format={value => `${value} formatted`}
+                            source="test"
+                            children={({ id, field }) => {
+                                return <input type="text" id={id} {...field} />;
+                            }}
+                            defaultValue="test"
+                        />
+                    )}
+                />
+            </CoreAdminContext>
+        );
+        expect(screen.getByDisplayValue('test formatted')).not.toBeNull();
+    });
+
+    test('should apply the provided parse function before applying the value from the real input', () => {
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <FormWithRedirect
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <Input
+                            defaultValue=""
+                            parse={value => (value + 1).toString()}
+                            source="test"
+                            children={({ id, field }) => {
+                                useEffect(() => {
+                                    field.onChange(999);
+                                }, []);
+
+                                return <input type="text" id={id} {...field} />;
+                            }}
+                        />
+                    )}
+                />
+            </CoreAdminContext>
+        );
+        expect(screen.getByDisplayValue('1000')).not.toBeNull();
+    });
 });
