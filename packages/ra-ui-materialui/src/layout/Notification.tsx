@@ -55,7 +55,7 @@ export const Notification = (props: NotificationProps) => {
     if (!messageInfo) return null;
 
     return (
-        <Snackbar
+        <StyleSnackbar
             open={open}
             message={
                 messageInfo.message &&
@@ -80,14 +80,14 @@ export const Notification = (props: NotificationProps) => {
             }}
             action={
                 messageInfo.notificationOptions.undoable ? (
-                    <StyledButton
+                    <Button
                         color="primary"
                         className={NotificationClasses.undo}
                         size="small"
                         onClick={handleUndo}
                     >
                         <>{translate('ra.action.undo')}</>
-                    </StyledButton>
+                    </Button>
                 ) : null
             }
             {...rest}
@@ -111,7 +111,7 @@ export const NotificationClasses = {
     multiLine: `${PREFIX}-multiLine`,
 };
 
-const StyledButton = styled(Button, { name: PREFIX })(
+const StyleSnackbar = styled(Snackbar, { name: PREFIX })(
     ({ theme, type }: NotificationProps & { theme?: Theme }) => ({
         [`& .${NotificationClasses.success}`]: {
             backgroundColor: theme.palette.success.main,
