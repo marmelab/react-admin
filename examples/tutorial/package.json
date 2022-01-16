@@ -3,6 +3,7 @@
     "version": "3.0.0",
     "private": true,
     "dependencies": {
+        "@mui/icons-material": "^5.0.1",
         "@mui/material": "^5.0.2",
         "ra-data-json-server": "^4.0.0-alpha.0",
         "react": "^17.0.0",

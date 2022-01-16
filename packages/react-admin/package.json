@@ -25,7 +25,10 @@
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "rimraf": "^2.6.3"
+        "expect": "^27.4.6",
+        "npm-dts": "^1.3.10",
+        "rimraf": "^2.6.3",
+        "tsup": "^5.11.11"
     },
     "peerDependencies": {
         "react": "^16.9.0 || ^17.0.0",
@@ -38,6 +41,7 @@
         "@mui/material": "^5.0.2",
         "final-form": "^4.20.4",
         "final-form-arrays": "^3.0.2",
+        "history": "^5.1.0",
         "ra-core": "^4.0.0-alpha.1",
         "ra-i18n-polyglot": "^4.0.0-alpha.1",
         "ra-language-english": "^4.0.0-alpha.1",
