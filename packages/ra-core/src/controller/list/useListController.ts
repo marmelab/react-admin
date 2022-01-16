@@ -176,9 +176,9 @@ const defaultSort = {
     order: SORT_ASC,
 };
 
-export interface ListControllerResult<RaRecordType extends RaRecord = any> {
+export interface ListControllerResult<RecordType extends RaRecord = any> {
     sort: SortPayload;
-    data: RaRecordType[];
+    data: RecordType[];
     defaultTitle?: string;
     displayedFilters: any;
     error?: any;
@@ -188,14 +188,14 @@ export interface ListControllerResult<RaRecordType extends RaRecord = any> {
     hideFilter: (filterName: string) => void;
     isFetching: boolean;
     isLoading: boolean;
-    onSelect: (ids: RaRecordType['id'][]) => void;
-    onToggleItem: (id: RaRecordType['id']) => void;
+    onSelect: (ids: RecordType['id'][]) => void;
+    onToggleItem: (id: RecordType['id']) => void;
     onUnselectItems: () => void;
     page: number;
     perPage: number;
-    refetch: UseGetListHookValue<RaRecordType>['refetch'];
+    refetch: UseGetListHookValue<RecordType>['refetch'];
     resource: string;
-    selectedIds: RaRecordType['id'][];
+    selectedIds: RecordType['id'][];
     setFilters: (
         filters: any,
         displayedFilters: any,
