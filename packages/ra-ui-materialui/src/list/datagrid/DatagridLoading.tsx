@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import classnames from 'classnames';
-import { useTimeout, Identifier, Record } from 'ra-core';
+import { useTimeout, Identifier, RaRecord } from 'ra-core';
 
 import { DatagridClasses } from './useDatagridStyles';
 import { Placeholder } from '../Placeholder';
@@ -127,7 +127,7 @@ export interface DatagridLoadingProps {
         | FC<{
               basePath: string;
               id: Identifier;
-              record: Record;
+              record: RaRecord;
               resource: string;
           }>;
     hasBulkActions?: boolean;

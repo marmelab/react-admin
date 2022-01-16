@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Record } from '../../types';
+import { RaRecord } from '../../types';
 import { RecordContext } from './RecordContext';
 
 /**
@@ -28,10 +28,10 @@ import { RecordContext } from './RecordContext';
  * };
  * render(<TextField record={record} />);
  *
- * @returns {Record} A record object
+ * @returns {RaRecord} A record object
  */
 export const useRecordContext = <
-    RecordType extends Record | Omit<Record, 'id'> = Record
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord
 >(
     props?: UseRecordContextParams<RecordType>
 ): RecordType => {
@@ -43,7 +43,7 @@ export const useRecordContext = <
 };
 
 export interface UseRecordContextParams<
-    RecordType extends Record | Omit<Record, 'id'> = Record
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord
 > {
     record?: RecordType;
     [key: string]: any;

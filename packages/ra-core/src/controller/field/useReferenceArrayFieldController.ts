@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 
-import { Record, SortPayload } from '../../types';
+import { RaRecord, SortPayload } from '../../types';
 import { useGetManyAggregate } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';
 import { useNotify } from '../../notification';
@@ -9,7 +9,7 @@ export interface UseReferenceArrayFieldControllerParams {
     filter?: any;
     page?: number;
     perPage?: number;
-    record?: Record;
+    record?: RaRecord;
     reference: string;
     resource: string;
     sort?: SortPayload;

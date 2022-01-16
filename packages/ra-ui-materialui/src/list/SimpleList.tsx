@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom';
 import {
     Identifier,
     linkToRecord,
-    Record,
+    RaRecord,
     RecordContextProvider,
     sanitizeListRestProps,
     useListContext,
@@ -61,7 +61,7 @@ import { SimpleListLoading } from './SimpleListLoading';
  *     </List>
  * );
  */
-export const SimpleList = <RecordType extends Record = Record>(
+export const SimpleList = <RecordType extends RaRecord = any>(
     props: SimpleListProps<RecordType>
 ) => {
     const {
@@ -204,12 +204,12 @@ SimpleList.propTypes = {
     rowStyle: PropTypes.func,
 };
 
-export type FunctionToElement<RecordType extends Record = Record> = (
+export type FunctionToElement<RecordType extends RaRecord = any> = (
     record: RecordType,
     id: Identifier
 ) => ReactNode;
 
-export interface SimpleListProps<RecordType extends Record = Record>
+export interface SimpleListProps<RecordType extends RaRecord = any>
     extends Omit<ListProps, 'classes'> {
     className?: string;
     hasBulkActions?: boolean;
@@ -221,7 +221,7 @@ export interface SimpleListProps<RecordType extends Record = Record>
     rightIcon?: FunctionToElement<RecordType>;
     secondaryText?: FunctionToElement<RecordType> | ReactElement;
     tertiaryText?: FunctionToElement<RecordType> | ReactElement;
-    rowStyle?: (record: Record, index: number) => any;
+    rowStyle?: (record: RecordType, index: number) => any;
     // can be injected when using the component without context
     resource?: string;
     data?: RecordType[];
@@ -279,13 +279,13 @@ const LinkOrNot = (
     );
 };
 
-export type FunctionLinkType = (record: Record, id: Identifier) => string;
+export type FunctionLinkType = (record: RaRecord, id: Identifier) => string;
 
 export interface LinkOrNotProps {
     linkType?: string | FunctionLinkType | boolean;
     resource: string;
     id: Identifier;
-    record: Record;
+    record: RaRecord;
     children: ReactNode;
 }
 

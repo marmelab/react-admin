@@ -10,7 +10,7 @@ import {
 
 import { useDataProvider } from './useDataProvider';
 import undoableEventEmitter from './undoableEventEmitter';
-import { Record, UpdateManyParams, MutationMode } from '../types';
+import { RaRecord, UpdateManyParams, MutationMode } from '../types';
 import { Identifier } from '..';
 
 /**
@@ -65,7 +65,7 @@ import { Identifier } from '..';
  *     return <button disabled={isLoading} onClick={() => updateMany()}>Reset views</button>;
  * };
  */
-export const useUpdateMany = <RecordType extends Record = Record>(
+export const useUpdateMany = <RecordType extends RaRecord = any>(
     resource?: string,
     params: Partial<UpdateManyParams<Partial<RecordType>>> = {},
     options: UseUpdateManyOptions<RecordType> = {}
@@ -387,7 +387,7 @@ export const useUpdateMany = <RecordType extends Record = Record>(
 
 type Snapshot = [key: QueryKey, value: any][];
 
-export interface UseUpdateManyMutateParams<RecordType extends Record = Record> {
+export interface UseUpdateManyMutateParams<RecordType extends RaRecord = any> {
     resource?: string;
     ids?: Array<RecordType['id']>;
     data?: Partial<RecordType>;
@@ -395,14 +395,14 @@ export interface UseUpdateManyMutateParams<RecordType extends Record = Record> {
 }
 
 export type UseUpdateManyOptions<
-    RecordType extends Record = Record
+    RecordType extends RaRecord = any
 > = UseMutationOptions<
     Array<RecordType['id']>,
     unknown,
     Partial<UseUpdateManyMutateParams<RecordType>>
 > & { mutationMode?: MutationMode };
 
-export type UseUpdateManyResult<RecordType extends Record = Record> = [
+export type UseUpdateManyResult<RecordType extends RaRecord = any> = [
     (
         resource?: string,
         params?: Partial<UpdateManyParams<RecordType>>,

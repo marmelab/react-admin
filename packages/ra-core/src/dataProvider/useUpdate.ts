@@ -10,7 +10,7 @@ import {
 
 import { useDataProvider } from './useDataProvider';
 import undoableEventEmitter from './undoableEventEmitter';
-import { Record, UpdateParams, MutationMode } from '../types';
+import { RaRecord, UpdateParams, MutationMode } from '../types';
 
 /**
  * Get a callback to call the dataProvider.update() method, the result and the loading state.
@@ -71,7 +71,7 @@ import { Record, UpdateParams, MutationMode } from '../types';
  * const [update, { data }] = useUpdate<Product>('products', { id, data: diff, previousData: product });
  *                    \-- data is Product
  */
-export const useUpdate = <RecordType extends Record = Record>(
+export const useUpdate = <RecordType extends RaRecord = any>(
     resource?: string,
     params: Partial<UpdateParams<RecordType>> = {},
     options: UseUpdateOptions<RecordType> = {}
@@ -387,7 +387,7 @@ export const useUpdate = <RecordType extends Record = Record>(
 
 type Snapshot = [key: QueryKey, value: any][];
 
-export interface UseUpdateMutateParams<RecordType extends Record = Record> {
+export interface UseUpdateMutateParams<RecordType extends RaRecord = any> {
     resource?: string;
     id?: RecordType['id'];
     data?: Partial<RecordType>;
@@ -395,14 +395,14 @@ export interface UseUpdateMutateParams<RecordType extends Record = Record> {
 }
 
 export type UseUpdateOptions<
-    RecordType extends Record = Record
+    RecordType extends RaRecord = any
 > = UseMutationOptions<
     RecordType,
     unknown,
     Partial<UseUpdateMutateParams<RecordType>>
 > & { mutationMode?: MutationMode };
 
-export type UseUpdateResult<RecordType extends Record = Record> = [
+export type UseUpdateResult<RecordType extends RaRecord = any> = [
     (
         resource?: string,
         params?: Partial<UpdateParams<RecordType>>,

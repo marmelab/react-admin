@@ -16,7 +16,7 @@ import { styled } from '@mui/material/styles';
 import {
     FormWithRedirectRenderProps,
     MutationMode,
-    Record,
+    RaRecord,
     useResourceContext,
 } from 'ra-core';
 import { Toolbar } from './Toolbar';
@@ -154,7 +154,7 @@ export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
     className?: string;
     margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
-    record?: Partial<Record>;
+    record?: Partial<RaRecord>;
     resource?: string;
     formRootPathname?: string;
     syncWithLocation?: boolean;

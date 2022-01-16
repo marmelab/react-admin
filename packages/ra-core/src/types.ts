@@ -14,7 +14,8 @@ import {
  */
 
 export type Identifier = string | number;
-export interface Record {
+
+export interface RaRecord {
     id: Identifier;
     [key: string]: any;
 }
@@ -77,47 +78,47 @@ export type LegacyAuthProvider = (
  */
 
 export type DataProvider = {
-    getList: <RecordType extends Record = Record>(
+    getList: <RecordType extends RaRecord = any>(
         resource: string,
         params: GetListParams
     ) => Promise<GetListResult<RecordType>>;
 
-    getOne: <RecordType extends Record = Record>(
+    getOne: <RecordType extends RaRecord = any>(
         resource: string,
         params: GetOneParams
     ) => Promise<GetOneResult<RecordType>>;
 
-    getMany: <RecordType extends Record = Record>(
+    getMany: <RecordType extends RaRecord = any>(
         resource: string,
         params: GetManyParams
     ) => Promise<GetManyResult<RecordType>>;
 
-    getManyReference: <RecordType extends Record = Record>(
+    getManyReference: <RecordType extends RaRecord = any>(
         resource: string,
         params: GetManyReferenceParams
     ) => Promise<GetManyReferenceResult<RecordType>>;
 
-    update: <RecordType extends Record = Record>(
+    update: <RecordType extends RaRecord = any>(
         resource: string,
         params: UpdateParams
     ) => Promise<UpdateResult<RecordType>>;
 
-    updateMany: <RecordType extends Record = Record>(
+    updateMany: <RecordType extends RaRecord = any>(
         resource: string,
         params: UpdateManyParams
     ) => Promise<UpdateManyResult<RecordType>>;
 
-    create: <RecordType extends Record = Record>(
+    create: <RecordType extends RaRecord = any>(
         resource: string,
         params: CreateParams
     ) => Promise<CreateResult<RecordType>>;
 
-    delete: <RecordType extends Record = Record>(
+    delete: <RecordType extends RaRecord = any>(
         resource: string,
         params: DeleteParams<RecordType>
     ) => Promise<DeleteResult<RecordType>>;
 
-    deleteMany: <RecordType extends Record = Record>(
+    deleteMany: <RecordType extends RaRecord = any>(
         resource: string,
         params: DeleteManyParams<RecordType>
     ) => Promise<DeleteManyResult<RecordType>>;
@@ -130,16 +131,16 @@ export interface GetListParams {
     sort: SortPayload;
     filter: any;
 }
-export interface GetListResult<RecordType extends Record = Record> {
+export interface GetListResult<RecordType extends RaRecord = any> {
     data: RecordType[];
     total: number;
     validUntil?: ValidUntil;
 }
 
-export interface GetOneParams<RecordType extends Record = Record> {
+export interface GetOneParams<RecordType extends RaRecord = any> {
     id: RecordType['id'];
 }
-export interface GetOneResult<RecordType extends Record = Record> {
+export interface GetOneResult<RecordType extends RaRecord = any> {
     data: RecordType;
     validUntil?: ValidUntil;
 }
@@ -147,7 +148,7 @@ export interface GetOneResult<RecordType extends Record = Record> {
 export interface GetManyParams {
     ids: Identifier[];
 }
-export interface GetManyResult<RecordType extends Record = Record> {
+export interface GetManyResult<RecordType extends RaRecord = any> {
     data: RecordType[];
     validUntil?: ValidUntil;
 }
@@ -159,7 +160,7 @@ export interface GetManyReferenceParams {
     sort: SortPayload;
     filter: any;
 }
-export interface GetManyReferenceResult<RecordType extends Record = Record> {
+export interface GetManyReferenceResult<RecordType extends RaRecord = any> {
     data: RecordType[];
     total: number;
     validUntil?: ValidUntil;
@@ -170,7 +171,7 @@ export interface UpdateParams<T = any> {
     data: Partial<T>;
     previousData: T;
 }
-export interface UpdateResult<RecordType extends Record = Record> {
+export interface UpdateResult<RecordType extends RaRecord = any> {
     data: RecordType;
     validUntil?: ValidUntil;
 }
@@ -179,7 +180,7 @@ export interface UpdateManyParams<T = any> {
     ids: Identifier[];
     data: T;
 }
-export interface UpdateManyResult<RecordType extends Record = Record> {
+export interface UpdateManyResult<RecordType extends RaRecord = any> {
     data?: RecordType['id'][];
     validUntil?: ValidUntil;
 }
@@ -187,27 +188,27 @@ export interface UpdateManyResult<RecordType extends Record = Record> {
 export interface CreateParams<T = any> {
     data: T;
 }
-export interface CreateResult<RecordType extends Record = Record> {
+export interface CreateResult<RecordType extends RaRecord = any> {
     data: RecordType;
     validUntil?: ValidUntil;
 }
 
-export interface DeleteParams<RecordType extends Record = Record> {
+export interface DeleteParams<RecordType extends RaRecord = any> {
     id: Identifier;
     previousData?: RecordType;
 }
-export interface DeleteResult<RecordType extends Record = Record> {
+export interface DeleteResult<RecordType extends RaRecord = any> {
     data: RecordType;
 }
 
-export interface DeleteManyParams<RecordType extends Record = Record> {
+export interface DeleteManyParams<RecordType extends RaRecord = any> {
     ids: RecordType['id'][];
 }
-export interface DeleteManyResult<RecordType extends Record = Record> {
+export interface DeleteManyResult<RecordType extends RaRecord = any> {
     data?: RecordType['id'][];
 }
 
-export type DataProviderResult<RecordType extends Record = Record> =
+export type DataProviderResult<RecordType extends RaRecord = any> =
     | CreateResult<RecordType>
     | DeleteResult<RecordType>
     | DeleteManyResult

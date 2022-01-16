@@ -8,7 +8,7 @@ import {
     ListContextProvider,
     useListContext,
     useResourceContext,
-    Record,
+    RaRecord,
 } from 'ra-core';
 
 import { ListView, ListViewProps } from './ListView';
@@ -34,7 +34,7 @@ import { listFieldTypes } from './listFieldTypes';
  *     </Admin>
  * );
  */
-export const ListGuesser = <RecordType extends Record = Record>() => {
+export const ListGuesser = <RecordType extends RaRecord = any>() => {
     const controllerProps = useListController<RecordType>();
     return (
         <ListContextProvider value={controllerProps}>

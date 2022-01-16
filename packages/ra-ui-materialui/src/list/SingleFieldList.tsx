@@ -14,7 +14,7 @@ import {
     sanitizeListRestProps,
     useListContext,
     useResourceContext,
-    Record,
+    RaRecord,
     RecordContextProvider,
     ComponentPropType,
 } from 'ra-core';
@@ -122,7 +122,7 @@ SingleFieldList.propTypes = {
     resource: PropTypes.string,
 };
 
-export interface SingleFieldListProps<RecordType extends Record = Record>
+export interface SingleFieldListProps<RecordType extends RaRecord = any>
     extends HtmlHTMLAttributes<HTMLDivElement> {
     className?: string;
 

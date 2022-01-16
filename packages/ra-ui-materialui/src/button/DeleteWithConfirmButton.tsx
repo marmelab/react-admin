@@ -8,7 +8,7 @@ import inflection from 'inflection';
 import { UseMutationOptions } from 'react-query';
 import {
     MutationMode,
-    Record,
+    RaRecord,
     DeleteParams,
     RedirectionSideEffect,
     useDeleteWithConfirmController,
@@ -19,7 +19,7 @@ import {
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
 
-export const DeleteWithConfirmButton = <RecordType extends Record = Record>(
+export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
     props: DeleteWithConfirmButtonProps<RecordType>
 ) => {
     const {
@@ -98,9 +98,8 @@ export const DeleteWithConfirmButton = <RecordType extends Record = Record>(
 
 const defaultIcon = <ActionDelete />;
 
-export interface DeleteWithConfirmButtonProps<
-    RecordType extends Record = Record
-> extends Omit<ButtonProps, 'record'> {
+export interface DeleteWithConfirmButtonProps<RecordType extends RaRecord = any>
+    extends Omit<ButtonProps, 'record'> {
     basePath?: string;
     className?: string;
     confirmTitle?: string;

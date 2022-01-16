@@ -1668,9 +1668,6 @@ const Toolbar = (props) => {
 }
 ```
 
-
-
-
 We removed the `handleSubmit` and `handleSubmitWithRedirect` props completely. Instead, when provided any of the side effects props, the `<SaveButton>` will render a simple button and will call the `save` function with them. It also take care of preventing the default form submit.
 
 If you relied on `handleSubmit` or `handleSubmitWithRedirect`, you can now use the `SaveButton` and override any of the side effect props: `onSuccess`, `onFailure` or `transform`.
@@ -1798,6 +1795,26 @@ const MyComponent = () => {
             <TextInput source="name" />
         </SimpleForm>
     )
+};
+```
+
+## TypeScript: `Record` Was Renamed To `RaRecord`
+
+Data Provider methods used to return records with a generic `Record` type, unless you were passing an explicit type. The `Record` type conflicted with TypeScript's native `Record` type and sometimes confused IDEs.
+
+We've renamed that type to `RaRecord` to avoid any confusion.
+
+If you've declared custom Record types, you'll need to upgrade your code as follows:
+
+```diff
+-import { Record } from 'react-admin';
++import { RaRecord } from 'react-admin';
+
+-export interface Customer extends Record {
++export interface Customer extends RaRecord {
+    id: string;
+    name: string;
+    email: string;
 }
 ```
 

@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
 
 import { CoreAdminContext } from '../core';
-import { Record } from '../types';
+import { RaRecord } from '../types';
 import { useUpdate } from './useUpdate';
 import {
     ErrorCase as ErrorCasePessimistic,
@@ -118,7 +118,7 @@ describe('useUpdate', () => {
     });
     describe('data', () => {
         it('returns a data typed based on the parametric type', async () => {
-            interface Product extends Record {
+            interface Product extends RaRecord {
                 sku: string;
             }
             const dataProvider = {

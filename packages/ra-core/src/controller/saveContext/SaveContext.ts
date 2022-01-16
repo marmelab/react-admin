@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { Record, onError, OnSuccess, TransformData } from '../../types';
+import { RaRecord, onError, OnSuccess, TransformData } from '../../types';
 
 export interface SaveContextValue {
     save?: SaveHandler;
@@ -7,7 +7,7 @@ export interface SaveContextValue {
 }
 
 export type SaveHandler = (
-    record: Partial<Record>,
+    record: Partial<RaRecord>,
     callbacks?: {
         onSuccess?: OnSuccess;
         onError?: onError;

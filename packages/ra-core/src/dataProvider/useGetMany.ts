@@ -6,7 +6,7 @@ import {
     hashQueryKey,
 } from 'react-query';
 
-import { Record, GetManyParams } from '../types';
+import { RaRecord, GetManyParams } from '../types';
 import { useDataProvider } from './useDataProvider';
 
 /**
@@ -48,7 +48,7 @@ import { useDataProvider } from './useDataProvider';
  *     )}</ul>;
  * };
  */
-export const useGetMany = <RecordType extends Record = Record>(
+export const useGetMany = <RecordType extends RaRecord = any>(
     resource: string,
     params: Partial<GetManyParams> = {},
     options?: UseQueryOptions<RecordType[], Error>
@@ -96,5 +96,5 @@ export const useGetMany = <RecordType extends Record = Record>(
 };
 
 export type UseGetManyHookValue<
-    RecordType extends Record = Record
+    RecordType extends RaRecord = any
 > = UseQueryResult<RecordType[], Error>;

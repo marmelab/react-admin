@@ -1,7 +1,7 @@
-import { Record, Translate } from '../../types';
+import { RaRecord, Translate } from '../../types';
 import { MatchingReferencesError } from './types';
 
-interface GetStatusForInputParams<RecordType extends Record = Record> {
+interface GetStatusForInputParams<RecordType extends RaRecord = any> {
     input: {
         value: any;
     };
@@ -15,7 +15,7 @@ const isMatchingReferencesError = (
 ): matchingReferences is MatchingReferencesError =>
     matchingReferences && matchingReferences.error !== undefined;
 
-export const getStatusForInput = <RecordType extends Record = Record>({
+export const getStatusForInput = <RecordType extends RaRecord = any>({
     input,
     matchingReferences,
     referenceRecord,
@@ -59,7 +59,7 @@ export const REFERENCES_STATUS_READY = 'REFERENCES_STATUS_READY';
 export const REFERENCES_STATUS_INCOMPLETE = 'REFERENCES_STATUS_INCOMPLETE';
 export const REFERENCES_STATUS_EMPTY = 'REFERENCES_STATUS_EMPTY';
 
-export const getSelectedReferencesStatus = <RecordType extends Record = Record>(
+export const getSelectedReferencesStatus = <RecordType extends RaRecord = any>(
     input: {
         value: any;
     },
@@ -71,7 +71,7 @@ export const getSelectedReferencesStatus = <RecordType extends Record = Record>(
         ? REFERENCES_STATUS_INCOMPLETE
         : REFERENCES_STATUS_EMPTY;
 
-interface GetStatusForArrayInputParams<RecordType extends Record = Record> {
+interface GetStatusForArrayInputParams<RecordType extends RaRecord = any> {
     input: {
         value: any;
     };
@@ -80,7 +80,7 @@ interface GetStatusForArrayInputParams<RecordType extends Record = Record> {
     translate: Translate;
 }
 
-export const getStatusForArrayInput = <RecordType extends Record = Record>({
+export const getStatusForArrayInput = <RecordType extends RaRecord = any>({
     input,
     matchingReferences,
     referenceRecords,

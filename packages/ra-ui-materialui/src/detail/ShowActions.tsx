@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { Record, useResourceDefinition, useRecordContext } from 'ra-core';
+import { RaRecord, useResourceDefinition, useRecordContext } from 'ra-core';
 
 import { EditButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
@@ -45,7 +45,7 @@ export const ShowActions = (props: ShowActionsProps) => {
 
 export interface ShowActionsProps {
     className?: string;
-    record?: Record;
+    record?: RaRecord;
 }
 
 ShowActions.propTypes = {

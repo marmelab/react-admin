@@ -10,7 +10,7 @@ import {
 
 import { useDataProvider } from './useDataProvider';
 import undoableEventEmitter from './undoableEventEmitter';
-import { Record, DeleteManyParams, MutationMode } from '../types';
+import { RaRecord, DeleteManyParams, MutationMode } from '../types';
 
 /**
  * Get a callback to call the dataProvider.delete() method, the result and the loading state.
@@ -70,7 +70,7 @@ import { Record, DeleteManyParams, MutationMode } from '../types';
  * const [deleteMany, { data }] = useDeleteMany<Product>('products', { ids });
  *                        \-- data is Product
  */
-export const useDeleteMany = <RecordType extends Record = Record>(
+export const useDeleteMany = <RecordType extends RaRecord = any>(
     resource?: string,
     params: Partial<DeleteManyParams<RecordType>> = {},
     options: UseDeleteManyOptions<RecordType> = {}
@@ -385,20 +385,20 @@ export const useDeleteMany = <RecordType extends Record = Record>(
 
 type Snapshot = [key: QueryKey, value: any][];
 
-export interface UseDeleteManyMutateParams<RecordType extends Record = Record> {
+export interface UseDeleteManyMutateParams<RecordType extends RaRecord = any> {
     resource?: string;
     ids?: RecordType['id'][];
 }
 
 export type UseDeleteManyOptions<
-    RecordType extends Record = Record
+    RecordType extends RaRecord = any
 > = UseMutationOptions<
     RecordType['id'][],
     unknown,
     Partial<UseDeleteManyMutateParams<RecordType>>
 > & { mutationMode?: MutationMode };
 
-export type UseDeleteManyResult<RecordType extends Record = Record> = [
+export type UseDeleteManyResult<RecordType extends RaRecord = any> = [
     (
         resource?: string,
         params?: Partial<DeleteManyParams<RecordType>>,

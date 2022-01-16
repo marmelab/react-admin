@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { Record, Resource, required, useCreate } from 'ra-core';
+import { RaRecord, Resource, required, useCreate } from 'ra-core';
 import { createMemoryHistory } from 'history';
 import {
     Dialog,
@@ -141,7 +141,7 @@ export const CustomTextFunction = () => (
     </Admin>
 );
 
-const CustomOption = ({ record, ...rest }: { record?: Record }) => (
+const CustomOption = ({ record, ...rest }: { record?: RaRecord }) => (
     <div {...rest}>
         {record?.fullName}&nbsp;<i>({record?.language})</i>
     </div>

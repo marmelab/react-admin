@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { Record } from '../../types';
+import { RaRecord } from '../../types';
 import { useRecordContext } from './useRecordContext';
 
 /**
@@ -14,14 +14,14 @@ import { useRecordContext } from './useRecordContext';
  *   </Show>
  * );
  */
-export const WithRecord = <RecordType extends Record>({
+export const WithRecord = <RecordType extends RaRecord>({
     render,
 }: WithRecordProps<RecordType>) => {
     const record = useRecordContext<RecordType>();
     return record ? render(record) : null;
 };
 
-export interface WithRecordProps<RecordType extends Record> {
+export interface WithRecordProps<RecordType extends RaRecord> {
     render: (record: RecordType) => ReactElement;
     label?: string;
 }

@@ -11,7 +11,7 @@ import {
     FormWithRedirect,
     FormWithRedirectProps,
     MutationMode,
-    Record,
+    RaRecord,
     RedirectionSideEffect,
     OnSuccess,
     onError,
@@ -137,12 +137,12 @@ export interface TabbedFormProps
     formRootPathname?: string;
     margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
-    record?: Record;
+    record?: RaRecord;
     redirect?: RedirectionSideEffect;
     resource?: string;
     sanitizeEmptyValues?: boolean;
     save?: (
-        data: Partial<Record>,
+        data: Partial<RaRecord>,
         redirectTo: RedirectionSideEffect,
         options?: {
             onSuccess?: OnSuccess;

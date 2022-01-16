@@ -7,7 +7,7 @@ import {
     DateField,
     useTranslate,
     useGetList,
-    Record,
+    RaRecord,
     ReferenceField,
     useLocale,
 } from 'react-admin';
@@ -46,7 +46,7 @@ const AsideRoot = styled('div')(({ theme }) => ({
 }));
 
 interface AsideProps {
-    record?: Record;
+    record?: RaRecord;
     basePath?: string;
 }
 
@@ -62,7 +62,7 @@ Aside.propTypes = {
 };
 
 interface EventListProps {
-    record?: Record;
+    record?: RaRecord;
     basePath?: string;
 }
 

@@ -6,7 +6,7 @@ import { ButtonProps as MuiButtonProps } from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import {
     linkToRecord,
-    Record,
+    RaRecord,
     useResourceContext,
     useRecordContext,
 } from 'ra-core';
@@ -62,7 +62,7 @@ interface Props {
     basePath?: string;
     icon?: ReactElement;
     label?: string;
-    record?: Record;
+    record?: RaRecord;
     scrollToTop?: boolean;
 }
 

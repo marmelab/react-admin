@@ -13,7 +13,7 @@ import {
     RedirectionSideEffect,
 } from '../../sideEffect';
 import { useNotify } from '../../notification';
-import { Record, MutationMode, DeleteParams } from '../../types';
+import { RaRecord, MutationMode, DeleteParams } from '../../types';
 import { useResourceContext } from '../../core';
 
 /**
@@ -68,7 +68,7 @@ import { useResourceContext } from '../../core';
  *     );
  * };
  */
-const useDeleteWithConfirmController = <RecordType extends Record = Record>(
+const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
     props: UseDeleteWithConfirmControllerParams<RecordType>
 ): UseDeleteWithConfirmControllerReturn => {
     const {
@@ -166,7 +166,7 @@ const useDeleteWithConfirmController = <RecordType extends Record = Record>(
 };
 
 export interface UseDeleteWithConfirmControllerParams<
-    RecordType extends Record = Record
+    RecordType extends RaRecord = any
 > {
     basePath?: string;
     mutationMode?: MutationMode;

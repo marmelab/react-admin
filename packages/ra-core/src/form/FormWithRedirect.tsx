@@ -6,7 +6,7 @@ import arrayMutators from 'final-form-arrays';
 import useResetSubmitErrors from './useResetSubmitErrors';
 import sanitizeEmptyValues from './sanitizeEmptyValues';
 import getFormInitialValues from './getFormInitialValues';
-import { Record as RaRecord } from '../types';
+import { RaRecord } from '../types';
 import { useNotify } from '../notification';
 import { useSaveContext, SaveHandler } from '../controller';
 import { useRecordContext, OptionalRecordContextProvider } from '../controller';

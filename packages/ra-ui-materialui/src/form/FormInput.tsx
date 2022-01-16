@@ -3,12 +3,12 @@ import { styled } from '@mui/material/styles';
 import { HtmlHTMLAttributes, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { Record } from 'ra-core';
+import { RaRecord } from 'ra-core';
 
 import { Labeled } from '../input/Labeled';
 
 export const FormInput = <
-    RecordType extends Record | Omit<Record, 'id'> = Record
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = any
 >(
     props: FormInputProps<RecordType>
 ) => {
@@ -67,7 +67,7 @@ FormInput.propTypes = {
 };
 
 export interface FormInputProps<
-    RecordType extends Record | Omit<Record, 'id'> = Record
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = any
 > extends HtmlHTMLAttributes<HTMLDivElement> {
     basePath: string;
     input: ReactElement<{

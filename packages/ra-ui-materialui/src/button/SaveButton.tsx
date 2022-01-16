@@ -11,7 +11,7 @@ import { useForm } from 'react-final-form';
 import {
     CreateParams,
     MutationMode,
-    Record,
+    RaRecord,
     TransformData,
     UpdateParams,
     useSaveContext,
@@ -46,7 +46,7 @@ import { sanitizeButtonRestProps } from './Button';
  *     return <SaveButton {...props} mutationOptions={{ onSuccess }} />;
  * }
  */
-export const SaveButton = <RecordType extends Record = Record>(
+export const SaveButton = <RecordType extends RaRecord = any>(
     props: SaveButtonProps<RecordType>
 ) => {
     const {
@@ -121,7 +121,7 @@ export const SaveButton = <RecordType extends Record = Record>(
 
 const defaultIcon = <ContentSave />;
 
-interface Props<RecordType extends Record = Record> {
+interface Props<RecordType extends RaRecord = any> {
     classes?: object;
     className?: string;
     disabled?: boolean;
@@ -139,12 +139,12 @@ interface Props<RecordType extends Record = Record> {
     variant?: string;
     // May be injected by Toolbar - sanitized in Button
     basePath?: string;
-    record?: Record;
+    record?: RaRecord;
     resource?: string;
     mutationMode?: MutationMode;
 }
 
-export type SaveButtonProps<RecordType extends Record = Record> = Props<
+export type SaveButtonProps<RecordType extends RaRecord = any> = Props<
     RecordType
 > &
     ButtonProps;

@@ -8,7 +8,7 @@ import {
 } from 'react-query';
 
 import { useDataProvider } from './useDataProvider';
-import { Record, CreateParams } from '../types';
+import { RaRecord, CreateParams } from '../types';
 
 /**
  * Get a callback to call the dataProvider.create() method, the result and the loading state.
@@ -66,7 +66,7 @@ import { Record, CreateParams } from '../types';
  * const [create, { data }] = useCreate<Product>('products', { data: product });
  *                    \-- data is Product
  */
-export const useCreate = <RecordType extends Record = Record>(
+export const useCreate = <RecordType extends RaRecord = any>(
     resource?: string,
     params: Partial<CreateParams> = {},
     options: UseCreateOptions<RecordType> = {}
@@ -122,20 +122,20 @@ export const useCreate = <RecordType extends Record = Record>(
     return [create, mutation];
 };
 
-export interface UseCreateMutateParams<RecordType extends Record = Record> {
+export interface UseCreateMutateParams<RecordType extends RaRecord = any> {
     resource?: string;
     data?: Partial<RecordType>;
 }
 
 export type UseCreateOptions<
-    RecordType extends Record = Record
+    RecordType extends RaRecord = any
 > = UseMutationOptions<
     RecordType,
     unknown,
     Partial<UseCreateMutateParams<RecordType>>
 >;
 
-export type UseCreateResult<RecordType extends Record = Record> = [
+export type UseCreateResult<RecordType extends RaRecord = any> = [
     (
         resource?: string,
         params?: Partial<CreateParams<Partial<RecordType>>>,

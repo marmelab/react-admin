@@ -8,7 +8,7 @@ import {
     RedirectionSideEffect,
 } from '../../sideEffect';
 import { useNotify } from '../../notification';
-import { Record, DeleteParams } from '../../types';
+import { RaRecord, DeleteParams } from '../../types';
 import { useResourceContext } from '../../core';
 
 /**
@@ -48,7 +48,7 @@ import { useResourceContext } from '../../core';
  *     );
  * };
  */
-const useDeleteWithUndoController = <RecordType extends Record = Record>(
+const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
     props: UseDeleteWithUndoControllerParams<RecordType>
 ): UseDeleteWithUndoControllerReturn => {
     const {
@@ -124,7 +124,7 @@ const useDeleteWithUndoController = <RecordType extends Record = Record>(
 };
 
 export interface UseDeleteWithUndoControllerParams<
-    RecordType extends Record = Record
+    RecordType extends RaRecord = any
 > {
     basePath?: string;
     record?: RecordType;

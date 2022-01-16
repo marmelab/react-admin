@@ -5,10 +5,10 @@ import {
     TextField,
     ResourceContextProvider,
     Identifier,
-    Record,
+    RaRecord,
 } from 'react-admin';
 
-const PostPreview = <RecordType extends Record = Record>({
+const PostPreview = <RecordType extends RaRecord = any>({
     id,
     resource,
 }: {

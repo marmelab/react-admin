@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { useGetList, UseGetManyHookValue } from '../../dataProvider';
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
-import { PaginationPayload, Record, SortPayload } from '../../types';
+import { PaginationPayload, RaRecord, SortPayload } from '../../types';
 import { ListControllerResult } from '../list';
 import { useReference } from '../useReference';
 import usePaginationState from '../usePaginationState';
@@ -54,7 +54,7 @@ const defaultFilter = {};
  *      filterToQuery: searchText => ({ title: searchText })
  * });
  */
-export const useReferenceInputController = <RecordType extends Record = Record>(
+export const useReferenceInputController = <RecordType extends RaRecord = any>(
     props: UseReferenceInputControllerParams
 ): ReferenceInputValue<RecordType> => {
     const {
@@ -216,10 +216,10 @@ export const useReferenceInputController = <RecordType extends Record = Record>(
 const hideFilter = () => {};
 const showFilter = () => {};
 
-export interface ReferenceInputValue<RecordType extends Record = Record> {
+export interface ReferenceInputValue<RecordType extends RaRecord = any> {
     possibleValues: ListControllerResult<RecordType>;
     referenceRecord: {
-        data?: Record;
+        data?: RaRecord;
         isLoading: boolean;
         isFetching: boolean;
         error?: any;
@@ -252,7 +252,7 @@ export interface UseReferenceInputControllerParams {
     input?: any;
     page?: number;
     perPage?: number;
-    record?: Record;
+    record?: RaRecord;
     reference: string;
     // @deprecated ignored
     referenceSource?: typeof defaultReferenceSource;

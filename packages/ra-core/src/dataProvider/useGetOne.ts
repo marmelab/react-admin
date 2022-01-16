@@ -1,4 +1,4 @@
-import { Record, GetOneParams } from '../types';
+import { RaRecord, GetOneParams } from '../types';
 import { useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
 import { useDataProvider } from './useDataProvider';
 
@@ -40,7 +40,7 @@ import { useDataProvider } from './useDataProvider';
  *     return <div>User {data.username}</div>;
  * };
  */
-export const useGetOne = <RecordType extends Record = Record>(
+export const useGetOne = <RecordType extends RaRecord = any>(
     resource: string,
     { id }: GetOneParams<RecordType>,
     options?: UseQueryOptions<RecordType>
@@ -60,5 +60,5 @@ export const useGetOne = <RecordType extends Record = Record>(
 };
 
 export type UseGetOneHookValue<
-    RecordType extends Record = Record
+    RecordType extends RaRecord = any
 > = UseQueryResult<RecordType>;

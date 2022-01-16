@@ -15,7 +15,7 @@ import { TableCell, TableRow, TableRowProps, Checkbox } from '@mui/material';
 import {
     Identifier,
     linkToRecord,
-    Record,
+    RaRecord,
     RecordContextProvider,
     useExpanded,
     useResourceContext,
@@ -265,7 +265,7 @@ export interface DatagridRowProps
         | FC<{
               basePath: string;
               id: Identifier;
-              record: Record;
+              record: RaRecord;
               resource: string;
           }>;
     hasBulkActions?: boolean;
@@ -275,7 +275,7 @@ export interface DatagridRowProps
         id: Identifier,
         event: React.TouchEvent | React.MouseEvent
     ) => void;
-    record?: Record;
+    record?: RaRecord;
     resource?: string;
     rowClick?: RowClickFunction | string;
     selected?: boolean;
@@ -286,7 +286,7 @@ export interface DatagridRowProps
 export type RowClickFunction = (
     id: Identifier,
     basePath: string,
-    record: Record
+    record: RaRecord
 ) => string | Promise<string>;
 
 const areEqual = (prevProps, nextProps) => {

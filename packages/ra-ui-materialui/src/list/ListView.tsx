@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { SxProps } from '@mui/system';
 import Card from '@mui/material/Card';
 import classnames from 'classnames';
-import { ComponentPropType, useListContext, Record } from 'ra-core';
+import { ComponentPropType, useListContext, RaRecord } from 'ra-core';
 
 import { Title, TitlePropType } from '../layout/Title';
 import { ListToolbar } from './ListToolbar';
@@ -18,7 +18,7 @@ const defaultPagination = <DefaultPagination />;
 const defaultEmpty = <Empty />;
 const DefaultComponent = Card;
 
-export const ListView = <RecordType extends Record = Record>(
+export const ListView = <RecordType extends RaRecord = any>(
     props: ListViewProps
 ) => {
     const {

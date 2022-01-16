@@ -1,12 +1,7 @@
 import * as React from 'react';
 import { render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
-import {
-    useNotificationContext,
-    DataProvider,
-    FormWithRedirect,
-    MutationMode,
-} from 'ra-core';
+import { DataProvider, FormWithRedirect, MutationMode } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { SaveButton } from './SaveButton';

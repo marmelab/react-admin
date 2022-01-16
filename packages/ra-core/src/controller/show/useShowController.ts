@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import { UseQueryOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
-import { Record } from '../../types';
+import { RaRecord } from '../../types';
 import { useGetOne, useRefresh, UseGetOneHookValue } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
 import { useRedirect } from '../../sideEffect';
@@ -41,7 +41,7 @@ import { useResourceContext, useGetResourceLabel } from '../../core';
  *     return <ShowView {...controllerProps} />;
  * };
  */
-export const useShowController = <RecordType extends Record = Record>(
+export const useShowController = <RecordType extends RaRecord = any>(
     props: ShowControllerProps<RecordType> = {}
 ): ShowControllerResult<RecordType> => {
     const { disableAuthentication, id: propsId, queryOptions = {} } = props;
@@ -99,14 +99,14 @@ export const useShowController = <RecordType extends Record = Record>(
     };
 };
 
-export interface ShowControllerProps<RecordType extends Record = Record> {
+export interface ShowControllerProps<RecordType extends RaRecord = any> {
     disableAuthentication?: boolean;
     id?: RecordType['id'];
     queryOptions?: UseQueryOptions<RecordType>;
     resource?: string;
 }
 
-export interface ShowControllerResult<RecordType extends Record = Record> {
+export interface ShowControllerResult<RecordType extends RaRecord = any> {
     defaultTitle: string;
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d

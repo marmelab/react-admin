@@ -1,9 +1,12 @@
 import get from 'lodash/get';
 
 import { linkToRecord } from '../../util';
-import { Record } from '../../types';
+import { RaRecord } from '../../types';
 
-export type LinkToFunctionType = (record: Record, reference: string) => string;
+export type LinkToFunctionType = (
+    record: RaRecord,
+    reference: string
+) => string;
 
 export type LinkToType = string | boolean | LinkToFunctionType;
 
@@ -12,7 +15,7 @@ interface Option {
     reference: string;
     resource: string;
     basePath?: string;
-    record?: Record;
+    record?: RaRecord;
     link?: LinkToType;
     /**
      * @deprecated use link instead

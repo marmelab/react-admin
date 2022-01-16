@@ -11,7 +11,7 @@ import {
 } from 'react';
 import { Typography } from '@mui/material';
 import classNames from 'classnames';
-import { Record } from 'ra-core';
+import { RaRecord } from 'ra-core';
 
 import { FormInput } from '../../form/FormInput';
 import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
@@ -47,7 +47,7 @@ export const SimpleFormIteratorItem = React.forwardRef(
         // If disableRemove is a function, then call the function with the current record to
         // determining if the button should be disabled. Otherwise, use a boolean property that
         // enables or disables the button for all of the fields.
-        const disableRemoveField = (record: Record) => {
+        const disableRemoveField = (record: RaRecord) => {
             if (typeof disableRemove === 'boolean') {
                 return disableRemove;
             }
@@ -158,7 +158,7 @@ export const SimpleFormIteratorItem = React.forwardRef(
     }
 );
 
-export type DisableRemoveFunction = (record: Record) => boolean;
+export type DisableRemoveFunction = (record: RaRecord) => boolean;
 
 export type SimpleFormIteratorItemProps = ArrayInputContextValue & {
     basePath: string;
@@ -172,7 +172,7 @@ export type SimpleFormIteratorItemProps = ArrayInputContextValue & {
     member: string;
     onRemoveField: (index: number) => void;
     onReorder: (origin: number, destination: number) => void;
-    record: Record;
+    record: RaRecord;
     removeButton?: ReactElement;
     reOrderButtons?: ReactElement;
     resource: string;

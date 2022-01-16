@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import { Record } from '../../types';
+import { RaRecord } from '../../types';
 import { RecordContextProvider } from './RecordContext';
 
 /**
@@ -19,7 +19,7 @@ import { RecordContextProvider } from './RecordContext';
  * );
  */
 export const OptionalRecordContextProvider = <
-    RecordType extends Record | Omit<Record, 'id'> = Record
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord
 >({
     value,
     children,

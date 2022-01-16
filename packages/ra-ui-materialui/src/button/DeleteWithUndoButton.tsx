@@ -7,7 +7,7 @@ import ActionDelete from '@mui/icons-material/Delete';
 import classnames from 'classnames';
 import { UseMutationOptions } from 'react-query';
 import {
-    Record,
+    RaRecord,
     RedirectionSideEffect,
     useDeleteWithUndoController,
     DeleteParams,
@@ -16,7 +16,7 @@ import {
 
 import { Button, ButtonProps } from './Button';
 
-export const DeleteWithUndoButton = <RecordType extends Record = Record>(
+export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
     props: DeleteWithUndoButtonProps<RecordType>
 ) => {
     const {
@@ -61,7 +61,7 @@ export const DeleteWithUndoButton = <RecordType extends Record = Record>(
 
 const defaultIcon = <ActionDelete />;
 
-export interface DeleteWithUndoButtonProps<RecordType extends Record = Record>
+export interface DeleteWithUndoButtonProps<RecordType extends RaRecord = any>
     extends Omit<ButtonProps, 'record'> {
     basePath?: string;
     className?: string;

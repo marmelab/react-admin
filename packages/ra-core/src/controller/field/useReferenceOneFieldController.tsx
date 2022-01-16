@@ -2,11 +2,11 @@ import get from 'lodash/get';
 
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
-import { Record } from '../../types';
+import { RaRecord } from '../../types';
 import { UseReferenceResult } from '../useReference';
 
 export interface UseReferenceOneFieldControllerParams {
-    record?: Record;
+    record?: RaRecord;
     reference: string;
     source?: string;
     target: string;

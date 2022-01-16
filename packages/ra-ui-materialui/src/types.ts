@@ -2,7 +2,7 @@ import { ReactElement, ReactNode, ElementType } from 'react';
 import { SxProps } from '@mui/system';
 import {
     Identifier,
-    Record as RaRecord,
+    RaRecord,
     MutationMode,
     TransformData,
     UpdateParams,
@@ -11,7 +11,7 @@ import {
 } from 'ra-core';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
-export interface EditProps<RecordType extends RaRecord = RaRecord> {
+export interface EditProps<RecordType extends RaRecord = any> {
     actions?: ReactElement | false;
     aside?: ReactElement;
     classes?: any;
@@ -31,7 +31,7 @@ export interface EditProps<RecordType extends RaRecord = RaRecord> {
     title?: string | ReactElement;
 }
 
-export interface CreateProps<RecordType extends RaRecord = RaRecord> {
+export interface CreateProps<RecordType extends RaRecord = any> {
     actions?: ReactElement | false;
     aside?: ReactElement;
     classes?: any;
@@ -49,7 +49,7 @@ export interface CreateProps<RecordType extends RaRecord = RaRecord> {
     title?: string | ReactElement;
 }
 
-export interface ShowProps<RecordType extends RaRecord = RaRecord> {
+export interface ShowProps<RecordType extends RaRecord = any> {
     actions?: ReactElement | false;
     aside?: ReactElement;
     children: ReactNode;

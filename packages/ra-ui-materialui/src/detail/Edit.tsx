@@ -6,7 +6,7 @@ import {
     ResourceContextProvider,
     useCheckMinimumRequiredProps,
     useEditController,
-    Record,
+    RaRecord,
 } from 'ra-core';
 import { EditProps } from '../types';
 import { EditView } from './EditView';
@@ -56,7 +56,7 @@ import { EditView } from './EditView';
  * );
  * export default App;
  */
-export const Edit = <RecordType extends Record = Record>(
+export const Edit = <RecordType extends RaRecord = any>(
     props: EditProps<RecordType> & { children: ReactElement }
 ): ReactElement => {
     useCheckMinimumRequiredProps('Edit', ['children'], props);

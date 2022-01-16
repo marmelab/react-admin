@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { UseMutationOptions } from 'react-query';
 import {
-    Record,
+    RaRecord,
     RedirectionSideEffect,
     MutationMode,
     DeleteParams,
@@ -50,7 +50,7 @@ import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
  *     return <Edit actions={<EditActions />} {...props} />;
  * };
  */
-export const DeleteButton = <RecordType extends Record = Record>(
+export const DeleteButton = <RecordType extends RaRecord = any>(
     props: DeleteButtonProps<RecordType>
 ) => {
     const { mutationMode = 'undoable', record, ...rest } = props;
@@ -71,7 +71,7 @@ export const DeleteButton = <RecordType extends Record = Record>(
     );
 };
 
-export interface DeleteButtonProps<RecordType extends Record = Record>
+export interface DeleteButtonProps<RecordType extends RaRecord = any>
     extends Omit<ButtonProps, 'record'> {
     basePath?: string;
     classes?: object;

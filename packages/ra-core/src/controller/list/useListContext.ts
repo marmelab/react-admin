@@ -3,7 +3,7 @@ import defaults from 'lodash/defaults';
 
 import { ListContext } from './ListContext';
 import { ListControllerResult } from './useListController';
-import { Record } from '../../types';
+import { RaRecord } from '../../types';
 
 /**
  * Hook to read the list controller props from the ListContext.
@@ -91,7 +91,7 @@ import { Record } from '../../types';
  *     );
  * }
  */
-export const useListContext = <RecordType extends Record = Record>(
+export const useListContext = <RecordType extends RaRecord = any>(
     props?: any
 ): ListControllerResult<RecordType> => {
     const context = useContext(ListContext);

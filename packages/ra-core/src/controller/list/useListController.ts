@@ -7,7 +7,7 @@ import { useNotify } from '../../notification';
 import { useGetList, UseGetListHookValue } from '../../dataProvider';
 import { SORT_ASC } from './queryReducer';
 import { defaultExporter } from '../../export';
-import { FilterPayload, SortPayload, Record, Exporter } from '../../types';
+import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import useRecordSelection from '../useRecordSelection';
 import { useListParams } from './useListParams';
@@ -29,7 +29,7 @@ import { useListParams } from './useListParams';
  *     return <ListView {...controllerProps} {...props} />;
  * }
  */
-export const useListController = <RecordType extends Record = Record>(
+export const useListController = <RecordType extends RaRecord = any>(
     props: ListControllerProps<RecordType> = {}
 ): ListControllerResult<RecordType> => {
     const {
@@ -155,7 +155,7 @@ export const useListController = <RecordType extends Record = Record>(
     };
 };
 
-export interface ListControllerProps<RecordType extends Record = Record> {
+export interface ListControllerProps<RecordType extends RaRecord = any> {
     debounce?: number;
     disableAuthentication?: boolean;
     /**
@@ -176,7 +176,7 @@ const defaultSort = {
     order: SORT_ASC,
 };
 
-export interface ListControllerResult<RecordType extends Record = Record> {
+export interface ListControllerResult<RecordType extends RaRecord = any> {
     sort: SortPayload;
     data: RecordType[];
     defaultTitle?: string;

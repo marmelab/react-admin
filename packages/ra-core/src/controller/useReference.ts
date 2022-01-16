@@ -1,4 +1,4 @@
-import { Record } from '../types';
+import { RaRecord } from '../types';
 import { UseGetManyHookValue, useGetManyAggregate } from '../dataProvider';
 
 interface UseReferenceProps {
@@ -6,7 +6,7 @@ interface UseReferenceProps {
     reference: string;
 }
 
-export interface UseReferenceResult<RecordType extends Record = Record> {
+export interface UseReferenceResult<RecordType extends RaRecord = any> {
     isLoading: boolean;
     isFetching: boolean;
     referenceRecord?: RecordType;
@@ -41,7 +41,7 @@ export interface UseReferenceResult<RecordType extends Record = Record> {
  *
  * @returns {UseReferenceResult} The reference record
  */
-export const useReference = <RecordType extends Record = Record>({
+export const useReference = <RecordType extends RaRecord = any>({
     reference,
     id,
 }: UseReferenceProps): UseReferenceResult<RecordType> => {

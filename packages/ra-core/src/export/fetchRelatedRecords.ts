@@ -1,4 +1,4 @@
-import { Record, Identifier, DataProvider } from '../types';
+import { RaRecord, Identifier, DataProvider } from '../types';
 
 /**
  * Helper function for calling the dataProvider.getMany() method,
@@ -48,7 +48,10 @@ const fetchRelatedRecords = (dataProvider: DataProvider) => (
  * @param {Object[]} records An array of records
  * @param {string} field the identifier of the record field to use
  */
-export const getRelatedIds = (records: Record[], field: string): Identifier[] =>
+export const getRelatedIds = (
+    records: RaRecord[],
+    field: string
+): Identifier[] =>
     Array.from(
         new Set(
             records

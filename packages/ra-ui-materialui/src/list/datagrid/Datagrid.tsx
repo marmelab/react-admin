@@ -16,7 +16,7 @@ import {
     sanitizeListRestProps,
     useListContext,
     Identifier,
-    Record,
+    RaRecord,
     SortPayload,
 } from 'ra-core';
 import { Table, TableProps } from '@mui/material';
@@ -313,7 +313,7 @@ Datagrid.propTypes = {
     isRowExpandable: PropTypes.func,
 };
 
-export interface DatagridProps<RecordType extends Record = Record>
+export interface DatagridProps<RecordType extends RaRecord = any>
     extends Omit<TableProps, 'size' | 'classes' | 'onSelect'> {
     body?: ReactElement | ComponentType;
     className?: string;
@@ -323,18 +323,18 @@ export interface DatagridProps<RecordType extends Record = Record>
         | FC<{
               basePath: string;
               id: Identifier;
-              record: Record;
+              record: RecordType;
               resource: string;
           }>;
     hasBulkActions?: boolean;
     header?: ReactElement | ComponentType;
     hover?: boolean;
     empty?: ReactElement;
-    isRowSelectable?: (record: Record) => boolean;
-    isRowExpandable?: (record: Record) => boolean;
+    isRowSelectable?: (record: RecordType) => boolean;
+    isRowExpandable?: (record: RecordType) => boolean;
     optimized?: boolean;
     rowClick?: string | RowClickFunction;
-    rowStyle?: (record: Record, index: number) => any;
+    rowStyle?: (record: RecordType, index: number) => any;
     size?: 'medium' | 'small';
     // can be injected when using the component without context
     basePath?: string;

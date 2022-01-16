@@ -3,7 +3,12 @@ import { useParams } from 'react-router-dom';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
-import { Record, MutationMode, TransformData, UpdateParams } from '../../types';
+import {
+    RaRecord,
+    MutationMode,
+    TransformData,
+    UpdateParams,
+} from '../../types';
 import { useRedirect, RedirectionSideEffect } from '../../sideEffect';
 import { useNotify } from '../../notification';
 import {
@@ -38,7 +43,7 @@ import { SaveHandler } from '../saveContext';
  *     return <EditView {...controllerProps} {...props} />;
  * }
  */
-export const useEditController = <RecordType extends Record = Record>(
+export const useEditController = <RecordType extends RaRecord = any>(
     props: EditControllerProps<RecordType> = {}
 ): EditControllerResult<RecordType> => {
     const {
@@ -190,7 +195,7 @@ export const useEditController = <RecordType extends Record = Record>(
     };
 };
 
-export interface EditControllerProps<RecordType extends Record = Record> {
+export interface EditControllerProps<RecordType extends RaRecord = any> {
     disableAuthentication?: boolean;
     id?: RecordType['id'];
     mutationMode?: MutationMode;
@@ -206,7 +211,7 @@ export interface EditControllerProps<RecordType extends Record = Record> {
     [key: string]: any;
 }
 
-export interface EditControllerResult<RecordType extends Record = Record> {
+export interface EditControllerResult<RecordType extends RaRecord = any> {
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
     data?: RecordType;

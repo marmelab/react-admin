@@ -1,7 +1,7 @@
 import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import isEqual from 'lodash/isEqual';
 
-import { Record, SortPayload, Identifier } from '../../types';
+import { RaRecord, SortPayload, Identifier } from '../../types';
 import { useGetList, useGetManyAggregate } from '../../dataProvider';
 import { FieldInputProps, useForm } from 'react-final-form';
 import { useTranslate } from '../../i18n';
@@ -37,7 +37,7 @@ import { ReferenceArrayInputContextValue } from './ReferenceArrayInputContext';
  * @return {Object} controllerProps Fetched data and callbacks for the ReferenceArrayInput components
  */
 export const useReferenceArrayInputController = <
-    RecordType extends Record = Record
+    RecordType extends RaRecord = any
 >(
     props: UseReferenceArrayInputParams<RecordType>
 ): UseReferenceArrayInputControllerHookValue<RecordType> => {
@@ -290,7 +290,7 @@ export const useReferenceArrayInputController = <
 const EmptyArray = [];
 
 // concatenate and deduplicate two lists of records
-const mergeReferences = <RecordType extends Record = Record>(
+const mergeReferences = <RecordType extends RaRecord = any>(
     ref1: RecordType[],
     ref2: RecordType[]
 ): RecordType[] => {
@@ -306,7 +306,7 @@ const mergeReferences = <RecordType extends Record = Record>(
 };
 
 export interface UseReferenceArrayInputParams<
-    RecordType extends Record = Record
+    RecordType extends RaRecord = any
 > {
     basePath?: string;
     filter?: any;
@@ -324,7 +324,7 @@ export interface UseReferenceArrayInputParams<
 }
 
 export type UseReferenceArrayInputControllerHookValue<
-    RecordType extends Record = Record
+    RecordType extends RaRecord = any
 > = ReferenceArrayInputContextValue<RecordType> &
     Omit<ListControllerResult<RecordType>, 'setSort' | 'refetch'> & {
         refetch: () => void;
