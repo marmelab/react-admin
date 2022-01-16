@@ -319,4 +319,11 @@ describe('useInput', () => {
         );
         expect(queryByText('true')).not.toBeNull();
     });
+
+    test.todo(
+        'should apply the provided format function before passing the value to the real input'
+    );
+    test.todo(
+        'should apply the provided parse function before applying the value from the real input'
+    );
 });
