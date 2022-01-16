@@ -55,7 +55,7 @@ export const Notification = (props: NotificationProps) => {
     if (!messageInfo) return null;
 
     return (
-        <StyleSnackbar
+        <StyledSnackbar
             open={open}
             message={
                 messageInfo.message &&
@@ -111,7 +111,7 @@ export const NotificationClasses = {
     multiLine: `${PREFIX}-multiLine`,
 };
 
-const StyleSnackbar = styled(Snackbar, { name: PREFIX })(
+const StyledSnackbar = styled(Snackbar, { name: PREFIX })(
     ({ theme, type }: NotificationProps & { theme?: Theme }) => ({
         [`& .${NotificationClasses.success}`]: {
             backgroundColor: theme.palette.success.main,
