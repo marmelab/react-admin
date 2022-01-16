@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback } from 'react';
+import { ReactElement, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import MenuItem from '@mui/material/MenuItem';
 import { TextFieldProps } from '@mui/material/TextField';
@@ -8,11 +8,12 @@ import {
     useInput,
     FieldTitle,
     useTranslate,
-    ChoicesInputProps,
+    ChoicesProps,
     useChoices,
     warning,
 } from 'ra-core';
 
+import { CommonInputProps } from './CommonInputProps';
 import {
     ResettableTextField,
     ResettableTextFieldStyles,
@@ -104,7 +105,6 @@ export const SelectInput = (props: SelectInputProps) => {
     const {
         allowEmpty,
         choices = [],
-        classes: classesOverride,
         className,
         create,
         createLabel,
@@ -117,14 +117,11 @@ export const SelectInput = (props: SelectInputProps) => {
         isFetching,
         isLoading,
         label,
-        loaded,
-        loading,
         margin = 'dense',
         onBlur,
         onChange,
         onCreate,
         onFocus,
-        options,
         optionText,
         optionValue,
         parse,
@@ -153,11 +150,14 @@ export const SelectInput = (props: SelectInputProps) => {
         translateChoice,
     });
 
-    const { id, input, isRequired, meta } = useInput({
+    const {
+        field,
+        fieldState,
+        id,
+        isRequired,
+        formState: { isSubmitted },
+    } = useInput({
         format,
-        onBlur,
-        onChange,
-        onFocus,
         parse,
         resource,
         source,
@@ -165,7 +165,7 @@ export const SelectInput = (props: SelectInputProps) => {
         ...rest,
     });
 
-    const { touched, error, submitError } = meta;
+    const { error, invalid, isTouched } = fieldState;
 
     const renderEmptyItemOption = useCallback(() => {
         return React.isValidElement(emptyText)
@@ -185,13 +185,13 @@ export const SelectInput = (props: SelectInputProps) => {
             // In this case, it will be the choice id
             // eslint-disable-next-line eqeqeq
             if (eventOrChoice?.target?.value != undefined) {
-                input.onChange(eventOrChoice.target.value);
+                field.onChange(eventOrChoice.target.value);
             } else {
                 // Or we might receive a choice directly, for instance a newly created one
-                input.onChange(getChoiceValue(eventOrChoice));
+                field.onChange(getChoiceValue(eventOrChoice));
             }
         },
-        [input, getChoiceValue]
+        [field, getChoiceValue]
     );
 
     const {
@@ -239,8 +239,8 @@ export const SelectInput = (props: SelectInputProps) => {
                 resource={resource}
                 className={className}
                 isRequired={isRequired}
-                meta={meta}
-                input={input}
+                fieldState={fieldState}
+                field={field}
                 margin={margin}
             >
                 <LinearProgress />
@@ -252,7 +252,7 @@ export const SelectInput = (props: SelectInputProps) => {
         <>
             <StyledResettableTextField
                 id={id}
-                {...input}
+                {...field}
                 onChange={handleChangeWithCreateSupport}
                 select
                 label={
@@ -268,16 +268,15 @@ export const SelectInput = (props: SelectInputProps) => {
                 }
                 className={className}
                 clearAlwaysVisible
-                error={!!(touched && (error || submitError))}
+                error={(isTouched || isSubmitted) && invalid}
                 helperText={
                     <InputHelperText
-                        touched={touched}
-                        error={error || submitError}
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
                         helperText={helperText}
                     />
                 }
                 margin={margin}
-                {...options}
                 {...sanitizeRestProps(rest)}
             >
                 {allowEmpty ? (
@@ -376,6 +375,12 @@ const StyledResettableTextField = styled(ResettableTextField)(({ theme }) => ({
     },
 }));
 
-export type SelectInputProps = ChoicesInputProps<TextFieldProps> &
+export type SelectInputProps = CommonInputProps &
+    ChoicesProps &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
-    Omit<TextFieldProps, 'label' | 'helperText' | 'classes'>;
+    Omit<TextFieldProps, 'label' | 'helperText' | 'classes'> & {
+        allowEmpty?: boolean;
+        disableValue?: string;
+        emptyText?: string | ReactElement;
+        emptyValue?: any;
+    };
