@@ -4,7 +4,7 @@ import MuiGridList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import {
-    linkToRecord,
+    useCreateInternalLink,
     NumberField,
     useListContext,
     DatagridProps,
@@ -85,6 +85,7 @@ const LoadingGridList = (props: DatagridProps & { nbItems?: number }) => {
 const LoadedGridList = (props: DatagridProps) => {
     const { data } = useListContext();
     const cols = useColsForWidth();
+    const createInternalLink = useCreateInternalLink();
 
     if (!data) return null;
 
@@ -99,7 +100,11 @@ const LoadedGridList = (props: DatagridProps) => {
                     // @ts-ignore
                     component={Link}
                     key={record.id}
-                    to={linkToRecord(`/products`, record.id)}
+                    to={createInternalLink({
+                        resource: 'products',
+                        id: record.id,
+                        type: 'edit',
+                    })}
                 >
                     <img src={record.thumbnail} alt="" />
                     <ImageListItemBar

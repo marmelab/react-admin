@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 
-import { linkToRecord } from '../../util';
+import { linkToRecord } from '../../routing';
 import { RaRecord } from '../../types';
 
 export type LinkToFunctionType = (

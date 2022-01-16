@@ -1,12 +1,16 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { ReactElement, memo, useMemo } from 'react';
+import { ReactElement, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Fab, useMediaQuery, Theme } from '@mui/material';
 import ContentAdd from '@mui/icons-material/Add';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-import { useTranslate, useResourceContext } from 'ra-core';
+import {
+    useTranslate,
+    useResourceContext,
+    useCreateInternalLink,
+} from 'ra-core';
 
 import { Button, ButtonProps, sanitizeButtonRestProps } from './Button';
 
@@ -34,24 +38,19 @@ const CreateButton = (props: CreateButtonProps) => {
     } = props;
 
     const resource = useResourceContext(props);
+    const createInternalLink = useCreateInternalLink();
     const translate = useTranslate();
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('md')
     );
-    const location = useMemo(
-        () => ({
-            pathname: `/${resource}/create`,
-            state: { _scrollToTop: scrollToTop },
-        }),
-        [resource, scrollToTop]
-    );
+
     return isSmall ? (
         <StyledFab
             component={Link}
+            to={createInternalLink({ resource, type: 'create' })}
+            state={{ _scrollToTop: scrollToTop }}
             color="primary"
             className={classnames(CreateButtonClasses.floating, className)}
-            to={location.pathname}
-            state={location.state}
             aria-label={label && translate(label)}
             {...sanitizeButtonRestProps(rest)}
         >
@@ -60,7 +59,8 @@ const CreateButton = (props: CreateButtonProps) => {
     ) : (
         <Button
             component={Link}
-            to={location}
+            to={createInternalLink({ resource, type: 'create' })}
+            state={{ _scrollToTop: scrollToTop }}
             className={className}
             label={label}
             variant={variant}
@@ -112,7 +112,6 @@ export default memo(CreateButton, (prevProps, nextProps) => {
         prevProps.resource === nextProps.resource &&
         prevProps.label === nextProps.label &&
         prevProps.translate === nextProps.translate &&
-        prevProps.to === nextProps.to &&
         prevProps.disabled === nextProps.disabled
     );
 });

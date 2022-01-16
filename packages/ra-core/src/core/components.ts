@@ -3,7 +3,7 @@ import createAdminStore from './createAdminStore';
 
 export * from './CoreAdmin';
 export * from './CoreAdminUI';
-export * from './CoreAdminRouter';
+export * from './CoreAdminRoutes';
 export * from './CustomRoutes';
 export * from './Resource';
 

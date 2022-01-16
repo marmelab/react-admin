@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionList from '@mui/icons-material/List';
 import { Link } from 'react-router-dom';
-import { useResourceContext } from 'ra-core';
+import { useResourceContext, useCreateInternalLink } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
 
@@ -34,12 +34,19 @@ import { Button, ButtonProps } from './Button';
  * );
  */
 export const ListButton = (props: ListButtonProps) => {
-    const { icon = defaultIcon, label = 'ra.action.list', ...rest } = props;
+    const {
+        icon = defaultIcon,
+        label = 'ra.action.list',
+        scrollToTop = true,
+        ...rest
+    } = props;
     const resource = useResourceContext(props);
+    const createInternalLink = useCreateInternalLink();
     return (
         <Button
             component={Link}
-            to={`/${resource}`}
+            to={createInternalLink({ type: 'list', resource })}
+            state={{ _scrollToTop: scrollToTop }}
             label={label}
             {...(rest as any)}
         >
@@ -53,6 +60,7 @@ const defaultIcon = <ActionList />;
 interface Props {
     icon?: ReactElement;
     label?: string;
+    scrollToTop?: boolean;
 }
 
 export type ListButtonProps = Props & ButtonProps;

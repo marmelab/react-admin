@@ -5,7 +5,7 @@ import { useAuthenticated } from '../../auth';
 import { RaRecord } from '../../types';
 import { useGetOne, useRefresh, UseGetOneHookValue } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
-import { useRedirect } from '../../sideEffect';
+import { useRedirect } from '../../routing';
 import { useNotify } from '../../notification';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 

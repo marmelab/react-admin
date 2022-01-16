@@ -9,7 +9,7 @@ import {
     TransformData,
     UpdateParams,
 } from '../../types';
-import { useRedirect, RedirectionSideEffect } from '../../sideEffect';
+import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import {
     useGetOne,

@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { memo, useMemo, ReactElement } from 'react';
+import { memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ImageEye from '@mui/icons-material/RemoveRedEye';
 import { Link } from 'react-router-dom';
 import {
-    linkToRecord,
     RaRecord,
     useResourceContext,
     useRecordContext,
+    useCreateInternalLink,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
@@ -24,7 +24,6 @@ import { Button, ButtonProps } from './Button';
  */
 const ShowButton = (props: ShowButtonProps) => {
     const {
-        basePath = '',
         icon = defaultIcon,
         label = 'ra.action.show',
         scrollToTop = true,
@@ -32,21 +31,12 @@ const ShowButton = (props: ShowButtonProps) => {
     } = props;
     const resource = useResourceContext(props);
     const record = useRecordContext(props);
+    const createInternalLink = useCreateInternalLink();
     return (
         <Button
             component={Link}
-            to={useMemo(
-                () => ({
-                    pathname: record
-                        ? `${linkToRecord(
-                              basePath || `/${resource}`,
-                              record.id
-                          )}/show`
-                        : '',
-                    state: { _scrollToTop: scrollToTop },
-                }),
-                [basePath, record, resource, scrollToTop]
-            )}
+            to={createInternalLink({ type: 'show', resource, id: record.id })}
+            state={{ _scrollToTop: scrollToTop }}
             label={label}
             onClick={stopPropagation}
             {...(rest as any)}
@@ -62,7 +52,6 @@ const defaultIcon = <ImageEye />;
 const stopPropagation = e => e.stopPropagation();
 
 interface Props {
-    basePath?: string;
     icon?: ReactElement;
     label?: string;
     record?: RaRecord;
@@ -82,11 +71,11 @@ ShowButton.propTypes = {
 const PureShowButton = memo(
     ShowButton,
     (props: ShowButtonProps, nextProps: ShowButtonProps) =>
+        props.resource === nextProps.resource &&
         (props.record && nextProps.record
             ? props.record.id === nextProps.record.id
             : props.record == nextProps.record) && // eslint-disable-line eqeqeq
-        props.basePath === nextProps.basePath &&
-        props.to === nextProps.to &&
+        props.label === nextProps.label &&
         props.disabled === nextProps.disabled
 );
 

@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { ReactElement, useMemo } from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ContentCreate from '@mui/icons-material/Create';
 import { ButtonProps as MuiButtonProps } from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import {
-    linkToRecord,
     RaRecord,
     useResourceContext,
     useRecordContext,
+    useCreateInternalLink,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
@@ -32,18 +32,12 @@ export const EditButton = (props: EditButtonProps) => {
     } = props;
     const resource = useResourceContext(props);
     const record = useRecordContext(props);
+    const createInternalLink = useCreateInternalLink();
     return (
         <Button
             component={Link}
-            to={useMemo(
-                () => ({
-                    pathname: record
-                        ? linkToRecord(`/${resource}`, record.id)
-                        : '',
-                    state: { _scrollToTop: scrollToTop },
-                }),
-                [record, resource, scrollToTop]
-            )}
+            to={createInternalLink({ type: 'edit', resource, id: record.id })}
+            state={{ _scrollToTop: scrollToTop }}
             label={label}
             onClick={stopPropagation}
             {...(rest as any)}

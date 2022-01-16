@@ -5,7 +5,7 @@ import { Route } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
 import CoreAdminContext from './CoreAdminContext';
-import { CoreAdminRouter } from './CoreAdminRouter';
+import { CoreAdminRoutes } from './CoreAdminRoutes';
 import { Resource } from './Resource';
 import { CustomRoutes } from './CustomRoutes';
 import { CoreLayoutProps } from '../types';
@@ -15,7 +15,7 @@ const Layout = ({ children }: CoreLayoutProps) => <div>Layout {children}</div>;
 const CatchAll = () => <div />;
 const Loading = () => <>Loading</>;
 
-describe('<CoreAdminRouter>', () => {
+describe('<CoreAdminRoutes>', () => {
     const defaultProps = {
         customRoutes: [],
     };
@@ -28,7 +28,7 @@ describe('<CoreAdminRouter>', () => {
                     dataProvider={testDataProvider()}
                     history={history}
                 >
-                    <CoreAdminRouter
+                    <CoreAdminRoutes
                         {...defaultProps}
                         layout={Layout}
                         catchAll={CatchAll}
@@ -48,7 +48,7 @@ describe('<CoreAdminRouter>', () => {
                             name="comments"
                             list={() => <span>CommentList</span>}
                         />
-                    </CoreAdminRouter>
+                    </CoreAdminRoutes>
                 </CoreAdminContext>
             );
             expect(screen.getByText('Layout')).not.toBeNull();
@@ -73,7 +73,7 @@ describe('<CoreAdminRouter>', () => {
                     dataProvider={testDataProvider()}
                     history={history}
                 >
-                    <CoreAdminRouter
+                    <CoreAdminRoutes
                         layout={Layout}
                         catchAll={CatchAll}
                         loading={Loading}
@@ -99,7 +99,7 @@ describe('<CoreAdminRouter>', () => {
                                 />
                             </>
                         )}
-                    </CoreAdminRouter>
+                    </CoreAdminRoutes>
                 </CoreAdminContext>
             );
             history.push('/foo');
@@ -123,7 +123,7 @@ describe('<CoreAdminRouter>', () => {
                     dataProvider={testDataProvider()}
                     history={history}
                 >
-                    <CoreAdminRouter
+                    <CoreAdminRoutes
                         layout={Layout}
                         catchAll={CatchAll}
                         loading={Loading}
@@ -149,7 +149,7 @@ describe('<CoreAdminRouter>', () => {
                                 />
                             </>
                         )}
-                    </CoreAdminRouter>
+                    </CoreAdminRoutes>
                 </CoreAdminContext>
             );
             history.push('/foo');
@@ -184,7 +184,7 @@ describe('<CoreAdminRouter>', () => {
                     dataProvider={testDataProvider()}
                     history={history}
                 >
-                    <CoreAdminRouter
+                    <CoreAdminRoutes
                         {...defaultProps}
                         layout={Layout}
                         loading={Loading}
@@ -194,7 +194,7 @@ describe('<CoreAdminRouter>', () => {
                             <Route path="/foo" element={<Custom />} />
                         </CustomRoutes>
                         {() => new Promise(() => null)}
-                    </CoreAdminRouter>
+                    </CoreAdminRoutes>
                 </CoreAdminContext>
             );
             // Timeout needed because we wait for a second before displaying the loading screen

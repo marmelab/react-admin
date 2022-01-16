@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createElement, ComponentType, useMemo, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import { CoreAdminRouter } from './CoreAdminRouter';
+import { CoreAdminRoutes } from './CoreAdminRoutes';
 import { Ready } from '../util';
 import {
     TitleComponent,
@@ -74,7 +74,7 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
             <Route
                 path="/*"
                 element={
-                    <CoreAdminRouter
+                    <CoreAdminRoutes
                         catchAll={catchAll}
                         dashboard={dashboard}
                         layout={layout}
@@ -85,7 +85,7 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
                         title={title}
                     >
                         {children}
-                    </CoreAdminRouter>
+                    </CoreAdminRoutes>
                 }
             />
         </Routes>

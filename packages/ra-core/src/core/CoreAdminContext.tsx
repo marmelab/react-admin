@@ -3,8 +3,8 @@ import { ComponentType, useContext, useMemo, useState } from 'react';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { Provider, ReactReduxContext } from 'react-redux';
 import { createHashHistory, History } from 'history';
-import { HistoryRouter } from './HistoryRouter';
 
+import { AdminRouter } from '../routing';
 import { AuthContext, convertLegacyAuthProvider } from '../auth';
 import {
     DataProviderContext,
@@ -92,14 +92,14 @@ React-admin requires a valid dataProvider function to work.`);
                     <QueryClientProvider client={finalQueryClient}>
                         <NotificationContextProvider>
                             <TranslationProvider i18nProvider={i18nProvider}>
-                                <HistoryRouter
+                                <AdminRouter
                                     history={finalHistory}
                                     basename={basename}
                                 >
                                     <ResourceDefinitionContextProvider>
                                         {children}
                                     </ResourceDefinitionContextProvider>
-                                </HistoryRouter>
+                                </AdminRouter>
                             </TranslationProvider>
                         </NotificationContextProvider>
                     </QueryClientProvider>

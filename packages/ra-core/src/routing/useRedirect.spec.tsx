@@ -6,7 +6,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
 import { CoreAdminContext } from '../core';
-import useRedirect from './useRedirect';
+import { useRedirect } from './useRedirect';
 import { testDataProvider } from '../dataProvider';
 
 const Redirect = ({
