@@ -5,8 +5,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormGroup, { FormGroupProps } from '@mui/material/FormGroup';
 import Switch, { SwitchProps } from '@mui/material/Switch';
-import { FieldTitle, useInput, InputProps } from 'ra-core';
+import { FieldTitle, useInput } from 'ra-core';
 
+import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 import { InputPropTypes } from './InputPropTypes';
@@ -20,7 +21,6 @@ export const BooleanInput = (props: BooleanInputProps) => {
         onBlur,
         onChange,
         onFocus,
-        options,
         disabled,
         parse,
         resource,
@@ -30,14 +30,12 @@ export const BooleanInput = (props: BooleanInputProps) => {
     } = props;
     const {
         id,
-        input: { onChange: finalFormOnChange, type, value, ...inputProps },
+        field,
         isRequired,
-        meta: { error, submitError, touched },
+        fieldState: { error, invalid, isTouched },
+        formState: { isSubmitted },
     } = useInput({
         format,
-        onBlur,
-        onChange,
-        onFocus,
         parse,
         resource,
         source,
@@ -48,9 +46,11 @@ export const BooleanInput = (props: BooleanInputProps) => {
 
     const handleChange = useCallback(
         (event, value) => {
-            finalFormOnChange(value);
+            field.onChange(event);
+            // Ensure field is considered as touched
+            field.onBlur();
         },
-        [finalFormOnChange]
+        [field]
     );
 
     return (
@@ -61,8 +61,8 @@ export const BooleanInput = (props: BooleanInputProps) => {
                         id={id}
                         color="primary"
                         onChange={handleChange}
-                        {...inputProps}
-                        {...options}
+                        checked={field.value}
+                        {...sanitizeInputRestProps(rest)}
                         disabled={disabled}
                     />
                 }
@@ -75,10 +75,10 @@ export const BooleanInput = (props: BooleanInputProps) => {
                     />
                 }
             />
-            <FormHelperText error={!!(error || submitError)}>
+            <FormHelperText error={(isTouched || isSubmitted) && invalid}>
                 <InputHelperText
-                    touched={touched}
-                    error={error || submitError}
+                    touched={isTouched}
+                    error={error?.message}
                     helperText={helperText}
                 />
             </FormHelperText>
@@ -97,5 +97,6 @@ BooleanInput.defaultProps = {
     options: {},
 };
 
-export type BooleanInputProps = InputProps<SwitchProps> &
+export type BooleanInputProps = CommonInputProps &
+    SwitchProps &
     Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'>;
