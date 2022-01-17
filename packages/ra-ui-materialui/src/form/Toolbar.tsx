@@ -68,13 +68,10 @@ export const Toolbar = <
     } = props;
 
     const isXs = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
-    const { isDirty, isValidating } = useFormState();
+    const { isValidating } = useFormState();
     // Use form pristine and validating to enable or disable the save button
     // if alwaysEnableSaveButton is undefined
-    const disabled = !valueOrDefault(
-        alwaysEnableSaveButton,
-        isDirty && !isValidating
-    );
+    const disabled = !valueOrDefault(alwaysEnableSaveButton, !isValidating);
 
     return (
         <StyledToolbar

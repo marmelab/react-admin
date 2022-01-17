@@ -27,11 +27,11 @@ export const Labeled = (props: LabeledProps) => {
         className,
         fullWidth,
         id,
-        input,
+        field,
         isRequired,
         label,
         margin = 'dense',
-        meta,
+        fieldState,
         source,
         ...rest
     } = props;
@@ -52,7 +52,7 @@ export const Labeled = (props: LabeledProps) => {
         <StyledFormControl
             className={className}
             fullWidth={fullWidth}
-            error={meta && meta.touched && !!(meta.error || meta.submitError)}
+            error={fieldState && fieldState.isTouched && !!fieldState.error}
             margin={margin}
         >
             <InputLabel htmlFor={id} shrink className={LabeledClasses.label}>
@@ -66,7 +66,7 @@ export const Labeled = (props: LabeledProps) => {
             <div className={LabeledClasses.value}>
                 {children && typeof children.type !== 'string'
                     ? React.cloneElement(children, {
-                          input,
+                          field,
                           resource,
                           ...restProps,
                       })
@@ -81,12 +81,12 @@ Labeled.displayName = 'Labeled';
 Labeled.propTypes = {
     children: PropTypes.element,
     className: PropTypes.string,
+    field: PropTypes.object,
+    fieldState: PropTypes.object,
     fullWidth: PropTypes.bool,
     id: PropTypes.string,
-    input: PropTypes.object,
     isRequired: PropTypes.bool,
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
-    meta: PropTypes.object,
     onChange: PropTypes.func,
     record: PropTypes.object,
     resource: PropTypes.string,
@@ -99,10 +99,10 @@ export interface LabeledProps {
     className?: string;
     fullWidth?: boolean;
     id?: string;
-    input?: any;
+    field?: any;
     isRequired?: boolean;
-    label?: string | ReactElement;
-    meta?: any;
+    label?: string | ReactElement | false;
+    fieldState?: any;
     resource?: string;
     source?: string;
     [key: string]: any;
