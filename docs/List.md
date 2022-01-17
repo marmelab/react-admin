@@ -942,7 +942,7 @@ const postFilters = [
 
 Elements of the `filters` array are regular inputs. That means you can build sophisticated filters based on references, array values, etc. `<List>` hides all inputs in the filter form by default, except those that have the `alwaysOn` prop.
 
-Filters will render as disabled inputs or menu items (depending on filter context) if passed the prop "disabled."
+**Tip**: Filters will render as disabled inputs or menu items (depending on filter context) if passed the prop `disabled`.
 
 **Tip**: For technical reasons, react-admin does not accept Filter inputs having both a `defaultValue` and `alwaysOn`. To set default values for always on filters, use the [`filterDefaultValues`](#filterdefaultvalues) prop of the `<List>` component instead.
 
