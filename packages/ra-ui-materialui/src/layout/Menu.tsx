@@ -114,4 +114,4 @@ const Root = styled('div', { name: PREFIX })(({ theme }) => ({
 }));
 
 export const MENU_WIDTH = 240;
-export const CLOSED_MENU_WIDTH = 55;
+export const CLOSED_MENU_WIDTH = 50;

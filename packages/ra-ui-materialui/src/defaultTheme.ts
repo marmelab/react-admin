@@ -19,7 +19,7 @@ export const defaultTheme = {
     },
     sidebar: {
         width: 240,
-        closedWidth: 55,
+        closedWidth: 50,
     },
     components: {
         MuiButtonBase: {
