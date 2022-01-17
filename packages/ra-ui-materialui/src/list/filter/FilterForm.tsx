@@ -8,7 +8,11 @@ import {
     ReactNode,
 } from 'react';
 import PropTypes from 'prop-types';
-import { useListContext, useResourceContext } from 'ra-core';
+import {
+    ListFilterContextValue,
+    useListContext,
+    useResourceContext,
+} from 'ra-core';
 import { FormProvider, useForm } from 'react-hook-form';
 import classnames from 'classnames';
 import lodashSet from 'lodash/set';
@@ -89,20 +93,25 @@ FilterFormBase.propTypes = {
 
 const sanitizeRestProps = ({
     displayedFilters,
+    filterValues,
+    hideFilter,
+    setFilters,
     resource,
     ...props
 }: Partial<FilterFormProps>) => props;
 
-export interface FilterFormProps
-    extends Omit<HtmlHTMLAttributes<HTMLFormElement>, 'children'> {
-    className?: string;
-    resource?: string;
-    displayedFilters: any;
-    filters: ReactNode[];
-    initialValues?: any;
-    margin?: 'none' | 'normal' | 'dense';
-    variant?: 'standard' | 'outlined' | 'filled';
-}
+export type FilterFormProps = Omit<
+    HtmlHTMLAttributes<HTMLFormElement>,
+    'children'
+> &
+    Partial<ListFilterContextValue> & {
+        className?: string;
+        resource?: string;
+        filters: ReactNode[];
+        initialValues?: any;
+        margin?: 'none' | 'normal' | 'dense';
+        variant?: 'standard' | 'outlined' | 'filled';
+    };
 
 export const mergeInitialValuesWithDefaultValues = (
     initialValues,
@@ -141,13 +150,18 @@ export const FilterForm = props => {
         defaultValues: mergedInitialValuesWithDefaultValues,
     });
 
+    const handleChange = values => {
+        setFilters(values, displayedFilters);
+    };
+
     return (
         <FormProvider {...form}>
             <FilterFormBase
-                onChange={() => setFilters(form.getValues(), displayedFilters)}
-                onSubmit={form.handleSubmit(handleFormSubmit)}
+                onChange={form.handleSubmit(handleChange)}
+                onSubmit={handleFormSubmit}
                 filters={filters}
                 initialValues={mergedInitialValuesWithDefaultValues}
+                {...props}
             />
         </FormProvider>
     );

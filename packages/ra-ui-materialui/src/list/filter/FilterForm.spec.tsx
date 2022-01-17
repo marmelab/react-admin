@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { minLength } from 'ra-core';
 
 import { FilterForm, mergeInitialValuesWithDefaultValues } from './FilterForm';
@@ -40,7 +40,7 @@ describe('<FilterForm />', () => {
         expect(screen.queryAllByLabelText('Name')).toHaveLength(1);
     });
 
-    it('should change the filter when the user updates an input', () => {
+    it('should change the filter when the user updates an input', async () => {
         const filters = [<TextInput source="title" label="Title" />];
         const displayedFilters = {
             title: true,
@@ -60,10 +60,12 @@ describe('<FilterForm />', () => {
         fireEvent.change(screen.queryByLabelText('Title'), {
             target: { value: 'foo' },
         });
-        expect(setFilters).toHaveBeenCalledWith(
-            { title: 'foo' },
-            { title: true }
-        );
+        await waitFor(() => {
+            expect(setFilters).toHaveBeenCalledWith(
+                { title: 'foo' },
+                { title: true }
+            );
+        });
     });
 
     it('should not change the filter when the user updates an input with an invalid value', () => {
