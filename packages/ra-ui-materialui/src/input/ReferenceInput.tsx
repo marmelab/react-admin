@@ -107,7 +107,6 @@ export const ReferenceInput = (props: ReferenceInputProps) => {
         format,
         onBlur,
         onChange,
-        onFocus,
         parse,
         validate,
         ...rest,
@@ -180,8 +179,7 @@ const sanitizeRestProps = ({
 
 export interface ReferenceInputViewProps
     extends ReferenceInputValue,
-        ReferenceInputProps,
-        Omit<UseInputValue, 'id'> {}
+        ReferenceInputProps {}
 
 export const ReferenceInputView = (props: ReferenceInputViewProps) => {
     const {

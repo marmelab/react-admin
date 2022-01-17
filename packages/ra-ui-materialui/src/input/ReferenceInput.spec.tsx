@@ -38,8 +38,8 @@ describe('<ReferenceInput />', () => {
             loading: false,
         },
         allowEmpty: false,
-        meta: {},
-        input: {},
+        fieldState: {},
+        field: {},
         label: '',
         record: {},
         reference: 'posts',
@@ -58,11 +58,9 @@ describe('<ReferenceInput />', () => {
     it('should display an error if error is defined', () => {
         const { queryByDisplayValue } = render(
             <ReferenceInputView
-                {...{
-                    ...defaultProps,
-                    error: 'fetch error',
-                    input: { value: 1 },
-                }}
+                {...defaultProps}
+                error="fetch error"
+                input={{ value: 1 }}
             >
                 <MyComponent />
             </ReferenceInputView>
@@ -75,12 +73,10 @@ describe('<ReferenceInput />', () => {
 
         const { queryByText } = render(
             <ReferenceInputView
-                {...{
-                    ...defaultProps,
-                    warning: 'fetch error',
-                    choices: [{ id: 1 }],
-                    input: { value: 1 },
-                }}
+                {...defaultProps}
+                warning="fetch error"
+                choices={[{ id: 1 }]}
+                input={{ value: 1 }}
             >
                 <Component />
             </ReferenceInputView>
