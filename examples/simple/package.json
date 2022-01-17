@@ -27,6 +27,7 @@
         "react-admin": "^4.0.0-alpha.1",
         "react-dom": "^17.0.0",
         "react-final-form": "^6.5.2",
+        "react-hook-form": "^7.24.0",
         "react-query": "^3.32.1",
         "react-router": "^6.1.0",
         "react-router-dom": "^6.1.0"
