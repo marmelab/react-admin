@@ -12,7 +12,7 @@ The `<ShowBase>` component handles the headless logic of the Show page:
 - it creates a `ShowContext` and a `RecordContext`,
 - it renders its child component
 
-Contrary to `<Show>`, it does not render the page layout, so no title and actions.
+Contrary to `<Show>`, it does not render the page layout, so no title, no actions, and no `<Card>`.
 
 ## Usage
 
@@ -59,8 +59,8 @@ const App = () => (
 
 ## Props
 
-* [`children`](#layout) the components that actually render something
-* [`queryOptions`](#query-client-options): options to pass to the react-query client
+* `children` the components that actually render something
+* [`queryOptions`](#client-query-options): options to pass to the react-query client
 
 ## Client Query Options
 
@@ -95,7 +95,7 @@ const PostShow = props => {
 }
 ```
 
-The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
+The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
 
 The default `onError` function is:
 

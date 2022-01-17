@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import CustomerIcon from '@mui/icons-material/PersonAdd';
 import { Link } from 'react-router-dom';
-import { useTranslate, useQueryWithStore } from 'react-admin';
+import { useTranslate, useGetList } from 'react-admin';
 import { subDays } from 'date-fns';
 
 import CardWithIcon from './CardWithIcon';
@@ -44,20 +44,16 @@ const NewCustomers = () => {
     aMonthAgo.setSeconds(0);
     aMonthAgo.setMilliseconds(0);
 
-    const { loaded, data: visitors } = useQueryWithStore({
-        type: 'getList',
-        resource: 'customers',
-        payload: {
-            filter: {
-                has_ordered: true,
-                first_seen_gte: aMonthAgo.toISOString(),
-            },
-            sort: { field: 'first_seen', order: 'DESC' },
-            pagination: { page: 1, perPage: 100 },
+    const { isLoading, data: visitors } = useGetList<Customer>('customers', {
+        filter: {
+            has_ordered: true,
+            first_seen_gte: aMonthAgo.toISOString(),
         },
+        sort: { field: 'first_seen', order: 'DESC' },
+        pagination: { page: 1, perPage: 100 },
     });
 
-    if (!loaded) return null;
+    if (isLoading) return null;
 
     const nb = visitors ? visitors.reduce((nb: number) => ++nb, 0) : 0;
     return (

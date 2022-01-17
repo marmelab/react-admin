@@ -17,6 +17,7 @@ export * from './NotFound';
 export * from './Notification';
 export * from './Sidebar';
 export * from './SidebarToggleButton';
+export * from './Theme';
 export * from './Title';
 export * from './TitleForRecord';
 export * from './TopToolbar';

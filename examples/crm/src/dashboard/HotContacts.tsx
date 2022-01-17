@@ -12,14 +12,15 @@ export const HotContacts = () => {
     const { identity } = useGetIdentity();
     const {
         data: contactData,
-        ids: contactIds,
         total: contactTotal,
-        loaded: contactsLoaded,
+        isLoading: contactsLoading,
     } = useGetList<Contact>(
         'contacts',
-        { page: 1, perPage: 10 },
-        { field: 'last_seen', order: 'DESC' },
-        { status: 'hot', sales_id: identity?.id },
+        {
+            pagination: { page: 1, perPage: 10 },
+            sort: { field: 'last_seen', order: 'DESC' },
+            filter: { status: 'hot', sales_id: identity?.id },
+        },
         { enabled: Number.isInteger(identity?.id) }
     );
     return (
@@ -41,10 +42,9 @@ export const HotContacts = () => {
             <Card>
                 <SimpleList<Contact>
                     linkType="show"
-                    ids={contactIds}
                     data={contactData}
                     total={contactTotal}
-                    loaded={contactsLoaded}
+                    isLoading={contactsLoading}
                     primaryText={contact =>
                         `${contact.first_name} ${contact.last_name}`
                     }

@@ -3,8 +3,7 @@ import { cloneElement, memo, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { TableBody, TableBodyProps } from '@mui/material';
 import classnames from 'classnames';
-import { shallowEqual } from 'react-redux';
-import { Identifier, Record, RecordMap } from 'ra-core';
+import { Identifier, RaRecord } from 'ra-core';
 
 import { DatagridClasses } from './useDatagridStyles';
 import DatagridRow, { PureDatagridRow, RowClickFunction } from './DatagridRow';
@@ -19,7 +18,6 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
             expand,
             hasBulkActions,
             hover,
-            ids,
             onToggleItem,
             resource,
             row,
@@ -40,7 +38,7 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
             )}
             {...rest}
         >
-            {ids.map((id, rowIndex) =>
+            {data.map((record, rowIndex) =>
                 cloneElement(
                     row,
                     {
@@ -53,16 +51,15 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
                         expand,
                         hasBulkActions: hasBulkActions && !!selectedIds,
                         hover,
-                        id,
-                        key: id,
+                        id: record.id,
+                        key: record.id,
                         onToggleItem,
-                        record: data[id],
+                        record,
                         resource,
                         rowClick,
-                        selectable:
-                            !isRowSelectable || isRowSelectable(data[id]),
-                        selected: selectedIds?.includes(id),
-                        style: rowStyle ? rowStyle(data[id], rowIndex) : null,
+                        selectable: !isRowSelectable || isRowSelectable(record),
+                        selected: selectedIds?.includes(record.id),
+                        style: rowStyle ? rowStyle(record, rowIndex) : null,
                     },
                     children
                 )
@@ -76,12 +73,11 @@ DatagridBody.propTypes = {
     className: PropTypes.string,
     children: PropTypes.node,
     // @ts-ignore
-    data: PropTypes.object.isRequired,
+    data: PropTypes.arrayOf(PropTypes.object).isRequired,
     // @ts-ignore
     expand: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     hasBulkActions: PropTypes.bool.isRequired,
     hover: PropTypes.bool,
-    ids: PropTypes.arrayOf(PropTypes.any).isRequired,
     onToggleItem: PropTypes.func,
     resource: PropTypes.string,
     row: PropTypes.element,
@@ -93,61 +89,43 @@ DatagridBody.propTypes = {
 };
 
 DatagridBody.defaultProps = {
-    data: {},
+    data: [],
     hasBulkActions: false,
-    ids: [],
     row: <DatagridRow />,
 };
 
 export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
     basePath?: string;
     className?: string;
-    data?: RecordMap;
+    data?: any[];
     expand?:
         | ReactElement
         | FC<{
               basePath: string;
               id: Identifier;
-              record: Record;
+              record: RaRecord;
               resource: string;
           }>;
     hasBulkActions?: boolean;
     hover?: boolean;
-    ids?: Identifier[];
     onToggleItem?: (
         id: Identifier,
         event: React.TouchEvent | React.MouseEvent
     ) => void;
-    record?: Record;
+    record?: RaRecord;
     resource?: string;
     row?: ReactElement;
     rowClick?: string | RowClickFunction;
-    rowStyle?: (record: Record, index: number) => any;
+    rowStyle?: (record: RaRecord, index: number) => any;
     selectedIds?: Identifier[];
-    isRowSelectable?: (record: Record) => boolean;
+    isRowSelectable?: (record: RaRecord) => boolean;
 }
 
 // trick material-ui Table into thinking this is one of the child type it supports
 // @ts-ignore
 DatagridBody.muiName = 'TableBody';
 
-const areEqual = (prevProps, nextProps) => {
-    const {
-        children: _1,
-        expand: _2,
-        row: _3,
-        ...prevPropsWithoutChildren
-    } = prevProps;
-    const {
-        children: _4,
-        expand: _5,
-        row: _6,
-        ...nextPropsWithoutChildren
-    } = nextProps;
-    return shallowEqual(prevPropsWithoutChildren, nextPropsWithoutChildren);
-};
-
-export const PureDatagridBody = memo(DatagridBody, areEqual);
+export const PureDatagridBody = memo(DatagridBody);
 
 // trick material-ui Table into thinking this is one of the child type it supports
 // @ts-ignore

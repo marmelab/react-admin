@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-final-form';
+import { useCallback, useEffect, useState } from 'react';
 import isEqual from 'lodash/isEqual';
-import { useFormContext } from './useFormContext';
 import { FieldState } from 'final-form';
+import { useForm } from 'react-final-form';
+import { useFormGroups } from './useFormGroups';
 
 type FormGroupState = {
     dirty: boolean;
@@ -57,7 +57,7 @@ type FormGroupState = {
  */
 export const useFormGroup = (name: string): FormGroupState => {
     const form = useForm();
-    const formContext = useFormContext();
+    const formGroups = useFormGroups();
     const [state, setState] = useState<FormGroupState>({
         dirty: false,
         errors: undefined,
@@ -67,24 +67,33 @@ export const useFormGroup = (name: string): FormGroupState => {
         valid: true,
     });
 
+    const updateGroupState = useCallback(() => {
+        const fields = formGroups.getGroupFields(name);
+        const fieldStates = fields
+            .map(field => {
+                return form.getFieldState(field);
+            })
+            .filter(fieldState => fieldState != undefined); // eslint-disable-line
+
+        const newState = getFormGroupState(fieldStates);
+        setState(oldState => {
+            if (!isEqual(oldState, newState)) {
+                return newState;
+            }
+
+            return oldState;
+        });
+    }, [form, formGroups, name]);
+
     useEffect(() => {
-        const unsubscribe = form.subscribe(
+        // Whenever the group content changes (input are added or removed)
+        // we must update its state
+        const unsubscribe = formGroups.subscribe(name, () => {
+            updateGroupState();
+        });
+        const unsubscribeFinalForm = form.subscribe(
             () => {
-                const fields = formContext.getGroupFields(name);
-                const fieldStates = fields
-                    .map(field => {
-                        return form.getFieldState(field);
-                    })
-                    .filter(fieldState => fieldState != undefined); // eslint-disable-line
-                const newState = getFormGroupState(fieldStates);
-
-                setState(oldState => {
-                    if (!isEqual(oldState, newState)) {
-                        return newState;
-                    }
-
-                    return oldState;
-                });
+                updateGroupState();
             },
             {
                 errors: true,
@@ -95,8 +104,11 @@ export const useFormGroup = (name: string): FormGroupState => {
                 touched: true,
             }
         );
-        return unsubscribe;
-    }, [form, formContext, name]);
+        return () => {
+            unsubscribe();
+            unsubscribeFinalForm();
+        };
+    }, [form, formGroups, name, updateGroupState]);
 
     return state;
 };

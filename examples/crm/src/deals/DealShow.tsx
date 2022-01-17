@@ -30,11 +30,11 @@ const Root = styled('div')({
     },
 });
 
-export const DealShow = ({ open }: { open: boolean }) => {
+export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
     const redirect = useRedirect();
 
     const handleClose = () => {
-        redirect('/deals');
+        redirect('list', '/deals');
     };
 
     return (
@@ -46,9 +46,11 @@ export const DealShow = ({ open }: { open: boolean }) => {
             classes={{ paper: classes.dialog }}
         >
             <DialogContent>
-                <ShowBase resource="deals">
-                    <DealShowContent />
-                </ShowBase>
+                {!!id ? (
+                    <ShowBase id={id}>
+                        <DealShowContent />
+                    </ShowBase>
+                ) : null}
             </DialogContent>
         </Dialog>
     );

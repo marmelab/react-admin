@@ -39,6 +39,7 @@ export interface TranslationMessages extends StringMap {
             update: string;
             move_up: string;
             move_down: string;
+            open: string;
         };
         boolean: {
             [key: string]: StringMap | string;

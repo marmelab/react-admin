@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Tab } from '@mui/material';
-import { getFieldLabelTranslationArgs, useTranslate } from 'ra-core';
+import { getFieldLabelTranslationArgs, useTranslate } from 'react-admin';
 
 const PREFIX = 'FieldConfigurationTab';
 

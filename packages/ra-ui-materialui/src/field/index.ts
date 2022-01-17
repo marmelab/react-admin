@@ -12,6 +12,7 @@ export * from './NumberField';
 export * from './ReferenceArrayField';
 export * from './ReferenceField';
 export * from './ReferenceManyField';
+export * from './ReferenceOneField';
 export * from './RichTextField';
 export * from './sanitizeFieldRestProps';
 export * from './SelectField';

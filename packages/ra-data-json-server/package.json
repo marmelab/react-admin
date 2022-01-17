@@ -1,14 +1,14 @@
 {
     "name": "ra-data-json-server",
-    "version": "4.0.0-alpha.0",
+    "version": "4.0.0-alpha.1",
     "description": "JSON Server data provider for react-admin",
-    "main": "lib/index.js",
-    "module": "esm/index.js",
+    "main": "dist/index",
+    "module": "dist/esm/index.js",
+    "types": "dist/index.d.ts",
     "sideEffects": false,
     "files": [
         "*.md",
-        "lib",
-        "esm",
+        "dist",
         "src"
     ],
     "authors": [
@@ -19,17 +19,17 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "scripts": {
-        "build": "yarn run build-cjs && yarn run build-esm",
-        "build-cjs": "rimraf ./lib && tsc",
-        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
-        "watch": "tsc --outDir esm --module es2015 --watch"
+        "build": "tsup src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output",
+        "watch": "tsup src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
     },
     "dependencies": {
         "query-string": "^5.1.1",
-        "ra-core": "^4.0.0-alpha.0"
+        "ra-core": "^4.0.0-alpha.1"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "rimraf": "^2.6.3"
+        "npm-dts": "^1.3.10",
+        "rimraf": "^2.6.3",
+        "tsup": "^5.11.11"
     }
 }

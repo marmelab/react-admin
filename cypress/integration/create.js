@@ -91,7 +91,7 @@ describe('Create Page', () => {
                 value: 'Annamarie Mayer',
             },
         ]);
-        cy.get('div[role="listbox"] li').trigger('click');
+        cy.get('[role="option"]').trigger('click');
         cy.get(CreatePage.elements.input('authors[0].role')).should(
             el => expect(el).to.exist
         );
@@ -258,7 +258,7 @@ describe('Create Page', () => {
             },
         ];
         CreatePage.setValues(values);
-        CreatePage.submit();
+        CreatePage.submit(false);
         cy.contains('Required field');
     });
 
@@ -313,7 +313,7 @@ describe('Create Page', () => {
             },
         ];
         CreatePage.setValues(values);
-        CreatePage.submit();
+        CreatePage.submit(false);
         cy.get(CreatePage.elements.richTextInputError)
             .should('exist')
             .contains('Required');
@@ -328,7 +328,7 @@ describe('Create Page', () => {
             },
         ];
         CreatePage.setValues(values);
-        CreatePage.submit();
+        CreatePage.submit(false);
         cy.get(CreatePage.elements.richTextInputError)
             .should('exist')
             .contains('Required');

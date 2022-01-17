@@ -1,17 +1,15 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render } from '@testing-library/react';
-import { Router } from 'react-router-dom';
+import { render, screen } from '@testing-library/react';
 import { stringify } from 'query-string';
 import { createMemoryHistory } from 'history';
+import { Provider } from 'react-redux';
 import { fireEvent, waitFor } from '@testing-library/react';
-import { renderWithRedux, TestContext } from 'ra-test';
 
+import { CoreAdminContext, createAdminStore } from '../../core';
+import { testDataProvider } from '../../dataProvider';
 import { useListParams, getQuery, getNumberOrDefault } from './useListParams';
-import {
-    SORT_DESC,
-    SORT_ASC,
-} from '../../reducer/admin/resource/list/queryReducer';
+import { SORT_DESC, SORT_ASC } from './queryReducer';
 
 describe('useListParams', () => {
     describe('getQuery', () => {
@@ -193,165 +191,172 @@ describe('useListParams', () => {
     });
     describe('showFilter', () => {
         it('should initialize displayed filters', async () => {
+            const history = createMemoryHistory();
+            const navigate = jest.spyOn(history, 'push');
             const TestedComponent = () => {
                 const [, { showFilter }] = useListParams({
                     resource: 'foo',
-                    syncWithLocation: true,
                 });
                 showFilter('foo', 'bar');
                 return <span />;
             };
-            const history = {
-                listen: jest.fn(),
-                push: jest.fn(),
-                location: { pathname: '', search: '' },
-            } as any;
             render(
-                <Router history={history}>
-                    <TestContext history={history}>
-                        <TestedComponent />
-                    </TestContext>
-                </Router>
+                <CoreAdminContext
+                    history={history}
+                    dataProvider={testDataProvider()}
+                >
+                    <TestedComponent />
+                </CoreAdminContext>
             );
             await waitFor(() => {
-                expect(history.push).toBeCalledWith({
-                    search:
-                        '?' +
-                        stringify({
-                            displayedFilters: JSON.stringify({ foo: true }),
-                            filter: JSON.stringify({ foo: 'bar' }),
-                            sort: 'id',
-                            order: 'ASC',
-                            page: 1,
-                            perPage: 10,
-                        }),
-                    state: { _scrollToTop: false },
-                });
+                expect(navigate).toHaveBeenCalledWith(
+                    {
+                        hash: '',
+                        pathname: '/',
+                        search:
+                            '?' +
+                            stringify({
+                                displayedFilters: JSON.stringify({ foo: true }),
+                                filter: JSON.stringify({ foo: 'bar' }),
+                                sort: 'id',
+                                order: 'ASC',
+                                page: 1,
+                                perPage: 10,
+                            }),
+                    },
+                    { _scrollToTop: false }
+                );
             });
         });
         it('should initialize filters', async () => {
+            const history = createMemoryHistory();
+            const navigate = jest.spyOn(history, 'push');
+
             const TestedComponent = () => {
                 const [, { showFilter }] = useListParams({
                     resource: 'foo',
-                    syncWithLocation: true,
                 });
                 showFilter('foo', 'bar');
                 return <span />;
             };
-            const history = {
-                listen: jest.fn(),
-                push: jest.fn(),
-                location: { pathname: '', search: '' },
-            } as any;
             render(
-                <Router history={history}>
-                    <TestContext history={history}>
-                        <TestedComponent />
-                    </TestContext>
-                </Router>
+                <CoreAdminContext
+                    history={history}
+                    dataProvider={testDataProvider()}
+                >
+                    <TestedComponent />
+                </CoreAdminContext>
             );
             await waitFor(() => {
-                expect(history.push).toBeCalledWith({
-                    search:
-                        '?' +
-                        stringify({
-                            displayedFilters: JSON.stringify({ foo: true }),
-                            filter: JSON.stringify({ foo: 'bar' }),
-                            sort: 'id',
-                            order: 'ASC',
-                            page: 1,
-                            perPage: 10,
-                        }),
-                    state: { _scrollToTop: false },
-                });
+                expect(navigate).toBeCalledWith(
+                    {
+                        hash: '',
+                        pathname: '/',
+                        search:
+                            '?' +
+                            stringify({
+                                displayedFilters: JSON.stringify({ foo: true }),
+                                filter: JSON.stringify({ foo: 'bar' }),
+                                sort: 'id',
+                                order: 'ASC',
+                                page: 1,
+                                perPage: 10,
+                            }),
+                    },
+                    { _scrollToTop: false }
+                );
             });
         });
 
         it('should initialize displayed filters on compound filters', async () => {
+            const history = createMemoryHistory();
+            const navigate = jest.spyOn(history, 'push');
+
             const TestedComponent = () => {
                 const [, { showFilter }] = useListParams({
                     resource: 'foo',
-                    syncWithLocation: true,
                 });
                 showFilter('foo.bar', 'baz');
                 return <span />;
             };
-            const history = {
-                listen: jest.fn(),
-                push: jest.fn(),
-                location: { pathname: '', search: '' },
-            } as any;
             render(
-                <Router history={history}>
-                    <TestContext history={history}>
-                        <TestedComponent />
-                    </TestContext>
-                </Router>
+                <CoreAdminContext
+                    history={history}
+                    dataProvider={testDataProvider()}
+                >
+                    <TestedComponent />
+                </CoreAdminContext>
             );
             await waitFor(() => {
-                expect(history.push).toBeCalledWith({
-                    search:
-                        '?' +
-                        stringify({
-                            displayedFilters: JSON.stringify({
-                                'foo.bar': true,
+                expect(navigate).toBeCalledWith(
+                    {
+                        hash: '',
+                        pathname: '/',
+                        search:
+                            '?' +
+                            stringify({
+                                displayedFilters: JSON.stringify({
+                                    'foo.bar': true,
+                                }),
+                                filter: JSON.stringify({ foo: { bar: 'baz' } }),
+                                sort: 'id',
+                                order: 'ASC',
+                                page: 1,
+                                perPage: 10,
                             }),
-                            filter: JSON.stringify({ foo: { bar: 'baz' } }),
-                            sort: 'id',
-                            order: 'ASC',
-                            page: 1,
-                            perPage: 10,
-                        }),
-                    state: { _scrollToTop: false },
-                });
+                    },
+                    { _scrollToTop: false }
+                );
             });
         });
 
         it('should initialize filters on compound filters', async () => {
+            const history = createMemoryHistory();
+            const navigate = jest.spyOn(history, 'push');
+
             const TestedComponent = () => {
                 const [, { showFilter }] = useListParams({
                     resource: 'foo',
-                    syncWithLocation: true,
                 });
                 showFilter('foo.bar', 'baz');
                 return <span />;
             };
-            const history = {
-                listen: jest.fn(),
-                push: jest.fn(),
-                location: { pathname: '', search: '' },
-            } as any;
             render(
-                <Router history={history}>
-                    <TestContext history={history}>
-                        <TestedComponent />
-                    </TestContext>
-                </Router>
+                <CoreAdminContext
+                    history={history}
+                    dataProvider={testDataProvider()}
+                >
+                    <TestedComponent />
+                </CoreAdminContext>
             );
             await waitFor(() => {
-                expect(history.push).toBeCalledWith({
-                    search:
-                        '?' +
-                        stringify({
-                            displayedFilters: JSON.stringify({
-                                'foo.bar': true,
+                expect(navigate).toBeCalledWith(
+                    {
+                        hash: '',
+                        pathname: '/',
+                        search:
+                            '?' +
+                            stringify({
+                                displayedFilters: JSON.stringify({
+                                    'foo.bar': true,
+                                }),
+                                filter: JSON.stringify({ foo: { bar: 'baz' } }),
+                                sort: 'id',
+                                order: 'ASC',
+                                page: 1,
+                                perPage: 10,
                             }),
-                            filter: JSON.stringify({ foo: { bar: 'baz' } }),
-                            sort: 'id',
-                            order: 'ASC',
-                            page: 1,
-                            perPage: 10,
-                        }),
-                    state: { _scrollToTop: false },
-                });
+                    },
+                    { _scrollToTop: false }
+                );
             });
         });
     });
     describe('useListParams', () => {
-        const Component = ({ syncWithLocation = false }) => {
+        const Component = ({ disableSyncWithLocation = false }) => {
             const [, { setPage }] = useListParams({
                 resource: 'posts',
-                syncWithLocation,
+                disableSyncWithLocation,
             });
 
             const handleClick = () => {
@@ -363,43 +368,51 @@ describe('useListParams', () => {
 
         it('should synchronize parameters with location and redux state when sync is enabled', async () => {
             const history = createMemoryHistory();
-            jest.spyOn(history, 'push');
-            let dispatch;
+            const navigate = jest.spyOn(history, 'push');
+            const store = createAdminStore({});
+            const dispatch = jest.spyOn(store, 'dispatch');
 
-            const { getByText } = renderWithRedux(
-                <TestContext enableReducers history={history}>
-                    {({ store }) => {
-                        dispatch = jest.spyOn(store, 'dispatch');
-                        return <Component syncWithLocation />;
-                    }}
-                </TestContext>
+            render(
+                <Provider store={store}>
+                    <CoreAdminContext
+                        history={history}
+                        dataProvider={testDataProvider()}
+                    >
+                        <Component />
+                    </CoreAdminContext>
+                </Provider>
             );
 
-            fireEvent.click(getByText('update'));
+            fireEvent.click(screen.getByText('update'));
             await waitFor(() => {
-                expect(history.push).toHaveBeenCalled();
+                expect(navigate).toHaveBeenCalled();
+            });
+            await waitFor(() => {
                 expect(dispatch).toHaveBeenCalled();
             });
         });
 
         test('should not synchronize parameters with location and redux state when sync is not enabled', async () => {
             const history = createMemoryHistory();
-            jest.spyOn(history, 'push');
-            let dispatch;
+            const navigate = jest.spyOn(history, 'push');
+            const store = createAdminStore({});
+            const dispatch = jest.spyOn(store, 'dispatch');
 
-            const { getByText } = renderWithRedux(
-                <TestContext enableReducers history={history}>
-                    {({ store }) => {
-                        dispatch = jest.spyOn(store, 'dispatch');
-                        return <Component />;
-                    }}
-                </TestContext>
+            render(
+                <Provider store={store}>
+                    <CoreAdminContext
+                        history={history}
+                        dataProvider={testDataProvider()}
+                    >
+                        <Component />
+                    </CoreAdminContext>
+                </Provider>
             );
 
-            fireEvent.click(getByText('update'));
+            fireEvent.click(screen.getByText('update'));
 
             await waitFor(() => {
-                expect(history.push).not.toHaveBeenCalled();
+                expect(navigate).not.toHaveBeenCalled();
                 expect(dispatch).not.toHaveBeenCalled();
             });
         });

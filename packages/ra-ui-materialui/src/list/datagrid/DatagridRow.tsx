@@ -15,14 +15,14 @@ import { TableCell, TableRow, TableRowProps, Checkbox } from '@mui/material';
 import {
     Identifier,
     linkToRecord,
-    Record,
+    RaRecord,
     RecordContextProvider,
     useExpanded,
     useResourceContext,
     useTranslate,
 } from 'ra-core';
 import { shallowEqual } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 
 import DatagridCell from './DatagridCell';
@@ -81,7 +81,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
         }
     }, [expandable, nbColumns, children, hasBulkActions]);
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleToggleExpand = useCallback(
         event => {
@@ -109,10 +109,10 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                     : rowClick;
             switch (effect) {
                 case 'edit':
-                    history.push(linkToRecord(basePath || `/${resource}`, id));
+                    navigate(linkToRecord(basePath || `/${resource}`, id));
                     return;
                 case 'show':
-                    history.push(
+                    navigate(
                         linkToRecord(basePath || `/${resource}`, id, 'show')
                     );
                     return;
@@ -123,13 +123,13 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                     handleToggleSelection(event);
                     return;
                 default:
-                    if (effect) history.push(effect);
+                    if (effect) navigate(effect);
                     return;
             }
         },
         [
             basePath,
-            history,
+            navigate,
             handleToggleExpand,
             handleToggleSelection,
             id,
@@ -265,7 +265,7 @@ export interface DatagridRowProps
         | FC<{
               basePath: string;
               id: Identifier;
-              record: Record;
+              record: RaRecord;
               resource: string;
           }>;
     hasBulkActions?: boolean;
@@ -275,7 +275,7 @@ export interface DatagridRowProps
         id: Identifier,
         event: React.TouchEvent | React.MouseEvent
     ) => void;
-    record?: Record;
+    record?: RaRecord;
     resource?: string;
     rowClick?: RowClickFunction | string;
     selected?: boolean;
@@ -286,7 +286,7 @@ export interface DatagridRowProps
 export type RowClickFunction = (
     id: Identifier,
     basePath: string,
-    record: Record
+    record: RaRecord
 ) => string | Promise<string>;
 
 const areEqual = (prevProps, nextProps) => {

@@ -1,9 +1,15 @@
 import * as React from 'react';
-import { render, waitFor, within, fireEvent } from '@testing-library/react';
+import {
+    render,
+    screen,
+    waitFor,
+    within,
+    fireEvent,
+} from '@testing-library/react';
 import { Form } from 'react-final-form';
-import { useListContext } from 'ra-core';
-import { renderWithRedux } from 'ra-test';
-import addDays from 'date-fns/add_days';
+import { CoreAdminContext, testDataProvider, useListContext } from 'ra-core';
+import { ThemeProvider, createTheme } from '@mui/material';
+
 import { Datagrid } from '../list';
 import { TextField } from '../field';
 import {
@@ -22,6 +28,11 @@ describe('<ReferenceArrayInput />', () => {
         basePath: '/posts',
         translate: x => `*${x}*`,
     };
+
+    afterEach(async () => {
+        // wait for the getManyAggregate batch to resolve
+        await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
+    });
 
     it('should display an error if error is defined', () => {
         const MyComponent = () => <div>MyComponent</div>;
@@ -175,157 +186,113 @@ describe('<ReferenceArrayInput />', () => {
 
     it('should provide a ListContext with all available choices', async () => {
         const Children = () => {
-            const listContext = useListContext();
-
-            return (
-                <>
-                    <div aria-label="total">{listContext.total}</div>
-                    <div aria-label="ids">{listContext.ids.join()}</div>
-                    <div aria-label="data">
-                        {JSON.stringify(listContext.data)}
-                    </div>
-                </>
-            );
+            const { total } = useListContext();
+            return <div aria-label="total">{total}</div>;
         };
-
-        const { getByLabelText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <ReferenceArrayInput {...defaultProps}>
-                        <Children />
-                    </ReferenceArrayInput>
-                )}
-            />,
-            {
-                admin: {
-                    references: {
-                        possibleValues: {
-                            'posts@tag_ids': [5, 6],
-                        },
-                    },
-                    resources: {
-                        tags: {
-                            list: {
-                                cachedRequests: {
-                                    [JSON.stringify({
-                                        pagination: { page: 1, perPage: 25 },
-                                        sort: {
-                                            field: 'id',
-                                            order: 'DESC',
-                                        },
-                                        filter: {},
-                                    })]: {
-                                        total: 2,
-                                    },
-                                },
-                            },
-                            data: {
-                                5: { id: 5, name: 'test1' },
-                                6: { id: 6, name: 'test2' },
-                            },
-                        },
-                    },
-                },
-            }
+        const dataProvider = testDataProvider({
+            getList: () =>
+                Promise.resolve({ data: [{ id: 1 }, { id: 2 }], total: 2 }),
+        });
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <ReferenceArrayInput {...defaultProps}>
+                            <Children />
+                        </ReferenceArrayInput>
+                    )}
+                />
+            </CoreAdminContext>
         );
-        expect(getByLabelText('total').innerHTML).toEqual('2');
+        await waitFor(() => {
+            expect(screen.getByLabelText('total').innerHTML).toEqual('2');
+        });
     });
 
-    test('should allow to use a Datagrid', async () => {
-        const { getByLabelText, queryByText } = renderWithRedux(
-            <Form
-                onSubmit={jest.fn()}
-                initialValues={{ tag_ids: [5] }}
-                render={() => (
-                    <ReferenceArrayInput
-                        reference="tags"
-                        resource="posts"
-                        source="tag_ids"
-                        basePath="/posts"
-                    >
-                        <Datagrid
-                            hasBulkActions={true}
-                            rowClick="toggleSelection"
-                        >
-                            <TextField source="name" />
-                        </Datagrid>
-                    </ReferenceArrayInput>
-                )}
-            />,
-            {
-                admin: {
-                    references: {
-                        possibleValues: {
-                            'posts@tag_ids': [5, 6],
-                        },
-                    },
-                    resources: {
-                        tags: {
-                            list: {
-                                cachedRequests: {
-                                    [JSON.stringify({
-                                        pagination: { page: 1, perPage: 25 },
-                                        sort: {
-                                            field: 'id',
-                                            order: 'DESC',
-                                        },
-                                        filter: {},
-                                    })]: {
-                                        ids: [5, 6],
-                                        total: 2,
-                                        validity: addDays(new Date(), 1),
-                                    },
-                                },
-                            },
-                            data: {
-                                5: { id: 5, name: 'test1' },
-                                6: { id: 6, name: 'test2' },
-                            },
-                        },
-                    },
-                },
-            }
+    it('should allow to use a Datagrid', async () => {
+        const dataProvider = testDataProvider({
+            getList: () =>
+                Promise.resolve({
+                    data: [
+                        { id: 5, name: 'test1' },
+                        { id: 6, name: 'test2' },
+                    ],
+                    total: 2,
+                }),
+            getMany: () =>
+                Promise.resolve({
+                    data: [{ id: 5, name: 'test1' }],
+                }),
+        });
+        render(
+            <ThemeProvider theme={createTheme()}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Form
+                        onSubmit={jest.fn()}
+                        initialValues={{ tag_ids: [5] }}
+                        render={() => (
+                            <ReferenceArrayInput
+                                reference="tags"
+                                resource="posts"
+                                source="tag_ids"
+                                basePath="/posts"
+                            >
+                                <Datagrid rowClick="toggleSelection">
+                                    <TextField source="name" />
+                                </Datagrid>
+                            </ReferenceArrayInput>
+                        )}
+                    />
+                </CoreAdminContext>
+            </ThemeProvider>
         );
 
         await waitFor(() => {
-            expect(queryByText('test1')).not.toBeNull();
-            expect(queryByText('test2')).not.toBeNull();
+            screen.getByText('test1');
+            screen.getByText('test2');
         });
 
-        const checkBoxTest1 = within(queryByText('test1').closest('tr'))
-            .getByLabelText('ra.action.select_row')
-            .querySelector('input');
-
-        const checkBoxTest2 = within(queryByText('test2').closest('tr'))
-            .getByLabelText('ra.action.select_row')
-            .querySelector('input');
-
-        const checkBoxAll = getByLabelText(
-            'ra.action.select_all'
-        ).querySelector('input');
-
-        expect(checkBoxTest1.checked).toEqual(true);
-        expect(checkBoxTest2.checked).toEqual(false);
-        fireEvent.click(checkBoxTest2);
+        const getCheckbox1 = () =>
+            within(screen.queryByText('test1').closest('tr'))
+                .getByLabelText('ra.action.select_row')
+                .querySelector('input');
+        const getCheckbox2 = () =>
+            within(screen.queryByText('test2').closest('tr'))
+                .getByLabelText('ra.action.select_row')
+                .querySelector('input');
+        const getCheckboxAll = () =>
+            screen
+                .getByLabelText('ra.action.select_all')
+                .querySelector('input');
 
         await waitFor(() => {
-            expect(checkBoxTest2.checked).toEqual(true);
-            expect(checkBoxAll.checked).toEqual(true);
+            expect(getCheckbox1().checked).toEqual(true);
+            expect(getCheckbox2().checked).toEqual(false);
         });
 
-        fireEvent.click(checkBoxAll);
+        fireEvent.click(getCheckbox2());
+
         await waitFor(() => {
-            expect(checkBoxTest1.checked).toEqual(false);
-            expect(checkBoxTest2.checked).toEqual(false);
-            expect(checkBoxAll.checked).toEqual(false);
+            expect(getCheckbox1().checked).toEqual(true);
+            expect(getCheckbox2().checked).toEqual(true);
+            expect(getCheckboxAll().checked).toEqual(true);
         });
 
-        fireEvent.click(checkBoxAll);
+        fireEvent.click(getCheckboxAll());
+
         await waitFor(() => {
-            expect(checkBoxTest1.checked).toEqual(true);
-            expect(checkBoxTest2.checked).toEqual(true);
-            expect(checkBoxAll.checked).toEqual(true);
+            expect(getCheckbox1().checked).toEqual(false);
+            expect(getCheckbox2().checked).toEqual(false);
+            expect(getCheckboxAll().checked).toEqual(false);
+        });
+
+        fireEvent.click(getCheckboxAll());
+
+        await waitFor(() => {
+            expect(getCheckbox1().checked).toEqual(true);
+            expect(getCheckbox2().checked).toEqual(true);
+            expect(getCheckboxAll().checked).toEqual(true);
         });
     });
 });

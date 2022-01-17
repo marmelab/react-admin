@@ -1,23 +1,16 @@
 import { useCallback } from 'react';
 
-import useGetList from '../../dataProvider/useGetList';
+import { useGetList, UseGetManyHookValue } from '../../dataProvider';
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
 import useTranslate from '../../i18n/useTranslate';
-import {
-    PaginationPayload,
-    Record,
-    RecordMap,
-    Identifier,
-    SortPayload,
-} from '../../types';
-import { ListControllerProps } from '../list';
-import useReference from '../useReference';
+import { PaginationPayload, RaRecord, SortPayload } from '../../types';
+import { ListControllerResult } from '../list';
+import { useReference } from '../useReference';
 import usePaginationState from '../usePaginationState';
 import { useSortState } from '..';
 import useFilterState from '../useFilterState';
 import useSelectionState from '../useSelectionState';
 import { useResourceContext } from '../../core';
-import { Refetch } from '../../dataProvider';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
@@ -61,11 +54,10 @@ const defaultFilter = {};
  *      filterToQuery: searchText => ({ title: searchText })
  * });
  */
-export const useReferenceInputController = (
-    props: Option
-): ReferenceInputValue => {
+export const useReferenceInputController = <RecordType extends RaRecord = any>(
+    props: UseReferenceInputControllerParams
+): ReferenceInputValue<RecordType> => {
     const {
-        basePath,
         input,
         page: initialPage = 1,
         perPage: initialPerPage = 25,
@@ -89,13 +81,13 @@ export const useReferenceInputController = (
     } = usePaginationState({ page: initialPage, perPage: initialPerPage });
 
     // sort logic
-    const { sort, setSort: setSortObject } = useSortState(sortOverride);
+    const { sort, setSort: setSortState } = useSortState(sortOverride);
     const setSort = useCallback(
-        (field: string, order: string = 'ASC') => {
-            setSortObject({ field, order });
+        (sort: SortPayload) => {
+            setSortState(sort);
             setPage(1);
         },
-        [setPage, setSortObject]
+        [setPage, setSortState]
     );
 
     // filter logic
@@ -117,48 +109,46 @@ export const useReferenceInputController = (
 
     // fetch possible values
     const {
-        ids: possibleValuesIds,
-        data: possibleValuesData,
+        data: possibleValuesData = [],
         total: possibleValuesTotal,
-        loaded: possibleValuesLoaded,
-        loading: possibleValuesLoading,
+        isFetching: possibleValuesFetching,
+        isLoading: possibleValuesLoading,
         error: possibleValuesError,
         refetch: refetchGetList,
-    } = useGetList(reference, pagination, sort, filterValues, {
-        action: 'CUSTOM_QUERY',
-        enabled: enableGetChoices ? enableGetChoices(filterValues) : true,
-    });
+    } = useGetList<RecordType>(
+        reference,
+        { pagination, sort, filter: filterValues },
+        { enabled: enableGetChoices ? enableGetChoices(filterValues) : true }
+    );
 
     // fetch current value
     const {
         referenceRecord,
         refetch: refetchReference,
         error: referenceError,
-        loading: referenceLoading,
-        loaded: referenceLoaded,
-    } = useReference({
+        isLoading: referenceLoading,
+        isFetching: referenceFetching,
+    } = useReference<RecordType>({
         id: input.value,
         reference,
     });
-
     // add current value to possible sources
-    let finalIds: Identifier[],
-        finalData: RecordMap<Record>,
-        finalTotal: number;
-    if (!referenceRecord || possibleValuesIds.includes(input.value)) {
-        finalIds = possibleValuesIds;
-        finalData = possibleValuesData;
+    let finalData: RecordType[], finalTotal: number;
+    if (
+        !referenceRecord ||
+        possibleValuesData.find(record => record.id === input.value)
+    ) {
+        finalData = [...possibleValuesData];
         finalTotal = possibleValuesTotal;
     } else {
-        finalIds = [input.value, ...possibleValuesIds];
-        finalData = { [input.value]: referenceRecord, ...possibleValuesData };
+        finalData = [referenceRecord, ...possibleValuesData];
         finalTotal = possibleValuesTotal + 1;
     }
 
     // overall status
     const dataStatus = getDataStatus({
         input,
-        matchingReferences: Object.keys(finalData).map(id => finalData[id]),
+        matchingReferences: finalData,
         referenceRecord,
         translate,
     });
@@ -171,19 +161,16 @@ export const useReferenceInputController = (
     return {
         // should match the ListContext shape
         possibleValues: {
-            basePath,
             data: finalData,
-            ids: finalIds,
             total: finalTotal,
             error: possibleValuesError,
-            loaded: possibleValuesLoaded,
-            loading: possibleValuesLoading,
-            hasCreate: false,
+            isFetching: possibleValuesFetching,
+            isLoading: possibleValuesLoading,
             page,
             setPage,
             perPage,
             setPerPage,
-            currentSort: sort,
+            sort,
             setSort,
             filterValues,
             displayedFilters,
@@ -194,13 +181,13 @@ export const useReferenceInputController = (
             onSelect,
             onToggleItem,
             onUnselectItems,
-            refetch,
+            refetch: refetchGetList,
             resource,
         },
         referenceRecord: {
             data: referenceRecord,
-            loaded: referenceLoaded,
-            loading: referenceLoading,
+            isLoading: referenceLoading,
+            isFetching: referenceFetching,
             error: referenceError,
             refetch: refetchReference,
         },
@@ -209,19 +196,19 @@ export const useReferenceInputController = (
             loading: dataStatus.waiting,
             warning: dataStatus.warning,
         },
-        choices: finalIds.map(id => finalData[id]),
+        choices: finalData,
         // kept for backwards compatibility
         // @deprecated to be removed in 4.0
         error: dataStatus.error,
-        loading: possibleValuesLoading || referenceLoading,
-        loaded: possibleValuesLoaded && referenceLoaded,
+        isFetching: possibleValuesFetching || referenceFetching,
+        isLoading: possibleValuesLoading || referenceLoading,
         filter: filterValues,
         refetch,
         setFilter,
         pagination,
         setPagination,
         sort,
-        setSort: setSortObject,
+        setSort,
         warning: dataStatus.warning,
     };
 };
@@ -229,24 +216,24 @@ export const useReferenceInputController = (
 const hideFilter = () => {};
 const showFilter = () => {};
 
-export interface ReferenceInputValue {
-    possibleValues: ListControllerProps;
+export interface ReferenceInputValue<RecordType extends RaRecord = any> {
+    possibleValues: ListControllerResult<RecordType>;
     referenceRecord: {
-        data?: Record;
-        loaded: boolean;
-        loading: boolean;
+        data?: RaRecord;
+        isLoading: boolean;
+        isFetching: boolean;
         error?: any;
-        refetch: Refetch;
+        refetch: UseGetManyHookValue<RecordType>['refetch'];
     };
     dataStatus: {
         error?: any;
         loading: boolean;
         warning?: string;
     };
-    choices: Record[];
+    choices: RecordType[];
     error?: string;
-    loaded: boolean;
-    loading: boolean;
+    isFetching: boolean;
+    isLoading: boolean;
     pagination: PaginationPayload;
     setFilter: (filter: string) => void;
     filter: any;
@@ -254,10 +241,10 @@ export interface ReferenceInputValue {
     setSort: (sort: SortPayload) => void;
     sort: SortPayload;
     warning?: string;
-    refetch: Refetch;
+    refetch: () => void;
 }
 
-interface Option {
+export interface UseReferenceInputControllerParams {
     allowEmpty?: boolean;
     basePath?: string;
     filter?: any;
@@ -265,7 +252,7 @@ interface Option {
     input?: any;
     page?: number;
     perPage?: number;
-    record?: Record;
+    record?: RaRecord;
     reference: string;
     // @deprecated ignored
     referenceSource?: typeof defaultReferenceSource;

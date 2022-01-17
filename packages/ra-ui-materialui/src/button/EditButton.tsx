@@ -4,7 +4,12 @@ import PropTypes from 'prop-types';
 import ContentCreate from '@mui/icons-material/Create';
 import { ButtonProps as MuiButtonProps } from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import { linkToRecord, Record, useResourceContext } from 'ra-core';
+import {
+    linkToRecord,
+    RaRecord,
+    useResourceContext,
+    useRecordContext,
+} from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
 
@@ -22,11 +27,11 @@ export const EditButton = (props: EditButtonProps) => {
     const {
         icon = defaultIcon,
         label = 'ra.action.edit',
-        record,
         scrollToTop = true,
         ...rest
     } = props;
-    const resource = useResourceContext();
+    const resource = useResourceContext(props);
+    const record = useRecordContext(props);
     return (
         <Button
             component={Link}
@@ -57,7 +62,7 @@ interface Props {
     basePath?: string;
     icon?: ReactElement;
     label?: string;
-    record?: Record;
+    record?: RaRecord;
     scrollToTop?: boolean;
 }
 

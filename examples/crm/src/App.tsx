@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Admin, Resource, ListGuesser } from 'react-admin';
-
 import { dataProvider } from './dataProvider';
 import { authProvider } from './authProvider';
 import Layout from './Layout';
@@ -15,6 +14,13 @@ const App = () => (
         authProvider={authProvider}
         layout={Layout}
         dashboard={Dashboard}
+        theme={{
+            palette: {
+                background: {
+                    default: '#fafafb',
+                },
+            },
+        }}
     >
         <Resource name="deals" {...deals} />
         <Resource name="contacts" {...contacts} />

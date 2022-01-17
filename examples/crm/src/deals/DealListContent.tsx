@@ -1,12 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect, useContext } from 'react';
-import {
-    useMutation,
-    Identifier,
-    useListContext,
-    RecordMap,
-    DataProviderContext,
-} from 'react-admin';
+import { Identifier, useListContext, DataProviderContext } from 'react-admin';
 import { Box } from '@mui/material';
 import { DragDropContext, OnDragEndResponder } from 'react-beautiful-dnd';
 import isEqual from 'lodash/isEqual';
@@ -14,6 +8,11 @@ import isEqual from 'lodash/isEqual';
 import { DealColumn } from './DealColumn';
 import { stages } from './stages';
 import { Deal } from '../types';
+
+export interface RecordMap {
+    [id: number]: Deal;
+    [id: string]: Deal;
+}
 
 interface DealsByColumn {
     [stage: string]: Identifier[];
@@ -24,66 +23,53 @@ const initialDeals: DealsByColumn = stages.reduce(
     {}
 );
 
-const getDealsByColumn = (
-    ids: Identifier[],
-    data: RecordMap<Deal>
-): DealsByColumn => {
+const getDealsByColumn = (data: Deal[]): DealsByColumn => {
     // group deals by column
-    const columns = ids.reduce(
-        (acc, id) => {
-            acc[data[id].stage].push(id);
+    const columns = data.reduce(
+        (acc, record) => {
+            acc[record.stage].push(record);
             return acc;
         },
         stages.reduce((obj, stage) => ({ ...obj, [stage]: [] }), {} as any)
     );
     // order each column by index
     stages.forEach(stage => {
-        columns[stage] = columns[stage].sort(
-            (a: Identifier, b: Identifier) => data[a].index - data[b].index
-        );
+        columns[stage] = columns[stage]
+            .sort(
+                (recordA: Deal, recordB: Deal) => recordA.index - recordB.index
+            )
+            .map((deal: Deal) => deal.id);
     });
     return columns;
 };
 
-export const DealListContent = () => {
-    const {
-        data,
-        ids,
-        loaded,
-        page,
-        perPage,
-        currentSort,
-        filterValues,
-    } = useListContext<Deal>();
+const indexById = (data: Deal[]): RecordMap =>
+    data.reduce((obj, record) => ({ ...obj, [record.id]: record }), {});
 
+export const DealListContent = () => {
+    const { data: unorderedDeals, isLoading, refetch } = useListContext<Deal>();
+
+    const [data, setData] = useState<RecordMap>(
+        isLoading ? {} : indexById(unorderedDeals)
+    );
     const [deals, setDeals] = useState<DealsByColumn>(
-        loaded ? getDealsByColumn(ids, data) : initialDeals
+        isLoading ? initialDeals : getDealsByColumn(unorderedDeals)
     );
     // we use the raw dataProvider to avoid too many updates to the Redux store after updates (which would create junk)
     const dataProvider = useContext(DataProviderContext);
 
-    // FIXME: use refetch when available
-    const [refresh] = useMutation({
-        resource: 'deals',
-        type: 'getList',
-        payload: {
-            pagination: { page, perPage },
-            sort: currentSort,
-            filter: filterValues,
-        },
-    });
-
     // update deals by columns when the dataProvider response updates
     useEffect(() => {
-        if (!loaded) return;
-        const newDeals = getDealsByColumn(ids, data);
+        if (isLoading) return;
+        const newDeals = getDealsByColumn(unorderedDeals);
         if (isEqual(deals, newDeals)) {
             return;
         }
         setDeals(newDeals);
-    }, [data, ids, loaded]); // eslint-disable-line react-hooks/exhaustive-deps
+        setData(indexById(unorderedDeals));
+    }, [unorderedDeals, isLoading]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    if (!loaded) return null;
+    if (isLoading) return null;
 
     const onDragEnd: OnDragEndResponder = async result => {
         const { destination, source, draggableId } = result;
@@ -153,7 +139,7 @@ export const DealListContent = () => {
                     }),
                 ]);
 
-                refresh();
+                refetch();
             } else {
                 // deal moved down, e.g
                 // src   dest
@@ -183,7 +169,7 @@ export const DealListContent = () => {
                     }),
                 ]);
 
-                refresh();
+                refetch();
             }
         } else {
             // moving deal across columns
@@ -260,7 +246,7 @@ export const DealListContent = () => {
                 }),
             ]);
 
-            refresh();
+            refetch();
         }
     };
 

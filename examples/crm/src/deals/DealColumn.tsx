@@ -2,11 +2,11 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Typography } from '@mui/material';
 import { Droppable } from 'react-beautiful-dnd';
-import { Identifier, RecordMap } from 'react-admin';
+import { Identifier } from 'react-admin';
 
 import { DealCard } from './DealCard';
 import { stageNames } from './stages';
-import { Deal } from '../types';
+import { RecordMap } from './DealListContent';
 
 const PREFIX = 'DealColumn';
 
@@ -48,7 +48,7 @@ export const DealColumn = ({
 }: {
     stage: string;
     dealIds: Identifier[];
-    data: RecordMap<Deal>;
+    data: RecordMap;
 }) => {
     return (
         <Root className={classes.root}>

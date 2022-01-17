@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { AdminProps } from 'ra-core';
+import { ComponentType } from 'react';
+import { CoreAdminProps } from 'ra-core';
+import { AdminUI, AdminContext } from 'ra-ui-materialui';
+import { ThemeOptions } from '@mui/material';
 
-import AdminContext from './AdminContext';
-import AdminUI from './AdminUI';
+import { defaultI18nProvider } from './defaultI18nProvider';
 
 /**
  * Main admin component, entry point to the application.
@@ -83,14 +85,14 @@ import { useEffect, useState } from 'react';
  *     );
  * };
  */
-const Admin = (props: AdminProps) => {
+export const Admin = (props: AdminProps) => {
     const {
         appLayout,
         authProvider,
+        basename,
         catchAll,
         children,
         customReducers,
-        customRoutes = [],
         dashboard,
         dataProvider,
         disableTelemetry,
@@ -103,6 +105,7 @@ const Admin = (props: AdminProps) => {
         loginPage,
         logoutButton,
         menu, // deprecated, use a custom layout instead
+        notification,
         ready,
         theme,
         title = 'React Admin',
@@ -127,24 +130,25 @@ const Admin = (props: AdminProps) => {
     return (
         <AdminContext
             authProvider={authProvider}
+            basename={basename}
             dataProvider={dataProvider}
             i18nProvider={i18nProvider}
             history={history}
             customReducers={customReducers}
             initialState={initialState}
+            theme={theme}
         >
             <AdminUI
                 layout={appLayout || layout}
-                customRoutes={customRoutes}
                 dashboard={dashboard}
                 disableTelemetry={disableTelemetry}
                 menu={menu}
                 catchAll={catchAll}
-                theme={theme}
                 title={title}
                 loading={loading}
                 loginPage={loginPage}
                 logout={authProvider ? logoutButton : undefined}
+                notification={notification}
                 ready={ready}
             >
                 {children}
@@ -153,4 +157,13 @@ const Admin = (props: AdminProps) => {
     );
 };
 
+Admin.defaultProps = {
+    i18nProvider: defaultI18nProvider,
+};
+
 export default Admin;
+
+export interface AdminProps extends CoreAdminProps {
+    theme?: ThemeOptions;
+    notification?: ComponentType;
+}

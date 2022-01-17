@@ -1,7 +1,7 @@
 import { useContext, useMemo } from 'react';
 import defaults from 'lodash/defaults';
 
-import { Record } from '../../types';
+import { RaRecord } from '../../types';
 import { EditContext } from './EditContext';
 import { EditControllerResult } from './useEditController';
 
@@ -22,7 +22,7 @@ import { EditControllerResult } from './useEditController';
  * @see useEditController for how it is filled
  *
  */
-export const useEditContext = <RecordType extends Record = Record>(
+export const useEditContext = <RecordType extends RaRecord = any>(
     props?: Partial<EditControllerResult<RecordType>>
 ): Partial<EditControllerResult<RecordType>> => {
     // Can't find a way to specify the RecordType when EditContext is declared
@@ -52,38 +52,22 @@ const extractEditContextProps = ({
     data,
     record,
     defaultTitle,
-    onFailureRef,
-    onSuccessRef,
-    transformRef,
     loaded,
     loading,
     redirect,
-    setOnFailure,
-    setOnSuccess,
-    setTransform,
     resource,
     save,
     saving,
-    successMessage,
-    version,
 }: any) => ({
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
     data: record || data,
     record: record || data,
     defaultTitle,
-    onFailureRef,
-    onSuccessRef,
-    transformRef,
     loaded,
     loading,
     redirect,
-    setOnFailure,
-    setOnSuccess,
-    setTransform,
     resource,
     save,
     saving,
-    successMessage,
-    version,
 });

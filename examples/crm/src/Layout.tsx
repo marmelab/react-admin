@@ -1,5 +1,4 @@
 import React, { HtmlHTMLAttributes } from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CssBaseline, Container } from '@mui/material';
 import { CoreLayoutProps } from 'react-admin';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -8,9 +7,9 @@ import { Notification, Error } from 'react-admin';
 import Header from './Header';
 
 const Layout = (props: LayoutProps) => {
-    const { theme, children } = props;
+    const { children } = props;
     return (
-        <ThemeProvider theme={createTheme(theme)}>
+        <>
             <CssBaseline />
             <Header />
             <Container>
@@ -22,7 +21,7 @@ const Layout = (props: LayoutProps) => {
                 </main>
             </Container>
             <Notification />
-        </ThemeProvider>
+        </>
     );
 };
 

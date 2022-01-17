@@ -13,7 +13,6 @@ import {
     FunctionField,
     TextField,
     useListContext,
-    Record,
 } from 'react-admin';
 
 import AvatarField from '../visitors/AvatarField';
@@ -41,19 +40,20 @@ const StyledList = styled(List)({
 });
 
 const ReviewListMobile = () => {
-    const { data, ids, loaded, total } = useListContext<Review>();
-
-    return loaded || Number(total) > 0 ? (
+    const { data, isLoading, total } = useListContext<Review>();
+    if (isLoading || Number(total) === 0) {
+        return null;
+    }
+    return (
         <StyledList className={classes.root}>
-            {(ids as Exclude<typeof ids, undefined>).map(id => {
-                const item = (data as Exclude<typeof data, undefined>)[id];
+            {data.map(item => {
                 if (!item) return null;
 
                 return (
                     <Link
-                        to={linkToRecord('/reviews', id)}
+                        to={linkToRecord('/reviews', item.id)}
                         className={classes.link}
-                        key={id}
+                        key={item.id}
                     >
                         <ListItem button>
                             <ListItemAvatar>
@@ -78,15 +78,9 @@ const ReviewListMobile = () => {
                                             link={false}
                                         >
                                             <FunctionField
-                                                render={(record?: Record) =>
+                                                render={(record?: Customer) =>
                                                     record
-                                                        ? `${
-                                                              (record as Customer)
-                                                                  .first_name
-                                                          } ${
-                                                              (record as Customer)
-                                                                  .last_name
-                                                          }`
+                                                        ? `${record.first_name} ${record.last_name}`
                                                         : ''
                                                 }
                                                 variant="subtitle1"
@@ -117,7 +111,7 @@ const ReviewListMobile = () => {
                 );
             })}
         </StyledList>
-    ) : null;
+    );
 };
 
 ReviewListMobile.propTypes = {

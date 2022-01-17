@@ -429,7 +429,7 @@ The default messages are available [here](https://github.com/marmelab/react-admi
 
 ## Translating Resource and Field Names
 
-By default, React-admin uses resource names ("post", "comment", etc) and field names ("title", "first_name", etc) everywhere in the interface. It simply "humanizes" the technical identifiers to make them look better (e.g. "first_name" becomes "First name").
+By default, React-admin uses resource names ("post", "comment", etc.) and field names ("title", "first_name", etc.) everywhere in the interface. It simply "humanizes" the technical identifiers to make them look better (e.g. "first_name" becomes "First name").
 
 However, before humanizing names, react-admin checks the `messages` dictionary for a possible translation, with the following keys:
 
@@ -552,7 +552,7 @@ export default withTranslate(MyHelloButton);
 
 ## Using Specific Polyglot Features
 
-Polyglot.js is a fantastic library: in addition to being small, fully maintained, and totally framework agnostic, it provides some nice features such as interpolation and pluralization, that you can use in react-admin.
+Polyglot.js is a fantastic library: in addition to being small, fully maintained, and totally framework-agnostic, it provides some nice features such as interpolation and pluralization, that you can use in react-admin.
 
 ```js
 const messages = {
@@ -623,7 +623,7 @@ export default {
 By default, react-admin translates the notification messages. You can pass variables for polyglot interpolation with custom notifications. For example:
 
 ```js
-notify('myroot.hello.world', 'info', { name: 'Planet Earth' });
+notify('myroot.hello.world', { messageArgs: { name: 'Planet Earth' } });
 ```
 
 Assuming you have the following in your custom messages:
@@ -704,8 +704,8 @@ This solution is all-or-nothing: you can't silence only *some* missing translati
 
 Some of your records may contain fields that are translated in multiple languages. It's common, in such cases, to offer an interface allowing admin users to see and edit each translation. React-admin provides 2 components for that:
 
-- To display translatable fields, use the [`<TranslatableFields>`](./Fields.md#translatable-fields) component
-- To edit translatable fields, use the [`<TranslatableInputs>`](./Inputs.md#translatable-inputs) component
+- To display translatable fields, use the [`<TranslatableFields>`](./TranslatableFields.md) component
+- To edit translatable fields, use the [`<TranslatableInputs>`](./TranslatableInputs.md) component
 
 They both expect the translatable values to have the following structure:
 

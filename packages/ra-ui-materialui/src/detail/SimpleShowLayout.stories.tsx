@@ -120,13 +120,13 @@ export const SeveralColumns = () => (
         <RecordContextProvider value={record}>
             <Grid container spacing={2}>
                 <Grid item xs={6}>
-                    <SimpleShowLayout component="div">
+                    <SimpleShowLayout>
                         <TextField source="id" />
                         <TextField source="title" />
                     </SimpleShowLayout>
                 </Grid>
                 <Grid item xs={6}>
-                    <SimpleShowLayout component="div">
+                    <SimpleShowLayout>
                         <TextField source="author" />
                         <TextField source="summary" />
                         <NumberField source="year" />

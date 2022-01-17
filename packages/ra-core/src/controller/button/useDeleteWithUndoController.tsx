@@ -1,13 +1,14 @@
 import { useCallback, ReactEventHandler } from 'react';
+import { UseMutationOptions } from 'react-query';
+
 import { useDelete } from '../../dataProvider';
-import { CRUD_DELETE } from '../../actions';
 import {
-    useRefresh,
-    useNotify,
     useRedirect,
+    useUnselect,
     RedirectionSideEffect,
 } from '../../sideEffect';
-import { Record, OnFailure, OnSuccess } from '../../types';
+import { useNotify } from '../../notification';
+import { RaRecord, DeleteParams } from '../../types';
 import { useResourceContext } from '../../core';
 
 /**
@@ -27,7 +28,7 @@ import { useResourceContext } from '../../core';
  *     onClick,
  *     ...rest
  * }) => {
- *     const { loading, handleDelete } = useDeleteWithUndoController({
+ *     const { isLoading, handleDelete } = useDeleteWithUndoController({
  *         resource,
  *         record,
  *         basePath,
@@ -38,7 +39,7 @@ import { useResourceContext } from '../../core';
  *     return (
  *         <Button
  *             onClick={handleDelete}
- *             disabled={loading}
+ *             disabled={isLoading}
  *             label="ra.action.delete"
  *             {...rest}
  *         >
@@ -47,88 +48,99 @@ import { useResourceContext } from '../../core';
  *     );
  * };
  */
-const useDeleteWithUndoController = (
-    props: UseDeleteWithUndoControllerParams
+const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
+    props: UseDeleteWithUndoControllerParams<RecordType>
 ): UseDeleteWithUndoControllerReturn => {
     const {
         record,
         basePath,
         redirect: redirectTo = 'list',
         onClick,
-        onSuccess,
-        onFailure,
+        mutationOptions,
     } = props;
     const resource = useResourceContext(props);
     const notify = useNotify();
+    const unselect = useUnselect();
     const redirect = useRedirect();
-    const refresh = useRefresh();
+    const [deleteOne, { isLoading }] = useDelete<RecordType>();
 
-    const [deleteOne, { loading }] = useDelete(resource, null, null, {
-        action: CRUD_DELETE,
-        onSuccess:
-            onSuccess !== undefined
-                ? onSuccess
-                : () => {
-                      notify(
-                          'ra.notification.deleted',
-                          'info',
-                          { smart_count: 1 },
-                          true
-                      );
-                      redirect(redirectTo, basePath || `/${resource}`);
-                      refresh();
-                  },
-        onFailure:
-            onFailure !== undefined
-                ? onFailure
-                : error => {
-                      notify(
-                          typeof error === 'string'
-                              ? error
-                              : error.message || 'ra.notification.http_error',
-                          'warning',
-                          {
-                              _:
-                                  typeof error === 'string'
-                                      ? error
-                                      : error && error.message
-                                      ? error.message
-                                      : undefined,
-                          }
-                      );
-                      refresh();
-                  },
-        mutationMode: 'undoable',
-    });
     const handleDelete = useCallback(
         event => {
             event.stopPropagation();
-            deleteOne({
-                payload: { id: record.id, previousData: record },
-            });
+            deleteOne(
+                resource,
+                { id: record.id, previousData: record },
+                {
+                    onSuccess: () => {
+                        notify('ra.notification.deleted', {
+                            type: 'info',
+                            messageArgs: { smart_count: 1 },
+                            undoable: true,
+                        });
+                        unselect(resource, [record.id]);
+                        redirect(redirectTo, basePath || `/${resource}`);
+                    },
+                    onError: (error: Error) => {
+                        notify(
+                            typeof error === 'string'
+                                ? error
+                                : error.message || 'ra.notification.http_error',
+                            {
+                                type: 'warning',
+                                messageArgs: {
+                                    _:
+                                        typeof error === 'string'
+                                            ? error
+                                            : error && error.message
+                                            ? error.message
+                                            : undefined,
+                                },
+                            }
+                        );
+                    },
+                    mutationMode: 'undoable',
+                    ...mutationOptions,
+                }
+            );
             if (typeof onClick === 'function') {
                 onClick(event);
             }
         },
-        [deleteOne, onClick, record]
+        [
+            basePath,
+            deleteOne,
+            mutationOptions,
+            notify,
+            onClick,
+            record,
+            redirect,
+            redirectTo,
+            resource,
+            unselect,
+        ]
     );
 
-    return { loading, handleDelete };
+    return { isLoading, handleDelete };
 };
 
-export interface UseDeleteWithUndoControllerParams {
+export interface UseDeleteWithUndoControllerParams<
+    RecordType extends RaRecord = any
+> {
     basePath?: string;
-    record?: Record;
+    record?: RecordType;
     redirect?: RedirectionSideEffect;
     // @deprecated. This hook get the resource from the context
     resource?: string;
     onClick?: ReactEventHandler<any>;
-    onSuccess?: OnSuccess;
-    onFailure?: OnFailure;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        unknown,
+        DeleteParams<RecordType>
+    >;
 }
 
 export interface UseDeleteWithUndoControllerReturn {
-    loading: boolean;
+    isLoading: boolean;
     handleDelete: ReactEventHandler<any>;
 }
 

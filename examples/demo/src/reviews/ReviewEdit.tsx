@@ -55,7 +55,7 @@ const Root = styled('div')(({ theme }) => ({
     },
 }));
 
-interface Props extends EditProps {
+interface Props extends EditProps<Review> {
     onCancel: () => void;
 }
 
@@ -79,9 +79,7 @@ const ReviewEdit = ({ onCancel, ...props }: Props) => {
                 <SimpleForm
                     className={classes.form}
                     record={controllerProps.record}
-                    save={controllerProps.save}
-                    version={controllerProps.version}
-                    redirect="list"
+                    onSubmit={controllerProps.save}
                     resource="reviews"
                     toolbar={<ReviewEditToolbar />}
                 >
@@ -98,7 +96,7 @@ const ReviewEdit = ({ onCancel, ...props }: Props) => {
                     <StarRatingField formClassName={classes.inlineField} />
                     <TextInput
                         source="comment"
-                        rowsMax={15}
+                        rowsmax={15}
                         multiline
                         fullWidth
                     />

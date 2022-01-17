@@ -8,7 +8,6 @@ import {
     NumberField,
     useListContext,
     DatagridProps,
-    Identifier,
 } from 'react-admin';
 import { Link } from 'react-router-dom';
 
@@ -53,9 +52,9 @@ const useColsForWidth = () => {
     const md = useMediaQuery(theme.breakpoints.up('md'));
     const lg = useMediaQuery(theme.breakpoints.up('lg'));
     const xl = useMediaQuery(theme.breakpoints.up('xl'));
-
-    if (xl) return 6;
-    if (lg) return 5;
+    // there are all dividers of 24, to have full rows on each page
+    if (xl) return 8;
+    if (lg) return 6;
     if (md) return 4;
     if (sm) return 3;
     return 2;
@@ -65,7 +64,7 @@ const times = (nbChildren: number, fn: (key: number) => any) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
 
 const LoadingGridList = (props: DatagridProps & { nbItems?: number }) => {
-    const { nbItems = 20 } = props;
+    const { nbItems = 24 } = props;
     const cols = useColsForWidth();
     return (
         <StyledGridList
@@ -84,10 +83,10 @@ const LoadingGridList = (props: DatagridProps & { nbItems?: number }) => {
 };
 
 const LoadedGridList = (props: DatagridProps) => {
-    const { ids, data } = useListContext();
+    const { data } = useListContext();
     const cols = useColsForWidth();
 
-    if (!ids || !data) return null;
+    if (!data) return null;
 
     return (
         <StyledGridList
@@ -95,24 +94,24 @@ const LoadedGridList = (props: DatagridProps) => {
             cols={cols}
             className={classes.gridList}
         >
-            {ids.map((id: Identifier) => (
+            {data.map(record => (
                 <ImageListItem
                     // @ts-ignore
                     component={Link}
-                    key={id}
-                    to={linkToRecord(`/products`, data[id].id)}
+                    key={record.id}
+                    to={linkToRecord(`/products`, record.id)}
                 >
-                    <img src={data[id].thumbnail} alt="" />
+                    <img src={record.thumbnail} alt="" />
                     <ImageListItemBar
                         className={classes.tileBar}
-                        title={data[id].reference}
+                        title={record.reference}
                         subtitle={
                             <span>
-                                {data[id].width}x{data[id].height},{' '}
+                                {record.width}x{record.height},{' '}
                                 <NumberField
                                     className={classes.price}
                                     source="price"
-                                    record={data[id]}
+                                    record={record}
                                     color="inherit"
                                     options={{
                                         style: 'currency',
@@ -129,8 +128,8 @@ const LoadedGridList = (props: DatagridProps) => {
 };
 
 const ImageList = () => {
-    const { loaded } = useListContext();
-    return loaded ? <LoadedGridList /> : <LoadingGridList />;
+    const { isLoading } = useListContext();
+    return isLoading ? <LoadingGridList /> : <LoadedGridList />;
 };
 
 export default ImageList;

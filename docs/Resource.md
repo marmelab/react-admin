@@ -7,13 +7,13 @@ title: "The Resource Component"
 
 `<Resource>` components are fundamental building blocks in react-admin apps. They form the skeleton of the application, and of its internal data store. 
 
-In react-admin terms, a *resource* is a string that refers to an entity type (like 'products', 'subscribers', or 'tags'). *Records* are objects with an `id` field, and two records of the same *resource* have the same field structure (e.g. all posts records have a title, a publication date, etc). 
+In react-admin terms, a *resource* is a string that refers to an entity type (like 'products', 'subscribers', or 'tags'). *Records* are objects with an `id` field, and two records of the same *resource* have the same field structure (e.g. all posts records have a title, a publication date, etc.). 
 
 A `<Resource>` component has 3 responsibilities:
 
-- It defines the page components to use for interacting with the resource records (to display a list of records, the details of a record, or to create a new one).
-- It initializes the internal data store so that react-admin components can see it as a mirror of the API for a given resource.
-- It creates a context that lets every descendent component know in which resource they are used (this context is called `ResourceContext`).
+- It defines the components for the CRUD routes of a given resource (to display a list of records, the details of a record, or to create a new one).
+- It creates a context that lets every descendent component know the current resource name (this context is called `ResourceContext`).
+- It stores the resource definition (its name, icon, and label) inside a shared context (this context is called `ResourceDefinitionContext`).
 
 `<Resource>` components can only be used as children of [the `<Admin>` component](./Admin.md).
 
@@ -43,8 +43,6 @@ const App = () => (
     </Admin>
 );
 ```
-
-**Tip**: You must add a `<Resource>` when you declare a reference (via `<ReferenceField>`, `<ReferenceArrayField>`, `<ReferenceManyField>`, `<ReferenceInput>` or `<ReferenceArrayInput>`), because react-admin uses resources to define the data store structure. That's why there is an empty `tags` resource in the example above.
 
 **Tip**: How does a resource map to an API endpoint? The `<Resource>` component doesn't know this mapping - it's [the `dataProvider`'s job](./DataProviders.md) to define it.
 

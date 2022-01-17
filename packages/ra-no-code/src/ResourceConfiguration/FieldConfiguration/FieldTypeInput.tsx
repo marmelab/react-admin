@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { InferenceTypes } from 'ra-core';
-import { FieldProps, SelectInput } from 'ra-ui-materialui';
+import { FieldProps, InferenceTypes, SelectInput } from 'react-admin';
 
 export const FieldTypeInput = (props: FieldProps) => (
     <SelectInput choices={INFERENCE_TYPES} {...props} />

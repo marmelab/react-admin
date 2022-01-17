@@ -1,7 +1,7 @@
 import { useContext, useMemo } from 'react';
 import defaults from 'lodash/defaults';
 
-import { Record } from '../../types';
+import { RaRecord } from '../../types';
 import { ShowContext } from './ShowContext';
 import { ShowControllerResult } from './useShowController';
 
@@ -22,7 +22,7 @@ import { ShowControllerResult } from './useShowController';
  * @see useShowController for how it is filled
  *
  */
-export const useShowContext = <RecordType extends Record = Record>(
+export const useShowContext = <RecordType extends RaRecord = any>(
     props?: Partial<ShowControllerResult<RecordType>>
 ): Partial<ShowControllerResult<RecordType>> => {
     // Can't find a way to specify the RecordType when ShowContext is declared
@@ -53,10 +53,9 @@ const extractShowContextProps = ({
     record,
     data,
     defaultTitle,
-    loaded,
-    loading,
+    isFetching,
+    isLoading,
     resource,
-    version,
 }: any) => ({
     basePath,
     // Necessary for actions (EditActions) which expect a data prop containing the record
@@ -64,8 +63,7 @@ const extractShowContextProps = ({
     record: record || data,
     data: record || data,
     defaultTitle,
-    loaded,
-    loading,
+    isFetching,
+    isLoading,
     resource,
-    version,
 });

@@ -498,7 +498,7 @@ describe('<SelectInput />', () => {
         });
     });
 
-    it('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
+    it('should not render a LinearProgress if isLoading is true and a second has not passed yet', () => {
         const { queryByRole } = render(
             <ThemeProvider theme={theme}>
                 <Form
@@ -508,8 +508,7 @@ describe('<SelectInput />', () => {
                         <SelectInput
                             {...{
                                 ...defaultProps,
-                                loaded: true,
-                                loading: true,
+                                isLoading: true,
                             }}
                         />
                     )}
@@ -520,7 +519,7 @@ describe('<SelectInput />', () => {
         expect(queryByRole('progressbar')).toBeNull();
     });
 
-    it('should render a LinearProgress if loading is true and a second has passed', async () => {
+    it('should render a LinearProgress if isLoading is true and a second has passed', async () => {
         const { queryByRole } = render(
             <ThemeProvider theme={theme}>
                 <Form
@@ -530,8 +529,7 @@ describe('<SelectInput />', () => {
                         <SelectInput
                             {...{
                                 ...defaultProps,
-                                loaded: true,
-                                loading: true,
+                                isLoading: true,
                             }}
                         />
                     )}
@@ -544,7 +542,7 @@ describe('<SelectInput />', () => {
         expect(queryByRole('progressbar')).not.toBeNull();
     });
 
-    it('should not render a LinearProgress if loading is false', () => {
+    it('should not render a LinearProgress if isLoading is false', () => {
         const { queryByRole } = render(
             <ThemeProvider theme={theme}>
                 <Form
@@ -589,7 +587,7 @@ describe('<SelectInput />', () => {
         fireEvent.mouseDown(select);
 
         fireEvent.click(getByText('ra.action.create'));
-        await new Promise(resolve => setImmediate(resolve));
+        await new Promise(resolve => setTimeout(resolve));
         input.blur();
 
         expect(
@@ -633,7 +631,7 @@ describe('<SelectInput />', () => {
         fireEvent.mouseDown(select);
 
         fireEvent.click(getByText('ra.action.create'));
-        await new Promise(resolve => setImmediate(resolve));
+        await new Promise(resolve => setTimeout(resolve));
         input.blur();
 
         await waitFor(() => {
@@ -642,6 +640,52 @@ describe('<SelectInput />', () => {
                 queryByText(newChoice.name, { selector: '[role=button]' })
             ).not.toBeNull();
         });
+    });
+
+    it('should support creation of a new choice with nested optionText', async () => {
+        const choices = [
+            { id: 'programming', name: { en: 'Programming' } },
+            { id: 'lifestyle', name: { en: 'Lifestyle' } },
+            { id: 'photography', name: { en: 'Photography' } },
+        ];
+        const newChoice = {
+            id: 'js_fatigue',
+            name: { en: 'New Kid On The Block' },
+        };
+
+        const { getByLabelText, getByRole, getByText, queryByText } = render(
+            <Form
+                validateOnBlur
+                onSubmit={jest.fn()}
+                render={() => (
+                    <SelectInput
+                        {...defaultProps}
+                        choices={choices}
+                        onCreate={() => {
+                            choices.push(newChoice);
+                            return newChoice;
+                        }}
+                        optionText="name.en"
+                    />
+                )}
+            />
+        );
+
+        const input = getByLabelText(
+            'resources.posts.fields.language'
+        ) as HTMLInputElement;
+        input.focus();
+        const select = getByRole('button');
+        fireEvent.mouseDown(select);
+
+        fireEvent.click(getByText('ra.action.create'));
+        await new Promise(resolve => setTimeout(resolve));
+        input.blur();
+
+        expect(
+            // The selector ensure we don't get the options from the menu but the select value
+            queryByText(newChoice.name.en, { selector: '[role=button]' })
+        ).not.toBeNull();
     });
 
     it('should support creation of a new choice through the create element', async () => {

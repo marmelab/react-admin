@@ -11,15 +11,15 @@ import {
     FormWithRedirect,
     FormWithRedirectProps,
     MutationMode,
-    Record,
+    RaRecord,
     RedirectionSideEffect,
     OnSuccess,
-    OnFailure,
+    onError,
 } from 'ra-core';
 import get from 'lodash/get';
-import { useRouteMatch, useLocation } from 'react-router';
 
 import { TabbedFormView } from './TabbedFormView';
+import { useFormRootPath } from './useFormRootPath';
 
 /**
  * Form layout where inputs are divided by tab, one input per line.
@@ -89,15 +89,18 @@ import { TabbedFormView } from './TabbedFormView';
  * @param {Props} props
  */
 export const TabbedForm = (props: TabbedFormProps) => {
-    const match = useRouteMatch();
-    const location = useLocation();
-    const formRootPathname = match ? match.url : location.pathname;
+    const formRootPathname = useFormRootPath();
 
     return (
         <FormWithRedirect
-            {...props}
             formRootPathname={formRootPathname}
-            render={formProps => <TabbedFormView {...formProps} />}
+            {...props}
+            render={formProps => (
+                <TabbedFormView
+                    formRootPathname={formRootPathname}
+                    {...formProps}
+                />
+            )}
         />
     );
 };
@@ -105,6 +108,7 @@ export const TabbedForm = (props: TabbedFormProps) => {
 TabbedForm.propTypes = {
     children: PropTypes.node,
     initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    formRootPathname: PropTypes.string,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     // @ts-ignore
     record: PropTypes.object,
@@ -130,18 +134,19 @@ export interface TabbedFormProps
     children: ReactNode;
     className?: string;
     initialValues?: any;
+    formRootPathname?: string;
     margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
-    record?: Record;
+    record?: RaRecord;
     redirect?: RedirectionSideEffect;
     resource?: string;
     sanitizeEmptyValues?: boolean;
     save?: (
-        data: Partial<Record>,
+        data: Partial<RaRecord>,
         redirectTo: RedirectionSideEffect,
         options?: {
             onSuccess?: OnSuccess;
-            onFailure?: OnFailure;
+            onError?: onError;
         }
     ) => void;
     submitOnEnter?: boolean;

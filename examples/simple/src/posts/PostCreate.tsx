@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useMemo } from 'react';
-import RichTextInput from 'ra-input-rich-text';
+import { RichTextInput } from 'ra-input-rich-text';
 import {
     ArrayInput,
     AutocompleteInput,
@@ -19,38 +19,82 @@ import {
     required,
     FileInput,
     FileField,
+    useNotify,
     usePermissions,
+    useRedirect,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
-import { FormSpy } from 'react-final-form';
+import { useForm, FormSpy } from 'react-final-form';
 
-const PostCreateToolbar = props => (
-    <Toolbar {...props}>
-        <SaveButton
-            label="post.action.save_and_edit"
-            redirect="edit"
-            submitOnEnter={true}
-        />
-        <SaveButton
-            label="post.action.save_and_show"
-            redirect="show"
-            submitOnEnter={false}
-            variant="text"
-        />
-        <SaveButton
-            label="post.action.save_and_add"
-            redirect={false}
-            submitOnEnter={false}
-            variant="text"
-        />
-        <SaveButton
-            label="post.action.save_with_average_note"
-            transform={data => ({ ...data, average_note: 10 })}
-            redirect="show"
-            submitOnEnter={false}
-            variant="text"
-        />
-    </Toolbar>
-);
+const PostCreateToolbar = props => {
+    const notify = useNotify();
+    const redirect = useRedirect();
+    const form = useForm();
+
+    return (
+        <Toolbar {...props}>
+            <SaveButton
+                label="post.action.save_and_edit"
+                submitOnEnter
+                variant="text"
+            />
+            <SaveButton
+                label="post.action.save_and_show"
+                submitOnEnter={false}
+                variant="text"
+                mutationOptions={{
+                    onSuccess: data => {
+                        notify('ra.notification.created', {
+                            type: 'info',
+                            messageArgs: { smart_count: 1 },
+                        });
+                        redirect('show', '/posts', data.id);
+                    },
+                }}
+            />
+            <SaveButton
+                label="post.action.save_and_add"
+                submitOnEnter={false}
+                variant="text"
+                mutationOptions={{
+                    onSuccess: () => {
+                        // FIXME for some reason, form.reset() doesn't work here
+                        form.getRegisteredFields().forEach(field => {
+                            if (field.includes('[')) {
+                                // input inside an array input, skipping
+                                return;
+                            }
+                            form.change(
+                                field,
+                                form.getState().initialValues[field]
+                            );
+                        });
+                        form.restart();
+                        window.scrollTo(0, 0);
+                        notify('ra.notification.created', {
+                            type: 'info',
+                            messageArgs: { smart_count: 1 },
+                        });
+                    },
+                }}
+            />
+            <SaveButton
+                label="post.action.save_with_average_note"
+                submitOnEnter={false}
+                variant="text"
+                mutationOptions={{
+                    onSuccess: data => {
+                        notify('ra.notification.created', {
+                            type: 'info',
+                            messageArgs: { smart_count: 1 },
+                        });
+                        redirect('show', '/posts', data.id);
+                    },
+                }}
+                transform={data => ({ ...data, average_note: 10 })}
+            />
+        </Toolbar>
+    );
+};
 
 const backlinksDefaultValue = [
     {
@@ -67,9 +111,8 @@ const PostCreate = () => {
     );
     const { permissions } = usePermissions();
     const dateDefaultValue = useMemo(() => new Date(), []);
-
     return (
-        <Create>
+        <Create redirect="edit">
             <SimpleForm
                 toolbar={<PostCreateToolbar />}
                 initialValues={initialValues}

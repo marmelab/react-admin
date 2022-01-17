@@ -1,20 +1,21 @@
 import * as React from 'react';
 import expect from 'expect';
-import { fireEvent, waitFor, act } from '@testing-library/react';
+import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import lolex from 'lolex';
 // TODO: we shouldn't import mui components in ra-core
 import { TextField } from '@mui/material';
+import { createMemoryHistory } from 'history';
+import { Provider } from 'react-redux';
 
-import { DataProviderContext } from '../../dataProvider';
+import { testDataProvider } from '../../dataProvider';
 import { ListController } from './ListController';
 import {
     getListControllerProps,
     sanitizeListRestProps,
 } from './useListController';
-
-import { renderWithRedux } from 'ra-test';
+import { CoreAdminContext, createAdminStore } from '../../core';
 import { CRUD_CHANGE_LIST_PARAMS } from '../../actions';
-import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
+import { SORT_ASC } from './queryReducer';
 
 describe('useListController', () => {
     const defaultProps = {
@@ -24,13 +25,6 @@ describe('useListController', () => {
         hasEdit: true,
         hasList: true,
         hasShow: true,
-        ids: [],
-        location: {
-            pathname: '/posts',
-            search: undefined,
-            state: undefined,
-            hash: undefined,
-        },
         query: {
             page: 1,
             perPage: 10,
@@ -43,76 +37,30 @@ describe('useListController', () => {
         debounce: 200,
     };
 
-    describe('data', () => {
-        it('should be synchronized with ids after delete', async () => {
-            const FooField = ({ record }) => <span>{record.foo}</span>;
-            const dataProvider = {
-                getList: () =>
-                    Promise.resolve({
-                        data: [
-                            { id: 1, foo: 'foo1' },
-                            { id: 2, foo: 'foo2' },
-                        ],
-                        total: 2,
-                    }),
-            };
-            const { dispatch, queryByText } = renderWithRedux(
-                <DataProviderContext.Provider value={dataProvider}>
-                    <ListController
-                        {...defaultProps}
-                        resource="comments"
-                        filter={{ foo: 1 }}
-                    >
-                        {({ data, ids }) => (
-                            <>
-                                {ids.map(id => (
-                                    <FooField key={id} record={data[id]} />
-                                ))}
-                            </>
-                        )}
-                    </ListController>
-                </DataProviderContext.Provider>,
-                {
-                    admin: {
-                        resources: {
-                            comments: {
-                                list: {
-                                    params: {},
-                                    cachedRequests: {},
-                                    ids: [],
-                                    selectedIds: [],
-                                    total: null,
-                                },
-                                data: {},
-                            },
-                        },
-                    },
-                }
-            );
-            await act(async () => await new Promise(r => setTimeout(r)));
-
-            // delete one post
-            act(() => {
-                dispatch({
-                    type: 'RA/CRUD_DELETE_OPTIMISTIC',
-                    payload: { id: 1 },
-                    meta: {
-                        resource: 'comments',
-                        fetch: 'DELETE',
-                        optimistic: true,
-                    },
-                });
-            });
-            await act(async () => await new Promise(r => setTimeout(r)));
-
-            expect(queryByText('foo1')).toBeNull();
-            expect(queryByText('foo2')).not.toBeNull();
+    it('should accept custom client query options', async () => {
+        const mock = jest.spyOn(console, 'error').mockImplementation(() => {});
+        const getList = jest
+            .fn()
+            .mockImplementationOnce(() => Promise.reject(new Error()));
+        const onError = jest.fn();
+        const dataProvider = testDataProvider({ getList });
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ListController resource="posts" queryOptions={{ onError }}>
+                    {() => <div />}
+                </ListController>
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(getList).toHaveBeenCalled();
+            expect(onError).toHaveBeenCalled();
         });
+        mock.mockRestore();
     });
 
     describe('setFilters', () => {
         let clock;
-        let fakeComponent = ({ setFilters, filterValues }) => (
+        let childFunction = ({ setFilters, filterValues }) => (
             // TODO: we shouldn't import mui components in ra-core
             <TextField
                 inputProps={{
@@ -135,25 +83,21 @@ describe('useListController', () => {
 
             const props = {
                 ...defaultProps,
-                children: fakeComponent,
+                children: childFunction,
             };
 
-            const { getByLabelText, dispatch, reduxStore } = renderWithRedux(
-                <ListController syncWithLocation {...props} />,
-                {
-                    admin: {
-                        resources: {
-                            posts: {
-                                list: {
-                                    params: {},
-                                    cachedRequests: {},
-                                },
-                            },
-                        },
-                    },
-                }
+            const store = createAdminStore({
+                initialState: { admin: { listParams: {} } },
+            });
+            const dispatch = jest.spyOn(store, 'dispatch');
+            render(
+                <Provider store={store}>
+                    <CoreAdminContext dataProvider={testDataProvider()}>
+                        <ListController {...props} />
+                    </CoreAdminContext>
+                </Provider>
             );
-            const searchInput = getByLabelText('search');
+            const searchInput = screen.getByLabelText('search');
 
             fireEvent.change(searchInput, { target: { value: 'hel' } });
             fireEvent.change(searchInput, { target: { value: 'hell' } });
@@ -166,8 +110,8 @@ describe('useListController', () => {
             );
             expect(changeParamsCalls).toHaveLength(1);
 
-            const state = reduxStore.getState();
-            expect(state.admin.resources.posts.list.params.filter).toEqual({
+            const state = store.getState();
+            expect(state.admin.listParams.posts.filter).toEqual({
                 q: 'hello',
             });
         });
@@ -175,48 +119,62 @@ describe('useListController', () => {
         it('should remove empty filters', () => {
             const props = {
                 ...defaultProps,
-                location: {
-                    ...defaultProps.location,
-                    search: `?filter=${JSON.stringify({ q: 'hello' })}`,
-                },
-                children: fakeComponent,
+                children: childFunction,
             };
 
-            const { getByLabelText, dispatch, reduxStore } = renderWithRedux(
-                <ListController syncWithLocation {...props} />,
-                {
+            const store = createAdminStore({
+                initialState: {
                     admin: {
-                        resources: {
+                        listParams: {
                             posts: {
-                                list: {
-                                    params: {
-                                        filter: { q: 'hello' },
-                                        displayedFilters: { q: true },
-                                    },
-                                    cachedRequests: {},
-                                },
+                                filter: { q: 'hello' },
+                                displayedFilters: { q: true },
                             },
                         },
                     },
-                }
+                },
+            });
+            const dispatch = jest.spyOn(store, 'dispatch');
+            const history = createMemoryHistory({
+                initialEntries: [
+                    `/posts?filter=${JSON.stringify({
+                        q: 'hello',
+                    })}&displayedFilters=${JSON.stringify({ q: true })}`,
+                ],
+            });
+            render(
+                <Provider store={store}>
+                    <CoreAdminContext
+                        dataProvider={testDataProvider()}
+                        history={history}
+                    >
+                        <ListController {...props} />
+                    </CoreAdminContext>
+                </Provider>
             );
-            const searchInput = getByLabelText('search');
+            expect(
+                dispatch.mock.calls.filter(
+                    call => call[0].type === CRUD_CHANGE_LIST_PARAMS
+                )
+            ).toHaveLength(1);
 
+            const searchInput = screen.getByLabelText('search');
             // FIXME: For some reason, triggering the change event with an empty string
-            // does not call the event handler on fakeComponent
+            // does not call the event handler on childFunction
             fireEvent.change(searchInput, { target: { value: '' } });
             clock.tick(210);
 
-            const changeParamsCalls = dispatch.mock.calls.filter(
-                call => call[0].type === CRUD_CHANGE_LIST_PARAMS
-            );
-            expect(changeParamsCalls).toHaveLength(1);
-
-            const state = reduxStore.getState();
-            expect(state.admin.resources.posts.list.params.filter).toEqual({});
             expect(
-                state.admin.resources.posts.list.params.displayedFilters
-            ).toEqual({ q: true });
+                dispatch.mock.calls.filter(
+                    call => call[0].type === CRUD_CHANGE_LIST_PARAMS
+                )
+            ).toHaveLength(2);
+
+            const state = store.getState();
+            expect(state.admin.listParams.posts.filter).toEqual({});
+            expect(state.admin.listParams.posts.displayedFilters).toEqual({
+                q: true,
+            });
         });
 
         it('should update data if permanent filters change', () => {
@@ -226,62 +184,51 @@ describe('useListController', () => {
                 debounce: 200,
                 children,
             };
+            const getList = jest
+                .fn()
+                .mockImplementation(() =>
+                    Promise.resolve({ data: [], total: 0 })
+                );
+            const dataProvider = testDataProvider({ getList });
+            const history = createMemoryHistory({
+                initialEntries: [`/posts`],
+            });
 
-            const { dispatch, rerender } = renderWithRedux(
-                <ListController
-                    syncWithLocation
-                    {...props}
-                    filter={{ foo: 1 }}
-                />,
-                {
-                    admin: {
-                        resources: {
-                            posts: {
-                                list: {
-                                    params: {},
-                                    cachedRequests: {},
-                                    ids: [],
-                                    selectedIds: [],
-                                    total: null,
-                                },
-                            },
-                        },
-                    },
-                }
+            const { rerender } = render(
+                <CoreAdminContext dataProvider={dataProvider} history={history}>
+                    <ListController {...props} filter={{ foo: 1 }} />
+                </CoreAdminContext>
             );
-            const crudGetListCalls = dispatch.mock.calls.filter(
-                call => call[0].type === 'RA/CRUD_GET_LIST'
-            );
-            expect(crudGetListCalls).toHaveLength(1);
+
             // Check that the permanent filter was used in the query
-            expect(crudGetListCalls[0][0].payload.filter).toEqual({ foo: 1 });
-            // Check that the permanent filter is not included in the displayedFilters (passed to Filter form and button)
-            expect(children).toBeCalledTimes(2);
-            expect(children.mock.calls[0][0].displayedFilters).toEqual({});
-            // Check that the permanent filter is not included in the filterValues (passed to Filter form and button)
-            expect(children.mock.calls[0][0].filterValues).toEqual({});
+            expect(getList).toHaveBeenCalledTimes(1);
+            expect(getList).toHaveBeenCalledWith(
+                'posts',
+                expect.objectContaining({ filter: { foo: 1 } })
+            );
+
+            // Check that the permanent filter is not included in the displayedFilters and filterValues (passed to Filter form and button)
+            expect(children).toHaveBeenCalledTimes(1);
+            expect(children).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    displayedFilters: {},
+                    filterValues: {},
+                })
+            );
 
             rerender(
-                <ListController
-                    syncWithLocation
-                    {...props}
-                    filter={{ foo: 2 }}
-                />
+                <CoreAdminContext dataProvider={dataProvider} history={history}>
+                    <ListController {...props} filter={{ foo: 2 }} />
+                </CoreAdminContext>
             );
 
-            const updatedCrudGetListCalls = dispatch.mock.calls.filter(
-                call => call[0].type === 'RA/CRUD_GET_LIST'
-            );
-            expect(updatedCrudGetListCalls).toHaveLength(2);
             // Check that the permanent filter was used in the query
-            expect(updatedCrudGetListCalls[1][0].payload.filter).toEqual({
-                foo: 2,
-            });
-            expect(children).toBeCalledTimes(4);
-            // Check that the permanent filter is not included in the displayedFilters (passed to Filter form and button)
-            expect(children.mock.calls[2][0].displayedFilters).toEqual({});
-            // Check that the permanent filter is not included in the filterValues (passed to Filter form and button)
-            expect(children.mock.calls[2][0].filterValues).toEqual({});
+            expect(getList).toHaveBeenCalledTimes(2);
+            expect(getList).toHaveBeenCalledWith(
+                'posts',
+                expect.objectContaining({ filter: { foo: 2 } })
+            );
+            expect(children).toHaveBeenCalledTimes(2);
         });
 
         afterEach(() => {
@@ -292,7 +239,7 @@ describe('useListController', () => {
         it('Does not remove previously shown filter when adding a new one', async () => {
             let currentDisplayedFilters;
 
-            let fakeComponent = ({
+            let childFunction = ({
                 showFilter,
                 displayedFilters,
                 filterValues,
@@ -318,34 +265,33 @@ describe('useListController', () => {
 
             const props = {
                 ...defaultProps,
-                children: fakeComponent,
+                children: childFunction,
             };
 
-            const { getByLabelText } = renderWithRedux(
-                <ListController {...props} />,
-                {
-                    admin: {
-                        resources: {
-                            posts: {
-                                list: {
-                                    params: {
-                                        filter: { q: 'hello' },
-                                    },
-                                    cachedRequests: {},
+            render(
+                <CoreAdminContext
+                    dataProvider={testDataProvider()}
+                    initialState={{
+                        admin: {
+                            listParams: {
+                                posts: {
+                                    filter: { q: 'hello' },
                                 },
                             },
                         },
-                    },
-                }
+                    }}
+                >
+                    <ListController {...props} />
+                </CoreAdminContext>
             );
 
-            fireEvent.click(getByLabelText('Show filter 1'));
+            fireEvent.click(screen.getByLabelText('Show filter 1'));
             await waitFor(() => {
                 expect(currentDisplayedFilters).toEqual({
                     'filter1.subdata': true,
                 });
             });
-            fireEvent.click(getByLabelText('Show filter 2'));
+            fireEvent.click(screen.getByLabelText('Show filter 2'));
             await waitFor(() => {
                 expect(currentDisplayedFilters).toEqual({
                     'filter1.subdata': true,
@@ -355,46 +301,45 @@ describe('useListController', () => {
         });
 
         it('should support to sync calls', async () => {
-            const { getByLabelText, queryByText } = renderWithRedux(
-                <ListController {...defaultProps}>
-                    {({ displayedFilters, showFilter }) => (
-                        <>
-                            <button
-                                aria-label="Show filters"
-                                onClick={() => {
-                                    showFilter('filter1.subdata', 'bob');
-                                    showFilter('filter2', '');
-                                }}
-                            />
-                            {Object.keys(displayedFilters).map(
-                                (displayedFilter, index) => (
-                                    <div key={index}>{displayedFilter}</div>
-                                )
-                            )}
-                        </>
-                    )}
-                </ListController>,
-                {
-                    admin: {
-                        resources: {
-                            posts: {
-                                list: {
-                                    params: {
-                                        filter: { q: 'hello' },
-                                    },
-                                    cachedRequests: {},
+            render(
+                <CoreAdminContext
+                    dataProvider={testDataProvider()}
+                    initialState={{
+                        admin: {
+                            listParams: {
+                                posts: {
+                                    filter: { q: 'hello' },
                                 },
                             },
                         },
-                    },
-                }
+                    }}
+                >
+                    <ListController {...defaultProps}>
+                        {({ displayedFilters, showFilter }) => (
+                            <>
+                                <button
+                                    aria-label="Show filters"
+                                    onClick={() => {
+                                        showFilter('filter1.subdata', 'bob');
+                                        showFilter('filter2', '');
+                                    }}
+                                />
+                                {Object.keys(displayedFilters).map(
+                                    (displayedFilter, index) => (
+                                        <div key={index}>{displayedFilter}</div>
+                                    )
+                                )}
+                            </>
+                        )}
+                    </ListController>
+                </CoreAdminContext>
             );
 
-            fireEvent.click(getByLabelText('Show filters'));
+            fireEvent.click(screen.getByLabelText('Show filters'));
 
             await waitFor(() => {
-                expect(queryByText('filter1.subdata')).not.toBeNull();
-                expect(queryByText('filter2')).not.toBeNull();
+                expect(screen.queryByText('filter1.subdata')).not.toBeNull();
+                expect(screen.queryByText('filter2')).not.toBeNull();
             });
         });
     });
@@ -405,14 +350,38 @@ describe('useListController', () => {
                 getListControllerProps({
                     foo: 1,
                     data: [4, 5],
-                    ids: [1, 2],
                     page: 3,
                     bar: 'hello',
                 })
             ).toEqual({
+                basePath: undefined,
+                sort: undefined,
                 data: [4, 5],
-                ids: [1, 2],
+                defaultTitle: undefined,
+                displayedFilters: undefined,
+                error: undefined,
+                exporter: undefined,
+                filterValues: undefined,
+                hasCreate: undefined,
+                hideFilter: undefined,
+                isFetching: undefined,
+                isLoading: undefined,
+                onSelect: undefined,
+                onToggleItem: undefined,
+                onUnselectItems: undefined,
                 page: 3,
+                perPage: undefined,
+                refetch: undefined,
+                refresh: undefined,
+                resource: undefined,
+                selectedIds: undefined,
+                setFilters: undefined,
+                setPage: undefined,
+                setPerPage: undefined,
+                setSort: undefined,
+                showFilter: undefined,
+                total: undefined,
+                totalPages: undefined,
             });
         });
     });
@@ -422,7 +391,6 @@ describe('useListController', () => {
                 sanitizeListRestProps({
                     foo: 1,
                     data: [4, 5],
-                    ids: [1, 2],
                     page: 3,
                     bar: 'hello',
                 })

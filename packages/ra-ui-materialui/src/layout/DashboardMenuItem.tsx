@@ -13,7 +13,6 @@ export const DashboardMenuItem = (props: DashboardMenuItemProps) => {
             to="/"
             primaryText={translate('ra.page.dashboard')}
             leftIcon={<DashboardIcon />}
-            exact
             {...rest}
         />
     );

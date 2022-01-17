@@ -9,7 +9,6 @@ import {
     useRefresh,
     useNotify,
     useUnselectAll,
-    CRUD_UPDATE_MANY,
     useResourceContext,
     useListContext,
 } from 'ra-core';
@@ -35,28 +34,29 @@ export const BulkUpdateWithUndoButton = (
         icon = defaultIcon,
         onClick,
         onSuccess = () => {
-            notify(
-                'ra.notification.updated',
-                'info',
-                { smart_count: selectedIds.length },
-                true
-            );
+            notify('ra.notification.updated', {
+                type: 'info',
+                messageArgs: { smart_count: selectedIds.length },
+                undoable: true,
+            });
             unselectAll(resource);
             refresh();
         },
-        onFailure = error => {
+        onError = (error: Error | string) => {
             notify(
                 typeof error === 'string'
                     ? error
                     : error.message || 'ra.notification.http_error',
-                'warning',
                 {
-                    _:
-                        typeof error === 'string'
-                            ? error
-                            : error && error.message
-                            ? error.message
-                            : undefined,
+                    type: 'warning',
+                    messageArgs: {
+                        _:
+                            typeof error === 'string'
+                                ? error
+                                : error && error.message
+                                ? error.message
+                                : undefined,
+                    },
                 }
             );
             refresh();
@@ -64,14 +64,12 @@ export const BulkUpdateWithUndoButton = (
         ...rest
     } = props;
 
-    const [updateMany, { loading }] = useUpdateMany(
+    const [updateMany, { isLoading }] = useUpdateMany(
         resource,
-        selectedIds,
-        data,
+        { ids: selectedIds, data },
         {
-            action: CRUD_UPDATE_MANY,
             onSuccess,
-            onFailure,
+            onError,
             mutationMode: 'undoable',
         }
     );
@@ -88,7 +86,7 @@ export const BulkUpdateWithUndoButton = (
             onClick={handleClick}
             label={label}
             className={BulkUpdateWithUndoButtonClasses.updateButton}
-            disabled={loading}
+            disabled={isLoading}
             {...sanitizeRestProps(rest)}
         >
             {icon}
@@ -104,7 +102,7 @@ const sanitizeRestProps = ({
     label,
     selectedIds,
     onSuccess,
-    onFailure,
+    onError,
     ...rest
 }: Omit<BulkUpdateWithUndoButtonProps, 'resource' | 'icon' | 'data'>) => rest;
 
@@ -114,7 +112,7 @@ export interface BulkUpdateWithUndoButtonProps
     icon?: ReactElement;
     data: any;
     onSuccess?: () => void;
-    onFailure?: (error: any) => void;
+    onError?: (error: any) => void;
 }
 
 BulkUpdateWithUndoButton.propTypes = {

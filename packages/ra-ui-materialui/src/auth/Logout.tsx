@@ -15,7 +15,7 @@ import { useTranslate, useLogout } from 'ra-core';
  * Used for the Logout Menu item in the sidebar
  */
 export const Logout: FunctionComponent<
-    LogoutProps & MenuItemProps<'li', { button: true }> // HACK: https://github.com/mui-org/material-ui/issues/16245
+    LogoutProps & MenuItemProps<'li'>
 > = React.forwardRef(function Logout(props, ref) {
     const {
         className,

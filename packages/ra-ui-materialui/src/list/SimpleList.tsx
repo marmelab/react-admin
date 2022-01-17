@@ -18,9 +18,8 @@ import { Link } from 'react-router-dom';
 import {
     Identifier,
     linkToRecord,
-    Record,
+    RaRecord,
     RecordContextProvider,
-    RecordMap,
     sanitizeListRestProps,
     useListContext,
     useResourceContext,
@@ -62,7 +61,7 @@ import { SimpleListLoading } from './SimpleListLoading';
  *     </List>
  * );
  */
-export const SimpleList = <RecordType extends Record = Record>(
+export const SimpleList = <RecordType extends RaRecord = any>(
     props: SimpleListProps<RecordType>
 ) => {
     const {
@@ -79,10 +78,10 @@ export const SimpleList = <RecordType extends Record = Record>(
         rowStyle,
         ...rest
     } = props;
-    const { data, ids, loaded, total } = useListContext<RecordType>(props);
+    const { data, isLoading, total } = useListContext<RecordType>(props);
     const resource = useResourceContext(props);
 
-    if (loaded === false) {
+    if (isLoading === true) {
         return (
             <SimpleListLoading
                 className={className}
@@ -95,10 +94,10 @@ export const SimpleList = <RecordType extends Record = Record>(
     }
 
     const renderAvatar = (
-        id: Identifier,
+        record: RecordType,
         avatarCallback: FunctionToElement<RecordType>
     ) => {
-        const avatarValue = avatarCallback(data[id], id);
+        const avatarValue = avatarCallback(record, record.id);
         if (
             typeof avatarValue === 'string' &&
             (avatarValue.startsWith('http') || avatarValue.startsWith('data:'))
@@ -111,28 +110,28 @@ export const SimpleList = <RecordType extends Record = Record>(
 
     return total > 0 ? (
         <Root className={className} {...sanitizeListRestProps(rest)}>
-            {ids.map((id, rowIndex) => (
-                <RecordContextProvider key={id} value={data[id]}>
-                    <ListItem>
+            {data.map((record, rowIndex) => (
+                <RecordContextProvider key={record.id} value={record}>
+                    <ListItem disablePadding>
                         <LinkOrNot
                             linkType={linkType}
                             resource={resource}
-                            id={id}
-                            record={data[id]}
+                            id={record.id}
+                            record={record}
                             style={
                                 rowStyle
-                                    ? rowStyle(data[id], rowIndex)
+                                    ? rowStyle(record, rowIndex)
                                     : undefined
                             }
                         >
                             {leftIcon && (
                                 <ListItemIcon>
-                                    {leftIcon(data[id], id)}
+                                    {leftIcon(record, record.id)}
                                 </ListItemIcon>
                             )}
                             {leftAvatar && (
                                 <ListItemAvatar>
-                                    {renderAvatar(id, leftAvatar)}
+                                    {renderAvatar(record, leftAvatar)}
                                 </ListItemAvatar>
                             )}
                             <ListItemText
@@ -140,7 +139,7 @@ export const SimpleList = <RecordType extends Record = Record>(
                                     <div>
                                         {isValidElement(primaryText)
                                             ? primaryText
-                                            : primaryText(data[id], id)}
+                                            : primaryText(record, record.id)}
 
                                         {!!tertiaryText &&
                                             (isValidElement(tertiaryText) ? (
@@ -151,7 +150,10 @@ export const SimpleList = <RecordType extends Record = Record>(
                                                         SimpleListClasses.tertiary
                                                     }
                                                 >
-                                                    {tertiaryText(data[id], id)}
+                                                    {tertiaryText(
+                                                        record,
+                                                        record.id
+                                                    )}
                                                 </span>
                                             ))}
                                     </div>
@@ -160,19 +162,19 @@ export const SimpleList = <RecordType extends Record = Record>(
                                     !!secondaryText &&
                                     (isValidElement(secondaryText)
                                         ? secondaryText
-                                        : secondaryText(data[id], id))
+                                        : secondaryText(record, record.id))
                                 }
                             />
                             {(rightAvatar || rightIcon) && (
                                 <ListItemSecondaryAction>
                                     {rightAvatar && (
                                         <Avatar>
-                                            {renderAvatar(id, rightAvatar)}
+                                            {renderAvatar(record, rightAvatar)}
                                         </Avatar>
                                     )}
                                     {rightIcon && (
                                         <ListItemIcon>
-                                            {rightIcon(data[id], id)}
+                                            {rightIcon(record, record.id)}
                                         </ListItemIcon>
                                     )}
                                 </ListItemSecondaryAction>
@@ -202,12 +204,12 @@ SimpleList.propTypes = {
     rowStyle: PropTypes.func,
 };
 
-export type FunctionToElement<RecordType extends Record = Record> = (
+export type FunctionToElement<RecordType extends RaRecord = any> = (
     record: RecordType,
     id: Identifier
 ) => ReactNode;
 
-export interface SimpleListProps<RecordType extends Record = Record>
+export interface SimpleListProps<RecordType extends RaRecord = any>
     extends Omit<ListProps, 'classes'> {
     className?: string;
     hasBulkActions?: boolean;
@@ -219,12 +221,12 @@ export interface SimpleListProps<RecordType extends Record = Record>
     rightIcon?: FunctionToElement<RecordType>;
     secondaryText?: FunctionToElement<RecordType> | ReactElement;
     tertiaryText?: FunctionToElement<RecordType> | ReactElement;
-    rowStyle?: (record: Record, index: number) => any;
+    rowStyle?: (record: RecordType, index: number) => any;
     // can be injected when using the component without context
     resource?: string;
-    data?: RecordMap<RecordType>;
-    ids?: Identifier[];
-    loaded?: boolean;
+    data?: RecordType[];
+    isLoading?: boolean;
+    isLoaded?: boolean;
     total?: number;
 }
 
@@ -277,13 +279,13 @@ const LinkOrNot = (
     );
 };
 
-export type FunctionLinkType = (record: Record, id: Identifier) => string;
+export type FunctionLinkType = (record: RaRecord, id: Identifier) => string;
 
 export interface LinkOrNotProps {
     linkType?: string | FunctionLinkType | boolean;
     resource: string;
     id: Identifier;
-    record: Record;
+    record: RaRecord;
     children: ReactNode;
 }
 

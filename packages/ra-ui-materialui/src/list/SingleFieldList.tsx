@@ -14,9 +14,7 @@ import {
     sanitizeListRestProps,
     useListContext,
     useResourceContext,
-    Record,
-    RecordMap,
-    Identifier,
+    RaRecord,
     RecordContextProvider,
     ComponentPropType,
 } from 'ra-core';
@@ -63,12 +61,12 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
         component = Root,
         ...rest
     } = props;
-    const { ids, data, loaded } = useListContext(props);
+    const { data, isLoading } = useListContext(props);
     const resource = useResourceContext(props);
 
     const Component = component;
 
-    if (loaded === false) {
+    if (isLoading === true) {
         return <LinearProgress />;
     }
 
@@ -77,22 +75,21 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
             className={classnames(SingleFieldListClasses.root, className)}
             {...sanitizeListRestProps(rest)}
         >
-            {ids.map(id => {
+            {data.map(record => {
                 const resourceLinkPath = !linkType
                     ? false
-                    : linkToRecord(`/${resource}`, id, linkType);
+                    : linkToRecord(`/${resource}`, record.id, linkType);
 
                 if (resourceLinkPath) {
                     return (
-                        <RecordContextProvider value={data[id]} key={id}>
+                        <RecordContextProvider value={record} key={record.id}>
                             <Link
                                 className={SingleFieldListClasses.link}
-                                key={id}
                                 to={resourceLinkPath}
                                 onClick={stopPropagation}
                             >
                                 {cloneElement(Children.only(children), {
-                                    record: data[id],
+                                    record,
                                     resource,
                                     // Workaround to force ChipField to be clickable
                                     onClick: handleClick,
@@ -103,12 +100,8 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
                 }
 
                 return (
-                    <RecordContextProvider value={data[id]} key={id}>
-                        {cloneElement(Children.only(children), {
-                            key: id,
-                            record: data[id],
-                            resource,
-                        })}
+                    <RecordContextProvider value={record} key={record.id}>
+                        {children}
                     </RecordContextProvider>
                 );
             })}
@@ -129,7 +122,7 @@ SingleFieldList.propTypes = {
     resource: PropTypes.string,
 };
 
-export interface SingleFieldListProps<RecordType extends Record = Record>
+export interface SingleFieldListProps<RecordType extends RaRecord = any>
     extends HtmlHTMLAttributes<HTMLDivElement> {
     className?: string;
 
@@ -138,8 +131,8 @@ export interface SingleFieldListProps<RecordType extends Record = Record>
     children: React.ReactElement;
     // can be injected when using the component without context
     basePath?: string;
-    data?: RecordMap<RecordType>;
-    ids?: Identifier[];
+    data?: RecordType[];
+    total?: number;
     loaded?: boolean;
 }
 
@@ -151,7 +144,7 @@ export const SingleFieldListClasses = {
 };
 
 const Root = styled('div', { name: PREFIX })(({ theme }) => ({
-    [`& .${SingleFieldListClasses.root}`]: {
+    [`&.${SingleFieldListClasses.root}`]: {
         display: 'flex',
         flexWrap: 'wrap',
         marginTop: theme.spacing(-1),

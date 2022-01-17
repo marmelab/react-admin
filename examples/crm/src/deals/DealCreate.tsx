@@ -38,7 +38,7 @@ export const DealCreate = ({ open }: { open: boolean }) => {
         redirect('/deals');
     };
 
-    const onSuccess = ({ data: deal }: { data: Deal }) => {
+    const onSuccess = (deal: Deal) => {
         redirect('/deals');
         // increase the index of all deals in the same stage as the new deal
         dataProvider
@@ -64,11 +64,10 @@ export const DealCreate = ({ open }: { open: boolean }) => {
 
     return (
         <StyledDialog open={open} onClose={handleClose}>
-            <Create
+            <Create<Deal>
                 resource="deals"
-                basePath="/deals"
                 className={classes.root}
-                onSuccess={onSuccess}
+                mutationOptions={{ onSuccess }}
             >
                 <SimpleForm initialValues={{ index: 0 }}>
                     <TextInput

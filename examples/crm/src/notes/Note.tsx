@@ -112,20 +112,27 @@ export const Note = ({
     const record = useRecordContext();
     const notify = useNotify();
 
-    const [update, { loading }] = useUpdate();
+    const [update, { isLoading }] = useUpdate();
 
-    const [handleDelete] = useDelete(resource, note.id, note, {
-        mutationMode: 'undoable',
-        onSuccess: () => {
-            notify('Note deleted', undefined, undefined, true);
-            update(
-                reference,
-                record.id,
-                { nb_notes: record.nb_notes - 1 },
-                record
-            );
-        },
-    });
+    const [deleteNote] = useDelete(
+        resource,
+        { id: note.id, previousData: note },
+        {
+            mutationMode: 'undoable',
+            onSuccess: () => {
+                notify('Note deleted', { type: 'info', undoable: true });
+                update(reference, {
+                    id: record.id,
+                    data: { nb_notes: record.nb_notes - 1 },
+                    previousData: record,
+                });
+            },
+        }
+    );
+
+    const handleDelete = () => {
+        deleteNote();
+    };
 
     const handleEnterEditMode = () => {
         setEditing(true);
@@ -143,13 +150,17 @@ export const Note = ({
 
     const handleNoteUpdate = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        update(resource, note.id, { text: noteText }, note, {
-            onSuccess: () => {
-                setEditing(false);
-                setNoteText(note.text);
-                setHover(false);
-            },
-        });
+        update(
+            resource,
+            { id: note.id, data: { text: noteText }, previousData: note },
+            {
+                onSuccess: () => {
+                    setEditing(false);
+                    setNoteText(note.text);
+                    setHover(false);
+                },
+            }
+        );
     };
 
     return (
@@ -206,7 +217,7 @@ export const Note = ({
                             type="submit"
                             color="primary"
                             variant="contained"
-                            disabled={loading}
+                            disabled={isLoading}
                         >
                             Update Note
                         </Button>

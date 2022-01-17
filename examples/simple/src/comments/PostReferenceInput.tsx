@@ -10,6 +10,7 @@ import {
     DialogContent,
     DialogActions,
 } from '@mui/material';
+import { useQueryClient } from 'react-query';
 
 import { ReferenceInput, SelectInput, useTranslate } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
@@ -31,13 +32,12 @@ const Root = styled('div')({
 
 const PostReferenceInput = props => {
     const translate = useTranslate();
-
+    const queryClient = useQueryClient();
     const { change } = useForm();
 
     const [showCreateDialog, setShowCreateDialog] = useState(false);
     const [showPreviewDialog, setShowPreviewDialog] = useState(false);
     const [newPostId, setNewPostId] = useState('');
-    const [version, setVersion] = useState(0);
 
     const handleNewClick = useCallback(
         event => {
@@ -67,15 +67,15 @@ const PostReferenceInput = props => {
         post => {
             setShowCreateDialog(false);
             setNewPostId(post.id);
-            setVersion(previous => previous + 1);
             change('post_id', post.id);
+            queryClient.invalidateQueries(['posts', 'getList']);
         },
-        [setShowCreateDialog, setNewPostId, change]
+        [setShowCreateDialog, setNewPostId, change, queryClient]
     );
 
     return (
         <Root>
-            <ReferenceInput key={version} {...props} defaultValue={newPostId}>
+            <ReferenceInput {...props} defaultValue={newPostId}>
                 <SelectInput optionText="title" />
             </ReferenceInput>
             <Button
@@ -110,7 +110,6 @@ const PostReferenceInput = props => {
                                 <DialogContent>
                                     <PostPreview
                                         id={values.post_id}
-                                        basePath="/posts"
                                         resource="posts"
                                     />
                                 </DialogContent>

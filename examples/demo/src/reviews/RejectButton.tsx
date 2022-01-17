@@ -13,27 +13,22 @@ const RejectButton = ({ record }: { record: Review }) => {
     const notify = useNotify();
     const redirectTo = useRedirect();
 
-    const [reject, { loading }] = useUpdate(
+    const [reject, { isLoading }] = useUpdate(
         'reviews',
-        record.id,
-        { status: 'rejected' },
-        record,
+        { id: record.id, data: { status: 'rejected' }, previousData: record },
         {
             mutationMode: 'undoable',
             onSuccess: () => {
-                notify(
-                    'resources.reviews.notification.rejected_success',
-                    'info',
-                    {},
-                    true
-                );
+                notify('resources.reviews.notification.rejected_success', {
+                    type: 'info',
+                    undoable: true,
+                });
                 redirectTo('/reviews');
             },
-            onFailure: () => {
-                notify(
-                    'resources.reviews.notification.rejected_error',
-                    'warning'
-                );
+            onError: () => {
+                notify('resources.reviews.notification.rejected_error', {
+                    type: 'warning',
+                });
             },
         }
     );
@@ -43,8 +38,10 @@ const RejectButton = ({ record }: { record: Review }) => {
             variant="outlined"
             color="primary"
             size="small"
-            onClick={reject}
-            disabled={loading}
+            onClick={() => {
+                reject();
+            }}
+            disabled={isLoading}
         >
             <ThumbDown
                 color="primary"

@@ -13,23 +13,21 @@ interface Params {
     initialState?: InitialState;
 }
 
-export default ({ customReducers = {}, initialState }: Params) => {
+export default ({ customReducers = {}, initialState }: Params = {}) => {
     const appReducer = createAppReducer(customReducers);
 
     const resettableAppReducer = (state, action) =>
         appReducer(
             action.type !== CLEAR_STATE
                 ? state
-                : // Erase data from the store but keep location, notifications, ui prefs, etc.
+                : // Erase state from the store but keep notifications, ui prefs, etc.
                   // This allows e.g. to display a notification on logout
                   {
                       ...state,
                       admin: {
                           ...state.admin,
-                          loading: 0,
-                          resources: {},
-                          customQueries: {},
-                          references: { oneToMany: {}, possibleValues: {} },
+                          expandedRows: {},
+                          selectedIds: {},
                       },
                   },
             action

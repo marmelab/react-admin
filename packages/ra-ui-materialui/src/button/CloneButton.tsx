@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Queue from '@mui/icons-material/Queue';
 import { Link } from 'react-router-dom';
 import { stringify } from 'query-string';
-import { Record, useResourceContext } from 'ra-core';
+import { RaRecord, useResourceContext } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
 
@@ -48,11 +48,11 @@ const defaultIcon = <Queue />;
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
-const omitId = ({ id, ...rest }: Record) => rest;
+const omitId = ({ id, ...rest }: RaRecord) => rest;
 
 interface Props {
     basePath?: string;
-    record?: Record;
+    record?: RaRecord;
     icon?: ReactElement;
     scrollToTop?: boolean;
 }

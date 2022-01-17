@@ -1,32 +1,25 @@
-import { useCallback, MutableRefObject } from 'react';
+import { useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { UseQueryOptions } from 'react-query';
+import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
-import useVersion from '../useVersion';
+import { useAuthenticated } from '../../auth';
 import {
-    Record,
-    Identifier,
+    RaRecord,
     MutationMode,
-    OnSuccess,
-    OnFailure,
-} from '../../types';
-import {
-    useNotify,
-    useRedirect,
-    useRefresh,
-    RedirectionSideEffect,
-} from '../../sideEffect';
-import { useGetOne, useUpdate, Refetch } from '../../dataProvider';
-import { useTranslate } from '../../i18n';
-import { CRUD_UPDATE } from '../../actions';
-import { useResourceContext, useGetResourceLabel } from '../../core';
-import {
-    SetOnSuccess,
-    SetOnFailure,
     TransformData,
-    SetTransformData,
-    useSaveModifiers,
-} from '../saveModifiers';
+    UpdateParams,
+} from '../../types';
+import { useRedirect, RedirectionSideEffect } from '../../sideEffect';
+import { useNotify } from '../../notification';
+import {
+    useGetOne,
+    useUpdate,
+    useRefresh,
+    UseGetOneHookValue,
+} from '../../dataProvider';
+import { useTranslate } from '../../i18n';
+import { useResourceContext, useGetResourceLabel } from '../../core';
+import { SaveHandler } from '../saveContext';
 
 /**
  * Prepare data for the Edit view.
@@ -50,55 +43,54 @@ import {
  *     return <EditView {...controllerProps} {...props} />;
  * }
  */
-export const useEditController = <RecordType extends Record = Record>(
+export const useEditController = <RecordType extends RaRecord = any>(
     props: EditControllerProps<RecordType> = {}
 ): EditControllerResult<RecordType> => {
     const {
+        disableAuthentication,
         id: propsId,
-        successMessage,
-        onSuccess,
-        onFailure,
         mutationMode = 'undoable',
-        transform,
+        mutationOptions = {},
         queryOptions = {},
+        redirect: redirectTo = DefaultRedirect,
+        transform,
     } = props;
+    useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
-    const version = useVersion();
-    const { id: routeId } = useParams<{ id?: string }>();
+    const { id: routeId } = useParams<'id'>();
     const id = propsId || decodeURIComponent(routeId);
-
-    if (process.env.NODE_ENV !== 'production' && successMessage) {
-        console.log(
-            '<Edit successMessage> prop is deprecated, use the onSuccess prop instead.'
-        );
-    }
-
-    const {
-        onSuccessRef,
-        setOnSuccess,
-        onFailureRef,
-        setOnFailure,
-        transformRef,
-        setTransform,
-    } = useSaveModifiers({ onSuccess, onFailure, transform });
+    const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
 
     const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
         RecordType
-    >(resource, id, {
-        onError: () => {
-            notify('ra.notification.item_doesnt_exist', {
-                type: 'warning',
-            });
-            redirect('list', `/${resource}`);
-            refresh();
-        },
-        retry: false,
-        ...queryOptions,
-    });
+    >(
+        resource,
+        { id },
+        {
+            onError: () => {
+                notify('ra.notification.item_doesnt_exist', {
+                    type: 'warning',
+                });
+                redirect('list', `/${resource}`);
+                refresh();
+            },
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+            retry: false,
+            ...queryOptions,
+        }
+    );
+
+    // eslint-disable-next-line eqeqeq
+    if (record && record.id && record.id != id) {
+        throw new Error(
+            `useEditController: Fetched record's id attribute (${record.id}) must match the requested 'id' (${id})`
+        );
+    }
 
     const getResourceLabel = useGetResourceLabel();
     const defaultTitle = translate('ra.page.edit', {
@@ -107,50 +99,42 @@ export const useEditController = <RecordType extends Record = Record>(
         record,
     });
 
-    const [update, { loading: saving }] = useUpdate(
+    const [update, { isLoading: saving }] = useUpdate<RecordType>(
         resource,
-        id,
-        {}, // set by the caller
-        record
+        { id, previousData: record },
+        { ...otherMutationOptions, mutationMode }
     );
 
     const save = useCallback(
         (
-            data: Partial<Record>,
-            redirectTo = DefaultRedirect,
+            data: Partial<RecordType>,
             {
                 onSuccess: onSuccessFromSave,
-                onFailure: onFailureFromSave,
+                onError: onErrorFromSave,
                 transform: transformFromSave,
             } = {}
         ) =>
             Promise.resolve(
                 transformFromSave
                     ? transformFromSave(data)
-                    : transformRef.current
-                    ? transformRef.current(data)
+                    : transform
+                    ? transform(data)
                     : data
-            ).then(data =>
+            ).then((data: Partial<RecordType>) =>
                 update(
-                    { payload: { data } },
+                    resource,
+                    { data },
                     {
-                        action: CRUD_UPDATE,
                         onSuccess: onSuccessFromSave
                             ? onSuccessFromSave
-                            : onSuccessRef.current
-                            ? onSuccessRef.current
+                            : onSuccess
+                            ? onSuccess
                             : () => {
-                                  notify(
-                                      successMessage ||
-                                          'ra.notification.updated',
-                                      {
-                                          type: 'info',
-                                          messageArgs: {
-                                              smart_count: 1,
-                                          },
-                                          undoable: mutationMode === 'undoable',
-                                      }
-                                  );
+                                  notify('ra.notification.updated', {
+                                      type: 'info',
+                                      messageArgs: { smart_count: 1 },
+                                      undoable: mutationMode === 'undoable',
+                                  });
                                   redirect(
                                       redirectTo,
                                       `/${resource}`,
@@ -158,11 +142,11 @@ export const useEditController = <RecordType extends Record = Record>(
                                       data
                                   );
                               },
-                        onFailure: onFailureFromSave
-                            ? onFailureFromSave
-                            : onFailureRef.current
-                            ? onFailureRef.current
-                            : error => {
+                        onError: onErrorFromSave
+                            ? onErrorFromSave
+                            : onError
+                            ? onError
+                            : (error: Error | string) => {
                                   notify(
                                       typeof error === 'string'
                                           ? error
@@ -180,28 +164,20 @@ export const useEditController = <RecordType extends Record = Record>(
                                           },
                                       }
                                   );
-                                  if (
-                                      mutationMode === 'undoable' ||
-                                      mutationMode === 'pessimistic'
-                                  ) {
-                                      refresh();
-                                  }
                               },
-                        mutationMode,
                     }
                 )
             ),
         [
-            transformRef,
-            update,
-            onSuccessRef,
-            onFailureRef,
-            notify,
-            successMessage,
-            redirect,
-            refresh,
-            resource,
             mutationMode,
+            notify,
+            onError,
+            onSuccess,
+            redirect,
+            redirectTo,
+            resource,
+            transform,
+            update,
         ]
     );
 
@@ -210,34 +186,32 @@ export const useEditController = <RecordType extends Record = Record>(
         error,
         isFetching,
         isLoading,
-        onFailureRef,
-        onSuccessRef,
         record,
         redirect: DefaultRedirect,
         refetch,
         resource,
         save,
         saving,
-        setOnFailure,
-        setOnSuccess,
-        setTransform,
-        transformRef,
-        version,
     };
 };
 
-export interface EditControllerProps<RecordType extends Record = Record> {
-    id?: Identifier;
-    resource?: string;
+export interface EditControllerProps<RecordType extends RaRecord = any> {
+    disableAuthentication?: boolean;
+    id?: RecordType['id'];
     mutationMode?: MutationMode;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        unknown,
+        UpdateParams<RecordType>
+    >;
     queryOptions?: UseQueryOptions<RecordType>;
-    onSuccess?: OnSuccess;
-    onFailure?: OnFailure;
+    redirect?: RedirectionSideEffect;
+    resource?: string;
     transform?: TransformData;
     [key: string]: any;
 }
 
-export interface EditControllerResult<RecordType extends Record = Record> {
+export interface EditControllerResult<RecordType extends RaRecord = any> {
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
     data?: RecordType;
@@ -245,28 +219,12 @@ export interface EditControllerResult<RecordType extends Record = Record> {
     defaultTitle: string;
     isFetching: boolean;
     isLoading: boolean;
-    onSuccessRef: MutableRefObject<OnSuccess>;
-    onFailureRef: MutableRefObject<OnFailure>;
-    transformRef: MutableRefObject<TransformData>;
-    save: (
-        data: Partial<Record>,
-        redirect?: RedirectionSideEffect,
-        callbacks?: {
-            onSuccess?: OnSuccess;
-            onFailure?: OnFailure;
-            transform?: TransformData;
-        }
-    ) => void;
+    save: SaveHandler;
     saving: boolean;
-    setOnSuccess: SetOnSuccess;
-    setOnFailure: SetOnFailure;
-    setTransform: SetTransformData;
-    successMessage?: string;
     record?: RecordType;
-    refetch: Refetch;
+    refetch: UseGetOneHookValue<RecordType>['refetch'];
     redirect: RedirectionSideEffect;
     resource: string;
-    version: number;
 }
 
 const DefaultRedirect = 'list';

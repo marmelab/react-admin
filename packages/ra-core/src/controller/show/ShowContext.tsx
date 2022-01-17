@@ -26,7 +26,6 @@ export const ShowContext = createContext<ShowControllerResult>({
     isLoading: null,
     refetch: null,
     resource: null,
-    version: null,
 });
 
 ShowContext.displayName = 'ShowContext';

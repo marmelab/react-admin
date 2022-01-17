@@ -1,4 +1,4 @@
-import { RaThemeOptions } from 'ra-ui-materialui';
+import { RaThemeOptions } from 'react-admin';
 import * as React from 'react';
 import { useMemo, useState } from 'react';
 import { Admin } from './Admin';

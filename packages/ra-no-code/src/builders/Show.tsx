@@ -1,14 +1,17 @@
 import React from 'react';
-import { useResourceContext } from 'ra-core';
-import { Show as RaShow, ShowProps, SimpleShowLayout } from 'ra-ui-materialui';
+import {
+    Show as RaShow,
+    SimpleShowLayout,
+    useResourceContext,
+} from 'react-admin';
 import {
     useResourceConfiguration,
     useResourcesConfiguration,
 } from '../ResourceConfiguration';
 import { getFieldFromFieldDefinition } from './getFieldFromFieldDefinition';
 
-export const Show = (props: ShowProps) => (
-    <RaShow {...props}>
+export const Show = () => (
+    <RaShow>
         <ShowForm />
     </RaShow>
 );

@@ -12,6 +12,23 @@ on:
       - 'docs/**'
 
 jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Use Node.js LTS
+      uses: actions/setup-node@v1
+      with:
+        node-version: '16.x'
+    - uses: bahmutov/npm-install@v1
+      with:
+        install-command: yarn --immutable
+    - name: Lint
+      run: make lint        
+    - name: Build
+      run: make build
+
   unit-test:
     runs-on: ubuntu-latest
     steps:
@@ -20,12 +37,10 @@ jobs:
     - name: Use Node.js LTS
       uses: actions/setup-node@v1
       with:
-        node-version: '14.x'
+        node-version: '16.x'
     - uses: bahmutov/npm-install@v1
-    - name: Build
-      run: make build
-    - name: Lint
-      run: make lint
+      with:
+        install-command: yarn --immutable
     - name: Unit Tests
       run: make test-unit
       env:
@@ -39,10 +54,10 @@ jobs:
     - name: Use Node.js LTS
       uses: actions/setup-node@v1
       with:
-        node-version: '14.x'
+        node-version: '16.x'
     - uses: bahmutov/npm-install@v1
-    - name: Build
-      run: make build
+      with:
+        install-command: yarn --immutable
     - name: e2e Tests
       run: make test-e2e
       env:

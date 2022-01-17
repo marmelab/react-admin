@@ -1,16 +1,16 @@
 {
     "name": "react-admin",
-    "version": "4.0.0-alpha.0",
+    "version": "4.0.0-alpha.1",
     "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
     "files": [
         "*.md",
-        "lib",
-        "esm",
+        "dist",
         "src",
         "docs"
     ],
-    "main": "lib/index.js",
-    "module": "esm/index.js",
+    "main": "dist/index",
+    "module": "dist/esm/index.js",
+    "types": "dist/index.d.ts",
     "sideEffects": false,
     "authors": [
         "François Zaninotto"
@@ -20,14 +20,15 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "scripts": {
-        "build": "yarn run build-cjs && yarn run build-esm",
-        "build-cjs": "rimraf ./lib && tsc",
-        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
-        "watch": "tsc --outDir esm --module es2015 --watch"
+        "build": "tsup src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output",
+        "watch": "tsup src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "rimraf": "^2.6.3"
+        "expect": "^27.4.6",
+        "npm-dts": "^1.3.10",
+        "rimraf": "^2.6.3",
+        "tsup": "^5.11.11"
     },
     "peerDependencies": {
         "react": "^16.9.0 || ^17.0.0",
@@ -38,17 +39,18 @@
         "@emotion/styled": "^11.3.0",
         "@mui/icons-material": "^5.0.1",
         "@mui/material": "^5.0.2",
-        "final-form": "^4.20.2",
+        "final-form": "^4.20.4",
         "final-form-arrays": "^3.0.2",
-        "ra-core": "^4.0.0-alpha.0",
-        "ra-i18n-polyglot": "^4.0.0-alpha.0",
-        "ra-language-english": "^4.0.0-alpha.0",
-        "ra-ui-materialui": "^4.0.0-alpha.0",
-        "react-final-form": "^6.5.2",
+        "history": "^5.1.0",
+        "ra-core": "^4.0.0-alpha.1",
+        "ra-i18n-polyglot": "^4.0.0-alpha.1",
+        "ra-language-english": "^4.0.0-alpha.1",
+        "ra-ui-materialui": "^4.0.0-alpha.1",
+        "react-final-form": "^6.5.7",
         "react-final-form-arrays": "^3.1.3",
         "react-redux": "^7.1.0",
-        "react-router": "^5.1.0",
-        "react-router-dom": "^5.1.0",
+        "react-router": "^6.0.2",
+        "react-router-dom": "^6.0.2",
         "redux": "^3.7.2 || ^4.0.3"
     }
 }

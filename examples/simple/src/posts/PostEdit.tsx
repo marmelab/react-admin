@@ -1,5 +1,5 @@
 import * as React from 'react';
-import RichTextInput from 'ra-input-rich-text';
+import { RichTextInput } from 'ra-input-rich-text';
 import {
     TopToolbar,
     AutocompleteInput,
@@ -11,6 +11,7 @@ import {
     DateInput,
     Edit,
     CloneButton,
+    CreateButton,
     ShowButton,
     EditButton,
     FormTab,
@@ -41,7 +42,6 @@ import {
     DialogContent,
     TextField as MuiTextField,
 } from '@mui/material';
-
 import PostTitle from './PostTitle';
 import TagReferenceInput from './TagReferenceInput';
 
@@ -80,22 +80,23 @@ const CreateCategory = ({
     );
 };
 
-const EditActions = ({ basePath, data, hasShow }: EditActionsProps) => (
+const EditActions = ({ data, hasShow, resource }: EditActionsProps) => (
     <TopToolbar>
         <CloneButton
             className="button-clone"
-            basePath={basePath}
+            basePath={`/${resource}`}
             record={data}
         />
-        {hasShow && <ShowButton basePath={basePath} record={data} />}
+        {hasShow && <ShowButton basePath={`/${resource}`} record={data} />}
+        {/* FIXME: added because react-router HashHistory cannot block navigation induced by address bar changes */}
+        <CreateButton basePath={`/${resource}`} />
     </TopToolbar>
 );
 
 const SanitizedBox = ({
     fullWidth,
-    basePath,
     ...props
-}: BoxProps & { fullWidth?: boolean; basePath?: string }) => <Box {...props} />;
+}: BoxProps & { fullWidth?: boolean }) => <Box {...props} />;
 
 const categories = [
     { name: 'Tech', id: 'tech' },
@@ -163,7 +164,6 @@ const PostEdit = () => {
                                         scopedFormData &&
                                         scopedFormData.user_id ? (
                                             <SelectInput
-                                                label="Role"
                                                 source={getSource('role')}
                                                 choices={[
                                                     {
@@ -180,6 +180,7 @@ const PostEdit = () => {
                                                     },
                                                 ]}
                                                 {...rest}
+                                                label="Role"
                                             />
                                         ) : null
                                     }
@@ -231,6 +232,16 @@ const PostEdit = () => {
                     />
                     <BooleanInput source="commentable" defaultValue />
                     <TextInput disabled source="views" />
+                    <ArrayInput source="pictures">
+                        <SimpleFormIterator>
+                            <TextInput source="url" initialValue="" />
+                            <ArrayInput source="metas.authors">
+                                <SimpleFormIterator>
+                                    <TextInput source="name" initialValue="" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleFormIterator>
+                    </ArrayInput>
                 </FormTab>
                 <FormTab label="post.form.comments">
                     <ReferenceManyField

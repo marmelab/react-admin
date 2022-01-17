@@ -9,7 +9,7 @@ import {
 } from 'react';
 import {
     FormGroupContextProvider,
-    Record,
+    RaRecord,
     useRecordContext,
     useTranslatableContext,
 } from 'ra-core';
@@ -72,7 +72,7 @@ export const TranslatableInputsTabContent = (
 };
 
 export type TranslatableInputsTabContentProps<
-    RecordType extends Record | Omit<Record, 'id'> = Record
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = any
 > = {
     basePath?: string;
     children: ReactNode;

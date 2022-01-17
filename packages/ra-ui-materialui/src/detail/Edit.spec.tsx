@@ -1,7 +1,17 @@
 import * as React from 'react';
 import expect from 'expect';
-import { waitFor, fireEvent, act } from '@testing-library/react';
-import { DataProviderContext, undoableEventEmitter } from 'ra-core';
+import {
+    render,
+    screen,
+    waitFor,
+    fireEvent,
+    act,
+} from '@testing-library/react';
+import {
+    CoreAdminContext,
+    DataProviderContext,
+    undoableEventEmitter,
+} from 'ra-core';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { renderWithRedux } from 'ra-test';
 
@@ -29,8 +39,7 @@ describe('<Edit />', () => {
                         <FakeForm />
                     </Edit>
                 </DataProviderContext.Provider>
-            </QueryClientProvider>,
-            { admin: { resources: { foo: { data: {} } } } }
+            </QueryClientProvider>
         );
         await waitFor(() => {
             expect(queryAllByText('lorem')).toHaveLength(1);
@@ -82,19 +91,18 @@ describe('<Edit />', () => {
     });
 
     describe('mutationMode prop', () => {
-        it.skip('should be undoable by default', async () => {
-            const update = jest
-                .fn()
-                .mockImplementationOnce((_, { data }) =>
-                    Promise.resolve({ data })
-                );
+        it('should be undoable by default', async () => {
+            let post = { id: 1234, title: 'lorem' };
+            const update = jest.fn().mockImplementationOnce((_, { data }) => {
+                post = data;
+                return Promise.resolve({ data });
+            });
             const dataProvider = {
-                getOne: () =>
-                    Promise.resolve({ data: { id: 1234, title: 'lorem' } }),
+                getOne: () => Promise.resolve({ data: post }),
                 update,
             } as any;
             const onSuccess = jest.fn();
-            const FakeForm = ({ record, save }) => (
+            const FakeForm = ({ record, save }: any) => (
                 <>
                     <span>{record.title}</span>
                     <button onClick={() => save({ ...record, title: 'ipsum' })}>
@@ -103,51 +111,48 @@ describe('<Edit />', () => {
                 </>
             );
 
-            const { queryByText, getByText, findByText } = renderWithRedux(
-                <QueryClientProvider client={new QueryClient()}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Edit
-                            {...defaultEditProps}
-                            id="1234"
-                            onSuccess={onSuccess}
-                        >
-                            <FakeForm />
-                        </Edit>
-                    </DataProviderContext.Provider>
-                </QueryClientProvider>
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Edit
+                        {...defaultEditProps}
+                        id="1234"
+                        mutationOptions={{ onSuccess }}
+                    >
+                        <FakeForm />
+                    </Edit>
+                </CoreAdminContext>
             );
-            await findByText('lorem');
-            fireEvent.click(getByText('Update'));
-            // waitFor for the next tick
-            await act(async () => {
-                await new Promise(resolve => setTimeout(resolve));
+            await screen.findByText('lorem');
+            screen.getByText('Update').click();
+            await waitFor(() => {
+                // changes applied locally
+                expect(screen.queryByText('ipsum')).not.toBeNull();
+                // side effects called right away
+                expect(onSuccess).toHaveBeenCalledTimes(1);
+                // dataProvider not called
+                expect(update).toHaveBeenCalledTimes(0);
             });
-            // changes applied locally
-            expect(queryByText('ipsum')).not.toBeNull();
-            // side effects called right away
-            expect(onSuccess).toHaveBeenCalledTimes(1);
-            // dataProvider not called
-            expect(update).toHaveBeenCalledTimes(0);
             act(() => {
                 undoableEventEmitter.emit('end', {});
             });
-            // dataProvider called
-            expect(update).toHaveBeenCalledTimes(1);
+            await waitFor(() =>
+                // dataProvider called
+                expect(update).toHaveBeenCalledTimes(1)
+            );
         });
 
-        it.skip('should accept optimistic mode', async () => {
-            const update = jest
-                .fn()
-                .mockImplementationOnce((_, { data }) =>
-                    Promise.resolve({ data })
-                );
+        it('should accept optimistic mode', async () => {
+            let post = { id: 1234, title: 'lorem' };
+            const update = jest.fn().mockImplementationOnce((_, { data }) => {
+                post = data;
+                return Promise.resolve({ data });
+            });
             const dataProvider = {
-                getOne: () =>
-                    Promise.resolve({ data: { id: 1234, title: 'lorem' } }),
+                getOne: () => Promise.resolve({ data: post }),
                 update,
             } as any;
             const onSuccess = jest.fn();
-            const FakeForm = ({ record, save }) => (
+            const FakeForm = ({ record, save }: any) => (
                 <>
                     <span>{record.title}</span>
                     <button onClick={() => save({ ...record, title: 'ipsum' })}>
@@ -156,48 +161,45 @@ describe('<Edit />', () => {
                 </>
             );
 
-            const { queryByText, getByText, findByText } = renderWithRedux(
-                <QueryClientProvider client={new QueryClient()}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Edit
-                            {...defaultEditProps}
-                            id="1234"
-                            mutationMode="optimistic"
-                            onSuccess={onSuccess}
-                        >
-                            <FakeForm />
-                        </Edit>
-                    </DataProviderContext.Provider>
-                </QueryClientProvider>
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Edit
+                        {...defaultEditProps}
+                        id="1234"
+                        mutationMode="optimistic"
+                        mutationOptions={{ onSuccess }}
+                    >
+                        <FakeForm />
+                    </Edit>
+                </CoreAdminContext>
             );
-            await findByText('lorem');
-            fireEvent.click(getByText('Update'));
-            // waitFor for the next tick
-            await act(async () => {
-                await new Promise(resolve => setTimeout(resolve));
+            await screen.findByText('lorem');
+            screen.getByText('Update').click();
+            await waitFor(() => {
+                // changes applied locally
+                expect(screen.queryByText('ipsum')).not.toBeNull();
+                // side effects called right away
+                expect(onSuccess).toHaveBeenCalledTimes(1);
+                // dataProvider called
+                expect(update).toHaveBeenCalledTimes(1);
             });
-            // changes applied locally
-            expect(queryByText('ipsum')).not.toBeNull();
-            // side effects called right away
-            expect(onSuccess).toHaveBeenCalledTimes(1);
-            // dataProvider called
-            expect(update).toHaveBeenCalledTimes(1);
         });
 
-        it.skip('should accept pessimistic mode', async () => {
+        it('should accept pessimistic mode', async () => {
+            let post = { id: 1234, title: 'lorem' };
             let resolveUpdate;
             const update = jest.fn().mockImplementationOnce((_, { data }) =>
                 new Promise(resolve => {
                     resolveUpdate = resolve;
+                    post = data;
                 }).then(() => ({ data }))
             );
             const dataProvider = {
-                getOne: () =>
-                    Promise.resolve({ data: { id: 1234, title: 'lorem' } }),
+                getOne: () => Promise.resolve({ data: post }),
                 update,
             } as any;
             const onSuccess = jest.fn();
-            const FakeForm = ({ record, save }) => (
+            const FakeForm = ({ record, save }: any) => (
                 <>
                     <span>{record.title}</span>
                     <button onClick={() => save({ ...record, title: 'ipsum' })}>
@@ -206,39 +208,37 @@ describe('<Edit />', () => {
                 </>
             );
 
-            const { queryByText, getByText, findByText } = renderWithRedux(
-                <QueryClientProvider client={new QueryClient()}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Edit
-                            {...defaultEditProps}
-                            id="1234"
-                            mutationMode="pessimistic"
-                            onSuccess={onSuccess}
-                        >
-                            <FakeForm />
-                        </Edit>
-                    </DataProviderContext.Provider>
-                </QueryClientProvider>
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Edit
+                        {...defaultEditProps}
+                        id="1234"
+                        mutationMode="pessimistic"
+                        mutationOptions={{ onSuccess }}
+                    >
+                        <FakeForm />
+                    </Edit>
+                </CoreAdminContext>
             );
-            await findByText('lorem');
-            fireEvent.click(getByText('Update'));
-            // waitFor for the next tick
-            await act(async () => {
-                await new Promise(resolve => setTimeout(resolve));
+            await screen.findByText('lorem');
+            screen.getByText('Update').click();
+            await waitFor(() => {
+                // changes not applied locally
+                expect(screen.queryByText('ipsum')).toBeNull();
+                // side effects not called right away
+                expect(onSuccess).toHaveBeenCalledTimes(0);
+                // dataProvider called
+                expect(update).toHaveBeenCalledTimes(1);
             });
-            // changes not applied locally
-            expect(queryByText('ipsum')).toBeNull();
-            // side effects not called right away
-            expect(onSuccess).toHaveBeenCalledTimes(0);
-            // dataProvider called
-            expect(update).toHaveBeenCalledTimes(1);
             act(() => {
                 resolveUpdate();
             });
-            // changes applied locally
-            await findByText('ipsum');
-            // side effects applied
-            expect(onSuccess).toHaveBeenCalledTimes(1);
+            await waitFor(() => {
+                // changes applied locally
+                expect(screen.queryByText('ipsum')).not.toBeNull();
+                // side effects applied
+                expect(onSuccess).toHaveBeenCalledTimes(1);
+            });
         });
     });
 
@@ -265,8 +265,8 @@ describe('<Edit />', () => {
                     <DataProviderContext.Provider value={dataProvider}>
                         <Edit
                             {...defaultEditProps}
-                            onSuccess={onSuccess}
                             mutationMode="pessimistic"
+                            mutationOptions={{ onSuccess }}
                         >
                             <FakeForm />
                         </Edit>
@@ -278,9 +278,14 @@ describe('<Edit />', () => {
             });
             fireEvent.click(getByText('Update'));
             await waitFor(() => {
-                expect(onSuccess).toHaveBeenCalledWith({
-                    data: { id: 123, title: 'ipsum' },
-                });
+                expect(onSuccess).toHaveBeenCalledWith(
+                    {
+                        id: 123,
+                        title: 'ipsum',
+                    },
+                    { data: { id: 123, title: 'ipsum' }, resource: 'foo' },
+                    { snapshot: [] }
+                );
             });
         });
 
@@ -299,9 +304,12 @@ describe('<Edit />', () => {
                     <span>{record.title}</span>
                     <button
                         onClick={() =>
-                            save({ ...record, title: 'ipsum' }, undefined, {
-                                onSuccess: onSuccessSave,
-                            })
+                            save(
+                                { ...record, title: 'ipsum' },
+                                {
+                                    onSuccess: onSuccessSave,
+                                }
+                            )
                         }
                     >
                         Update
@@ -313,8 +321,8 @@ describe('<Edit />', () => {
                     <DataProviderContext.Provider value={dataProvider}>
                         <Edit
                             {...defaultEditProps}
-                            onSuccess={onSuccess}
                             mutationMode="pessimistic"
+                            mutationOptions={{ onSuccess }}
                         >
                             <FakeForm />
                         </Edit>
@@ -326,15 +334,20 @@ describe('<Edit />', () => {
             });
             fireEvent.click(getByText('Update'));
             await waitFor(() => {
-                expect(onSuccessSave).toHaveBeenCalledWith({
-                    data: { id: 123, title: 'ipsum' },
-                });
+                expect(onSuccessSave).toHaveBeenCalledWith(
+                    {
+                        id: 123,
+                        title: 'ipsum',
+                    },
+                    { data: { id: 123, title: 'ipsum' }, resource: 'foo' },
+                    { snapshot: [] }
+                );
                 expect(onSuccess).not.toHaveBeenCalled();
             });
         });
     });
 
-    describe('onFailure prop', () => {
+    describe('onError prop', () => {
         it('should allow to override the default error side effects', async () => {
             jest.spyOn(console, 'error').mockImplementationOnce(() => {});
             const dataProvider = {
@@ -344,7 +357,7 @@ describe('<Edit />', () => {
                     }),
                 update: () => Promise.reject({ message: 'not good' }),
             } as any;
-            const onFailure = jest.fn();
+            const onError = jest.fn();
             const FakeForm = ({ record, save }) => (
                 <>
                     <span>{record.title}</span>
@@ -358,8 +371,8 @@ describe('<Edit />', () => {
                     <DataProviderContext.Provider value={dataProvider}>
                         <Edit
                             {...defaultEditProps}
-                            onFailure={onFailure}
                             mutationMode="pessimistic"
+                            mutationOptions={{ onError }}
                         >
                             <FakeForm />
                         </Edit>
@@ -371,11 +384,15 @@ describe('<Edit />', () => {
             });
             fireEvent.click(getByText('Update'));
             await waitFor(() => {
-                expect(onFailure).toHaveBeenCalledWith({ message: 'not good' });
+                expect(onError).toHaveBeenCalledWith(
+                    { message: 'not good' },
+                    { data: { id: 123, title: 'ipsum' }, resource: 'foo' },
+                    { snapshot: [] }
+                );
             });
         });
 
-        it('should be overridden by onFailure save option', async () => {
+        it('should be overridden by onError save option', async () => {
             jest.spyOn(console, 'error').mockImplementationOnce(() => {});
             const dataProvider = {
                 getOne: () =>
@@ -384,16 +401,19 @@ describe('<Edit />', () => {
                     }),
                 update: () => Promise.reject({ message: 'not good' }),
             } as any;
-            const onFailure = jest.fn();
-            const onFailureSave = jest.fn();
+            const onError = jest.fn();
+            const onErrorSave = jest.fn();
             const FakeForm = ({ record, save }) => (
                 <>
                     <span>{record.title}</span>
                     <button
                         onClick={() =>
-                            save({ ...record, title: 'ipsum' }, undefined, {
-                                onFailure: onFailureSave,
-                            })
+                            save(
+                                { ...record, title: 'ipsum' },
+                                {
+                                    onError: onErrorSave,
+                                }
+                            )
                         }
                     >
                         Update
@@ -405,8 +425,8 @@ describe('<Edit />', () => {
                     <DataProviderContext.Provider value={dataProvider}>
                         <Edit
                             {...defaultEditProps}
-                            onFailure={onFailure}
                             mutationMode="pessimistic"
+                            mutationOptions={{ onError }}
                         >
                             <FakeForm />
                         </Edit>
@@ -418,10 +438,14 @@ describe('<Edit />', () => {
             });
             fireEvent.click(getByText('Update'));
             await waitFor(() => {
-                expect(onFailureSave).toHaveBeenCalledWith({
-                    message: 'not good',
-                });
-                expect(onFailure).not.toHaveBeenCalled();
+                expect(onErrorSave).toHaveBeenCalledWith(
+                    {
+                        message: 'not good',
+                    },
+                    { data: { id: 123, title: 'ipsum' }, resource: 'foo' },
+                    { snapshot: [] }
+                );
+                expect(onError).not.toHaveBeenCalled();
             });
         });
     });
@@ -505,9 +529,12 @@ describe('<Edit />', () => {
                     <span>{record.title}</span>
                     <button
                         onClick={() =>
-                            save({ ...record, title: 'ipsum' }, undefined, {
-                                transform: transformSave,
-                            })
+                            save(
+                                { ...record, title: 'ipsum' },
+                                {
+                                    transform: transformSave,
+                                }
+                            )
                         }
                     >
                         Update

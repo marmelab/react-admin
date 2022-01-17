@@ -10,8 +10,8 @@ const config = defaults.__get__('config');
  * Do not mangle component names in production, for better learning experience
  * @link https://kentcdodds.com/blog/profile-a-react-app-for-performance#disable-function-name-mangling
  */
-config.optimization.minimizer[0].options.terserOptions.keep_classnames = true;
-config.optimization.minimizer[0].options.terserOptions.keep_fnames = true;
+config.optimization.minimizer[0].options.keep_classnames = true;
+config.optimization.minimizer[0].options.keep_fnames = true;
 
 /**
  * Do not disable component profiling in production, for better learning experience

@@ -55,7 +55,7 @@ export const NewNote = ({
     const [text, setText] = useState('');
     const [status, setStatus] = useState(record && record.status);
     const [date, setDate] = useState(getCurrentDate());
-    const [create, { loading }] = useCreate();
+    const [create, { isLoading }] = useCreate();
     const [update] = useUpdate();
     // FIXME: use refetch instead when ReferenceManyField exposes it in the ListContext
     const refresh = useRefresh();
@@ -74,23 +74,26 @@ export const NewNote = ({
         if (showStatus) {
             data.status = status;
         }
-        update(
-            reference,
-            ((record && record.id) as unknown) as Identifier,
-            {
+        update(reference, {
+            id: ((record && record.id) as unknown) as Identifier,
+            data: {
                 last_seen: date,
                 status,
                 nb_notes: record.nb_notes + 1,
             },
-            record
-        );
-        create(resource, data, {
-            onSuccess: () => {
-                setText('');
-                notify('Note added successfully');
-                refresh();
-            },
+            previousData: record,
         });
+        create(
+            resource,
+            { data },
+            {
+                onSuccess: () => {
+                    setText('');
+                    notify('Note added successfully');
+                    refresh();
+                },
+            }
+        );
         return false;
     };
     return (
@@ -140,7 +143,7 @@ export const NewNote = ({
                         type="submit"
                         variant="contained"
                         color="primary"
-                        disabled={!text || loading}
+                        disabled={!text || isLoading}
                     >
                         Add this note
                     </Button>

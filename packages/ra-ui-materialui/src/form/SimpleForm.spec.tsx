@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { SaveContextProvider, SideEffectContextProvider } from 'ra-core';
+import { SaveContextProvider } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -12,20 +12,16 @@ describe('<SimpleForm />', () => {
     const saveContextValue = {
         save: jest.fn(),
         saving: false,
-        setOnFailure: jest.fn(),
     };
-    const sideEffects = {};
 
     it('should embed a form with given component children', () => {
         const { queryByLabelText } = renderWithRedux(
             <ThemeProvider theme={createTheme(defaultTheme)}>
                 <SaveContextProvider value={saveContextValue}>
-                    <SideEffectContextProvider value={sideEffects}>
-                        <SimpleForm>
-                            <TextInput source="name" />
-                            <TextInput source="city" />
-                        </SimpleForm>
-                    </SideEffectContextProvider>
+                    <SimpleForm>
+                        <TextInput source="name" />
+                        <TextInput source="city" />
+                    </SimpleForm>
                 </SaveContextProvider>
             </ThemeProvider>
         );
@@ -41,12 +37,10 @@ describe('<SimpleForm />', () => {
         const { queryByLabelText } = renderWithRedux(
             <ThemeProvider theme={createTheme(defaultTheme)}>
                 <SaveContextProvider value={saveContextValue}>
-                    <SideEffectContextProvider value={sideEffects}>
-                        <SimpleForm>
-                            <TextInput source="name" />
-                            <TextInput source="city" />
-                        </SimpleForm>
-                    </SideEffectContextProvider>
+                    <SimpleForm>
+                        <TextInput source="name" />
+                        <TextInput source="city" />
+                    </SimpleForm>
                 </SaveContextProvider>
             </ThemeProvider>
         );
@@ -61,11 +55,9 @@ describe('<SimpleForm />', () => {
         const { queryByText, rerender } = renderWithRedux(
             <ThemeProvider theme={createTheme(defaultTheme)}>
                 <SaveContextProvider value={saveContextValue}>
-                    <SideEffectContextProvider value={sideEffects}>
-                        <SimpleForm submitOnEnter={false} toolbar={<Toolbar />}>
-                            <TextInput source="name" />
-                        </SimpleForm>
-                    </SideEffectContextProvider>
+                    <SimpleForm submitOnEnter={false} toolbar={<Toolbar />}>
+                        <TextInput source="name" />
+                    </SimpleForm>
                 </SaveContextProvider>
             </ThemeProvider>
         );
@@ -75,11 +67,9 @@ describe('<SimpleForm />', () => {
         rerender(
             <ThemeProvider theme={createTheme(defaultTheme)}>
                 <SaveContextProvider value={saveContextValue}>
-                    <SideEffectContextProvider value={sideEffects}>
-                        <SimpleForm submitOnEnter toolbar={<Toolbar />}>
-                            <TextInput source="name" />
-                        </SimpleForm>
-                    </SideEffectContextProvider>
+                    <SimpleForm submitOnEnter toolbar={<Toolbar />}>
+                        <TextInput source="name" />
+                    </SimpleForm>
                 </SaveContextProvider>
             </ThemeProvider>
         );
@@ -91,11 +81,9 @@ describe('<SimpleForm />', () => {
         const { queryByLabelText } = renderWithRedux(
             <ThemeProvider theme={createTheme(defaultTheme)}>
                 <SaveContextProvider value={saveContextValue}>
-                    <SideEffectContextProvider value={sideEffects}>
-                        <SimpleForm>
-                            <TextInput source="name" />
-                        </SimpleForm>
-                    </SideEffectContextProvider>
+                    <SimpleForm>
+                        <TextInput source="name" />
+                    </SimpleForm>
                 </SaveContextProvider>
             </ThemeProvider>
         );
@@ -112,11 +100,9 @@ describe('<SimpleForm />', () => {
         const { queryByLabelText } = renderWithRedux(
             <ThemeProvider theme={createTheme(defaultTheme)}>
                 <SaveContextProvider value={saveContextValue}>
-                    <SideEffectContextProvider value={sideEffects}>
-                        <SimpleForm variant="outlined" margin="normal">
-                            <TextInput source="name" />
-                        </SimpleForm>
-                    </SideEffectContextProvider>
+                    <SimpleForm variant="outlined" margin="normal">
+                        <TextInput source="name" />
+                    </SimpleForm>
                 </SaveContextProvider>
             </ThemeProvider>
         );
@@ -133,15 +119,13 @@ describe('<SimpleForm />', () => {
         const { queryByLabelText } = renderWithRedux(
             <ThemeProvider theme={createTheme(defaultTheme)}>
                 <SaveContextProvider value={saveContextValue}>
-                    <SideEffectContextProvider value={sideEffects}>
-                        <SimpleForm variant="standard" margin="none">
-                            <TextInput
-                                source="name"
-                                variant="outlined"
-                                margin="normal"
-                            />
-                        </SimpleForm>
-                    </SideEffectContextProvider>
+                    <SimpleForm variant="standard" margin="none">
+                        <TextInput
+                            source="name"
+                            variant="outlined"
+                            margin="normal"
+                        />
+                    </SimpleForm>
                 </SaveContextProvider>
             </ThemeProvider>
         );

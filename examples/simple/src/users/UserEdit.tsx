@@ -1,7 +1,6 @@
 /* eslint react/jsx-key: off */
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
 import {
     CloneButton,
     DeleteWithConfirmButton,
@@ -56,24 +55,18 @@ const UserEditToolbar = props => {
     );
 };
 
-const EditActions = ({ basePath, data, hasShow }: EditActionsProps) => (
+const EditActions = ({ data, hasShow, resource }: EditActionsProps) => (
     <TopToolbar>
         <CloneButton
             className="button-clone"
-            basePath={basePath}
+            basePath={`/${resource}`}
             record={data}
         />
-        <ShowButton basePath={basePath} record={data} />
+        <ShowButton basePath={`/${resource}`} record={data} />
     </TopToolbar>
 );
 
-const UserEditForm = ({
-    save,
-    ...props
-}: {
-    permissions?: any;
-    save?: any;
-}) => {
+const UserEditForm = ({ save, ...props }: { save?: any }) => {
     const { permissions } = usePermissions();
     const newSave = values =>
         new Promise((resolve, reject) => {
@@ -93,7 +86,7 @@ const UserEditForm = ({
             defaultValue={{ role: 'user' }}
             toolbar={<UserEditToolbar />}
             {...props}
-            save={newSave}
+            onSubmit={newSave}
         >
             <FormTab label="user.form.summary" path="">
                 {permissions === 'admin' && <TextInput disabled source="id" />}
@@ -130,13 +123,6 @@ const UserEdit = () => {
             <UserEditForm />
         </StyledEdit>
     );
-};
-
-UserEdit.propTypes = {
-    id: PropTypes.any.isRequired,
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
-    permissions: PropTypes.string,
 };
 
 export default UserEdit;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import expect from 'expect';
-import { fireEvent } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { TranslatableInputs } from './TranslatableInputs';
 import { TextInput } from './TextInput';
 import { FormWithRedirect, required, useTranslatableContext } from 'ra-core';
@@ -28,15 +28,11 @@ const record = {
 
 describe('<TranslatableInputs />', () => {
     it('should display every input for every locale', () => {
-        const save = jest.fn();
-        const {
-            queryByDisplayValue,
-            getByLabelText,
-            getByText,
-        } = renderWithRedux(
+        const handleSubmit = jest.fn();
+        renderWithRedux(
             <FormWithRedirect
                 record={record}
-                save={save}
+                onSubmit={handleSubmit}
                 render={() => (
                     <TranslatableInputs locales={['en', 'fr']}>
                         <TextInput source="name" />
@@ -48,31 +44,37 @@ describe('<TranslatableInputs />', () => {
         );
 
         expect(
-            getByLabelText('ra.locales.en').getAttribute('hidden')
+            screen.getByLabelText('ra.locales.en').getAttribute('hidden')
         ).toBeNull();
         expect(
-            getByLabelText('ra.locales.fr').getAttribute('hidden')
+            screen.getByLabelText('ra.locales.fr').getAttribute('hidden')
         ).not.toBeNull();
 
-        expect(queryByDisplayValue('english name')).not.toBeNull();
-        expect(queryByDisplayValue('english description')).not.toBeNull();
-        expect(queryByDisplayValue('english nested field')).not.toBeNull();
-
-        expect(queryByDisplayValue('french name')).not.toBeNull();
-        expect(queryByDisplayValue('french description')).not.toBeNull();
-        expect(queryByDisplayValue('french nested field')).not.toBeNull();
-
-        fireEvent.click(getByText('ra.locales.fr'));
+        expect(screen.queryByDisplayValue('english name')).not.toBeNull();
         expect(
-            getByLabelText('ra.locales.en').getAttribute('hidden')
+            screen.queryByDisplayValue('english description')
         ).not.toBeNull();
         expect(
-            getByLabelText('ra.locales.fr').getAttribute('hidden')
+            screen.queryByDisplayValue('english nested field')
+        ).not.toBeNull();
+
+        expect(screen.queryByDisplayValue('french name')).not.toBeNull();
+        expect(screen.queryByDisplayValue('french description')).not.toBeNull();
+        expect(
+            screen.queryByDisplayValue('french nested field')
+        ).not.toBeNull();
+
+        fireEvent.click(screen.getByText('ra.locales.fr'));
+        expect(
+            screen.getByLabelText('ra.locales.en').getAttribute('hidden')
+        ).not.toBeNull();
+        expect(
+            screen.getByLabelText('ra.locales.fr').getAttribute('hidden')
         ).toBeNull();
     });
 
     it('should display validation errors and highlight the tab which has invalid inputs', () => {
-        const save = jest.fn();
+        const handleSubmit = jest.fn();
 
         const Selector = () => {
             const {
@@ -98,15 +100,9 @@ describe('<TranslatableInputs />', () => {
             );
         };
 
-        const {
-            queryByText,
-            getByLabelText,
-            getAllByLabelText,
-            getByText,
-            getAllByRole,
-        } = renderWithRedux(
+        renderWithRedux(
             <FormWithRedirect
-                save={save}
+                onSubmit={handleSubmit}
                 render={() => (
                     <TranslatableInputs
                         locales={['en', 'fr']}
@@ -119,40 +115,40 @@ describe('<TranslatableInputs />', () => {
         );
 
         expect(
-            getByLabelText('ra.locales.en').getAttribute('hidden')
+            screen.getByLabelText('ra.locales.en').getAttribute('hidden')
         ).toBeNull();
         expect(
-            getByLabelText('ra.locales.fr').getAttribute('hidden')
+            screen.getByLabelText('ra.locales.fr').getAttribute('hidden')
         ).not.toBeNull();
 
         fireEvent.change(
-            getAllByLabelText('resources.undefined.fields.name *')[0],
+            screen.getAllByLabelText('resources.undefined.fields.name *')[0],
             {
                 target: { value: 'english value' },
             }
         );
-        fireEvent.click(getByText('ra.locales.fr'));
+        fireEvent.click(screen.getByText('ra.locales.fr'));
         fireEvent.focus(
-            getAllByLabelText('resources.undefined.fields.name *')[1]
+            screen.getAllByLabelText('resources.undefined.fields.name *')[1]
         );
         fireEvent.blur(
-            getAllByLabelText('resources.undefined.fields.name *')[1]
+            screen.getAllByLabelText('resources.undefined.fields.name *')[1]
         );
-        expect(queryByText('ra.validation.required')).not.toBeNull();
-        fireEvent.click(getByText('ra.locales.en'));
-        const tabs = getAllByRole('tab');
+        expect(screen.queryByText('ra.validation.required')).not.toBeNull();
+        fireEvent.click(screen.getByText('ra.locales.en'));
+        const tabs = screen.getAllByRole('tab');
         expect(tabs[1].getAttribute('id')).toEqual('translatable-header-fr');
         expect(
             tabs[1].classList.contains('RaTranslatableInputsTab-error')
         ).toEqual(true);
     });
 
-    it('should allow to update any input for any locale', () => {
+    it('should allow to update any input for any locale', async () => {
         const save = jest.fn();
-        const { queryByDisplayValue, getByText } = renderWithRedux(
+        renderWithRedux(
             <FormWithRedirect
                 record={record}
-                save={save}
+                onSubmit={save}
                 render={({ handleSubmit }) => (
                     <form onSubmit={handleSubmit}>
                         <TranslatableInputs locales={['en', 'fr']}>
@@ -166,17 +162,17 @@ describe('<TranslatableInputs />', () => {
             />
         );
 
-        fireEvent.change(queryByDisplayValue('english name'), {
+        fireEvent.change(screen.queryByDisplayValue('english name'), {
             target: { value: 'english name updated' },
         });
-        fireEvent.click(getByText('ra.locales.fr'));
-        fireEvent.change(queryByDisplayValue('french nested field'), {
+        fireEvent.click(screen.getByText('ra.locales.fr'));
+        fireEvent.change(screen.queryByDisplayValue('french nested field'), {
             target: { value: 'french nested field updated' },
         });
-        fireEvent.click(getByText('save'));
+        fireEvent.click(screen.getByText('save'));
 
-        expect(save).toHaveBeenCalledWith(
-            {
+        await waitFor(() => {
+            expect(save).toHaveBeenCalledWith({
                 id: 123,
                 name: {
                     en: 'english name updated',
@@ -192,9 +188,8 @@ describe('<TranslatableInputs />', () => {
                         fr: 'french nested field updated',
                     },
                 },
-            },
-            undefined
-        );
+            });
+        });
     });
 
     it('should allow to customize the locale selector', () => {
@@ -228,7 +223,7 @@ describe('<TranslatableInputs />', () => {
             );
         };
 
-        const { getByLabelText, queryByDisplayValue } = renderWithRedux(
+        renderWithRedux(
             <FormWithRedirect
                 record={record}
                 render={({ handleSubmit }) => (
@@ -247,21 +242,31 @@ describe('<TranslatableInputs />', () => {
             />
         );
 
-        expect(getByLabelText('en').getAttribute('hidden')).toBeNull();
-        expect(getByLabelText('fr').getAttribute('hidden')).not.toBeNull();
+        expect(screen.getByLabelText('en').getAttribute('hidden')).toBeNull();
+        expect(
+            screen.getByLabelText('fr').getAttribute('hidden')
+        ).not.toBeNull();
 
-        expect(queryByDisplayValue('english name')).not.toBeNull();
-        expect(queryByDisplayValue('english description')).not.toBeNull();
-        expect(queryByDisplayValue('english nested field')).not.toBeNull();
+        expect(screen.queryByDisplayValue('english name')).not.toBeNull();
+        expect(
+            screen.queryByDisplayValue('english description')
+        ).not.toBeNull();
+        expect(
+            screen.queryByDisplayValue('english nested field')
+        ).not.toBeNull();
 
-        expect(queryByDisplayValue('french name')).not.toBeNull();
-        expect(queryByDisplayValue('french description')).not.toBeNull();
-        expect(queryByDisplayValue('french nested field')).not.toBeNull();
+        expect(screen.queryByDisplayValue('french name')).not.toBeNull();
+        expect(screen.queryByDisplayValue('french description')).not.toBeNull();
+        expect(
+            screen.queryByDisplayValue('french nested field')
+        ).not.toBeNull();
 
-        fireEvent.change(getByLabelText('select locale'), {
+        fireEvent.change(screen.getByLabelText('select locale'), {
             target: { value: 'fr' },
         });
-        expect(getByLabelText('en').getAttribute('hidden')).not.toBeNull();
-        expect(getByLabelText('fr').getAttribute('hidden')).toBeNull();
+        expect(
+            screen.getByLabelText('en').getAttribute('hidden')
+        ).not.toBeNull();
+        expect(screen.getByLabelText('fr').getAttribute('hidden')).toBeNull();
     });
 });

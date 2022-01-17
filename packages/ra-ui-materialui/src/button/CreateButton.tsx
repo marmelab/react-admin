@@ -50,7 +50,8 @@ const CreateButton = (props: CreateButtonProps) => {
             component={Link}
             color="primary"
             className={classnames(CreateButtonClasses.floating, className)}
-            to={location}
+            to={location.pathname}
+            state={location.state}
             aria-label={label && translate(label)}
             {...sanitizeButtonRestProps(rest)}
         >

@@ -20,15 +20,14 @@ import { Contact } from '../types';
 const Spacer = () => <Box width={20} component="span" />;
 
 const ContactEditContent = () => {
-    const { record, loaded, save } = useEditContext<Contact>();
-    if (!loaded || !record) return null;
+    const { record, isLoading, save } = useEditContext<Contact>();
+    if (isLoading || !record) return null;
     return (
         <Box mt={2} display="flex">
             <Box flex="1">
                 <FormWithRedirect
                     record={record}
-                    redirect="show"
-                    save={save}
+                    onSubmit={save}
                     render={formProps => (
                         <Card>
                             <CardContent>
@@ -110,7 +109,7 @@ const ContactEditContent = () => {
 };
 
 export const ContactEdit = (props: EditProps) => (
-    <EditBase {...props}>
+    <EditBase {...props} redirect="show">
         <ContactEditContent />
     </EditBase>
 );

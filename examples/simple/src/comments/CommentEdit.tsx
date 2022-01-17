@@ -11,20 +11,22 @@ import {
 } from '@mui/material';
 import {
     AutocompleteInput,
+    CreateButton,
     DateInput,
-    EditActions,
     EditContextProvider,
     useEditController,
-    Link,
+    Link as RaLink,
     ReferenceInput,
     SimpleForm,
     TextInput,
     Title,
     minLength,
-    Record,
+    RaRecord,
+    ShowButton,
+    TopToolbar,
     useCreateSuggestionContext,
     useCreate,
-} from 'react-admin'; // eslint-disable-line import/no-unresolved
+} from 'react-admin';
 
 const PREFIX = 'CommentEdit';
 
@@ -43,21 +45,21 @@ const Root = styled('div')({
     },
 });
 
-const LinkToRelatedPost = ({ record }: { record?: Record }) => (
-    <Link to={`/posts/${record?.post_id}`}>
+const LinkToRelatedPost = ({ record }: { record?: RaRecord }) => (
+    <RaLink to={`/posts/${record?.post_id}`}>
         <Typography variant="caption" color="inherit" align="right">
             See related post
         </Typography>
-    </Link>
+    </RaLink>
 );
 
-const OptionRenderer = ({ record }: { record?: Record }) => {
+const OptionRenderer = ({ record, ...rest }: { record?: RaRecord }) => {
     return record.id === '@@ra-create' ? (
-        <span>{record.name}</span>
+        <div {...rest}>{record.name}</div>
     ) : (
-        <span>
+        <div {...rest}>
             {record?.title} - {record?.id}
-        </span>
+        </div>
     );
 };
 
@@ -69,19 +71,18 @@ const inputText = record =>
 const CreatePost = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
-    const [create] = useCreate('posts');
+    const [create] = useCreate();
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         create(
+            'posts',
             {
-                payload: {
-                    data: {
-                        title: value,
-                    },
+                data: {
+                    title: value,
                 },
             },
             {
-                onSuccess: ({ data }) => {
+                onSuccess: data => {
                     setValue('');
                     const choice = data;
                     onCreate(choice);
@@ -112,37 +113,25 @@ const CreatePost = () => {
 
 const CommentEdit = props => {
     const controllerProps = useEditController(props);
-    const {
-        resource,
-        record,
-        redirect,
-        save,
-        basePath,
-        version,
-    } = controllerProps;
+    const { resource, record, save } = controllerProps;
 
     return (
         <EditContextProvider value={controllerProps}>
             <Root className="edit-page">
                 <Title defaultTitle={`Comment #${record ? record.id : ''}`} />
                 <div className={classes.actions}>
-                    <EditActions
-                        basePath={basePath}
-                        resource={resource}
-                        data={record}
-                        hasShow
-                        hasList
-                    />
+                    <TopToolbar>
+                        <ShowButton record={record} />
+                        {/* FIXME: added because react-router HashHistory cannot block navigation induced by address bar changes */}
+                        <CreateButton resource="posts" label="Create post" />
+                    </TopToolbar>
                 </div>
                 <Card className={classes.card}>
                     {record && (
                         <SimpleForm
-                            basePath={basePath}
-                            redirect={redirect}
                             resource={resource}
                             record={record}
-                            save={save}
-                            version={version}
+                            onSubmit={save}
                             warnWhenUnsavedChanges
                         >
                             <TextInput disabled source="id" fullWidth />
@@ -160,16 +149,10 @@ const CommentEdit = props => {
                                         suggestion
                                     ) => {
                                         const title = `${suggestion.title} - ${suggestion.id}`;
-
                                         return title.includes(filterValue);
                                     }}
                                     optionText={<OptionRenderer />}
                                     inputText={inputText}
-                                    options={{
-                                        InputProps: {
-                                            fullWidth: true,
-                                        },
-                                    }}
                                 />
                             </ReferenceInput>
 

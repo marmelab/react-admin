@@ -1,24 +1,42 @@
 import * as React from 'react';
 import expect from 'expect';
-import { waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { Provider } from 'react-redux';
 
-import Authenticated from './Authenticated';
-import AuthContext from './AuthContext';
-import { renderWithRedux } from 'ra-test';
-import { showNotification } from '../actions/notificationActions';
 import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { CoreAdminContext, createAdminStore } from '../core';
+import { useNotificationContext } from '../notification';
+import Authenticated from './Authenticated';
+import { testDataProvider } from '../dataProvider';
 
 describe('<Authenticated>', () => {
     const Foo = () => <div>Foo</div>;
 
     it('should render its child by default', async () => {
-        const { dispatch, queryByText } = renderWithRedux(
-            <Authenticated>
-                <Foo />
-            </Authenticated>
+        const authProvider = {
+            login: () => Promise.reject('bad method'),
+            logout: () => Promise.reject('bad method'),
+            checkAuth: jest.fn().mockResolvedValueOnce(''),
+            checkError: () => Promise.reject('bad method'),
+            getPermissions: () => Promise.reject('bad method'),
+        };
+        const store = createAdminStore();
+        const dispatch = jest.spyOn(store, 'dispatch');
+
+        render(
+            <Provider store={store}>
+                <CoreAdminContext
+                    authProvider={authProvider}
+                    dataProvider={testDataProvider()}
+                >
+                    <Authenticated>
+                        <Foo />
+                    </Authenticated>
+                </CoreAdminContext>
+            </Provider>
         );
-        expect(queryByText('Foo')).not.toBeNull();
+        expect(screen.queryByText('Foo')).not.toBeNull();
         await waitFor(() => {
             expect(dispatch).toHaveBeenCalledTimes(0);
         });
@@ -32,36 +50,68 @@ describe('<Authenticated>', () => {
             checkError: jest.fn().mockResolvedValue(''),
             getPermissions: jest.fn().mockResolvedValue(''),
         };
-
+        const store = createAdminStore();
+        const dispatch = jest.spyOn(store, 'dispatch');
         const history = createMemoryHistory();
 
-        const { dispatch } = renderWithRedux(
-            <Router history={history}>
-                <AuthContext.Provider value={authProvider}>
-                    <Authenticated>
-                        <Foo />
-                    </Authenticated>
-                </AuthContext.Provider>
-            </Router>
+        const Login = () => {
+            const location = useLocation();
+
+            return (
+                <div aria-label="nextPathname">
+                    {location.state.nextPathname}
+                </div>
+            );
+        };
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
+        render(
+            <Provider store={store}>
+                <CoreAdminContext
+                    authProvider={authProvider}
+                    dataProvider={testDataProvider()}
+                    history={history}
+                >
+                    <Notification />
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={
+                                <Authenticated>
+                                    <Foo />
+                                </Authenticated>
+                            }
+                        />
+                        <Route path="/login" element={<Login />} />
+                    </Routes>
+                </CoreAdminContext>
+            </Provider>
         );
         await waitFor(() => {
             expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({});
             expect(authProvider.logout.mock.calls[0][0]).toEqual({});
-            expect(dispatch).toHaveBeenCalledTimes(2);
-            expect(dispatch.mock.calls[0][0]).toEqual(
-                showNotification('ra.auth.auth_check_error', 'warning', {
-                    messageArgs: {},
-                    undoable: false,
-                })
-            );
-            expect(dispatch.mock.calls[1][0]).toEqual({
+            expect(dispatch).toHaveBeenCalledTimes(1);
+            expect(notificationsSpy).toEqual([
+                {
+                    message: 'ra.auth.auth_check_error',
+                    type: 'warning',
+                    notificationOptions: {},
+                },
+            ]);
+            expect(dispatch.mock.calls[0][0]).toEqual({
                 type: 'RA/CLEAR_STATE',
             });
-            expect(history.location.pathname).toEqual('/login');
-            expect(history.location.state).toEqual({
-                nextPathname: '/',
-                nextSearch: '',
-            });
+            expect(screen.getByLabelText('nextPathname').innerHTML).toEqual(
+                '/'
+            );
         });
     });
 });

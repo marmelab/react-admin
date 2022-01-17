@@ -5,7 +5,7 @@ title: "SimpleShowLayout"
 
 # `<SimpleShowLayout>`
 
-The `<SimpleShowLayout>` pulls the `record` from the `RecordContext`. It renders a material-ui `<Card>` containing the record fields in a single-column layout (via material-ui's `<Stack>` component). `<SimpleShowLayout>` delegates the actual rendering of fields to its children. It wraps each field inside [a `<FieldWithLabel>` component](./FieldWithLabel.md) to add a label.
+The `<SimpleShowLayout>` pulls the `record` from the `RecordContext`. It renders the record fields in a single-column layout (via material-ui's `<Stack>` component). `<SimpleShowLayout>` delegates the actual rendering of fields to its children. It wraps each field inside [a `<FieldWithLabel>` component](./FieldWithLabel.md) to add a label.
 
 ## Usage
 
@@ -27,13 +27,12 @@ const PostShow = () => (
 
 * [`children`](#fields): components rendering a record field
 * `className`: passed to the root component
-* [`component`](#root-component): overrides the root component
 * [`divider`](#divider): optional element to render between each field
 * [`record`](#controlled-mode): can be injected when outside a RecordContext 
 * [`spacing`](#spacing): optional integer to set the spacing between the fields
-* [`sx`](#css-api): Override the styles
+* [`sx`](#sx-css-api): Override the styles
 
-Additional props are passed to the root component (`<Card>`).
+Additional props are passed to the root component (`<div>`).
 
 ## Fields
 
@@ -42,19 +41,17 @@ Additional props are passed to the root component (`<Card>`).
 ```jsx
 const PostShow = () => (
     <Show>
-        <Card>
-            <Stack>
-                <FieldWithLabel label="Title">
-                    <TextField source="title" />
-                </FieldWithLabel>
-                <FieldWithLabel label="Body">
-                    <RichTextField source="body" />
-                </FieldWithLabel>
-                <FieldWithLabel label="Nb Views">
-                    <NumberField source="nb_views" />
-                </FieldWithLabel>
-            </Stack>
-        </Card>
+        <Stack>
+            <FieldWithLabel label="Title">
+                <TextField source="title" />
+            </FieldWithLabel>
+            <FieldWithLabel label="Body">
+                <RichTextField source="body" />
+            </FieldWithLabel>
+            <FieldWithLabel label="Nb Views">
+                <NumberField source="nb_views" />
+            </FieldWithLabel>
+        </Stack>
     </Show>
 );
 ```
@@ -74,13 +71,11 @@ const PostShow = () => (
 // translates to
 const PostShow = () => (
     <Show>
-        <Card>
-            <Stack>
-                <FieldWithLabel label="My Custom Title">
-                    <TextField source="title" />
-                </FieldWithLabel>
-            </Stack>
-        </Card>
+        <Stack>
+            <FieldWithLabel label="My Custom Title">
+                <TextField source="title" />
+            </FieldWithLabel>
+        </Stack>
     </Show>
 );
 ```
@@ -99,11 +94,9 @@ const PostShow = () => (
 // translates to
 const PostShow = () => (
     <Show>
-        <Card>
-            <Stack>
-                <TextField source="title" />
-            </Stack>
-        </Card>
+        <Stack>
+            <TextField source="title" />
+        </Stack>
     </Show>
 );
 ```
@@ -157,21 +150,6 @@ const PostShow = () => (
 );
 ```
 
-## Root Component
-
-By default, the `<SimpleShowLayout>` view renders the main content area inside a material-ui `<Card>`. You can override the main area container by passing a `component` prop:
-
-```jsx
-// use a div as root component
-const PostShow = () => (
-    <Show>
-        <SimpleShowLayout component="div">
-            <TextField source="title" />
-        </SimpleShowLayout>
-    </Show>
-);
-```
-
 ## More Than One Column
 
 `<SimpleShowLayout>` arranges fields with labels in a single column. If you need more than one column, nothing prevents you from using this layout several times:
@@ -179,32 +157,28 @@ const PostShow = () => (
 ```jsx
 const BookShow = () => (
     <Show>
-        <Card>
-            <Grid container spacing={2}>
-                <Grid item xs={6}>
-                    <SimpleShowLayout component="div">
-                        <TextField source="id" />
-                        <TextField source="title" />
-                    </SimpleShowLayout>
-                </Grid>
-                <Grid item xs={6}>
-                    <SimpleShowLayout component="div">
-                        <TextField source="author" />
-                        <TextField source="summary" />
-                        <NumberField source="year" />
-                    </SimpleShowLayout>
-                </Grid>
+        <Grid container spacing={2}>
+            <Grid item xs={6}>
+                <SimpleShowLayout>
+                    <TextField source="id" />
+                    <TextField source="title" />
+                </SimpleShowLayout>
             </Grid>
-        </Card>
+            <Grid item xs={6}>
+                <SimpleShowLayout>
+                    <TextField source="author" />
+                    <TextField source="summary" />
+                    <NumberField source="year" />
+                </SimpleShowLayout>
+            </Grid>
+        </Grid>
     </Show>
 );
 ```
 
-Just make sure that you set `component="div"` to avoid rendering a card inside another card.
-
 ## Controlled Mode
 
-By default, `<SimpleShowLayout>` reads the record from the `ResourceContext`. But by passing a `record` prop, you can render the component outside of a `ResourceContext`.
+By default, `<SimpleShowLayout>` reads the record from the `ResourceContext`. But by passing a `record` prop, you can render the component outside a `ResourceContext`.
 
 {% raw %}
 ```jsx
@@ -218,14 +192,14 @@ const StaticPostShow = () => (
 
 When passed a `record`, `<SimpleShowLayout>` creates a `RecordContext` with the given record.
 
-## CSS API
+## `sx`: CSS API
 
 The `<SimpleShowLayout>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
-| Rule name   | Description                                              |
-| ----------- | ---------------------------------------------------------|
-| `stack`     | Applied to the `<Stack>` element                         |
-| `row`       | Applied to each child of the stack (i.e. to each field)  |
+| Rule name                     | Description                                             |
+|-------------------------------|---------------------------------------------------------|
+| `& .RaSimpleShowLayout-stack` | Applied to the `<Stack>` element                        |
+| `& .RaSimpleShowLayout-row`   | Applied to each child of the stack (i.e. to each field) |
 
 To override the style of all instances of `<SimpleShowLayout>` using the [material-ui style overrides](https://mui.com/customization/theme-components/), use the `RaSimpleShowLayout` key.
 

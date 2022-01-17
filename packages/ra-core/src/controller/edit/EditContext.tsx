@@ -24,19 +24,11 @@ export const EditContext = createContext<EditControllerResult>({
     defaultTitle: null,
     isFetching: null,
     isLoading: null,
-    onFailureRef: null,
-    onSuccessRef: null,
-    transformRef: null,
     redirect: null,
-    setOnFailure: null,
-    setOnSuccess: null,
-    setTransform: null,
     refetch: null,
     resource: null,
     save: null,
     saving: null,
-    successMessage: null,
-    version: null,
 });
 
 EditContext.displayName = 'EditContext';

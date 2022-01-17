@@ -46,17 +46,22 @@ import { FilterButton } from './filter';
  *     );
  */
 export const ListActions = (props: ListActionsProps) => {
-    const { className, exporter, filters: filtersProp, ...rest } = props;
     const {
-        currentSort,
+        className,
+        exporter,
+        filters: filtersProp,
+        hasCreate: _,
+        ...rest
+    } = props;
+    const {
+        sort,
         displayedFilters,
         filterValues,
-        selectedIds,
         showFilter,
         total,
     } = useListContext(props);
-    const resource = useResourceContext(rest);
-    const { hasCreate } = useResourceDefinition(rest);
+    const resource = useResourceContext(props);
+    const { hasCreate } = useResourceDefinition(props);
     const filters = useContext(FilterContext) || filtersProp;
     return useMemo(
         () => (
@@ -75,19 +80,32 @@ export const ListActions = (props: ListActionsProps) => {
                     <ExportButton
                         disabled={total === 0}
                         resource={resource}
-                        sort={currentSort}
+                        sort={sort}
                         filterValues={filterValues}
                     />
                 )}
             </TopToolbar>
         ),
-        [resource, displayedFilters, filterValues, selectedIds, filters, total] // eslint-disable-line react-hooks/exhaustive-deps
+        /* eslint-disable react-hooks/exhaustive-deps */
+        [
+            resource,
+            displayedFilters,
+            filterValues,
+            filtersProp,
+            showFilter,
+            filters,
+            total,
+            className,
+            sort,
+            exporter,
+            hasCreate,
+        ]
     );
 };
 
 ListActions.propTypes = {
     className: PropTypes.string,
-    currentSort: PropTypes.any,
+    sort: PropTypes.any,
     displayedFilters: PropTypes.object,
     exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     filters: PropTypes.element,
@@ -106,7 +124,7 @@ ListActions.defaultProps = {
 };
 
 export interface ListActionsProps extends ToolbarProps {
-    currentSort?: SortPayload;
+    sort?: SortPayload;
     className?: string;
     resource?: string;
     filters?: ReactElement<any>;

@@ -5,7 +5,7 @@ import {
     TranslatableContextProvider,
     useTranslatable,
     UseTranslatableOptions,
-    Record,
+    RaRecord,
     useRecordContext,
 } from 'ra-core';
 import { TranslatableFieldsTabs } from './TranslatableFieldsTabs';
@@ -104,7 +104,7 @@ export const TranslatableFields = (
 export interface TranslatableFieldsProps extends UseTranslatableOptions {
     basePath?: string;
     children: ReactNode;
-    record?: Record;
+    record?: RaRecord;
     resource?: string;
     selector?: ReactElement;
     groupKey?: string;

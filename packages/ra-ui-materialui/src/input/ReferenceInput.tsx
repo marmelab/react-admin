@@ -167,6 +167,7 @@ export interface ReferenceInputProps extends InputProps {
 
 const sanitizeRestProps = ({
     dataStatus = null,
+    enableGetChoices = null,
     filter = null,
     filterToQuery = null,
     onChange = null,

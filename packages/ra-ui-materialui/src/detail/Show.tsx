@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { ShowBase, ResourceContextProvider, Record } from 'ra-core';
+import { ShowBase, ResourceContextProvider, RaRecord } from 'ra-core';
 
 import { ShowProps } from '../types';
 import { ShowView } from './ShowView';
@@ -10,7 +10,7 @@ import { ShowView } from './ShowView';
  * Page component for the Show view
  *
  * The `<Show>` component handles the headless logic of the Show page:
- * - it calls useShowcontroller to fetch the record from the data provider,
+ * - it calls useShowController to fetch the record from the data provider,
  * - it creates a ShowContext and a RecordContext,
  * - it computes the default page title
  * - it renders the page layout with the correct title and actions
@@ -58,7 +58,7 @@ import { ShowView } from './ShowView';
  *
  * @see ShowView for the actual rendering
  */
-export const Show = <RecordType extends Record = Record>({
+export const Show = <RecordType extends RaRecord = any>({
     id,
     resource,
     queryOptions,

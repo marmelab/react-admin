@@ -135,12 +135,16 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     });
 
     const handleChange = useCallback(
-        (event, newItem) => {
-            if (newItem) {
-                input.onChange([...input.value, getChoiceValue(newItem)]);
-                return;
+        (eventOrChoice: any) => {
+            // We might receive an event from the mui component
+            // In this case, it will be the choice id
+            // eslint-disable-next-line eqeqeq
+            if (eventOrChoice?.target?.value != undefined) {
+                input.onChange(eventOrChoice.target.value);
+            } else {
+                // Or we might receive a choice directly, for instance a newly created one
+                input.onChange([...input.value, getChoiceValue(eventOrChoice)]);
             }
-            input.onChange(event);
         },
         [input, getChoiceValue]
     );
@@ -162,9 +166,15 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     const finalChoices =
         create || onCreate ? [...choices, createItem] : choices;
 
-    const renderMenuItemOption = useCallback(choice => getChoiceText(choice), [
-        getChoiceText,
-    ]);
+    const renderMenuItemOption = useCallback(
+        choice =>
+            !!createItem &&
+            choice?.id === createItem.id &&
+            typeof optionText === 'function'
+                ? createItem.name
+                : getChoiceText(choice),
+        [createItem, getChoiceText, optionText]
+    );
 
     const renderMenuItem = useCallback(
         choice => {
@@ -174,9 +184,11 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     value={getChoiceValue(choice)}
                     disabled={getDisableValue(choice)}
                 >
-                    {!!createItem && choice?.id === createItem.id
-                        ? createItem.name
-                        : renderMenuItemOption(choice)}
+                    {renderMenuItemOption(
+                        !!createItem && choice?.id === createItem.id
+                            ? createItem
+                            : choice
+                    )}
                 </MenuItem>
             ) : null;
         },

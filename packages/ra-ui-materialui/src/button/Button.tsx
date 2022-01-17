@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement, SyntheticEvent, ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import {
     Button as MuiButton,
@@ -14,11 +14,17 @@ import { styled } from '@mui/material/styles';
 import classnames from 'classnames';
 import {
     MutationMode,
-    Record,
+    RaRecord,
     RedirectionSideEffect,
     useTranslate,
 } from 'ra-core';
-import { LocationDescriptor } from 'history';
+import { Path } from 'react-router';
+
+export type LocationDescriptor = Partial<Path> & {
+    redirect?: boolean;
+    state?: any;
+    replace?: boolean;
+};
 
 /**
  * A generic Button with side icon. Only the icon is displayed on small screens.
@@ -42,9 +48,11 @@ export const Button = (props: ButtonProps) => {
         label,
         color = 'primary',
         size = 'small',
+        to: locationDescriptor,
         ...rest
     } = props;
     const translate = useTranslate();
+    const linkParams = getLinkParams(locationDescriptor);
 
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
@@ -59,6 +67,7 @@ export const Button = (props: ButtonProps) => {
                     className={className}
                     color={color}
                     {...restProps}
+                    {...linkParams}
                     size="large"
                 >
                     {children}
@@ -70,6 +79,7 @@ export const Button = (props: ButtonProps) => {
                 color={color}
                 disabled={disabled}
                 {...restProps}
+                {...linkParams}
                 size="large"
             >
                 {children}
@@ -83,6 +93,7 @@ export const Button = (props: ButtonProps) => {
             aria-label={label ? translate(label, { _: label }) : undefined}
             disabled={disabled}
             {...restProps}
+            {...linkParams}
         >
             {alignIcon === 'left' &&
                 children &&
@@ -123,14 +134,11 @@ interface Props {
     variant?: string;
     // May be injected by Toolbar
     basePath?: string;
-    handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
-    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
     invalid?: boolean;
-    onSave?: (values: object, redirect: RedirectionSideEffect) => void;
     saving?: boolean;
     submitOnEnter?: boolean;
     pristine?: boolean;
-    record?: Record;
+    record?: RaRecord;
     resource?: string;
     mutationMode?: MutationMode;
 }
@@ -140,10 +148,7 @@ export type ButtonProps = Props & MuiButtonProps;
 export const sanitizeButtonRestProps = ({
     // The next props are injected by Toolbar
     basePath,
-    handleSubmit,
-    handleSubmitWithRedirect,
     invalid,
-    onSave,
     pristine,
     record,
     redirect,
@@ -151,6 +156,7 @@ export const sanitizeButtonRestProps = ({
     saving,
     submitOnEnter,
     mutationMode,
+    hasCreate,
     ...rest
 }: any) => rest;
 
@@ -196,3 +202,22 @@ const StyledButton = styled(MuiButton, { name: PREFIX })({
         fontSize: 24,
     },
 });
+
+const getLinkParams = (locationDescriptor?: LocationDescriptor | string) => {
+    // eslint-disable-next-line eqeqeq
+    if (locationDescriptor == undefined) {
+        return undefined;
+    }
+
+    if (typeof locationDescriptor === 'string') {
+        return { to: locationDescriptor };
+    }
+
+    const { redirect, replace, state, ...to } = locationDescriptor;
+    return {
+        to,
+        redirect,
+        replace,
+        state,
+    };
+};

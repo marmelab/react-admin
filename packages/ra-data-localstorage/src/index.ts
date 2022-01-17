@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import fakeRestProvider from 'ra-data-fakerest';
-import { DataProvider, Record } from 'ra-core';
+import { DataProvider, RaRecord } from 'ra-core';
 import pullAt from 'lodash/pullAt';
 
 /**
@@ -55,7 +55,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
 
     return {
         // read methods are just proxies to FakeRest
-        getList: <RecordType extends Record = Record>(resource, params) =>
+        getList: <RecordType extends RaRecord = any>(resource, params) =>
             baseDataProvider
                 .getList<RecordType>(resource, params)
                 .catch(error => {
@@ -66,11 +66,11 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
                         throw error;
                     }
                 }),
-        getOne: <RecordType extends Record = Record>(resource, params) =>
+        getOne: <RecordType extends RaRecord = any>(resource, params) =>
             baseDataProvider.getOne<RecordType>(resource, params),
-        getMany: <RecordType extends Record = Record>(resource, params) =>
+        getMany: <RecordType extends RaRecord = any>(resource, params) =>
             baseDataProvider.getMany<RecordType>(resource, params),
-        getManyReference: <RecordType extends Record = Record>(
+        getManyReference: <RecordType extends RaRecord = any>(
             resource,
             params
         ) =>
@@ -86,7 +86,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
                 }),
 
         // update methods need to persist changes in localStorage
-        update: <RecordType extends Record = Record>(resource, params) => {
+        update: <RecordType extends RaRecord = any>(resource, params) => {
             updateLocalStorage(() => {
                 const index = data[resource].findIndex(
                     record => record.id == params.id
@@ -112,7 +112,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
             });
             return baseDataProvider.updateMany(resource, params);
         },
-        create: <RecordType extends Record = Record>(resource, params) => {
+        create: <RecordType extends RaRecord = any>(resource, params) => {
             // we need to call the fakerest provider first to get the generated id
             return baseDataProvider
                 .create<RecordType>(resource, params)
@@ -126,7 +126,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
                     return response;
                 });
         },
-        delete: <RecordType extends Record = Record>(resource, params) => {
+        delete: <RecordType extends RaRecord = any>(resource, params) => {
             updateLocalStorage(() => {
                 const index = data[resource].findIndex(
                     record => record.id == params.id

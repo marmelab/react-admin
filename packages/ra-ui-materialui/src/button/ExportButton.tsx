@@ -21,13 +21,12 @@ export const ExportButton = (props: ExportButtonProps) => {
         label = 'ra.action.export',
         icon = defaultIcon,
         exporter: customExporter,
-        sort, // deprecated, to be removed in v4
         ...rest
     } = props;
     const {
         filter,
         filterValues,
-        currentSort,
+        sort,
         exporter: exporterFromContext,
         total,
     } = useListContext(props);
@@ -39,7 +38,7 @@ export const ExportButton = (props: ExportButtonProps) => {
         event => {
             dataProvider
                 .getList(resource, {
-                    sort: currentSort || sort,
+                    sort,
                     filter: filter
                         ? { ...filterValues, ...filter }
                         : filterValues,
@@ -57,14 +56,13 @@ export const ExportButton = (props: ExportButtonProps) => {
                 )
                 .catch(error => {
                     console.error(error);
-                    notify('ra.notification.http_error', 'warning');
+                    notify('ra.notification.http_error', { type: 'warning' });
                 });
             if (typeof onClick === 'function') {
                 onClick(event);
             }
         },
         [
-            currentSort,
             dataProvider,
             exporter,
             filter,

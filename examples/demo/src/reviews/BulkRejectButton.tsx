@@ -6,9 +6,7 @@ import {
     Button,
     useUpdateMany,
     useNotify,
-    useRefresh,
     useUnselectAll,
-    CRUD_UPDATE_MANY,
     BulkActionProps,
     Identifier,
 } from 'react-admin';
@@ -18,31 +16,24 @@ const noSelection: Identifier[] = [];
 const BulkRejectButton = (props: BulkActionProps) => {
     const { selectedIds = noSelection } = props;
     const notify = useNotify();
-    const refresh = useRefresh();
     const unselectAll = useUnselectAll('reviews');
 
-    const [reject, { loading }] = useUpdateMany(
+    const [updateMany, { isLoading }] = useUpdateMany(
         'reviews',
-        selectedIds,
-        { status: 'rejected' },
+        { ids: selectedIds, data: { status: 'rejected' } },
         {
-            action: CRUD_UPDATE_MANY,
             mutationMode: 'undoable',
             onSuccess: () => {
-                notify(
-                    'resources.reviews.notification.approved_success',
-                    'info',
-                    {},
-                    true
-                );
-                refresh();
+                notify('resources.reviews.notification.approved_success', {
+                    type: 'info',
+                    undoable: true,
+                });
                 unselectAll();
             },
-            onFailure: () => {
-                notify(
-                    'resources.reviews.notification.approved_error',
-                    'warning'
-                );
+            onError: () => {
+                notify('resources.reviews.notification.approved_error', {
+                    type: 'warning',
+                });
             },
         }
     );
@@ -50,8 +41,8 @@ const BulkRejectButton = (props: BulkActionProps) => {
     return (
         <Button
             label="resources.reviews.action.reject"
-            onClick={reject}
-            disabled={loading}
+            onClick={() => updateMany()}
+            disabled={isLoading}
         >
             <ThumbDown />
         </Button>

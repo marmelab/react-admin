@@ -474,7 +474,7 @@ export default {
     '.ql-bubble .ql-direction.ql-active svg:last-child': {
         display: 'inline',
     },
-    '.ql-bubble .ql-direction.ql-active svg:first-child': {
+    '.ql-bubble .ql-direction.ql-active svg:first-of-type': {
         display: 'none',
     },
     '.ql-bubble .ql-editor h1': {
@@ -711,7 +711,7 @@ export default {
     '.ql-bubble .ql-toolbar .ql-formats': {
         margin: '8px 12px 8px 0px',
     },
-    '.ql-bubble .ql-toolbar .ql-formats:first-child': {
+    '.ql-bubble .ql-toolbar .ql-formats:first-of-type': {
         marginLeft: 12,
     },
     '.ql-bubble .ql-color-picker svg': {

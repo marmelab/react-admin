@@ -3,7 +3,7 @@ import defaults from 'lodash/defaults';
 
 import { ListContext } from './ListContext';
 import { ListControllerResult } from './useListController';
-import { Record } from '../../types';
+import { RaRecord } from '../../types';
 
 /**
  * Hook to read the list controller props from the ListContext.
@@ -17,17 +17,16 @@ import { Record } from '../../types';
  * The given props will take precedence over context values.
  *
  * @typedef {Object} ListControllerProps
- * @prop {Object}   data an id-based dictionary of the list data, e.g. { 123: { id: 123, title: 'hello world' }, 456: { ... } }
- * @prop {Array}    ids an array listing the ids of the records in the list, e.g. [123, 456, ...]
+ * @prop {Object}   data an array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }]
  * @prop {integer}  total the total number of results for the current filters, excluding pagination. Useful to build the pagination controls. e.g. 23
- * @prop {boolean}  loaded boolean that is false until the data is available
- * @prop {boolean}  loading boolean that is true on mount, and false once the data was fetched
+ * @prop {boolean}  isFetching boolean that is true on mount, and false once the data was fetched
+ * @prop {boolean}  isLoading boolean that is false until the data is available
  * @prop {integer}  page the current page. Starts at 1
  * @prop {Function} setPage a callback to change the page, e.g. setPage(3)
  * @prop {integer}  perPage the number of results per page. Defaults to 25
  * @prop {Function} setPerPage a callback to change the number of results per page, e.g. setPerPage(25)
- * @prop {Object}   currentSort a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
- * @prop {Function} setSort a callback to change the sort, e.g. setSort('name', 'ASC')
+ * @prop {Object}   sort a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
+ * @prop {Function} setSort a callback to change the sort, e.g. setSort({ field : 'name', order: 'ASC' })
  * @prop {Object}   filterValues a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
  * @prop {Function} setFilters a callback to update the filters, e.g. setFilters(filters, displayedFilters)
  * @prop {Object}   displayedFilters a dictionary of the displayed filters, e.g. { title: true, nationality: true }
@@ -50,14 +49,13 @@ import { Record } from '../../types';
  * import { useListContext } from 'react-admin';
  *
  * const MyList = () => {
- *     const { data, ids, loaded } = useListContext();
- *     if (!loaded) {
+ *     const { data, isLoading } = useListContext();
+ *     if (isLoading) {
  *         return <>Loading...</>;
  *     }
- *     const records = ids.map(id => data[id]);
  *     return (
  *         <ul>
- *             {records.map(record => (
+ *             {data.map(record => (
  *                 <li key={record.id}>{record.name}</li>
  *             ))}
  *         </ul>
@@ -93,7 +91,7 @@ import { Record } from '../../types';
  *     );
  * }
  */
-export const useListContext = <RecordType extends Record = Record>(
+export const useListContext = <RecordType extends RaRecord = any>(
     props?: any
 ): ListControllerResult<RecordType> => {
     const context = useContext(ListContext);
@@ -119,16 +117,15 @@ export const useListContext = <RecordType extends Record = Record>(
  */
 const extractListContextProps = ({
     basePath,
-    currentSort,
+    sort,
     data,
     defaultTitle,
     displayedFilters,
     filterValues,
     hasCreate,
     hideFilter,
-    ids,
-    loaded,
-    loading,
+    isFetching,
+    isLoading,
     onSelect,
     onToggleItem,
     onUnselectItems,
@@ -145,16 +142,15 @@ const extractListContextProps = ({
     total,
 }) => ({
     basePath,
-    currentSort,
+    sort,
     data,
     defaultTitle,
     displayedFilters,
     filterValues,
     hasCreate,
     hideFilter,
-    ids,
-    loaded,
-    loading,
+    isFetching,
+    isLoading,
     onSelect,
     onToggleItem,
     onUnselectItems,

@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { PaginationPayload, Record, SortPayload } from '../../types';
+import { PaginationPayload, RaRecord, SortPayload } from '../../types';
 
 /**
  * Context which provides access to the useReferenceArrayInput features.
@@ -16,14 +16,15 @@ import { PaginationPayload, Record, SortPayload } from '../../types';
  */
 export const ReferenceArrayInputContext = createContext(undefined);
 
-export interface ReferenceArrayInputContextValue {
-    choices: Record[];
+export interface ReferenceArrayInputContextValue<
+    RecordType extends RaRecord = any
+> {
+    choices: RecordType[];
     error?: any;
     warning?: any;
-    loading: boolean;
-    loaded: boolean;
+    isLoading?: boolean;
+    isFetching?: boolean;
     setFilter: (filter: any) => void;
     setPagination: (pagination: PaginationPayload) => void;
     setSort: (sort: SortPayload) => void;
-    setSortForList: (sort: string, order?: string) => void;
 }

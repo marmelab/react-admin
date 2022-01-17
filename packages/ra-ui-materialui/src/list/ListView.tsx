@@ -1,103 +1,90 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { Children, cloneElement, ReactElement } from 'react';
+import { Children, cloneElement, ReactElement, ElementType } from 'react';
 import PropTypes from 'prop-types';
+import { SxProps } from '@mui/system';
 import Card from '@mui/material/Card';
 import classnames from 'classnames';
-import {
-    ComponentPropType,
-    defaultExporter,
-    ListControllerProps,
-    useListContext,
-    getListControllerProps,
-    useVersion,
-} from 'ra-core';
+import { ComponentPropType, useListContext, RaRecord } from 'ra-core';
 
 import { Title, TitlePropType } from '../layout/Title';
 import { ListToolbar } from './ListToolbar';
 import { Pagination as DefaultPagination } from './pagination';
-import { BulkDeleteButton } from '../button';
-import { BulkActionsToolbar } from './BulkActionsToolbar';
 import { ListActions as DefaultActions } from './ListActions';
 import { Empty } from './Empty';
-import { ListProps } from '../types';
 
-export const ListView = (props: ListViewProps) => {
+const defaultActions = <DefaultActions />;
+const defaultPagination = <DefaultPagination />;
+const defaultEmpty = <Empty />;
+const DefaultComponent = Card;
+
+export const ListView = <RecordType extends RaRecord = any>(
+    props: ListViewProps
+) => {
     const {
-        actions,
+        actions = defaultActions,
         aside,
         filters,
         bulkActionButtons,
-        pagination,
+        emptyWhileLoading,
+        hasCreate,
+        pagination = defaultPagination,
         children,
         className,
-        component: Content,
-        exporter = defaultExporter,
+        component: Content = DefaultComponent,
         title,
-        empty,
+        empty = defaultEmpty,
         ...rest
     } = props;
-    const controllerProps = getListControllerProps(props); // deprecated, to be removed in v4
-    const listContext = useListContext(props);
-
     const {
         defaultTitle,
+        data,
         total,
-        loaded,
-        loading,
+        isLoading,
         filterValues,
-        selectedIds,
-    } = listContext;
-    const version = useVersion();
+    } = useListContext<RecordType>(props);
+
+    if (!children || (!data && isLoading && emptyWhileLoading)) {
+        return null;
+    }
 
     const renderList = () => (
-        <>
+        <div className={ListClasses.main}>
             {(filters || actions) && (
                 <ListToolbar
                     filters={filters}
-                    {...controllerProps} // deprecated, use ListContext instead, to be removed in v4
                     actions={actions}
-                    exporter={exporter} // deprecated, use ListContext instead, to be removed in v4
+                    hasCreate={hasCreate}
                 />
             )}
-            <div className={ListClasses.main}>
-                <Content
-                    className={classnames(ListClasses.content, {
-                        [ListClasses.bulkActionsDisplayed]:
-                            selectedIds.length > 0,
-                    })}
-                    key={version}
-                >
-                    {bulkActionButtons !== false && bulkActionButtons && (
-                        <BulkActionsToolbar {...controllerProps}>
-                            {bulkActionButtons}
-                        </BulkActionsToolbar>
-                    )}
-                    {children &&
-                        // @ts-ignore-line
-                        cloneElement(Children.only(children), {
-                            ...controllerProps, // deprecated, use ListContext instead, to be removed in v4
-                            hasBulkActions: bulkActionButtons !== false,
-                        })}
-                    {pagination && cloneElement(pagination, listContext)}
-                </Content>
-                {aside && cloneElement(aside, listContext)}
-            </div>
-        </>
+            <Content className={ListClasses.content}>
+                {bulkActionButtons && children
+                    ? cloneElement(Children.only(children), {
+                          bulkActionButtons,
+                      })
+                    : children}
+            </Content>
+            {pagination !== false && pagination}
+        </div>
     );
 
+    const renderEmpty = () =>
+        empty !== false && cloneElement(empty, { hasCreate });
+
     const shouldRenderEmptyPage =
-        loaded && !loading && total === 0 && !Object.keys(filterValues).length;
+        !isLoading &&
+        total === 0 &&
+        !Object.keys(filterValues).length &&
+        empty !== false;
 
     return (
         <Root
             className={classnames('list-page', ListClasses.root, className)}
-            {...sanitizeRestProps(rest)}
+            {...rest}
         >
             <Title title={title} defaultTitle={defaultTitle} />
-            {shouldRenderEmptyPage && empty !== false
-                ? cloneElement(empty, listContext)
-                : renderList()}
+            {shouldRenderEmptyPage ? renderEmpty() : renderList()}
+            {aside}
         </Root>
     );
 };
@@ -107,19 +94,18 @@ ListView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     aside: PropTypes.element,
     basePath: PropTypes.string,
-    // @ts-ignore-line
-    bulkActionButtons: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     children: PropTypes.element,
     className: PropTypes.string,
     component: ComponentPropType,
     // @ts-ignore-line
-    currentSort: PropTypes.shape({
+    sort: PropTypes.shape({
         field: PropTypes.string.isRequired,
         order: PropTypes.string.isRequired,
     }),
     data: PropTypes.any,
     defaultTitle: PropTypes.string,
     displayedFilters: PropTypes.object,
+    emptyWhileLoading: PropTypes.bool,
     // @ts-ignore-line
     exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     filterDefaultValues: PropTypes.object,
@@ -149,82 +135,27 @@ ListView.propTypes = {
     showFilter: PropTypes.func,
     title: TitlePropType,
     total: PropTypes.number,
-    version: PropTypes.number,
 };
 
-const DefaultBulkActionButtons = props => <BulkDeleteButton {...props} />;
-
-ListView.defaultProps = {
-    actions: <DefaultActions />,
-    component: Card,
-    bulkActionButtons: <DefaultBulkActionButtons />,
-    pagination: <DefaultPagination />,
-    empty: <Empty />,
-};
-
-export interface ListViewProps
-    extends Omit<ListProps, 'basePath' | 'hasCreate' | 'perPage' | 'resource'>,
-        // Partial because we now get those props via context
-        Partial<ListControllerProps> {
+export interface ListViewProps {
+    actions?: ReactElement | false;
+    aside?: ReactElement;
+    /**
+     * @deprecated pass the bulkActionButtons prop to the List child (Datagrid or SimpleList) instead
+     */
+    bulkActionButtons?: ReactElement | false;
+    classes?: any;
+    className?: string;
     children: ReactElement;
+    component?: ElementType;
+    empty?: ReactElement | false;
+    emptyWhileLoading?: boolean;
+    filters?: ReactElement | ReactElement[];
+    hasCreate?: boolean;
+    pagination?: ReactElement | false;
+    title?: string | ReactElement;
+    sx?: SxProps;
 }
-
-const sanitizeRestProps: (
-    props: Omit<
-        ListViewProps,
-        | 'actions'
-        | 'aside'
-        | 'filter'
-        | 'filters'
-        | 'bulkActionButtons'
-        | 'pagination'
-        | 'children'
-        | 'className'
-        | 'classes'
-        | 'component'
-        | 'exporter'
-        | 'title'
-        | 'empty'
-    >
-) => any = ({
-    basePath = null,
-    currentSort = null,
-    data = null,
-    defaultTitle = null,
-    displayedFilters = null,
-    filterDefaultValues = null,
-    filterValues = null,
-    hasCreate = null,
-    hasEdit = null,
-    hasList = null,
-    hasShow = null,
-    hideFilter = null,
-    history = null,
-    ids = null,
-    loading = null,
-    loaded = null,
-    location = null,
-    match = null,
-    onSelect = null,
-    onToggleItem = null,
-    onUnselectItems = null,
-    options = null,
-    page = null,
-    permissions = null,
-    perPage = null,
-    refetch = null,
-    resource = null,
-    selectedIds = null,
-    setFilters = null,
-    setPage = null,
-    setPerPage = null,
-    setSort = null,
-    showFilter = null,
-    syncWithLocation = null,
-    sort = null,
-    total = null,
-    ...rest
-}) => rest;
 
 const PREFIX = 'RaList';
 
@@ -232,32 +163,27 @@ export const ListClasses = {
     root: `${PREFIX}-root`,
     main: `${PREFIX}-main`,
     content: `${PREFIX}-content`,
-    bulkActionsDisplayed: `${PREFIX}-bulkActionsDisplayed`,
     actions: `${PREFIX}-actions`,
     noResults: `${PREFIX}-noResults`,
 };
 
 const Root = styled('div', { name: PREFIX })(({ theme }) => ({
-    [`&.${ListClasses.root}`]: {},
-
-    [`& .${ListClasses.main}`]: {
+    [`&.${ListClasses.root}`]: {
         display: 'flex',
     },
 
-    [`& .${ListClasses.content}`]: {
-        marginTop: 0,
-        transition: theme.transitions.create('margin-top'),
-        position: 'relative',
+    [`& .${ListClasses.main}`]: {
         flex: '1 1 auto',
+        display: 'flex',
+        flexDirection: 'column',
+    },
+
+    [`& .${ListClasses.content}`]: {
+        position: 'relative',
         [theme.breakpoints.down('sm')]: {
             boxShadow: 'none',
         },
         overflow: 'inherit',
-    },
-
-    [`& .${ListClasses.bulkActionsDisplayed}`]: {
-        marginTop: theme.spacing(-8),
-        transition: theme.transitions.create('margin-top'),
     },
 
     [`& .${ListClasses.actions}`]: {

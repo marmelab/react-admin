@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import get from 'lodash/get';
 import MenuItem from '@mui/material/MenuItem';
 import { TextFieldProps } from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
@@ -115,6 +114,8 @@ export const SelectInput = (props: SelectInputProps) => {
         emptyValue,
         format,
         helperText,
+        isFetching,
+        isLoading,
         label,
         loaded,
         loading,
@@ -145,9 +146,10 @@ export const SelectInput = (props: SelectInputProps) => {
         `If you're not wrapping the SelectInput inside a ReferenceInput, you must provide the choices prop`
     );
 
-    const { getChoiceText, getChoiceValue } = useChoices({
+    const { getChoiceText, getChoiceValue, getDisableValue } = useChoices({
         optionText,
         optionValue,
+        disableValue,
         translateChoice,
     });
 
@@ -178,14 +180,16 @@ export const SelectInput = (props: SelectInputProps) => {
     ]);
 
     const handleChange = useCallback(
-        async (event: React.ChangeEvent<HTMLSelectElement>, newItem) => {
-            if (newItem) {
-                const value = getChoiceValue(newItem);
-                input.onChange(value);
-                return;
+        async (eventOrChoice: any) => {
+            // We might receive an event from the mui component
+            // In this case, it will be the choice id
+            // eslint-disable-next-line eqeqeq
+            if (eventOrChoice?.target?.value != undefined) {
+                input.onChange(eventOrChoice.target.value);
+            } else {
+                // Or we might receive a choice directly, for instance a newly created one
+                input.onChange(getChoiceValue(eventOrChoice));
             }
-
-            input.onChange(event);
         },
         [input, getChoiceValue]
     );
@@ -202,7 +206,31 @@ export const SelectInput = (props: SelectInputProps) => {
         onCreate,
         optionText,
     });
-    if (loading) {
+
+    const createItem = create || onCreate ? getCreateItem() : null;
+    const finalChoices =
+        create || onCreate ? [...choices, createItem] : choices;
+
+    const renderMenuItem = useCallback(
+        choice => {
+            return choice ? (
+                <MenuItem
+                    key={getChoiceValue(choice)}
+                    value={getChoiceValue(choice)}
+                    disabled={getDisableValue(choice)}
+                >
+                    {renderMenuItemOption(
+                        !!createItem && choice?.id === createItem.id
+                            ? createItem
+                            : choice
+                    )}
+                </MenuItem>
+            ) : null;
+        },
+        [getChoiceValue, getDisableValue, renderMenuItemOption, createItem]
+    );
+
+    if (isLoading) {
         return (
             <Labeled
                 id={id}
@@ -219,18 +247,6 @@ export const SelectInput = (props: SelectInputProps) => {
             </Labeled>
         );
     }
-
-    const renderCreateItem = () => {
-        if (onCreate || create) {
-            const createItem = getCreateItem();
-            return (
-                <MenuItem value={createItem.id} key={createItem.id}>
-                    {createItem.name}
-                </MenuItem>
-            );
-        }
-        return null;
-    };
 
     return (
         <>
@@ -274,16 +290,7 @@ export const SelectInput = (props: SelectInputProps) => {
                         {renderEmptyItemOption()}
                     </MenuItem>
                 ) : null}
-                {choices.map(choice => (
-                    <MenuItem
-                        key={getChoiceValue(choice)}
-                        value={getChoiceValue(choice)}
-                        disabled={get(choice, disableValue)}
-                    >
-                        {renderMenuItemOption(choice)}
-                    </MenuItem>
-                ))}
-                {renderCreateItem()}
+                {finalChoices.map(renderMenuItem)}
             </StyledResettableTextField>
             {createElement}
         </>
@@ -359,7 +366,7 @@ const sanitizeRestProps = ({
 const PREFIX = 'RaSelectInput';
 
 const classes = {
-    input: `${PREFIX}-inputEnd`,
+    input: `${PREFIX}-input`,
 };
 
 const StyledResettableTextField = styled(ResettableTextField)(({ theme }) => ({

@@ -9,8 +9,7 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
-import { StaticContext } from 'react-router';
-import { NavLink, NavLinkProps } from 'react-router-dom';
+import { Link, LinkProps, useMatch } from 'react-router-dom';
 import { ReduxState, setSidebarVisibility } from 'ra-core';
 import {
     MenuItem,
@@ -95,12 +94,18 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
         [dispatch, isSmall, onClick]
     );
 
+    const match = useMatch(
+        typeof props.to === 'string' ? props.to : props.to.pathname
+    );
+
     const renderMenuItem = () => {
         return (
             <StyledMenuItem
-                className={classnames(MenuItemLinkClasses.root, className)}
-                activeClassName={MenuItemLinkClasses.active}
-                component={NavLinkRef}
+                // @ts-ignore
+                className={classnames(MenuItemLinkClasses.root, className, {
+                    [MenuItemLinkClasses.active]: !!match,
+                })}
+                component={LinkRef}
                 // @ts-ignore
                 ref={ref}
                 tabIndex={0}
@@ -131,7 +136,6 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
 interface Props {
     leftIcon?: ReactElement;
     primaryText?: ReactNode;
-    staticContext?: StaticContext;
     /**
      * @deprecated
      */
@@ -139,16 +143,13 @@ interface Props {
     tooltipProps?: TooltipProps;
 }
 
-export type MenuItemLinkProps = Props &
-    NavLinkProps &
-    MenuItemProps<'li', { button?: true }>; // HACK: https://github.com/mui-org/material-ui/issues/16245
+export type MenuItemLinkProps = Props & LinkProps & MenuItemProps<'li'>;
 
 MenuItemLink.propTypes = {
     className: PropTypes.string,
     leftIcon: PropTypes.element,
     onClick: PropTypes.func,
     primaryText: PropTypes.node,
-    staticContext: PropTypes.object,
     to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
     sidebarIsOpen: PropTypes.bool,
 };
@@ -166,13 +167,13 @@ const StyledMenuItem = styled(MenuItem, { name: PREFIX })(({ theme }) => ({
         color: theme.palette.text.secondary,
     },
 
-    [`& .${MenuItemLinkClasses.active}`]: {
+    [`&.${MenuItemLinkClasses.active}`]: {
         color: theme.palette.text.primary,
     },
 
     [`& .${MenuItemLinkClasses.icon}`]: { minWidth: theme.spacing(5) },
 }));
 
-const NavLinkRef = forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => (
-    <NavLink innerRef={ref} {...props} />
+const LinkRef = forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
+    <Link ref={ref} {...props} />
 ));

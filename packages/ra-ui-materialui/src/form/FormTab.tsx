@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { FormGroupContextProvider, Record } from 'ra-core';
+import { FormGroupContextProvider, RaRecord } from 'ra-core';
 
 import { FormInput } from './FormInput';
 import { FormTabHeader } from './FormTabHeader';
@@ -96,7 +96,7 @@ export interface FormTabProps {
     label: string | ReactElement;
     margin?: 'none' | 'normal' | 'dense';
     path?: string;
-    record?: Record;
+    record?: RaRecord;
     resource?: string;
     syncWithLocation?: boolean;
     value?: string | number;

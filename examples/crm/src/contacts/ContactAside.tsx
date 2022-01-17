@@ -103,7 +103,7 @@ export const ContactAside = ({ record, link = 'edit' }: any) => (
         <Box mb={3}>
             <Typography variant="subtitle2">Tags</Typography>
             <Divider />
-            <TagsListEdit record={record} />
+            <TagsListEdit />
         </Box>
 
         <ReferenceManyField
@@ -117,36 +117,25 @@ export const ContactAside = ({ record, link = 'edit' }: any) => (
 );
 
 const TasksIterator = () => {
-    const { data, ids, loading } = useListContext();
-    if (loading || ids.length === 0) return null;
+    const { data, isLoading } = useListContext();
+    if (isLoading || data.length === 0) return null;
     return (
         <Box>
             <Typography variant="subtitle2">Tasks</Typography>
             <Divider />
 
             <List>
-                {ids.map(id => {
-                    const task = data[id];
-                    return (
-                        <ListItem key={id} disableGutters>
-                            <Box>
-                                <Typography variant="body2">
-                                    {task.text}
-                                </Typography>
-                                <Typography
-                                    variant="body2"
-                                    color="textSecondary"
-                                >
-                                    due{' '}
-                                    <DateField
-                                        source="due_date"
-                                        record={task}
-                                    />
-                                </Typography>
-                            </Box>
-                        </ListItem>
-                    );
-                })}
+                {data.map(task => (
+                    <ListItem key={task.id} disableGutters>
+                        <Box>
+                            <Typography variant="body2">{task.text}</Typography>
+                            <Typography variant="body2" color="textSecondary">
+                                due{' '}
+                                <DateField source="due_date" record={task} />
+                            </Typography>
+                        </Box>
+                    </ListItem>
+                ))}
             </List>
         </Box>
     );

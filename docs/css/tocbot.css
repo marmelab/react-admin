@@ -4,10 +4,25 @@
 }
 
 .toc-list-item {
-    padding: 2px 0;
+    padding-bottom: 8px;
+    line-height: normal;
+}
+
+.toc-list-item code {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.toc-list-item > ol > li.toc-list-item:first-child {
+    padding-top: 8px;
+}
+
+.toc-list-item > ol > li.toc-list-item:last-child {
+    padding-bottom: 0;
 }
 
 .toc-link {
+    font-size: 0.9em;
     color: var(--black) !important;
 }
 

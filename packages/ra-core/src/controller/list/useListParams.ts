@@ -3,7 +3,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce';
 import pickBy from 'lodash/pickBy';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import queryReducer, {
     SET_FILTER,
@@ -13,7 +13,7 @@ import queryReducer, {
     SET_PER_PAGE,
     SET_SORT,
     SORT_ASC,
-} from '../../reducer/admin/resource/list/queryReducer';
+} from './queryReducer';
 import { changeListParams, ListParams } from '../../actions';
 import { SortPayload, ReduxState, FilterPayload } from '../../types';
 import removeEmpty from '../../util/removeEmpty';
@@ -77,13 +77,11 @@ export const useListParams = ({
 }: ListParamsOptions): [Parameters, Modifiers] => {
     const dispatch = useDispatch();
     const location = useLocation();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [localParams, setLocalParams] = useState(defaultParams);
     const params = useSelector(
         (reduxState: ReduxState) =>
-            reduxState.admin.resources[resource]
-                ? reduxState.admin.resources[resource].list.params
-                : defaultParams,
+            reduxState.admin.listParams[resource] || defaultParams,
         shallowEqual
     );
     const tempParams = useRef<ListParams>();
@@ -134,16 +132,22 @@ export const useListParams = ({
                     setLocalParams(tempParams.current);
                 } else {
                     // the useEffect above will apply the changes to the params in the redux state
-                    history.push({
-                        search: `?${stringify({
-                            ...tempParams.current,
-                            filter: JSON.stringify(tempParams.current.filter),
-                            displayedFilters: JSON.stringify(
-                                tempParams.current.displayedFilters
-                            ),
-                        })}`,
-                        state: { _scrollToTop: action.type === SET_PAGE },
-                    });
+                    navigate(
+                        {
+                            search: `?${stringify({
+                                ...tempParams.current,
+                                filter: JSON.stringify(
+                                    tempParams.current.filter
+                                ),
+                                displayedFilters: JSON.stringify(
+                                    tempParams.current.displayedFilters
+                                ),
+                            })}`,
+                        },
+                        {
+                            state: { _scrollToTop: action.type === SET_PAGE },
+                        }
+                    );
                 }
                 tempParams.current = undefined;
             }, 0);
@@ -154,10 +158,10 @@ export const useListParams = ({
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     const setSort = useCallback(
-        (sort: string, order?: string) =>
+        (sort: SortPayload) =>
             changeParams({
                 type: SET_SORT,
-                payload: { sort, order },
+                payload: sort,
             }),
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
@@ -364,7 +368,7 @@ interface Modifiers {
     changeParams: (action: any) => void;
     setPage: (page: number) => void;
     setPerPage: (pageSize: number) => void;
-    setSort: (sort: string, order?: string) => void;
+    setSort: (sort: SortPayload) => void;
     setFilters: (filters: any, displayedFilters: any) => void;
     hideFilter: (filterName: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;

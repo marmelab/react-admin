@@ -13,6 +13,8 @@ import {
     CreateButton,
     Pagination,
     useGetIdentity,
+    BulkActionsToolbar,
+    BulkDeleteButton,
 } from 'react-admin';
 import {
     List,
@@ -46,34 +48,36 @@ const StyledTopToolbar = styled(TopToolbar)(({ theme }) => ({
 }));
 
 const ContactListContent = () => {
-    const { data, ids, loaded, onToggleItem, selectedIds } = useListContext<
+    const { data, isLoading, onToggleItem, selectedIds } = useListContext<
         Contact
     >();
-    const now = Date.now();
-    if (loaded === false) {
+    if (isLoading) {
         return <SimpleListLoading hasLeftAvatarOrIcon hasSecondaryText />;
     }
+    const now = Date.now();
 
     return (
-        <List>
-            {ids.map(id => {
-                const contact = data[id];
-                return (
+        <>
+            <BulkActionsToolbar>
+                <BulkDeleteButton />
+            </BulkActionsToolbar>
+            <List>
+                {data.map(contact => (
                     <ListItem
                         button
-                        key={id}
+                        key={contact.id}
                         component={Link}
-                        to={`/contacts/${id}/show`}
+                        to={`/contacts/${contact.id}/show`}
                     >
                         <ListItemIcon>
                             <Checkbox
                                 edge="start"
-                                checked={selectedIds.includes(id)}
+                                checked={selectedIds.includes(contact.id)}
                                 tabIndex={-1}
                                 disableRipple
                                 onClick={e => {
                                     e.stopPropagation();
-                                    onToggleItem(id);
+                                    onToggleItem(contact.id);
                                 }}
                             />
                         </ListItemIcon>
@@ -111,9 +115,9 @@ const ContactListContent = () => {
                             </Typography>
                         </ListItemSecondaryAction>
                     </ListItem>
-                );
-            })}
-        </List>
+                ))}
+            </List>
+        </>
     );
 };
 

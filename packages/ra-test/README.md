@@ -80,7 +80,7 @@ test('should render a book', async () => {
     };
 
     const Book = ({ id }) => {
-        const { data, isLoading } = useGetOne('books', id);
+        const { data, isLoading } = useGetOne('books', { id });
         return isLoading ? <span>loading</span> : <span>{data.title}</span>;
     };
 

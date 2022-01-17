@@ -11,7 +11,7 @@ The `<Show>` component handles the logic of the Show page:
 - it computes the default page title
 - it creates a `ShowContext` and a `RecordContext`,
 - it renders the page layout with the correct title and actions
-- it renders its child component (a show layout component like `<SimpleShowLayout>`)
+- it renders its child component (a show layout component like `<SimpleShowLayout>`) in a Material-ui `<Card>`
 
 ## Usage
 
@@ -60,8 +60,8 @@ That's enough to display the post show view:
 * [`children`](#layout): the components that render the record fields
 * [`component`](#root-component): overrides the root component
 * [`emptyWhileLoading`](#loading-state)
-* [`queryOptions`](#query-client-options): options to pass to the react-query client
-* [`sx`](#css-api): Override the styles
+* [`queryOptions`](#client-query-options): options to pass to the react-query client
+* [`sx`](#sx-css-api): Override the styles
 * [`title`](#page-title)
 
 ## Layout
@@ -92,7 +92,7 @@ export const PostShow = () => (
 );
 ```
 
-You can also pass React elements as children, so as to build a custom layout. Check [Building a custom Show Layout](./ShowTutorial.md#building-a-custom-layout) for more details.
+You can also pass a React element as child, to build a custom layout. Check [Building a custom Show Layout](./ShowTutorial.md#building-a-custom-layout) for more details.
 
 ## Page Title
 
@@ -183,7 +183,7 @@ const PostShow = props => {
 }
 ```
 
-The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
+The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
 
 The default `onError` function is:
 
@@ -249,29 +249,57 @@ const PostShow = () => (
 
 ## Root Component
 
-By default, the Show view renders the main content area inside a `<div>`. The actual layout of the record fields depends on the Show Layout component you're using (`<SimpleShowLayout>`, `<TabbedShowLayout>`, or a custom layout component).
+By default, the Show view renders the main content area inside a material-ui `<Card>`. The actual layout of the record fields depends on the Show Layout component you're using (`<SimpleShowLayout>`, `<TabbedShowLayout>`, or a custom layout component).
 
 You can override the main area container by passing a `component` prop:
 
+{% raw %}
 ```jsx
-import { Card } from '@mui/material';
+import { Box } from '@mui/material';
 
-// use a Card as root component
+const ShowWrapper = ({ children }) => (
+    <Box sx={{ margin: 2, border: 'solid 1px grey' }}>
+        {children}
+    </Box>
+);
+
+// use a ShowWrapper as root component
 const PostShow = props => (
-    <Show component={Card} {...props}>
+    <Show component={ShowWrapper} {...props}>
         ...
     </Show>
 );
 ```
+{% endraw %}
 
-## CSS API
+## `sx`: CSS API
 
 The `<Show>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
-| Rule name   | Description                                                                                |
-| ----------- | ------------------------------------------------------------------------------------------ |
-| `root`      | Alternative to using `className`. Applied to the root element                              |
-| `main`      | Applied to the main container                                                              |
+| Rule name        | Description                                                   |
+|------------------| ------------------------------------------------------------- |
+| `&.RaShow-root`  | Alternative to using `className`. Applied to the root element |
+| `& .RaShow-main` | Applied to the main container                                 |
+| `& .RaShow-card` | Applied to the `<Card>` element                               |
+
+Here's an example of how to override the default styles:
+
+{% raw %}
+```jsx
+const PostShow = () => (
+    <Show 
+        sx={{
+            backgroundColor: 'yellow',
+            '& .RaShow-main': {
+                backgroundColor: 'red',
+            },
+        }}
+    >
+            ...
+    </Show>
+);
+```
+{% endraw %}
 
 To override the style of all instances of `<Show>` using the [material-ui style overrides](https://mui.com/customization/theme-components/), use the `RaShow` key.
 
@@ -297,10 +325,10 @@ const PostShowActions = () => {
     );
 }
 
-export const PostShow = ({ permissions, ...props }) => {
+export const PostShow = () => {
     const permissions = usePermissions();
     return (
-        <Show actions={<PostShowActions />} {...props}>
+        <Show actions={<PostShowActions />}>
             <SimpleShowLayout>
                 <TextField source="title" />
                 <RichTextField source="body" />

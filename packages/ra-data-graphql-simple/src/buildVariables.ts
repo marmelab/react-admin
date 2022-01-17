@@ -291,34 +291,37 @@ const buildGetListVariables = (introspectionResults: IntrospectionResult) => (
 const buildCreateUpdateVariables = (
     resource: IntrospectedResource,
     raFetchMethod,
-    params: any,
+    { id, data }: any,
     queryType: IntrospectionField
 ) =>
-    Object.keys(params.data).reduce((acc, key) => {
-        if (Array.isArray(params.data[key])) {
-            const arg = queryType.args.find(a => a.name === `${key}Ids`);
+    Object.keys(data).reduce(
+        (acc, key) => {
+            if (Array.isArray(data[key])) {
+                const arg = queryType.args.find(a => a.name === `${key}Ids`);
 
-            if (arg) {
-                return {
-                    ...acc,
-                    [`${key}Ids`]: params.data[key].map(({ id }) => id),
-                };
+                if (arg) {
+                    return {
+                        ...acc,
+                        [`${key}Ids`]: data[key].map(({ id }) => id),
+                    };
+                }
             }
-        }
 
-        if (typeof params.data[key] === 'object') {
-            const arg = queryType.args.find(a => a.name === `${key}Id`);
+            if (typeof data[key] === 'object') {
+                const arg = queryType.args.find(a => a.name === `${key}Id`);
 
-            if (arg) {
-                return {
-                    ...acc,
-                    [`${key}Id`]: params.data[key].id,
-                };
+                if (arg) {
+                    return {
+                        ...acc,
+                        [`${key}Id`]: data[key].id,
+                    };
+                }
             }
-        }
 
-        return {
-            ...acc,
-            [key]: params.data[key],
-        };
-    }, {});
+            return {
+                ...acc,
+                [key]: data[key],
+            };
+        },
+        { id }
+    );

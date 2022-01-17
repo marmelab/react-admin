@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {
-    RecordContextProvider,
-    ResourceContext,
-    useRecordContext,
-    WithRecord,
-} from 'ra-core';
+import { RecordContextProvider, ResourceContext } from 'ra-core';
 import { TextField } from '../field/TextField';
 import { FieldWithLabel } from './FieldWithLabel';
 

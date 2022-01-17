@@ -7,9 +7,7 @@ import {
     DateField,
     useTranslate,
     useGetList,
-    Record,
-    RecordMap,
-    Identifier,
+    RaRecord,
     ReferenceField,
     useLocale,
 } from 'react-admin';
@@ -48,7 +46,7 @@ const AsideRoot = styled('div')(({ theme }) => ({
 }));
 
 interface AsideProps {
-    record?: Record;
+    record?: RaRecord;
     basePath?: string;
 }
 
@@ -64,34 +62,24 @@ Aside.propTypes = {
 };
 
 interface EventListProps {
-    record?: Record;
+    record?: RaRecord;
     basePath?: string;
 }
-
-const StyledStepper = styled(Stepper)({
-    '&': {
-        background: 'none',
-        border: 'none',
-        marginLeft: '0.3em',
-    },
-});
 
 const EventList = ({ record, basePath }: EventListProps) => {
     const translate = useTranslate();
     const locale = useLocale();
-    const { data: orders, ids: orderIds } = useGetList<OrderRecord>(
-        'commands',
-        { page: 1, perPage: 100 },
-        { field: 'date', order: 'DESC' },
-        { customer_id: record && record.id }
-    );
-    const { data: reviews, ids: reviewIds } = useGetList<ReviewRecord>(
-        'reviews',
-        { page: 1, perPage: 100 },
-        { field: 'date', order: 'DESC' },
-        { customer_id: record && record.id }
-    );
-    const events = mixOrdersAndReviews(orders, orderIds, reviews, reviewIds);
+    const { data: orders } = useGetList<OrderRecord>('commands', {
+        pagination: { page: 1, perPage: 100 },
+        sort: { field: 'date', order: 'DESC' },
+        filter: { customer_id: record && record.id },
+    });
+    const { data: reviews } = useGetList<ReviewRecord>('reviews', {
+        pagination: { page: 1, perPage: 100 },
+        sort: { field: 'date', order: 'DESC' },
+        filter: { customer_id: record && record.id },
+    });
+    const events = mixOrdersAndReviews(orders, reviews);
 
     return (
         <>
@@ -124,7 +112,7 @@ const EventList = ({ record, basePath }: EventListProps) => {
                                         />
                                     </Box>
                                 </Box>
-                                {orderIds && orderIds.length > 0 && (
+                                {orders && (
                                     <Box display="flex">
                                         <Box mr="1em">
                                             <order.icon
@@ -138,7 +126,7 @@ const EventList = ({ record, basePath }: EventListProps) => {
                                                     'resources.commands.amount',
                                                     {
                                                         smart_count:
-                                                            orderIds.length,
+                                                            orders.length,
                                                     }
                                                 )}
                                             </Typography>
@@ -166,7 +154,7 @@ const EventList = ({ record, basePath }: EventListProps) => {
                                         />
                                     </Box>
                                 </Box>
-                                {reviewIds && reviewIds.length > 0 && (
+                                {reviews && (
                                     <Box display="flex">
                                         <Box mr="1em">
                                             <review.icon
@@ -180,7 +168,7 @@ const EventList = ({ record, basePath }: EventListProps) => {
                                                     'resources.reviews.amount',
                                                     {
                                                         smart_count:
-                                                            reviewIds.length,
+                                                            reviews.length,
                                                     }
                                                 )}
                                             </Typography>
@@ -192,7 +180,12 @@ const EventList = ({ record, basePath }: EventListProps) => {
                     </CardContent>
                 </Card>
             </Box>
-            <StyledStepper orientation="vertical">
+            <Stepper
+                orientation="vertical"
+                sx={{
+                    ml: 3.5,
+                }}
+            >
                 {events.map(event => (
                     <Step
                         key={`${event.type}-${event.data.id}`}
@@ -241,7 +234,7 @@ const EventList = ({ record, basePath }: EventListProps) => {
                         </StepContent>
                     </Step>
                 ))}
-            </StyledStepper>
+            </Stepper>
         </>
     );
 };
@@ -253,27 +246,23 @@ interface AsideEvent {
 }
 
 const mixOrdersAndReviews = (
-    orders?: RecordMap<OrderRecord>,
-    orderIds?: Identifier[],
-    reviews?: RecordMap<ReviewRecord>,
-    reviewIds?: Identifier[]
+    orders?: OrderRecord[],
+    reviews?: ReviewRecord[]
 ): AsideEvent[] => {
-    const eventsFromOrders =
-        orderIds && orders
-            ? orderIds.map<AsideEvent>(id => ({
-                  type: 'order',
-                  date: orders[id].date,
-                  data: orders[id],
-              }))
-            : [];
-    const eventsFromReviews =
-        reviewIds && reviews
-            ? reviewIds.map<AsideEvent>(id => ({
-                  type: 'review',
-                  date: reviews[id].date,
-                  data: reviews[id],
-              }))
-            : [];
+    const eventsFromOrders = orders
+        ? orders.map<AsideEvent>(order => ({
+              type: 'order',
+              date: order.date,
+              data: order,
+          }))
+        : [];
+    const eventsFromReviews = reviews
+        ? reviews.map<AsideEvent>(review => ({
+              type: 'review',
+              date: review.date,
+              data: review,
+          }))
+        : [];
     const events = eventsFromOrders.concat(eventsFromReviews);
     events.sort(
         (e1, e2) => new Date(e2.date).getTime() - new Date(e1.date).getTime()
@@ -332,8 +321,8 @@ interface ReviewProps {
 const ReviewRoot = styled('div')({
     '& .clamp': {
         display: '-webkit-box',
-        '-webkit-line-clamp': 3,
-        '-webkit-box-orient': 'vertical',
+        WebkitLineClamp: 3,
+        WebkitBoxOrient: 'vertical',
         overflow: 'hidden',
     },
 });

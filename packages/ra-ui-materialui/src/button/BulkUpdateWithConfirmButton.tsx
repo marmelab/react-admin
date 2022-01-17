@@ -5,12 +5,12 @@ import ActionUpdate from '@mui/icons-material/Update';
 import inflection from 'inflection';
 import { alpha, styled } from '@mui/material/styles';
 import {
+    useListContext,
     useTranslate,
     useUpdateMany,
     useRefresh,
     useNotify,
     useUnselectAll,
-    CRUD_UPDATE_MANY,
     useResourceContext,
     MutationMode,
 } from 'ra-core';
@@ -28,6 +28,7 @@ export const BulkUpdateWithConfirmButton = (
     const unselectAll = useUnselectAll();
     const resource = useResourceContext(props);
     const [isOpen, setOpen] = useState(false);
+    const { selectedIds } = useListContext(props);
 
     const {
         basePath,
@@ -38,27 +39,30 @@ export const BulkUpdateWithConfirmButton = (
         label = 'ra.action.update',
         mutationMode = 'pessimistic',
         onClick,
-        selectedIds,
         onSuccess = () => {
             refresh();
-            notify('ra.notification.updated', 'info', {
-                smart_count: selectedIds.length,
+            notify('ra.notification.updated', {
+                type: 'info',
+                messageArgs: { smart_count: selectedIds.length },
             });
             unselectAll(resource);
+            setOpen(false);
         },
-        onFailure = error => {
+        onError = (error: Error | string) => {
             notify(
                 typeof error === 'string'
                     ? error
                     : error.message || 'ra.notification.http_error',
-                'warning',
                 {
-                    _:
-                        typeof error === 'string'
-                            ? error
-                            : error && error.message
-                            ? error.message
-                            : undefined,
+                    type: 'warning',
+                    messageArgs: {
+                        _:
+                            typeof error === 'string'
+                                ? error
+                                : error && error.message
+                                ? error.message
+                                : undefined,
+                    },
                 }
             );
             setOpen(false);
@@ -66,14 +70,12 @@ export const BulkUpdateWithConfirmButton = (
         ...rest
     } = props;
 
-    const [updateMany, { loading }] = useUpdateMany(
+    const [updateMany, { isLoading }] = useUpdateMany(
         resource,
-        selectedIds,
-        data,
+        { ids: selectedIds, data },
         {
-            action: CRUD_UPDATE_MANY,
             onSuccess,
-            onFailure,
+            onError,
             mutationMode,
         }
     );
@@ -107,7 +109,7 @@ export const BulkUpdateWithConfirmButton = (
             </StyledButton>
             <Confirm
                 isOpen={isOpen}
-                loading={loading}
+                loading={isLoading}
                 title={confirmTitle}
                 content={confirmContent}
                 translateOptions={{
@@ -138,7 +140,7 @@ const sanitizeRestProps = ({
     filterValues,
     label,
     onSuccess,
-    onFailure,
+    onError,
     ...rest
 }: Omit<
     BulkUpdateWithConfirmButtonProps,
@@ -153,7 +155,7 @@ export interface BulkUpdateWithConfirmButtonProps
     icon?: ReactElement;
     data: any;
     onSuccess?: () => void;
-    onFailure?: (error: any) => void;
+    onError?: (error: any) => void;
     mutationMode?: MutationMode;
 }
 
