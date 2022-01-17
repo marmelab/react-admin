@@ -14,34 +14,12 @@ const renderWithTable = element =>
     );
 
 describe('<DatagridCell />', () => {
-    const Field = ({ basePath }) => <div>{basePath}</div>;
-    Field.propTypes = {
-        type: PropTypes.string,
-        basePath: PropTypes.string,
-    };
-
-    Field.defaultProps = {
-        type: 'foo',
-    };
+    const Field = () => <div>cell</div>;
 
     it('should render as a mui <TableCell /> component', () => {
         const { getByRole } = renderWithTable(
             <DatagridCell field={<Field />} />
         );
         expect(getByRole('cell').className).toContain('MuiTableCell-root');
-    });
-
-    it('should pass the Datagrid basePath by default', () => {
-        const { queryByText } = renderWithTable(
-            <DatagridCell basePath="default" field={<Field />} />
-        );
-        expect(queryByText('default')).not.toBeNull();
-    });
-
-    it('should allow to overwrite the `basePath` field', () => {
-        const { queryByText } = renderWithTable(
-            <DatagridCell basePath="default" field={<Field basePath="new" />} />
-        );
-        expect(queryByText('new')).not.toBeNull();
     });
 });

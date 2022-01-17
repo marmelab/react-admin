@@ -39,7 +39,6 @@ const computeNbColumns = (expand, children, hasBulkActions) =>
 
 const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
     const {
-        basePath,
         children,
         className,
         expand,
@@ -104,7 +103,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
             event.persist();
             const type =
                 typeof rowClick === 'function'
-                    ? await rowClick(id, basePath || `/${resource}`, record)
+                    ? await rowClick(id, resource, record)
                     : rowClick;
             if (type === false) {
                 return;
@@ -126,7 +125,6 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
         [
             rowClick,
             id,
-            basePath,
             resource,
             record,
             navigate,
@@ -193,7 +191,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                                 DatagridClasses.rowCell
                             )}
                             record={record}
-                            {...{ field, basePath, resource }}
+                            {...{ field, resource }}
                         />
                     ) : null
                 )}
@@ -209,13 +207,11 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                             ? cloneElement(expand, {
                                   // @ts-ignore
                                   record,
-                                  basePath,
                                   resource,
                                   id: String(id),
                               })
                             : createElement(expand, {
                                   record,
-                                  basePath,
                                   resource,
                                   id: String(id),
                               })}
@@ -227,7 +223,6 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
 });
 
 DatagridRow.propTypes = {
-    basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
     // @ts-ignore
@@ -255,12 +250,10 @@ DatagridRow.defaultProps = {
 
 export interface DatagridRowProps
     extends Omit<TableRowProps, 'id' | 'classes'> {
-    basePath?: string;
     className?: string;
     expand?:
         | ReactElement
         | FC<{
-              basePath: string;
               id: Identifier;
               record: RaRecord;
               resource: string;
@@ -282,7 +275,7 @@ export interface DatagridRowProps
 
 export type RowClickFunction = (
     id: Identifier,
-    basePath: string,
+    resource: string,
     record: RaRecord
 ) => string | Promise<string>;
 

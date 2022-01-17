@@ -282,7 +282,6 @@ const createOrCloneElement = (element, props, children) =>
         : createElement(element, props, children);
 
 Datagrid.propTypes = {
-    basePath: PropTypes.string,
     // @ts-ignore
     body: PropTypes.oneOfType([PropTypes.element, PropTypes.elementType]),
     // @ts-ignore-line
@@ -321,7 +320,6 @@ export interface DatagridProps<RecordType extends RaRecord = any>
     expand?:
         | ReactElement
         | FC<{
-              basePath: string;
               id: Identifier;
               record: RecordType;
               resource: string;
@@ -337,7 +335,6 @@ export interface DatagridProps<RecordType extends RaRecord = any>
     rowStyle?: (record: RecordType, index: number) => any;
     size?: 'medium' | 'small';
     // can be injected when using the component without context
-    basePath?: string;
     sort?: SortPayload;
     data?: RecordType[];
     isLoading?: boolean;

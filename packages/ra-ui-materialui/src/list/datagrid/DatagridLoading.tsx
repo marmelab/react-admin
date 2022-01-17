@@ -125,7 +125,6 @@ export interface DatagridLoadingProps {
     expand?:
         | ReactElement
         | FC<{
-              basePath: string;
               id: Identifier;
               record: RaRecord;
               resource: string;

@@ -31,7 +31,6 @@ describe('<Datagrid />', () => {
 
     const contextValue = {
         resource: 'posts',
-        basePath: '',
         data: defaultData,
         isFetching: false,
         isLoading: false,

@@ -22,7 +22,6 @@ const render = element =>
 describe('<DatagridRow />', () => {
     const defaultProps = {
         id: 15,
-        basePath: '/blob',
         record: { id: 15, title: 'hello' },
         resource: 'posts',
     };
@@ -76,7 +75,7 @@ describe('<DatagridRow />', () => {
             );
             fireEvent.click(getByText('hello'));
             expect(history.location.pathname).toEqual(
-                linkToRecord(defaultProps.basePath, defaultProps.id)
+                linkToRecord(defaultProps.resource, defaultProps.id)
             );
         });
 
@@ -88,7 +87,7 @@ describe('<DatagridRow />', () => {
             );
             fireEvent.click(getByText('hello'));
             expect(history.location.pathname).toEqual(
-                linkToRecord(defaultProps.basePath, defaultProps.id, 'show')
+                linkToRecord(defaultProps.resource, defaultProps.id, 'show')
             );
         });
 
