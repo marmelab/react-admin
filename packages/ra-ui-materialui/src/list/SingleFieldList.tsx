@@ -17,6 +17,7 @@ import {
     RaRecord,
     RecordContextProvider,
     ComponentPropType,
+    useCreateInternalLink,
 } from 'ra-core';
 
 import { Link } from '../Link';
@@ -63,6 +64,7 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
     } = props;
     const { data, isLoading } = useListContext(props);
     const resource = useResourceContext(props);
+    const createInternalLink = useCreateInternalLink();
 
     const Component = component;
 
@@ -78,7 +80,11 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
             {data.map(record => {
                 const resourceLinkPath = !linkType
                     ? false
-                    : linkToRecord(`/${resource}`, record.id, linkType);
+                    : createInternalLink({
+                          resource,
+                          type: linkType,
+                          id: record.id,
+                      });
 
                 if (resourceLinkPath) {
                     return (

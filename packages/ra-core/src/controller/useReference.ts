@@ -1,8 +1,8 @@
-import { RaRecord } from '../types';
+import { RaRecord, Identifier } from '../types';
 import { UseGetManyHookValue, useGetManyAggregate } from '../dataProvider';
 
 interface UseReferenceProps {
-    id: string;
+    id: Identifier;
     reference: string;
 }
 

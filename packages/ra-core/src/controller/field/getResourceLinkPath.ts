@@ -8,7 +8,7 @@ export type LinkToFunctionType = (
     reference: string
 ) => string;
 
-export type LinkToType = string | boolean | LinkToFunctionType;
+export type LinkToType = string | false | LinkToFunctionType;
 
 interface Option {
     source: string;
@@ -49,6 +49,8 @@ interface Option {
  * @param {string} option.source The key of the linked resource identifier
  *
  * @returns {string | false} The link to the reference record
+ *
+ * @deprecated
  */
 export const getResourceLinkPath = ({
     resource,

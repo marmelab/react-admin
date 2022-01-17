@@ -10,10 +10,32 @@ export const Resource = (props: ResourceProps) => {
     return (
         <ResourceContextProvider value={name}>
             <Routes>
-                {Create && <Route path="create/*" element={<Create />} />}
-                {Show && <Route path=":id/show/*" element={<Show />} />}
-                {Edit && <Route path=":id/*" element={<Edit />} />}
-                {List && <Route path="/*" element={<List />} />}
+                {Create && (
+                    <Route
+                        path="create/*"
+                        element={
+                            React.isValidElement(Create) ? Create : <Create />
+                        }
+                    />
+                )}
+                {Show && (
+                    <Route
+                        path=":id/show/*"
+                        element={React.isValidElement(Show) ? Show : <Show />}
+                    />
+                )}
+                {Edit && (
+                    <Route
+                        path=":id/*"
+                        element={React.isValidElement(Edit) ? Edit : <Edit />}
+                    />
+                )}
+                {List && (
+                    <Route
+                        path="/*"
+                        element={React.isValidElement(List) ? List : <List />}
+                    />
+                )}
             </Routes>
         </ResourceContextProvider>
     );

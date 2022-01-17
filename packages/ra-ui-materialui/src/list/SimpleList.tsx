@@ -23,6 +23,7 @@ import {
     sanitizeListRestProps,
     useListContext,
     useResourceContext,
+    useCreateInternalLink,
 } from 'ra-core';
 
 import { SimpleListLoading } from './SimpleListLoading';
@@ -242,33 +243,11 @@ const LinkOrNot = (
         record,
         ...rest
     } = props;
-    const link =
+    const createInternalLink = useCreateInternalLink();
+    const type =
         typeof linkType === 'function' ? linkType(record, id) : linkType;
 
-    return link === 'edit' || link === true ? (
-        // @ts-ignore
-        <ListItemButton
-            component={Link}
-            to={linkToRecord(`/${resource}`, id)}
-            {...rest}
-        >
-            {children}
-        </ListItemButton>
-    ) : link === 'show' ? (
-        // @ts-ignore
-        <ListItemButton
-            component={Link}
-            to={`${linkToRecord(`/${resource}`, id)}/show`}
-            {...rest}
-        >
-            {children}
-        </ListItemButton>
-    ) : link !== false ? (
-        // @ts-ignore
-        <ListItemButton component={Link} to={link} {...rest}>
-            {children}
-        </ListItemButton>
-    ) : (
+    return type === false ? (
         <ListItemText
             // @ts-ignore
             component="div"
@@ -276,13 +255,22 @@ const LinkOrNot = (
         >
             {children}
         </ListItemText>
+    ) : (
+        // @ts-ignore
+        <ListItemButton
+            component={Link}
+            to={createInternalLink({ resource, id, type })}
+            {...rest}
+        >
+            {children}
+        </ListItemButton>
     );
 };
 
 export type FunctionLinkType = (record: RaRecord, id: Identifier) => string;
 
 export interface LinkOrNotProps {
-    linkType?: string | FunctionLinkType | boolean;
+    linkType?: string | FunctionLinkType | false;
     resource: string;
     id: Identifier;
     record: RaRecord;

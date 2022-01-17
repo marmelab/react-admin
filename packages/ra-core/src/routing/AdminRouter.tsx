@@ -15,7 +15,7 @@ export const AdminRouter = ({
     children,
 }: AdminRouterProps) => {
     const isInRouter = useInRouterContext();
-    const Router = isInRouter ? HistoryRouter : DummyRouter;
+    const Router = isInRouter ? DummyRouter : HistoryRouter;
     return (
         <BasenameContextProvider basename={isInRouter ? basename : ''}>
             <Router basename={basename} history={history}>

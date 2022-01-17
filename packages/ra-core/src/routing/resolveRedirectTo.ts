@@ -1,5 +1,8 @@
 import { To } from 'react-router-dom';
 
+/**
+ * @deprecated use useCreateInternalLink instead
+ */
 export const resolveRedirectTo = (
     redirectTo,
     resource: string,

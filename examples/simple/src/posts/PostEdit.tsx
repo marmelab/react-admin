@@ -82,11 +82,7 @@ const CreateCategory = ({
 
 const EditActions = ({ data, hasShow, resource }: EditActionsProps) => (
     <TopToolbar>
-        <CloneButton
-            className="button-clone"
-            basePath={`/${resource}`}
-            record={data}
-        />
+        <CloneButton className="button-clone" record={data} />
         {hasShow && <ShowButton basePath={`/${resource}`} record={data} />}
         {/* FIXME: added because react-router HashHistory cannot block navigation induced by address bar changes */}
         <CreateButton basePath={`/${resource}`} />

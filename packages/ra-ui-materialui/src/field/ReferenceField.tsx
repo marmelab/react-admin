@@ -8,12 +8,13 @@ import ErrorIcon from '@mui/icons-material/Error';
 import {
     useReference,
     UseReferenceResult,
-    getResourceLinkPath,
     LinkToType,
     ResourceContextProvider,
     RecordContextProvider,
     RaRecord,
     useRecordContext,
+    useCreateInternalLink,
+    Identifier,
 } from 'ra-core';
 
 import { LinearProgress } from '../layout';
@@ -67,15 +68,16 @@ import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
 export const ReferenceField: FC<ReferenceFieldProps> = props => {
     const { source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
+    const id = get(record, source);
 
-    return get(record, source) == null ? (
+    return id == null ? (
         emptyText ? (
             <Typography component="span" variant="body2">
                 {emptyText}
             </Typography>
         ) : null
     ) : (
-        <NonEmptyReferenceField {...rest} record={record} source={source} />
+        <NonEmptyReferenceField {...rest} record={record} id={id} />
     );
 };
 
@@ -94,11 +96,7 @@ ReferenceField.propTypes = {
     sortByOrder: fieldPropTypes.sortByOrder,
     source: PropTypes.string.isRequired,
     translateChoice: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
-    linkType: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
+    // @ts-ignore
     link: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool,
@@ -119,10 +117,6 @@ export interface ReferenceFieldProps<RecordType extends RaRecord = any>
     resource?: string;
     source: string;
     translateChoice?: Function | boolean;
-    /**
-     * @deprecated use link instead
-     */
-    linkType?: LinkToType;
     link?: LinkToType;
 }
 
@@ -130,29 +124,33 @@ export interface ReferenceFieldProps<RecordType extends RaRecord = any>
  * This intermediate component is made necessary by the useReference hook,
  * which cannot be called conditionally when get(record, source) is empty.
  */
-export const NonEmptyReferenceField: FC<Omit<
-    ReferenceFieldProps,
-    'emptyText'
->> = ({ children, record, source, ...props }) => {
+export const NonEmptyReferenceField: FC<
+    Omit<ReferenceFieldProps, 'emptyText' | 'source'> & { id: Identifier }
+> = ({ children, id, record, reference, link, ...props }) => {
     if (React.Children.count(children) !== 1) {
         throw new Error('<ReferenceField> only accepts a single child');
     }
-    const { basePath, resource, reference } = props;
-    const resourceLinkPath = getResourceLinkPath({
-        ...props,
-        resource,
-        record,
-        source,
-        basePath,
-    });
+    const createInternalLink = useCreateInternalLink();
+    const resourceLinkPath =
+        link === false
+            ? false
+            : createInternalLink({
+                  resource: reference,
+                  id,
+                  type:
+                      typeof link === 'function'
+                          ? link(record, reference)
+                          : link,
+              });
 
     return (
         <ResourceContextProvider value={reference}>
             <PureReferenceFieldView
+                reference={reference}
                 {...props}
                 {...useReference({
                     reference,
-                    id: get(record, source),
+                    id,
                 })}
                 resourceLinkPath={resourceLinkPath}
             >
@@ -241,7 +239,7 @@ export interface ReferenceFieldViewProps
     reference: string;
     resource?: string;
     translateChoice?: Function | boolean;
-    resourceLinkPath?: ReturnType<typeof getResourceLinkPath>;
+    resourceLinkPath?: string | false;
     children?: ReactElement;
 }
 

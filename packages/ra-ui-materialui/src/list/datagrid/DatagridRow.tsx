@@ -20,6 +20,7 @@ import {
     useExpanded,
     useResourceContext,
     useTranslate,
+    useCreateInternalLink,
 } from 'ra-core';
 import { shallowEqual } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -63,6 +64,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
             context.isRowExpandable(record)) &&
         expand;
     const resource = useResourceContext(props);
+    const createInternalLink = useCreateInternalLink();
     const [expanded, toggleExpanded] = useExpanded(resource, id);
     const [nbColumns, setNbColumns] = useState(() =>
         computeNbColumns(expandable, children, hasBulkActions)
@@ -100,42 +102,38 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
     );
     const handleClick = useCallback(
         async event => {
-            if (!rowClick) return;
             event.persist();
-
-            const effect =
+            const type =
                 typeof rowClick === 'function'
                     ? await rowClick(id, basePath || `/${resource}`, record)
                     : rowClick;
-            switch (effect) {
-                case 'edit':
-                    navigate(linkToRecord(basePath || `/${resource}`, id));
-                    return;
-                case 'show':
-                    navigate(
-                        linkToRecord(basePath || `/${resource}`, id, 'show')
-                    );
-                    return;
-                case 'expand':
-                    handleToggleExpand(event);
-                    return;
-                case 'toggleSelection':
-                    handleToggleSelection(event);
-                    return;
-                default:
-                    if (effect) navigate(effect);
-                    return;
+            if (type === false) {
+                return;
             }
+            if (['edit', 'show'].includes(type)) {
+                navigate(createInternalLink({ resource, id, type }));
+                return;
+            }
+            if (type === 'expand') {
+                handleToggleExpand(event);
+                return;
+            }
+            if (type === 'toggleSelection') {
+                handleToggleSelection(event);
+                return;
+            }
+            navigate(type);
         },
         [
+            rowClick,
+            id,
             basePath,
+            resource,
+            record,
             navigate,
+            createInternalLink,
             handleToggleExpand,
             handleToggleSelection,
-            id,
-            record,
-            resource,
-            rowClick,
         ]
     );
 
@@ -277,7 +275,7 @@ export interface DatagridRowProps
     ) => void;
     record?: RaRecord;
     resource?: string;
-    rowClick?: RowClickFunction | string;
+    rowClick?: RowClickFunction | string | false;
     selected?: boolean;
     style?: any;
     selectable?: boolean;

@@ -136,10 +136,11 @@ const sanitizeRestProps = ({
     classes,
     filterValues,
     label,
+    selectedIds,
     ...rest
 }: Omit<
     BulkDeleteWithConfirmButtonProps,
-    'resource' | 'selectedIds' | 'icon' | 'mutationMode'
+    'resource' | 'icon' | 'mutationMode'
 >) => rest;
 
 export interface BulkDeleteWithConfirmButtonProps
