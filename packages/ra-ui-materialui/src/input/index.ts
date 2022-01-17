@@ -3,6 +3,7 @@ export * from './AutocompleteInput';
 export * from './AutocompleteArrayInput';
 export * from './BooleanInput';
 export * from './CheckboxGroupInput';
+export * from './CommonInputProps';
 export * from './DateInput';
 export * from './DateTimeInput';
 export * from './FileInput';
