@@ -58,6 +58,7 @@ export const DealsPipeline = () => {
             </Box>
             <Card>
                 <SimpleList<Deal>
+                    resource="deals"
                     linkType="show"
                     data={getOrderedDeals(data)}
                     total={total}

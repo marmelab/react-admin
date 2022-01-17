@@ -20,7 +20,6 @@ const Layout = (props: LayoutProps) => {
                     </ErrorBoundary>
                 </main>
             </Container>
-            <Notification />
         </>
     );
 };

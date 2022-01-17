@@ -77,7 +77,7 @@ export const CompanyCard = ({ record }: { record: Company }) => {
         >
             <Paper className={classes.paper} elevation={elevation}>
                 <div className={classes.identity}>
-                    <CompanyAvatar />
+                    <CompanyAvatar record={record} />
                     <div className={classes.name}>
                         <Typography variant="subtitle2">
                             {record.name}
