@@ -216,7 +216,7 @@ export interface SimpleListProps<RecordType extends RaRecord = any>
     leftAvatar?: FunctionToElement<RecordType>;
     leftIcon?: FunctionToElement<RecordType>;
     primaryText?: FunctionToElement<RecordType> | ReactElement;
-    linkType?: string | FunctionLinkType | boolean;
+    linkType?: string | FunctionLinkType | false;
     rightAvatar?: FunctionToElement<RecordType>;
     rightIcon?: FunctionToElement<RecordType>;
     secondaryText?: FunctionToElement<RecordType> | ReactElement;
