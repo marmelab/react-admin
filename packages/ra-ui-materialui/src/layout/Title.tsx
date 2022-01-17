@@ -28,13 +28,15 @@ const Title: FC<TitleProps> = ({
 
     warning(!defaultTitle && !title, 'Missing title prop in <Title> element');
 
+    const titleSeparator = container.childNodes.length ? ' ' : '';
+
     const titleElement = !title ? (
         <span className={className} {...rest}>
-            {defaultTitle}
+            {titleSeparator + defaultTitle}
         </span>
     ) : typeof title === 'string' ? (
         <span className={className} {...rest}>
-            {translate(title, { _: title })}
+            {titleSeparator + translate(title, { _: title })}
         </span>
     ) : (
         cloneElement(title, { className, record, ...rest })
