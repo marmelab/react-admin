@@ -10,8 +10,9 @@ import { ThemeOptions } from '@mui/material';
 import { ThemeContext, ThemeSetter } from './ThemeContext';
 
 /**
- * This components sets up a React context that provides a function to set the
+ * This component sets up a React context that provides a function to set the
  * Material-UI theme. It also wraps the children in a Material-UI ThemeProvider.
+ *
  * @param props
  * @param props.children The children of the component.
  * @param props.theme The initial theme.

@@ -1652,7 +1652,7 @@ import { useForm } from 'react-final-form';
 
 The `<SaveButton>` used to accept the `onSuccess`, `onFailure` and `transform` props to handle multiple submit buttons.
 
-Just like the `Edit` and `Create` components, it now accepts a `mutationOptions` prop which may contain an `onSuccess` and/or `onError` function. It still accept a `transform` prop though.
+Just like the `Edit` and `Create` components, it now accepts a `mutationOptions` prop which may contain an `onSuccess` and/or `onError` function. It still accepts a `transform` prop though.
 
 ```diff
 const Toolbar = (props) => {
@@ -1668,7 +1668,7 @@ const Toolbar = (props) => {
 }
 ```
 
-We removed the `handleSubmit` and `handleSubmitWithRedirect` props completely. Instead, when provided any of the side effects props, the `<SaveButton>` will render a simple button and will call the `save` function with them. It also take care of preventing the default form submit.
+We removed the `handleSubmit` and `handleSubmitWithRedirect` props completely. Instead, when provided any of the side effects props, the `<SaveButton>` will render a simple button and will call the `save` function with them. It also takes care of preventing the default form submit.
 
 If you relied on `handleSubmit` or `handleSubmitWithRedirect`, you can now use the `SaveButton` and override any of the side effect props: `onSuccess`, `onFailure` or `transform`.
 

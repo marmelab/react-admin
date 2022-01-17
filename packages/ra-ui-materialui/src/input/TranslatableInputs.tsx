@@ -57,10 +57,10 @@ import { TranslatableInputsTabContent } from './TranslatableInputsTabContent';
  *     );
  * }
  *
- * * @param props The component props
- * * @param {string} props.defaultLocale The locale selected by default. Default to 'en'.
- * * @param {string[]} props.locales An array of the possible locales. For example: `['en', 'fr'].
- * * @param {ReactElement} props.selector The element responsible for selecting a locale. Defaults to Material UI tabs.
+ * @param props The component props
+ * @param {string} props.defaultLocale The locale selected by default. Default to 'en'.
+ * @param {string[]} props.locales An array of the possible locales. For example: `['en', 'fr'].
+ * @param {ReactElement} props.selector The element responsible for selecting a locale. Defaults to Material UI tabs.
  */
 export const TranslatableInputs = (
     props: TranslatableInputsProps
