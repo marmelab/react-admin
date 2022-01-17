@@ -8,8 +8,9 @@ import FormControl, { FormControlProps } from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import FormHelperText from '@mui/material/FormHelperText';
 import { CheckboxProps } from '@mui/material/Checkbox';
-import { FieldTitle, useInput, ChoicesInputProps, warning } from 'ra-core';
+import { FieldTitle, useInput, ChoicesProps, warning } from 'ra-core';
 
+import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { CheckboxGroupInputItem } from './CheckboxGroupInputItem';
 import { InputHelperText } from './InputHelperText';
@@ -87,15 +88,14 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         format,
         helperText,
         label,
-        loaded,
-        loading,
+        isLoading,
+        isFetching,
         margin = 'dense',
         onBlur,
         onChange,
         onFocus,
         optionText,
         optionValue,
-        options,
         parse,
         resource,
         row,
@@ -117,19 +117,19 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
     );
 
     const {
+        field: { onChange: formOnChange, onBlur: formOnBlur, value },
+        fieldState: { error, invalid, isTouched },
+        formState: { isSubmitted },
         id,
-        input: { onChange: finalFormOnChange, onBlur: finalFormOnBlur, value },
         isRequired,
-        meta: { error, submitError, touched },
     } = useInput({
         format,
-        onBlur,
-        onChange,
-        onFocus,
         parse,
         resource,
         source,
         validate,
+        onChange,
+        onBlur,
         ...rest,
     });
 
@@ -144,16 +144,16 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                 newValue = event.target.value;
             }
             if (isChecked) {
-                finalFormOnChange([...(value || []), ...[newValue]]);
+                formOnChange([...(value || []), ...[newValue]]);
             } else {
-                finalFormOnChange(value.filter(v => v != newValue)); // eslint-disable-line eqeqeq
+                formOnChange(value.filter(v => v != newValue)); // eslint-disable-line eqeqeq
             }
-            finalFormOnBlur(); // HACK: See https://github.com/final-form/react-final-form/issues/365#issuecomment-515045503
+            formOnBlur(); // Ensure field is flagged as touched
         },
-        [finalFormOnChange, finalFormOnBlur, value]
+        [formOnChange, formOnBlur, value]
     );
 
-    if (loading) {
+    if (isLoading) {
         return (
             <Labeled
                 label={label}
@@ -172,7 +172,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         <StyledFormControl
             component="fieldset"
             margin={margin}
-            error={touched && !!(error || submitError)}
+            error={(isTouched || isSubmitted) && invalid}
             className={classnames(CheckboxGroupInputClasses.root, className)}
             {...sanitizeRestProps(rest)}
         >
@@ -194,18 +194,18 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                         choice={choice}
                         id={id}
                         onChange={handleCheck}
-                        options={options}
                         optionText={optionText}
                         optionValue={optionValue}
                         translateChoice={translateChoice}
                         value={value}
+                        {...sanitizeRestProps(rest)}
                     />
                 ))}
             </FormGroup>
             <FormHelperText>
                 <InputHelperText
-                    touched={touched}
-                    error={error || submitError}
+                    touched={isTouched || isSubmitted}
+                    error={error?.message}
                     helperText={helperText}
                 />
             </FormHelperText>
@@ -214,6 +214,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
 };
 
 const sanitizeRestProps = ({
+    fullWidth,
     refetch,
     setFilter,
     setPagination,
@@ -226,9 +227,7 @@ const sanitizeRestProps = ({
 CheckboxGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),
     className: PropTypes.string,
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     source: PropTypes.string,
-    options: PropTypes.object,
     optionText: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.func,
@@ -241,7 +240,6 @@ CheckboxGroupInput.propTypes = {
 };
 
 CheckboxGroupInput.defaultProps = {
-    options: {},
     optionText: 'name',
     optionValue: 'id',
     translateChoice: true,
@@ -249,9 +247,12 @@ CheckboxGroupInput.defaultProps = {
     row: true,
 };
 
-export interface CheckboxGroupInputProps
-    extends ChoicesInputProps<CheckboxProps>,
-        FormControlProps {}
+export type CheckboxGroupInputProps = CommonInputProps &
+    ChoicesProps &
+    CheckboxProps &
+    FormControlProps & {
+        row?: boolean;
+    };
 
 const PREFIX = 'RaCheckboxGroupInput';
 
