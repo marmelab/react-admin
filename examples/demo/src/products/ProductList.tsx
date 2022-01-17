@@ -64,7 +64,7 @@ const ListActions = ({ isSmall }: any) => (
     <TopToolbar>
         {isSmall && <FilterButton />}
         <SortButton fields={['reference', 'sales', 'stock']} />
-        <CreateButton basePath="/products" />
+        <CreateButton />
         <ExportButton />
     </TopToolbar>
 );

@@ -7,7 +7,7 @@ import { useBasename } from './useBasename';
 import { useCreateInternalLink } from './useCreateInternalLink';
 
 type RedirectToFunction = (
-    basePath?: string,
+    resource?: string,
     id?: Identifier,
     data?: Partial<RaRecord>,
     state?: object

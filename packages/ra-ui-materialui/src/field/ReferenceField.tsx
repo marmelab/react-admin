@@ -83,7 +83,6 @@ export const ReferenceField: FC<ReferenceFieldProps> = props => {
 
 ReferenceField.propTypes = {
     addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
     cellClassName: PropTypes.string,
@@ -216,7 +215,6 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
 };
 
 ReferenceFieldView.propTypes = {
-    basePath: PropTypes.string,
     children: PropTypes.element,
     className: PropTypes.string,
     isLoading: PropTypes.bool,

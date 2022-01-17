@@ -124,7 +124,6 @@ const Root = styled('div', { name: PREFIX })(({ theme }) => ({
 const sanitizeRestProps = ({
     record,
     resource,
-    basePath,
     initialValues,
     translate,
     ...rest

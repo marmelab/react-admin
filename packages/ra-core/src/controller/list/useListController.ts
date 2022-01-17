@@ -209,7 +209,6 @@ export interface ListControllerResult<RecordType extends RaRecord = any> {
 }
 
 export const injectedProps = [
-    'basePath',
     'sort',
     'data',
     'defaultTitle',

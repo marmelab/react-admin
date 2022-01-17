@@ -138,7 +138,6 @@ interface Props<RecordType extends RaRecord = any> {
     submitOnEnter?: boolean;
     variant?: string;
     // May be injected by Toolbar - sanitized in Button
-    basePath?: string;
     record?: RaRecord;
     resource?: string;
     mutationMode?: MutationMode;

@@ -33,13 +33,10 @@ import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
  * import { Edit, DeleteButton, TopToolbar } from 'react-admin';
  *
  * const EditActions = props => {
- *     const { basePath, data, resource } = props;
+ *     const { data, resource } = props;
  *     return (
  *         <TopToolbar>
  *             <DeleteButton
- *                 basePath={basePath}
- *                 record={data}
- *                 resource={resource}
  *                 mutationMode="pessimistic" // Renders the <DeleteWithConfirmButton>
  *             />
  *         </TopToolbar>
@@ -73,7 +70,6 @@ export const DeleteButton = <RecordType extends RaRecord = any>(
 
 export interface DeleteButtonProps<RecordType extends RaRecord = any>
     extends Omit<ButtonProps, 'record'> {
-    basePath?: string;
     classes?: object;
     className?: string;
     confirmTitle?: string;
@@ -97,7 +93,6 @@ export interface DeleteButtonProps<RecordType extends RaRecord = any>
 }
 
 DeleteButton.propTypes = {
-    basePath: PropTypes.string,
     label: PropTypes.string,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     record: PropTypes.any,

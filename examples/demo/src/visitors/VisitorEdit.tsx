@@ -199,7 +199,6 @@ const VisitorForm = (props: any) => {
                         </CardContent>
                         <Toolbar
                             record={formProps.record}
-                            basePath={formProps.basePath}
                             mutationMode="undoable"
                             invalid={formProps.invalid}
                             saving={formProps.saving}

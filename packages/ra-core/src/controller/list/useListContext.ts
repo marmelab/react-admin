@@ -36,7 +36,6 @@ import { RaRecord } from '../../types';
  * @prop {Function} onSelect callback to change the list of selected rows, e.g. onSelect([456, 789])
  * @prop {Function} onToggleItem callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
  * @prop {Function} onUnselectItems callback to clear the selection, e.g. onUnselectItems();
- * @prop {string}   basePath deduced from the location, useful for action buttons
  * @prop {string}   defaultTitle the translated title based on the resource, e.g. 'Posts'
  * @prop {string}   resource the resource name, deduced from the location. e.g. 'posts'
  *
@@ -116,7 +115,6 @@ export const useListContext = <RecordType extends RaRecord = any>(
  * @returns {ListControllerResult} List controller props
  */
 const extractListContextProps = ({
-    basePath,
     sort,
     data,
     defaultTitle,
@@ -141,7 +139,6 @@ const extractListContextProps = ({
     showFilter,
     total,
 }) => ({
-    basePath,
     sort,
     data,
     defaultTitle,

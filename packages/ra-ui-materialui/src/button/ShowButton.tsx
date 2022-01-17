@@ -19,7 +19,7 @@ import { Button, ButtonProps } from './Button';
  * import { ShowButton } from 'react-admin';
  *
  * const CommentShowButton = ({ record }) => (
- *     <ShowButton basePath="/comments" label="Show comment" record={record} />
+ *     <ShowButton label="Show comment" record={record} />
  * );
  */
 const ShowButton = (props: ShowButtonProps) => {
@@ -61,7 +61,6 @@ interface Props {
 export type ShowButtonProps = Props & ButtonProps;
 
 ShowButton.propTypes = {
-    basePath: PropTypes.string,
     icon: PropTypes.element,
     label: PropTypes.string,
     record: PropTypes.any,

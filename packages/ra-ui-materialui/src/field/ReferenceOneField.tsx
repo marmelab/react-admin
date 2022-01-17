@@ -24,7 +24,6 @@ import { ReferenceFieldView } from './ReferenceField';
  */
 export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
     const {
-        basePath,
         children,
         reference,
         source,
@@ -73,7 +72,6 @@ export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
                 isFetching={isFetching}
                 referenceRecord={referenceRecord}
                 resourceLinkPath={resourceLinkPath}
-                basePath={basePath}
                 reference={reference}
                 refetch={refetch}
                 error={error}

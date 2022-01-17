@@ -14,16 +14,16 @@ import { Button, ButtonProps } from './Button';
  * import { ListButton } from 'react-admin';
  *
  * const CommentListButton = () => (
- *     <ListButton basePath="/comments" label="Comments" />
+ *     <ListButton label="Comments" />
  * );
  *
  * @example // linking back to the list from the Edit view
  * import { TopToolbar, ListButton, ShowButton, Edit } from 'react-admin';
  *
- * const PostEditActions = ({ basePath, record, resource }) => (
+ * const PostEditActions = () => (
  *     <TopToolbar>
- *         <ListButton basePath={basePath} />
- *         <ShowButton basePath={basePath} record={record} />
+ *         <ListButton />
+ *         <ShowButton />
  *     </TopToolbar>
  * );
  *

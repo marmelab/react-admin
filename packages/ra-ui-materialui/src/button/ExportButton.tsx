@@ -90,7 +90,6 @@ export const ExportButton = (props: ExportButtonProps) => {
 const defaultIcon = <DownloadIcon />;
 
 const sanitizeRestProps = ({
-    basePath,
     filterValues,
     resource,
     ...rest
@@ -98,7 +97,6 @@ const sanitizeRestProps = ({
     rest;
 
 interface Props {
-    basePath?: string;
     exporter?: Exporter;
     filterValues?: FilterPayload;
     icon?: JSX.Element;
@@ -112,7 +110,6 @@ interface Props {
 export type ExportButtonProps = Props & ButtonProps;
 
 ExportButton.propTypes = {
-    basePath: PropTypes.string,
     exporter: PropTypes.func,
     filterValues: PropTypes.object,
     label: PropTypes.string,

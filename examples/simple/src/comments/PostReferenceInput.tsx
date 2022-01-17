@@ -138,7 +138,6 @@ const PostReferenceInput = props => {
                     <PostQuickCreate
                         onCancel={handleCloseCreate}
                         onSave={handleSave}
-                        basePath="/posts"
                         resource="posts"
                     />
                 </DialogContent>

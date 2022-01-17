@@ -67,7 +67,6 @@ const DealActions = () => {
             <FilterButton />
             <ExportButton />
             <CreateButton
-                basePath="/deals"
                 variant="contained"
                 label="New Deal"
                 className={classes.createButton}

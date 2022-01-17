@@ -173,7 +173,6 @@ const OrderForm = (props: any) => {
                                             source="customer_id"
                                             resource="commands"
                                             reference="customers"
-                                            basePath="/customers"
                                             record={formProps.record}
                                             link={false}
                                         >
@@ -190,7 +189,6 @@ const OrderForm = (props: any) => {
                                             source="customer_id"
                                             resource="commands"
                                             reference="customers"
-                                            basePath="/customers"
                                             record={formProps.record}
                                             link={false}
                                         >
@@ -221,7 +219,6 @@ const OrderForm = (props: any) => {
                             </CardContent>
                             <Toolbar
                                 record={formProps.record}
-                                basePath={formProps.basePath}
                                 mutationMode="undoable"
                                 invalid={formProps.invalid}
                                 saving={formProps.saving}

@@ -10,7 +10,6 @@ import { CreateBase } from './CreateBase';
 
 describe('CreateBase', () => {
     const defaultProps = {
-        basePath: '',
         hasCreate: true,
         hasEdit: true,
         hasList: true,

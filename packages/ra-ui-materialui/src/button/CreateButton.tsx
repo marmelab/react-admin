@@ -24,7 +24,7 @@ import { Button, ButtonProps, sanitizeButtonRestProps } from './Button';
  * import { CreateButton } from 'react-admin';
  *
  * const CommentCreateButton = () => (
- *     <CreateButton basePath="/comments" label="Create comment" />
+ *     <CreateButton label="Create comment" />
  * );
  */
 const CreateButton = (props: CreateButtonProps) => {

@@ -136,7 +136,6 @@ const Deal = ({ note }: any) => (
             record={note}
             source="deal_id"
             reference="deals"
-            basePath="/deals"
             link="show"
         >
             <TextField source="name" variant="body1" />
@@ -151,7 +150,6 @@ const Contact = ({ note }: any) => (
             record={note}
             source="contact_id"
             reference="contacts"
-            basePath="/contacts"
             link="show"
         >
             <FunctionField<ContactType>

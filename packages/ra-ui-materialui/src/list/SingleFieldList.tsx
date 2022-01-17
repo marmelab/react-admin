@@ -115,7 +115,6 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
 };
 
 SingleFieldList.propTypes = {
-    basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -135,7 +134,6 @@ export interface SingleFieldListProps<RecordType extends RaRecord = any>
     linkType?: string | false;
     children: React.ReactElement;
     // can be injected when using the component without context
-    basePath?: string;
     data?: RecordType[];
     total?: number;
     loaded?: boolean;

@@ -14,7 +14,6 @@ const ReferenceInputController = props => {
 
 describe('useReferenceInputController', () => {
     const defaultProps = {
-        basePath: '/comments',
         children: jest.fn(),
         input: { value: undefined } as any,
         onChange: jest.fn(),

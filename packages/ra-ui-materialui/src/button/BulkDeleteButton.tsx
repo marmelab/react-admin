@@ -20,10 +20,10 @@ import { MutationMode } from 'ra-core';
  * import { Fragment } from 'react';
  * import { BulkDeleteButton, BulkExportButton } from 'react-admin';
  *
- * const PostBulkActionButtons = ({ basePath }) => (
+ * const PostBulkActionButtons = () => (
  *     <Fragment>
  *         <BulkExportButton />
- *         <BulkDeleteButton basePath={basePath} />
+ *         <BulkDeleteButton />
  *     </Fragment>
  * );
  *
@@ -51,7 +51,6 @@ export type BulkDeleteButtonProps = Props &
     (BulkDeleteWithUndoButtonProps | BulkDeleteWithConfirmButtonProps);
 
 BulkDeleteButton.propTypes = {
-    basePath: PropTypes.string,
     label: PropTypes.string,
     resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any),

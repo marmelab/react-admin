@@ -62,7 +62,6 @@ export const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
                                 record={deal}
                                 reference="companies"
                                 resource="deals"
-                                basePath="/deals"
                             >
                                 <LogoField size="small" />
                             </ReferenceField>

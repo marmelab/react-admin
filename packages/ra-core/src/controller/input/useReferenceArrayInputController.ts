@@ -18,7 +18,6 @@ import { ReferenceArrayInputContextValue } from './ReferenceArrayInputContext';
  * @example
  *
  * const { choices, error, loaded, loading } = useReferenceArrayInputController({
- *      basePath: 'resource';
  *      record: { referenceIds: ['id1', 'id2']};
  *      reference: 'reference';
  *      resource: 'resource';
@@ -26,7 +25,6 @@ import { ReferenceArrayInputContextValue } from './ReferenceArrayInputContext';
  * });
  *
  * @param {Object} props
- * @param {string} props.basePath basepath to current resource
  * @param {Object} props.record The current resource record
  * @param {string} props.reference The linked resource name
  * @param {string} props.resource The current resource name
@@ -308,7 +306,6 @@ const mergeReferences = <RecordType extends RaRecord = any>(
 export interface UseReferenceArrayInputParams<
     RecordType extends RaRecord = any
 > {
-    basePath?: string;
     filter?: any;
     filterToQuery?: (filter: any) => any;
     input: FieldInputProps<any, HTMLElement>;

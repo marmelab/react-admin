@@ -90,7 +90,7 @@ const SubTree = ({
                 <ListItemText primary={root.name.en} />
 
                 <ListItemSecondaryAction>
-                    <EditButton record={root} basePath="/tags" />
+                    <EditButton record={root} />
                 </ListItemSecondaryAction>
             </ListItem>
             <Collapse in={open} timeout="auto" unmountOnExit>

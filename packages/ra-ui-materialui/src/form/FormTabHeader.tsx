@@ -52,7 +52,6 @@ const UseFormStateOptions = {
 };
 
 interface FormTabHeaderProps {
-    basePath?: string;
     className?: string;
     hidden?: boolean;
     icon?: ReactElement;
@@ -67,7 +66,6 @@ interface FormTabHeaderProps {
 }
 
 FormTabHeader.propTypes = {
-    basePath: PropTypes.string,
     className: PropTypes.string,
     contentClassName: PropTypes.string,
     children: PropTypes.node,

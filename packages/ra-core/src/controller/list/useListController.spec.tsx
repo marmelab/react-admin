@@ -19,7 +19,6 @@ import { SORT_ASC } from './queryReducer';
 
 describe('useListController', () => {
     const defaultProps = {
-        basePath: '',
         children: jest.fn(),
         hasCreate: true,
         hasEdit: true,
@@ -354,7 +353,6 @@ describe('useListController', () => {
                     bar: 'hello',
                 })
             ).toEqual({
-                basePath: undefined,
                 sort: undefined,
                 data: [4, 5],
                 defaultTitle: undefined,

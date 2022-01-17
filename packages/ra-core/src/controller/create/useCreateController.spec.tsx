@@ -50,7 +50,6 @@ describe('useCreateController', () => {
     });
 
     const defaultProps = {
-        basePath: '',
         hasCreate: true,
         hasEdit: true,
         hasList: true,

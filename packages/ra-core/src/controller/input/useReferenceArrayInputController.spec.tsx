@@ -19,7 +19,6 @@ describe('useReferenceArrayInputController', () => {
         input: { value: undefined },
         record: undefined,
         reference: 'tags',
-        basePath: '/posts',
         resource: 'posts',
         source: 'tag_ids',
     };

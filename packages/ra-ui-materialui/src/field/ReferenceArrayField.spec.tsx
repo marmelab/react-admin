@@ -25,7 +25,6 @@ describe('<ReferenceArrayField />', () => {
                 <ListContextProvider
                     value={{
                         resource: 'foo',
-                        basePath: '',
                         data: null,
                         isLoading: true,
                     }}
@@ -58,7 +57,6 @@ describe('<ReferenceArrayField />', () => {
                     <ListContextProvider
                         value={{
                             resource: 'foo',
-                            basePath: '',
                             data,
                             isLoading: false,
                         }}
@@ -88,7 +86,6 @@ describe('<ReferenceArrayField />', () => {
                 <ListContextProvider
                     value={{
                         resource: 'foo',
-                        basePath: '',
                         data: [],
                         isLoading: false,
                     }}
@@ -120,7 +117,6 @@ describe('<ReferenceArrayField />', () => {
                     <ListContextProvider
                         value={{
                             resource: 'foo',
-                            basePath: '',
                             data,
                             isLoading: false,
                         }}
@@ -155,7 +151,6 @@ describe('<ReferenceArrayField />', () => {
                     <ListContextProvider
                         value={{
                             resource: 'foo',
-                            basePath: '',
                             data,
                             isLoading: false,
                         }}
@@ -191,7 +186,6 @@ describe('<ReferenceArrayField />', () => {
                     <ListContextProvider
                         value={{
                             resource: 'foo',
-                            basePath: '',
                             data,
                             isLoading: false,
                         }}
@@ -241,7 +235,6 @@ describe('<ReferenceArrayField />', () => {
                         resource="foos"
                         reference="bars"
                         source="barIds"
-                        basePath="/foos"
                     >
                         <SingleFieldList linkType={false}>
                             <WeakField />

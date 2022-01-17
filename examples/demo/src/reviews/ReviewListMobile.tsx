@@ -61,7 +61,6 @@ const ReviewListMobile = () => {
                                     record={item}
                                     source="customer_id"
                                     reference="customers"
-                                    basePath="/customers"
                                     link={false}
                                 >
                                     <AvatarField size="40" />
@@ -74,7 +73,6 @@ const ReviewListMobile = () => {
                                             record={item}
                                             source="customer_id"
                                             reference="customers"
-                                            basePath="/customers"
                                             link={false}
                                         >
                                             <FunctionField
@@ -92,7 +90,6 @@ const ReviewListMobile = () => {
                                             record={item}
                                             source="product_id"
                                             reference="products"
-                                            basePath="/products"
                                             link={false}
                                         >
                                             <TextField
@@ -115,7 +112,6 @@ const ReviewListMobile = () => {
 };
 
 ReviewListMobile.propTypes = {
-    basePath: PropTypes.string,
     data: PropTypes.any,
     hasBulkActions: PropTypes.bool.isRequired,
     ids: PropTypes.array,

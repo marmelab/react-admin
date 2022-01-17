@@ -24,7 +24,6 @@ import { TabbedFormTabs, getTabbedFormTabFullPath } from './TabbedFormTabs';
 
 export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
     const {
-        basePath,
         children,
         className,
         formRootPathname,
@@ -95,7 +94,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                               classes: TabbedFormClasses,
                               resource,
                               record,
-                              basePath,
                               hidden,
                               variant: tab.props.variant || variant,
                               margin: tab.props.margin || margin,
@@ -106,7 +104,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
             </div>
             {toolbar &&
                 React.cloneElement(toolbar, {
-                    basePath,
                     className: 'toolbar',
                     invalid,
                     mutationMode,
@@ -122,7 +119,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
 };
 
 TabbedFormView.propTypes = {
-    basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
@@ -149,7 +145,6 @@ const DefaultTabs = <TabbedFormTabs />;
 const DefaultToolbar = <Toolbar />;
 
 export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
-    basePath?: string;
     children?: ReactNode;
     className?: string;
     margin?: 'none' | 'normal' | 'dense';

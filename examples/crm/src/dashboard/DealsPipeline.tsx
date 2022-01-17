@@ -79,7 +79,6 @@ export const DealsPipeline = () => {
                             record={deal}
                             reference="companies"
                             resource="deals"
-                            basePath="/deals"
                             link={false}
                         >
                             <CompanyAvatar size="small" />

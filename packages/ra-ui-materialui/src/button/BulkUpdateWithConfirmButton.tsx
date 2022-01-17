@@ -31,7 +31,6 @@ export const BulkUpdateWithConfirmButton = (
     const { selectedIds } = useListContext(props);
 
     const {
-        basePath,
         confirmTitle = 'ra.message.bulk_update_title',
         confirmContent = 'ra.message.bulk_update_content',
         data,
@@ -136,7 +135,6 @@ export const BulkUpdateWithConfirmButton = (
 };
 
 const sanitizeRestProps = ({
-    basePath,
     filterValues,
     label,
     onSuccess,
@@ -160,7 +158,6 @@ export interface BulkUpdateWithConfirmButtonProps
 }
 
 BulkUpdateWithConfirmButton.propTypes = {
-    basePath: PropTypes.string,
     confirmTitle: PropTypes.string,
     confirmContent: PropTypes.string,
     label: PropTypes.string,

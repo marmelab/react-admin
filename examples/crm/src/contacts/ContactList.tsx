@@ -93,7 +93,6 @@ const ContactListContent = () => {
                                         record={contact}
                                         source="company_id"
                                         reference="companies"
-                                        basePath="/companies"
                                         link={false}
                                     >
                                         <TextField source="name" />
@@ -126,7 +125,6 @@ const ContactListActions = () => (
         <SortButton fields={['last_name', 'first_name', 'last_seen']} />
         <ExportButton />
         <CreateButton
-            basePath="/contacts"
             variant="contained"
             label="New Contact"
             className={classes.createButton}

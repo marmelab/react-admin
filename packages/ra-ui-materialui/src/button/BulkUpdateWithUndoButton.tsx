@@ -27,7 +27,6 @@ export const BulkUpdateWithUndoButton = (
     const resource = useResourceContext(props);
 
     const {
-        basePath,
         classes: classesOverride,
         data,
         label = 'ra.action.update',
@@ -97,7 +96,6 @@ export const BulkUpdateWithUndoButton = (
 const defaultIcon = <ActionUpdate />;
 
 const sanitizeRestProps = ({
-    basePath,
     filterValues,
     label,
     selectedIds,
@@ -116,7 +114,6 @@ export interface BulkUpdateWithUndoButtonProps
 }
 
 BulkUpdateWithUndoButton.propTypes = {
-    basePath: PropTypes.string,
     classes: PropTypes.object,
     label: PropTypes.string,
     resource: PropTypes.string,

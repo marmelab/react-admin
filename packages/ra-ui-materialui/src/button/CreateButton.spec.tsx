@@ -8,7 +8,6 @@ import { createTheme } from '@mui/material/styles';
 import CreateButton from './CreateButton';
 
 const invalidButtonDomProps = {
-    basePath: '',
     invalid: false,
     pristine: false,
     record: { id: 123, foo: 'bar' },

@@ -123,7 +123,6 @@ export const ReferenceInput = (props: ReferenceInputProps) => {
 
 ReferenceInput.propTypes = {
     allowEmpty: PropTypes.bool,
-    basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
     classes: PropTypes.object,
@@ -151,7 +150,6 @@ ReferenceInput.defaultProps = {
 
 export interface ReferenceInputProps extends InputProps {
     allowEmpty?: boolean;
-    basePath?: string;
     children: ReactElement;
     className?: string;
     filterToQuery?: (filter: string) => any;
@@ -188,7 +186,6 @@ export interface ReferenceInputViewProps
 export const ReferenceInputView = (props: ReferenceInputViewProps) => {
     const {
         allowEmpty,
-        basePath,
         children,
         choices,
         className,
@@ -251,7 +248,6 @@ export const ReferenceInputView = (props: ReferenceInputViewProps) => {
                     meta: finalMeta,
                     source,
                     choices,
-                    basePath,
                     setFilter,
                     setPagination,
                     setSort,

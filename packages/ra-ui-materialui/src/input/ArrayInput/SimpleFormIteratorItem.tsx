@@ -25,7 +25,6 @@ import {
 export const SimpleFormIteratorItem = React.forwardRef(
     (props: SimpleFormIteratorItemProps, ref: any) => {
         const {
-            basePath,
             children,
             disabled,
             disableReordering,
@@ -111,9 +110,6 @@ export const SimpleFormIteratorItem = React.forwardRef(
                                 const { source, ...inputProps } = input.props;
                                 return (
                                     <FormInput
-                                        basePath={
-                                            input.props.basePath || basePath
-                                        }
                                         input={cloneElement(input, {
                                             source: source
                                                 ? `${member}.${source}`
@@ -161,7 +157,6 @@ export const SimpleFormIteratorItem = React.forwardRef(
 export type DisableRemoveFunction = (record: RaRecord) => boolean;
 
 export type SimpleFormIteratorItemProps = ArrayInputContextValue & {
-    basePath: string;
     children?: ReactNode;
     disabled?: boolean;
     disableRemove?: boolean | DisableRemoveFunction;

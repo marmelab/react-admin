@@ -318,7 +318,6 @@ const sanitizeRestProps = ({
     addLabel,
     allowEmpty,
     alwaysOn,
-    basePath,
     choices,
     classNamInputWithOptionsPropse,
     componenInputWithOptionsPropst,

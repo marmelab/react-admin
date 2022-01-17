@@ -24,7 +24,6 @@ export const BulkDeleteWithConfirmButton = (
     props: BulkDeleteWithConfirmButtonProps
 ) => {
     const {
-        basePath,
         confirmTitle = 'ra.message.bulk_delete_title',
         confirmContent = 'ra.message.bulk_delete_content',
         icon = defaultIcon,
@@ -132,7 +131,6 @@ export const BulkDeleteWithConfirmButton = (
 };
 
 const sanitizeRestProps = ({
-    basePath,
     classes,
     filterValues,
     label,
@@ -174,7 +172,6 @@ const StyledButton = styled(Button, { name: PREFIX })(({ theme }) => ({
 const defaultIcon = <ActionDelete />;
 
 BulkDeleteWithConfirmButton.propTypes = {
-    basePath: PropTypes.string,
     confirmTitle: PropTypes.string,
     confirmContent: PropTypes.string,
     icon: PropTypes.element,

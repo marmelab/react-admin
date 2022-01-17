@@ -16,7 +16,7 @@ describe('resolveRedirectTo', () => {
     });
 
     it('should accept a function as parameter', () => {
-        const redirect = (basePath, id, data) =>
+        const redirect = (resource, id, data) =>
             `/related/${data.related_id}/show`;
         expect(
             resolveRedirectTo(redirect, 'books', 1, { related_id: 3 })

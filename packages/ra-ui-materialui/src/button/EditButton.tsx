@@ -14,13 +14,15 @@ import {
 import { Button, ButtonProps } from './Button';
 
 /**
- * Opens the Edit view of a given record:
+ * Opens the Edit view for the current record.
+ *
+ * Reads the record and resource from the context.
  *
  * @example // basic usage
  * import { EditButton } from 'react-admin';
  *
- * const CommentEditButton = ({ record }) => (
- *     <EditButton basePath="/comments" label="Edit comment" record={record} />
+ * const CommentEditButton = () => (
+ *     <EditButton label="Edit comment" />
  * );
  */
 export const EditButton = (props: EditButtonProps) => {
@@ -53,7 +55,6 @@ const defaultIcon = <ContentCreate />;
 const stopPropagation = e => e.stopPropagation();
 
 interface Props {
-    basePath?: string;
     icon?: ReactElement;
     label?: string;
     record?: RaRecord;
@@ -63,7 +64,6 @@ interface Props {
 export type EditButtonProps = Props & ButtonProps & MuiButtonProps;
 
 EditButton.propTypes = {
-    basePath: PropTypes.string,
     icon: PropTypes.element,
     label: PropTypes.string,
     record: PropTypes.any,

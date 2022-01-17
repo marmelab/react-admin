@@ -77,7 +77,6 @@ const MobileGrid = (props: MobileGridProps) => {
                                 </span>
                                 <EditButton
                                     resource="commands"
-                                    basePath="/commands"
                                     record={record}
                                 />
                             </div>

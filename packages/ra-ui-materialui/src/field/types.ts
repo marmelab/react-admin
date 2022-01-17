@@ -28,7 +28,6 @@ export interface PublicFieldProps {
 
 // Props injected by react-admin
 export interface InjectedFieldProps<RecordType extends RaRecord = any> {
-    basePath?: string;
     record?: RecordType;
     resource?: string;
 }

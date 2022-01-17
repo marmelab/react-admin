@@ -64,7 +64,6 @@ const InvoiceShow = () => {
                             resource="invoices"
                             reference="customers"
                             source="customer_id"
-                            basePath="/invoices"
                             record={record}
                             link={false}
                         >
@@ -91,7 +90,6 @@ const InvoiceShow = () => {
                             resource="invoices"
                             reference="commands"
                             source="command_id"
-                            basePath="/invoices"
                             record={record}
                             link={false}
                         >
@@ -109,7 +107,6 @@ const InvoiceShow = () => {
                         resource="invoices"
                         reference="commands"
                         source="command_id"
-                        basePath="/invoices"
                         record={record}
                         link={false}
                     >

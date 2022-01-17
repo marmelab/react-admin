@@ -13,7 +13,6 @@ import { Notification } from '../layout';
 const theme = createTheme();
 
 const invalidButtonDomProps = {
-    basePath: '',
     invalid: false,
     pristine: false,
     record: { id: 123, foo: 'bar' },

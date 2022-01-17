@@ -20,7 +20,6 @@ import { useResourceContext } from '../../core';
  * const DeleteButton = ({
  *     resource,
  *     record,
- *     basePath,
  *     redirect,
  *     onClick,
  *     ...rest
@@ -28,7 +27,6 @@ import { useResourceContext } from '../../core';
  *     const { isLoading, handleDelete } = useDeleteWithUndoController({
  *         resource,
  *         record,
- *         basePath,
  *         redirect,
  *         onClick,
  *     });
@@ -50,7 +48,6 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
 ): UseDeleteWithUndoControllerReturn => {
     const {
         record,
-        basePath,
         redirect: redirectTo = 'list',
         onClick,
         mutationOptions,
@@ -75,7 +72,7 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
                             undoable: true,
                         });
                         unselect(resource, [record.id]);
-                        redirect(redirectTo, basePath || resource);
+                        redirect(redirectTo, resource);
                     },
                     onError: (error: Error) => {
                         notify(
@@ -104,7 +101,6 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
             }
         },
         [
-            basePath,
             deleteOne,
             mutationOptions,
             notify,
@@ -123,7 +119,6 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
 export interface UseDeleteWithUndoControllerParams<
     RecordType extends RaRecord = any
 > {
-    basePath?: string;
     record?: RecordType;
     redirect?: RedirectionSideEffect;
     // @deprecated. This hook get the resource from the context

@@ -41,7 +41,6 @@ const defaultFilter = {};
  *     }
  *     target: 'comments',
  *     source: 'userId',
- *     basePath: '/comments',
  *     page: 1,
  *     perPage: 25,
  * });

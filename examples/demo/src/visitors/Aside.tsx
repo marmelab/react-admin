@@ -47,26 +47,23 @@ const AsideRoot = styled('div')(({ theme }) => ({
 
 interface AsideProps {
     record?: RaRecord;
-    basePath?: string;
 }
 
-const Aside = ({ record, basePath }: AsideProps) => (
+const Aside = ({ record }: AsideProps) => (
     <AsideRoot className={classes.root}>
-        {record && <EventList record={record} basePath={basePath} />}
+        {record && <EventList record={record} />}
     </AsideRoot>
 );
 
 Aside.propTypes = {
     record: PropTypes.any,
-    basePath: PropTypes.string,
 };
 
 interface EventListProps {
     record?: RaRecord;
-    basePath?: string;
 }
 
-const EventList = ({ record, basePath }: EventListProps) => {
+const EventList = ({ record }: EventListProps) => {
     const translate = useTranslate();
     const locale = useLocale();
     const { data: orders } = useGetList<OrderRecord>('commands', {
@@ -222,13 +219,11 @@ const EventList = ({ record, basePath }: EventListProps) => {
                                 <Order
                                     record={event.data as OrderRecord}
                                     key={`event_${event.data.id}`}
-                                    basePath={basePath}
                                 />
                             ) : (
                                 <Review
                                     record={event.data as ReviewRecord}
                                     key={`review_${event.data.id}`}
-                                    basePath={basePath}
                                 />
                             )}
                         </StepContent>
@@ -272,10 +267,9 @@ const mixOrdersAndReviews = (
 
 interface OrderProps {
     record?: OrderRecord;
-    basePath?: string;
 }
 
-const Order = ({ record, basePath }: OrderProps) => {
+const Order = ({ record }: OrderProps) => {
     const translate = useTranslate();
     return record ? (
         <>
@@ -300,14 +294,9 @@ const Order = ({ record, basePath }: OrderProps) => {
                         currency: 'USD',
                     }}
                     record={record}
-                    basePath={basePath}
                 />
                 &nbsp;-&nbsp;
-                <TextField
-                    source="status"
-                    record={record}
-                    basePath={basePath}
-                />
+                <TextField source="status" record={record} />
             </Typography>
         </>
     ) : null;
@@ -315,7 +304,6 @@ const Order = ({ record, basePath }: OrderProps) => {
 
 interface ReviewProps {
     record?: ReviewRecord;
-    basePath?: string;
 }
 
 const ReviewRoot = styled('div')({
@@ -327,7 +315,7 @@ const ReviewRoot = styled('div')({
     },
 });
 
-const Review = ({ record, basePath }: ReviewProps) => {
+const Review = ({ record }: ReviewProps) => {
     const translate = useTranslate();
     return record ? (
         <ReviewRoot>
@@ -339,7 +327,6 @@ const Review = ({ record, basePath }: ReviewProps) => {
                         reference="products"
                         resource="reviews"
                         record={record}
-                        basePath={basePath}
                         link={false}
                     >
                         <TextField source="reference" component="span" />

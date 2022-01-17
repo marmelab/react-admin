@@ -57,7 +57,6 @@ export const Toolbar = <
 ) => {
     const {
         alwaysEnableSaveButton,
-        basePath,
         children,
         className,
         invalid,
@@ -103,7 +102,6 @@ export const Toolbar = <
                     />
                     {record && typeof record.id !== 'undefined' && (
                         <DeleteButton
-                            basePath={basePath}
                             // @ts-ignore
                             record={record}
                             resource={resource}
@@ -115,10 +113,6 @@ export const Toolbar = <
                 Children.map(children, (button: ReactElement) =>
                     button && isValidElement<any>(button)
                         ? React.cloneElement(button, {
-                              basePath: valueOrDefault(
-                                  button.props.basePath,
-                                  basePath
-                              ),
                               invalid,
                               pristine,
                               record: valueOrDefault(
@@ -156,14 +150,12 @@ export interface ToolbarProps<RecordType extends Partial<RaRecord> = any>
     pristine?: boolean;
     saving?: boolean;
     submitOnEnter?: boolean;
-    basePath?: string;
     record?: RecordType;
     resource?: string;
     validating?: boolean;
 }
 
 Toolbar.propTypes = {
-    basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
     invalid: PropTypes.bool,

@@ -24,7 +24,6 @@ export const TranslatableInputsTabContent = (
     props: TranslatableInputsTabContentProps
 ): ReactElement => {
     const {
-        basePath,
         children,
         groupKey = '',
         locale,
@@ -50,7 +49,6 @@ export const TranslatableInputsTabContent = (
                 {Children.map(children, child =>
                     isValidElement(child) ? (
                         <FormInput
-                            basePath={basePath}
                             input={cloneElement(child, {
                                 ...child.props,
                                 label: getLabel(
@@ -74,7 +72,6 @@ export const TranslatableInputsTabContent = (
 export type TranslatableInputsTabContentProps<
     RecordType extends RaRecord | Omit<RaRecord, 'id'> = any
 > = {
-    basePath?: string;
     children: ReactNode;
     groupKey?: string;
     locale: string;

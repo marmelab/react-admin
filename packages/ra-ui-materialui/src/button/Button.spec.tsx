@@ -10,7 +10,6 @@ import { Button } from './Button';
 const theme = createTheme();
 
 const invalidButtonDomProps = {
-    basePath: '',
     invalid: false,
     pristine: false,
     record: { id: 123, foo: 'bar' },

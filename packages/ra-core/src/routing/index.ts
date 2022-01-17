@@ -5,3 +5,4 @@ export * from './useBasename';
 export * from './useCreateInternalLink';
 export * from './useRedirect';
 export * from './useScrollToTop';
+export * from './types';

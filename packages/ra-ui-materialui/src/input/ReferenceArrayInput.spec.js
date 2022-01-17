@@ -25,7 +25,6 @@ describe('<ReferenceArrayInput />', () => {
         reference: 'tags',
         resource: 'posts',
         source: 'tag_ids',
-        basePath: '/posts',
         translate: x => `*${x}*`,
     };
 
@@ -126,12 +125,10 @@ describe('<ReferenceArrayInput />', () => {
         expect(queryByText(JSON.stringify([]))).not.toBeNull();
     });
 
-    it('should pass the correct resource and basePath down to child component', () => {
+    it('should pass the correct resource down to child component', () => {
         let resourceProp;
-        let basePathProp;
-        const MyComponent = ({ resource, basePath }) => {
+        const MyComponent = ({ resource }) => {
             resourceProp = resource;
-            basePathProp = basePath;
             return <div />;
         };
         const onChange = jest.fn();
@@ -145,7 +142,6 @@ describe('<ReferenceArrayInput />', () => {
             </ReferenceArrayInputView>
         );
         expect(resourceProp).toEqual('tags');
-        expect(basePathProp).toEqual('/tags');
     });
 
     it('should pass onChange down to child component', () => {
@@ -236,7 +232,6 @@ describe('<ReferenceArrayInput />', () => {
                                 reference="tags"
                                 resource="posts"
                                 source="tag_ids"
-                                basePath="/posts"
                             >
                                 <Datagrid rowClick="toggleSelection">
                                     <TextField source="name" />

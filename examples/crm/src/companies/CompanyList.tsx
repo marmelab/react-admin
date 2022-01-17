@@ -46,7 +46,6 @@ const CompanyListActions = () => {
         <StyledTopToolbar>
             <ExportButton />
             <CreateButton
-                basePath="/companies"
                 variant="contained"
                 label="New Company"
                 className={classes.createButton}

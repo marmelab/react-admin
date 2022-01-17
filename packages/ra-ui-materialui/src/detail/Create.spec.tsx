@@ -7,7 +7,6 @@ import { Create } from './Create';
 
 describe('<Create />', () => {
     const defaultCreateProps = {
-        basePath: '/foo',
         id: '123',
         resource: 'foo',
         location: {},

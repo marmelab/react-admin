@@ -89,7 +89,6 @@ interface CreateViewProps<RecordType extends RaRecord = any>
 CreateView.propTypes = {
     actions: PropTypes.element,
     aside: PropTypes.element,
-    basePath: PropTypes.string,
     children: PropTypes.element,
     className: PropTypes.string,
     defaultTitle: PropTypes.any,
@@ -108,7 +107,6 @@ CreateView.propTypes = {
 };
 
 const sanitizeRestProps = ({
-    basePath = null,
     defaultTitle = null,
     hasCreate = null,
     hasEdit = null,

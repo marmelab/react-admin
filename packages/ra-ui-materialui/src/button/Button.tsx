@@ -133,7 +133,6 @@ interface Props {
     redirect?: RedirectionSideEffect;
     variant?: string;
     // May be injected by Toolbar
-    basePath?: string;
     invalid?: boolean;
     saving?: boolean;
     submitOnEnter?: boolean;
@@ -147,7 +146,6 @@ export type ButtonProps = Props & MuiButtonProps;
 
 export const sanitizeButtonRestProps = ({
     // The next props are injected by Toolbar
-    basePath,
     invalid,
     pristine,
     record,

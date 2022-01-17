@@ -41,7 +41,6 @@ export const TagsList = ({ record }: { record: Contact }) => {
     return (
         <StyledReferenceArrayField
             record={record}
-            basePath="/contacts"
             resource="contacts"
             source="tags"
             reference="tags"

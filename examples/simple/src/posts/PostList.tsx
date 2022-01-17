@@ -84,7 +84,7 @@ const PostListActionToolbar = ({ children, ...props }) => (
     <Box sx={{ alignItems: 'center', display: 'flex' }}>{children}</Box>
 );
 
-const rowClick = (id, basePath, record) => {
+const rowClick = (id, resource, record) => {
     if (record.commentable) {
         return 'edit';
     }
