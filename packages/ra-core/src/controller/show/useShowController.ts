@@ -66,7 +66,7 @@ export const useShowController = <RecordType extends RaRecord = any>(
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'warning',
                 });
-                redirect('list', `/${resource}`);
+                redirect('list', resource);
                 refresh();
             },
             retry: false,

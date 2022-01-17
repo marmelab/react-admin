@@ -98,7 +98,7 @@ export const useCreateController = <
                                   });
                                   redirect(
                                       finalRedirectTo,
-                                      `/${resource}`,
+                                      resource,
                                       newRecord.id,
                                       newRecord
                                   );

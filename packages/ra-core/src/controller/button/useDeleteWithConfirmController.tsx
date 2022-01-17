@@ -108,7 +108,7 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
                             undoable: mutationMode === 'undoable',
                         });
                         unselect(resource, [record.id]);
-                        redirect(redirectTo, basePath || `/${resource}`);
+                        redirect(redirectTo, basePath || resource);
                     },
                     onError: (error: Error) => {
                         setOpen(false);

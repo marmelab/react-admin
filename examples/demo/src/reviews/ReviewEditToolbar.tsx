@@ -56,7 +56,7 @@ const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
                                     messageArgs: { smart_count: 1 },
                                     undoable: true,
                                 });
-                                redirect('list', '/reviews');
+                                redirect('list', 'reviews');
                             },
                         }}
                         submitOnEnter={true}

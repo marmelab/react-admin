@@ -22,15 +22,15 @@ export type RedirectionSideEffect = string | false | RedirectToFunction;
  *
  * const redirect = useRedirect();
  * // redirect to list view
- * redirect('list', '/posts');
+ * redirect('list', 'posts');
  * // redirect to edit view
- * redirect('edit', '/posts', 123);
+ * redirect('edit', 'posts', 123);
  * // redirect to edit view with state data
- * redirect('edit', '/comment', 123, {}, { record: { post_id: record.id } });
+ * redirect('edit', 'comments', 123, {}, { record: { post_id: record.id } });
  * // do not redirect
  * redirect(false);
  * // redirect to the result of a function
- * redirect((redirectTo, basePath, id, data) => ...)
+ * redirect((resource, id, data) => ...)
  */
 export const useRedirect = () => {
     const navigate = useNavigate();

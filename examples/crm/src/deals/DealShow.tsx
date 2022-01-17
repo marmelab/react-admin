@@ -34,7 +34,7 @@ export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
     const redirect = useRedirect();
 
     const handleClose = () => {
-        redirect('list', '/deals');
+        redirect('list', 'deals');
     };
 
     return (

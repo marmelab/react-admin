@@ -75,7 +75,7 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
                             undoable: true,
                         });
                         unselect(resource, [record.id]);
-                        redirect(redirectTo, basePath || `/${resource}`);
+                        redirect(redirectTo, basePath || resource);
                     },
                     onError: (error: Error) => {
                         notify(

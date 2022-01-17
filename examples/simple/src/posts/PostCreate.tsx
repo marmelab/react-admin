@@ -47,7 +47,7 @@ const PostCreateToolbar = props => {
                             type: 'info',
                             messageArgs: { smart_count: 1 },
                         });
-                        redirect('show', '/posts', data.id);
+                        redirect('show', 'posts', data.id);
                     },
                 }}
             />
@@ -87,7 +87,7 @@ const PostCreateToolbar = props => {
                             type: 'info',
                             messageArgs: { smart_count: 1 },
                         });
-                        redirect('show', '/posts', data.id);
+                        redirect('show', 'posts', data.id);
                     },
                 }}
                 transform={data => ({ ...data, average_note: 10 })}
