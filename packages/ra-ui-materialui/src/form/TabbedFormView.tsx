@@ -10,7 +10,7 @@ import {
 } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { matchPath, useLocation } from 'react-router-dom';
+import { matchPath, useResolvedPath, useLocation } from 'react-router-dom';
 import { Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import {
@@ -44,6 +44,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         ...rest
     } = props;
     const location = useLocation();
+    const resolvedPath = useResolvedPath('');
     const resource = useResourceContext(props);
     const [tabValue, setTabValue] = useState(0);
 
@@ -80,13 +81,12 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                     if (!tab) {
                         return;
                     }
-                    const tabPath = getTabbedFormTabFullPath(
-                        tab,
-                        index,
-                        formRootPathname
-                    );
+                    const tabPath = getTabbedFormTabFullPath(tab, index);
                     const hidden = syncWithLocation
-                        ? !matchPath(tabPath, location.pathname)
+                        ? !matchPath(
+                              `${resolvedPath.pathname}/${tabPath}`,
+                              location.pathname
+                          )
                         : tabValue !== index;
 
                     return isValidElement<any>(tab)

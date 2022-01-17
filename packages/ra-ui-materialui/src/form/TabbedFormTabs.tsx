@@ -10,7 +10,7 @@ export const TabbedFormTabs = (props: TabbedFormTabsProps) => {
 
     const validTabPaths = Children.map(children, (tab, index) => {
         if (!isValidElement(tab)) return undefined;
-        return getTabbedFormTabFullPath(tab, index, url);
+        return getTabbedFormTabFullPath(tab, index);
     });
 
     // This ensures we don't get warnings from material-ui Tabs component when
@@ -37,7 +37,7 @@ export const TabbedFormTabs = (props: TabbedFormTabsProps) => {
                 // TabbedShowLayout hierarchy (ex: '/posts/create', '/posts/12', , '/posts/12/show')
                 // and the tab path.
                 // This will be used as the Tab's value
-                const tabPath = getTabbedFormTabFullPath(tab, index, url);
+                const tabPath = getTabbedFormTabFullPath(tab, index);
 
                 return cloneElement(tab, {
                     intent: 'header',
@@ -59,12 +59,9 @@ TabbedFormTabs.propTypes = {
 
 export const getTabbedFormTabFullPath = (
     tab: ReactElement,
-    index: number,
-    baseUrl: string
+    index: number
 ): string =>
-    `${baseUrl}${
-        tab.props.path ? `/${tab.props.path}` : index > 0 ? `/${index}` : ''
-    }`.replace('//', '/'); // Because baseUrl can be a single / when on the first tab
+    `${tab.props.path ? `/${tab.props.path}` : index > 0 ? index : ''}`;
 
 export interface TabbedFormTabsProps extends TabsProps {
     classes?: any;
