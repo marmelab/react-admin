@@ -7,6 +7,7 @@ import {
     ResourceContextProvider,
     getResourceLinkPath,
     LinkToType,
+    useCreateInternalLink,
 } from 'ra-core';
 
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
@@ -25,7 +26,6 @@ import { ReferenceFieldView } from './ReferenceField';
 export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
     const {
         basePath,
-        resource,
         children,
         reference,
         source,
@@ -34,6 +34,7 @@ export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
         link = false,
     } = props;
     const record = useRecordContext(props);
+    const createInternalLink = useCreateInternalLink();
 
     const {
         isLoading,
@@ -48,14 +49,17 @@ export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
         target,
     });
 
-    const resourceLinkPath = getResourceLinkPath({
-        basePath,
-        link,
-        record,
-        reference,
-        resource,
-        source,
-    });
+    const resourceLinkPath =
+        link === false
+            ? false
+            : createInternalLink({
+                  resource: reference,
+                  id: referenceRecord?.id,
+                  type:
+                      typeof link === 'function'
+                          ? link(record, reference)
+                          : link,
+              });
 
     return !record || (!isLoading && referenceRecord == null) ? (
         emptyText ? (
@@ -97,7 +101,6 @@ ReferenceOneField.propTypes = {
     label: fieldPropTypes.label,
     record: PropTypes.any,
     reference: PropTypes.string.isRequired,
-    resource: PropTypes.string,
     source: PropTypes.string.isRequired,
     target: PropTypes.string.isRequired,
 };

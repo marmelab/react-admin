@@ -22,22 +22,29 @@ import {
     useShowController,
     useLocale,
     RaRecord,
+    useCreateInternalLink,
 } from 'react-admin';
 import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
 import PostTitle from './PostTitle';
 
-const CreateRelatedComment = ({ record }: { record?: RaRecord }) => (
-    <Button
-        component={Link}
-        to={{
-            pathname: '/comments/create',
-            state: { record: { post_id: record?.id } },
-        }}
-    >
-        Add comment
-    </Button>
-);
+const CreateRelatedComment = ({ record }: { record?: RaRecord }) => {
+    const createInternalLink = useCreateInternalLink();
+    return (
+        <Button
+            component={Link}
+            to={{
+                pathname: createInternalLink({
+                    resource: 'comments',
+                    type: 'create',
+                }),
+                state: { record: { post_id: record?.id } },
+            }}
+        >
+            Add comment
+        </Button>
+    );
+};
 
 const PostShow = () => {
     const controllerProps = useShowController();

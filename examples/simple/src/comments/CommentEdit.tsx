@@ -26,6 +26,7 @@ import {
     TopToolbar,
     useCreateSuggestionContext,
     useCreate,
+    useCreateInternalLink,
 } from 'react-admin';
 
 const PREFIX = 'CommentEdit';
@@ -45,13 +46,22 @@ const Root = styled('div')({
     },
 });
 
-const LinkToRelatedPost = ({ record }: { record?: RaRecord }) => (
-    <RaLink to={`/posts/${record?.post_id}`}>
-        <Typography variant="caption" color="inherit" align="right">
-            See related post
-        </Typography>
-    </RaLink>
-);
+const LinkToRelatedPost = ({ record }: { record?: RaRecord }) => {
+    const createInternalLink = useCreateInternalLink();
+    return (
+        <RaLink
+            to={createInternalLink({
+                type: 'edit',
+                resource: 'posts',
+                id: record?.post_id,
+            })}
+        >
+            <Typography variant="caption" color="inherit" align="right">
+                See related post
+            </Typography>
+        </RaLink>
+    );
+};
 
 const OptionRenderer = ({ record, ...rest }: { record?: RaRecord }) => {
     return record.id === '@@ra-create' ? (
