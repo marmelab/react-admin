@@ -1,18 +1,11 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import {
-    CoreAdminContext,
-    required,
-    testDataProvider,
-    TestTranslationProvider,
-} from 'ra-core';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { required, testDataProvider, TestTranslationProvider } from 'ra-core';
 
+import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { SelectInput } from './SelectInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
-
-const theme = createTheme({});
 
 describe('<SelectInput />', () => {
     const defaultProps = {
@@ -26,16 +19,14 @@ describe('<SelectInput />', () => {
 
     it('should use the input parameter value as the initial input value', async () => {
         const { container } = render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{ language: 'ang' }}
-                        onSubmit={jest.fn()}
-                    >
-                        <SelectInput {...defaultProps} />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ language: 'ang' }}
+                    onSubmit={jest.fn()}
+                >
+                    <SelectInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
         const input = container.querySelector('input');
         expect(input.value).toEqual('ang');
@@ -43,13 +34,11 @@ describe('<SelectInput />', () => {
 
     it('should render choices as mui MenuItem components', async () => {
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput {...defaultProps} />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
         fireEvent.mouseDown(
             screen.getByLabelText('resources.posts.fields.language')
@@ -66,19 +55,17 @@ describe('<SelectInput />', () => {
 
     it('should render disable choices marked so', () => {
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            choices={[
-                                { id: 'ang', name: 'Angular' },
-                                { id: 'rea', name: 'React', disabled: true },
-                            ]}
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput
+                        {...defaultProps}
+                        choices={[
+                            { id: 'ang', name: 'Angular' },
+                            { id: 'rea', name: 'React', disabled: true },
+                        ]}
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
         fireEvent.mouseDown(
             screen.getByLabelText('resources.posts.fields.language')
@@ -92,13 +79,11 @@ describe('<SelectInput />', () => {
 
     it('should add an empty menu when allowEmpty is true', () => {
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput {...defaultProps} allowEmpty />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput {...defaultProps} allowEmpty />
+                </SimpleForm>
+            </AdminContext>
         );
         fireEvent.mouseDown(
             screen.getByLabelText('resources.posts.fields.language')
@@ -113,17 +98,15 @@ describe('<SelectInput />', () => {
         const emptyValue = 'test';
 
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            allowEmpty
-                            emptyValue={emptyValue}
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput
+                        {...defaultProps}
+                        allowEmpty
+                        emptyValue={emptyValue}
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
         fireEvent.mouseDown(
             screen.getByLabelText('resources.posts.fields.language')
@@ -138,17 +121,15 @@ describe('<SelectInput />', () => {
         const emptyText = 'Default';
 
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            allowEmpty
-                            emptyText={emptyText}
-                            {...defaultProps}
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput
+                        allowEmpty
+                        emptyText={emptyText}
+                        {...defaultProps}
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
         fireEvent.mouseDown(
             screen.getByLabelText('resources.posts.fields.language')
@@ -168,17 +149,15 @@ describe('<SelectInput />', () => {
         );
 
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            allowEmpty
-                            emptyText={emptyText}
-                            {...defaultProps}
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput
+                        allowEmpty
+                        emptyText={emptyText}
+                        {...defaultProps}
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
         fireEvent.mouseDown(
             screen.getByLabelText('resources.posts.fields.language')
@@ -192,13 +171,11 @@ describe('<SelectInput />', () => {
 
     it('should not add a falsy (null or false) element when allowEmpty is false', () => {
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput {...defaultProps} />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
         fireEvent.mouseDown(
             screen.getByLabelText('resources.posts.fields.language')
@@ -209,20 +186,18 @@ describe('<SelectInput />', () => {
 
     it('should use optionValue as value identifier', () => {
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            optionValue="foobar"
-                            choices={[
-                                { foobar: 'ang', name: 'Angular' },
-                                { foobar: 'rea', name: 'React' },
-                            ]}
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput
+                        {...defaultProps}
+                        optionValue="foobar"
+                        choices={[
+                            { foobar: 'ang', name: 'Angular' },
+                            { foobar: 'rea', name: 'React' },
+                        ]}
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
         fireEvent.mouseDown(
             screen.getByLabelText('resources.posts.fields.language')
@@ -234,20 +209,18 @@ describe('<SelectInput />', () => {
 
     it('should use optionValue including "." as value identifier', () => {
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            optionValue="foobar.id"
-                            choices={[
-                                { foobar: { id: 'ang' }, name: 'Angular' },
-                                { foobar: { id: 'rea' }, name: 'React' },
-                            ]}
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput
+                        {...defaultProps}
+                        optionValue="foobar.id"
+                        choices={[
+                            { foobar: { id: 'ang' }, name: 'Angular' },
+                            { foobar: { id: 'rea' }, name: 'React' },
+                        ]}
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
         fireEvent.mouseDown(
             screen.getByLabelText('resources.posts.fields.language')
@@ -259,20 +232,18 @@ describe('<SelectInput />', () => {
 
     it('should use optionText with a string value as text identifier', () => {
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            optionText="foobar"
-                            choices={[
-                                { id: 'ang', foobar: 'Angular' },
-                                { id: 'rea', foobar: 'React' },
-                            ]}
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput
+                        {...defaultProps}
+                        optionText="foobar"
+                        choices={[
+                            { id: 'ang', foobar: 'Angular' },
+                            { id: 'rea', foobar: 'React' },
+                        ]}
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
         fireEvent.mouseDown(
             screen.getByLabelText('resources.posts.fields.language')
@@ -284,20 +255,18 @@ describe('<SelectInput />', () => {
 
     it('should use optionText with a string value including "." as text identifier', () => {
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            optionText="foobar.name"
-                            choices={[
-                                { id: 'ang', foobar: { name: 'Angular' } },
-                                { id: 'rea', foobar: { name: 'React' } },
-                            ]}
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput
+                        {...defaultProps}
+                        optionText="foobar.name"
+                        choices={[
+                            { id: 'ang', foobar: { name: 'Angular' } },
+                            { id: 'rea', foobar: { name: 'React' } },
+                        ]}
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
         fireEvent.mouseDown(
             screen.getByLabelText('resources.posts.fields.language')
@@ -309,20 +278,18 @@ describe('<SelectInput />', () => {
 
     it('should use optionText with a function value as text identifier', () => {
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            optionText={choice => choice.foobar}
-                            choices={[
-                                { id: 'ang', foobar: 'Angular' },
-                                { id: 'rea', foobar: 'React' },
-                            ]}
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput
+                        {...defaultProps}
+                        optionText={choice => choice.foobar}
+                        choices={[
+                            { id: 'ang', foobar: 'Angular' },
+                            { id: 'rea', foobar: 'React' },
+                        ]}
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
         fireEvent.mouseDown(
             screen.getByLabelText('resources.posts.fields.language')
@@ -338,20 +305,18 @@ describe('<SelectInput />', () => {
         );
 
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            optionText={<Foobar />}
-                            choices={[
-                                { id: 'ang', foobar: 'Angular' },
-                                { id: 'rea', foobar: 'React' },
-                            ]}
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput
+                        {...defaultProps}
+                        optionText={<Foobar />}
+                        choices={[
+                            { id: 'ang', foobar: 'Angular' },
+                            { id: 'rea', foobar: 'React' },
+                        ]}
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
         fireEvent.mouseDown(
             screen.getByLabelText('resources.posts.fields.language')
@@ -363,15 +328,13 @@ describe('<SelectInput />', () => {
 
     it('should translate the choices by default', () => {
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <TestTranslationProvider translate={x => `**${x}**`}>
-                        <SimpleForm onSubmit={jest.fn()}>
-                            <SelectInput {...defaultProps} />
-                        </SimpleForm>
-                    </TestTranslationProvider>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <TestTranslationProvider translate={x => `**${x}**`}>
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <SelectInput {...defaultProps} />
+                    </SimpleForm>
+                </TestTranslationProvider>
+            </AdminContext>
         );
         fireEvent.mouseDown(
             screen.getByLabelText('**resources.posts.fields.language**')
@@ -388,18 +351,16 @@ describe('<SelectInput />', () => {
 
     it('should not translate the choices if translateChoice is false', () => {
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <TestTranslationProvider translate={x => `**${x}**`}>
-                        <SimpleForm onSubmit={jest.fn()}>
-                            <SelectInput
-                                {...defaultProps}
-                                translateChoice={false}
-                            />
-                        </SimpleForm>
-                    </TestTranslationProvider>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <TestTranslationProvider translate={x => `**${x}**`}>
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <SelectInput
+                            {...defaultProps}
+                            translateChoice={false}
+                        />
+                    </SimpleForm>
+                </TestTranslationProvider>
+            </AdminContext>
         );
         fireEvent.mouseDown(
             screen.getByLabelText('**resources.posts.fields.language**')
@@ -416,19 +377,17 @@ describe('<SelectInput />', () => {
 
     it('should display helperText if prop is present', () => {
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{ language: 'ang' }}
-                        onSubmit={jest.fn()}
-                    >
-                        <SelectInput
-                            {...defaultProps}
-                            helperText="Can I help you?"
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ language: 'ang' }}
+                    onSubmit={jest.fn()}
+                >
+                    <SelectInput
+                        {...defaultProps}
+                        helperText="Can I help you?"
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
         const helperText = screen.getByText('Can I help you?');
         expect(helperText).not.toBeNull();
@@ -437,19 +396,14 @@ describe('<SelectInput />', () => {
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
             render(
-                <ThemeProvider theme={theme}>
-                    <CoreAdminContext dataProvider={testDataProvider()}>
-                        <SimpleForm
-                            defaultValues={{ language: 'ang' }}
-                            onSubmit={jest.fn()}
-                        >
-                            <SelectInput
-                                {...defaultProps}
-                                validate={required()}
-                            />
-                        </SimpleForm>
-                    </CoreAdminContext>
-                </ThemeProvider>
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ language: 'ang' }}
+                        onSubmit={jest.fn()}
+                    >
+                        <SelectInput {...defaultProps} validate={required()} />
+                    </SimpleForm>
+                </AdminContext>
             );
             const error = screen.queryAllByText('ra.validation.required');
             expect(error.length).toEqual(0);
@@ -457,20 +411,15 @@ describe('<SelectInput />', () => {
 
         it('should not be displayed if field has been touched but is valid', () => {
             render(
-                <ThemeProvider theme={theme}>
-                    <CoreAdminContext dataProvider={testDataProvider()}>
-                        <SimpleForm
-                            defaultValues={{ language: 'ang' }}
-                            mode="onBlur"
-                            onSubmit={jest.fn()}
-                        >
-                            <SelectInput
-                                {...defaultProps}
-                                validate={required()}
-                            />
-                        </SimpleForm>
-                    </CoreAdminContext>
-                </ThemeProvider>
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ language: 'ang' }}
+                        mode="onBlur"
+                        onSubmit={jest.fn()}
+                    >
+                        <SelectInput {...defaultProps} validate={required()} />
+                    </SimpleForm>
+                </AdminContext>
             );
             const input = screen.getByLabelText(
                 'resources.posts.fields.language *'
@@ -484,18 +433,16 @@ describe('<SelectInput />', () => {
 
         it('should be displayed if field has been touched and is invalid', async () => {
             render(
-                <ThemeProvider theme={theme}>
-                    <CoreAdminContext dataProvider={testDataProvider()}>
-                        <SimpleForm mode="onChange" onSubmit={jest.fn()}>
-                            <SelectInput
-                                {...defaultProps}
-                                allowEmpty
-                                emptyText="Empty"
-                                validate={required()}
-                            />
-                        </SimpleForm>
-                    </CoreAdminContext>
-                </ThemeProvider>
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm mode="onChange" onSubmit={jest.fn()}>
+                        <SelectInput
+                            {...defaultProps}
+                            allowEmpty
+                            emptyText="Empty"
+                            validate={required()}
+                        />
+                    </SimpleForm>
+                </AdminContext>
             );
 
             const select = screen.getByLabelText(
@@ -517,13 +464,11 @@ describe('<SelectInput />', () => {
 
     it('should not render a LinearProgress if isLoading is true and a second has not passed yet', () => {
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput {...defaultProps} isLoading />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput {...defaultProps} isLoading />
+                </SimpleForm>
+            </AdminContext>
         );
 
         expect(screen.queryByRole('progressbar')).toBeNull();
@@ -531,13 +476,11 @@ describe('<SelectInput />', () => {
 
     it('should render a LinearProgress if isLoading is true and a second has passed', async () => {
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput {...defaultProps} isLoading />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput {...defaultProps} isLoading />
+                </SimpleForm>
+            </AdminContext>
         );
 
         await new Promise(resolve => setTimeout(resolve, 1001));
@@ -547,13 +490,11 @@ describe('<SelectInput />', () => {
 
     it('should not render a LinearProgress if isLoading is false', () => {
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput {...defaultProps} />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
 
         expect(screen.queryByRole('progressbar')).toBeNull();
@@ -564,20 +505,18 @@ describe('<SelectInput />', () => {
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            choices={choices}
-                            onCreate={() => {
-                                choices.push(newChoice);
-                                return newChoice;
-                            }}
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput
+                        {...defaultProps}
+                        choices={choices}
+                        onCreate={() => {
+                            choices.push(newChoice);
+                            return newChoice;
+                        }}
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
 
         const input = screen.getByLabelText('resources.posts.fields.language');
@@ -595,24 +534,22 @@ describe('<SelectInput />', () => {
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            choices={choices}
-                            onCreate={() => {
-                                return new Promise(resolve => {
-                                    setTimeout(() => {
-                                        choices.push(newChoice);
-                                        resolve(newChoice);
-                                    }, 50);
-                                });
-                            }}
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput
+                        {...defaultProps}
+                        choices={choices}
+                        onCreate={() => {
+                            return new Promise(resolve => {
+                                setTimeout(() => {
+                                    choices.push(newChoice);
+                                    resolve(newChoice);
+                                }, 50);
+                            });
+                        }}
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
 
         const input = screen.getByLabelText('resources.posts.fields.language');
@@ -637,21 +574,19 @@ describe('<SelectInput />', () => {
         };
 
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            choices={choices}
-                            onCreate={() => {
-                                choices.push(newChoice);
-                                return newChoice;
-                            }}
-                            optionText="name.en"
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput
+                        {...defaultProps}
+                        choices={choices}
+                        onCreate={() => {
+                            choices.push(newChoice);
+                            return newChoice;
+                        }}
+                        optionText="name.en"
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
 
         const input = screen.getByLabelText('resources.posts.fields.language');
@@ -678,17 +613,15 @@ describe('<SelectInput />', () => {
         };
 
         render(
-            <ThemeProvider theme={theme}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <SelectInput
-                            {...defaultProps}
-                            choices={choices}
-                            create={<Create />}
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput
+                        {...defaultProps}
+                        choices={choices}
+                        create={<Create />}
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
 
         const input = screen.getByLabelText('resources.posts.fields.language');

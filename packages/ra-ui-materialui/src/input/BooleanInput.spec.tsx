@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { CoreAdminContext, testDataProvider } from 'ra-core';
+import { testDataProvider } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { defaultTheme } from '../defaultTheme';
+import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { BooleanInput } from './BooleanInput';
 
@@ -15,16 +15,14 @@ describe('<BooleanInput />', () => {
 
     it('should render as a checkbox', () => {
         render(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{ isPublished: true }}
-                        onSubmit={jest.fn}
-                    >
-                        <BooleanInput {...defaultProps} />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ isPublished: true }}
+                    onSubmit={jest.fn}
+                >
+                    <BooleanInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
 
         const input = screen.getByLabelText(
@@ -36,16 +34,14 @@ describe('<BooleanInput />', () => {
 
     it('should be checked if the value is true', () => {
         render(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn}
-                        defaultValues={{ isPublished: true }}
-                    >
-                        <BooleanInput {...defaultProps} />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    onSubmit={jest.fn}
+                    defaultValues={{ isPublished: true }}
+                >
+                    <BooleanInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
 
         const input = screen.getByLabelText(
@@ -57,16 +53,14 @@ describe('<BooleanInput />', () => {
 
     it('should not be checked if the value is false', () => {
         render(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn}
-                        defaultValues={{ isPublished: false }}
-                    >
-                        <BooleanInput {...defaultProps} />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    onSubmit={jest.fn}
+                    defaultValues={{ isPublished: false }}
+                >
+                    <BooleanInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
 
         const input = screen.getByLabelText(
@@ -78,13 +72,11 @@ describe('<BooleanInput />', () => {
 
     it('should not be checked if the value is undefined', () => {
         render(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn}>
-                        <BooleanInput {...defaultProps} />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn}>
+                    <BooleanInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
 
         const input = screen.getByLabelText(
@@ -96,13 +88,11 @@ describe('<BooleanInput />', () => {
 
     it('should be checked if the value is undefined and defaultValue is true', () => {
         render(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn}>
-                        <BooleanInput {...defaultProps} defaultValue={true} />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn}>
+                    <BooleanInput {...defaultProps} defaultValue={true} />
+                </SimpleForm>
+            </AdminContext>
         );
 
         const input = screen.getByLabelText(
@@ -114,16 +104,11 @@ describe('<BooleanInput />', () => {
 
     it('should be checked if the value is true and defaultValue is false', () => {
         render(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn}
-                        record={{ isPublished: true }}
-                    >
-                        <BooleanInput {...defaultProps} defaultValue={false} />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn} record={{ isPublished: true }}>
+                    <BooleanInput {...defaultProps} defaultValue={false} />
+                </SimpleForm>
+            </AdminContext>
         );
 
         const input = screen.getByLabelText(
@@ -135,16 +120,14 @@ describe('<BooleanInput />', () => {
 
     it('should update on click', async () => {
         render(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{ isPublished: false }}
-                        onSubmit={jest.fn}
-                    >
-                        <BooleanInput {...defaultProps} />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ isPublished: false }}
+                    onSubmit={jest.fn}
+                >
+                    <BooleanInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
 
         const input = screen.getByLabelText(
@@ -162,24 +145,24 @@ describe('<BooleanInput />', () => {
         const validate = () => 'ra.validation.error';
 
         render(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        onSubmit={jest.fn}
-                        defaultValues={{ isPublished: true }}
-                        mode="onChange"
-                    >
-                        <BooleanInput {...defaultProps} validate={validate} />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    onSubmit={jest.fn}
+                    defaultValues={{ isPublished: true }}
+                    mode="onChange"
+                >
+                    <BooleanInput {...defaultProps} validate={validate} />
+                </SimpleForm>
+            </AdminContext>
         );
         const input = screen.getByLabelText(
             'resources.posts.fields.isPublished'
         ) as HTMLInputElement;
 
         fireEvent.click(input);
-        expect(input.checked).toBe(false);
+        await waitFor(() => {
+            expect(input.checked).toBe(false);
+        });
 
         await waitFor(() => {
             expect(screen.queryByText('ra.validation.error')).not.toBeNull();

@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { render, fireEvent, screen, waitFor } from '@testing-library/react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { CoreAdminContext, required, testDataProvider } from 'ra-core';
+import { required, testDataProvider } from 'ra-core';
+import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
-import { defaultTheme } from '../defaultTheme';
 import { TextInput } from './TextInput';
 
 describe('<TextInput />', () => {
@@ -15,16 +14,14 @@ describe('<TextInput />', () => {
 
     it('should render the input correctly', () => {
         render(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{ title: 'hello' }}
-                        onSubmit={jest.fn}
-                    >
-                        <TextInput {...defaultProps} />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ title: 'hello' }}
+                    onSubmit={jest.fn}
+                >
+                    <TextInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
         const TextFieldElement = screen.getByLabelText(
             'resources.posts.fields.title'
@@ -35,16 +32,14 @@ describe('<TextInput />', () => {
 
     it('should use a ResettableTextField when type is password', () => {
         render(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{ title: 'hello' }}
-                        onSubmit={jest.fn}
-                    >
-                        <TextInput {...defaultProps} type="password" />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ title: 'hello' }}
+                    onSubmit={jest.fn}
+                >
+                    <TextInput {...defaultProps} type="password" />
+                </SimpleForm>
+            </AdminContext>
         );
         const TextFieldElement = screen.getByLabelText(
             'resources.posts.fields.title'
@@ -55,17 +50,15 @@ describe('<TextInput />', () => {
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
             render(
-                <ThemeProvider theme={createTheme(defaultTheme)}>
-                    <CoreAdminContext dataProvider={testDataProvider()}>
-                        <SimpleForm onSubmit={jest.fn}>
-                            <TextInput
-                                {...defaultProps}
-                                defaultValue=""
-                                validate={required()}
-                            />
-                        </SimpleForm>
-                    </CoreAdminContext>
-                </ThemeProvider>
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm onSubmit={jest.fn}>
+                        <TextInput
+                            {...defaultProps}
+                            defaultValue=""
+                            validate={required()}
+                        />
+                    </SimpleForm>
+                </AdminContext>
             );
             fireEvent.click(screen.getByText('ra.action.save'));
             const error = screen.queryByText('ra.validation.required');
@@ -74,17 +67,15 @@ describe('<TextInput />', () => {
 
         it('should not be displayed if field has been touched but is valid', () => {
             render(
-                <ThemeProvider theme={createTheme(defaultTheme)}>
-                    <CoreAdminContext dataProvider={testDataProvider()}>
-                        <SimpleForm onSubmit={jest.fn}>
-                            <TextInput
-                                {...defaultProps}
-                                defaultValue=""
-                                validate={required()}
-                            />
-                        </SimpleForm>
-                    </CoreAdminContext>
-                </ThemeProvider>
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm onSubmit={jest.fn}>
+                        <TextInput
+                            {...defaultProps}
+                            defaultValue=""
+                            validate={required()}
+                        />
+                    </SimpleForm>
+                </AdminContext>
             );
 
             const input = screen.getByLabelText(
@@ -98,17 +89,15 @@ describe('<TextInput />', () => {
 
         it('should be displayed if field has been touched and is invalid', async () => {
             render(
-                <ThemeProvider theme={createTheme(defaultTheme)}>
-                    <CoreAdminContext dataProvider={testDataProvider()}>
-                        <SimpleForm mode="onBlur" onSubmit={jest.fn}>
-                            <TextInput
-                                {...defaultProps}
-                                defaultValue="foo"
-                                validate={required()}
-                            />
-                        </SimpleForm>
-                    </CoreAdminContext>
-                </ThemeProvider>
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm mode="onBlur" onSubmit={jest.fn}>
+                        <TextInput
+                            {...defaultProps}
+                            defaultValue="foo"
+                            validate={required()}
+                        />
+                    </SimpleForm>
+                </AdminContext>
             );
 
             const input = screen.getByLabelText(

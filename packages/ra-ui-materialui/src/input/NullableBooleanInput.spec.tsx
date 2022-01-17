@@ -1,11 +1,10 @@
 import * as React from 'react';
 import expect from 'expect';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { CoreAdminContext, testDataProvider } from 'ra-core';
+import { testDataProvider } from 'ra-core';
 
 import { SimpleForm } from '../form';
-import { defaultTheme } from '../defaultTheme';
+import { AdminContext } from '../AdminContext';
 
 import { NullableBooleanInput } from './NullableBooleanInput';
 
@@ -18,16 +17,14 @@ describe('<NullableBooleanInput />', () => {
 
     it('should give three different choices for true, false or unknown', async () => {
         render(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{ isPublished: true }}
-                        onSubmit={jest.fn()}
-                    >
-                        <NullableBooleanInput {...defaultProps} />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ isPublished: true }}
+                    onSubmit={jest.fn()}
+                >
+                    <NullableBooleanInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
         const select = screen.getByLabelText(
             'resources.posts.fields.isPublished'
@@ -51,19 +48,17 @@ describe('<NullableBooleanInput />', () => {
 
     it('should select the option "true" if value is true', () => {
         const { container } = render(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{ isPublished: true }}
-                        onSubmit={jest.fn}
-                    >
-                        <NullableBooleanInput
-                            source="isPublished"
-                            resource="posts"
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ isPublished: true }}
+                    onSubmit={jest.fn}
+                >
+                    <NullableBooleanInput
+                        source="isPublished"
+                        resource="posts"
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
         expect(container.querySelector('input').getAttribute('value')).toBe(
             'true'
@@ -79,25 +74,23 @@ describe('<NullableBooleanInput />', () => {
         ).toBe('true');
         expect(
             screen.getByText('ra.boolean.false').getAttribute('aria-selected')
-        ).toBeNull();
+        ).toBe('false');
         expect(
             screen.getByText('ra.boolean.null').getAttribute('aria-selected')
-        ).toBeNull();
+        ).toBe('false');
     });
 
     it('should select the option "true" if defaultValue is true', () => {
         const { container } = render(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn}>
-                        <NullableBooleanInput
-                            source="isPublished"
-                            resource="posts"
-                            defaultValue
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn}>
+                    <NullableBooleanInput
+                        source="isPublished"
+                        resource="posts"
+                        defaultValue
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
         expect(container.querySelector('input').getAttribute('value')).toBe(
             'true'
@@ -113,27 +106,25 @@ describe('<NullableBooleanInput />', () => {
         ).toBe('true');
         expect(
             screen.getByText('ra.boolean.false').getAttribute('aria-selected')
-        ).toBeNull();
+        ).toBe('false');
         expect(
             screen.getByText('ra.boolean.null').getAttribute('aria-selected')
-        ).toBeNull();
+        ).toBe('false');
     });
 
     it('should select the option "false" if value is false', () => {
         const { container } = render(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{ isPublished: false }}
-                        onSubmit={jest.fn}
-                    >
-                        <NullableBooleanInput
-                            source="isPublished"
-                            resource="posts"
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ isPublished: false }}
+                    onSubmit={jest.fn}
+                >
+                    <NullableBooleanInput
+                        source="isPublished"
+                        resource="posts"
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
         expect(container.querySelector('input').getAttribute('value')).toBe(
             'false'
@@ -144,7 +135,7 @@ describe('<NullableBooleanInput />', () => {
         fireEvent.mouseDown(select);
         expect(
             screen.getByText('ra.boolean.true').getAttribute('aria-selected')
-        ).toBeNull();
+        ).toBe('false');
         expect(
             screen
                 .getAllByText('ra.boolean.false')[1]
@@ -152,22 +143,20 @@ describe('<NullableBooleanInput />', () => {
         ).toBe('true');
         expect(
             screen.getByText('ra.boolean.null').getAttribute('aria-selected')
-        ).toBeNull();
+        ).toBe('false');
     });
 
     it('should select the option "false" if defaultValue is false', () => {
         const { container } = render(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn}>
-                        <NullableBooleanInput
-                            source="isPublished"
-                            resource="posts"
-                            defaultValue={false}
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn}>
+                    <NullableBooleanInput
+                        source="isPublished"
+                        resource="posts"
+                        defaultValue={false}
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
         expect(container.querySelector('input').getAttribute('value')).toBe(
             'false'
@@ -178,7 +167,7 @@ describe('<NullableBooleanInput />', () => {
         fireEvent.mouseDown(select);
         expect(
             screen.getByText('ra.boolean.true').getAttribute('aria-selected')
-        ).toBeNull();
+        ).toBe('false');
         expect(
             screen
                 .getAllByText('ra.boolean.false')[1]
@@ -186,24 +175,22 @@ describe('<NullableBooleanInput />', () => {
         ).toBe('true');
         expect(
             screen.getByText('ra.boolean.null').getAttribute('aria-selected')
-        ).toBeNull();
+        ).toBe('false');
     });
 
     it('should select the option "null" if value is null', () => {
         render(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{ isPublished: null }}
-                        onSubmit={jest.fn}
-                    >
-                        <NullableBooleanInput
-                            source="isPublished"
-                            resource="posts"
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ isPublished: null }}
+                    onSubmit={jest.fn}
+                >
+                    <NullableBooleanInput
+                        source="isPublished"
+                        resource="posts"
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
         expect(screen.queryByDisplayValue('')).not.toBeNull();
         const select = screen.getByLabelText(
@@ -212,10 +199,10 @@ describe('<NullableBooleanInput />', () => {
         fireEvent.mouseDown(select);
         expect(
             screen.getByText('ra.boolean.true').getAttribute('aria-selected')
-        ).toBeNull();
+        ).toBe('false');
         expect(
             screen.getByText('ra.boolean.false').getAttribute('aria-selected')
-        ).toBeNull();
+        ).toBe('false');
         expect(
             screen.getByText('ra.boolean.null').getAttribute('aria-selected')
         ).toBe('true');
@@ -223,20 +210,18 @@ describe('<NullableBooleanInput />', () => {
 
     it('should select the option "null" if defaultValue is null', () => {
         render(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{ title: 'hello' }}
-                        onSubmit={jest.fn}
-                    >
-                        <NullableBooleanInput
-                            source="isPublished"
-                            resource="posts"
-                            defaultValue={null}
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ title: 'hello' }}
+                    onSubmit={jest.fn}
+                >
+                    <NullableBooleanInput
+                        source="isPublished"
+                        resource="posts"
+                        defaultValue={null}
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
         expect(screen.queryByDisplayValue('')).not.toBeNull();
         const select = screen.getByLabelText(
@@ -245,10 +230,10 @@ describe('<NullableBooleanInput />', () => {
         fireEvent.mouseDown(select);
         expect(
             screen.getByText('ra.boolean.true').getAttribute('aria-selected')
-        ).toBeNull();
+        ).toBe('false');
         expect(
             screen.getByText('ra.boolean.false').getAttribute('aria-selected')
-        ).toBeNull();
+        ).toBe('false');
         expect(
             screen.getByText('ra.boolean.null').getAttribute('aria-selected')
         ).toBe('true');
@@ -256,20 +241,18 @@ describe('<NullableBooleanInput />', () => {
 
     it('should allow to customize the label of the null option', () => {
         render(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{ isPublished: null }}
-                        onSubmit={jest.fn}
-                    >
-                        <NullableBooleanInput
-                            source="isPublished"
-                            resource="posts"
-                            nullLabel="example null label"
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ isPublished: null }}
+                    onSubmit={jest.fn}
+                >
+                    <NullableBooleanInput
+                        source="isPublished"
+                        resource="posts"
+                        nullLabel="example null label"
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
         expect(screen.queryByDisplayValue('')).not.toBeNull();
         const select = screen.getByLabelText(
@@ -281,20 +264,18 @@ describe('<NullableBooleanInput />', () => {
 
     it('should allow to customize the label of the false option', () => {
         render(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{ isPublished: null }}
-                        onSubmit={jest.fn}
-                    >
-                        <NullableBooleanInput
-                            source="isPublished"
-                            resource="posts"
-                            falseLabel="example false label"
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ isPublished: null }}
+                    onSubmit={jest.fn}
+                >
+                    <NullableBooleanInput
+                        source="isPublished"
+                        resource="posts"
+                        falseLabel="example false label"
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
         expect(screen.queryByDisplayValue('')).not.toBeNull();
 
@@ -307,20 +288,18 @@ describe('<NullableBooleanInput />', () => {
 
     it('should allow to customize the label of the true option', () => {
         render(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <CoreAdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm
-                        defaultValues={{ isPublished: null }}
-                        onSubmit={jest.fn}
-                    >
-                        <NullableBooleanInput
-                            source="isPublished"
-                            resource="posts"
-                            trueLabel="example true label"
-                        />
-                    </SimpleForm>
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ isPublished: null }}
+                    onSubmit={jest.fn}
+                >
+                    <NullableBooleanInput
+                        source="isPublished"
+                        resource="posts"
+                        trueLabel="example true label"
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
         expect(screen.queryByDisplayValue('')).not.toBeNull();
 
