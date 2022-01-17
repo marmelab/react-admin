@@ -290,7 +290,8 @@ If you provided a React element for the optionText prop, you must also provide t
     }, [getOptionLabel, multiple, selectedChoice]);
 
     const isOptionEqualToValue = (option, value) => {
-        return getChoiceValue(option) === getChoiceValue(value);
+        // eslint-disable-next-line eqeqeq
+        return getChoiceValue(option) == getChoiceValue(value);
     };
 
     const handleInputChange = (event: any, newInputValue: string) => {
