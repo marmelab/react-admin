@@ -20,12 +20,12 @@ import {
     TextFieldProps,
 } from '@mui/material';
 import {
-    ChoicesInputProps,
+    ChoicesProps,
     FieldTitle,
     RaRecord,
-    UseChoicesOptions,
     useInput,
     useSuggestions,
+    UseSuggestionsOptions,
     useTimeout,
     useTranslate,
     warning,
@@ -34,7 +34,9 @@ import {
     SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
 } from './useSupportCreateSuggestion';
+import { CommonInputProps } from './CommonInputProps';
 import { InputHelperText } from './InputHelperText';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -112,22 +114,21 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         createValue,
         debounce: debounceDelay = 250,
         emptyText,
-        emptyValue,
+        emptyValue = '',
         format,
         helperText,
         id: idOverride,
-        input: inputOverride,
+        field: fieldOverride,
         inputText,
         isFetching,
         isLoading,
         isRequired: isRequiredOverride,
         label,
-        loaded,
-        loading,
         limitChoicesToValue,
         matchSuggestion,
         margin = 'dense',
-        meta: metaOverride,
+        fieldState: fieldStateOverride,
+        formState: formStateOverride,
         multiple = false,
         noOptionsText,
         onBlur,
@@ -138,11 +139,8 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         optionText = 'name',
         optionValue = 'id',
         parse,
-        refetch,
         resource,
         setFilter,
-        setPagination,
-        setSort,
         shouldRenderSuggestions,
         source,
         suggestionLimit,
@@ -156,17 +154,18 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
     const translate = useTranslate();
     const {
         id,
-        input,
+        field,
         isRequired,
-        meta: { touched, error, submitError },
+        fieldState: { error, invalid, isTouched },
+        formState: { isSubmitted },
     } = useInput({
         format,
         id: idOverride,
-        input: inputOverride,
-        meta: metaOverride,
+        field: fieldOverride,
+        fieldState: fieldStateOverride,
+        formState: formStateOverride,
         onBlur,
         onChange,
-        onFocus,
         parse,
         resource,
         source,
@@ -174,7 +173,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         ...rest,
     });
 
-    const selectedChoice = useSelectedChoice(input.value, props);
+    const selectedChoice = useSelectedChoice(field.value, props);
 
     useEffect(() => {
         // eslint-disable-next-line eqeqeq
@@ -223,12 +222,15 @@ If you provided a React element for the optionText prop, you must also provide t
     const handleChange = (newValue: any) => {
         if (multiple) {
             if (Array.isArray(newValue)) {
-                input.onChange(newValue.map(getChoiceValue));
+                field.onChange(newValue.map(getChoiceValue));
             } else {
-                input.onChange([...input.value, getChoiceValue(newValue)]);
+                field.onChange([
+                    ...(field.value ?? []),
+                    getChoiceValue(newValue),
+                ]);
             }
         } else {
-            input.onChange(getChoiceValue(newValue));
+            field.onChange(getChoiceValue(newValue));
         }
     };
 
@@ -236,15 +238,15 @@ If you provided a React element for the optionText prop, you must also provide t
     // display at least some choices even if the input has a value.
     // Otherwise, it would only display the currently selected one and the user
     // would have to first clear the input before seeing any other choices
-    const currentValue = useRef(input.value);
+    const currentValue = useRef(field.value);
     useEffect(() => {
-        if (!isEqual(currentValue.current, input.value)) {
-            currentValue.current = input.value;
+        if (!isEqual(currentValue.current, field.value)) {
+            currentValue.current = field.value;
             if (setFilter) {
                 debouncedSetFilter('');
             }
         }
-    }, [input.value]); // eslint-disable-line
+    }, [field.value]); // eslint-disable-line
 
     const {
         getCreateItem,
@@ -367,7 +369,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 isOptionEqualToValue={isOptionEqualToValue}
                 renderInput={params => (
                     <TextField
-                        name={input.name}
+                        name={field.name}
                         label={
                             <FieldTitle
                                 label={label}
@@ -380,11 +382,11 @@ If you provided a React element for the optionText prop, you must also provide t
                                 }
                             />
                         }
-                        error={!!(touched && (error || submitError))}
+                        error={isTouched && invalid}
                         helperText={
                             <InputHelperText
-                                touched={touched}
-                                error={error || submitError}
+                                touched={isTouched}
+                                error={error?.message}
                                 helperText={helperText}
                             />
                         }
@@ -419,10 +421,10 @@ If you provided a React element for the optionText prop, you must also provide t
                         ? translate(noOptionsText, { _: noOptionsText })
                         : noOptionsText
                 }
-                {...rest}
+                selectOnFocus
+                clearOnBlur
+                {...sanitizeInputRestProps(rest)}
                 freeSolo={!!create || !!onCreate}
-                selectOnFocus={!!create || !!onCreate}
-                clearOnBlur={!!create || !!onCreate}
                 handleHomeEndKeys={!!create || !!onCreate}
                 filterOptions={filterOptions}
                 options={
@@ -434,12 +436,11 @@ If you provided a React element for the optionText prop, you must also provide t
                 getOptionLabel={getOptionLabel}
                 inputValue={filterValue}
                 loading={
-                    loading && suggestions.length === 0 && oneSecondHasPassed
+                    isLoading && suggestions.length === 0 && oneSecondHasPassed
                 }
                 value={selectedChoice}
                 onChange={handleAutocompleteChange}
-                onBlur={input.onBlur}
-                onFocus={input.onFocus}
+                onBlur={field.onBlur}
                 onInputChange={handleInputChange}
                 renderOption={(props, record) => {
                     if (isValidElement(optionText)) {
@@ -463,8 +464,9 @@ export interface AutocompleteInputProps<
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
     SupportCreate extends boolean | undefined = false
-> extends ChoicesInputProps,
-        UseChoicesOptions,
+> extends CommonInputProps,
+        ChoicesProps,
+        UseSuggestionsOptions,
         Omit<SupportCreateSuggestionOptions, 'handleChange' | 'optionText'>,
         Omit<
             AutocompleteProps<
@@ -475,8 +477,11 @@ export interface AutocompleteInputProps<
             >,
             'onChange' | 'options' | 'renderInput'
         > {
-    isFetching?: boolean;
-    isLoading?: boolean;
+    allowEmpty?: boolean;
+    debounce?: number;
+    inputText?: (option: any) => string;
+    setFilter?: (value: string) => void;
+    shouldRenderSuggestions?: any;
     TextFieldProps?: TextFieldProps;
 }
 
@@ -511,8 +516,7 @@ const useSelectedChoice = (
             setSelectedChoice(newSelectedItems);
         }
     }, [choices, value, multiple, optionValue]);
-
-    return selectedChoice;
+    return selectedChoice || null;
 };
 
 const getSelectedItems = (
@@ -523,7 +527,7 @@ const getSelectedItems = (
 ) => {
     if (multiple) {
         return choices.filter(choice =>
-            value.includes(get(choice, optionValue))
+            (value || []).includes(get(choice, optionValue))
         );
     }
     return choices.find(choice => get(choice, optionValue) === value) || '';
