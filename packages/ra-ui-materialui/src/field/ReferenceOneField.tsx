@@ -5,7 +5,6 @@ import {
     useReferenceOneFieldController,
     useRecordContext,
     ResourceContextProvider,
-    getResourceLinkPath,
     LinkToType,
     useCreateInternalLink,
 } from 'ra-core';
