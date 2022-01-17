@@ -17,7 +17,6 @@ import {
 import { Link } from 'react-router-dom';
 import {
     Identifier,
-    linkToRecord,
     RaRecord,
     RecordContextProvider,
     sanitizeListRestProps,

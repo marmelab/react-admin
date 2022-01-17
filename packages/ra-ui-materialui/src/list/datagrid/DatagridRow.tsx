@@ -14,7 +14,6 @@ import classnames from 'classnames';
 import { TableCell, TableRow, TableRowProps, Checkbox } from '@mui/material';
 import {
     Identifier,
-    linkToRecord,
     RaRecord,
     RecordContextProvider,
     useExpanded,

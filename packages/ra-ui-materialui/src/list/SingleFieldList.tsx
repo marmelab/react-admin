@@ -10,7 +10,6 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import LinearProgress from '@mui/material/LinearProgress';
 import {
-    linkToRecord,
     sanitizeListRestProps,
     useListContext,
     useResourceContext,
