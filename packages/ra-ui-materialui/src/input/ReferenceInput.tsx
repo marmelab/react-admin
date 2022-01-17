@@ -113,7 +113,6 @@ export const ReferenceInput = (props: ReferenceInputProps) => {
     });
     return (
         <ReferenceInputView
-            {...inputProps}
             {...rest}
             {...useReferenceInputController({ ...rest, ...inputProps })}
         />

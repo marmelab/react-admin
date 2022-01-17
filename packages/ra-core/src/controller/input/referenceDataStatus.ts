@@ -1,8 +1,8 @@
 import { RaRecord, Translate } from '../../types';
 import { MatchingReferencesError } from './types';
 
-interface GetStatusForInputParams<RecordType extends RaRecord = any> {
-    input: {
+interface GetStatusForInputParams<RecordType extends RaRecord = RaRecord> {
+    field: {
         value: any;
     };
     matchingReferences: RecordType[] | MatchingReferencesError;
@@ -15,8 +15,8 @@ const isMatchingReferencesError = (
 ): matchingReferences is MatchingReferencesError =>
     matchingReferences && matchingReferences.error !== undefined;
 
-export const getStatusForInput = <RecordType extends RaRecord = any>({
-    input,
+export const getStatusForInput = <RecordType extends RaRecord = RaRecord>({
+    field,
     matchingReferences,
     referenceRecord,
     translate = x => x,
@@ -29,7 +29,7 @@ export const getStatusForInput = <RecordType extends RaRecord = any>({
           })
         : null;
     const selectedReferenceError =
-        input.value && !referenceRecord
+        field.value && !referenceRecord
             ? translate('ra.input.references.single_missing', {
                   _: 'ra.input.references.single_missing',
               })
@@ -37,14 +37,14 @@ export const getStatusForInput = <RecordType extends RaRecord = any>({
 
     return {
         waiting:
-            (input.value && selectedReferenceError && !matchingReferences) ||
-            (!input.value && !matchingReferences),
+            (field.value && selectedReferenceError && !matchingReferences) ||
+            (!field.value && !matchingReferences),
         error:
-            (input.value &&
+            (field.value &&
                 selectedReferenceError &&
                 matchingReferencesError) ||
-            (!input.value && matchingReferencesError)
-                ? input.value
+            (!field.value && matchingReferencesError)
+                ? field.value
                     ? selectedReferenceError
                     : matchingReferencesError
                 : null,
