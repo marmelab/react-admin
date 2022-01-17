@@ -27,7 +27,10 @@ describe('<CloneButton />', () => {
         const { getByLabelText } = render(
             <MemoryRouter>
                 <ThemeProvider theme={theme}>
-                    <CloneButton record={{ id: 123, foo: 'bar' }} />
+                    <CloneButton
+                        resource="posts"
+                        record={{ id: 123, foo: 'bar' }}
+                    />
                 </ThemeProvider>
             </MemoryRouter>
         );

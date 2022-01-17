@@ -4,13 +4,15 @@ import {
     CoreAdminContext,
     testDataProvider,
     ListContextProvider,
+    useRecordContext,
 } from 'ra-core';
 import { ThemeProvider, createTheme } from '@mui/material';
 import { Datagrid } from './Datagrid';
 
-const TitleField = ({ record }: any): JSX.Element => (
-    <span>{record.title}</span>
-);
+const TitleField = (): JSX.Element => {
+    const record = useRecordContext();
+    return <span>{record.title}</span>;
+};
 
 const Wrapper = ({ children, listContext }) => (
     <ThemeProvider theme={createTheme()}>

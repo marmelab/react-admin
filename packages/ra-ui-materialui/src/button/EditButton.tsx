@@ -35,6 +35,7 @@ export const EditButton = (props: EditButtonProps) => {
     const resource = useResourceContext(props);
     const record = useRecordContext(props);
     const createInternalLink = useCreateInternalLink();
+    if (!record) return null;
     return (
         <Button
             component={Link}

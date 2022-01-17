@@ -1,14 +1,16 @@
 import * as React from 'react';
 import { fireEvent } from '@testing-library/react';
-import { linkToRecord } from 'ra-core';
+import { useRecordContext } from 'ra-core';
 import { renderWithRedux } from 'ra-test';
 
 import DatagridRow from './DatagridRow';
 import DatagridContextProvider from './DatagridContextProvider';
 
-const TitleField = ({ record }: any): JSX.Element => (
-    <span>{record.title}</span>
-);
+const TitleField = (): JSX.Element => {
+    const record = useRecordContext();
+    return <span>{record.title}</span>;
+};
+
 const ExpandPanel = () => <span>expanded</span>;
 
 // remove validateDomNesting warnings by react-testing-library
@@ -74,9 +76,7 @@ describe('<DatagridRow />', () => {
                 </DatagridRow>
             );
             fireEvent.click(getByText('hello'));
-            expect(history.location.pathname).toEqual(
-                linkToRecord(defaultProps.resource, defaultProps.id)
-            );
+            expect(history.location.pathname).toEqual('/posts/15');
         });
 
         it("should redirect to show page if the 'show' option is selected", () => {
@@ -86,9 +86,7 @@ describe('<DatagridRow />', () => {
                 </DatagridRow>
             );
             fireEvent.click(getByText('hello'));
-            expect(history.location.pathname).toEqual(
-                linkToRecord(defaultProps.resource, defaultProps.id, 'show')
-            );
+            expect(history.location.pathname).toEqual('/posts/15/show');
         });
 
         it("should change the expand state if the 'expand' option is selected", () => {
