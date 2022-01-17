@@ -7,7 +7,7 @@
         "allowJs": false,
         "jsx": "react",
         "lib": ["es2017", "dom"],
-        "target": "es5",
+        "target": "es2016",
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
