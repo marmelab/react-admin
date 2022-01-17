@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import { Form } from 'react-final-form';
-import { required } from 'ra-core';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { testDataProvider } from 'ra-core';
 
+import { AdminContext } from '../AdminContext';
+import { SimpleForm } from '../form';
 import { NumberInput } from './NumberInput';
 
 describe('<NumberInput />', () => {
@@ -12,98 +13,103 @@ describe('<NumberInput />', () => {
     };
 
     it('should use a mui TextField', () => {
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn}
-                initialValues={{ views: 12 }}
-                render={() => <NumberInput {...defaultProps} />}
-            />
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm defaultValues={{ views: 12 }} onSubmit={jest.fn()}>
+                    <NumberInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
-        const input = getByLabelText(
+        const input = screen.getByLabelText(
             'resources.posts.fields.views'
         ) as HTMLInputElement;
         expect(input.value).toEqual('12');
         expect(input.getAttribute('type')).toEqual('number');
     });
 
-    describe('props', () => {
-        it('should accept `step` prop and pass it to native input', () => {
-            const { getByLabelText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    render={() => <NumberInput {...defaultProps} step="0.1" />}
-                />
-            );
-            const input = getByLabelText(
-                'resources.posts.fields.views'
-            ) as HTMLInputElement;
-            expect(input.step).toEqual('0.1');
-        });
+    it('should accept `step` prop and pass it to native input', () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <NumberInput {...defaultProps} step="0.1" />
+                </SimpleForm>
+            </AdminContext>
+        );
+        const input = screen.getByLabelText(
+            'resources.posts.fields.views'
+        ) as HTMLInputElement;
+        expect(input.step).toEqual('0.1');
     });
 
     describe('onChange event', () => {
-        it('should be customizable via the `onChange` prop', () => {
+        it('should be customizable via the `onChange` prop', async () => {
             let value;
             const onChange = jest.fn(event => {
                 value = event.target.value;
             });
 
-            const { getByLabelText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    render={() => (
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ views: 12 }}
+                        onSubmit={jest.fn()}
+                    >
                         <NumberInput {...defaultProps} onChange={onChange} />
-                    )}
-                />
+                    </SimpleForm>
+                </AdminContext>
             );
-            const input = getByLabelText('resources.posts.fields.views');
+            const input = screen.getByLabelText('resources.posts.fields.views');
             fireEvent.change(input, { target: { value: 3 } });
-            expect(value).toEqual('3');
+            await waitFor(() => {
+                expect(value).toEqual('3');
+            });
         });
 
-        it('should keep calling redux-form original event', () => {
+        it('should keep calling the form library original event', async () => {
+            const onSubmit = jest.fn();
             let value;
             const onChange = jest.fn(event => {
                 value = event.target.value;
             });
-            let formApi;
-
-            const { getByLabelText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    render={({ form }) => {
-                        formApi = form;
-                        return (
-                            <NumberInput
-                                {...defaultProps}
-                                onChange={onChange}
-                            />
-                        );
-                    }}
-                />
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ views: 12 }}
+                        onSubmit={onSubmit}
+                    >
+                        <NumberInput {...defaultProps} onChange={onChange} />
+                    </SimpleForm>
+                </AdminContext>
             );
-            const input = getByLabelText('resources.posts.fields.views');
+            const input = screen.getByLabelText('resources.posts.fields.views');
             fireEvent.change(input, { target: { value: 3 } });
             expect(value).toEqual('3');
-            expect(formApi.getState().values.views).toEqual(3);
+            fireEvent.click(screen.getByText('ra.action.save'));
+            await waitFor(() => {
+                expect(onSubmit).toHaveBeenCalledWith({ views: 3 });
+            });
         });
 
-        it('should cast value as a numeric one', () => {
-            let formApi;
+        it('should cast value as a numeric one', async () => {
+            const onSubmit = jest.fn();
 
-            const { getByLabelText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    render={({ form }) => {
-                        formApi = form;
-                        return <NumberInput {...defaultProps} />;
-                    }}
-                />
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ views: 12 }}
+                        onSubmit={onSubmit}
+                    >
+                        <NumberInput {...defaultProps} />
+                    </SimpleForm>
+                </AdminContext>
             );
-            const input = getByLabelText('resources.posts.fields.views');
+            const input = screen.getByLabelText('resources.posts.fields.views');
             fireEvent.change(input, { target: { value: '3' } });
-            expect(formApi.getState().values.views).toEqual(3);
-            expect(typeof formApi.getState().values.views).toEqual('number');
+            fireEvent.click(screen.getByText('ra.action.save'));
+            await waitFor(() => {
+                expect(onSubmit).toHaveBeenCalledWith({ views: 3 });
+            });
+            expect(typeof onSubmit.mock.calls[0][0].views).toEqual('number');
         });
     });
 
@@ -111,37 +117,19 @@ describe('<NumberInput />', () => {
         it('should be customizable via the `onFocus` prop', () => {
             const onFocus = jest.fn();
 
-            const { getByLabelText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    render={() => (
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ views: 12 }}
+                        onSubmit={jest.fn()}
+                    >
                         <NumberInput {...defaultProps} onFocus={onFocus} />
-                    )}
-                />
+                    </SimpleForm>
+                </AdminContext>
             );
-            const input = getByLabelText('resources.posts.fields.views');
-            input.focus();
+            const input = screen.getByLabelText('resources.posts.fields.views');
+            fireEvent.focus(input);
             expect(onFocus).toHaveBeenCalled();
-        });
-
-        it('should keep calling redux-form original event', () => {
-            const onFocus = jest.fn();
-            let formApi;
-
-            const { getByLabelText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    render={({ form }) => {
-                        formApi = form;
-                        return (
-                            <NumberInput {...defaultProps} onFocus={onFocus} />
-                        );
-                    }}
-                />
-            );
-            const input = getByLabelText('resources.posts.fields.views');
-            input.focus();
-            expect(formApi.getState().active).toEqual('views');
         });
     });
 
@@ -149,92 +137,83 @@ describe('<NumberInput />', () => {
         it('should be customizable via the `onBlur` prop', () => {
             const onBlur = jest.fn();
 
-            const { getByLabelText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    render={() => (
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ views: 12 }}
+                        onSubmit={jest.fn()}
+                    >
                         <NumberInput {...defaultProps} onBlur={onBlur} />
-                    )}
-                />
+                    </SimpleForm>
+                </AdminContext>
             );
-            const input = getByLabelText('resources.posts.fields.views');
-            input.focus();
-            input.blur();
+            const input = screen.getByLabelText('resources.posts.fields.views');
+            fireEvent.blur(input);
             expect(onBlur).toHaveBeenCalled();
-        });
-
-        it('should keep calling redux-form original event', () => {
-            const onBlur = jest.fn();
-            let formApi;
-
-            const { getByLabelText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    render={({ form }) => {
-                        formApi = form;
-                        return (
-                            <NumberInput {...defaultProps} onBlur={onBlur} />
-                        );
-                    }}
-                />
-            );
-            const input = getByLabelText('resources.posts.fields.views');
-            input.focus();
-            expect(formApi.getState().active).toEqual('views');
-            input.blur();
-            expect(onBlur).toHaveBeenCalled();
-            expect(formApi.getState().active).toBeUndefined();
         });
     });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const { queryByText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    render={() => (
-                        <NumberInput {...defaultProps} validate={required()} />
-                    )}
-                />
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ views: 12 }}
+                        onSubmit={jest.fn()}
+                    >
+                        <NumberInput
+                            {...defaultProps}
+                            validate={() => 'error'}
+                        />
+                    </SimpleForm>
+                </AdminContext>
             );
-            const error = queryByText('ra.validation.required');
+            const error = screen.queryByText('error');
             expect(error).toBeNull();
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
-            const { getByLabelText, queryByText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    validateOnBlur
-                    render={() => (
-                        <NumberInput {...defaultProps} validate={required()} />
-                    )}
-                />
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ views: 12 }}
+                        onSubmit={jest.fn()}
+                    >
+                        <NumberInput
+                            {...defaultProps}
+                            validate={() => 'error'}
+                        />
+                    </SimpleForm>
+                </AdminContext>
             );
-            const input = getByLabelText('resources.posts.fields.views *');
+            const input = screen.getByLabelText('resources.posts.fields.views');
             fireEvent.change(input, { target: { value: '3' } });
             input.blur();
 
-            const error = queryByText('ra.validation.required');
+            const error = screen.queryByText('error');
             expect(error).toBeNull();
         });
 
-        it('should be displayed if field has been touched and is invalid', () => {
-            const { getByLabelText, getByText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    validateOnBlur
-                    render={() => (
-                        <NumberInput {...defaultProps} validate={required()} />
-                    )}
-                />
+        it('should be displayed if field has been touched and is invalid', async () => {
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ views: 12 }}
+                        onSubmit={jest.fn()}
+                    >
+                        <NumberInput
+                            {...defaultProps}
+                            validate={() => 'error'}
+                        />
+                    </SimpleForm>
+                </AdminContext>
             );
-            const input = getByLabelText('resources.posts.fields.views *');
-            input.focus();
-            input.blur();
+            const input = screen.getByLabelText('resources.posts.fields.views');
+            fireEvent.blur(input);
 
-            const error = getByText('ra.validation.required');
-            expect(error).not.toBeNull();
+            await waitFor(() => {
+                expect(screen.getByText('error')).not.toBeNull();
+            });
         });
     });
 });
