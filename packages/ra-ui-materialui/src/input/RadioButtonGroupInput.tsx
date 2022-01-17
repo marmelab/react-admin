@@ -10,8 +10,9 @@ import {
 import { RadioGroupProps } from '@mui/material/RadioGroup';
 import { FormControlProps } from '@mui/material/FormControl';
 import get from 'lodash/get';
-import { useInput, FieldTitle, ChoicesInputProps, warning } from 'ra-core';
+import { useInput, FieldTitle, ChoicesProps, warning } from 'ra-core';
 
+import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 import { RadioButtonGroupInputItem } from './RadioButtonGroupInputItem';
@@ -83,13 +84,9 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         isFetching,
         isLoading,
         label,
-        loaded,
-        loading,
         margin = 'dense',
         onBlur,
         onChange,
-        onFocus,
-        options,
         optionText,
         optionValue,
         parse,
@@ -111,11 +108,10 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         `If you're not wrapping the RadioButtonGroupInput inside a ReferenceInput, you must provide the choices prop`
     );
 
-    const { id, isRequired, meta, input } = useInput({
+    const { id, isRequired, fieldState, field, formState } = useInput({
         format,
         onBlur,
         onChange,
-        onFocus,
         parse,
         resource,
         source,
@@ -123,7 +119,8 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         ...rest,
     });
 
-    const { error, submitError, touched } = meta;
+    const { error, invalid, isTouched } = fieldState;
+    const { isSubmitted } = formState;
 
     if (isLoading) {
         return (
@@ -135,8 +132,8 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
                 className={rest.className}
                 isRequired={isRequired}
                 margin={margin}
-                meta={meta}
-                input={input}
+                fieldState={fieldState}
+                field={field}
             >
                 <LinearProgress />
             </Labeled>
@@ -146,7 +143,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         <StyledFormControl
             component="fieldset"
             margin={margin}
-            error={touched && !!(error || submitError)}
+            error={(isTouched || isSubmitted) && invalid}
             {...sanitizeRestProps(rest)}
         >
             <FormLabel
@@ -161,10 +158,14 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
                 />
             </FormLabel>
 
-            <RadioGroup id={id} row={row} {...options}>
+            <RadioGroup
+                id={id}
+                row={row}
+                {...field}
+                {...sanitizeRestProps(rest)}
+            >
                 {choices.map(choice => (
                     <RadioButtonGroupInputItem
-                        {...input}
                         key={get(choice, optionValue)}
                         choice={choice}
                         optionText={optionText}
@@ -176,8 +177,8 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
             </RadioGroup>
             <FormHelperText>
                 <InputHelperText
-                    touched={touched}
-                    error={error || submitError}
+                    touched={isTouched || isSubmitted}
+                    error={error?.message}
                     helperText={helperText}
                 />
             </FormHelperText>
@@ -243,8 +244,10 @@ const sanitizeRestProps = ({
     ...rest
 }: any) => sanitizeInputRestProps(rest);
 
-export type RadioButtonGroupInputProps = ChoicesInputProps<RadioGroupProps> &
-    FormControlProps;
+export type RadioButtonGroupInputProps = CommonInputProps &
+    ChoicesProps &
+    FormControlProps &
+    RadioGroupProps;
 
 const PREFIX = 'RaRadioButtonGroupInput';
 
