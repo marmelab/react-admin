@@ -50,9 +50,9 @@ import * as React from "react";
 import Button from '@material-ui/core/Button';
 import { TopToolbar, ShowButton } from 'react-admin';
 
-const PostEditActions = ({ basePath, data, resource }) => (
+const PostEditActions = () => (
     <TopToolbar>
-        <ShowButton basePath={basePath} record={data} />
+        <ShowButton />
         {/* Add your custom actions */}
         <Button color="primary" onClick={customAction}>Custom Action</Button>
     </TopToolbar>
@@ -134,29 +134,6 @@ TextField.propTypes = {
 
 export default TextField;
 ```
-
-**Tip**: Previous versions of react-admin used the "push, don't pull" approach instead. Some components haven't migrated to the Context architecture yet, or their documentation hasn't been updated yet. That explains why some components expect a certain list of props to be pushed by their parent, like for instance `<ShowButton>`:
-
-```jsx
-import { ShowButton } from 'react-admin';
-
-const CommentShowButton = ({ record }) => (
-    <ShowButton basePath="/comments" label="Show comment" record={record} />
-);
-```
-
-This works, but the idiomatic way to do so is by using the appropriate context:  
-
-```jsx
-import { ShowButton, userecordContext } from 'react-admin';
-
-const CommentShowButton = () => {
-    const record = useRecordContext();
-    return (
-        <ShowButton basePath="/comments" label="Show comment" record={record} />
-    );
-};
-``` 
 
 ## Hooks
 

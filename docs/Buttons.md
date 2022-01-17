@@ -13,14 +13,12 @@ These buttons allow users to navigate between the various react-admin views.
 
 ### `<EditButton>`
 
-Opens the Edit view of a given record:
+Opens the Edit view of the current record:
 
 ```js
 import { EditButton } from 'react-admin';
 
-const CommentEditButton = ({ record }) => (
-    <EditButton basePath="/comments" label="Edit comment" record={record} />
-);
+const CommentEditButton = () => <EditButton label="Edit comment" />;
 ```
 
 ![Edit button](./img/edit-button.png)
@@ -29,28 +27,26 @@ const CommentEditButton = ({ record }) => (
 
 | Prop          | Required | Type            | Default          | Description                                      |
 | ------------- | -------- | --------------- | ---------------- | ------------------------------------------------ |
-| `basePath`    | Required | `string`        | -                | Base path to resource, e.g. '/posts'             |
-| `record`      | Required | `Object`        | -                | Record to link to, e.g. `{ id: 12, foo: 'bar' }` |
+| `resource`    | Optional | `string`        | -                | Resource to link to, e.g. 'posts'                |
+| `record`      | Optional | `Object`        | -                | Record to link to, e.g. `{ id: 12, foo: 'bar' }` |
 | `label`       | Optional | `string`        | 'ra.action.edit' | Label or translation message to use              |
 | `icon`        | Optional | `ReactElement`  | -                | Icon element, e.g. `<CommentIcon />`             |
 | `scrollToTop` | Optional | `boolean`       | `true`           | Scroll to top after link                         |
 
 It also supports [all the other `<Button>` props](#button).
 
-**Tip**: You can use it as `<Datagrid>` child with no props, since `<Datagrid>` injects `record` and `basePath` to its children. However, you should use the `<Datagrid rowClick="edit">` prop instead to avoid using one column for the Edit button.
+**Tip**: You can use it as `<Datagrid>` child, too. However, you should use the `<Datagrid rowClick="edit">` prop instead to avoid using one column for the Edit button.
 
 **Tip**: If you want to link to the Edit view manually, use the `/{resource}/{record.id}` location.
 
 ### `<ShowButton>`
 
-Opens the Show view of a given record:
+Opens the Show view of the current record:
 
 ```js
 import { ShowButton } from 'react-admin';
 
-const CommentShowButton = ({ record }) => (
-    <ShowButton basePath="/comments" label="Show comment" record={record} />
-);
+const CommentShowButton = () => <ShowButton label="Show comment" />;
 ```
 
 ![Show button](./img/show-button.png)
@@ -59,8 +55,8 @@ const CommentShowButton = ({ record }) => (
 
 | Prop          | Required | Type            | Default          | Description                                      |
 | ------------- | -------- | --------------- | ---------------- | ------------------------------------------------ |
-| `basePath`    | Required | `string`        | -                | Base path to resource, e.g. '/posts'             |
-| `record`      | Required | `Object`        | -                | Record to link to, e.g. `{ id: 12, foo: 'bar' }` |
+| `resource`    | Optional | `string`        | -                | The target resource, e.g. 'posts'                |
+| `record`      | Optional | `Object`        | -                | Record to link to, e.g. `{ id: 12, foo: 'bar' }` |
 | `component`   | Optional | `ReactElement`  | -                | Base path to resource, e.g. '/posts'             |
 | `label`       | Optional | `string`        | 'ra.action.show' | Label or translation message to use              |
 | `icon`        | Optional | `ReactElement`  | -                | Icon element, e.g. `<CommentIcon />`             |
@@ -68,20 +64,18 @@ const CommentShowButton = ({ record }) => (
 
 It also supports [all the other `<Button>` props](#button).
 
-**Tip**: You can use it as `<Datagrid>` child with no props, since `<Datagrid>` injects `record` and `basePath` to its children. However, you should use the `<Datagrid rowClick="show">` prop instead to avoid using one column for the Edit button.
+**Tip**: You can use it as `<Datagrid>` child with no props, too. However, you should use the `<Datagrid rowClick="show">` prop instead to avoid using one column for the Edit button.
 
 **Tip**: If you want to link to the Show view manually, use the `/{resource}/{record.id}/show` location.
 
 ### `<CreateButton>`
 
-Opens the Create view of a given resource:
+Opens the Create view of the current resource:
 
 ```js
 import { CreateButton } from 'react-admin';
 
-const CommentCreateButton = () => (
-    <CreateButton basePath="/comments" label="Create comment" />
-);
+const CommentCreateButton = () => <CreateButton label="Create comment" />;
 ```
 
 ![Create button](./img/create-button.png)
@@ -92,7 +86,7 @@ const CommentCreateButton = () => (
 
 | Prop          | Required | Type            | Default            | Description                                  |
 | ------------- | -------- | --------------- | ------------------ | -------------------------------------------- |
-| `basePath`    | Required | `string`        | -                  | base path to resource, e.g. '/posts'         |
+| `resource`    | Optional | `string`        | -                  | Target resource, e.g. 'posts'                |
 | `label`       | Optional | `string`        | 'ra.action.create' | label or translation message to use          |
 | `icon`        | Optional | `ReactElement`  | -                  | iconElement, e.g. `<CommentIcon />`          |
 | `scrollToTop` | Optional | `boolean`       | `true`             | Scroll to top after link                     |
@@ -116,9 +110,7 @@ Opens the List view of a given resource:
 ```js
 import { ListButton } from 'react-admin';
 
-const CommentListButton = () => (
-    <ListButton basePath="/comments" label="Comments" />
-);
+const CommentListButton = () => <ListButton label="Comments" />;
 ```
 
 ![List button](./img/list-button.png)
@@ -131,10 +123,10 @@ By default, react-admin doesn't display a `<ListButton>` in Edit and Show views 
 // linking back to the list from the Edit view
 import { TopToolbar, ListButton, ShowButton, Edit } from 'react-admin';
 
-const PostEditActions = ({ basePath, record, resource }) => (
+const PostEditActions = () => (
     <TopToolbar>
-        <ListButton basePath={basePath} />
-        <ShowButton basePath={basePath} record={record} />
+        <ListButton />
+        <ShowButton />
     </TopToolbar>
 );
 
@@ -147,7 +139,7 @@ export const PostEdit = () => (
 
 | Prop       | Required | Type            | Default          | Description                                  |
 | ---------- | -------- | --------------- | ---------------- | -------------------------------------------- |
-| `basePath` | Required | `string`        | -                | base path to resource, e.g. '/posts'         |
+| `resource` | Optional | `string`        | -                | target resource, e.g. 'posts'                |
 | `label`    | Optional | `string`        | 'ra.action.list' | label or translation message to use          |
 | `icon`     | Optional | `ReactElement`  | -                | iconElement, e.g. `<CommentIcon />`          |
 
@@ -168,10 +160,10 @@ By default, the `<ExportButton>` is included in the List actions.
 ```jsx
 import { CreateButton, ExportButton, TopToolbar } from 'react-admin';
 
-const PostListActions = ({ basePath }) => (
+const PostListActions = () => (
     <TopToolbar>
         <PostFilter context="button" />
-        <CreateButton basePath={basePath} />
+        <CreateButton />
         <ExportButton />
     </TopToolbar>
 );
@@ -201,10 +193,10 @@ import * as React from 'react';
 import { Fragment } from 'react';
 import { BulkDeleteButton, BulkExportButton } from 'react-admin';
 
-const PostBulkActionButtons = ({ basePath }) => (
+const PostBulkActionButtons = () => (
     <Fragment>
         <BulkExportButton />
-        <BulkDeleteButton basePath={basePath} />
+        <BulkDeleteButton />
     </Fragment>
 );
 
@@ -234,10 +226,10 @@ import * as React from 'react';
 import { Fragment } from 'react';
 import { BulkDeleteButton, BulkExportButton } from 'react-admin';
 
-const PostBulkActionButtons = ({ basePath }) => (
+const PostBulkActionButtons = () => (
     <Fragment>
         <BulkExportButton />
-        <BulkDeleteButton basePath={basePath} />
+        <BulkDeleteButton />
     </Fragment>
 );
 
@@ -288,7 +280,7 @@ import { TopToolbar, SortButton, CreateButton, ExportButton } from 'react-admin'
 const ListActions = () => (
     <TopToolbar>
         <SortButton fields={['reference', 'sales', 'stock']} />
-        <CreateButton basePath="/products" />
+        <CreateButton />
         <ExportButton />
     </TopToolbar>
 );

@@ -20,7 +20,7 @@ import { TopToolbar, SortButton, CreateButton, ExportButton } from 'react-admin'
 const ListActions = () => (
     <TopToolbar>
         <SortButton fields={['reference', 'sales', 'stock']} />
-        <CreateButton basePath="/products" />
+        <CreateButton />
         <ExportButton />
     </TopToolbar>
 );

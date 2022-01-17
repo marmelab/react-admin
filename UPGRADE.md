@@ -1333,7 +1333,6 @@ const {
     resource,
     record,
     redirect,
-    basePath,
     onClick,
 -    undoable: true
 +    mutationMode: 'undoable'

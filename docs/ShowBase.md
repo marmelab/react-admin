@@ -102,7 +102,7 @@ The default `onError` function is:
 ```jsx
 (error) => {
     notify('ra.notification.item_doesnt_exist', { type: 'warning' });
-    redirect('list', basePath);
+    redirect('list', resource);
     refresh();
 }
 ```

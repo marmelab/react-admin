@@ -209,16 +209,16 @@ const App = () => (
 +               <ConnectedRouter history={history}>
 +                   <Switch>
 +                       <Route exact path="/" component={Dashboard} />
-+                       <Route exact path="/posts" render={(routeProps) => <PostList hasCreate resource="posts" basePath={routeProps.match.url} {...routeProps} />} />
-+                       <Route exact path="/posts/create" render={(routeProps) => <PostCreate resource="posts" basePath={routeProps.match.url} {...routeProps} />} />
-+                       <Route exact path="/posts/:id" render={(routeProps) => <PostEdit hasShow resource="posts" basePath={routeProps.match.url} id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
-+                       <Route exact path="/posts/:id/show" render={(routeProps) => <PostShow hasEdit resource="posts" basePath={routeProps.match.url} id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
-+                       <Route exact path="/comments" render={(routeProps) => <CommentList hasCreate resource="comments" basePath={routeProps.match.url} {...routeProps} />} />
-+                       <Route exact path="/comments/create" render={(routeProps) => <CommentCreate resource="comments" basePath={routeProps.match.url} {...routeProps} />} />
-+                       <Route exact path="/comments/:id" render={(routeProps) => <CommentEdit resource="comments" basePath={routeProps.match.url} id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
-+                       <Route exact path="/users" render={(routeProps) => <UsersList hasCreate resource="users" basePath={routeProps.match.url} {...routeProps} />} />
-+                       <Route exact path="/users/create" render={(routeProps) => <UsersCreate resource="users" basePath={routeProps.match.url} {...routeProps} />} />
-+                       <Route exact path="/users/:id" render={(routeProps) => <UsersEdit resource="users" basePath={routeProps.match.url} id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
++                       <Route exact path="/posts" render={(routeProps) => <PostList hasCreate resource="posts" {...routeProps} />} />
++                       <Route exact path="/posts/create" render={(routeProps) => <PostCreate resource="posts" {...routeProps} />} />
++                       <Route exact path="/posts/:id" render={(routeProps) => <PostEdit hasShow resource="posts" id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
++                       <Route exact path="/posts/:id/show" render={(routeProps) => <PostShow hasEdit resource="posts" id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
++                       <Route exact path="/comments" render={(routeProps) => <CommentList hasCreate resource="comments" {...routeProps} />} />
++                       <Route exact path="/comments/create" render={(routeProps) => <CommentCreate resource="comments" {...routeProps} />} />
++                       <Route exact path="/comments/:id" render={(routeProps) => <CommentEdit resource="comments" id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
++                       <Route exact path="/users" render={(routeProps) => <UsersList hasCreate resource="users" {...routeProps} />} />
++                       <Route exact path="/users/create" render={(routeProps) => <UsersCreate resource="users" {...routeProps} />} />
++                       <Route exact path="/users/:id" render={(routeProps) => <UsersEdit resource="users" id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
 +                   </Switch>
 +               </ConnectedRouter>
 +               <Notification />
