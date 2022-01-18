@@ -105,7 +105,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                 typeof rowClick === 'function'
                     ? await rowClick(id, resource, record)
                     : rowClick;
-            if (type === false) {
+            if (type === false || type == null) {
                 return;
             }
             if (['edit', 'show'].includes(type)) {
