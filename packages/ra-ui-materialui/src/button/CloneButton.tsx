@@ -4,7 +4,12 @@ import PropTypes from 'prop-types';
 import Queue from '@mui/icons-material/Queue';
 import { Link } from 'react-router-dom';
 import { stringify } from 'query-string';
-import { RaRecord, useResourceContext, useCreateInternalLink } from 'ra-core';
+import {
+    RaRecord,
+    useResourceContext,
+    useRecordContext,
+    useCreateInternalLink,
+} from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
 
@@ -12,12 +17,11 @@ export const CloneButton = (props: CloneButtonProps) => {
     const {
         label = 'ra.action.clone',
         scrollToTop = true,
-        record,
         icon = defaultIcon,
         ...rest
     } = props;
-
     const resource = useResourceContext(props);
+    const record = useRecordContext(props);
     const createInternalLink = useCreateInternalLink();
     const pathname = createInternalLink({ resource, type: 'create' });
     return (
@@ -36,7 +40,7 @@ export const CloneButton = (props: CloneButtonProps) => {
             }
             label={label}
             onClick={stopPropagation}
-            {...rest}
+            {...sanitizeRestProps(rest)}
         >
             {icon}
         </Button>
@@ -49,6 +53,12 @@ const defaultIcon = <Queue />;
 const stopPropagation = e => e.stopPropagation();
 
 const omitId = ({ id, ...rest }: RaRecord) => rest;
+
+const sanitizeRestProps = ({
+    resource,
+    record,
+    ...rest
+}: Omit<CloneButtonProps, 'label' | 'scrollToTop' | 'icon'>) => rest;
 
 interface Props {
     record?: RaRecord;
