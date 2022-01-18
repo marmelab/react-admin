@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Link, Routes, Route } from 'react-router-dom';
+import { createHashHistory } from 'history';
 
 import { HistoryRouter } from './HistoryRouter';
 import { BasenameContextProvider } from './BasenameContextProvider';
@@ -64,8 +65,8 @@ const PostDetail = () => {
     );
 };
 
-export const AtRoot = (argsOrProps, context) => (
-    <HistoryRouter history={context.history}>
+export const AtRoot = (props, context) => (
+    <HistoryRouter history={context.history || createHashHistory()}>
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/posts" element={<PostList />} />
@@ -74,8 +75,8 @@ export const AtRoot = (argsOrProps, context) => (
     </HistoryRouter>
 );
 
-export const SubPath = (argsOrProps, context) => (
-    <HistoryRouter history={context.history}>
+export const SubPath = (props, context) => (
+    <HistoryRouter history={context.history || createHashHistory()}>
         <Routes>
             <Route
                 path="/"
