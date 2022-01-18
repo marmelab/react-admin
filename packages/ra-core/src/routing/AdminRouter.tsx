@@ -30,7 +30,7 @@ export const AdminRouter = ({
 };
 
 export interface AdminRouterProps {
-    history: History;
+    history?: History;
     basename?: string;
     children: React.ReactNode;
 }
