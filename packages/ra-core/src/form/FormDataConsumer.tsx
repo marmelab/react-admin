@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { useFormState } from 'react-final-form';
+import { useWatch } from 'react-hook-form';
 import { FormSubscription } from 'final-form';
 import get from 'lodash/get';
 
@@ -68,10 +68,10 @@ interface Props extends ConnectedProps {
  *     </Edit>
  * );
  */
-const FormDataConsumer = ({ subscription, ...props }: ConnectedProps) => {
-    const formState = useFormState({ subscription });
+const FormDataConsumer = (props: ConnectedProps) => {
+    const formData = useWatch();
 
-    return <FormDataConsumerView formData={formState.values} {...props} />;
+    return <FormDataConsumerView formData={formData} {...props} />;
 };
 
 export const FormDataConsumerView = (props: Props) => {
