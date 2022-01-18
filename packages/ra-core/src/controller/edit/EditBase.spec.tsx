@@ -300,7 +300,7 @@ describe('EditBase', () => {
                 Promise.resolve({ data: { id, ...previousData, ...data } })
             ),
         });
-        const transform = jest.fn(data => ({
+        const transform = jest.fn((data, _options) => ({
             ...data,
             test: 'test transformed',
         }));
@@ -338,7 +338,10 @@ describe('EditBase', () => {
         getByLabelText('save').click();
 
         await waitFor(() => {
-            expect(transform).toHaveBeenCalledWith({ test: 'test' });
+            expect(transform).toHaveBeenCalledWith(
+                { test: 'test' },
+                { previousData: undefined }
+            );
         });
         await waitFor(() => {
             expect(dataProvider.update).toHaveBeenCalledWith('posts', {
@@ -359,7 +362,7 @@ describe('EditBase', () => {
             ),
         });
         const transform = jest.fn();
-        const transformOverride = jest.fn(data => ({
+        const transformOverride = jest.fn((data, _options) => ({
             ...data,
             test: 'test transformed',
         }));
@@ -400,7 +403,10 @@ describe('EditBase', () => {
         getByLabelText('save').click();
 
         await waitFor(() => {
-            expect(transformOverride).toHaveBeenCalledWith({ test: 'test' });
+            expect(transformOverride).toHaveBeenCalledWith(
+                { test: 'test' },
+                { previousData: undefined }
+            );
         });
         await waitFor(() => {
             expect(dataProvider.update).toHaveBeenCalledWith('posts', {

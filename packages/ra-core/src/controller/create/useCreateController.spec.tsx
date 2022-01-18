@@ -338,6 +338,7 @@ describe('useCreateController', () => {
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         expect(transform).toHaveBeenCalledWith({ foo: 'bar' });
+
         expect(create).toHaveBeenCalledWith('posts', {
             data: { foo: 'bar', transformed: true },
         });

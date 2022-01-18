@@ -382,7 +382,7 @@ export const useUpdate = <RecordType extends RaRecord = any>(
         }
     };
 
-    return [update, mutation];
+    return [update, mutation, paramsRef.current.previousData];
 };
 
 type Snapshot = [key: QueryKey, value: any][];
@@ -418,5 +418,6 @@ export type UseUpdateResult<RecordType extends RaRecord = any> = [
         unknown,
         Partial<UpdateParams<RecordType> & { resource?: string }>,
         unknown
-    >
+    >,
+    RecordType
 ];

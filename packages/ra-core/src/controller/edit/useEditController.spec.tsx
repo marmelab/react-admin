@@ -661,9 +661,11 @@ describe('useEditController', () => {
             </CoreAdminContext>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
-        expect(transform).toHaveBeenCalledWith({
-            foo: 'bar',
-        });
+        expect(transform).toHaveBeenCalledWith(
+            { foo: 'bar' },
+            { previousData: undefined }
+        );
+
         expect(update).toHaveBeenCalledWith('posts', {
             id: 12,
             data: { foo: 'bar', transformed: true },
@@ -712,9 +714,10 @@ describe('useEditController', () => {
             )
         );
         expect(transform).not.toHaveBeenCalled();
-        expect(transformSave).toHaveBeenCalledWith({
-            foo: 'bar',
-        });
+        expect(transformSave).toHaveBeenCalledWith(
+            { foo: 'bar' },
+            { previousData: undefined }
+        );
         expect(update).toHaveBeenCalledWith('posts', {
             id: 12,
             data: { foo: 'bar', transformed: true },
