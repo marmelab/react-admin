@@ -346,6 +346,9 @@ export interface DatagridProps<RecordType extends RaRecord = any>
 }
 
 const injectedProps = [
+    'field',
+    'fieldState',
+    'formState',
     'allowEmpty',
     'isRequired',
     'setFilter',
