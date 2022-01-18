@@ -1,11 +1,43 @@
 import * as React from 'react';
 import { render, screen } from '@testing-library/react';
 
+import { useCreatePath } from './useCreatePath';
 import { AtRoot, SubPath } from './useCreatePath.stories';
 
 describe('useCreatePath', () => {
     beforeEach(() => {
         window.history.replaceState({}, '', '/');
+    });
+
+    const UseCreatePath = ({ resource, type, id }: any) => {
+        const createPath = useCreatePath();
+        const path = createPath({ resource, type, id });
+        return <div>{path}</div>;
+    };
+
+    it('creates links for list views', () => {
+        render(<UseCreatePath resource="posts" type="list" />);
+        screen.getByText('/posts');
+    });
+
+    it('creates links for create views', () => {
+        render(<UseCreatePath resource="posts" type="create" />);
+        screen.getByText('/posts/create');
+    });
+
+    it('creates links for edit views', () => {
+        render(<UseCreatePath resource="posts" type="edit" id="1234" />);
+        screen.getByText('/posts/1234');
+    });
+
+    it('creates links for show views', () => {
+        render(<UseCreatePath resource="posts" type="show" id="1234" />);
+        screen.getByText('/posts/1234/show');
+    });
+
+    it('removes double slashes', () => {
+        render(<UseCreatePath resource="/posts" type="edit" id="1234" />);
+        screen.getByText('/posts/1234');
     });
 
     it('creates valid links when used without a basename', async () => {
