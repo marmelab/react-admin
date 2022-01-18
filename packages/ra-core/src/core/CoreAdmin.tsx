@@ -159,6 +159,9 @@ export interface CoreAdminProps {
     dashboard?: DashboardComponent;
     dataProvider: DataProvider | LegacyDataProvider;
     disableTelemetry?: boolean;
+    /**
+     * @deprecated Wrap your Admin inside a Router to change the routing strategy
+     */
     history?: History;
     i18nProvider?: I18nProvider;
     initialState?: InitialState;

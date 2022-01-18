@@ -36,6 +36,9 @@ export interface AdminContextProps {
     dashboard?: DashboardComponent;
     dataProvider?: DataProvider | LegacyDataProvider;
     queryClient?: QueryClient;
+    /**
+     * @deprecated Wrap your Admin inside a Router to change the routing strategy
+     */
     history?: History;
     i18nProvider?: I18nProvider;
     initialState?: InitialState;

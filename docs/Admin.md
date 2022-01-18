@@ -457,6 +457,8 @@ const App = () => (
 
 ## `history`
 
+**Note**: This prop is depredated. Check [the Routing chapter](./Routing.md) to see how to use a different router.
+
 By default, react-admin creates URLs using a hash sign (e.g. "myadmin.acme.com/#/posts/123"). The hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers. But you may want to use another routing strategy, e.g. to allow server-side rendering.
 
 You can create your own `history` function (compatible with [the `history` npm package](https://github.com/reacttraining/history)), and pass it to the `<Admin>` component to override the default history strategy. For instance, to use `browserHistory`:
@@ -476,7 +478,7 @@ const App = () => (
 
 ## `basename`
 
-Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is only needed when using the [`BrowserHistory`](https://github.com/remix-run/history/blob/main/docs/api-reference.md#createbrowserhistory) to serve the application under a subpath of your domain (for example https://marmelab.com/ra-enterprise-demo). See https://reactrouter.com/docs/en/v6/api#router for more information.
+Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is only needed when using the [`BrowserHistory`](https://github.com/remix-run/history/blob/main/docs/api-reference.md#createbrowserhistory) to serve the application under a subpath of your domain (for example https://marmelab.com/ra-enterprise-demo), or when embedding react-admin inside a single-page app withits own routing. See https://reactrouter.com/docs/en/v6/api#router for more information.
 
 ```jsx
 import { Admin } from 'react-admin';

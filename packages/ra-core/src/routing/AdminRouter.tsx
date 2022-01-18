@@ -12,7 +12,7 @@ import { BasenameContextProvider } from './BasenameContextProvider';
  */
 export const AdminRouter = ({
     history,
-    basename,
+    basename = '',
     children,
 }: AdminRouterProps) => {
     const isInRouter = useInRouterContext();

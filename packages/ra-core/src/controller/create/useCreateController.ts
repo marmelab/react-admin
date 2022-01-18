@@ -1,8 +1,7 @@
 import { useCallback } from 'react';
 // @ts-ignore
 import { parse } from 'query-string';
-import { useLocation } from 'react-router-dom';
-import { Location } from 'history';
+import { useLocation, Location } from 'react-router-dom';
 import { UseMutationOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';

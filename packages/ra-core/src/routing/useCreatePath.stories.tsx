@@ -1,12 +1,15 @@
 import * as React from 'react';
-import { HashRouter, Link, Routes, Route } from 'react-router-dom';
+import { Link, Routes, Route } from 'react-router-dom';
 
+import { HistoryRouter } from './HistoryRouter';
 import { BasenameContextProvider } from './BasenameContextProvider';
 import { useBasename } from './useBasename';
 import { useCreatePath } from './useCreatePath';
+import { FakeBrowserDecorator } from '../storybook//FakeBrowser';
 
 export default {
     title: 'ra-core/routing/useCreatePath',
+    decorators: [FakeBrowserDecorator],
 };
 
 const Home = () => {
@@ -61,18 +64,18 @@ const PostDetail = () => {
     );
 };
 
-export const AtRoot = () => (
-    <HashRouter>
+export const AtRoot = (argsOrProps, context) => (
+    <HistoryRouter history={context.history}>
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/posts" element={<PostList />} />
             <Route path="/posts/123" element={<PostDetail />} />
         </Routes>
-    </HashRouter>
+    </HistoryRouter>
 );
 
-export const SubPath = () => (
-    <HashRouter>
+export const SubPath = (argsOrProps, context) => (
+    <HistoryRouter history={context.history}>
         <Routes>
             <Route
                 path="/"
@@ -98,5 +101,5 @@ export const SubPath = () => (
                 }
             />
         </Routes>
-    </HashRouter>
+    </HistoryRouter>
 );

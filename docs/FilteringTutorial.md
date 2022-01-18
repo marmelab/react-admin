@@ -45,7 +45,7 @@ Once decoded, the `filter` query parameter reveals as a JSON value:
 filter={"commentable":true,"q":"lorem "}
 ```
 
-You can change the filters by updating the query parameter, e.g. using the `<Link>` component or the `history.push()` method from `react-router`. 
+You can change the filters by updating the query parameter, e.g. using the `<Link>` component or the `useNavigate()` hook from `react-router-dom`. 
 
 **Tip**: Once a user sets a filter, react-admin persists the filter value in the application state, so that when the user comes back to the list, they should see the filtered list. That's a design choice.
 
