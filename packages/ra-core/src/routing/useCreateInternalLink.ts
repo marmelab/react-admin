@@ -9,15 +9,19 @@ export const useCreateInternalLink = () => {
         ({ resource, id, type }: CreateInternalLinkParams): string => {
             switch (type) {
                 case 'list':
-                    return `${basename}/${resource}`;
+                    return removeDoubleSlashes(`${basename}/${resource}`);
                 case 'create':
-                    return `${basename}/${resource}/create`;
+                    return removeDoubleSlashes(
+                        `${basename}/${resource}/create`
+                    );
                 case 'edit':
-                    return `${basename}/${resource}/${encodeURIComponent(id)}`;
+                    return removeDoubleSlashes(
+                        `${basename}/${resource}/${encodeURIComponent(id)}`
+                    );
                 case 'show':
-                    return `${basename}/${resource}/${encodeURIComponent(
-                        id
-                    )}/show`;
+                    return removeDoubleSlashes(
+                        `${basename}/${resource}/${encodeURIComponent(id)}/show`
+                    );
                 default:
                     return type;
             }
@@ -31,3 +35,5 @@ export interface CreateInternalLinkParams {
     resource: string;
     id?: Identifier;
 }
+
+const removeDoubleSlashes = (path: string) => path.replace('//', '/');

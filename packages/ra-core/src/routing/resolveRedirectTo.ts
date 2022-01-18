@@ -13,22 +13,30 @@ export const resolveRedirectTo = (
     if (typeof redirectTo === 'function') {
         const target: To = redirectTo(resource, id, data);
         return typeof target === 'string'
-            ? `${basename}/${target}`
+            ? removeDoubleSlashes(`${basename}/${target}`)
             : {
-                  pathname: `${basename}/${target.pathname}`,
+                  pathname: removeDoubleSlashes(
+                      `${basename}/${target.pathname}`
+                  ),
                   ...target,
               };
     }
     switch (redirectTo) {
         case 'list':
-            return `${basename}/${resource}`;
+            return removeDoubleSlashes(`${basename}/${resource}`);
         case 'create':
-            return `${basename}/${resource}/create`;
+            return removeDoubleSlashes(`${basename}/${resource}/create`);
         case 'edit':
-            return `${basename}/${resource}/${encodeURIComponent(id)}`;
+            return removeDoubleSlashes(
+                `${basename}/${resource}/${encodeURIComponent(id)}`
+            );
         case 'show':
-            return `${basename}/${resource}/${encodeURIComponent(id)}/show`;
+            return removeDoubleSlashes(
+                `${basename}/${resource}/${encodeURIComponent(id)}/show`
+            );
         default:
             return redirectTo;
     }
 };
+
+const removeDoubleSlashes = (path: string) => path.replace('//', '/');
