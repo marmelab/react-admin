@@ -13,7 +13,7 @@ import {
     RecordContextProvider,
     RaRecord,
     useRecordContext,
-    useCreateInternalLink,
+    useCreatePath,
     Identifier,
 } from 'ra-core';
 
@@ -129,11 +129,11 @@ export const NonEmptyReferenceField: FC<
     if (React.Children.count(children) !== 1) {
         throw new Error('<ReferenceField> only accepts a single child');
     }
-    const createInternalLink = useCreateInternalLink();
+    const createPath = useCreatePath();
     const resourceLinkPath =
         link === false
             ? false
-            : createInternalLink({
+            : createPath({
                   resource: reference,
                   id,
                   type:

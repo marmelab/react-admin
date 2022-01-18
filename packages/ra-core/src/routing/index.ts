@@ -2,7 +2,7 @@ export * from './AdminRouter';
 export * from './linkToRecord';
 export * from './resolveRedirectTo';
 export * from './useBasename';
-export * from './useCreateInternalLink';
+export * from './useCreatePath';
 export * from './useRedirect';
 export * from './useScrollToTop';
 export * from './types';

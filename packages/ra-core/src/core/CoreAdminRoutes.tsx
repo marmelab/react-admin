@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { WithPermissions } from '../auth';
 import { useTimeout } from '../util';
-import { useScrollToTop, useCreateInternalLink } from '../routing';
+import { useScrollToTop, useCreatePath } from '../routing';
 import {
     AdminChildren,
     CatchAllComponent,
@@ -16,7 +16,7 @@ import { useConfigureAdminRouterFromChildren } from './useConfigureAdminRouterFr
 export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
     const oneSecondHasPassed = useTimeout(1000);
     useScrollToTop();
-    const createInternalLink = useCreateInternalLink();
+    const createPath = useCreatePath();
 
     const {
         customRoutesWithLayout,
@@ -88,7 +88,7 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
                                             />
                                         ) : resources.length > 0 ? (
                                             <Navigate
-                                                to={createInternalLink({
+                                                to={createPath({
                                                     resource:
                                                         resources[0].props.name,
                                                     type: 'list',

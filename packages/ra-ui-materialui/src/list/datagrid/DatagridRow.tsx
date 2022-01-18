@@ -19,7 +19,7 @@ import {
     useExpanded,
     useResourceContext,
     useTranslate,
-    useCreateInternalLink,
+    useCreatePath,
 } from 'ra-core';
 import { shallowEqual } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -62,7 +62,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
             context.isRowExpandable(record)) &&
         expand;
     const resource = useResourceContext(props);
-    const createInternalLink = useCreateInternalLink();
+    const createPath = useCreatePath();
     const [expanded, toggleExpanded] = useExpanded(resource, id);
     const [nbColumns, setNbColumns] = useState(() =>
         computeNbColumns(expandable, children, hasBulkActions)
@@ -109,7 +109,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                 return;
             }
             if (['edit', 'show'].includes(type)) {
-                navigate(createInternalLink({ resource, id, type }));
+                navigate(createPath({ resource, id, type }));
                 return;
             }
             if (type === 'expand') {
@@ -128,7 +128,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
             resource,
             record,
             navigate,
-            createInternalLink,
+            createPath,
             handleToggleExpand,
             handleToggleSelection,
         ]

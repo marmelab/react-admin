@@ -4,7 +4,7 @@ import { parsePath } from 'history';
 
 import { Identifier, RaRecord } from '../types';
 import { useBasename } from './useBasename';
-import { useCreateInternalLink } from './useCreateInternalLink';
+import { useCreatePath } from './useCreatePath';
 
 type RedirectToFunction = (
     resource?: string,
@@ -35,7 +35,7 @@ export type RedirectionSideEffect = string | false | RedirectToFunction;
 export const useRedirect = () => {
     const navigate = useNavigate();
     const basename = useBasename();
-    const createInternalLink = useCreateInternalLink();
+    const createPath = useCreatePath();
 
     return useCallback(
         (
@@ -76,15 +76,12 @@ export const useRedirect = () => {
                 return;
             } else {
                 // redirection to an internal link
-                navigate(
-                    createInternalLink({ resource, id, type: redirectTo }),
-                    {
-                        state: { _scrollToTop: true, ...state },
-                    }
-                );
+                navigate(createPath({ resource, id, type: redirectTo }), {
+                    state: { _scrollToTop: true, ...state },
+                });
                 return;
             }
         },
-        [navigate, basename, createInternalLink]
+        [navigate, basename, createPath]
     );
 };

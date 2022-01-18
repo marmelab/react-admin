@@ -6,11 +6,7 @@ import { Fab, useMediaQuery, Theme } from '@mui/material';
 import ContentAdd from '@mui/icons-material/Add';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-import {
-    useTranslate,
-    useResourceContext,
-    useCreateInternalLink,
-} from 'ra-core';
+import { useTranslate, useResourceContext, useCreatePath } from 'ra-core';
 
 import { Button, ButtonProps, sanitizeButtonRestProps } from './Button';
 
@@ -38,7 +34,7 @@ const CreateButton = (props: CreateButtonProps) => {
     } = props;
 
     const resource = useResourceContext(props);
-    const createInternalLink = useCreateInternalLink();
+    const createPath = useCreatePath();
     const translate = useTranslate();
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('md')
@@ -47,7 +43,7 @@ const CreateButton = (props: CreateButtonProps) => {
     return isSmall ? (
         <StyledFab
             component={Link}
-            to={createInternalLink({ resource, type: 'create' })}
+            to={createPath({ resource, type: 'create' })}
             state={{ _scrollToTop: scrollToTop }}
             color="primary"
             className={classnames(CreateButtonClasses.floating, className)}
@@ -59,7 +55,7 @@ const CreateButton = (props: CreateButtonProps) => {
     ) : (
         <Button
             component={Link}
-            to={createInternalLink({ resource, type: 'create' })}
+            to={createPath({ resource, type: 'create' })}
             state={{ _scrollToTop: scrollToTop }}
             className={className}
             label={label}

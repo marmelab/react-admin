@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionList from '@mui/icons-material/List';
 import { Link } from 'react-router-dom';
-import { useResourceContext, useCreateInternalLink } from 'ra-core';
+import { useResourceContext, useCreatePath } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
 
@@ -41,11 +41,11 @@ export const ListButton = (props: ListButtonProps) => {
         ...rest
     } = props;
     const resource = useResourceContext(props);
-    const createInternalLink = useCreateInternalLink();
+    const createPath = useCreatePath();
     return (
         <Button
             component={Link}
-            to={createInternalLink({ type: 'list', resource })}
+            to={createPath({ type: 'list', resource })}
             state={{ _scrollToTop: scrollToTop }}
             label={label}
             {...(rest as any)}

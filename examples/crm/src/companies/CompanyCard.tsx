@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Paper, Typography, Link as MuiLink } from '@mui/material';
 import ContactsIcon from '@mui/icons-material/AccountCircle';
 import DealIcon from '@mui/icons-material/MonetizationOn';
-import { useCreateInternalLink, SelectField } from 'react-admin';
+import { useCreatePath, SelectField } from 'react-admin';
 import { Link } from 'react-router-dom';
 
 import { sectors } from './sectors';
@@ -61,12 +61,12 @@ const StyledMuiLink = styled(MuiLink)(({ theme }) => ({
 
 export const CompanyCard = ({ record }: { record: Company }) => {
     const [elevation, setElevation] = useState(1);
-    const createInternalLink = useCreateInternalLink();
+    const createPath = useCreatePath();
     return (
         <StyledMuiLink
             // @ts-ignore
             component={Link}
-            to={createInternalLink({
+            to={createPath({
                 resource: 'companies',
                 id: record.id,
                 type: 'show',

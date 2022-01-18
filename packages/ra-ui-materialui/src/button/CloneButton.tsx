@@ -8,7 +8,7 @@ import {
     RaRecord,
     useResourceContext,
     useRecordContext,
-    useCreateInternalLink,
+    useCreatePath,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
@@ -22,8 +22,8 @@ export const CloneButton = (props: CloneButtonProps) => {
     } = props;
     const resource = useResourceContext(props);
     const record = useRecordContext(props);
-    const createInternalLink = useCreateInternalLink();
-    const pathname = createInternalLink({ resource, type: 'create' });
+    const createPath = useCreatePath();
+    const pathname = createPath({ resource, type: 'create' });
     return (
         <Button
             component={Link}

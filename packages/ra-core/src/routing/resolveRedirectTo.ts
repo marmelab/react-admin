@@ -1,7 +1,7 @@
 import { To } from 'react-router-dom';
 
 /**
- * @deprecated use useCreateInternalLink instead
+ * @deprecated use useCreatePath instead
  */
 export const resolveRedirectTo = (
     redirectTo,

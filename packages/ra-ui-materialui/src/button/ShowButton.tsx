@@ -7,7 +7,7 @@ import {
     RaRecord,
     useResourceContext,
     useRecordContext,
-    useCreateInternalLink,
+    useCreatePath,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
@@ -31,12 +31,12 @@ const ShowButton = (props: ShowButtonProps) => {
     } = props;
     const resource = useResourceContext(props);
     const record = useRecordContext(props);
-    const createInternalLink = useCreateInternalLink();
+    const createPath = useCreatePath();
     if (!record) return null;
     return (
         <Button
             component={Link}
-            to={createInternalLink({ type: 'show', resource, id: record.id })}
+            to={createPath({ type: 'show', resource, id: record.id })}
             state={{ _scrollToTop: scrollToTop }}
             label={label}
             onClick={stopPropagation}

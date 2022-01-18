@@ -22,7 +22,7 @@ import {
     sanitizeListRestProps,
     useListContext,
     useResourceContext,
-    useCreateInternalLink,
+    useCreatePath,
 } from 'ra-core';
 
 import { SimpleListLoading } from './SimpleListLoading';
@@ -242,7 +242,7 @@ const LinkOrNot = (
         record,
         ...rest
     } = props;
-    const createInternalLink = useCreateInternalLink();
+    const createPath = useCreatePath();
     const type =
         typeof linkType === 'function' ? linkType(record, id) : linkType;
 
@@ -258,7 +258,7 @@ const LinkOrNot = (
         // @ts-ignore
         <ListItemButton
             component={Link}
-            to={createInternalLink({ resource, id, type })}
+            to={createPath({ resource, id, type })}
             {...rest}
         >
             {children}

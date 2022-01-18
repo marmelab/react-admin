@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import { AtRoot, SubPath } from './useCreateInternalLink.stories';
+import { AtRoot, SubPath } from './useCreatePath.stories';
 
-describe('useCreateInternalLink', () => {
+describe('useCreatePath', () => {
     beforeEach(() => {
         window.history.replaceState({}, '', '/');
     });

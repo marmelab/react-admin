@@ -6,7 +6,7 @@ import {
     useRecordContext,
     ResourceContextProvider,
     LinkToType,
-    useCreateInternalLink,
+    useCreatePath,
 } from 'ra-core';
 
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
@@ -32,7 +32,7 @@ export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
         link = false,
     } = props;
     const record = useRecordContext(props);
-    const createInternalLink = useCreateInternalLink();
+    const createPath = useCreatePath();
 
     const {
         isLoading,
@@ -50,7 +50,7 @@ export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
     const resourceLinkPath =
         link === false
             ? false
-            : createInternalLink({
+            : createPath({
                   resource: reference,
                   id: referenceRecord?.id,
                   type:

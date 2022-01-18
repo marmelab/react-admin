@@ -10,7 +10,7 @@ import {
     useResourceDefinitions,
     useGetResourceLabel,
     ReduxState,
-    useCreateInternalLink,
+    useCreatePath,
 } from 'ra-core';
 
 import { DashboardMenuItem } from './DashboardMenuItem';
@@ -19,7 +19,7 @@ import { MenuItemLink } from './MenuItemLink';
 export const Menu = (props: MenuProps) => {
     const resources = useResourceDefinitions();
     const getResourceLabel = useGetResourceLabel();
-    const createInternalLink = useCreateInternalLink();
+    const createPath = useCreatePath();
     const {
         hasDashboard,
         dense,
@@ -31,7 +31,7 @@ export const Menu = (props: MenuProps) => {
                     .map(name => (
                         <MenuItemLink
                             key={name}
-                            to={createInternalLink({
+                            to={createPath({
                                 resource: name,
                                 type: 'list',
                             })}

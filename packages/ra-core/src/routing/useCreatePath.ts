@@ -17,16 +17,16 @@ import { useBasename } from './useBasename';
  * hand, e.g. '/articles/1/show'.
  *
  * @example
- * import { useCreateInternalLink, useRecordContext } from 'react-admin';
+ * import { useCreatePath, useRecordContext } from 'react-admin';
  * import { useNavigate } from 'react-router-dom';
  *
  * const PostEditButton = () => {
- *     const createLink = useCreateInternalLink();
+ *     const createPath = useCreatePath();
  *     const record = useRecordContext();
  *     const navigate = useNavigate();
  *
  *     const handleClick = () => {
- *         const link = createLink({
+ *         const link = createPath({
  *            type: 'edit',
  *            resource: 'posts',
  *            id: record.id
@@ -37,10 +37,10 @@ import { useBasename } from './useBasename';
  *    return <button onClick={handleClick}>Edit Post</button>;
  * };
  */
-export const useCreateInternalLink = () => {
+export const useCreatePath = () => {
     const basename = useBasename();
     return useCallback(
-        ({ resource, id, type }: CreateInternalLinkParams): string => {
+        ({ resource, id, type }: CreatePathParams): string => {
             switch (type) {
                 case 'list':
                     return removeDoubleSlashes(`${basename}/${resource}`);
@@ -64,7 +64,7 @@ export const useCreateInternalLink = () => {
     );
 };
 
-export interface CreateInternalLinkParams {
+export interface CreatePathParams {
     type: string;
     resource: string;
     id?: Identifier;

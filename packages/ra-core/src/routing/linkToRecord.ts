@@ -1,5 +1,5 @@
 /**
- * @deprecated use useCreateInternalLink instead
+ * @deprecated use useCreatePath instead
  */
 export const linkToRecord = (resource, id, linkType = 'edit') => {
     const link = `${resource}/${encodeURIComponent(id)}`;

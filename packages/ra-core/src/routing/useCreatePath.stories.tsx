@@ -3,21 +3,21 @@ import { HashRouter, Link, Routes, Route } from 'react-router-dom';
 
 import { BasenameContextProvider } from './BasenameContextProvider';
 import { useBasename } from './useBasename';
-import { useCreateInternalLink } from './useCreateInternalLink';
+import { useCreatePath } from './useCreatePath';
 
 export default {
-    title: 'ra-core/routing/useCreateInternalLink',
+    title: 'ra-core/routing/useCreatePath',
 };
 
 const Home = () => {
-    const createInternalLink = useCreateInternalLink();
+    const createPath = useCreatePath();
     return (
         <>
             <h1>Home</h1>
             <ul>
                 <li>
                     <Link
-                        to={createInternalLink({
+                        to={createPath({
                             resource: 'posts',
                             type: 'list',
                         })}
@@ -27,7 +27,7 @@ const Home = () => {
                 </li>
                 <li>
                     <Link
-                        to={createInternalLink({
+                        to={createPath({
                             resource: 'posts',
                             type: 'edit',
                             id: 123,
