@@ -194,7 +194,7 @@ export const getSuggestionsFactory = ({
                     getChoiceValue(choice) === getChoiceValue(selectedItem)
             );
         } else {
-            suggestions = choices;
+            suggestions = [...choices];
         }
     } else {
         suggestions = choices.filter(choice => matchSuggestion(filter, choice));
@@ -239,9 +239,10 @@ export const getSuggestionsFactory = ({
     // Only keep unique items. Necessary because we might have fetched
     // the currently selected choice in addition of the possible choices
     // that may also contain it
-    return suggestions.filter(
+    const result = suggestions.filter(
         (suggestion, index) => suggestions.indexOf(suggestion) === index
     );
+    return result;
 };
 
 /**
