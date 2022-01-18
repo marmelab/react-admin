@@ -13,8 +13,7 @@ export const TranslatableInputsTab = (
     props: TranslatableInputsTabProps & TabProps
 ) => {
     const { groupKey = '', locale, ...rest } = props;
-    const { invalid, touched } = useFormGroup(`${groupKey}${locale}`);
-
+    const { isValid, isTouched } = useFormGroup(`${groupKey}${locale}`);
     const translate = useTranslate();
 
     return (
@@ -24,7 +23,7 @@ export const TranslatableInputsTab = (
                 _: capitalize(locale),
             })}
             className={classnames(TranslatableInputsTabClasses.root, {
-                [TranslatableInputsTabClasses.error]: invalid && touched,
+                [TranslatableInputsTabClasses.error]: !isValid && isTouched,
             })}
             {...rest}
         />
@@ -50,7 +49,7 @@ const StyledTab = styled(Tab, { name: PREFIX })(({ theme }) => ({
         minWidth: theme.spacing(6),
     },
 
-    [`& .${TranslatableInputsTabClasses.error}`]: {
+    [`&.${TranslatableInputsTabClasses.error}`]: {
         color: theme.palette.error.main,
     },
 }));

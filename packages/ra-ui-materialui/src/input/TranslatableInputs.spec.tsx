@@ -1,12 +1,14 @@
 import * as React from 'react';
 import expect from 'expect';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
-import { TranslatableInputs } from './TranslatableInputs';
 import { TextInput } from './TextInput';
-import { FormWithRedirect, required, useTranslatableContext } from 'ra-core';
-import { renderWithRedux } from 'ra-test';
-import { TranslatableInputsTab } from './TranslatableInputsTab';
+import { required, testDataProvider, useTranslatableContext } from 'ra-core';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Tabs } from '@mui/material';
+
+import { AdminContext } from '../AdminContext';
+import { SimpleForm } from '../form';
+import { TranslatableInputs } from './TranslatableInputs';
+import { TranslatableInputsTab } from './TranslatableInputsTab';
 
 const record = {
     id: 123,
@@ -29,18 +31,16 @@ const record = {
 describe('<TranslatableInputs />', () => {
     it('should display every input for every locale', () => {
         const handleSubmit = jest.fn();
-        renderWithRedux(
-            <FormWithRedirect
-                record={record}
-                onSubmit={handleSubmit}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm record={record} onSubmit={handleSubmit}>
                     <TranslatableInputs locales={['en', 'fr']}>
                         <TextInput source="name" />
                         <TextInput source="description" />
                         <TextInput source="nested.field" />
                     </TranslatableInputs>
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
 
         expect(
@@ -73,7 +73,7 @@ describe('<TranslatableInputs />', () => {
         ).toBeNull();
     });
 
-    it('should display validation errors and highlight the tab which has invalid inputs', () => {
+    it('should display validation errors and highlight the tab which has invalid inputs', async () => {
         const handleSubmit = jest.fn();
 
         const Selector = () => {
@@ -100,18 +100,21 @@ describe('<TranslatableInputs />', () => {
             );
         };
 
-        renderWithRedux(
-            <FormWithRedirect
-                onSubmit={handleSubmit}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    record={record}
+                    onSubmit={handleSubmit}
+                    mode="onBlur"
+                >
                     <TranslatableInputs
                         locales={['en', 'fr']}
                         selector={<Selector />}
                     >
-                        <TextInput source="name" validate={required()} />
+                        <TextInput source="name" validate={() => 'error'} />
                     </TranslatableInputs>
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
 
         expect(
@@ -122,19 +125,21 @@ describe('<TranslatableInputs />', () => {
         ).not.toBeNull();
 
         fireEvent.change(
-            screen.getAllByLabelText('resources.undefined.fields.name *')[0],
+            screen.getAllByLabelText('resources.undefined.fields.name')[0],
             {
                 target: { value: 'english value' },
             }
         );
         fireEvent.click(screen.getByText('ra.locales.fr'));
         fireEvent.focus(
-            screen.getAllByLabelText('resources.undefined.fields.name *')[1]
+            screen.getAllByLabelText('resources.undefined.fields.name')[1]
         );
         fireEvent.blur(
-            screen.getAllByLabelText('resources.undefined.fields.name *')[1]
+            screen.getAllByLabelText('resources.undefined.fields.name')[1]
         );
-        expect(screen.queryByText('ra.validation.required')).not.toBeNull();
+        await waitFor(() => {
+            expect(screen.queryByText('error')).not.toBeNull();
+        });
         fireEvent.click(screen.getByText('ra.locales.en'));
         const tabs = screen.getAllByRole('tab');
         expect(tabs[1].getAttribute('id')).toEqual('translatable-header-fr');
@@ -145,21 +150,16 @@ describe('<TranslatableInputs />', () => {
 
     it('should allow to update any input for any locale', async () => {
         const save = jest.fn();
-        renderWithRedux(
-            <FormWithRedirect
-                record={record}
-                onSubmit={save}
-                render={({ handleSubmit }) => (
-                    <form onSubmit={handleSubmit}>
-                        <TranslatableInputs locales={['en', 'fr']}>
-                            <TextInput source="name" />
-                            <TextInput source="description" />
-                            <TextInput source="nested.field" />
-                        </TranslatableInputs>
-                        <button type="submit">save</button>
-                    </form>
-                )}
-            />
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm record={record} onSubmit={save}>
+                    <TranslatableInputs locales={['en', 'fr']}>
+                        <TextInput source="name" />
+                        <TextInput source="description" />
+                        <TextInput source="nested.field" />
+                    </TranslatableInputs>
+                </SimpleForm>
+            </AdminContext>
         );
 
         fireEvent.change(screen.queryByDisplayValue('english name'), {
@@ -169,7 +169,7 @@ describe('<TranslatableInputs />', () => {
         fireEvent.change(screen.queryByDisplayValue('french nested field'), {
             target: { value: 'french nested field updated' },
         });
-        fireEvent.click(screen.getByText('save'));
+        fireEvent.click(screen.getByText('ra.action.save'));
 
         await waitFor(() => {
             expect(save).toHaveBeenCalledWith({
@@ -223,23 +223,19 @@ describe('<TranslatableInputs />', () => {
             );
         };
 
-        renderWithRedux(
-            <FormWithRedirect
-                record={record}
-                render={({ handleSubmit }) => (
-                    <form onSubmit={handleSubmit}>
-                        <TranslatableInputs
-                            locales={['en', 'fr']}
-                            selector={<Selector />}
-                        >
-                            <TextInput source="name" />
-                            <TextInput source="description" />
-                            <TextInput source="nested.field" />
-                        </TranslatableInputs>
-                        <button type="submit">save</button>
-                    </form>
-                )}
-            />
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm record={record}>
+                    <TranslatableInputs
+                        locales={['en', 'fr']}
+                        selector={<Selector />}
+                    >
+                        <TextInput source="name" />
+                        <TextInput source="description" />
+                        <TextInput source="nested.field" />
+                    </TranslatableInputs>
+                </SimpleForm>
+            </AdminContext>
         );
 
         expect(screen.getByLabelText('en').getAttribute('hidden')).toBeNull();
