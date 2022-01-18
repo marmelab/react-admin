@@ -14,7 +14,6 @@ import {
     isInaccessible,
     render,
     screen,
-    waitFor,
 } from '@testing-library/react';
 
 import { defaultTheme } from '../defaultTheme';
