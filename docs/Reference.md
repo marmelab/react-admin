@@ -76,7 +76,6 @@ title: "Reference"
 * [`<Loading>`](./Theming.md#loading)
 * [`<LinearProgress>`](./Theming.md#linearprogress)
 * [`<Logout>`](./Theming.md#using-a-custom-logout-button)
-* [`linkToRecord`](./Fields.md#linking-to-other-records)
 * [`<List>`](./List.md#usage)
 * [`<ListBase>`](./ListBase.md#usage)
 * [`<ListGuesser>`](./ListGuesser.md#usage)
