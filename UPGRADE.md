@@ -1285,6 +1285,10 @@ If you still relied on sagas, you have to port your saga code to react `useEffec
 - Removed `<ReferenceArrayInputController>` (use `useReferenceArrayInputController` instead)
 - Removed declarative side effects in dataProvider hooks (e.g. `{ onSuccess: { refresh: true } }`). Use function side effects instead (e.g. `{ onSuccess: () => { refresh(); } }`)
 
+## Removed Deprecated Props
+
+- Removed `<ReferenceField linkType>` prop (use `<ReferenceField link>` instead)
+
 ## Removed connected-react-router
 
 If you were dispatching `connected-react-router` actions to navigate, you'll now have to use `react-router` hooks:
@@ -1350,6 +1354,106 @@ export const PostEdit = (props) => (
     </Edit>
 );
 ```
+
+## The `record` Prop Is No Longer Injected
+
+The List and Show components that took Field as children (e.g. `<Datagrid>`, `<SimpleShowLayout>`) used to clone these childrena and to inject the current `record` as prop. This is no longer the case, and Field components have to "pull" the record using `useRecordContext` instead. 
+
+All the react-admin Field components have been updated to use this `useRecordContext` hook. But you will need to update your custom fields:
+
+```diff
++import { useRecordContext } from 'react-admin';
+
+-const MyField = ({ record }) => {
++const MyField = () => {
++   const record = useRecordContext();
+    return <div>{record ? record.title : ''}</div>;
+}
+
+const PostList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="author" />
+            <MyField />
+        </Datagrid>
+    </List>
+);
+```
+
+The same goes for other components that used to receive the `record` prop, like e.g. aside components:
+
+```diff
+-const Aside = ({ record }) => (
++const Aside = () => {
++   const record = useRecordContext();
+    return (
+        <div>
+            <Typography variant="h6">Post details</Typography>
+            {record && (
+                <Typography variant="body2">
+                    Creation date: {record.createdAt}
+                </Typography>
+            )}
+        </div>
+    );
+};
+```
+
+**Tip**: If you're using TypeScript, you can specify the type of the record returned by the hook:
+
+```tsx
+const record = useRecordContext<Customer>();
+// record is of type Customer
+```
+
+## Removed The `basePath` Prop
+
+Many component received, or passed down, a prop named `basePath`. This was necessary to build internal routes that worked when react-admin was used under a subpath. 
+
+React-admin v4 now uses a context to keep the app basePath, so the `basePath` prop is no longer necessary. Every component that received it doesn't need it anymore. You can safely remove it from your code. 
+
+```diff
+-const PostEditActions = ({ basePath }) => (
++const PostEditActions = () => (
+    <TopToolbar>
+-       <ShowButton basePath={basePath} />
++       <ShowButton />
+        {/* Add your custom actions */}
+        <Button color="primary" onClick={customAction}>Custom Action</Button>
+    </TopToolbar>
+);
+```
+
+Keeping the `basePath` prop may result in unrecognized DOM props warnings, but your app will still work flawlessly even if you don't remove them. If you're using TypeScript, your code will not compile unless you remove all the `basePath` props.
+
+When a function (not a component) received the `basePath` as argument, it now receives the `resource` instead. For instance, the `<Datagrid rowClick>`prop used to accept a function:
+
+```diff
+-   <Datagrid rowClick={(id, basePath, record) => {/* ... */}}>
++   <Datagrid rowClick={(id, resource, record) => {/* ... */}}>
+```
+
+In most cases, the injected `basePath` was the `resource` with a leading slash (e.g. basename: `/posts`, resource: `posts`).
+
+## Changed The Way To Mount React-Admin In A Sub Path
+
+If you were using react-admin in a sub path (e.g. `/admin`), and if you were using `BrowserHistory`, you'll have to update your code to set this base path as the `<Admin basename>` prop:
+
+```diff
+import { Admin, Resource } from 'react-admin';
+
+const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+        authProvider={authProvider}
++       basename="/admin"
+    >
+        <Resource name="posts" />
+    </Admin>
+);
+```
+
+You don't need to make that change if you were using `HashHistory` or `MemoryHistory`.
 
 ## `addLabel` Prop No Longer Considered For Show Labelling 
 
