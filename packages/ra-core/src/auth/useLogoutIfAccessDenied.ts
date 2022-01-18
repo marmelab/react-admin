@@ -71,13 +71,21 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                             .checkAuth({})
                             .then(() => {
                                 if (logoutUser) {
-                                    notify('ra.notification.logged_out', {
-                                        type: 'warning',
-                                    });
+                                    notify(
+                                        getErrorMessage(
+                                            e,
+                                            'ra.notification.logged_out'
+                                        ),
+                                        { type: 'warning' }
+                                    );
                                 } else {
-                                    notify('ra.notification.not_authorized', {
-                                        type: 'warning',
-                                    });
+                                    notify(
+                                        getErrorMessage(
+                                            e,
+                                            'ra.notification.not_authorized'
+                                        ),
+                                        { type: 'warning' }
+                                    );
                                 }
                             })
                             .catch(() => {});
@@ -120,5 +128,12 @@ type LogoutIfAccessDenied = (
     /** @deprecated to disable the notification, authProvider.checkAuth() should return an object with an error property set to true */
     disableNotification?: boolean
 ) => Promise<boolean>;
+
+const getErrorMessage = (error, defaultMessage) =>
+    typeof error === 'string'
+        ? error
+        : typeof error === 'undefined' || !error.message
+        ? defaultMessage
+        : error.message;
 
 export default useLogoutIfAccessDenied;

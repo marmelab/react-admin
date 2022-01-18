@@ -614,7 +614,7 @@ When the auth backend returns an error, the Auth Provider should return a reject
 | Method           | Reject if                                 | Error format |
 | ---------------- | ----------------------------------------- | --------------- |
 | `login`          | Login credentials weren't accepted        | `string | { message?: string }` error message to display |
-| `checkError`     | Error is an auth error                    | `void | { redirectTo?: string, message?: boolean }` route to redirect to after logout, and whether to disable error notification |
+| `checkError`     | Error is an auth error                    | `void | { redirectTo?: string, message?: string | boolean  }` route to redirect to after logout, message to notify the user or `false` to disable notification |
 | `checkAuth`      | User is not authenticated                 | `void | { redirectTo?: string, message?: string }` route to redirect to after logout, message to notify the user |
 | `logout`         | Auth backend failed to log the user out   | `void` |
 | `getIdentity`    | Auth backend failed to return identity    | `Object` free format - returned as `error` when `useGetIdentity()` is called | 

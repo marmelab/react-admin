@@ -24,8 +24,12 @@ const authProvider: AuthProvider = {
     checkAuth: () =>
         loggedIn ? Promise.resolve() : Promise.reject('bad method'),
     checkError: params => {
-        if (params instanceof Error && params.message === 'denied') {
-            return Promise.reject(new Error('logout'));
+        if (params instanceof Error) {
+            return Promise.reject(
+                new Error(
+                    params.message === 'denied' ? 'logout' : params.message
+                )
+            );
         }
         return Promise.resolve();
     },
@@ -211,6 +215,24 @@ describe('useLogoutIfAccessDenied', () => {
         await waitFor(() => {
             expect(authProvider.logout).toHaveBeenCalledTimes(1);
             expect(notify).toHaveBeenCalledTimes(0);
+            expect(screen.queryByText('logged in')).toBeNull();
+        });
+    });
+
+    it('should notify if passed an error with a message that makes the authProvider throw', async () => {
+        render(
+            <Route
+                path="/"
+                element={<TestComponent error={new Error('Test message')} />}
+            />,
+            {
+                wrapper: TestWrapper,
+            }
+        );
+        await waitFor(() => {
+            expect(authProvider.logout).toHaveBeenCalledTimes(1);
+            expect(notify).toHaveBeenCalledTimes(1);
+            expect(notify.mock.calls[0][0]).toEqual('Test message');
             expect(screen.queryByText('logged in')).toBeNull();
         });
     });
