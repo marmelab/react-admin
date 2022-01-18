@@ -5,7 +5,6 @@ import {
     CloneButton,
     DeleteWithConfirmButton,
     Edit,
-    EditActionsProps,
     FormTab,
     required,
     SaveButton,
