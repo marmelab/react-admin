@@ -14,6 +14,7 @@ import { InputPropTypes } from './InputPropTypes';
 
 export const BooleanInput = (props: BooleanInputProps) => {
     const {
+        className,
         format,
         label,
         fullWidth,
@@ -54,7 +55,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
     );
 
     return (
-        <FormGroup {...sanitizeInputRestProps(rest)}>
+        <FormGroup className={className} {...sanitizeInputRestProps(rest)}>
             <FormControlLabel
                 control={
                     <Switch
