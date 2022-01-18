@@ -2,7 +2,7 @@ import * as React from 'react';
 import { styled, Theme } from '@mui/material/styles';
 import { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Snackbar, SnackbarProps } from '@mui/material';
+import { Button, Snackbar, SnackbarProps, SnackbarOrigin } from '@mui/material';
 import classnames from 'classnames';
 
 import {
@@ -11,6 +11,23 @@ import {
     useTranslate,
 } from 'ra-core';
 
+const defaultAnchorOrigin: SnackbarOrigin = {
+    vertical: 'bottom',
+    horizontal: 'center',
+};
+
+/**
+ * Provides a way to show a notification.
+ * @see useNotify
+ *
+ * @example <caption>Basic usage</caption>
+ * <Notification />
+ *
+ * @param props The component props
+ * @param {string} props.type The notification type. Defaults to 'info'.
+ * @param {number} props.autoHideDuration Duration in milliseconds to wait until hiding a given notification. Defaults to 4000.
+ * @param {boolean} props.multiLine Set it to `true` if the notification message should be shown in more than one line.
+ */
 export const Notification = (props: NotificationProps) => {
     const {
         classes: classesOverride,
@@ -18,6 +35,7 @@ export const Notification = (props: NotificationProps) => {
         autoHideDuration = 4000,
         className,
         multiLine = false,
+        anchorOrigin = defaultAnchorOrigin,
         ...rest
     } = props;
     const { notifications, takeNotification } = useNotificationContext();
@@ -90,6 +108,7 @@ export const Notification = (props: NotificationProps) => {
                     </Button>
                 ) : null
             }
+            anchorOrigin={anchorOrigin}
             {...rest}
         />
     );
