@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { ReactNode, useMemo, useRef } from 'react';
-import { FormGroupsContext, FormGroupSubscriber } from './FormGroupsContext';
+import {
+    FormGroupsContext,
+    FormGroupsContextValue,
+    FormGroupSubscriber,
+} from './FormGroupsContext';
 
 /**
  * This component provides functions through context to manage form groups,
@@ -15,7 +19,7 @@ export const FormGroupsProvider = ({ children }: { children: ReactNode }) => {
         [key: string]: FormGroupSubscriber[];
     }>({});
 
-    const formContextValue = useMemo(
+    const formContextValue = useMemo<FormGroupsContextValue>(
         () => ({
             /**
              * Register a subscriber function for the specified group. The subscriber
@@ -41,7 +45,7 @@ export const FormGroupsProvider = ({ children }: { children: ReactNode }) => {
                 delete formGroups[name];
             },
             registerField: (source, group) => {
-                if (group) {
+                if (group != null) {
                     if (!(formGroups.current[group] || []).includes(source)) {
                         formGroups.current[group] = [
                             ...(formGroups.current[group] || []),
@@ -57,7 +61,7 @@ export const FormGroupsProvider = ({ children }: { children: ReactNode }) => {
                 }
             },
             unregisterField: (source, group) => {
-                if (group) {
+                if (group != null) {
                     if (!formGroups.current[group]) {
                         console.warn(`Invalid form group ${group}`);
                     } else {

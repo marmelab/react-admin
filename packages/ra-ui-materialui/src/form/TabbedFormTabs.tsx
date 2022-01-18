@@ -50,7 +50,7 @@ export const getTabbedFormTabFullPath = (
     tab: ReactElement,
     index: number
 ): string =>
-    `${tab.props.path ? `/${tab.props.path}` : index > 0 ? index : ''}`;
+    tab.props.path != null ? tab.props.path : index > 0 ? index.toString() : '';
 
 export interface TabbedFormTabsProps extends TabsProps {
     classes?: any;
