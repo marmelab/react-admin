@@ -40,7 +40,7 @@ export const EditButton = (props: EditButtonProps) => {
         <Button
             component={Link}
             to={createPath({ type: 'edit', resource, id: record.id })}
-            state={{ _scrollToTop: scrollToTop }}
+            state={scrollStates[String(scrollToTop)]}
             label={label}
             onClick={stopPropagation}
             {...(rest as any)}
@@ -48,6 +48,12 @@ export const EditButton = (props: EditButtonProps) => {
             {icon}
         </Button>
     );
+};
+
+// avoids using useMemo to get a constant value for the link state
+const scrollStates = {
+    true: { _scrollToTop: true },
+    false: {},
 };
 
 const defaultIcon = <ContentCreate />;

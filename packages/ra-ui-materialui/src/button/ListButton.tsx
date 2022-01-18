@@ -46,13 +46,19 @@ export const ListButton = (props: ListButtonProps) => {
         <Button
             component={Link}
             to={createPath({ type: 'list', resource })}
-            state={{ _scrollToTop: scrollToTop }}
+            state={scrollStates[String(scrollToTop)]}
             label={label}
             {...(rest as any)}
         >
             {icon}
         </Button>
     );
+};
+
+// avoids using useMemo to get a constant value for the link state
+const scrollStates = {
+    true: { _scrollToTop: true },
+    false: {},
 };
 
 const defaultIcon = <ActionList />;

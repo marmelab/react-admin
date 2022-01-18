@@ -44,7 +44,7 @@ const CreateButton = (props: CreateButtonProps) => {
         <StyledFab
             component={Link}
             to={createPath({ resource, type: 'create' })}
-            state={{ _scrollToTop: scrollToTop }}
+            state={scrollStates[String(scrollToTop)]}
             color="primary"
             className={classnames(CreateButtonClasses.floating, className)}
             aria-label={label && translate(label)}
@@ -56,7 +56,7 @@ const CreateButton = (props: CreateButtonProps) => {
         <Button
             component={Link}
             to={createPath({ resource, type: 'create' })}
-            state={{ _scrollToTop: scrollToTop }}
+            state={scrollStates[String(scrollToTop)]}
             className={className}
             label={label}
             variant={variant}
@@ -65,6 +65,12 @@ const CreateButton = (props: CreateButtonProps) => {
             {icon}
         </Button>
     );
+};
+
+// avoids using useMemo to get a constant value for the link state
+const scrollStates = {
+    true: { _scrollToTop: true },
+    false: {},
 };
 
 const defaultIcon = <ContentAdd />;

@@ -37,7 +37,7 @@ const ShowButton = (props: ShowButtonProps) => {
         <Button
             component={Link}
             to={createPath({ type: 'show', resource, id: record.id })}
-            state={{ _scrollToTop: scrollToTop }}
+            state={scrollStates[String(scrollToTop)]}
             label={label}
             onClick={stopPropagation}
             {...(rest as any)}
@@ -45,6 +45,12 @@ const ShowButton = (props: ShowButtonProps) => {
             {icon}
         </Button>
     );
+};
+
+// avoids using useMemo to get a constant value for the link state
+const scrollStates = {
+    true: { _scrollToTop: true },
+    false: {},
 };
 
 const defaultIcon = <ImageEye />;
