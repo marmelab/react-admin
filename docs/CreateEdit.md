@@ -542,6 +542,22 @@ The `transform` function can also return a `Promise`, which allows you to do all
 
 **Tip**: The message will be translated.
 
+**Tip**: `<Edit>`'s transform prop function also get the `previousData` in its second argument:
+
+```jsx
+export const UserEdit = (props) => {
+    const transform = (data, { previousData }) => ({
+        ...data,
+        avoidChangeField: previousData.avoidChangeField
+    });
+    return (
+        <Edit {...props} transform={transform}>
+            ...
+        </Edit>
+    );
+}
+```
+
 ## Prefilling a `<Create>` Record
 
 Users may need to create a copy of an existing record. For that use case, use the `<CloneButton>` component. It reads the `record` from the current `RecordContext`.
@@ -2283,6 +2299,32 @@ const dataProvider = {
         }));
     },
 }
+```
+
+**Tip**: `<Edit>`'s transform prop function also get the `previousData` in its second argument:
+
+```jsx
+const PostEditToolbar = props => (
+    <Toolbar {...props}>
+        <SaveButton submitOnEnter={true} />
+        <SaveButton
+            label="post.action.save_and_notify"
+            transform={(data, { previousData }) => ({
+                ...data,
+                avoidChangeField: previousData.avoidChangeField
+            })}
+            submitOnEnter={false}
+        />
+    </Toolbar>
+);
+
+const PostEdit = () => (
+    <Edit>
+        <SimpleForm toolbar={<PostEditToolbar />}>
+            // ...
+        </SimpleForm>
+    </Edit>
+);
 ```
 
 ### Grouping Inputs
