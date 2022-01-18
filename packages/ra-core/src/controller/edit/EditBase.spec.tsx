@@ -339,7 +339,7 @@ describe('EditBase', () => {
         await waitFor(() => {
             expect(transform).toHaveBeenCalledWith(
                 { test: 'test' },
-                { previousData: undefined }
+                { previousData: { id: 12, test: 'previous' } }
             );
         });
         await waitFor(() => {
@@ -404,7 +404,7 @@ describe('EditBase', () => {
         await waitFor(() => {
             expect(transformOverride).toHaveBeenCalledWith(
                 { test: 'test' },
-                { previousData: undefined }
+                { previousData: { id: 12, test: 'previous' } }
             );
         });
         await waitFor(() => {

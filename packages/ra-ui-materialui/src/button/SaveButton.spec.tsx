@@ -268,7 +268,7 @@ describe('<SaveButton />', () => {
         await waitFor(() => {
             expect(transform).toHaveBeenCalledWith(
                 { id: 123, title: 'ipsum' },
-                { previousData: undefined }
+                { previousData: { id: 123, title: 'lorem' } }
             );
             expect(update).toHaveBeenCalledWith('posts', {
                 id: '123',
