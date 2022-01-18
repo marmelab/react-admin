@@ -14,7 +14,7 @@ const CommentList = () => <h1>Comment List</h1>;
 export const Basic = () => (
     <Admin dataProvider={testDataProvider()}>
         <Resource name="posts" list={PostList} />
-        <Resource name="commentd" list={CommentList} />
+        <Resource name="comments" list={CommentList} />
     </Admin>
 );
 
@@ -22,7 +22,7 @@ export const InsideRouter = () => (
     <MemoryRouter>
         <Admin dataProvider={testDataProvider()}>
             <Resource name="posts" list={PostList} />
-            <Resource name="commentd" list={CommentList} />
+            <Resource name="comments" list={CommentList} />
         </Admin>
     </MemoryRouter>
 );
@@ -46,7 +46,7 @@ export const SubPath = () => (
                 element={
                     <Admin dataProvider={testDataProvider()} basename="/admin">
                         <Resource name="posts" list={PostList} />
-                        <Resource name="commentd" list={CommentList} />
+                        <Resource name="comments" list={CommentList} />
                     </Admin>
                 }
             />
