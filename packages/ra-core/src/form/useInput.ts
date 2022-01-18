@@ -56,9 +56,10 @@ const useInput = ({
     const record = useRecordContext();
 
     useEffect(() => {
-        if (!formGroups || !formGroupName) {
+        if (!formGroups || formGroupName == null) {
             return;
         }
+
         formGroups.registerField(source, formGroupName);
 
         return () => {

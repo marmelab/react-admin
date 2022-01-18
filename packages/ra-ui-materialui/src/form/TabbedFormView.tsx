@@ -10,7 +10,13 @@ import {
 } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { matchPath, useResolvedPath, useLocation } from 'react-router-dom';
+import {
+    Routes,
+    Route,
+    matchPath,
+    useResolvedPath,
+    useLocation,
+} from 'react-router-dom';
 import { Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import {
@@ -53,22 +59,31 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         }
     };
 
+    const renderTabHeaders = () =>
+        cloneElement(
+            tabs,
+            {
+                classes: TabbedFormClasses,
+                onChange: handleTabChange,
+                syncWithLocation,
+                url: formRootPathname,
+                value: tabValue,
+            },
+            children
+        );
+
     return (
         <Root
             className={classnames('tabbed-form', className)}
             onSubmit={handleSubmit}
             {...sanitizeRestProps(rest)}
         >
-            {cloneElement(
-                tabs,
-                {
-                    classes: TabbedFormClasses,
-                    onChange: handleTabChange,
-                    syncWithLocation,
-                    url: formRootPathname,
-                    value: tabValue,
-                },
-                children
+            {syncWithLocation ? (
+                <Routes>
+                    <Route path="/*" element={renderTabHeaders()} />
+                </Routes>
+            ) : (
+                renderTabHeaders()
             )}
             <Divider />
             <div className={TabbedFormClasses.content}>

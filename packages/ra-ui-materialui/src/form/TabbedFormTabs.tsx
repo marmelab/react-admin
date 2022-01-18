@@ -2,27 +2,16 @@ import * as React from 'react';
 import { Children, cloneElement, isValidElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import Tabs, { TabsProps } from '@mui/material/Tabs';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 export const TabbedFormTabs = (props: TabbedFormTabsProps) => {
     const { children, classes, url, syncWithLocation, value, ...rest } = props;
-    const location = useLocation();
 
-    const validTabPaths = Children.map(children, (tab, index) => {
-        if (!isValidElement(tab)) return undefined;
-        return getTabbedFormTabFullPath(tab, index);
-    });
+    const params = useParams();
 
-    // This ensures we don't get warnings from material-ui Tabs component when
-    // the current location pathname targets a dynamically added Tab
-    // In the case the targeted Tab is not present at first render (when
-    // using permissions for example) we temporarily switch to the first
-    // available tab. The current location will be applied again on the
-    // first render containing the targeted tab. This is almost transparent
-    // for the user who may just see a short tab selection animation
-    const tabValue = validTabPaths.includes(location.pathname)
-        ? location.pathname
-        : validTabPaths[0];
+    // params will include eventual parameters from the root pathname and * for the remaining part
+    // which should match the tabs paths
+    const tabValue = params['*'];
 
     return (
         <Tabs
