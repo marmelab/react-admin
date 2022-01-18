@@ -21,6 +21,7 @@ title: "The FileInput Component"
 | `labelSingle`   | Optional | `string`             | 'ra.input.file. upload_single'  | Invite displayed in the drop zone if the input accepts one file                                                                                                                                                                                                                                                                                        |
 | `labelMultiple` | Optional | `string`             | 'ra.input.file. upload_several' | Invite displayed in the drop zone if the input accepts several files                                                                                                                                                                                                                                                                                   |
 | `placeholder`   | Optional | `ReactNode`          | -                               | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple`                                                                                                                                                                                                                                                                         |
+| `validateFileRemoval`   | Optional | `Function`          | -                               | Validate removing items. This is able to cancel to remove the file's list item by onRemove handler when you want to do so by throwing Error. `(file) => void \| Promise<void>`                                                                                                                                                                                                                                                                         |
 | `options`       | Optional | `Object`             | `{}`                            | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details .                                                                                                                                                          |
 
 `<FileInput>` also accepts the [common input props](./Inputs.md#common-input-props).
@@ -52,6 +53,60 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 ```
 
 Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#handling-file-uploads) for base64 encoding data by extending the REST Client.
+
+The `validateFileRemoval` handler can interrupt removing visual items in your page. Given if you want to remove immediately file so call your api request in `validateFileRemoval`, then the request fails and throws error, These items don't disapper in the page.
+
+The `validateFileRemoval` can also be used to confirm the deletion of items to users. The following is an example.
+
+
+```jsx
+function Edit(props) {
+    const [removeImageConfirmEvent, setRemoveFileConfirmEvent] = useState(null);
+    const [isRemoveImageModalOpen, setIsRemoveImageModalOpen] = useState(false);
+    return (
+        <Edit {...props}>
+            <SimpleForm>
+                <ImageInput
+                    source="images"
+                    src="image"
+                    validateFileRemoval={(file, _record) => {
+                        const promise = new Promise((_resolve, reject) => {
+                            setRemoveFileConfirmEvent({
+                                fileName: `Image ID: ${file.id}`,
+                                resolve: async (result) => {
+                                  await YourApi.deleteImages({ ids: [file.id] });
+                                  return _resolve(result);
+                                },
+                                reject,
+                            });
+                        });
+                        setIsRemoveImageModalOpen(true);
+                        return promise.then((result) => {
+                          // Success Action if you want
+                        });
+                    }}
+                />
+                <SomeConfirmModal
+                    isOpen={isRemoveImageModalOpen}
+                    title="delete image"
+                    message={`${removeImageConfirmEvent ? removeImageConfirmEvent.fileName: ''} will be deleted`}
+                    onSubmit={() => {
+                        setIsRemoveImageModalOpen(false);
+                        removeImageConfirmEvent && removeImageConfirmEvent.resolve();
+                    }}
+                    onCancel={() => {
+                        setIsRemoveImageModalOpen(false);
+                        removeImageConfirmEvent && removeImageConfirmEvent.reject();
+                    }}
+                />
+            </SimpleForm>
+        </Edit>
+    )
+}
+```
+
+This example assumes that it can show some confirm modal has two buttons, to submit and cancel, when clicking a FileInput delete button icon. Then it interrupts to remove items in the page if "YourApi.deleteImages" fails or cancel button is clicked though when succeeding to submit they are removed.
+
 
 ## `sx`: CSS API
 

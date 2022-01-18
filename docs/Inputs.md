@@ -78,7 +78,7 @@ Then you can display a text input to edit the author first name as follows:
 
 **Tip**: For compatibility reasons, input components also accept the `defaultValue` prop - which is simply copied as the `initialValue` prop.
 
-## Recipes 
+## Recipes
 
 ### Transforming Input Value to/from Record
 
@@ -124,7 +124,7 @@ const dateParser = v => {
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 
-React-admin relies on [react-final-form](https://final-form.org/docs/react-final-form/getting-started) for form handling. You can grab the current form values using react-final-form [useFormState](https://final-form.org/docs/react-final-form/api/useFormState) hook. 
+React-admin relies on [react-final-form](https://final-form.org/docs/react-final-form/getting-started) for form handling. You can grab the current form values using react-final-form [useFormState](https://final-form.org/docs/react-final-form/api/useFormState) hook.
 
 ```jsx
 import * as React from 'react';
