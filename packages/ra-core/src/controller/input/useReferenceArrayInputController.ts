@@ -1,9 +1,9 @@
 import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import isEqual from 'lodash/isEqual';
+import { ControllerRenderProps, useFormContext } from 'react-hook-form';
 
 import { RaRecord, SortPayload, Identifier } from '../../types';
 import { useGetList, useGetManyAggregate } from '../../dataProvider';
-import { FieldInputProps, useForm } from 'react-final-form';
 import { useTranslate } from '../../i18n';
 import { getStatusForArrayInput as getDataStatus } from './referenceDataStatus';
 import { useResourceContext } from '../../core';
@@ -42,7 +42,7 @@ export const useReferenceArrayInputController = <
     const {
         filter: defaultFilter,
         filterToQuery = defaultFilterToQuery,
-        input,
+        field,
         page: initialPage = 1,
         perPage: initialPerPage = 25,
         sort: initialSort = { field: 'id', order: 'DESC' },
@@ -63,7 +63,7 @@ export const useReferenceArrayInputController = <
         isFetching: isFetchingGetMany,
         refetch: refetchGetMany,
     } = useGetManyAggregate<RecordType>(reference, {
-        ids: input.value || EmptyArray,
+        ids: field.value || EmptyArray,
     });
 
     /**
@@ -83,40 +83,40 @@ export const useReferenceArrayInputController = <
         perPage: initialPerPage,
     });
 
-    const form = useForm();
+    const { setValue } = useFormContext();
     const onSelect = useCallback(
         (newIds: Identifier[]) => {
             // This could happen when user unselect all items using the datagrid for instance
             if (newIds.length === 0) {
-                form.change(input.name, EmptyArray);
+                setValue(field.name, EmptyArray);
                 return;
             }
 
-            const newValue = new Set(input.value);
+            const newValue = new Set(field.value);
             newIds.forEach(newId => {
                 newValue.add(newId);
             });
-            form.change(input.name, Array.from(newValue));
+            setValue(field.name, Array.from(newValue));
         },
-        [form, input.value, input.name]
+        [setValue, field.value, field.name]
     );
 
     const onUnselectItems = useCallback(() => {
-        form.change(input.name, EmptyArray);
-    }, [form, input.name]);
+        setValue(field.name, EmptyArray);
+    }, [setValue, field.name]);
 
     const onToggleItem = useCallback(
         (id: Identifier) => {
-            if (input.value.some(selectedId => selectedId === id)) {
-                form.change(
-                    input.name,
-                    input.value.filter(selectedId => selectedId !== id)
+            if (field.value.some(selectedId => selectedId === id)) {
+                setValue(
+                    field.name,
+                    field.value.filter(selectedId => selectedId !== id)
                 );
             } else {
-                form.change(input.name, [...input.value, id]);
+                setValue(field.name, [...field.value, id]);
             }
         },
-        [form, input.name, input.value]
+        [setValue, field.name, field.value]
     );
 
     // sort logic
@@ -239,7 +239,7 @@ export const useReferenceArrayInputController = <
             : matchingReferences;
 
     const dataStatus = getDataStatus<RecordType>({
-        input,
+        field,
         matchingReferences: finalMatchingReferences,
         referenceRecords: finalReferenceRecords,
         translate,
@@ -272,7 +272,7 @@ export const useReferenceArrayInputController = <
         perPage,
         refetch,
         resource,
-        selectedIds: input.value || EmptyArray,
+        selectedIds: field.value || EmptyArray,
         setFilter,
         setFilters,
         setPage,
@@ -308,7 +308,7 @@ export interface UseReferenceArrayInputParams<
 > {
     filter?: any;
     filterToQuery?: (filter: any) => any;
-    input: FieldInputProps<any, HTMLElement>;
+    field: ControllerRenderProps;
     options?: any;
     page?: number;
     perPage?: number;

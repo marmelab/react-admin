@@ -2,11 +2,11 @@ import * as React from 'react';
 import { ReactElement } from 'react';
 import expect from 'expect';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import { Form } from 'react-final-form';
 
 import { useReferenceArrayInputController } from './useReferenceArrayInputController';
 import { CoreAdminContext } from '../../core';
 import { testDataProvider } from '../../dataProvider';
+import { FormWithRedirect } from '../../form';
 import { SORT_ASC } from '../list/queryReducer';
 
 const ReferenceArrayInputController = props => {
@@ -16,7 +16,7 @@ const ReferenceArrayInputController = props => {
 
 describe('useReferenceArrayInputController', () => {
     const defaultProps = {
-        input: { value: undefined },
+        field: { value: undefined },
         record: undefined,
         reference: 'tags',
         resource: 'posts',
@@ -35,12 +35,12 @@ describe('useReferenceArrayInputController', () => {
             ));
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
-                    <Form
+                    <FormWithRedirect
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
                                 {...defaultProps}
-                                input={{ value: [1, 2] }}
+                                field={{ value: [1, 2] }}
                             >
                                 {children}
                             </ReferenceArrayInputController>
@@ -61,12 +61,12 @@ describe('useReferenceArrayInputController', () => {
             });
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <Form
+                    <FormWithRedirect
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
                                 {...defaultProps}
-                                input={{ value: [1, 2] }}
+                                field={{ value: [1, 2] }}
                             >
                                 {children}
                             </ReferenceArrayInputController>
@@ -93,7 +93,7 @@ describe('useReferenceArrayInputController', () => {
                         getMany: () => Promise.resolve({ data: [] }),
                     })}
                 >
-                    <Form
+                    <FormWithRedirect
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController {...defaultProps}>
@@ -121,12 +121,12 @@ describe('useReferenceArrayInputController', () => {
                         getMany: () => Promise.resolve({ data: [] }),
                     })}
                 >
-                    <Form
+                    <FormWithRedirect
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
                                 {...defaultProps}
-                                input={{ value: [1] }}
+                                field={{ value: [1] }}
                             >
                                 {children}
                             </ReferenceArrayInputController>
@@ -154,12 +154,12 @@ describe('useReferenceArrayInputController', () => {
                             }),
                     })}
                 >
-                    <Form
+                    <FormWithRedirect
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
                                 {...defaultProps}
-                                input={{ value: [1, 2] }}
+                                field={{ value: [1, 2] }}
                             >
                                 {children}
                             </ReferenceArrayInputController>
@@ -181,29 +181,28 @@ describe('useReferenceArrayInputController', () => {
             jest.spyOn(console, 'error').mockImplementation(() => {});
             const children = jest.fn(({ warning }) => <div>{warning}</div>);
             render(
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <CoreAdminContext
-                            dataProvider={testDataProvider({
-                                getList: () =>
-                                    Promise.reject(new Error('boom')),
-                                getMany: () =>
-                                    // @ts-ignore
-                                    Promise.resolve({
-                                        data: [{ id: 1, name: 'foo ' }],
-                                    }),
-                            })}
-                        >
+                <CoreAdminContext
+                    dataProvider={testDataProvider({
+                        getList: () => Promise.reject(new Error('boom')),
+                        getMany: () =>
+                            // @ts-ignore
+                            Promise.resolve({
+                                data: [{ id: 1, name: 'foo ' }],
+                            }),
+                    })}
+                >
+                    <FormWithRedirect
+                        onSubmit={jest.fn()}
+                        render={() => (
                             <ReferenceArrayInputController
                                 {...defaultProps}
-                                input={{ value: [1, 2] }}
+                                field={{ value: [1, 2] }}
                             >
                                 {children}
                             </ReferenceArrayInputController>
-                        </CoreAdminContext>
-                    )}
-                />
+                        )}
+                    />
+                </CoreAdminContext>
             );
             await waitFor(() => {
                 expect(
@@ -226,12 +225,12 @@ describe('useReferenceArrayInputController', () => {
                         getMany: () => Promise.resolve({ data: [] }),
                     })}
                 >
-                    <Form
+                    <FormWithRedirect
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
                                 {...defaultProps}
-                                input={{ value: [1, 2] }}
+                                field={{ value: [1, 2] }}
                             >
                                 {children}
                             </ReferenceArrayInputController>
@@ -262,12 +261,12 @@ describe('useReferenceArrayInputController', () => {
                             Promise.resolve({ data: [{ id: 5 }, { id: 6 }] }),
                     })}
                 >
-                    <Form
+                    <FormWithRedirect
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
                                 {...defaultProps}
-                                input={{ value: [1, 2] }}
+                                field={{ value: [1, 2] }}
                             >
                                 {children}
                             </ReferenceArrayInputController>
@@ -293,12 +292,12 @@ describe('useReferenceArrayInputController', () => {
                             Promise.resolve({ data: [{ id: 1 }, { id: 2 }] }),
                     })}
                 >
-                    <Form
+                    <FormWithRedirect
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
                                 {...defaultProps}
-                                input={{ value: [1, 2] }}
+                                field={{ value: [1, 2] }}
                             >
                                 {children}
                             </ReferenceArrayInputController>
@@ -324,7 +323,7 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
+                <FormWithRedirect
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
@@ -359,7 +358,7 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
+                <FormWithRedirect
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
@@ -398,7 +397,7 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
+                <FormWithRedirect
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController {...defaultProps}>
@@ -437,7 +436,7 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
+                <FormWithRedirect
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
@@ -482,12 +481,12 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
+                <FormWithRedirect
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
                             {...defaultProps}
-                            input={{ value: [5, 6] }}
+                            field={{ value: [5, 6] }}
                         >
                             {children}
                         </ReferenceArrayInputController>
@@ -518,12 +517,12 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
+                <FormWithRedirect
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
                             {...defaultProps}
-                            input={{ value: [5] }}
+                            field={{ value: [5] }}
                         >
                             {children}
                         </ReferenceArrayInputController>
@@ -554,12 +553,12 @@ describe('useReferenceArrayInputController', () => {
         });
         const { rerender } = render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
+                <FormWithRedirect
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
                             {...defaultProps}
-                            input={{ value: [5] }}
+                            field={{ value: [5] }}
                         >
                             {children}
                         </ReferenceArrayInputController>
@@ -570,12 +569,12 @@ describe('useReferenceArrayInputController', () => {
 
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
+                <FormWithRedirect
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
                             {...defaultProps}
-                            input={{ value: [5] }}
+                            field={{ value: [5] }}
                             filter={{ permanentFilter: 'bar' }}
                         >
                             {children}
@@ -592,12 +591,12 @@ describe('useReferenceArrayInputController', () => {
 
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
+                <FormWithRedirect
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
                             {...defaultProps}
-                            input={{ value: [5] }}
+                            field={{ value: [5] }}
                             filter={{ permanentFilter: 'bar' }}
                             sort={{ field: 'foo', order: 'ASC' }}
                         >
@@ -615,12 +614,12 @@ describe('useReferenceArrayInputController', () => {
 
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
+                <FormWithRedirect
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
                             {...defaultProps}
-                            input={{ value: [5] }}
+                            field={{ value: [5] }}
                             filter={{ permanentFilter: 'bar' }}
                             sort={{ field: 'foo', order: 'ASC' }}
                             perPage={42}
@@ -649,12 +648,12 @@ describe('useReferenceArrayInputController', () => {
         });
         const { rerender } = render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
+                <FormWithRedirect
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
                             {...defaultProps}
-                            input={{ value: [5] }}
+                            field={{ value: [5] }}
                         >
                             {children}
                         </ReferenceArrayInputController>
@@ -669,12 +668,12 @@ describe('useReferenceArrayInputController', () => {
         });
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
+                <FormWithRedirect
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
                             {...defaultProps}
-                            input={{ value: [5, 6] }}
+                            field={{ value: [5, 6] }}
                         >
                             {children}
                         </ReferenceArrayInputController>
@@ -725,12 +724,12 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
+                <FormWithRedirect
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
                             {...defaultProps}
-                            input={{ value: [5, 6] }}
+                            field={{ value: [5, 6] }}
                         >
                             {children}
                         </ReferenceArrayInputController>
@@ -789,12 +788,12 @@ describe('useReferenceArrayInputController', () => {
         const children = jest.fn(() => null);
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
+                <FormWithRedirect
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
                             {...defaultProps}
-                            input={{ value: [1, 2] }}
+                            field={{ value: [1, 2] }}
                         >
                             {children}
                         </ReferenceArrayInputController>
@@ -820,7 +819,7 @@ describe('useReferenceArrayInputController', () => {
             });
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <Form
+                    <FormWithRedirect
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
@@ -875,12 +874,12 @@ describe('useReferenceArrayInputController', () => {
             });
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <Form
+                    <FormWithRedirect
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
                                 {...defaultProps}
-                                input={{ value: [5, 6] }}
+                                field={{ value: [5, 6] }}
                                 enableGetChoices={() => false}
                             >
                                 {children}
@@ -903,10 +902,10 @@ describe('useReferenceArrayInputController', () => {
                 return false;
             });
             render(
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <CoreAdminContext dataProvider={testDataProvider()}>
+                <CoreAdminContext dataProvider={testDataProvider()}>
+                    <FormWithRedirect
+                        onSubmit={jest.fn()}
+                        render={() => (
                             <ReferenceArrayInputController
                                 {...defaultProps}
                                 allowEmpty
@@ -914,9 +913,9 @@ describe('useReferenceArrayInputController', () => {
                             >
                                 {children}
                             </ReferenceArrayInputController>
-                        </CoreAdminContext>
-                    )}
-                />
+                        )}
+                    />
+                </CoreAdminContext>
             );
 
             await waitFor(() => {

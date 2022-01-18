@@ -15,9 +15,9 @@ import {
     ListContextProvider,
 } from 'ra-core';
 
+import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { ReferenceError } from './ReferenceError';
-import { FieldInputProps, FieldMetaState } from 'react-final-form';
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -114,11 +114,10 @@ export const ReferenceArrayInput = ({
         );
     }
 
-    const { id, input, isRequired, meta } = useInput({
+    const { field, fieldState, formState, id, isRequired } = useInput({
         id: idOverride,
         onBlur,
         onChange,
-        onFocus,
         source: props.source,
         validate,
         parse,
@@ -128,7 +127,7 @@ export const ReferenceArrayInput = ({
 
     const controllerProps = useReferenceArrayInputController({
         ...props,
-        input,
+        field,
     });
 
     const translate = useTranslate();
@@ -138,9 +137,10 @@ export const ReferenceArrayInput = ({
                 <ListContextProvider value={controllerProps}>
                     <ReferenceArrayInputView
                         id={id}
-                        input={input}
+                        field={field}
                         isRequired={isRequired}
-                        meta={meta}
+                        fieldState={fieldState}
+                        formState={formState}
                         translate={translate}
                         children={children}
                         {...props}
@@ -190,21 +190,16 @@ const sanitizeRestProps = ({
     ...rest
 }: any) => sanitizeInputRestProps(rest);
 
-export interface ReferenceArrayInputViewProps {
+export type ReferenceArrayInputViewProps = CommonInputProps & {
     allowEmpty?: boolean;
     children: ReactElement;
     choices: any[];
     classes?: object;
     className?: string;
     error?: string;
-    helperText?: string | boolean;
     id: string;
-    input: FieldInputProps<any, HTMLElement>;
-    isRequired: boolean;
-    label?: string;
     isFetching: boolean;
     isLoading: boolean;
-    meta: FieldMetaState<any>;
     onChange: any;
     options?: any;
     reference: string;
@@ -212,10 +207,9 @@ export interface ReferenceArrayInputViewProps {
     setFilter: (v: string) => void;
     setPagination: (pagination: PaginationPayload) => void;
     setSort: (sort: SortPayload) => void;
-    source: string;
     translate: Translate;
     warning?: string;
-}
+};
 
 export const ReferenceArrayInputView = ({
     allowEmpty,
@@ -223,12 +217,13 @@ export const ReferenceArrayInputView = ({
     choices,
     className,
     error,
-    input,
+    field,
+    fieldState,
+    formState,
     isFetching,
     isLoading,
     isRequired,
     label,
-    meta,
     onChange,
     options,
     reference,
@@ -241,13 +236,16 @@ export const ReferenceArrayInputView = ({
     warning,
     ...rest
 }: ReferenceArrayInputViewProps) => {
-    const translatedLabel = translate(
-        ...getFieldLabelTranslationArgs({
-            label,
-            resource,
-            source,
-        })
-    );
+    const translatedLabel =
+        typeof label === 'string'
+            ? translate(
+                  ...getFieldLabelTranslationArgs({
+                      label,
+                      resource,
+                      source,
+                  })
+              )
+            : label;
 
     if (error) {
         return <ReferenceError label={translatedLabel} error={error} />;
@@ -258,15 +256,16 @@ export const ReferenceArrayInputView = ({
         choices,
         className,
         error,
-        input,
+        field,
+        fieldState: {
+            ...fieldState,
+            helperText: warning || false,
+        },
+        formState,
         isRequired,
         label: translatedLabel,
         isFetching,
         isLoading,
-        meta: {
-            ...meta,
-            helperText: warning || false,
-        },
         onChange,
         options,
         resource: reference,
@@ -288,9 +287,9 @@ ReferenceArrayInputView.propTypes = {
     className: PropTypes.string,
     error: PropTypes.string,
     loading: PropTypes.bool,
-    input: PropTypes.object.isRequired,
+    field: PropTypes.object.isRequired,
     label: PropTypes.string,
-    meta: PropTypes.object,
+    fieldState: PropTypes.object,
     onChange: PropTypes.func,
     options: PropTypes.object,
     resource: PropTypes.string,

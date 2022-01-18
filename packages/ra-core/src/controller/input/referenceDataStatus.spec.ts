@@ -11,7 +11,7 @@ import {
 describe('References data status', () => {
     describe('getStatusForInput', () => {
         const data = {
-            input: {},
+            field: {},
             matchingReferences: null,
             referenceRecord: null,
             translate: x => `*${x}*`,
@@ -30,24 +30,24 @@ describe('References data status', () => {
                 'we must waitFor until the references fetch is finished and there is no reference already associated with the resource.'
             );
             test(
-                { ...data, input: { value: 1 } },
+                { ...data, field: { value: 1 } },
                 true,
                 'we must waitFor until the references fetch is finished and linked reference data are not found.'
             );
             test(
-                { ...data, input: { value: 1 }, referenceRecord: [{ id: 1 }] },
+                { ...data, field: { value: 1 }, referenceRecord: [{ id: 1 }] },
                 false,
                 'it is ready if the references fetch is not finished but linked reference data are found.'
             );
             test(
-                { ...data, input: { value: 1 }, matchingReferences: [] },
+                { ...data, field: { value: 1 }, matchingReferences: [] },
                 false,
                 'it is ready if linked reference data are not found, but the references fetch is finished.'
             );
             test(
                 {
                     ...data,
-                    input: { value: 1 },
+                    field: { value: 1 },
                     matchingReferences: { error: 'error' },
                 },
                 false,
@@ -73,7 +73,7 @@ describe('References data status', () => {
                 {
                     ...data,
                     matchingReferences: { error: 'error' },
-                    input: { value: 1 },
+                    field: { value: 1 },
                 },
                 '*ra.input.references.single_missing*',
                 'there is an error if the references fetch fails and there is a linked reference without data'
@@ -82,7 +82,7 @@ describe('References data status', () => {
                 {
                     ...data,
                     matchingReferences: { error: 'error' },
-                    input: { value: 1 },
+                    field: { value: 1 },
                     referenceRecord: [{ id: 1 }],
                 },
                 null,
@@ -92,7 +92,7 @@ describe('References data status', () => {
                 {
                     ...data,
                     matchingReferences: [{ id: 2 }],
-                    input: { value: 1 },
+                    field: { value: 1 },
                     referenceRecord: null,
                 },
                 null,
@@ -102,7 +102,7 @@ describe('References data status', () => {
                 {
                     ...data,
                     matchingReferences: [],
-                    input: { value: 1 },
+                    field: { value: 1 },
                     referenceRecord: null,
                 },
                 null,
@@ -130,7 +130,7 @@ describe('References data status', () => {
                 {
                     ...data,
                     matchingReferences: { error: 'error on fetch' },
-                    input: { value: 1 },
+                    field: { value: 1 },
                     referenceRecord: [{ id: 1 }],
                 },
                 '*error on fetch*',
@@ -140,7 +140,7 @@ describe('References data status', () => {
                 {
                     ...data,
                     matchingReferences: [{ id: 2 }],
-                    input: { value: 1 },
+                    field: { value: 1 },
                     referenceRecord: null,
                 },
                 '*ra.input.references.single_missing*',
@@ -150,7 +150,7 @@ describe('References data status', () => {
                 {
                     ...data,
                     matchingReferences: [],
-                    input: { value: 1 },
+                    field: { value: 1 },
                     referenceRecord: [{ value: 1 }],
                 },
                 null,
@@ -179,7 +179,7 @@ describe('References data status', () => {
                 {
                     ...data,
                     matchingReferences: { error: 'error on fetch' },
-                    input: { value: 1 },
+                    field: { value: 1 },
                     referenceRecord: { id: 1 },
                 },
                 '*error on fetch*',
@@ -190,7 +190,7 @@ describe('References data status', () => {
                 {
                     ...data,
                     matchingReferences: [{ id: 2 }],
-                    input: { value: 1 },
+                    field: { value: 1 },
                     referenceRecord: null,
                 },
                 '*ra.input.references.single_missing*',
@@ -201,7 +201,7 @@ describe('References data status', () => {
                 {
                     ...data,
                     matchingReferences: [{ id: 1 }, { id: 2 }],
-                    input: { value: 1 },
+                    field: { value: 1 },
                     referenceRecord: { id: 1 },
                 },
                 null,
@@ -252,7 +252,7 @@ describe('References data status', () => {
 
     describe('getStatusForArrayInput', () => {
         const data = {
-            input: {},
+            field: {},
             matchingReferences: null,
             referenceRecords: [],
             translate: x => `*${x}*`,
@@ -271,28 +271,28 @@ describe('References data status', () => {
                 'we must waitFor until the references fetch is finished and there is no reference already associated with the resource.'
             );
             test(
-                { ...data, input: { value: [1, 2] } },
+                { ...data, field: { value: [1, 2] } },
                 true,
                 'we must waitFor until the references fetch is finished and linked references data are not found.'
             );
             test(
                 {
                     ...data,
-                    input: { value: [1, 2] },
+                    field: { value: [1, 2] },
                     referenceRecords: [{ id: 1 }],
                 },
                 false,
                 'it is ready if the references fetch is not finished but at least one linked reference data are found.'
             );
             test(
-                { ...data, input: { value: [1, 2] }, matchingReferences: [] },
+                { ...data, field: { value: [1, 2] }, matchingReferences: [] },
                 false,
                 'it is ready if none linked reference data are not found, but the references fetch is finished.'
             );
             test(
                 {
                     ...data,
-                    input: { value: [1, 2] },
+                    field: { value: [1, 2] },
                     matchingReferences: { error: 'error' },
                 },
                 false,
@@ -318,7 +318,7 @@ describe('References data status', () => {
                 {
                     ...data,
                     matchingReferences: { error: 'error' },
-                    input: { value: [1] },
+                    field: { value: [1] },
                 },
                 '*ra.input.references.all_missing*',
                 'there is an error if the references fetch fails and there is all linked reference without data'
@@ -327,7 +327,7 @@ describe('References data status', () => {
                 {
                     ...data,
                     matchingReferences: { error: 'error' },
-                    input: { value: [1, 2] },
+                    field: { value: [1, 2] },
                     referenceRecords: [{ id: 1 }],
                 },
                 null,
@@ -337,7 +337,7 @@ describe('References data status', () => {
                 {
                     ...data,
                     matchingReferences: [{ id: 2 }],
-                    input: { value: [1, 2] },
+                    field: { value: [1, 2] },
                     referenceRecords: [],
                 },
                 null,
@@ -347,7 +347,7 @@ describe('References data status', () => {
                 {
                     ...data,
                     matchingReferences: [],
-                    input: { value: [1, 2] },
+                    field: { value: [1, 2] },
                     referenceRecords: [],
                 },
                 null,
@@ -375,7 +375,7 @@ describe('References data status', () => {
                 {
                     ...data,
                     matchingReferences: { error: 'error on fetch' },
-                    input: { value: [1] },
+                    field: { value: [1] },
                     referenceRecords: [{ id: 1 }],
                 },
                 '*error on fetch*',
@@ -385,7 +385,7 @@ describe('References data status', () => {
                 {
                     ...data,
                     matchingReferences: [{ id: 3 }],
-                    input: { value: [1, 2] },
+                    field: { value: [1, 2] },
                     referenceRecords: [{ id: 2 }],
                 },
                 '*ra.input.references.many_missing*',
@@ -395,7 +395,7 @@ describe('References data status', () => {
                 {
                     ...data,
                     matchingReferences: [],
-                    input: { value: [1, 2] },
+                    field: { value: [1, 2] },
                     referenceRecords: [{ id: 1 }, { id: 2 }],
                 },
                 null,
@@ -424,7 +424,7 @@ describe('References data status', () => {
                 {
                     ...data,
                     matchingReferences: { error: 'error on fetch' },
-                    input: { value: [1, 2] },
+                    field: { value: [1, 2] },
                     referenceRecords: [{ id: 1 }, { id: 2 }],
                 },
                 '*error on fetch*',
@@ -435,7 +435,7 @@ describe('References data status', () => {
                 {
                     ...data,
                     matchingReferences: [{ id: 3 }],
-                    input: { value: [1, 2] },
+                    field: { value: [1, 2] },
                     referenceRecords: [],
                 },
                 '*ra.input.references.many_missing*',
@@ -451,7 +451,7 @@ describe('References data status', () => {
                         { id: 3 },
                         { id: 4 },
                     ],
-                    input: { value: [1, 2] },
+                    field: { value: [1, 2] },
                     referenceRecords: [{ id: 1 }, { id: 2 }],
                 },
                 null,

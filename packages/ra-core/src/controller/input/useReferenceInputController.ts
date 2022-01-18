@@ -7,7 +7,7 @@ import { PaginationPayload, RaRecord, SortPayload } from '../../types';
 import { ListControllerResult } from '../list';
 import { useReference } from '../useReference';
 import usePaginationState from '../usePaginationState';
-import { useSortState } from '..';
+import useSortState from '../useSortState';
 import useFilterState from '../useFilterState';
 import useSelectionState from '../useSelectionState';
 import { useResourceContext } from '../../core';
