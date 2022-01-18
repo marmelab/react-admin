@@ -142,6 +142,7 @@ const FormView = (props: FormViewProps) => {
     const {
         defaultValues,
         formRootPathname,
+        handleSubmit: formHandleSubmit,
         record,
         render,
         warnWhenUnsavedChanges,
@@ -158,5 +159,16 @@ const FormView = (props: FormViewProps) => {
     useInitializeFormWithRecord(defaultValues, record);
     useWarnWhenUnsavedChanges(warnWhenUnsavedChanges, formRootPathname);
 
-    return <FormGroupsProvider>{render(rest)}</FormGroupsProvider>;
+    const handleSubmit = async (event: BaseSyntheticEvent) => {
+        // Prevent outer forms to receive the event
+        event.stopPropagation();
+        formHandleSubmit(event);
+        return;
+    };
+
+    return (
+        <FormGroupsProvider>
+            {render({ ...rest, handleSubmit })}
+        </FormGroupsProvider>
+    );
 };
