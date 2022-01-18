@@ -56,26 +56,6 @@ const Dashboard = () => {
 }
 ```
 
-## Using React-Admin Inside An Existing App
-
-React-admin links are absolute (e.g. `/posts/123/show`). If you serve your admin from a sub path (e.g. `/admin`), you need to set the `<Admin basename>` prop, so that react-admin routes include the basename (e.g. `/admin/posts/123/show`).
-
-```jsx
-import { Admin, Resource } from 'react-admin';
-
-const App = () => (
-    <Admin
-        dataProvider={...}
-        authProvider={...}
-        basename="/admin"
-    >
-        <Resource name="posts" />
-    </Admin>
-);
-```
-
-If you want to use react-admin in another single-page app using react-router, and mount it under a sub path, read the next section.
-
 ## Using A Custom Router 
 
 By default, react-admin creates a [HashRouter](https://reactrouter.com/docs/en/v6/api#hashrouter). The hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers. 
@@ -88,14 +68,34 @@ import { Admin, Resource } from 'react-admin';
 
 const App = () => (
     <BrowserRouter>
-        <Admin dataProvider={...} authProvider={...}>
+        <Admin dataProvider={...}>
             <Resource name="posts" />
         </Admin>
     </BrowserRouter>
 );
 ```
 
-If you want to include your react-admin app inside another app that already has its own router, you just need to set the `<Admin basename>` prop to let react-admin build URLs relative to the sub path.
+## Using React-Admin In A Sub Path
+
+React-admin links are absolute (e.g. `/posts/123/show`). If you serve your admin from a sub path (e.g. `/admin`), react-admin works seamlessly as it only appends a hash (URLs will look like `/admin#/posts/123/show`).
+
+However, if you serve your admin from a sub path AND use another Router (like `BrowserRouter` for instance), you need to set the `<Admin basename>` prop, so that react-admin routes include the basename in all links (e.g. `/admin/posts/123/show`).
+
+```jsx
+import { Admin, Resource } from 'react-admin';
+
+const App = () => (
+    <BrowserRouter>
+        <Admin basename="/admin" dataProvider={...}>
+            <Resource name="posts" />
+        </Admin>
+    </BrowserRouter>
+);
+```
+
+## Using React-Admin Inside a Route
+
+If you want to include a react-admin app inside another app using a react-router `<Route>`, you need to set the `<Admin basename>` prop, too. This will let react-admin build absolute URLs including the sub path.
 
 ```jsx
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -110,16 +110,10 @@ export const App = () => (
     </BrowserRouter>
 );
 
-const StoreFront = () => (
-    // ...
-);
+const StoreFront = () => (/* ... */);
 
 const StoreAdmin = () => (
-    <Admin
-        dataProvider={...}
-        authProvider={...}
-        basename="/admin"
-    >
+    <Admin basename="/admin" dataProvider={...}>
         <Resource name="posts" />
     </Admin>
 );
