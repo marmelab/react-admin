@@ -493,10 +493,14 @@ describe('<Edit />', () => {
             });
             fireEvent.click(getByText('Update'));
             await waitFor(() => {
-                expect(transform).toHaveBeenCalledWith({
-                    id: 123,
-                    title: 'ipsum',
-                });
+                expect(transform).toHaveBeenCalledWith(
+                    {
+                        id: 123,
+                        title: 'ipsum',
+                    },
+                    { previousData: undefined }
+                );
+
                 expect(update).toHaveBeenCalledWith('foo', {
                     id: '123',
                     data: { id: 123, title: 'ipsum', transformed: true },
@@ -559,10 +563,13 @@ describe('<Edit />', () => {
             fireEvent.click(getByText('Update'));
             await waitFor(() => {
                 expect(transform).not.toHaveBeenCalled();
-                expect(transformSave).toHaveBeenCalledWith({
-                    id: 123,
-                    title: 'ipsum',
-                });
+                expect(transformSave).toHaveBeenCalledWith(
+                    {
+                        id: 123,
+                        title: 'ipsum',
+                    },
+                    { previousData: undefined }
+                );
                 expect(update).toHaveBeenCalledWith('foo', {
                     id: '123',
                     data: { id: 123, title: 'ipsum', transformed: true },

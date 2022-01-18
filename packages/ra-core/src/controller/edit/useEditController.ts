@@ -99,7 +99,7 @@ export const useEditController = <RecordType extends RaRecord = any>(
         record,
     });
 
-    const [update, { isLoading: saving }] = useUpdate<RecordType>(
+    const [update, { isLoading: saving }, previousData] = useUpdate<RecordType>(
         resource,
         { id, previousData: record },
         { ...otherMutationOptions, mutationMode }
@@ -116,9 +116,9 @@ export const useEditController = <RecordType extends RaRecord = any>(
         ) =>
             Promise.resolve(
                 transformFromSave
-                    ? transformFromSave(data)
+                    ? transformFromSave(data, { previousData })
                     : transform
-                    ? transform(data)
+                    ? transform(data, { previousData })
                     : data
             ).then((data: Partial<RecordType>) =>
                 update(
@@ -173,6 +173,7 @@ export const useEditController = <RecordType extends RaRecord = any>(
             resource,
             transform,
             update,
+            previousData,
         ]
     );
 
