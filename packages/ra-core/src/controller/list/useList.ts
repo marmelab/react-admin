@@ -153,56 +153,64 @@ export const useList = <RecordType extends RaRecord = any>(
     });
 
     // We do all the data processing (filtering, sorting, paginating) client-side
-    useEffect(() => {
-        if (isLoading || !data) return;
+    useEffect(
+        () => {
+            if (isLoading || !data) return;
 
-        // 1. filter
-        let tempData = data.filter(record =>
-            Object.entries(filterValues).every(([filterName, filterValue]) => {
-                const recordValue = get(record, filterName);
-                const result = Array.isArray(recordValue)
-                    ? Array.isArray(filterValue)
-                        ? recordValue.some(item => filterValue.includes(item))
-                        : recordValue.includes(filterValue)
-                    : Array.isArray(filterValue)
-                    ? filterValue.includes(recordValue)
-                    : filterValue == recordValue; // eslint-disable-line eqeqeq
-                return result;
-            })
-        );
+            // 1. filter
+            let tempData = data.filter(record =>
+                Object.entries(filterValues).every(
+                    ([filterName, filterValue]) => {
+                        const recordValue = get(record, filterName);
+                        const result = Array.isArray(recordValue)
+                            ? Array.isArray(filterValue)
+                                ? recordValue.some(item =>
+                                      filterValue.includes(item)
+                                  )
+                                : recordValue.includes(filterValue)
+                            : Array.isArray(filterValue)
+                            ? filterValue.includes(recordValue)
+                            : filterValue == recordValue; // eslint-disable-line eqeqeq
+                        return result;
+                    }
+                )
+            );
 
-        const filteredLength = tempData.length;
+            const filteredLength = tempData.length;
 
-        // 2. sort
-        if (sort.field) {
-            tempData = tempData.sort((a, b) => {
-                if (get(a, sort.field) > get(b, sort.field)) {
-                    return sort.order === 'ASC' ? 1 : -1;
-                }
-                if (get(a, sort.field) < get(b, sort.field)) {
-                    return sort.order === 'ASC' ? -1 : 1;
-                }
-                return 0;
+            // 2. sort
+            if (sort.field) {
+                tempData = tempData.sort((a, b) => {
+                    if (get(a, sort.field) > get(b, sort.field)) {
+                        return sort.order === 'ASC' ? 1 : -1;
+                    }
+                    if (get(a, sort.field) < get(b, sort.field)) {
+                        return sort.order === 'ASC' ? -1 : 1;
+                    }
+                    return 0;
+                });
+            }
+
+            // 3. paginate
+            tempData = tempData.slice((page - 1) * perPage, page * perPage);
+
+            setFinalItems({
+                data: tempData,
+                total: filteredLength,
             });
-        }
-
-        // 3. paginate
-        tempData = tempData.slice((page - 1) * perPage, page * perPage);
-
-        setFinalItems({
-            data: tempData,
-            total: filteredLength,
-        });
-    }, [
-        data,
-        filterValues,
-        isLoading,
-        page,
-        perPage,
-        setFinalItems,
-        sort.field,
-        sort.order,
-    ]);
+        }, // eslint-disable-next-line react-hooks/exhaustive-deps
+        [
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            JSON.stringify(data),
+            filterValues,
+            isLoading,
+            page,
+            perPage,
+            setFinalItems,
+            sort.field,
+            sort.order,
+        ]
+    );
 
     useEffect(() => {
         if (isFetching !== fetchingState) {
