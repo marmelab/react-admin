@@ -1408,7 +1408,7 @@ const record = useRecordContext<Customer>();
 
 ## Removed The `basePath` Prop
 
-Many component received, or passed down, a prop named `basePath`. This was necessary to build internal routes that worked when react-admin was used under a subpath. 
+Many components received, or passed down, a prop named `basePath`. This was necessary to build internal routes that worked when react-admin was used under a subpath. 
 
 React-admin v4 now uses a context to keep the app basePath, so the `basePath` prop is no longer necessary. Every component that received it doesn't need it anymore. You can safely remove it from your code. 
 
@@ -1426,7 +1426,7 @@ React-admin v4 now uses a context to keep the app basePath, so the `basePath` pr
 
 Keeping the `basePath` prop may result in unrecognized DOM props warnings, but your app will still work flawlessly even if you don't remove them. If you're using TypeScript, your code will not compile unless you remove all the `basePath` props.
 
-When a function (not a component) received the `basePath` as argument, it now receives the `resource` instead. For instance, the `<Datagrid rowClick>`prop used to accept a function:
+When a function (not a component) received the `basePath` as argument, it now receives the `resource` instead. For instance, the `<Datagrid rowClick>` prop used to accept a function:
 
 ```diff
 -   <Datagrid rowClick={(id, basePath, record) => {/* ... */}}>
