@@ -80,6 +80,31 @@ describe('useCreate', () => {
         });
     });
 
+    it('accepts a meta paramater', async () => {
+        const dataProvider = testDataProvider({
+            create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+        });
+        let localCreate;
+        const Dummy = () => {
+            const [create] = useCreate();
+            localCreate = create;
+            return <span />;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+            </CoreAdminContext>
+        );
+        localCreate('foo', { data: { bar: 'baz' }, meta: { hello: 'world' } });
+        await waitFor(() => {
+            expect(dataProvider.create).toHaveBeenCalledWith('foo', {
+                data: { bar: 'baz' },
+                meta: { hello: 'world' },
+            });
+        });
+    });
+
     it('returns a state typed based on the parametric type', async () => {
         interface Product extends RaRecord {
             sku: string;

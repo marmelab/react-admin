@@ -1577,6 +1577,7 @@ The most common use case is to display two submit buttons in the `<Create>` view
 
 For that use case, use the `<SaveButton>` component with a custom `onSuccess` prop:
 
+{% raw %}
 ```jsx
 import * as React from "react";
 import { Create, SimpleForm, SaveButton, Toolbar, useRedirect } from 'react-admin';
@@ -1616,6 +1617,7 @@ export const PostCreate = () => (
     </Create>
 );
 ```
+{% endraw %}
 
 Another use case is to remove the `<DeleteButton>` from the toolbar in an edit view. In that case, create a custom toolbar containing only the `<SaveButton>` as a child:
 

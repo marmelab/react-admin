@@ -23,12 +23,13 @@ import { useDataProvider } from './useDataProvider';
  * with the same parameters, until the response arrives.
  *
  * @param {string} resource The resource name, e.g. 'posts'
- * @param {Params} params The getMany parameters { ids }
+ * @param {Params} params The getMany parameters { ids, meta }
  * @param {Object} options Options object to pass to the queryClient.
  * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
  *
  * @typedef Params
  * @prop params.ids The ids to get, e.g. [123, 456, 789]
+ * @prop params.meta Optional meta parameters
  *
  * @returns The current request state. Destructure as { data, error, isLoading, refetch }.
  *
@@ -53,16 +54,16 @@ export const useGetMany = <RecordType extends RaRecord = any>(
     params: Partial<GetManyParams> = {},
     options?: UseQueryOptions<RecordType[], Error>
 ): UseGetManyHookValue<RecordType> => {
-    const { ids } = params;
+    const { ids, meta } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const queryCache = queryClient.getQueryCache();
 
     return useQuery<RecordType[], Error, RecordType[]>(
-        [resource, 'getMany', { ids: ids.map(id => String(id)) }],
+        [resource, 'getMany', { ids: ids.map(id => String(id)), meta }],
         () =>
             dataProvider
-                .getMany<RecordType>(resource, { ids })
+                .getMany<RecordType>(resource, { ids, meta })
                 .then(({ data }) => data),
         {
             placeholderData: () => {
@@ -70,7 +71,7 @@ export const useGetMany = <RecordType extends RaRecord = any>(
                     const queryHash = hashQueryKey([
                         resource,
                         'getOne',
-                        { id: String(id) },
+                        { id: String(id), meta },
                     ]);
                     return queryCache.get<RecordType>(queryHash)?.state?.data;
                 });
@@ -84,7 +85,7 @@ export const useGetMany = <RecordType extends RaRecord = any>(
                 // optimistically populate the getOne cache
                 data.forEach(record => {
                     queryClient.setQueryData(
-                        [resource, 'getOne', { id: String(record.id) }],
+                        [resource, 'getOne', { id: String(record.id), meta }],
                         oldRecord => oldRecord ?? record
                     );
                 });

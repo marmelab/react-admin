@@ -11,7 +11,7 @@ This hook calls `dataProvider.getOne()` when the component mounts. It queries th
 // syntax
 const { data, isLoading, error, refetch } = useGetOne(
     resource,
-    { id },
+    { id, meta },
     options
 );
 

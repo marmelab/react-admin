@@ -78,4 +78,29 @@ describe('useDeleteMany', () => {
             });
         });
     });
+
+    it('accepts a meta parameter', async () => {
+        const dataProvider = testDataProvider({
+            deleteMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
+        });
+        let localDeleteMany;
+        const Dummy = () => {
+            const [deleteMany] = useDeleteMany();
+            localDeleteMany = deleteMany;
+            return <span />;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+            </CoreAdminContext>
+        );
+        localDeleteMany('foo', { ids: [1, 2], meta: { hello: 'world' } });
+        await waitFor(() => {
+            expect(dataProvider.deleteMany).toHaveBeenCalledWith('foo', {
+                ids: [1, 2],
+                meta: { hello: 'world' },
+            });
+        });
+    });
 });

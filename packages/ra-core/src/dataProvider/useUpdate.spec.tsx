@@ -115,6 +115,40 @@ describe('useUpdate', () => {
                 });
             });
         });
+
+        it('accepts a meta parameter', async () => {
+            const dataProvider = {
+                update: jest.fn(() =>
+                    Promise.resolve({ data: { id: 1 } } as any)
+                ),
+            } as any;
+            let localUpdate;
+            const Dummy = () => {
+                const [update] = useUpdate();
+                localUpdate = update;
+                return <span />;
+            };
+
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Dummy />
+                </CoreAdminContext>
+            );
+            localUpdate('foo', {
+                id: 1,
+                data: { bar: 'baz' },
+                previousData: { id: 1, bar: 'bar' },
+                meta: { hello: 'world' },
+            });
+            await waitFor(() => {
+                expect(dataProvider.update).toHaveBeenCalledWith('foo', {
+                    id: 1,
+                    data: { bar: 'baz' },
+                    previousData: { id: 1, bar: 'bar' },
+                    meta: { hello: 'world' },
+                });
+            });
+        });
     });
     describe('data', () => {
         it('returns a data typed based on the parametric type', async () => {

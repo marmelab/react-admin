@@ -130,27 +130,27 @@ export interface GetListParams {
     pagination: PaginationPayload;
     sort: SortPayload;
     filter: any;
+    meta?: any;
 }
 export interface GetListResult<RecordType extends RaRecord = any> {
     data: RecordType[];
     total: number;
-    validUntil?: ValidUntil;
 }
 
 export interface GetOneParams<RecordType extends RaRecord = any> {
     id: RecordType['id'];
+    meta?: any;
 }
 export interface GetOneResult<RecordType extends RaRecord = any> {
     data: RecordType;
-    validUntil?: ValidUntil;
 }
 
 export interface GetManyParams {
     ids: Identifier[];
+    meta?: any;
 }
 export interface GetManyResult<RecordType extends RaRecord = any> {
     data: RecordType[];
-    validUntil?: ValidUntil;
 }
 
 export interface GetManyReferenceParams {
@@ -159,43 +159,44 @@ export interface GetManyReferenceParams {
     pagination: PaginationPayload;
     sort: SortPayload;
     filter: any;
+    meta?: any;
 }
 export interface GetManyReferenceResult<RecordType extends RaRecord = any> {
     data: RecordType[];
     total: number;
-    validUntil?: ValidUntil;
 }
 
 export interface UpdateParams<T = any> {
     id: Identifier;
     data: Partial<T>;
     previousData: T;
+    meta?: any;
 }
 export interface UpdateResult<RecordType extends RaRecord = any> {
     data: RecordType;
-    validUntil?: ValidUntil;
 }
 
 export interface UpdateManyParams<T = any> {
     ids: Identifier[];
     data: T;
+    meta?: any;
 }
 export interface UpdateManyResult<RecordType extends RaRecord = any> {
     data?: RecordType['id'][];
-    validUntil?: ValidUntil;
 }
 
 export interface CreateParams<T = any> {
     data: T;
+    meta?: any;
 }
 export interface CreateResult<RecordType extends RaRecord = any> {
     data: RecordType;
-    validUntil?: ValidUntil;
 }
 
 export interface DeleteParams<RecordType extends RaRecord = any> {
     id: Identifier;
     previousData?: RecordType;
+    meta?: any;
 }
 export interface DeleteResult<RecordType extends RaRecord = any> {
     data: RecordType;
@@ -203,6 +204,7 @@ export interface DeleteResult<RecordType extends RaRecord = any> {
 
 export interface DeleteManyParams<RecordType extends RaRecord = any> {
     ids: RecordType['id'][];
+    meta?: any;
 }
 export interface DeleteManyResult<RecordType extends RaRecord = any> {
     data?: RecordType['id'][];

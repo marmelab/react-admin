@@ -30,7 +30,7 @@ import { RaRecord, CreateParams } from '../types';
  * - success: [create, { data: [data from response], isLoading: false, isSuccess: true }]
  * - error:   [create, { error: [error from response], isLoading: false, isError: true }]
  *
- * The create() function must be called with a resource and a parameter object: create(resource, { data }, options)
+ * The create() function must be called with a resource and a parameter object: create(resource, { data, meta }, options)
  *
  * This hook uses react-query useMutation under the hood.
  * This means the state object contains mutate, isIdle, reset and other react-query methods.
@@ -83,10 +83,12 @@ export const useCreate = <RecordType extends RaRecord = any>(
         ({
             resource: callTimeResource = resource,
             data: callTimeData = paramsRef.current.data,
+            meta: callTimeMeta = paramsRef.current.meta,
         } = {}) =>
             dataProvider
                 .create<RecordType>(callTimeResource, {
                     data: callTimeData,
+                    meta: callTimeMeta,
                 })
                 .then(({ data }) => data),
         {
@@ -125,6 +127,7 @@ export const useCreate = <RecordType extends RaRecord = any>(
 export interface UseCreateMutateParams<RecordType extends RaRecord = any> {
     resource?: string;
     data?: Partial<RecordType>;
+    meta?: any;
 }
 
 export type UseCreateOptions<
