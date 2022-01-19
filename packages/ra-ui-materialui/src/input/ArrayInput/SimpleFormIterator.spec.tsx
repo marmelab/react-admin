@@ -7,19 +7,13 @@ import {
     waitFor,
 } from '@testing-library/react';
 import expect from 'expect';
-import {
-    CoreAdminContext,
-    SaveContextProvider,
-    testDataProvider,
-} from 'ra-core';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { testDataProvider } from 'ra-core';
 
+import { AdminContext } from '../../AdminContext';
 import { SimpleForm } from '../../form';
 import { ArrayInput } from './ArrayInput';
 import { TextInput } from '../TextInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
-
-const theme = createTheme({});
 
 describe('<SimpleFormIterator />', () => {
     // bypass confirm leave form with unsaved changes
@@ -30,19 +24,10 @@ describe('<SimpleFormIterator />', () => {
     });
     afterAll(() => confirmSpy.mockRestore());
 
-    const saveContextValue = {
-        save: jest.fn(),
-        saving: false,
-    };
-
     const Wrapper = ({ children }) => (
-        <ThemeProvider theme={theme}>
-            <CoreAdminContext dataProvider={testDataProvider()}>
-                <SaveContextProvider value={saveContextValue}>
-                    {children}
-                </SaveContextProvider>
-            </CoreAdminContext>
-        </ThemeProvider>
+        <AdminContext dataProvider={testDataProvider()}>
+            {children}
+        </AdminContext>
     );
 
     it('should display one input group per row', () => {
@@ -480,7 +465,9 @@ describe('<SimpleFormIterator />', () => {
         );
 
         expect(screen.queryAllByText('ra.action.remove').length).toBe(0);
-        expect(screen.getByText('Custom Remove Button')).not.toBeNull();
+        expect(
+            screen.queryAllByText('Custom Remove Button').length
+        ).toBeGreaterThan(0);
     });
 
     it('should not display the default reorder element if a custom reorder element is passed', () => {
@@ -511,7 +498,9 @@ describe('<SimpleFormIterator />', () => {
         expect(screen.queryAllByLabelText('ra.action.move_down').length).toBe(
             0
         );
-        expect(screen.getByText('Custom reorder Button')).not.toBeNull();
+        expect(
+            screen.queryAllByText('Custom reorder Button').length
+        ).toBeGreaterThan(0);
     });
 
     it('should display custom row label', () => {
@@ -534,8 +523,8 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
 
-        expect(screen.getByText('3.0')).toBeDefined();
-        expect(screen.getByText('3.1')).toBeDefined();
+        expect(screen.queryAllByText('3.0').length).toBeGreaterThan(0);
+        expect(screen.queryAllByText('3.1').length).toBeGreaterThan(0);
     });
 
     it('should call the onClick method when the custom add button is clicked', async () => {
@@ -585,7 +574,7 @@ describe('<SimpleFormIterator />', () => {
                 </SimpleForm>
             </Wrapper>
         );
-        fireEvent.click(screen.getByText('Custom Remove Button'));
+        fireEvent.click(screen.getAllByText('Custom Remove Button')[0]);
         expect(onClick).toHaveBeenCalled();
     });
 
@@ -627,6 +616,8 @@ describe('<SimpleFormIterator />', () => {
             </Wrapper>
         );
 
-        expect(screen.getByText('Custom Remove Button')).not.toBeNull();
+        expect(
+            screen.queryAllByText('Custom Remove Button').length
+        ).toBeGreaterThan(0);
     });
 });

@@ -5,12 +5,13 @@ import {
     isRequired,
     FieldTitle,
     composeSyncValidators,
-    InputProps,
+    RaRecord,
 } from 'ra-core';
-import { useFieldArray } from 'react-final-form-arrays';
+import { useFieldArray, useWatch } from 'react-hook-form';
 import { InputLabel, FormControl, FormHelperText } from '@mui/material';
 
 import { LinearProgress } from '../../layout';
+import { CommonInputProps } from '../CommonInputProps';
 import { InputHelperText } from '../InputHelperText';
 import { sanitizeInputRestProps } from '../sanitizeInputRestProps';
 import { Labeled } from '../Labeled';
@@ -62,8 +63,8 @@ export const ArrayInput = (props: ArrayInputProps) => {
         className,
         defaultValue,
         label,
-        loaded,
-        loading,
+        isFetching,
+        isLoading,
         children,
         helperText,
         record,
@@ -79,13 +80,13 @@ export const ArrayInput = (props: ArrayInputProps) => {
         ? composeSyncValidators(validate)
         : validate;
 
-    const fieldProps = useFieldArray(source, {
-        initialValue: defaultValue,
-        validate: sanitizedValidate,
-        ...rest,
+    const fieldProps = useFieldArray({
+        name: source,
     });
 
-    if (loading) {
+    // const value = useWatch({ name: source });
+
+    if (isLoading) {
         return (
             <Labeled
                 label={label}
@@ -99,21 +100,21 @@ export const ArrayInput = (props: ArrayInputProps) => {
         );
     }
 
-    const { error, submitError, touched, dirty } = fieldProps.meta;
-    const arrayInputError = getArrayInputError(error || submitError);
+    // const { error, submitError, touched, dirty } = fieldProps.meta;
+    // const arrayInputError = getArrayInputError(error);
 
     return (
         <FormControl
             fullWidth
             margin="normal"
             className={className}
-            error={(touched || dirty) && !!arrayInputError}
+            //error={(touched || dirty) && !!arrayInputError}
             {...sanitizeInputRestProps(rest)}
         >
             <InputLabel
                 htmlFor={source}
                 shrink
-                error={(touched || dirty) && !!arrayInputError}
+                //error={(touched || dirty) && !!arrayInputError}
             >
                 <FieldTitle
                     label={label}
@@ -133,7 +134,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
                     disabled,
                 })}
             </ArrayInputContext.Provider>
-            {!!((touched || dirty) && arrayInputError) || helperText ? (
+            {/* {!!((touched || dirty) && arrayInputError) || helperText ? (
                 <FormHelperText error={(touched || dirty) && !!arrayInputError}>
                     <InputHelperText
                         touched={touched || dirty}
@@ -141,7 +142,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
                         helperText={helperText}
                     />
                 </FormHelperText>
-            ) : null}
+            ) : null} */}
         </FormControl>
     );
 };
@@ -176,7 +177,11 @@ export const getArrayInputError = error => {
     return error;
 };
 
-export interface ArrayInputProps extends InputProps {
+export type ArrayInputProps = CommonInputProps & {
+    className?: string;
     children: ReactElement;
     disabled?: boolean;
-}
+    isFetching?: boolean;
+    isLoading?: boolean;
+    record?: Partial<RaRecord>;
+};
