@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Children, ReactElement, ReactNode } from 'react';
+import { Children, cloneElement, ReactElement, ReactNode } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import { FormWithRedirectRenderProps, MutationMode, RaRecord } from 'ra-core';
@@ -43,7 +43,8 @@ export const SimpleFormView = ({
             )}
         </Component>
         {toolbar &&
-            React.cloneElement(toolbar, {
+            cloneElement(toolbar, {
+                className: 'toolbar',
                 mutationMode,
                 record,
                 resource,

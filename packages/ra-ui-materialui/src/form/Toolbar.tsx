@@ -9,7 +9,7 @@ import {
     Theme,
 } from '@mui/material';
 import classnames from 'classnames';
-import { RaRecord, MutationMode } from 'ra-core';
+import { RaRecord, MutationMode, SaveContextValue } from 'ra-core';
 import { useFormState } from 'react-hook-form';
 
 import { SaveButton, DeleteButton } from '../button';
@@ -62,6 +62,7 @@ export const Toolbar = <
         className,
         record,
         resource,
+        saving,
         submitOnEnter = true,
         mutationMode,
         ...rest
@@ -71,7 +72,10 @@ export const Toolbar = <
     const { isValidating } = useFormState();
     // Use form pristine and validating to enable or disable the save button
     // if alwaysEnableSaveButton is undefined
-    const disabled = !valueOrDefault(alwaysEnableSaveButton, !isValidating);
+    const disabled = !valueOrDefault(
+        alwaysEnableSaveButton,
+        !isValidating && !saving
+    );
 
     return (
         <StyledToolbar
@@ -130,7 +134,8 @@ export const Toolbar = <
 };
 
 export interface ToolbarProps<RecordType extends Partial<RaRecord> = any>
-    extends Omit<MuiToolbarProps, 'classes'> {
+    extends Omit<MuiToolbarProps, 'classes'>,
+        Partial<SaveContextValue> {
     children?: ReactNode;
     alwaysEnableSaveButton?: boolean;
     className?: string;

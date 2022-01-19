@@ -37,6 +37,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         mutationMode,
         record,
         saving,
+        submitOnEnter = true,
         syncWithLocation = true,
         tabs = DefaultTabs,
         toolbar = DefaultToolbar,
@@ -114,7 +115,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                 })}
             </div>
             {toolbar &&
-                React.cloneElement(toolbar, {
+                cloneElement(toolbar, {
                     className: 'toolbar',
                     mutationMode,
                     record,
