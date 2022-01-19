@@ -49,8 +49,8 @@ const useLogout = (): Logout => {
             redirectToCurrentLocationAfterLogin = true
         ) =>
             authProvider.logout(params).then(redirectToFromProvider => {
-                dispatch(clearState());
                 if (redirectToFromProvider === false) {
+                    dispatch(clearState());
                     // do not redirect
                     return;
                 }
@@ -76,6 +76,8 @@ const useLogout = (): Logout => {
                     newLocation.search = redirectToParts[1];
                 }
                 history.push(newLocation);
+                dispatch(clearState());
+
                 return redirectToFromProvider;
             }),
         [authProvider, history, dispatch]
