@@ -11,6 +11,7 @@ import {
     RedirectionSideEffect,
     useDeleteWithUndoController,
     DeleteParams,
+    useRecordContext,
     useResourceContext,
 } from 'ra-core';
 
@@ -24,12 +25,12 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
         className,
         icon = defaultIcon,
         onClick,
-        record,
         redirect = 'list',
         mutationOptions,
         ...rest
     } = props;
 
+    const record = useRecordContext(props);
     const resource = useResourceContext(props);
     const { isLoading, handleDelete } = useDeleteWithUndoController({
         record,

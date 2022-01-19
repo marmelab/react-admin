@@ -12,6 +12,7 @@ import {
     DeleteParams,
     RedirectionSideEffect,
     useDeleteWithConfirmController,
+    useRecordContext,
     useResourceContext,
     useTranslate,
 } from 'ra-core';
@@ -30,13 +31,12 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
         label = 'ra.action.delete',
         mutationMode = 'pessimistic',
         onClick,
-        record,
         redirect = 'list',
         mutationOptions,
         ...rest
     } = props;
     const translate = useTranslate();
-
+    const record = useRecordContext(props);
     const resource = useResourceContext(props);
 
     const {
