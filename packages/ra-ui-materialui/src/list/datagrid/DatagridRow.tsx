@@ -14,12 +14,12 @@ import classnames from 'classnames';
 import { TableCell, TableRow, TableRowProps, Checkbox } from '@mui/material';
 import {
     Identifier,
-    linkToRecord,
     RaRecord,
     RecordContextProvider,
     useExpanded,
     useResourceContext,
     useTranslate,
+    useCreatePath,
 } from 'ra-core';
 import { shallowEqual } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -39,7 +39,6 @@ const computeNbColumns = (expand, children, hasBulkActions) =>
 
 const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
     const {
-        basePath,
         children,
         className,
         expand,
@@ -63,6 +62,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
             context.isRowExpandable(record)) &&
         expand;
     const resource = useResourceContext(props);
+    const createPath = useCreatePath();
     const [expanded, toggleExpanded] = useExpanded(resource, id);
     const [nbColumns, setNbColumns] = useState(() =>
         computeNbColumns(expandable, children, hasBulkActions)
@@ -100,42 +100,37 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
     );
     const handleClick = useCallback(
         async event => {
-            if (!rowClick) return;
             event.persist();
-
-            const effect =
+            const type =
                 typeof rowClick === 'function'
-                    ? await rowClick(id, basePath || `/${resource}`, record)
+                    ? await rowClick(id, resource, record)
                     : rowClick;
-            switch (effect) {
-                case 'edit':
-                    navigate(linkToRecord(basePath || `/${resource}`, id));
-                    return;
-                case 'show':
-                    navigate(
-                        linkToRecord(basePath || `/${resource}`, id, 'show')
-                    );
-                    return;
-                case 'expand':
-                    handleToggleExpand(event);
-                    return;
-                case 'toggleSelection':
-                    handleToggleSelection(event);
-                    return;
-                default:
-                    if (effect) navigate(effect);
-                    return;
+            if (type === false || type == null) {
+                return;
             }
+            if (['edit', 'show'].includes(type)) {
+                navigate(createPath({ resource, id, type }));
+                return;
+            }
+            if (type === 'expand') {
+                handleToggleExpand(event);
+                return;
+            }
+            if (type === 'toggleSelection') {
+                handleToggleSelection(event);
+                return;
+            }
+            navigate(type);
         },
         [
-            basePath,
+            rowClick,
+            id,
+            resource,
+            record,
             navigate,
+            createPath,
             handleToggleExpand,
             handleToggleSelection,
-            id,
-            record,
-            resource,
-            rowClick,
         ]
     );
 
@@ -196,7 +191,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                                 DatagridClasses.rowCell
                             )}
                             record={record}
-                            {...{ field, basePath, resource }}
+                            {...{ field, resource }}
                         />
                     ) : null
                 )}
@@ -212,13 +207,11 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                             ? cloneElement(expand, {
                                   // @ts-ignore
                                   record,
-                                  basePath,
                                   resource,
                                   id: String(id),
                               })
                             : createElement(expand, {
                                   record,
-                                  basePath,
                                   resource,
                                   id: String(id),
                               })}
@@ -230,7 +223,6 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
 });
 
 DatagridRow.propTypes = {
-    basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
     // @ts-ignore
@@ -258,12 +250,10 @@ DatagridRow.defaultProps = {
 
 export interface DatagridRowProps
     extends Omit<TableRowProps, 'id' | 'classes'> {
-    basePath?: string;
     className?: string;
     expand?:
         | ReactElement
         | FC<{
-              basePath: string;
               id: Identifier;
               record: RaRecord;
               resource: string;
@@ -277,7 +267,7 @@ export interface DatagridRowProps
     ) => void;
     record?: RaRecord;
     resource?: string;
-    rowClick?: RowClickFunction | string;
+    rowClick?: RowClickFunction | string | false;
     selected?: boolean;
     style?: any;
     selectable?: boolean;
@@ -285,7 +275,7 @@ export interface DatagridRowProps
 
 export type RowClickFunction = (
     id: Identifier,
-    basePath: string,
+    resource: string,
     record: RaRecord
 ) => string | Promise<string>;
 

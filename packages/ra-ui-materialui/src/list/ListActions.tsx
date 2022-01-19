@@ -29,7 +29,7 @@ import { FilterButton } from './filter';
  *     import Button from '@mui/material/Button';
  *     import { TopToolbar, List, CreateButton, ExportButton } from 'react-admin';
  *
- *     const PostListActions = ({ basePath, filters }) => (
+ *     const PostListActions = ({ filters }) => (
  *         <TopToolbar>
  *             { cloneElement(filters, { context: 'button' }) }
  *             <CreateButton/>
@@ -133,7 +133,6 @@ export interface ListActionsProps extends ToolbarProps {
     filterValues?: any;
     permanentFilter?: any;
     hasCreate?: boolean;
-    basePath?: string;
     selectedIds?: Identifier[];
     onUnselectItems?: () => void;
     showFilter?: (filterName: string, defaultValue: any) => void;

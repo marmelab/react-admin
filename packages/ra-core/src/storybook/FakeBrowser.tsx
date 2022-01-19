@@ -65,6 +65,7 @@ const Browser = ({
 
 const BrowserBar = ({ history }: { history: History }) => {
     const [location, setLocation] = useState<Location>(history.location);
+
     useEffect(() => {
         const unsubscribe = history.listen(update => {
             setLocation(update.location);
@@ -117,6 +118,7 @@ const BrowserBar = ({ history }: { history: History }) => {
                 <input
                     name="location"
                     type="text"
+                    key={createPath(location)}
                     defaultValue={`http://localhost:3000${createPath(
                         location
                     )}`}

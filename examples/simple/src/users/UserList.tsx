@@ -29,7 +29,7 @@ const UserBulkActionButtons = props => (
     <BulkDeleteWithConfirmButton {...props} />
 );
 
-const rowClick = memoize(permissions => (id, basePath, record) => {
+const rowClick = memoize(permissions => (id, resource, record) => {
     return permissions === 'admin'
         ? Promise.resolve('edit')
         : Promise.resolve('show');

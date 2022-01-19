@@ -246,7 +246,6 @@ export interface ReferenceInputValue<RecordType extends RaRecord = any> {
 
 export interface UseReferenceInputControllerParams {
     allowEmpty?: boolean;
-    basePath?: string;
     filter?: any;
     filterToQuery?: (filter: string) => any;
     input?: any;

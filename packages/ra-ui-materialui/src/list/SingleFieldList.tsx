@@ -10,13 +10,13 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import LinearProgress from '@mui/material/LinearProgress';
 import {
-    linkToRecord,
     sanitizeListRestProps,
     useListContext,
     useResourceContext,
     RaRecord,
     RecordContextProvider,
     ComponentPropType,
+    useCreatePath,
 } from 'ra-core';
 
 import { Link } from '../Link';
@@ -63,6 +63,7 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
     } = props;
     const { data, isLoading } = useListContext(props);
     const resource = useResourceContext(props);
+    const createPath = useCreatePath();
 
     const Component = component;
 
@@ -78,7 +79,11 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
             {data.map(record => {
                 const resourceLinkPath = !linkType
                     ? false
-                    : linkToRecord(`/${resource}`, record.id, linkType);
+                    : createPath({
+                          resource,
+                          type: linkType,
+                          id: record.id,
+                      });
 
                 if (resourceLinkPath) {
                     return (
@@ -110,7 +115,6 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
 };
 
 SingleFieldList.propTypes = {
-    basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
     classes: PropTypes.object,
     className: PropTypes.string,
@@ -130,7 +134,6 @@ export interface SingleFieldListProps<RecordType extends RaRecord = any>
     linkType?: string | false;
     children: React.ReactElement;
     // can be injected when using the component without context
-    basePath?: string;
     data?: RecordType[];
     total?: number;
     loaded?: boolean;

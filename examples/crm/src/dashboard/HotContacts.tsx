@@ -48,6 +48,7 @@ export const HotContacts = () => {
                     primaryText={contact =>
                         `${contact.first_name} ${contact.last_name}`
                     }
+                    resource="contacts"
                     secondaryText={contact =>
                         formatDistance(
                             new Date(contact.last_seen),

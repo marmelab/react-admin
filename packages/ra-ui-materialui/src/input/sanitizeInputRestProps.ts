@@ -3,7 +3,6 @@ export const sanitizeInputRestProps = ({
     allowEmpty,
     allowNull,
     alwaysOn,
-    basePath,
     beforeSubmit,
     component,
     data,

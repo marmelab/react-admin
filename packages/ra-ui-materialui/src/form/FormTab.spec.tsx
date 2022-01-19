@@ -61,7 +61,6 @@ describe('<FormTab label="foo" />', () => {
                     <TabbedForm>
                         <FormTab
                             label="First"
-                            basePath="/posts"
                             resource="posts"
                             record={record}
                             margin="none"
@@ -71,7 +70,6 @@ describe('<FormTab label="foo" />', () => {
                         </FormTab>
                         <FormTab
                             label="Second"
-                            basePath="/posts"
                             resource="posts"
                             record={record}
                             margin="dense"
@@ -81,7 +79,6 @@ describe('<FormTab label="foo" />', () => {
                         </FormTab>
                         <FormTab
                             label="Third"
-                            basePath="/posts"
                             resource="posts"
                             record={record}
                             margin="normal"

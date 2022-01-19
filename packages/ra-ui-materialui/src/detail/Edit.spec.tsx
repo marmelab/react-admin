@@ -19,7 +19,6 @@ import { Edit } from './Edit';
 
 describe('<Edit />', () => {
     const defaultEditProps = {
-        basePath: '',
         id: '123',
         resource: 'foo',
         location: {} as any,

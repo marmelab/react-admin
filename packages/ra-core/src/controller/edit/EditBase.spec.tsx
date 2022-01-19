@@ -10,7 +10,6 @@ import { useRecordContext } from '../';
 
 describe('EditBase', () => {
     const defaultProps = {
-        basePath: '',
         hasCreate: true,
         hasEdit: true,
         hasList: true,

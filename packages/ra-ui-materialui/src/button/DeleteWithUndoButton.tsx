@@ -25,7 +25,6 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
         icon = defaultIcon,
         onClick,
         record,
-        basePath,
         redirect = 'list',
         mutationOptions,
         ...rest
@@ -35,7 +34,6 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
     const { isLoading, handleDelete } = useDeleteWithUndoController({
         record,
         resource,
-        basePath,
         redirect,
         onClick,
         mutationOptions,
@@ -63,7 +61,6 @@ const defaultIcon = <ActionDelete />;
 
 export interface DeleteWithUndoButtonProps<RecordType extends RaRecord = any>
     extends Omit<ButtonProps, 'record'> {
-    basePath?: string;
     className?: string;
     icon?: ReactElement;
     label?: string;
@@ -84,7 +81,6 @@ export interface DeleteWithUndoButtonProps<RecordType extends RaRecord = any>
 }
 
 DeleteWithUndoButton.propTypes = {
-    basePath: PropTypes.string,
     className: PropTypes.string,
     label: PropTypes.string,
     record: PropTypes.any,

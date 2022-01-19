@@ -33,7 +33,7 @@ const defaultFilter = {};
  *
  * @example
  *
- * const { isLoading, referenceRecord, resourceLinkPath } = useReferenceManyFieldController({
+ * const { isLoading, data } = useReferenceManyFieldController({
  *     resource
  *     reference: 'users',
  *     record: {
@@ -41,7 +41,6 @@ const defaultFilter = {};
  *     }
  *     target: 'comments',
  *     source: 'userId',
- *     basePath: '/comments',
  *     page: 1,
  *     perPage: 25,
  * });

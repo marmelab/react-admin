@@ -10,7 +10,13 @@ import {
 } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { matchPath, useLocation } from 'react-router-dom';
+import {
+    Routes,
+    Route,
+    matchPath,
+    useResolvedPath,
+    useLocation,
+} from 'react-router-dom';
 import { Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import {
@@ -24,7 +30,6 @@ import { TabbedFormTabs, getTabbedFormTabFullPath } from './TabbedFormTabs';
 
 export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
     const {
-        basePath,
         children,
         className,
         formRootPathname,
@@ -44,6 +49,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         ...rest
     } = props;
     const location = useLocation();
+    const resolvedPath = useResolvedPath('');
     const resource = useResourceContext(props);
     const [tabValue, setTabValue] = useState(0);
 
@@ -53,22 +59,31 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         }
     };
 
+    const renderTabHeaders = () =>
+        cloneElement(
+            tabs,
+            {
+                classes: TabbedFormClasses,
+                onChange: handleTabChange,
+                syncWithLocation,
+                url: formRootPathname,
+                value: tabValue,
+            },
+            children
+        );
+
     return (
         <Root
             className={classnames('tabbed-form', className)}
             onSubmit={handleSubmit}
             {...sanitizeRestProps(rest)}
         >
-            {cloneElement(
-                tabs,
-                {
-                    classes: TabbedFormClasses,
-                    onChange: handleTabChange,
-                    syncWithLocation,
-                    url: formRootPathname,
-                    value: tabValue,
-                },
-                children
+            {syncWithLocation ? (
+                <Routes>
+                    <Route path="/*" element={renderTabHeaders()} />
+                </Routes>
+            ) : (
+                renderTabHeaders()
             )}
             <Divider />
             <div className={TabbedFormClasses.content}>
@@ -80,13 +95,12 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                     if (!tab) {
                         return;
                     }
-                    const tabPath = getTabbedFormTabFullPath(
-                        tab,
-                        index,
-                        formRootPathname
-                    );
+                    const tabPath = getTabbedFormTabFullPath(tab, index);
                     const hidden = syncWithLocation
-                        ? !matchPath(tabPath, location.pathname)
+                        ? !matchPath(
+                              `${resolvedPath.pathname}/${tabPath}`,
+                              location.pathname
+                          )
                         : tabValue !== index;
 
                     return isValidElement<any>(tab)
@@ -95,7 +109,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                               classes: TabbedFormClasses,
                               resource,
                               record,
-                              basePath,
                               hidden,
                               variant: tab.props.variant || variant,
                               margin: tab.props.margin || margin,
@@ -106,7 +119,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
             </div>
             {toolbar &&
                 React.cloneElement(toolbar, {
-                    basePath,
                     className: 'toolbar',
                     invalid,
                     mutationMode,
@@ -122,7 +134,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
 };
 
 TabbedFormView.propTypes = {
-    basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
@@ -149,7 +160,6 @@ const DefaultTabs = <TabbedFormTabs />;
 const DefaultToolbar = <Toolbar />;
 
 export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
-    basePath?: string;
     children?: ReactNode;
     className?: string;
     margin?: 'none' | 'normal' | 'dense';

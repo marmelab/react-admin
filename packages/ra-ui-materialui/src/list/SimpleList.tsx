@@ -17,12 +17,12 @@ import {
 import { Link } from 'react-router-dom';
 import {
     Identifier,
-    linkToRecord,
     RaRecord,
     RecordContextProvider,
     sanitizeListRestProps,
     useListContext,
     useResourceContext,
+    useCreatePath,
 } from 'ra-core';
 
 import { SimpleListLoading } from './SimpleListLoading';
@@ -216,7 +216,7 @@ export interface SimpleListProps<RecordType extends RaRecord = any>
     leftAvatar?: FunctionToElement<RecordType>;
     leftIcon?: FunctionToElement<RecordType>;
     primaryText?: FunctionToElement<RecordType> | ReactElement;
-    linkType?: string | FunctionLinkType | boolean;
+    linkType?: string | FunctionLinkType | false;
     rightAvatar?: FunctionToElement<RecordType>;
     rightIcon?: FunctionToElement<RecordType>;
     secondaryText?: FunctionToElement<RecordType> | ReactElement;
@@ -242,33 +242,11 @@ const LinkOrNot = (
         record,
         ...rest
     } = props;
-    const link =
+    const createPath = useCreatePath();
+    const type =
         typeof linkType === 'function' ? linkType(record, id) : linkType;
 
-    return link === 'edit' || link === true ? (
-        // @ts-ignore
-        <ListItemButton
-            component={Link}
-            to={linkToRecord(`/${resource}`, id)}
-            {...rest}
-        >
-            {children}
-        </ListItemButton>
-    ) : link === 'show' ? (
-        // @ts-ignore
-        <ListItemButton
-            component={Link}
-            to={`${linkToRecord(`/${resource}`, id)}/show`}
-            {...rest}
-        >
-            {children}
-        </ListItemButton>
-    ) : link !== false ? (
-        // @ts-ignore
-        <ListItemButton component={Link} to={link} {...rest}>
-            {children}
-        </ListItemButton>
-    ) : (
+    return type === false ? (
         <ListItemText
             // @ts-ignore
             component="div"
@@ -276,13 +254,22 @@ const LinkOrNot = (
         >
             {children}
         </ListItemText>
+    ) : (
+        // @ts-ignore
+        <ListItemButton
+            component={Link}
+            to={createPath({ resource, id, type })}
+            {...rest}
+        >
+            {children}
+        </ListItemButton>
     );
 };
 
 export type FunctionLinkType = (record: RaRecord, id: Identifier) => string;
 
 export interface LinkOrNotProps {
-    linkType?: string | FunctionLinkType | boolean;
+    linkType?: string | FunctionLinkType | false;
     resource: string;
     id: Identifier;
     record: RaRecord;

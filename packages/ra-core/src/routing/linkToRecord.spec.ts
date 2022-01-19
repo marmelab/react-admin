@@ -1,5 +1,5 @@
 import expect from 'expect';
-import linkToRecord from './linkToRecord';
+import { linkToRecord } from './linkToRecord';
 
 describe('Linking to a record', () => {
     it('should generate valid edition links by default', () => {

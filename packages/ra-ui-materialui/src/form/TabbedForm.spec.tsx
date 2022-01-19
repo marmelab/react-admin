@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { createMemoryHistory } from 'history';
-import { minLength, required, SaveContextProvider } from 'ra-core';
-import { CoreAdminContext, testDataProvider } from 'ra-core';
+import { Route, Routes } from 'react-router-dom';
+import {
+    minLength,
+    required,
+    SaveContextProvider,
+    CoreAdminContext,
+    testDataProvider,
+} from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {
     fireEvent,
@@ -93,27 +99,34 @@ describe('<TabbedForm />', () => {
                 dataProvider={testDataProvider()}
                 history={history}
             >
-                <ThemeProvider theme={createTheme(defaultTheme)}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <TabbedForm
-                            classes={{ errorTabButton: 'error' }}
-                            resource="posts"
-                        >
-                            <FormTab label="tab1">
-                                <TextInput
-                                    source="title"
-                                    validate={required()}
-                                />
-                            </FormTab>
-                            <FormTab label="tab2">
-                                <TextInput
-                                    source="description"
-                                    validate={minLength(10)}
-                                />
-                            </FormTab>
-                        </TabbedForm>
-                    </SaveContextProvider>
-                </ThemeProvider>
+                <Routes>
+                    <Route
+                        path="/posts/:id/*"
+                        element={
+                            <ThemeProvider theme={createTheme(defaultTheme)}>
+                                <SaveContextProvider value={saveContextValue}>
+                                    <TabbedForm
+                                        classes={{ errorTabButton: 'error' }}
+                                        resource="posts"
+                                    >
+                                        <FormTab label="tab1">
+                                            <TextInput
+                                                source="title"
+                                                validate={required()}
+                                            />
+                                        </FormTab>
+                                        <FormTab label="tab2">
+                                            <TextInput
+                                                source="description"
+                                                validate={minLength(10)}
+                                            />
+                                        </FormTab>
+                                    </TabbedForm>
+                                </SaveContextProvider>
+                            </ThemeProvider>
+                        }
+                    />
+                </Routes>
             </CoreAdminContext>
         );
 
@@ -136,27 +149,34 @@ describe('<TabbedForm />', () => {
                 dataProvider={testDataProvider()}
                 history={history}
             >
-                <ThemeProvider theme={createTheme(defaultTheme)}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <TabbedForm
-                            classes={{ errorTabButton: 'error' }}
-                            resource="posts"
-                        >
-                            <FormTab label="tab1">
-                                <TextInput
-                                    source="title"
-                                    validate={required()}
-                                />
-                            </FormTab>
-                            <FormTab label="tab2">
-                                <TextInput
-                                    source="description"
-                                    validate={required()}
-                                />
-                            </FormTab>
-                        </TabbedForm>
-                    </SaveContextProvider>
-                </ThemeProvider>
+                <Routes>
+                    <Route
+                        path="/posts/:id/*"
+                        element={
+                            <ThemeProvider theme={createTheme(defaultTheme)}>
+                                <SaveContextProvider value={saveContextValue}>
+                                    <TabbedForm
+                                        classes={{ errorTabButton: 'error' }}
+                                        resource="posts"
+                                    >
+                                        <FormTab label="tab1">
+                                            <TextInput
+                                                source="title"
+                                                validate={required()}
+                                            />
+                                        </FormTab>
+                                        <FormTab label="tab2">
+                                            <TextInput
+                                                source="description"
+                                                validate={required()}
+                                            />
+                                        </FormTab>
+                                    </TabbedForm>
+                                </SaveContextProvider>
+                            </ThemeProvider>
+                        }
+                    />
+                </Routes>
             </CoreAdminContext>
         );
 
@@ -177,27 +197,31 @@ describe('<TabbedForm />', () => {
                 dataProvider={testDataProvider()}
                 history={history}
             >
-                <ThemeProvider theme={createTheme(defaultTheme)}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <TabbedForm
-                            classes={{ errorTabButton: 'error' }}
-                            resource="posts"
-                        >
-                            <FormTab label="tab1">
-                                <TextInput
-                                    source="title"
-                                    validate={required()}
-                                />
-                            </FormTab>
-                            <FormTab label="tab2">
-                                <TextInput
-                                    source="description"
-                                    validate={minLength(10)}
-                                />
-                            </FormTab>
-                        </TabbedForm>
-                    </SaveContextProvider>
-                </ThemeProvider>
+                <Routes>
+                    <Route
+                        path="/posts/:id/*"
+                        element={
+                            <ThemeProvider theme={createTheme(defaultTheme)}>
+                                <SaveContextProvider value={saveContextValue}>
+                                    <TabbedForm resource="posts">
+                                        <FormTab label="tab1">
+                                            <TextInput
+                                                source="title"
+                                                validate={required()}
+                                            />
+                                        </FormTab>
+                                        <FormTab label="tab2">
+                                            <TextInput
+                                                source="description"
+                                                validate={minLength(10)}
+                                            />
+                                        </FormTab>
+                                    </TabbedForm>
+                                </SaveContextProvider>
+                            </ThemeProvider>
+                        }
+                    />
+                </Routes>
             </CoreAdminContext>
         );
 

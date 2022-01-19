@@ -326,7 +326,6 @@ export type LoadingComponent = ComponentType<{
 }>;
 
 export interface ResourceComponentInjectedProps {
-    basePath?: string;
     permissions?: any;
     resource?: string;
     options?: any;

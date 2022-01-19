@@ -1,14 +1,14 @@
 import expect from 'expect';
-import resolveRedirectTo from './resolveRedirectTo';
+import { resolveRedirectTo } from './resolveRedirectTo';
 
 describe('resolveRedirectTo', () => {
     it('should accept a view name', () => {
-        expect(resolveRedirectTo('list', '/books', 1)).toEqual('/books');
-        expect(resolveRedirectTo('create', '/books', 1)).toEqual(
+        expect(resolveRedirectTo('list', 'books', 1)).toEqual('/books');
+        expect(resolveRedirectTo('create', 'books', 1)).toEqual(
             '/books/create'
         );
-        expect(resolveRedirectTo('edit', '/books', 1)).toEqual('/books/1');
-        expect(resolveRedirectTo('show', '/books', 1)).toEqual('/books/1/show');
+        expect(resolveRedirectTo('edit', 'books', 1)).toEqual('/books/1');
+        expect(resolveRedirectTo('show', 'books', 1)).toEqual('/books/1/show');
     });
 
     it('should accept a custom route name', () => {
@@ -16,7 +16,7 @@ describe('resolveRedirectTo', () => {
     });
 
     it('should accept a function as parameter', () => {
-        const redirect = (basePath, id, data) =>
+        const redirect = (resource, id, data) =>
             `/related/${data.related_id}/show`;
         expect(
             resolveRedirectTo(redirect, 'books', 1, { related_id: 3 })

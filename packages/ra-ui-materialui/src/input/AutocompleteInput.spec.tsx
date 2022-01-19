@@ -841,7 +841,7 @@ describe('<AutocompleteInput />', () => {
     it("should allow to edit the input if it's inside a FormDataConsumer", () => {
         const { getByLabelText } = renderWithRedux(
             <ThemeProvider theme={createTheme(defaultTheme)}>
-                <SimpleForm validateOnBlur basePath="/posts" resource="posts">
+                <SimpleForm validateOnBlur resource="posts">
                     <FormDataConsumer>
                         {({ formData, ...rest }) => {
                             return (

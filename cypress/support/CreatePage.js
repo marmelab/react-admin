@@ -74,28 +74,28 @@ export default url => ({
     submitWithKeyboard() {
         cy.get("input[type='text']:first").type('{enter}');
         cy.get(this.elements.snackbar);
-        cy.get(this.elements.body).click(); // dismiss notification
+        cy.get(this.elements.snackbar).click(); // dismiss notification
         cy.wait(200); // let the notification disappear (could block further submits)
     },
 
     submitAndShow() {
         cy.get(this.elements.submitAndShowButton).click();
         cy.get(this.elements.snackbar);
-        cy.get(this.elements.body).click(); // dismiss notification
+        cy.get(this.elements.snackbar).click(); // dismiss notification
         cy.wait(200); // let the notification disappear (could block further submits)
     },
 
     submitAndAdd() {
         cy.get(this.elements.submitAndAddButton).click();
         cy.get(this.elements.snackbar);
-        cy.get(this.elements.body).click(); // dismiss notification
+        cy.get(this.elements.snackbar).click(); // dismiss notification
         cy.wait(200); // let the notification disappear (could block further submits)
     },
 
     submitWithAverageNote() {
         cy.get(this.elements.submitCommentable).click();
         cy.get(this.elements.snackbar);
-        cy.get(this.elements.body).click(); // dismiss notification
+        cy.get(this.elements.snackbar).click(); // dismiss notification
         cy.wait(200); // let the notification disappear (could block further submits)
     },
 

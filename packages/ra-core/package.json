@@ -44,8 +44,8 @@
         "react-dom": "^17.0.0",
         "react-final-form": "^6.5.7",
         "react-redux": "^7.1.0",
-        "react-router": "^6.0.2",
-        "react-router-dom": "^6.0.2",
+        "react-router": "^6.1.0",
+        "react-router-dom": "^6.1.0",
         "react-test-renderer": "^16.9.0 || ^17.0.0",
         "redux": "^3.7.2 || ^4.0.3",
         "tsup": "^5.11.11",
@@ -59,8 +59,8 @@
         "react-dom": "^16.9.0 || ^17.0.0",
         "react-final-form": "^6.5.2",
         "react-redux": "^7.1.0",
-        "react-router": "^6.0.2",
-        "react-router-dom": "^6.0.2",
+        "react-router": "^6.1.0",
+        "react-router-dom": "^6.1.0",
         "redux": "^3.7.2 || ^4.0.3"
     },
     "dependencies": {

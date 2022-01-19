@@ -12,7 +12,6 @@ import { CloneButton } from './CloneButton';
 const theme = createTheme();
 
 const invalidButtonDomProps = {
-    basePath: '/posts',
     invalid: false,
     pristine: false,
     record: { id: 123, foo: 'bar' },
@@ -29,8 +28,8 @@ describe('<CloneButton />', () => {
             <MemoryRouter>
                 <ThemeProvider theme={theme}>
                     <CloneButton
+                        resource="posts"
                         record={{ id: 123, foo: 'bar' }}
-                        basePath="/posts"
                     />
                 </ThemeProvider>
             </MemoryRouter>

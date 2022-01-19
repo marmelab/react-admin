@@ -3,7 +3,7 @@ import { CssBaseline, Container } from '@mui/material';
 import { CoreLayoutProps } from 'react-admin';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import { Notification, Error } from 'react-admin';
+import { Error } from 'react-admin';
 import Header from './Header';
 
 const Layout = (props: LayoutProps) => {
@@ -20,7 +20,6 @@ const Layout = (props: LayoutProps) => {
                     </ErrorBoundary>
                 </main>
             </Container>
-            <Notification />
         </>
     );
 };

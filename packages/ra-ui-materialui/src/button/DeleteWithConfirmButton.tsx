@@ -23,7 +23,6 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
     props: DeleteWithConfirmButtonProps<RecordType>
 ) => {
     const {
-        basePath,
         className,
         confirmTitle = 'ra.message.delete_title',
         confirmContent = 'ra.message.delete_content',
@@ -49,7 +48,6 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
     } = useDeleteWithConfirmController({
         record,
         redirect,
-        basePath,
         mutationMode,
         onClick,
         mutationOptions,
@@ -100,7 +98,6 @@ const defaultIcon = <ActionDelete />;
 
 export interface DeleteWithConfirmButtonProps<RecordType extends RaRecord = any>
     extends Omit<ButtonProps, 'record'> {
-    basePath?: string;
     className?: string;
     confirmTitle?: string;
     confirmContent?: React.ReactNode;
@@ -124,7 +121,6 @@ export interface DeleteWithConfirmButtonProps<RecordType extends RaRecord = any>
 }
 
 DeleteWithConfirmButton.propTypes = {
-    basePath: PropTypes.string,
     className: PropTypes.string,
     confirmTitle: PropTypes.string,
     confirmContent: PropTypes.string,

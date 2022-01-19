@@ -2,9 +2,9 @@ import * as React from 'react';
 import { ComponentType, useContext, useMemo, useState } from 'react';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { Provider, ReactReduxContext } from 'react-redux';
-import { createHashHistory, History } from 'history';
-import { HistoryRouter } from './HistoryRouter';
+import { History } from 'history';
 
+import { AdminRouter } from '../routing';
 import { AuthContext, convertLegacyAuthProvider } from '../auth';
 import {
     DataProviderContext,
@@ -36,6 +36,9 @@ export interface AdminContextProps {
     dashboard?: DashboardComponent;
     dataProvider?: DataProvider | LegacyDataProvider;
     queryClient?: QueryClient;
+    /**
+     * @deprecated Wrap your Admin inside a Router to change the routing strategy
+     */
     history?: History;
     i18nProvider?: I18nProvider;
     initialState?: InitialState;
@@ -81,32 +84,23 @@ React-admin requires a valid dataProvider function to work.`);
         [dataProvider]
     );
 
-    const finalHistory = useMemo(() => history || createHashHistory(), [
-        history,
-    ]);
-
-    const renderCore = () => {
-        return (
-            <AuthContext.Provider value={finalAuthProvider}>
-                <DataProviderContext.Provider value={finalDataProvider}>
-                    <QueryClientProvider client={finalQueryClient}>
-                        <NotificationContextProvider>
-                            <TranslationProvider i18nProvider={i18nProvider}>
-                                <HistoryRouter
-                                    history={finalHistory}
-                                    basename={basename}
-                                >
-                                    <ResourceDefinitionContextProvider>
-                                        {children}
-                                    </ResourceDefinitionContextProvider>
-                                </HistoryRouter>
-                            </TranslationProvider>
-                        </NotificationContextProvider>
-                    </QueryClientProvider>
-                </DataProviderContext.Provider>
-            </AuthContext.Provider>
-        );
-    };
+    const renderCore = () => (
+        <AuthContext.Provider value={finalAuthProvider}>
+            <DataProviderContext.Provider value={finalDataProvider}>
+                <QueryClientProvider client={finalQueryClient}>
+                    <NotificationContextProvider>
+                        <TranslationProvider i18nProvider={i18nProvider}>
+                            <AdminRouter history={history} basename={basename}>
+                                <ResourceDefinitionContextProvider>
+                                    {children}
+                                </ResourceDefinitionContextProvider>
+                            </AdminRouter>
+                        </TranslationProvider>
+                    </NotificationContextProvider>
+                </QueryClientProvider>
+            </DataProviderContext.Provider>
+        </AuthContext.Provider>
+    );
 
     const [store] = useState(() =>
         needsNewRedux

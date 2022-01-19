@@ -7,11 +7,8 @@ import {
 import { UseMutationOptions } from 'react-query';
 
 import { useDelete } from '../../dataProvider';
-import {
-    useRedirect,
-    useUnselect,
-    RedirectionSideEffect,
-} from '../../sideEffect';
+import { useUnselect } from '../../sideEffect';
+import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import { RaRecord, MutationMode, DeleteParams } from '../../types';
 import { useResourceContext } from '../../core';
@@ -24,7 +21,6 @@ import { useResourceContext } from '../../core';
  * const DeleteButton = ({
  *     resource,
  *     record,
- *     basePath,
  *     redirect,
  *     onClick,
  *     ...rest
@@ -39,7 +35,6 @@ import { useResourceContext } from '../../core';
  *         resource,
  *         record,
  *         redirect,
- *         basePath,
  *         onClick,
  *     });
  *
@@ -74,7 +69,6 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
     const {
         record,
         redirect: redirectTo,
-        basePath,
         mutationMode,
         onClick,
         mutationOptions,
@@ -111,7 +105,7 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
                             undoable: mutationMode === 'undoable',
                         });
                         unselect(resource, [record.id]);
-                        redirect(redirectTo, basePath || `/${resource}`);
+                        redirect(redirectTo, resource);
                     },
                     onError: (error: Error) => {
                         setOpen(false);
@@ -142,7 +136,6 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
             }
         },
         [
-            basePath,
             deleteOne,
             mutationMode,
             mutationOptions,
@@ -168,7 +161,6 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
 export interface UseDeleteWithConfirmControllerParams<
     RecordType extends RaRecord = any
 > {
-    basePath?: string;
     mutationMode?: MutationMode;
     record?: RecordType;
     redirect?: RedirectionSideEffect;

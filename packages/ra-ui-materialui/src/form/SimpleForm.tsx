@@ -71,7 +71,6 @@ export interface SimpleFormProps
             HtmlHTMLAttributes<HTMLFormElement>,
             'defaultValue' | 'onSubmit' | 'children'
         > {
-    basePath?: string;
     children: ReactNode;
     className?: string;
     component?: React.ComponentType<any>;

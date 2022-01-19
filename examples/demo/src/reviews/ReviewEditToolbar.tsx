@@ -30,7 +30,7 @@ const StyledMuiToolbar = styled(MuiToolbar)(({ theme }) => ({
 }));
 
 const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
-    const { basePath, invalid, resource, saving } = props;
+    const { invalid, resource, saving } = props;
     const redirect = useRedirect();
     const notify = useNotify();
 
@@ -56,16 +56,12 @@ const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
                                     messageArgs: { smart_count: 1 },
                                     undoable: true,
                                 });
-                                redirect('list', '/reviews');
+                                redirect('list', 'reviews');
                             },
                         }}
                         submitOnEnter={true}
                     />
-                    <DeleteButton
-                        basePath={basePath}
-                        record={record}
-                        resource={resource}
-                    />
+                    <DeleteButton record={record} resource={resource} />
                 </Fragment>
             )}
         </StyledMuiToolbar>

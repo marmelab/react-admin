@@ -103,7 +103,6 @@ import { InputHelperText } from './InputHelperText';
 export const AutocompleteInput = (props: AutocompleteInputProps) => {
     const {
         allowEmpty,
-        basePath,
         choices,
         clearText = 'ra.action.clear_input_value',
         closeText = 'ra.action.close',

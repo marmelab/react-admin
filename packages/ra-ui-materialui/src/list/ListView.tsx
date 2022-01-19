@@ -93,7 +93,6 @@ ListView.propTypes = {
     // @ts-ignore-line
     actions: PropTypes.oneOfType([PropTypes.bool, PropTypes.element]),
     aside: PropTypes.element,
-    basePath: PropTypes.string,
     children: PropTypes.element,
     className: PropTypes.string,
     component: ComponentPropType,

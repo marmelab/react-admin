@@ -41,7 +41,6 @@ const ResetViewsButton = ({ resource, selectedIds }) => {
 };
 
 ResetViewsButton.propTypes = {
-    basePath: PropTypes.string,
     label: PropTypes.string,
     resource: PropTypes.string.isRequired,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,

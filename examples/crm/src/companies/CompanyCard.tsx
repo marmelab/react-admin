@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Paper, Typography, Link as MuiLink } from '@mui/material';
 import ContactsIcon from '@mui/icons-material/AccountCircle';
 import DealIcon from '@mui/icons-material/MonetizationOn';
-import { linkToRecord, SelectField } from 'react-admin';
+import { useCreatePath, SelectField } from 'react-admin';
 import { Link } from 'react-router-dom';
 
 import { sectors } from './sectors';
@@ -61,18 +61,23 @@ const StyledMuiLink = styled(MuiLink)(({ theme }) => ({
 
 export const CompanyCard = ({ record }: { record: Company }) => {
     const [elevation, setElevation] = useState(1);
+    const createPath = useCreatePath();
     return (
         <StyledMuiLink
             // @ts-ignore
             component={Link}
-            to={linkToRecord('/companies', record.id, 'show')}
+            to={createPath({
+                resource: 'companies',
+                id: record.id,
+                type: 'show',
+            })}
             underline="none"
             onMouseEnter={() => setElevation(3)}
             onMouseLeave={() => setElevation(1)}
         >
             <Paper className={classes.paper} elevation={elevation}>
                 <div className={classes.identity}>
-                    <CompanyAvatar />
+                    <CompanyAvatar record={record} />
                     <div className={classes.name}>
                         <Typography variant="subtitle2">
                             {record.name}

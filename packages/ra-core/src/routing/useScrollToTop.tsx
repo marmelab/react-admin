@@ -25,6 +25,7 @@ import { useLocation } from 'react-router-dom';
 export const useScrollToTop = () => {
     const location = useLocation();
     useEffect(() => {
+        // @ts-ignore
         if (location.state?._scrollToTop && typeof window != 'undefined') {
             window.scrollTo(0, 0);
         }

@@ -30,7 +30,6 @@ describe('MyCustomEditView', () => {
 
     beforeEach(() => {
         const defaultEditProps = {
-            basePath: '/',
             id: '123',
             resource: 'foo',
             location: {},

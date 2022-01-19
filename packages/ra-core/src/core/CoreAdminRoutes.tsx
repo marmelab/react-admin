@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { WithPermissions } from '../auth';
 import { useTimeout } from '../util';
-import { useScrollToTop } from './useScrollToTop';
+import { useScrollToTop, useCreatePath } from '../routing';
 import {
     AdminChildren,
     CatchAllComponent,
@@ -13,9 +13,10 @@ import {
 } from '../types';
 import { useConfigureAdminRouterFromChildren } from './useConfigureAdminRouterFromChildren';
 
-export const CoreAdminRouter = (props: AdminRouterProps) => {
+export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
     const oneSecondHasPassed = useTimeout(1000);
     useScrollToTop();
+    const createPath = useCreatePath();
 
     const {
         customRoutesWithLayout,
@@ -87,7 +88,11 @@ export const CoreAdminRouter = (props: AdminRouterProps) => {
                                             />
                                         ) : resources.length > 0 ? (
                                             <Navigate
-                                                to={`/${resources[0].props.name}`}
+                                                to={createPath({
+                                                    resource:
+                                                        resources[0].props.name,
+                                                    type: 'list',
+                                                })}
                                             />
                                         ) : null
                                     }
@@ -105,11 +110,11 @@ export const CoreAdminRouter = (props: AdminRouterProps) => {
     );
 };
 
-CoreAdminRouter.defaultProps = {
+CoreAdminRoutes.defaultProps = {
     customRoutes: [],
 };
 
-export interface AdminRouterProps extends CoreLayoutProps {
+export interface CoreAdminRoutesProps extends CoreLayoutProps {
     layout: LayoutComponent;
     catchAll: CatchAllComponent;
     children?: AdminChildren;

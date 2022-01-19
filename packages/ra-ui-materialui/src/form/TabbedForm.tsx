@@ -130,7 +130,6 @@ export interface TabbedFormProps
             HtmlHTMLAttributes<HTMLFormElement>,
             'defaultValue' | 'onSubmit' | 'children'
         > {
-    basePath?: string;
     children: ReactNode;
     className?: string;
     initialValues?: any;

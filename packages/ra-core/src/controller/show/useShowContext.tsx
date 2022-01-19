@@ -49,7 +49,6 @@ export const useShowContext = <RecordType extends RaRecord = any>(
  * @returns {ShowControllerResult} show controller props
  */
 const extractShowContextProps = ({
-    basePath,
     record,
     data,
     defaultTitle,
@@ -57,7 +56,6 @@ const extractShowContextProps = ({
     isLoading,
     resource,
 }: any) => ({
-    basePath,
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
     record: record || data,

@@ -6,20 +6,20 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
 import { CoreAdminContext } from '../core';
-import useRedirect from './useRedirect';
+import { useRedirect } from './useRedirect';
 import { testDataProvider } from '../dataProvider';
 
 const Redirect = ({
     redirectTo,
-    basePath = '',
+    resource = '',
     id = null,
     data = null,
     state = null,
 }) => {
     const redirect = useRedirect();
     useEffect(() => {
-        redirect(redirectTo, basePath, id, data, state);
-    }, [basePath, data, id, redirect, redirectTo, state]);
+        redirect(redirectTo, resource, id, data, state);
+    }, [resource, data, id, redirect, redirectTo, state]);
     return null;
 };
 

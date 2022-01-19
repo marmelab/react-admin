@@ -3,7 +3,6 @@ export * from './components';
 export * from './ResourceContext';
 export * from './ResourceContextProvider';
 export * from './ResourceDefinitionContext';
-export * from './useScrollToTop';
 export * from './useResourceContext';
 export * from './useResourceDefinition';
 export * from './useResourceDefinitions';

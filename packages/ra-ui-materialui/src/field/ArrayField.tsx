@@ -79,7 +79,7 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *     TagsField.defaultProps = { addLabel: true };
  */
 export const ArrayField: FC<ArrayFieldProps> = memo(props => {
-    const { basePath, children, resource, source, addLabel, ...rest } = props;
+    const { children, resource, source, addLabel, ...rest } = props;
     const record = useRecordContext(props);
     const [data, setData] = useState(initialState);
 
@@ -92,7 +92,6 @@ export const ArrayField: FC<ArrayFieldProps> = memo(props => {
         <ListContextProvider
             value={{
                 data,
-                basePath,
                 selectedIds: [],
                 sort: { field: null, order: null },
                 displayedFilters: null,
@@ -118,7 +117,6 @@ export const ArrayField: FC<ArrayFieldProps> = memo(props => {
             {cloneElement(Children.only(children), {
                 data,
                 isLoading: false,
-                basePath,
                 sort: { field: null, order: null },
                 resource,
                 ...rest,

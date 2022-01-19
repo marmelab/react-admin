@@ -8,7 +8,6 @@ import { Toolbar } from './Toolbar';
 import { FormInput } from './FormInput';
 
 export const SimpleFormView = ({
-    basePath,
     children,
     className,
     component: Component = CardContentInner,
@@ -37,7 +36,6 @@ export const SimpleFormView = ({
                 (input: ReactElement) =>
                     input && (
                         <FormInput
-                            basePath={basePath}
                             input={input}
                             record={record}
                             resource={resource}
@@ -49,7 +47,6 @@ export const SimpleFormView = ({
         </Component>
         {toolbar &&
             React.cloneElement(toolbar, {
-                basePath,
                 invalid,
                 mutationMode,
                 pristine,
@@ -63,7 +60,6 @@ export const SimpleFormView = ({
 );
 
 SimpleFormView.propTypes = {
-    basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
     invalid: PropTypes.bool,
@@ -81,7 +77,6 @@ SimpleFormView.propTypes = {
 const DefaultToolbar = <Toolbar />;
 
 export interface SimpleFormViewProps extends FormWithRedirectRenderProps {
-    basePath?: string;
     children?: ReactNode;
     className?: string;
     component?: React.ComponentType<any>;

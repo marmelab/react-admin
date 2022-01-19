@@ -7,7 +7,7 @@ import { UseMutationOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
 import { useCreate } from '../../dataProvider';
-import { useRedirect, RedirectionSideEffect } from '../../sideEffect';
+import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import { SaveHandler } from '../saveContext';
 import { useTranslate } from '../../i18n';
@@ -98,7 +98,7 @@ export const useCreateController = <
                                   });
                                   redirect(
                                       finalRedirectTo,
-                                      `/${resource}`,
+                                      resource,
                                       newRecord.id,
                                       newRecord
                                   );

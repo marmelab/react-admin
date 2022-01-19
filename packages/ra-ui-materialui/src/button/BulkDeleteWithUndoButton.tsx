@@ -20,7 +20,6 @@ export const BulkDeleteWithUndoButton = (
     props: BulkDeleteWithUndoButtonProps
 ) => {
     const {
-        basePath,
         label = 'ra.action.delete',
         icon = defaultIcon,
         onClick,
@@ -90,7 +89,6 @@ export const BulkDeleteWithUndoButton = (
 const defaultIcon = <ActionDelete />;
 
 const sanitizeRestProps = ({
-    basePath,
     classes,
     filterValues,
     label,
@@ -124,7 +122,6 @@ const StyledButton = styled(Button, { name: PREFIX })(({ theme }) => ({
 }));
 
 BulkDeleteWithUndoButton.propTypes = {
-    basePath: PropTypes.string,
     label: PropTypes.string,
     resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any),

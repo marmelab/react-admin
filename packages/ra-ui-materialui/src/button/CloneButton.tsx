@@ -4,22 +4,26 @@ import PropTypes from 'prop-types';
 import Queue from '@mui/icons-material/Queue';
 import { Link } from 'react-router-dom';
 import { stringify } from 'query-string';
-import { RaRecord, useResourceContext } from 'ra-core';
+import {
+    RaRecord,
+    useResourceContext,
+    useRecordContext,
+    useCreatePath,
+} from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
 
 export const CloneButton = (props: CloneButtonProps) => {
     const {
-        basePath = '',
         label = 'ra.action.clone',
         scrollToTop = true,
-        record,
         icon = defaultIcon,
         ...rest
     } = props;
-
-    const resource = useResourceContext();
-    const pathname = basePath ? `${basePath}/create` : `/${resource}/create`;
+    const resource = useResourceContext(props);
+    const record = useRecordContext(props);
+    const createPath = useCreatePath();
+    const pathname = createPath({ resource, type: 'create' });
     return (
         <Button
             component={Link}
@@ -36,7 +40,7 @@ export const CloneButton = (props: CloneButtonProps) => {
             }
             label={label}
             onClick={stopPropagation}
-            {...rest}
+            {...sanitizeRestProps(rest)}
         >
             {icon}
         </Button>
@@ -50,8 +54,13 @@ const stopPropagation = e => e.stopPropagation();
 
 const omitId = ({ id, ...rest }: RaRecord) => rest;
 
+const sanitizeRestProps = ({
+    resource,
+    record,
+    ...rest
+}: Omit<CloneButtonProps, 'label' | 'scrollToTop' | 'icon'>) => rest;
+
 interface Props {
-    basePath?: string;
     record?: RaRecord;
     icon?: ReactElement;
     scrollToTop?: boolean;
@@ -60,7 +69,6 @@ interface Props {
 export type CloneButtonProps = Props & ButtonProps;
 
 CloneButton.propTypes = {
-    basePath: PropTypes.string,
     icon: PropTypes.element,
     label: PropTypes.string,
     record: PropTypes.any,

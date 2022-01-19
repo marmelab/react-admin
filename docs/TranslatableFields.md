@@ -81,7 +81,6 @@ const Selector = () => {
 <TranslatableFields
     record={record}
     resource="products"
-    basePath="/products"
     locales={['en', 'fr']}
     selector={<Selector />}
 >

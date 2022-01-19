@@ -11,7 +11,6 @@ import DatagridRow, { PureDatagridRow, RowClickFunction } from './DatagridRow';
 const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
     (
         {
-            basePath,
             children,
             className,
             data,
@@ -42,7 +41,6 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
                 cloneElement(
                     row,
                     {
-                        basePath,
                         className: classnames(DatagridClasses.row, {
                             [DatagridClasses.rowEven]: rowIndex % 2 === 0,
                             [DatagridClasses.rowOdd]: rowIndex % 2 !== 0,
@@ -69,7 +67,6 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
 );
 
 DatagridBody.propTypes = {
-    basePath: PropTypes.string,
     className: PropTypes.string,
     children: PropTypes.node,
     // @ts-ignore
@@ -95,13 +92,11 @@ DatagridBody.defaultProps = {
 };
 
 export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
-    basePath?: string;
     className?: string;
     data?: any[];
     expand?:
         | ReactElement
         | FC<{
-              basePath: string;
               id: Identifier;
               record: RaRecord;
               resource: string;

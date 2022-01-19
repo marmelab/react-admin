@@ -34,12 +34,12 @@ const StyledAvatar = styled(Avatar)({
     },
 });
 
-export const CompanyAvatar = ({
-    size = 'large',
-}: {
+export const CompanyAvatar = (props: {
+    record?: Company;
     size?: 'small' | 'large';
 }) => {
-    const record = useRecordContext<Company>();
+    const { size = 'large' } = props;
+    const record = useRecordContext<Company>(props);
     if (!record) return null;
     return (
         <StyledAvatar

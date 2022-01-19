@@ -1,26 +1,28 @@
 import * as React from 'react';
-import { ReactElement, useMemo } from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ContentCreate from '@mui/icons-material/Create';
 import { ButtonProps as MuiButtonProps } from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import {
-    linkToRecord,
     RaRecord,
     useResourceContext,
     useRecordContext,
+    useCreatePath,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
 
 /**
- * Opens the Edit view of a given record:
+ * Opens the Edit view for the current record.
+ *
+ * Reads the record and resource from the context.
  *
  * @example // basic usage
  * import { EditButton } from 'react-admin';
  *
- * const CommentEditButton = ({ record }) => (
- *     <EditButton basePath="/comments" label="Edit comment" record={record} />
+ * const CommentEditButton = () => (
+ *     <EditButton label="Edit comment" />
  * );
  */
 export const EditButton = (props: EditButtonProps) => {
@@ -32,18 +34,13 @@ export const EditButton = (props: EditButtonProps) => {
     } = props;
     const resource = useResourceContext(props);
     const record = useRecordContext(props);
+    const createPath = useCreatePath();
+    if (!record) return null;
     return (
         <Button
             component={Link}
-            to={useMemo(
-                () => ({
-                    pathname: record
-                        ? linkToRecord(`/${resource}`, record.id)
-                        : '',
-                    state: { _scrollToTop: scrollToTop },
-                }),
-                [record, resource, scrollToTop]
-            )}
+            to={createPath({ type: 'edit', resource, id: record.id })}
+            state={scrollStates[String(scrollToTop)]}
             label={label}
             onClick={stopPropagation}
             {...(rest as any)}
@@ -53,13 +50,18 @@ export const EditButton = (props: EditButtonProps) => {
     );
 };
 
+// avoids using useMemo to get a constant value for the link state
+const scrollStates = {
+    true: { _scrollToTop: true },
+    false: {},
+};
+
 const defaultIcon = <ContentCreate />;
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
 interface Props {
-    basePath?: string;
     icon?: ReactElement;
     label?: string;
     record?: RaRecord;
@@ -69,7 +71,6 @@ interface Props {
 export type EditButtonProps = Props & ButtonProps & MuiButtonProps;
 
 EditButton.propTypes = {
-    basePath: PropTypes.string,
     icon: PropTypes.element,
     label: PropTypes.string,
     record: PropTypes.any,

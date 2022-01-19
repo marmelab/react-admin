@@ -53,7 +53,6 @@ import { FieldWithLabel } from './FieldWithLabel';
  *     export default App;
  */
 export const Tab = ({
-    basePath,
     children,
     contentClassName,
     context,
@@ -122,7 +121,6 @@ Tab.propTypes = {
 };
 
 export interface TabProps extends Omit<MuiTabProps, 'children'> {
-    basePath?: string;
     children: ReactNode;
     contentClassName?: string;
     context?: 'header' | 'content';

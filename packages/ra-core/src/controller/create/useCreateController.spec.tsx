@@ -1,7 +1,7 @@
 import React from 'react';
 import expect from 'expect';
 import { render, act } from '@testing-library/react';
-import { Location } from 'history';
+import { Location } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import { getRecordFromLocation } from './useCreateController';
@@ -50,7 +50,6 @@ describe('useCreateController', () => {
     });
 
     const defaultProps = {
-        basePath: '',
         hasCreate: true,
         hasEdit: true,
         hasList: true,

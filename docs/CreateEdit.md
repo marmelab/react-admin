@@ -78,8 +78,6 @@ That's enough to display the post edit form:
 
 **Tip**: You might find it cumbersome to repeat the same input components for both the `<Create>` and the `<Edit>` view. In practice, these two views almost never have exactly the same form inputs. For instance, in the previous snippet, the `<Edit>` view shows related comments to the current post, which makes no sense for a new post. Having two separate sets of input components for the two views is, therefore, a deliberate choice. However, if you have the same set of input components, export them as a custom Form component to avoid repetition.
 
-React-admin injects a few props to the `create` and `edit` views: the `resource` name, the `basePath` (the root URL), the `permissions`, and, in the case of the `edit` view, the record `id`. That's why you need to pass the `props` to the `<Create>` and `<Edit>` components.
-
 ## The `<Create>` and `<Edit>` components
 
 The `<Create>` and `<Edit>` components call the `dataProvider`, prepare the form submit handler, and render the page title and actions. They are not responsible for rendering the actual form - that's the job of their child component (usually `<SimpleForm>`). This form component uses its children ([`<Input>`](./Inputs.md) components) to render each form input.
@@ -155,9 +153,9 @@ import * as React from "react";
 import Button from '@material-ui/core/Button';
 import { TopToolbar, ShowButton } from 'react-admin';
 
-const PostEditActions = ({ basePath, data, resource }) => (
+const PostEditActions = () => (
     <TopToolbar>
-        <ShowButton basePath={basePath} record={data} />
+        <ShowButton />
         {/* Add your custom actions */}
         <Button color="primary" onClick={customAction}>Custom Action</Button>
     </TopToolbar>
@@ -177,10 +175,10 @@ A common customization is to add a button to go back to the List. Use the `<List
 ```jsx
 import { TopToolbar, ListButton, ShowButton } from 'react-admin';
 
-const PostEditActions = ({ basePath, data }) => (
+const PostEditActions = () => (
     <TopToolbar>
-        <ListButton basePath={basePath} />
-        <ShowButton basePath={basePath} record={data} />
+        <ListButton />
+        <ShowButton />
     </TopToolbar>
 );
 ```
@@ -190,10 +188,10 @@ If you want this button to look like a Back button, you can pass a custom label 
 ```jsx
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 
-const PostEditActions = ({ basePath, data }) => (
+const PostEditActions = () => (
     <TopToolbar>
-        <ListButton basePath={basePath} label="Back" icon={<ChevronLeft />} />
-        <ShowButton basePath={basePath} record={data} />
+        <ListButton label="Back" icon={<ChevronLeft />} />
+        <ShowButton />
     </TopToolbar>
 );
 ```
@@ -223,20 +221,23 @@ const PostEdit = () => (
 ```
 {% endraw %}
 
-The `aside` component receives the same props as the `Edit` or `Create` child component: `basePath`, `record`, `resource`, and `version`. That means you can display non-editable details of the current record in the aside component:
+The `aside` component renders in the same `RecordContext` as the `Edit` or `Create` child component. That means you can display non-editable details of the current record in the aside component:
 
 {% raw %}
 ```jsx
-const Aside = ({ record }) => (
-    <div style={{ width: 200, margin: '1em' }}>
-        <Typography variant="h6">Post details</Typography>
-        {record && (
-            <Typography variant="body2">
-                Creation date: {record.createdAt}
-            </Typography>
-        )}
-    </div>
-);
+const Aside = () => {
+    const record = useRecordContext();
+    return (
+        <div style={{ width: 200, margin: '1em' }}>
+            <Typography variant="h6">Post details</Typography>
+            {record && (
+                <Typography variant="body2">
+                    Creation date: {record.createdAt}
+                </Typography>
+            )}
+        </div>
+    );
+};
 ```
 {% endraw %}
 
@@ -425,7 +426,7 @@ The default `onSuccess` function is:
 // for the <Create> component:
 () => {
     notify('ra.notification.created', { messageArgs: { smart_count: 1 } });
-    redirect('edit', basePath, data.id, data);
+    redirect('edit', resource, data.id, data);
 }
 
 // for the <Edit> component: 
@@ -434,7 +435,7 @@ The default `onSuccess` function is:
         messageArgs: { smart_count: 1 },
         undoable: mutationMode === 'undoable'
     });
-    redirect('list', basePath, data.id, data);
+    redirect('list', resource, data.id, data);
 }
 ```
 
@@ -543,7 +544,7 @@ The `transform` function can also return a `Promise`, which allows you to do all
 
 ## Prefilling a `<Create>` Record
 
-Users may need to create a copy of an existing record. For that use case, use the `<CloneButton>` component. It expects a `record` and a `basePath` (usually injected to children of `<Datagrid>`, `<SimpleForm>`, `<SimpleShowLayout>`, etc.), so it's as simple to use as a regular field or input.
+Users may need to create a copy of an existing record. For that use case, use the `<CloneButton>` component. It reads the `record` from the current `RecordContext`.
 
 For instance, to allow cloning all the posts from the list:
 
@@ -671,7 +672,6 @@ import { useCreateController, CreateContextProvider, SimpleForm } from 'react-ad
 const MyCreate = props => {
     const createControllerProps = useCreateController(props);
     const {
-        basePath, // deduced from the location, useful for action buttons
         defaultTitle, // the translated title based on the resource, e.g. 'Create Post'
         record, // empty object, unless some values were passed in the location state to prefill the form
         redirect, // the default redirection route. Defaults to 'edit', unless the resource has no edit view, in which case it's 'list'
@@ -685,7 +685,6 @@ const MyCreate = props => {
             <div>
                 <h1>{defaultTitle}</h1>
                 {cloneElement(props.children, {
-                    basePath,
                     record,
                     redirect,
                     resource,
@@ -721,7 +720,6 @@ import { useEditController, EditContextProvider, SimpleForm } from 'react-admin'
 const MyEdit = props => {
     const controllerProps = useEditController(props);
     const {
-        basePath, // deduced from the location, useful for action buttons
         defaultTitle, // the translated title based on the resource, e.g. 'Post #123'
         error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onError` side effect.
         loaded, // boolean that is false until the record is available
@@ -738,7 +736,6 @@ const MyEdit = props => {
             <div>
                 <h1>{defaultTitle}</h1>
                 {cloneElement(props.children, {
-                    basePath,
                     record,
                     redirect,
                     resource,
@@ -1550,7 +1547,7 @@ You can also pass a custom route (e.g. "/home") or a function as `redirect` prop
 
 ```jsx
 // redirect to the related Author show page
-const redirect = (basePath, id, data) => `/author/${data.author_id}/show`;
+const redirect = (resource, id, data) => `/author/${data.author_id}/show`;
 
 export const PostEdit = () => (
     <Edit redirect={redirect}>
@@ -2011,7 +2008,7 @@ import arrayMutators from 'final-form-arrays';
 import { CardContent, Typography, Box } from '@material-ui/core';
 
 // the parent component (Edit or Create) injects these props to their child
-const VisitorForm = ({ basePath, record, save, saving, version }) => {
+const VisitorForm = ({ record, save, saving, version }) => {
     const submit = values => {
         // React-final-form removes empty values from the form state.
         // To allow users to *delete* values, this must be taken into account 
@@ -2195,7 +2192,7 @@ const PostEdit = () => {
     const redirect = useRedirect();
     const onSuccess = () => {
         notify('Post saved successfully'); // default message is 'ra.notification.updated'
-        redirect('list', props.basePath);
+        redirect('list', 'posts');
     }
     return (
         <Edit mutationOptions={{ onSuccess }}>
@@ -2222,7 +2219,7 @@ const PostEdit = () => {
         } else {
             notify('ra.notification.http_error', { type: 'warning' });
         }
-        redirect('list', props.basePath);
+        redirect('list', 'posts');
     }
     return (
         <Edit mutationOptions={{ onError }}>

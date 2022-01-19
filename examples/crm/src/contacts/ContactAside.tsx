@@ -19,17 +19,9 @@ export const ContactAside = ({ record, link = 'edit' }: any) => (
     <Box ml={4} width={250} minWidth={250}>
         <Box textAlign="center" mb={2}>
             {link === 'edit' ? (
-                <EditButton
-                    basePath="/contacts"
-                    record={record}
-                    label="Edit Contact"
-                />
+                <EditButton record={record} label="Edit Contact" />
             ) : (
-                <ShowButton
-                    basePath="/contacts"
-                    record={record}
-                    label="Show Contact"
-                />
+                <ShowButton record={record} label="Show Contact" />
             )}
         </Box>
 

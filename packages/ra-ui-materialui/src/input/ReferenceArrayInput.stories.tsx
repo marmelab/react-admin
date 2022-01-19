@@ -37,7 +37,6 @@ export const WithDatagridChild = () => (
                         reference="tags"
                         resource="posts"
                         source="tag_ids"
-                        basePath="/posts"
                     >
                         <Datagrid rowClick="toggleSelection">
                             <TextField source="name" />

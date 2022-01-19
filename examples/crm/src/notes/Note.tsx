@@ -175,7 +175,6 @@ export const Note = ({
                     resource="contactNotes"
                     source="sales_id"
                     reference="sales"
-                    basePath="/contactNotes"
                 >
                     <TextField source="first_name" variant="body1" />
                 </ReferenceField>{' '}

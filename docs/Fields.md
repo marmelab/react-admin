@@ -476,16 +476,16 @@ And now you can use a regular Field component, and the label displays correctly 
 
 ### Linking To Other Records
 
-A custom Field component might need to display a link to another record. React Admin provides a `linkToRecord(basePath, id[, linkType])` method for this purpose.
+A custom Field component might need to display a link to another record. Build the URL to the distant record using the resource name and the id, as follows:
 
 ```js
-import { linkToRecord, useRecordContext, useGetOne } from 'react-admin';
+import { useRecordContext, useGetOne } from 'react-admin';
 import { Link } from 'react-router-dom';
 
 const AuthorField = () => {
     const post = useRecordContext(props);
     const { data, isLoading } = useGetOne('users', { id: post.user_id });
-    const userShowPage = linkToRecord('/users', post.user_id, 'show');
+    const userShowPage = `/users/${post.user_id}/show`;
 
     return isLoading ? null : <Link to={userShowPage}>{data.username}</Link>;
 };

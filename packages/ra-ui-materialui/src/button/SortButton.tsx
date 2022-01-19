@@ -35,10 +35,10 @@ import {
  * import * as React from 'react';
  * import { TopToolbar, SortButton, CreateButton, ExportButton } from 'react-admin';
  *
- * const ListActions = props => (
+ * const ListActions = () => (
  *     <TopToolbar>
  *         <SortButton fields={['reference', 'sales', 'stock']} />
- *         <CreateButton basePath={props.basePath} />
+ *         <CreateButton />
  *         <ExportButton />
  *     </TopToolbar>
  * );

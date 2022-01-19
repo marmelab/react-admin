@@ -69,7 +69,6 @@ FormInput.propTypes = {
 export interface FormInputProps<
     RecordType extends RaRecord | Omit<RaRecord, 'id'> = any
 > extends HtmlHTMLAttributes<HTMLDivElement> {
-    basePath: string;
     input: ReactElement<{
         label?: string;
         source?: string;
@@ -95,11 +94,4 @@ const Root = styled('div', { name: PREFIX })(({ theme }) => ({
     [`& .${FormInputClasses.input}`]: { width: theme.spacing(32) },
 }));
 
-const sanitizeRestProps = ({
-    basePath,
-    record,
-    ...rest
-}: {
-    basePath?: string;
-    record?: unknown;
-}) => rest;
+const sanitizeRestProps = ({ record, ...rest }: { record?: unknown }) => rest;

@@ -64,7 +64,6 @@ export interface ShowProps<RecordType extends RaRecord = any> {
 }
 
 export interface BulkActionProps {
-    basePath?: string;
     filterValues?: any;
     resource?: string;
     selectedIds?: Identifier[];

@@ -8,7 +8,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import { Link } from 'react-router-dom';
 import {
-    linkToRecord,
+    useCreatePath,
     ReferenceField,
     FunctionField,
     TextField,
@@ -41,6 +41,7 @@ const StyledList = styled(List)({
 
 const ReviewListMobile = () => {
     const { data, isLoading, total } = useListContext<Review>();
+    const createPath = useCreatePath();
     if (isLoading || Number(total) === 0) {
         return null;
     }
@@ -51,7 +52,11 @@ const ReviewListMobile = () => {
 
                 return (
                     <Link
-                        to={linkToRecord('/reviews', item.id)}
+                        to={createPath({
+                            resource: 'reviews',
+                            type: 'edit',
+                            id: item.id,
+                        })}
                         className={classes.link}
                         key={item.id}
                     >
@@ -61,7 +66,6 @@ const ReviewListMobile = () => {
                                     record={item}
                                     source="customer_id"
                                     reference="customers"
-                                    basePath="/customers"
                                     link={false}
                                 >
                                     <AvatarField size="40" />
@@ -74,7 +78,6 @@ const ReviewListMobile = () => {
                                             record={item}
                                             source="customer_id"
                                             reference="customers"
-                                            basePath="/customers"
                                             link={false}
                                         >
                                             <FunctionField
@@ -92,7 +95,6 @@ const ReviewListMobile = () => {
                                             record={item}
                                             source="product_id"
                                             reference="products"
-                                            basePath="/products"
                                             link={false}
                                         >
                                             <TextField
@@ -115,7 +117,6 @@ const ReviewListMobile = () => {
 };
 
 ReviewListMobile.propTypes = {
-    basePath: PropTypes.string,
     data: PropTypes.any,
     hasBulkActions: PropTypes.bool.isRequired,
     ids: PropTypes.array,

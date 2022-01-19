@@ -9,7 +9,7 @@ import {
     TransformData,
     UpdateParams,
 } from '../../types';
-import { useRedirect, RedirectionSideEffect } from '../../sideEffect';
+import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import {
     useGetOne,
@@ -75,7 +75,7 @@ export const useEditController = <RecordType extends RaRecord = any>(
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'warning',
                 });
-                redirect('list', `/${resource}`);
+                redirect('list', resource);
                 refresh();
             },
             refetchOnReconnect: false,
@@ -135,12 +135,7 @@ export const useEditController = <RecordType extends RaRecord = any>(
                                       messageArgs: { smart_count: 1 },
                                       undoable: mutationMode === 'undoable',
                                   });
-                                  redirect(
-                                      redirectTo,
-                                      `/${resource}`,
-                                      data.id,
-                                      data
-                                  );
+                                  redirect(redirectTo, resource, data.id, data);
                               },
                         onError: onErrorFromSave
                             ? onErrorFromSave

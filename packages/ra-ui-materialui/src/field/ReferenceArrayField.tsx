@@ -134,10 +134,7 @@ export interface ReferenceArrayFieldProps
 }
 
 export interface ReferenceArrayFieldViewProps
-    extends Omit<
-            ReferenceArrayFieldProps,
-            'basePath' | 'resource' | 'page' | 'perPage'
-        >,
+    extends Omit<ReferenceArrayFieldProps, 'resource' | 'page' | 'perPage'>,
         ListControllerProps {}
 
 export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props => {

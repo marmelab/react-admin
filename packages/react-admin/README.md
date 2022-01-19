@@ -84,7 +84,7 @@ export const PostList = (props) => (
             <DateField source="published_at" />
             <TextField source="average_note" />
             <TextField source="views" />
-            <EditButton basePath="/posts" />
+            <EditButton />
         </Datagrid>
     </List>
 );

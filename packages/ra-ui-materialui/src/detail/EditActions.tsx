@@ -42,7 +42,6 @@ export const EditActions = ({ className, ...rest }: EditActionsProps) => {
 };
 
 const sanitizeRestProps = ({
-    basePath = null,
     hasCreate = null,
     hasEdit = null,
     hasShow = null,

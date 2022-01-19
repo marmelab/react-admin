@@ -33,7 +33,6 @@ import { ReferenceManyToManyInput, useReferenceManyToManyUpdate } from '@react-a
  */
 const ArtistEditForm = props => {
     const save = useReferenceManyToManyUpdate({
-        basePath: props.basePath,
         record: props.record,
         redirect: props.redirect || 'list',
         reference: 'events',

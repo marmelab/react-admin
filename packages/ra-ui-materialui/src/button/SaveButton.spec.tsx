@@ -13,7 +13,6 @@ import { AdminContext } from '../AdminContext';
 const theme = createTheme();
 
 const invalidButtonDomProps = {
-    basePath: '',
     invalid: false,
     disabled: true,
     pristine: false,
@@ -270,7 +269,6 @@ describe('<SaveButton />', () => {
     });
 
     const defaultEditProps = {
-        basePath: '',
         id: '123',
         resource: 'posts',
         location: {

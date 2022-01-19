@@ -159,7 +159,6 @@ export const ReferenceArrayInput = ({
 
 ReferenceArrayInput.propTypes = {
     allowEmpty: PropTypes.bool,
-    basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
     filter: PropTypes.object,
@@ -183,7 +182,6 @@ ReferenceArrayInput.defaultProps = {
 };
 
 const sanitizeRestProps = ({
-    basePath,
     filterToQuery,
     perPage,
     reference,
@@ -194,7 +192,6 @@ const sanitizeRestProps = ({
 
 export interface ReferenceArrayInputViewProps {
     allowEmpty?: boolean;
-    basePath?: string;
     children: ReactElement;
     choices: any[];
     classes?: object;
@@ -222,7 +219,6 @@ export interface ReferenceArrayInputViewProps {
 
 export const ReferenceArrayInputView = ({
     allowEmpty,
-    basePath,
     children,
     choices,
     className,
@@ -259,9 +255,6 @@ export const ReferenceArrayInputView = ({
 
     return React.cloneElement(children, {
         allowEmpty,
-        basePath: basePath
-            ? basePath.replace(resource, reference)
-            : `/${reference}`,
         choices,
         className,
         error,
@@ -290,7 +283,6 @@ export const ReferenceArrayInputView = ({
 
 ReferenceArrayInputView.propTypes = {
     allowEmpty: PropTypes.bool,
-    basePath: PropTypes.string,
     children: PropTypes.element,
     choices: PropTypes.array,
     className: PropTypes.string,
@@ -312,7 +304,6 @@ ReferenceArrayInputView.propTypes = {
 
 export interface ReferenceArrayInputProps extends InputProps {
     allowEmpty?: boolean;
-    basePath?: string;
     children: ReactElement;
     className?: string;
     label?: string;

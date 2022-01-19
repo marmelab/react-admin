@@ -12,7 +12,6 @@ import { DeleteWithUndoButton } from './DeleteWithUndoButton';
 const theme = createTheme();
 
 const invalidButtonDomProps = {
-    basePath: '',
     invalid: false,
     pristine: false,
     record: { id: 123, foo: 'bar' },
@@ -44,7 +43,6 @@ describe('<DeleteWithUndoButton />', () => {
     });
 
     const defaultEditProps = {
-        basePath: '',
         id: '123',
         resource: 'posts',
         location: {

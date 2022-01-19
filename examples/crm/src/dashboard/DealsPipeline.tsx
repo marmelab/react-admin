@@ -58,6 +58,7 @@ export const DealsPipeline = () => {
             </Box>
             <Card>
                 <SimpleList<Deal>
+                    resource="deals"
                     linkType="show"
                     data={getOrderedDeals(data)}
                     total={total}
@@ -79,7 +80,6 @@ export const DealsPipeline = () => {
                             record={deal}
                             reference="companies"
                             resource="deals"
-                            basePath="/deals"
                             link={false}
                         >
                             <CompanyAvatar size="small" />
