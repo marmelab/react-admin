@@ -74,8 +74,8 @@ describe('Edit Page', () => {
 
             cy.get(EditPostPage.elements.addBacklinkButton).click();
 
-            EditPostPage.clickInput('backlinks[0].url');
-            cy.get(EditPostPage.elements.input('backlinks[0].url')).blur();
+            EditPostPage.clickInput('backlinks.0.url');
+            cy.get(EditPostPage.elements.input('backlinks.0.url')).blur();
 
             cy.contains('Required');
             // FIXME: We navigate away from the page and confirm the unsaved changes
