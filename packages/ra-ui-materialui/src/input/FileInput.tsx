@@ -82,7 +82,7 @@ export const FileInput = (props: FileInputProps) => {
 
     const {
         id,
-        field: { onChange, value, ...inputProps },
+        field: { onChange, value },
         fieldState,
         formState: { isSubmitted },
         isRequired,
@@ -90,11 +90,10 @@ export const FileInput = (props: FileInputProps) => {
         format: format || transformFiles,
         parse: parse || transformFiles,
         source,
-        type: 'file',
         validate,
         ...rest,
     });
-    const { isTouched, error, invalid } = fieldState;
+    const { isTouched, error } = fieldState;
     const files = value ? (Array.isArray(value) ? value : [value]) : [];
 
     const onDrop = (newFiles, rejectedFiles, event) => {
@@ -160,14 +159,14 @@ export const FileInput = (props: FileInputProps) => {
         >
             <>
                 <div
-                    data-testid="dropzone"
-                    className={FileInputClasses.dropZone}
-                    {...getRootProps()}
+                    {...getRootProps({
+                        className: FileInputClasses.dropZone,
+                        'data-testid': 'dropzone',
+                    })}
                 >
                     <input
                         id={id}
                         {...getInputProps({
-                            ...inputProps,
                             ...inputPropsOptions,
                         })}
                     />

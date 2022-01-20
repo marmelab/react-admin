@@ -24,7 +24,7 @@ export type InputProps<ValueType = any> = Omit<
 > &
     Partial<UseControllerReturn> & {
         defaultValue?: any;
-        format?: (value: ValueType) => string;
+        format?: (value: ValueType) => any;
         id?: string;
         isRequired?: boolean;
         label?: string | ReactElement | false;
@@ -32,7 +32,7 @@ export type InputProps<ValueType = any> = Omit<
         name?: string;
         onBlur?: (...event: any[]) => void;
         onChange?: (...event: any[]) => void;
-        parse?: (value: string) => ValueType;
+        parse?: (value: any) => ValueType;
         resource?: string;
         source: string;
         validate?: Validator | Validator[];
