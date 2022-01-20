@@ -60,6 +60,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
                 control={
                     <Switch
                         id={id}
+                        name={field.name}
                         color="primary"
                         onChange={handleChange}
                         checked={field.value}
