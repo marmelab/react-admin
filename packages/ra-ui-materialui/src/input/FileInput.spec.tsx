@@ -250,164 +250,165 @@ describe('<FileInput />', () => {
         });
     });
 
-    describe('should call validateFileRemoval on removal to allow developers to conditionally prevent the removal', () => {
+    describe('should call validateFileRemoval on removal to allow developers to conditionally prevent the removal', async () => {
         it('normal function', async () => {
             const onSubmit = jest.fn();
 
-            const { getByLabelText, getByTitle } = render(
-                <Form
-                    initialValues={{
-                        image: {
-                            src: 'test.png',
-                            title: 'cats',
-                        },
-                    }}
-                    onSubmit={onSubmit}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <FileInput
-                                {...defaultProps}
-                                validateFileRemoval={file => {
-                                    throw Error('Cancel Removal Action');
-                                }}
-                            >
-                                <FileField source="src" title="title" />
-                            </FileInput>
-                            <button type="submit" aria-label="Save" />
-                        </form>
-                    )}
-                />
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{
+                            image: {
+                                src: 'test.png',
+                                title: 'cats',
+                            },
+                        }}
+                        onSubmit={onSubmit}
+                    >
+                        <FileInput
+                            {...defaultProps}
+                            validateFileRemoval={file => {
+                                throw Error('Cancel Removal Action');
+                            }}
+                        >
+                            <FileField source="src" title="title" />
+                        </FileInput>
+                    </SimpleForm>
+                </AdminContext>
             );
 
-            const fileDom = getByTitle('cats');
+            const fileDom = screen.getByTitle('cats');
             expect(fileDom).not.toBeNull();
-            fireEvent.click(getByLabelText('ra.action.delete'));
+            fireEvent.click(screen.getByLabelText('ra.action.delete'));
             await waitFor(() => {
                 expect(fileDom).not.toBeNull();
             });
-            fireEvent.click(getByLabelText('Save'));
+            fireEvent.click(screen.getByLabelText('ra.action.save'));
 
-            expect(onSubmit.mock.calls[0][0]).toEqual({
-                image: {
-                    src: 'test.png',
-                    title: 'cats',
-                },
+            await waitFor(() => {
+                expect(onSubmit).toHaveBeenCalledWith({
+                    image: {
+                        src: 'test.png',
+                        title: 'cats',
+                    },
+                });
             });
         });
+
         it('promise function', async () => {
             const onSubmit = jest.fn();
 
-            const { getByLabelText, getByTitle } = render(
-                <Form
-                    initialValues={{
-                        image: {
-                            src: 'test.png',
-                            title: 'cats',
-                        },
-                    }}
-                    onSubmit={onSubmit}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <FileInput
-                                {...defaultProps}
-                                validateFileRemoval={async file => {
-                                    throw Error('Cancel Removal Action');
-                                }}
-                            >
-                                <FileField source="src" title="title" />
-                            </FileInput>
-                            <button type="submit" aria-label="Save" />
-                        </form>
-                    )}
-                />
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{
+                            image: {
+                                src: 'test.png',
+                                title: 'cats',
+                            },
+                        }}
+                        onSubmit={onSubmit}
+                    >
+                        <FileInput
+                            {...defaultProps}
+                            validateFileRemoval={async file => {
+                                throw Error('Cancel Removal Action');
+                            }}
+                        >
+                            <FileField source="src" title="title" />
+                        </FileInput>
+                    </SimpleForm>
+                </AdminContext>
             );
-            const fileDom = getByTitle('cats');
+            const fileDom = screen.getByTitle('cats');
             expect(fileDom).not.toBeNull();
-            fireEvent.click(getByLabelText('ra.action.delete'));
+            fireEvent.click(screen.getByLabelText('ra.action.delete'));
             await waitFor(() => {
                 expect(fileDom).not.toBeNull();
             });
-            fireEvent.click(getByLabelText('Save'));
-            expect(onSubmit.mock.calls[0][0]).toEqual({
-                image: {
-                    src: 'test.png',
-                    title: 'cats',
-                },
+            fireEvent.click(screen.getByLabelText('ra.action.save'));
+            await waitFor(() => {
+                expect(onSubmit).toHaveBeenCalledWith({
+                    image: {
+                        src: 'test.png',
+                        title: 'cats',
+                    },
+                });
             });
         });
     });
 
-    describe('should continue to remove file field validateFileRemoval without Promise rejected.', () => {
+    describe('should continue to remove file when validateFileRemoval returns true.', async () => {
         it('normal function', async () => {
             const onSubmit = jest.fn();
 
-            const { getByLabelText, getByTitle } = render(
-                <Form
-                    initialValues={{
-                        image: {
-                            src: 'test.png',
-                            title: 'cats',
-                        },
-                    }}
-                    onSubmit={onSubmit}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <FileInput
-                                {...defaultProps}
-                                validateFileRemoval={file => true}
-                            >
-                                <FileField source="src" title="title" />
-                            </FileInput>
-                            <button type="submit" aria-label="Save" />
-                        </form>
-                    )}
-                />
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{
+                            image: {
+                                src: 'test.png',
+                                title: 'cats',
+                            },
+                        }}
+                        onSubmit={onSubmit}
+                    >
+                        <FileInput
+                            {...defaultProps}
+                            validateFileRemoval={file => true}
+                        >
+                            <FileField source="src" title="title" />
+                        </FileInput>
+                    </SimpleForm>
+                </AdminContext>
             );
 
-            const fileDom = getByTitle('cats');
+            const fileDom = screen.getByTitle('cats');
             expect(fileDom).not.toBeNull();
-            fireEvent.click(getByLabelText('ra.action.delete'));
+            fireEvent.click(screen.getByLabelText('ra.action.delete'));
             await waitForElementToBeRemoved(fileDom);
-            fireEvent.click(getByLabelText('Save'));
+            fireEvent.click(screen.getByLabelText('ra.action.save'));
 
-            expect(onSubmit.mock.calls[0][0]).toEqual({
-                image: null,
+            await waitFor(() => {
+                expect(onSubmit).toHaveBeenCalledWith({
+                    image: null,
+                });
             });
         });
         it('promise function', async () => {
             const onSubmit = jest.fn();
 
-            const { getByLabelText, getByTitle } = render(
-                <Form
-                    initialValues={{
-                        image: {
-                            src: 'test.png',
-                            title: 'cats',
-                        },
-                    }}
-                    onSubmit={onSubmit}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <FileInput
-                                {...defaultProps}
-                                validateFileRemoval={async file => true}
-                            >
-                                <FileField source="src" title="title" />
-                            </FileInput>
-                            <button type="submit" aria-label="Save" />
-                        </form>
-                    )}
-                />
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{
+                            image: {
+                                src: 'test.png',
+                                title: 'cats',
+                            },
+                        }}
+                        onSubmit={onSubmit}
+                    >
+                        <FileInput
+                            {...defaultProps}
+                            validateFileRemoval={async file => true}
+                        >
+                            <FileField source="src" title="title" />
+                        </FileInput>
+                    </SimpleForm>
+                </AdminContext>
             );
 
-            const fileDom = getByTitle('cats');
+            const fileDom = screen.getByTitle('cats');
             expect(fileDom).not.toBeNull();
-            fireEvent.click(getByLabelText('ra.action.delete'));
+            fireEvent.click(screen.getByLabelText('ra.action.delete'));
             await waitForElementToBeRemoved(fileDom);
-            fireEvent.click(getByLabelText('Save'));
+            fireEvent.click(screen.getByLabelText('ra.action.save'));
 
-            expect(onSubmit.mock.calls[0][0]).toEqual({
-                image: null,
+            await waitFor(() => {
+                expect(onSubmit).toHaveBeenCalledWith({
+                    image: null,
+                });
             });
         });
     });

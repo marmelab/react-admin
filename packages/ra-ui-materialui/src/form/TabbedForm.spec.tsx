@@ -1,22 +1,6 @@
 import * as React from 'react';
 import { createMemoryHistory } from 'history';
-<<<<<<< HEAD
-import { Route, Routes } from 'react-router-dom';
-import {
-    minLength,
-    required,
-    SaveContextProvider,
-    CoreAdminContext,
-    testDataProvider,
-} from 'ra-core';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-||||||| parent of b9a690008 (Fix forms)
-import { minLength, required, SaveContextProvider } from 'ra-core';
-import { CoreAdminContext, testDataProvider } from 'ra-core';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-=======
 import { minLength, required, testDataProvider } from 'ra-core';
->>>>>>> b9a690008 (Fix forms)
 import {
     fireEvent,
     isInaccessible,
@@ -123,68 +107,6 @@ describe('<TabbedForm />', () => {
     it('should set the style of an active Tab button with errors', async () => {
         const history = createMemoryHistory({ initialEntries: ['/posts/1'] });
         render(
-<<<<<<< HEAD
-            <CoreAdminContext
-                dataProvider={testDataProvider()}
-                history={history}
-            >
-                <Routes>
-                    <Route
-                        path="/posts/:id/*"
-                        element={
-                            <ThemeProvider theme={createTheme(defaultTheme)}>
-                                <SaveContextProvider value={saveContextValue}>
-                                    <TabbedForm
-                                        classes={{ errorTabButton: 'error' }}
-                                        resource="posts"
-                                    >
-                                        <FormTab label="tab1">
-                                            <TextInput
-                                                source="title"
-                                                validate={required()}
-                                            />
-                                        </FormTab>
-                                        <FormTab label="tab2">
-                                            <TextInput
-                                                source="description"
-                                                validate={required()}
-                                            />
-                                        </FormTab>
-                                    </TabbedForm>
-                                </SaveContextProvider>
-                            </ThemeProvider>
-                        }
-                    />
-                </Routes>
-            </CoreAdminContext>
-||||||| parent of b9a690008 (Fix forms)
-            <CoreAdminContext
-                dataProvider={testDataProvider()}
-                history={history}
-            >
-                <ThemeProvider theme={createTheme(defaultTheme)}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <TabbedForm
-                            classes={{ errorTabButton: 'error' }}
-                            resource="posts"
-                        >
-                            <FormTab label="tab1">
-                                <TextInput
-                                    source="title"
-                                    validate={required()}
-                                />
-                            </FormTab>
-                            <FormTab label="tab2">
-                                <TextInput
-                                    source="description"
-                                    validate={required()}
-                                />
-                            </FormTab>
-                        </TabbedForm>
-                    </SaveContextProvider>
-                </ThemeProvider>
-            </CoreAdminContext>
-=======
             <AdminContext dataProvider={testDataProvider()} history={history}>
                 <TabbedForm resource="posts" mode="onBlur">
                     <FormTab label="tab1">
@@ -203,7 +125,6 @@ describe('<TabbedForm />', () => {
                     </FormTab>
                 </TabbedForm>
             </AdminContext>
->>>>>>> b9a690008 (Fix forms)
         );
 
         const tabs = screen.getAllByRole('tab');
@@ -225,65 +146,6 @@ describe('<TabbedForm />', () => {
     it('should set the style of any Tab button with errors on submit', async () => {
         const history = createMemoryHistory({ initialEntries: ['/posts/1'] });
         render(
-<<<<<<< HEAD
-            <CoreAdminContext
-                dataProvider={testDataProvider()}
-                history={history}
-            >
-                <Routes>
-                    <Route
-                        path="/posts/:id/*"
-                        element={
-                            <ThemeProvider theme={createTheme(defaultTheme)}>
-                                <SaveContextProvider value={saveContextValue}>
-                                    <TabbedForm resource="posts">
-                                        <FormTab label="tab1">
-                                            <TextInput
-                                                source="title"
-                                                validate={required()}
-                                            />
-                                        </FormTab>
-                                        <FormTab label="tab2">
-                                            <TextInput
-                                                source="description"
-                                                validate={minLength(10)}
-                                            />
-                                        </FormTab>
-                                    </TabbedForm>
-                                </SaveContextProvider>
-                            </ThemeProvider>
-                        }
-                    />
-                </Routes>
-            </CoreAdminContext>
-||||||| parent of b9a690008 (Fix forms)
-            <CoreAdminContext
-                dataProvider={testDataProvider()}
-                history={history}
-            >
-                <ThemeProvider theme={createTheme(defaultTheme)}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <TabbedForm
-                            classes={{ errorTabButton: 'error' }}
-                            resource="posts"
-                        >
-                            <FormTab label="tab1">
-                                <TextInput
-                                    source="title"
-                                    validate={required()}
-                                />
-                            </FormTab>
-                            <FormTab label="tab2">
-                                <TextInput
-                                    source="description"
-                                    validate={minLength(10)}
-                                />
-                            </FormTab>
-                        </TabbedForm>
-                    </SaveContextProvider>
-                </ThemeProvider>
-            </CoreAdminContext>
-=======
             <AdminContext dataProvider={testDataProvider()} history={history}>
                 <TabbedForm resource="posts" mode="onBlur">
                     <FormTab label="tab1">
@@ -302,7 +164,6 @@ describe('<TabbedForm />', () => {
                     </FormTab>
                 </TabbedForm>
             </AdminContext>
->>>>>>> b9a690008 (Fix forms)
         );
 
         const tabs = screen.getAllByRole('tab');
