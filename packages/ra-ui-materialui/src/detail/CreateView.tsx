@@ -7,7 +7,7 @@ import { RaRecord, CreateControllerProps, useCreateContext } from 'ra-core';
 import classnames from 'classnames';
 
 import { CreateProps } from '../types';
-import { TitleForRecord } from '../layout';
+import { Title } from '../layout';
 
 export const CreateView = (props: CreateViewProps) => {
     const {
@@ -34,11 +34,7 @@ export const CreateView = (props: CreateViewProps) => {
             className={classnames('create-page', CreateClasses.root, className)}
             {...sanitizeRestProps(rest)}
         >
-            <TitleForRecord
-                title={title}
-                record={record}
-                defaultTitle={defaultTitle}
-            />
+            <Title title={title} record={record} defaultTitle={defaultTitle} />
             {actions &&
                 cloneElement(actions, {
                     resource,

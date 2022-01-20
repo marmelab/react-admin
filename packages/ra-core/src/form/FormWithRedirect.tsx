@@ -5,6 +5,7 @@ import {
     SubmitHandler,
     useForm,
     UseFormProps,
+    FieldValues,
 } from 'react-hook-form';
 
 import { useNotify } from '../notification';
@@ -58,6 +59,7 @@ export const FormWithRedirect = (props: FormWithRedirectProps) => {
         shouldUnregister,
         shouldUseNativeValidation,
         warnWhenUnsavedChanges,
+        validate,
         ...rest
     } = props;
     const record = useRecordContext(props);
@@ -75,7 +77,10 @@ export const FormWithRedirect = (props: FormWithRedirectProps) => {
         delayError,
         mode,
         reValidateMode,
-        resolver,
+        resolver:
+            resolver ?? validate
+                ? getSimpleValidationResolver(validate)
+                : undefined,
         shouldFocusError,
         shouldUnregister,
         shouldUseNativeValidation,
@@ -109,9 +114,14 @@ export const FormWithRedirect = (props: FormWithRedirectProps) => {
         </OptionalRecordContextProvider>
     );
 };
+export type ValidateForm = (
+    data: FieldValues
+) => FieldValues | Promise<FieldValues>;
 
 export type FormWithRedirectProps = FormWithRedirectOwnProps &
-    Omit<UseFormProps, 'onSubmit'>;
+    Omit<UseFormProps, 'onSubmit'> & {
+        validate: ValidateForm;
+    };
 
 export type FormWithRedirectRenderProps = Omit<
     FormViewProps,
@@ -127,7 +137,7 @@ export interface FormWithRedirectOwnProps {
     formRootPathname?: string;
     record?: Partial<RaRecord>;
     render: FormWithRedirectRender;
-    onSubmit?: SubmitHandler<Record<string, any>>;
+    onSubmit?: SubmitHandler<FieldValues>;
     sanitizeEmptyValues?: boolean;
     saving?: boolean;
     warnWhenUnsavedChanges?: boolean;
@@ -171,4 +181,28 @@ const FormView = (props: FormViewProps) => {
             {render({ ...rest, handleSubmit })}
         </FormGroupsProvider>
     );
+};
+
+const getSimpleValidationResolver = (validate: ValidateForm) => async (
+    data: FieldValues
+) => {
+    const errors = await validate(data);
+
+    if (!errors) {
+        return { values: data, errors: {} };
+    }
+
+    return {
+        values: {},
+        errors: Object.keys(errors).reduce(
+            (acc, field) => ({
+                ...acc,
+                [field]: {
+                    type: 'manual',
+                    message: errors[field],
+                },
+            }),
+            {} as FieldValues
+        ),
+    };
 };
