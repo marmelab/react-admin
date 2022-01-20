@@ -84,9 +84,8 @@ export const ArrayInput = (props: ArrayInputProps) => {
         initialValue: defaultValue,
         validate: sanitizedValidate,
         ...rest,
-        isEqual: (allPreviousValues, allNewValues) => {
-            return isEqual(allPreviousValues, allNewValues);
-        },
+        isEqual: (allPreviousValues, allNewValues) =>
+            isEqual(allPreviousValues, allNewValues),
     });
 
     if (loading) {
