@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { cloneElement, Children, ReactElement } from 'react';
 import PropTypes from 'prop-types';
+import isEqual from 'lodash/isEqual';
 import {
     isRequired,
     FieldTitle,
@@ -83,6 +84,8 @@ export const ArrayInput = (props: ArrayInputProps) => {
         initialValue: defaultValue,
         validate: sanitizedValidate,
         ...rest,
+        isEqual: (allPreviousValues, allNewValues) =>
+            isEqual(allPreviousValues, allNewValues),
     });
 
     if (loading) {
