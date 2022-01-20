@@ -49,7 +49,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         variant,
         margin,
         TransitionProps,
-        defaultValue,
         getItemLabel = DefaultLabelFn,
     } = props;
     const { append, fields, move, remove } = useArrayInput(props);

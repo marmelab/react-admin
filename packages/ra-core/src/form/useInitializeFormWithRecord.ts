@@ -12,9 +12,7 @@ export const useInitializeFormWithRecord = (defaultValues, record) => {
         if (!record) {
             return;
         }
-
         const initialValues = getFormInitialValues(defaultValues, record);
-
         reset(initialValues);
     }, [reset, JSON.stringify(record, defaultValues)]); // eslint-disable-line react-hooks/exhaustive-deps
 };

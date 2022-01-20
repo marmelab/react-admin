@@ -9,17 +9,14 @@ import {
     UseFormStateReturn,
 } from 'react-hook-form';
 import get from 'lodash/get';
-import {
-    composeValidators,
-    ValidationErrorMessageWithArgs,
-    Validator,
-} from './validate';
+
+import { useRecordContext } from '../controller';
+import { composeValidators, Validator } from './validate';
 import isRequired from './isRequired';
 import { useFormGroupContext } from './useFormGroupContext';
+import { useGetValidationErrorMessage } from './useGetValidationErrorMessage';
 import { useFormGroups } from './useFormGroups';
-import { useRecordContext } from '../controller';
-import { useTranslate } from '../i18n';
-import { useDeepCompareEffect } from '../util/hooks';
+import { useApplyInputDefaultValues } from './useApplyInputDefaultValues';
 
 export type InputProps<ValueType = any> = Omit<
     UseControllerProps,
@@ -67,7 +64,7 @@ export const useInput = (props: InputProps): UseInputValue => {
     const formGroupName = useFormGroupContext();
     const formGroups = useFormGroups();
     const record = useRecordContext();
-    const translate = useTranslate();
+    const getValidationErrorMessage = useGetValidationErrorMessage();
     const formContext = useFormContext();
 
     useEffect(() => {
@@ -103,31 +100,13 @@ export const useInput = (props: InputProps): UseInputValue => {
                 );
 
                 if (!error) return true;
-                if ((error as ValidationErrorMessageWithArgs).message) {
-                    const {
-                        message,
-                        args,
-                    } = error as ValidationErrorMessageWithArgs;
-                    return translate(message, { _: message, ...args });
-                }
-                return translate(error as string, { _: error });
+                return getValidationErrorMessage(error);
             },
         },
         ...options,
     });
 
-    // Update the input value whenever the record changes
-    useDeepCompareEffect(() => {
-        if (
-            (!record || get(record, source) == undefined) && // eslint-disable-line eqeqeq
-            get(formContext.getValues(), source) == undefined && // eslint-disable-line eqeqeq
-            defaultValue != undefined // eslint-disable-line eqeqeq
-        ) {
-            formContext.resetField(source, {
-                defaultValue: get(record, source, defaultValue),
-            });
-        }
-    }, [record]);
+    useApplyInputDefaultValues(props);
 
     // If there is an field prop, this input has already been enhanced by react-hook-form
     // This is required in for inputs used inside other inputs (such as the SelectInput inside a ReferenceInput)

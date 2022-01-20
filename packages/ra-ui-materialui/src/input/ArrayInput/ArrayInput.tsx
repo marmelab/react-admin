@@ -1,14 +1,16 @@
 import * as React from 'react';
-import { cloneElement, Children, ReactElement } from 'react';
-import PropTypes from 'prop-types';
+import { cloneElement, Children, ReactElement, useEffect, useRef } from 'react';
 import {
     isRequired,
     FieldTitle,
     composeSyncValidators,
     RaRecord,
+    useApplyInputDefaultValues,
+    useGetValidationErrorMessage,
 } from 'ra-core';
-import { useFieldArray, useWatch } from 'react-hook-form';
+import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { InputLabel, FormControl, FormHelperText } from '@mui/material';
+import isEqual from 'lodash/isEqual';
 
 import { LinearProgress } from '../../layout';
 import { CommonInputProps } from '../CommonInputProps';
@@ -79,12 +81,72 @@ export const ArrayInput = (props: ArrayInputProps) => {
     const sanitizedValidate = Array.isArray(validate)
         ? composeSyncValidators(validate)
         : validate;
+    const getValidationErrorMessage = useGetValidationErrorMessage();
 
     const fieldProps = useFieldArray({
         name: source,
     });
 
-    // const value = useWatch({ name: source });
+    const {
+        _getFieldState,
+        clearErrors,
+        formState,
+        getValues,
+        register,
+        setError,
+        unregister,
+    } = useFormContext();
+
+    const { isSubmitted } = formState;
+
+    // We need to register the array itself as a field to enable validation at its level
+    useEffect(() => {
+        register(source);
+
+        return () => {
+            unregister(source);
+        };
+    }, [register, unregister, source]);
+
+    useApplyInputDefaultValues(props);
+
+    const value = useWatch({ name: source });
+    const { isDirty, invalid, error } = _getFieldState(source, formState);
+
+    // As react-hook-form does not handle validation on the array itself,
+    // we need to do it manually
+    const errorRef = useRef(null);
+    useEffect(() => {
+        const applyValidation = async () => {
+            const newError = await sanitizedValidate(value, getValues(), props);
+            if (newError && !isEqual(errorRef.current, newError)) {
+                errorRef.current = newError;
+                setError(source, {
+                    type: 'manual',
+                    message: getValidationErrorMessage(newError),
+                });
+            }
+
+            if (!newError && error) {
+                errorRef.current = null;
+                clearErrors(source);
+            }
+        };
+
+        if (sanitizedValidate) {
+            applyValidation();
+        }
+    }, [
+        clearErrors,
+        error,
+        sanitizedValidate,
+        value,
+        getValues,
+        props,
+        setError,
+        source,
+        getValidationErrorMessage,
+    ]);
 
     if (isLoading) {
         return (
@@ -100,21 +162,18 @@ export const ArrayInput = (props: ArrayInputProps) => {
         );
     }
 
-    // const { error, submitError, touched, dirty } = fieldProps.meta;
-    // const arrayInputError = getArrayInputError(error);
-
     return (
         <FormControl
             fullWidth
             margin="normal"
             className={className}
-            //error={(touched || dirty) && !!arrayInputError}
+            error={(isDirty || isSubmitted) && invalid}
             {...sanitizeInputRestProps(rest)}
         >
             <InputLabel
                 htmlFor={source}
                 shrink
-                //error={(touched || dirty) && !!arrayInputError}
+                error={(isDirty || isSubmitted) && invalid}
             >
                 <FieldTitle
                     label={label}
@@ -134,35 +193,17 @@ export const ArrayInput = (props: ArrayInputProps) => {
                     disabled,
                 })}
             </ArrayInputContext.Provider>
-            {/* {!!((touched || dirty) && arrayInputError) || helperText ? (
-                <FormHelperText error={(touched || dirty) && !!arrayInputError}>
+            {!!((isDirty || isSubmitted) && invalid) || helperText ? (
+                <FormHelperText error={(isDirty || isSubmitted) && invalid}>
                     <InputHelperText
-                        touched={touched || dirty}
-                        error={arrayInputError}
+                        touched={isDirty || isSubmitted}
+                        error={error?.message}
                         helperText={helperText}
                     />
                 </FormHelperText>
-            ) : null} */}
+            ) : null}
         </FormControl>
     );
-};
-
-ArrayInput.propTypes = {
-    // @ts-ignore
-    children: PropTypes.node,
-    className: PropTypes.string,
-    defaultValue: PropTypes.any,
-    isRequired: PropTypes.bool,
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-    helperText: PropTypes.string,
-    resource: PropTypes.string,
-    source: PropTypes.string,
-    record: PropTypes.object,
-    options: PropTypes.object,
-    validate: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.arrayOf(PropTypes.func),
-    ]),
 };
 
 ArrayInput.defaultProps = {
