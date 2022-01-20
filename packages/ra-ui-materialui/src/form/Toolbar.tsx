@@ -9,7 +9,12 @@ import {
     Theme,
 } from '@mui/material';
 import classnames from 'classnames';
-import { RaRecord, MutationMode, SaveContextValue } from 'ra-core';
+import {
+    RaRecord,
+    MutationMode,
+    SaveContextValue,
+    useRecordContext,
+} from 'ra-core';
 import { useFormState } from 'react-hook-form';
 
 import { SaveButton, DeleteButton } from '../button';
@@ -60,14 +65,13 @@ export const Toolbar = <
         alwaysEnableSaveButton,
         children,
         className,
-        record,
         resource,
         saving,
         submitOnEnter = true,
         mutationMode,
         ...rest
     } = props;
-
+    const record = useRecordContext(props);
     const isXs = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
     const { isValidating } = useFormState();
     // Use form pristine and validating to enable or disable the save button
