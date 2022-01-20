@@ -1868,7 +1868,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/react@npm:^11.4.1, @emotion/react@npm:^11.7.1":
+"@emotion/react@npm:^11.1.5, @emotion/react@npm:^11.4.1, @emotion/react@npm:^11.7.1":
   version: 11.7.1
   resolution: "@emotion/react@npm:11.7.1"
   dependencies:
@@ -2125,6 +2125,24 @@ __metadata:
   dependencies:
     "@hapi/hoek": ^8.3.0
   checksum: 9948100dc6a3081bf29e88c7c2657a1612e46fe701d6f0cf5a5d3d656344c9cc6199d5489c563f231b65213288293673dec7d32845c59882a0f26c07dc461980
+  languageName: node
+  linkType: hard
+
+"@hookform/devtools@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "@hookform/devtools@npm:4.0.2"
+  dependencies:
+    "@emotion/react": ^11.1.5
+    "@emotion/styled": ^11.3.0
+    "@types/lodash": ^4.14.168
+    little-state-machine: ^4.1.0
+    lodash: ^4.17.21
+    react-simple-animate: ^3.3.12
+  peerDependencies:
+    react: ">=17.0.2"
+    react-dom: ">=17.0.2"
+    react-hook-form: ^7.13.0
+  checksum: 079eda3b8693c48d140f41f8640febd9ae5491925ffc62b4e5048562ae966d2cf524f7a8ef2357a96828ed8f25704a881357124159ccaf8d3af77acac5a35dc3
   languageName: node
   linkType: hard
 
@@ -5685,7 +5703,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:~4.14.168":
+"@types/lodash@npm:^4.14.168, @types/lodash@npm:~4.14.168":
   version: 4.14.178
   resolution: "@types/lodash@npm:4.14.178"
   checksum: 820e33578a084aba2ca66fc83728c14d82813b91f3f14f281621b36904533c3d1681992b5e2719579b8beb52e1a77cfa914283a145f66dfa71b5e02a7cec5a37
@@ -19860,6 +19878,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"little-state-machine@npm:^4.1.0":
+  version: 4.2.0
+  resolution: "little-state-machine@npm:4.2.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17
+  checksum: 57fc0997a377349afddca3dc4907ab5de44dae1f6f26479b0bae6a4e9421de1f0eff88c0546bcd087a44ca98d842f8e6aaa7d5e3476035a1116b5001042712fc
+  languageName: node
+  linkType: hard
+
 "load-json-file@npm:^4.0.0":
   version: 4.0.0
   resolution: "load-json-file@npm:4.0.0"
@@ -24499,7 +24526,7 @@ __metadata:
     react: ^17.0.0
     react-dom: ^17.0.0
     react-final-form: ^6.5.7
-    react-hook-form: ^7.24.0
+    react-hook-form: ^7.24.1
     react-is: ^17.0.2
     react-query: ^3.32.1
     react-redux: ^7.1.0
@@ -24517,7 +24544,7 @@ __metadata:
     react: ^16.9.0 || ^17.0.0
     react-dom: ^16.9.0 || ^17.0.0
     react-final-form: ^6.5.2
-    react-hook-form: ^7.24.0
+    react-hook-form: ^7.24.1
     react-redux: ^7.1.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
@@ -24785,7 +24812,7 @@ __metadata:
     react-error-boundary: ^3.1.4
     react-final-form: ^6.5.7
     react-final-form-arrays: ^3.1.3
-    react-hook-form: ^7.24.0
+    react-hook-form: ^7.24.1
     react-query: ^3.32.1
     react-redux: ^7.1.0
     react-router: ^6.1.0
@@ -25263,12 +25290,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.24.0":
-  version: 7.24.0
-  resolution: "react-hook-form@npm:7.24.0"
+"react-hook-form@npm:^7.24.1":
+  version: 7.24.1
+  resolution: "react-hook-form@npm:7.24.1"
   peerDependencies:
     react: ^16.8.0 || ^17
-  checksum: 560e6bda0f8d96ccec9abe69f2bdb565a5273aa956ec7c1b28f49d999a644eba0ebe480541810cf37d97e8a35cffaa48123e2beac111912d70bd888daa068761
+  checksum: fa7e07d224c1b7bccc33b2c15a6ce7944f61fda50af774e85e0368808d770bd9deb5a68243669a1381ada574945ffc0cc0327354843845dc6088ca7a6b567fda
   languageName: node
   linkType: hard
 
@@ -25522,6 +25549,16 @@ __metadata:
   peerDependencies:
     react: ^16.0.0 || ^17.0.0
   checksum: b95f7ee2d88cf093e5b370663943ceb9199b8dff4217cb8cbffdf5e60966286f898a3ce7257b3c31bab54d698a3c80e70e92b0a8320bc69bdcf4d565678261c9
+  languageName: node
+  linkType: hard
+
+"react-simple-animate@npm:^3.3.12":
+  version: 3.3.12
+  resolution: "react-simple-animate@npm:3.3.12"
+  peerDependencies:
+    react: ^16.8.0 || ^17
+    react-dom: ^16.8.0 || ^17
+  checksum: 39b10294514abfdda3ec55c7f99a64932023f1525884deef4a5eb49fc5599f42214d65a64c30a7f6346ceb52384216cdcc87bb737282b1a2810c8cb7f9095816
   languageName: node
   linkType: hard
 
@@ -27364,6 +27401,7 @@ __metadata:
     "@babel/preset-react": ^7.12.10
     "@emotion/react": ^11.7.1
     "@emotion/styled": ^11.6.0
+    "@hookform/devtools": ^4.0.2
     "@mui/icons-material": ^5.0.1
     "@mui/material": ^5.0.2
     "@vitejs/plugin-react-refresh": ^1.3.3
@@ -27385,6 +27423,7 @@ __metadata:
     react-app-polyfill: ^1.0.4
     react-dom: ^17.0.0
     react-final-form: ^6.5.2
+    react-hook-form: ^7.24.1
     react-query: ^3.32.1
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
