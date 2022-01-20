@@ -506,6 +506,24 @@ const PostListContainer = () => {
 };
 ```
 
+## List `bulkActionButtons` Prop Moved To Datagrid
+
+The `Datagrid` is now responsible for managing the bulk actions component.
+
+```diff
+import { List, Datagrid } from 'react-admin'; 
+
+const PostList = () => (
+-    <List bulkActionButtons={<PostBulkActionButtons />}>
++    <List>
+-        <Datagrid>
++        <Datagrid bulkActionButtons={<PostBulkActionButtons />}>        
+            ...
+        </Datagrid>
+    </List>
+);
+```
+
 ## Mutation Callbacks Can No Longer Be Used As Event Handlers
 
 In 3.0, you could use a mutation callback in an event handler, e.g. a click handler on a button. This is no longer possible, so you'll have to call the callback manually inside a handler function:
