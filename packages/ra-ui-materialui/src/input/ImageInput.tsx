@@ -1,35 +1,31 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 
-import { FileInput, FileInputProps, FileInputOptions } from './FileInput';
-import { InputProps } from 'ra-core';
+import { FileInput, FileInputProps, FileInputClasses } from './FileInput';
 
 export const ImageInput = (props: ImageInputProps) => {
     return (
         <StyledFileInput
             labelMultiple="ra.input.image.upload_several"
             labelSingle="ra.input.image.upload_single"
-            classes={ImageInputClasses}
+            className={ImageInputClasses.root}
             {...props}
         />
     );
 };
 
-export type ImageInputProps = FileInputProps & InputProps<FileInputOptions>;
+export type ImageInputProps = FileInputProps;
 
 const PREFIX = 'RaImageInput';
 
 export const ImageInputClasses = {
     root: `${PREFIX}-root`,
-    dropZone: `${PREFIX}-dropZone`,
-    preview: `${PREFIX}-preview`,
-    removeButton: `${PREFIX}-removeButton`,
 };
 
 const StyledFileInput = styled(FileInput, { name: PREFIX })(({ theme }) => ({
-    [`& .${ImageInputClasses.root}`]: { width: '100%' },
+    [`&.${ImageInputClasses.root}`]: { width: '100%' },
 
-    [`& .${ImageInputClasses.dropZone}`]: {
+    [`& .${FileInputClasses.dropZone}`]: {
         background: theme.palette.background.default,
         cursor: 'pointer',
         padding: theme.spacing(1),
@@ -37,11 +33,11 @@ const StyledFileInput = styled(FileInput, { name: PREFIX })(({ theme }) => ({
         color: theme.palette.getContrastText(theme.palette.background.default),
     },
 
-    [`& .${ImageInputClasses.preview}`]: {
+    [`& .${FileInputClasses.preview}`]: {
         display: 'inline-block',
     },
 
-    [`& .${ImageInputClasses.removeButton}`]: {
+    [`& .${FileInputClasses.removeButton}`]: {
         display: 'inline-block',
         position: 'relative',
         float: 'left',
