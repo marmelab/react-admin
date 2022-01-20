@@ -120,7 +120,7 @@ export type ValidateForm = (
 
 export type FormWithRedirectProps = FormWithRedirectOwnProps &
     Omit<UseFormProps, 'onSubmit'> & {
-        validate: ValidateForm;
+        validate?: ValidateForm;
     };
 
 export type FormWithRedirectRenderProps = Omit<
