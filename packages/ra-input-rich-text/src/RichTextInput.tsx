@@ -126,7 +126,7 @@ export const RichTextInput = (props: RichTextInputProps) => {
                 }
             >
                 <InputHelperText
-                    error={error}
+                    error={error?.message}
                     helperText={helperText}
                     touched={isTouched || isSubmitted}
                 />
