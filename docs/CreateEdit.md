@@ -98,7 +98,7 @@ You can customize the `<Create>` and `<Edit>` components using the following pro
 * [`component`](#component)
 * [`undoable`](#undoable) (`<Edit>` only) (deprecated)
 * [`mutationMode`](#mutationmode) (`<Edit>` only) 
-* [`mutationOptions](#mutationoptions)
+* [`mutationOptions`](#mutationoptions)
 * [`transform`](#transform)
 * [`redirect`](#redirection-after-submission)
 
