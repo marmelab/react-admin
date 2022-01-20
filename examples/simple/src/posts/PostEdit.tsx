@@ -104,7 +104,7 @@ const PostEdit = () => {
     return (
         <Edit title={<PostTitle />} actions={<EditActions />}>
             <TabbedForm
-                initialValues={{ average_note: 0 }}
+                defaultValues={{ average_note: 0 }}
                 warnWhenUnsavedChanges
             >
                 <FormTab label="post.form.summary">
