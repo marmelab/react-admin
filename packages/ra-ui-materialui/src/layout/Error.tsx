@@ -84,11 +84,14 @@ const Error = (props: ErrorProps): JSX.Element => {
                 <div>{translate('ra.message.error')}</div>
                 {process.env.NODE_ENV !== 'production' && (
                     <>
+                        <Typography className={classes.panel}>
+                            {translate(error.toString(), {
+                                _: error.toString(),
+                            })}
+                        </Typography>
                         <Accordion className={classes.panel}>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                {translate(error.toString(), {
-                                    _: error.toString(),
-                                })}
+                                Error stack
                             </AccordionSummary>
                             {errorInfo && (
                                 <AccordionDetails
