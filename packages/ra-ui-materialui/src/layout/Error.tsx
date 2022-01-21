@@ -44,8 +44,10 @@ const useStyles = makeStyles(
             marginTop: '1em',
             maxWidth: '60em',
         },
+        panelSumary: {
+            userSelect: 'all',
+        },
         panelDetails: {
-            flexDirection: 'column',
             whiteSpace: 'pre-wrap',
         },
         toolbar: {
@@ -86,17 +88,21 @@ const Error = (props: ErrorProps): JSX.Element => {
                 {process.env.NODE_ENV !== 'production' && (
                     <>
                         <Accordion className={classes.panel}>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                Error stack
+                            <AccordionSummary
+                                className={classes.panelSumary}
+                                expandIcon={<ExpandMoreIcon />}
+                            >
+                                {translate(error.toString(), {
+                                    _: error.toString(),
+                                })}
                             </AccordionSummary>
-                            <AccordionDetails className={classes.panelDetails}>
-                                <b>
-                                    {translate(error.toString(), {
-                                        _: error.toString(),
-                                    })}
-                                </b>
-                                {errorInfo && errorInfo.componentStack}
-                            </AccordionDetails>
+                            {errorInfo && (
+                                <AccordionDetails
+                                    className={classes.panelDetails}
+                                >
+                                    {errorInfo.componentStack}
+                                </AccordionDetails>
+                            )}
                         </Accordion>
 
                         <div className={classes.advice}>
