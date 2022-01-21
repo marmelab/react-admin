@@ -20,7 +20,8 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  * The object passed as `options` props is passed to the material-ui <TextField> component
  */
 export const NumberInput = ({
-    format,
+    defaultValue = '',
+    format = convertNumberToString,
     helperText,
     label,
     margin = 'dense',
@@ -44,6 +45,7 @@ export const NumberInput = ({
         id,
         isRequired,
     } = useInput({
+        defaultValue,
         format,
         onBlur,
         onChange,
@@ -114,4 +116,8 @@ const convertStringToNumber = value => {
     const float = parseFloat(value);
 
     return isNaN(float) ? null : float;
+};
+
+const convertNumberToString = value => {
+    return value === null ? '' : value.toString();
 };

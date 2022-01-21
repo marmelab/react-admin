@@ -26,6 +26,7 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  */
 export const TextInput = (props: TextInputProps) => {
     const {
+        defaultValue = '',
         label,
         format,
         helperText,
@@ -45,6 +46,7 @@ export const TextInput = (props: TextInputProps) => {
         id,
         isRequired,
     } = useInput({
+        defaultValue,
         format,
         parse,
         resource,
