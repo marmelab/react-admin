@@ -724,9 +724,7 @@ const PostList = () => (
     <List>
         <Datagrid
             sx={{
-                '& .column-title': {
-                    backgroundColor: '#fee',
-                },
+                '& .column-title': { backgroundColor: '#fee' },
             }}
         >
             <TextField source="id" />
@@ -739,7 +737,7 @@ const PostList = () => (
 ```
 {% endraw %}
 
-You can even style the header cells differently by passing a more specific CSS selectoor (e.g. '& tr.column-title').
+You can even style the header cells differently by passing a more specific CSS selector (e.g. `& tr.column-title`).
 
 A common practice is to hide certain columns on smaller screens. You can use the same technique:
 
