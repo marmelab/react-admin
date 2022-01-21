@@ -377,11 +377,13 @@ const StyledResettableTextField = styled(ResettableTextField)(({ theme }) => ({
     },
 }));
 
-export type SelectInputProps = CommonInputProps &
+export type SelectInputProps = Omit<CommonInputProps, 'source'> &
     ChoicesProps &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     Omit<TextFieldProps, 'label' | 'helperText' | 'classes'> & {
         disableValue?: string;
         emptyText?: string | ReactElement;
         emptyValue?: any;
+        // Source is optional as AutocompleteInput can be used inside a ReferenceInput that already defines the source
+        source?: string;
     };

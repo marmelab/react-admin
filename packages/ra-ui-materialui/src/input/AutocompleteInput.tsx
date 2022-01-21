@@ -499,7 +499,8 @@ export interface AutocompleteInputProps<
     inputText?: (option: any) => string;
     setFilter?: (value: string) => void;
     shouldRenderSuggestions?: any;
-    source?: string; // Source is optional as AutocompleteInput can be used inside a ReferenceInput that already defines the source
+    // Source is optional as AutocompleteInput can be used inside a ReferenceInput that already defines the source
+    source?: string;
     TextFieldProps?: TextFieldProps;
 }
 
