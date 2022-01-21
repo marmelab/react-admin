@@ -1,14 +1,14 @@
 import * as React from 'react';
 import expect from 'expect';
 import { testDataProvider } from 'ra-core';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { TabbedForm } from './TabbedForm';
 import { FormTab } from './FormTab';
 import { TextInput } from '../input';
 import { AdminContext } from '../AdminContext';
 
 describe('<FormTab label="foo" />', () => {
-    it('should display <Toolbar />', () => {
+    it('should display <Toolbar />', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <TabbedForm>
@@ -19,10 +19,12 @@ describe('<FormTab label="foo" />', () => {
                 </TabbedForm>
             </AdminContext>
         );
-        expect(screen.queryByLabelText('ra.action.save')).not.toBeNull();
+        await waitFor(() => {
+            expect(screen.queryByLabelText('ra.action.save')).not.toBeNull();
+        });
     });
 
-    it('should not alter default margin or variant', () => {
+    it('should not alter default margin or variant', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <TabbedForm>
@@ -35,13 +37,15 @@ describe('<FormTab label="foo" />', () => {
         const inputElement = screen.queryByLabelText(
             'resources.undefined.fields.name'
         );
-        expect(inputElement.classList).toContain('MuiFilledInput-input');
+        await waitFor(() => {
+            expect(inputElement.classList).toContain('MuiFilledInput-input');
+        });
         expect(inputElement.parentElement.parentElement.classList).toContain(
             'MuiFormControl-marginDense'
         );
     });
 
-    it('should render a TabbedForm with FormTabs having custom props without warnings', () => {
+    it('should render a TabbedForm with FormTabs having custom props without warnings', async () => {
         let countWarnings = 0;
         const spy = jest
             .spyOn(console, 'error')
@@ -86,13 +90,15 @@ describe('<FormTab label="foo" />', () => {
                 </TabbedForm>
             </AdminContext>
         );
-        expect(countWarnings).toEqual(0);
+        await waitFor(() => {
+            expect(countWarnings).toEqual(0);
+        });
         expect(container).not.toBeNull();
 
         spy.mockRestore();
     });
 
-    it('should pass variant and margin to child inputs', () => {
+    it('should pass variant and margin to child inputs', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <TabbedForm>
@@ -105,13 +111,15 @@ describe('<FormTab label="foo" />', () => {
         const inputElement = screen.queryByLabelText(
             'resources.undefined.fields.name'
         );
-        expect(inputElement.classList).toContain('MuiOutlinedInput-input');
+        await waitFor(() => {
+            expect(inputElement.classList).toContain('MuiOutlinedInput-input');
+        });
         expect(inputElement.parentElement.parentElement.classList).toContain(
             'MuiFormControl-marginNormal'
         );
     });
 
-    it('should allow input children to override variant and margin', () => {
+    it('should allow input children to override variant and margin', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <TabbedForm>
@@ -128,7 +136,9 @@ describe('<FormTab label="foo" />', () => {
         const inputElement = screen.queryByLabelText(
             'resources.undefined.fields.name'
         );
-        expect(inputElement.classList).toContain('MuiOutlinedInput-input');
+        await waitFor(() => {
+            expect(inputElement.classList).toContain('MuiOutlinedInput-input');
+        });
         expect(inputElement.parentElement.parentElement.classList).toContain(
             'MuiFormControl-marginNormal'
         );
