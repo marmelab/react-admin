@@ -45,6 +45,7 @@ const useStyles = makeStyles(
             maxWidth: '60em',
         },
         panelDetails: {
+            flexDirection: 'column',
             whiteSpace: 'pre-wrap',
         },
         toolbar: {
@@ -84,22 +85,18 @@ const Error = (props: ErrorProps): JSX.Element => {
                 <div>{translate('ra.message.error')}</div>
                 {process.env.NODE_ENV !== 'production' && (
                     <>
-                        <Typography className={classes.panel}>
-                            {translate(error.toString(), {
-                                _: error.toString(),
-                            })}
-                        </Typography>
                         <Accordion className={classes.panel}>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                                 Error stack
                             </AccordionSummary>
-                            {errorInfo && (
-                                <AccordionDetails
-                                    className={classes.panelDetails}
-                                >
-                                    {errorInfo.componentStack}
-                                </AccordionDetails>
-                            )}
+                            <AccordionDetails className={classes.panelDetails}>
+                                <b>
+                                    {translate(error.toString(), {
+                                        _: error.toString(),
+                                    })}
+                                </b>
+                                {errorInfo && errorInfo.componentStack}
+                            </AccordionDetails>
                         </Accordion>
 
                         <div className={classes.advice}>
