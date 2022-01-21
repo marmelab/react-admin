@@ -2,12 +2,6 @@ import { ReactNode, ReactElement, ComponentType } from 'react';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
-import {
-    CreateControllerProps,
-    EditControllerProps,
-    ListControllerProps,
-    ShowControllerProps,
-} from './controller';
 
 /**
  * data types
@@ -340,10 +334,10 @@ export interface ResourceComponentInjectedProps {
 export interface ResourceProps {
     intent?: 'route' | 'registration';
     name: string;
-    list?: ComponentType<ListControllerProps>;
-    create?: ComponentType<CreateControllerProps>;
-    edit?: ComponentType<EditControllerProps>;
-    show?: ComponentType<ShowControllerProps>;
+    list?: ComponentType<any> | ReactElement;
+    create?: ComponentType<any> | ReactElement;
+    edit?: ComponentType<any> | ReactElement;
+    show?: ComponentType<any> | ReactElement;
     icon?: ComponentType<any>;
     options?: object;
 }
