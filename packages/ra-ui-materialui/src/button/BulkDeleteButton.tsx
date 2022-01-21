@@ -51,6 +51,8 @@ BulkDeleteButton.propTypes = {
     selectedIds: PropTypes.arrayOf(PropTypes.any),
     undoable: PropTypes.bool,
     icon: PropTypes.element,
+    onSuccess: PropTypes.func,
+    onFailure: PropTypes.func,
 };
 
 BulkDeleteButton.defaultProps = {
