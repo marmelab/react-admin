@@ -35,7 +35,7 @@ describe('Edit Page', () => {
             EditPostPage.submit();
             // Ensure react-admin has handled the update as it will redirect to the list page
             // once done
-            cy.url().should(url => expect(url).to.match(/.*\/posts$/));
+            cy.url().then(url => expect(url).to.contain('/#/posts'));
             EditPostPage.navigate();
             cy.get(EditPostPage.elements.input('title')).should(el =>
                 expect(el).to.have.value('Lorem Ipsum')
