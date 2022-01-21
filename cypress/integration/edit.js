@@ -276,7 +276,7 @@ describe('Edit Page', () => {
         EditPostPage.gotoTab(3);
         cy.contains('Tech').click();
         cy.get('li[aria-label="Clear value"]').click();
-        EditPostPage.submit();
+        EditPostPage.setInputValue('input', 'average_note', '{enter}', false);
         cy.url().should('match', /\/#\/posts$/);
         ListPagePosts.waitUntilDataLoaded();
 
