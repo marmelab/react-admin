@@ -427,7 +427,6 @@ describe('<AutocompleteArrayInput />', () => {
 
     it('should reset filter only when needed, even if the value is an array of objects (fixes #4454)', async () => {
         const setFilter = jest.fn();
-        let formApi;
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm
@@ -449,8 +448,9 @@ describe('<AutocompleteArrayInput />', () => {
         );
         const input = screen.getByLabelText('resources.posts.fields.tags');
         userEvent.type(input, 'p');
-        await new Promise(resolve => setTimeout(resolve, 300));
-        expect(setFilter).toHaveBeenCalledTimes(1);
+        await waitFor(() => {
+            expect(setFilter).toHaveBeenCalledTimes(1);
+        });
         expect(setFilter).toHaveBeenCalledWith('p');
         rerender(
             <AdminContext dataProvider={testDataProvider()}>
@@ -473,8 +473,8 @@ describe('<AutocompleteArrayInput />', () => {
         );
         await waitFor(() => {
             expect(setFilter).toHaveBeenCalledTimes(2);
-            expect(setFilter).toHaveBeenCalledWith('');
         });
+        expect(setFilter).toHaveBeenCalledWith('');
     });
 
     it('should allow customized rendering of suggesting item', () => {

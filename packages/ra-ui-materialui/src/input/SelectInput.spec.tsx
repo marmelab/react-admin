@@ -43,14 +43,21 @@ describe('<SelectInput />', () => {
         fireEvent.mouseDown(
             screen.getByLabelText('resources.posts.fields.language')
         );
-        const options = screen.queryAllByRole('option');
-        expect(options.length).toEqual(2);
+        expect(screen.queryAllByRole('option').length).toEqual(3);
 
-        const option1 = screen.getByText('Angular');
-        expect(option1.getAttribute('data-value')).toEqual('ang');
+        expect(
+            screen
+                .getByTitle('ra.action.clear_input_value')
+                .getAttribute('data-value')
+        ).toEqual('');
 
-        const option2 = screen.getByText('React');
-        expect(option2.getAttribute('data-value')).toEqual('rea');
+        expect(screen.getByText('Angular').getAttribute('data-value')).toEqual(
+            'ang'
+        );
+
+        expect(screen.getByText('React').getAttribute('data-value')).toEqual(
+            'rea'
+        );
     });
 
     it('should render disable choices marked so', () => {
@@ -70,64 +77,22 @@ describe('<SelectInput />', () => {
         fireEvent.mouseDown(
             screen.getByLabelText('resources.posts.fields.language')
         );
-        const option1 = screen.getByText('Angular');
-        expect(option1.getAttribute('aria-disabled')).toBeNull();
 
-        const option2 = screen.getByText('React');
-        expect(option2.getAttribute('aria-disabled')).toEqual('true');
+        expect(
+            screen.getByText('Angular').getAttribute('aria-disabled')
+        ).toBeNull();
+        expect(screen.getByText('React').getAttribute('aria-disabled')).toEqual(
+            'true'
+        );
     });
 
-    it('should add an empty menu when allowEmpty is true', () => {
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <SelectInput {...defaultProps} allowEmpty />
-                </SimpleForm>
-            </AdminContext>
-        );
-        fireEvent.mouseDown(
-            screen.getByLabelText('resources.posts.fields.language')
-        );
-
-        const options = screen.queryAllByRole('option');
-        expect(options.length).toEqual(3);
-        expect(options[0].getAttribute('data-value')).toEqual('');
-    });
-
-    it('should add an empty menu with custom value when allowEmpty is true', () => {
-        const emptyValue = 'test';
-
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <SelectInput
-                        {...defaultProps}
-                        allowEmpty
-                        emptyValue={emptyValue}
-                    />
-                </SimpleForm>
-            </AdminContext>
-        );
-        fireEvent.mouseDown(
-            screen.getByLabelText('resources.posts.fields.language')
-        );
-
-        const options = screen.queryAllByRole('option');
-        expect(options.length).toEqual(3);
-        expect(options[0].getAttribute('data-value')).toEqual(emptyValue);
-    });
-
-    it('should add an empty menu with proper text when emptyText is a string', () => {
+    it('should allow to override the empty menu option text by passing a string', () => {
         const emptyText = 'Default';
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm onSubmit={jest.fn()}>
-                    <SelectInput
-                        allowEmpty
-                        emptyText={emptyText}
-                        {...defaultProps}
-                    />
+                    <SelectInput emptyText={emptyText} {...defaultProps} />
                 </SimpleForm>
             </AdminContext>
         );
@@ -135,13 +100,12 @@ describe('<SelectInput />', () => {
             screen.getByLabelText('resources.posts.fields.language')
         );
 
-        const options = screen.queryAllByRole('option');
-        expect(options.length).toEqual(3);
+        expect(screen.queryAllByRole('option').length).toEqual(3);
 
         expect(screen.getByText('Default')).not.toBeNull();
     });
 
-    it('should add an empty menu with proper text when emptyText is a React element', () => {
+    it('should allow to override the empty menu option text by passing a React element', () => {
         const emptyText = (
             <div>
                 <em>Empty choice</em>
@@ -151,11 +115,7 @@ describe('<SelectInput />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm onSubmit={jest.fn()}>
-                    <SelectInput
-                        allowEmpty
-                        emptyText={emptyText}
-                        {...defaultProps}
-                    />
+                    <SelectInput emptyText={emptyText} {...defaultProps} />
                 </SimpleForm>
             </AdminContext>
         );
@@ -163,25 +123,9 @@ describe('<SelectInput />', () => {
             screen.getByLabelText('resources.posts.fields.language')
         );
 
-        const options = screen.queryAllByRole('option');
-        expect(options.length).toEqual(3);
+        expect(screen.queryAllByRole('option').length).toEqual(3);
 
         expect(screen.getByText('Empty choice')).not.toBeNull();
-    });
-
-    it('should not add a falsy (null or false) element when allowEmpty is false', () => {
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()}>
-                    <SelectInput {...defaultProps} />
-                </SimpleForm>
-            </AdminContext>
-        );
-        fireEvent.mouseDown(
-            screen.getByLabelText('resources.posts.fields.language')
-        );
-        const options = screen.queryAllByRole('option');
-        expect(options.length).toEqual(2);
     });
 
     it('should use optionValue as value identifier', () => {
@@ -203,8 +147,9 @@ describe('<SelectInput />', () => {
             screen.getByLabelText('resources.posts.fields.language')
         );
 
-        const option = screen.getByText('Angular');
-        expect(option.getAttribute('data-value')).toEqual('ang');
+        expect(screen.getByText('Angular').getAttribute('data-value')).toEqual(
+            'ang'
+        );
     });
 
     it('should use optionValue including "." as value identifier', () => {
@@ -226,8 +171,9 @@ describe('<SelectInput />', () => {
             screen.getByLabelText('resources.posts.fields.language')
         );
 
-        const option = screen.getByText('Angular');
-        expect(option.getAttribute('data-value')).toEqual('ang');
+        expect(screen.getByText('Angular').getAttribute('data-value')).toEqual(
+            'ang'
+        );
     });
 
     it('should use optionText with a string value as text identifier', () => {
@@ -249,8 +195,9 @@ describe('<SelectInput />', () => {
             screen.getByLabelText('resources.posts.fields.language')
         );
 
-        const option = screen.getByText('Angular');
-        expect(option.getAttribute('data-value')).toEqual('ang');
+        expect(screen.getByText('Angular').getAttribute('data-value')).toEqual(
+            'ang'
+        );
     });
 
     it('should use optionText with a string value including "." as text identifier', () => {
@@ -272,8 +219,9 @@ describe('<SelectInput />', () => {
             screen.getByLabelText('resources.posts.fields.language')
         );
 
-        const option = screen.getByText('Angular');
-        expect(option.getAttribute('data-value')).toEqual('ang');
+        expect(screen.getByText('Angular').getAttribute('data-value')).toEqual(
+            'ang'
+        );
     });
 
     it('should use optionText with a function value as text identifier', () => {
@@ -295,8 +243,9 @@ describe('<SelectInput />', () => {
             screen.getByLabelText('resources.posts.fields.language')
         );
 
-        const option = screen.getByText('Angular');
-        expect(option.getAttribute('data-value')).toEqual('ang');
+        expect(screen.getByText('Angular').getAttribute('data-value')).toEqual(
+            'ang'
+        );
     });
 
     it('should use optionText with an element value as text identifier', () => {
@@ -322,8 +271,9 @@ describe('<SelectInput />', () => {
             screen.getByLabelText('resources.posts.fields.language')
         );
 
-        const option = screen.getByLabelText('Angular');
-        expect(option.getAttribute('data-value')).toEqual('ang');
+        expect(
+            screen.getByLabelText('Angular').getAttribute('data-value')
+        ).toEqual('ang');
     });
 
     it('should translate the choices by default', () => {
@@ -339,14 +289,14 @@ describe('<SelectInput />', () => {
         fireEvent.mouseDown(
             screen.getByLabelText('**resources.posts.fields.language**')
         );
-        const options = screen.queryAllByRole('option');
-        expect(options.length).toEqual(2);
 
-        const option1 = screen.getByText('**Angular**');
-        expect(option1.getAttribute('data-value')).toEqual('ang');
-
-        const option2 = screen.getByText('**React**');
-        expect(option2.getAttribute('data-value')).toEqual('rea');
+        expect(screen.queryAllByRole('option').length).toEqual(3);
+        expect(
+            screen.getByText('**Angular**').getAttribute('data-value')
+        ).toEqual('ang');
+        expect(
+            screen.getByText('**React**').getAttribute('data-value')
+        ).toEqual('rea');
     });
 
     it('should not translate the choices if translateChoice is false', () => {
@@ -365,14 +315,14 @@ describe('<SelectInput />', () => {
         fireEvent.mouseDown(
             screen.getByLabelText('**resources.posts.fields.language**')
         );
-        const options = screen.queryAllByRole('option');
-        expect(options.length).toEqual(2);
 
-        const option1 = screen.getByText('Angular');
-        expect(option1.getAttribute('data-value')).toEqual('ang');
-
-        const option2 = screen.getByText('React');
-        expect(option2.getAttribute('data-value')).toEqual('rea');
+        expect(screen.queryAllByRole('option').length).toEqual(3);
+        expect(screen.getByText('Angular').getAttribute('data-value')).toEqual(
+            'ang'
+        );
+        expect(screen.getByText('React').getAttribute('data-value')).toEqual(
+            'rea'
+        );
     });
 
     it('should display helperText if prop is present', () => {
@@ -437,7 +387,6 @@ describe('<SelectInput />', () => {
                     <SimpleForm mode="onChange" onSubmit={jest.fn()}>
                         <SelectInput
                             {...defaultProps}
-                            allowEmpty
                             emptyText="Empty"
                             validate={required()}
                         />
@@ -528,8 +477,7 @@ describe('<SelectInput />', () => {
         });
     });
 
-    // FIXME
-    it.skip('should support creation of a new choice through the onCreate event with a promise', async () => {
+    it('should support creation of a new choice through the onCreate event with a promise', async () => {
         const choices = [...defaultProps.choices];
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 
@@ -539,6 +487,7 @@ describe('<SelectInput />', () => {
                     <SelectInput
                         {...defaultProps}
                         choices={choices}
+                        defaultValue="ang"
                         onCreate={() => {
                             return new Promise(resolve => {
                                 setTimeout(() => {
@@ -556,7 +505,7 @@ describe('<SelectInput />', () => {
         fireEvent.mouseDown(input);
 
         fireEvent.click(screen.getByText('ra.action.create'));
-        await new Promise(resolve => setTimeout(resolve, 100));
+
         await waitFor(() => {
             expect(screen.queryByText(newChoice.name)).not.toBeNull();
         });

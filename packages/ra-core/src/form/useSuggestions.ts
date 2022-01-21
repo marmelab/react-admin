@@ -197,7 +197,19 @@ export const getSuggestionsFactory = ({
             suggestions = [...choices];
         }
     } else {
-        suggestions = choices.filter(choice => matchSuggestion(filter, choice));
+        suggestions = choices.filter(
+            choice =>
+                matchSuggestion(filter, choice) ||
+                (selectedItem != null &&
+                    (!Array.isArray(selectedItem)
+                        ? getChoiceValue(choice) ===
+                          getChoiceValue(selectedItem)
+                        : selectedItem.some(
+                              selected =>
+                                  getChoiceValue(choice) ===
+                                  getChoiceValue(selected)
+                          )))
+        );
     }
 
     suggestions = limitSuggestions(suggestions, suggestionLimit);

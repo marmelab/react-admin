@@ -102,9 +102,20 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  * @example
  * <AutocompleteInput source="author_id" options={{ color: 'secondary', InputLabelProps: { shrink: true } }} />
  */
-export const AutocompleteInput = (props: AutocompleteInputProps) => {
+export const AutocompleteInput = <
+    OptionType extends RaRecord = RaRecord,
+    Multiple extends boolean | undefined = false,
+    DisableClearable extends boolean | undefined = false,
+    SupportCreate extends boolean | undefined = false
+>(
+    props: AutocompleteInputProps<
+        OptionType,
+        Multiple,
+        DisableClearable,
+        SupportCreate
+    >
+) => {
     const {
-        allowEmpty,
         choices,
         clearText = 'ra.action.clear_input_value',
         closeText = 'ra.action.close',
@@ -113,6 +124,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         createItemLabel,
         createValue,
         debounce: debounceDelay = 250,
+        defaultValue = '',
         emptyText,
         emptyValue = '',
         format,
@@ -159,6 +171,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         fieldState: { error, invalid, isTouched },
         formState: { isSubmitted },
     } = useInput({
+        defaultValue,
         format,
         id: idOverride,
         field: fieldOverride,
@@ -173,7 +186,12 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         ...rest,
     });
 
-    const selectedChoice = useSelectedChoice(field.value, props);
+    const selectedChoice = useSelectedChoice<
+        OptionType,
+        Multiple,
+        DisableClearable,
+        SupportCreate
+    >(field.value, props);
 
     useEffect(() => {
         // eslint-disable-next-line eqeqeq
@@ -198,7 +216,6 @@ If you provided a React element for the optionText prop, you must also provide t
     }, [shouldRenderSuggestions, noOptionsText]);
 
     const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
-        allowEmpty,
         choices,
         emptyText,
         emptyValue,
@@ -290,11 +307,6 @@ If you provided a React element for the optionText prop, you must also provide t
         }
     }, [getOptionLabel, multiple, selectedChoice]);
 
-    const isOptionEqualToValue = (option, value) => {
-        // eslint-disable-next-line eqeqeq
-        return getChoiceValue(option) == getChoiceValue(value);
-    };
-
     const handleInputChange = (event: any, newInputValue: string) => {
         setFilterValue(newInputValue);
 
@@ -357,6 +369,11 @@ If you provided a React element for the optionText prop, you must also provide t
         return getSuggestions(filterValue);
     }, [choices, filterValue, getSuggestions, oneSecondHasPassed, setFilter]);
 
+    const isOptionEqualToValue = (option, value) => {
+        // eslint-disable-next-line eqeqeq
+        return getChoiceValue(option) == getChoiceValue(value);
+    };
+
     return (
         <>
             <Autocomplete
@@ -367,6 +384,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 openText={translate(openText, { _: openText })}
                 id={id}
                 isOptionEqualToValue={isOptionEqualToValue}
+                filterSelectedOptions
                 renderInput={params => (
                     <TextField
                         name={field.name}
@@ -382,10 +400,10 @@ If you provided a React element for the optionText prop, you must also provide t
                                 }
                             />
                         }
-                        error={isTouched && invalid}
+                        error={(isTouched || isSubmitted) && invalid}
                         helperText={
                             <InputHelperText
-                                touched={isTouched}
+                                touched={isTouched || isSubmitted}
                                 error={error?.message}
                                 helperText={helperText}
                             />
@@ -464,7 +482,7 @@ export interface AutocompleteInputProps<
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
     SupportCreate extends boolean | undefined = false
-> extends CommonInputProps,
+> extends Omit<CommonInputProps, 'source'>,
         ChoicesProps,
         UseSuggestionsOptions,
         Omit<SupportCreateSuggestionOptions, 'handleChange' | 'optionText'>,
@@ -477,11 +495,11 @@ export interface AutocompleteInputProps<
             >,
             'onChange' | 'options' | 'renderInput'
         > {
-    allowEmpty?: boolean;
     debounce?: number;
     inputText?: (option: any) => string;
     setFilter?: (value: string) => void;
     shouldRenderSuggestions?: any;
+    source?: string; // Source is optional as AutocompleteInput can be used inside a ReferenceInput that already defines the source
     TextFieldProps?: TextFieldProps;
 }
 
@@ -490,9 +508,23 @@ const DefaultSetFilter = () => {};
 /**
  * Returns the selected choice (or choices if multiple) by matching the input value with the choices.
  */
-const useSelectedChoice = (
+const useSelectedChoice = <
+    OptionType extends any = RaRecord,
+    Multiple extends boolean | undefined = false,
+    DisableClearable extends boolean | undefined = false,
+    SupportCreate extends boolean | undefined = false
+>(
     value: any,
-    { choices, multiple, optionValue }: AutocompleteInputProps
+    {
+        choices,
+        multiple,
+        optionValue,
+    }: AutocompleteInputProps<
+        OptionType,
+        Multiple,
+        DisableClearable,
+        SupportCreate
+    >
 ) => {
     const selectedChoiceRef = useRef(
         getSelectedItems(choices, value, optionValue, multiple)

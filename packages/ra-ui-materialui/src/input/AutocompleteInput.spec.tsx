@@ -25,7 +25,6 @@ describe('<AutocompleteInput />', () => {
                 <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: null }}>
                     <AutocompleteInput
                         {...defaultProps}
-                        allowEmpty
                         choices={[{ id: 2, name: 'foo' }]}
                     />
                 </SimpleForm>
@@ -228,7 +227,10 @@ describe('<AutocompleteInput />', () => {
                 <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: 2 }}>
                     <AutocompleteInput
                         {...defaultProps}
-                        choices={[{ id: 2, name: 'foo' }]}
+                        choices={[
+                            { id: 2, name: 'foo' },
+                            { id: 3, name: 'bar' },
+                        ]}
                     />
                 </SimpleForm>
             </AdminContext>
@@ -236,7 +238,7 @@ describe('<AutocompleteInput />', () => {
 
         fireEvent.focus(screen.getByLabelText('resources.users.fields.role'));
         await waitFor(() => {
-            expect(screen.queryByText('foo')).not.toBeNull();
+            expect(screen.queryByText('bar')).not.toBeNull();
         });
     });
 
@@ -351,28 +353,6 @@ describe('<AutocompleteInput />', () => {
         expect(input.value).toEqual('foo');
     });
 
-    it('should revert the searchText when allowEmpty is false', async () => {
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: 2 }}>
-                    <AutocompleteInput
-                        {...defaultProps}
-                        choices={[{ id: 2, name: 'foo' }]}
-                    />
-                </SimpleForm>
-            </AdminContext>
-        );
-        const input = screen.getByLabelText(
-            'resources.users.fields.role'
-        ) as HTMLInputElement;
-        fireEvent.focus(input);
-        fireEvent.change(input, { target: { value: 'bar' } });
-        fireEvent.blur(input);
-        await waitFor(() => {
-            expect(input.value).toEqual('foo');
-        });
-    });
-
     it('should show the suggestions when the input value is null and the input is focussed and choices arrived late', () => {
         const { rerender } = render(
             <AdminContext dataProvider={testDataProvider()}>
@@ -398,11 +378,6 @@ describe('<AutocompleteInput />', () => {
                 </SimpleForm>
             </AdminContext>
         );
-        expect(
-            screen.queryByText('foo', {
-                selector: '[role="option"]',
-            })
-        ).not.toBeNull();
         expect(
             screen.queryByText('bar', {
                 selector: '[role="option"]',
@@ -478,7 +453,6 @@ describe('<AutocompleteInput />', () => {
         const input = screen.getByLabelText('resources.users.fields.role');
         fireEvent.focus(input);
         expect(screen.queryByLabelText('bar')).not.toBeNull();
-        expect(screen.queryByLabelText('foo')).not.toBeNull();
     });
 
     it('should display helperText if specified', () => {
@@ -547,8 +521,7 @@ describe('<AutocompleteInput />', () => {
         });
     });
 
-    // FIXME
-    it.skip('updates suggestions when input is blurred and refocused', async () => {
+    it('updates suggestions when input is blurred and refocused', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm onSubmit={jest.fn()}>
@@ -567,13 +540,13 @@ describe('<AutocompleteInput />', () => {
 
         fireEvent.change(input, { target: { value: 'a' } });
         await waitFor(() => {
-            expect(screen.queryAllByRole('option').length).toEqual(2);
+            expect(screen.queryAllByRole('option').length).toEqual(3);
         });
         fireEvent.blur(input);
 
         fireEvent.change(input, { target: { value: 'a' } });
         await waitFor(() => {
-            expect(screen.queryAllByRole('option').length).toEqual(2);
+            expect(screen.queryAllByRole('option').length).toEqual(3);
         });
     });
 
@@ -819,15 +792,14 @@ describe('<AutocompleteInput />', () => {
         fireEvent.click(screen.getByLabelText('Clear value'));
         await waitFor(() => {
             expect(screen.getByText('Victor Hugo'));
-            expect(screen.getByText('Leo Tolstoy'));
         });
         fireEvent.change(screen.getByRole('textbox'), {
             target: { value: 'Vic' },
         });
         await waitFor(() => {
             expect(screen.getByText('Victor Hugo'));
-            expect(screen.queryByText('Leo Tolstoy')).toBeNull();
         });
+        expect(screen.queryByText('Leo Tolstoy')).toBeNull();
     });
 
     it("should allow to edit the input if it's inside a FormDataConsumer", () => {

@@ -1945,6 +1945,7 @@ TODO
 - FormWithRedirect props and render changed
 - useInput signature changed
 - Form components don't clone toolbar anymore (no more prop injection)
+- allowEmpty has been removed. SelectInput and Autocomplete inputs always allow empty. Necessary for MUI default value
 
 # Upgrade to 3.0
 

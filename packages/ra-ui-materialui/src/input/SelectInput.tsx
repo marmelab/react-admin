@@ -103,12 +103,12 @@ import {
  */
 export const SelectInput = (props: SelectInputProps) => {
     const {
-        allowEmpty,
         choices = [],
         className,
         create,
         createLabel,
         createValue,
+        defaultValue = '',
         disableValue,
         emptyText,
         emptyValue,
@@ -157,6 +157,7 @@ export const SelectInput = (props: SelectInputProps) => {
         isRequired,
         formState: { isSubmitted },
     } = useInput({
+        defaultValue,
         format,
         parse,
         resource,
@@ -279,16 +280,14 @@ export const SelectInput = (props: SelectInputProps) => {
                 margin={margin}
                 {...sanitizeRestProps(rest)}
             >
-                {allowEmpty ? (
-                    <MenuItem
-                        value={emptyValue}
-                        key="null"
-                        aria-label={translate('ra.action.clear_input_value')}
-                        title={translate('ra.action.clear_input_value')}
-                    >
-                        {renderEmptyItemOption()}
-                    </MenuItem>
-                ) : null}
+                <MenuItem
+                    value={emptyValue}
+                    key="null"
+                    aria-label={translate('ra.action.clear_input_value')}
+                    title={translate('ra.action.clear_input_value')}
+                >
+                    {renderEmptyItemOption()}
+                </MenuItem>
                 {finalChoices.map(renderMenuItem)}
             </StyledResettableTextField>
             {createElement}
@@ -382,7 +381,6 @@ export type SelectInputProps = CommonInputProps &
     ChoicesProps &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     Omit<TextFieldProps, 'label' | 'helperText' | 'classes'> & {
-        allowEmpty?: boolean;
         disableValue?: string;
         emptyText?: string | ReactElement;
         emptyValue?: any;
