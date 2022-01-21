@@ -250,7 +250,7 @@ describe('<FileInput />', () => {
         });
     });
 
-    describe('should call validateFileRemoval on removal to allow developers to conditionally prevent the removal', async () => {
+    describe('should call validateFileRemoval on removal to allow developers to conditionally prevent the removal', () => {
         it('normal function', async () => {
             const onSubmit = jest.fn();
 
@@ -338,7 +338,7 @@ describe('<FileInput />', () => {
         });
     });
 
-    describe('should continue to remove file when validateFileRemoval returns true.', async () => {
+    describe('should continue to remove file when validateFileRemoval returns true.', () => {
         it('normal function', async () => {
             const onSubmit = jest.fn();
 
