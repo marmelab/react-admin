@@ -33,11 +33,7 @@ WrapperField.defaultProps = {
     addLabel: true,
 };
 
-WrapperField.propTypes = {
-    // @ts-ignore
-    ...Typography.propTypes,
-    ...fieldPropTypes,
-};
+WrapperField.propTypes = fieldPropTypes;
 
 export interface WrapperFieldProps
     extends PublicFieldProps,
