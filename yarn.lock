@@ -9958,17 +9958,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:*, classnames@npm:^2.2.5":
+"classnames@npm:2.3.1":
   version: 2.3.1
   resolution: "classnames@npm:2.3.1"
   checksum: e3b832219042802464e648c41c2e8be96c2c64d2522cfa22fbb5ec088418406c61ab351a682c077c07f691c8b00c9f0ee7939b20fabc6c23da69063252a4ab89
-  languageName: node
-  linkType: hard
-
-"classnames@npm:~2.2.5":
-  version: 2.2.6
-  resolution: "classnames@npm:2.2.6"
-  checksum: 04fe84deb40e4f4fcee688494ced342b048a6992506cd3da81efb773b03f6d8120f9b893e6eb8a0bc7c6fb38edd66b4751e413ab4672ed93b2c59a4e2bd1068a
   languageName: node
   linkType: hard
 
@@ -20870,14 +20863,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mini-css-extract-plugin@npm:^2.4.5":
-  version: 2.5.0
-  resolution: "mini-css-extract-plugin@npm:2.5.0"
+"mini-css-extract-plugin@npm:2.4.5":
+  version: 2.4.5
+  resolution: "mini-css-extract-plugin@npm:2.4.5"
   dependencies:
     schema-utils: ^4.0.0
   peerDependencies:
     webpack: ^5.0.0
-  checksum: eaf5062af864d4ee07a65913c9970b9d6df761216496153e65332e2aebaf3076412b02d45fe98d110261b159e724310ed2d4f0f97c6ba7dddb1161d5c24474dc
+  checksum: 00a1c4007b566052b6aa1345d9c468d476b9b6950de1d41d4dd824e83648977e95a4804c7b6cc0d2466c652843713922f7eeca0803cd8cb1a419f6b39d3c9880
   languageName: node
   linkType: hard
 
@@ -24984,6 +24977,7 @@ __metadata:
     "@storybook/addons": ^6.3.12
     "@storybook/react": ^6.3.12
     "@storybook/testing-react": ^0.0.22
+    "@types/classnames": ^2.2.9
     "@types/jest": ^26.0.19
     "@types/react": ^17.0.20
     "@types/react-redux": ^7.1.1

@@ -71,7 +71,7 @@ const VisitorCreate = () => {
         <Create>
             <StyledSimpleForm
                 // Here for the GQL provider
-                initialValues={{
+                defaultValues={{
                     birthday: date,
                     first_seen: date,
                     last_seen: date,
@@ -99,7 +99,6 @@ const VisitorCreate = () => {
                 <TextInput
                     type="email"
                     source="email"
-                    validation={{ email: true }}
                     fullWidth
                     formClassName={classes.email}
                     validate={[required(), email()]}
@@ -146,7 +145,7 @@ const SectionTitle = ({ label }: { label: string }) => {
 
     return (
         <Typography variant="h6" gutterBottom>
-            {translate(label)}
+            {translate(label as string)}
         </Typography>
     );
 };

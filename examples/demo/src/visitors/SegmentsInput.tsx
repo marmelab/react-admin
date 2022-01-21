@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { useTranslate, SelectArrayInput, InputProps } from 'react-admin';
+import { useTranslate, SelectArrayInput, CommonInputProps } from 'react-admin';
 
 import segments from '../segments/data';
 
-interface Props extends Omit<InputProps, 'source'> {
+interface Props extends Omit<CommonInputProps, 'source'> {
+    addField?: string;
     source?: string;
 }
 

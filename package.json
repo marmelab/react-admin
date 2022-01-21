@@ -32,6 +32,7 @@
         "@storybook/addons": "^6.3.12",
         "@storybook/react": "^6.3.12",
         "@storybook/testing-react": "^0.0.22",
+        "@types/classnames": "^2.2.9",
         "@types/jest": "^26.0.19",
         "@types/react": "^17.0.20",
         "@types/react-redux": "^7.1.1",
@@ -73,6 +74,10 @@
         "@react-spring/core": {
             "built": false
         }
+    },
+    "resolutions": {
+        "classnames": "2.3.1",
+        "mini-css-extract-plugin": "2.4.5"
     },
     "packageManager": "yarn@3.1.1"
 }

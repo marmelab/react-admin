@@ -220,7 +220,6 @@ const OrderForm = (props: any) => {
                             <Toolbar
                                 record={formProps.record}
                                 mutationMode="undoable"
-                                invalid={formProps.invalid}
                                 saving={formProps.saving}
                                 resource="commands"
                             />

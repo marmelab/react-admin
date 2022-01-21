@@ -96,7 +96,7 @@ const ReviewEdit = ({ onCancel, ...props }: Props) => {
                     <StarRatingField formClassName={classes.inlineField} />
                     <TextInput
                         source="comment"
-                        rowsmax={15}
+                        maxRows={15}
                         multiline
                         fullWidth
                     />
