@@ -6,7 +6,8 @@
         "dev": "webpack-dev-server --progress --color --hot --watch --mode development",
         "start": "vite",
         "build": "vite build",
-        "serve": "vite preview"
+        "serve": "vite preview",
+        "type-check": "tsc --noEmit"
     },
     "dependencies": {
         "@emotion/react": "^11.7.1",

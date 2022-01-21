@@ -21,28 +21,18 @@ import {
     UrlField,
     useShowController,
     useLocale,
-    RaRecord,
-    useCreatePath,
+    useRecordContext,
 } from 'react-admin';
-import { Link } from 'react-router-dom';
-import { Button } from '@mui/material';
 import PostTitle from './PostTitle';
 
-const CreateRelatedComment = ({ record }: { record?: RaRecord }) => {
-    const createPath = useCreatePath();
+const CreateRelatedComment = () => {
+    const record = useRecordContext();
     return (
-        <Button
-            component={Link}
-            to={{
-                pathname: createPath({
-                    resource: 'comments',
-                    type: 'create',
-                }),
-                state: { record: { post_id: record?.id } },
-            }}
-        >
-            Add comment
-        </Button>
+        <CloneButton
+            resource="comments"
+            label="Add comment"
+            record={{ post_id: record.id }}
+        />
     );
 };
 

@@ -66,21 +66,13 @@ const Tree = () => {
     );
 };
 
-const SubTree = ({
-    level,
-    root,
-    getChildNodes,
-    openChildren,
-    toggleNode,
-    defaultTitle,
-}) => {
+const SubTree = ({ level, root, getChildNodes, openChildren, toggleNode }) => {
     const childNodes = getChildNodes(root);
     const hasChildren = childNodes.length > 0;
     const open = openChildren.includes(root.id);
     return (
         <Fragment>
             <ListItem
-                button={hasChildren}
                 onClick={() => hasChildren && toggleNode(root)}
                 style={{ paddingLeft: level * 16 }}
             >

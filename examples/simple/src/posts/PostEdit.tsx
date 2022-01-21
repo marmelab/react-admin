@@ -230,10 +230,10 @@ const PostEdit = () => {
                     <TextInput disabled source="views" />
                     <ArrayInput source="pictures">
                         <SimpleFormIterator>
-                            <TextInput source="url" initialValue="" />
+                            <TextInput source="url" defaultValue="" />
                             <ArrayInput source="metas.authors">
                                 <SimpleFormIterator>
-                                    <TextInput source="name" initialValue="" />
+                                    <TextInput source="name" defaultValue="" />
                                 </SimpleFormIterator>
                             </ArrayInput>
                         </SimpleFormIterator>
