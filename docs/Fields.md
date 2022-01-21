@@ -413,49 +413,11 @@ const BookList = () => (
 
 ## Writing Your Own Field Component
 
-If you don't find what you need in the list above, you can write your own Field component. It must be a regular React component, accepting a `source` attribute and retrieving the `record` from the `RecordContext` with the `useRecordContext` hook. React-admin will set the `record` in this context based on the API response data at render time. The field component only needs to find the `source` in the `record` and display it.
+If you don't find what you need in the list of available Fields, you can write your own Field component.
 
-For instance, here is an equivalent of react-admin's `<TextField>` component:
+It must be a regular React component, accepting a `source` attribute and retrieving the `record` from the `RecordContext` with the `useRecordContext` hook. React-admin will set the `record` in this context based on the API response data at render time. The field component only needs to find the `source` in the `record` and display it.
 
-```jsx
-import * as React from "react";
-import PropTypes from 'prop-types';
-import { useRecordContext } from 'react-admin';
-
-const TextField = (props) => {
-    const { source } = props;
-    const record = useRecordContext(props);
-    return <span>{record[source]}</span>;
-}
-
-TextField.propTypes = {
-    label: PropTypes.string,
-    record: PropTypes.object,
-    source: PropTypes.string.isRequired,
-};
-
-export default TextField;
-```
-
-**Tip**: The `label` attribute isn't used in the `render()` method, but react-admin uses it to display the table header.
-
-**Tip**: If you want to support deep field sources (e.g. source values like `author.name`), use [lodash/get](https://www.npmjs.com/package/lodash.get) to replace the simple object lookup:
-
-```jsx
-import * as React from "react";
-import PropTypes from 'prop-types';
-import get from 'lodash/get';
-import { useRecordContext } from 'react-admin';
-
-const TextField = (props) => {
-    const { source } = props;
-    const record = useRecordContext(props);
-
-    return <span>{get(record, source)}</span>;
-}
-```
-
-If you are not looking for reusability, you can create even simpler components, with no attributes. Let's say an API returns user records with `firstName` and `lastName` properties, and that you want to display a full name in a user list.
+Let's see an example for an API returning user records with `firstName` and `lastName` properties.
 
 ```js
 {
@@ -465,19 +427,26 @@ If you are not looking for reusability, you can create even simpler components, 
 }
 ```
 
-The component will be:
+Here is a custom field displaying the full name:
 
 ```jsx
-import * as React from "react";
-import { List, Datagrid, TextField, useRecordContext } from 'react-admin';
+import { useRecordContext } from 'react-admin';
 
-const FullNameField = (props) => {
+export const FullNameField = (props) => {
     const record = useRecordContext(props);
-
-    return <span>{record.firstName} {record.lastName}</span>;
+    return record ? <span>{record.firstName} {record.lastName}</span> : null;
 }
 
 FullNameField.defaultProps = { label: 'Name' };
+```
+
+**Tip**: Always check the `record` is defined before inspecting its properties, as react-admin may display the Show view *before* fetching the record from the data provider. So the first time it renders the show view for a resource, the `record` is `undefined`.
+
+You can now use this field like any other react-admin field:
+
+```jsx
+import { List, Datagrid } from 'react-admin';
+import { FullNameField } from './FullNameField';
 
 export const UserList = () => (
     <List>
@@ -489,6 +458,22 @@ export const UserList = () => (
 ```
 
 **Tip**: In such custom fields, the `source` is optional. React-admin uses it to determine which column to use for sorting when the column header is clicked. In case you use the `source` property for additional purposes, the sorting can be overridden by the `sortBy` property on any `Field` component.
+
+If you build a reusable field accepting a `source` props, you will probably want to support deep field sources (e.g. source values like `author.name`). Use [lodash/get](https://www.npmjs.com/package/lodash.get) to replace the simple object lookup. For instance, for a Text field:
+
+```diff
+import * as React from 'react';
++import get from 'lodash/get';
+import { useRecordContext } from 'react-admin';
+
+const TextField = ({ source }) => {
+    const record = useRecordContext();
+-   return record ? <span>{record[source]}</span> : null;
++   return record ? <span>{get(record, source)}</span> : null;
+}
+
+export default TextField;
+```
 
 ## Adding A Label To Custom Field Components
 
@@ -548,113 +533,64 @@ const MyShowLayout = () => (
 
 In a Show view, you may want to display or hide fields based on the value of another field - for instance, show an `email` field only if the `hasEmail` boolean field is `true`.
 
-For such cases, you can use the custom field approach: use the injected `record` prop and render another Field based on the value.
+For such cases, you can use the custom field approach: read the `record` from the context, and render another Field based on the value.
 
 ```jsx
-import * as React from "react";
-import { EmailField } from 'react-admin';
+import { Show, SimpleShowLayout, TextField, EmailField } from 'react-admin';
 
-const ConditionalEmailField = (props) => {
-    const record = useRecordContext(props);
-    return record && record.hasEmail
-        ? <EmailField source="email" {...props} />
-        : null;
+const ConditionalEmailField = () => {
+    const record = useRecordContext();
+    return record && record.hasEmail ? <EmailField source="email" /> : null;
 }
 
-export default ConditionalEmailField;
-```
-
-**Tip**: Always check the `record` is defined before inspecting its properties, as react-admin displays the `Show` view *before* fetching the record from the data provider. So the first time it renders the show view for a resource, the `record` is `undefined`.
-
-This `ConditionalEmailField` is properly hidden when `hasEmail` is `false`. But when `hasEmail` is `true`, the Show layout renders it... without a label. And if you add a `addLabel` default prop, the `Show` layout will render the label regardless of the `hasEmail` value...
-
-One solution is to add the label manually in the custom component:
-
-```jsx
-import * as React from "react";
-import { Labeled, EmailField } from 'react-admin';
-
-const ConditionalEmailField = (props) => {
-    const record = useRecordContext(props);
-
-    return record && record.hasEmail
-        ? (
-            <Labeled label="Email">
-                <EmailField source="email" {...props} />
-            </Labeled>
-        )
-        : null;
-}
-
-export default ConditionalEmailField;
-```
-
-This comes with a drawback, though: the `<ConditionalEmailField>` cannot be used in a List view anymore, as it will always have a label. If you want to reuse the custom component in a List, this isn't the right solution.
-
-An alternative solution is to split the `<Show>` component. Under the hood, the `<Show>` component is composed of two sub-components: the `<ShowController>` component, which fetches the record, and the `<ShowView>`, which is responsible for rendering the view title, actions, and children. `<ShowController>` uses the *render props* pattern:
-
-```jsx
-// inside react-admin
-const Show = props => (
-    <ShowController {...props}>
-        {controllerProps => <ShowView {...props} {...controllerProps} />}
-    </ShowController>
-);
-```
-
-The `<ShowController>` fetches the `record` from the data provider, and passes it to its child function when received (among the `controllerProps`). That means the following code:
-
-```jsx
-import { Show, SimpleShowLayout, TextField } from 'react-admin';
-
-const UserShow = props => (
-    <Show {...props}>
+const UserShow = () => (
+    <Show>
         <SimpleShowLayout>
-            <TextField source="username" />
-            <TextField source="email" />
+            <TextField source="first_name" />
+            <TextField source="last_name" />
+            <ConditionalEmailField />
         </SimpleShowLayout>
     </Show>
 );
 ```
 
-Is equivalent to:
+This `<ConditionalEmailField>` is properly hidden when `hasEmail` is `false`. But the label for the field never renders. And if you add a `label` default prop, `SimpleShowLayout` layout will render the label regardless of the `hasEmail` value...
+
+How about using React conditionals in `UserShow` to add the `<EmailField>` field only if the `record.hasEmail` is `true`? Unfortunately, the `useRecordContext()` hook doesn't work in `<UserShow>` (as it's the `<Show>` component's responsibility to fetch the record and put it into a context).
 
 ```jsx
-import { ShowController, ShowView, SimpleShowLayout, TextField } from 'react-admin';
-
-const UserShow = props => (
-    <ShowController {...props}>
-        {controllerProps =>
-            <ShowView {...props} {...controllerProps}>
-                <SimpleShowLayout>
-                    <TextField source="username" />
-                    <TextField source="email" />
-                </SimpleShowLayout>
-            </ShowView>
-        }
-    </ShowController>
+const UserShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField source="first_name" />
+            <TextField source="last_name" />
+            {/** where can we get the record? **/}
+            {record.hasEmail && <EmailField source="email" />}
+        </SimpleShowLayout>
+    </Show>
 );
 ```
 
-If you want one field to be displayed based on the `record`, for instance, to display the email field only if the `hasEmail` field is `true`, you just need to test the value from `controllerProps.record`, as follows:
+The solution is to *split* the `<UserShow>` component into two: one that fetches the record, and one that renders the show layout. In descendents of `<Show>`, you can use the `useRecordContext()` hook.
 
 ```jsx
-import { ShowController, ShowView, SimpleShowLayout, TextField } from 'react-admin';
-
-const UserShow = props => (
-    <ShowController {...props}>
-        {controllerProps =>
-            <ShowView {...props} {...controllerProps}>
-                <SimpleShowLayout>
-                    <TextField source="username" />
-                    {controllerProps.record && controllerProps.record.hasEmail &&
-                        <TextField source="email" />
-                    }
-                </SimpleShowLayout>
-            </ShowView>
-        }
-    </ShowController>
+const UserShow = () => (
+    <Show>
+        <UserShowLayout />
+    </Show>
 );
+
+const UserShowLayout = () => {
+    const record = useRecordContext();
+    if (!record) return null;
+    return (
+        <SimpleShowLayout>
+            <TextField source="first_name" />
+            <TextField source="last_name" />
+            {record.hasEmail && <EmailField source="email" />}
+        </SimpleShowLayout>
+    ):
+};
 ```
 
 And now you can use a regular Field component, and the label displays correctly in the Show view.
