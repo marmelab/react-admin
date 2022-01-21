@@ -231,6 +231,8 @@ export const useList = <RecordType extends RaRecord = any>(
         error,
         displayedFilters,
         filterValues,
+        hasNextPage: page * perPage < finalItems.total,
+        hasPreviousPage: page > 1,
         hideFilter,
         isFetching: fetchingState,
         isLoading: loadingState,

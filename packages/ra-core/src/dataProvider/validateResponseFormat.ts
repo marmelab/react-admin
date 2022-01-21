@@ -51,7 +51,8 @@ function validateResponseFormat(
     }
     if (
         fetchActionsWithTotalResponse.includes(type) &&
-        !response.hasOwnProperty('total')
+        !response.hasOwnProperty('total') &&
+        !response.hasOwnProperty('pageInfo')
     ) {
         logger(
             `The response to '${type}' must be like  { data: [...], total: 123 }, but the received response does not have a 'total' key. The dataProvider is probably wrong for '${type}'`

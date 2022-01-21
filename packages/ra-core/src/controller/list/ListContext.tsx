@@ -58,6 +58,8 @@ export const ListContext = createContext<ListControllerResult>({
     defaultTitle: null,
     displayedFilters: null,
     filterValues: null,
+    hasNextPage: null,
+    hasPreviousPage: null,
     hideFilter: null,
     isFetching: null,
     isLoading: null,

@@ -128,7 +128,11 @@ export interface GetListParams {
 }
 export interface GetListResult<RecordType extends RaRecord = any> {
     data: RecordType[];
-    total: number;
+    total?: number;
+    pageInfo?: {
+        hasNextPage?: boolean;
+        hasPreviousPage?: boolean;
+    };
 }
 
 export interface GetOneParams<RecordType extends RaRecord = any> {
@@ -157,7 +161,11 @@ export interface GetManyReferenceParams {
 }
 export interface GetManyReferenceResult<RecordType extends RaRecord = any> {
     data: RecordType[];
-    total: number;
+    total?: number;
+    pageInfo?: {
+        hasNextPage?: boolean;
+        hasPreviousPage?: boolean;
+    };
 }
 
 export interface UpdateParams<T = any> {
