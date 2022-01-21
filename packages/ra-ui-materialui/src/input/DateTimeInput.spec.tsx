@@ -54,8 +54,7 @@ describe('<DateTimeInput />', () => {
         expect(screen.queryByText('Dirty: false')).not.toBeNull();
     });
 
-    // FIXME When ArrayInput is migrated to react-hook-form
-    it.skip('should display a default value inside an ArrayInput', () => {
+    it('should display a default value inside an ArrayInput', () => {
         const date = new Date('Wed Oct 05 2011 16:48:00 GMT+0200');
         const backlinksDefaultValue = [
             {
