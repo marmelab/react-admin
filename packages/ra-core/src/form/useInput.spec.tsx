@@ -354,7 +354,7 @@ describe('useInput', () => {
                             children={({ id, field }) => {
                                 useEffect(() => {
                                     field.onChange(999);
-                                }, []);
+                                }, [field]);
 
                                 return <input type="text" id={id} {...field} />;
                             }}
