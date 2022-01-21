@@ -519,6 +519,7 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                         ref,
                         size,
                         color,
+                        classes: inputPropsClasses,
                         ...inputProps
                     } = getInputProps({
                         onBlur: handleBlur,
@@ -531,7 +532,6 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                             ? [getCreateItem()]
                             : []),
                     ];
-
                     return (
                         <div className={classes.container}>
                             <TextField
