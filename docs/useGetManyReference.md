@@ -11,7 +11,7 @@ This hook calls `dataProvider.getManyReference()` when the component mounts. It 
 // syntax
 const { data, total, isLoading, error, refetch } = useGetManyReference(
     resource,
-    { target, id, pagination, sort, filter },
+    { target, id, pagination, sort, filter, meta },
     options
 );
 

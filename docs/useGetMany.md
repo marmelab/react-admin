@@ -11,7 +11,7 @@ This hook calls `dataProvider.getMany()` when the component mounts. It queries t
 // syntax
 const { data, isLoading, error, refetch } = useGetMany(
     resource,
-    { ids },
+    { ids, meta },
     options
 );
 

@@ -11,7 +11,7 @@ This hook allows calling `dataProvider.delete()` when the callback is executed a
 // syntax
 const [deleteOne, { data, isLoading, error }] = useDelete(
     resource,
-    { id, previousData },
+    { id, previousData, meta },
     options
 );
 ```

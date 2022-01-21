@@ -11,7 +11,7 @@ This hook allows to call `dataProvider.create()` when the callback is executed.
 // syntax
 const [create, { data, isLoading, error }] = useCreate(
     resource,
-    { data },
+    { data, meta },
     options
 );
 ```

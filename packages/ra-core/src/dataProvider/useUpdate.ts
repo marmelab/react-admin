@@ -16,7 +16,7 @@ import { RaRecord, UpdateParams, MutationMode } from '../types';
  * Get a callback to call the dataProvider.update() method, the result and the loading state.
  *
  * @param {string} resource
- * @param {Params} params The update parameters { id, data, previousData }
+ * @param {Params} params The update parameters { id, data, previousData, meta }
  * @param {Object} options Options object to pass to the queryClient.
  * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
  * May include a mutation mode (optimistic/pessimistic/undoable), e.g. { mutationMode: 'undoable' }
@@ -25,6 +25,7 @@ import { RaRecord, UpdateParams, MutationMode } from '../types';
  * @prop params.id The resource identifier, e.g. 123
  * @prop params.data The updates to merge into the record, e.g. { views: 10 }
  * @prop params.previousData The record before the update is applied
+ * @prop params.meta Optional meta data
  *
  * @returns The current mutation state. Destructure as [update, { data, error, isLoading }].
  *
@@ -78,7 +79,7 @@ export const useUpdate = <RecordType extends RaRecord = any>(
 ): UseUpdateResult<RecordType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const { id, data } = params;
+    const { id, data, meta } = params;
     const { mutationMode = 'pessimistic', ...reactMutationOptions } = options;
     const mode = useRef<MutationMode>(mutationMode);
     const paramsRef = useRef<Partial<UpdateParams<RecordType>>>(params);
@@ -109,7 +110,7 @@ export const useUpdate = <RecordType extends RaRecord = any>(
         type GetListResult = { data?: RecordType[]; total?: number };
 
         queryClient.setQueryData(
-            [resource, 'getOne', { id: String(id) }],
+            [resource, 'getOne', { id: String(id), meta }],
             (record: RecordType) => ({ ...record, ...data }),
             { updatedAt }
         );
@@ -146,6 +147,7 @@ export const useUpdate = <RecordType extends RaRecord = any>(
             resource: callTimeResource = resource,
             id: callTimeId = paramsRef.current.id,
             data: callTimeData = paramsRef.current.data,
+            meta: callTimeMeta = paramsRef.current.meta,
             previousData: callTimePreviousData = paramsRef.current.previousData,
         } = {}) =>
             dataProvider
@@ -153,6 +155,7 @@ export const useUpdate = <RecordType extends RaRecord = any>(
                     id: callTimeId,
                     data: callTimeData,
                     previousData: callTimePreviousData,
+                    meta: callTimeMeta,
                 })
                 .then(({ data }) => data),
         {
@@ -283,6 +286,7 @@ export const useUpdate = <RecordType extends RaRecord = any>(
         const {
             id: callTimeId = id,
             data: callTimeData = data,
+            meta: callTimeMeta = meta,
         } = callTimeParams;
 
         // optimistic update as documented in https://react-query.tanstack.com/guides/optimistic-updates
@@ -292,11 +296,15 @@ export const useUpdate = <RecordType extends RaRecord = any>(
         const previousRecord = queryClient.getQueryData<RecordType>([
             callTimeResource,
             'getOne',
-            { id: String(callTimeId) },
+            { id: String(callTimeId), meta: callTimeMeta },
         ]);
 
         const queryKeys = [
-            [callTimeResource, 'getOne', { id: String(callTimeId) }],
+            [
+                callTimeResource,
+                'getOne',
+                { id: String(callTimeId), meta: callTimeMeta },
+            ],
             [callTimeResource, 'getList'],
             [callTimeResource, 'getMany'],
             [callTimeResource, 'getManyReference'],
@@ -392,6 +400,7 @@ export interface UseUpdateMutateParams<RecordType extends RaRecord = any> {
     id?: RecordType['id'];
     data?: Partial<RecordType>;
     previousData?: any;
+    meta?: any;
 }
 
 export type UseUpdateOptions<

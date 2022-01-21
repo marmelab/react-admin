@@ -17,7 +17,7 @@ import { Identifier } from '..';
  * Get a callback to call the dataProvider.updateMany() method, the result and the loading state.
  *
  * @param {string} resource
- * @param {Params} params The updateMany parameters { ids, data }
+ * @param {Params} params The updateMany parameters { ids, data, meta }
  * @param {Object} options Options object to pass to the queryClient.
  * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
  * May include a mutation mode (optimistic/pessimistic/undoable), e.g. { mutationMode: 'undoable' }
@@ -25,6 +25,7 @@ import { Identifier } from '..';
  * @typedef Params
  * @prop params.ids The resource identifiers, e.g. [123, 456]
  * @prop params.data The updates to merge into the record, e.g. { views: 10 }
+ * @prop params.meta Optional meta parameters
  *
  * @returns The current mutation state. Destructure as [updateMany, { data, error, isLoading }].
  *
@@ -72,11 +73,11 @@ export const useUpdateMany = <RecordType extends RaRecord = any>(
 ): UseUpdateManyResult<RecordType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const { ids, data } = params;
+    const { ids, data, meta } = params;
     const { mutationMode = 'pessimistic', ...reactMutationOptions } = options;
     const mode = useRef<MutationMode>(mutationMode);
     const paramsRef = useRef<Partial<UpdateManyParams<Partial<RecordType>>>>(
-        {}
+        params
     );
     const snapshot = useRef<Snapshot>([]);
 
@@ -84,10 +85,12 @@ export const useUpdateMany = <RecordType extends RaRecord = any>(
         resource,
         ids,
         data,
+        meta,
     }: {
         resource: string;
         ids: Identifier[];
         data: any;
+        meta?: any;
     }) => {
         // hack: only way to tell react-query not to fetch this query for the next 5 seconds
         // because setQueryData doesn't accept a stale time option
@@ -116,7 +119,7 @@ export const useUpdateMany = <RecordType extends RaRecord = any>(
 
         ids.forEach(id =>
             queryClient.setQueryData(
-                [resource, 'getOne', { id: String(id) }],
+                [resource, 'getOne', { id: String(id), meta }],
                 (record: RecordType) => ({ ...record, ...data }),
                 { updatedAt }
             )
@@ -154,11 +157,13 @@ export const useUpdateMany = <RecordType extends RaRecord = any>(
             resource: callTimeResource = resource,
             ids: callTimeIds = paramsRef.current.ids,
             data: callTimeData = paramsRef.current.data,
+            meta: callTimeMeta = paramsRef.current.meta,
         } = {}) =>
             dataProvider
                 .updateMany(callTimeResource, {
                     ids: callTimeIds,
                     data: callTimeData,
+                    meta: callTimeMeta,
                 })
                 .then(({ data }) => data),
         {
@@ -213,11 +218,13 @@ export const useUpdateMany = <RecordType extends RaRecord = any>(
                     const {
                         resource: callTimeResource = resource,
                         ids: callTimeIds = ids,
+                        meta: callTimeMeta = meta,
                     } = variables;
                     updateCache({
                         resource: callTimeResource,
                         ids: callTimeIds,
                         data,
+                        meta: callTimeMeta,
                     });
 
                     if (reactMutationOptions.onSuccess) {
@@ -289,6 +296,7 @@ export const useUpdateMany = <RecordType extends RaRecord = any>(
         const {
             ids: callTimeIds = ids,
             data: callTimeData = data,
+            meta: callTimeMeta = meta,
         } = callTimeParams;
 
         // optimistic update as documented in https://react-query.tanstack.com/guides/optimistic-updates
@@ -331,6 +339,7 @@ export const useUpdateMany = <RecordType extends RaRecord = any>(
             resource: callTimeResource,
             ids: callTimeIds,
             data: callTimeData,
+            meta: callTimeMeta,
         });
 
         // run the success callbacks during the next tick
@@ -392,6 +401,7 @@ export interface UseUpdateManyMutateParams<RecordType extends RaRecord = any> {
     ids?: Array<RecordType['id']>;
     data?: Partial<RecordType>;
     previousData?: any;
+    meta?: any;
 }
 
 export type UseUpdateManyOptions<

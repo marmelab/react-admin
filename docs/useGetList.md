@@ -11,7 +11,7 @@ This hook calls `dataProvider.getList()` when the component mounts. It's ideal f
 // syntax
 const { data, total, isLoading, error, refetch } = useGetList(
     resource,
-    { pagination, sort, filter },
+    { pagination, sort, filter, meta },
     options
 );
 

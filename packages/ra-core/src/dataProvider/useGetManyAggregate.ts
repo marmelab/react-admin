@@ -35,12 +35,16 @@ import { useDataProvider } from './useDataProvider';
  * dataProvider.getMany('tags', [1, 2, 3, 4])
  *
  * @param resource The resource name, e.g. 'posts'
- * @param ids The resource identifiers, e.g. [123, 456, 789]
+ * @param {Params} params The getMany parameters { ids, meta }
  * @param {Object} options Options object to pass to the dataProvider.
  * @param {boolean} options.enabled Flag to conditionally run the query. If it's false, the query will not run
  * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
  * @param {Function} options.onError Side effect function to be executed upon failure, e.g. { onError: error => notify(error.message) }
  *
+ * @typedef Params
+ * @prop params.ids The ids to get, e.g. [123, 456, 789]
+ * @prop params.meta Optional meta parameters
+
  * @returns The current request state. Destructure as { data, error, loading, loaded, refetch }.
  *
  * @example
@@ -48,7 +52,7 @@ import { useDataProvider } from './useDataProvider';
  * import { useGetManyAggregate } from 'react-admin';
  *
  * const PostTags = ({ record }) => {
- *     const { data, loading, error } = useGetManyAggregate('tags', record.tagIds);
+ *     const { data, loading, error } = useGetManyAggregate('tags', { ids: record.tagIds });
  *     if (loading) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }
  *     return (
@@ -68,13 +72,13 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const queryCache = queryClient.getQueryCache();
-    const { ids } = params;
+    const { ids, meta } = params;
     const placeholderData = useMemo(() => {
         const records = ids.map(id => {
             const queryHash = hashQueryKey([
                 resource,
                 'getOne',
-                { id: String(id) },
+                { id: String(id), meta },
             ]);
             return queryCache.get<RecordType>(queryHash)?.state?.data;
         });
@@ -83,16 +87,17 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
         } else {
             return records;
         }
-    }, [ids, queryCache, resource]);
+    }, [ids, queryCache, resource, meta]);
 
     return useQuery<RecordType[], Error, RecordType[]>(
-        [resource, 'getMany', { ids: ids.map(id => String(id)) }],
+        [resource, 'getMany', { ids: ids.map(id => String(id)), meta }],
         () =>
             new Promise((resolve, reject) =>
                 // debounced / batched fetch
                 callGetManyQueries({
                     resource,
                     ids,
+                    meta,
                     resolve,
                     reject,
                     dataProvider,
@@ -105,7 +110,7 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
                 // optimistically populate the getOne cache
                 data.forEach(record => {
                     queryClient.setQueryData(
-                        [resource, 'getOne', { id: String(record.id) }],
+                        [resource, 'getOne', { id: String(record.id), meta }],
                         oldRecord => oldRecord ?? record
                     );
                 });
@@ -145,6 +150,7 @@ const batch = fn => {
 interface GetManyCallArgs {
     resource: string;
     ids: Identifier[];
+    meta?: any;
     resolve: (data: any[]) => void;
     reject: (error?: any) => void;
     dataProvider: DataProvider;
@@ -192,6 +198,10 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
         const aggregatedIds = callsForResource
             .reduce((acc, { ids }) => union(acc, ids), []) // concat + unique
             .filter(v => v != null && v !== ''); // remove null values
+        const uniqueMeta = callsForResource.reduce(
+            (acc, { meta }) => meta || acc,
+            undefined
+        );
 
         if (aggregatedIds.length === 0) {
             // no need to call the data provider if all the ids are null
@@ -214,11 +224,12 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
                 dataProvider,
                 resource,
                 ids,
+                meta,
                 resolve,
                 reject,
             } = callsForResource[0];
             dataProvider
-                .getMany<any>(resource, { ids })
+                .getMany<any>(resource, { ids, meta })
                 .then(({ data }) => data)
                 .then(resolve, reject);
             return;
@@ -233,11 +244,17 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
                 [
                     resource,
                     'getMany',
-                    { ids: aggregatedIds.map(id => String(id)) },
+                    {
+                        ids: aggregatedIds.map(id => String(id)),
+                        meta: uniqueMeta,
+                    },
                 ],
                 () =>
                     dataProvider
-                        .getMany<any>(resource, { ids: aggregatedIds })
+                        .getMany<any>(resource, {
+                            ids: aggregatedIds,
+                            meta: uniqueMeta,
+                        })
                         .then(({ data }) => data)
             )
             .then(data => {

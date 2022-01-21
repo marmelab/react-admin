@@ -12,12 +12,13 @@ const UseGetList = ({
     sort = { field: 'id', order: 'DESC' },
     filter = {},
     options = {},
+    meta = undefined,
     callback = null,
     ...rest
 }) => {
     const hookValue = useGetList(
         resource,
-        { pagination, sort, filter },
+        { pagination, sort, filter, meta },
         options
     );
     if (callback) callback(hookValue);
@@ -91,6 +92,30 @@ describe('useGetList', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(2);
+        });
+    });
+
+    it('should accept a meta parameter', async () => {
+        const dataProvider = {
+            getList: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'foo' }], total: 1 })
+            ),
+        };
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetList
+                    pagination={{ page: 1, perPage: 20 }}
+                    meta={{ hello: 'world' }}
+                />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(dataProvider.getList).toBeCalledWith('posts', {
+                filter: {},
+                pagination: { page: 1, perPage: 20 },
+                sort: { field: 'id', order: 'DESC' },
+                meta: { hello: 'world' },
+            });
         });
     });
 

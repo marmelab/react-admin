@@ -42,15 +42,17 @@ Standard methods are:
 
 | Method             | Usage                                           | Parameters format                                                                                                                               |
 | ------------------ | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `getList`          | Search for resources                            | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }`                                |
-| `getOne`           | Read a single resource, by id                   | `{ id: {mixed} }`                                                                                                                               |
-| `getMany`          | Read a list of resource, by ids                 | `{ ids: {mixed[]} }`                                                                                                                            |
-| `getManyReference` | Read a list of resources related to another one | `{ target: {string}, id: {mixed}, pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object} }` |
-| `create`           | Create a single resource                        | `{ data: {Object} }`                                                                                                                            |
-| `update`           | Update a single resource                        | `{ id: {mixed}, data: {Object}, previousData: {Object} }`                                                                                       |
-| `updateMany`       | Update multiple resources                       | `{ ids: {mixed[]}, data: {Object} }`                                                                                                            |
-| `delete`           | Delete a single resource                        | `{ id: {mixed}, previousData: {Object} }`                                                                                                       |
-| `deleteMany`       | Delete multiple resources                       | `{ ids: {mixed[]} }`                                                                                                                            |
+| `getList`          | Search for resources                            | `{ pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object}, meta: {Object} }`                                |
+| `getOne`           | Read a single resource, by id                   | `{ id: {mixed}, meta: {Object} }`                                                                                                                               |
+| `getMany`          | Read a list of resource, by ids                 | `{ ids: {mixed[]}, meta: {Object} }`                                                                                                                            |
+| `getManyReference` | Read a list of resources related to another one | `{ target: {string}, id: {mixed}, pagination: { page: {int} , perPage: {int} }, sort: { field: {string}, order: {string} }, filter: {Object}, meta: {Object} }` |
+| `create`           | Create a single resource                        | `{ data: {Object}, meta: {Object} }`                                                                                                                            |
+| `update`           | Update a single resource                        | `{ id: {mixed}, data: {Object}, previousData: {Object}, meta: {Object} }`                                                                                       |
+| `updateMany`       | Update multiple resources                       | `{ ids: {mixed[]}, data: {Object}, meta: {Object} }`                                                                                                            |
+| `delete`           | Delete a single resource                        | `{ id: {mixed}, previousData: {Object}, meta: {Object} }`                                                                                                       |
+| `deleteMany`       | Delete multiple resources                       | `{ ids: {mixed[]}, meta: {Object} }`                                                                                                                            |
+
+**Tip**: All methods accept an optional `meta` parameter. React-admin doesn't use it, but it's a good way to pass special arguments or metadata to an API call. 
 
 Here are several examples of how react-admin can call the Data Provider:
 
