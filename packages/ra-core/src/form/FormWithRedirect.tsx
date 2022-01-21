@@ -2,7 +2,6 @@ import * as React from 'react';
 import { BaseSyntheticEvent, useCallback, useEffect, useMemo } from 'react';
 import {
     FormProvider,
-    SubmitHandler,
     useForm,
     UseFormProps,
     FieldValues,
@@ -137,7 +136,7 @@ export interface FormWithRedirectOwnProps {
     formRootPathname?: string;
     record?: Partial<RaRecord>;
     render: FormWithRedirectRender;
-    onSubmit?: SubmitHandler<FieldValues>;
+    onSubmit?: (data: FieldValues) => any | Promise<any>;
     sanitizeEmptyValues?: boolean;
     saving?: boolean;
     warnWhenUnsavedChanges?: boolean;
