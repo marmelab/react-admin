@@ -94,11 +94,12 @@ FilterFormBase.propTypes = {
 const sanitizeRestProps = ({
     displayedFilters,
     filterValues,
+    hasCreate,
     hideFilter,
     setFilters,
     resource,
     ...props
-}: Partial<FilterFormProps>) => props;
+}: Partial<FilterFormProps> & { hasCreate?: boolean }) => props;
 
 export type FilterFormProps = Omit<
     HtmlHTMLAttributes<HTMLFormElement>,

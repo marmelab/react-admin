@@ -4,7 +4,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { minLength } from 'ra-core';
 
 import { FilterForm, mergeInitialValuesWithDefaultValues } from './FilterForm';
-import { TextInput, SelectInput } from '../../input';
+import { TextInput } from '../../input';
 import { AdminContext } from '../../AdminContext';
 
 describe('<FilterForm />', () => {
@@ -95,106 +95,6 @@ describe('<FilterForm />', () => {
             target: { value: 'foo' },
         });
         expect(setFilters).not.toHaveBeenCalled();
-    });
-
-    describe('allowEmpty', () => {
-        it('should keep allowEmpty true if undefined', () => {
-            const filters = [
-                <SelectInput
-                    label="SelectWithUndefinedAllowEmpty"
-                    choices={[
-                        { title: 'yes', id: 1 },
-                        { title: 'no', id: 0 },
-                    ]}
-                    source="test"
-                    optionText="title"
-                />,
-            ];
-            const displayedFilters = {
-                test: true,
-            };
-
-            render(
-                <AdminContext>
-                    <FilterForm
-                        {...defaultProps}
-                        filters={filters}
-                        displayedFilters={displayedFilters}
-                    />
-                </AdminContext>
-            );
-
-            const select = screen.queryByLabelText(
-                'SelectWithUndefinedAllowEmpty'
-            );
-            fireEvent.mouseDown(select);
-            const options = screen.queryAllByRole('option');
-            expect(options.length).toEqual(3);
-        });
-
-        it('should keep allowEmpty false', () => {
-            const filters = [
-                <SelectInput
-                    label="SelectWithFalseAllowEmpty"
-                    allowEmpty={false}
-                    choices={[
-                        { title: 'yes', id: 1 },
-                        { title: 'no', id: 0 },
-                    ]}
-                    source="test"
-                    optionText="title"
-                />,
-            ];
-            const displayedFilters = {
-                test: true,
-            };
-
-            render(
-                <AdminContext>
-                    <FilterForm
-                        {...defaultProps}
-                        filters={filters}
-                        displayedFilters={displayedFilters}
-                    />
-                </AdminContext>
-            );
-            const select = screen.queryByLabelText('SelectWithFalseAllowEmpty');
-            fireEvent.mouseDown(select);
-            const options = screen.queryAllByRole('option');
-            expect(options.length).toEqual(2);
-        });
-
-        it('should keep allowEmpty true', () => {
-            const filters = [
-                <SelectInput
-                    label="SelectWithTrueAllowEmpty"
-                    allowEmpty={true}
-                    choices={[
-                        { title: 'yes', id: 1 },
-                        { title: 'no', id: 0 },
-                    ]}
-                    source="test"
-                    optionText="title"
-                />,
-            ];
-            const displayedFilters = {
-                test: true,
-            };
-
-            render(
-                <AdminContext>
-                    <FilterForm
-                        {...defaultProps}
-                        filters={filters}
-                        displayedFilters={displayedFilters}
-                    />
-                </AdminContext>
-            );
-            const select = screen.queryByLabelText('SelectWithTrueAllowEmpty');
-            fireEvent.mouseDown(select);
-            const options = screen.queryAllByRole('option');
-            expect(options.length).toEqual(3);
-        });
     });
 
     describe('mergeInitialValuesWithDefaultValues', () => {

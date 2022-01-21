@@ -23,6 +23,7 @@ export type InputProps<ValueType = any> = Omit<
     'name' | 'defaultValue' | 'rules'
 > &
     Partial<UseControllerReturn> & {
+        alwaysOn?: any;
         defaultValue?: any;
         format?: (value: ValueType) => any;
         id?: string;
