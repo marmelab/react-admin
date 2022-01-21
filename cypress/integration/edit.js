@@ -31,11 +31,12 @@ describe('Edit Page', () => {
         });
 
         it('should allow to update elements', () => {
-            EditPostPage.setInputValue('input', 'title', 'Lorem Ipsum');
-            EditPostPage.submit();
+            // For some unknown reason, the click on submit didn't work in cypress
+            // so we submit with enter
+            EditPostPage.setInputValue('input', 'title', 'Lorem Ipsum{enter}');
             // Ensure react-admin has handled the update as it will redirect to the list page
             // once done
-            cy.url().then(url => expect(url).to.contain('/#/posts'));
+            cy.url().should('match', /\/#\/posts$/);
             EditPostPage.navigate();
             cy.get(EditPostPage.elements.input('title')).should(el =>
                 expect(el).to.have.value('Lorem Ipsum')
@@ -43,9 +44,10 @@ describe('Edit Page', () => {
         });
 
         it('should redirect to list page after edit success', () => {
-            EditPostPage.setInputValue('input', 'title', 'Lorem Ipsum +');
-            EditPostPage.submit();
-            cy.url().then(url => expect(url).to.contain('/#/posts'));
+            // For some unknown reason, the click on submit didn't work in cypress
+            // so we submit with enter
+            EditPostPage.setInputValue('input', 'title', 'Lorem Ipsum{enter}');
+            cy.url().should('match', /\/#\/posts$/);
         });
 
         it('should allow to switch tabs', () => {
@@ -275,6 +277,7 @@ describe('Edit Page', () => {
         cy.contains('Tech').click();
         cy.get('li[aria-label="Clear value"]').click();
         EditPostPage.submit();
+        cy.url().should('match', /\/#\/posts$/);
         ListPagePosts.waitUntilDataLoaded();
 
         EditPostPage.navigate();
