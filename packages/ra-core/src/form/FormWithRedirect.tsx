@@ -188,7 +188,7 @@ const getSimpleValidationResolver = (validate: ValidateForm) => async (
 ) => {
     const errors = await validate(data);
 
-    if (!errors) {
+    if (!errors || Object.getOwnPropertyNames(errors).length === 0) {
         return { values: data, errors: {} };
     }
 

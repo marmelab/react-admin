@@ -15,9 +15,9 @@ export const useApplyInputDefaultValues = (props: Partial<InputProps>) => {
 
     useDeepCompareEffect(() => {
         if (
-            (!record || get(record, source) == undefined) && // eslint-disable-line eqeqeq
-            get(getValues(), source) == undefined && // eslint-disable-line eqeqeq
-            defaultValue != undefined // eslint-disable-line eqeqeq
+            (!record || get(record, source) == null) &&
+            get(getValues(), source) == null &&
+            defaultValue != null
         ) {
             resetField(source, {
                 defaultValue: get(record, source, defaultValue),
