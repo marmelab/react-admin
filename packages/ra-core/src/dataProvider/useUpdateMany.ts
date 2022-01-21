@@ -77,7 +77,7 @@ export const useUpdateMany = <RecordType extends RaRecord = any>(
     const { mutationMode = 'pessimistic', ...reactMutationOptions } = options;
     const mode = useRef<MutationMode>(mutationMode);
     const paramsRef = useRef<Partial<UpdateManyParams<Partial<RecordType>>>>(
-        {}
+        params
     );
     const snapshot = useRef<Snapshot>([]);
 
@@ -224,7 +224,7 @@ export const useUpdateMany = <RecordType extends RaRecord = any>(
                         resource: callTimeResource,
                         ids: callTimeIds,
                         data,
-                        meta,
+                        meta: callTimeMeta,
                     });
 
                     if (reactMutationOptions.onSuccess) {

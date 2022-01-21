@@ -78,7 +78,7 @@ export const useDelete = <RecordType extends RaRecord = any>(
     const { id, previousData } = params;
     const { mutationMode = 'pessimistic', ...reactMutationOptions } = options;
     const mode = useRef<MutationMode>(mutationMode);
-    const paramsRef = useRef<Partial<DeleteParams<RecordType>>>({});
+    const paramsRef = useRef<Partial<DeleteParams<RecordType>>>(params);
     const snapshot = useRef<Snapshot>([]);
 
     const updateCache = ({ resource, id }) => {
