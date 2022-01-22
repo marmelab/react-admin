@@ -8,8 +8,8 @@ import {
 } from 'react';
 import PropTypes from 'prop-types';
 import {
-    FormWithRedirect,
-    FormWithRedirectProps,
+    Form,
+    FormProps,
     MutationMode,
     RaRecord,
     RedirectionSideEffect,
@@ -92,7 +92,7 @@ export const TabbedForm = (props: TabbedFormProps) => {
     const formRootPathname = useFormRootPath();
 
     return (
-        <FormWithRedirect
+        <Form
             formRootPathname={formRootPathname}
             {...props}
             render={formProps => (
@@ -125,7 +125,7 @@ TabbedForm.propTypes = {
 };
 
 export interface TabbedFormProps
-    extends Omit<FormWithRedirectProps, 'render'>,
+    extends Omit<FormProps, 'render'>,
         Omit<
             HtmlHTMLAttributes<HTMLFormElement>,
             'defaultValue' | 'onSubmit' | 'children'

@@ -4,7 +4,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { useFormContext } from 'react-hook-form';
 import { CoreAdminContext } from '../core';
 import { testDataProvider } from '../dataProvider';
-import { FormWithRedirect } from './FormWithRedirect';
+import { Form } from './Form';
 import { useInput, InputProps } from './useInput';
 import { required } from './validate';
 
@@ -22,7 +22,7 @@ describe('useInput', () => {
         let inputProps;
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <Input
@@ -53,7 +53,7 @@ describe('useInput', () => {
         let inputProps;
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <Input id="my-title" source="title" resource="posts">
@@ -79,7 +79,7 @@ describe('useInput', () => {
 
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <Input
@@ -118,7 +118,7 @@ describe('useInput', () => {
         const onSubmit = jest.fn();
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     onSubmit={onSubmit}
                     render={({ handleSubmit }) => (
                         <form onSubmit={handleSubmit}>
@@ -149,7 +149,7 @@ describe('useInput', () => {
     it('does not apply the defaultValue when input has a value of 0', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     record={{ id: 1, views: 0 }}
                     render={() => {
@@ -181,7 +181,7 @@ describe('useInput', () => {
     it('does not apply the defaultValue when input has a value of 0', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     record={{ id: 1, views: 0 }}
                     render={() => {
@@ -238,7 +238,7 @@ describe('useInput', () => {
     it('does not change the value if the field is of type checkbox and has no value', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     record={{ id: 1 }}
                     render={() => <BooleanInput source="is_published" />}
@@ -251,7 +251,7 @@ describe('useInput', () => {
     it('applies the defaultValue true when the field is of type checkbox and has no value', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     record={{ id: 1 }}
                     render={() => (
@@ -269,7 +269,7 @@ describe('useInput', () => {
     it('applies the defaultValue false when the field is of type checkbox and has no value', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     record={{ id: 1 }}
                     render={() => (
@@ -287,7 +287,7 @@ describe('useInput', () => {
     it('does not apply the defaultValue true when the field is of type checkbox and has a value', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     record={{ id: 1, is_published: false }}
                     onSubmit={jest.fn()}
                     render={() => (
@@ -305,7 +305,7 @@ describe('useInput', () => {
     it('does not apply the defaultValue false when the field is of type checkbox and has a value', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     record={{ id: 1, is_published: true }}
                     onSubmit={jest.fn()}
                     render={() => (
@@ -323,7 +323,7 @@ describe('useInput', () => {
     test('should apply the provided format function before passing the value to the real input', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <Input
@@ -344,7 +344,7 @@ describe('useInput', () => {
     test('should apply the provided parse function before applying the value from the real input', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <Input

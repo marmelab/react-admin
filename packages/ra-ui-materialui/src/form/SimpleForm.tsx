@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactElement, ReactNode, HtmlHTMLAttributes } from 'react';
 import PropTypes from 'prop-types';
-import { FormWithRedirect, FormWithRedirectProps, MutationMode } from 'ra-core';
+import { Form, FormProps, MutationMode } from 'ra-core';
 import { SimpleFormView } from './SimpleFormView';
 
 /**
@@ -40,10 +40,7 @@ import { SimpleFormView } from './SimpleFormView';
  * @param {Props} props
  */
 export const SimpleForm = (props: SimpleFormProps) => (
-    <FormWithRedirect
-        {...props}
-        render={formProps => <SimpleFormView {...formProps} />}
-    />
+    <Form {...props} render={formProps => <SimpleFormView {...formProps} />} />
 );
 
 SimpleForm.propTypes = {
@@ -66,7 +63,7 @@ SimpleForm.propTypes = {
 };
 
 export interface SimpleFormProps
-    extends Omit<FormWithRedirectProps, 'render'>,
+    extends Omit<FormProps, 'render'>,
         Omit<
             HtmlHTMLAttributes<HTMLFormElement>,
             'defaultValue' | 'onSubmit' | 'children'

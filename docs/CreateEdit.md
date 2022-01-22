@@ -1906,7 +1906,7 @@ Here is an example of such custom form, taken from the Posters Galore demo. It u
 ```jsx
 import * as React from "react";
 import {
-    FormWithRedirect,
+    Form,
     DateInput,
     SelectArrayInput,
     TextInput,
@@ -1926,7 +1926,7 @@ const segments = [
 ];
 
 const VisitorForm = props => (
-    <FormWithRedirect
+    <Form
         {...props}
         render={formProps => (
             // here starts the custom form layout
@@ -1984,7 +1984,7 @@ const VisitorForm = props => (
 );
 ```
 
-This custom form layout component uses the `FormWithRedirect` component, which wraps react-final-form's `Form` component. It also uses react-admin's `<SaveButton>` and a `<DeleteButton>`.
+This custom form layout component uses the `Form` component, which wraps react-final-form's `Form` component. It also uses react-admin's `<SaveButton>` and a `<DeleteButton>`.
 
 **Tip**: When `Input` components have a `resource` prop, they use it to determine the input label. `<SimpleForm>` and `<TabbedForm>` inject this `resource` prop to `Input` components automatically. When you use a custom form layout, pass the `resource` prop manually - unless the `Input` has a `label` prop.
 
@@ -1998,7 +1998,7 @@ const VisitorEdit = () => (
 );
 ```
 
-**Tip**: `FormWithRedirect` contains some logic that you may not want. In fact, nothing forbids you from using a react-final-form [Form](https://final-form.org/docs/react-final-form/api/Form) component as root component for a custom form layout. You'll have to set initial values based the injected `record` prop manually, as follows:
+**Tip**: `Form` contains some logic that you may not want. In fact, nothing forbids you from using a react-final-form [Form](https://final-form.org/docs/react-final-form/api/Form) component as root component for a custom form layout. You'll have to set initial values based the injected `record` prop manually, as follows:
 
 {% raw %}
 ```jsx

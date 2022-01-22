@@ -4,7 +4,7 @@ import {
     BooleanInput,
     DateField,
     Edit,
-    FormWithRedirect,
+    Form,
     Labeled,
     ReferenceField,
     SelectInput,
@@ -82,7 +82,7 @@ const Spacer = () => <Box m={1}>&nbsp;</Box>;
 const OrderForm = (props: any) => {
     const translate = useTranslate();
     return (
-        <FormWithRedirect
+        <Form
             {...props}
             render={({ handleSubmit, ...formProps }: any) => (
                 <form onSubmit={handleSubmit}>

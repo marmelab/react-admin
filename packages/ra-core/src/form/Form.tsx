@@ -26,7 +26,7 @@ import { useWarnWhenUnsavedChanges } from './useWarnWhenUnsavedChanges';
  * @example
  *
  * const SimpleForm = props => (
- *    <FormWithRedirect
+ *    <Form
  *        {...props}
  *        render={formProps => <SimpleFormView {...formProps} />}
  *    />
@@ -42,7 +42,7 @@ import { useWarnWhenUnsavedChanges } from './useWarnWhenUnsavedChanges';
  *
  * @param {Props} props
  */
-export const FormWithRedirect = (props: FormWithRedirectProps) => {
+export const Form = (props: FormProps) => {
     const {
         context,
         criteriaMode = 'firstError',
@@ -117,14 +117,14 @@ export type ValidateForm = (
     data: FieldValues
 ) => FieldValues | Promise<FieldValues>;
 
-export type FormWithRedirectProps = FormWithRedirectOwnProps &
+export type FormProps = FormWithRedirectOwnProps &
     Omit<UseFormProps, 'onSubmit'> & {
         validate?: ValidateForm;
     };
 
 export type FormWithRedirectRenderProps = Omit<
     FormViewProps,
-    'children' | 'isValid' | 'render' | 'setRedirect'
+    'children' | 'isValid' | 'render' | 'onSubmit' | 'sanitizeEmptyValues'
 >;
 
 export type FormWithRedirectRender = (
@@ -142,7 +142,8 @@ export interface FormWithRedirectOwnProps {
     warnWhenUnsavedChanges?: boolean;
 }
 
-interface FormViewProps extends FormWithRedirectOwnProps {
+interface FormViewProps
+    extends Omit<FormWithRedirectOwnProps, 'onSubmit' | 'sanitizeEmptyValues'> {
     handleSubmit: (e?: BaseSyntheticEvent) => Promise<void>;
     warnWhenUnsavedChanges?: boolean;
 }

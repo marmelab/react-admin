@@ -6,7 +6,7 @@ import {
     ReferenceInput,
     AutocompleteInput,
     BooleanInput,
-    FormWithRedirect,
+    Form,
     Toolbar,
     useEditContext,
 } from 'react-admin';
@@ -25,7 +25,7 @@ const ContactEditContent = () => {
     return (
         <Box mt={2} display="flex">
             <Box flex="1">
-                <FormWithRedirect
+                <Form
                     record={record}
                     onSubmit={save}
                     render={formProps => (

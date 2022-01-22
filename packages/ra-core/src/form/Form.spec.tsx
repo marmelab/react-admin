@@ -4,12 +4,12 @@ import { useFormState } from 'react-hook-form';
 
 import { CoreAdminContext } from '../core';
 import { testDataProvider } from '../dataProvider';
-import { FormWithRedirect } from './FormWithRedirect';
+import { Form } from './Form';
 import { useNotificationContext } from '../notification';
 import { useInput } from './useInput';
 import { required } from './validate';
 
-describe('FormWithRedirect', () => {
+describe('Form', () => {
     const Input = props => {
         const { field, fieldState } = useInput(props);
         return (
@@ -32,11 +32,7 @@ describe('FormWithRedirect', () => {
         ));
         const { rerender } = render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
-                    onSubmit={jest.fn()}
-                    saving={false}
-                    render={renderProp}
-                />
+                <Form onSubmit={jest.fn()} saving={false} render={renderProp} />
             </CoreAdminContext>
         );
 
@@ -45,7 +41,7 @@ describe('FormWithRedirect', () => {
 
         rerender(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     saving={false}
                     render={renderProp}
@@ -67,7 +63,7 @@ describe('FormWithRedirect', () => {
         ));
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     saving={false}
                     render={renderProp}
@@ -89,7 +85,7 @@ describe('FormWithRedirect', () => {
         ));
         const { rerender } = render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     saving={false}
                     record={{ id: 1, name: 'Foo' }}
@@ -103,7 +99,7 @@ describe('FormWithRedirect', () => {
 
         rerender(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     saving={false}
                     record={{
@@ -131,7 +127,7 @@ describe('FormWithRedirect', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <>
-                    <FormWithRedirect
+                    <Form
                         onSubmit={jest.fn()}
                         render={({ handleSubmit }) => (
                             <form onSubmit={handleSubmit}>

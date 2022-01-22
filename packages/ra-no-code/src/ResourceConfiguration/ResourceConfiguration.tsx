@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
-    FormWithRedirect,
+    Form,
     RecordContextProvider,
     SaveContextProvider,
     SaveButton,
@@ -60,7 +60,7 @@ export const ResourceConfigurationPage = () => {
     return (
         <RecordContextProvider value={resourceConfiguration}>
             <SaveContextProvider value={saveContext}>
-                <FormWithRedirect
+                <Form
                     onSubmit={save}
                     defaultValues={resourceConfiguration}
                     render={({ handleSubmit }) => (

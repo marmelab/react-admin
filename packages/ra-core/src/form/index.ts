@@ -20,7 +20,7 @@ export {
     sanitizeEmptyValues,
     ValidationError,
 };
-export * from './FormWithRedirect';
+export * from './Form';
 export { isRequired } from './FormField';
 export * from './validate';
 export * from './constants';

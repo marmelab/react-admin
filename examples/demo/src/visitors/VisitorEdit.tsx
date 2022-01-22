@@ -7,7 +7,7 @@ import {
     PasswordInput,
     Toolbar,
     useTranslate,
-    FormWithRedirect,
+    Form,
     required,
     email,
     FieldProps,
@@ -35,7 +35,7 @@ const VisitorForm = (props: any) => {
     const translate = useTranslate();
 
     return (
-        <FormWithRedirect
+        <Form
             {...props}
             validate={validatePasswords}
             render={({ handleSubmit, ...formProps }: any) => (

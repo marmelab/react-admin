@@ -5,7 +5,7 @@ import expect from 'expect';
 
 import { useReferenceInputController } from './useReferenceInputController';
 import { CoreAdminContext } from '../../core';
-import { FormWithRedirect, useInput } from '../../form';
+import { Form, useInput } from '../../form';
 import { testDataProvider } from '../../dataProvider';
 
 const ReferenceInputController = props => {
@@ -51,7 +51,7 @@ describe('useReferenceInputController', () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <FormWithRedirect
+                <Form
                     render={() => (
                         <ReferenceInputController {...defaultProps}>
                             {children}
@@ -83,7 +83,7 @@ describe('useReferenceInputController', () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <FormWithRedirect
+                <Form
                     render={() => (
                         <ReferenceInputController
                             {...defaultProps}
@@ -120,7 +120,7 @@ describe('useReferenceInputController', () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <FormWithRedirect
+                <Form
                     defaultValues={{ post_id: 1 }}
                     render={() => (
                         <ReferenceInputController {...defaultProps}>
@@ -142,7 +142,7 @@ describe('useReferenceInputController', () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <FormWithRedirect
+                <Form
                     defaultValues={{ post_id: 1 }}
                     render={() => (
                         <ReferenceInputController
@@ -242,7 +242,7 @@ describe('useReferenceInputController', () => {
         };
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <FormWithRedirect render={() => <Component />} />
+                <Form render={() => <Component />} />
             </CoreAdminContext>
         );
 
@@ -289,7 +289,7 @@ describe('useReferenceInputController', () => {
             });
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <FormWithRedirect
+                    <Form
                         defaultValues={{ post_id: 1 }}
                         render={() => (
                             <ReferenceInputController
@@ -324,7 +324,7 @@ describe('useReferenceInputController', () => {
             const children = jest.fn().mockReturnValue(<p>child</p>);
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <FormWithRedirect
+                    <Form
                         defaultValues={{ post_id: 1 }}
                         render={() => (
                             <ReferenceInputController

@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
 import {
     CoreAdminContext,
-    FormWithRedirect,
+    Form,
     MutationMode,
     required,
     testDataProvider,
@@ -30,7 +30,7 @@ describe('<SaveButton />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     render={() => <SaveButton {...invalidButtonDomProps} />}
                 />
             </AdminContext>
@@ -49,9 +49,7 @@ describe('<SaveButton />', () => {
     it('should render a disabled button', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
-                    render={() => <SaveButton disabled={true} />}
-                />
+                <Form render={() => <SaveButton disabled={true} />} />
             </AdminContext>
         );
         await waitFor(() =>
@@ -64,7 +62,7 @@ describe('<SaveButton />', () => {
     it('should render as submit type when submitOnEnter is true', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect render={() => <SaveButton submitOnEnter />} />
+                <Form render={() => <SaveButton submitOnEnter />} />
             </AdminContext>
         );
         await waitFor(() =>
@@ -77,9 +75,7 @@ describe('<SaveButton />', () => {
     it('should render as button type when submitOnEnter is false', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
-                    render={() => <SaveButton submitOnEnter={false} />}
-                />
+                <Form render={() => <SaveButton submitOnEnter={false} />} />
             </AdminContext>
         );
 
@@ -94,7 +90,7 @@ describe('<SaveButton />', () => {
         const onSubmit = jest.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     onSubmit={onSubmit}
                     render={({ handleSubmit }) => (
                         <form onSubmit={handleSubmit}>
@@ -117,7 +113,7 @@ describe('<SaveButton />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     onSubmit={onSubmit}
                     render={({ handleSubmit }) => (
                         <form onSubmit={handleSubmit}>
@@ -360,7 +356,7 @@ describe('<SaveButton />', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <>
-                    <FormWithRedirect
+                    <Form
                         onSubmit={jest.fn()}
                         render={({ handleSubmit }) => (
                             <form onSubmit={handleSubmit}>

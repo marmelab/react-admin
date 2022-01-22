@@ -6,7 +6,7 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { useReferenceArrayInputController } from './useReferenceArrayInputController';
 import { CoreAdminContext } from '../../core';
 import { testDataProvider } from '../../dataProvider';
-import { FormWithRedirect } from '../../form';
+import { Form } from '../../form';
 import { SORT_ASC } from '../list/queryReducer';
 
 const ReferenceArrayInputController = props => {
@@ -35,7 +35,7 @@ describe('useReferenceArrayInputController', () => {
             ));
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
-                    <FormWithRedirect
+                    <Form
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
@@ -61,7 +61,7 @@ describe('useReferenceArrayInputController', () => {
             });
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <FormWithRedirect
+                    <Form
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
@@ -93,7 +93,7 @@ describe('useReferenceArrayInputController', () => {
                         getMany: () => Promise.resolve({ data: [] }),
                     })}
                 >
-                    <FormWithRedirect
+                    <Form
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController {...defaultProps}>
@@ -121,7 +121,7 @@ describe('useReferenceArrayInputController', () => {
                         getMany: () => Promise.resolve({ data: [] }),
                     })}
                 >
-                    <FormWithRedirect
+                    <Form
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
@@ -154,7 +154,7 @@ describe('useReferenceArrayInputController', () => {
                             }),
                     })}
                 >
-                    <FormWithRedirect
+                    <Form
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
@@ -191,7 +191,7 @@ describe('useReferenceArrayInputController', () => {
                             }),
                     })}
                 >
-                    <FormWithRedirect
+                    <Form
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
@@ -225,7 +225,7 @@ describe('useReferenceArrayInputController', () => {
                         getMany: () => Promise.resolve({ data: [] }),
                     })}
                 >
-                    <FormWithRedirect
+                    <Form
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
@@ -261,7 +261,7 @@ describe('useReferenceArrayInputController', () => {
                             Promise.resolve({ data: [{ id: 5 }, { id: 6 }] }),
                     })}
                 >
-                    <FormWithRedirect
+                    <Form
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
@@ -292,7 +292,7 @@ describe('useReferenceArrayInputController', () => {
                             Promise.resolve({ data: [{ id: 1 }, { id: 2 }] }),
                     })}
                 >
-                    <FormWithRedirect
+                    <Form
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
@@ -323,7 +323,7 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
@@ -358,7 +358,7 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
@@ -397,7 +397,7 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController {...defaultProps}>
@@ -436,7 +436,7 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
@@ -481,7 +481,7 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
@@ -517,7 +517,7 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
@@ -553,7 +553,7 @@ describe('useReferenceArrayInputController', () => {
         });
         const { rerender } = render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
@@ -569,7 +569,7 @@ describe('useReferenceArrayInputController', () => {
 
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
@@ -591,7 +591,7 @@ describe('useReferenceArrayInputController', () => {
 
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
@@ -614,7 +614,7 @@ describe('useReferenceArrayInputController', () => {
 
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
@@ -648,7 +648,7 @@ describe('useReferenceArrayInputController', () => {
         });
         const { rerender } = render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
@@ -668,7 +668,7 @@ describe('useReferenceArrayInputController', () => {
         });
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
@@ -724,7 +724,7 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
@@ -788,7 +788,7 @@ describe('useReferenceArrayInputController', () => {
         const children = jest.fn(() => null);
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <FormWithRedirect
+                <Form
                     onSubmit={jest.fn()}
                     render={() => (
                         <ReferenceArrayInputController
@@ -819,7 +819,7 @@ describe('useReferenceArrayInputController', () => {
             });
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <FormWithRedirect
+                    <Form
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
@@ -874,7 +874,7 @@ describe('useReferenceArrayInputController', () => {
             });
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <FormWithRedirect
+                    <Form
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
@@ -903,7 +903,7 @@ describe('useReferenceArrayInputController', () => {
             });
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
-                    <FormWithRedirect
+                    <Form
                         onSubmit={jest.fn()}
                         render={() => (
                             <ReferenceArrayInputController
