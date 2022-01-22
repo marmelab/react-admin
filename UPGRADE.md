@@ -1941,11 +1941,99 @@ If you've declared custom Record types, you'll need to upgrade your code as foll
 
 ## react-final-form Has Been Replaced By react-hook-form
 
-TODO
-- FormWithRedirect props and render changed
-- useInput signature changed
-- Form components don't clone toolbar anymore (no more prop injection)
-- allowEmpty has been removed. SelectInput and Autocomplete inputs always allow empty. Necessary for MUI default value
+### `<FormWithRedirect>` Has Been Renamed to `<Form>`
+
+The form components don't handle redirection at all anymore as it happens in side effects, the `<FormWithRedirect>` has been renamed to `<Form>`.
+
+To upgrade simply replace all occurrences of `FormWithRedirect` with  `Form`.
+
+```diff
+- import { FormWithRedirect } from 'react-admin';
++ import { Form } from 'react-admin';
+
+export const MyForm = () => (
+-    <FormWithRedirect
++    <Form
+        render={() => ...}
+    />
+);
+```
+
+### `<FormWithRedirect>` Props Have Changed
+
+`<FormWithRedirect>` used to accept [`react-final-form` `<Form>` props](https://final-form.org/docs/react-final-form/types/FormProps). It now accepts [`react-hook-form` `useForm` props](https://react-hook-form.com/api/useform). This also affects the other form components (`SimpleForm`, `TabbedForm`, etc.)
+
+The most commonly used prop is probably `initialValues` which is now named `defaultValues`:
+
+```diff
+const PostCreate = () => (
+    <Create>
+        <SimpleForm
+-            initialValues={{ title: 'A default title' }}
++            defaultValues={{ title: 'A default title' }}
+        >
+            ...
+        </SimpleForm>
+    </Create>
+)
+```
+
+However, we kept the `validate` function prop which we automatically translate as a custom [`react-hook-form` `resolver`](https://react-hook-form.com/api/useform#validationResolver).
+
+This also means you can now use [`yup`](https://github.com/jquense/yup), [`zod`](https://github.com/colinhacks/zod), [`joi`](https://github.com/sideway/joi), [superstruct](https://github.com/ianstormtaylor/superstruct), [vest](https://github.com/ealush/vest) or any [resolvers](https://react-hook-form.com/api/useform#validationResolver) supported by `react-hook-form` to apply schema validation.
+
+### `<FormWithRedirect>` Render Function Arguments Have Changed
+
+The `<FormWithRedirect>` render function used to be called with an object containing parts of the `final-form` form state (`valid`, `invalid`, `pristine`, `dirty`). It now only receive the `handleSubmit` function which must be passed to the `onSubmit` prop of the underlying form. If you need access to the form state, call [`react-hook-form` `useFormState` hook](https://react-hook-form.com/api/useformstate):
+
+```diff
+import { FormWithRedirect } from 'react-admin';
++ import { useFormState } from 'react-hook-form';
+
+const MyCustomForm = () => {
+    return (
+-        <FormWithRedirect
++        <Form
+-            render={({ valid, dirty, handleSubmit }) => (
++            render={({ handleSubmit }) => (
+                <form onSubmit={handleSubmit}>
+                    ...
+-                    <SubmitButton disabled={!dirty || !valid}>Save</SubmitButton>
++                    <SubmitButton>Save</SubmitButton>
+                </form>
+            )}
+        />
+    );
+};
+
+-const SubmitButton = ({ disabled, ...props }) => {
++const SubmitButton = (props) => {
++    const { isDirty, isValid } = useFormState();
+    return (
+-        <button disabled={disabled} {...props} />
++        <button disabled={!isDirty || !isValid} {...props} />
+    );
+}
+```
+
+### `useInput` Signature Changed
+
+`useInput` used to accept both a `initialValue` and a `defaultValue` prop. It now only accept `defaultValue`:
+
+```diff
+const PostCreate = () => (
+    <Create>
+        <SimpleForm>
+-            <TextInput source="title" initialValue="A default">
++            <TextInput source="title" defaultValue="A default">
+        </SimpleForm>
+    </Create>
+)
+```
+
+## `allowEmpty` Has Been Removed From `SelectInput`, `AutocompleteInput` and `AutocompleteArrayInput`
+
+This is necessary for the underlying MaterialUI inputs as they require that the current input value is actually one of the available option. Those components now always accept an empty value (an empty string by default). If you require the input to have a non empty value, use the `required` validation. You can safely remove this prop.
 
 # Upgrade to 3.0
 
