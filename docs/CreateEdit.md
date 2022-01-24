@@ -774,7 +774,7 @@ to change this behaviour you can pass `false` for the `submitOnEnter` property, 
 
 Here are all the props you can set on the `<SimpleForm>` component:
 
-* [`initialValues`](#default-values)
+* [`defaultValue`](#default-values)
 * [`validate`](#validation)
 * [`submitOnEnter`](#submit-on-enter)
 * [`toolbar`](#toolbar)
@@ -844,7 +844,7 @@ to change this behaviour you can pass `false` for the `submitOnEnter` property.
 
 Here are all the props accepted by the `<TabbedForm>` component:
 
-* [`initialValues`](#default-values)
+* [`defaultValue`](#default-values)
 * [`validate`](#validation)
 * [`submitOnEnter`](#submit-on-enter)
 * [`tabs`](#tabbedformtabs)
@@ -1141,19 +1141,17 @@ Check [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/mo
 
 ## Default Values
 
-To define default values, you can add a `initialValues` prop to form components (`<SimpleForm>`, `<TabbedForm>`, etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
-
-**Note**: on RA v2 the `initialValues` used to be named `defaultValue`
+To define default values, you can add a `defaultValues` prop to form components (`<SimpleForm>`, `<TabbedForm>`, etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
 
 ### Global Default Value
 
-The value of the form `initialValues` prop is an object, or a function returning an object, specifying default values for the created record. For instance:
+The value of the form `defaultValue` prop is an object, or a function returning an object, specifying default values for the created record. For instance:
 
 ```jsx
 const postDefaultValue = () => ({ id: uuid(), created_at: new Date(), nb_views: 0 });
 export const PostCreate = () => (
     <Create>
-        <SimpleForm initialValues={postDefaultValue}>
+        <SimpleForm defaultValue={postDefaultValue}>
             <TextInput source="title" />
             <RichTextInput source="body" />
             <NumberInput source="nb_views" />
@@ -1162,7 +1160,7 @@ export const PostCreate = () => (
 );
 ```
 
-**Tip**: You can include properties in the form `initialValues` that are not listed as input components, like the `created_at` property in the previous example.
+**Tip**: You can include properties in the form `defaultValue` that are not listed as input components, like the `created_at` property in the previous example.
 
 ### Per Input Default Value
 
@@ -1180,7 +1178,7 @@ export const PostCreate = () => (
 );
 ```
 
-**Tip**: Per-input default values cannot be functions. For default values computed at render time, set the `initialValues` at the form level, as explained in the previous section. 
+**Tip**: Per-input default values cannot be functions. For default values computed at render time, set the `defaultValue` at the form level, as explained in the previous section. 
 
 ## Validation
 
@@ -1374,7 +1372,7 @@ const validateStock = [required(), number(), minValue(0)];
 
 export const ProductEdit = () => (
     <Edit>
-        <SimpleForm initialValues={{ stock: 0 }}>
+        <SimpleForm defaultValue={{ stock: 0 }}>
             ...
             {/* do this */}
             <NumberInput source="stock" validate={validateStock} />
@@ -1467,6 +1465,33 @@ export const UserCreate = () => (
 );
 ```
 
+### Schema Validation
+
+`react-hook-form` supports schema validation with many libraries through its [`resolver` props](https://react-hook-form.com/api/useform#validationResolver). To use it, follow their [resolvers documentation](https://github.com/react-hook-form/resolvers). Here's an example using `yup`:
+
+```jsx
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { SimpleForm, TextInput, NumberInput } from 'react-admin';
+
+const schema = yup
+    .object()
+    .shape({
+        name: yup.string().required(),
+        age: yup.number().required(),
+    })
+    .required();
+
+const CustomerCreate = () => (
+    <Create>
+        <SimpleForm resolver={yupResolver(schema)}>
+            <TextInput source="name" />
+            <NumberInput source="age" />
+        </SimpleForm>
+    </Create>
+    );
+```
+
 ## Submission Validation
 
 The form can be validated by the server after its submission. In order to display the validation errors, a custom `save` function needs to be used:
@@ -1485,6 +1510,7 @@ export const UserCreate = () => {
                 await create('users', { data: values });
             } catch (error) {
                 if (error.body.errors) {
+                    // The shape of the returned validation errors must match the shape of the form
                     return error.body.errors;
                 }
             }
@@ -2076,7 +2102,7 @@ const Form = ({ onSubmit }) => {
 
 ## Setting Empty Values To Null
 
-`<SimpleForm>` and `<TabbedForm>` recreate deleted or missing attributes based on its `initialValues` in order to send them to the data provider with a `null` value, as most APIs requires all attributes for a given record, even if they are nullable.
+`<SimpleForm>` and `<TabbedForm>` recreate deleted or missing attributes based on its `defaultValue` in order to send them to the data provider with a `null` value, as most APIs requires all attributes for a given record, even if they are nullable.
 
 It is possible to opt-out this default behavior by passing the `sanitizeEmptyValues` prop:
 
@@ -2137,7 +2163,7 @@ export const UserCreate = () => {
         <Create redirect="show">
             <SimpleForm
                 toolbar={<UserCreateToolbar permissions={permissions} />}
-                initialValues={{ role: 'user' }}
+                defaultValue={{ role: 'user' }}
             >
                 <TextInput source="name" validate={[required()]} />
                 {permissions === 'admin' &&
@@ -2157,7 +2183,7 @@ This also works inside an `Edition` view with a `TabbedForm`, and you can hide a
 ```jsx
 export const UserEdit = ({ permissions }) =>
     <Edit title={<UserTitle />}>
-        <TabbedForm initialValues={{ role: 'user' }}>
+        <TabbedForm defaultValue={{ role: 'user' }}>
             <FormTab label="user.form.summary">
                 {permissions === 'admin' && <TextInput disabled source="id" />}
                 <TextInput source="name" validate={required()} />
