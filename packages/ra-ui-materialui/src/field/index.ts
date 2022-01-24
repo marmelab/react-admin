@@ -21,5 +21,6 @@ export * from './TranslatableFields';
 export * from './TranslatableFieldsTab';
 export * from './TranslatableFieldsTabContent';
 export * from './UrlField';
+export * from './WrapperField';
 
 export type { PublicFieldProps, InjectedFieldProps, FieldProps };

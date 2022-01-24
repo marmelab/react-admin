@@ -107,13 +107,13 @@ export default PostList;
 
 `<Datagrid>` accepts a list of Field components as children. It inspects each child's `source` and/or `label` props to determine the name of the column.
 
-What's a Field component? Simply a component that reads the record (via `useGetRecord`) and renders a value. React-admin includes many Field componentds that you can use as children of `<Datagrid>` (`<TextField>`, `<NumberField>`, `<DateField>`, `<ReferenceField>`, and many more). Check [the Fields documentation](./Fields.md) for more information. 
+What's a Field component? Simply a component that reads the record (via `useRecordContext`) and renders a value. React-admin includes many Field components that you can use as children of `<Datagrid>` (`<TextField>`, `<NumberField>`, `<DateField>`, `<ReferenceField>`, and many more). Check [the Fields documentation](./Fields.md) for more information. 
 
 You can even create your own field components.
 
 ```jsx
 // in src/posts.js
-import * as React from "react";
+import * as React from 'react';
 import { useRecordContext, List, Datagrid, TextField, DateField } from 'react-admin';
 
 const FullNameField = () => {
@@ -140,7 +140,7 @@ Finally, `<Datagrid>` inspects children for props that indicate how it should be
 
 ![Bulk Action Buttons](./img/bulk-actions-toolbar.gif)
 
-Bulk action buttons are buttons that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, the bulk actions toolbar appears when a user ticks the checkboxes in the first column of the table. The user can then choose a button from the bulk actions toolbar. By default, all datagrids have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<Datagrid>` component:
+Bulk action buttons are buttons that affect several records at once, like mass deletion for instance. In the `<Datagrid>` component, the bulk actions toolbar appears when a user ticks the checkboxes in the first column of the table. The user can then choose a button from the bulk actions toolbar. By default, all Datagrids have a single bulk action button, the bulk delete button. You can add other bulk action buttons by passing a custom element as the `bulkActionButtons` prop of the `<Datagrid>` component:
 
 ```jsx
 import { Button } from '@mui/material';
@@ -528,6 +528,8 @@ You can customize which rows can have an expandable panel by using the `isRowExp
 For instance, this code shows an expand button only for rows that have a detail to show:
 
 ```jsx
+import { List, Datagrid, EditButton, BooleanField, DateField, TextField, useRecordContext } from 'react-admin';
+
 const PostPanel = () => {
     const record = useRecordContext();
     return (
@@ -558,6 +560,8 @@ You can customize which rows show a selection checkbox using the `isRowSelectabl
 For instance, this code shows a checkbox only for rows with an id greater than 300:
 
 ```jsx
+import { List, Datagrid } from 'react-admin';
+
 export const PostList = () => (
     <List>
         <Datagrid isRowSelectable={ record => record.id > 300 }>
@@ -577,6 +581,8 @@ In such cases, you can opt-in for an optimized version of the `<Datagrid>` by se
 Be aware that you can't have dynamic children, such as those displayed or hidden by checking permissions, when using this mode.
 
 ```jsx
+import { List, Datagrid, TextField } from 'react-admin';
+
 const PostList = () => (
     <List>
         <Datagrid optimized>
@@ -595,6 +601,8 @@ You can customize the `<Datagrid>` row style (applied to the `<tr>` element) bas
 For instance, this allows to apply a custom background to the entire row if one value of the record - like its number of views - passes a certain threshold.
 
 ```jsx
+import { List, Datagrid } from 'react-admin';
+
 const postRowStyle = (record, index) => ({
     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
 });
@@ -612,6 +620,8 @@ export const PostList = () => (
 You can catch clicks on rows to redirect to the show or edit view by setting the `rowClick` prop:
 
 ```jsx
+import { List, Datagrid } from 'react-admin';
+
 export const PostList = () => (
     <List>
         <Datagrid rowClick="edit">
@@ -720,13 +730,13 @@ Using the `sx` prop, the column customization is just one line:
 
 {% raw %}
 ```jsx
+import { List, Datagrid, TextField } from 'react-admin';
+
 const PostList = () => (
     <List>
         <Datagrid
             sx={{
-                '& .column-title': {
-                    backgroundColor: '#fee',
-                },
+                '& .column-title': { backgroundColor: '#fee' },
             }}
         >
             <TextField source="id" />
@@ -739,12 +749,14 @@ const PostList = () => (
 ```
 {% endraw %}
 
-You can even style the header cells differently by passing a more specific CSS selectoor (e.g. '& tr.column-title').
+You can even style the header cells differently by passing a more specific CSS selector (e.g. `& tr.column-title`).
 
 A common practice is to hide certain columns on smaller screens. You can use the same technique:
 
 {% raw %}
 ```jsx
+import { List, Datagrid, TextField } from 'react-admin';
+
 const PostList = () => (
     <List>
         <Datagrid
@@ -799,7 +811,7 @@ By default, a column is sorted by the `source` property. To define another attri
 {% raw %}
 ```jsx
 // in src/posts.js
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, Datagrid, FunctionField, ReferenceField, TextField } from 'react-admin';
 
 export const PostList = () => (
     <List>
@@ -825,7 +837,7 @@ By default, when the user clicks on a column header, the list becomes sorted in 
 
 ```jsx
 // in src/posts.js
-import { List, Datagrid, TextField } from 'react-admin';
+import { List, Datagrid, FunctionField, ReferenceField, TextField } from 'react-admin';
 
 export const PostList = () => (
     <List>
@@ -851,6 +863,8 @@ You might want to display some fields only to users with specific permissions. U
 
 {% raw %}
 ```jsx
+import { List, Datagrid, TextField, TextInput, ShowButton, usePermissions } from 'react-admin';
+
 const getUserFilters = (permissions) => ([
     <TextInput label="user.list.search" source="q" alwaysOn />,
     <TextInput source="name" />,
@@ -913,7 +927,7 @@ const MyCustomList = () => {
 };
 ```
 
-This list has no filtering, sorting, or row selection - it's static. If you want to allow users to interact with this list, you should pass more props to the `<Datagrid>` component, but the logic isn't triviel. Fortunately, react-admin provides [the `useList` hook](./useList.md) to build callbacks to manipulate local data. You just have to put the result in a `ListContext` to have an interactive `<Datagrid>`:
+This list has no filtering, sorting, or row selection - it's static. If you want to allow users to interact with this list, you should pass more props to the `<Datagrid>` component, but the logic isn't trivial. Fortunately, react-admin provides [the `useList` hook](./useList.md) to build callbacks to manipulate local data. You just have to put the result in a `ListContext` to have an interactive `<Datagrid>`:
 
 ```jsx
 import {
