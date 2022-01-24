@@ -541,7 +541,7 @@ describe('<AutocompleteArrayInput />', () => {
         it('should be displayed if field has been touched and is invalid', async () => {
             render(
                 <AdminContext dataProvider={testDataProvider()}>
-                    <SimpleForm onSubmit={jest.fn()}>
+                    <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
                         <AutocompleteArrayInput
                             {...defaultProps}
                             choices={[{ id: 1, name: 'hello' }]}

@@ -496,6 +496,7 @@ describe('<AutocompleteInput />', () => {
                 <AdminContext dataProvider={testDataProvider()}>
                     <SimpleForm
                         onSubmit={jest.fn()}
+                        mode="onBlur"
                         defaultValues={{ role: 1 }}
                     >
                         <AutocompleteInput

@@ -200,6 +200,7 @@ describe('<NumberInput />', () => {
                     <SimpleForm
                         defaultValues={{ views: 12 }}
                         onSubmit={jest.fn()}
+                        mode="onBlur"
                     >
                         <NumberInput
                             {...defaultProps}

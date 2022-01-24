@@ -49,7 +49,7 @@ export const Form = (props: FormProps) => {
         defaultValues,
         delayError,
         formRootPathname,
-        mode = 'onBlur',
+        mode,
         render,
         resolver,
         reValidateMode = 'onChange',

@@ -51,6 +51,7 @@ export const LoginForm = (props: LoginFormProps) => {
     return (
         <Form
             onSubmit={submit}
+            mode="onChange"
             render={({ handleSubmit }) => (
                 <Root onSubmit={handleSubmit} noValidate>
                     <div className={LoginFormClasses.form}>
@@ -61,6 +62,7 @@ export const LoginForm = (props: LoginFormProps) => {
                                 label={translate('ra.auth.username')}
                                 disabled={loading}
                                 validate={required()}
+                                fullWidth
                             />
                         </div>
                         <div className={LoginFormClasses.input}>
@@ -71,6 +73,7 @@ export const LoginForm = (props: LoginFormProps) => {
                                 disabled={loading}
                                 autoComplete="current-password"
                                 validate={required()}
+                                fullWidth
                             />
                         </div>
                     </div>

@@ -17,7 +17,7 @@ describe('Authentication', () => {
         ListPage.navigate();
         cy.url().should('contain', '/#/login');
     });
-    it('should not login with incorrect credentials', () => {
+    it.only('should not login with incorrect credentials', () => {
         ListPage.navigate();
         ListPage.logout();
         LoginPage.login('foo', 'bar');
