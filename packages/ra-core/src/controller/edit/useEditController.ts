@@ -179,6 +179,7 @@ export const useEditController = <RecordType extends RaRecord = any>(
             resource,
             transform,
             update,
+            recordCached.previousData,
         ]
     );
 
