@@ -128,20 +128,20 @@ export type FormProps = FormOwnProps &
         validate?: ValidateForm;
     };
 
-export type FormWithRedirectRenderProps = Omit<
+export type FormRenderProps = Omit<
     FormViewProps,
     'children' | 'isValid' | 'render' | 'onSubmit' | 'sanitizeEmptyValues'
 >;
 
-export type FormWithRedirectRender = (
-    props: FormWithRedirectRenderProps
+export type FormRender = (
+    props: FormRenderProps
 ) => React.ReactElement<any, any>;
 
 export interface FormOwnProps {
     defaultValues?: any;
     formRootPathname?: string;
     record?: Partial<RaRecord>;
-    render: FormWithRedirectRender;
+    render: FormRender;
     onSubmit?: (data: FieldValues) => any | Promise<any>;
     sanitizeEmptyValues?: boolean;
     saving?: boolean;

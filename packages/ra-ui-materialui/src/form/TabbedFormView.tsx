@@ -20,7 +20,7 @@ import {
 import { Divider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import {
-    FormWithRedirectRenderProps,
+    FormRenderProps,
     MutationMode,
     RaRecord,
     useResourceContext,
@@ -153,7 +153,7 @@ TabbedFormView.propTypes = {
 const DefaultTabs = <TabbedFormTabs />;
 const DefaultToolbar = <Toolbar />;
 
-export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
+export interface TabbedFormViewProps extends FormRenderProps {
     children?: ReactNode;
     className?: string;
     margin?: 'none' | 'normal' | 'dense';

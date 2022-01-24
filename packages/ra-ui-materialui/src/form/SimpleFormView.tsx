@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Children, cloneElement, ReactElement, ReactNode } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { FormWithRedirectRenderProps, MutationMode, RaRecord } from 'ra-core';
+import { FormRenderProps, MutationMode, RaRecord } from 'ra-core';
 import { CardContentInner } from '../layout';
 import { Toolbar } from './Toolbar';
 import { FormInput } from './FormInput';
@@ -71,7 +71,7 @@ SimpleFormView.propTypes = {
 
 const DefaultToolbar = <Toolbar />;
 
-export interface SimpleFormViewProps extends FormWithRedirectRenderProps {
+export interface SimpleFormViewProps extends FormRenderProps {
     children?: ReactNode;
     className?: string;
     component?: React.ComponentType<any>;
