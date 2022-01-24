@@ -1,14 +1,16 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { Field, Form } from 'react-final-form';
+import { Button, CardActions, CircularProgress } from '@mui/material';
 import {
-    Button,
-    CardActions,
-    CircularProgress,
-    TextField,
-} from '@mui/material';
-import { useTranslate, useLogin, useNotify, useSafeSetState } from 'ra-core';
+    Form,
+    required,
+    useTranslate,
+    useLogin,
+    useNotify,
+    useSafeSetState,
+} from 'ra-core';
+import { TextInput } from '../input';
 
 export const LoginForm = (props: LoginFormProps) => {
     const { redirectTo } = props;
@@ -17,19 +19,7 @@ export const LoginForm = (props: LoginFormProps) => {
     const translate = useTranslate();
     const notify = useNotify();
 
-    const validate = (values: FormData) => {
-        const errors = { username: undefined, password: undefined };
-
-        if (!values.username) {
-            errors.username = translate('ra.validation.required');
-        }
-        if (!values.password) {
-            errors.password = translate('ra.validation.required');
-        }
-        return errors;
-    };
-
-    const submit = values => {
+    const submit = (values: FormData) => {
         setLoading(true);
         login(values, redirectTo)
             .then(() => {
@@ -61,29 +51,26 @@ export const LoginForm = (props: LoginFormProps) => {
     return (
         <Form
             onSubmit={submit}
-            validate={validate}
             render={({ handleSubmit }) => (
                 <Root onSubmit={handleSubmit} noValidate>
                     <div className={LoginFormClasses.form}>
                         <div className={LoginFormClasses.input}>
-                            <Field
+                            <TextInput
                                 autoFocus
-                                id="username"
-                                name="username"
-                                component={Input}
+                                source="username"
                                 label={translate('ra.auth.username')}
                                 disabled={loading}
+                                validate={required()}
                             />
                         </div>
                         <div className={LoginFormClasses.input}>
-                            <Field
-                                id="password"
-                                name="password"
-                                component={Input}
+                            <TextInput
+                                source="password"
                                 label={translate('ra.auth.password')}
                                 type="password"
                                 disabled={loading}
                                 autoComplete="current-password"
+                                validate={required()}
                             />
                         </div>
                     </div>
@@ -146,21 +133,6 @@ interface FormData {
     username: string;
     password: string;
 }
-
-const Input = ({
-    meta: { touched, error }, // eslint-disable-line react/prop-types
-    input: inputProps, // eslint-disable-line react/prop-types
-    ...props
-}) => (
-    <TextField
-        error={!!(touched && error)}
-        helperText={touched && error}
-        {...inputProps}
-        {...props}
-        fullWidth
-    />
-);
-
 LoginForm.propTypes = {
     redirectTo: PropTypes.string,
 };
