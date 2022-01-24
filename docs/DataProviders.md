@@ -441,7 +441,7 @@ export const App = () => (
 
 Teams where several people work in parallel on a common task need to allow live updates, real-time notifications, and prevent data loss when two editors work on the same resource concurrently. 
 
-[`ra-realtime`](https://marmelab.com/ra-enterprise/modules/ra-realtime) (an [Enterprise Edition <img class="icon" src="./img/premium.svg" />](https://marmelab.com/ra-enterprise) module) provides hooks and UI components to lock records, and update views when the underlying data changes. It's based on the Publish / Subscribe (PubSub) pattern, and requires a backend supporting this pattern (like GraphQL, Mercure). 
+[`ra-realtime`](https://marmelab.com/ra-enterprise/modules/ra-realtime) (an [Enterprise Edition <img class="icon" src="./img/premium.svg" />](https://marmelab.com/ra-enterprise) module) provides hooks and UI components to lock records, and update views when the underlying data changes. It's based on the Publish / Subscribe (PubSub) pattern, and requires a backend supporting this pattern (like GraphQL, Mercury). 
 
 For instance, here is how to enable live updates on a List view:
 

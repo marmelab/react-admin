@@ -17,13 +17,13 @@ import { BooleanField } from 'react-admin';
 
 ## Properties
 
-| Prop              | Required | Type             | Default                    | Description                                                          |
-| ----------------- | -------- | ---------------- | -------------------------- |----------------------------------------------------------------------|
-| `valueLabelTrue`  | Optional | string           | 'true'                     | Aria label for the truthy value                                      |
-| `valueLabelFalse` | Optional | string           | 'false'                    | Aria label for the falsy value                                       |
-| `TrueIcon`        | Optional | SvgIconComponent | `@material-ui/icons/Done`  | Icon to show for the truthy value                                    |
-| `FalseIcon`       | Optional | SvgIconComponent | `@material-ui/icons/Clear` | Icon to show for the falsy value                                     |
-| `looseValue`      | Optional | boolean          | `false`                    | If `true` the field's value is not evaluated strictly as a `boolean` |
+| Prop              | Required | Type             | Default                     | Description                                                          |
+| ----------------- | -------- | ---------------- |-----------------------------|----------------------------------------------------------------------|
+| `valueLabelTrue`  | Optional | string           | 'true'                      | Aria label for the truthy value                                      |
+| `valueLabelFalse` | Optional | string           | 'false'                     | Aria label for the falsy value                                       |
+| `TrueIcon`        | Optional | SvgIconComponent | `@mui/icons-material/Done`  | Icon to show for the truthy value                                    |
+| `FalseIcon`       | Optional | SvgIconComponent | `@mui/icons-material/Clear` | Icon to show for the falsy value                                     |
+| `looseValue`      | Optional | boolean          | `false`                     | If `true` the field's value is not evaluated strictly as a `boolean` |
 
 `<BooleanField>` also accepts the [common field props](./Fields.md#common-field-props).
 
@@ -54,8 +54,8 @@ If you need to override it, you can use the `valueLabelTrue` and `valueLabelFals
 You can customize the icons to show by setting the `TrueIcon` and `FalseIcon` props which accept a SvgIcon type.
 
 ```jsx
-import AlarmOnIcon from '@material-ui/icons/AlarmOn';
-import AlarmOffIcon from '@material-ui/icons/AlarmOff';
+import AlarmOnIcon from '@mui/icons-material/AlarmOn';
+import AlarmOffIcon from '@mui/icons-material/AlarmOff';
 
 <BooleanField source="alarm" TrueIcon={AlarmOnIcon} FalseIcon={AlarmOffIcon} />
 ```

@@ -17,7 +17,7 @@ Here is an example customizing an `EditButton` component inside a `Datagrid`, us
 ```jsx
 import * as React from 'react';
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 
 const useStyles = makeStyles({
     button: {
@@ -61,8 +61,8 @@ import {
     TextField,
     ShowButton,
 } from 'react-admin';
-import Icon from '@material-ui/icons/Person';
-import { makeStyles } from '@material-ui/core/styles';
+import Icon from '@mui/icons-material/Person';
+import { makeStyles } from '@mui/material/styles';
 
 export const VisitorIcon = Icon;
 
@@ -111,7 +111,7 @@ Sometimes you want the format to depend on the value. The following example show
 ```jsx
 import * as React from 'react';
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 import classnames from 'classnames';
 
 const useStyles = makeStyles({
@@ -154,7 +154,7 @@ Furthermore, you may extract this highlighting strategy into a Higher Order Comp
 ```jsx
 import * as React from 'react';
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 import classnames from 'classnames';
 
 const useStyles = makeStyles({
@@ -254,7 +254,7 @@ export const PostList = () => {
 Material UI also supports [complete theming](https://material-ui.com/customization/themes) out of the box. Material UI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `createTheme()`).
 
 ```jsx
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
@@ -280,9 +280,9 @@ For instance, here is how to override the default react-admin theme:
 ```jsx
 import { defaultTheme } from 'react-admin';
 import merge from 'lodash/merge';
-import indigo from '@material-ui/core/colors/indigo';
-import pink from '@material-ui/core/colors/pink';
-import red from '@material-ui/core/colors/red';
+import indigo from '@mui/material/colors/indigo';
+import pink from '@mui/material/colors/pink';
+import red from '@mui/material/colors/red';
 
 const myTheme = merge({}, defaultTheme, {
     palette: {
@@ -401,7 +401,7 @@ You can replace the default user menu by your own by setting the `userMenu` prop
 ```jsx
 import * as React from 'react';
 import { AppBar, UserMenu, MenuItemLink } from 'react-admin';
-import SettingsIcon from '@material-ui/icons/Settings';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const ConfigurationMenu = forwardRef(({ onClick }, ref) => (
     <MenuItemLink
@@ -440,8 +440,8 @@ You can also customize the default icon by setting the `icon` prop to the `<User
 {% raw %}
 ``` jsx
 import { AppBar, UserMenu } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
-import Avatar from '@material-ui/core/Avatar';
+import { makeStyles } from '@mui/material/styles';
+import Avatar from '@mui/material/Avatar';
 
 const useStyles = makeStyles({
     avatar: {
@@ -472,7 +472,7 @@ You can specify the `Sidebar` width by setting the `width` and `closedWidth` pro
 
 ```jsx
 import { defaultTheme } from "react-admin";
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
     ...defaultTheme,
@@ -493,7 +493,7 @@ For more advanced sidebar theming, pass your own `Sidebar` component to a custom
 
 ```jsx
 import { Sidebar, Layout } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 
 const useSidebarStyles = makeStyles({
     drawerPaper: {
@@ -521,7 +521,7 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import {
     AppBar,
@@ -657,8 +657,8 @@ Here is an example customization for `<AppBar>` to include a company logo in the
 // in src/MyAppBar.js
 import * as React from 'react';
 import { AppBar } from 'react-admin';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
+import { makeStyles } from '@mui/material/styles';
 
 import Logo from './Logo';
 
@@ -745,9 +745,9 @@ For more drastic changes of the top component, you will probably want to create 
 ```jsx
 // in src/MyAppBar.js
 import * as React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 
 const MyAppBar = props => (
     <AppBar {...props}>
@@ -808,10 +808,10 @@ You can create a custom menu component using the `<DashboardMenuItem>` and `<Men
 // in src/Menu.js
 import * as React from 'react';
 import { DashboardMenuItem, Menu, MenuItemLink } from 'react-admin';
-import BookIcon from '@material-ui/icons/Book';
-import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
-import PeopleIcon from '@material-ui/icons/People';
-import LabelIcon from '@material-ui/icons/Label';
+import BookIcon from '@mui/icons-material/Book';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import PeopleIcon from '@mui/icons-material/People';
+import LabelIcon from '@mui/icons-material/Label';
 
 export const Menu = (props) => (
     <Menu {...props}>
@@ -856,8 +856,8 @@ import { createElement } from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
 import { DashboardMenuItem, Menu, MenuItemLink, useResourceDefinitions } from 'react-admin';
-import DefaultIcon from '@material-ui/icons/ViewList';
-import LabelIcon from '@material-ui/icons/Label';
+import DefaultIcon from '@mui/icons-material/ViewList';
+import LabelIcon from '@mui/icons-material/Label';
 
 export const Menu = (props) => {
     const resources = useResourceDefinitions()
@@ -899,7 +899,7 @@ The `<MenuItemLink>` component displays a menu item with a label and an icon - o
 The `primaryText` prop accepts a string or a React node. You can use it e.g. to display a badge on top of the menu item:
 
 ```jsx
-import Badge from '@material-ui/core/Badge';
+import Badge from '@mui/material/Badge';
 
 <MenuItemLink to="/custom-route" primaryText={
     <Badge badgeContent={4} color="primary">
@@ -996,7 +996,7 @@ It is possible to use a completely [custom logout button](./Admin.md#logoutbutto
 
 ```jsx
 import { Admin, Logout } from 'react-admin';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 const MyLogoutButton = props => <Logout {...props} icon={<ExitToAppIcon/>} />;
 
@@ -1041,9 +1041,9 @@ Whenever a client-side error happens in react-admin, the user sees a default err
 ```jsx
 // in src/MyError.js
 import * as React from 'react';
-import Button from '@material-ui/core/Button';
-import ErrorIcon from '@material-ui/icons/Report';
-import History from '@material-ui/icons/History';
+import Button from '@mui/material/Button';
+import ErrorIcon from '@mui/icons-material/Report';
+import History from '@mui/icons-material/History';
 import { Title, useTranslate } from 'react-admin';
 import { useLocation } from 'react-router';
 

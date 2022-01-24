@@ -19,7 +19,7 @@ All descendent components can therefore access the list context, using the `useL
 
 ## Usage
 
-Call `useListContext` in a component, then use this component as a desendent of a List component.
+Call `useListContext` in a component, then use this component as a descendant of a List component.
 
 ```jsx
 // in src/posts/Aside.js

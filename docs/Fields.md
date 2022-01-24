@@ -132,7 +132,7 @@ import { FunctionField } from 'react-admin';
 All field components accept a `className` prop, allowing you to customize their style to your liking. We advise you to use the Material UI styling solution, JSS, to generate those classes. See their [documentation](https://material-ui.com/customization/css-in-js/#api) about that.
 
 ```jsx
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 
 const useStyles = makeStyles({
     price: { color: 'purple' },
@@ -161,7 +161,7 @@ You may want to customize the cell style inside a `Datagrid`. You can use the `c
 
 {% raw %}
 ```jsx
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 
 const useStyles = makeStyles({
     priceCell: { fontWeight: 'bold' },
@@ -189,7 +189,7 @@ You may want to override the field header (the `<th>` element in the `Datagrid`)
 
 {% raw %}
 ```jsx
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 
 const useStyles = makeStyles({
     priceHeader: { fontWeight: 'bold' },
@@ -270,7 +270,7 @@ const TextField = (props) => {
 }
 ```
 
-If you are not looking for reusability, you can create even simpler components, with no attributes. Let's say an API returns user records with `firstName` and `lastName` properties, and that you want to display a full name in a user list.
+If you are not looking for re-usability, you can create even simpler components, with no attributes. Let's say an API returns user records with `firstName` and `lastName` properties, and that you want to display a full name in a user list.
 
 ```js
 {

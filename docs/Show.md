@@ -132,7 +132,7 @@ export const PostShow = () => (
 By default, `<Show>` includes an action toolbar with an `<EditButton>` if the `<Resource>` declared an `edit` component. You can replace the list of default actions by your own component using the `actions` prop:
 
 ```jsx
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { EditButton, TopToolbar } from 'react-admin';
 
 const PostShowActions = () => (
@@ -311,8 +311,8 @@ Here's an example inside a `Show` view with a `SimpleShowLayout` and a custom `a
 
 {% raw %}
 ```jsx
-import TopToolbar from '@material-ui/core/TopToolbar';
-import Button from '@material-ui/core/Button';
+import TopToolbar from '@mui/material/TopToolbar';
+import Button from '@mui/material/Button';
 import { usePermissions, EditButton, DeleteButton } from 'react-admin';
 
 const PostShowActions = () => {

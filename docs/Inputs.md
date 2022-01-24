@@ -360,7 +360,7 @@ Instead of HTML `input` elements, you can use a material-ui component like `Text
 
 ```jsx
 // in LatLongInput.js
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 import { useField } from 'react-final-form';
 
 const BoundedTextField = ({ name, label }) => {
@@ -418,7 +418,7 @@ So internally, react-admin components use another hook, which wraps react-final-
 
 ```jsx
 // in LatLongInput.js
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 import { useInput, required } from 'react-admin';
 
 const BoundedTextField = props => {
@@ -457,8 +457,8 @@ Here is another example, this time using a material-ui `Select` component:
 
 ```jsx
 // in SexInput.js
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import { useInput } from 'react-admin';
 
 const SexInput = props => {

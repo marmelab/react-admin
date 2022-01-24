@@ -15,11 +15,11 @@ The most common use case for `<WithRecord>` is to build a custom field on-the-fl
 import { Show, SimpleShowLayout, WithRecord } from 'react-admin';
 
 const BookShow = () => (
-   <Show>
-      <SimpleShowLayout>
-         <WithRecord label="author" render={record => <span>{record.author}</span>} />
-     </SimpleShowLayout>
-  </Show>
+    <Show>
+        <SimpleShowLayout>
+            <WithRecord label="author" render={record => <span>{record.author}</span>} />
+        </SimpleShowLayout>
+    </Show>
 );
 ```
 
