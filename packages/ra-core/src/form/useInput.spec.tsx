@@ -206,6 +206,38 @@ describe('useInput', () => {
         expect(queryByDisplayValue('foo')).not.toBeNull();
     });
 
+    it('applies the initialValue when input has null value', () => {
+        const { queryByDisplayValue } = renderWithRedux(
+            <FormWithRedirect
+                record={{
+                    title: null,
+                }}
+                onSubmit={jest.fn()}
+                render={() => {
+                    return (
+                        <Input
+                            source="title"
+                            resource="posts"
+                            initialValue="foo"
+                        >
+                            {({ id, input }) => {
+                                return (
+                                    <input
+                                        type="text"
+                                        id={id}
+                                        aria-label="Title"
+                                        {...input}
+                                    />
+                                );
+                            }}
+                        </Input>
+                    );
+                }}
+            />
+        );
+        expect(queryByDisplayValue('foo')).not.toBeNull();
+    });
+
     it('does not apply the initialValue when input has a value of 0', () => {
         const { queryByDisplayValue } = renderWithRedux(
             <FormWithRedirect
