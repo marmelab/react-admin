@@ -2062,7 +2062,7 @@ const MyInput = ({ helperText, ...props }) => {
 
 ## `allowEmpty` Has Been Removed From `SelectInput`, `AutocompleteInput` and `AutocompleteArrayInput`
 
-This is necessary for the underlying MaterialUI inputs as they require that the current input value is actually one of the available option. Those components now always accept an empty value (an empty string by default). If you require the input to have a non empty value, use the `required` validation. You can safely remove this prop.
+This is necessary for the underlying MaterialUI inputs as they require that the current input value is actually one of the available option. Those components now always accept an empty value (an empty string by default). If you require the input to have a non-empty value, use the `required` validation. You can safely remove this prop.
 
 # Upgrade to 3.0
 
