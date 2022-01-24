@@ -5,6 +5,7 @@ import {
     FieldRenderProps,
     FieldInputProps,
 } from 'react-final-form';
+import get from 'lodash/get';
 import { Validator, composeValidators } from './validate';
 import isRequired from './isRequired';
 import { useFormGroupContext } from './useFormGroupContext';
@@ -73,7 +74,7 @@ const useInput = ({
     // This ensure dynamically added inputs have their value set correctly (ArrayInput for example).
     // We don't do this for the form level initialValues so that it works as it should in final-form
     // (ie. field level initialValue override form level initialValues for this field).
-    let inputInitialValue = record ? record[source] : undefined;
+    let inputInitialValue = get(record, source);
     if (inputInitialValue === null || inputInitialValue === undefined) {
         inputInitialValue = initialValue;
     }
