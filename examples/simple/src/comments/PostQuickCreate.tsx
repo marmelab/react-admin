@@ -1,19 +1,16 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import {
-    Button,
     Dialog,
     DialogTitle,
     DialogContent,
     DialogActions,
 } from '@mui/material';
 import { useCallback } from 'react';
-import PropTypes from 'prop-types';
 import {
     SaveButton,
     SimpleForm,
     TextInput,
-    Toolbar,
     required,
     useCreate,
     useCreateSuggestionContext,
