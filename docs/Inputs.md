@@ -389,7 +389,7 @@ const LatLngInput = () => (
 
 **Tip**: Material-ui's `<TextField>` component already includes a label, so you don't need to use `<Labeled>` in this case.
 
-`useController()` returns three values: `field` and `fieldState` and `formState`. To learn more about these props, please refer to the [useController](https://react-hook-form.com/api/usecontroller) hook documentation.
+`useController()` returns three values: `field`, `fieldState`, and `formState`. To learn more about these props, please refer to the [useController](https://react-hook-form.com/api/usecontroller) hook documentation.
 
 Instead of HTML `input` elements or material-ui components, you can use react-admin input components, like `<NumberInput>` for instance. React-admin components already use `useController()`, and already include a label, so you don't need either `useController()` or `<Labeled>` when using them:
 

@@ -40,7 +40,7 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
 
 ## Usage
 
-`<ArrayInput>` expects a single child, which must be a *form iterator* component. A form iterator is a component accepting a `fields` object as passed by [react-hook-form](https://react-hook-form.com/api/usefieldarray), and defining a layout for an array of fields. It also receive several functions to manipulate the array values. For instance, the `<SimpleFormIterator>` component displays an array of react-admin Inputs in an unordered list (`<ul>`), one sub-form by list item (`<li>`). It also provides controls for adding and removing a sub-record (a backlink in this example).
+`<ArrayInput>` expects a single child, which must be a *form iterator* component. A form iterator is a component accepting a `fields` object as passed by [react-hook-form](https://react-hook-form.com/api/usefieldarray), and defining a layout for an array of fields. It also receives several functions to manipulate the array values. For instance, the `<SimpleFormIterator>` component displays an array of react-admin Inputs in an unordered list (`<ul>`), one sub-form by list item (`<li>`). It also provides controls for adding and removing a sub-record (a backlink in this example).
 
 You can pass `disableAdd` and `disableRemove` as props of `SimpleFormIterator`, to disable `ADD` and `REMOVE` button respectively. Default value of both is `false`.
 

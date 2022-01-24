@@ -1943,9 +1943,9 @@ If you've declared custom Record types, you'll need to upgrade your code as foll
 
 ### `<FormWithRedirect>` Has Been Renamed to `<Form>`
 
-The form components don't handle redirection at all anymore as it happens in side effects, the `<FormWithRedirect>` has been renamed to `<Form>`.
+The form components don't handle redirection anymore, as redirections are now handled in side effects (`<Create mutationOptions>` and `<Edit mutationOptions>`). As a consequence, the `<FormWithRedirect>` has been renamed to `<Form>`.
 
-To upgrade simply replace all occurrences of `FormWithRedirect` with  `Form`.
+To upgrade, replace all occurrences of `<FormWithRedirect>` with  `<Form>`.
 
 ```diff
 - import { FormWithRedirect } from 'react-admin';
@@ -1959,11 +1959,11 @@ export const MyForm = () => (
 );
 ```
 
-### `<FormWithRedirect>` Props Have Changed
+### Form Props Have Changed
 
-`<FormWithRedirect>` used to accept [`react-final-form` `<Form>` props](https://final-form.org/docs/react-final-form/types/FormProps). It now accepts [`react-hook-form` `useForm` props](https://react-hook-form.com/api/useform). This also affects the other form components (`SimpleForm`, `TabbedForm`, etc.)
+`<FormWithRedirect>` used to accept [`react-final-form` `<Form>` props](https://final-form.org/docs/react-final-form/types/FormProps). It now accepts [`react-hook-form` `useForm` props](https://react-hook-form.com/api/useform). This also affects the other form components (`<SimpleForm>`, `<TabbedForm>`, etc.)
 
-The most commonly used prop is probably `initialValues` which is now named `defaultValues`:
+The most commonly used prop is probably `initialValues`, which is now named `defaultValues`:
 
 ```diff
 const PostCreate = () => (
@@ -1978,13 +1978,13 @@ const PostCreate = () => (
 )
 ```
 
-However, we kept the `validate` function prop which we automatically translate as a custom [`react-hook-form` `resolver`](https://react-hook-form.com/api/useform#validationResolver).
+We kept the `validate` function prop, which we automatically translate to a custom [`react-hook-form` `resolver`](https://react-hook-form.com/api/useform#validationResolver). So even if it's not technically a react-hook-form prop, you can still use `validate` as before.
 
-This also means you can now use [`yup`](https://github.com/jquense/yup), [`zod`](https://github.com/colinhacks/zod), [`joi`](https://github.com/sideway/joi), [superstruct](https://github.com/ianstormtaylor/superstruct), [vest](https://github.com/ealush/vest) or any [resolvers](https://react-hook-form.com/api/useform#validationResolver) supported by `react-hook-form` to apply schema validation.
+This also means you can now use [`yup`](https://github.com/jquense/yup), [`zod`](https://github.com/colinhacks/zod), [`joi`](https://github.com/sideway/joi), [superstruct](https://github.com/ianstormtaylor/superstruct), [vest](https://github.com/ealush/vest) or any [resolver](https://react-hook-form.com/api/useform#validationResolver) supported by `react-hook-form` to apply schema validation.
 
 ### `<FormWithRedirect>` Render Function Arguments Have Changed
 
-The `<FormWithRedirect>` render function used to be called with an object containing parts of the `final-form` form state (`valid`, `invalid`, `pristine`, `dirty`). It now only receive the `handleSubmit` function which must be passed to the `onSubmit` prop of the underlying form. If you need access to the form state, call [`react-hook-form` `useFormState` hook](https://react-hook-form.com/api/useformstate):
+`<FormWithRedirect>` used to call its child function with an object containing parts of the `final-form` form state (`valid`, `invalid`, `pristine`, `dirty`). It now only passes the `handleSubmit` function, which must be passed down to the `onSubmit` prop of the underlying form. If you need to access the form state, call [the react-hook-form `useFormState` hook](https://react-hook-form.com/api/useformstate):
 
 ```diff
 import { FormWithRedirect } from 'react-admin';
@@ -2018,7 +2018,7 @@ const MyCustomForm = () => {
 
 ### `useInput` Signature Changed
 
-`useInput` used to accept both a `initialValue` and a `defaultValue` prop. It now only accept `defaultValue`:
+`useInput` used to accept both a `initialValue` and a `defaultValue` prop. It now only accepts `defaultValue`:
 
 ```diff
 const PostCreate = () => (

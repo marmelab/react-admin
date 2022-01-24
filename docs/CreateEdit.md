@@ -1489,7 +1489,7 @@ const CustomerCreate = () => (
             <NumberInput source="age" />
         </SimpleForm>
     </Create>
-    );
+);
 ```
 
 ## Submission Validation
