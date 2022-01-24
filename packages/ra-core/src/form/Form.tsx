@@ -144,7 +144,7 @@ export interface FormOwnProps {
 
 interface FormViewProps
     extends Omit<FormOwnProps, 'onSubmit' | 'sanitizeEmptyValues'> {
-    handleSubmit: (e?: BaseSyntheticEvent) => Promise<void>;
+    handleSubmit: (e?: BaseSyntheticEvent) => void;
     warnWhenUnsavedChanges?: boolean;
 }
 
@@ -169,7 +169,7 @@ const FormView = (props: FormViewProps) => {
     useInitializeFormWithRecord(defaultValues, record);
     useWarnWhenUnsavedChanges(warnWhenUnsavedChanges, formRootPathname);
 
-    const handleSubmit = async (event: BaseSyntheticEvent) => {
+    const handleSubmit = (event: BaseSyntheticEvent) => {
         // Prevent outer forms to receive the event
         event.stopPropagation();
         formHandleSubmit(event);
