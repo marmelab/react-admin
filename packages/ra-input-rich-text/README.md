@@ -61,7 +61,7 @@ To fix this problem, you should override the default card style, as follows:
 
 ```diff
 import { Edit, SimpleForm, TextInput } from 'react-admin';
-+import { withStyles } from '@material-ui/core/styles';
++import { withStyles } from '@mui/material/styles';
 
 -const PostEdit = props => (
 +const PostEdit = withStyles({ card: { overflow: 'initial' } })(props => (

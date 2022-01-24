@@ -306,8 +306,8 @@ The following component shows the filter form on click. We'll take advantage of 
 
 ```jsx
 import { useListContext } from 'react-admin';
-import { Button } from "@mui/material";
-import ContentFilter from "@mui/icons-material/FilterList";
+import { Button } from '@mui/material';
+import ContentFilter from '@mui/icons-material/FilterList';
 
 const PostFilterButton = () => {
     const { showFilter } = useListContext();

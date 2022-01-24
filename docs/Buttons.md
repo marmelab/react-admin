@@ -64,7 +64,7 @@ const CommentShowButton = () => <ShowButton label="Show comment" />;
 
 It also supports [all the other `<Button>` props](#button).
 
-**Tip**: You can use it as `<Datagrid>` child with no props, too. However, you should use the `<Datagrid rowClick="show">` prop instead to avoid using one column for the Edit button.
+**Tip**: You can use it as `<Datagrid>` child with no props too. However, you should use the `<Datagrid rowClick="show">` prop instead to avoid using one column for the Edit button.
 
 **Tip**: If you want to link to the Show view manually, use the `/{resource}/{record.id}/show` location.
 
@@ -359,10 +359,10 @@ You can create a custom menu component using the `<DashboardMenuItem>` and `<Men
 // in src/Menu.js
 import * as React from 'react';
 import { DashboardMenuItem, Menu, MenuItemLink } from 'react-admin';
-import BookIcon from '@material-ui/icons/Book';
-import ChatBubbleIcon from '@material-ui/icons/ChatBubble';
-import PeopleIcon from '@material-ui/icons/People';
-import LabelIcon from '@material-ui/icons/Label';
+import BookIcon from '@mui/icons-material/Book';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import PeopleIcon from '@mui/icons-material/People';
+import LabelIcon from '@mui/icons-material/Label';
 
 export const Menu = (props) => (
     <Menu {...props}>

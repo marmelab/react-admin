@@ -242,7 +242,7 @@ Then, use the `useSetLocale` hook to change locale. For instance, the following 
 
 ```jsx
 import * as React from "react";
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { useSetLocale } from 'react-admin';
 
 const LocaleSwitcher = () => {
@@ -266,7 +266,7 @@ Your language switcher component probably needs to know the current locale, in o
 ```jsx
 import * as React from 'react';
 import { Component } from 'react';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { useLocale, useSetLocale } from 'react-admin';
 
 const LocaleSwitcher = () => {

@@ -9,7 +9,7 @@ Use `<SingleFieldList>` when you want to display only one property for each reco
 
 ![SingleFieldList](./img/singlefieldlist.png)
 
-`<SingleFieldList>` is an **iterator** component: it gets `data` from the `ListContext`, and iterates over it to display each record. It creates a `<RecordContext>`for each record, and delegates the actual rendering to its child - usually a Field component. 
+`<SingleFieldList>` is an **iterator** component: it gets `data` from the `ListContext`, and iterates over it to display each record. It creates a `<RecordContext>` for each record, and delegates the actual rendering to its child - usually a Field component. 
 
 ## Usage
 

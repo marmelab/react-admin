@@ -134,8 +134,8 @@ Here is the main code for bootstrapping a barebone react-admin application witho
 
 ```diff
 // in src/App.js
-import * as React from "react";
-+import PropTypes from "prop-types";
+import * as React from 'react';
++import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { createHashHistory } from 'history';
 +import { ConnectedRouter } from 'connected-react-router';
@@ -147,10 +147,10 @@ import restProvider from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 +import { ThemeProvider } from '@material-ui/styles';
-+import { createTheme } from "@material-ui/core/styles";
-+import AppBar from '@material-ui/core/AppBar';
-+import Toolbar from '@material-ui/core/Toolbar';
-+import Typography from '@material-ui/core/Typography';
++import { createTheme } from '@mui/material/styles';
++import AppBar from '@mui/material/AppBar';
++import Toolbar from '@mui/material/Toolbar';
++import Typography from '@mui/material/Typography';
 
 import createAdminStore from './createAdminStore';
 import messages from './i18n';

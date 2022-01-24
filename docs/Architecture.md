@@ -47,7 +47,7 @@ For instance, you cannot pass a list of actions to the `<Edit>` view, but you ca
 
 ```jsx
 import * as React from "react";
-import Button from '@material-ui/core/Button';
+import { Button } from '@mui/material';
 import { TopToolbar, ShowButton } from 'react-admin';
 
 const PostEditActions = () => (

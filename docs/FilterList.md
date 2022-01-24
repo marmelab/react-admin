@@ -187,7 +187,7 @@ const HasOrderedFilter = () => (
 
 ## `label`
 
-React-admin renders the `<FilterList label>`on top of the child filter items. The string is passed through the `useTranslate` hook, and therefore can be translated.
+React-admin renders the `<FilterList label>` on top of the child filter items. The string is passed through the `useTranslate` hook, and therefore can be translated.
 
 {% raw %}
 ```jsx

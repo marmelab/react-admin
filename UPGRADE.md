@@ -772,7 +772,7 @@ const NotifyButton = () => {
 };
 ```
 
-Check [the `useNotify`documentation](https://marmelab.com/react-admin/useNotify.html) for more information.
+Check [the `useNotify` documentation](https://marmelab.com/react-admin/useNotify.html) for more information.
 
 ## The `useVersion` Hook Was Removed
 
@@ -885,8 +885,8 @@ import { createElement } from 'react';
 import { useMediaQuery } from '@material-ui/core';
 -import { DashboardMenuItem, Menu, MenuItemLink, getResources } from 'react-admin';
 +import { DashboardMenuItem, Menu, MenuItemLink, useResourceDefinitions } from 'react-admin';
-import DefaultIcon from '@material-ui/icons/ViewList';
-import LabelIcon from '@material-ui/icons/Label';
+import DefaultIcon from '@mui/icons-material/ViewList';
+import LabelIcon from '@mui/icons-material/Label';
 
 export const Menu = (props) => {
 -   const resources = useSelector(getResources);
@@ -1008,7 +1008,7 @@ const MyList = () => (
 
 ## No More props injection in custom Pagination and Empty components
 
-The `<List>` component renders a Pagination component when there are records to display, and an Empty component otherwise. You can customize these components by passing your own with the `pagination`and `empty`props. 
+The `<List>` component renders a Pagination component when there are records to display, and an Empty component otherwise. You can customize these components by passing your own with the `pagination` and `empty`props. 
 
 `<List>` used to inject `ListContext` props (`data`, `isLoaded`, etc.) to the Pagination component. In v4, the component rendered by `<List>` no longer receive these props. They must grab them from the ListContext instead.
 
@@ -1016,8 +1016,8 @@ This means you'll have to do a few changes if you use a custom Pagination compon
 
 ```diff
 import { Button, Toolbar } from '@material-ui/core';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
+import ChevronRight from '@mui/icons-material/ChevronRight';
 +import { useListContext } from 'react-admin';
 
 -const PostPagination = (props) => {
@@ -1084,7 +1084,7 @@ Starting with react-admin v4, `useListContext` only returns a `data` prop, and i
 import * as React from 'react';
 import { useListContext, List, TextField, DateField, ReferenceField, EditButton } from 'react-admin';
 import { Card, CardActions, CardContent, CardHeader, Avatar } from '@material-ui/core';
-import PersonIcon from '@material-ui/icons/Person';
+import PersonIcon from '@mui/icons-material/Person';
 
 const CommentGrid = () => {
 -   const { data, ids, loading } = useListContext();
@@ -1233,8 +1233,8 @@ import { createElement } from 'react';
 import { useMediaQuery } from '@material-ui/core';
 -import { DashboardMenuItem, Menu, MenuItemLink, getResources } from 'react-admin';
 +import { DashboardMenuItem, Menu, MenuItemLink, useResourceDefinitions } from 'react-admin';
-import DefaultIcon from '@material-ui/icons/ViewList';
-import LabelIcon from '@material-ui/icons/Label';
+import DefaultIcon from '@mui/icons-material/ViewList';
+import LabelIcon from '@mui/icons-material/Label';
 
 export const Menu = (props) => {
 -   const resources = useSelector(getResources);
@@ -2637,7 +2637,7 @@ However, if your app allowed users to change locale at runtime, you need to upda
 ```diff
 import * as React from "react";
 -import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 -import { changeLocale } from 'react-admin';
 +import { useSetLocale } from 'react-admin';
 
@@ -2764,7 +2764,7 @@ When using the `<ReferenceField>` component, you should rename the `linkType` pr
 The `<CardActions>` component, which used to wrap the action buttons in the `Edit`, `Show` and `Create` views, is now named `<TopToolbar>`. That's because actions aren't located inside the `Card` anymore, but above it.
 
 ```diff
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 -import { CardActions, ShowButton } from 'react-admin';
 +import { TopToolbar, ShowButton } from 'react-admin';
 
@@ -2914,7 +2914,7 @@ The `<SideBar>` component used to accept `size` and `closedSize` prop to control
 You can now customize those values by providing a custom material-ui theme.
 
 ```jsx
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme } from '@mui/material/styles';
 
 const theme = createMuiTheme({
     sidebar: {
@@ -3239,8 +3239,8 @@ import * as React from "react";
 import { connect } from 'react-redux';
 import compose from 'lodash/flowRight';
 import classnames from 'classnames';
-import Snackbar from "@material-ui/core/Snackbar";
-import { withStyles, createStyles } from "@material-ui/core";
+import Snackbar from '@mui/material/Snackbar';
+import { withStyles, createStyles } from '@mui/material/styles';
 import {
     complete,
     undo,

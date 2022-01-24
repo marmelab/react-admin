@@ -35,7 +35,7 @@ export const PostList = () => (
 
 ## `rowsPerPage`
 
-The `<Pagination>` component renders a dropdown allowing users to selevct how many rows to display per page. You can customize the options of this dropdown by passing a `rowsPerPageOptions` prop.
+The `<Pagination>` component renders a dropdown allowing users to select how many rows to display per page. You can customize the options of this dropdown by passing a `rowsPerPageOptions` prop.
 
 ```jsx
 // in src/MyPagination.js

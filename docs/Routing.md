@@ -37,7 +37,7 @@ const Dashboard = () => (
 );
 ```
 
-Internally, react-admin uses a helper to build links, to allow mounting react-admin apps inside an existing app. You can use this helper, `useCreatePath`, in your components, if they have to work in admins momunted in a sub path:
+Internally, react-admin uses a helper to build links, to allow mounting react-admin apps inside an existing app. You can use this helper, `useCreatePath`, in your components, if they have to work in admins mounted in a sub path:
 
 ```jsx
 import { Link } from 'react-router-dom';

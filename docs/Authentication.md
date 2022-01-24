@@ -455,7 +455,7 @@ export default {
 
 ### Getting User Permissions
 
-If you need to check the permissions in any of the default react-admin views or in custom spage, you can use the [`usePermissions()`](#usepermissions-hook) hook:
+If you need to check the permissions in any of the default react-admin views or in custom page, you can use the [`usePermissions()`](#usepermissions-hook) hook:
 
 Here is an example of a `Create` view with a conditional Input based on permissions:
 
@@ -483,8 +483,8 @@ It works in custom pages too:
 ```jsx
 // in src/MyPage.js
 import * as React from "react";
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import { Card } from '@mui/material';
+import CardContent from '@mui/material/CardContent';
 import { usePermissions } from 'react-admin';
 
 const MyPage = () => {
@@ -633,8 +633,7 @@ For instance, here is how to build a custom Login page based on email rather tha
 import * as React from 'react';
 import { useState } from 'react';
 import { useLogin, useNotify, Notification, defaultTheme } from 'react-admin';
-import { ThemeProvider } from '@material-ui/styles';
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const MyLoginPage = ({ theme }) => {
     const [email, setEmail] = useState('');
@@ -762,8 +761,8 @@ Just like `useLogin()`, `useLogout()` returns a callback that you can use to cal
 import * as React from 'react';
 import { forwardRef } from 'react';
 import { useLogout } from 'react-admin';
-import MenuItem from '@material-ui/core/MenuItem';
-import ExitIcon from '@material-ui/icons/PowerSettingsNew';
+import { MenuItem } from '@mui/material';
+import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 
 const MyLogoutButton = forwardRef((props, ref) => {
     const logout = useLogout();
@@ -827,8 +826,8 @@ You might want to check user permissions inside a [custom page](./Admin.md#addin
 ```jsx
 // in src/MyPage.js
 import * as React from "react";
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import { usePermissions } from 'react-admin';
 
 const MyPage = () => {
@@ -954,7 +953,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useLogin, useNotify, Notification, defaultTheme } from 'react-admin';
 import { ThemeProvider } from '@material-ui/styles';
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme } from '@mui/material/styles';
 
 const MyLoginPage = ({ theme }) => {
     const [email, setEmail] = useState('');
@@ -995,8 +994,8 @@ export default MyLoginPage;
 import * as React from 'react';
 import { forwardRef } from 'react';
 import { useLogout } from 'react-admin';
-import MenuItem from '@material-ui/core/MenuItem';
-import ExitIcon from '@material-ui/icons/PowerSettingsNew';
+import MenuItem from '@mui/material/MenuItem';
+import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 
 const MyLogoutButton = forwardRef((props, ref) => {
     const logout = useLogout();
@@ -1138,8 +1137,8 @@ React-admin injects the permissions into the component provided as a [`dashboard
 ```jsx
 // in src/Dashboard.js
 import * as React from 'react';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import { Title } from 'react-admin';
 
 export default ({ permissions }) => (
