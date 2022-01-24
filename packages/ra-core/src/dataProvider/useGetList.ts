@@ -22,7 +22,7 @@ import { useDataProvider } from './useDataProvider';
  * with the same parameters, until the response arrives.
  *
  * @param {string} resource The resource name, e.g. 'posts'
- * @param {Params} params The getList parameters { pagination, sort, filter }
+ * @param {Params} params The getList parameters { pagination, sort, filter, meta }
  * @param {Object} options Options object to pass to the queryClient.
  * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
  *
@@ -30,6 +30,7 @@ import { useDataProvider } from './useDataProvider';
  * @prop params.pagination The request pagination { page, perPage }, e.g. { page: 1, perPage: 10 }
  * @prop params.sort The request sort { field, order }, e.g. { field: 'id', order: 'DESC' }
  * @prop params.filter The request filters, e.g. { title: 'hello, world' }
+ * @prop params.meta Optional meta parameters
  *
  * @returns The current request state. Destructure as { data, total, error, isLoading, refetch }.
  *
@@ -58,6 +59,7 @@ export const useGetList = <RecordType extends RaRecord = any>(
         pagination = { page: 1, perPage: 25 },
         sort = { field: 'id', order: 'DESC' },
         filter = {},
+        meta,
     } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
@@ -66,17 +68,22 @@ export const useGetList = <RecordType extends RaRecord = any>(
         Error,
         { data: RecordType[]; total: number }
     >(
-        [resource, 'getList', { pagination, sort, filter }],
+        [resource, 'getList', { pagination, sort, filter, meta }],
         () =>
             dataProvider
-                .getList<RecordType>(resource, { pagination, sort, filter })
+                .getList<RecordType>(resource, {
+                    pagination,
+                    sort,
+                    filter,
+                    meta,
+                })
                 .then(({ data, total }) => ({ data, total })),
         {
             onSuccess: ({ data }) => {
                 // optimistically populate the getOne cache
                 data.forEach(record => {
                     queryClient.setQueryData(
-                        [resource, 'getOne', { id: String(record.id) }],
+                        [resource, 'getOne', { id: String(record.id), meta }],
                         oldRecord => oldRecord ?? record
                     );
                 });

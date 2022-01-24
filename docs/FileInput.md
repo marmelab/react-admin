@@ -54,7 +54,7 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 
 Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#handling-file-uploads) for base64 encoding data by extending the REST Client.
 
-The `validateFileRemoval` handler can interrupt removing visual items in your page. Given if you want to remove immediately file so call your api request in `validateFileRemoval`, then the request fails and throws error, These items don't disapper in the page.
+The `validateFileRemoval` handler can interrupt removing visual items in your page. Given if you want to remove immediately file so call your api request in `validateFileRemoval`, then the request fails and throws error, These items don't disappear in the page.
 
 The `validateFileRemoval` can also be used to confirm the deletion of items to users. The following is an example.
 

@@ -9,11 +9,12 @@ import { testDataProvider } from '../dataProvider';
 const UseGetMany = ({
     resource,
     ids,
+    meta = undefined,
     options = {},
     callback = null,
     ...rest
 }) => {
-    const hookValue = useGetMany(resource, { ids }, options);
+    const hookValue = useGetMany(resource, { ids, meta }, options);
     if (callback) callback(hookValue);
     return <div>hello</div>;
 };
@@ -120,6 +121,25 @@ describe('useGetMany', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(2);
+        });
+    });
+
+    it('should accept a meta parameter', async () => {
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetMany
+                    resource="posts"
+                    ids={[1]}
+                    meta={{ hello: 'world' }}
+                />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
+            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
+                ids: [1],
+                meta: { hello: 'world' },
+            });
         });
     });
 

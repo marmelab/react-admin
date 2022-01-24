@@ -85,4 +85,33 @@ describe('useUpdateMany', () => {
             });
         });
     });
+
+    it('accepts a meta parameter', async () => {
+        const dataProvider = testDataProvider({
+            updateMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
+        });
+        let localUpdateMany;
+        const Dummy = () => {
+            const [updateMany] = useUpdateMany();
+            localUpdateMany = updateMany;
+            return <span />;
+        };
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+            </CoreAdminContext>
+        );
+        localUpdateMany('foo', {
+            ids: [1, 2],
+            data: { bar: 'baz' },
+            meta: { hello: 'world' },
+        });
+        await waitFor(() => {
+            expect(dataProvider.updateMany).toHaveBeenCalledWith('foo', {
+                ids: [1, 2],
+                data: { bar: 'baz' },
+                meta: { hello: 'world' },
+            });
+        });
+    });
 });

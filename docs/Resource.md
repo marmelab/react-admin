@@ -94,8 +94,8 @@ React-admin will render the `icon` prop component in the menu:
 ```jsx
 // in src/App.js
 import * as React from "react";
-import PostIcon from '@material-ui/icons/Book';
-import UserIcon from '@material-ui/icons/People';
+import PostIcon from '@mui/icons-material/Book';
+import UserIcon from '@mui/icons-material/People';
 import { Admin, Resource } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
 

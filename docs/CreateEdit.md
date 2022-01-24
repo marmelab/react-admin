@@ -150,7 +150,7 @@ You can replace the list of default actions by your own element using the `actio
 
 ```jsx
 import * as React from "react";
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { TopToolbar, ShowButton } from 'react-admin';
 
 const PostEditActions = () => (
@@ -186,7 +186,7 @@ const PostEditActions = () => (
 If you want this button to look like a Back button, you can pass a custom label and icon to the `ListButton`:
 
 ```jsx
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
 
 const PostEditActions = () => (
     <TopToolbar>
@@ -294,7 +294,7 @@ import {
     Edit,
     SimpleForm,
 } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 
 const useStyles = makeStyles({
     toolbar: {
@@ -362,7 +362,7 @@ import {
     Edit,
     SimpleForm,
 } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 
 const useStyles = makeStyles({
     toolbar: {
@@ -389,7 +389,7 @@ const PostEdit = () => (
 
 ### `mutationOptions`
 
-You can customize the options you pass to react-query's `useMutation` hook, e.g. to override succes or error side effects, by setting the `mutationOptions` prop.
+You can customize the options you pass to react-query's `useMutation` hook, e.g. to override success or error side effects, by setting the `mutationOptions` prop.
 
 Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to another page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 
@@ -470,7 +470,7 @@ const PostEdit = () => {
 
 **Tip**: If you want to have different success side effects based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save and redirect to the list", and another to "save and display an empty form"), you can set the `onSuccess` prop on the `<SaveButton>` component, too.
 
-Similarly, you can override the failure side effects with an `onError` otion. By default, when the save action fails at the dataProvider level, react-admin shows an error notification. On an Edit page with `mutationMode` set to `undoable` or `optimistic`, it refreshes the page, too.
+Similarly, you can override the failure side effects with an `onError` option. By default, when the save action fails at the dataProvider level, react-admin shows an error notification. On an Edit page with `mutationMode` set to `undoable` or `optimistic`, it refreshes the page, too.
 
 ```jsx
 import * as React from 'react';
@@ -564,7 +564,7 @@ const PostList = () => (
 
 **Note**: `<CloneButton>` is designed to be used in a `<Datagrid>` and in an edit view `<Actions>` component, not inside the form `<Toolbar>`. The `Toolbar` is basically for submitting the form, not for going to another resource.
 
-Alternately, users need to prepopulate a record based on a *related* record. For instance, to create a comment related to an existing post. 
+Alternately, users need to pre-populate a record based on a *related* record. For instance, to create a comment related to an existing post. 
 
 By default, the `<Create>` view starts with an empty `record`. However, if the `location` object (injected by [react-router-dom](https://reacttraining.com/react-router/web/api/location)) contains a `record` in its `state`, the `<Create>` view uses that `record` instead of the empty object. That's how the `<CloneButton>` works under the hood.
 
@@ -572,9 +572,9 @@ That means that if you want to create a link to a creation form, presetting *som
 
 {% raw %}
 ```jsx
-import * as React from "react";
+import * as React from 'react';
 import { Datagrid } from 'react-admin';
-import Button from '@material-ui/core/Button';
+import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 const CreateRelatedCommentButton = ({ record }) => (
@@ -607,7 +607,7 @@ export default PostList = () => (
 {% raw %}
 ```jsx
 import * as React from "react";
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 
 const CreateRelatedCommentButton = ({ record }) => (
@@ -1601,6 +1601,7 @@ The most common use case is to display two submit buttons in the `<Create>` view
 
 For that use case, use the `<SaveButton>` component with a custom `onSuccess` prop:
 
+{% raw %}
 ```jsx
 import * as React from "react";
 import { Create, SimpleForm, SaveButton, Toolbar, useRedirect } from 'react-admin';
@@ -1640,6 +1641,7 @@ export const PostCreate = () => (
     </Create>
 );
 ```
+{% endraw %}
 
 Another use case is to remove the `<DeleteButton>` from the toolbar in an edit view. In that case, create a custom toolbar containing only the `<SaveButton>` as a child:
 
@@ -1729,7 +1731,7 @@ To override the style of all instances of `<Toolbar>` components using the [mate
 
 ```jsx
 import * as React from "react";
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 
 const CustomButton = props => <Button label="My Custom Button" {...props} />
 
@@ -1839,7 +1841,7 @@ import {
     SimpleForm,
     TextInput,
 } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 
 const useStyles = makeStyles({
     inlineBlock: { display: 'inline-flex', marginRight: '1rem' },

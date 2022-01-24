@@ -336,17 +336,16 @@ const CreateAuthor = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [name, setName] = React.useState(filter || '');
     const [language, setLanguage] = React.useState('');
-    const [create] = useCreate('authors');
+    const [create] = useCreate();
 
     const handleSubmit = event => {
         event.preventDefault();
         create(
+            'authors',
             {
-                payload: {
-                    data: {
-                        name,
-                        language,
-                    },
+                data: {
+                    name,
+                    language,
                 },
             },
             {

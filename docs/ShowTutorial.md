@@ -232,7 +232,7 @@ const BookShow = () => (
 );
 ```
 
-And that's it! React-admin components are not magic, they are React commponents designed to let you focus on the business logic and avoid repetitive tasks.
+And that's it! React-admin components are not magic, they are React components designed to let you focus on the business logic and avoid repetitive tasks.
 
 **Tip**: Actually, `<Show>` does more than the code it replaces in the previous example: it redirects to the List view if the call to `useGetOne` returns an error, it sets the page title, and stores all the data it prepared in a `<ShowContext>`.
 

@@ -104,6 +104,36 @@ describe('useDelete', () => {
         });
     });
 
+    it('accepts a meta parameter', async () => {
+        const dataProvider = testDataProvider({
+            delete: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+        });
+        let localDeleteOne;
+        const Dummy = () => {
+            const [deleteOne] = useDelete();
+            localDeleteOne = deleteOne;
+            return <span />;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+            </CoreAdminContext>
+        );
+        localDeleteOne('foo', {
+            id: 1,
+            previousData: { id: 1, bar: 'bar' },
+            meta: { hello: 'world' },
+        });
+        await waitFor(() => {
+            expect(dataProvider.delete).toHaveBeenCalledWith('foo', {
+                id: 1,
+                previousData: { id: 1, bar: 'bar' },
+                meta: { hello: 'world' },
+            });
+        });
+    });
+
     it('returns data typed based on the parametric type', async () => {
         interface Product extends RaRecord {
             sku: string;

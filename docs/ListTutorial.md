@@ -148,7 +148,7 @@ const BookList = () => {
 };
 ```
 
-`<Datagrid>`does more than the previous table: it renders table headers depending on the current sort, and allows you to change the sort order by clicking a column header. Also, for each row, `<Datagrid>` creates a `RecordContext`, which lets you use react-admin Field and Buttons without explicitely passing the row data.
+`<Datagrid>` does more than the previous table: it renders table headers depending on the current sort, and allows you to change the sort order by clicking a column header. Also, for each row, `<Datagrid>` creates a `RecordContext`, which lets you use react-admin Field and Buttons without explicitly passing the row data.
 
 ## `ListContext` Exposes List Data To Descendents
 
@@ -309,7 +309,7 @@ The following example illustrates the usage of `useListContext` with a custom pa
 
 ```jsx
 import { useListContext } from 'react-admin';
-import { Toolbar, Button } from '@mui/core';
+import { Toolbar, Button } from '@mui/material';
 
 const Pagination = () => {
     const { page, setPage, total } = useListContext();
@@ -460,9 +460,9 @@ You can also handle the loading state inside a custom list layout by grabbing th
 
 ## Filtering the List
 
-One of the most important features of the List page is the ability to search for a dedicated record. In this documentation, we use the term "filter" for the cpontrols allowing to search the list.
+One of the most important features of the List page is the ability to search for a dedicated record. In this documentation, we use the term "filter" for the controls allowing to search the list.
 
-React-admin rovides 2 possible UIs for filters, and lets your own if they're not sufficient.
+React-admin provides 2 possible UIs for filters, and lets your own if they're not sufficient.
 
 The first filter UI is called "the Filer/Form Combo". 
 

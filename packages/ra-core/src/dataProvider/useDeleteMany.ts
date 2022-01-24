@@ -33,7 +33,7 @@ import { RaRecord, DeleteManyParams, MutationMode } from '../types';
  * - success: [deleteMany, { data: [data from response], isLoading: false, isSuccess: true }]
  * - error:   [deleteMany, { error: [error from response], isLoading: false, isError: true }]
  *
- * The deleteMany() function must be called with a resource and a parameter object: deleteMany(resource, { id, data, previousData }, options)
+ * The deleteMany() function must be called with a resource and a parameter object: deleteMany(resource, { ids, meta }, options)
  *
  * This hook uses react-query useMutation under the hood.
  * This means the state object contains mutate, isIdle, reset and other react-query methods.
@@ -160,10 +160,12 @@ export const useDeleteMany = <RecordType extends RaRecord = any>(
         ({
             resource: callTimeResource = resource,
             ids: callTimeIds = paramsRef.current.ids,
+            meta: callTimeMeta = paramsRef.current.meta,
         } = {}) =>
             dataProvider
                 .deleteMany<RecordType>(callTimeResource, {
                     ids: callTimeIds,
+                    meta: callTimeMeta,
                 })
                 .then(({ data }) => data),
         {
@@ -388,6 +390,7 @@ type Snapshot = [key: QueryKey, value: any][];
 export interface UseDeleteManyMutateParams<RecordType extends RaRecord = any> {
     resource?: string;
     ids?: RecordType['id'][];
+    meta?: any;
 }
 
 export type UseDeleteManyOptions<

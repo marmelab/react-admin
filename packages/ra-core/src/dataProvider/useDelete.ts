@@ -34,7 +34,7 @@ import { RaRecord, DeleteParams, MutationMode } from '../types';
  * - success: [deleteOne, { data: [data from response], isLoading: false, isSuccess: true }]
  * - error:   [deleteOne, { error: [error from response], isLoading: false, isError: true }]
  *
- * The deleteOne() function must be called with a resource and a parameter object: deleteOne(resource, { id, data, previousData }, options)
+ * The deleteOne() function must be called with a resource and a parameter object: deleteOne(resource, { id, previousData, meta }, options)
  *
  * This hook uses react-query useMutation under the hood.
  * This means the state object contains mutate, isIdle, reset and other react-query methods.
@@ -78,7 +78,7 @@ export const useDelete = <RecordType extends RaRecord = any>(
     const { id, previousData } = params;
     const { mutationMode = 'pessimistic', ...reactMutationOptions } = options;
     const mode = useRef<MutationMode>(mutationMode);
-    const paramsRef = useRef<Partial<DeleteParams<RecordType>>>({});
+    const paramsRef = useRef<Partial<DeleteParams<RecordType>>>(params);
     const snapshot = useRef<Snapshot>([]);
 
     const updateCache = ({ resource, id }) => {
@@ -148,11 +148,13 @@ export const useDelete = <RecordType extends RaRecord = any>(
             resource: callTimeResource = resource,
             id: callTimeId = paramsRef.current.id,
             previousData: callTimePreviousData = paramsRef.current.previousData,
+            meta: callTimeMeta = paramsRef.current.meta,
         } = {}) =>
             dataProvider
                 .delete<RecordType>(callTimeResource, {
                     id: callTimeId,
                     previousData: callTimePreviousData,
+                    meta: callTimeMeta,
                 })
                 .then(({ data }) => data),
         {
@@ -382,6 +384,7 @@ export interface UseDeleteMutateParams<RecordType extends RaRecord = any> {
     id?: RecordType['id'];
     data?: Partial<RecordType>;
     previousData?: any;
+    meta?: any;
 }
 
 export type UseDeleteOptions<

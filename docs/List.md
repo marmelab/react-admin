@@ -378,7 +378,7 @@ const SimpleBookList = () => {
 }
 ```
 
-The `<List emptyWhileLoading>` prop provides a convenient shorcut for that use case. When enabled, `<List>` won't render its child until `data` is defined. 
+The `<List emptyWhileLoading>` prop provides a convenient shortcut for that use case. When enabled, `<List>` won't render its child until `data` is defined. 
 
 ```diff
 const BookList = () => (

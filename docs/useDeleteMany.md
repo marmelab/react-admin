@@ -11,7 +11,7 @@ This hook allows to call `dataProvider.deleteMany()` when the callback is execut
 // syntax
 const [deleteMany, { data, isLoading, error }] = useDeleteMany(
     resource,
-    { ids },
+    { ids, meta },
     options
 );
 ```

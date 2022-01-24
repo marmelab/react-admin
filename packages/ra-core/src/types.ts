@@ -2,12 +2,6 @@ import { ReactNode, ReactElement, ComponentType } from 'react';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
-import {
-    CreateControllerProps,
-    EditControllerProps,
-    ListControllerProps,
-    ShowControllerProps,
-} from './controller';
 
 /**
  * data types
@@ -130,27 +124,27 @@ export interface GetListParams {
     pagination: PaginationPayload;
     sort: SortPayload;
     filter: any;
+    meta?: any;
 }
 export interface GetListResult<RecordType extends RaRecord = any> {
     data: RecordType[];
     total: number;
-    validUntil?: ValidUntil;
 }
 
 export interface GetOneParams<RecordType extends RaRecord = any> {
     id: RecordType['id'];
+    meta?: any;
 }
 export interface GetOneResult<RecordType extends RaRecord = any> {
     data: RecordType;
-    validUntil?: ValidUntil;
 }
 
 export interface GetManyParams {
     ids: Identifier[];
+    meta?: any;
 }
 export interface GetManyResult<RecordType extends RaRecord = any> {
     data: RecordType[];
-    validUntil?: ValidUntil;
 }
 
 export interface GetManyReferenceParams {
@@ -159,43 +153,44 @@ export interface GetManyReferenceParams {
     pagination: PaginationPayload;
     sort: SortPayload;
     filter: any;
+    meta?: any;
 }
 export interface GetManyReferenceResult<RecordType extends RaRecord = any> {
     data: RecordType[];
     total: number;
-    validUntil?: ValidUntil;
 }
 
 export interface UpdateParams<T = any> {
     id: Identifier;
     data: Partial<T>;
     previousData: T;
+    meta?: any;
 }
 export interface UpdateResult<RecordType extends RaRecord = any> {
     data: RecordType;
-    validUntil?: ValidUntil;
 }
 
 export interface UpdateManyParams<T = any> {
     ids: Identifier[];
     data: T;
+    meta?: any;
 }
 export interface UpdateManyResult<RecordType extends RaRecord = any> {
     data?: RecordType['id'][];
-    validUntil?: ValidUntil;
 }
 
 export interface CreateParams<T = any> {
     data: T;
+    meta?: any;
 }
 export interface CreateResult<RecordType extends RaRecord = any> {
     data: RecordType;
-    validUntil?: ValidUntil;
 }
 
 export interface DeleteParams<RecordType extends RaRecord = any> {
     id: Identifier;
     previousData?: RecordType;
+    meta?: any;
 }
 export interface DeleteResult<RecordType extends RaRecord = any> {
     data: RecordType;
@@ -203,6 +198,7 @@ export interface DeleteResult<RecordType extends RaRecord = any> {
 
 export interface DeleteManyParams<RecordType extends RaRecord = any> {
     ids: RecordType['id'][];
+    meta?: any;
 }
 export interface DeleteManyResult<RecordType extends RaRecord = any> {
     data?: RecordType['id'][];
@@ -338,10 +334,10 @@ export interface ResourceComponentInjectedProps {
 export interface ResourceProps {
     intent?: 'route' | 'registration';
     name: string;
-    list?: ComponentType<ListControllerProps>;
-    create?: ComponentType<CreateControllerProps>;
-    edit?: ComponentType<EditControllerProps>;
-    show?: ComponentType<ShowControllerProps>;
+    list?: ComponentType<any> | ReactElement;
+    create?: ComponentType<any> | ReactElement;
+    edit?: ComponentType<any> | ReactElement;
+    show?: ComponentType<any> | ReactElement;
     icon?: ComponentType<any>;
     options?: object;
 }

@@ -103,6 +103,19 @@ const { data: user, isLoading, error } = useGetOne(
 );
 ```
 
+## `meta` Parameter
+
+All Data Provider methods accept a `meta` parameter. React-admin doesn't set this parameter by default in its queries, but it's a good way to pass special arguments or metadata to an API call.
+
+```jsx
+const { data, isLoading, error } = useGetOne(
+    'books',
+    { id, meta: { _embed: 'authors' } },
+);
+```
+
+It's up to the Data Provider to interpret this parameter.
+
 ## `useQuery` and `useMutation`
 
 Internally, react-admin uses [react-query](https://react-query.tanstack.com/) to call the dataProvider. When fetching data from the dataProvider in your components, if you can't use any of the dataProvider method hooks, you should use that library, too. It brings several benefits:

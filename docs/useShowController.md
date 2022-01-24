@@ -136,7 +136,7 @@ const MyShow = () => {
 
 ## See Also
 
-* [`<ShowBase>`](./ShowBase.md) calls `useShowController`, puts the result in a `RecordContextProvider` and renders the component child. In many cases, you'll pefer this component to the hook version.
+* [`<ShowBase>`](./ShowBase.md) calls `useShowController`, puts the result in a `RecordContextProvider` and renders the component child. In many cases, you'll prefer this component to the hook version.
 
 ## API
 
