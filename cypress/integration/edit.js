@@ -78,7 +78,7 @@ describe('Edit Page', () => {
 
             EditPostPage.clickInput('backlinks.0.url');
             cy.get(EditPostPage.elements.input('backlinks.0.url')).blur();
-
+            EditPostPage.submit();
             cy.contains('Required');
             // FIXME: We navigate away from the page and confirm the unsaved changes
             // This is needed because HashHistory would prevent further navigation
