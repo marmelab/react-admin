@@ -765,7 +765,7 @@ This custom Edit view has no action buttons or aside component - it's up to you 
 
 The `<SimpleForm>` component reads the `record` from the `RecordContext`. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, which is passed to the `form` `onSubmit` prop.
 
-The `<SimpleForm>` renders its child components line by line (within `<div>` components). It accepts Input and Field components as children. It relies on [react-final-form](https://github.com/final-form/react-final-form) for form handling.
+The `<SimpleForm>` renders its child components line by line (within `<div>` components). It accepts Input and Field components as children. It relies on [react-hook-form](https://react-hook-form.com/) for form handling.
 
 ![post edition form](./img/post-edition.png)
 
@@ -1184,7 +1184,7 @@ export const PostCreate = () => (
 
 ## Validation
 
-React-admin relies on [react-final-form](https://github.com/final-form/react-final-form) for the validation.
+React-admin relies on [react-hook-form](https://react-hook-form.com/) for the validation.
 
 To validate values submitted by a form, you can add a `validate` prop to the form component, to individual inputs, or even mix both approaches.
 
@@ -1221,7 +1221,7 @@ export const UserCreate = () => (
 );
 ```
 
-**Tip**: The props you pass to `<SimpleForm>` and `<TabbedForm>` are passed to the [\<Form\>](https://final-form.org/docs/react-final-form/api/Form) of `react-final-form`.
+**Tip**: The props you pass to `<SimpleForm>` and `<TabbedForm>` are passed to the [useForm hook](https://react-hook-form.com/api/useform) of `react-hook-form`.
 
 **Tip**: The `validate` function can return a promise for asynchronous validation. See [the Server-Side Validation section](#server-side-validation) below.
 
@@ -1387,7 +1387,7 @@ export const ProductEdit = () => (
 ```
 {% endraw %}
 
-**Tip**: The props of your Input components are passed to a `react-final-form` [Field](https://final-form.org/docs/react-final-form/api/Field) component.
+**Tip**: The props of your Input components are passed to a `react-hook-form` [useController](https://react-hook-form.com/api/usecontroller) hook.
 
 **Tip**: You can use *both* Form validation and input validation.
 
@@ -1466,8 +1466,6 @@ export const UserCreate = () => (
     </Create>
 );
 ```
-
-**Important**: Note that asynchronous validators are not supported on the `<ArrayInput>` component due to a limitation of [react-final-form-arrays](https://github.com/final-form/react-final-form-arrays).
 
 ## Submission Validation
 
@@ -1984,7 +1982,7 @@ const VisitorForm = props => (
 );
 ```
 
-This custom form layout component uses the `Form` component, which wraps react-final-form's `Form` component. It also uses react-admin's `<SaveButton>` and a `<DeleteButton>`.
+This custom form layout component uses the `Form` component, which leverages react-hook-form's `useForm` hook. It also uses react-admin's `<SaveButton>` and a `<DeleteButton>`.
 
 **Tip**: When `Input` components have a `resource` prop, they use it to determine the input label. `<SimpleForm>` and `<TabbedForm>` inject this `resource` prop to `Input` components automatically. When you use a custom form layout, pass the `resource` prop manually - unless the `Input` has a `label` prop.
 
@@ -1998,42 +1996,32 @@ const VisitorEdit = () => (
 );
 ```
 
-**Tip**: `Form` contains some logic that you may not want. In fact, nothing forbids you from using a react-final-form [Form](https://final-form.org/docs/react-final-form/api/Form) component as root component for a custom form layout. You'll have to set initial values based the injected `record` prop manually, as follows:
+**Tip**: `Form` contains some logic that you may not want. In fact, nothing forbids you from using a react-hook-form [useForm](https://react-hook-form.com/api/useform) hook to create your own form. You'll have to set default values based the injected `record` prop manually, as follows:
 
 {% raw %}
 ```jsx
 import { sanitizeEmptyValues } from 'react-admin';
-import { Form } from 'react-final-form';
-import arrayMutators from 'final-form-arrays';
+import { useForm } from 'react-hook-form';
 import { CardContent, Typography, Box } from '@material-ui/core';
 
 // the parent component (Edit or Create) injects these props to their child
 const VisitorForm = ({ record, save, saving, version }) => {
+    const form = useForm({
+        defaultValues: record,
+    });
+
     const submit = values => {
-        // React-final-form removes empty values from the form state.
-        // To allow users to *delete* values, this must be taken into account 
-        save(sanitizeEmptyValues(record, values));
+        save(values);
     };
+
     return (
-        <Form
-            initialValues={record}
-            onSubmit={submit}
-            mutators={{ ...arrayMutators }} // necessary for ArrayInput
-            subscription={defaultSubscription} // don't redraw entire form each time one field changes
+        <form
+            onSubmit={form.handleSubmit(submit)}
             key={version} // support for refresh button
-            keepDirtyOnReinitialize
-            render={formProps => (
+        >
                 {/* render your custom form here */}
-            )}
-        />
+        </form>
     );
-};
-const defaultSubscription = {
-    submitting: true,
-    pristine: true,
-    valid: true,
-    invalid: true,
-    validating: true,
 };
 ```
 {% endraw %}
@@ -2058,21 +2046,24 @@ export const TagEdit = () => (
 );
 ```
 
-And that's all. `warnWhenUnsavedChanges` works for both `<SimpleForm>` and `<TabbedForm>`. In fact, this feature is provided by a custom hook called `useWarnWhenUnsavedChanges()`, which you can use in your own react-final-form forms.
+And that's all. `warnWhenUnsavedChanges` works for both `<SimpleForm>` and `<TabbedForm>`. In fact, this feature is provided by a custom hook called `useWarnWhenUnsavedChanges()`, which you can use in your own react-hook-form forms.
 
 ```jsx
-import { Form, Field } from 'react-final-form';
+import { useForm } from 'react-hook-form';
 import { useWarnWhenUnsavedChanges } from 'react-admin';
 
-const MyForm = () => (
-    <Form onSubmit={() => { /*...*/}} component={FormBody} />
-);
+const MyForm = ({ onSubmit }) => {
+    const form = useForm();
+    return (
+        <Form onSubmit={form.handleSubmit(onSubmit)} />
+    );
+}
 
-const FormBody = ({ handleSubmit }) => {
+const Form = ({ onSubmit }) => {
     // enable the warn when unsaved changes feature
     useWarnWhenUnsavedChanges(true);
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onSubmit}>
             <label id="firstname-label">First Name</label>
             <Field name="firstName" aria-labelledby="firstname-label" component="input" />
             <button type="submit">Submit</button>
