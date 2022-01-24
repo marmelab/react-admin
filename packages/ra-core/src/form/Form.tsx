@@ -18,10 +18,10 @@ import { useIsFormInvalid } from './useIsFormInvalid';
 import { useWarnWhenUnsavedChanges } from './useWarnWhenUnsavedChanges';
 
 /**
- * Wrapper around react-final-form's Form to handle redirection on submit,
+ * Wrapper around react-hook-form's useForm to handle redirection on submit,
  * legacy defaultValue prop, and array inputs.
  *
- * Requires a render function, just like react-final-form
+ * Requires a render function.
  *
  * @example
  *

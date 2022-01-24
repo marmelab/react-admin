@@ -121,7 +121,7 @@ export const useFormGroup = (name: string): FormGroupState => {
 /**
  * Get the state of a form group
  *
- * @param {FieldState[]} fieldStates A map of field states from final-form where the key is the field name.
+ * @param {FieldState[]} fieldStates A map of field states from react-hook-form where the key is the field name.
  * @returns {FormGroupState} The state of the group.
  */
 export const getFormGroupState = (

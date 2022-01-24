@@ -4,7 +4,6 @@ import { useTranslate, SelectArrayInput, CommonInputProps } from 'react-admin';
 import segments from '../segments/data';
 
 interface Props extends Omit<CommonInputProps, 'source'> {
-    addField?: string;
     source?: string;
 }
 
@@ -23,7 +22,6 @@ const SegmentsInput = ({ addField, ...rest }: Props) => {
 };
 
 SegmentsInput.defaultProps = {
-    addField: true,
     source: 'groups',
     resource: 'customers',
 };

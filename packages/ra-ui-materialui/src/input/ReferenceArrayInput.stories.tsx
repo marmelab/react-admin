@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Form } from 'react-final-form';
-import { CoreAdminContext, testDataProvider } from 'ra-core';
+import { CoreAdminContext, Form, testDataProvider } from 'ra-core';
 import { ThemeProvider, createTheme } from '@mui/material';
 
 import { Datagrid } from '../list';
@@ -31,7 +30,7 @@ export const WithDatagridChild = () => (
         <CoreAdminContext dataProvider={dataProvider}>
             <Form
                 onSubmit={() => {}}
-                initialValues={{ tag_ids: [5] }}
+                defaultValues={{ tag_ids: [5] }}
                 render={() => (
                     <ReferenceArrayInput
                         reference="tags"

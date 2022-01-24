@@ -1,35 +1,9 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 import { useWatch } from 'react-hook-form';
-import { FormSubscription } from 'final-form';
 import get from 'lodash/get';
 
 import warning from '../util/warning';
-
-export interface FormDataConsumerRenderParams {
-    formData: any;
-    scopedFormData?: any;
-    getSource?: (source: string) => string;
-}
-
-export type FormDataConsumerRender = (
-    params: FormDataConsumerRenderParams
-) => ReactNode;
-
-interface ConnectedProps {
-    children: FormDataConsumerRender;
-    form?: string;
-    record?: any;
-    source?: string;
-    subscription?: FormSubscription;
-    [key: string]: any;
-}
-
-interface Props extends ConnectedProps {
-    formData: any;
-    index?: number;
-}
-
 /**
  * Get the current (edited) value of the record from the form and pass it
  * to a child function
@@ -125,3 +99,26 @@ export const FormDataConsumerView = (props: Props) => {
 };
 
 export default FormDataConsumer;
+
+export interface FormDataConsumerRenderParams {
+    formData: any;
+    scopedFormData?: any;
+    getSource?: (source: string) => string;
+}
+
+export type FormDataConsumerRender = (
+    params: FormDataConsumerRenderParams
+) => ReactNode;
+
+interface ConnectedProps {
+    children: FormDataConsumerRender;
+    form?: string;
+    record?: any;
+    source?: string;
+    [key: string]: any;
+}
+
+interface Props extends ConnectedProps {
+    formData: any;
+    index?: number;
+}

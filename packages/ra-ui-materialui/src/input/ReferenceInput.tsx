@@ -7,7 +7,6 @@ import {
     warning as warningLog,
     ListContextProvider,
     ReferenceInputValue,
-    UseInputValue,
     ResourceContextProvider,
 } from 'ra-core';
 
@@ -189,10 +188,10 @@ export const ReferenceInputView = (props: ReferenceInputViewProps) => {
         error,
         helperText,
         id,
-        input,
+        field,
         isRequired,
         label,
-        meta,
+        fieldState,
         possibleValues,
         resource,
         reference,
@@ -207,7 +206,7 @@ export const ReferenceInputView = (props: ReferenceInputViewProps) => {
         throw new Error('<ReferenceInput> only accepts a single child');
     }
 
-    // This is not a final-form error but an unrecoverable error from the
+    // This is not a form error but an unrecoverable error from the
     // useReferenceInputController hook
     if (error) {
         return <ReferenceError label={label} error={error} />;
@@ -215,13 +214,13 @@ export const ReferenceInputView = (props: ReferenceInputViewProps) => {
 
     // When the useReferenceInputController returns a warning, it means it
     // had an issue trying to load the referenced record
-    // We display it by overriding the final-form meta
-    const finalMeta = warning
+    // We display it by overriding the react-hook-form fieldState
+    const finalFieldState = warning
         ? {
-              ...meta,
+              ...fieldState,
               error: warning,
           }
-        : meta;
+        : fieldState;
 
     // helperText should never be set on ReferenceInput, only in child component
     // But in a Filter component, the child helperText have to be forced to false
@@ -238,11 +237,11 @@ export const ReferenceInputView = (props: ReferenceInputViewProps) => {
                 {cloneElement(children, {
                     allowEmpty,
                     className,
-                    input,
+                    field,
                     isRequired,
                     label,
                     resource,
-                    meta: finalMeta,
+                    meta: finalFieldState,
                     source,
                     choices,
                     setFilter,

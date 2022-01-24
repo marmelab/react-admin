@@ -82,7 +82,6 @@ export interface SimpleFormViewProps extends FormWithRedirectRenderProps {
     toolbar?: ReactElement | false;
     variant?: 'standard' | 'outlined' | 'filled';
     submitOnEnter?: boolean;
-    __versions?: any; // react-final-form internal prop, missing in their type
 }
 
 const sanitizeRestProps = ({ save = null, ...props }) => props;

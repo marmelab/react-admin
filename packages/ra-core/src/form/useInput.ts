@@ -86,7 +86,7 @@ export const useInput = (props: InputProps): UseInputValue => {
 
     // Fetch the defaultValue from the record if available or apply the provided defaultValue.
     // This ensure dynamically added inputs have their value set correctly (ArrayInput for example).
-    // We don't do this for the form level defaultValues so that it works as it should in final-form
+    // We don't do this for the form level defaultValues so that it works as it should in react-hook-form
     // (ie. field level defaultValue override form level defaultValues for this field).
     const { field: controllerField, fieldState, formState } = useController({
         name: finalName,
