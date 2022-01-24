@@ -60,7 +60,6 @@ describe('Create Page', () => {
                 value: 'foo',
             },
         ]);
-        //cy.get(CreatePage.elements.submitButton).click();
         cy.get('.ra-input-backlinks').contains('Required');
     });
 
@@ -300,12 +299,12 @@ describe('Create Page', () => {
         );
     });
 
-    // Skipped as we are going to replace the RichTextInput with the tip tap version
+    // FIXME Skipped as we are going to replace the RichTextInput with the tip tap version
     it.skip('should not show rich text input error message when field is untouched', () => {
         cy.get(CreatePage.elements.richTextInputError).should('not.have.value');
     });
 
-    // Skipped as we are going to replace the RichTextInput with the tip tap version
+    // FIXME Skipped as we are going to replace the RichTextInput with the tip tap version
     it.skip('should show rich text input error message when form is submitted', () => {
         const values = [
             {
@@ -321,7 +320,7 @@ describe('Create Page', () => {
             .contains('Required');
     });
 
-    // Skipped as we are going to replace the RichTextInput with the tip tap version
+    // FIXME Skipped as we are going to replace the RichTextInput with the tip tap version
     it.skip('should not show rich text input error message when form is submitted and input is filled with text', () => {
         const values = [
             {
