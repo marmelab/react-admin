@@ -3,7 +3,6 @@ import FormDataConsumer, {
     FormDataConsumerRenderParams,
 } from './FormDataConsumer';
 import ValidationError, { ValidationErrorProps } from './ValidationError';
-import sanitizeEmptyValues from './sanitizeEmptyValues';
 
 export type {
     FormDataConsumerRender,
@@ -11,7 +10,7 @@ export type {
     ValidationErrorProps,
 };
 
-export { FormDataConsumer, sanitizeEmptyValues, ValidationError };
+export { FormDataConsumer, ValidationError };
 export * from './Form';
 export * from './validate';
 export * from './constants';

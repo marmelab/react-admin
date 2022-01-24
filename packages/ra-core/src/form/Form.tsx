@@ -117,7 +117,7 @@ export type ValidateForm = (
     data: FieldValues
 ) => FieldValues | Promise<FieldValues>;
 
-export type FormProps = FormWithRedirectOwnProps &
+export type FormProps = FormOwnProps &
     Omit<UseFormProps, 'onSubmit'> & {
         validate?: ValidateForm;
     };
@@ -131,7 +131,7 @@ export type FormWithRedirectRender = (
     props: FormWithRedirectRenderProps
 ) => React.ReactElement<any, any>;
 
-export interface FormWithRedirectOwnProps {
+export interface FormOwnProps {
     defaultValues?: any;
     formRootPathname?: string;
     record?: Partial<RaRecord>;
@@ -143,7 +143,7 @@ export interface FormWithRedirectOwnProps {
 }
 
 interface FormViewProps
-    extends Omit<FormWithRedirectOwnProps, 'onSubmit' | 'sanitizeEmptyValues'> {
+    extends Omit<FormOwnProps, 'onSubmit' | 'sanitizeEmptyValues'> {
     handleSubmit: (e?: BaseSyntheticEvent) => Promise<void>;
     warnWhenUnsavedChanges?: boolean;
 }
