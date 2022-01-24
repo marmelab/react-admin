@@ -2031,6 +2031,35 @@ const PostCreate = () => (
 )
 ```
 
+`useInput` used to return `final-form` properties such as `input ` and `meta`. It now returns `field`, `fieldState` and `formState` (see https://react-hook-form.com/api/usecontroller).
+
+```diff
+import TextField from '@material-ui/core/TextField';
+import { useInput, required } from 'react-admin';
+
+const MyInput = ({ helperText, ...props }) => {
+    const {
+-        input: { name, onChange, ...rest },
++        field,
+-        meta: { touched, error },
++        fieldState: { isTouched, invalid, error },
++        formState: { isSubmitted }
+        isRequired
+    } = useInput(props);
+
+    return (
+        <TextField
+            {...field}
+            label={props.label}
+            error={(isTouched || isSubmitted) && invalid}
+            helperText={(isTouched || isSubmitted) && invalid ? error : helperText}
+            required={isRequired}
+            {...rest}
+        />
+    );
+};
+```
+
 ## `allowEmpty` Has Been Removed From `SelectInput`, `AutocompleteInput` and `AutocompleteArrayInput`
 
 This is necessary for the underlying MaterialUI inputs as they require that the current input value is actually one of the available option. Those components now always accept an empty value (an empty string by default). If you require the input to have a non empty value, use the `required` validation. You can safely remove this prop.
