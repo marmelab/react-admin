@@ -1,5 +1,17 @@
 # Changelog
 
+## v3.19.7
+
+* Fix `<SimpleFormIterator>` assigns items indexes incorrectly ([#7123](https://github.com/marmelab/react-admin/pull/7123)) ([WiXSL](https://github.com/WiXSL))
+* Fix error messages can't be copied ([#7115](https://github.com/marmelab/react-admin/pull/7115)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<ArrayInput>` could make the form dirty on initialization ([#7112](https://github.com/marmelab/react-admin/pull/7112)) ([WiXSL](https://github.com/WiXSL))
+* Fix race condition accessing redux store after logout ([#7105](https://github.com/marmelab/react-admin/pull/7105)) ([WiXSL](https://github.com/WiXSL))
+* Fix dom warning when overriding `<AutocompleteInput>` styles ([#6486](https://github.com/marmelab/react-admin/pull/6486)) ([mohandes-jiri](https://github.com/mohandes-jiri))
+* [Doc] customizing and disabling item reordering for `<ArrayInput>` ([#7104](https://github.com/marmelab/react-admin/pull/7104)) ([vaizki](https://github.com/vaizki))
+* [Doc] Fix code snippet for choice creation in `<AutocompleteArrayInput>` and `<SelectArrayInput>` ([#7086](https://github.com/marmelab/react-admin/pull/7086)) ([kristelvdakker](https://github.com/kristelvdakker))
+* [Doc] Fix dead link in Data Providers documentation ([#7063](https://github.com/marmelab/react-admin/pull/7063)) ([Fabious](https://github.com/Fabious))
+* Bump dependencies for security warnings ([#7092](https://github.com/marmelab/react-admin/pull/7092)) ([#7128](https://github.com/marmelab/react-admin/pull/7128)) ([#7126](https://github.com/marmelab/react-admin/pull/7126)) ([#7090](https://github.com/marmelab/react-admin/pull/7090))
+
 ## v3.19.6
 
 * Fix loading indicator keeps spinning on permissions error when `logoutUser` is false ([#7044](https://github.com/marmelab/react-admin/pull/7044)) ([WiXSL](https://github.com/WiXSL))
