@@ -202,6 +202,9 @@ Default layout components (`<SimpleShowLayout>` and `<TabbedshowLayout>`) return
 That means that the following will fail on load with a "ReferenceError: record is not defined" error:
 
 ```jsx
+import { Show, useRecordContext } from 'react-admin';
+import { Card } from '@mui/material';
+
 const PostTitle = () => {
     const record = useRecordContext();
     return <span>{record.title}</span>;
@@ -219,6 +222,8 @@ const PostShow = () => (
 You can handle this case by calling the [`useShowContext`](./useShowContext.md) hook to get the loading state:
 
 ```jsx
+import { useShowContext, useRecordContext } from 'react-admin';
+
 const PostTitle = () => {
     const record = useRecordContext();
     const { isLoading } = useShowContext();
@@ -229,7 +234,7 @@ const PostTitle = () => {
 
 But this can be cumbersome, as you need to do it in every field component.
 
-The `<Show emptyWhileLoading>` prop provides a convenient shorcut for that use case. When enabled, `<Show>` won't render its child until `record` is defined. 
+The `<Show emptyWhileLoading>` prop provides a convenient shortcut for that use case. When enabled, `<Show>` won't render its child until `record` is defined. 
 
 ```diff
 const PostTitle = () => {
@@ -313,7 +318,7 @@ Here's an example inside a `Show` view with a `SimpleShowLayout` and a custom `a
 ```jsx
 import TopToolbar from '@material-ui/core/TopToolbar';
 import Button from '@material-ui/core/Button';
-import { usePermissions, EditButton, DeleteButton } from 'react-admin';
+import { Show, SimpleShowLayout, RichTextField, NumberField, usePermissions, EditButton, DeleteButton } from 'react-admin';
 
 const PostShowActions = () => {
     const permissions = usePermissions(); 
@@ -346,6 +351,8 @@ This also works inside a `TabbedShowLayout`, and you can hide a `Tab` completely
 
 {% raw %}
 ```jsx
+import { Show, TabbedShowLayout, Tab, TextField } from 'react-admin';
+
 export const UserShow = () => {
     const permissions = usePermissions();
     return (
