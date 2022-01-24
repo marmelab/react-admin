@@ -7,12 +7,12 @@ interface Props extends Omit<CommonInputProps, 'source'> {
     source?: string;
 }
 
-const SegmentsInput = ({ addField, ...rest }: Props) => {
+const SegmentsInput = (props: Props) => {
     const translate = useTranslate();
     return (
         <SelectArrayInput
             source="groups"
-            {...rest}
+            {...props}
             choices={segments.map(segment => ({
                 id: segment.id,
                 name: translate(segment.name),
