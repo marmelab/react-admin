@@ -13,7 +13,14 @@ describe('Form', () => {
     const Input = props => {
         const { field, fieldState } = useInput(props);
         return (
-            <input type="text" aria-invalid={fieldState.invalid} {...field} />
+            <>
+                <input
+                    type="text"
+                    aria-invalid={fieldState.invalid}
+                    {...field}
+                />
+                <p>{fieldState.error?.message}</p>
+            </>
         );
     };
 
@@ -144,6 +151,43 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
         await waitFor(() => {
             screen.getByText('ra.message.invalid_form');
+        });
+    });
+
+    it('Displays submission errors', async () => {
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            return notifications.length > 0 ? (
+                <div>{notifications[0].message}</div>
+            ) : null;
+        };
+
+        const onSubmit = jest.fn(() =>
+            Promise.resolve({
+                name: 'This name is already taken',
+            })
+        );
+
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <>
+                    <Form
+                        onSubmit={onSubmit}
+                        render={({ handleSubmit }) => (
+                            <form onSubmit={handleSubmit}>
+                                <Input source="name" />
+                                <button type="submit">Submit</button>
+                            </form>
+                        )}
+                    />
+                    <Notification />
+                </>
+            </CoreAdminContext>
+        );
+
+        fireEvent.click(screen.getByText('Submit'));
+        await waitFor(() => {
+            screen.getByText('This name is already taken');
         });
     });
 });

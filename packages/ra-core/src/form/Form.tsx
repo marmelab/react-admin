@@ -16,6 +16,7 @@ import { FormGroupsProvider } from './FormGroupsProvider';
 import { useInitializeFormWithRecord } from './useInitializeFormWithRecord';
 import { useIsFormInvalid } from './useIsFormInvalid';
 import { useWarnWhenUnsavedChanges } from './useWarnWhenUnsavedChanges';
+import { setSubmissionErrors } from './setSubmissionErrors';
 
 /**
  * Wrapper around react-hook-form's useForm to handle redirection on submit,
@@ -86,15 +87,20 @@ export const Form = (props: FormProps) => {
     });
 
     const handleSubmit = useCallback(
-        values => {
+        async values => {
+            let errors;
+
             if (onSubmit) {
-                return onSubmit(values);
+                errors = await onSubmit(values);
             }
-            if (saveContext?.save) {
-                saveContext.save(values);
+            if (onSubmit == null && saveContext?.save) {
+                errors = await saveContext.save(values);
+            }
+            if (errors != null) {
+                setSubmissionErrors(errors, form.setError);
             }
         },
-        [onSubmit, saveContext]
+        [form, onSubmit, saveContext]
     );
 
     return (
