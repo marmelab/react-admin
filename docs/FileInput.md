@@ -68,7 +68,7 @@ import { useMutation } from 'react-query';
 
 const MyEdit = (props) => {
     const [removeImage, setRemoveImage] = React.useState(null);
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [showModal, setShowModal] = React.useState(false);
     const dataProvider = useDataProvider();
     const { mutate } = useMutation();
 
@@ -92,22 +92,22 @@ const MyEdit = (props) => {
                                 cancelDelete: reject,
                             });
                         });
-                        setIsOpen(true);
+                        setShowModal(true);
                         return promise.then((result) => {
                             console.log('Image removed!');
                         });
                     }}
                 />
                 <Confirm
-                    isOpen={isOpen}
+                    showModal={showModal}
                     title="Delete image"
                     content={`${removeImage ? removeImage.fileName: ''} will be deleted`}
                     onConfirm={() => {
-                        setIsOpen(false);
+                        setShowModal(false);
                         removeImage && removeImage.deleteImage();
                     }}
                     onClose={() => {
-                        setIsOpen(false);
+                        setShowModal(false);
                         removeImage && removeImage.cancelDelete();
                     }}
                 />
