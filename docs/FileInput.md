@@ -67,8 +67,8 @@ import { Edit, SimpleForm, ImageInput, Confirm, useDataProvider } from 'react-ad
 import { useMutation } from 'react-query';
 
 const MyEdit = (props) => {
-    const [removeImageConfirmEvent, setRemoveImageConfirmEvent] = React.useState(null);
-    const [isRemoveImageModalOpen, setIsRemoveImageModalOpen] = React.useState(false);
+    const [removeImage, setRemoveImage] = React.useState(null);
+    const [isOpen, setIsOpen] = React.useState(false);
     const dataProvider = useDataProvider();
     const { mutate } = useMutation();
 
@@ -80,7 +80,7 @@ const MyEdit = (props) => {
                     src="image"
                     validateFileRemoval={(file, _record) => {
                         const promise = new Promise((_resolve, reject) => {
-                            setRemoveImageConfirmEvent({
+                            setRemoveImage({
                                 fileName: `Image ID: ${file.id}`,
                                 deleteImage: async (result) => {
                                     await mutate(
@@ -92,23 +92,23 @@ const MyEdit = (props) => {
                                 cancelDelete: reject,
                             });
                         });
-                        setIsRemoveImageModalOpen(true);
+                        setIsOpen(true);
                         return promise.then((result) => {
                             console.log('Image removed!');
                         });
                     }}
                 />
                 <Confirm
-                    isOpen={isRemoveImageModalOpen}
+                    isOpen={isOpen}
                     title="Delete image"
-                    content={`${removeImageConfirmEvent ? removeImageConfirmEvent.fileName: ''} will be deleted`}
+                    content={`${removeImage ? removeImage.fileName: ''} will be deleted`}
                     onConfirm={() => {
-                        setIsRemoveImageModalOpen(false);
-                        removeImageConfirmEvent && removeImageConfirmEvent.deleteImage();
+                        setIsOpen(false);
+                        removeImage && removeImage.deleteImage();
                     }}
                     onClose={() => {
-                        setIsRemoveImageModalOpen(false);
-                        removeImageConfirmEvent && removeImageConfirmEvent.cancelDelete();
+                        setIsOpen(false);
+                        removeImage && removeImage.cancelDelete();
                     }}
                 />
             </SimpleForm>
