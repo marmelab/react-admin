@@ -111,6 +111,8 @@ const englishMessages: TranslationMessages = {
             page_out_from_end: 'Cannot go after last page',
             page_out_from_begin: 'Cannot go before page 1',
             page_range_info: '%{offsetBegin}-%{offsetEnd} of %{total}',
+            partial_page_range_info:
+                '%{offsetBegin}-%{offsetEnd} of more than %{offsetEnd}',
             page_rows_per_page: 'Rows per page:',
             next: 'Next',
             prev: 'Prev',

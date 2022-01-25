@@ -23,7 +23,7 @@ import {
     ListActions,
     DateField,
     EditButton,
-    PaginationLimit,
+    Pagination,
     ReferenceField,
     ReferenceInput,
     SearchInput,
@@ -103,50 +103,6 @@ const exporter = (records, fetchRelatedRecords) =>
         });
     });
 
-const CommentPagination = () => {
-    const {
-        isLoading,
-        data,
-        page,
-        hasNextPage,
-        hasPreviousPage,
-        setPage,
-    } = useListContext();
-    const translate = useTranslate();
-
-    if (!isLoading && data && data.length === 0) {
-        return <PaginationLimit />;
-    }
-    if (!hasPreviousPage && !hasNextPage) {
-        return null;
-    }
-    return (
-        <Toolbar>
-            {hasPreviousPage && (
-                <Button
-                    color="primary"
-                    key="prev"
-                    onClick={() => setPage(page - 1)}
-                >
-                    <ChevronLeft />
-                    &nbsp;
-                    {translate('ra.navigation.prev')}
-                </Button>
-            )}
-            {hasNextPage && (
-                <Button
-                    color="primary"
-                    key="next"
-                    onClick={() => setPage(page + 1)}
-                >
-                    {translate('ra.navigation.next')}&nbsp;
-                    <ChevronRight />
-                </Button>
-            )}
-        </Toolbar>
-    );
-};
-
 const CommentGrid = () => {
     const { data } = useListContext();
     const translate = useTranslate();
@@ -178,7 +134,17 @@ const CommentGrid = () => {
                             }
                         />
                         <CardContent className={classes.cardContent}>
-                            <TextField record={record} source="body" />
+                            <TextField
+                                record={record}
+                                source="body"
+                                sx={{
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    display: '-webkit-box',
+                                    WebkitLineClamp: 2,
+                                    WebkitBoxOrient: 'vertical',
+                                }}
+                            />
                         </CardContent>
                         <CardContent className={classes.cardLink}>
                             <Typography component="span" variant="body2">
@@ -236,7 +202,7 @@ const ListView = () => {
             <Title defaultTitle={defaultTitle} />
             <ListToolbar filters={commentFilters} actions={<ListActions />} />
             {isSmall ? <CommentMobileList /> : <CommentGrid />}
-            <CommentPagination />
+            <Pagination rowsPerPageOptions={[6, 9, 12]} />
         </Root>
     );
 };

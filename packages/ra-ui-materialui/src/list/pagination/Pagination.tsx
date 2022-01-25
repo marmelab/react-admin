@@ -16,17 +16,19 @@ import {
 } from 'ra-core';
 
 import { PaginationActions } from './PaginationActions';
+import { PartialPaginationActions } from './PartialPaginationActions';
 import { PaginationLimit } from './PaginationLimit';
 
 export const Pagination: FC<PaginationProps> = memo(props => {
     const {
         rowsPerPageOptions = DefaultRowsPerPageOptions,
-        actions = PaginationActions,
+        actions,
         limit = DefaultLimit,
         ...rest
     } = props;
     const {
         isLoading,
+        hasNextPage,
         page,
         perPage,
         total,
@@ -39,7 +41,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
     );
 
     const totalPages = useMemo(() => {
-        return Math.ceil(total / perPage) || 1;
+        return total != null ? Math.ceil(total / perPage) : undefined;
     }, [perPage, total]);
 
     /**
@@ -69,23 +71,28 @@ export const Pagination: FC<PaginationProps> = memo(props => {
 
     const labelDisplayedRows = useCallback(
         ({ from, to, count }) =>
-            translate('ra.navigation.page_range_info', {
-                offsetBegin: from,
-                offsetEnd: to,
-                total: count,
-            }),
-        [translate]
+            count === -1 && hasNextPage
+                ? translate('ra.navigation.partial_page_range_info', {
+                      offsetBegin: from,
+                      offsetEnd: to,
+                  })
+                : translate('ra.navigation.page_range_info', {
+                      offsetBegin: from,
+                      offsetEnd: to,
+                      total: count === -1 ? to : count,
+                  }),
+        [translate, hasNextPage]
     );
 
     // Avoid rendering TablePagination if "page" value is invalid
-    if (total == null || total === 0 || page < 1 || page > totalPages) {
+    if (total != null && (total === 0 || page < 1 || page > totalPages)) {
         return isLoading ? <Toolbar variant="dense" /> : limit;
     }
 
     if (isSmall) {
         return (
             <TablePagination
-                count={total}
+                count={total == null ? -1 : total}
                 rowsPerPage={perPage}
                 page={page - 1}
                 onPageChange={handlePageChange}
@@ -99,12 +106,16 @@ export const Pagination: FC<PaginationProps> = memo(props => {
 
     return (
         <TablePagination
-            count={total}
+            count={total == null ? -1 : total}
             rowsPerPage={perPage}
             page={page - 1}
             onPageChange={handlePageChange}
             onRowsPerPageChange={handlePerPageChange}
-            ActionsComponent={actions}
+            // @ts-ignore
+            ActionsComponent={
+                actions ||
+                (total == null ? PartialPaginationActions : PaginationActions)
+            }
             component="span"
             labelRowsPerPage={translate('ra.navigation.page_rows_per_page')}
             labelDisplayedRows={labelDisplayedRows}
