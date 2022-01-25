@@ -65,7 +65,9 @@ describe('<FilterButton />', () => {
 
             fireEvent.click(getByLabelText('ra.action.add_filter'));
 
-            expect(getByLabelText('Returned')['disabled']).toEqual(true);
+            const filter = getByLabelText('Returned') as HTMLInputElement;
+
+            expect(filter.disabled).toEqual(true);
         });
     });
 });
