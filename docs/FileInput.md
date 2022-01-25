@@ -62,11 +62,14 @@ This prop can also be used to confirm the deletion of items to users.
 The following example shows a react-admin's `Confirm` dialog when clicking the delete button of an `FileInput` item. It will interrupt the removal of items if "YourApi.deleteImages" fails or cancel button is clicked.
 
 ```jsx
-import { Edit, SimpleForm, ImageInput, Confirm } from 'react-admin';
+import { Edit, SimpleForm, ImageInput, Confirm, useDataProvider } from 'react-admin';
+import { useMutation } from 'react-query';
 
 const MyEdit = (props) => {
     const [removeImageConfirmEvent, setRemoveImageConfirmEvent] = React.useState(null);
     const [isRemoveImageModalOpen, setIsRemoveImageModalOpen] = React.useState(false);
+    const dataProvider = useDataProvider();
+    const { mutate } = useMutation();
 
     return (
         <Edit {...props}>
@@ -78,16 +81,19 @@ const MyEdit = (props) => {
                         const promise = new Promise((_resolve, reject) => {
                             setRemoveImageConfirmEvent({
                                 fileName: `Image ID: ${file.id}`,
-                                resolve: async (result) => {
-                                    await YourApi.deleteImages({ ids: [file.id] });
+                                deleteImage: async (result) => {
+                                    await mutate(
+                                        ['deleteImages', { ids: [file.id] }],
+                                        () => dataProvider.deleteImages({ ids: [file.id] })
+                                    );
                                     return _resolve(result);
                                 },
-                                reject,
+                                cancelDelete: reject,
                             });
                         });
                         setIsRemoveImageModalOpen(true);
                         return promise.then((result) => {
-                            // Success action
+                            console.log('Image removed!');
                         });
                     }}
                 />
@@ -97,11 +103,11 @@ const MyEdit = (props) => {
                     content={`${removeImageConfirmEvent ? removeImageConfirmEvent.fileName: ''} will be deleted`}
                     onConfirm={() => {
                         setIsRemoveImageModalOpen(false);
-                        removeImageConfirmEvent && removeImageConfirmEvent.resolve();
+                        removeImageConfirmEvent && removeImageConfirmEvent.deleteImage();
                     }}
                     onClose={() => {
                         setIsRemoveImageModalOpen(false);
-                        removeImageConfirmEvent && removeImageConfirmEvent.reject();
+                        removeImageConfirmEvent && removeImageConfirmEvent.cancelDelete();
                     }}
                 />
             </SimpleForm>
