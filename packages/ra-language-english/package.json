@@ -15,8 +15,8 @@
     "module": "dist/esm/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
-        "build": "tsup --external react-hook-form src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output",
-        "watch": "tsup --external react-hook-form src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
+        "build": "tsup src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output",
+        "watch": "tsup src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
     },
     "dependencies": {
         "ra-core": "^4.0.0-alpha.1"
