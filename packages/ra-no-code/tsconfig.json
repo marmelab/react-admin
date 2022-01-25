@@ -7,7 +7,8 @@
         "declarationMap": true,
         "allowJs": false,
         "types": [
-            "jest"
+            "jest",
+            "@types/node"
         ]
     },
     "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js"],
