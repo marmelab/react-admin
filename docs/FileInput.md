@@ -11,18 +11,18 @@ title: "The FileInput Component"
 
 ## Properties
 
-| Prop            | Required | Type                 | Default                         | Description                                                                                                                                                                                                                                                                                                                                            |
-| --------------- | -------- | -------------------- | ------------------------------- | -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  |
-| `accept`        | Optional | `string | string[]`  | -                               | Accepted file type(s), e. g. 'application/json,video/*' or 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See [MDN input docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept) for syntax and examples. |
-| `children`      | Optional | `ReactNode`          | -                               | Element used to display the preview of a file (cloned several times if the select accepts multiple files).                                                                                                                                                                                                                                             |
-| `minSize`       | Optional | `number`             | 0                               | Minimum file size (in bytes), e.g. 5000 for 5KB                                                                                                                                                                                                                                                                                                       |
-| `maxSize`       | Optional | `number`             | `Infinity`                      | Maximum file size (in bytes), e.g. 5000000 for 5MB                                                                                                                                                                                                                                                                                                     |
-| `multiple`      | Optional | `boolean`            | `false`                         | Set to true if the input should accept a list of files, false if it should only accept one file                                                                                                                                                                                                                                                        |
-| `labelSingle`   | Optional | `string`             | 'ra.input.file. upload_single'  | Invite displayed in the drop zone if the input accepts one file                                                                                                                                                                                                                                                                                        |
-| `labelMultiple` | Optional | `string`             | 'ra.input.file. upload_several' | Invite displayed in the drop zone if the input accepts several files                                                                                                                                                                                                                                                                                   |
-| `placeholder`   | Optional | `ReactNode`          | -                               | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple`                                                                                                                                                                                                                                                                         |
-| `validateFileRemoval`   | Optional | `Function`          | -                               | Validate removing items. This is able to cancel to remove the file's list item by onRemove handler when you want to do so by throwing Error. `(file) => void \| Promise<void>`                                                                                                                                                                                                                                                                         |
-| `options`       | Optional | `Object`             | `{}`                            | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details .                                                                                                                                                          |
+| Prop                  | Required | Type               | Default                         | Description                                                                                                                                                                                   |
+|-----------------------| -------- |--------------------| ------------------------------- |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `accept`              | Optional | `string            | string[]`  | -                                                                                                                                                                                             | Accepted file type(s), e. g. 'application/json,video/*' or 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'. If left empty, all file types are accepted. Equivalent of the `accept` attribute of an `<input type="file">`. See [MDN input docs](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file#accept) for syntax and examples. |
+| `children`            | Optional | `ReactNode`        | -                               | Element used to display the preview of a file (cloned several times if the select accepts multiple files).                                                                                    |
+| `minSize`             | Optional | `number`           | 0                               | Minimum file size (in bytes), e.g. 5000 for 5KB                                                                                                                                               |
+| `maxSize`             | Optional | `number`           | `Infinity`                      | Maximum file size (in bytes), e.g. 5000000 for 5MB                                                                                                                                            |
+| `multiple`            | Optional | `boolean`          | `false`                         | Set to true if the input should accept a list of files, false if it should only accept one file                                                                                               |
+| `labelSingle`         | Optional | `string`           | 'ra.input.file. upload_single'  | Invite displayed in the drop zone if the input accepts one file                                                                                                                               |
+| `labelMultiple`       | Optional | `string`           | 'ra.input.file. upload_several' | Invite displayed in the drop zone if the input accepts several files                                                                                                                          |
+| `placeholder`         | Optional | `ReactNode`        | -                               | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple`                                                                                                                |
+| `validateFileRemoval` | Optional | `(file) => void | Promise<void>`          | -                                                                                                                                                                                             | Validate removing items. Allows to cancel the removal of files.                                                                                                                    |
+| `options`             | Optional | `Object`           | `{}`                            | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details.  |
 
 `<FileInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -54,15 +54,20 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 
 Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#handling-file-uploads) for base64 encoding data by extending the REST Client.
 
-The `validateFileRemoval` handler can interrupt removing visual items in your page. Given if you want to remove immediately file so call your api request in `validateFileRemoval`, then the request fails and throws error, These items don't disappear in the page.
+### `validateFileRemoval`
 
-The `validateFileRemoval` can also be used to confirm the deletion of items to users. The following is an example.
+To prevent selected files from being removed from the `FileInput` when submitting the form, use the `validateFileRemoval` prop. It should return either an empty promise (validated) or a rejected promise (failed). The latter will prevent items from being removed from the component.  
+This prop can also be used to confirm the deletion of items to users.
 
+The following example shows a react-admin's `Confirm` dialog when clicking the delete button of an `FileInput` item. It will interrupt the removal of items if "YourApi.deleteImages" fails or cancel button is clicked.
 
 ```jsx
-function Edit(props) {
-    const [removeImageConfirmEvent, setRemoveFileConfirmEvent] = useState(null);
-    const [isRemoveImageModalOpen, setIsRemoveImageModalOpen] = useState(false);
+import { Edit, SimpleForm, ImageInput, Confirm } from 'react-admin';
+
+const MyEdit = (props) => {
+    const [removeImageConfirmEvent, setRemoveImageConfirmEvent] = React.useState(null);
+    const [isRemoveImageModalOpen, setIsRemoveImageModalOpen] = React.useState(false);
+
     return (
         <Edit {...props}>
             <SimpleForm>
@@ -71,30 +76,30 @@ function Edit(props) {
                     src="image"
                     validateFileRemoval={(file, _record) => {
                         const promise = new Promise((_resolve, reject) => {
-                            setRemoveFileConfirmEvent({
+                            setRemoveImageConfirmEvent({
                                 fileName: `Image ID: ${file.id}`,
                                 resolve: async (result) => {
-                                  await YourApi.deleteImages({ ids: [file.id] });
-                                  return _resolve(result);
+                                    await YourApi.deleteImages({ ids: [file.id] });
+                                    return _resolve(result);
                                 },
                                 reject,
                             });
                         });
                         setIsRemoveImageModalOpen(true);
                         return promise.then((result) => {
-                          // Success Action if you want
+                            // Success action
                         });
                     }}
                 />
-                <SomeConfirmModal
+                <Confirm
                     isOpen={isRemoveImageModalOpen}
-                    title="delete image"
-                    message={`${removeImageConfirmEvent ? removeImageConfirmEvent.fileName: ''} will be deleted`}
-                    onSubmit={() => {
+                    title="Delete image"
+                    content={`${removeImageConfirmEvent ? removeImageConfirmEvent.fileName: ''} will be deleted`}
+                    onConfirm={() => {
                         setIsRemoveImageModalOpen(false);
                         removeImageConfirmEvent && removeImageConfirmEvent.resolve();
                     }}
-                    onCancel={() => {
+                    onClose={() => {
                         setIsRemoveImageModalOpen(false);
                         removeImageConfirmEvent && removeImageConfirmEvent.reject();
                     }}
@@ -104,9 +109,6 @@ function Edit(props) {
     )
 }
 ```
-
-This example assumes that it can show some confirm modal has two buttons, to submit and cancel, when clicking a FileInput delete button icon. Then it interrupts to remove items in the page if "YourApi.deleteImages" fails or cancel button is clicked though when succeeding to submit they are removed.
-
 
 ## `sx`: CSS API
 
