@@ -82,14 +82,14 @@ const MyEdit = (props) => {
                         const promise = new Promise((_resolve, reject) => {
                             setRemoveImage({
                                 fileName: `Image ID: ${file.id}`,
-                                deleteImage: async (result) => {
+                                delete: async (result) => {
                                     await mutate(
                                         ['deleteImages', { ids: [file.id] }],
                                         () => dataProvider.deleteImages({ ids: [file.id] })
                                     );
                                     return _resolve(result);
                                 },
-                                cancelDelete: reject,
+                                cancel: reject,
                             });
                         });
                         setShowModal(true);
@@ -104,11 +104,11 @@ const MyEdit = (props) => {
                     content={`${removeImage ? removeImage.fileName: ''} will be deleted`}
                     onConfirm={() => {
                         setShowModal(false);
-                        removeImage && removeImage.deleteImage();
+                        removeImage && removeImage.delete();
                     }}
                     onClose={() => {
                         setShowModal(false);
-                        removeImage && removeImage.cancelDelete();
+                        removeImage && removeImage.cancel();
                     }}
                 />
             </SimpleForm>
