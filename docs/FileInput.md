@@ -60,6 +60,7 @@ To prevent selected files from being removed from the `FileInput` when submittin
 This prop can also be used to confirm the deletion of items to users.
 
 The following example shows a react-admin's `Confirm` dialog when clicking the delete button of an `FileInput` item. It will interrupt the removal of items if "dataProvider.deleteImages" fails or cancel button is clicked.
+This example asumes the implementation of a `deleteImages` function in the dataProvider.
 
 ```jsx
 import { Edit, SimpleForm, ImageInput, Confirm, useDataProvider } from 'react-admin';
