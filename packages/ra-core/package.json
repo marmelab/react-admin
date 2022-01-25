@@ -20,8 +20,8 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "scripts": {
-        "build": "tsup-node src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output",
-        "watch": "tsup src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
+        "build": "tsup --external react-hook-form src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output",
+        "watch": "tsup --external react-hook-form src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
     },
     "devDependencies": {
         "@testing-library/react": "^11.2.3",
@@ -40,7 +40,7 @@
         "ra-test": "^4.0.0-alpha.1",
         "react": "^17.0.0",
         "react-dom": "^17.0.0",
-        "react-hook-form": "^7.24.1",
+        "react-hook-form": "^7.25.0",
         "react-redux": "^7.1.0",
         "react-router": "^6.1.0",
         "react-router-dom": "^6.1.0",
@@ -53,7 +53,7 @@
         "history": "^5.1.0",
         "react": "^16.9.0 || ^17.0.0",
         "react-dom": "^16.9.0 || ^17.0.0",
-        "react-hook-form": "^7.24.1",
+        "react-hook-form": "^7.25.0",
         "react-redux": "^7.1.0",
         "react-router": "^6.1.0",
         "react-router-dom": "^6.1.0",

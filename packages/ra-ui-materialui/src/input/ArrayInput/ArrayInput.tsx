@@ -88,7 +88,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
     });
 
     const {
-        _getFieldState,
+        getFieldState,
         clearErrors,
         formState,
         getValues,
@@ -111,7 +111,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
     useApplyInputDefaultValues(props);
 
     const value = useWatch({ name: source });
-    const { isDirty, invalid, error } = _getFieldState(source, formState);
+    const { isDirty, invalid, error } = getFieldState(source, formState);
 
     // As react-hook-form does not handle validation on the array itself,
     // we need to do it manually

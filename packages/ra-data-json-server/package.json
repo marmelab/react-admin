@@ -19,8 +19,8 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "scripts": {
-        "build": "tsup src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output",
-        "watch": "tsup src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
+        "build": "tsup --external react-hook-form src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output",
+        "watch": "tsup --external react-hook-form src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
     },
     "dependencies": {
         "query-string": "^5.1.1",

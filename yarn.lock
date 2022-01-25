@@ -24497,7 +24497,7 @@ __metadata:
     ra-test: ^4.0.0-alpha.1
     react: ^17.0.0
     react-dom: ^17.0.0
-    react-hook-form: ^7.24.1
+    react-hook-form: ^7.25.0
     react-is: ^17.0.2
     react-query: ^3.32.1
     react-redux: ^7.1.0
@@ -24512,7 +24512,7 @@ __metadata:
     history: ^5.1.0
     react: ^16.9.0 || ^17.0.0
     react-dom: ^16.9.0 || ^17.0.0
-    react-hook-form: ^7.24.1
+    react-hook-form: ^7.25.0
     react-redux: ^7.1.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
@@ -24774,7 +24774,7 @@ __metadata:
     react-dom: ^17.0.0
     react-dropzone: ^10.1.7
     react-error-boundary: ^3.1.4
-    react-hook-form: ^7.24.1
+    react-hook-form: ^7.25.0
     react-query: ^3.32.1
     react-redux: ^7.1.0
     react-router: ^6.1.0
@@ -25219,12 +25219,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.24.1":
-  version: 7.24.1
-  resolution: "react-hook-form@npm:7.24.1"
+"react-hook-form@npm:^7.25.0":
+  version: 7.25.0
+  resolution: "react-hook-form@npm:7.25.0"
   peerDependencies:
     react: ^16.8.0 || ^17
-  checksum: fa7e07d224c1b7bccc33b2c15a6ce7944f61fda50af774e85e0368808d770bd9deb5a68243669a1381ada574945ffc0cc0327354843845dc6088ca7a6b567fda
+  checksum: f24f9cd10c8f9127a21d81ded58e29a9b19815021b8ac41c4b7aa7c5fa88d4844b8fde5857c9a0a5df5a955afc8d8668abe320b8fe54398ae012224c1b7d7a7c
   languageName: node
   linkType: hard
 
@@ -27350,7 +27350,7 @@ __metadata:
     react-admin: ^4.0.0-alpha.1
     react-app-polyfill: ^1.0.4
     react-dom: ^17.0.0
-    react-hook-form: ^7.24.1
+    react-hook-form: ^7.25.0
     react-query: ^3.32.1
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
