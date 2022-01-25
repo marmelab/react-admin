@@ -5,7 +5,10 @@
         "rootDir": "src",
         "declaration": true,
         "declarationMap": true,
-        "allowJs": false
+        "allowJs": false,
+        "types": [
+            "jest"
+        ]
     },
     "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js"],
     "include": ["src"]
