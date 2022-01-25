@@ -2,62 +2,52 @@
     "name": "ra-input-rich-text",
     "version": "4.0.0-alpha.2",
     "description": "<RichTextInput> component for react-admin, useful for editing HTML code in admin GUIs.",
-    "main": "dist/index",
-    "module": "dist/esm/index.js",
-    "types": "dist/index.d.ts",
-    "sideEffects": false,
+    "author": "Gildas Garcia",
+    "repository": "marmelab/react-admin",
+    "homepage": "https://github.com/marmelab/react-admin#readme",
+    "bugs": "https://github.com/marmelab/react-admin/issues",
+    "license": "MIT",
     "files": [
-        "LICENSE",
         "*.md",
         "dist",
         "src"
     ],
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/marmelab/react-admin.git"
-    },
-    "keywords": [
-        "reactjs",
-        "react",
-        "react-admin",
-        "admin-on-rest",
-        "rest",
-        "richtext",
-        "html",
-        "wysiwyg",
-        "editor"
-    ],
-    "author": "François Zaninotto",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/marmelab/react-admin/issues"
-    },
-    "homepage": "https://github.com/marmelab/react-admin#readme",
+    "main": "dist/index",
+    "module": "dist/esm/index.js",
+    "types": "dist/index.d.ts",
+    "sideEffects": false,
     "scripts": {
         "build": "tsup src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output",
         "watch": "tsup src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
     },
+    "dependencies": {
+        "@tiptap/extension-link": "^2.0.0-beta.20",
+        "@tiptap/extension-placeholder": "^2.0.0-beta.30",
+        "@tiptap/extension-text-align": "^2.0.0-beta.23",
+        "@tiptap/extension-underline": "^2.0.0-beta.16",
+        "@tiptap/react": "^2.0.0-beta.63",
+        "@tiptap/starter-kit": "^2.0.0-beta.101",
+        "clsx": "^1.1.1"
+    },
     "peerDependencies": {
+        "@mui/icons-material": "^5.0.1",
         "@mui/material": "^5.0.2",
         "ra-core": "^4.0.0-alpha.2",
         "ra-ui-materialui": "^4.0.0-alpha.2",
         "react": "^16.9.0 || ^17.0.0",
         "react-dom": "^16.9.0 || ^17.0.0"
     },
-    "dependencies": {
-        "@types/quill": "~1.3.0",
-        "lodash": "~4.17.5",
-        "prop-types": "^15.6.0",
-        "quill": "~1.3.6"
-    },
     "devDependencies": {
+        "@mui/icons-material": "^5.0.1",
         "@mui/material": "^5.0.2",
         "@testing-library/react": "^11.2.3",
-        "@types/prop-types": "^15.6.0",
-        "npm-dts": "^1.3.10",
-        "ra-core": "^4.0.0-alpha.2",
-        "ra-ui-materialui": "^4.0.0-alpha.2",
-        "rimraf": "^2.6.3",
+        "data-generator-retail": "^4.0.0-alpha.0",
+        "ra-core": "^4.0.0-alpha.0",
+        "ra-data-fakerest": "^4.0.0-alpha.0",
+        "ra-ui-materialui": "^4.0.0-alpha.0",
+        "react": "^17.0.0",
+        "react-dom": "^17.0.0",
+        "react-hook-form": "^7.25.0",
         "tsup": "^5.11.11"
     }
 }

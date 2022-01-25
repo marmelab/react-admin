@@ -128,8 +128,8 @@ const PostCreate = () => {
                     <FileField source="src" title="title" />
                 </FileInput>
                 <TextInput autoFocus source="title" />
-                <TextInput source="teaser" fullWidth={true} multiline={true} />
-                <RichTextInput source="body" validate={required()} />
+                <TextInput source="teaser" fullWidth multiline />
+                <RichTextInput source="body" fullWidth validate={required()} />
                 <DependantInput dependency="title">
                     <NumberInput source="average_note" />
                 </DependantInput>
