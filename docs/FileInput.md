@@ -99,7 +99,7 @@ const MyEdit = (props) => {
                     }}
                 />
                 <Confirm
-                    showModal={showModal}
+                    isOpen={showModal}
                     title="Delete image"
                     content={`${removeImage ? removeImage.fileName: ''} will be deleted`}
                     onConfirm={() => {
