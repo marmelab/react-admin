@@ -2,7 +2,7 @@ import * as React from 'react';
 import { createElement, ComponentType, useMemo, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-import { CoreAdminRouter } from './CoreAdminRouter';
+import { CoreAdminRoutes } from './CoreAdminRoutes';
 import { Ready } from '../util';
 import {
     TitleComponent,
@@ -19,7 +19,7 @@ export type ChildrenFunction = () => ComponentType[];
 
 const DefaultLayout = ({ children }: CoreLayoutProps) => <>{children}</>;
 
-export interface AdminUIProps {
+export interface CoreAdminUIProps {
     catchAll?: CatchAllComponent;
     children?: AdminChildren;
     dashboard?: DashboardComponent;
@@ -30,14 +30,10 @@ export interface AdminUIProps {
     logout?: ComponentType;
     menu?: ComponentType;
     ready?: ComponentType;
-    theme?: object;
     title?: TitleComponent;
 }
 
-// for BC
-export type CoreAdminUIProps = AdminUIProps;
-
-const CoreAdminUI = (props: AdminUIProps) => {
+export const CoreAdminUI = (props: CoreAdminUIProps) => {
     const {
         catchAll = Noop,
         children,
@@ -49,7 +45,6 @@ const CoreAdminUI = (props: AdminUIProps) => {
         logout,
         menu, // deprecated, use a custom layout instead
         ready = Ready,
-        theme,
         title = 'React Admin',
     } = props;
 
@@ -74,15 +69,12 @@ const CoreAdminUI = (props: AdminUIProps) => {
     return (
         <Routes>
             {LoginPage !== false && LoginPage !== true ? (
-                <Route
-                    path="/login"
-                    element={<LoginPage title={title} theme={theme} />}
-                />
+                <Route path="/login" element={<LoginPage title={title} />} />
             ) : null}
             <Route
                 path="/*"
                 element={
-                    <CoreAdminRouter
+                    <CoreAdminRoutes
                         catchAll={catchAll}
                         dashboard={dashboard}
                         layout={layout}
@@ -90,11 +82,10 @@ const CoreAdminUI = (props: AdminUIProps) => {
                         logout={logoutElement}
                         menu={menu}
                         ready={ready}
-                        theme={theme}
                         title={title}
                     >
                         {children}
-                    </CoreAdminRouter>
+                    </CoreAdminRoutes>
                 }
             />
         </Routes>
@@ -102,5 +93,3 @@ const CoreAdminUI = (props: AdminUIProps) => {
 };
 
 const Noop = () => null;
-
-export default CoreAdminUI;

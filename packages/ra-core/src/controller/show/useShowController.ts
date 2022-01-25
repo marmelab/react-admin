@@ -2,11 +2,11 @@ import { useParams } from 'react-router-dom';
 import { UseQueryOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
-import useVersion from '../useVersion';
-import { Record, Identifier } from '../../types';
-import { useGetOne, Refetch } from '../../dataProvider';
+import { RaRecord } from '../../types';
+import { useGetOne, useRefresh, UseGetOneHookValue } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
-import { useNotify, useRedirect, useRefresh } from '../../sideEffect';
+import { useRedirect } from '../../routing';
+import { useNotify } from '../../notification';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 
 /**
@@ -41,7 +41,7 @@ import { useResourceContext, useGetResourceLabel } from '../../core';
  *     return <ShowView {...controllerProps} />;
  * };
  */
-export const useShowController = <RecordType extends Record = Record>(
+export const useShowController = <RecordType extends RaRecord = any>(
     props: ShowControllerProps<RecordType> = {}
 ): ShowControllerResult<RecordType> => {
     const { disableAuthentication, id: propsId, queryOptions = {} } = props;
@@ -53,7 +53,6 @@ export const useShowController = <RecordType extends Record = Record>(
     const notify = useNotify();
     const redirect = useRedirect();
     const refresh = useRefresh();
-    const version = useVersion();
     const { id: routeId } = useParams<'id'>();
     const id = propsId || decodeURIComponent(routeId);
 
@@ -67,7 +66,7 @@ export const useShowController = <RecordType extends Record = Record>(
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'warning',
                 });
-                redirect('list', `/${resource}`);
+                redirect('list', resource);
                 refresh();
             },
             retry: false,
@@ -97,18 +96,17 @@ export const useShowController = <RecordType extends Record = Record>(
         record,
         refetch,
         resource,
-        version,
     };
 };
 
-export interface ShowControllerProps<RecordType extends Record = Record> {
+export interface ShowControllerProps<RecordType extends RaRecord = any> {
     disableAuthentication?: boolean;
-    id?: Identifier;
+    id?: RecordType['id'];
     queryOptions?: UseQueryOptions<RecordType>;
     resource?: string;
 }
 
-export interface ShowControllerResult<RecordType extends Record = Record> {
+export interface ShowControllerResult<RecordType extends RaRecord = any> {
     defaultTitle: string;
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
@@ -118,6 +116,5 @@ export interface ShowControllerResult<RecordType extends Record = Record> {
     isLoading: boolean;
     resource: string;
     record?: RecordType;
-    refetch: Refetch;
-    version: number;
+    refetch: UseGetOneHookValue<RecordType>['refetch'];
 }

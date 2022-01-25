@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     CreateContextProvider,
-    Record,
+    RaRecord,
     ResourceContextProvider,
     useCheckMinimumRequiredProps,
     useCreateController,
@@ -25,7 +25,7 @@ import { CreateView } from './CreateView';
  * - actions
  * - aside
  * - component
- * - successMessage
+ * - mutationOptions
  * - title
  *
  * @example
@@ -55,7 +55,7 @@ import { CreateView } from './CreateView';
  * );
  * export default App;
  */
-export const Create = <RecordType extends Record = Record>(
+export const Create = <RecordType extends RaRecord = any>(
     props: CreateProps<RecordType> & { children: ReactElement }
 ): ReactElement => {
     useCheckMinimumRequiredProps('Create', ['children'], props);
@@ -84,12 +84,15 @@ Create.propTypes = {
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,
     hasShow: PropTypes.bool,
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
     resource: PropTypes.string,
     title: PropTypes.node,
     record: PropTypes.object,
     hasList: PropTypes.bool,
-    successMessage: PropTypes.string,
-    onSuccess: PropTypes.func,
-    onFailure: PropTypes.func,
+    mutationOptions: PropTypes.object,
     transform: PropTypes.func,
 };

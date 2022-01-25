@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { render, waitFor, fireEvent } from '@testing-library/react';
+import { screen, render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
-import { DataProvider, DataProviderContext, MutationMode } from 'ra-core';
-import { QueryClientProvider, QueryClient } from 'react-query';
-import { renderWithRedux, TestContext } from 'ra-test';
+import { CoreAdminContext, MutationMode, testDataProvider } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
@@ -15,11 +13,7 @@ import { Notification } from '../layout';
 const theme = createTheme();
 
 const invalidButtonDomProps = {
-    basePath: '',
-    handleSubmit: jest.fn(),
-    handleSubmitWithRedirect: jest.fn(),
     invalid: false,
-    onSave: jest.fn(),
     pristine: false,
     record: { id: 123, foo: 'bar' },
     redirect: 'list',
@@ -33,82 +27,61 @@ describe('<DeleteWithConfirmButton />', () => {
     it('should render a button with no DOM errors', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-        const { getByLabelText } = render(
-            <TestContext
-                initialState={{
-                    admin: {
-                        resources: {
-                            posts: {
-                                data: {
-                                    1: {
-                                        id: 1,
-                                        foo: 'bar',
-                                    },
-                                },
-                            },
-                        },
-                    },
-                }}
-            >
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
                 <ThemeProvider theme={theme}>
                     <DeleteWithConfirmButton {...invalidButtonDomProps} />
                 </ThemeProvider>
-            </TestContext>
+            </CoreAdminContext>
         );
 
         expect(spy).not.toHaveBeenCalled();
-        expect(getByLabelText('ra.action.delete').getAttribute('type')).toEqual(
-            'button'
-        );
+        expect(
+            screen.getByLabelText('ra.action.delete').getAttribute('type')
+        ).toEqual('button');
 
         spy.mockRestore();
     });
 
     const defaultEditProps = {
-        basePath: '',
         id: '123',
         resource: 'posts',
         location: {},
         match: {},
-        mutationMode: 'pessimistic',
+        mutationMode: 'pessimistic' as MutationMode,
     };
 
     it('should allow to override the resource', async () => {
-        const dataProvider = ({
+        const dataProvider = testDataProvider({
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
             delete: jest.fn().mockResolvedValueOnce({ data: { id: 123 } }),
-        } as unknown) as DataProvider;
+        });
         const EditToolbar = props => (
             <Toolbar {...props}>
                 <DeleteWithConfirmButton resource="comments" />
             </Toolbar>
         );
-        const {
-            queryByDisplayValue,
-            getByLabelText,
-            getByText,
-        } = renderWithRedux(
+        render(
             <ThemeProvider theme={theme}>
-                <QueryClientProvider client={new QueryClient()}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Edit {...defaultEditProps}>
-                            <SimpleForm toolbar={<EditToolbar />}>
-                                <TextInput source="title" />
-                            </SimpleForm>
-                        </Edit>
-                    </DataProviderContext.Provider>
-                </QueryClientProvider>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Edit {...defaultEditProps}>
+                        <SimpleForm toolbar={<EditToolbar />}>
+                            <TextInput source="title" />
+                        </SimpleForm>
+                    </Edit>
+                </CoreAdminContext>
             </ThemeProvider>
         );
         // waitFor for the dataProvider.getOne() return
         await waitFor(() => {
-            expect(queryByDisplayValue('lorem')).not.toBeNull();
+            expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(getByLabelText('ra.action.delete'));
-        fireEvent.click(getByText('ra.action.confirm'));
+        fireEvent.click(screen.getByLabelText('ra.action.delete'));
+        fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.delete).toHaveBeenCalledWith('comments', {
                 id: 123,
@@ -118,140 +91,138 @@ describe('<DeleteWithConfirmButton />', () => {
     });
 
     it('should allows to undo the deletion after confirmation if mutationMode is undoable', async () => {
-        const dataProvider = ({
+        const dataProvider = testDataProvider({
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
             delete: jest.fn().mockResolvedValueOnce({ data: { id: 123 } }),
-        } as unknown) as DataProvider;
+        });
         const EditToolbar = props => (
             <Toolbar {...props}>
                 <DeleteWithConfirmButton mutationMode="undoable" />
             </Toolbar>
         );
-        const {
-            queryByDisplayValue,
-            queryByText,
-            getByLabelText,
-            getByText,
-        } = renderWithRedux(
+        render(
             <ThemeProvider theme={theme}>
-                <QueryClientProvider client={new QueryClient()}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <>
-                            <Edit {...defaultEditProps}>
-                                <SimpleForm toolbar={<EditToolbar />}>
-                                    <TextInput source="title" />
-                                </SimpleForm>
-                            </Edit>
-                            <Notification />
-                        </>
-                    </DataProviderContext.Provider>
-                </QueryClientProvider>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <>
+                        <Edit {...defaultEditProps}>
+                            <SimpleForm toolbar={<EditToolbar />}>
+                                <TextInput source="title" />
+                            </SimpleForm>
+                        </Edit>
+                        <Notification />
+                    </>
+                </CoreAdminContext>
             </ThemeProvider>
         );
         // waitFor for the dataProvider.getOne() return
         await waitFor(() => {
-            expect(queryByDisplayValue('lorem')).not.toBeNull();
+            expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(getByLabelText('ra.action.delete'));
-        fireEvent.click(getByText('ra.action.confirm'));
+        fireEvent.click(screen.getByLabelText('ra.action.delete'));
+        fireEvent.click(screen.getByText('ra.action.confirm'));
 
         await waitFor(() => {
-            expect(queryByText('ra.notification.deleted')).not.toBeNull();
+            expect(
+                screen.queryByText('ra.notification.deleted')
+            ).not.toBeNull();
         });
-        expect(queryByText('ra.action.undo')).not.toBeNull();
+        expect(screen.queryByText('ra.action.undo')).not.toBeNull();
     });
 
-    it('should allow to override the onSuccess side effects', async () => {
-        const dataProvider = ({
+    it('should allow to override the success side effects', async () => {
+        const dataProvider = testDataProvider({
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
             delete: jest.fn().mockResolvedValueOnce({ data: { id: 123 } }),
-        } as unknown) as DataProvider;
+        });
         const onSuccess = jest.fn();
         const EditToolbar = props => (
             <Toolbar {...props}>
-                <DeleteWithConfirmButton onSuccess={onSuccess} />
+                <DeleteWithConfirmButton mutationOptions={{ onSuccess }} />
             </Toolbar>
         );
-        const {
-            queryByDisplayValue,
-            getByLabelText,
-            getByText,
-        } = renderWithRedux(
+        render(
             <ThemeProvider theme={theme}>
-                <QueryClientProvider client={new QueryClient()}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Edit {...defaultEditProps}>
-                            <SimpleForm toolbar={<EditToolbar />}>
-                                <TextInput source="title" />
-                            </SimpleForm>
-                        </Edit>
-                    </DataProviderContext.Provider>
-                </QueryClientProvider>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Edit {...defaultEditProps}>
+                        <SimpleForm toolbar={<EditToolbar />}>
+                            <TextInput source="title" />
+                        </SimpleForm>
+                    </Edit>
+                </CoreAdminContext>
             </ThemeProvider>
         );
         // waitFor for the dataProvider.getOne() return
         await waitFor(() => {
-            expect(queryByDisplayValue('lorem')).not.toBeNull();
+            expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(getByLabelText('ra.action.delete'));
-        fireEvent.click(getByText('ra.action.confirm'));
+        fireEvent.click(screen.getByLabelText('ra.action.delete'));
+        fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.delete).toHaveBeenCalled();
-            expect(onSuccess).toHaveBeenCalledWith({
-                data: { id: 123 },
-            });
+            expect(onSuccess).toHaveBeenCalledWith(
+                { id: 123 },
+                {
+                    id: 123,
+                    previousData: { id: 123, title: 'lorem' },
+                    resource: 'posts',
+                },
+                { snapshot: [] }
+            );
         });
     });
 
-    it('should allow to override the onFailure side effects', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
-        const dataProvider = ({
+    it('should allow to override the error side effects', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        const dataProvider = testDataProvider({
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
-            delete: jest.fn().mockRejectedValueOnce({ message: 'not good' }),
-        } as unknown) as DataProvider;
-        const onFailure = jest.fn();
+            delete: jest.fn().mockRejectedValueOnce(new Error('not good')),
+        });
+        const onError = jest.fn();
         const EditToolbar = props => (
             <Toolbar {...props}>
-                <DeleteWithConfirmButton onFailure={onFailure} />
+                <DeleteWithConfirmButton mutationOptions={{ onError }} />
             </Toolbar>
         );
-        const {
-            queryByDisplayValue,
-            getByLabelText,
-            getByText,
-        } = renderWithRedux(
-            <QueryClientProvider client={new QueryClient()}>
-                <ThemeProvider theme={theme}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Edit {...defaultEditProps}>
-                            <SimpleForm toolbar={<EditToolbar />}>
-                                <TextInput source="title" />
-                            </SimpleForm>
-                        </Edit>
-                    </DataProviderContext.Provider>
-                </ThemeProvider>
-            </QueryClientProvider>
+        render(
+            <ThemeProvider theme={theme}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Edit {...defaultEditProps}>
+                        <SimpleForm toolbar={<EditToolbar />}>
+                            <TextInput source="title" />
+                        </SimpleForm>
+                    </Edit>
+                </CoreAdminContext>
+            </ThemeProvider>
         );
         // waitFor for the dataProvider.getOne() return
         await waitFor(() => {
-            expect(queryByDisplayValue('lorem')).toBeDefined();
+            expect(screen.queryByDisplayValue('lorem')).toBeDefined();
         });
-        fireEvent.click(getByLabelText('ra.action.delete'));
-        fireEvent.click(getByText('ra.action.confirm'));
+        fireEvent.click(screen.getByLabelText('ra.action.delete'));
+        fireEvent.click(screen.getByText('ra.action.confirm'));
         await waitFor(() => {
             expect(dataProvider.delete).toHaveBeenCalled();
-            expect(onFailure).toHaveBeenCalledWith({
-                message: 'not good',
-            });
+            expect(onError).toHaveBeenCalledWith(
+                new Error('not good'),
+                {
+                    id: 123,
+                    previousData: { id: 123, title: 'lorem' },
+                    resource: 'posts',
+                },
+                { snapshot: [] }
+            );
         });
     });
 });

@@ -1,12 +1,16 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { useSelector, useDispatch } from 'react-redux';
+import { styled, useTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
-import { useTranslate, useLocale, useSetLocale, Title } from 'react-admin';
-import { changeTheme } from './actions';
-import { AppState } from '../types';
+import {
+    useTranslate,
+    useLocale,
+    useSetLocale,
+    useSetTheme,
+    Title,
+} from 'react-admin';
+import { darkTheme, lightTheme } from '../layout/themes';
 
 const PREFIX = 'Configuration';
 
@@ -25,8 +29,9 @@ const Configuration = () => {
     const locale = useLocale();
     const setLocale = useSetLocale();
 
-    const theme = useSelector((state: AppState) => state.theme);
-    const dispatch = useDispatch();
+    const theme = useTheme();
+    const setTheme = useSetTheme();
+
     return (
         <StyledCard>
             <Title title={translate('pos.configuration')} />
@@ -37,16 +42,20 @@ const Configuration = () => {
                 <Button
                     variant="contained"
                     className={classes.button}
-                    color={theme === 'light' ? 'primary' : 'secondary'}
-                    onClick={() => dispatch(changeTheme('light'))}
+                    color={
+                        theme.palette.mode === 'light' ? 'primary' : 'secondary'
+                    }
+                    onClick={() => setTheme(lightTheme)}
                 >
                     {translate('pos.theme.light')}
                 </Button>
                 <Button
                     variant="contained"
                     className={classes.button}
-                    color={theme === 'dark' ? 'primary' : 'secondary'}
-                    onClick={() => dispatch(changeTheme('dark'))}
+                    color={
+                        theme.palette.mode === 'dark' ? 'primary' : 'secondary'
+                    }
+                    onClick={() => setTheme(darkTheme)}
                 >
                     {translate('pos.theme.dark')}
                 </Button>

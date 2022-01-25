@@ -5,7 +5,7 @@ import {
     TranslatableContextProvider,
     useTranslatable,
     UseTranslatableOptions,
-    Record,
+    RaRecord,
     useRecordContext,
 } from 'ra-core';
 import { TranslatableFieldsTabs } from './TranslatableFieldsTabs';
@@ -14,7 +14,7 @@ import { TranslatableFieldsTabContent } from './TranslatableFieldsTabContent';
 /**
  * Provides a way to show multiple languages for any field passed as children.
  * It expects the translatable values to have the following structure:
- * { 
+ * {
  *     name: {
  *         en: 'The english value',
  *         fr: 'The french value',
@@ -60,10 +60,10 @@ import { TranslatableFieldsTabContent } from './TranslatableFieldsTabContent';
  *     );
  * }
  *
- * * @param props The component props
- * * @param {string} props.defaultLocale The locale selected by default. Default to 'en'.
- * * @param {string[]} props.locales An array of the possible locales in the form. For example [{ 'en', 'fr' }].
- * * @param {ReactElement} props.selector The element responsible for selecting a locale. Defaults to Material UI tabs.
+ * @param props The component props
+ * @param {string} props.defaultLocale The locale selected by default. Default to 'en'.
+ * @param {string[]} props.locales An array of the possible locales in the form. For example [{ 'en', 'fr' }].
+ * @param {ReactElement} props.selector The element responsible for selecting a locale. Defaults to Material UI tabs.
  */
 export const TranslatableFields = (
     props: TranslatableFieldsProps
@@ -75,7 +75,6 @@ export const TranslatableFields = (
         selector = <TranslatableFieldsTabs groupKey={groupKey} />,
         children,
         resource,
-        basePath,
     } = props;
     const record = useRecordContext(props);
     const context = useTranslatable({ defaultLocale, locales });
@@ -87,7 +86,6 @@ export const TranslatableFields = (
                 {locales.map(locale => (
                     <TranslatableFieldsTabContent
                         key={locale}
-                        basePath={basePath}
                         locale={locale}
                         record={record}
                         resource={resource}
@@ -102,9 +100,8 @@ export const TranslatableFields = (
 };
 
 export interface TranslatableFieldsProps extends UseTranslatableOptions {
-    basePath?: string;
     children: ReactNode;
-    record?: Record;
+    record?: RaRecord;
     resource?: string;
     selector?: ReactElement;
     groupKey?: string;

@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useForm } from 'react-final-form';
 import {
     AutocompleteArrayInput,
     ReferenceArrayInput,
     useCreate,
     useCreateSuggestionContext,
+    useLocale,
 } from 'react-admin';
 import {
     Button,
@@ -36,6 +37,19 @@ const StyledDialog = styled(Dialog)({
     },
 });
 
+const useTagsFilterToQuery = () => {
+    const locale = useLocale();
+    return useCallback(
+        (filter: string) =>
+            filter
+                ? {
+                      [`name.${locale}_q`]: filter,
+                  }
+                : {},
+        [locale]
+    );
+};
+
 const TagReferenceInput = ({
     ...props
 }: {
@@ -44,19 +58,25 @@ const TagReferenceInput = ({
     label?: string;
 }) => {
     const { change } = useForm();
-    const [filter, setFilter] = useState(true);
+    const [filter, setFilter] = useState({ published: true });
+    const filterToQuery = useTagsFilterToQuery();
+    const locale = useLocale();
 
     const handleAddFilter = () => {
-        setFilter(!filter);
+        setFilter(prev => ({ published: !prev.published }));
         change('tags', []);
     };
 
     return (
         <div className={classes.input}>
-            <ReferenceArrayInput {...props} filter={{ published: filter }}>
+            <ReferenceArrayInput
+                {...props}
+                filter={filter}
+                filterToQuery={filterToQuery}
+            >
                 <AutocompleteArrayInput
                     create={<CreateTag />}
-                    optionText="name.en"
+                    optionText={`name.${locale}`}
                 />
             </ReferenceArrayInput>
             <Button
@@ -73,21 +93,15 @@ const TagReferenceInput = ({
 const CreateTag = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
-    const [create] = useCreate('tags');
+    const [create] = useCreate();
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         create(
+            'tags',
+            { data: { name: { en: value } } },
+
             {
-                payload: {
-                    data: {
-                        name: {
-                            en: value,
-                        },
-                    },
-                },
-            },
-            {
-                onSuccess: ({ data }) => {
+                onSuccess: data => {
                     setValue('');
                     const choice = data;
                     onCreate(choice);

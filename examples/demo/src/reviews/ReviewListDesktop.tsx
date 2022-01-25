@@ -55,11 +55,6 @@ const ReviewListDesktop = ({
             rowClick="edit"
             // @ts-ignore
             rowStyle={rowStyle(selectedRow)}
-            classes={{
-                headerRow: classes.headerRow,
-                headerCell: classes.headerCell,
-                rowCell: classes.rowCell,
-            }}
             optimized
             {...props}
         >

@@ -3,8 +3,9 @@ import { Children, cloneElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { Card } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { CreateControllerProps, useCreateContext } from 'ra-core';
+import { RaRecord, CreateControllerProps, useCreateContext } from 'ra-core';
 import classnames from 'classnames';
+
 import { CreateProps } from '../types';
 import { TitleForRecord } from '../layout';
 
@@ -26,7 +27,6 @@ export const CreateView = (props: CreateViewProps) => {
         resource,
         save,
         saving,
-        version,
     } = useCreateContext(props);
 
     return (
@@ -63,7 +63,6 @@ export const CreateView = (props: CreateViewProps) => {
                                 ? save
                                 : children.props.save,
                         saving,
-                        version,
                     })}
                 </Content>
                 {aside &&
@@ -75,28 +74,27 @@ export const CreateView = (props: CreateViewProps) => {
                                 ? save
                                 : children.props.save,
                         saving,
-                        version,
                     })}
             </div>
         </Root>
     );
 };
 
-interface CreateViewProps
-    extends CreateProps,
-        Omit<CreateControllerProps, 'resource'> {
+interface CreateViewProps<RecordType extends RaRecord = any>
+    extends CreateProps<RecordType>,
+        Omit<CreateControllerProps<RecordType>, 'resource'> {
     children: ReactElement;
 }
 
 CreateView.propTypes = {
     actions: PropTypes.element,
     aside: PropTypes.element,
-    basePath: PropTypes.string,
     children: PropTypes.element,
     className: PropTypes.string,
     defaultTitle: PropTypes.any,
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
+    mutationOptions: PropTypes.object,
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([
         PropTypes.string,
@@ -106,38 +104,25 @@ CreateView.propTypes = {
     resource: PropTypes.string,
     save: PropTypes.func,
     title: PropTypes.node,
-    onSuccess: PropTypes.func,
-    onFailure: PropTypes.func,
-    setOnSuccess: PropTypes.func,
-    setOnFailure: PropTypes.func,
-    setTransform: PropTypes.func,
 };
 
 const sanitizeRestProps = ({
-    basePath = null,
     defaultTitle = null,
     hasCreate = null,
     hasEdit = null,
     hasList = null,
     hasShow = null,
     history = null,
-    loaded = null,
-    loading = null,
+    isFetching = null,
+    isLoading = null,
     location = null,
     match = null,
-    onFailure = null,
-    onFailureRef = null,
-    onSuccess = null,
-    onSuccessRef = null,
+    mutationOptions = null,
     options = null,
     permissions = null,
     save = null,
     saving = null,
-    setOnFailure = null,
-    setOnSuccess = null,
-    setTransform = null,
     transform = null,
-    transformRef = null,
     ...rest
 }) => rest;
 

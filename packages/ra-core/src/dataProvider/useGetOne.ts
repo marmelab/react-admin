@@ -1,6 +1,6 @@
-import { Record, GetOneParams } from '../types';
+import { RaRecord, GetOneParams } from '../types';
 import { useQuery, UseQueryOptions, UseQueryResult } from 'react-query';
-import useDataProvider from './useDataProvider';
+import { useDataProvider } from './useDataProvider';
 
 /**
  * Call the dataProvider.getOne() method and return the resolved value
@@ -16,7 +16,7 @@ import useDataProvider from './useDataProvider';
  * with the same parameters, until the response arrives.
  *
  * @param resource The resource name, e.g. 'posts'
- * @param {Params} params The getOne parameters { id }, e.g. { id: 123 }
+ * @param {Params} params The getOne parameters { id, meta }, e.g. { id: 123 }
  * @param {Options} options Options object to pass to the react-query queryClient.
  *
  * @typedef Params
@@ -40,9 +40,9 @@ import useDataProvider from './useDataProvider';
  *     return <div>User {data.username}</div>;
  * };
  */
-export const useGetOne = <RecordType extends Record = Record>(
+export const useGetOne = <RecordType extends RaRecord = any>(
     resource: string,
-    { id }: GetOneParams,
+    { id, meta }: GetOneParams<RecordType>,
     options?: UseQueryOptions<RecordType>
 ): UseGetOneHookValue<RecordType> => {
     const dataProvider = useDataProvider();
@@ -50,15 +50,15 @@ export const useGetOne = <RecordType extends Record = Record>(
         // Sometimes the id comes as a string (e.g. when read from the URL in a Show view).
         // Sometimes the id comes as a number (e.g. when read from a Record in useGetList response).
         // As the react-query cache is type-sensitive, we always stringify the identifier to get a match
-        [resource, 'getOne', String(id)],
+        [resource, 'getOne', { id: String(id), meta }],
         () =>
             dataProvider
-                .getOne<RecordType>(resource, { id })
+                .getOne<RecordType>(resource, { id, meta })
                 .then(({ data }) => data),
         options
     );
 };
 
 export type UseGetOneHookValue<
-    RecordType extends Record = Record
+    RecordType extends RaRecord = any
 > = UseQueryResult<RecordType>;

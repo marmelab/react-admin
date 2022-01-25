@@ -5,7 +5,7 @@ import {
     useListContext,
     useResourceContext,
     Identifier,
-    Record,
+    RaRecord,
     SortPayload,
     useTranslate,
 } from 'ra-core';
@@ -30,28 +30,24 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
     } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
-    const {
-        currentSort,
-        data,
-        onSelect,
-        selectedIds,
-        setSort,
-    } = useListContext(props);
+    const { sort, data, onSelect, selectedIds, setSort } = useListContext(
+        props
+    );
 
     const updateSortCallback = useCallback(
         event => {
             event.stopPropagation();
             const newField = event.currentTarget.dataset.field;
             const newOrder =
-                currentSort.field === newField
-                    ? currentSort.order === 'ASC'
+                sort.field === newField
+                    ? sort.order === 'ASC'
                         ? 'DESC'
                         : 'ASC'
                     : event.currentTarget.dataset.order;
 
-            setSort(newField, newOrder);
+            setSort({ field: newField, order: newOrder });
         },
-        [currentSort.field, currentSort.order, setSort]
+        [sort.field, sort.order, setSort]
     );
 
     const updateSort = setSort ? updateSortCallback : null;
@@ -127,11 +123,14 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                 {Children.map(children, (field, index) =>
                     isValidElement(field) ? (
                         <DatagridHeaderCell
-                            className={DatagridClasses.headerCell}
-                            currentSort={currentSort}
+                            className={classnames(
+                                DatagridClasses.headerCell,
+                                `column-${(field.props as any).source}`
+                            )}
+                            sort={sort}
                             field={field}
                             isSorting={
-                                currentSort.field ===
+                                sort.field ===
                                 ((field.props as any).sortBy ||
                                     (field.props as any).source)
                             }
@@ -149,7 +148,7 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
 DatagridHeader.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
-    currentSort: PropTypes.exact({
+    sort: PropTypes.exact({
         field: PropTypes.string,
         order: PropTypes.string,
     }),
@@ -165,22 +164,22 @@ DatagridHeader.propTypes = {
     setSort: PropTypes.func,
 };
 
-export interface DatagridHeaderProps<RecordType extends Record = Record> {
+export interface DatagridHeaderProps<RecordType extends RaRecord = any> {
     children?: React.ReactNode;
     className?: string;
     hasExpand?: boolean;
     hasBulkActions?: boolean;
-    isRowSelectable?: (record: Record) => boolean;
-    isRowExpandable?: (record: Record) => boolean;
+    isRowSelectable?: (record: RecordType) => boolean;
+    isRowExpandable?: (record: RecordType) => boolean;
     size?: 'medium' | 'small';
     // can be injected when using the component without context
-    currentSort?: SortPayload;
+    sort?: SortPayload;
     data?: RecordType[];
     onSelect?: (ids: Identifier[]) => void;
     onToggleItem?: (id: Identifier) => void;
     resource?: string;
     selectedIds?: Identifier[];
-    setSort?: (sort: string, order?: string) => void;
+    setSort?: (sort: SortPayload) => void;
 }
 
 DatagridHeader.displayName = 'DatagridHeader';

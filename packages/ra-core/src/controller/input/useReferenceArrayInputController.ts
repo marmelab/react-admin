@@ -1,17 +1,14 @@
 import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
-import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
-import difference from 'lodash/difference';
 
-import { Record, SortPayload, ReduxState, Identifier } from '../../types';
-import { useGetMany } from '../../dataProvider';
+import { RaRecord, SortPayload, Identifier } from '../../types';
+import { useGetList, useGetManyAggregate } from '../../dataProvider';
 import { FieldInputProps, useForm } from 'react-final-form';
-import { useGetList } from '../../dataProvider/useGetList';
 import { useTranslate } from '../../i18n';
 import { getStatusForArrayInput as getDataStatus } from './referenceDataStatus';
 import { useResourceContext } from '../../core';
 import { usePaginationState, useSortState } from '..';
-import { ListControllerProps } from '../list';
+import { ListControllerResult } from '../list';
 import { removeEmpty, useSafeSetState } from '../../util';
 import { ReferenceArrayInputContextValue } from './ReferenceArrayInputContext';
 
@@ -21,7 +18,6 @@ import { ReferenceArrayInputContextValue } from './ReferenceArrayInputContext';
  * @example
  *
  * const { choices, error, loaded, loading } = useReferenceArrayInputController({
- *      basePath: 'resource';
  *      record: { referenceIds: ['id1', 'id2']};
  *      reference: 'reference';
  *      resource: 'resource';
@@ -29,7 +25,6 @@ import { ReferenceArrayInputContextValue } from './ReferenceArrayInputContext';
  * });
  *
  * @param {Object} props
- * @param {string} props.basePath basepath to current resource
  * @param {Object} props.record The current resource record
  * @param {string} props.reference The linked resource name
  * @param {string} props.resource The current resource name
@@ -39,9 +34,11 @@ import { ReferenceArrayInputContextValue } from './ReferenceArrayInputContext';
  *
  * @return {Object} controllerProps Fetched data and callbacks for the ReferenceArrayInput components
  */
-export const useReferenceArrayInputController = (
-    props: UseReferenceArrayInputOptions
-): ReferenceArrayInputContextValue & Omit<ListControllerProps, 'setSort'> => {
+export const useReferenceArrayInputController = <
+    RecordType extends RaRecord = any
+>(
+    props: UseReferenceArrayInputParams<RecordType>
+): UseReferenceArrayInputControllerHookValue<RecordType> => {
     const {
         filter: defaultFilter,
         filterToQuery = defaultFilterToQuery,
@@ -59,67 +56,15 @@ export const useReferenceArrayInputController = (
     /**
      * Get the records related to the current value (with getMany)
      */
-
-    // We store the current input value in a ref so that we are able to fetch
-    // only the missing references when the input value changes
-    const inputValue = useRef(input.value);
-    const [idsToFetch, setIdsToFetch] = useState(input.value);
-    const [idsToGetFromStore, setIdsToGetFromStore] = useState(EmptyArray);
-    const referenceRecordsFromStore = useSelector((state: ReduxState) =>
-        idsToGetFromStore.map(id => state.admin.resources[reference].data[id])
-    );
-
-    // optimization: we fetch selected items only once. When the user selects more items,
-    // as we already have the past selected items in the store, we don't fetch them.
-    useEffect(() => {
-        // Only fetch new ids
-        const newIdsToFetch = difference(input.value, inputValue.current);
-        // Only get from store ids selected and already fetched
-        const newIdsToGetFromStore = difference(input.value, newIdsToFetch);
-        /*
-            input.value (current)
-                +------------------------+
-                | ********************** |
-                | ********************** |  inputValue.current (old)
-                | ********** +-----------------------+
-                | ********** | ooooooooo |           |
-                | ********** | ooooooooo |           |
-                | ********** | ooooooooo |           |
-                | ********** | ooooooooo |           |
-                +---|--------|------|----+           |
-                    |        |      |                |
-                    |        |      |                |
-                    |        +------|----------------+
-                    |               |
-            newIdsToFetch    newIdsToGetFromStore
-        */
-        // Change states each time input values changes to avoid keeping previous values no more selected
-        if (!isEqual(idsToFetch, newIdsToFetch)) {
-            setIdsToFetch(newIdsToFetch);
-        }
-        if (!isEqual(idsToGetFromStore, newIdsToGetFromStore)) {
-            setIdsToGetFromStore(newIdsToGetFromStore);
-        }
-
-        inputValue.current = input.value;
-    }, [
-        idsToFetch,
-        idsToGetFromStore,
-        input.value,
-        setIdsToFetch,
-        setIdsToGetFromStore,
-    ]);
-
     const {
-        data: referenceRecordsFetched,
+        data: referenceRecords,
         error: errorGetMany,
-        loaded,
+        isLoading: isLoadingGetMany,
+        isFetching: isFetchingGetMany,
         refetch: refetchGetMany,
-    } = useGetMany(reference, idsToFetch || EmptyArray);
-
-    const referenceRecords = referenceRecordsFetched
-        ? referenceRecordsFetched.concat(referenceRecordsFromStore)
-        : referenceRecordsFromStore;
+    } = useGetManyAggregate<RecordType>(reference, {
+        ids: input.value || EmptyArray,
+    });
 
     /**
      * Get the possible values to display as choices (with getList)
@@ -176,26 +121,22 @@ export const useReferenceArrayInputController = (
 
     // sort logic
     const sortRef = useRef(initialSort);
-    const { sort, setSort } = useSortState(initialSort);
+    const { sort, setSort: setSortState } = useSortState(initialSort);
 
-    // ReferenceArrayInput.setSort had a different signature than the one from ListContext.
-    // In order to not break backward compatibility, we added this temporary setSortForList in the
-    // ReferenceArrayInputContext
-    // FIXME remove in 4.0
-    const setSortForList = useCallback(
-        (field: string, order: string = 'ASC') => {
-            setSort({ field, order });
+    const setSort = useCallback(
+        (sort: SortPayload) => {
+            setSortState(sort);
             setPage(1);
         },
-        [setPage, setSort]
+        [setPage, setSortState]
     );
 
     // Ensure sort can be updated through props too, not just by using the setSort function
     useEffect(() => {
         if (!isEqual(initialSort, sortRef.current)) {
-            setSort(initialSort);
+            setSortState(initialSort);
         }
-    }, [setSort, initialSort]);
+    }, [setSortState, initialSort]);
 
     // Ensure pagination can be updated through props too, not just by using the setPagination function
     const paginationRef = useRef({ initialPage, initialPerPage });
@@ -267,7 +208,9 @@ export const useReferenceArrayInputController = (
     );
 
     // filter out not found references - happens when the dataProvider doesn't guarantee referential integrity
-    const finalReferenceRecords = referenceRecords.filter(Boolean);
+    const finalReferenceRecords = referenceRecords
+        ? referenceRecords.filter(Boolean)
+        : [];
 
     const isGetMatchingEnabled = enableGetChoices
         ? enableGetChoices(finalFilter)
@@ -278,8 +221,9 @@ export const useReferenceArrayInputController = (
         total,
         error: errorGetList,
         isLoading: isLoadingGetList,
+        isFetching: isFetchingGetList,
         refetch: refetchGetMatching,
-    } = useGetList(
+    } = useGetList<RecordType>(
         reference,
         { pagination, sort, filter: finalFilter },
         { retry: false, enabled: isGetMatchingEnabled, ...options }
@@ -294,7 +238,7 @@ export const useReferenceArrayInputController = (
             ? finalReferenceRecords
             : matchingReferences;
 
-    const dataStatus = getDataStatus({
+    const dataStatus = getDataStatus<RecordType>({
         input,
         matchingReferences: finalMatchingReferences,
         referenceRecords: finalReferenceRecords,
@@ -307,9 +251,8 @@ export const useReferenceArrayInputController = (
     }, [refetchGetMany, refetchGetMatching]);
 
     return {
-        basePath: props.basePath || `/${resource}`,
         choices: dataStatus.choices,
-        currentSort: sort,
+        sort,
         data: matchingReferences,
         displayedFilters,
         error:
@@ -319,11 +262,9 @@ export const useReferenceArrayInputController = (
                   })
                 : undefined,
         filterValues,
-        hasCreate: false,
         hideFilter,
-        loaded,
-        isLoading: !loaded || isLoadingGetList,
-        loading: dataStatus.waiting,
+        isFetching: isFetchingGetMany || isFetchingGetList,
+        isLoading: isLoadingGetMany || isLoadingGetList,
         onSelect,
         onToggleItem,
         onUnselectItems,
@@ -338,7 +279,6 @@ export const useReferenceArrayInputController = (
         setPagination,
         setPerPage,
         setSort,
-        setSortForList,
         showFilter,
         warning: dataStatus.warning,
         total,
@@ -348,7 +288,10 @@ export const useReferenceArrayInputController = (
 const EmptyArray = [];
 
 // concatenate and deduplicate two lists of records
-const mergeReferences = (ref1: Record[], ref2: Record[]): Record[] => {
+const mergeReferences = <RecordType extends RaRecord = any>(
+    ref1: RecordType[],
+    ref2: RecordType[]
+): RecordType[] => {
     const res = [...ref1];
     const ids = ref1.map(ref => ref.id);
     ref2.forEach(ref => {
@@ -360,20 +303,28 @@ const mergeReferences = (ref1: Record[], ref2: Record[]): Record[] => {
     return res;
 };
 
-export interface UseReferenceArrayInputOptions {
-    basePath?: string;
+export interface UseReferenceArrayInputParams<
+    RecordType extends RaRecord = any
+> {
     filter?: any;
     filterToQuery?: (filter: any) => any;
     input: FieldInputProps<any, HTMLElement>;
     options?: any;
     page?: number;
     perPage?: number;
-    record?: Record;
+    record?: RecordType;
     reference: string;
     resource?: string;
     sort?: SortPayload;
     source: string;
     enableGetChoices?: (filters: any) => boolean;
 }
+
+export type UseReferenceArrayInputControllerHookValue<
+    RecordType extends RaRecord = any
+> = ReferenceArrayInputContextValue<RecordType> &
+    Omit<ListControllerResult<RecordType>, 'setSort' | 'refetch'> & {
+        refetch: () => void;
+    };
 
 const defaultFilterToQuery = searchText => ({ q: searchText });

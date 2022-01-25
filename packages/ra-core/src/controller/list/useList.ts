@@ -2,11 +2,17 @@ import { useCallback, useEffect, useRef } from 'react';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import { removeEmpty, useSafeSetState } from '../../util';
-import { FilterPayload, Record, SortPayload } from '../../types';
+import { FilterPayload, RaRecord, SortPayload } from '../../types';
 import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
 import useSelectionState from '../useSelectionState';
-import { ListControllerProps } from './useListController';
+import { ListControllerResult } from './useListController';
+
+const refetch = () => {
+    throw new Error(
+        'refetch is not available for a ListContext built from useList based on local data'
+    );
+};
 
 /**
  * Handle filtering, sorting and pagination on local data.
@@ -33,7 +39,7 @@ import { ListControllerProps } from './useListController';
  * };
  *
  * @param {UseListOptions} props
- * @param {Record[]} props.data An array of records
+ * @param {RaRecord[]} props.data An array of records
  * @param {Boolean} props.isFetching: Optional. A boolean indicating whether the data is being loaded
  * @param {Boolean} props.isLoading: Optional. A boolean indicating whether the data has been loaded at least once
  * @param {Error | String} props.error: Optional. The error if any occurred while loading the data
@@ -42,7 +48,7 @@ import { ListControllerProps } from './useListController';
  * @param {Number} props.perPage: Optional. The initial page size
  * @param {SortPayload} props.sort: Optional. The initial sort (field and order)
  */
-export const useList = <RecordType extends Record = Record>(
+export const useList = <RecordType extends RaRecord = any>(
     props: UseListOptions<RecordType>
 ): UseListValue<RecordType> => {
     const {
@@ -61,11 +67,11 @@ export const useList = <RecordType extends Record = Record>(
     const [loadingState, setLoadingState] = useSafeSetState<boolean>(isLoading);
 
     const [finalItems, setFinalItems] = useSafeSetState<{
-        data: RecordType[];
+        data?: RecordType[];
         total: number;
     }>(() => ({
         data,
-        total: data.length,
+        total: data ? data.length : undefined,
     }));
 
     // pagination logic
@@ -75,13 +81,13 @@ export const useList = <RecordType extends Record = Record>(
     });
 
     // sort logic
-    const { sort, setSort: setSortObject } = useSortState(initialSort);
+    const { sort, setSort: setSortState } = useSortState(initialSort);
     const setSort = useCallback(
-        (field: string, order = 'ASC') => {
-            setSortObject({ field, order });
+        (sort: SortPayload) => {
+            setSortState(sort);
             setPage(1);
         },
-        [setPage, setSortObject]
+        [setPage, setSortState]
     );
 
     // selection logic
@@ -147,56 +153,64 @@ export const useList = <RecordType extends Record = Record>(
     });
 
     // We do all the data processing (filtering, sorting, paginating) client-side
-    useEffect(() => {
-        if (isLoading) return;
+    useEffect(
+        () => {
+            if (isLoading || !data) return;
 
-        // 1. filter
-        let tempData = data.filter(record =>
-            Object.entries(filterValues).every(([filterName, filterValue]) => {
-                const recordValue = get(record, filterName);
-                const result = Array.isArray(recordValue)
-                    ? Array.isArray(filterValue)
-                        ? recordValue.some(item => filterValue.includes(item))
-                        : recordValue.includes(filterValue)
-                    : Array.isArray(filterValue)
-                    ? filterValue.includes(recordValue)
-                    : filterValue == recordValue; // eslint-disable-line eqeqeq
-                return result;
-            })
-        );
+            // 1. filter
+            let tempData = data.filter(record =>
+                Object.entries(filterValues).every(
+                    ([filterName, filterValue]) => {
+                        const recordValue = get(record, filterName);
+                        const result = Array.isArray(recordValue)
+                            ? Array.isArray(filterValue)
+                                ? recordValue.some(item =>
+                                      filterValue.includes(item)
+                                  )
+                                : recordValue.includes(filterValue)
+                            : Array.isArray(filterValue)
+                            ? filterValue.includes(recordValue)
+                            : filterValue == recordValue; // eslint-disable-line eqeqeq
+                        return result;
+                    }
+                )
+            );
 
-        const filteredLength = tempData.length;
+            const filteredLength = tempData.length;
 
-        // 2. sort
-        if (sort.field) {
-            tempData = tempData.sort((a, b) => {
-                if (get(a, sort.field) > get(b, sort.field)) {
-                    return sort.order === 'ASC' ? 1 : -1;
-                }
-                if (get(a, sort.field) < get(b, sort.field)) {
-                    return sort.order === 'ASC' ? -1 : 1;
-                }
-                return 0;
+            // 2. sort
+            if (sort.field) {
+                tempData = tempData.sort((a, b) => {
+                    if (get(a, sort.field) > get(b, sort.field)) {
+                        return sort.order === 'ASC' ? 1 : -1;
+                    }
+                    if (get(a, sort.field) < get(b, sort.field)) {
+                        return sort.order === 'ASC' ? -1 : 1;
+                    }
+                    return 0;
+                });
+            }
+
+            // 3. paginate
+            tempData = tempData.slice((page - 1) * perPage, page * perPage);
+
+            setFinalItems({
+                data: tempData,
+                total: filteredLength,
             });
-        }
-
-        // 3. paginate
-        tempData = tempData.slice((page - 1) * perPage, page * perPage);
-
-        setFinalItems({
-            data: tempData,
-            total: filteredLength,
-        });
-    }, [
-        data,
-        filterValues,
-        isLoading,
-        page,
-        perPage,
-        setFinalItems,
-        sort.field,
-        sort.order,
-    ]);
+        }, // eslint-disable-next-line react-hooks/exhaustive-deps
+        [
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+            JSON.stringify(data),
+            filterValues,
+            isLoading,
+            page,
+            perPage,
+            setFinalItems,
+            sort.field,
+            sort.order,
+        ]
+    );
 
     useEffect(() => {
         if (isFetching !== fetchingState) {
@@ -211,8 +225,9 @@ export const useList = <RecordType extends Record = Record>(
     }, [isLoading, loadingState, setLoadingState]);
 
     return {
-        currentSort: sort,
+        sort,
         data: finalItems.data,
+        defaultTitle: '',
         error,
         displayedFilters,
         filterValues,
@@ -224,6 +239,8 @@ export const useList = <RecordType extends Record = Record>(
         onUnselectItems,
         page,
         perPage,
+        resource: undefined,
+        refetch,
         selectedIds,
         setFilters,
         setPage,
@@ -234,8 +251,8 @@ export const useList = <RecordType extends Record = Record>(
     };
 };
 
-export interface UseListOptions<RecordType extends Record = Record> {
-    data: RecordType[];
+export interface UseListOptions<RecordType extends RaRecord = any> {
+    data?: RecordType[];
     error?: any;
     filter?: FilterPayload;
     isFetching?: boolean;
@@ -245,10 +262,9 @@ export interface UseListOptions<RecordType extends Record = Record> {
     sort?: SortPayload;
 }
 
-export type UseListValue<RecordType extends Record = Record> = Omit<
-    ListControllerProps<RecordType>,
-    'resource' | 'basePath' | 'refetch'
->;
+export type UseListValue<
+    RecordType extends RaRecord = any
+> = ListControllerResult<RecordType>;
 
 const defaultFilter = {};
 const defaultSort = { field: null, order: null };

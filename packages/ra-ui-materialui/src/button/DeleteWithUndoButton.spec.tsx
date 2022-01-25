@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { render, waitFor, fireEvent } from '@testing-library/react';
+import { screen, render, waitFor, fireEvent } from '@testing-library/react';
 import expect from 'expect';
-import { DataProvider, DataProviderContext, MutationMode } from 'ra-core';
-import { QueryClientProvider, QueryClient } from 'react-query';
-import { renderWithRedux, TestContext } from 'ra-test';
+import { MutationMode, CoreAdminContext, testDataProvider } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { Toolbar, SimpleForm } from '../form';
@@ -14,11 +12,7 @@ import { DeleteWithUndoButton } from './DeleteWithUndoButton';
 const theme = createTheme();
 
 const invalidButtonDomProps = {
-    basePath: '',
-    handleSubmit: jest.fn(),
-    handleSubmitWithRedirect: jest.fn(),
     invalid: false,
-    onSave: jest.fn(),
     pristine: false,
     record: { id: 123, foo: 'bar' },
     redirect: 'list',
@@ -32,39 +26,23 @@ describe('<DeleteWithUndoButton />', () => {
     it('should render a button with no DOM errors', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-        const { getByLabelText } = render(
-            <TestContext
-                initialState={{
-                    admin: {
-                        resources: {
-                            posts: {
-                                data: {
-                                    1: {
-                                        id: 1,
-                                        foo: 'bar',
-                                    },
-                                },
-                            },
-                        },
-                    },
-                }}
-            >
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
                 <ThemeProvider theme={theme}>
                     <DeleteWithUndoButton {...invalidButtonDomProps} />
                 </ThemeProvider>
-            </TestContext>
+            </CoreAdminContext>
         );
 
         expect(spy).not.toHaveBeenCalled();
-        expect(getByLabelText('ra.action.delete').getAttribute('type')).toEqual(
-            'button'
-        );
+        expect(
+            screen.getByLabelText('ra.action.delete').getAttribute('type')
+        ).toEqual('button');
 
         spy.mockRestore();
     });
 
     const defaultEditProps = {
-        basePath: '',
         id: '123',
         resource: 'posts',
         location: {
@@ -78,39 +56,47 @@ describe('<DeleteWithUndoButton />', () => {
     };
 
     it('should allow to override the onSuccess side effects', async () => {
-        const dataProvider = ({
+        const dataProvider = testDataProvider({
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
+            // @ts-ignore
             delete: () => Promise.resolve({ data: { id: 123 } }),
-        } as unknown) as DataProvider;
+        });
         const onSuccess = jest.fn();
         const EditToolbar = props => (
             <Toolbar {...props}>
-                <DeleteWithUndoButton onSuccess={onSuccess} />
+                <DeleteWithUndoButton mutationOptions={{ onSuccess }} />
             </Toolbar>
         );
-        const { queryByDisplayValue, getByLabelText } = renderWithRedux(
+        render(
             <ThemeProvider theme={theme}>
-                <QueryClientProvider client={new QueryClient()}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Edit {...defaultEditProps}>
-                            <SimpleForm toolbar={<EditToolbar />}>
-                                <TextInput source="title" />
-                            </SimpleForm>
-                        </Edit>
-                    </DataProviderContext.Provider>
-                </QueryClientProvider>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Edit {...defaultEditProps}>
+                        <SimpleForm toolbar={<EditToolbar />}>
+                            <TextInput source="title" />
+                        </SimpleForm>
+                    </Edit>
+                </CoreAdminContext>
             </ThemeProvider>
         );
         // waitFor for the dataProvider.getOne() return
         await waitFor(() => {
-            expect(queryByDisplayValue('lorem')).not.toBeNull();
+            expect(screen.queryByDisplayValue('lorem')).not.toBeNull();
         });
-        fireEvent.click(getByLabelText('ra.action.delete'));
+        fireEvent.click(screen.getByLabelText('ra.action.delete'));
         await waitFor(() => {
-            expect(onSuccess).toHaveBeenCalledWith({});
+            expect(onSuccess).toHaveBeenCalledWith(
+                { id: 123, title: 'lorem' },
+                {
+                    id: 123,
+                    previousData: { id: 123, title: 'lorem' },
+                    resource: 'posts',
+                },
+                { snapshot: [] }
+            );
         });
     });
 });

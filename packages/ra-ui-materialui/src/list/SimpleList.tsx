@@ -17,12 +17,12 @@ import {
 import { Link } from 'react-router-dom';
 import {
     Identifier,
-    linkToRecord,
-    Record,
+    RaRecord,
     RecordContextProvider,
     sanitizeListRestProps,
     useListContext,
     useResourceContext,
+    useCreatePath,
 } from 'ra-core';
 
 import { SimpleListLoading } from './SimpleListLoading';
@@ -61,7 +61,7 @@ import { SimpleListLoading } from './SimpleListLoading';
  *     </List>
  * );
  */
-export const SimpleList = <RecordType extends Record = Record>(
+export const SimpleList = <RecordType extends RaRecord = any>(
     props: SimpleListProps<RecordType>
 ) => {
     const {
@@ -112,7 +112,7 @@ export const SimpleList = <RecordType extends Record = Record>(
         <Root className={className} {...sanitizeListRestProps(rest)}>
             {data.map((record, rowIndex) => (
                 <RecordContextProvider key={record.id} value={record}>
-                    <ListItem>
+                    <ListItem disablePadding>
                         <LinkOrNot
                             linkType={linkType}
                             resource={resource}
@@ -204,24 +204,24 @@ SimpleList.propTypes = {
     rowStyle: PropTypes.func,
 };
 
-export type FunctionToElement<RecordType extends Record = Record> = (
+export type FunctionToElement<RecordType extends RaRecord = any> = (
     record: RecordType,
     id: Identifier
 ) => ReactNode;
 
-export interface SimpleListProps<RecordType extends Record = Record>
+export interface SimpleListProps<RecordType extends RaRecord = any>
     extends Omit<ListProps, 'classes'> {
     className?: string;
     hasBulkActions?: boolean;
     leftAvatar?: FunctionToElement<RecordType>;
     leftIcon?: FunctionToElement<RecordType>;
     primaryText?: FunctionToElement<RecordType> | ReactElement;
-    linkType?: string | FunctionLinkType | boolean;
+    linkType?: string | FunctionLinkType | false;
     rightAvatar?: FunctionToElement<RecordType>;
     rightIcon?: FunctionToElement<RecordType>;
     secondaryText?: FunctionToElement<RecordType> | ReactElement;
     tertiaryText?: FunctionToElement<RecordType> | ReactElement;
-    rowStyle?: (record: Record, index: number) => any;
+    rowStyle?: (record: RecordType, index: number) => any;
     // can be injected when using the component without context
     resource?: string;
     data?: RecordType[];
@@ -242,33 +242,11 @@ const LinkOrNot = (
         record,
         ...rest
     } = props;
-    const link =
+    const createPath = useCreatePath();
+    const type =
         typeof linkType === 'function' ? linkType(record, id) : linkType;
 
-    return link === 'edit' || link === true ? (
-        // @ts-ignore
-        <ListItemButton
-            component={Link}
-            to={linkToRecord(`/${resource}`, id)}
-            {...rest}
-        >
-            {children}
-        </ListItemButton>
-    ) : link === 'show' ? (
-        // @ts-ignore
-        <ListItemButton
-            component={Link}
-            to={`${linkToRecord(`/${resource}`, id)}/show`}
-            {...rest}
-        >
-            {children}
-        </ListItemButton>
-    ) : link !== false ? (
-        // @ts-ignore
-        <ListItemButton component={Link} to={link} {...rest}>
-            {children}
-        </ListItemButton>
-    ) : (
+    return type === false ? (
         <ListItemText
             // @ts-ignore
             component="div"
@@ -276,16 +254,25 @@ const LinkOrNot = (
         >
             {children}
         </ListItemText>
+    ) : (
+        // @ts-ignore
+        <ListItemButton
+            component={Link}
+            to={createPath({ resource, id, type })}
+            {...rest}
+        >
+            {children}
+        </ListItemButton>
     );
 };
 
-export type FunctionLinkType = (record: Record, id: Identifier) => string;
+export type FunctionLinkType = (record: RaRecord, id: Identifier) => string;
 
 export interface LinkOrNotProps {
-    linkType?: string | FunctionLinkType | boolean;
+    linkType?: string | FunctionLinkType | false;
     resource: string;
     id: Identifier;
-    record: Record;
+    record: RaRecord;
     children: ReactNode;
 }
 

@@ -35,17 +35,17 @@ import {
  * import * as React from 'react';
  * import { TopToolbar, SortButton, CreateButton, ExportButton } from 'react-admin';
  *
- * const ListActions = props => (
+ * const ListActions = () => (
  *     <TopToolbar>
  *         <SortButton fields={['reference', 'sales', 'stock']} />
- *         <CreateButton basePath={props.basePath} />
+ *         <CreateButton />
  *         <ExportButton />
  *     </TopToolbar>
  * );
  */
 const SortButton = (props: SortButtonProps) => {
     const { fields, label = 'ra.sort.sort_by', icon = defaultIcon } = props;
-    const { resource, currentSort, setSort } = useListSortContext();
+    const { resource, sort, setSort } = useListSortContext();
     const translate = useTranslate();
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
@@ -63,12 +63,10 @@ const SortButton = (props: SortButtonProps) => {
         event: React.MouseEvent<HTMLLIElement, MouseEvent>
     ) => {
         const field = event.currentTarget.dataset.sort;
-        setSort(
+        setSort({
             field,
-            field === currentSort.field
-                ? inverseOrder(currentSort.order)
-                : 'ASC'
-        );
+            order: field === sort.field ? inverseOrder(sort.order) : 'ASC',
+        });
         setAnchorEl(null);
     };
 
@@ -76,10 +74,10 @@ const SortButton = (props: SortButtonProps) => {
         field: translate(
             ...getFieldLabelTranslationArgs({
                 resource,
-                source: currentSort.field,
+                source: sort.field,
             })
         ),
-        order: translate(`ra.sort.${currentSort.order}`),
+        order: translate(`ra.sort.${sort.order}`),
         _: label,
     });
 
@@ -130,8 +128,8 @@ const SortButton = (props: SortButtonProps) => {
                         )}{' '}
                         {translate(
                             `ra.sort.${
-                                currentSort.field === field
-                                    ? inverseOrder(currentSort.order)
+                                sort.field === field
+                                    ? inverseOrder(sort.order)
                                     : 'ASC'
                             }`
                         )}

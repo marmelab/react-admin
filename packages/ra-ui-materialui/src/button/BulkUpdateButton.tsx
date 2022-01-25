@@ -20,10 +20,10 @@ import { MutationMode } from 'ra-core';
  * import { Fragment } from 'react';
  * import { BulkUpdateButton, BulkExportButton } from 'react-admin';
  *
- * const PostBulkActionButtons = ({ basePath }) => (
+ * const PostBulkActionButtons = () => (
  *     <Fragment>
  *         <BulkExportButton />
- *         <BulkUpdateButton label="Reset Views" data={{ views: 0 }} basePath={basePath} />
+ *         <BulkUpdateButton label="Reset Views" data={{ views: 0 }} />
  *     </Fragment>
  * );
  *
@@ -51,7 +51,6 @@ export type BulkUpdateButtonProps = Props &
     (BulkUpdateWithUndoButtonProps | BulkUpdateWithConfirmButtonProps);
 
 BulkUpdateButton.propTypes = {
-    basePath: PropTypes.string,
     label: PropTypes.string,
     resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any),

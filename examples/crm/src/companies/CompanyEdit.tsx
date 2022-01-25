@@ -6,7 +6,6 @@ import {
     SimpleForm,
     TextInput,
     SelectInput,
-    useRecordContext,
     required,
 } from 'react-admin';
 import { Box, CardContent, Divider } from '@mui/material';
@@ -35,8 +34,12 @@ const StyledEdit = styled(Edit)({
 
 export const CompanyEdit = () => {
     return (
-        <StyledEdit aside={<CompanyAside link="show" />} actions={false}>
-            <SimpleForm component={CustomLayout} redirect="show">
+        <StyledEdit
+            aside={<CompanyAside link="show" />}
+            actions={false}
+            redirect="show"
+        >
+            <SimpleForm component={CustomLayout}>
                 <TextInput source="name" validate={required()} fullWidth />
                 <SelectInput
                     source="sector"
@@ -84,19 +87,16 @@ export const CompanyEdit = () => {
     );
 };
 
-const CustomLayout = (props: any) => {
-    const record = useRecordContext(props);
-    return (
-        <CardContent>
-            <Box display="flex">
-                <LogoField record={record as any} />
-                <Box ml={2} flex="1" maxWidth={796}>
-                    {props.children}
-                </Box>
+const CustomLayout = (props: any) => (
+    <CardContent>
+        <Box display="flex">
+            <LogoField />
+            <Box ml={2} flex="1" maxWidth={796}>
+                {props.children}
             </Box>
-        </CardContent>
-    );
-};
+        </Box>
+    </CardContent>
+);
 
 const CustomDivider = () => (
     <Box mb={2}>

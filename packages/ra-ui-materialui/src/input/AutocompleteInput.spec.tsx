@@ -1,10 +1,17 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { renderWithRedux } from 'ra-test';
+import { Form } from 'react-final-form';
+import { FormDataConsumer, TestTranslationProvider } from 'ra-core';
+import { SimpleForm } from '../form';
 
 import { AutocompleteInput } from './AutocompleteInput';
-import { Form } from 'react-final-form';
-import { TestTranslationProvider } from 'ra-core';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
+import { InsideReferenceInput } from './AutocompleteInput.stories';
+import { createTheme } from '@mui/material/styles';
+import { defaultTheme } from '../defaultTheme';
+import { ThemeProvider } from '../layout';
 
 describe('<AutocompleteInput />', () => {
     const defaultProps = {
@@ -437,8 +444,10 @@ describe('<AutocompleteInput />', () => {
             />
         );
         const input = screen.getByLabelText('resources.users.fields.role');
-        fireEvent.change(input, { target: { value: 'bar' } });
-        expect(setFilter).toHaveBeenCalledTimes(1);
+        userEvent.type(input, '{selectall}bar');
+        await waitFor(() => {
+            expect(setFilter).toHaveBeenCalledTimes(1);
+        });
         expect(setFilter).toHaveBeenCalledWith('bar');
 
         rerender(
@@ -655,7 +664,7 @@ describe('<AutocompleteInput />', () => {
         input.focus();
         fireEvent.change(input, { target: { value: 'New Kid On The Block' } });
         fireEvent.click(screen.getByText('ra.action.create_item'));
-        await new Promise(resolve => setImmediate(resolve));
+        await new Promise(resolve => setTimeout(resolve));
         rerender(
             <Form
                 validateOnBlur
@@ -782,6 +791,7 @@ describe('<AutocompleteInput />', () => {
         fireEvent.change(input, { target: { value: 'New Kid On The Block' } });
         fireEvent.click(screen.getByText('ra.action.create_item'));
         fireEvent.click(screen.getByText('Get the kid'));
+        await new Promise(resolve => setTimeout(resolve));
         rerender(
             <Form
                 validateOnBlur
@@ -804,5 +814,66 @@ describe('<AutocompleteInput />', () => {
         fireEvent.blur(input);
         fireEvent.focus(input);
         expect(screen.queryByText('New Kid On The Block')).not.toBeNull();
+    });
+
+    it('should work inside a ReferenceInput field', async () => {
+        render(<InsideReferenceInput />);
+        await waitFor(() => {
+            expect(
+                (screen.getByRole('textbox') as HTMLInputElement).value
+            ).toBe('Leo Tolstoy');
+        });
+        screen.getByRole('textbox').focus();
+        fireEvent.click(screen.getByLabelText('Clear value'));
+        await waitFor(() => {
+            expect(screen.getByText('Victor Hugo'));
+            expect(screen.getByText('Leo Tolstoy'));
+        });
+        fireEvent.change(screen.getByRole('textbox'), {
+            target: { value: 'Vic' },
+        });
+        await waitFor(() => {
+            expect(screen.getByText('Victor Hugo'));
+            expect(screen.queryByText('Leo Tolstoy')).toBeNull();
+        });
+    });
+
+    it("should allow to edit the input if it's inside a FormDataConsumer", () => {
+        const { getByLabelText } = renderWithRedux(
+            <ThemeProvider theme={createTheme(defaultTheme)}>
+                <SimpleForm validateOnBlur resource="posts">
+                    <FormDataConsumer>
+                        {({ formData, ...rest }) => {
+                            return (
+                                <AutocompleteInput
+                                    label="Id"
+                                    choices={[
+                                        {
+                                            name: 'General Practitioner',
+                                            id: 'GeneralPractitioner',
+                                        },
+                                        {
+                                            name: 'Physiotherapist',
+                                            id: 'Physiotherapist',
+                                        },
+                                        {
+                                            name: 'Clinical Pharmacist',
+                                            id: 'ClinicalPharmacist',
+                                        },
+                                    ]}
+                                    source="id"
+                                />
+                            );
+                        }}
+                    </FormDataConsumer>
+                </SimpleForm>
+            </ThemeProvider>
+        );
+        const input = getByLabelText('Id', {
+            selector: 'input',
+        }) as HTMLInputElement;
+        fireEvent.focus(input);
+        userEvent.type(input, 'Hello World!');
+        expect(input.value).toEqual('Hello World!');
     });
 });

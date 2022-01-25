@@ -217,12 +217,11 @@ export const FilterFormClasses = {
 
 const StyledForm = styled('form', { name: PREFIX })(({ theme }) => ({
     [`&.${FilterFormClasses.form}`]: {
-        marginTop: theme.spacing(-2),
-        paddingTop: 0,
+        marginTop: theme.spacing(-1),
+        minHeight: theme.spacing(8),
         display: 'flex',
         alignItems: 'flex-end',
         flexWrap: 'wrap',
-        minHeight: theme.spacing(10),
         pointerEvents: 'none',
     },
 

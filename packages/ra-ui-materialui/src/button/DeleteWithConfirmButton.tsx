@@ -1,20 +1,15 @@
-import React, {
-    Fragment,
-    ReactEventHandler,
-    ReactElement,
-    SyntheticEvent,
-} from 'react';
+import React, { Fragment, ReactEventHandler, ReactElement } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import ActionDelete from '@mui/icons-material/Delete';
 import classnames from 'classnames';
 import inflection from 'inflection';
+import { UseMutationOptions } from 'react-query';
 import {
     MutationMode,
-    OnSuccess,
-    OnFailure,
-    Record,
+    RaRecord,
+    DeleteParams,
     RedirectionSideEffect,
     useDeleteWithConfirmController,
     useResourceContext,
@@ -24,11 +19,10 @@ import {
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
 
-export const DeleteWithConfirmButton = (
-    props: DeleteWithConfirmButtonProps
+export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
+    props: DeleteWithConfirmButtonProps<RecordType>
 ) => {
     const {
-        basePath,
         className,
         confirmTitle = 'ra.message.delete_title',
         confirmContent = 'ra.message.delete_content',
@@ -38,8 +32,7 @@ export const DeleteWithConfirmButton = (
         onClick,
         record,
         redirect = 'list',
-        onSuccess,
-        onFailure,
+        mutationOptions,
         ...rest
     } = props;
     const translate = useTranslate();
@@ -48,18 +41,16 @@ export const DeleteWithConfirmButton = (
 
     const {
         open,
-        loading,
+        isLoading,
         handleDialogOpen,
         handleDialogClose,
         handleDelete,
     } = useDeleteWithConfirmController({
         record,
         redirect,
-        basePath,
         mutationMode,
         onClick,
-        onSuccess,
-        onFailure,
+        mutationOptions,
         resource,
     });
 
@@ -80,7 +71,7 @@ export const DeleteWithConfirmButton = (
             </StyledButton>
             <Confirm
                 isOpen={open}
-                loading={loading}
+                loading={isLoading}
                 title={confirmTitle}
                 content={confirmContent}
                 translateOptions={{
@@ -105,8 +96,8 @@ export const DeleteWithConfirmButton = (
 
 const defaultIcon = <ActionDelete />;
 
-interface Props {
-    basePath?: string;
+export interface DeleteWithConfirmButtonProps<RecordType extends RaRecord = any>
+    extends Omit<ButtonProps, 'record'> {
     className?: string;
     confirmTitle?: string;
     confirmContent?: React.ReactNode;
@@ -114,24 +105,22 @@ interface Props {
     label?: string;
     mutationMode?: MutationMode;
     onClick?: ReactEventHandler<any>;
-    record?: Record;
+    record?: RecordType;
     redirect?: RedirectionSideEffect;
     resource?: string;
     // May be injected by Toolbar - sanitized in Button
-    handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
-    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
     invalid?: boolean;
     pristine?: boolean;
     saving?: boolean;
     submitOnEnter?: boolean;
-    onSuccess?: OnSuccess;
-    onFailure?: OnFailure;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        unknown,
+        DeleteParams<RecordType>
+    >;
 }
 
-export type DeleteWithConfirmButtonProps = Props & ButtonProps;
-
 DeleteWithConfirmButton.propTypes = {
-    basePath: PropTypes.string,
     className: PropTypes.string,
     confirmTitle: PropTypes.string,
     confirmContent: PropTypes.string,

@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Fragment, useState, ReactElement } from 'react';
+import { Fragment, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import ActionDelete from '@mui/icons-material/Delete';
 import inflection from 'inflection';
 import { alpha, styled } from '@mui/material/styles';
 import {
-    CRUD_DELETE_MANY,
     MutationMode,
     useDeleteMany,
     useListContext,
@@ -14,6 +13,7 @@ import {
     useResourceContext,
     useTranslate,
     useUnselectAll,
+    useSafeSetState,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
@@ -24,7 +24,6 @@ export const BulkDeleteWithConfirmButton = (
     props: BulkDeleteWithConfirmButtonProps
 ) => {
     const {
-        basePath,
         confirmTitle = 'ra.message.bulk_delete_title',
         confirmContent = 'ra.message.bulk_delete_content',
         icon = defaultIcon,
@@ -34,40 +33,47 @@ export const BulkDeleteWithConfirmButton = (
         ...rest
     } = props;
     const { selectedIds } = useListContext(props);
-    const [isOpen, setOpen] = useState(false);
+    const [isOpen, setOpen] = useSafeSetState(false);
     const notify = useNotify();
     const unselectAll = useUnselectAll();
     const refresh = useRefresh();
     const translate = useTranslate();
     const resource = useResourceContext(props);
-    const [deleteMany, { loading }] = useDeleteMany(resource, selectedIds, {
-        action: CRUD_DELETE_MANY,
-        onSuccess: () => {
-            refresh();
-            notify('ra.notification.deleted', 'info', {
-                smart_count: selectedIds.length,
-            });
-            unselectAll(resource);
-        },
-        onFailure: error => {
-            notify(
-                typeof error === 'string'
-                    ? error
-                    : error.message || 'ra.notification.http_error',
-                'warning',
-                {
-                    _:
-                        typeof error === 'string'
-                            ? error
-                            : error && error.message
-                            ? error.message
-                            : undefined,
-                }
-            );
-            setOpen(false);
-        },
-        mutationMode,
-    });
+    const [deleteMany, { isLoading }] = useDeleteMany(
+        resource,
+        { ids: selectedIds },
+        {
+            onSuccess: () => {
+                refresh();
+                notify('ra.notification.deleted', {
+                    type: 'info',
+                    messageArgs: { smart_count: selectedIds.length },
+                });
+                unselectAll(resource);
+                setOpen(false);
+            },
+            onError: (error: Error) => {
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : error.message || 'ra.notification.http_error',
+                    {
+                        type: 'warning',
+                        messageArgs: {
+                            _:
+                                typeof error === 'string'
+                                    ? error
+                                    : error && error.message
+                                    ? error.message
+                                    : undefined,
+                        },
+                    }
+                );
+                setOpen(false);
+            },
+            mutationMode,
+        }
+    );
 
     const handleClick = e => {
         setOpen(true);
@@ -98,7 +104,7 @@ export const BulkDeleteWithConfirmButton = (
             </StyledButton>
             <Confirm
                 isOpen={isOpen}
-                loading={loading}
+                loading={isLoading}
                 title={confirmTitle}
                 content={confirmContent}
                 translateOptions={{
@@ -125,14 +131,14 @@ export const BulkDeleteWithConfirmButton = (
 };
 
 const sanitizeRestProps = ({
-    basePath,
     classes,
     filterValues,
     label,
+    selectedIds,
     ...rest
 }: Omit<
     BulkDeleteWithConfirmButtonProps,
-    'resource' | 'selectedIds' | 'icon' | 'mutationMode'
+    'resource' | 'icon' | 'mutationMode'
 >) => rest;
 
 export interface BulkDeleteWithConfirmButtonProps
@@ -166,7 +172,6 @@ const StyledButton = styled(Button, { name: PREFIX })(({ theme }) => ({
 const defaultIcon = <ActionDelete />;
 
 BulkDeleteWithConfirmButton.propTypes = {
-    basePath: PropTypes.string,
     confirmTitle: PropTypes.string,
     confirmContent: PropTypes.string,
     icon: PropTypes.element,

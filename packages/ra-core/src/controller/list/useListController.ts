@@ -1,25 +1,14 @@
-import { isValidElement, ReactElement, useEffect, useMemo } from 'react';
-import { Location } from 'history';
+import { isValidElement, useEffect, useMemo } from 'react';
 import { UseQueryOptions } from 'react-query';
 
 import { useAuthenticated } from '../../auth';
 import { useTranslate } from '../../i18n';
-import { useNotify } from '../../sideEffect';
-import { useGetList, Refetch } from '../../dataProvider';
-import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
+import { useNotify } from '../../notification';
+import { useGetList, UseGetListHookValue } from '../../dataProvider';
+import { SORT_ASC } from './queryReducer';
 import { defaultExporter } from '../../export';
-import {
-    FilterPayload,
-    SortPayload,
-    Identifier,
-    Record,
-    Exporter,
-} from '../../types';
-import {
-    useResourceContext,
-    useResourceDefinition,
-    useGetResourceLabel,
-} from '../../core';
+import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
+import { useResourceContext, useGetResourceLabel } from '../../core';
 import useRecordSelection from '../useRecordSelection';
 import { useListParams } from './useListParams';
 
@@ -40,7 +29,7 @@ import { useListParams } from './useListParams';
  *     return <ListView {...controllerProps} {...props} />;
  * }
  */
-export const useListController = <RecordType extends Record = Record>(
+export const useListController = <RecordType extends RaRecord = any>(
     props: ListControllerProps<RecordType> = {}
 ): ListControllerResult<RecordType> => {
     const {
@@ -56,7 +45,6 @@ export const useListController = <RecordType extends Record = Record>(
     } = props;
     useAuthenticated({ enabled: !disableAuthentication });
     const resource = useResourceContext(props);
-    const { hasCreate } = useResourceDefinition(props);
 
     if (!resource) {
         throw new Error(
@@ -83,10 +71,6 @@ export const useListController = <RecordType extends Record = Record>(
 
     const [selectedIds, selectionModifiers] = useRecordSelection(resource);
 
-    /**
-     * We want the list of ids to be always available for optimistic rendering,
-     * and therefore we need a custom action (CRUD_GET_LIST) that will be used.
-     */
     const { data, total, error, isLoading, isFetching, refetch } = useGetList<
         RecordType
     >(
@@ -103,13 +87,12 @@ export const useListController = <RecordType extends Record = Record>(
             keepPreviousData: true,
             retry: false,
             onError: error =>
-                notify(
-                    error?.message || 'ra.notification.http_error',
-                    'warning',
-                    {
+                notify(error?.message || 'ra.notification.http_error', {
+                    type: 'warning',
+                    messageArgs: {
                         _: error?.message,
-                    }
-                ),
+                    },
+                }),
             ...queryOptions,
         }
     );
@@ -144,7 +127,7 @@ export const useListController = <RecordType extends Record = Record>(
     });
 
     return {
-        currentSort,
+        sort: currentSort,
         data,
         defaultTitle,
         displayedFilters: query.displayedFilters,
@@ -152,7 +135,6 @@ export const useListController = <RecordType extends Record = Record>(
         exporter,
         filter,
         filterValues: query.filterValues,
-        hasCreate,
         hideFilter: queryModifiers.hideFilter,
         isFetching,
         isLoading,
@@ -173,25 +155,20 @@ export const useListController = <RecordType extends Record = Record>(
     };
 };
 
-export interface ListControllerProps<RecordType extends Record = Record> {
+export interface ListControllerProps<RecordType extends RaRecord = any> {
+    debounce?: number;
     disableAuthentication?: boolean;
-    // the props you can change
+    /**
+     * Whether to disable the synchronization of the list parameters with the current location (URL search parameters)
+     */
+    disableSyncWithLocation?: boolean;
+    exporter?: Exporter | false;
     filter?: FilterPayload;
-    filters?: ReactElement | ReactElement[];
     filterDefaultValues?: object;
     perPage?: number;
-    sort?: SortPayload;
-    exporter?: Exporter | false;
     queryOptions?: UseQueryOptions<{ data: RecordType[]; total: number }>;
-    // the props managed by react-admin
-    debounce?: number;
-    location?: Location;
-    path?: string;
     resource?: string;
-    // Whether to disable the synchronization of the list parameters
-    // with the current location (URL search parameters)
-    disableSyncWithLocation?: boolean;
-    [key: string]: any;
+    sort?: SortPayload;
 }
 
 const defaultSort = {
@@ -199,8 +176,8 @@ const defaultSort = {
     order: SORT_ASC,
 };
 
-export interface ListControllerResult<RecordType extends Record = Record> {
-    currentSort: SortPayload;
+export interface ListControllerResult<RecordType extends RaRecord = any> {
+    sort: SortPayload;
     data: RecordType[];
     defaultTitle?: string;
     displayedFilters: any;
@@ -208,18 +185,17 @@ export interface ListControllerResult<RecordType extends Record = Record> {
     exporter?: Exporter | false;
     filter?: FilterPayload;
     filterValues: any;
-    hasCreate?: boolean;
     hideFilter: (filterName: string) => void;
     isFetching: boolean;
     isLoading: boolean;
-    onSelect: (ids: Identifier[]) => void;
-    onToggleItem: (id: Identifier) => void;
+    onSelect: (ids: RecordType['id'][]) => void;
+    onToggleItem: (id: RecordType['id']) => void;
     onUnselectItems: () => void;
     page: number;
     perPage: number;
-    refetch: Refetch;
+    refetch: UseGetListHookValue<RecordType>['refetch'];
     resource: string;
-    selectedIds: Identifier[];
+    selectedIds: RecordType['id'][];
     setFilters: (
         filters: any,
         displayedFilters: any,
@@ -227,21 +203,19 @@ export interface ListControllerResult<RecordType extends Record = Record> {
     ) => void;
     setPage: (page: number) => void;
     setPerPage: (page: number) => void;
-    setSort: (sort: string, order?: string) => void;
+    setSort: (sort: SortPayload) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
     total: number;
 }
 
 export const injectedProps = [
-    'basePath',
-    'currentSort',
+    'sort',
     'data',
     'defaultTitle',
     'displayedFilters',
     'error',
     'exporter',
     'filterValues',
-    'hasCreate',
     'hideFilter',
     'isFetching',
     'isLoading',
@@ -261,7 +235,6 @@ export const injectedProps = [
     'showFilter',
     'total',
     'totalPages',
-    'version',
 ];
 
 /**

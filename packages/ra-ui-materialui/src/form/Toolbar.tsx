@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { Children, isValidElement, ReactElement, FC, ReactNode } from 'react';
+import { Children, isValidElement, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import {
     Toolbar as MuiToolbar,
@@ -9,8 +9,7 @@ import {
     Theme,
 } from '@mui/material';
 import classnames from 'classnames';
-import { Record, RedirectionSideEffect, MutationMode } from 'ra-core';
-import { FormRenderProps } from 'react-final-form';
+import { RaRecord, MutationMode } from 'ra-core';
 
 import { SaveButton, DeleteButton } from '../button';
 
@@ -51,18 +50,18 @@ import { SaveButton, DeleteButton } from '../button';
  * @prop {string} width Apply to the mobile or desktop classes depending on its value. Pass `xs` to display the mobile version.
  *
  */
-export const Toolbar: FC<ToolbarProps> = props => {
+export const Toolbar = <
+    RecordType extends Partial<RaRecord> = Partial<RaRecord>
+>(
+    props: ToolbarProps<RecordType>
+) => {
     const {
         alwaysEnableSaveButton,
-        basePath,
         children,
         className,
-        handleSubmit,
-        handleSubmitWithRedirect,
         invalid,
         pristine,
         record,
-        redirect,
         resource,
         saving,
         submitOnEnter = true,
@@ -96,18 +95,14 @@ export const Toolbar: FC<ToolbarProps> = props => {
             {Children.count(children) === 0 ? (
                 <div className={ToolbarClasses.defaultToolbar}>
                     <SaveButton
-                        handleSubmitWithRedirect={
-                            handleSubmitWithRedirect || handleSubmit
-                        }
                         disabled={disabled}
                         invalid={invalid}
-                        redirect={redirect}
                         saving={saving || validating}
                         submitOnEnter={submitOnEnter}
                     />
                     {record && typeof record.id !== 'undefined' && (
                         <DeleteButton
-                            basePath={basePath}
+                            // @ts-ignore
                             record={record}
                             resource={resource}
                             mutationMode={mutationMode}
@@ -118,19 +113,6 @@ export const Toolbar: FC<ToolbarProps> = props => {
                 Children.map(children, (button: ReactElement) =>
                     button && isValidElement<any>(button)
                         ? React.cloneElement(button, {
-                              basePath: valueOrDefault(
-                                  button.props.basePath,
-                                  basePath
-                              ),
-                              handleSubmit: valueOrDefault(
-                                  button.props.handleSubmit,
-                                  handleSubmit
-                              ),
-                              handleSubmitWithRedirect: valueOrDefault(
-                                  button.props.handleSubmitWithRedirect,
-                                  handleSubmitWithRedirect
-                              ),
-                              onSave: button.props.onSave,
                               invalid,
                               pristine,
                               record: valueOrDefault(
@@ -158,40 +140,27 @@ export const Toolbar: FC<ToolbarProps> = props => {
     );
 };
 
-export interface ToolbarProps<RecordType extends Record = Record>
+export interface ToolbarProps<RecordType extends Partial<RaRecord> = any>
     extends Omit<MuiToolbarProps, 'classes'> {
     children?: ReactNode;
     alwaysEnableSaveButton?: boolean;
     className?: string;
-
-    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
-    handleSubmit?: FormRenderProps['handleSubmit'];
     invalid?: boolean;
     mutationMode?: MutationMode;
     pristine?: boolean;
     saving?: boolean;
     submitOnEnter?: boolean;
-    redirect?: RedirectionSideEffect;
-    basePath?: string;
     record?: RecordType;
     resource?: string;
     validating?: boolean;
 }
 
 Toolbar.propTypes = {
-    basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
-    handleSubmit: PropTypes.func,
-    handleSubmitWithRedirect: PropTypes.func,
     invalid: PropTypes.bool,
     pristine: PropTypes.bool,
     record: PropTypes.any,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
     resource: PropTypes.string,
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,

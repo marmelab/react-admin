@@ -1,13 +1,14 @@
 import React from 'react';
 import expect from 'expect';
-import { act } from '@testing-library/react';
-import { Location } from 'history';
+import { render, act } from '@testing-library/react';
+import { Location } from 'react-router-dom';
+import { Provider } from 'react-redux';
 
 import { getRecordFromLocation } from './useCreateController';
 import { CreateController } from './CreateController';
-import { renderWithRedux } from 'ra-test';
-import { DataProviderContext } from '../../dataProvider';
-import { DataProvider } from '../../types';
+import { testDataProvider } from '../../dataProvider';
+import { useNotificationContext } from '../../notification';
+import { CoreAdminContext, createAdminStore } from '../../core';
 
 describe('useCreateController', () => {
     describe('getRecordFromLocation', () => {
@@ -49,7 +50,6 @@ describe('useCreateController', () => {
     });
 
     const defaultProps = {
-        basePath: '',
         hasCreate: true,
         hasEdit: true,
         hasList: true,
@@ -59,115 +59,131 @@ describe('useCreateController', () => {
     };
 
     it('should call the dataProvider.create() function on save', async () => {
-        const create = jest
-            .fn()
-            .mockImplementationOnce((_, { data }) =>
-                Promise.resolve({ data: { id: 123, ...data } })
-            );
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
-            create,
-        } as unknown) as DataProvider;
+        const dataProvider = testDataProvider({
+            getOne: () => Promise.resolve({ data: { id: 12 } } as any),
+            create: jest
+                .fn()
+                .mockImplementationOnce((_, { data }) =>
+                    Promise.resolve({ data: { id: 123, ...data } })
+                ),
+        });
         let saveCallback;
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <CreateController {...defaultProps}>
                     {({ save }) => {
                         saveCallback = save;
                         return null;
                     }}
                 </CreateController>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </CoreAdminContext>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
-        expect(create).toHaveBeenCalledWith('posts', {
+        expect(dataProvider.create).toHaveBeenCalledWith('posts', {
             data: { foo: 'bar' },
         });
     });
 
     it('should execute default success side effects on success', async () => {
         let saveCallback;
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
+        const dataProvider = testDataProvider({
+            getOne: () => Promise.resolve({ data: { id: 12 } } as any),
             create: (_, { data }) =>
                 Promise.resolve({ data: { id: 123, ...data } }),
-        } as unknown) as DataProvider;
-        const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+        });
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
                 <CreateController {...defaultProps}>
                     {({ save }) => {
                         saveCallback = save;
                         return null;
                     }}
                 </CreateController>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </CoreAdminContext>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
-        const notify = dispatch.mock.calls.find(
-            params => params[0].type === 'RA/SHOW_NOTIFICATION'
-        );
-        expect(notify[0]).toEqual({
-            type: 'RA/SHOW_NOTIFICATION',
-            payload: {
-                messageArgs: { smart_count: 1 },
-                type: 'info',
+        expect(notificationsSpy).toEqual([
+            {
                 message: 'ra.notification.created',
+                type: 'info',
+                notificationOptions: { messageArgs: { smart_count: 1 } },
             },
-        });
+        ]);
     });
 
     it('should execute default failure side effects on failure', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+        jest.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
+        const dataProvider = testDataProvider({
+            getOne: () => Promise.resolve({ data: { id: 12 } } as any),
             create: () => Promise.reject({ message: 'not good' }),
-        } as unknown) as DataProvider;
-        const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+        });
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
                 <CreateController {...defaultProps}>
                     {({ save }) => {
                         saveCallback = save;
                         return null;
                     }}
                 </CreateController>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </CoreAdminContext>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
-        const notify = dispatch.mock.calls.find(
-            params => params[0].type === 'RA/SHOW_NOTIFICATION'
-        );
-        expect(notify[0]).toEqual({
-            type: 'RA/SHOW_NOTIFICATION',
-            payload: {
-                messageArgs: { _: 'not good' },
-                type: 'warning',
+        expect(notificationsSpy).toEqual([
+            {
                 message: 'not good',
+                type: 'warning',
+                notificationOptions: { messageArgs: { _: 'not good' } },
             },
-        });
+        ]);
     });
 
-    it('should allow onSuccess to override the default success side effects', async () => {
+    it('should allow mutationOptions to override the default success side effects', async () => {
         let saveCallback;
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
+        const dataProvider = testDataProvider({
+            getOne: () => Promise.resolve({ data: { id: 12 } } as any),
             create: (_, { data }) =>
                 Promise.resolve({ data: { id: 123, ...data } }),
-        } as unknown) as DataProvider;
+        });
         const onSuccess = jest.fn();
-        const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <CreateController {...defaultProps} onSuccess={onSuccess}>
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </CreateController>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+        const store = createAdminStore();
+        const dispatch = jest.spyOn(store, 'dispatch');
+        render(
+            <Provider store={store}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <CreateController
+                        {...defaultProps}
+                        mutationOptions={{ onSuccess }}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </CreateController>
+                </CoreAdminContext>
+            </Provider>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         expect(onSuccess).toHaveBeenCalled();
@@ -179,28 +195,37 @@ describe('useCreateController', () => {
 
     it('should allow the save onSuccess option to override the success side effects override', async () => {
         let saveCallback;
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
+        const dataProvider = testDataProvider({
+            getOne: () => Promise.resolve({ data: { id: 12 } } as any),
             create: (_, { data }) =>
                 Promise.resolve({ data: { id: 123, ...data } }),
-        } as unknown) as DataProvider;
+        });
         const onSuccess = jest.fn();
         const onSuccessSave = jest.fn();
-        const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <CreateController {...defaultProps} onSuccess={onSuccess}>
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </CreateController>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+        const store = createAdminStore();
+        const dispatch = jest.spyOn(store, 'dispatch');
+        render(
+            <Provider store={store}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <CreateController
+                        {...defaultProps}
+                        mutationOptions={{ onSuccess }}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </CreateController>
+                </CoreAdminContext>
+            </Provider>
         );
         await act(async () =>
-            saveCallback({ foo: 'bar' }, undefined, {
-                onSuccess: onSuccessSave,
-            })
+            saveCallback(
+                { foo: 'bar' },
+                {
+                    onSuccess: onSuccessSave,
+                }
+            )
         );
         expect(onSuccess).not.toHaveBeenCalled();
         expect(onSuccessSave).toHaveBeenCalled();
@@ -210,60 +235,75 @@ describe('useCreateController', () => {
         expect(notify).toBeUndefined();
     });
 
-    it('should allow onFailure to override the default failure side effects', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+    it('should allow mutationOptions to override the default failure side effects', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
+        const dataProvider = testDataProvider({
+            getOne: () => Promise.resolve({ data: { id: 12 } } as any),
             create: () => Promise.reject({ message: 'not good' }),
-        } as unknown) as DataProvider;
-        const onFailure = jest.fn();
-        const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <CreateController {...defaultProps} onFailure={onFailure}>
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </CreateController>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+        });
+        const onError = jest.fn();
+        const store = createAdminStore();
+        const dispatch = jest.spyOn(store, 'dispatch');
+        render(
+            <Provider store={store}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <CreateController
+                        {...defaultProps}
+                        mutationOptions={{ onError }}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </CreateController>
+                </CoreAdminContext>
+            </Provider>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
-        expect(onFailure).toHaveBeenCalled();
+        expect(onError).toHaveBeenCalled();
         const notify = dispatch.mock.calls.find(
             params => params[0].type === 'RA/SHOW_NOTIFICATION'
         );
         expect(notify).toBeUndefined();
     });
 
-    it('should allow the save onFailure option to override the failure side effects override', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+    it('should allow the save onError option to override the failure side effects override', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
+        const dataProvider = testDataProvider({
+            getOne: () => Promise.resolve({ data: { id: 12 } } as any),
             create: () => Promise.reject({ message: 'not good' }),
-        } as unknown) as DataProvider;
-        const onFailure = jest.fn();
-        const onFailureSave = jest.fn();
-        const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <CreateController {...defaultProps} onFailure={onFailure}>
-                    {({ save }) => {
-                        saveCallback = save;
-                        return null;
-                    }}
-                </CreateController>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+        });
+        const onError = jest.fn();
+        const onErrorSave = jest.fn();
+        const store = createAdminStore();
+        const dispatch = jest.spyOn(store, 'dispatch');
+        render(
+            <Provider store={store}>
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <CreateController
+                        {...defaultProps}
+                        mutationOptions={{ onError }}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </CreateController>
+                </CoreAdminContext>
+            </Provider>
         );
         await act(async () =>
-            saveCallback({ foo: 'bar' }, undefined, {
-                onFailure: onFailureSave,
-            })
+            saveCallback(
+                { foo: 'bar' },
+                {
+                    onError: onErrorSave,
+                }
+            )
         );
-        expect(onFailure).not.toHaveBeenCalled();
-        expect(onFailureSave).toHaveBeenCalled();
+        expect(onError).not.toHaveBeenCalled();
+        expect(onErrorSave).toHaveBeenCalled();
         const notify = dispatch.mock.calls.find(
             params => params[0].type === 'RA/SHOW_NOTIFICATION'
         );
@@ -277,24 +317,23 @@ describe('useCreateController', () => {
             .mockImplementationOnce((_, { data }) =>
                 Promise.resolve({ data: { id: 123, ...data } })
             );
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
+        const dataProvider = testDataProvider({
+            getOne: () => Promise.resolve({ data: { id: 12 } } as any),
             create,
-        } as unknown) as DataProvider;
+        });
         const transform = jest.fn().mockImplementationOnce(data => ({
             ...data,
             transformed: true,
         }));
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <CreateController {...defaultProps} transform={transform}>
                     {({ save }) => {
                         saveCallback = save;
                         return null;
                     }}
                 </CreateController>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </CoreAdminContext>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         expect(transform).toHaveBeenCalledWith({ foo: 'bar' });
@@ -310,30 +349,32 @@ describe('useCreateController', () => {
             .mockImplementationOnce((_, { data }) =>
                 Promise.resolve({ data: { id: 123, ...data } })
             );
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
+        const dataProvider = testDataProvider({
+            getOne: () => Promise.resolve({ data: { id: 12 } } as any),
             create,
-        } as unknown) as DataProvider;
+        });
         const transform = jest.fn();
         const transformSave = jest.fn().mockImplementationOnce(data => ({
             ...data,
             transformed: true,
         }));
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <CreateController {...defaultProps} transform={transform}>
                     {({ save }) => {
                         saveCallback = save;
                         return null;
                     }}
                 </CreateController>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </CoreAdminContext>
         );
         await act(async () =>
-            saveCallback({ foo: 'bar' }, undefined, {
-                transform: transformSave,
-            })
+            saveCallback(
+                { foo: 'bar' },
+                {
+                    transform: transformSave,
+                }
+            )
         );
         expect(transform).not.toHaveBeenCalled();
         expect(transformSave).toHaveBeenCalledWith({ foo: 'bar' });

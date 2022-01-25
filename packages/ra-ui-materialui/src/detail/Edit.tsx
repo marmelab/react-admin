@@ -6,7 +6,7 @@ import {
     ResourceContextProvider,
     useCheckMinimumRequiredProps,
     useEditController,
-    Record,
+    RaRecord,
 } from 'ra-core';
 import { EditProps } from '../types';
 import { EditView } from './EditView';
@@ -25,9 +25,9 @@ import { EditView } from './EditView';
  * - actions
  * - aside
  * - component
- * - successMessage
  * - title
  * - mutationMode
+ * - mutationOptions
  *
  * @example
  *
@@ -56,7 +56,7 @@ import { EditView } from './EditView';
  * );
  * export default App;
  */
-export const Edit = <RecordType extends Record = Record>(
+export const Edit = <RecordType extends RaRecord = any>(
     props: EditProps<RecordType> & { children: ReactElement }
 ): ReactElement => {
     useCheckMinimumRequiredProps('Edit', ['children'], props);
@@ -88,10 +88,14 @@ Edit.propTypes = {
     hasList: PropTypes.bool,
     id: PropTypes.any,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-    queryOptions: PropTypes.object,
     mutationOptions: PropTypes.object,
+    queryOptions: PropTypes.object,
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
     resource: PropTypes.string,
-    successMessage: PropTypes.string,
     title: PropTypes.node,
     transform: PropTypes.func,
 };

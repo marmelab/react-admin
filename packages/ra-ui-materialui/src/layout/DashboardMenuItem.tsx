@@ -1,16 +1,17 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import { useTranslate } from 'ra-core';
+import { useTranslate, useBasename } from 'ra-core';
 
 import { MenuItemLink } from './MenuItemLink';
 
 export const DashboardMenuItem = (props: DashboardMenuItemProps) => {
     const { locale, ...rest } = props;
     const translate = useTranslate();
+    const basename = useBasename();
     return (
         <MenuItemLink
-            to="/"
+            to={`${basename}/`}
             primaryText={translate('ra.page.dashboard')}
             leftIcon={<DashboardIcon />}
             {...rest}

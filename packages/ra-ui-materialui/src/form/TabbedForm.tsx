@@ -11,10 +11,10 @@ import {
     FormWithRedirect,
     FormWithRedirectProps,
     MutationMode,
-    Record,
+    RaRecord,
     RedirectionSideEffect,
     OnSuccess,
-    OnFailure,
+    onError,
 } from 'ra-core';
 import get from 'lodash/get';
 
@@ -130,23 +130,22 @@ export interface TabbedFormProps
             HtmlHTMLAttributes<HTMLFormElement>,
             'defaultValue' | 'onSubmit' | 'children'
         > {
-    basePath?: string;
     children: ReactNode;
     className?: string;
     initialValues?: any;
     formRootPathname?: string;
     margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
-    record?: Record;
+    record?: RaRecord;
     redirect?: RedirectionSideEffect;
     resource?: string;
     sanitizeEmptyValues?: boolean;
     save?: (
-        data: Partial<Record>,
+        data: Partial<RaRecord>,
         redirectTo: RedirectionSideEffect,
         options?: {
             onSuccess?: OnSuccess;
-            onFailure?: OnFailure;
+            onError?: onError;
         }
     ) => void;
     submitOnEnter?: boolean;

@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import useLogout from './useLogout';
-import useNotify from '../sideEffect/useNotify';
+import { useNotify } from '../notification';
 
 /**
  * Get a callback for calling the authProvider.checkAuth() method.

@@ -1,31 +1,12 @@
-import get from 'lodash/get';
-import { useMemo } from 'react';
-
-import { CRUD_GET_MANY_REFERENCE } from '../actions/dataActions/crudGetManyReference';
 import {
-    PaginationPayload,
-    SortPayload,
-    Identifier,
-    ReduxState,
-    Record,
-    RecordMap,
-} from '../types';
-import { useQueryWithStore } from './useQueryWithStore';
-import {
-    getIds,
-    getTotal,
-    nameRelatedTo,
-} from '../reducer/admin/references/oneToMany';
+    useQuery,
+    UseQueryOptions,
+    UseQueryResult,
+    useQueryClient,
+} from 'react-query';
 
-const defaultIds = [];
-const defaultData = {};
-
-interface UseGetManyReferenceOptions {
-    onSuccess?: (args?: any) => void;
-    onFailure?: (error: any) => void;
-    enabled?: boolean;
-    [key: string]: any;
-}
+import { RaRecord, GetManyReferenceParams } from '../types';
+import { useDataProvider } from './useDataProvider';
 
 /**
  * Call the dataProvider.getManyReference() method and return the resolved result
@@ -33,120 +14,105 @@ interface UseGetManyReferenceOptions {
  *
  * The return value updates according to the request state:
  *
- * - start: { loading: true, loaded: false, refetch }
- * - success: { data: [data from store], ids: [ids from response], total: [total from response], loading: false, loaded: true, refetch }
- * - error: { error: [error from response], loading: false, loaded: false, refetch }
+ * - start: { isLoading: true, refetch }
+ * - success: { data: [data from store], total: [total from response], isLoading: false, refetch }
+ * - error: { error: [error from response], isLoading: false, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
  *
- * @param {string} resource The referenced resource name, e.g. 'comments'
- * @param {string} target The target resource key, e.g. 'post_id'
- * @param {Object} id The identifier of the record to look for in 'target'
- * @param {Object} pagination The request pagination { page, perPage }, e.g. { page: 1, perPage: 10 }
- * @param {Object} sort The request sort { field, order }, e.g. { field: 'id', order: 'DESC' }
- * @param {Object} filter The request filters, e.g. { body: 'hello, world' }
- * @param {string} referencingResource The resource name, e.g. 'posts'. Used to generate a cache key
- * @param {Object} options Options object to pass to the dataProvider.
- * @param {boolean} options.enabled Flag to conditionally run the query. If it's false, the query will not run
- * @param {Function} options.onSuccess Side effect function to be executed upon success, e.g. { onSuccess: { refresh: true } }
- * @param {Function} options.onFailure Side effect function to be executed upon failure, e.g. { onFailure: error => notify(error.message) }
+ * @param {string} resource The resource name, e.g. 'posts'
+ * @param {Params} params The getManyReference parameters { target, id, pagination, sort, filter, meta }
+ * @param {Object} options Options object to pass to the queryClient.
+ * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
  *
- * @returns The current request state. Destructure as { data, total, ids, error, loading, loaded, refetch }.
+ * @typedef Params
+ * @prop params.target The target resource key, e.g. 'post_id'
+ * @prop params.id The identifier of the record to look for in target, e.g. '123'
+ * @prop params.pagination The request pagination { page, perPage }, e.g. { page: 1, perPage: 10 }
+ * @prop params.sort The request sort { field, order }, e.g. { field: 'id', order: 'DESC' }
+ * @prop params.filter The request filters, e.g. { title: 'hello, world' }
+ * @prop params.meta Optional meta parameters
+ *
+ *
+ * @returns The current request state. Destructure as { data, total, error, isLoading, refetch }.
  *
  * @example
  *
  * import { useGetManyReference } from 'react-admin';
  *
- * const PostComments = ({ post_id }) => {
- *     const { data, ids, loading, error } = useGetManyReference(
+ * const PostComments = ({ record }) => {
+ *     // fetch all comments related to the current record
+ *     const { data, isLoading, error } = useGetManyReference(
  *         'comments',
- *         'post_id',
- *         post_id,
- *         { page: 1, perPage: 10 },
- *         { field: 'published_at', order: 'DESC' }
- *         {},
- *         'posts',
+ *         { target: 'post_id', id: record.id, pagination: { page: 1, perPage: 10 }, sort: { field: 'published_at', order: 'DESC' } }
  *     );
- *     if (loading) { return <Loading />; }
+ *     if (isLoading) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }
- *     return <ul>{ids.map(id =>
- *         <li key={id}>{data[id].body}</li>
+ *     return <ul>{data.map(comment =>
+ *         <li key={comment.id}>{comment.body}</li>
  *     )}</ul>;
  * };
  */
-const useGetManyReference = (
+export const useGetManyReference = <RecordType extends RaRecord = any>(
     resource: string,
-    target: string,
-    id: Identifier,
-    pagination: PaginationPayload,
-    sort: SortPayload,
-    filter: object,
-    referencingResource: string,
-    options?: UseGetManyReferenceOptions
-) => {
-    const relatedTo = useMemo(
-        () => nameRelatedTo(resource, id, referencingResource, target, filter),
-        [filter, resource, id, referencingResource, target]
-    );
-
+    params: Partial<GetManyReferenceParams> = {},
+    options?: UseQueryOptions<{ data: RecordType[]; total: number }, Error>
+): UseGetManyReferenceHookValue<RecordType> => {
     const {
-        data: { ids, allRecords },
-        total,
-        error,
-        loading,
-        loaded,
-        refetch,
-    } = useQueryWithStore(
-        {
-            type: 'getManyReference',
-            resource: resource,
-            payload: { target, id, pagination, sort, filter },
-        },
-        { ...options, relatedTo, action: CRUD_GET_MANY_REFERENCE },
-        // ids and data selector
-        (state: ReduxState) => ({
-            ids: getIds(state, relatedTo),
-            allRecords: get(
-                state.admin.resources,
-                [resource, 'data'],
-                defaultData
-            ),
-        }),
-        (state: ReduxState) => getTotal(state, relatedTo),
-        isDataLoaded
-    );
-
-    const data = useMemo(
+        target,
+        id,
+        pagination = { page: 1, perPage: 25 },
+        sort = { field: 'id', order: 'DESC' },
+        filter = {},
+        meta,
+    } = params;
+    const dataProvider = useDataProvider();
+    const queryClient = useQueryClient();
+    const result = useQuery<
+        { data: RecordType[]; total: number },
+        Error,
+        { data: RecordType[]; total: number }
+    >(
+        [
+            resource,
+            'getManyReference',
+            { target, id, pagination, sort, filter, meta },
+        ],
         () =>
-            ids == null
-                ? defaultData
-                : ids
-                      .map(id => allRecords[id])
-                      .reduce((acc, record) => {
-                          if (!record) return acc;
-                          acc[record.id] = record;
-                          return acc;
-                      }, {}),
-        [ids, allRecords]
+            dataProvider
+                .getManyReference<RecordType>(resource, {
+                    target,
+                    id,
+                    pagination,
+                    sort,
+                    filter,
+                    meta,
+                })
+                .then(({ data, total }) => ({ data, total })),
+        {
+            onSuccess: ({ data }) => {
+                // optimistically populate the getOne cache
+                data.forEach(record => {
+                    queryClient.setQueryData(
+                        [resource, 'getOne', { id: String(record.id), meta }],
+                        oldRecord => oldRecord ?? record
+                    );
+                });
+            },
+            ...options,
+        }
     );
 
-    return {
-        data,
-        ids: ids || defaultIds,
-        total,
-        error,
-        loading,
-        loaded,
-        refetch,
-    };
+    return (result.data
+        ? {
+              ...result,
+              data: result.data?.data,
+              total: result.data?.total,
+          }
+        : result) as UseQueryResult<RecordType[], Error> & { total?: number };
 };
 
-interface DataSelectorResult<RecordType extends Record = Record> {
-    ids: Identifier[];
-    allRecords: RecordMap<RecordType>;
-}
-
-const isDataLoaded = (data: DataSelectorResult) => data.ids != null;
-
-export default useGetManyReference;
+export type UseGetManyReferenceHookValue<
+    RecordType extends RaRecord = any
+> = UseQueryResult<RecordType[], Error> & { total?: number };

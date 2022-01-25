@@ -18,7 +18,6 @@ const UserEditEmbedded = ({ id }: { id?: Identifier }) => (
 
 UserEditEmbedded.propTypes = {
     record: PropTypes.object,
-    basePath: PropTypes.string,
     resource: PropTypes.string,
     id: PropTypes.string,
 };

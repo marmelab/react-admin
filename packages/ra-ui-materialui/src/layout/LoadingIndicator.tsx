@@ -2,17 +2,15 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useSelector } from 'react-redux';
 import { useTheme } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
-import { ReduxState, useRefreshWhenVisible } from 'ra-core';
+import { useLoading } from 'ra-core';
 
 import { RefreshIconButton } from '../button';
 
 export const LoadingIndicator = (props: LoadingIndicatorProps) => {
     const { className, ...rest } = props;
-    useRefreshWhenVisible();
-    const loading = useSelector<ReduxState>(state => state.admin.loading > 0);
+    const loading = useLoading();
 
     const theme = useTheme();
     return (

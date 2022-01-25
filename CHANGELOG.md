@@ -1,5 +1,71 @@
 # Changelog
 
+## v3.19.6
+
+* Fix loading indicator keeps spinning on permissions error when `logoutUser` is false ([#7044](https://github.com/marmelab/react-admin/pull/7044)) ([WiXSL](https://github.com/WiXSL))
+* Fix `redirect=false` after save doesn't clear the form ([#7041](https://github.com/marmelab/react-admin/pull/7041)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<SelectArrayInput optionText>` function not fully supported with create item ([#7039](https://github.com/marmelab/react-admin/pull/7039)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<AutocompleteArrayInput optionText>` function not supported with create item set ([#7038](https://github.com/marmelab/react-admin/pull/7038)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<SelectInput optionText>` for create ([#7031](https://github.com/marmelab/react-admin/pull/7031)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<SelectArrayInput optionText>` for create ([#7030](https://github.com/marmelab/react-admin/pull/7030)) ([WiXSL](https://github.com/WiXSL))
+* [Demo] Fix typescript error ([#7045](https://github.com/marmelab/react-admin/pull/7045)) ([WiXSL](https://github.com/WiXSL))
+* [Demo] Update Create-React-App to V5 ([#7022](https://github.com/marmelab/react-admin/pull/7022)) ([fzaninotto](https://github.com/fzaninotto))
+
+## v3.19.5
+
+* Fix `<Autocomplete>` fails when used inside a `<FormDataConsumer>` ([#7013](https://github.com/marmelab/react-admin/pull/7013)) ([WiXSL](https://github.com/WiXSL))
+* Fix `updateMany` throws an error for undefined ID in `ra-data-graphql-simple` ([#7002](https://github.com/marmelab/react-admin/pull/7002)) ([djhi](https://github.com/djhi))
+* Fix warning for unrecognized `enableGetChoices` prop when using `<SelectInput>` as child of `<ReferenceInput>` ([#6999](https://github.com/marmelab/react-admin/pull/6999)) ([ZachSelindh](https://github.com/ZachSelindh))
+* [Doc] Fix typos ([#7012](https://github.com/marmelab/react-admin/pull/7012)) ([WiXSL](https://github.com/WiXSL))
+
+## v3.19.4
+
+* Fix list `<FilterButton>` is not accessible ([#6967](https://github.com/marmelab/react-admin/pull/6967)) ([WiXSL](https://github.com/WiXSL))
+* Fix incorrect `exporter` when switching resource ([#6989](https://github.com/marmelab/react-admin/pull/6989)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<ArrayField>` doesn't accept `<SimpleList>` as child ([#6975](https://github.com/marmelab/react-admin/pull/6975)) ([Luwangel](https://github.com/Luwangel))
+* Fix unit tests require build first ([#6983](https://github.com/marmelab/react-admin/pull/6983)) ([WiXSL](https://github.com/WiXSL))
+* [TypeScript] Fix `<SimpleList toolbar>` doesn't allow `false` value ([#6969](https://github.com/marmelab/react-admin/pull/6969)) ([ZachSelindh](https://github.com/ZachSelindh))
+* [TypeScript] Fix `ToolbarProps` to be compatible with `FormWithRedirectOwnProps` definition ([#6994](https://github.com/marmelab/react-admin/pull/6994)) ([WiXSL](https://github.com/WiXSL))
+* [TypeScript] Fix missing definition for `<ReferenceFieldController label>` prop ([#6745](https://github.com/marmelab/react-admin/pull/6745)) ([kevinmamaqi](https://github.com/kevinmamaqi))
+* [TypeScript] Fix `<ArrayInput>` proptype definition ([#6617](https://github.com/marmelab/react-admin/pull/6617)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix typo in `<Tab>` jsDoc ([#6959](https://github.com/marmelab/react-admin/pull/6959)) ([erakli](https://github.com/erakli))
+* [Demo] Fix `<SelectInput label>` is overridden in simple project ([#6920](https://github.com/marmelab/react-admin/pull/6920)) ([WiXSL](https://github.com/WiXSL))
+
+## v3.19.3
+
+* Fix `<ArrayInput>` issue with `initialValue` ([#6932](https://github.com/marmelab/react-admin/pull/6932)) ([djhi](https://github.com/djhi))
+* Fix `<Datagrid>` select all rows fails over multiple pages ([#6950](https://github.com/marmelab/react-admin/pull/6950)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<Notification>` component appears only once when saving several times ([#6929](https://github.com/marmelab/react-admin/pull/6929)) ([wbojaume](https://github.com/wbojaume))
+* Fix `useList` isn't usable with asynchronously fetched data ([#6899](https://github.com/marmelab/react-admin/pull/6899)) ([djhi](https://github.com/djhi))
+* Fix `<FilterListItem>` styles can't be overridden via theme ([#6941](https://github.com/marmelab/react-admin/pull/6941)) ([kristelvdakker](https://github.com/kristelvdakker))
+* Fix `<List bulkActionButtons>` prop does not handle the value true ([#6926](https://github.com/marmelab/react-admin/pull/6926)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<SidebarToggleButton>` is not exported ([#6911](https://github.com/marmelab/react-admin/pull/6911)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<Tab>` children are missing the `fullWidth` prop when `addLabel` is set ([#6915](https://github.com/marmelab/react-admin/pull/6915)) ([WiXSL](https://github.com/WiXSL))
+* Fix `useReferenceArrayInputController` sets `loading` prop incorrectly ([#6914](https://github.com/marmelab/react-admin/pull/6914)) ([WiXSL](https://github.com/WiXSL))
+* Fix e2e tests fail on a clean install ([#6938](https://github.com/marmelab/react-admin/pull/6938)) ([WiXSL](https://github.com/WiXSL))
+* Fix wrong imports in tests ([#6931](https://github.com/marmelab/react-admin/pull/6931)) ([djhi](https://github.com/djhi))
+* Fix warn about unsaved changes when modifying `<CheckGroupInput>` or `<ArrayInput>` components ([#6954](https://github.com/marmelab/react-admin/pull/6954)) ([WiXSL](https://github.com/WiXSL))
+* [TypeScript] Fix types in tests ([#6949](https://github.com/marmelab/react-admin/pull/6949)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add Blitzjs data provider ([#6945](https://github.com/marmelab/react-admin/pull/6945)) ([Fidym](https://github.com/Fidym))
+* [Doc] Fix `authProvider` example ([#6933](https://github.com/marmelab/react-admin/pull/6933)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix code examples of `<FormDataConsumer>` ([#6936](https://github.com/marmelab/react-admin/pull/6936)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix mention of deprecated `createMuiTheme` in theming docs ([#6918](https://github.com/marmelab/react-admin/pull/6918)) ([AntoineCrb](https://github.com/AntoineCrb))
+* [Doc] Fix `useNotify` examples encourage a deprecated syntax ([#6912](https://github.com/marmelab/react-admin/pull/6912)) ([WiXSL](https://github.com/WiXSL))
+* [Demo] Fix no-code-demo does not work in CodeSandbox ([#6463](https://github.com/marmelab/react-admin/pull/6463)) ([smeng9](https://github.com/smeng9))
+* [Demo] Update simple example dependencies ([#6930](https://github.com/marmelab/react-admin/pull/6930)) ([djhi](https://github.com/djhi))
+* [Demo] Fix deprecation warnings in simple project ([#6903](https://github.com/marmelab/react-admin/pull/6903)) ([WiXSL](https://github.com/WiXSL))
+
+## v3.19.2
+
+* Fix `<SimpleForm>` warns of unsaved changes when the form is submitting ([#6895](https://github.com/marmelab/react-admin/pull/6895)) ([WiXSL](https://github.com/WiXSL))
+* Fix `useMutation` not considering returnPromise option ([#6886](https://github.com/marmelab/react-admin/pull/6886)) ([WiXSL](https://github.com/WiXSL))
+* Fix package duplication in `yarn.lock` slows down react-admin CI ([#6874](https://github.com/marmelab/react-admin/pull/6874)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix include side effects in `<DeleteButton>` props type ([#6877](https://github.com/marmelab/react-admin/pull/6877)) ([WiXSL](https://github.com/WiXSL))
+* [Demo] Fix `authProvider.getIdentity()` returns an object instead of a promise in simple demo ([#6881](https://github.com/marmelab/react-admin/pull/6881)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix typo in README ([#6875](https://github.com/marmelab/react-admin/pull/6875)) ([CoreyB26](https://github.com/CoreyB26))
+* [Doc] Fix various typos ([#6872](https://github.com/marmelab/react-admin/pull/6872)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix List actions examples ([#6742](https://github.com/marmelab/react-admin/pull/6742)) ([erakli](https://github.com/erakli))
+
 ## v3.19.1
 
 * Fix sidebar is displayed over the content ([#6723](https://github.com/marmelab/react-admin/pull/6723)) ([djhi](https://github.com/djhi))

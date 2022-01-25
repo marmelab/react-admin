@@ -1,29 +1,23 @@
 import React, {
-    useEffect,
-    useRef,
     useState,
     ErrorInfo,
     ReactNode,
     ComponentType,
     HtmlHTMLAttributes,
 } from 'react';
-import PropTypes from 'prop-types';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useSelector } from 'react-redux';
 import classnames from 'classnames';
-import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
-import { DeprecatedThemeOptions } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import { CoreLayoutProps, ReduxState } from 'ra-core';
 
 import { AppBar as DefaultAppBar, AppBarProps } from './AppBar';
 import { Sidebar as DefaultSidebar } from './Sidebar';
 import { Menu as DefaultMenu, MenuProps } from './Menu';
-import { Notification as DefaultNotification } from './Notification';
 import { Error, ErrorProps } from './Error';
-import { defaultTheme } from '../defaultTheme';
 import { SkipNavigationButton } from '../button';
 
-const LayoutWithoutTheme = (props: LayoutWithoutThemeProps) => {
+export const Layout = (props: LayoutProps) => {
     const {
         appBar: AppBar = DefaultAppBar,
         children,
@@ -32,7 +26,6 @@ const LayoutWithoutTheme = (props: LayoutWithoutThemeProps) => {
         error: errorComponent,
         logout,
         menu: Menu = DefaultMenu,
-        notification: Notification = DefaultNotification,
         sidebar: Sidebar = DefaultSidebar,
         title,
         ...rest
@@ -48,45 +41,36 @@ const LayoutWithoutTheme = (props: LayoutWithoutThemeProps) => {
     };
 
     return (
-        <>
-            <StyledLayout
-                className={classnames('layout', LayoutClasses.root, className)}
-                {...rest}
-            >
-                <SkipNavigationButton />
-                <div className={LayoutClasses.appFrame}>
-                    <AppBar logout={logout} open={open} title={title} />
-                    <main className={LayoutClasses.contentWithSidebar}>
-                        <Sidebar>
-                            <Menu hasDashboard={!!dashboard} />
-                        </Sidebar>
-                        <div
-                            id="main-content"
-                            className={LayoutClasses.content}
+        <StyledLayout
+            className={classnames('layout', LayoutClasses.root, className)}
+            {...rest}
+        >
+            <SkipNavigationButton />
+            <div className={LayoutClasses.appFrame}>
+                <AppBar logout={logout} open={open} title={title} />
+                <main className={LayoutClasses.contentWithSidebar}>
+                    <Sidebar>
+                        <Menu hasDashboard={!!dashboard} />
+                    </Sidebar>
+                    <div id="main-content" className={LayoutClasses.content}>
+                        <ErrorBoundary
+                            onError={handleError}
+                            fallbackRender={({ error, resetErrorBoundary }) => (
+                                <Error
+                                    error={error}
+                                    errorComponent={errorComponent}
+                                    errorInfo={errorInfo}
+                                    resetErrorBoundary={resetErrorBoundary}
+                                    title={title}
+                                />
+                            )}
                         >
-                            <ErrorBoundary
-                                onError={handleError}
-                                fallbackRender={({
-                                    error,
-                                    resetErrorBoundary,
-                                }) => (
-                                    <Error
-                                        error={error}
-                                        errorComponent={errorComponent}
-                                        errorInfo={errorInfo}
-                                        resetErrorBoundary={resetErrorBoundary}
-                                        title={title}
-                                    />
-                                )}
-                            >
-                                {children}
-                            </ErrorBoundary>
-                        </div>
-                    </main>
-                </div>
-            </StyledLayout>
-            <Notification />
-        </>
+                            {children}
+                        </ErrorBoundary>
+                    </div>
+                </main>
+            </div>
+        </StyledLayout>
     );
 };
 
@@ -98,9 +82,7 @@ export interface LayoutProps
     className?: string;
     error?: ComponentType<ErrorProps>;
     menu?: ComponentType<MenuProps>;
-    notification?: ComponentType;
     sidebar?: ComponentType<{ children: ReactNode }>;
-    theme?: DeprecatedThemeOptions;
 }
 
 export interface LayoutState {
@@ -108,39 +90,6 @@ export interface LayoutState {
     error?: Error;
     errorInfo?: ErrorInfo;
 }
-
-interface LayoutWithoutThemeProps extends Omit<LayoutProps, 'theme'> {
-    open?: boolean;
-}
-
-export const Layout = ({
-    theme: themeOverride,
-    ...props
-}: LayoutProps): JSX.Element => {
-    const themeProp = useRef(themeOverride);
-    const [theme, setTheme] = useState(() => createTheme(themeOverride));
-
-    useEffect(() => {
-        if (themeProp.current !== themeOverride) {
-            themeProp.current = themeOverride;
-            setTheme(createTheme(themeOverride));
-        }
-    }, [themeOverride, themeProp, theme, setTheme]);
-
-    return (
-        <ThemeProvider theme={theme}>
-            <LayoutWithoutTheme {...props} />
-        </ThemeProvider>
-    );
-};
-
-Layout.propTypes = {
-    theme: PropTypes.object,
-};
-
-Layout.defaultProps = {
-    theme: defaultTheme,
-};
 
 const PREFIX = 'RaLayout';
 export const LayoutClasses = {

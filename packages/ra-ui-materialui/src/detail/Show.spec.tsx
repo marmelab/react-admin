@@ -36,13 +36,7 @@ describe('<Show />', () => {
             initialEntries: ['/books/123/show'],
         });
         render(
-            <CoreAdminContext
-                dataProvider={dataProvider}
-                history={history}
-                initialState={{
-                    admin: { resources: { books: { props: {}, data: {} } } },
-                }}
-            >
+            <CoreAdminContext dataProvider={dataProvider} history={history}>
                 <Routes>
                     <Route
                         path="/books/:id/show"
@@ -106,19 +100,19 @@ describe('<Show />', () => {
         await waitFor(() => expect(onError).toHaveBeenCalled());
     });
 
-    it('should display an edit button by default when there is an Edit view', () => {
+    it('should display an edit button by default when there is an Edit view', async () => {
         render(<Default />);
-        expect(screen.getByText('Edit')).toBeDefined();
+        await screen.findByText('Edit');
     });
 
-    it('should allow to display custom actions with the actions prop', () => {
+    it('should allow to display custom actions with the actions prop', async () => {
         render(<Actions />);
-        expect(screen.getByText('Actions')).toBeDefined();
+        await screen.findByText('Edit');
     });
 
     it('should display a default title based on resource and id', async () => {
         render(<Basic />);
-        await waitFor(() => expect(screen.getByText('Book #1')).toBeDefined());
+        await screen.findByText('Book #1');
     });
 
     it('should allow to override the root component', () => {

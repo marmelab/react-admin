@@ -13,7 +13,7 @@ import { FormHelperText, styled } from '@mui/material';
 import classNames from 'classnames';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
-import { Record, ValidationError } from 'ra-core';
+import { RaRecord, ValidationError } from 'ra-core';
 import { FieldArrayRenderProps } from 'react-final-form-arrays';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { CSSTransitionProps } from 'react-transition-group/CSSTransition';
@@ -37,7 +37,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         addButton = <DefaultAddItemButton />,
         removeButton = <DefaultRemoveItemButton />,
         reOrderButtons = <DefaultReOrderButtons />,
-        basePath,
         children,
         className,
         record,
@@ -145,7 +144,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                             {...TransitionProps}
                         >
                             <SimpleFormIteratorItem
-                                basePath={basePath}
                                 disabled={disabled}
                                 disableRemove={disableRemove}
                                 disableReordering={disableReordering}
@@ -199,7 +197,6 @@ SimpleFormIterator.propTypes = {
     defaultValue: PropTypes.any,
     addButton: PropTypes.element,
     removeButton: PropTypes.element,
-    basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
     // @ts-ignore
@@ -218,7 +215,6 @@ SimpleFormIterator.propTypes = {
 export interface SimpleFormIteratorProps
     extends Partial<Omit<FieldArrayRenderProps<any, HTMLElement>, 'meta'>> {
     addButton?: ReactElement;
-    basePath?: string;
     children?: ReactNode;
     className?: string;
     defaultValue?: any;
@@ -233,7 +229,7 @@ export interface SimpleFormIteratorProps
         error?: any;
         submitFailed?: boolean;
     };
-    record?: Record;
+    record?: RaRecord;
     removeButton?: ReactElement;
     reOrderButtons?: ReactElement;
     resource?: string;

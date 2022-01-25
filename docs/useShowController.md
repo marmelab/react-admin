@@ -106,14 +106,14 @@ const PostShow = props => {
 }
 ```
 
-The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
+The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
 
 The default `onError` function is:
 
-```jsx
+```js
 (error) => {
     notify('ra.notification.item_doesnt_exist', { type: 'warning' });
-    redirect('list', basePath);
+    redirect('list', resource);
     refresh();
 }
 ```
@@ -122,7 +122,7 @@ The default `onError` function is:
 
 By default, `useShowController` reads the resource name from the resource context, and the record id from the browser location.
 
-But by passing `resource` and `id` props, you can run the controller logic outside of these contexts:
+But by passing `resource` and `id` props, you can run the controller logic outside these contexts:
 
 ```jsx
 import { useShowController } from 'react-admin';
@@ -136,7 +136,7 @@ const MyShow = () => {
 
 ## See Also
 
-* [`<ShowBase>`](./ShowBase.md) calls `useShowController`, puts the result in a `RecordContextProvider` and renders the component child. In many cases, you'll pefer this component to the hook version.
+* [`<ShowBase>`](./ShowBase.md) calls `useShowController`, puts the result in a `RecordContextProvider` and renders the component child. In many cases, you'll prefer this component to the hook version.
 
 ## API
 

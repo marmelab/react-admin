@@ -19,7 +19,6 @@ import { Edit } from './Edit';
 
 describe('<Edit />', () => {
     const defaultEditProps = {
-        basePath: '',
         id: '123',
         resource: 'foo',
         location: {} as any,
@@ -39,8 +38,7 @@ describe('<Edit />', () => {
                         <FakeForm />
                     </Edit>
                 </DataProviderContext.Provider>
-            </QueryClientProvider>,
-            { admin: { resources: { foo: { data: {} } } } }
+            </QueryClientProvider>
         );
         await waitFor(() => {
             expect(queryAllByText('lorem')).toHaveLength(1);
@@ -285,7 +283,7 @@ describe('<Edit />', () => {
                         title: 'ipsum',
                     },
                     { data: { id: 123, title: 'ipsum' }, resource: 'foo' },
-                    {}
+                    { snapshot: [] }
                 );
             });
         });
@@ -305,9 +303,12 @@ describe('<Edit />', () => {
                     <span>{record.title}</span>
                     <button
                         onClick={() =>
-                            save({ ...record, title: 'ipsum' }, undefined, {
-                                onSuccess: onSuccessSave,
-                            })
+                            save(
+                                { ...record, title: 'ipsum' },
+                                {
+                                    onSuccess: onSuccessSave,
+                                }
+                            )
                         }
                     >
                         Update
@@ -338,14 +339,14 @@ describe('<Edit />', () => {
                         title: 'ipsum',
                     },
                     { data: { id: 123, title: 'ipsum' }, resource: 'foo' },
-                    {}
+                    { snapshot: [] }
                 );
                 expect(onSuccess).not.toHaveBeenCalled();
             });
         });
     });
 
-    describe('onFailure prop', () => {
+    describe('onError prop', () => {
         it('should allow to override the default error side effects', async () => {
             jest.spyOn(console, 'error').mockImplementationOnce(() => {});
             const dataProvider = {
@@ -385,12 +386,12 @@ describe('<Edit />', () => {
                 expect(onError).toHaveBeenCalledWith(
                     { message: 'not good' },
                     { data: { id: 123, title: 'ipsum' }, resource: 'foo' },
-                    {}
+                    { snapshot: [] }
                 );
             });
         });
 
-        it('should be overridden by onFailure save option', async () => {
+        it('should be overridden by onError save option', async () => {
             jest.spyOn(console, 'error').mockImplementationOnce(() => {});
             const dataProvider = {
                 getOne: () =>
@@ -400,15 +401,18 @@ describe('<Edit />', () => {
                 update: () => Promise.reject({ message: 'not good' }),
             } as any;
             const onError = jest.fn();
-            const onFailureSave = jest.fn();
+            const onErrorSave = jest.fn();
             const FakeForm = ({ record, save }) => (
                 <>
                     <span>{record.title}</span>
                     <button
                         onClick={() =>
-                            save({ ...record, title: 'ipsum' }, undefined, {
-                                onFailure: onFailureSave,
-                            })
+                            save(
+                                { ...record, title: 'ipsum' },
+                                {
+                                    onError: onErrorSave,
+                                }
+                            )
                         }
                     >
                         Update
@@ -433,12 +437,12 @@ describe('<Edit />', () => {
             });
             fireEvent.click(getByText('Update'));
             await waitFor(() => {
-                expect(onFailureSave).toHaveBeenCalledWith(
+                expect(onErrorSave).toHaveBeenCalledWith(
                     {
                         message: 'not good',
                     },
                     { data: { id: 123, title: 'ipsum' }, resource: 'foo' },
-                    {}
+                    { snapshot: [] }
                 );
                 expect(onError).not.toHaveBeenCalled();
             });
@@ -524,9 +528,12 @@ describe('<Edit />', () => {
                     <span>{record.title}</span>
                     <button
                         onClick={() =>
-                            save({ ...record, title: 'ipsum' }, undefined, {
-                                transform: transformSave,
-                            })
+                            save(
+                                { ...record, title: 'ipsum' },
+                                {
+                                    transform: transformSave,
+                                }
+                            )
                         }
                     >
                         Update

@@ -227,10 +227,9 @@ ul.sidenav code {
 @media only screen and (min-width: 601px) {
     .markdown-section img {
         max-width: 90%;
-        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
-            0 10px 10px rgba(0, 0, 0, 0.22);
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.24);
         border-radius: 2px;
-        margin: 2rem;
+        margin: 1rem;
     }
 }
 
@@ -288,6 +287,7 @@ ul.sidenav code {
     padding: 0.85em 1em;
     margin-bottom: 1.275em;
     background: #f7f7f7;
+    line-height: 1.4;
 }
 .markdown-section pre > code {
     display: inline;
@@ -406,6 +406,6 @@ ul.sidenav code {
 .container .token.url,
 .container .language-css .token.string,
 .container .style .token.string {
-	color: #9a6e3a;
+    color: #9a6e3a;
     background: none;
 }

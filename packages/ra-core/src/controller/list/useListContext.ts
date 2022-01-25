@@ -3,7 +3,7 @@ import defaults from 'lodash/defaults';
 
 import { ListContext } from './ListContext';
 import { ListControllerResult } from './useListController';
-import { Record } from '../../types';
+import { RaRecord } from '../../types';
 
 /**
  * Hook to read the list controller props from the ListContext.
@@ -25,8 +25,8 @@ import { Record } from '../../types';
  * @prop {Function} setPage a callback to change the page, e.g. setPage(3)
  * @prop {integer}  perPage the number of results per page. Defaults to 25
  * @prop {Function} setPerPage a callback to change the number of results per page, e.g. setPerPage(25)
- * @prop {Object}   currentSort a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
- * @prop {Function} setSort a callback to change the sort, e.g. setSort('name', 'ASC')
+ * @prop {Object}   sort a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
+ * @prop {Function} setSort a callback to change the sort, e.g. setSort({ field : 'name', order: 'ASC' })
  * @prop {Object}   filterValues a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
  * @prop {Function} setFilters a callback to update the filters, e.g. setFilters(filters, displayedFilters)
  * @prop {Object}   displayedFilters a dictionary of the displayed filters, e.g. { title: true, nationality: true }
@@ -36,7 +36,6 @@ import { Record } from '../../types';
  * @prop {Function} onSelect callback to change the list of selected rows, e.g. onSelect([456, 789])
  * @prop {Function} onToggleItem callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
  * @prop {Function} onUnselectItems callback to clear the selection, e.g. onUnselectItems();
- * @prop {string}   basePath deduced from the location, useful for action buttons
  * @prop {string}   defaultTitle the translated title based on the resource, e.g. 'Posts'
  * @prop {string}   resource the resource name, deduced from the location. e.g. 'posts'
  *
@@ -91,7 +90,7 @@ import { Record } from '../../types';
  *     );
  * }
  */
-export const useListContext = <RecordType extends Record = Record>(
+export const useListContext = <RecordType extends RaRecord = any>(
     props?: any
 ): ListControllerResult<RecordType> => {
     const context = useContext(ListContext);
@@ -116,8 +115,7 @@ export const useListContext = <RecordType extends Record = Record>(
  * @returns {ListControllerResult} List controller props
  */
 const extractListContextProps = ({
-    basePath,
-    currentSort,
+    sort,
     data,
     defaultTitle,
     displayedFilters,
@@ -141,8 +139,7 @@ const extractListContextProps = ({
     showFilter,
     total,
 }) => ({
-    basePath,
-    currentSort,
+    sort,
     data,
     defaultTitle,
     displayedFilters,

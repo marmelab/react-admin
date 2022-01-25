@@ -7,7 +7,7 @@ import {
     ReactElement,
     ReactNode,
 } from 'react';
-import { useTranslatableContext, Record } from 'ra-core';
+import { useTranslatableContext, RaRecord } from 'ra-core';
 import { Labeled } from '../input';
 
 /**
@@ -18,7 +18,6 @@ export const TranslatableFieldsTabContent = (
     props: TranslatableFieldsTabContentProps
 ): ReactElement => {
     const {
-        basePath,
         children,
         groupKey = '',
         locale,
@@ -44,7 +43,6 @@ export const TranslatableFieldsTabContent = (
                             <Labeled
                                 record={record}
                                 resource={resource}
-                                basePath={basePath}
                                 label={field.props.label}
                                 source={field.props.source}
                                 disabled={false}
@@ -75,12 +73,11 @@ export const TranslatableFieldsTabContent = (
 };
 
 export type TranslatableFieldsTabContentProps = {
-    basePath: string;
     children: ReactNode;
     formGroupKeyPrefix?: string;
     groupKey: string;
     locale: string;
-    record: Record;
+    record: RaRecord;
     resource: string;
 };
 

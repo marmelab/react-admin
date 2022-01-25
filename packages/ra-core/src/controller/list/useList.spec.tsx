@@ -39,7 +39,7 @@ describe('<useList />', () => {
 
         expect(callback).toHaveBeenCalledWith(
             expect.objectContaining({
-                currentSort: { field: 'id', order: 'ASC' },
+                sort: { field: 'id', order: 'ASC' },
                 isFetching: false,
                 isLoading: false,
                 data: [{ id: 2, title: 'world' }],
@@ -70,7 +70,7 @@ describe('<useList />', () => {
         await waitFor(() => {
             expect(callback).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    currentSort: { field: 'id', order: 'ASC' },
+                    sort: { field: 'id', order: 'ASC' },
                     isFetching: false,
                     isLoading: false,
                     data: [
@@ -96,7 +96,11 @@ describe('<useList />', () => {
             const listContext = useListContext();
 
             return (
-                <button onClick={() => listContext.setSort('title', 'ASC')}>
+                <button
+                    onClick={() =>
+                        listContext.setSort({ field: 'title', order: 'ASC' })
+                    }
+                >
                     Sort by title ASC
                 </button>
             );
@@ -115,7 +119,7 @@ describe('<useList />', () => {
         await waitFor(() => {
             expect(callback).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    currentSort: { field: 'title', order: 'DESC' },
+                    sort: { field: 'title', order: 'DESC' },
                     isFetching: false,
                     isLoading: false,
                     data: [
@@ -132,7 +136,7 @@ describe('<useList />', () => {
         await waitFor(() => {
             expect(callback).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    currentSort: { field: 'title', order: 'ASC' },
+                    sort: { field: 'title', order: 'ASC' },
                     isFetching: false,
                     isLoading: false,
                     data: [
@@ -171,7 +175,7 @@ describe('<useList />', () => {
         await waitFor(() => {
             expect(callback).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    currentSort: { field: 'id', order: 'ASC' },
+                    sort: { field: 'id', order: 'ASC' },
                     isFetching: false,
                     isLoading: false,
                     data: [
@@ -185,5 +189,43 @@ describe('<useList />', () => {
                 })
             );
         });
+    });
+
+    it('should be usable with asynchronously fetched data', () => {
+        const callback = jest.fn();
+        const data = [
+            { id: 1, title: 'hello' },
+            { id: 2, title: 'world' },
+        ];
+
+        const { rerender } = render(
+            <UseList
+                filter={{ title: 'world' }}
+                sort={{ field: 'id', order: 'ASC' }}
+                callback={callback}
+            />
+        );
+
+        rerender(
+            <UseList
+                data={data}
+                isFetching={true}
+                isLoading={false}
+                filter={{ title: 'world' }}
+                sort={{ field: 'id', order: 'ASC' }}
+                callback={callback}
+            />
+        );
+
+        expect(callback).toHaveBeenCalledWith(
+            expect.objectContaining({
+                sort: { field: 'id', order: 'ASC' },
+                isFetching: true,
+                isLoading: false,
+                data: [{ id: 2, title: 'world' }],
+                error: undefined,
+                total: 1,
+            })
+        );
     });
 });

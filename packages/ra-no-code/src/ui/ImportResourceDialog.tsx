@@ -12,7 +12,7 @@ import {
 import { useDropzone } from 'react-dropzone';
 import { useQueryClient } from 'react-query';
 
-import { useNotify } from 'ra-core';
+import { useNotify } from 'react-admin';
 import { useNavigate } from 'react-router-dom';
 import { useImportResourceFromCsv } from './useImportResourceFromCsv';
 

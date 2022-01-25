@@ -1,31 +1,17 @@
 import { ReactNode, ReactElement, ComponentType } from 'react';
-import { DeprecatedThemeOptions } from '@mui/material';
-import { Location, History } from 'history';
-import { QueryClient } from 'react-query';
 
 import { WithPermissionsChildrenParams } from './auth/WithPermissions';
 import { AuthActionType } from './auth/types';
-import {
-    CreateControllerProps,
-    EditControllerProps,
-    ListControllerProps,
-    ShowControllerProps,
-} from './controller';
 
 /**
  * data types
  */
 
 export type Identifier = string | number;
-export interface Record {
+
+export interface RaRecord {
     id: Identifier;
     [key: string]: any;
-}
-
-export interface RecordMap<RecordType extends Record = Record> {
-    // Accept strings and numbers as identifiers
-    [id: string]: RecordType;
-    [id: number]: RecordType;
 }
 
 export interface SortPayload {
@@ -86,50 +72,50 @@ export type LegacyAuthProvider = (
  */
 
 export type DataProvider = {
-    getList: <RecordType extends Record = Record>(
+    getList: <RecordType extends RaRecord = any>(
         resource: string,
         params: GetListParams
     ) => Promise<GetListResult<RecordType>>;
 
-    getOne: <RecordType extends Record = Record>(
+    getOne: <RecordType extends RaRecord = any>(
         resource: string,
         params: GetOneParams
     ) => Promise<GetOneResult<RecordType>>;
 
-    getMany: <RecordType extends Record = Record>(
+    getMany: <RecordType extends RaRecord = any>(
         resource: string,
         params: GetManyParams
     ) => Promise<GetManyResult<RecordType>>;
 
-    getManyReference: <RecordType extends Record = Record>(
+    getManyReference: <RecordType extends RaRecord = any>(
         resource: string,
         params: GetManyReferenceParams
     ) => Promise<GetManyReferenceResult<RecordType>>;
 
-    update: <RecordType extends Record = Record>(
+    update: <RecordType extends RaRecord = any>(
         resource: string,
         params: UpdateParams
     ) => Promise<UpdateResult<RecordType>>;
 
-    updateMany: (
+    updateMany: <RecordType extends RaRecord = any>(
         resource: string,
         params: UpdateManyParams
-    ) => Promise<UpdateManyResult>;
+    ) => Promise<UpdateManyResult<RecordType>>;
 
-    create: <RecordType extends Record = Record>(
+    create: <RecordType extends RaRecord = any>(
         resource: string,
         params: CreateParams
     ) => Promise<CreateResult<RecordType>>;
 
-    delete: <RecordType extends Record = Record>(
+    delete: <RecordType extends RaRecord = any>(
         resource: string,
-        params: DeleteParams
+        params: DeleteParams<RecordType>
     ) => Promise<DeleteResult<RecordType>>;
 
-    deleteMany: (
+    deleteMany: <RecordType extends RaRecord = any>(
         resource: string,
-        params: DeleteManyParams
-    ) => Promise<DeleteManyResult>;
+        params: DeleteManyParams<RecordType>
+    ) => Promise<DeleteManyResult<RecordType>>;
 
     [key: string]: any;
 };
@@ -138,27 +124,27 @@ export interface GetListParams {
     pagination: PaginationPayload;
     sort: SortPayload;
     filter: any;
+    meta?: any;
 }
-export interface GetListResult<RecordType extends Record = Record> {
+export interface GetListResult<RecordType extends RaRecord = any> {
     data: RecordType[];
     total: number;
-    validUntil?: ValidUntil;
 }
 
-export interface GetOneParams {
-    id: Identifier;
+export interface GetOneParams<RecordType extends RaRecord = any> {
+    id: RecordType['id'];
+    meta?: any;
 }
-export interface GetOneResult<RecordType extends Record = Record> {
+export interface GetOneResult<RecordType extends RaRecord = any> {
     data: RecordType;
-    validUntil?: ValidUntil;
 }
 
 export interface GetManyParams {
     ids: Identifier[];
+    meta?: any;
 }
-export interface GetManyResult<RecordType extends Record = Record> {
+export interface GetManyResult<RecordType extends RaRecord = any> {
     data: RecordType[];
-    validUntil?: ValidUntil;
 }
 
 export interface GetManyReferenceParams {
@@ -167,56 +153,58 @@ export interface GetManyReferenceParams {
     pagination: PaginationPayload;
     sort: SortPayload;
     filter: any;
+    meta?: any;
 }
-export interface GetManyReferenceResult<RecordType extends Record = Record> {
+export interface GetManyReferenceResult<RecordType extends RaRecord = any> {
     data: RecordType[];
     total: number;
-    validUntil?: ValidUntil;
 }
 
 export interface UpdateParams<T = any> {
     id: Identifier;
     data: Partial<T>;
     previousData: T;
+    meta?: any;
 }
-export interface UpdateResult<RecordType extends Record = Record> {
+export interface UpdateResult<RecordType extends RaRecord = any> {
     data: RecordType;
-    validUntil?: ValidUntil;
 }
 
 export interface UpdateManyParams<T = any> {
     ids: Identifier[];
     data: T;
+    meta?: any;
 }
-export interface UpdateManyResult {
-    data?: Identifier[];
-    validUntil?: ValidUntil;
+export interface UpdateManyResult<RecordType extends RaRecord = any> {
+    data?: RecordType['id'][];
 }
 
 export interface CreateParams<T = any> {
     data: T;
+    meta?: any;
 }
-export interface CreateResult<RecordType extends Record = Record> {
+export interface CreateResult<RecordType extends RaRecord = any> {
     data: RecordType;
-    validUntil?: ValidUntil;
 }
 
-export interface DeleteParams {
+export interface DeleteParams<RecordType extends RaRecord = any> {
     id: Identifier;
-    previousData?: Record;
+    previousData?: RecordType;
+    meta?: any;
 }
-export interface DeleteResult<RecordType extends Record = Record> {
+export interface DeleteResult<RecordType extends RaRecord = any> {
     data: RecordType;
 }
 
-export interface DeleteManyParams {
-    ids: Identifier[];
+export interface DeleteManyParams<RecordType extends RaRecord = any> {
+    ids: RecordType['id'][];
+    meta?: any;
 }
-export interface DeleteManyResult {
-    data?: Identifier[];
+export interface DeleteManyResult<RecordType extends RaRecord = any> {
+    data?: RecordType['id'][];
 }
 
-export type DataProviderResult<RecordType extends Record = Record> =
+export type DataProviderResult<RecordType extends RaRecord = any> =
     | CreateResult<RecordType>
     | DeleteResult<RecordType>
     | DeleteManyResult
@@ -227,78 +215,14 @@ export type DataProviderResult<RecordType extends Record = Record> =
     | UpdateResult<RecordType>
     | UpdateManyResult;
 
-// This generic function type extracts the parameters of the function passed as its DataProviderMethod generic parameter.
-// It returns another function with the same parameters plus an optional options parameter used by the useDataProvider hook to specify side effects.
-// The returned function has the same result type as the original
-type DataProviderProxyMethod<
-    TDataProviderMethod
-> = TDataProviderMethod extends (...a: any[]) => infer Result
-    ? (
-          // This strange spread usage is required for two reasons
-          // 1. It keeps the named parameters of the original function
-          // 2. It allows to add an optional options parameter as the LAST parameter
-          ...a: [
-              ...Args: Parameters<TDataProviderMethod>,
-              options?: UseDataProviderOptions
-          ]
-      ) => Result
-    : never;
-
-export type DataProviderProxy<
-    TDataProvider extends DataProvider = DataProvider
-> = {
-    [MethodKey in keyof TDataProvider]: DataProviderProxyMethod<
-        TDataProvider[MethodKey]
-    >;
-} & {
-    getList: <RecordType extends Record = Record>(
-        resource: string,
-        params: GetListParams,
-        options?: UseDataProviderOptions
-    ) => Promise<GetListResult<RecordType>>;
-
-    getOne: <RecordType extends Record = Record>(
-        resource: string,
-        params: GetOneParams,
-        options?: UseDataProviderOptions
-    ) => Promise<GetOneResult<RecordType>>;
-
-    getMany: <RecordType extends Record = Record>(
-        resource: string,
-        params: GetManyParams,
-        options?: UseDataProviderOptions
-    ) => Promise<GetManyResult<RecordType>>;
-
-    getManyReference: <RecordType extends Record = Record>(
-        resource: string,
-        params: GetManyReferenceParams,
-        options?: UseDataProviderOptions
-    ) => Promise<GetManyReferenceResult<RecordType>>;
-
-    update: <RecordType extends Record = Record>(
-        resource: string,
-        params: UpdateParams,
-        options?: UseDataProviderOptions
-    ) => Promise<UpdateResult<RecordType>>;
-
-    create: <RecordType extends Record = Record>(
-        resource: string,
-        params: CreateParams
-    ) => Promise<CreateResult<RecordType>>;
-
-    delete: <RecordType extends Record = Record>(
-        resource: string,
-        params: DeleteParams
-    ) => Promise<DeleteResult<RecordType>>;
-};
-
 export type MutationMode = 'pessimistic' | 'optimistic' | 'undoable';
 export type OnSuccess = (
     response?: any,
     variables?: any,
     context?: any
 ) => void;
-export type OnFailure = (error?: any, variables?: any, context?: any) => void;
+export type onError = (error?: any, variables?: any, context?: any) => void;
+export type TransformData = (data: any) => any | Promise<any>;
 
 export interface UseDataProviderOptions {
     action?: string;
@@ -306,7 +230,7 @@ export interface UseDataProviderOptions {
     meta?: object;
     mutationMode?: MutationMode;
     onSuccess?: OnSuccess;
-    onFailure?: OnFailure;
+    onError?: onError;
     enabled?: boolean;
 }
 
@@ -332,46 +256,23 @@ export interface ResourceDefinition {
 export interface ReduxState {
     admin: {
         ui: {
-            automaticRefreshEnabled: boolean;
-            optimistic: boolean;
             sidebarOpen: boolean;
-            viewVersion: number;
         };
-        resources: {
+        expandedRows: {
+            [name: string]: Identifier[];
+        };
+        selectedIds: {
+            [name: string]: Identifier[];
+        };
+        listParams: {
             [name: string]: {
-                props: ResourceDefinition;
-                data: RecordMap;
-                list: {
-                    cachedRequests?: {
-                        ids: Identifier[];
-                        total: number;
-                        validity: Date;
-                    };
-                    expanded: Identifier[];
-                    ids: Identifier[];
-                    loadedOnce: boolean;
-                    params: any;
-                    selectedIds: Identifier[];
-                    total: number;
-                };
-                validity: {
-                    [key: string]: Date;
-                    [key: number]: Date;
-                };
+                sort: string;
+                order: string;
+                page: number;
+                perPage: number;
+                filter: any;
             };
         };
-        references: {
-            oneToMany: {
-                [relatedTo: string]: { ids: Identifier[]; total: number };
-            };
-        };
-        loading: number;
-        customQueries: {
-            [key: string]: any;
-        };
-    };
-    router: {
-        location: Location;
     };
 
     // leave space for custom reducers
@@ -397,9 +298,8 @@ export type AdminChildren = RenderResourcesFunction | ReactNode;
 export type TitleComponent = string | ReactElement<any>;
 export type CatchAllComponent = ComponentType<{ title?: TitleComponent }>;
 
-interface LoginComponentProps {
+export interface LoginComponentProps {
     title?: TitleComponent;
-    theme?: object;
 }
 export type LoginComponent = ComponentType<LoginComponentProps>;
 export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;
@@ -412,19 +312,16 @@ export interface CoreLayoutProps {
         logout?: ReactNode;
         hasDashboard?: boolean;
     }>;
-    theme?: DeprecatedThemeOptions;
     title?: TitleComponent;
 }
 
 export type LayoutComponent = ComponentType<CoreLayoutProps>;
 export type LoadingComponent = ComponentType<{
-    theme?: DeprecatedThemeOptions;
     loadingPrimary?: string;
     loadingSecondary?: string;
 }>;
 
 export interface ResourceComponentInjectedProps {
-    basePath?: string;
     permissions?: any;
     resource?: string;
     options?: any;
@@ -437,37 +334,12 @@ export interface ResourceComponentInjectedProps {
 export interface ResourceProps {
     intent?: 'route' | 'registration';
     name: string;
-    list?: ComponentType<ListControllerProps>;
-    create?: ComponentType<CreateControllerProps>;
-    edit?: ComponentType<EditControllerProps>;
-    show?: ComponentType<ShowControllerProps>;
+    list?: ComponentType<any> | ReactElement;
+    create?: ComponentType<any> | ReactElement;
+    edit?: ComponentType<any> | ReactElement;
+    show?: ComponentType<any> | ReactElement;
     icon?: ComponentType<any>;
     options?: object;
-}
-
-export interface AdminProps {
-    appLayout?: LayoutComponent;
-    authProvider?: AuthProvider | LegacyAuthProvider;
-    basename?: string;
-    catchAll?: CatchAllComponent;
-    children?: AdminChildren;
-    customReducers?: object;
-    dashboard?: DashboardComponent;
-    dataProvider: DataProvider | LegacyDataProvider;
-    disableTelemetry?: boolean;
-    history?: History;
-    i18nProvider?: I18nProvider;
-    initialState?: InitialState;
-    layout?: LayoutComponent;
-    loading?: ComponentType;
-    locale?: string;
-    loginPage?: LoginComponent | boolean;
-    logoutButton?: ComponentType;
-    menu?: ComponentType;
-    queryClient?: QueryClient;
-    ready?: ComponentType;
-    theme?: DeprecatedThemeOptions;
-    title?: TitleComponent;
 }
 
 export type Exporter = (
@@ -477,29 +349,13 @@ export type Exporter = (
         field: string,
         resource: string
     ) => Promise<any>,
-    dataProvider: DataProviderProxy,
+    dataProvider: DataProvider,
     resource?: string
 ) => void | Promise<void>;
 
 export type SetOnSave = (
     onSave?: (values: object, redirect: any) => void
 ) => void;
-
-export type FormGroupSubscriber = () => void;
-export type FormContextValue = {
-    setOnSave?: SetOnSave;
-    registerGroup: (name: string) => void;
-    unregisterGroup: (name: string) => void;
-    registerField: (source: string, group?: string) => void;
-    unregisterField: (source: string, group?: string) => void;
-    getGroupFields: (name: string) => string[];
-    /**
-     * Subscribe to any changes of the group content (fields added or removed).
-     * Subscribers can get the current fields of the group by calling getGroupFields.
-     * Returns a function to unsubscribe.
-     */
-    subscribe: (name: string, subscriber: FormGroupSubscriber) => () => void;
-};
 
 export type FormFunctions = {
     setOnSave?: SetOnSave;

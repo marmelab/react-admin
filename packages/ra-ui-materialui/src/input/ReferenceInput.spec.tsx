@@ -6,7 +6,6 @@ import { ReferenceInputView } from './ReferenceInput';
 describe('<ReferenceInput />', () => {
     const defaultProps = {
         possibleValues: {
-            basePath: '',
             data: {},
             ids: [],
             total: 0,
@@ -17,7 +16,7 @@ describe('<ReferenceInput />', () => {
             setPage: () => {},
             perPage: 25,
             setPerPage: () => {},
-            currentSort: {},
+            sort: {},
             setSort: () => {},
             filterValues: {},
             displayedFilters: [],
@@ -39,7 +38,6 @@ describe('<ReferenceInput />', () => {
             loading: false,
         },
         allowEmpty: false,
-        basePath: '/posts',
         meta: {},
         input: {},
         label: '',

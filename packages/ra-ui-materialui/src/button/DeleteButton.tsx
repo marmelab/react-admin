@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { ReactElement, SyntheticEvent } from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
+import { UseMutationOptions } from 'react-query';
 import {
-    Record,
+    RaRecord,
     RedirectionSideEffect,
     MutationMode,
-    OnSuccess,
-    OnFailure,
+    DeleteParams,
 } from 'ra-core';
 
 import { ButtonProps } from './Button';
@@ -33,13 +33,10 @@ import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
  * import { Edit, DeleteButton, TopToolbar } from 'react-admin';
  *
  * const EditActions = props => {
- *     const { basePath, data, resource } = props;
+ *     const { data, resource } = props;
  *     return (
  *         <TopToolbar>
  *             <DeleteButton
- *                 basePath={basePath}
- *                 record={data}
- *                 resource={resource}
  *                 mutationMode="pessimistic" // Renders the <DeleteWithConfirmButton>
  *             />
  *         </TopToolbar>
@@ -50,16 +47,20 @@ import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
  *     return <Edit actions={<EditActions />} {...props} />;
  * };
  */
-export const DeleteButton = (props: DeleteButtonProps) => {
+export const DeleteButton = <RecordType extends RaRecord = any>(
+    props: DeleteButtonProps<RecordType>
+) => {
     const { mutationMode = 'undoable', record, ...rest } = props;
     if (!record || record.id == null) {
         return null;
     }
 
     return mutationMode === 'undoable' ? (
-        <DeleteWithUndoButton record={record} {...rest} />
+        // @ts-ignore I looked for the error for one hour without finding it
+        <DeleteWithUndoButton<RecordType> record={record} {...rest} />
     ) : (
-        <DeleteWithConfirmButton
+        <DeleteWithConfirmButton<RecordType>
+            // @ts-ignore I looked for the error for one hour without finding it
             mutationMode={mutationMode}
             record={record}
             {...rest}
@@ -67,8 +68,8 @@ export const DeleteButton = (props: DeleteButtonProps) => {
     );
 };
 
-interface Props {
-    basePath?: string;
+export interface DeleteButtonProps<RecordType extends RaRecord = any>
+    extends Omit<ButtonProps, 'record'> {
     classes?: object;
     className?: string;
     confirmTitle?: string;
@@ -76,25 +77,22 @@ interface Props {
     icon?: ReactElement;
     label?: string;
     mutationMode?: MutationMode;
-    onClick?: (e: MouseEvent) => void;
-    record?: Record;
+    record?: RecordType;
     redirect?: RedirectionSideEffect;
     resource?: string;
     // May be injected by Toolbar
-    handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
-    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
     invalid?: boolean;
     pristine?: boolean;
     saving?: boolean;
     submitOnEnter?: boolean;
-    onSuccess?: OnSuccess;
-    onFailure?: OnFailure;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        unknown,
+        DeleteParams<RecordType>
+    >;
 }
 
-export type DeleteButtonProps = Props & ButtonProps;
-
 DeleteButton.propTypes = {
-    basePath: PropTypes.string,
     label: PropTypes.string,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     record: PropTypes.any,

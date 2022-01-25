@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { Record, useResourceDefinition, useRecordContext } from 'ra-core';
+import { RaRecord, useResourceDefinition, useRecordContext } from 'ra-core';
 
 import { EditButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
@@ -16,9 +16,9 @@ import TopToolbar from '../layout/TopToolbar';
  *     import Button from '@mui/material/Button';
  *     import { TopToolbar, EditButton, Show } from 'react-admin';
  *
- *     const PostShowActions = ({ basePath, record, resource }) => (
+ *     const PostShowActions = ({ record, resource }) => (
  *         <TopToolbar>
- *             <EditButton basePath={basePath} record={record} />
+ *             <EditButton record={record} />
  *             // Add your custom actions here //
  *             <Button color="primary" onClick={customAction}>Custom Action</Button>
  *         </TopToolbar>
@@ -45,7 +45,7 @@ export const ShowActions = (props: ShowActionsProps) => {
 
 export interface ShowActionsProps {
     className?: string;
-    record?: Record;
+    record?: RaRecord;
 }
 
 ShowActions.propTypes = {

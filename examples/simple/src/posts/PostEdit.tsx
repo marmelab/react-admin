@@ -1,5 +1,5 @@
 import * as React from 'react';
-import RichTextInput from 'ra-input-rich-text';
+import { RichTextInput } from 'ra-input-rich-text';
 import {
     TopToolbar,
     AutocompleteInput,
@@ -80,16 +80,12 @@ const CreateCategory = ({
     );
 };
 
-const EditActions = ({ data, hasShow, resource }: EditActionsProps) => (
+const EditActions = ({ hasShow }: EditActionsProps) => (
     <TopToolbar>
-        <CloneButton
-            className="button-clone"
-            basePath={`/${resource}`}
-            record={data}
-        />
-        {hasShow && <ShowButton basePath={`/${resource}`} record={data} />}
+        <CloneButton className="button-clone" />
+        {hasShow && <ShowButton />}
         {/* FIXME: added because react-router HashHistory cannot block navigation induced by address bar changes */}
-        <CreateButton basePath={`/${resource}`} />
+        <CreateButton />
     </TopToolbar>
 );
 
@@ -164,7 +160,6 @@ const PostEdit = () => {
                                         scopedFormData &&
                                         scopedFormData.user_id ? (
                                             <SelectInput
-                                                label="Role"
                                                 source={getSource('role')}
                                                 choices={[
                                                     {
@@ -181,6 +176,7 @@ const PostEdit = () => {
                                                     },
                                                 ]}
                                                 {...rest}
+                                                label="Role"
                                             />
                                         ) : null
                                     }
@@ -232,6 +228,16 @@ const PostEdit = () => {
                     />
                     <BooleanInput source="commentable" defaultValue />
                     <TextInput disabled source="views" />
+                    <ArrayInput source="pictures">
+                        <SimpleFormIterator>
+                            <TextInput source="url" initialValue="" />
+                            <ArrayInput source="metas.authors">
+                                <SimpleFormIterator>
+                                    <TextInput source="name" initialValue="" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleFormIterator>
+                    </ArrayInput>
                 </FormTab>
                 <FormTab label="post.form.comments">
                     <ReferenceManyField

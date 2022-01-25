@@ -44,7 +44,7 @@ const Root = styled('div')(({ theme }) => ({
     },
 
     [`&.${classes.closed}`]: {
-        width: 55,
+        width: 50,
     },
 }));
 

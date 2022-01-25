@@ -1,10 +1,10 @@
 import React from 'react';
-import { useResourceContext } from 'ra-core';
 import {
     Datagrid as RaDatagrid,
     DatagridProps,
     List as RaList,
-} from 'ra-ui-materialui';
+    useResourceContext,
+} from 'react-admin';
 
 import {
     useResourceConfiguration,

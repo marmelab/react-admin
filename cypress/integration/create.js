@@ -258,7 +258,7 @@ describe('Create Page', () => {
             },
         ];
         CreatePage.setValues(values);
-        CreatePage.submit();
+        CreatePage.submit(false);
         cy.contains('Required field');
     });
 
@@ -313,7 +313,7 @@ describe('Create Page', () => {
             },
         ];
         CreatePage.setValues(values);
-        CreatePage.submit();
+        CreatePage.submit(false);
         cy.get(CreatePage.elements.richTextInputError)
             .should('exist')
             .contains('Required');
@@ -328,7 +328,7 @@ describe('Create Page', () => {
             },
         ];
         CreatePage.setValues(values);
-        CreatePage.submit();
+        CreatePage.submit(false);
         cy.get(CreatePage.elements.richTextInputError)
             .should('exist')
             .contains('Required');

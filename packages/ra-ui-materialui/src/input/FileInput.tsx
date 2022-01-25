@@ -33,6 +33,7 @@ export const FileInput = (
         maxSize,
         minSize,
         multiple = false,
+        validateFileRemoval,
         options: {
             inputProps: inputPropsOptions,
             ...options
@@ -111,7 +112,14 @@ export const FileInput = (
         }
     };
 
-    const onRemove = file => () => {
+    const onRemove = file => async () => {
+        if (validateFileRemoval) {
+            try {
+                await validateFileRemoval(file);
+            } catch (e) {
+                return;
+            }
+        }
         if (multiple) {
             const filteredFiles = files.filter(
                 stateFile => !shallowEqual(stateFile, file)
@@ -216,6 +224,7 @@ FileInput.propTypes = {
     maxSize: PropTypes.number,
     minSize: PropTypes.number,
     multiple: PropTypes.bool,
+    validateFileRemoval: PropTypes.func,
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
@@ -250,6 +259,7 @@ export interface FileInputProps
         DropzoneOptions,
         'accept' | 'multiple' | 'maxSize' | 'minSize'
     > {
+    validateFileRemoval?(file): boolean | Promise<boolean>;
     children?: ReactNode;
     labelMultiple?: string;
     labelSingle?: string;

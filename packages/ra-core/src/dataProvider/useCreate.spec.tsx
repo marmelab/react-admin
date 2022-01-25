@@ -1,41 +1,17 @@
 import * as React from 'react';
-import { renderWithRedux } from 'ra-test';
-import { waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import expect from 'expect';
 
-import { DataProvider, Record } from '../types';
-import DataProviderContext from './DataProviderContext';
-import useCreate from './useCreate';
+import { RaRecord } from '../types';
+import { testDataProvider } from './testDataProvider';
+import { useCreate } from './useCreate';
+import { CoreAdminContext } from '../core';
 
 describe('useCreate', () => {
-    it('returns a callback that can be used with create arguments', () => {
-        const dataProvider: Partial<DataProvider> = {
+    it('returns a callback that can be used with create arguments', async () => {
+        const dataProvider = testDataProvider({
             create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
-        };
-        let localCreate;
-        const Dummy = () => {
-            const [create] = useCreate();
-            localCreate = create;
-            return <span />;
-        };
-
-        renderWithRedux(
-            // @ts-expect-error
-            <DataProviderContext.Provider value={dataProvider}>
-                <Dummy />
-            </DataProviderContext.Provider>
-        );
-        localCreate('foo', { bar: 'baz' });
-        expect(dataProvider.create).toHaveBeenCalledWith('foo', {
-            data: { bar: 'baz' },
         });
-    });
-
-    it('returns a callback that can be used with mutation payload', () => {
-        const dataProvider: Partial<DataProvider> = {
-            create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
-            update: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
-        };
         let localCreate;
         const Dummy = () => {
             const [create] = useCreate();
@@ -43,80 +19,101 @@ describe('useCreate', () => {
             return <span />;
         };
 
-        renderWithRedux(
-            // @ts-expect-error
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <Dummy />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
-        localCreate({
-            type: 'update',
-            resource: 'foo',
-            payload: {
+        localCreate('foo', { data: { bar: 'baz' } });
+        await waitFor(() => {
+            expect(dataProvider.create).toHaveBeenCalledWith('foo', {
                 data: { bar: 'baz' },
-            },
-        });
-        expect(dataProvider.create).not.toHaveBeenCalled();
-        expect(dataProvider.update).toHaveBeenCalledWith('foo', {
-            data: { bar: 'baz' },
+            });
         });
     });
 
-    it('returns a callback that can be used with no arguments', () => {
-        const dataProvider: Partial<DataProvider> = {
+    it('returns a callback that can be used with no arguments', async () => {
+        const dataProvider = testDataProvider({
             create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
-        };
+        });
         let localCreate;
         const Dummy = () => {
-            const [create] = useCreate('foo', { bar: 'baz' });
+            const [create] = useCreate('foo', { data: { bar: 'baz' } });
             localCreate = create;
             return <span />;
         };
 
-        renderWithRedux(
-            // @ts-expect-error
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <Dummy />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
         localCreate();
-        expect(dataProvider.create).toHaveBeenCalledWith('foo', {
-            data: { bar: 'baz' },
+        await waitFor(() => {
+            expect(dataProvider.create).toHaveBeenCalledWith('foo', {
+                data: { bar: 'baz' },
+            });
         });
     });
 
-    it('merges hook call time and callback call time queries', () => {
-        const dataProvider: Partial<DataProvider> = {
+    it('uses call time params over hook time params', async () => {
+        const dataProvider = testDataProvider({
             create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
-        };
+        });
         let localCreate;
         const Dummy = () => {
-            const [create] = useCreate('foo', { bar: 'baz' });
+            const [create] = useCreate('foo', { data: { bar: 'baz' } });
             localCreate = create;
             return <span />;
         };
 
-        renderWithRedux(
-            // @ts-expect-error
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <Dummy />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
-        localCreate({ payload: { data: { foo: 456 } } });
-        expect(dataProvider.create).toHaveBeenCalledWith('foo', {
-            data: { bar: 'baz', foo: 456 },
+        localCreate('foo', { data: { foo: 456 } });
+        await waitFor(() => {
+            expect(dataProvider.create).toHaveBeenCalledWith('foo', {
+                data: { foo: 456 },
+            });
+        });
+    });
+
+    it('accepts a meta paramater', async () => {
+        const dataProvider = testDataProvider({
+            create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+        });
+        let localCreate;
+        const Dummy = () => {
+            const [create] = useCreate();
+            localCreate = create;
+            return <span />;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+            </CoreAdminContext>
+        );
+        localCreate('foo', { data: { bar: 'baz' }, meta: { hello: 'world' } });
+        await waitFor(() => {
+            expect(dataProvider.create).toHaveBeenCalledWith('foo', {
+                data: { bar: 'baz' },
+                meta: { hello: 'world' },
+            });
         });
     });
 
     it('returns a state typed based on the parametric type', async () => {
-        interface Product extends Record {
+        interface Product extends RaRecord {
             sku: string;
         }
-        const dataProvider: Partial<DataProvider> = {
+        const dataProvider = testDataProvider({
             create: jest.fn(() =>
                 Promise.resolve({ data: { id: 1, sku: 'abc' } } as any)
             ),
-        };
+        });
         let localCreate;
         let sku;
         const Dummy = () => {
@@ -125,14 +122,13 @@ describe('useCreate', () => {
             sku = data && data.sku;
             return <span />;
         };
-        renderWithRedux(
-            // @ts-expect-error
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <Dummy />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
-        expect(sku).toBeNull();
-        localCreate('products', { sku: 'abc' });
+        expect(sku).toBeUndefined();
+        localCreate('products', { data: { sku: 'abc' } });
         await waitFor(() => {
             expect(sku).toEqual('abc');
         });

@@ -23,10 +23,10 @@ import { Button, ButtonProps } from './Button';
  * import { Fragment } from 'react';
  * import { BulkDeleteButton, BulkExportButton } from 'react-admin';
  *
- * const PostBulkActionButtons = ({ basePath }) => (
+ * const PostBulkActionButtons = () => (
  *     <Fragment>
  *         <BulkExportButton />
- *         <BulkDeleteButton basePath={basePath} />
+ *         <BulkDeleteButton />
  *     </Fragment>
  * );
  *
@@ -67,7 +67,9 @@ export const BulkExportButton = (props: BulkExportButtonProps) => {
                     )
                     .catch(error => {
                         console.error(error);
-                        notify('ra.notification.http_error', 'warning');
+                        notify('ra.notification.http_error', {
+                            type: 'warning',
+                        });
                     });
             if (typeof onClick === 'function') {
                 onClick(event);
@@ -90,7 +92,6 @@ export const BulkExportButton = (props: BulkExportButtonProps) => {
 const defaultIcon = <DownloadIcon />;
 
 const sanitizeRestProps = ({
-    basePath,
     filterValues,
     selectedIds,
     resource,
@@ -98,7 +99,6 @@ const sanitizeRestProps = ({
 }: Omit<BulkExportButtonProps, 'exporter' | 'label'>) => rest;
 
 interface Props {
-    basePath?: string;
     exporter?: Exporter;
     filterValues?: any;
     icon?: JSX.Element;
@@ -111,7 +111,6 @@ interface Props {
 export type BulkExportButtonProps = Props & ButtonProps;
 
 BulkExportButton.propTypes = {
-    basePath: PropTypes.string,
     exporter: PropTypes.func,
     label: PropTypes.string,
     resource: PropTypes.string,

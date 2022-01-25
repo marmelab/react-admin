@@ -5,10 +5,12 @@ import {
     FieldRenderProps,
     FieldInputProps,
 } from 'react-final-form';
+import get from 'lodash/get';
 import { Validator, composeValidators } from './validate';
 import isRequired from './isRequired';
 import { useFormGroupContext } from './useFormGroupContext';
-import { useFormContext } from './useFormContext';
+import { useFormGroups } from './useFormGroups';
+import { useRecordContext } from '../controller';
 
 export interface InputProps<T = any>
     extends Omit<
@@ -50,25 +52,31 @@ const useInput = ({
 }: InputProps): UseInputValue => {
     const finalName = name || source;
     const formGroupName = useFormGroupContext();
-    const formContext = useFormContext();
+    const formGroups = useFormGroups();
+    const record = useRecordContext();
 
     useEffect(() => {
-        if (!formContext || !formGroupName) {
+        if (!formGroups || formGroupName == null) {
             return;
         }
-        formContext.registerField(source, formGroupName);
+
+        formGroups.registerField(source, formGroupName);
 
         return () => {
-            formContext.unregisterField(source, formGroupName);
+            formGroups.unregisterField(source, formGroupName);
         };
-    }, [formContext, formGroupName, source]);
+    }, [formGroups, formGroupName, source]);
 
     const sanitizedValidate = Array.isArray(validate)
         ? composeValidators(validate)
         : validate;
 
+    // Fetch the initialValue from the record if available or apply the provided initialValue.
+    // This ensure dynamically added inputs have their value set correctly (ArrayInput for example).
+    // We don't do this for the form level initialValues so that it works as it should in final-form
+    // (ie. field level initialValue override form level initialValues for this field).
     const { input, meta } = useFinalFormField(finalName, {
-        initialValue,
+        initialValue: get(record, source, initialValue),
         defaultValue,
         validate: sanitizedValidate,
         ...options,

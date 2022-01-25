@@ -1,8 +1,6 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { cloneElement, FC, memo, ReactElement } from 'react';
+import { FC, memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import {
     ListContextProvider,
     useListContext,
@@ -12,11 +10,11 @@ import {
     FilterPayload,
     ResourceContextProvider,
     useRecordContext,
-    ReduxState,
 } from 'ra-core';
 
 import { fieldPropTypes, PublicFieldProps, InjectedFieldProps } from './types';
 import { LinearProgress } from '../layout';
+import { styled } from '@mui/material/styles';
 
 /**
  * A container component that fetches records from another resource specified
@@ -76,8 +74,6 @@ import { LinearProgress } from '../layout';
  */
 export const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
     const {
-        basePath,
-        children,
         filter,
         page = 1,
         perPage,
@@ -87,25 +83,7 @@ export const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
         source,
     } = props;
     const record = useRecordContext(props);
-
-    if (React.Children.count(children) !== 1) {
-        throw new Error(
-            '<ReferenceArrayField> only accepts a single child (like <Datagrid>)'
-        );
-    }
-
-    const isReferenceDeclared = useSelector<ReduxState, boolean>(
-        state => typeof state.admin.resources[props.reference] !== 'undefined'
-    );
-
-    if (!isReferenceDeclared) {
-        throw new Error(
-            `You must declare a <Resource name="${props.reference}"> in order to use a <ReferenceArrayField reference="${props.reference}">`
-        );
-    }
-
     const controllerProps = useReferenceArrayFieldController({
-        basePath,
         filter,
         page,
         perPage,
@@ -129,7 +107,7 @@ ReferenceArrayField.propTypes = {
     addLabel: PropTypes.bool,
     className: PropTypes.string,
     children: PropTypes.element.isRequired,
-    label: PropTypes.string,
+    label: fieldPropTypes.label,
     record: PropTypes.any,
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string,
@@ -156,30 +134,24 @@ export interface ReferenceArrayFieldProps
 }
 
 export interface ReferenceArrayFieldViewProps
-    extends Omit<
-            ReferenceArrayFieldProps,
-            'basePath' | 'resource' | 'page' | 'perPage'
-        >,
+    extends Omit<ReferenceArrayFieldProps, 'resource' | 'page' | 'perPage'>,
         ListControllerProps {}
 
 export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props => {
     const { children, pagination, className } = props;
-
     const { isLoading, total } = useListContext(props);
 
     return (
-        <Root className={className}>
+        <Root>
             {isLoading ? (
                 <LinearProgress
                     className={ReferenceArrayFieldClasses.progress}
                 />
             ) : (
-                <>
+                <span className={className}>
                     {children}
-                    {pagination &&
-                        total !== undefined &&
-                        cloneElement(pagination)}
-                </>
+                    {pagination && total !== undefined ? pagination : null}
+                </span>
             )}
         </Root>
     );
@@ -190,8 +162,6 @@ ReferenceArrayFieldView.propTypes = {
     children: PropTypes.element.isRequired,
     reference: PropTypes.string.isRequired,
 };
-
-const PureReferenceArrayFieldView = memo(ReferenceArrayFieldView);
 
 const PREFIX = 'RaReferenceArrayField';
 
@@ -204,3 +174,11 @@ const Root = styled('div', { name: PREFIX })(({ theme }) => ({
         marginTop: theme.spacing(2),
     },
 }));
+
+ReferenceArrayFieldView.propTypes = {
+    className: PropTypes.string,
+    children: PropTypes.element.isRequired,
+    reference: PropTypes.string.isRequired,
+};
+
+const PureReferenceArrayFieldView = memo(ReferenceArrayFieldView);

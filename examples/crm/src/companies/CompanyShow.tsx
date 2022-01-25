@@ -56,7 +56,7 @@ const CompanyShowContent = () => {
                 <Card>
                     <CardContent>
                         <Box display="flex" mb={1}>
-                            <LogoField record={record as any} />
+                            <LogoField />
                             <Box ml={2} flex="1">
                                 <Typography variant="h5">
                                     {record.name}

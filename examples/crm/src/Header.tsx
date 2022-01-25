@@ -85,7 +85,7 @@ const Header = () => {
                         </Box>
                         <Box display="flex">
                             <LoadingIndicator />
-                            <UserMenu logout={<Logout button />} />
+                            <UserMenu logout={<Logout />} />
                         </Box>
                     </Box>
                 </Toolbar>

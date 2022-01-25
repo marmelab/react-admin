@@ -19,19 +19,16 @@ const RejectButton = ({ record }: { record: Review }) => {
         {
             mutationMode: 'undoable',
             onSuccess: () => {
-                notify(
-                    'resources.reviews.notification.rejected_success',
-                    'info',
-                    {},
-                    true
-                );
+                notify('resources.reviews.notification.rejected_success', {
+                    type: 'info',
+                    undoable: true,
+                });
                 redirectTo('/reviews');
             },
             onError: () => {
-                notify(
-                    'resources.reviews.notification.rejected_error',
-                    'warning'
-                );
+                notify('resources.reviews.notification.rejected_error', {
+                    type: 'warning',
+                });
             },
         }
     );

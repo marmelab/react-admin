@@ -1,487 +1,245 @@
 import * as React from 'react';
 import expect from 'expect';
+import { render, waitFor } from '@testing-library/react';
 
-import { renderWithRedux } from 'ra-test';
-import useGetMany from './useGetMany';
-import { DataProviderContext } from '../dataProvider';
-import { waitFor } from '@testing-library/react';
+import { CoreAdminContext } from '../core';
+import { useGetMany } from './useGetMany';
+import { testDataProvider } from '../dataProvider';
 
 const UseGetMany = ({
     resource,
     ids,
+    meta = undefined,
     options = {},
     callback = null,
     ...rest
 }) => {
-    const hookValue = useGetMany(resource, ids, options);
+    const hookValue = useGetMany(resource, { ids, meta }, options);
     if (callback) callback(hookValue);
     return <div>hello</div>;
 };
 
 describe('useGetMany', () => {
-    it('should call the dataProvider with a GET_MANY on mount', async () => {
-        const dataProvider = {
-            getMany: jest.fn(() =>
-                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-            ),
-        };
-        const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <UseGetMany resource="posts" ids={[1]} />
-            </DataProviderContext.Provider>
-        );
-        await new Promise(resolve => setTimeout(resolve));
-        expect(dispatch).toBeCalledTimes(5);
-        expect(dispatch.mock.calls[0][0].type).toBe('RA/CRUD_GET_MANY');
-        expect(dataProvider.getMany).toBeCalledTimes(1);
-        expect(dataProvider.getMany.mock.calls[0]).toEqual([
-            'posts',
-            { ids: [1] },
-        ]);
+    let dataProvider;
+
+    beforeEach(() => {
+        dataProvider = testDataProvider({
+            getMany: jest
+                .fn()
+                .mockResolvedValue({ data: [{ id: 1, title: 'foo' }] }),
+        });
     });
 
-    it('should not call the dataProvider with a GET_MANY on mount if enabled is false', async () => {
-        const dataProvider = {
-            getMany: jest.fn(() =>
-                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-            ),
-        };
-        const { dispatch, rerender } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+    it('should call dataProvider.getMany() on mount', async () => {
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetMany resource="posts" ids={[1]} />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
+            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
+                ids: [1],
+            });
+        });
+    });
+
+    it('should not call dataProvider.getMany() on mount if enabled is false', async () => {
+        const { rerender } = render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetMany
                     resource="posts"
                     ids={[1]}
                     options={{ enabled: false }}
                 />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
         await new Promise(resolve => setTimeout(resolve));
-        expect(dispatch).toBeCalledTimes(0);
-        expect(dataProvider.getMany).toBeCalledTimes(0);
-
+        expect(dataProvider.getMany).toHaveBeenCalledTimes(0);
         rerender(
-            <DataProviderContext.Provider value={dataProvider}>
+            <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetMany
                     resource="posts"
                     ids={[1]}
                     options={{ enabled: true }}
                 />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
         await new Promise(resolve => setTimeout(resolve));
-        expect(dispatch).toBeCalledTimes(5);
-        expect(dispatch.mock.calls[0][0].type).toBe('RA/CRUD_GET_MANY');
-        expect(dataProvider.getMany).toBeCalledTimes(1);
-        expect(dataProvider.getMany.mock.calls[0]).toEqual([
-            'posts',
-            { ids: [1] },
-        ]);
+        expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
     });
 
-    it('should aggregate multiple queries into a single call', async () => {
-        const dataProvider = {
-            getMany: jest.fn(() =>
-                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-            ),
-        };
-        const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+    it('should not call dataProvider.getMany() on update', async () => {
+        const { rerender } = render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetMany resource="posts" ids={[1]} />
-                <UseGetMany resource="posts" ids={[2, 3]} />
-                <UseGetMany resource="posts" ids={[4]} />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
         await new Promise(resolve => setTimeout(resolve));
-        expect(dispatch).toBeCalledTimes(5);
-        expect(dataProvider.getMany).toBeCalledTimes(1);
-        expect(dataProvider.getMany.mock.calls[0]).toEqual([
-            'posts',
-            { ids: [1, 2, 3, 4] },
-        ]);
-    });
-
-    it('should deduplicate repeated ids', async () => {
-        const dataProvider = {
-            getMany: jest.fn(() =>
-                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-            ),
-        };
-        const { dispatch } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <UseGetMany resource="posts" ids={[1]} />
-                <UseGetMany resource="posts" ids={[1, 2]} />
-                <UseGetMany resource="posts" ids={[2, 3]} />
-            </DataProviderContext.Provider>
-        );
-        await new Promise(resolve => setTimeout(resolve));
-        expect(dispatch).toBeCalledTimes(5);
-        expect(dataProvider.getMany).toBeCalledTimes(1);
-        expect(dataProvider.getMany.mock.calls[0]).toEqual([
-            'posts',
-            { ids: [1, 2, 3] },
-        ]);
-    });
-
-    it('should not aggregate or deduplicate calls for different resources', async () => {
-        const dataProvider = {
-            getMany: jest
-                .fn()
-                .mockReturnValueOnce(
-                    Promise.resolve({ data: [{ id: 1 }, { id: 2 }, { id: 3 }] })
-                )
-                .mockReturnValueOnce(
-                    Promise.resolve({ data: [{ id: 5 }, { id: 6 }, { id: 7 }] })
-                ),
-        };
-
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <UseGetMany resource="posts" ids={[1, 2]} />
-                <UseGetMany resource="posts" ids={[2, 3]} />
-                <UseGetMany resource="comments" ids={[5, 6]} />
-                <UseGetMany resource="comments" ids={[6, 7]} />
-            </DataProviderContext.Provider>
-        );
-        await new Promise(resolve => setTimeout(resolve));
-        expect(dataProvider.getMany).toBeCalledTimes(2);
-        expect(dataProvider.getMany.mock.calls[0]).toEqual([
-            'posts',
-            { ids: [1, 2, 3] },
-        ]);
-        expect(dataProvider.getMany.mock.calls[1]).toEqual([
-            'comments',
-            { ids: [5, 6, 7] },
-        ]);
-    });
-
-    it('should not call the dataProvider on update', async () => {
-        const dataProvider = {
-            getMany: jest.fn(() =>
-                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-            ),
-        };
-        const { dispatch, rerender } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <UseGetMany resource="posts" ids={[1]} />
-            </DataProviderContext.Provider>
-        );
-        await new Promise(resolve => setTimeout(resolve));
+        expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
         rerender(
-            <DataProviderContext.Provider value={dataProvider}>
+            <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetMany resource="posts" ids={[1]} />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
+        );
+        await new Promise(resolve => setTimeout(resolve));
+        expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
+    });
+
+    it('should recall dataProvider.getMany() when ids changes', async () => {
+        const { rerender } = render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetMany resource="posts" ids={[1]} />
+            </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(dispatch).toBeCalledTimes(5);
-            expect(dataProvider.getMany).toBeCalledTimes(1);
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
+        });
+        rerender(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetMany resource="posts" ids={[1, 2]} />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(2);
         });
     });
 
-    it('should call the dataProvider on update when the resource changes', async () => {
-        const dataProvider = {
-            getMany: jest.fn(() =>
-                Promise.resolve({ data: [{ id: 1, title: 'foo' }] })
-            ),
-        };
-        const { dispatch, rerender } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+    it('should recall dataProvider.getMany() when resource changes', async () => {
+        const { rerender } = render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetMany resource="posts" ids={[1]} />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
-        await new Promise(resolve => setTimeout(resolve));
+        await waitFor(() => {
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
+        });
         rerender(
-            <DataProviderContext.Provider value={dataProvider}>
+            <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetMany resource="comments" ids={[1]} />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(dispatch).toBeCalledTimes(10);
-            expect(dataProvider.getMany).toBeCalledTimes(2);
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(2);
         });
     });
 
-    it('should retrieve results from redux state on mount', () => {
-        const hookValue = jest.fn();
-        renderWithRedux(
-            <UseGetMany resource="posts" ids={[1, 2]} callback={hookValue} />,
-            {
-                admin: {
-                    resources: {
-                        posts: { data: { 1: { id: 1 }, 2: { id: 2 } } },
-                    },
-                },
-            }
-        );
-        expect(hookValue.mock.calls[0][0]).toEqual({
-            data: [{ id: 1 }, { id: 2 }],
-            loading: true,
-            loaded: true,
-            error: null,
-            refetch: expect.any(Function),
-        });
-    });
-
-    it('should replace redux data with dataProvider data', async () => {
-        const hookValue = jest.fn();
-        const dataProvider = {
-            getMany: jest.fn(() =>
-                Promise.resolve({
-                    data: [
-                        { id: 1, title: 'foo' },
-                        { id: 2, title: 'bar' },
-                    ],
-                })
-            ),
-        };
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+    it('should accept a meta parameter', async () => {
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetMany
                     resource="posts"
-                    ids={[1, 2]}
-                    callback={hookValue}
+                    ids={[1]}
+                    meta={{ hello: 'world' }}
                 />
-            </DataProviderContext.Provider>,
-            {
-                admin: {
-                    resources: {
-                        posts: { data: { 1: { id: 1 }, 2: { id: 2 } } },
-                    },
-                },
-            }
+            </CoreAdminContext>
         );
         await waitFor(() => {
-            if (hookValue.mock.calls.length > 0) {
-                expect(hookValue.mock.calls.pop()[0]).toEqual({
-                    data: [
-                        { id: 1, title: 'foo' },
-                        { id: 2, title: 'bar' },
-                    ],
-                    loading: false,
-                    loaded: true,
-                    error: null,
-                    refetch: expect.any(Function),
-                });
-            }
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
+            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
+                ids: [1],
+                meta: { hello: 'world' },
+            });
         });
     });
 
-    it('should return loading state false once the dataProvider returns', async () => {
-        const hookValue = jest.fn();
-        const dataProvider = {
-            getMany: jest.fn(() =>
-                Promise.resolve({
-                    data: [
-                        { id: 1, title: 'foo' },
-                        { id: 2, title: 'bar' },
-                    ],
-                })
-            ),
+    it('should use data from query cache on mount', async () => {
+        const FecthGetMany = () => {
+            useGetMany('posts', { ids: ['1'] });
+            return <span>dummy</span>;
         };
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <UseGetMany
-                    resource="posts"
-                    ids={[1, 2]}
-                    callback={hookValue}
-                />
-            </DataProviderContext.Provider>,
-            {
-                admin: {
-                    resources: {
-                        posts: { data: { 1: { id: 1 }, 2: { id: 2 } } },
-                    },
-                },
-            }
-        );
-        expect(hookValue.mock.calls.pop()[0].loading).toBe(true);
-        await waitFor(() => {
-            expect(hookValue.mock.calls.pop()[0].loading).toBe(false);
-        });
-    });
-
-    it('should set the loading state depending on the availability of the data in the redux store', () => {
         const hookValue = jest.fn();
-        renderWithRedux(
-            <UseGetMany resource="posts" ids={[1, 2]} callback={hookValue} />,
-            {
-                admin: {
-                    resources: { posts: { data: {} } },
-                },
-            }
+        const { rerender } = render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <FecthGetMany />
+            </CoreAdminContext>
         );
-        expect(hookValue.mock.calls[0][0]).toEqual({
-            data: [undefined, undefined],
-            loading: true,
-            loaded: false,
-            error: null,
-            refetch: expect.any(Function),
+        await waitFor(() => {
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
         });
+        rerender(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetMany resource="posts" ids={[1]} callback={hookValue} />
+            </CoreAdminContext>
+        );
+        expect(hookValue).toHaveBeenCalledWith(
+            expect.objectContaining({
+                data: [{ id: 1, title: 'foo' }],
+                isFetching: true,
+                isLoading: false,
+                error: null,
+            })
+        );
+        await waitFor(() => {
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(2);
+        });
+        expect(hookValue).toHaveBeenCalledWith(
+            expect.objectContaining({
+                data: [{ id: 1, title: 'foo' }],
+                isFetching: false,
+                isLoading: false,
+                error: null,
+            })
+        );
     });
 
     it('should set the error state when the dataProvider fails', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+        jest.spyOn(console, 'error').mockImplementation(() => {});
         const hookValue = jest.fn();
-        const dataProvider = {
-            getMany: jest.fn(() => Promise.reject(new Error('failed'))),
-        };
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <UseGetMany
-                    resource="posts"
-                    ids={[1, 2]}
-                    callback={hookValue}
-                />
-            </DataProviderContext.Provider>
-        );
-        expect(hookValue.mock.calls.pop()[0].error).toBe(null);
-        await waitFor(() => {
-            expect(hookValue.mock.calls.pop()[0].error).toEqual(
-                new Error('failed')
-            );
+        const dataProvider = testDataProvider({
+            getMany: jest.fn().mockRejectedValue(new Error('failed')),
         });
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetMany resource="posts" ids={[1]} callback={hookValue} />
+            </CoreAdminContext>
+        );
+        expect(hookValue).toHaveBeenCalledWith(
+            expect.objectContaining({
+                error: null,
+            })
+        );
+        await waitFor(() => {
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
+        });
+        expect(hookValue).toHaveBeenCalledWith(
+            expect.objectContaining({
+                error: new Error('failed'),
+            })
+        );
     });
 
     it('should execute success side effects on success', async () => {
-        const onSuccess1 = jest.fn();
-        const onSuccess2 = jest.fn();
-        const dataProvider = {
-            getMany: jest
-                .fn()
-                .mockReturnValueOnce(
-                    Promise.resolve({
-                        data: [
-                            { id: 1, title: 'foo' },
-                            { id: 2, title: 'bar' },
-                        ],
-                    })
-                )
-                .mockReturnValueOnce(
-                    Promise.resolve({
-                        data: [
-                            { id: 3, foo: 1 },
-                            { id: 4, foo: 2 },
-                        ],
-                    })
-                ),
-        };
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <UseGetMany
-                    resource="posts"
-                    ids={[1, 2]}
-                    options={{ onSuccess: onSuccess1 }}
-                />
-                <UseGetMany
-                    resource="comments"
-                    ids={[3, 4]}
-                    options={{ onSuccess: onSuccess2 }}
-                />
-            </DataProviderContext.Provider>
-        );
-        await waitFor(() => {
-            expect(onSuccess1).toBeCalledTimes(1);
-            expect(onSuccess1.mock.calls.pop()[0]).toEqual({
-                data: [
-                    { id: 1, title: 'foo' },
-                    { id: 2, title: 'bar' },
-                ],
-            });
-            expect(onSuccess2).toBeCalledTimes(1);
-            expect(onSuccess2.mock.calls.pop()[0]).toEqual({
-                data: [
-                    { id: 3, foo: 1 },
-                    { id: 4, foo: 2 },
-                ],
-            });
-        });
-    });
-
-    it('should execute success side effects once for each hook call', async () => {
         const onSuccess = jest.fn();
-        const dataProvider = {
-            getMany: jest.fn(() =>
-                Promise.resolve({
-                    data: [
-                        { id: 1, title: 'foo' },
-                        { id: 2, title: 'bar' },
-                    ],
-                })
-            ),
-        };
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetMany
                     resource="posts"
                     ids={[1]}
                     options={{ onSuccess }}
                 />
-                <UseGetMany
-                    resource="posts"
-                    ids={[2]}
-                    options={{ onSuccess }}
-                />
-            </DataProviderContext.Provider>
+            </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(onSuccess).toBeCalledTimes(2);
-            expect(onSuccess.mock.calls.shift()[0]).toEqual({
-                data: [{ id: 1, title: 'foo' }],
-            });
-            expect(onSuccess.mock.calls.shift()[0]).toEqual({
-                data: [{ id: 2, title: 'bar' }],
-            });
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
+            expect(onSuccess).toHaveBeenCalledWith([{ id: 1, title: 'foo' }]);
         });
     });
 
-    it('should execute failure side effects on failure', async () => {
+    it('should execute error side effects on failure', async () => {
         jest.spyOn(console, 'error').mockImplementationOnce(() => {});
-        const onFailure = jest.fn();
-        const dataProvider = {
-            getMany: jest.fn(() => Promise.reject(new Error('failed'))),
-        };
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <UseGetMany
-                    resource="posts"
-                    ids={[1, 2]}
-                    options={{ onFailure }}
-                />
-            </DataProviderContext.Provider>
-        );
-        await waitFor(() => {
-            expect(onFailure).toBeCalledTimes(1);
-            expect(onFailure.mock.calls.pop()[0]).toEqual(new Error('failed'));
+        const dataProvider = testDataProvider({
+            getMany: jest.fn().mockRejectedValue(new Error('failed')),
         });
-    });
-
-    it('should execute failure side effects once for each hook call', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
-        const onFailure = jest.fn();
-        const dataProvider = {
-            getMany: jest.fn(() => Promise.reject(new Error('failed'))),
-        };
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <UseGetMany
-                    resource="posts"
-                    ids={[1]}
-                    options={{ onFailure }}
-                />
-                <UseGetMany
-                    resource="posts"
-                    ids={[2]}
-                    options={{ onFailure }}
-                />
-            </DataProviderContext.Provider>
+        const onError = jest.fn();
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetMany resource="posts" ids={[1]} options={{ onError }} />
+            </CoreAdminContext>
         );
         await waitFor(() => {
-            expect(onFailure).toBeCalledTimes(2);
-            expect(onFailure.mock.calls.shift()[0]).toEqual(
-                new Error('failed')
-            );
-            expect(onFailure.mock.calls.shift()[0]).toEqual(
-                new Error('failed')
-            );
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
+            expect(onError).toHaveBeenCalledWith(new Error('failed'));
         });
     });
 });

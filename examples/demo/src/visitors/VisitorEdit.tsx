@@ -38,9 +38,9 @@ const VisitorForm = (props: any) => {
         <FormWithRedirect
             {...props}
             validate={validatePasswords}
-            render={(formProps: any) => (
+            render={({ handleSubmit, ...formProps }: any) => (
                 <Card>
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <CardContent>
                             <Box display={{ md: 'block', lg: 'flex' }}>
                                 <Box flex={2} mr={{ md: 0, lg: '1em' }}>
@@ -199,10 +199,8 @@ const VisitorForm = (props: any) => {
                         </CardContent>
                         <Toolbar
                             record={formProps.record}
-                            basePath={formProps.basePath}
                             mutationMode="undoable"
                             invalid={formProps.invalid}
-                            handleSubmit={formProps.handleSubmit}
                             saving={formProps.saving}
                             resource="customers"
                         />

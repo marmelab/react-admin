@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import get from 'lodash/get';
 import MenuItem from '@mui/material/MenuItem';
 import { TextFieldProps } from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
@@ -147,9 +146,10 @@ export const SelectInput = (props: SelectInputProps) => {
         `If you're not wrapping the SelectInput inside a ReferenceInput, you must provide the choices prop`
     );
 
-    const { getChoiceText, getChoiceValue } = useChoices({
+    const { getChoiceText, getChoiceValue, getDisableValue } = useChoices({
         optionText,
         optionValue,
+        disableValue,
         translateChoice,
     });
 
@@ -207,6 +207,29 @@ export const SelectInput = (props: SelectInputProps) => {
         optionText,
     });
 
+    const createItem = create || onCreate ? getCreateItem() : null;
+    const finalChoices =
+        create || onCreate ? [...choices, createItem] : choices;
+
+    const renderMenuItem = useCallback(
+        choice => {
+            return choice ? (
+                <MenuItem
+                    key={getChoiceValue(choice)}
+                    value={getChoiceValue(choice)}
+                    disabled={getDisableValue(choice)}
+                >
+                    {renderMenuItemOption(
+                        !!createItem && choice?.id === createItem.id
+                            ? createItem
+                            : choice
+                    )}
+                </MenuItem>
+            ) : null;
+        },
+        [getChoiceValue, getDisableValue, renderMenuItemOption, createItem]
+    );
+
     if (isLoading) {
         return (
             <Labeled
@@ -224,18 +247,6 @@ export const SelectInput = (props: SelectInputProps) => {
             </Labeled>
         );
     }
-
-    const renderCreateItem = () => {
-        if (onCreate || create) {
-            const createItem = getCreateItem();
-            return (
-                <MenuItem value={createItem.id} key={createItem.id}>
-                    {createItem.name}
-                </MenuItem>
-            );
-        }
-        return null;
-    };
 
     return (
         <>
@@ -279,16 +290,7 @@ export const SelectInput = (props: SelectInputProps) => {
                         {renderEmptyItemOption()}
                     </MenuItem>
                 ) : null}
-                {choices.map(choice => (
-                    <MenuItem
-                        key={getChoiceValue(choice)}
-                        value={getChoiceValue(choice)}
-                        disabled={get(choice, disableValue)}
-                    >
-                        {renderMenuItemOption(choice)}
-                    </MenuItem>
-                ))}
-                {renderCreateItem()}
+                {finalChoices.map(renderMenuItem)}
             </StyledResettableTextField>
             {createElement}
         </>
@@ -364,7 +366,7 @@ const sanitizeRestProps = ({
 const PREFIX = 'RaSelectInput';
 
 const classes = {
-    input: `${PREFIX}-inputEnd`,
+    input: `${PREFIX}-input`,
 };
 
 const StyledResettableTextField = styled(ResettableTextField)(({ theme }) => ({

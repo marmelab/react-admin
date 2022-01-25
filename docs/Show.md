@@ -11,7 +11,7 @@ The `<Show>` component handles the logic of the Show page:
 - it computes the default page title
 - it creates a `ShowContext` and a `RecordContext`,
 - it renders the page layout with the correct title and actions
-- it renders its child component (a show layout component like `<SimpleShowLayout>`)
+- it renders its child component (a show layout component like `<SimpleShowLayout>`) in a Material-ui `<Card>`
 
 ## Usage
 
@@ -29,7 +29,7 @@ export const PostShow = () => (
             <TextField source="title" />
             <TextField source="teaser" />
             <RichTextField source="body" />
-            <DateField label="Publication date" source="created_at" />
+            <DateField label="Publication date" source="published_at" />
         </SimpleShowLayout>
     </Show>
 );
@@ -61,7 +61,7 @@ That's enough to display the post show view:
 * [`component`](#root-component): overrides the root component
 * [`emptyWhileLoading`](#loading-state)
 * [`queryOptions`](#client-query-options): options to pass to the react-query client
-* [`sx`](#css-api): Override the styles
+* [`sx`](#sx-css-api): Override the styles
 * [`title`](#page-title)
 
 ## Layout
@@ -92,7 +92,7 @@ export const PostShow = () => (
 );
 ```
 
-You can also pass React elements as children, so as to build a custom layout. Check [Building a custom Show Layout](./ShowTutorial.md#building-a-custom-layout) for more details.
+You can also pass a React element as child, to build a custom layout. Check [Building a custom Show Layout](./ShowTutorial.md#building-a-custom-layout) for more details.
 
 ## Page Title
 
@@ -132,7 +132,7 @@ export const PostShow = () => (
 By default, `<Show>` includes an action toolbar with an `<EditButton>` if the `<Resource>` declared an `edit` component. You can replace the list of default actions by your own component using the `actions` prop:
 
 ```jsx
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { EditButton, TopToolbar } from 'react-admin';
 
 const PostShowActions = () => (
@@ -183,14 +183,14 @@ const PostShow = props => {
 }
 ```
 
-The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
+The `onError` function receives the error from the dataProvider call (`dataProvider.getOne()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
 
 The default `onError` function is:
 
 ```jsx
 (error) => {
     notify('ra.notification.item_doesnt_exist', { type: 'warning' });
-    redirect('list', basePath);
+    redirect('list', resource);
     refresh();
 }
 ```
@@ -202,6 +202,9 @@ Default layout components (`<SimpleShowLayout>` and `<TabbedshowLayout>`) return
 That means that the following will fail on load with a "ReferenceError: record is not defined" error:
 
 ```jsx
+import { Show, useRecordContext } from 'react-admin';
+import { Card } from '@mui/material';
+
 const PostTitle = () => {
     const record = useRecordContext();
     return <span>{record.title}</span>;
@@ -219,6 +222,8 @@ const PostShow = () => (
 You can handle this case by calling the [`useShowContext`](./useShowContext.md) hook to get the loading state:
 
 ```jsx
+import { useShowContext, useRecordContext } from 'react-admin';
+
 const PostTitle = () => {
     const record = useRecordContext();
     const { isLoading } = useShowContext();
@@ -229,7 +234,7 @@ const PostTitle = () => {
 
 But this can be cumbersome, as you need to do it in every field component.
 
-The `<Show emptyWhileLoading>` prop provides a convenient shorcut for that use case. When enabled, `<Show>` won't render its child until `record` is defined. 
+The `<Show emptyWhileLoading>` prop provides a convenient shortcut for that use case. When enabled, `<Show>` won't render its child until `record` is defined. 
 
 ```diff
 const PostTitle = () => {
@@ -249,29 +254,57 @@ const PostShow = () => (
 
 ## Root Component
 
-By default, the Show view renders the main content area inside a `<div>`. The actual layout of the record fields depends on the Show Layout component you're using (`<SimpleShowLayout>`, `<TabbedShowLayout>`, or a custom layout component).
+By default, the Show view renders the main content area inside a material-ui `<Card>`. The actual layout of the record fields depends on the Show Layout component you're using (`<SimpleShowLayout>`, `<TabbedShowLayout>`, or a custom layout component).
 
 You can override the main area container by passing a `component` prop:
 
+{% raw %}
 ```jsx
-import { Card } from '@mui/material';
+import { Box } from '@mui/material';
 
-// use a Card as root component
+const ShowWrapper = ({ children }) => (
+    <Box sx={{ margin: 2, border: 'solid 1px grey' }}>
+        {children}
+    </Box>
+);
+
+// use a ShowWrapper as root component
 const PostShow = props => (
-    <Show component={Card} {...props}>
+    <Show component={ShowWrapper} {...props}>
         ...
     </Show>
 );
 ```
+{% endraw %}
 
-## CSS API
+## `sx`: CSS API
 
 The `<Show>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
-| Rule name   | Description                                                                                |
-| ----------- | ------------------------------------------------------------------------------------------ |
-| `root`      | Alternative to using `className`. Applied to the root element                              |
-| `main`      | Applied to the main container                                                              |
+| Rule name        | Description                                                   |
+|------------------| ------------------------------------------------------------- |
+| `&.RaShow-root`  | Alternative to using `className`. Applied to the root element |
+| `& .RaShow-main` | Applied to the main container                                 |
+| `& .RaShow-card` | Applied to the `<Card>` element                               |
+
+Here's an example of how to override the default styles:
+
+{% raw %}
+```jsx
+const PostShow = () => (
+    <Show 
+        sx={{
+            backgroundColor: 'yellow',
+            '& .RaShow-main': {
+                backgroundColor: 'red',
+            },
+        }}
+    >
+            ...
+    </Show>
+);
+```
+{% endraw %}
 
 To override the style of all instances of `<Show>` using the [material-ui style overrides](https://mui.com/customization/theme-components/), use the `RaShow` key.
 
@@ -283,9 +316,9 @@ Here's an example inside a `Show` view with a `SimpleShowLayout` and a custom `a
 
 {% raw %}
 ```jsx
-import TopToolbar from '@material-ui/core/TopToolbar';
-import Button from '@material-ui/core/Button';
-import { usePermissions, EditButton, DeleteButton } from 'react-admin';
+import TopToolbar from '@mui/material/TopToolbar';
+import Button from '@mui/material/Button';
+import { Show, SimpleShowLayout, RichTextField, NumberField, usePermissions, EditButton, DeleteButton } from 'react-admin';
 
 const PostShowActions = () => {
     const permissions = usePermissions(); 
@@ -297,10 +330,10 @@ const PostShowActions = () => {
     );
 }
 
-export const PostShow = ({ permissions, ...props }) => {
+export const PostShow = () => {
     const permissions = usePermissions();
     return (
-        <Show actions={<PostShowActions />} {...props}>
+        <Show actions={<PostShowActions />}>
             <SimpleShowLayout>
                 <TextField source="title" />
                 <RichTextField source="body" />
@@ -318,6 +351,8 @@ This also works inside a `TabbedShowLayout`, and you can hide a `Tab` completely
 
 {% raw %}
 ```jsx
+import { Show, TabbedShowLayout, Tab, TextField } from 'react-admin';
+
 export const UserShow = () => {
     const permissions = usePermissions();
     return (

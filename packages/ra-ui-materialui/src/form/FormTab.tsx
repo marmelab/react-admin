@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { FormGroupContextProvider, Record } from 'ra-core';
+import { FormGroupContextProvider, RaRecord } from 'ra-core';
 
 import { FormInput } from './FormInput';
 import { FormTabHeader } from './FormTabHeader';
 
 export const FormTab = (props: FormTabProps) => {
     const {
-        basePath,
         className,
         contentClassName,
         children,
@@ -50,7 +49,6 @@ export const FormTab = (props: FormTabProps) => {
                     (input: ReactElement) =>
                         input && (
                             <FormInput
-                                basePath={basePath}
                                 input={input}
                                 record={record}
                                 resource={resource}
@@ -67,7 +65,6 @@ export const FormTab = (props: FormTabProps) => {
 };
 
 FormTab.propTypes = {
-    basePath: PropTypes.string,
     className: PropTypes.string,
     contentClassName: PropTypes.string,
     children: PropTypes.node,
@@ -86,7 +83,6 @@ FormTab.propTypes = {
 };
 
 export interface FormTabProps {
-    basePath?: string;
     className?: string;
     children?: ReactNode;
     contentClassName?: string;
@@ -96,7 +92,7 @@ export interface FormTabProps {
     label: string | ReactElement;
     margin?: 'none' | 'normal' | 'dense';
     path?: string;
-    record?: Record;
+    record?: RaRecord;
     resource?: string;
     syncWithLocation?: boolean;
     value?: string | number;

@@ -33,7 +33,6 @@ describe('<TranslatableFields />', () => {
                 <TranslatableFields
                     record={record}
                     resource="products"
-                    basePath="/products"
                     locales={['en', 'fr']}
                 >
                     <TextField source="name" />
@@ -103,7 +102,6 @@ describe('<TranslatableFields />', () => {
                 <TranslatableFields
                     record={record}
                     resource="products"
-                    basePath="/products"
                     locales={['en', 'fr']}
                     selector={<Selector />}
                 >

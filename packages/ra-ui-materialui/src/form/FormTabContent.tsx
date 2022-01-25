@@ -35,7 +35,6 @@ export const FormTabContent = (props: any) => {
                     (input: ReactElement) =>
                         input && (
                             <FormInput
-                                basePath={`/${resource}`}
                                 input={input}
                                 record={record}
                                 resource={resource}

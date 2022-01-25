@@ -1,7 +1,6 @@
 export const sanitizeFieldRestProps: (props: any) => any = ({
     addLabel,
     allowEmpty,
-    basePath,
     cellClassName,
     className,
     emptyText,

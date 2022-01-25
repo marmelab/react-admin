@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import { Tab as MuiTab, TabProps as MuiTabProps, Stack } from '@mui/material';
 import { ResponsiveStyleValue } from '@mui/system';
-import { useTranslate, Record } from 'ra-core';
+import { useTranslate, RaRecord } from 'ra-core';
 import classnames from 'classnames';
 
 import { FieldWithLabel } from './FieldWithLabel';
 
 /**
- * Tab element for the SimpleShowLayout.
+ * Tab element for the TabbedShowLayout.
  *
  * The `<Tab>` component accepts the following props:
  *
@@ -53,7 +53,6 @@ import { FieldWithLabel } from './FieldWithLabel';
  *     export default App;
  */
 export const Tab = ({
-    basePath,
     children,
     contentClassName,
     context,
@@ -122,7 +121,6 @@ Tab.propTypes = {
 };
 
 export interface TabProps extends Omit<MuiTabProps, 'children'> {
-    basePath?: string;
     children: ReactNode;
     contentClassName?: string;
     context?: 'header' | 'content';
@@ -131,7 +129,7 @@ export interface TabProps extends Omit<MuiTabProps, 'children'> {
     icon?: ReactElement;
     label: string;
     path?: string;
-    record?: Record;
+    record?: RaRecord;
     spacing?: ResponsiveStyleValue<number | string>;
     syncWithLocation?: boolean;
     value?: string | number;

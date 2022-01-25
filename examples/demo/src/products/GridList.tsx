@@ -4,7 +4,7 @@ import MuiGridList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import {
-    linkToRecord,
+    useCreatePath,
     NumberField,
     useListContext,
     DatagridProps,
@@ -52,9 +52,9 @@ const useColsForWidth = () => {
     const md = useMediaQuery(theme.breakpoints.up('md'));
     const lg = useMediaQuery(theme.breakpoints.up('lg'));
     const xl = useMediaQuery(theme.breakpoints.up('xl'));
-
-    if (xl) return 6;
-    if (lg) return 5;
+    // there are all dividers of 24, to have full rows on each page
+    if (xl) return 8;
+    if (lg) return 6;
     if (md) return 4;
     if (sm) return 3;
     return 2;
@@ -64,7 +64,7 @@ const times = (nbChildren: number, fn: (key: number) => any) =>
     Array.from({ length: nbChildren }, (_, key) => fn(key));
 
 const LoadingGridList = (props: DatagridProps & { nbItems?: number }) => {
-    const { nbItems = 20 } = props;
+    const { nbItems = 24 } = props;
     const cols = useColsForWidth();
     return (
         <StyledGridList
@@ -85,6 +85,7 @@ const LoadingGridList = (props: DatagridProps & { nbItems?: number }) => {
 const LoadedGridList = (props: DatagridProps) => {
     const { data } = useListContext();
     const cols = useColsForWidth();
+    const createPath = useCreatePath();
 
     if (!data) return null;
 
@@ -99,7 +100,11 @@ const LoadedGridList = (props: DatagridProps) => {
                     // @ts-ignore
                     component={Link}
                     key={record.id}
-                    to={linkToRecord(`/products`, record.id)}
+                    to={createPath({
+                        resource: 'products',
+                        id: record.id,
+                        type: 'edit',
+                    })}
                 >
                     <img src={record.thumbnail} alt="" />
                     <ImageListItemBar

@@ -12,11 +12,7 @@ import { CloneButton } from './CloneButton';
 const theme = createTheme();
 
 const invalidButtonDomProps = {
-    basePath: '/posts',
-    handleSubmit: jest.fn(),
-    handleSubmitWithRedirect: jest.fn(),
     invalid: false,
-    onSave: jest.fn(),
     pristine: false,
     record: { id: 123, foo: 'bar' },
     redirect: 'list',
@@ -32,8 +28,8 @@ describe('<CloneButton />', () => {
             <MemoryRouter>
                 <ThemeProvider theme={theme}>
                     <CloneButton
+                        resource="posts"
                         record={{ id: 123, foo: 'bar' }}
-                        basePath="/posts"
                     />
                 </ThemeProvider>
             </MemoryRouter>

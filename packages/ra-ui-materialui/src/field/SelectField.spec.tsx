@@ -3,7 +3,7 @@ import { FC } from 'react';
 import expect from 'expect';
 import { render } from '@testing-library/react';
 import {
-    Record,
+    RaRecord,
     TestTranslationProvider,
     RecordContextProvider,
 } from 'ra-core';
@@ -126,7 +126,7 @@ describe('<SelectField />', () => {
     });
 
     it('should use optionText with an element value as text identifier', () => {
-        const Foobar: FC<{ record?: Record }> = ({ record }) => (
+        const Foobar: FC<{ record?: RaRecord }> = ({ record }) => (
             <span>{record.foobar}</span>
         );
         const { queryAllByText } = render(

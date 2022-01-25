@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import useAuthProvider from './useAuthProvider';
 import useLogout from './useLogout';
-import { useNotify } from '../sideEffect';
+import { useNotify } from '../notification';
 import { useNavigate } from 'react-router';
 
 let timer;
@@ -72,13 +72,19 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                             .then(() => {
                                 if (logoutUser) {
                                     notify(
-                                        'ra.notification.logged_out',
-                                        'warning'
+                                        getErrorMessage(
+                                            e,
+                                            'ra.notification.logged_out'
+                                        ),
+                                        { type: 'warning' }
                                     );
                                 } else {
                                     notify(
-                                        'ra.notification.not_authorized',
-                                        'warning'
+                                        getErrorMessage(
+                                            e,
+                                            'ra.notification.not_authorized'
+                                        ),
+                                        { type: 'warning' }
                                     );
                                 }
                             })
@@ -122,5 +128,12 @@ type LogoutIfAccessDenied = (
     /** @deprecated to disable the notification, authProvider.checkAuth() should return an object with an error property set to true */
     disableNotification?: boolean
 ) => Promise<boolean>;
+
+const getErrorMessage = (error, defaultMessage) =>
+    typeof error === 'string'
+        ? error
+        : typeof error === 'undefined' || !error.message
+        ? defaultMessage
+        : error.message;
 
 export default useLogoutIfAccessDenied;

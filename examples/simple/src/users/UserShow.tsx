@@ -1,6 +1,5 @@
 /* eslint react/jsx-key: off */
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import {
     Show,
     Tab,
@@ -30,12 +29,6 @@ const UserShow = () => {
             <Aside />
         </Show>
     );
-};
-
-UserShow.propTypes = {
-    location: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
-    permissions: PropTypes.string,
 };
 
 export default UserShow;

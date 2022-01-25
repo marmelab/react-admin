@@ -12,6 +12,7 @@ export * from './NumberField';
 export * from './ReferenceArrayField';
 export * from './ReferenceField';
 export * from './ReferenceManyField';
+export * from './ReferenceOneField';
 export * from './RichTextField';
 export * from './sanitizeFieldRestProps';
 export * from './SelectField';
@@ -20,5 +21,6 @@ export * from './TranslatableFields';
 export * from './TranslatableFieldsTab';
 export * from './TranslatableFieldsTabContent';
 export * from './UrlField';
+export * from './WrapperField';
 
 export type { PublicFieldProps, InjectedFieldProps, FieldProps };

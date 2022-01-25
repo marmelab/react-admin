@@ -35,7 +35,6 @@ export const EditView = (props: EditViewProps) => {
         resource,
         save,
         saving,
-        version,
     } = useEditContext(props);
 
     const finalActions =
@@ -86,7 +85,6 @@ export const EditView = (props: EditViewProps) => {
                                     : children.props.save,
                             saving,
                             mutationMode,
-                            version,
                         })
                     ) : (
                         <CardContent>&nbsp;</CardContent>
@@ -96,7 +94,6 @@ export const EditView = (props: EditViewProps) => {
                     React.cloneElement(aside, {
                         record,
                         resource,
-                        version,
                         save:
                             typeof children.props.save === 'undefined'
                                 ? save
@@ -124,6 +121,7 @@ EditView.propTypes = {
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
+    mutationOptions: PropTypes.object,
     record: PropTypes.object,
     redirect: PropTypes.oneOfType([
         PropTypes.string,
@@ -133,16 +131,9 @@ EditView.propTypes = {
     resource: PropTypes.string,
     save: PropTypes.func,
     title: PropTypes.node,
-    version: PropTypes.number,
-    onSuccess: PropTypes.func,
-    onFailure: PropTypes.func,
-    setOnSuccess: PropTypes.func,
-    setOnFailure: PropTypes.func,
-    setTransform: PropTypes.func,
 };
 
 const sanitizeRestProps = ({
-    basePath = null,
     defaultTitle = null,
     hasCreate = null,
     hasEdit = null,
@@ -154,10 +145,6 @@ const sanitizeRestProps = ({
     isLoading = null,
     location = null,
     match = null,
-    onFailure = null,
-    onFailureRef = null,
-    onSuccess = null,
-    onSuccessRef = null,
     options = null,
     queryOptions = null,
     mutationOptions = null,
@@ -166,12 +153,7 @@ const sanitizeRestProps = ({
     resource = null,
     save = null,
     saving = null,
-    setOnFailure = null,
-    setOnSuccess = null,
-    setTransform = null,
-    successMessage = null,
     transform = null,
-    transformRef = null,
     ...rest
 }) => rest;
 

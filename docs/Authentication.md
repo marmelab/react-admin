@@ -56,7 +56,7 @@ It's very common that your auth logic is so specific that you'll need to write y
 
 - **[AWS Amplify](https://docs.amplify.aws)**: [MrHertal/react-admin-amplify](https://github.com/MrHertal/react-admin-amplify)
 - **[AWS Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/setting-up-the-javascript-sdk.html)**: [thedistance/ra-cognito](https://github.com/thedistance/ra-cognito)
-- **[Firebase Auth (Google, Facebook, Github etc)](https://firebase.google.com/docs/auth/web/firebaseui)**: [benwinding/react-admin-firebase](https://github.com/benwinding/react-admin-firebase#auth-provider)
+- **[Firebase Auth (Google, Facebook, GitHub, etc.)](https://firebase.google.com/docs/auth/web/firebaseui)**: [benwinding/react-admin-firebase](https://github.com/benwinding/react-admin-firebase#auth-provider)
 - **[Supabase](https://supabase.io/)**: [marmelab/ra-supabase](https://github.com/marmelab/ra-supabase).
 
 Beyond ready-to-use providers, you may find help in these third-party tutorials about integrating more authentication backends:
@@ -103,6 +103,14 @@ const authProvider = {
             .catch(() => {
                 throw new Error('Network error')
             });
+    },
+    checkAuth: () => {
+        // Required for the authentication to work
+        return Promise.resolve();
+    },
+    getPermissions: () => {
+        // Required for the authentication to work
+        return Promise.resolve();
     },
     // ...
 };
@@ -447,7 +455,7 @@ export default {
 
 ### Getting User Permissions
 
-If you need to check the permissions in any of the default react-admin views or in custom spage, you can use the [`usePermissions()`](#usepermissions-hook) hook:
+If you need to check the permissions in any of the default react-admin views or in custom page, you can use the [`usePermissions()`](#usepermissions-hook) hook:
 
 Here is an example of a `Create` view with a conditional Input based on permissions:
 
@@ -475,8 +483,8 @@ It works in custom pages too:
 ```jsx
 // in src/MyPage.js
 import * as React from "react";
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import { Card } from '@mui/material';
+import CardContent from '@mui/material/CardContent';
 import { usePermissions } from 'react-admin';
 
 const MyPage = () => {
@@ -606,7 +614,7 @@ When the auth backend returns an error, the Auth Provider should return a reject
 | Method           | Reject if                                 | Error format |
 | ---------------- | ----------------------------------------- | --------------- |
 | `login`          | Login credentials weren't accepted        | `string | { message?: string }` error message to display |
-| `checkError`     | Error is an auth error                    | `void | { redirectTo?: string, message?: boolean }` route to redirect to after logout, and whether to disable error notification |
+| `checkError`     | Error is an auth error                    | `void | { redirectTo?: string, message?: string | boolean  }` route to redirect to after logout, message to notify the user or `false` to disable notification |
 | `checkAuth`      | User is not authenticated                 | `void | { redirectTo?: string, message?: string }` route to redirect to after logout, message to notify the user |
 | `logout`         | Auth backend failed to log the user out   | `void` |
 | `getIdentity`    | Auth backend failed to return identity    | `Object` free format - returned as `error` when `useGetIdentity()` is called | 
@@ -625,8 +633,7 @@ For instance, here is how to build a custom Login page based on email rather tha
 import * as React from 'react';
 import { useState } from 'react';
 import { useLogin, useNotify, Notification, defaultTheme } from 'react-admin';
-import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const MyLoginPage = ({ theme }) => {
     const [email, setEmail] = useState('');
@@ -642,7 +649,7 @@ const MyLoginPage = ({ theme }) => {
     };
 
     return (
-        <ThemeProvider theme={createMuiTheme(defaultTheme)}>
+        <ThemeProvider theme={createTheme(defaultTheme)}>
             <form onSubmit={submit}>
                 <input
                     name="email"
@@ -754,8 +761,8 @@ Just like `useLogin()`, `useLogout()` returns a callback that you can use to cal
 import * as React from 'react';
 import { forwardRef } from 'react';
 import { useLogout } from 'react-admin';
-import MenuItem from '@material-ui/core/MenuItem';
-import ExitIcon from '@material-ui/icons/PowerSettingsNew';
+import { MenuItem } from '@mui/material';
+import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 
 const MyLogoutButton = forwardRef((props, ref) => {
     const logout = useLogout();
@@ -814,13 +821,13 @@ const PostDetail = ({ id }) => {
 
 ### `usePermissions()` Hook
 
-You might want to check user permissions inside a [custom page](./Admin.md#customroutes). That's the purpose of the `usePermissions()` hook, which calls the `authProvider.getPermissions()` method on mount, and returns the result when available:
+You might want to check user permissions inside a [custom page](./Admin.md#adding-custom-pages). That's the purpose of the `usePermissions()` hook, which calls the `authProvider.getPermissions()` method on mount, and returns the result when available:
 
 ```jsx
 // in src/MyPage.js
 import * as React from "react";
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import { usePermissions } from 'react-admin';
 
 const MyPage = () => {
@@ -946,7 +953,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useLogin, useNotify, Notification, defaultTheme } from 'react-admin';
 import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@mui/material/styles';
 
 const MyLoginPage = ({ theme }) => {
     const [email, setEmail] = useState('');
@@ -961,7 +968,7 @@ const MyLoginPage = ({ theme }) => {
     };
 
     return (
-        <ThemeProvider theme={createMuiTheme(defaultTheme)}>
+        <ThemeProvider theme={createTheme(defaultTheme)}>
             <form onSubmit={submit}>
                 <input
                     name="email"
@@ -987,8 +994,8 @@ export default MyLoginPage;
 import * as React from 'react';
 import { forwardRef } from 'react';
 import { useLogout } from 'react-admin';
-import MenuItem from '@material-ui/core/MenuItem';
-import ExitIcon from '@material-ui/icons/PowerSettingsNew';
+import MenuItem from '@mui/material/MenuItem';
+import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 
 const MyLogoutButton = forwardRef((props, ref) => {
     const logout = useLogout();
@@ -1130,8 +1137,8 @@ React-admin injects the permissions into the component provided as a [`dashboard
 ```jsx
 // in src/Dashboard.js
 import * as React from 'react';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import { Title } from 'react-admin';
 
 export default ({ permissions }) => (

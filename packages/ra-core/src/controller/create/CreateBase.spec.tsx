@@ -1,18 +1,15 @@
 import * as React from 'react';
 import expect from 'expect';
 import { useEffect } from 'react';
-import { cleanup } from '@testing-library/react';
+import { screen, render, waitFor } from '@testing-library/react';
+
+import { CoreAdminContext } from '../../core';
+import { testDataProvider } from '../../dataProvider';
+import { useSaveContext } from '../saveContext';
 import { CreateBase } from './CreateBase';
-import { useSaveContext } from '../SaveContext';
-import { DataProviderContext } from '../../dataProvider';
-import { DataProvider } from '../../types';
-import { renderWithRedux } from 'ra-test';
 
 describe('CreateBase', () => {
-    afterEach(cleanup);
-
     const defaultProps = {
-        basePath: '',
         hasCreate: true,
         hasEdit: true,
         hasList: true,
@@ -22,222 +19,277 @@ describe('CreateBase', () => {
         debounce: 200,
     };
 
-    it('should give access to the current onSuccess function', () => {
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update: (_, { id, data, previousData }) =>
-                Promise.resolve({ data: { id, ...previousData, ...data } }),
-        } as unknown) as DataProvider;
-        const onSuccess = jest.fn();
+    it('should give access to the save function', async () => {
+        const dataProvider = testDataProvider({
+            create: jest.fn((_, { data }) =>
+                Promise.resolve({ data: { id: 1, ...data } })
+            ),
+        });
 
         const Child = () => {
             const saveContext = useSaveContext();
 
             useEffect(() => {
-                saveContext.onSuccessRef.current('test');
-            }, [saveContext.onSuccessRef]);
+                saveContext.save({ test: 'test' });
+            }, []); // eslint-disable-line
 
             return null;
         };
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <CreateBase {...defaultProps} onSuccess={onSuccess}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <CreateBase {...defaultProps}>
                     <Child />
                 </CreateBase>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </CoreAdminContext>
         );
 
-        expect(onSuccess).toHaveBeenCalledWith('test');
+        await waitFor(() => {
+            expect(dataProvider.create).toHaveBeenCalledWith('posts', {
+                data: { test: 'test' },
+            });
+        });
     });
 
-    it('should allow to override the onSuccess function', () => {
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update: (_, { id, data, previousData }) =>
-                Promise.resolve({ data: { id, ...previousData, ...data } }),
-        } as unknown) as DataProvider;
+    it('should allow to override the onSuccess function', async () => {
+        const dataProvider = testDataProvider({
+            create: jest.fn((_, { data }) =>
+                Promise.resolve({ data: { id: 1, ...data } })
+            ),
+        });
+        const onSuccess = jest.fn();
+
+        const Child = () => {
+            const saveContext = useSaveContext();
+
+            const handleClick = () => {
+                saveContext.save({ test: 'test' });
+            };
+
+            return <button aria-label="save" onClick={handleClick} />;
+        };
+        const { getByLabelText } = render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <CreateBase {...defaultProps} mutationOptions={{ onSuccess }}>
+                    <Child />
+                </CreateBase>
+            </CoreAdminContext>
+        );
+
+        getByLabelText('save').click();
+
+        await waitFor(() => {
+            expect(onSuccess).toHaveBeenCalledWith(
+                {
+                    id: 1,
+                    test: 'test',
+                },
+                { data: { test: 'test' }, resource: 'posts' },
+                undefined
+            );
+        });
+    });
+
+    it('should allow to override the onSuccess function at call time', async () => {
+        const dataProvider = testDataProvider({
+            create: jest.fn((_, { data }) =>
+                Promise.resolve({ data: { id: 1, ...data } })
+            ),
+        });
         const onSuccess = jest.fn();
         const onSuccessOverride = jest.fn();
 
-        const SetOnSuccess = () => {
-            const saveContext = useSaveContext();
-
-            useEffect(() => {
-                saveContext.setOnSuccess(onSuccessOverride);
-            }, [saveContext]);
-
-            return null;
-        };
         const Child = () => {
             const saveContext = useSaveContext();
 
             const handleClick = () => {
-                saveContext.onSuccessRef.current('test');
+                saveContext.save(
+                    { test: 'test' },
+                    { onSuccess: onSuccessOverride }
+                );
             };
 
             return <button aria-label="save" onClick={handleClick} />;
         };
-        const { getByLabelText } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <CreateBase {...defaultProps} onSuccess={onSuccess}>
-                    <>
-                        <SetOnSuccess />
-                        <Child />
-                    </>
-                </CreateBase>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
-        );
-
-        getByLabelText('save').click();
-
-        expect(onSuccessOverride).toHaveBeenCalledWith('test');
-    });
-
-    it('should give access to the current onFailure function', () => {
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update: (_, { id, data, previousData }) =>
-                Promise.resolve({ data: { id, ...previousData, ...data } }),
-        } as unknown) as DataProvider;
-        const onFailure = jest.fn();
-
-        const Child = () => {
-            const saveContext = useSaveContext();
-
-            useEffect(() => {
-                saveContext.onFailureRef.current({ message: 'test' });
-            }, [saveContext.onFailureRef]);
-
-            return null;
-        };
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <CreateBase {...defaultProps} onFailure={onFailure}>
+        const { getByLabelText } = render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <CreateBase {...defaultProps} mutationOptions={{ onSuccess }}>
                     <Child />
                 </CreateBase>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
-        );
-
-        expect(onFailure).toHaveBeenCalledWith({ message: 'test' });
-    });
-
-    it('should allow to override the onFailure function', () => {
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update: (_, { id, data, previousData }) =>
-                Promise.resolve({ data: { id, ...previousData, ...data } }),
-        } as unknown) as DataProvider;
-        const onFailure = jest.fn();
-        const onFailureOverride = jest.fn();
-
-        const SetOnSuccess = () => {
-            const saveContext = useSaveContext();
-
-            useEffect(() => {
-                saveContext.setOnFailure(onFailureOverride);
-            }, [saveContext]);
-
-            return null;
-        };
-        const Child = () => {
-            const saveContext = useSaveContext();
-
-            const handleClick = () => {
-                saveContext.onFailureRef.current({ message: 'test' });
-            };
-
-            return <button aria-label="save" onClick={handleClick} />;
-        };
-        const { getByLabelText } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
-                <CreateBase {...defaultProps} onFailure={onFailure}>
-                    <>
-                        <SetOnSuccess />
-                        <Child />
-                    </>
-                </CreateBase>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </CoreAdminContext>
         );
 
         getByLabelText('save').click();
 
-        expect(onFailureOverride).toHaveBeenCalledWith({ message: 'test' });
+        await waitFor(() => {
+            expect(onSuccessOverride).toHaveBeenCalledWith(
+                {
+                    id: 1,
+                    test: 'test',
+                },
+                { data: { test: 'test' }, resource: 'posts' },
+                undefined
+            );
+        });
+        expect(onSuccess).not.toHaveBeenCalled();
     });
 
-    it('should give access to the current transform function', () => {
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update: (_, { id, data, previousData }) =>
-                Promise.resolve({ data: { id, ...previousData, ...data } }),
-        } as unknown) as DataProvider;
-        const transform = jest.fn();
+    it('should allow to override the onError function', async () => {
+        const dataProvider = testDataProvider({
+            create: jest.fn((_, { data }) =>
+                Promise.reject({ message: 'test' })
+            ),
+        });
+        const onError = jest.fn();
 
         const Child = () => {
             const saveContext = useSaveContext();
 
-            useEffect(() => {
-                saveContext.transformRef.current({ message: 'test' });
-            }, [saveContext.transformRef]);
+            const handleClick = () => {
+                saveContext.save({ test: 'test' });
+            };
 
-            return null;
+            return <button aria-label="save" onClick={handleClick} />;
         };
-        renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <CreateBase {...defaultProps} mutationOptions={{ onError }}>
+                    <Child />
+                </CreateBase>
+            </CoreAdminContext>
+        );
+
+        screen.getByLabelText('save').click();
+
+        await waitFor(() => {
+            expect(onError).toHaveBeenCalledWith(
+                { message: 'test' },
+                { data: { test: 'test' }, resource: 'posts' },
+                undefined
+            );
+        });
+    });
+
+    it('should allow to override the onError function at call time', async () => {
+        const dataProvider = testDataProvider({
+            create: jest.fn((_, { data }) =>
+                Promise.reject({ message: 'test' })
+            ),
+        });
+        const onError = jest.fn();
+        const onErrorOverride = jest.fn();
+
+        const Child = () => {
+            const saveContext = useSaveContext();
+
+            const handleClick = () => {
+                saveContext.save(
+                    { test: 'test' },
+                    { onError: onErrorOverride }
+                );
+            };
+
+            return <button aria-label="save" onClick={handleClick} />;
+        };
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <CreateBase {...defaultProps} mutationOptions={{ onError }}>
+                    <Child />
+                </CreateBase>
+            </CoreAdminContext>
+        );
+
+        screen.getByLabelText('save').click();
+
+        await waitFor(() => {
+            expect(onErrorOverride).toHaveBeenCalledWith(
+                { message: 'test' },
+                { data: { test: 'test' }, resource: 'posts' },
+                undefined
+            );
+        });
+        expect(onError).not.toHaveBeenCalled();
+    });
+
+    it('should allow to override the transform function', async () => {
+        const dataProvider = testDataProvider({
+            create: jest.fn((_, { data }) =>
+                Promise.resolve({ data: { id: 1, ...data } })
+            ),
+        });
+        const transform = jest
+            .fn()
+            .mockReturnValueOnce({ test: 'test transformed' });
+
+        const Child = () => {
+            const saveContext = useSaveContext();
+
+            const handleClick = () => {
+                saveContext.save({ test: 'test' });
+            };
+
+            return <button aria-label="save" onClick={handleClick} />;
+        };
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <CreateBase {...defaultProps} transform={transform}>
                     <Child />
                 </CreateBase>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </CoreAdminContext>
         );
 
-        expect(transform).toHaveBeenCalledWith({ message: 'test' });
+        screen.getByLabelText('save').click();
+
+        await waitFor(() => {
+            expect(transform).toHaveBeenCalledWith({ test: 'test' });
+        });
+        await waitFor(() => {
+            expect(dataProvider.create).toHaveBeenCalledWith('posts', {
+                data: { test: 'test transformed' },
+            });
+        });
     });
 
-    it('should allow to override the transform function', () => {
-        const dataProvider = ({
-            getOne: () => Promise.resolve({ data: { id: 12 } }),
-            update: (_, { id, data, previousData }) =>
-                Promise.resolve({ data: { id, ...previousData, ...data } }),
-        } as unknown) as DataProvider;
+    it('should allow to override the transform function at call time', async () => {
+        const dataProvider = testDataProvider({
+            create: jest.fn((_, { data }) =>
+                Promise.resolve({ data: { id: 1, ...data } })
+            ),
+        });
         const transform = jest.fn();
-        const transformOverride = jest.fn();
+        const transformOverride = jest
+            .fn()
+            .mockReturnValueOnce({ test: 'test transformed' });
 
-        const SetOnSuccess = () => {
-            const saveContext = useSaveContext();
-
-            useEffect(() => {
-                saveContext.setTransform(transformOverride);
-            }, [saveContext]);
-
-            return null;
-        };
         const Child = () => {
             const saveContext = useSaveContext();
 
             const handleClick = () => {
-                saveContext.transformRef.current('test');
+                saveContext.save(
+                    { test: 'test' },
+                    { transform: transformOverride }
+                );
             };
 
             return <button aria-label="save" onClick={handleClick} />;
         };
-        const { getByLabelText } = renderWithRedux(
-            <DataProviderContext.Provider value={dataProvider}>
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
                 <CreateBase {...defaultProps} transform={transform}>
-                    <>
-                        <SetOnSuccess />
-                        <Child />
-                    </>
+                    <Child />
                 </CreateBase>
-            </DataProviderContext.Provider>,
-            { admin: { resources: { posts: { data: {} } } } }
+            </CoreAdminContext>
         );
 
-        getByLabelText('save').click();
+        screen.getByLabelText('save').click();
 
-        expect(transformOverride).toHaveBeenCalledWith('test');
+        await waitFor(() => {
+            expect(transformOverride).toHaveBeenCalledWith({ test: 'test' });
+        });
+        await waitFor(() => {
+            expect(dataProvider.create).toHaveBeenCalledWith('posts', {
+                data: { test: 'test transformed' },
+            });
+        });
+        expect(transform).not.toHaveBeenCalled();
     });
 });

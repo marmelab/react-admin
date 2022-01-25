@@ -7,13 +7,8 @@ import {
     fireEvent,
 } from '@testing-library/react';
 import { Form } from 'react-final-form';
-import { Provider } from 'react-redux';
-import {
-    CoreAdminContext,
-    testDataProvider,
-    createAdminStore,
-    useListContext,
-} from 'ra-core';
+import { CoreAdminContext, testDataProvider, useListContext } from 'ra-core';
+import { ThemeProvider, createTheme } from '@mui/material';
 
 import { Datagrid } from '../list';
 import { TextField } from '../field';
@@ -30,9 +25,13 @@ describe('<ReferenceArrayInput />', () => {
         reference: 'tags',
         resource: 'posts',
         source: 'tag_ids',
-        basePath: '/posts',
         translate: x => `*${x}*`,
     };
+
+    afterEach(async () => {
+        // wait for the getManyAggregate batch to resolve
+        await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
+    });
 
     it('should display an error if error is defined', () => {
         const MyComponent = () => <div>MyComponent</div>;
@@ -126,12 +125,10 @@ describe('<ReferenceArrayInput />', () => {
         expect(queryByText(JSON.stringify([]))).not.toBeNull();
     });
 
-    it('should pass the correct resource and basePath down to child component', () => {
+    it('should pass the correct resource down to child component', () => {
         let resourceProp;
-        let basePathProp;
-        const MyComponent = ({ resource, basePath }) => {
+        const MyComponent = ({ resource }) => {
             resourceProp = resource;
-            basePathProp = basePath;
             return <div />;
         };
         const onChange = jest.fn();
@@ -145,7 +142,6 @@ describe('<ReferenceArrayInput />', () => {
             </ReferenceArrayInputView>
         );
         expect(resourceProp).toEqual('tags');
-        expect(basePathProp).toEqual('/tags');
     });
 
     it('should pass onChange down to child component', () => {
@@ -189,27 +185,21 @@ describe('<ReferenceArrayInput />', () => {
             const { total } = useListContext();
             return <div aria-label="total">{total}</div>;
         };
-
-        const store = createAdminStore({
-            initialState: { admin: { resources: { tags: { data: {} } } } },
-        });
         const dataProvider = testDataProvider({
             getList: () =>
                 Promise.resolve({ data: [{ id: 1 }, { id: 2 }], total: 2 }),
         });
         render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInput {...defaultProps}>
-                                <Children />
-                            </ReferenceArrayInput>
-                        )}
-                    />
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form
+                    onSubmit={jest.fn()}
+                    render={() => (
+                        <ReferenceArrayInput {...defaultProps}>
+                            <Children />
+                        </ReferenceArrayInput>
+                    )}
+                />
+            </CoreAdminContext>
         );
         await waitFor(() => {
             expect(screen.getByLabelText('total').innerHTML).toEqual('2');
@@ -217,9 +207,6 @@ describe('<ReferenceArrayInput />', () => {
     });
 
     it('should allow to use a Datagrid', async () => {
-        const store = createAdminStore({
-            initialState: { admin: { resources: { tags: { data: {} } } } },
-        });
         const dataProvider = testDataProvider({
             getList: () =>
                 Promise.resolve({
@@ -229,9 +216,13 @@ describe('<ReferenceArrayInput />', () => {
                     ],
                     total: 2,
                 }),
+            getMany: () =>
+                Promise.resolve({
+                    data: [{ id: 5, name: 'test1' }],
+                }),
         });
         render(
-            <Provider store={store}>
+            <ThemeProvider theme={createTheme()}>
                 <CoreAdminContext dataProvider={dataProvider}>
                     <Form
                         onSubmit={jest.fn()}
@@ -241,59 +232,62 @@ describe('<ReferenceArrayInput />', () => {
                                 reference="tags"
                                 resource="posts"
                                 source="tag_ids"
-                                basePath="/posts"
                             >
-                                <Datagrid
-                                    hasBulkActions={true}
-                                    rowClick="toggleSelection"
-                                >
+                                <Datagrid rowClick="toggleSelection">
                                     <TextField source="name" />
                                 </Datagrid>
                             </ReferenceArrayInput>
                         )}
                     />
                 </CoreAdminContext>
-            </Provider>
+            </ThemeProvider>
         );
 
         await waitFor(() => {
-            expect(screen.queryByText('test1')).not.toBeNull();
-            expect(screen.queryByText('test2')).not.toBeNull();
+            screen.getByText('test1');
+            screen.getByText('test2');
         });
 
-        const checkBoxTest1 = within(screen.queryByText('test1').closest('tr'))
-            .getByLabelText('ra.action.select_row')
-            .querySelector('input');
-
-        const checkBoxTest2 = within(screen.queryByText('test2').closest('tr'))
-            .getByLabelText('ra.action.select_row')
-            .querySelector('input');
-
-        const checkBoxAll = screen
-            .getByLabelText('ra.action.select_all')
-            .querySelector('input');
-
-        expect(checkBoxTest1.checked).toEqual(true);
-        expect(checkBoxTest2.checked).toEqual(false);
-        fireEvent.click(checkBoxTest2);
+        const getCheckbox1 = () =>
+            within(screen.queryByText('test1').closest('tr'))
+                .getByLabelText('ra.action.select_row')
+                .querySelector('input');
+        const getCheckbox2 = () =>
+            within(screen.queryByText('test2').closest('tr'))
+                .getByLabelText('ra.action.select_row')
+                .querySelector('input');
+        const getCheckboxAll = () =>
+            screen
+                .getByLabelText('ra.action.select_all')
+                .querySelector('input');
 
         await waitFor(() => {
-            expect(checkBoxTest2.checked).toEqual(true);
-            expect(checkBoxAll.checked).toEqual(true);
+            expect(getCheckbox1().checked).toEqual(true);
+            expect(getCheckbox2().checked).toEqual(false);
         });
 
-        fireEvent.click(checkBoxAll);
+        fireEvent.click(getCheckbox2());
+
         await waitFor(() => {
-            expect(checkBoxTest1.checked).toEqual(false);
-            expect(checkBoxTest2.checked).toEqual(false);
-            expect(checkBoxAll.checked).toEqual(false);
+            expect(getCheckbox1().checked).toEqual(true);
+            expect(getCheckbox2().checked).toEqual(true);
+            expect(getCheckboxAll().checked).toEqual(true);
         });
 
-        fireEvent.click(checkBoxAll);
+        fireEvent.click(getCheckboxAll());
+
         await waitFor(() => {
-            expect(checkBoxTest1.checked).toEqual(true);
-            expect(checkBoxTest2.checked).toEqual(true);
-            expect(checkBoxAll.checked).toEqual(true);
+            expect(getCheckbox1().checked).toEqual(false);
+            expect(getCheckbox2().checked).toEqual(false);
+            expect(getCheckboxAll().checked).toEqual(false);
+        });
+
+        fireEvent.click(getCheckboxAll());
+
+        await waitFor(() => {
+            expect(getCheckbox1().checked).toEqual(true);
+            expect(getCheckbox2().checked).toEqual(true);
+            expect(getCheckboxAll().checked).toEqual(true);
         });
     });
 });

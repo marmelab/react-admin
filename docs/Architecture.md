@@ -47,12 +47,12 @@ For instance, you cannot pass a list of actions to the `<Edit>` view, but you ca
 
 ```jsx
 import * as React from "react";
-import Button from '@material-ui/core/Button';
+import { Button } from '@mui/material';
 import { TopToolbar, ShowButton } from 'react-admin';
 
-const PostEditActions = ({ basePath, data, resource }) => (
+const PostEditActions = () => (
     <TopToolbar>
-        <ShowButton basePath={basePath} record={data} />
+        <ShowButton />
         {/* Add your custom actions */}
         <Button color="primary" onClick={customAction}>Custom Action</Button>
     </TopToolbar>
@@ -134,29 +134,6 @@ TextField.propTypes = {
 
 export default TextField;
 ```
-
-**Tip**: Previous versions of react-admin used the "push, don't pull" approach instead. Some components haven't migrated to the Context architecture yet, or their documentation hasn't been updated yet. That explains why some components expect a certain list of props to be pushed by their parent, like for instance `<ShowButton>`:
-
-```jsx
-import { ShowButton } from 'react-admin';
-
-const CommentShowButton = ({ record }) => (
-    <ShowButton basePath="/comments" label="Show comment" record={record} />
-);
-```
-
-This works, but the idiomatic way to do so is by using the appropriate context:  
-
-```jsx
-import { ShowButton, userecordContext } from 'react-admin';
-
-const CommentShowButton = () => {
-    const record = useRecordContext();
-    return (
-        <ShowButton basePath="/comments" label="Show comment" record={record} />
-    );
-};
-``` 
 
 ## Hooks
 
@@ -267,7 +244,7 @@ You can build your own distribution of react-admin by combining different packag
 
 None of us like to update the code of our apps just because an underlying library has published a breaking change. React-admin does its best to avoid losing developers' time.
 
-Some of the components may have a weird API. That's probably for historical reasons. We prefer to keep the backward compatibility as high as possible - sometimes at the cost of API consistency.
+Some components may have a weird API. That's probably for historical reasons. We prefer to keep the backward compatibility as high as possible - sometimes at the cost of API consistency.
 
 The code of some components may seem convoluted for no apparent reason. It's probably that the component has to support both the old and the new syntax.
 

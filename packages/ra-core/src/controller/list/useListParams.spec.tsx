@@ -9,10 +9,7 @@ import { fireEvent, waitFor } from '@testing-library/react';
 import { CoreAdminContext, createAdminStore } from '../../core';
 import { testDataProvider } from '../../dataProvider';
 import { useListParams, getQuery, getNumberOrDefault } from './useListParams';
-import {
-    SORT_DESC,
-    SORT_ASC,
-} from '../../reducer/admin/resource/list/queryReducer';
+import { SORT_DESC, SORT_ASC } from './queryReducer';
 
 describe('useListParams', () => {
     describe('getQuery', () => {

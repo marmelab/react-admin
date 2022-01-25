@@ -13,7 +13,7 @@ import queryReducer, {
     SET_PER_PAGE,
     SET_SORT,
     SORT_ASC,
-} from '../../reducer/admin/resource/list/queryReducer';
+} from './queryReducer';
 import { changeListParams, ListParams } from '../../actions';
 import { SortPayload, ReduxState, FilterPayload } from '../../types';
 import removeEmpty from '../../util/removeEmpty';
@@ -81,9 +81,7 @@ export const useListParams = ({
     const [localParams, setLocalParams] = useState(defaultParams);
     const params = useSelector(
         (reduxState: ReduxState) =>
-            reduxState.admin.resources[resource]
-                ? reduxState.admin.resources[resource].list.params
-                : defaultParams,
+            reduxState.admin.listParams[resource] || defaultParams,
         shallowEqual
     );
     const tempParams = useRef<ListParams>();
@@ -160,10 +158,10 @@ export const useListParams = ({
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
 
     const setSort = useCallback(
-        (sort: string, order?: string) =>
+        (sort: SortPayload) =>
             changeParams({
                 type: SET_SORT,
-                payload: { sort, order },
+                payload: sort,
             }),
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
@@ -370,7 +368,7 @@ interface Modifiers {
     changeParams: (action: any) => void;
     setPage: (page: number) => void;
     setPerPage: (pageSize: number) => void;
-    setSort: (sort: string, order?: string) => void;
+    setSort: (sort: SortPayload) => void;
     setFilters: (filters: any, displayedFilters: any) => void;
     hideFilter: (filterName: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;

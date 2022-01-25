@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Children, Fragment, cloneElement, memo } from 'react';
+import { Fragment, memo } from 'react';
 import BookIcon from '@mui/icons-material/Book';
 import { Box, Chip, useMediaQuery } from '@mui/material';
 import { Theme, styled } from '@mui/material/styles';
@@ -66,6 +66,9 @@ const StyledDatagrid = styled(Datagrid)(({ theme }) => ({
             display: 'none',
         },
     },
+    '& .column-tags': {
+        minWidth: '9em',
+    },
     '& .publishedAt': { fontStyle: 'italic' },
 }));
 
@@ -77,23 +80,11 @@ const PostListBulkActions = memo(({ children, ...props }) => (
     </Fragment>
 ));
 
-const PostListActionToolbar = ({ children, ...props }) => {
-    return (
-        // @ts-ignore
-        <Box
-            sx={{
-                alignItems: 'center',
-                display: 'flex',
-                marginTop: -1,
-                marginBotton: -1,
-            }}
-        >
-            {Children.map(children, button => cloneElement(button, props))}
-        </Box>
-    );
-};
+const PostListActionToolbar = ({ children, ...props }) => (
+    <Box sx={{ alignItems: 'center', display: 'flex' }}>{children}</Box>
+);
 
-const rowClick = (id, basePath, record) => {
+const rowClick = (id, resource, record) => {
     if (record.commentable) {
         return 'edit';
     }
@@ -109,7 +100,6 @@ const PostList = () => {
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     return (
         <List
-            bulkActionButtons={<PostListBulkActions />}
             filters={postFilter}
             sort={{ field: 'published_at', order: 'DESC' }}
             exporter={exporter}
@@ -124,6 +114,7 @@ const PostList = () => {
                 />
             ) : (
                 <StyledDatagrid
+                    bulkActionButtons={<PostListBulkActions />}
                     rowClick={rowClick}
                     expand={PostPanel}
                     optimized

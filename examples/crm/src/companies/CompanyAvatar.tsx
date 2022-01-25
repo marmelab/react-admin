@@ -2,6 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Avatar } from '@mui/material';
 import clsx from 'clsx';
+import { useRecordContext } from 'react-admin';
 
 import { Company } from '../types';
 
@@ -33,13 +34,12 @@ const StyledAvatar = styled(Avatar)({
     },
 });
 
-export const CompanyAvatar = ({
-    record,
-    size = 'large',
-}: {
+export const CompanyAvatar = (props: {
     record?: Company;
     size?: 'small' | 'large';
 }) => {
+    const { size = 'large' } = props;
+    const record = useRecordContext<Company>(props);
     if (!record) return null;
     return (
         <StyledAvatar

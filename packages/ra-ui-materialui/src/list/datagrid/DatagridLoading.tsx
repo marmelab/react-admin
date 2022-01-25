@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ReactElement, FC, memo } from 'react';
 import PropTypes from 'prop-types';
 import {
+    Table,
     TableCell,
     TableHead,
     TableRow,
@@ -11,9 +12,9 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import classnames from 'classnames';
-import { useTimeout, Identifier, Record } from 'ra-core';
+import { useTimeout, Identifier, RaRecord } from 'ra-core';
 
-import { DatagridClasses, StyledTable } from './useDatagridStyles';
+import { DatagridClasses } from './useDatagridStyles';
 import { Placeholder } from '../Placeholder';
 
 const times = (nbChildren, fn) =>
@@ -30,7 +31,7 @@ const DatagridLoading = ({
     const oneSecondHasPassed = useTimeout(1000);
 
     return oneSecondHasPassed ? (
-        <StyledTable
+        <Table
             className={classnames(DatagridClasses.table, className)}
             size={size}
         >
@@ -106,7 +107,7 @@ const DatagridLoading = ({
                     </TableRow>
                 ))}
             </TableBody>
-        </StyledTable>
+        </Table>
     ) : null;
 };
 
@@ -124,9 +125,8 @@ export interface DatagridLoadingProps {
     expand?:
         | ReactElement
         | FC<{
-              basePath: string;
               id: Identifier;
-              record: Record;
+              record: RaRecord;
               resource: string;
           }>;
     hasBulkActions?: boolean;

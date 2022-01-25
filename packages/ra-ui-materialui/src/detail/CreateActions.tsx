@@ -16,9 +16,9 @@ import { useResourceDefinition } from 'ra-core';
  *     import Button from '@mui/material/Button';
  *     import { TopToolbar, Create, ListButton } from 'react-admin';
  *
- *     const PostCreateActions = ({ basePath }) => (
+ *     const PostCreateActions = () => (
  *         <TopToolbar>
- *             <ListButton basePath={basePath} />
+ *             <ListButton />
  *             // Add your custom actions here //
  *             <Button color="primary" onClick={customAction}>Custom Action</Button>
  *         </TopToolbar>
@@ -56,7 +56,6 @@ export interface CreateActionsProps {
 }
 
 CreateActions.propTypes = {
-    basePath: PropTypes.string,
     className: PropTypes.string,
     hasCreate: PropTypes.bool,
     hasEdit: PropTypes.bool,

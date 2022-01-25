@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { Form } from 'react-final-form';
+import { renderWithRedux } from 'ra-test';
+import { FormWithRedirect } from 'ra-core';
 
 import { BooleanInput } from './BooleanInput';
 
@@ -90,10 +92,10 @@ describe('<BooleanInput />', () => {
     });
 
     it('should be checked if the value is true and initialValue is false', () => {
-        const { getByLabelText } = render(
-            <Form
+        const { getByLabelText } = renderWithRedux(
+            <FormWithRedirect
                 onSubmit={jest.fn}
-                initialValues={{ isPublished: true }}
+                record={{ isPublished: true }}
                 render={() => (
                     <BooleanInput {...defaultProps} initialValue={false} />
                 )}

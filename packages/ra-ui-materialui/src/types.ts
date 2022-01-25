@@ -2,39 +2,16 @@ import { ReactElement, ReactNode, ElementType } from 'react';
 import { SxProps } from '@mui/system';
 import {
     Identifier,
-    Exporter,
-    SortPayload,
-    FilterPayload,
-    Record as RaRecord,
+    RaRecord,
     MutationMode,
-    OnSuccess,
-    OnFailure,
     TransformData,
     UpdateParams,
+    CreateParams,
+    RedirectionSideEffect,
 } from 'ra-core';
 import { UseQueryOptions, UseMutationOptions } from 'react-query';
 
-export interface ListProps {
-    actions?: ReactElement | false;
-    aside?: ReactElement;
-    bulkActionButtons?: ReactElement | false;
-    classes?: any;
-    className?: string;
-    component?: ElementType;
-    empty?: ReactElement | false;
-    exporter?: Exporter | false;
-    filter?: FilterPayload;
-    filterDefaultValues?: object;
-    filters?: ReactElement | ReactElement[];
-    pagination?: ReactElement | false;
-    perPage?: number;
-    resource?: string;
-    sort?: SortPayload;
-    disableSyncWithLocation?: boolean;
-    title?: string | ReactElement;
-}
-
-export interface EditProps<RecordType extends RaRecord = RaRecord> {
+export interface EditProps<RecordType extends RaRecord = any> {
     actions?: ReactElement | false;
     aside?: ReactElement;
     classes?: any;
@@ -48,27 +25,33 @@ export interface EditProps<RecordType extends RaRecord = RaRecord> {
         unknown,
         UpdateParams<RecordType>
     >;
+    redirect?: RedirectionSideEffect;
     resource?: string;
     transform?: TransformData;
     title?: string | ReactElement;
 }
 
-export interface CreateProps<RecordType extends RaRecord = RaRecord> {
+export interface CreateProps<RecordType extends RaRecord = any> {
     actions?: ReactElement | false;
     aside?: ReactElement;
     classes?: any;
     className?: string;
     component?: ElementType;
     record?: Partial<RecordType>;
+    redirect?: RedirectionSideEffect;
     resource?: string;
-    onSuccess?: OnSuccess;
-    onFailure?: OnFailure;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        unknown,
+        CreateParams<RecordType>
+    >;
     transform?: TransformData;
     title?: string | ReactElement;
 }
 
-export interface ShowProps<RecordType extends RaRecord = RaRecord> {
+export interface ShowProps<RecordType extends RaRecord = any> {
     actions?: ReactElement | false;
+    aside?: ReactElement;
     children: ReactNode;
     className?: string;
     component?: ElementType;
@@ -81,7 +64,6 @@ export interface ShowProps<RecordType extends RaRecord = RaRecord> {
 }
 
 export interface BulkActionProps {
-    basePath?: string;
     filterValues?: any;
     resource?: string;
     selectedIds?: Identifier[];

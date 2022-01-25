@@ -15,11 +15,10 @@ import {
 } from './useListController';
 import { CoreAdminContext, createAdminStore } from '../../core';
 import { CRUD_CHANGE_LIST_PARAMS } from '../../actions';
-import { SORT_ASC } from '../../reducer/admin/resource/list/queryReducer';
+import { SORT_ASC } from './queryReducer';
 
 describe('useListController', () => {
     const defaultProps = {
-        basePath: '',
         children: jest.fn(),
         hasCreate: true,
         hasEdit: true,
@@ -87,18 +86,7 @@ describe('useListController', () => {
             };
 
             const store = createAdminStore({
-                initialState: {
-                    admin: {
-                        resources: {
-                            posts: {
-                                list: {
-                                    params: {},
-                                    cachedRequests: {},
-                                },
-                            },
-                        },
-                    },
-                },
+                initialState: { admin: { listParams: {} } },
             });
             const dispatch = jest.spyOn(store, 'dispatch');
             render(
@@ -122,7 +110,7 @@ describe('useListController', () => {
             expect(changeParamsCalls).toHaveLength(1);
 
             const state = store.getState();
-            expect(state.admin.resources.posts.list.params.filter).toEqual({
+            expect(state.admin.listParams.posts.filter).toEqual({
                 q: 'hello',
             });
         });
@@ -136,15 +124,10 @@ describe('useListController', () => {
             const store = createAdminStore({
                 initialState: {
                     admin: {
-                        resources: {
+                        listParams: {
                             posts: {
-                                list: {
-                                    params: {
-                                        filter: { q: 'hello' },
-                                        displayedFilters: { q: true },
-                                    },
-                                    cachedRequests: {},
-                                },
+                                filter: { q: 'hello' },
+                                displayedFilters: { q: true },
                             },
                         },
                     },
@@ -187,10 +170,10 @@ describe('useListController', () => {
             ).toHaveLength(2);
 
             const state = store.getState();
-            expect(state.admin.resources.posts.list.params.filter).toEqual({});
-            expect(
-                state.admin.resources.posts.list.params.displayedFilters
-            ).toEqual({ q: true });
+            expect(state.admin.listParams.posts.filter).toEqual({});
+            expect(state.admin.listParams.posts.displayedFilters).toEqual({
+                q: true,
+            });
         });
 
         it('should update data if permanent filters change', () => {
@@ -222,8 +205,9 @@ describe('useListController', () => {
                 'posts',
                 expect.objectContaining({ filter: { foo: 1 } })
             );
+
             // Check that the permanent filter is not included in the displayedFilters and filterValues (passed to Filter form and button)
-            expect(children).toHaveBeenCalledTimes(2);
+            expect(children).toHaveBeenCalledTimes(1);
             expect(children).toHaveBeenCalledWith(
                 expect.objectContaining({
                     displayedFilters: {},
@@ -243,7 +227,7 @@ describe('useListController', () => {
                 'posts',
                 expect.objectContaining({ filter: { foo: 2 } })
             );
-            expect(children).toHaveBeenCalledTimes(4);
+            expect(children).toHaveBeenCalledTimes(2);
         });
 
         afterEach(() => {
@@ -288,14 +272,9 @@ describe('useListController', () => {
                     dataProvider={testDataProvider()}
                     initialState={{
                         admin: {
-                            resources: {
+                            listParams: {
                                 posts: {
-                                    list: {
-                                        params: {
-                                            filter: { q: 'hello' },
-                                        },
-                                        cachedRequests: {},
-                                    },
+                                    filter: { q: 'hello' },
                                 },
                             },
                         },
@@ -326,14 +305,9 @@ describe('useListController', () => {
                     dataProvider={testDataProvider()}
                     initialState={{
                         admin: {
-                            resources: {
+                            listParams: {
                                 posts: {
-                                    list: {
-                                        params: {
-                                            filter: { q: 'hello' },
-                                        },
-                                        cachedRequests: {},
-                                    },
+                                    filter: { q: 'hello' },
                                 },
                             },
                         },
@@ -379,8 +353,7 @@ describe('useListController', () => {
                     bar: 'hello',
                 })
             ).toEqual({
-                basePath: undefined,
-                currentSort: undefined,
+                sort: undefined,
                 data: [4, 5],
                 defaultTitle: undefined,
                 displayedFilters: undefined,
@@ -407,7 +380,6 @@ describe('useListController', () => {
                 showFilter: undefined,
                 total: undefined,
                 totalPages: undefined,
-                version: undefined,
             });
         });
     });

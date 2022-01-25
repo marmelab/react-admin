@@ -1,36 +1,45 @@
 import * as React from 'react';
+import { ReactNode, createElement } from 'react';
 import { styled } from '@mui/material/styles';
-import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { shallowEqual, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import lodashGet from 'lodash/get';
 import DefaultIcon from '@mui/icons-material/ViewList';
 import classnames from 'classnames';
-import { useGetResourceLabel, getResources, ReduxState } from 'ra-core';
+import {
+    useResourceDefinitions,
+    useGetResourceLabel,
+    ReduxState,
+    useCreatePath,
+} from 'ra-core';
 
 import { DashboardMenuItem } from './DashboardMenuItem';
 import { MenuItemLink } from './MenuItemLink';
 
 export const Menu = (props: MenuProps) => {
-    const resources = useSelector(getResources, shallowEqual) as Array<any>;
+    const resources = useResourceDefinitions();
     const getResourceLabel = useGetResourceLabel();
+    const createPath = useCreatePath();
     const {
         hasDashboard,
         dense,
         children = (
             <>
                 {hasDashboard && <DashboardMenuItem dense={dense} />}
-                {resources
-                    .filter(r => r.hasList)
-                    .map(resource => (
+                {Object.keys(resources)
+                    .filter(name => resources[name].hasList)
+                    .map(name => (
                         <MenuItemLink
-                            key={resource.name}
-                            to={`/${resource.name}`}
+                            key={name}
+                            to={createPath({
+                                resource: name,
+                                type: 'list',
+                            })}
                             state={{ _scrollToTop: true }}
-                            primaryText={getResourceLabel(resource.name, 2)}
+                            primaryText={getResourceLabel(name, 2)}
                             leftIcon={
-                                resource.icon ? (
-                                    <resource.icon />
+                                resources[name].icon ? (
+                                    createElement(resources[name].icon)
                                 ) : (
                                     <DefaultIcon />
                                 )
@@ -110,4 +119,4 @@ const Root = styled('div', { name: PREFIX })(({ theme }) => ({
 }));
 
 export const MENU_WIDTH = 240;
-export const CLOSED_MENU_WIDTH = 55;
+export const CLOSED_MENU_WIDTH = 50;

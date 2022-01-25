@@ -17,8 +17,9 @@ import {
     FormWithRedirect,
     RecordContextProvider,
     SaveContextProvider,
-} from 'ra-core';
-import { SaveButton, TextInput } from 'ra-ui-materialui';
+    SaveButton,
+    TextInput,
+} from 'react-admin';
 import {
     ResourceConfiguration,
     FieldConfiguration,
@@ -74,8 +75,6 @@ export const ResourceConfigurationPage = () => {
     };
     const saveContext = {
         save,
-        setOnFailure: () => {},
-        setOnSuccess: () => {},
     };
 
     const handleTabChange = (event, newValue) => {
@@ -99,9 +98,9 @@ export const ResourceConfigurationPage = () => {
         <RecordContextProvider value={resourceConfiguration}>
             <SaveContextProvider value={saveContext}>
                 <FormWithRedirect
-                    save={save}
+                    onSubmit={save}
                     initialValues={resourceConfiguration}
-                    render={({ handleSubmitWithRedirect }) => (
+                    render={({ handleSubmit }) => (
                         <StyledCard>
                             <CardHeader
                                 avatar={
@@ -129,68 +128,67 @@ export const ResourceConfigurationPage = () => {
                                     resourceConfiguration.name
                                 }`}
                             />
-
-                            <CardContent>
-                                <TextInput
-                                    source="label"
-                                    initialValue={
-                                        resourceConfiguration.label ||
-                                        resourceConfiguration.name
-                                    }
-                                />
-                            </CardContent>
-                            <Divider />
-                            <div className={classes.fields}>
-                                <Tabs
-                                    orientation="vertical"
-                                    value={activeField.props.source}
-                                    onChange={handleTabChange}
-                                    className={classes.fieldList}
-                                >
-                                    {resourceConfiguration.fields.map(field => (
-                                        <FieldConfigurationTab
-                                            key={`${field.props.source}_tab`}
-                                            field={field}
-                                            value={field.props.source}
-                                            resource={resource}
-                                        />
-                                    ))}
-                                </Tabs>
-                                {resourceConfiguration.fields.map(
-                                    (field, index) => (
-                                        <div
-                                            key={`${field.props.source}_panel`}
-                                            role="tabpanel"
-                                            hidden={
-                                                activeField.props.source !==
-                                                field.props.source
-                                            }
-                                            id={`nav-tabpanel-${field.props.source}`}
-                                            aria-labelledby={`nav-tab-${field.props.source}`}
-                                        >
-                                            {activeField.props.source ===
-                                            field.props.source ? (
-                                                <FieldConfigurationFormSection
-                                                    key={field.props.source}
+                            <form onSubmit={handleSubmit}>
+                                <CardContent>
+                                    <TextInput
+                                        source="label"
+                                        initialValue={
+                                            resourceConfiguration.label ||
+                                            resourceConfiguration.name
+                                        }
+                                    />
+                                </CardContent>
+                                <Divider />
+                                <div className={classes.fields}>
+                                    <Tabs
+                                        orientation="vertical"
+                                        value={activeField.props.source}
+                                        onChange={handleTabChange}
+                                        className={classes.fieldList}
+                                    >
+                                        {resourceConfiguration.fields.map(
+                                            field => (
+                                                <FieldConfigurationTab
+                                                    key={`${field.props.source}_tab`}
                                                     field={field}
-                                                    sourcePrefix={`fields[${index}]`}
-                                                    className={
-                                                        classes.fieldPanel
-                                                    }
+                                                    value={field.props.source}
                                                     resource={resource}
                                                 />
-                                            ) : null}
-                                        </div>
-                                    )
-                                )}
-                            </div>
-                            <CardActions className={classes.actions}>
-                                <SaveButton
-                                    handleSubmitWithRedirect={
-                                        handleSubmitWithRedirect
-                                    }
-                                />
-                            </CardActions>
+                                            )
+                                        )}
+                                    </Tabs>
+                                    {resourceConfiguration.fields.map(
+                                        (field, index) => (
+                                            <div
+                                                key={`${field.props.source}_panel`}
+                                                role="tabpanel"
+                                                hidden={
+                                                    activeField.props.source !==
+                                                    field.props.source
+                                                }
+                                                id={`nav-tabpanel-${field.props.source}`}
+                                                aria-labelledby={`nav-tab-${field.props.source}`}
+                                            >
+                                                {activeField.props.source ===
+                                                field.props.source ? (
+                                                    <FieldConfigurationFormSection
+                                                        key={field.props.source}
+                                                        field={field}
+                                                        sourcePrefix={`fields[${index}]`}
+                                                        className={
+                                                            classes.fieldPanel
+                                                        }
+                                                        resource={resource}
+                                                    />
+                                                ) : null}
+                                            </div>
+                                        )
+                                    )}
+                                </div>
+                                <CardActions className={classes.actions}>
+                                    <SaveButton submitOnEnter />
+                                </CardActions>
+                            </form>
                         </StyledCard>
                     )}
                 />

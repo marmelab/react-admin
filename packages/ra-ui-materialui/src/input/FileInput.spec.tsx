@@ -1,7 +1,11 @@
 import * as React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import {
+    render,
+    fireEvent,
+    waitForElementToBeRemoved,
+    waitFor,
+} from '@testing-library/react';
 import { Form } from 'react-final-form';
-
 import { FileField, ImageField } from '../field';
 import { FileInput } from './FileInput';
 
@@ -71,7 +75,7 @@ describe('<FileInput />', () => {
         const file = createFile('cats.gif', 1234, 'image/gif');
         fireEvent.drop(getByTestId('dropzone'), createDataTransfer([file]));
         // Required because react-dropzone handle drag & drop operations asynchronously
-        await new Promise(resolve => setImmediate(resolve));
+        await new Promise(resolve => setTimeout(resolve));
 
         fireEvent.click(getByLabelText('Save'));
 
@@ -112,7 +116,7 @@ describe('<FileInput />', () => {
             createDataTransfer([file1, file2])
         );
         // Required because react-dropzone handle drag & drop operations asynchronously
-        await new Promise(resolve => setImmediate(resolve));
+        await new Promise(resolve => setTimeout(resolve));
 
         fireEvent.click(getByLabelText('Save'));
 
@@ -244,6 +248,168 @@ describe('<FileInput />', () => {
                     title: 'cats',
                 },
             ],
+        });
+    });
+
+    describe('should call validateFileRemoval on removal to allow developers to conditionally prevent the removal', () => {
+        it('normal function', async () => {
+            const onSubmit = jest.fn();
+
+            const { getByLabelText, getByTitle } = render(
+                <Form
+                    initialValues={{
+                        image: {
+                            src: 'test.png',
+                            title: 'cats',
+                        },
+                    }}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <FileInput
+                                {...defaultProps}
+                                validateFileRemoval={file => {
+                                    throw Error('Cancel Removal Action');
+                                }}
+                            >
+                                <FileField source="src" title="title" />
+                            </FileInput>
+                            <button type="submit" aria-label="Save" />
+                        </form>
+                    )}
+                />
+            );
+
+            const fileDom = getByTitle('cats');
+            expect(fileDom).not.toBeNull();
+            fireEvent.click(getByLabelText('ra.action.delete'));
+            await waitFor(() => {
+                expect(fileDom).not.toBeNull();
+            });
+            fireEvent.click(getByLabelText('Save'));
+
+            expect(onSubmit.mock.calls[0][0]).toEqual({
+                image: {
+                    src: 'test.png',
+                    title: 'cats',
+                },
+            });
+        });
+        it('promise function', async () => {
+            const onSubmit = jest.fn();
+
+            const { getByLabelText, getByTitle } = render(
+                <Form
+                    initialValues={{
+                        image: {
+                            src: 'test.png',
+                            title: 'cats',
+                        },
+                    }}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <FileInput
+                                {...defaultProps}
+                                validateFileRemoval={async file => {
+                                    throw Error('Cancel Removal Action');
+                                }}
+                            >
+                                <FileField source="src" title="title" />
+                            </FileInput>
+                            <button type="submit" aria-label="Save" />
+                        </form>
+                    )}
+                />
+            );
+            const fileDom = getByTitle('cats');
+            expect(fileDom).not.toBeNull();
+            fireEvent.click(getByLabelText('ra.action.delete'));
+            await waitFor(() => {
+                expect(fileDom).not.toBeNull();
+            });
+            fireEvent.click(getByLabelText('Save'));
+            expect(onSubmit.mock.calls[0][0]).toEqual({
+                image: {
+                    src: 'test.png',
+                    title: 'cats',
+                },
+            });
+        });
+    });
+
+    describe('should continue to remove file field validateFileRemoval without Promise rejected.', () => {
+        it('normal function', async () => {
+            const onSubmit = jest.fn();
+
+            const { getByLabelText, getByTitle } = render(
+                <Form
+                    initialValues={{
+                        image: {
+                            src: 'test.png',
+                            title: 'cats',
+                        },
+                    }}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <FileInput
+                                {...defaultProps}
+                                validateFileRemoval={file => true}
+                            >
+                                <FileField source="src" title="title" />
+                            </FileInput>
+                            <button type="submit" aria-label="Save" />
+                        </form>
+                    )}
+                />
+            );
+
+            const fileDom = getByTitle('cats');
+            expect(fileDom).not.toBeNull();
+            fireEvent.click(getByLabelText('ra.action.delete'));
+            await waitForElementToBeRemoved(fileDom);
+            fireEvent.click(getByLabelText('Save'));
+
+            expect(onSubmit.mock.calls[0][0]).toEqual({
+                image: null,
+            });
+        });
+        it('promise function', async () => {
+            const onSubmit = jest.fn();
+
+            const { getByLabelText, getByTitle } = render(
+                <Form
+                    initialValues={{
+                        image: {
+                            src: 'test.png',
+                            title: 'cats',
+                        },
+                    }}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <FileInput
+                                {...defaultProps}
+                                validateFileRemoval={async file => true}
+                            >
+                                <FileField source="src" title="title" />
+                            </FileInput>
+                            <button type="submit" aria-label="Save" />
+                        </form>
+                    )}
+                />
+            );
+
+            const fileDom = getByTitle('cats');
+            expect(fileDom).not.toBeNull();
+            fireEvent.click(getByLabelText('ra.action.delete'));
+            await waitForElementToBeRemoved(fileDom);
+            fireEvent.click(getByLabelText('Save'));
+
+            expect(onSubmit.mock.calls[0][0]).toEqual({
+                image: null,
+            });
         });
     });
 
@@ -407,7 +573,7 @@ describe('<FileInput />', () => {
             const file = createFile('cats.gif', 1234, 'image/gif');
             fireEvent.drop(getByTestId('dropzone'), createDataTransfer([file]));
             // Required because react-dropzone handle drag & drop operations asynchronously
-            await new Promise(resolve => setImmediate(resolve));
+            await new Promise(resolve => setTimeout(resolve));
 
             const previewImage = queryByRole('image');
             expect(previewImage).not.toBeNull();

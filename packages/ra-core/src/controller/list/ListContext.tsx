@@ -16,8 +16,8 @@ import { ListControllerResult } from './useListController';
  * @prop {Function} setPage a callback to change the page, e.g. setPage(3)
  * @prop {integer}  perPage the number of results per page. Defaults to 25
  * @prop {Function} setPerPage a callback to change the number of results per page, e.g. setPerPage(25)
- * @prop {Object}   currentSort a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
- * @prop {Function} setSort a callback to change the sort, e.g. setSort('name', 'ASC')
+ * @prop {Object}   sort a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
+ * @prop {Function} setSort a callback to change the sort, e.g. setSort({ field: 'name', order: 'ASC' })
  * @prop {Object}   filterValues a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
  * @prop {Function} setFilters a callback to update the filters, e.g. setFilters(filters, displayedFilters)
  * @prop {Object}   displayedFilters a dictionary of the displayed filters, e.g. { title: true, nationality: true }
@@ -27,7 +27,6 @@ import { ListControllerResult } from './useListController';
  * @prop {Function} onSelect callback to change the list of selected rows, e.g. onSelect([456, 789])
  * @prop {Function} onToggleItem callback to toggle the selection of a given record based on its id, e.g. onToggleItem(456)
  * @prop {Function} onUnselectItems callback to clear the selection, e.g. onUnselectItems();
- * @prop {string}   basePath deduced from the location, useful for action buttons
  * @prop {string}   defaultTitle the translated title based on the resource, e.g. 'Posts'
  * @prop {string}   resource the resource name, deduced from the location. e.g. 'posts'
  * @prop {Function} refetch a function for triggering a refetch of the list data
@@ -54,12 +53,11 @@ import { ListControllerResult } from './useListController';
  * };
  */
 export const ListContext = createContext<ListControllerResult>({
-    currentSort: null,
+    sort: null,
     data: null,
     defaultTitle: null,
     displayedFilters: null,
     filterValues: null,
-    hasCreate: null,
     hideFilter: null,
     isFetching: null,
     isLoading: null,
@@ -70,7 +68,7 @@ export const ListContext = createContext<ListControllerResult>({
     perPage: null,
     refetch: null,
     resource: null,
-    selectedIds: null,
+    selectedIds: undefined,
     setFilters: null,
     setPage: null,
     setPerPage: null,

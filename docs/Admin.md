@@ -63,7 +63,9 @@ const dataProvider = {
 }
 ```
 
-The `dataProvider` is also the ideal place to add custom HTTP headers, authentication, etc. The [Data Providers Chapter](./DataProviders.md) of the documentation lists available data providers, and explains how to build your own.
+Check [the Data Provider documentation](./DataProviderIntroduction.md) for more details.
+
+The `dataProvider` is also the ideal place to add custom HTTP headers, authentication, etc. The [Data Providers Backends ](./DataProviderList.md) chapters lists available data providers, and you can learn how to build your own in the [Writing a Data Provider](./DataProviderWriting.md) chapter.
 
 ## `authProvider`
 
@@ -111,8 +113,8 @@ By default, the homepage of an admin app is the `list` of the first child `<Reso
 ```jsx
 // in src/Dashboard.js
 import * as React from "react";
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import { Title } from 'react-admin';
 export default () => (
     <Card>
@@ -172,8 +174,8 @@ You can customize this page to use the component of your choice by passing it as
 ```jsx
 // in src/NotFound.js
 import * as React from "react";
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import { Title } from 'react-admin';
 
 export default () => (
@@ -201,7 +203,7 @@ const App = () => (
 );
 ```
 
-**Tip**: If your custom `catchAll` component contains react-router `<Route>` components, this allows you to register new routes displayed within the react-admin layout easily. Note that these routes will match *after* all the react-admin resource routes have been tested. To add custom routes *before* the react-admin ones, and therefore override the default resource routes, use the [`customRoutes` prop](#customroutes) instead.
+**Tip**: If your custom `catchAll` component contains react-router `<Route>` components, this allows you to register new routes displayed within the react-admin layout easily. Note that these routes will match *after* all the react-admin resource routes have been tested. To add custom routes *before* the react-admin ones, and therefore override the default resource routes, see the [`custom pages`](#adding-custom-pages) section instead.
 
 ## `menu`
 
@@ -217,21 +219,22 @@ import * as React from 'react';
 import { createElement } from 'react';
 import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
-import { MenuItemLink, getResources } from 'react-admin';
-import LabelIcon from '@material-ui/icons/Label';
+import { MenuItemLink, useResourceDefinitions } from 'react-admin';
+import LabelIcon from '@mui/icons-material/Label';
 
 const Menu = ({ onMenuClick, logout }) => {
     const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
     const open = useSelector(state => state.admin.ui.sidebarOpen);
-    const resources = useSelector(getResources);
+    const resources = useResourceDefinitions();
+    
     return (
         <div>
-            {resources.map(resource => (
+            {Object.keys(resources).map(name => (
                 <MenuItemLink
-                    key={resource.name}
-                    to={`/${resource.name}`}
-                    primaryText={resource.options && resource.options.label || resource.name}
-                    leftIcon={createElement(resource.icon)}
+                    key={name}
+                    to={`/${name}`}
+                    primaryText={resources[name].options && resources[name].options.label || name}
+                    leftIcon={createElement(resources[name].icon)}
                     onClick={onMenuClick}
                     sidebarIsOpen={open}
                 />
@@ -275,9 +278,9 @@ See the [Theming documentation](./Theming.md#using-a-custom-menu) for more detai
 Material UI supports [theming](https://material-ui.com/customization/themes). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom material ui theme by using the `theme` prop:
 
 ```jsx
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@mui/material/styles';
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     type: 'dark', // Switching the dark mode on is a single property value change.
   },
@@ -296,7 +299,7 @@ For more details on predefined themes and custom themes, refer to the [Material 
 
 ## `layout`
 
-If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. If you use material UI fields and inputs, it should contain a `<ThemeProvider>` element. And finally, if you want to show the spinner in the app header when the app fetches data in the background, the Layout should connect to the redux store.
+If you want to deeply customize the app header, the menu, or the notifications, the best way is to provide a custom layout component. It must contain a `{children}` placeholder, where react-admin will render the resources. 
 
 Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point, and check [the Theming documentation](./Theming.md#using-a-custom-layout) for examples.
 
@@ -454,6 +457,8 @@ const App = () => (
 
 ## `history`
 
+**Note**: This prop is deprecated. Check [the Routing chapter](./Routing.md) to see how to use a different router.
+
 By default, react-admin creates URLs using a hash sign (e.g. "myadmin.acme.com/#/posts/123"). The hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers. But you may want to use another routing strategy, e.g. to allow server-side rendering.
 
 You can create your own `history` function (compatible with [the `history` npm package](https://github.com/reacttraining/history)), and pass it to the `<Admin>` component to override the default history strategy. For instance, to use `browserHistory`:
@@ -473,7 +478,7 @@ const App = () => (
 
 ## `basename`
 
-Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is only needed when using the [`BrowserHistory`](https://github.com/remix-run/history/blob/main/docs/api-reference.md#createbrowserhistory) to serve the application under a subpath of your domain (for example https://marmelab.com/ra-enterprise-demo). See https://reactrouter.com/docs/en/v6/api#router for more information.
+Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is only needed when using the [`BrowserHistory`](https://github.com/remix-run/history/blob/main/docs/api-reference.md#createbrowserhistory) to serve the application under a sub-path of your domain (for example https://marmelab.com/ra-enterprise-demo), or when embedding react-admin inside a single-page app with its own routing. See https://reactrouter.com/docs/en/v6/api#router for more information.
 
 ```jsx
 import { Admin } from 'react-admin';
@@ -624,8 +629,7 @@ Now, when a user browses to `/foo` or `/bar`, the components you defined will ap
 ```jsx
 // in src/Foo.js
 import * as React from "react";
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import { Card, CardContent } from '@mui/material';
 import { Title } from 'react-admin';
 
 const Foo = () => (
@@ -665,7 +669,7 @@ const App = () => (
 export default App;
 ```
 
-When a user browses to `/register`, the `<Register>` component will appear outside of the defined Layout, leaving you the freedom to design the screen the way you want.
+When a user browses to `/register`, the `<Register>` component will appear outside the defined Layout, leaving you the freedom to design the screen the way you want.
 
 **Tip**: Custom routes can be [a `<Redirect>` route](https://reacttraining.com/react-router/web/api/Redirect), too.
 

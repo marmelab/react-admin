@@ -21,23 +21,30 @@ import {
     UrlField,
     useShowController,
     useLocale,
-    Record,
+    RaRecord,
+    useCreatePath,
 } from 'react-admin';
 import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
 import PostTitle from './PostTitle';
 
-const CreateRelatedComment = ({ record }: { record?: Record }) => (
-    <Button
-        component={Link}
-        to={{
-            pathname: '/comments/create',
-            state: { record: { post_id: record?.id } },
-        }}
-    >
-        Add comment
-    </Button>
-);
+const CreateRelatedComment = ({ record }: { record?: RaRecord }) => {
+    const createPath = useCreatePath();
+    return (
+        <Button
+            component={Link}
+            to={{
+                pathname: createPath({
+                    resource: 'comments',
+                    type: 'create',
+                }),
+                state: { record: { post_id: record?.id } },
+            }}
+        >
+            Add comment
+        </Button>
+    );
+};
 
 const PostShow = () => {
     const controllerProps = useShowController();

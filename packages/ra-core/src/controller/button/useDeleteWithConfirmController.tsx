@@ -4,15 +4,13 @@ import {
     ReactEventHandler,
     SyntheticEvent,
 } from 'react';
+import { UseMutationOptions } from 'react-query';
+
 import { useDelete } from '../../dataProvider';
-import { CRUD_DELETE } from '../../actions';
-import {
-    useRefresh,
-    useNotify,
-    useRedirect,
-    RedirectionSideEffect,
-} from '../../sideEffect';
-import { Record, MutationMode, OnFailure, OnSuccess } from '../../types';
+import { useUnselect } from '../../sideEffect';
+import { useRedirect, RedirectionSideEffect } from '../../routing';
+import { useNotify } from '../../notification';
+import { RaRecord, MutationMode, DeleteParams } from '../../types';
 import { useResourceContext } from '../../core';
 
 /**
@@ -23,14 +21,13 @@ import { useResourceContext } from '../../core';
  * const DeleteButton = ({
  *     resource,
  *     record,
- *     basePath,
  *     redirect,
  *     onClick,
  *     ...rest
  * }) => {
  *     const {
  *         open,
- *         loading,
+ *         isLoading,
  *         handleDialogOpen,
  *         handleDialogClose,
  *         handleDelete,
@@ -38,7 +35,6 @@ import { useResourceContext } from '../../core';
  *         resource,
  *         record,
  *         redirect,
- *         basePath,
  *         onClick,
  *     });
  *
@@ -53,7 +49,7 @@ import { useResourceContext } from '../../core';
  *             </Button>
  *             <Confirm
  *                 isOpen={open}
- *                 loading={loading}
+ *                 loading={isLoading}
  *                 title="ra.message.delete_title"
  *                 content="ra.message.delete_content"
  *                 translateOptions={{
@@ -67,65 +63,22 @@ import { useResourceContext } from '../../core';
  *     );
  * };
  */
-const useDeleteWithConfirmController = (
-    props: UseDeleteWithConfirmControllerParams
+const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
+    props: UseDeleteWithConfirmControllerParams<RecordType>
 ): UseDeleteWithConfirmControllerReturn => {
     const {
         record,
         redirect: redirectTo,
-        basePath,
         mutationMode,
         onClick,
-        onSuccess,
-        onFailure,
+        mutationOptions,
     } = props;
     const resource = useResourceContext(props);
     const [open, setOpen] = useState(false);
     const notify = useNotify();
+    const unselect = useUnselect();
     const redirect = useRedirect();
-    const refresh = useRefresh();
-    const [deleteOne, { loading }] = useDelete(resource, null, null, {
-        action: CRUD_DELETE,
-        onSuccess: response => {
-            setOpen(false);
-            if (onSuccess === undefined) {
-                notify('ra.notification.deleted', {
-                    type: 'info',
-                    messageArgs: { smart_count: 1 },
-                    undoable: mutationMode === 'undoable',
-                });
-                redirect(redirectTo, basePath || `/${resource}`);
-                refresh();
-            } else {
-                onSuccess(response);
-            }
-        },
-        onFailure: error => {
-            setOpen(false);
-            if (onFailure === undefined) {
-                notify(
-                    typeof error === 'string'
-                        ? error
-                        : error.message || 'ra.notification.http_error',
-                    {
-                        type: 'warning',
-                        messageArgs: {
-                            _:
-                                typeof error === 'string'
-                                    ? error
-                                    : error && error.message
-                                    ? error.message
-                                    : undefined,
-                        },
-                    }
-                );
-                refresh();
-            } else {
-                onFailure(error);
-            }
-        },
-        mutationMode,
-    });
+    const [deleteOne, { isLoading }] = useDelete<RecordType>();
 
     const handleDialogOpen = e => {
         setOpen(true);
@@ -140,34 +93,90 @@ const useDeleteWithConfirmController = (
     const handleDelete = useCallback(
         event => {
             event.stopPropagation();
-            deleteOne({
-                payload: { id: record.id, previousData: record },
-            });
+            deleteOne(
+                resource,
+                { id: record.id, previousData: record },
+                {
+                    onSuccess: () => {
+                        setOpen(false);
+                        notify('ra.notification.deleted', {
+                            type: 'info',
+                            messageArgs: { smart_count: 1 },
+                            undoable: mutationMode === 'undoable',
+                        });
+                        unselect(resource, [record.id]);
+                        redirect(redirectTo, resource);
+                    },
+                    onError: (error: Error) => {
+                        setOpen(false);
+
+                        notify(
+                            typeof error === 'string'
+                                ? error
+                                : error.message || 'ra.notification.http_error',
+                            {
+                                type: 'warning',
+                                messageArgs: {
+                                    _:
+                                        typeof error === 'string'
+                                            ? error
+                                            : error && error.message
+                                            ? error.message
+                                            : undefined,
+                                },
+                            }
+                        );
+                    },
+                    mutationMode,
+                    ...mutationOptions,
+                }
+            );
             if (typeof onClick === 'function') {
                 onClick(event);
             }
         },
-        [deleteOne, onClick, record]
+        [
+            deleteOne,
+            mutationMode,
+            mutationOptions,
+            notify,
+            onClick,
+            record,
+            redirect,
+            redirectTo,
+            resource,
+            unselect,
+        ]
     );
 
-    return { open, loading, handleDialogOpen, handleDialogClose, handleDelete };
+    return {
+        open,
+        isLoading,
+        handleDialogOpen,
+        handleDialogClose,
+        handleDelete,
+    };
 };
 
-export interface UseDeleteWithConfirmControllerParams {
-    basePath?: string;
+export interface UseDeleteWithConfirmControllerParams<
+    RecordType extends RaRecord = any
+> {
     mutationMode?: MutationMode;
-    record?: Record;
+    record?: RecordType;
     redirect?: RedirectionSideEffect;
     // @deprecated. This hook get the resource from the context
     resource?: string;
     onClick?: ReactEventHandler<any>;
-    onSuccess?: OnSuccess;
-    onFailure?: OnFailure;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        unknown,
+        DeleteParams<RecordType>
+    >;
 }
 
 export interface UseDeleteWithConfirmControllerReturn {
     open: boolean;
-    loading: boolean;
+    isLoading: boolean;
     handleDialogOpen: (e: SyntheticEvent) => void;
     handleDialogClose: (e: SyntheticEvent) => void;
     handleDelete: ReactEventHandler<any>;

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { ReactElement, memo, useMemo } from 'react';
+import { ReactElement, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Fab, useMediaQuery, Theme } from '@mui/material';
 import ContentAdd from '@mui/icons-material/Add';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
-import { useTranslate, useResourceContext } from 'ra-core';
+import { useTranslate, useResourceContext, useCreatePath } from 'ra-core';
 
 import { Button, ButtonProps, sanitizeButtonRestProps } from './Button';
 
@@ -20,7 +20,7 @@ import { Button, ButtonProps, sanitizeButtonRestProps } from './Button';
  * import { CreateButton } from 'react-admin';
  *
  * const CommentCreateButton = () => (
- *     <CreateButton basePath="/comments" label="Create comment" />
+ *     <CreateButton label="Create comment" />
  * );
  */
 const CreateButton = (props: CreateButtonProps) => {
@@ -34,23 +34,19 @@ const CreateButton = (props: CreateButtonProps) => {
     } = props;
 
     const resource = useResourceContext(props);
+    const createPath = useCreatePath();
     const translate = useTranslate();
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('md')
     );
-    const location = useMemo(
-        () => ({
-            pathname: `/${resource}/create`,
-            state: { _scrollToTop: scrollToTop },
-        }),
-        [resource, scrollToTop]
-    );
+
     return isSmall ? (
         <StyledFab
             component={Link}
+            to={createPath({ resource, type: 'create' })}
+            state={scrollStates[String(scrollToTop)]}
             color="primary"
             className={classnames(CreateButtonClasses.floating, className)}
-            to={location}
             aria-label={label && translate(label)}
             {...sanitizeButtonRestProps(rest)}
         >
@@ -59,7 +55,8 @@ const CreateButton = (props: CreateButtonProps) => {
     ) : (
         <Button
             component={Link}
-            to={location}
+            to={createPath({ resource, type: 'create' })}
+            state={scrollStates[String(scrollToTop)]}
             className={className}
             label={label}
             variant={variant}
@@ -68,6 +65,12 @@ const CreateButton = (props: CreateButtonProps) => {
             {icon}
         </Button>
     );
+};
+
+// avoids using useMemo to get a constant value for the link state
+const scrollStates = {
+    true: { _scrollToTop: true },
+    false: {},
 };
 
 const defaultIcon = <ContentAdd />;
@@ -111,7 +114,6 @@ export default memo(CreateButton, (prevProps, nextProps) => {
         prevProps.resource === nextProps.resource &&
         prevProps.label === nextProps.label &&
         prevProps.translate === nextProps.translate &&
-        prevProps.to === nextProps.to &&
         prevProps.disabled === nextProps.disabled
     );
 });

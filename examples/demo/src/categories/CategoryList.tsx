@@ -66,10 +66,7 @@ const CategoryGrid = () => {
                             classes={{ spacing: classes.actionSpacer }}
                         >
                             <LinkToRelatedProducts record={record} />
-                            <EditButton
-                                basePath="/categories"
-                                record={record}
-                            />
+                            <EditButton record={record} />
                         </CardActions>
                     </Card>
                 </Grid>

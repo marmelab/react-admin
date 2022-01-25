@@ -3,7 +3,6 @@ import {
     ChangeEvent,
     Children,
     cloneElement,
-    ElementType,
     isValidElement,
     ReactElement,
     ReactNode,
@@ -12,10 +11,10 @@ import {
 import PropTypes from 'prop-types';
 import { ResponsiveStyleValue, SxProps } from '@mui/system';
 import { styled } from '@mui/material/styles';
-import { Card, Divider } from '@mui/material';
+import { Divider } from '@mui/material';
 import { Outlet, Routes, Route } from 'react-router-dom';
 import {
-    Record,
+    RaRecord,
     useRecordContext,
     OptionalRecordContextProvider,
 } from 'ra-core';
@@ -28,9 +27,9 @@ import {
 /**
  * Layout for a Show view showing fields grouped in tabs and laid out in a single column.
  *
- * It pulls the record from the RecordContext. It renders a material-ui `<Card>`
- * containing a set of `<Tabs>`, each of which contains a list of record fields
- * in a single-column layout (via material-ui's `<Stack>` component).
+ * It pulls the record from the RecordContext. It renders a set of `<Tabs>`,
+ * each of which contains a list of record fields in a single-column layout
+ * (via material-ui's `<Stack>` component).
  * `<TabbedShowLayout>` delegates the actual rendering of fields to its children,
  * which should be `<Tab>` components.
  * `<Tab>` wraps each field inside a <Labeled> component to add a label.
@@ -79,7 +78,6 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
     const {
         children,
         className,
-        component: Component = Root,
         spacing,
         divider,
         syncWithLocation = true,
@@ -116,7 +114,7 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
 
     return (
         <OptionalRecordContextProvider value={props.record}>
-            <Component className={className} {...sanitizeRestProps(rest)}>
+            <Root className={className} {...sanitizeRestProps(rest)}>
                 {syncWithLocation ? (
                     <Routes>
                         <Route
@@ -173,7 +171,7 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
                         </div>
                     </>
                 )}
-            </Component>
+            </Root>
         </OptionalRecordContextProvider>
     );
 };
@@ -181,9 +179,8 @@ export const TabbedShowLayout = (props: TabbedShowLayoutProps) => {
 export interface TabbedShowLayoutProps {
     children: ReactNode;
     className?: string;
-    component?: ElementType;
     divider?: ReactNode;
-    record?: Record;
+    record?: RaRecord;
     rootPath?: string;
     spacing?: ResponsiveStyleValue<number | string>;
     sx?: SxProps;
@@ -195,7 +192,6 @@ export interface TabbedShowLayoutProps {
 TabbedShowLayout.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
-    component: PropTypes.elementType,
     record: PropTypes.object,
     spacing: PropTypes.any,
     sx: PropTypes.any,
@@ -212,7 +208,7 @@ export const TabbedShowLayoutClasses = {
     content: `${PREFIX}-content`,
 };
 
-const Root = styled(Card, { name: PREFIX })(({ theme }) => ({
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
     flex: 1,
     [`& .${TabbedShowLayoutClasses.content}`]: {
         padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
@@ -220,12 +216,8 @@ const Root = styled(Card, { name: PREFIX })(({ theme }) => ({
 }));
 
 const sanitizeRestProps = ({
-    children,
-    className,
     record,
     resource,
-    basePath,
-    version,
     initialValues,
     staticContext,
     translate,

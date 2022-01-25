@@ -5,8 +5,8 @@ import {
     useQueryClient,
 } from 'react-query';
 
-import { Record, GetListParams } from '../types';
-import useDataProvider from './useDataProvider';
+import { RaRecord, GetListParams } from '../types';
+import { useDataProvider } from './useDataProvider';
 
 /**
  * Call the dataProvider.getList() method and return the resolved result
@@ -22,14 +22,15 @@ import useDataProvider from './useDataProvider';
  * with the same parameters, until the response arrives.
  *
  * @param {string} resource The resource name, e.g. 'posts'
- * @param {Params} params The getList parameters { pagination, sort, filter }
+ * @param {Params} params The getList parameters { pagination, sort, filter, meta }
  * @param {Object} options Options object to pass to the queryClient.
- * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh() } }
+ * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
  *
  * @typedef Params
  * @prop params.pagination The request pagination { page, perPage }, e.g. { page: 1, perPage: 10 }
  * @prop params.sort The request sort { field, order }, e.g. { field: 'id', order: 'DESC' }
  * @prop params.filter The request filters, e.g. { title: 'hello, world' }
+ * @prop params.meta Optional meta parameters
  *
  * @returns The current request state. Destructure as { data, total, error, isLoading, refetch }.
  *
@@ -49,7 +50,7 @@ import useDataProvider from './useDataProvider';
  *     )}</ul>;
  * };
  */
-export const useGetList = <RecordType extends Record = Record>(
+export const useGetList = <RecordType extends RaRecord = any>(
     resource: string,
     params: Partial<GetListParams> = {},
     options?: UseQueryOptions<{ data: RecordType[]; total: number }, Error>
@@ -58,6 +59,7 @@ export const useGetList = <RecordType extends Record = Record>(
         pagination = { page: 1, perPage: 25 },
         sort = { field: 'id', order: 'DESC' },
         filter = {},
+        meta,
     } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
@@ -66,18 +68,23 @@ export const useGetList = <RecordType extends Record = Record>(
         Error,
         { data: RecordType[]; total: number }
     >(
-        [resource, 'getList', { pagination, sort, filter }],
+        [resource, 'getList', { pagination, sort, filter, meta }],
         () =>
             dataProvider
-                .getList<RecordType>(resource, { pagination, sort, filter })
+                .getList<RecordType>(resource, {
+                    pagination,
+                    sort,
+                    filter,
+                    meta,
+                })
                 .then(({ data, total }) => ({ data, total })),
         {
             onSuccess: ({ data }) => {
                 // optimistically populate the getOne cache
                 data.forEach(record => {
                     queryClient.setQueryData(
-                        [resource, 'getOne', String(record.id)],
-                        record
+                        [resource, 'getOne', { id: String(record.id), meta }],
+                        oldRecord => oldRecord ?? record
                     );
                 });
             },
@@ -95,5 +102,5 @@ export const useGetList = <RecordType extends Record = Record>(
 };
 
 export type UseGetListHookValue<
-    RecordType extends Record = Record
+    RecordType extends RaRecord = any
 > = UseQueryResult<RecordType[], Error> & { total?: number };

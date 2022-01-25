@@ -1,25 +1,16 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen } from '@testing-library/react';
-import { refreshView } from 'ra-core';
 
 import TestContext, { defaultStore } from './TestContext';
-
 import { WithDataProvider } from './TestContext.stories';
 
 const primedStore = {
     admin: {
-        loading: 0,
-        notifications: [],
-        references: {
-            oneToMany: {},
-            possibleValues: {},
-        },
-        resources: {},
-        ui: {
-            viewVersion: 1,
-        },
-        customQueries: {},
+        ui: {},
+        selectedIds: {},
+        expandedRows: {},
+        listParams: {},
     },
 };
 
@@ -74,49 +65,6 @@ describe('TestContext.js', () => {
     });
 
     describe('enableReducers options', () => {
-        it('should update the state when set to TRUE', () => {
-            let testStore;
-            render(
-                <TestContext enableReducers={true}>
-                    {({ store }) => {
-                        testStore = store;
-                        return <span>foo</span>;
-                    }}
-                </TestContext>
-            );
-            expect(testStore.getState()).toEqual(primedStore);
-
-            testStore.dispatch(refreshView());
-
-            expect(testStore.getState()).toEqual({
-                ...primedStore,
-                admin: {
-                    ...primedStore.admin,
-                    ui: {
-                        ...primedStore.admin.ui,
-                        viewVersion: 2,
-                    },
-                },
-            });
-        });
-
-        it('should NOT update the state when set to FALSE (default)', () => {
-            let testStore;
-            render(
-                <TestContext>
-                    {({ store }) => {
-                        testStore = store;
-                        return <span>foo</span>;
-                    }}
-                </TestContext>
-            );
-            expect(testStore.getState()).toEqual(defaultStore);
-
-            testStore.dispatch(refreshView());
-
-            expect(testStore.getState()).toEqual(defaultStore);
-        });
-
         it('should initilize the state with customReducers initialState', () => {
             let testStore;
             render(

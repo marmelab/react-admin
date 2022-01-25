@@ -1,10 +1,7 @@
 import { combineReducers, Reducer } from 'redux';
-import admin, {
-    getResources as adminGetResources,
-    getReferenceResource as adminGetReferenceResource,
-    getPossibleReferenceValues as adminGetPossibleReferenceValues,
-} from './admin';
-export { getNotification } from './admin/notifications';
+
+import admin from './admin';
+import { ReduxState } from '../types';
 
 interface CustomReducers {
     [key: string]: Reducer;
@@ -14,12 +11,4 @@ export default (customReducers: CustomReducers) =>
     combineReducers({
         admin,
         ...customReducers,
-    });
-
-export const getPossibleReferenceValues = (state, props) =>
-    adminGetPossibleReferenceValues(state.admin, props);
-export const getResources = state => adminGetResources(state.admin);
-export const getReferenceResource = (state, props) =>
-    adminGetReferenceResource(state.admin, props);
-
-export { getPossibleReferences } from './admin';
+    }) as Reducer<ReduxState>;

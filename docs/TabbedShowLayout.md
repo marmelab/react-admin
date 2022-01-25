@@ -5,7 +5,7 @@ title: "TabbedShowLayout"
 
 # `<TabbedShowLayout>`
 
-The `<TabbedShowLayout>` pulls the `record` from the `RecordContext`. It renders a material-ui `<Card>` containing a set of `<Tabs>`, each of which contains a list of record fields in a single-column layout (via material-ui's `<Stack>` component). `<TabbedShowLayout>` delegates the actual rendering of fields to its children, which should be `<Tab>` components. `<Tab>`  wraps each field inside a `<FieldWithLabel>` component to add a label.
+The `<TabbedShowLayout>` pulls the `record` from the `RecordContext`. It renders a set of `<Tabs>`, each of which contains a list of record fields in a single-column layout (via material-ui's `<Stack>` component). `<TabbedShowLayout>` delegates the actual rendering of fields to its children, which should be `<Tab>` components. `<Tab>`  wraps each field inside a `<FieldWithLabel>` component to add a label.
 
 Switching tabs will update the current url. By default, it uses the tabs indexes and the first tab will be displayed at the root url. You can customize the path by providing a `path` prop to each `Tab` component. If you'd like the first one to act as an index page, just omit the `path` prop.
 
@@ -56,15 +56,14 @@ export const PostShow = () => (
 
 * [`children`](#tabs): components rendering a tab
 * `className`: passed to the root component
-* [`component`](#root-component): overrides the root component
 * [`divider`](#divider): optional element to render between each field
 * [`record`](#controlled-mode): can be injected when outside a RecordContext 
 * [`spacing`](#spacing): optional integer to set the spacing between the fields
-* [`sx`](#css-api): Override the styles
+* [`sx`](#sx-css-api): Override the styles
 * [`syncWithLocation`](#sync-tabs-with-location): optional boolean to disable storing the active tab in the url
 * [`tabs`](#custom-tab-component): custom Tabs component
 
-Additional props are passed to the root component (`<Card>`).
+Additional props are passed to the root component (`<div>`).
 
 ## Tabs
 
@@ -228,23 +227,6 @@ const PostShow = () => (
 );
 ```
 
-## Root Component
-
-By default, `<TabbedShowLayout>` view renders the main content area inside a material-ui `<Card>`. You can override the main area container by passing a `component` prop:
-
-```jsx
-// use a div as root component
-const PostShow = () => (
-    <Show>
-        <TabbedShowLayout component="div">
-            <Tab label="main">
-                <TextField source="title" />
-            </Tab>
-        </TabbedShowLayout>
-    </Show>
-);
-```
-
 ## Custom Tab Component
 
 By default, `<TabbedShowLayout>` renders its tabs using `<TabbedShowLayoutTabs>`, an internal react-admin component. You can pass a custom component as the `tabs` prop to override that default. Also, props passed to `<TabbedShowLayoutTabs>` are passed to the material-ui's `<Tabs>` component inside `<TabbedShowLayoutTabs>`. That means you can create a custom `tabs` component without copying several components from the react-admin source.
@@ -271,7 +253,7 @@ export default ScrollableTabbedShowLayout;
 
 ## Controlled Mode
 
-By default, `<TabbedShowLayout>` reads the record from the `ResourceContext`. But by passing a `record` prop, you can render the component outside of a `ResourceContext`.
+By default, `<TabbedShowLayout>` reads the record from the `ResourceContext`. But by passing a `record` prop, you can render the component outside a `ResourceContext`.
 
 {% raw %}
 ```jsx
@@ -287,13 +269,13 @@ const StaticPostShow = () => (
 
 When passed a `record`, `<TabbedShowLayout>` creates a `RecordContext` with the given record.
 
-## CSS API
+## `sx`: CSS API
 
 The `<TabbedShowLayout>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
-| Rule name   | Description                                              |
-| ----------- | ---------------------------------------------------------|
-| `content`   | Applied to the content zone (under the tabs)             |
+| Rule name                       | Description                                              |
+|---------------------------------| ---------------------------------------------------------|
+| `& .RaTabbedShowLayout-content` | Applied to the content zone (under the tabs)             |
 
 To override the style of all instances of `<TabbedShowLayout>` using the [material-ui style overrides](https://mui.com/customization/theme-components/), use the `RaTabbedShowLayout` key.
 

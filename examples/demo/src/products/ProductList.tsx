@@ -64,7 +64,7 @@ const ListActions = ({ isSmall }: any) => (
     <TopToolbar>
         {isSmall && <FilterButton />}
         <SortButton fields={['reference', 'sales', 'stock']} />
-        <CreateButton basePath="/products" />
+        <CreateButton />
         <ExportButton />
     </TopToolbar>
 );
@@ -72,7 +72,7 @@ const ListActions = ({ isSmall }: any) => (
 const ProductList = () => {
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     return (
-        <ListBase perPage={20} sort={{ field: 'reference', order: 'ASC' }}>
+        <ListBase perPage={24} sort={{ field: 'reference', order: 'ASC' }}>
             <ProductListView isSmall={isSmall} />
         </ListBase>
     );
@@ -95,7 +95,7 @@ const ProductListView = ({ isSmall }: { isSmall: boolean }) => {
                 <Aside />
                 <Box width={isSmall ? 'auto' : 'calc(100% - 16em)'}>
                     <ImageList />
-                    <Pagination rowsPerPageOptions={[10, 20, 40]} />
+                    <Pagination rowsPerPageOptions={[12, 24, 48, 72]} />
                 </Box>
             </Box>
         </>

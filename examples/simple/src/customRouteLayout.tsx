@@ -7,14 +7,14 @@ import {
     Title,
 } from 'react-admin';
 
-const currentSort = { field: 'published_at', order: 'DESC' };
+const sort = { field: 'published_at', order: 'DESC' };
 
 const CustomRouteLayout = ({ title = 'Posts' }) => {
     useAuthenticated();
 
     const { data, total, isLoading } = useGetList('posts', {
         pagination: { page: 1, perPage: 10 },
-        sort: currentSort,
+        sort,
     });
 
     return !isLoading ? (
@@ -25,8 +25,7 @@ const CustomRouteLayout = ({ title = 'Posts' }) => {
                 Found <span className="total">{total}</span> posts !
             </p>
             <Datagrid
-                basePath="/posts"
-                currentSort={currentSort}
+                sort={sort}
                 data={data}
                 isLoading={isLoading}
                 total={total}

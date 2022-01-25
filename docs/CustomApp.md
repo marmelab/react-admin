@@ -134,8 +134,8 @@ Here is the main code for bootstrapping a barebone react-admin application witho
 
 ```diff
 // in src/App.js
-import * as React from "react";
-+import PropTypes from "prop-types";
+import * as React from 'react';
++import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 import { createHashHistory } from 'history';
 +import { ConnectedRouter } from 'connected-react-router';
@@ -147,10 +147,10 @@ import restProvider from 'ra-data-simple-rest';
 import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 +import { ThemeProvider } from '@material-ui/styles';
-+import { createMuiTheme } from "@material-ui/core/styles";
-+import AppBar from '@material-ui/core/AppBar';
-+import Toolbar from '@material-ui/core/Toolbar';
-+import Typography from '@material-ui/core/Typography';
++import { createTheme } from '@mui/material/styles';
++import AppBar from '@mui/material/AppBar';
++import Toolbar from '@mui/material/Toolbar';
++import Typography from '@mui/material/Typography';
 
 import createAdminStore from './createAdminStore';
 import messages from './i18n';
@@ -171,7 +171,7 @@ const i18nProvider = polyglotI18nProvider(locale => {
     return defaultMessages;
 });
 const history = createHashHistory();
-const theme = createMuiTheme();
+const theme = createTheme();
 
 const App = () => (
     <Provider
@@ -209,16 +209,16 @@ const App = () => (
 +               <ConnectedRouter history={history}>
 +                   <Switch>
 +                       <Route exact path="/" component={Dashboard} />
-+                       <Route exact path="/posts" render={(routeProps) => <PostList hasCreate resource="posts" basePath={routeProps.match.url} {...routeProps} />} />
-+                       <Route exact path="/posts/create" render={(routeProps) => <PostCreate resource="posts" basePath={routeProps.match.url} {...routeProps} />} />
-+                       <Route exact path="/posts/:id" render={(routeProps) => <PostEdit hasShow resource="posts" basePath={routeProps.match.url} id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
-+                       <Route exact path="/posts/:id/show" render={(routeProps) => <PostShow hasEdit resource="posts" basePath={routeProps.match.url} id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
-+                       <Route exact path="/comments" render={(routeProps) => <CommentList hasCreate resource="comments" basePath={routeProps.match.url} {...routeProps} />} />
-+                       <Route exact path="/comments/create" render={(routeProps) => <CommentCreate resource="comments" basePath={routeProps.match.url} {...routeProps} />} />
-+                       <Route exact path="/comments/:id" render={(routeProps) => <CommentEdit resource="comments" basePath={routeProps.match.url} id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
-+                       <Route exact path="/users" render={(routeProps) => <UsersList hasCreate resource="users" basePath={routeProps.match.url} {...routeProps} />} />
-+                       <Route exact path="/users/create" render={(routeProps) => <UsersCreate resource="users" basePath={routeProps.match.url} {...routeProps} />} />
-+                       <Route exact path="/users/:id" render={(routeProps) => <UsersEdit resource="users" basePath={routeProps.match.url} id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
++                       <Route exact path="/posts" render={(routeProps) => <PostList hasCreate resource="posts" {...routeProps} />} />
++                       <Route exact path="/posts/create" render={(routeProps) => <PostCreate resource="posts" {...routeProps} />} />
++                       <Route exact path="/posts/:id" render={(routeProps) => <PostEdit hasShow resource="posts" id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
++                       <Route exact path="/posts/:id/show" render={(routeProps) => <PostShow hasEdit resource="posts" id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
++                       <Route exact path="/comments" render={(routeProps) => <CommentList hasCreate resource="comments" {...routeProps} />} />
++                       <Route exact path="/comments/create" render={(routeProps) => <CommentCreate resource="comments" {...routeProps} />} />
++                       <Route exact path="/comments/:id" render={(routeProps) => <CommentEdit resource="comments" id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
++                       <Route exact path="/users" render={(routeProps) => <UsersList hasCreate resource="users" {...routeProps} />} />
++                       <Route exact path="/users/create" render={(routeProps) => <UsersCreate resource="users" {...routeProps} />} />
++                       <Route exact path="/users/:id" render={(routeProps) => <UsersEdit resource="users" id={decodeURIComponent((routeProps.match).params.id)} {...routeProps} />} />
 +                   </Switch>
 +               </ConnectedRouter>
 +               <Notification />

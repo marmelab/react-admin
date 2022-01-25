@@ -9,8 +9,8 @@ import { ListControllerResult } from './useListController';
  * List components do in react-admin (e.g. <SortButton>).
  *
  * @typedef {Object} ListSortContextValue
- * @prop {Object}   currentSort a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
- * @prop {Function} setSort a callback to change the sort, e.g. setSort('name', 'ASC')
+ * @prop {Object}   sort a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
+ * @prop {Function} setSort a callback to change the sort, e.g. setSort({ field: 'name', order: 'ASC' })
  * @prop {string}   resource the resource name, deduced from the location. e.g. 'posts'
  *
  * @typedef Props
@@ -35,23 +35,23 @@ import { ListControllerResult } from './useListController';
  * };
  */
 export const ListSortContext = createContext<ListSortContextValue>({
-    currentSort: null,
+    sort: null,
     setSort: null,
     resource: null,
 });
 
 export type ListSortContextValue = Pick<
     ListControllerResult,
-    'currentSort' | 'setSort' | 'resource'
+    'sort' | 'setSort' | 'resource'
 >;
 
 export const usePickSortContext = (
     context: ListControllerResult
 ): ListSortContextValue =>
     useMemo(
-        () => pick(context, ['currentSort', 'setSort', 'resource']),
+        () => pick(context, ['sort', 'setSort', 'resource']),
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [context.currentSort, context.setSort]
+        [context.sort, context.setSort]
     );
 
 ListSortContext.displayName = 'ListSortContext';

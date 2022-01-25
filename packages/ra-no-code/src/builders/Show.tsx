@@ -1,6 +1,9 @@
 import React from 'react';
-import { useResourceContext } from 'ra-core';
-import { Show as RaShow, SimpleShowLayout } from 'ra-ui-materialui';
+import {
+    Show as RaShow,
+    SimpleShowLayout,
+    useResourceContext,
+} from 'react-admin';
 import {
     useResourceConfiguration,
     useResourcesConfiguration,

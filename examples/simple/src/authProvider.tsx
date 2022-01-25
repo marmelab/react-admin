@@ -60,10 +60,10 @@ export default {
         return Promise.resolve(role);
     },
     getIdentity: () => {
-        return {
+        return Promise.resolve({
             id: localStorage.getItem('login'),
             fullName: localStorage.getItem('user'),
             avatar: localStorage.getItem('avatar'),
-        };
+        });
     },
 };

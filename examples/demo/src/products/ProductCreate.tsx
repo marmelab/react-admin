@@ -12,7 +12,7 @@ import {
     CreateProps,
 } from 'react-admin';
 import { InputAdornment } from '@mui/material';
-import RichTextInput from 'ra-input-rich-text';
+import { RichTextInput } from 'ra-input-rich-text';
 
 const PREFIX = 'ProductCreate';
 
@@ -40,7 +40,7 @@ const StyledCreate = styled(Create)({
 const ProductCreate = (props: CreateProps) => {
     return (
         <StyledCreate {...props}>
-            <TabbedForm>
+            <TabbedForm initialValues={{ sales: 0 }}>
                 <FormTab label="resources.products.tabs.image">
                     <TextInput
                         autoFocus

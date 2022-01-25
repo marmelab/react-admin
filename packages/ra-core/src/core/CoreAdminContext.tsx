@@ -2,16 +2,19 @@ import * as React from 'react';
 import { ComponentType, useContext, useMemo, useState } from 'react';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { Provider, ReactReduxContext } from 'react-redux';
-import { createHashHistory, History } from 'history';
-import { HistoryRouter } from './HistoryRouter';
+import { History } from 'history';
 
+import { AdminRouter } from '../routing';
 import { AuthContext, convertLegacyAuthProvider } from '../auth';
 import {
     DataProviderContext,
     convertLegacyDataProvider,
+    defaultDataProvider,
 } from '../dataProvider';
 import createAdminStore from './createAdminStore';
 import TranslationProvider from '../i18n/TranslationProvider';
+import { ResourceDefinitionContextProvider } from './ResourceDefinitionContext';
+import { NotificationContextProvider } from '../notification';
 import {
     AuthProvider,
     LegacyAuthProvider,
@@ -31,8 +34,11 @@ export interface AdminContextProps {
     children?: AdminChildren;
     customReducers?: object;
     dashboard?: DashboardComponent;
-    dataProvider: DataProvider | LegacyDataProvider;
+    dataProvider?: DataProvider | LegacyDataProvider;
     queryClient?: QueryClient;
+    /**
+     * @deprecated Wrap your Admin inside a Router to change the routing strategy
+     */
     history?: History;
     i18nProvider?: I18nProvider;
     initialState?: InitialState;
@@ -78,28 +84,23 @@ React-admin requires a valid dataProvider function to work.`);
         [dataProvider]
     );
 
-    const finalHistory = useMemo(() => history || createHashHistory(), [
-        history,
-    ]);
-
-    const renderCore = () => {
-        return (
-            <AuthContext.Provider value={finalAuthProvider}>
-                <DataProviderContext.Provider value={finalDataProvider}>
-                    <QueryClientProvider client={finalQueryClient}>
+    const renderCore = () => (
+        <AuthContext.Provider value={finalAuthProvider}>
+            <DataProviderContext.Provider value={finalDataProvider}>
+                <QueryClientProvider client={finalQueryClient}>
+                    <NotificationContextProvider>
                         <TranslationProvider i18nProvider={i18nProvider}>
-                            <HistoryRouter
-                                history={finalHistory}
-                                basename={basename}
-                            >
-                                {children}
-                            </HistoryRouter>
+                            <AdminRouter history={history} basename={basename}>
+                                <ResourceDefinitionContextProvider>
+                                    {children}
+                                </ResourceDefinitionContextProvider>
+                            </AdminRouter>
                         </TranslationProvider>
-                    </QueryClientProvider>
-                </DataProviderContext.Provider>
-            </AuthContext.Provider>
-        );
-    };
+                    </NotificationContextProvider>
+                </QueryClientProvider>
+            </DataProviderContext.Provider>
+        </AuthContext.Provider>
+    );
 
     const [store] = useState(() =>
         needsNewRedux
@@ -115,6 +116,10 @@ React-admin requires a valid dataProvider function to work.`);
     } else {
         return renderCore();
     }
+};
+
+CoreAdminContext.defaultProps = {
+    dataProvider: defaultDataProvider,
 };
 
 export default CoreAdminContext;
