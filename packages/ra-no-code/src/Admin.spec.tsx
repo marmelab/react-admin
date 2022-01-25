@@ -122,5 +122,5 @@ describe('Admin', () => {
             getByText('Orders', { selector: '#react-admin-title *' });
             getByText('1-10 of 12');
         });
-    });
+    }, 10000);
 });
