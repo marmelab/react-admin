@@ -5,7 +5,25 @@ import {
 import { useTranslate } from '../i18n';
 
 /**
- * This hook returns a function that can translate an error message. It handles simple string errors and those which have a message and args.
+ * This internal hook returns a function that can translate an error message.
+ * It handles simple string errors and those which have a message and args.
+ * Only useful if you are implementing custom inputs without leveraging our useInput hook.
+ *
+ * @example
+ * const MyInput = props => {
+ *      const { field, fieldState } = useController(props);
+ *      useEffect(() => {
+ *          if (fieldState.error) {
+ *              const errorMessage = useGetValidationErrorMessage(fieldState.error);
+ *              alert(errorMessage);
+ *          }
+ *      }, [fieldState.error]);
+ *
+ *      return (
+ *          <input {...field} />
+ *      );
+ * }
+ *
  * @see ValidationErrorMessage
  * @see ValidationErrorMessageWithArgs
  */

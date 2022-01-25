@@ -1,26 +1,25 @@
 import * as React from 'react';
-import { BaseSyntheticEvent, useCallback, useEffect, useMemo } from 'react';
+import { BaseSyntheticEvent, useCallback, useMemo } from 'react';
 import {
     FormProvider,
+    FieldValues,
     useForm,
     UseFormProps,
-    FieldValues,
 } from 'react-hook-form';
 
-import { useNotify } from '../notification';
 import { RaRecord } from '../types';
 import { useSaveContext } from '../controller';
 import { useRecordContext, OptionalRecordContextProvider } from '../controller';
 import getFormInitialValues from './getFormInitialValues';
-import { FormGroupsProvider } from './FormGroupsProvider';
-import { useInitializeFormWithRecord } from './useInitializeFormWithRecord';
-import { useIsFormInvalid } from './useIsFormInvalid';
-import { useWarnWhenUnsavedChanges } from './useWarnWhenUnsavedChanges';
+import {
+    getSimpleValidationResolver,
+    ValidateForm,
+} from './getSimpleValidationResolver';
 import { setSubmissionErrors } from './setSubmissionErrors';
+import { FormContent } from './FormContent';
 
 /**
- * Wrapper around react-hook-form's useForm to handle redirection on submit,
- * legacy defaultValue prop, and array inputs.
+ * Wrapper around react-hook-form's useForm. It sets up a [FormContext]{@link https://react-hook-form.com/api/useformcontext} and a FormGroupContext. It also handle submission validation.
  *
  * Requires a render function.
  *
@@ -41,7 +40,7 @@ import { setSubmissionErrors } from './setSubmissionErrors';
  * @prop {string} redirect
  * @prop {boolean} sanitizeEmptyValues
  *
- * @param {Props} props
+ * @see FormGroupContext
  */
 export const Form = (props: FormProps) => {
     const {
@@ -106,7 +105,7 @@ export const Form = (props: FormProps) => {
     return (
         <OptionalRecordContextProvider value={record}>
             <FormProvider {...form}>
-                <FormView
+                <FormContent
                     {...rest}
                     defaultValues={defaultValues}
                     handleSubmit={form.handleSubmit(handleSubmit)}
@@ -119,19 +118,15 @@ export const Form = (props: FormProps) => {
         </OptionalRecordContextProvider>
     );
 };
-export type ValidateForm = (
-    data: FieldValues
-) => FieldValues | Promise<FieldValues>;
 
 export type FormProps = FormOwnProps &
     Omit<UseFormProps, 'onSubmit'> & {
         validate?: ValidateForm;
     };
 
-export type FormRenderProps = Omit<
-    FormViewProps,
-    'children' | 'isValid' | 'render' | 'onSubmit' | 'sanitizeEmptyValues'
->;
+export type FormRenderProps = {
+    handleSubmit: (e?: BaseSyntheticEvent) => void;
+};
 
 export type FormRender = (
     props: FormRenderProps
@@ -147,68 +142,3 @@ export interface FormOwnProps {
     saving?: boolean;
     warnWhenUnsavedChanges?: boolean;
 }
-
-interface FormViewProps
-    extends Omit<FormOwnProps, 'onSubmit' | 'sanitizeEmptyValues'> {
-    handleSubmit: (e?: BaseSyntheticEvent) => void;
-    warnWhenUnsavedChanges?: boolean;
-}
-
-const FormView = (props: FormViewProps) => {
-    const {
-        defaultValues,
-        formRootPathname,
-        handleSubmit: formHandleSubmit,
-        record,
-        render,
-        warnWhenUnsavedChanges,
-        ...rest
-    } = props;
-    const isInvalid = useIsFormInvalid();
-    const notify = useNotify();
-
-    useEffect(() => {
-        if (isInvalid) {
-            notify('ra.message.invalid_form', { type: 'warning' });
-        }
-    }, [isInvalid, notify]);
-    useInitializeFormWithRecord(defaultValues, record);
-    useWarnWhenUnsavedChanges(warnWhenUnsavedChanges, formRootPathname);
-
-    const handleSubmit = (event: BaseSyntheticEvent) => {
-        // Prevent outer forms to receive the event
-        event.stopPropagation();
-        formHandleSubmit(event);
-        return;
-    };
-
-    return (
-        <FormGroupsProvider>
-            {render({ ...rest, handleSubmit })}
-        </FormGroupsProvider>
-    );
-};
-
-const getSimpleValidationResolver = (validate: ValidateForm) => async (
-    data: FieldValues
-) => {
-    const errors = await validate(data);
-
-    if (!errors || Object.getOwnPropertyNames(errors).length === 0) {
-        return { values: data, errors: {} };
-    }
-
-    return {
-        values: {},
-        errors: Object.keys(errors).reduce(
-            (acc, field) => ({
-                ...acc,
-                [field]: {
-                    type: 'manual',
-                    message: errors[field],
-                },
-            }),
-            {} as FieldValues
-        ),
-    };
-};

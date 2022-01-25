@@ -1,5 +1,6 @@
 /* eslint react/jsx-key: off */
 import * as React from 'react';
+import { useFormContext } from 'react-hook-form';
 import {
     Create,
     FormTab,
@@ -11,14 +12,13 @@ import {
     required,
     useNotify,
     usePermissions,
-    useRedirect,
 } from 'react-admin';
 
 import Aside from './Aside';
 
 const UserEditToolbar = ({ permissions, ...props }) => {
     const notify = useNotify();
-    const redirect = useRedirect();
+    const { reset } = useFormContext();
 
     return (
         <Toolbar {...props}>
@@ -37,7 +37,7 @@ const UserEditToolbar = ({ permissions, ...props }) => {
                                     smart_count: 1,
                                 },
                             });
-                            redirect(false);
+                            reset();
                         },
                     }}
                     submitOnEnter={false}

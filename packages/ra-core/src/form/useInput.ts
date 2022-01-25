@@ -107,9 +107,13 @@ export const useInput = (props: InputProps): UseInputValue => {
         ...options,
     });
 
+    // Because our forms may received an asynchronously loaded record for instance,
+    // they may reset their default values which would override the input default value.
+    // This hook ensures that the input default value is applied when a new record is loaded but has
+    // no value for the input.
     useApplyInputDefaultValues(props);
 
-    // If there is an field prop, this input has already been enhanced by react-hook-form
+    // If there is a field prop, this input has already been enhanced by react-hook-form
     // This is required in for inputs used inside other inputs (such as the SelectInput inside a ReferenceInput)
     if (options.field) {
         return {

@@ -2016,9 +2016,33 @@ const MyCustomForm = () => {
 }
 ```
 
-### `useInput` Signature Changed
+### `<Toolbar>` Props Have Changed
 
-`useInput` used to accept both a `initialValue` and a `defaultValue` prop. It now only accepts `defaultValue`:
+The `<Toolbar>` component used to receive the form state props (`dirty`, `invalid`, `pristine` and `valid`). They don't exist in `react-hook-form` and you can get the form state with its `useFormState` hook:
+
+```diff
+import Toolbar from '@mui/material/Toolbar';
+import { SaveButton } from 'react-admin';
+
+const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
+-    const { invalid, resource, saving } = props;
++    const { resource, saving } = props;
+
+    return (
+        <Toolbar>
+            <SaveButton
+-                invalid={invalid}
+                saving={saving}
+                submitOnEnter={true}
+            />
+        </Toolbar>
+    );
+};
+```
+
+### `initalValue` and `defaultValue` Have Been Merged Into `defaultValue`
+
+All React Admin inputs used to accept both a `initialValue` and a `defaultValue` prop and they had different meanings in `react-final-form`. With `react-hook-form` there's only `defaultValue`:
 
 ```diff
 const PostCreate = () => (
@@ -2031,7 +2055,13 @@ const PostCreate = () => (
 )
 ```
 
-`useInput` used to return `final-form` properties such as `input ` and `meta`. It now returns `field`, `fieldState` and `formState` (see https://react-hook-form.com/api/usecontroller).
+### `useInput` Signature And Return Value Have Changed
+
+Just like all inputs, `useInput` now only accept `defaultValue` and will ignore `initialValue`.
+
+Besides, `useInput` used to return `final-form` properties such as `input ` and `meta`. It now returns `field`, `fieldState` and `formState` (see https://react-hook-form.com/api/usecontroller).
+
+Note that the `error` returned by `fieldState` is a not just a simple string anymore but an object with a `message` property.
 
 ```diff
 import TextField from '@material-ui/core/TextField';
@@ -2039,7 +2069,7 @@ import { useInput, required } from 'react-admin';
 
 const MyInput = ({ helperText, ...props }) => {
     const {
--        input: { name, onChange, ...rest },
+-        input,
 +        field,
 -        meta: { touched, error },
 +        fieldState: { isTouched, invalid, error },
@@ -2049,20 +2079,121 @@ const MyInput = ({ helperText, ...props }) => {
 
     return (
         <TextField
-            {...field}
+-            {...input}
++            {...field}
             label={props.label}
-            error={(isTouched || isSubmitted) && invalid}
-            helperText={(isTouched || isSubmitted) && invalid ? error : helperText}
+-            error={touched && !!error}
++            error={(isTouched || isSubmitted) && invalid}
+-            helperText={touched && !!error ? error : helperText}
++            helperText={(isTouched || isSubmitted) && invalid ? error?.message : helperText}
             required={isRequired}
             {...rest}
         />
     );
 };
+
+const UserForm = () => (
+    <SimpleForm>
+-        <MyInput initialValue="John" />
++        <MyInput defaultValue="John" />
+    </SimpleForm>
+)
+```
+
+### Common Patterns To Access Form State And Values Have Changed
+
+If you used to rely on `react-final-form` hooks and components such as `useForm`, `useFormState` or `<FormSpy>`, you must replace them with their `react-hook-form` equivalent.
+
+For instance, if you used `useFormState` in a component to show something depending on another form value, use `useWatch` instead:
+
+```diff
+-import { useFormState } from 'react-final-form';
++import { useWatch } from 'react-hook-form';
+
+const CityInput = props => {
+-    const { values } = useFormState();
++    const country = useWatch({ name: 'country' });
+    return (
+        <SelectInput
+-            choices={values.country ? toChoices(cities[values.country]) : []}
++            choices={country ? toChoices(cities[country]) : []}
+            {...props}
+        />
+    );
+};
+```
+
+If you used `<FormSpy>`:
+
+```diff
+-import { FormSpy } from 'react-final-form';
++import { useWatch } from 'react-hook-form';
+
+const CityInput = props => {
++    const country = useWatch({ name: 'country' });
+    return (
+-        <FormSpy subscription={{ values: true }}>
+-            {({ values }) => (
+-                <SelectInput
+-                    choices={values.country ? toChoices(cities[values.country]) : []}
+-                    {...props}
+-                />
+-            )}
+-        </FormSpy>
++        <SelectInput
++             choices={country ? toChoices(cities[country]) : []}
++             {...props}
++        />
+    );
+};
+```
+
+If you had a component setting a form value imperatively via `useForm`, you should use `useFormContext`:
+
+```diff
+-import { useForm } from 'react-final-form';
++import { useFormContext } from 'react-hook-form';
+
+const ClearCountry = () => {
+-    const { change } = useForm();
++    const { setValue } = useFormContext();
+
+    const handleClick = () => {
+-        change('country', '');
++        setValue('country', '');
+    };
+
+    return <button onClick={handleClick}>Clear country</button>
+}
+```
+
+If you called `useForm` to access the form API, you should now call `useFormContext`:
+
+```diff
+-import { useForm } from 'react-final-form';
++import { useFormContext } from 'react-hook-form';
+
+const ResetFormButton = () => {
+-    const { reset } = useForm();
++    const { reset } = useFormContext();
+    return <Button onClick={() => reset()}>Reset</Button>
+}
 ```
 
 ## `allowEmpty` Has Been Removed From `SelectInput`, `AutocompleteInput` and `AutocompleteArrayInput`
 
-This is necessary for the underlying MaterialUI inputs as they require that the current input value is actually one of the available option. Those components now always accept an empty value (an empty string by default). If you require the input to have a non-empty value, use the `required` validation. You can safely remove this prop.
+The `SelectInput`, `AutocompleteInput` and `AutocompleteArrayInput` components used to accept an `allowEmpty` prop. When set to `true`, a choice was added for setting the input value to an empty value (empty string by default).
+
+However, the underlying MaterialUI components now require that the current input value has a matching choice. Those components now always accept an empty value (an empty string by default). If you require the input to have a non-empty value, use the `required` validation. You can safely remove this prop.
+
+```diff
+const choices = [{ id: 1, name: 'value' }, { id: 2, name: 'value 2' }]
+
+const MySelect = () => (
+-    <SelectInput choices={choices} allowEmpty />
++    <SelectInput choices={choices} />
+);
+```
 
 # Upgrade to 3.0
 

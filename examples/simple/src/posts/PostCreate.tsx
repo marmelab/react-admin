@@ -130,9 +130,9 @@ const PostCreate = () => {
                 <TextInput autoFocus source="title" />
                 <TextInput source="teaser" fullWidth={true} multiline={true} />
                 <RichTextInput source="body" validate={required()} />
-                <DependantField dependency="title">
+                <DependantInput dependency="title">
                     <NumberInput source="average_note" />
-                </DependantField>
+                </DependantInput>
 
                 <DateInput
                     source="published_at"
@@ -199,7 +199,7 @@ const PostCreate = () => {
 
 export default PostCreate;
 
-const DependantField = ({
+const DependantInput = ({
     dependency,
     children,
 }: {
