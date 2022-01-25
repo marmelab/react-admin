@@ -74,12 +74,9 @@ const useInput = ({
     // This ensure dynamically added inputs have their value set correctly (ArrayInput for example).
     // We don't do this for the form level initialValues so that it works as it should in final-form
     // (ie. field level initialValue override form level initialValues for this field).
-    let inputInitialValue = get(record, source);
-    if (inputInitialValue === null || inputInitialValue === undefined) {
-        inputInitialValue = initialValue;
-    }
+    const inputInitialValue = get(record, source, initialValue);
     const { input, meta } = useFinalFormField(finalName, {
-        initialValue: inputInitialValue,
+        initialValue: inputInitialValue ?? initialValue,
         defaultValue,
         validate: sanitizedValidate,
         ...options,
