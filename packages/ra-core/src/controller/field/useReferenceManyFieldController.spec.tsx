@@ -146,6 +146,49 @@ describe('useReferenceManyFieldController', () => {
                         { id: 1, title: 'hello' },
                         { id: 2, title: 'world' },
                     ],
+                    total: 2,
+                    hasPreviousPage: false,
+                    hasNextPage: false,
+                })
+            );
+        });
+    });
+
+    it('should handle partial pagination', async () => {
+        const children = jest.fn().mockReturnValue('children');
+        const dataProvider = testDataProvider({
+            getManyReference: () =>
+                Promise.resolve({
+                    data: [
+                        { id: 1, title: 'hello' },
+                        { id: 2, title: 'world' },
+                    ],
+                    pageInfo: {
+                        hasPreviousPage: false,
+                        hasNextPage: false,
+                    },
+                }) as any,
+        });
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ReferenceManyFieldController
+                    resource="authors"
+                    source="id"
+                    record={{ id: 123, name: 'James Joyce' }}
+                    reference="books"
+                    target="author_id"
+                >
+                    {children}
+                </ReferenceManyFieldController>
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(children).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    total: undefined,
+                    hasPreviousPage: false,
+                    hasNextPage: false,
                 })
             );
         });
