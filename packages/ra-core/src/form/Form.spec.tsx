@@ -15,6 +15,7 @@ describe('Form', () => {
         return (
             <>
                 <input
+                    aria-label="name"
                     type="text"
                     aria-invalid={fieldState.invalid}
                     {...field}
@@ -188,6 +189,361 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
         await waitFor(() => {
             screen.getByText('This name is already taken');
+        });
+    });
+
+    it('should set null or undefined values to null', async () => {
+        const onSubmit = jest.fn();
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <Form
+                    defaultValues={{ foo: 23 }}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <Input
+                                source="foo"
+                                parse={() => null}
+                                format={() => '23'}
+                            />
+                            <button type="submit">Submit</button>
+                        </form>
+                    )}
+                />
+            </CoreAdminContext>
+        );
+
+        fireEvent.change(screen.getByLabelText('name'), {
+            target: { value: '' },
+        });
+        fireEvent.click(screen.getByText('Submit'));
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith({ foo: null });
+        });
+    });
+
+    it('should set null or undefined deep values to null', async () => {
+        const onSubmit = jest.fn();
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <Form
+                    defaultValues={{ foo: { bar: 23 } }}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <Input
+                                source="foo.bar"
+                                parse={() => null}
+                                format={() => '23'}
+                            />
+                            <button type="submit">Submit</button>
+                        </form>
+                    )}
+                />
+            </CoreAdminContext>
+        );
+
+        fireEvent.change(screen.getByLabelText('name'), {
+            target: { value: '' },
+        });
+        fireEvent.click(screen.getByText('Submit'));
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith({ foo: { bar: null } });
+        });
+    });
+
+    it('should accept string values', async () => {
+        const str = 'hello';
+        const onSubmit = jest.fn();
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <Form
+                    defaultValues={{ foo: null }}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <Input
+                                source="foo"
+                                parse={() => str}
+                                format={() => str}
+                            />
+                            <button type="submit">Submit</button>
+                        </form>
+                    )}
+                />
+            </CoreAdminContext>
+        );
+
+        fireEvent.change(screen.getByLabelText('name'), {
+            target: { value: '' },
+        });
+        fireEvent.click(screen.getByText('Submit'));
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith({ foo: str });
+        });
+    });
+    it('should accept date values', async () => {
+        const date = new Date();
+
+        const onSubmit = jest.fn();
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <Form
+                    defaultValues={{ foo: null }}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <Input
+                                source="foo"
+                                parse={() => date}
+                                format={() => 'date'}
+                            />
+                            <button type="submit">Submit</button>
+                        </form>
+                    )}
+                />
+            </CoreAdminContext>
+        );
+
+        fireEvent.change(screen.getByLabelText('name'), {
+            target: { value: '' },
+        });
+        fireEvent.click(screen.getByText('Submit'));
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith({ foo: date });
+        });
+    });
+
+    it('should accept array values', async () => {
+        const arr = [1, 2, 3];
+
+        const onSubmit = jest.fn();
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <Form
+                    defaultValues={{ foo: null }}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <Input
+                                source="foo"
+                                parse={() => arr}
+                                format={() => 'arr'}
+                            />
+                            <button type="submit">Submit</button>
+                        </form>
+                    )}
+                />
+            </CoreAdminContext>
+        );
+
+        fireEvent.change(screen.getByLabelText('name'), {
+            target: { value: '' },
+        });
+        fireEvent.click(screen.getByText('Submit'));
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith({ foo: arr });
+        });
+    });
+
+    it('should accept object values', async () => {
+        const obj = { foo: 1 };
+
+        const onSubmit = jest.fn();
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <Form
+                    defaultValues={{ foo: null }}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <Input
+                                source="foo"
+                                parse={() => obj}
+                                format={() => 'obj'}
+                            />
+                            <button type="submit">Submit</button>
+                        </form>
+                    )}
+                />
+            </CoreAdminContext>
+        );
+
+        fireEvent.change(screen.getByLabelText('name'), {
+            target: { value: '' },
+        });
+        fireEvent.click(screen.getByText('Submit'));
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith({ foo: obj });
+        });
+    });
+    it('should accept deep object values', async () => {
+        const obj = { foo: { bar: 1 } };
+
+        const onSubmit = jest.fn();
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <Form
+                    defaultValues={{ foo: { bar: null } }}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <Input
+                                source="foo"
+                                parse={() => obj}
+                                format={() => 'obj'}
+                            />
+                            <button type="submit">Submit</button>
+                        </form>
+                    )}
+                />
+            </CoreAdminContext>
+        );
+
+        fireEvent.change(screen.getByLabelText('name'), {
+            target: { value: '' },
+        });
+        fireEvent.click(screen.getByText('Submit'));
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith({ foo: obj });
+        });
+    });
+    it('should accept object values in arrays', async () => {
+        const obj = [{ foo: 1 }, { foo: 2 }];
+
+        const onSubmit = jest.fn();
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <Form
+                    defaultValues={{ foo: [{ foo: 1 }, {}] }}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <Input
+                                source="foo"
+                                parse={() => obj}
+                                format={() => 'obj'}
+                            />
+                            <button type="submit">Submit</button>
+                        </form>
+                    )}
+                />
+            </CoreAdminContext>
+        );
+
+        fireEvent.change(screen.getByLabelText('name'), {
+            target: { value: '' },
+        });
+        fireEvent.click(screen.getByText('Submit'));
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith({ foo: obj });
+        });
+    });
+    it('should accept adding objects in arrays', async () => {
+        const obj = [{ foo: 1, foo2: 2 }, { foo: 3 }, { foo: 4 }];
+
+        const onSubmit = jest.fn();
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <Form
+                    defaultValues={{ foo: [{ foo: 1 }, { foo: 4 }] }}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <Input
+                                source="foo"
+                                parse={() => obj}
+                                format={() => 'obj'}
+                            />
+                            <button type="submit">Submit</button>
+                        </form>
+                    )}
+                />
+            </CoreAdminContext>
+        );
+
+        fireEvent.change(screen.getByLabelText('name'), {
+            target: { value: '' },
+        });
+        fireEvent.click(screen.getByText('Submit'));
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith({ foo: obj });
+        });
+    });
+    it('should accept removing objects in array of objects', async () => {
+        const obj = [{ foo: 1 }, { foo: 4 }];
+
+        const onSubmit = jest.fn();
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <Form
+                    defaultValues={{
+                        foo: [{ foo: 1, foo2: 2 }, { foo: 3 }, { foo: 4 }],
+                    }}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <Input
+                                source="foo"
+                                parse={() => obj}
+                                format={() => 'obj'}
+                            />
+                            <button type="submit">Submit</button>
+                        </form>
+                    )}
+                />
+            </CoreAdminContext>
+        );
+
+        fireEvent.change(screen.getByLabelText('name'), {
+            target: { value: '' },
+        });
+        fireEvent.click(screen.getByText('Submit'));
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith({ foo: obj });
+        });
+    });
+    it("should not ignore initial value when it's not of the same type", async () => {
+        const initialValues = { foo: 'foobar' };
+        const values = { foo: { hello: 'world' } };
+
+        const onSubmit = jest.fn();
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <Form
+                    defaultValues={initialValues}
+                    onSubmit={onSubmit}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <Input
+                                source="foo"
+                                parse={() => values.foo}
+                                format={() => 'obj'}
+                            />
+                            <button type="submit">Submit</button>
+                        </form>
+                    )}
+                />
+            </CoreAdminContext>
+        );
+
+        fireEvent.change(screen.getByLabelText('name'), {
+            target: { value: '' },
+        });
+        fireEvent.click(screen.getByText('Submit'));
+
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith(values);
         });
     });
 });
