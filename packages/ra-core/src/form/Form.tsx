@@ -126,6 +126,7 @@ export type FormProps = FormOwnProps &
 
 export type FormRenderProps = {
     handleSubmit: (e?: BaseSyntheticEvent) => void;
+    saving?: boolean;
 };
 
 export type FormRender = (
