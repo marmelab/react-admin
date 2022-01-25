@@ -10,8 +10,6 @@ import { ArrayInput } from './ArrayInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
 
 describe('<ArrayInput />', () => {
-    const onSubmit = jest.fn();
-
     it('should pass its record props to its child', async () => {
         let childProps;
         const MockChild = props => {
@@ -134,17 +132,13 @@ describe('<ArrayInput />', () => {
         ).toEqual(['bar', 'baz']);
     });
 
-    // TODO: restore when validation is implemented at the ArrayInput level
-    it.skip('should apply validation to both itself and its inner inputs', async () => {
+    it('should apply validation to both itself and its inner inputs', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm
                     onSubmit={jest.fn}
                     defaultValues={{
-                        arr: [
-                            { id: 123, foo: 'bar' },
-                            { id: 456, foo: 'baz' },
-                        ],
+                        arr: [],
                     }}
                 >
                     <ArrayInput
@@ -168,7 +162,10 @@ describe('<ArrayInput />', () => {
         );
 
         fireEvent.click(screen.getByText('ra.action.add'));
-        expect(screen.queryByText('array_min_length')).not.toBeNull();
+        fireEvent.click(screen.getByText('ra.action.save'));
+        await waitFor(() => {
+            expect(screen.queryByText('array_min_length')).not.toBeNull();
+        });
         fireEvent.click(screen.getByText('ra.action.add'));
         const firstId = screen.getAllByLabelText(
             'resources.bar.fields.id *'

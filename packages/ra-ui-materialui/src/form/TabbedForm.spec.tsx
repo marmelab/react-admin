@@ -31,8 +31,7 @@ describe('<TabbedForm />', () => {
         expect(tabs.length).toEqual(2);
     });
 
-    // We should introduce a context for form config (submitOnEnter, variant, margin)
-    it.skip('should pass submitOnEnter to <Toolbar />', () => {
+    it('should pass submitOnEnter to <Toolbar />', () => {
         const Toolbar = ({ submitOnEnter }: any) => (
             <p>submitOnEnter: {submitOnEnter.toString()}</p>
         );

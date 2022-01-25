@@ -37,8 +37,7 @@ describe('<SimpleForm />', () => {
         expect(screen.queryByLabelText('ra.action.save')).not.toBeNull();
     });
 
-    // We should introduce a context for form config (submitOnEnter, variant, margin)
-    it.skip('should pass submitOnEnter to <Toolbar />', () => {
+    it('should pass submitOnEnter to <Toolbar />', () => {
         const Toolbar = ({ submitOnEnter }: any): any => (
             <p>submitOnEnter: {submitOnEnter.toString()}</p>
         );
