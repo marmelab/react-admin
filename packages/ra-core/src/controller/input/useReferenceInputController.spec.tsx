@@ -165,6 +165,8 @@ describe('useReferenceInputController', () => {
                         isLoading: false,
                         page: 1,
                         perPage: 25,
+                        hasPreviousPage: false,
+                        hasNextPage: false,
                         hideFilter: expect.any(Function),
                         onSelect: expect.any(Function),
                         onToggleItem: expect.any(Function),
