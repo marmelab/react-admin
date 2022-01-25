@@ -104,39 +104,46 @@ const exporter = (records, fetchRelatedRecords) =>
     });
 
 const CommentPagination = () => {
-    const { isLoading, data, page, perPage, total, setPage } = useListContext();
+    const {
+        isLoading,
+        data,
+        page,
+        hasNextPage,
+        hasPreviousPage,
+        setPage,
+    } = useListContext();
     const translate = useTranslate();
-    const nbPages = Math.ceil(total / perPage) || 1;
-    if (!isLoading && (total === 0 || (data && !data.length))) {
+
+    if (!isLoading && data && data.length === 0) {
         return <PaginationLimit />;
     }
-
+    if (!hasPreviousPage && !hasNextPage) {
+        return null;
+    }
     return (
-        nbPages > 1 && (
-            <Toolbar>
-                {page > 1 && (
-                    <Button
-                        color="primary"
-                        key="prev"
-                        onClick={() => setPage(page - 1)}
-                    >
-                        <ChevronLeft />
-                        &nbsp;
-                        {translate('ra.navigation.prev')}
-                    </Button>
-                )}
-                {page !== nbPages && (
-                    <Button
-                        color="primary"
-                        key="next"
-                        onClick={() => setPage(page + 1)}
-                    >
-                        {translate('ra.navigation.next')}&nbsp;
-                        <ChevronRight />
-                    </Button>
-                )}
-            </Toolbar>
-        )
+        <Toolbar>
+            {hasPreviousPage && (
+                <Button
+                    color="primary"
+                    key="prev"
+                    onClick={() => setPage(page - 1)}
+                >
+                    <ChevronLeft />
+                    &nbsp;
+                    {translate('ra.navigation.prev')}
+                </Button>
+            )}
+            {hasNextPage && (
+                <Button
+                    color="primary"
+                    key="next"
+                    onClick={() => setPage(page + 1)}
+                >
+                    {translate('ra.navigation.next')}&nbsp;
+                    <ChevronRight />
+                </Button>
+            )}
+        </Toolbar>
     );
 };
 
