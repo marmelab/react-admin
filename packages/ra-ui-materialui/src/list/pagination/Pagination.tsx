@@ -90,9 +90,13 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         [translate]
     );
 
+    if (isLoading) {
+        return <Toolbar variant="dense" />;
+    }
+
     // Avoid rendering TablePagination if "page" value is invalid
-    if (total != null && (total === 0 || page < 1 || page > totalPages)) {
-        return isLoading ? <Toolbar variant="dense" /> : limit;
+    if (total === 0 || page < 1 || (total != null && page > totalPages)) {
+        return limit;
     }
 
     if (isSmall) {
