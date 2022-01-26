@@ -16,7 +16,6 @@ import {
 } from 'ra-core';
 
 import { PaginationActions } from './PaginationActions';
-import { PartialPaginationActions } from './PartialPaginationActions';
 import { PaginationLimit } from './PaginationLimit';
 
 export const Pagination: FC<PaginationProps> = memo(props => {
@@ -86,6 +85,11 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         [translate, hasNextPage]
     );
 
+    const labelItem = useCallback(
+        type => translate(`ra.navigation.${type}`, { _: `Go to ${type} page` }),
+        [translate]
+    );
+
     // Avoid rendering TablePagination if "page" value is invalid
     if (total != null && (total === 0 || page < 1 || page > totalPages)) {
         return isLoading ? <Toolbar variant="dense" /> : limit;
@@ -106,6 +110,12 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         );
     }
 
+    const ActionsComponent = actions
+        ? actions // overridden b ycaller
+        : !isLoading && total != null
+        ? PaginationActions // regular navigation
+        : undefined; // partial navigation (uses default TablePaginationActions)
+
     return (
         <TablePagination
             count={total == null ? -1 : total}
@@ -114,15 +124,14 @@ export const Pagination: FC<PaginationProps> = memo(props => {
             onPageChange={handlePageChange}
             onRowsPerPageChange={handlePerPageChange}
             // @ts-ignore
-            ActionsComponent={
-                actions ||
-                (!isLoading && total == null
-                    ? PartialPaginationActions
-                    : PaginationActions)
-            }
+            ActionsComponent={ActionsComponent}
+            nextIconButtonProps={{
+                disabled: !hasNextPage,
+            }}
             component="span"
             labelRowsPerPage={translate('ra.navigation.page_rows_per_page')}
             labelDisplayedRows={labelDisplayedRows}
+            getItemAriaLabel={labelItem}
             rowsPerPageOptions={rowsPerPageOptions}
             {...sanitizeListRestProps(rest)}
         />
