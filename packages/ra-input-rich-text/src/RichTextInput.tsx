@@ -7,12 +7,7 @@ import Link from '@tiptap/extension-link';
 import TextAlign from '@tiptap/extension-text-align';
 import { FormHelperText } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import {
-    getFieldLabelTranslationArgs,
-    useInput,
-    useResourceContext,
-    useTranslate,
-} from 'ra-core';
+import { useInput, useResourceContext } from 'ra-core';
 import {
     CommonInputProps,
     InputHelperText,
@@ -73,6 +68,7 @@ import { RichTextInputToolbar } from './RichTextInputToolbar';
  */
 export const RichTextInput = (props: RichTextInputProps) => {
     const {
+        defaultValue = '',
         disabled = false,
         readOnly = false,
         editorOptions = DefaultEditorOptions,
@@ -84,27 +80,13 @@ export const RichTextInput = (props: RichTextInputProps) => {
     } = props;
 
     const resource = useResourceContext(props);
-    const translate = useTranslate();
     const {
         id,
         field,
         isRequired,
         fieldState,
         formState: { isSubmitted },
-    } = useInput(props);
-
-    const finalLabel =
-        typeof label === 'string'
-            ? label
-                ? translate(label, { _: label })
-                : translate(
-                      ...getFieldLabelTranslationArgs({
-                          label: label as string,
-                          resource,
-                          source,
-                      })
-                  )
-            : label;
+    } = useInput({ ...props, defaultValue });
 
     const editor = useEditor({
         ...editorOptions,
@@ -112,8 +94,6 @@ export const RichTextInput = (props: RichTextInputProps) => {
         editorProps: {
             attributes: {
                 id,
-                'aria-label':
-                    typeof finalLabel === 'string' ? finalLabel : undefined,
                 ...(disabled || readOnly
                     ? EditorAttributesNotEditable
                     : EditorAttributes),
@@ -130,15 +110,13 @@ export const RichTextInput = (props: RichTextInputProps) => {
             editorProps: {
                 attributes: {
                     id,
-                    'aria-label':
-                        typeof finalLabel === 'string' ? finalLabel : undefined,
                     ...(disabled || readOnly
                         ? EditorAttributesNotEditable
                         : EditorAttributes),
                 },
             },
         });
-    }, [disabled, editor, readOnly, finalLabel, id]);
+    }, [disabled, editor, readOnly, id]);
 
     useEffect(() => {
         if (!editor) {
@@ -181,7 +159,10 @@ export const RichTextInput = (props: RichTextInputProps) => {
                         editor={editor}
                     />
                 </TiptapEditorProvider>
-                <FormHelperText error={(isTouched || isSubmitted) && invalid}>
+                <FormHelperText
+                    className="ra-rich-text-input-error"
+                    error={(isTouched || isSubmitted) && invalid}
+                >
                     <InputHelperText
                         touched={isTouched || isSubmitted}
                         error={error?.message}

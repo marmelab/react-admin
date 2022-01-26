@@ -9,7 +9,7 @@ import {
     LinkButtons,
     QuoteButtons,
     ClearButtons,
-} from './RichTextInputDefaultButtons';
+} from './buttons';
 
 /**
  * A toolbar for the <RichTextInput>.
