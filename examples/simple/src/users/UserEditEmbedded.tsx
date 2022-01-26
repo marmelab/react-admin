@@ -6,7 +6,7 @@ import { Edit, Identifier, SimpleForm, TextInput, required } from 'react-admin';
 const UserEditEmbedded = ({ id }: { id?: Identifier }) => (
     /* Passing " " as title disables the custom title */
     <Edit title=" " id={id}>
-        <SimpleForm initialValues={{ role: 'user' }}>
+        <SimpleForm defaultValues={{ role: 'user' }}>
             <TextInput
                 source="name"
                 defaultValue="slim shady"

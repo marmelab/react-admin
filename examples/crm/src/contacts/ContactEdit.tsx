@@ -11,7 +11,6 @@ import {
     useEditContext,
 } from 'react-admin';
 import { Card, CardContent, Divider, Box } from '@mui/material';
-import omit from 'lodash/omit';
 
 import { Avatar } from './Avatar';
 import { ContactAside } from './ContactAside';
@@ -81,24 +80,7 @@ const ContactEditContent = () => {
                                     </Box>
                                 </Box>
                             </CardContent>
-                            <Toolbar
-                                {...omit(formProps, [
-                                    // FIXME Not super user friendly way to remove warnings
-                                    'dirtyFields',
-                                    'dirtyFieldsSinceLastSubmit',
-                                    'dirtySinceLastSubmit',
-                                    'hasSubmitErrors',
-                                    'hasValidationErrors',
-                                    'initialValues',
-                                    'modifiedSinceLastSubmit',
-                                    'submitError',
-                                    'submitErrors',
-                                    'submitFailed',
-                                    'submitSucceeded',
-                                    'submitting',
-                                    'valid',
-                                ])}
-                            />
+                            <Toolbar {...formProps} />
                         </Card>
                     )}
                 />
