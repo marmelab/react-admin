@@ -219,6 +219,7 @@ export const useReferenceArrayInputController = <
     const {
         data: matchingReferences,
         total,
+        pageInfo,
         error: errorGetList,
         isLoading: isLoadingGetList,
         isFetching: isFetchingGetList,
@@ -251,37 +252,44 @@ export const useReferenceArrayInputController = <
     }, [refetchGetMany, refetchGetMatching]);
 
     return {
-        choices: dataStatus.choices,
-        sort,
-        data: matchingReferences,
         displayedFilters,
+        choices: dataStatus.choices,
+        warning: dataStatus.warning,
         error:
             errorGetMany || errorGetList
                 ? translate('ra.input.references.all_missing', {
                       _: 'ra.input.references.all_missing',
                   })
                 : undefined,
-        filterValues,
-        hideFilter,
         isFetching: isFetchingGetMany || isFetchingGetList,
         isLoading: isLoadingGetMany || isLoadingGetList,
+        // possibleValues
+        data: matchingReferences,
+        total,
+        sort,
+        setSort,
+        filterValues,
+        hideFilter,
+        showFilter,
+        setFilter,
+        setFilters,
         onSelect,
         onToggleItem,
         onUnselectItems,
         page,
         perPage,
-        refetch,
-        resource,
-        selectedIds: field.value || EmptyArray,
-        setFilter,
-        setFilters,
         setPage,
         setPagination,
         setPerPage,
-        setSort,
-        showFilter,
-        warning: dataStatus.warning,
-        total,
+        hasNextPage: pageInfo
+            ? pageInfo.hasNextPage
+            : total != null
+            ? page * perPage < total
+            : undefined,
+        hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : page > 1,
+        refetch,
+        resource,
+        selectedIds: field.value || EmptyArray,
     };
 };
 

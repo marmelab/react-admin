@@ -9,6 +9,20 @@ const dataProvider = fakeRestProvider(data, true);
 const addTagsSearchSupport = (dataProvider: DataProvider) => ({
     ...dataProvider,
     getList: (resource, params) => {
+        if (resource === 'comments') {
+            // partial pagination
+            return dataProvider
+                .getList(resource, params)
+                .then(({ data, total }) => ({
+                    data,
+                    pageInfo: {
+                        hasNextPage:
+                            params.pagination.perPage * params.pagination.page <
+                            total,
+                        hasPreviousPage: params.pagination.page > 1,
+                    },
+                }));
+        }
         if (resource === 'tags') {
             const matchSearchFilter = Object.keys(params.filter).find(key =>
                 key.endsWith('_q')

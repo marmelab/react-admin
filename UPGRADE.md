@@ -1539,6 +1539,34 @@ In general, you should use `isLoading`. It's false as long as the data has never
 
 The new props are actually returned by react-query's `useQuery` hook. Check [their documentation](https://react-query.tanstack.com/reference/useQuery) for more information.
 
+## Changes In Translation Messages
+
+The `ra.navigation.prev` message was renamed to `ra.navigation.previous`. Update your translation files accordingly.
+
+```diff
+const messages = {
+    ra: {
+        navigation: {
+            no_results: 'No results found',
+            no_more_results:
+                'The page number %{page} is out of boundaries. Try the previous page.',
+            page_out_of_boundaries: 'Page number %{page} out of boundaries',
+            page_out_from_end: 'Cannot go after last page',
+            page_out_from_begin: 'Cannot go before page 1',
+            page_range_info: '%{offsetBegin}-%{offsetEnd} of %{total}',
+            partial_page_range_info:
+                '%{offsetBegin}-%{offsetEnd} of more than %{offsetEnd}',
+            current_page: 'Page %{page}',
+            page: 'Go to page %{page}',
+            next: 'Go to next page',
+-           prev: 'Go to previous page',
++           previous: 'Go to previous page',
+            page_rows_per_page: 'Rows per page:',
+            skip_nav: 'Skip to content',
+        },
+        // ...
+```
+
 ## Unit Tests for Data Provider Dependent Components Need A QueryClientContext
 
 If you were using components dependent on the dataProvider hooks in isolation (e.g. in unit or integration tests), you now need to wrap them inside a `<QueryClientContext>` component, to let the access react-query's `QueryClient` instance.

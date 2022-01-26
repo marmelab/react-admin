@@ -71,9 +71,15 @@ export const useListController = <RecordType extends RaRecord = any>(
 
     const [selectedIds, selectionModifiers] = useRecordSelection(resource);
 
-    const { data, total, error, isLoading, isFetching, refetch } = useGetList<
-        RecordType
-    >(
+    const {
+        data,
+        pageInfo,
+        total,
+        error,
+        isLoading,
+        isFetching,
+        refetch,
+    } = useGetList<RecordType>(
         resource,
         {
             pagination: {
@@ -99,14 +105,19 @@ export const useListController = <RecordType extends RaRecord = any>(
 
     // change page if there is no data
     useEffect(() => {
-        const totalPages = Math.ceil(total / query.perPage) || 1;
         if (
             query.page <= 0 ||
             (!isFetching && query.page > 1 && data.length === 0)
         ) {
             // Query for a page that doesn't exist, set page to 1
             queryModifiers.setPage(1);
-        } else if (!isFetching && query.page > totalPages) {
+            return;
+        }
+        if (total == null) {
+            return;
+        }
+        const totalPages = Math.ceil(total / query.perPage) || 1;
+        if (!isFetching && query.page > totalPages) {
             // Query for a page out of bounds, set page to the last existing page
             // It occurs when deleting the last element of the last page
             queryModifiers.setPage(totalPages);
@@ -152,6 +163,12 @@ export const useListController = <RecordType extends RaRecord = any>(
         setSort: queryModifiers.setSort,
         showFilter: queryModifiers.showFilter,
         total: total,
+        hasNextPage: pageInfo
+            ? pageInfo.hasNextPage
+            : total != null
+            ? query.page * perPage < total
+            : undefined,
+        hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : query.page > 1,
     };
 };
 
@@ -166,7 +183,14 @@ export interface ListControllerProps<RecordType extends RaRecord = any> {
     filter?: FilterPayload;
     filterDefaultValues?: object;
     perPage?: number;
-    queryOptions?: UseQueryOptions<{ data: RecordType[]; total: number }>;
+    queryOptions?: UseQueryOptions<{
+        data: RecordType[];
+        total?: number;
+        pageInfo?: {
+            hasNextPage?: boolean;
+            hasPreviousPage?: boolean;
+        };
+    }>;
     resource?: string;
     sort?: SortPayload;
 }
@@ -206,6 +230,8 @@ export interface ListControllerResult<RecordType extends RaRecord = any> {
     setSort: (sort: SortPayload) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
     total: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
 }
 
 export const injectedProps = [
