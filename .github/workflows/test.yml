@@ -79,8 +79,6 @@ jobs:
       run: make build
     - name: Build e-commerce
       run: make build-demo
-    - name: Build crm
-      run: make build-crm
 
   crm:
     runs-on: ubuntu-latest
