@@ -10,6 +10,7 @@ import {
     RaRecord,
     ReferenceField,
     useLocale,
+    useRecordContext,
 } from 'react-admin';
 import {
     Typography,
@@ -45,16 +46,15 @@ const AsideRoot = styled('div')(({ theme }) => ({
     },
 }));
 
-interface AsideProps {
-    record?: RaRecord;
-}
+const Aside = () => {
+    const record = useRecordContext();
 
-const Aside = ({ record }: AsideProps) => (
-    <AsideRoot className={classes.root}>
-        {record && <EventList record={record} />}
-    </AsideRoot>
-);
-
+    return (
+        <AsideRoot className={classes.root}>
+            {record && <EventList record={record} />}
+        </AsideRoot>
+    );
+};
 Aside.propTypes = {
     record: PropTypes.any,
 };

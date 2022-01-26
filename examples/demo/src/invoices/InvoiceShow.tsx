@@ -4,12 +4,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import {
-    useRecordContext,
-    ReferenceField,
-    TextField,
-    FieldProps,
-} from 'react-admin';
+import { ReferenceField, TextField, useRecordContext } from 'react-admin';
 
 import Basket from '../orders/Basket';
 import { Customer, Invoice } from '../types';
@@ -28,8 +23,9 @@ const StyledCard = styled(Card)({
     [`& .${classes.invoices}`]: { margin: '10px 0' },
 });
 
-const CustomerField = ({ record }: FieldProps<Customer>) =>
-    record ? (
+const CustomerField = () => {
+    const record = useRecordContext<Customer>();
+    return record ? (
         <Typography>
             {record.first_name} {record.last_name}
             <br />
@@ -38,7 +34,7 @@ const CustomerField = ({ record }: FieldProps<Customer>) =>
             {record.city}, {record.zipcode}
         </Typography>
     ) : null;
-
+};
 const InvoiceShow = () => {
     const record = useRecordContext<Invoice>();
 

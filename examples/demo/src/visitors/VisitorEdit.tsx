@@ -10,7 +10,7 @@ import {
     Form,
     required,
     email,
-    FieldProps,
+    useRecordContext,
 } from 'react-admin';
 import { Box, Card, CardContent, Typography } from '@mui/material';
 
@@ -28,8 +28,10 @@ const VisitorEdit = () => {
     );
 };
 
-const VisitorTitle = ({ record }: FieldProps<Customer>) =>
-    record ? <FullNameField record={record} size="32" /> : null;
+const VisitorTitle = () => {
+    const record = useRecordContext<Customer>();
+    return record ? <FullNameField record={record} size="32" /> : null;
+};
 
 const VisitorForm = (props: any) => {
     const translate = useTranslate();

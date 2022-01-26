@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Chip from '@mui/material/Chip';
-import { useTranslate, FieldProps } from 'react-admin';
+import { FieldProps, useTranslate, useRecordContext } from 'react-admin';
 import segments from '../segments/data';
 import { Customer } from '../types';
 
@@ -22,8 +22,9 @@ const Root = styled('span')({
     [`& .${classes.chip}`]: { margin: 4 },
 });
 
-const SegmentsField = ({ record }: FieldProps<Customer>) => {
+const SegmentsField = (props: FieldProps) => {
     const translate = useTranslate();
+    const record = useRecordContext<Customer>();
 
     return record ? (
         <Root className={classes.main}>

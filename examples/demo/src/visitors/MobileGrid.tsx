@@ -105,7 +105,7 @@ const MobileGrid = () => {
                     </CardContent>
                     {record.groups && record.groups.length > 0 && (
                         <CardContent className={classes.cardContent}>
-                            <SegmentsField record={record} />
+                            <SegmentsField />
                         </CardContent>
                     )}
                 </Card>
