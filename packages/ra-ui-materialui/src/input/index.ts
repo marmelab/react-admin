@@ -1,7 +1,7 @@
 import AutocompleteArrayInput, {
     AutocompleteArrayInputProps,
 } from './AutocompleteArrayInput';
-import BooleanInput from './BooleanInput';
+import BooleanInput, { BooleanInputProps } from './BooleanInput';
 import CheckboxGroupInput, {
     CheckboxGroupInputProps,
 } from './CheckboxGroupInput';
@@ -66,6 +66,7 @@ export {
 
 export type {
     AutocompleteArrayInputProps,
+    BooleanInputProps,
     CheckboxGroupInputProps,
     DateInputProps,
     DateTimeInputProps,
