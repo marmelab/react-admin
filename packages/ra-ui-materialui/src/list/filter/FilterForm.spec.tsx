@@ -14,10 +14,10 @@ describe('<FilterForm />', () => {
         setFilters: () => {},
         hideFilter: () => {},
         displayedFilters: {},
-        filterValues: {},
     };
 
-    it('should display correctly passed filters', () => {
+    it('should display correctly passed filters', async () => {
+        const setFilters = jest.fn();
         const filters = [
             <TextInput source="title" label="Title" />,
             <TextInput source="customer.name" label="Name" />,
@@ -31,6 +31,7 @@ describe('<FilterForm />', () => {
             <AdminContext>
                 <FilterForm
                     {...defaultProps}
+                    setFilters={setFilters}
                     filters={filters}
                     displayedFilters={displayedFilters}
                 />
@@ -68,7 +69,7 @@ describe('<FilterForm />', () => {
         });
     });
 
-    it('should not change the filter when the user updates an input with an invalid value', () => {
+    it('should not change the filter when the user updates an input with an invalid value', async () => {
         const filters = [
             <TextInput
                 source="title"
@@ -94,7 +95,9 @@ describe('<FilterForm />', () => {
         fireEvent.change(screen.queryByLabelText('Title'), {
             target: { value: 'foo' },
         });
-        expect(setFilters).not.toHaveBeenCalled();
+        await waitFor(() => {
+            expect(setFilters).not.toHaveBeenCalled();
+        });
     });
 
     describe('mergeInitialValuesWithDefaultValues', () => {
