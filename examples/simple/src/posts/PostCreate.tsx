@@ -22,13 +22,13 @@ import {
     useNotify,
     usePermissions,
     useRedirect,
-} from 'react-admin'; // eslint-disable-line import/no-unresolved
-import { useForm, FormSpy } from 'react-final-form';
+} from 'react-admin';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 const PostCreateToolbar = props => {
     const notify = useNotify();
     const redirect = useRedirect();
-    const form = useForm();
+    const { reset } = useFormContext();
 
     return (
         <Toolbar {...props}>
@@ -57,18 +57,7 @@ const PostCreateToolbar = props => {
                 variant="text"
                 mutationOptions={{
                     onSuccess: () => {
-                        // FIXME for some reason, form.reset() doesn't work here
-                        form.getRegisteredFields().forEach(field => {
-                            if (field.includes('[')) {
-                                // input inside an array input, skipping
-                                return;
-                            }
-                            form.change(
-                                field,
-                                form.getState().initialValues[field]
-                            );
-                        });
-                        form.restart();
+                        reset();
                         window.scrollTo(0, 0);
                         notify('ra.notification.created', {
                             type: 'info',
@@ -103,7 +92,7 @@ const backlinksDefaultValue = [
     },
 ];
 const PostCreate = () => {
-    const initialValues = useMemo(
+    const defaultValues = useMemo(
         () => ({
             average_note: 0,
         }),
@@ -115,7 +104,7 @@ const PostCreate = () => {
         <Create redirect="edit">
             <SimpleForm
                 toolbar={<PostCreateToolbar />}
-                initialValues={initialValues}
+                defaultValues={defaultValues}
                 validate={values => {
                     const errors = {} as any;
                     ['title', 'teaser'].forEach(field => {
@@ -141,13 +130,9 @@ const PostCreate = () => {
                 <TextInput autoFocus source="title" />
                 <TextInput source="teaser" fullWidth={true} multiline={true} />
                 <RichTextInput source="body" validate={required()} />
-                <FormSpy subscription={{ values: true }}>
-                    {({ values }) =>
-                        values.title ? (
-                            <NumberInput source="average_note" />
-                        ) : null
-                    }
-                </FormSpy>
+                <DependantInput dependency="title">
+                    <NumberInput source="average_note" />
+                </DependantInput>
 
                 <DateInput
                     source="published_at"
@@ -160,8 +145,8 @@ const PostCreate = () => {
                     validate={[required()]}
                 >
                     <SimpleFormIterator>
-                        <DateInput source="date" />
-                        <TextInput source="url" />
+                        <DateInput source="date" defaultValue="" />
+                        <TextInput source="url" defaultValue="" />
                     </SimpleFormIterator>
                 </ArrayInput>
                 {permissions === 'admin' && (
@@ -213,3 +198,15 @@ const PostCreate = () => {
 };
 
 export default PostCreate;
+
+const DependantInput = ({
+    dependency,
+    children,
+}: {
+    dependency: string;
+    children: JSX.Element;
+}) => {
+    const dependencyValue = useWatch({ name: dependency });
+
+    return dependencyValue ? children : null;
+};

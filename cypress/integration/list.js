@@ -107,6 +107,11 @@ describe('List Page', () => {
                 'Omnis voluptate enim similique est possimus'
             );
             cy.contains('1-1 of 1');
+            // As we debounce filters, this ensures the filter has been applied
+            cy.url().should(
+                'contain',
+                'Omnis%20voluptate%20enim%20similique%20est%20possimus'
+            );
             cy.get('[href="#/users"]').click();
             cy.get('[href="#/posts"]').click();
             cy.get(ListPagePosts.elements.filter('title')).should(el =>

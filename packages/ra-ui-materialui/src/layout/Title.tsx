@@ -50,6 +50,6 @@ Title.propTypes = {
 export interface TitleProps {
     className?: string;
     defaultTitle?: string;
-    record?: RaRecord;
+    record?: Partial<RaRecord>;
     title?: string | ReactElement;
 }

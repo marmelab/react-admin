@@ -69,7 +69,7 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                 className={classes.root}
                 mutationOptions={{ onSuccess }}
             >
-                <SimpleForm initialValues={{ index: 0 }}>
+                <SimpleForm defaultValues={{ index: 0 }}>
                     <TextInput
                         source="name"
                         label="Deal name"

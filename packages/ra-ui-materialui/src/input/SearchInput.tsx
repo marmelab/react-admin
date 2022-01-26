@@ -2,10 +2,10 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import { InputAdornment } from '@mui/material';
-import { TextFieldProps } from '@mui/material/TextField';
-import { useTranslate, InputProps } from 'ra-core';
+import { useTranslate } from 'ra-core';
 
-import { TextInput } from './TextInput';
+import { CommonInputProps } from './CommonInputProps';
+import { TextInput, TextInputProps } from './TextInput';
 
 export const SearchInput = (props: SearchInputProps) => {
     const translate = useTranslate();
@@ -36,8 +36,7 @@ export const SearchInput = (props: SearchInputProps) => {
     );
 };
 
-export type SearchInputProps = InputProps<TextFieldProps> &
-    Omit<TextFieldProps, 'label' | 'helperText'>;
+export type SearchInputProps = CommonInputProps & TextInputProps;
 
 const PREFIX = 'RaSearchInput';
 

@@ -156,7 +156,7 @@ export const SimpleFormIteratorItem = React.forwardRef(
 
 export type DisableRemoveFunction = (record: RaRecord) => boolean;
 
-export type SimpleFormIteratorItemProps = ArrayInputContextValue & {
+export type SimpleFormIteratorItemProps = Partial<ArrayInputContextValue> & {
     children?: ReactNode;
     disabled?: boolean;
     disableRemove?: boolean | DisableRemoveFunction;

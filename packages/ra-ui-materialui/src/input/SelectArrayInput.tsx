@@ -11,18 +11,13 @@ import {
     Chip,
 } from '@mui/material';
 import classnames from 'classnames';
-import {
-    FieldTitle,
-    useInput,
-    InputProps,
-    ChoicesProps,
-    useChoices,
-} from 'ra-core';
+import { FieldTitle, useInput, ChoicesProps, useChoices } from 'ra-core';
 import { InputHelperText } from './InputHelperText';
-import { SelectProps } from '@mui/material/Select';
 import { FormControlProps } from '@mui/material/FormControl';
-import { Labeled } from './Labeled';
+
 import { LinearProgress } from '../layout';
+import { CommonInputProps } from './CommonInputProps';
+import { Labeled } from './Labeled';
 import {
     SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
@@ -91,14 +86,13 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         format,
         helperText,
         label,
-        loaded,
-        loading,
+        isFetching,
+        isLoading,
         margin = 'dense',
         onBlur,
         onChange,
         onCreate,
         onFocus,
-        options,
         optionText,
         optionValue,
         parse,
@@ -119,14 +113,14 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         translateChoice,
     });
     const {
-        input,
+        field,
         isRequired,
-        meta: { error, submitError, touched },
+        fieldState: { error, invalid, isTouched },
+        formState: { isSubmitted },
     } = useInput({
         format,
         onBlur,
         onChange,
-        onFocus,
         parse,
         resource,
         source,
@@ -140,13 +134,16 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
             // In this case, it will be the choice id
             // eslint-disable-next-line eqeqeq
             if (eventOrChoice?.target?.value != undefined) {
-                input.onChange(eventOrChoice.target.value);
+                field.onChange(eventOrChoice.target.value);
             } else {
                 // Or we might receive a choice directly, for instance a newly created one
-                input.onChange([...input.value, getChoiceValue(eventOrChoice)]);
+                field.onChange([
+                    ...(field.value || []),
+                    getChoiceValue(eventOrChoice),
+                ]);
             }
         },
-        [input, getChoiceValue]
+        [field, getChoiceValue]
     );
 
     const {
@@ -164,7 +161,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
 
     const createItem = create || onCreate ? getCreateItem() : null;
     const finalChoices =
-        create || onCreate ? [...choices, createItem] : choices;
+        create || onCreate ? [...(choices || []), createItem] : choices || [];
 
     const renderMenuItemOption = useCallback(
         choice =>
@@ -195,7 +192,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         [getChoiceValue, getDisableValue, renderMenuItemOption, createItem]
     );
 
-    if (loading) {
+    if (isLoading) {
         return (
             <Labeled
                 label={label}
@@ -215,14 +212,14 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
             <StyledFormControl
                 margin={margin}
                 className={classnames(SelectArrayInputClasses.root, className)}
-                error={touched && !!(error || submitError)}
+                error={(isTouched || isSubmitted) && invalid}
                 variant={variant}
                 {...sanitizeRestProps(rest)}
             >
                 <InputLabel
                     ref={inputLabel}
                     id={`${label}-outlined-label`}
-                    error={touched && !!(error || submitError)}
+                    error={(isTouched || isSubmitted) && invalid}
                 >
                     <FieldTitle
                         label={label}
@@ -235,7 +232,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     autoWidth
                     labelId={`${label}-outlined-label`}
                     multiple
-                    error={!!(touched && (error || submitError))}
+                    error={(isTouched || isSubmitted) && invalid}
                     renderValue={(selected: any[]) => (
                         <div className={SelectArrayInputClasses.chips}>
                             {selected
@@ -256,17 +253,16 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                         </div>
                     )}
                     data-testid="selectArray"
-                    {...input}
+                    {...field}
                     onChange={handleChangeWithCreateSupport}
-                    value={input.value || []}
-                    {...options}
+                    value={field.value || []}
                 >
                     {finalChoices.map(renderMenuItem)}
                 </Select>
-                <FormHelperText error={touched && !!(error || submitError)}>
+                <FormHelperText error={isTouched && !!error}>
                     <InputHelperText
-                        touched={touched}
-                        error={error || submitError}
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
                         helperText={helperText}
                     />
                 </FormHelperText>
@@ -276,17 +272,12 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
     );
 };
 
-export interface SelectArrayInputProps
-    extends Omit<ChoicesProps, 'choices' | 'optionText'>,
-        Omit<SupportCreateSuggestionOptions, 'handleChange'>,
-        Omit<InputProps<SelectProps>, 'source'>,
-        Omit<
-            FormControlProps,
-            'defaultValue' | 'onBlur' | 'onChange' | 'onFocus'
-        > {
-    choices?: object[];
-    source?: string;
-}
+export type SelectArrayInputProps = ChoicesProps &
+    Omit<SupportCreateSuggestionOptions, 'handleChange'> &
+    CommonInputProps &
+    Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> & {
+        disableValue?: string;
+    };
 
 SelectArrayInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.object),

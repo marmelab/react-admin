@@ -35,7 +35,7 @@ const QuickFilter = ({ label }: InputProps) => {
         <Chip
             sx={{ marginBottom: 1 }}
             className={classes.root}
-            label={translate(label)}
+            label={translate(label as string)}
         />
     );
 };

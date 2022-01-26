@@ -1,10 +1,9 @@
 import { RaRecord, Translate } from '../../types';
 import { MatchingReferencesError } from './types';
+import { ControllerRenderProps } from 'react-hook-form';
 
-interface GetStatusForInputParams<RecordType extends RaRecord = any> {
-    input: {
-        value: any;
-    };
+interface GetStatusForInputParams<RecordType extends RaRecord = RaRecord> {
+    field: Pick<ControllerRenderProps, 'value'>;
     matchingReferences: RecordType[] | MatchingReferencesError;
     referenceRecord: RecordType;
     translate: Translate;
@@ -15,8 +14,8 @@ const isMatchingReferencesError = (
 ): matchingReferences is MatchingReferencesError =>
     matchingReferences && matchingReferences.error !== undefined;
 
-export const getStatusForInput = <RecordType extends RaRecord = any>({
-    input,
+export const getStatusForInput = <RecordType extends RaRecord = RaRecord>({
+    field,
     matchingReferences,
     referenceRecord,
     translate = x => x,
@@ -29,7 +28,7 @@ export const getStatusForInput = <RecordType extends RaRecord = any>({
           })
         : null;
     const selectedReferenceError =
-        input.value && !referenceRecord
+        field.value && !referenceRecord
             ? translate('ra.input.references.single_missing', {
                   _: 'ra.input.references.single_missing',
               })
@@ -37,14 +36,14 @@ export const getStatusForInput = <RecordType extends RaRecord = any>({
 
     return {
         waiting:
-            (input.value && selectedReferenceError && !matchingReferences) ||
-            (!input.value && !matchingReferences),
+            (field.value && selectedReferenceError && !matchingReferences) ||
+            (!field.value && !matchingReferences),
         error:
-            (input.value &&
+            (field.value &&
                 selectedReferenceError &&
                 matchingReferencesError) ||
-            (!input.value && matchingReferencesError)
-                ? input.value
+            (!field.value && matchingReferencesError)
+                ? field.value
                     ? selectedReferenceError
                     : matchingReferencesError
                 : null,
@@ -60,28 +59,24 @@ export const REFERENCES_STATUS_INCOMPLETE = 'REFERENCES_STATUS_INCOMPLETE';
 export const REFERENCES_STATUS_EMPTY = 'REFERENCES_STATUS_EMPTY';
 
 export const getSelectedReferencesStatus = <RecordType extends RaRecord = any>(
-    input: {
-        value: any;
-    },
+    field: Pick<ControllerRenderProps, 'value'>,
     referenceRecords: RecordType[]
 ) =>
-    !input.value || input.value.length === referenceRecords.length
+    !field.value || field.value.length === referenceRecords.length
         ? REFERENCES_STATUS_READY
         : referenceRecords.length > 0
         ? REFERENCES_STATUS_INCOMPLETE
         : REFERENCES_STATUS_EMPTY;
 
 interface GetStatusForArrayInputParams<RecordType extends RaRecord = any> {
-    input: {
-        value: any;
-    };
+    field: ControllerRenderProps;
     matchingReferences: RecordType[] | MatchingReferencesError;
     referenceRecords: RecordType[];
     translate: Translate;
 }
 
 export const getStatusForArrayInput = <RecordType extends RaRecord = any>({
-    input,
+    field,
     matchingReferences,
     referenceRecords,
     translate = x => x,
@@ -90,7 +85,7 @@ export const getStatusForArrayInput = <RecordType extends RaRecord = any>({
     // or "incomplete" (Not all of the reference data was found)
     // or "ready" (all references data was found or there is no references from input.value)
     const selectedReferencesDataStatus = getSelectedReferencesStatus(
-        input,
+        field,
         referenceRecords
     );
 
@@ -114,13 +109,13 @@ export const getStatusForArrayInput = <RecordType extends RaRecord = any>({
     return {
         waiting:
             (!matchingReferences &&
-                input.value &&
+                field.value &&
                 selectedReferencesDataStatus === REFERENCES_STATUS_EMPTY) ||
-            (!matchingReferences && !input.value),
+            (!matchingReferences && !field.value),
         error:
             matchingReferencesError &&
-            (!input.value ||
-                (input.value &&
+            (!field.value ||
+                (field.value &&
                     selectedReferencesDataStatus === REFERENCES_STATUS_EMPTY))
                 ? translate('ra.input.references.all_missing', {
                       _: 'ra.input.references.all_missing',
@@ -128,7 +123,7 @@ export const getStatusForArrayInput = <RecordType extends RaRecord = any>({
                 : null,
         warning:
             matchingReferencesError ||
-            (input.value &&
+            (field.value &&
                 selectedReferencesDataStatus !== REFERENCES_STATUS_READY)
                 ? matchingReferencesError ||
                   translate('ra.input.references.many_missing', {

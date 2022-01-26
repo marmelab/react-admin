@@ -1,33 +1,87 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
+    HtmlHTMLAttributes,
+    ReactNode,
     useEffect,
     useCallback,
     useContext,
-    HtmlHTMLAttributes,
-    ReactNode,
 } from 'react';
 import PropTypes from 'prop-types';
-import { useListContext, useResourceContext } from 'ra-core';
-import { Form, FormRenderProps, FormSpy } from 'react-final-form';
-import arrayMutators from 'final-form-arrays';
+import { styled } from '@mui/material/styles';
+import {
+    ListFilterContextValue,
+    useListContext,
+    useResourceContext,
+} from 'ra-core';
+import {
+    FieldValues,
+    FormProvider,
+    useForm,
+    useFormContext,
+} from 'react-hook-form';
 import classnames from 'classnames';
 import lodashSet from 'lodash/set';
 import lodashGet from 'lodash/get';
+import cloneDeep from 'lodash/cloneDeep';
 
 import { FilterFormInput } from './FilterFormInput';
 import { FilterContext } from '../FilterContext';
 
-export const FilterFormBase = (props: FilterFormProps) => {
-    const {
-        className,
-        margin,
-        filters,
-        variant,
-        initialValues,
-        ...rest
-    } = props;
+export const FilterForm = (props: FilterFormProps) => {
+    const { filters: filtersProps, ...rest } = props;
+
+    const { setFilters, displayedFilters, filterValues } = useListContext(
+        props
+    );
+    const filters = useContext(FilterContext) || filtersProps;
+
+    const form = useForm({
+        defaultValues: filterValues,
+    });
+
+    // Reapply filterValues when the URL changes or a user removes a filter
+    useEffect(() => {
+        form.reset(filterValues);
+    }, [filterValues, filters, form]);
+
+    useEffect(() => {
+        const subscription = form.watch(async (values, { name, type }) => {
+            // We must check whether the form is valid as watch will not check that for us.
+            // We can't rely on form state as it might not be synchronized yet
+            const isFormValid = await form.trigger();
+
+            if (isFormValid) {
+                if (lodashGet(values, name) === '') {
+                    const newValues = cloneDeep(values);
+                    lodashSet(newValues, name, undefined);
+                    setFilters(newValues, displayedFilters);
+                } else {
+                    setFilters(values, displayedFilters);
+                }
+            }
+        });
+        return () => subscription.unsubscribe();
+    }, [displayedFilters, form, setFilters]);
+
+    return (
+        <FormProvider {...form}>
+            <FilterFormBase
+                onSubmit={handleFormSubmit}
+                filters={filters}
+                {...rest}
+            />
+        </FormProvider>
+    );
+};
+
+export type FilterFormProps = FilterFormBaseProps & {
+    defaultValues?: FieldValues;
+};
+
+export const FilterFormBase = (props: FilterFormBaseProps) => {
+    const { className, margin, filters, variant, ...rest } = props;
     const resource = useResourceContext(props);
+    const form = useFormContext();
     const { displayedFilters = {}, hideFilter } = useListContext(props);
     useEffect(() => {
         filters.forEach((filter: JSX.Element) => {
@@ -39,14 +93,16 @@ export const FilterFormBase = (props: FilterFormProps) => {
         });
     }, [filters]);
 
-    const getShownFilters = () =>
-        filters.filter(
+    const getShownFilters = () => {
+        const values = form.getValues();
+        return filters.filter(
             (filterElement: JSX.Element) =>
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
-                typeof lodashGet(initialValues, filterElement.props.source) !==
+                typeof lodashGet(values, filterElement.props.source) !==
                     'undefined'
         );
+    };
 
     const handleHide = useCallback(
         event => hideFilter(event.currentTarget.dataset.key),
@@ -89,53 +145,26 @@ FilterFormBase.propTypes = {
 };
 
 const sanitizeRestProps = ({
-    active,
-    dirty,
-    dirtyFields,
-    dirtyFieldsSinceLastSubmit,
-    dirtySinceLastSubmit,
     displayedFilters,
-    error,
-    errors,
     filterValues,
-    form,
-    handleSubmit,
-    hasSubmitErrors,
-    hasValidationErrors,
+    hasCreate,
     hideFilter,
-    invalid,
-    modified,
-    modifiedSinceLastSubmit,
-    pristine,
-    resource,
     setFilters,
-    submitError,
-    submitErrors,
-    submitFailed,
-    submitSucceeded,
-    submitting,
-    touched,
-    valid,
-    validating,
-    values,
-    visited,
+    resource,
     ...props
-}: Partial<FilterFormProps>) => props;
+}: Partial<FilterFormBaseProps> & { hasCreate?: boolean }) => props;
 
-export interface FilterFormProps
-    extends Omit<FormRenderProps, 'initialValues'>,
-        Omit<HtmlHTMLAttributes<HTMLFormElement>, 'children'> {
-    className?: string;
-    resource?: string;
-    filterValues: any;
-    hideFilter: (filterName: string) => void;
-    setFilters: (filters: any, displayedFilters: any) => void;
-    displayedFilters: any;
-    filters: ReactNode[];
-    initialValues?: any;
-    margin?: 'none' | 'normal' | 'dense';
-    variant?: 'standard' | 'outlined' | 'filled';
-}
+export type FilterFormBaseProps = Omit<
+    HtmlHTMLAttributes<HTMLFormElement>,
+    'children'
+> &
+    Partial<ListFilterContextValue> & {
+        className?: string;
+        resource?: string;
+        filters?: ReactNode[];
+        margin?: 'none' | 'normal' | 'dense';
+        variant?: 'standard' | 'outlined' | 'filled';
+    };
 
 export const mergeInitialValuesWithDefaultValues = (
     initialValues,
@@ -158,55 +187,7 @@ export const mergeInitialValuesWithDefaultValues = (
     ...initialValues,
 });
 
-export const FilterForm = props => {
-    const {
-        classes: classesOverride,
-        filters: filtersProps,
-        initialValues,
-        ...rest
-    } = props;
-
-    const { setFilters, displayedFilters, filterValues } = useListContext(
-        props
-    );
-    const filters = useContext(FilterContext) || filtersProps;
-
-    const mergedInitialValuesWithDefaultValues = mergeInitialValuesWithDefaultValues(
-        initialValues || filterValues,
-        filters
-    );
-
-    return (
-        <Form
-            onSubmit={handleFinalFormSubmit}
-            initialValues={mergedInitialValuesWithDefaultValues}
-            mutators={{ ...arrayMutators }}
-            render={formProps => (
-                <>
-                    <FormSpy
-                        subscription={FormSpySubscription}
-                        onChange={({ pristine, values, invalid }) => {
-                            if (pristine || invalid) {
-                                return;
-                            }
-                            setFilters(values, displayedFilters);
-                        }}
-                    />
-                    <FilterFormBase
-                        {...formProps}
-                        {...rest}
-                        filters={filters}
-                    />
-                </>
-            )}
-        />
-    );
-};
-
-const handleFinalFormSubmit = () => {};
-
-// Options to instruct the FormSpy that it should only listen to the values and pristine changes
-const FormSpySubscription = { values: true, pristine: true, invalid: true };
+const handleFormSubmit = () => {};
 
 const PREFIX = 'RaFilterForm';
 

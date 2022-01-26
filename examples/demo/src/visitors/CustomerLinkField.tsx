@@ -5,7 +5,7 @@ import FullNameField from './FullNameField';
 import { Customer } from '../types';
 
 const CustomerLinkField = (props: FieldProps<Customer>) => {
-    const record = useRecordContext();
+    const record = useRecordContext<Customer>();
     if (!record) {
         return null;
     }

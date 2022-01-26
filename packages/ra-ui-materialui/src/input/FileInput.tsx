@@ -11,38 +11,36 @@ import { shallowEqual } from 'react-redux';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
 import FormHelperText from '@mui/material/FormHelperText';
 import classnames from 'classnames';
-import { useInput, useTranslate, InputProps } from 'ra-core';
+import { useInput, useTranslate } from 'ra-core';
 
+import { CommonInputProps } from './CommonInputProps';
 import { Labeled } from './Labeled';
 import { FileInputPreview } from './FileInputPreview';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 
-export const FileInput = (
-    props: FileInputProps & InputProps<FileInputOptions>
-) => {
+export const FileInput = (props: FileInputProps) => {
     const {
         accept,
         children,
         className,
         format,
         helperText,
+        inputProps: inputPropsOptions,
         label,
         labelMultiple = 'ra.input.file.upload_several',
         labelSingle = 'ra.input.file.upload_single',
         maxSize,
         minSize,
         multiple = false,
-        validateFileRemoval,
-        options: {
-            inputProps: inputPropsOptions,
-            ...options
-        } = {} as FileInputOptions,
+        onDrop: onDropProp,
+        onRemove: onRemoveProp,
         parse,
         placeholder,
         resource,
         source,
         validate,
+        validateFileRemoval,
         ...rest
     } = props;
     const translate = useTranslate();
@@ -84,18 +82,18 @@ export const FileInput = (
 
     const {
         id,
-        input: { onChange, value, ...inputProps },
-        meta,
+        field: { onChange, value },
+        fieldState,
+        formState: { isSubmitted },
         isRequired,
     } = useInput({
         format: format || transformFiles,
         parse: parse || transformFiles,
         source,
-        type: 'file',
         validate,
         ...rest,
     });
-    const { touched, error, submitError } = meta;
+    const { isTouched, error } = fieldState;
     const files = value ? (Array.isArray(value) ? value : [value]) : [];
 
     const onDrop = (newFiles, rejectedFiles, event) => {
@@ -107,8 +105,8 @@ export const FileInput = (
             onChange(updatedFiles[0]);
         }
 
-        if (options.onDrop) {
-            options.onDrop(newFiles, rejectedFiles, event);
+        if (onDropProp) {
+            onDropProp(newFiles, rejectedFiles, event);
         }
     };
 
@@ -129,8 +127,8 @@ export const FileInput = (
             onChange(null);
         }
 
-        if (options.onRemove) {
-            options.onRemove(file);
+        if (onRemoveProp) {
+            onRemoveProp(file);
         }
     };
 
@@ -140,12 +138,12 @@ export const FileInput = (
             : undefined;
 
     const { getRootProps, getInputProps } = useDropzone({
-        ...options,
         accept,
         maxSize,
         minSize,
         multiple,
         onDrop,
+        ...rest,
     });
 
     return (
@@ -156,19 +154,19 @@ export const FileInput = (
             source={source}
             resource={resource}
             isRequired={isRequired}
-            meta={meta}
+            fieldState={fieldState}
             {...sanitizeInputRestProps(rest)}
         >
             <>
                 <div
-                    data-testid="dropzone"
-                    className={FileInputClasses.dropZone}
-                    {...getRootProps()}
+                    {...getRootProps({
+                        className: FileInputClasses.dropZone,
+                        'data-testid': 'dropzone',
+                    })}
                 >
                     <input
                         id={id}
                         {...getInputProps({
-                            ...inputProps,
                             ...inputPropsOptions,
                         })}
                     />
@@ -182,8 +180,8 @@ export const FileInput = (
                 </div>
                 <FormHelperText>
                     <InputHelperText
-                        touched={touched}
-                        error={error || submitError}
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
                         helperText={helperText}
                     />
                 </FormHelperText>
@@ -254,19 +252,14 @@ const StyledLabeled = styled(Labeled, { name: PREFIX })(({ theme }) => ({
     [`&.${FileInputClasses.root}`]: { width: '100%' },
 }));
 
-export interface FileInputProps
-    extends Pick<
-        DropzoneOptions,
-        'accept' | 'multiple' | 'maxSize' | 'minSize'
-    > {
-    validateFileRemoval?(file): boolean | Promise<boolean>;
-    children?: ReactNode;
-    labelMultiple?: string;
-    labelSingle?: string;
-    placeholder?: ReactNode;
-}
-
-export interface FileInputOptions extends DropzoneOptions {
-    inputProps?: any;
-    onRemove?: Function;
-}
+export type FileInputProps = DropzoneOptions &
+    CommonInputProps & {
+        className?: string;
+        children?: ReactNode;
+        labelMultiple?: string;
+        labelSingle?: string;
+        onRemove?: Function;
+        placeholder?: ReactNode;
+        inputProps?: any;
+        validateFileRemoval?(file): boolean | Promise<boolean>;
+    };

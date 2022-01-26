@@ -1,8 +1,9 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
-import { useInput, FieldTitle, InputProps } from 'ra-core';
+import { useInput, FieldTitle } from 'ra-core';
 
+import { CommonInputProps } from './CommonInputProps';
 import { InputHelperText } from './InputHelperText';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 
@@ -19,14 +20,13 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  * The object passed as `options` props is passed to the material-ui <TextField> component
  */
 export const NumberInput = ({
-    format,
+    defaultValue = '',
+    format = convertNumberToString,
     helperText,
     label,
     margin = 'dense',
     onBlur,
-    onFocus,
     onChange,
-    options,
     parse = convertStringToNumber,
     resource,
     source,
@@ -39,19 +39,19 @@ export const NumberInput = ({
     ...rest
 }: NumberInputProps) => {
     const {
+        field,
+        fieldState: { error, invalid, isTouched },
+        formState: { isSubmitted },
         id,
-        input,
         isRequired,
-        meta: { error, submitError, touched },
     } = useInput({
+        defaultValue,
         format,
         onBlur,
         onChange,
-        onFocus,
         parse,
         resource,
         source,
-        type: 'number',
         validate,
         ...rest,
     });
@@ -61,13 +61,14 @@ export const NumberInput = ({
     return (
         <TextField
             id={id}
-            {...input}
+            {...field}
+            type="number"
             variant={variant}
-            error={!!(touched && (error || submitError))}
+            error={(isTouched || isSubmitted) && invalid}
             helperText={
                 <InputHelperText
-                    touched={touched}
-                    error={error || submitError}
+                    touched={isTouched || isSubmitted}
+                    error={error?.message}
                     helperText={helperText}
                 />
             }
@@ -81,7 +82,6 @@ export const NumberInput = ({
             }
             margin={margin}
             inputProps={inputProps}
-            {...options}
             {...sanitizeInputRestProps(rest)}
         />
     );
@@ -102,15 +102,10 @@ NumberInput.defaultProps = {
 };
 
 export interface NumberInputProps
-    extends InputProps<TextFieldProps>,
+    extends CommonInputProps,
         Omit<
             TextFieldProps,
-            | 'label'
-            | 'helperText'
-            | 'onChange'
-            | 'onBlur'
-            | 'onFocus'
-            | 'defaultValue'
+            'label' | 'helperText' | 'defaultValue' | 'onChange' | 'onBlur'
         > {
     step?: string | number;
     min?: string | number;
@@ -121,4 +116,8 @@ const convertStringToNumber = value => {
     const float = parseFloat(value);
 
     return isNaN(float) ? null : float;
+};
+
+const convertNumberToString = value => {
+    return value === null ? '' : value.toString();
 };

@@ -765,7 +765,7 @@ This custom Edit view has no action buttons or aside component - it's up to you 
 
 The `<SimpleForm>` component reads the `record` from the `RecordContext`. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, which is passed to the `form` `onSubmit` prop.
 
-The `<SimpleForm>` renders its child components line by line (within `<div>` components). It accepts Input and Field components as children. It relies on [react-final-form](https://github.com/final-form/react-final-form) for form handling.
+The `<SimpleForm>` renders its child components line by line (within `<div>` components). It accepts Input and Field components as children. It relies on [react-hook-form](https://react-hook-form.com/) for form handling.
 
 ![post edition form](./img/post-edition.png)
 
@@ -774,7 +774,7 @@ to change this behaviour you can pass `false` for the `submitOnEnter` property, 
 
 Here are all the props you can set on the `<SimpleForm>` component:
 
-* [`initialValues`](#default-values)
+* [`defaultValue`](#default-values)
 * [`validate`](#validation)
 * [`submitOnEnter`](#submit-on-enter)
 * [`toolbar`](#toolbar)
@@ -782,7 +782,6 @@ Here are all the props you can set on the `<SimpleForm>` component:
 * [`margin`](#margin)
 * [`component`](#simpleform-component)
 * [`warnWhenUnsavedChanges`](#warning-about-unsaved-changes)
-* [`sanitizeEmptyValues`](#setting-empty-values-to-null)
 
 ```jsx
 export const PostCreate = () => (
@@ -844,7 +843,7 @@ to change this behaviour you can pass `false` for the `submitOnEnter` property.
 
 Here are all the props accepted by the `<TabbedForm>` component:
 
-* [`initialValues`](#default-values)
+* [`defaultValue`](#default-values)
 * [`validate`](#validation)
 * [`submitOnEnter`](#submit-on-enter)
 * [`tabs`](#tabbedformtabs)
@@ -854,7 +853,6 @@ Here are all the props accepted by the `<TabbedForm>` component:
 * `save`: The function invoked when the form is submitted. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 * `saving`: A boolean indicating whether a save operation is ongoing. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 * [`warnWhenUnsavedChanges`](#warning-about-unsaved-changes)
-* [`sanitizeEmptyValues`](#setting-empty-values-to-null)
 * [`syncWithLocation`](#sync-with-location)
 
 {% raw %}
@@ -1141,19 +1139,17 @@ Check [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/mo
 
 ## Default Values
 
-To define default values, you can add a `initialValues` prop to form components (`<SimpleForm>`, `<TabbedForm>`, etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
-
-**Note**: on RA v2 the `initialValues` used to be named `defaultValue`
+To define default values, you can add a `defaultValues` prop to form components (`<SimpleForm>`, `<TabbedForm>`, etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
 
 ### Global Default Value
 
-The value of the form `initialValues` prop is an object, or a function returning an object, specifying default values for the created record. For instance:
+The value of the form `defaultValue` prop is an object, or a function returning an object, specifying default values for the created record. For instance:
 
 ```jsx
 const postDefaultValue = () => ({ id: uuid(), created_at: new Date(), nb_views: 0 });
 export const PostCreate = () => (
     <Create>
-        <SimpleForm initialValues={postDefaultValue}>
+        <SimpleForm defaultValue={postDefaultValue}>
             <TextInput source="title" />
             <RichTextInput source="body" />
             <NumberInput source="nb_views" />
@@ -1162,7 +1158,7 @@ export const PostCreate = () => (
 );
 ```
 
-**Tip**: You can include properties in the form `initialValues` that are not listed as input components, like the `created_at` property in the previous example.
+**Tip**: You can include properties in the form `defaultValue` that are not listed as input components, like the `created_at` property in the previous example.
 
 ### Per Input Default Value
 
@@ -1180,11 +1176,11 @@ export const PostCreate = () => (
 );
 ```
 
-**Tip**: Per-input default values cannot be functions. For default values computed at render time, set the `initialValues` at the form level, as explained in the previous section. 
+**Tip**: Per-input default values cannot be functions. For default values computed at render time, set the `defaultValue` at the form level, as explained in the previous section. 
 
 ## Validation
 
-React-admin relies on [react-final-form](https://github.com/final-form/react-final-form) for the validation.
+React-admin relies on [react-hook-form](https://react-hook-form.com/) for the validation.
 
 To validate values submitted by a form, you can add a `validate` prop to the form component, to individual inputs, or even mix both approaches.
 
@@ -1221,7 +1217,7 @@ export const UserCreate = () => (
 );
 ```
 
-**Tip**: The props you pass to `<SimpleForm>` and `<TabbedForm>` are passed to the [\<Form\>](https://final-form.org/docs/react-final-form/api/Form) of `react-final-form`.
+**Tip**: The props you pass to `<SimpleForm>` and `<TabbedForm>` are passed to the [useForm hook](https://react-hook-form.com/api/useform) of `react-hook-form`.
 
 **Tip**: The `validate` function can return a promise for asynchronous validation. See [the Server-Side Validation section](#server-side-validation) below.
 
@@ -1374,7 +1370,7 @@ const validateStock = [required(), number(), minValue(0)];
 
 export const ProductEdit = () => (
     <Edit>
-        <SimpleForm initialValues={{ stock: 0 }}>
+        <SimpleForm defaultValue={{ stock: 0 }}>
             ...
             {/* do this */}
             <NumberInput source="stock" validate={validateStock} />
@@ -1387,7 +1383,7 @@ export const ProductEdit = () => (
 ```
 {% endraw %}
 
-**Tip**: The props of your Input components are passed to a `react-final-form` [Field](https://final-form.org/docs/react-final-form/api/Field) component.
+**Tip**: The props of your Input components are passed to a `react-hook-form` [useController](https://react-hook-form.com/api/usecontroller) hook.
 
 **Tip**: You can use *both* Form validation and input validation.
 
@@ -1467,7 +1463,32 @@ export const UserCreate = () => (
 );
 ```
 
-**Important**: Note that asynchronous validators are not supported on the `<ArrayInput>` component due to a limitation of [react-final-form-arrays](https://github.com/final-form/react-final-form-arrays).
+### Schema Validation
+
+`react-hook-form` supports schema validation with many libraries through its [`resolver` props](https://react-hook-form.com/api/useform#validationResolver). To use it, follow their [resolvers documentation](https://github.com/react-hook-form/resolvers). Here's an example using `yup`:
+
+```jsx
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { SimpleForm, TextInput, NumberInput } from 'react-admin';
+
+const schema = yup
+    .object()
+    .shape({
+        name: yup.string().required(),
+        age: yup.number().required(),
+    })
+    .required();
+
+const CustomerCreate = () => (
+    <Create>
+        <SimpleForm resolver={yupResolver(schema)}>
+            <TextInput source="name" />
+            <NumberInput source="age" />
+        </SimpleForm>
+    </Create>
+);
+```
 
 ## Submission Validation
 
@@ -1487,6 +1508,7 @@ export const UserCreate = () => {
                 await create('users', { data: values });
             } catch (error) {
                 if (error.body.errors) {
+                    // The shape of the returned validation errors must match the shape of the form
                     return error.body.errors;
                 }
             }
@@ -1908,7 +1930,7 @@ Here is an example of such custom form, taken from the Posters Galore demo. It u
 ```jsx
 import * as React from "react";
 import {
-    FormWithRedirect,
+    Form,
     DateInput,
     SelectArrayInput,
     TextInput,
@@ -1928,7 +1950,7 @@ const segments = [
 ];
 
 const VisitorForm = props => (
-    <FormWithRedirect
+    <Form
         {...props}
         render={formProps => (
             // here starts the custom form layout
@@ -1986,7 +2008,7 @@ const VisitorForm = props => (
 );
 ```
 
-This custom form layout component uses the `FormWithRedirect` component, which wraps react-final-form's `Form` component. It also uses react-admin's `<SaveButton>` and a `<DeleteButton>`.
+This custom form layout component uses the `Form` component, which leverages react-hook-form's `useForm` hook. It also uses react-admin's `<SaveButton>` and a `<DeleteButton>`.
 
 **Tip**: When `Input` components have a `resource` prop, they use it to determine the input label. `<SimpleForm>` and `<TabbedForm>` inject this `resource` prop to `Input` components automatically. When you use a custom form layout, pass the `resource` prop manually - unless the `Input` has a `label` prop.
 
@@ -2000,42 +2022,31 @@ const VisitorEdit = () => (
 );
 ```
 
-**Tip**: `FormWithRedirect` contains some logic that you may not want. In fact, nothing forbids you from using a react-final-form [Form](https://final-form.org/docs/react-final-form/api/Form) component as root component for a custom form layout. You'll have to set initial values based the injected `record` prop manually, as follows:
+**Tip**: `Form` contains some logic that you may not want. In fact, nothing forbids you from using a react-hook-form [useForm](https://react-hook-form.com/api/useform) hook to create your own form. You'll have to set default values based the injected `record` prop manually, as follows:
 
 {% raw %}
 ```jsx
-import { sanitizeEmptyValues } from 'react-admin';
-import { Form } from 'react-final-form';
-import arrayMutators from 'final-form-arrays';
+import { useForm } from 'react-hook-form';
 import { CardContent, Typography, Box } from '@material-ui/core';
 
 // the parent component (Edit or Create) injects these props to their child
 const VisitorForm = ({ record, save, saving, version }) => {
+    const form = useForm({
+        defaultValues: record,
+    });
+
     const submit = values => {
-        // React-final-form removes empty values from the form state.
-        // To allow users to *delete* values, this must be taken into account 
-        save(sanitizeEmptyValues(record, values));
+        save(values);
     };
+
     return (
-        <Form
-            initialValues={record}
-            onSubmit={submit}
-            mutators={{ ...arrayMutators }} // necessary for ArrayInput
-            subscription={defaultSubscription} // don't redraw entire form each time one field changes
+        <form
+            onSubmit={form.handleSubmit(submit)}
             key={version} // support for refresh button
-            keepDirtyOnReinitialize
-            render={formProps => (
+        >
                 {/* render your custom form here */}
-            )}
-        />
+        </form>
     );
-};
-const defaultSubscription = {
-    submitting: true,
-    pristine: true,
-    valid: true,
-    invalid: true,
-    validating: true,
 };
 ```
 {% endraw %}
@@ -2060,21 +2071,24 @@ export const TagEdit = () => (
 );
 ```
 
-And that's all. `warnWhenUnsavedChanges` works for both `<SimpleForm>` and `<TabbedForm>`. In fact, this feature is provided by a custom hook called `useWarnWhenUnsavedChanges()`, which you can use in your own react-final-form forms.
+And that's all. `warnWhenUnsavedChanges` works for both `<SimpleForm>` and `<TabbedForm>`. In fact, this feature is provided by a custom hook called `useWarnWhenUnsavedChanges()`, which you can use in your own react-hook-form forms.
 
 ```jsx
-import { Form, Field } from 'react-final-form';
+import { useForm } from 'react-hook-form';
 import { useWarnWhenUnsavedChanges } from 'react-admin';
 
-const MyForm = () => (
-    <Form onSubmit={() => { /*...*/}} component={FormBody} />
-);
+const MyForm = ({ onSubmit }) => {
+    const form = useForm();
+    return (
+        <Form onSubmit={form.handleSubmit(onSubmit)} />
+    );
+}
 
-const FormBody = ({ handleSubmit }) => {
+const Form = ({ onSubmit }) => {
     // enable the warn when unsaved changes feature
     useWarnWhenUnsavedChanges(true);
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onSubmit}>
             <label id="firstname-label">First Name</label>
             <Field name="firstName" aria-labelledby="firstname-label" component="input" />
             <button type="submit">Submit</button>
@@ -2084,23 +2098,6 @@ const FormBody = ({ handleSubmit }) => {
 ```
 
 **Tip**: You can customize the message displayed in the confirm dialog by setting the `ra.message.unsaved_changes` message in your i18nProvider.
-
-## Setting Empty Values To Null
-
-`<SimpleForm>` and `<TabbedForm>` recreate deleted or missing attributes based on its `initialValues` in order to send them to the data provider with a `null` value, as most APIs requires all attributes for a given record, even if they are nullable.
-
-It is possible to opt-out this default behavior by passing the `sanitizeEmptyValues` prop:
-
-```jsx
-export const PostEdit = () => (
-    <Edit>
-        <SimpleForm sanitizeEmptyValues={false}>
-            <TextInput source="title" />
-            <JsonInput source="body" />
-        </SimpleForm>
-    </Edit>
-);
-```
 
 ## Recipes
 
@@ -2148,7 +2145,7 @@ export const UserCreate = () => {
         <Create redirect="show">
             <SimpleForm
                 toolbar={<UserCreateToolbar permissions={permissions} />}
-                initialValues={{ role: 'user' }}
+                defaultValue={{ role: 'user' }}
             >
                 <TextInput source="name" validate={[required()]} />
                 {permissions === 'admin' &&
@@ -2168,7 +2165,7 @@ This also works inside an `Edition` view with a `TabbedForm`, and you can hide a
 ```jsx
 export const UserEdit = ({ permissions }) =>
     <Edit title={<UserTitle />}>
-        <TabbedForm initialValues={{ role: 'user' }}>
+        <TabbedForm defaultValue={{ role: 'user' }}>
             <FormTab label="user.form.summary">
                 {permissions === 'admin' && <TextInput disabled source="id" />}
                 <TextInput source="name" validate={required()} />

@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import {
-    FormWithRedirect,
+    Form,
     RecordContextProvider,
     SaveContextProvider,
     SaveButton,
@@ -27,43 +27,6 @@ import {
 import { useResourceConfiguration } from './useResourceConfiguration';
 import { FieldConfigurationFormSection } from './FieldConfigurationFormSection';
 import { FieldConfigurationTab } from './FieldConfigurationTab';
-
-const PREFIX = 'ResourceConfigurationPage';
-
-const classes = {
-    fields: `${PREFIX}-fields`,
-    fieldList: `${PREFIX}-fieldList`,
-    fieldTitle: `${PREFIX}-fieldTitle`,
-    fieldPanel: `${PREFIX}-fieldPanel`,
-    actions: `${PREFIX}-actions`,
-};
-
-const StyledCard = styled(Card)(({ theme }) => ({
-    [`& .${classes.fields}`]: {
-        display: 'flex',
-    },
-
-    [`& .${classes.fieldList}`]: {
-        backgroundColor: theme.palette.background.default,
-    },
-
-    [`& .${classes.fieldTitle}`]: {
-        paddingTop: theme.spacing(1),
-        paddingBottom: theme.spacing(1),
-        paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(2),
-        textTransform: 'none',
-        minHeight: 0,
-    },
-
-    [`& .${classes.fieldPanel}`]: {
-        flexGrow: 1,
-    },
-
-    [`& .${classes.actions}`]: {
-        backgroundColor: theme.palette.background.default,
-    },
-}));
 
 export const ResourceConfigurationPage = () => {
     const { resource } = useParams<'resource'>();
@@ -97,9 +60,9 @@ export const ResourceConfigurationPage = () => {
     return (
         <RecordContextProvider value={resourceConfiguration}>
             <SaveContextProvider value={saveContext}>
-                <FormWithRedirect
+                <Form
                     onSubmit={save}
-                    initialValues={resourceConfiguration}
+                    defaultValues={resourceConfiguration}
                     render={({ handleSubmit }) => (
                         <StyledCard>
                             <CardHeader
@@ -132,7 +95,7 @@ export const ResourceConfigurationPage = () => {
                                 <CardContent>
                                     <TextInput
                                         source="label"
-                                        initialValue={
+                                        defaultValue={
                                             resourceConfiguration.label ||
                                             resourceConfiguration.name
                                         }
@@ -196,3 +159,40 @@ export const ResourceConfigurationPage = () => {
         </RecordContextProvider>
     );
 };
+
+const PREFIX = 'ResourceConfigurationPage';
+
+const classes = {
+    fields: `${PREFIX}-fields`,
+    fieldList: `${PREFIX}-fieldList`,
+    fieldTitle: `${PREFIX}-fieldTitle`,
+    fieldPanel: `${PREFIX}-fieldPanel`,
+    actions: `${PREFIX}-actions`,
+};
+
+const StyledCard = styled(Card)(({ theme }) => ({
+    [`& .${classes.fields}`]: {
+        display: 'flex',
+    },
+
+    [`& .${classes.fieldList}`]: {
+        backgroundColor: theme.palette.background.default,
+    },
+
+    [`& .${classes.fieldTitle}`]: {
+        paddingTop: theme.spacing(1),
+        paddingBottom: theme.spacing(1),
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+        textTransform: 'none',
+        minHeight: 0,
+    },
+
+    [`& .${classes.fieldPanel}`]: {
+        flexGrow: 1,
+    },
+
+    [`& .${classes.actions}`]: {
+        backgroundColor: theme.palette.background.default,
+    },
+}));

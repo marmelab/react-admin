@@ -90,18 +90,13 @@ export const useSupportCreateSuggestion = (
                     : translate(createLabel, { _: createLabel })
             );
         },
-        handleChange: async eventOrValue => {
+        handleChange: async (eventOrValue: MouseEvent | any) => {
             const value = eventOrValue?.target?.value || eventOrValue;
-
             const finalValue = Array.isArray(value) ? [...value].pop() : value;
-            if (eventOrValue?.preventDefault) {
-                eventOrValue.preventDefault();
-                eventOrValue.stopPropagation();
-            }
+
             if (finalValue?.id === createValue || finalValue === createValue) {
                 if (!isValidElement(create)) {
                     const newSuggestion = await onCreate(filter);
-
                     if (newSuggestion) {
                         handleChange(newSuggestion);
                         return;

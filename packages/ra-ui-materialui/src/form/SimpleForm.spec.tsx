@@ -1,50 +1,40 @@
 import * as React from 'react';
 import expect from 'expect';
-import { SaveContextProvider } from 'ra-core';
-import { renderWithRedux } from 'ra-test';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { render, screen } from '@testing-library/react';
+import { testDataProvider } from 'ra-core';
 
-import { defaultTheme } from '../defaultTheme';
+import { AdminContext } from '../AdminContext';
 import { SimpleForm } from './SimpleForm';
 import { TextInput } from '../input';
 
 describe('<SimpleForm />', () => {
-    const saveContextValue = {
-        save: jest.fn(),
-        saving: false,
-    };
-
     it('should embed a form with given component children', () => {
-        const { queryByLabelText } = renderWithRedux(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <SaveContextProvider value={saveContextValue}>
-                    <SimpleForm>
-                        <TextInput source="name" />
-                        <TextInput source="city" />
-                    </SimpleForm>
-                </SaveContextProvider>
-            </ThemeProvider>
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm>
+                    <TextInput source="name" />
+                    <TextInput source="city" />
+                </SimpleForm>
+            </AdminContext>
         );
         expect(
-            queryByLabelText('resources.undefined.fields.name')
+            screen.queryByLabelText('resources.undefined.fields.name')
         ).not.toBeNull();
         expect(
-            queryByLabelText('resources.undefined.fields.city')
+            screen.queryByLabelText('resources.undefined.fields.city')
         ).not.toBeNull();
     });
 
     it('should display <Toolbar />', () => {
-        const { queryByLabelText } = renderWithRedux(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <SaveContextProvider value={saveContextValue}>
-                    <SimpleForm>
-                        <TextInput source="name" />
-                        <TextInput source="city" />
-                    </SimpleForm>
-                </SaveContextProvider>
-            </ThemeProvider>
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm>
+                    <TextInput source="name" />
+                    <TextInput source="city" />
+                </SimpleForm>
+            </AdminContext>
         );
-        expect(queryByLabelText('ra.action.save')).not.toBeNull();
+        expect(screen.queryByLabelText('ra.action.save')).not.toBeNull();
     });
 
     it('should pass submitOnEnter to <Toolbar />', () => {
@@ -52,42 +42,36 @@ describe('<SimpleForm />', () => {
             <p>submitOnEnter: {submitOnEnter.toString()}</p>
         );
 
-        const { queryByText, rerender } = renderWithRedux(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <SaveContextProvider value={saveContextValue}>
-                    <SimpleForm submitOnEnter={false} toolbar={<Toolbar />}>
-                        <TextInput source="name" />
-                    </SimpleForm>
-                </SaveContextProvider>
-            </ThemeProvider>
+        const { rerender } = render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm submitOnEnter={false} toolbar={<Toolbar />}>
+                    <TextInput source="name" />
+                </SimpleForm>
+            </AdminContext>
         );
 
-        expect(queryByText('submitOnEnter: false')).not.toBeNull();
+        expect(screen.queryByText('submitOnEnter: false')).not.toBeNull();
 
         rerender(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <SaveContextProvider value={saveContextValue}>
-                    <SimpleForm submitOnEnter toolbar={<Toolbar />}>
-                        <TextInput source="name" />
-                    </SimpleForm>
-                </SaveContextProvider>
-            </ThemeProvider>
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm submitOnEnter toolbar={<Toolbar />}>
+                    <TextInput source="name" />
+                </SimpleForm>
+            </AdminContext>
         );
 
-        expect(queryByText('submitOnEnter: true')).not.toBeNull();
+        expect(screen.queryByText('submitOnEnter: true')).not.toBeNull();
     });
 
     it('should not alter default margin or variant', () => {
-        const { queryByLabelText } = renderWithRedux(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <SaveContextProvider value={saveContextValue}>
-                    <SimpleForm>
-                        <TextInput source="name" />
-                    </SimpleForm>
-                </SaveContextProvider>
-            </ThemeProvider>
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm>
+                    <TextInput source="name" />
+                </SimpleForm>
+            </AdminContext>
         );
-        const inputElement = queryByLabelText(
+        const inputElement = screen.queryByLabelText(
             'resources.undefined.fields.name'
         );
         expect(inputElement.classList).toContain('MuiFilledInput-input');
@@ -97,16 +81,14 @@ describe('<SimpleForm />', () => {
     });
 
     it('should pass variant and margin to child inputs', () => {
-        const { queryByLabelText } = renderWithRedux(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <SaveContextProvider value={saveContextValue}>
-                    <SimpleForm variant="outlined" margin="normal">
-                        <TextInput source="name" />
-                    </SimpleForm>
-                </SaveContextProvider>
-            </ThemeProvider>
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm variant="outlined" margin="normal">
+                    <TextInput source="name" />
+                </SimpleForm>
+            </AdminContext>
         );
-        const inputElement = queryByLabelText(
+        const inputElement = screen.queryByLabelText(
             'resources.undefined.fields.name'
         );
         expect(inputElement.classList).toContain('MuiOutlinedInput-input');
@@ -116,20 +98,18 @@ describe('<SimpleForm />', () => {
     });
 
     it('should allow input children to override variant and margin', () => {
-        const { queryByLabelText } = renderWithRedux(
-            <ThemeProvider theme={createTheme(defaultTheme)}>
-                <SaveContextProvider value={saveContextValue}>
-                    <SimpleForm variant="standard" margin="none">
-                        <TextInput
-                            source="name"
-                            variant="outlined"
-                            margin="normal"
-                        />
-                    </SimpleForm>
-                </SaveContextProvider>
-            </ThemeProvider>
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm variant="standard" margin="none">
+                    <TextInput
+                        source="name"
+                        variant="outlined"
+                        margin="normal"
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
-        const inputElement = queryByLabelText(
+        const inputElement = screen.queryByLabelText(
             'resources.undefined.fields.name'
         );
         expect(inputElement.classList).toContain('MuiOutlinedInput-input');

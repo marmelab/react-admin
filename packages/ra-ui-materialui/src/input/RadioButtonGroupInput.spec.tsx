@@ -1,9 +1,10 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, fireEvent } from '@testing-library/react';
-import { Form } from 'react-final-form';
-import { TestTranslationProvider } from 'ra-core';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { testDataProvider, TestTranslationProvider } from 'ra-core';
 
+import { AdminContext } from '../AdminContext';
+import { SimpleForm } from '../form';
 import { RadioButtonGroupInput } from './RadioButtonGroupInput';
 
 describe('<RadioButtonGroupInput />', () => {
@@ -17,23 +18,25 @@ describe('<RadioButtonGroupInput />', () => {
     };
 
     it('should render choices as radio inputs', () => {
-        const { getByLabelText, queryByText } = render(
-            <Form
-                onSubmit={jest.fn}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ type: 'visa' }}
+                    onSubmit={jest.fn()}
+                >
                     <RadioButtonGroupInput
                         {...defaultProps}
                         label="Credit card"
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
-        expect(queryByText('Credit card')).not.toBeNull();
-        const input1 = getByLabelText('VISA') as HTMLInputElement;
+        expect(screen.queryByText('Credit card')).not.toBeNull();
+        const input1 = screen.getByLabelText('VISA') as HTMLInputElement;
         expect(input1.type).toBe('radio');
         expect(input1.name).toBe('type');
-        expect(input1.checked).toBeFalsy();
-        const input2 = getByLabelText('Mastercard') as HTMLInputElement;
+        expect(input1.checked).toEqual(true);
+        const input2 = screen.getByLabelText('Mastercard') as HTMLInputElement;
         expect(input2.type).toBe('radio');
         expect(input2.name).toBe('type');
         expect(input2.checked).toBeFalsy();
@@ -46,10 +49,12 @@ describe('<RadioButtonGroupInput />', () => {
             </span>
         );
 
-        const { getByLabelText, queryByText } = render(
-            <Form
-                onSubmit={jest.fn}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ type: 'visa' }}
+                    onSubmit={jest.fn()}
+                >
                     <RadioButtonGroupInput
                         resource={'people'}
                         source="type"
@@ -68,53 +73,63 @@ describe('<RadioButtonGroupInput />', () => {
                         optionText={record => <FullNameField record={record} />}
                         label="People"
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
-        expect(queryByText('People')).not.toBeNull();
-        const input1 = getByLabelText('Leo Tolstoi');
+        expect(screen.queryByText('People')).not.toBeNull();
+        const input1 = screen.getByLabelText('Leo Tolstoi');
         expect(input1.id).toBe('type_123');
-        const input2 = getByLabelText('Jane Austen');
+        const input2 = screen.getByLabelText('Jane Austen');
         expect(input2.id).toBe('type_456');
     });
 
     it('should trigger custom onChange when clicking radio button', async () => {
         const onChange = jest.fn();
-        const { getByLabelText, queryByText } = render(
-            <Form
-                onSubmit={jest.fn}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ type: 'visa' }}
+                    onSubmit={jest.fn()}
+                >
                     <RadioButtonGroupInput
                         {...defaultProps}
                         label="Credit card"
                         onChange={onChange}
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
-        expect(queryByText('Credit card')).not.toBeNull();
-        const input1 = getByLabelText('VISA') as HTMLInputElement;
-        fireEvent.click(input1);
-        expect(onChange).toBeCalledWith('visa');
+        expect(screen.queryByText('Credit card')).not.toBeNull();
 
-        const input2 = getByLabelText('Mastercard') as HTMLInputElement;
+        const input2 = screen.getByLabelText('Mastercard') as HTMLInputElement;
         fireEvent.click(input2);
-        expect(onChange).toBeCalledWith('mastercard');
+        await waitFor(() => {
+            expect(onChange).toBeCalledWith(expect.anything(), 'mastercard');
+        });
+
+        const input1 = screen.getByLabelText('VISA') as HTMLInputElement;
+        fireEvent.click(input1);
+        await waitFor(() => {
+            expect(onChange).toBeCalledWith(expect.anything(), 'visa');
+        });
     });
 
-    it('should use the value provided by final-form as the initial input value', () => {
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn}
-                initialValues={{ type: 'mastercard' }}
-                render={() => <RadioButtonGroupInput {...defaultProps} />}
-            />
+    it('should use the value provided by the form default values', () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    onSubmit={jest.fn()}
+                    defaultValues={{ type: 'mastercard' }}
+                >
+                    <RadioButtonGroupInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
         expect(
-            (getByLabelText('VISA') as HTMLInputElement).checked
+            (screen.getByLabelText('VISA') as HTMLInputElement).checked
         ).toBeFalsy();
         expect(
-            (getByLabelText('Mastercard') as HTMLInputElement).checked
+            (screen.getByLabelText('Mastercard') as HTMLInputElement).checked
         ).toBeTruthy();
     });
 
@@ -123,46 +138,43 @@ describe('<RadioButtonGroupInput />', () => {
             { id: 1, name: 'VISA' },
             { id: 2, name: 'Mastercard' },
         ];
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()} defaultValues={{ type: 1 }}>
                     <RadioButtonGroupInput
                         {...defaultProps}
                         choices={choices}
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
-        const input = getByLabelText('Mastercard') as HTMLInputElement;
+        const input = screen.getByLabelText('Mastercard') as HTMLInputElement;
         expect(input.checked).toBe(false);
         fireEvent.click(input);
         expect(input.checked).toBe(true);
     });
 
     it('should use optionValue as value identifier', () => {
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm defaultValues={{ type: 'mc' }} onSubmit={jest.fn()}>
                     <RadioButtonGroupInput
                         {...defaultProps}
                         optionValue="short"
                         choices={[{ short: 'mc', name: 'Mastercard' }]}
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
-        expect((getByLabelText('Mastercard') as HTMLInputElement).value).toBe(
-            'mc'
-        );
+        expect(
+            (screen.getByLabelText('Mastercard') as HTMLInputElement).value
+        ).toBe('mc');
     });
 
     it('should use optionValue including "." as value identifier', () => {
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm defaultValues={{ type: 'mc' }} onSubmit={jest.fn()}>
                     <RadioButtonGroupInput
                         {...defaultProps}
                         optionValue="details.id"
@@ -170,35 +182,33 @@ describe('<RadioButtonGroupInput />', () => {
                             { details: { id: 'mc' }, name: 'Mastercard' },
                         ]}
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
-        expect((getByLabelText('Mastercard') as HTMLInputElement).value).toBe(
-            'mc'
-        );
+        expect(
+            (screen.getByLabelText('Mastercard') as HTMLInputElement).value
+        ).toBe('mc');
     });
 
     it('should use optionText with a string value as text identifier', () => {
-        const { queryByText } = render(
-            <Form
-                onSubmit={jest.fn}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm defaultValues={{ type: 'mc' }} onSubmit={jest.fn()}>
                     <RadioButtonGroupInput
                         {...defaultProps}
                         optionText="longname"
                         choices={[{ id: 'mc', longname: 'Mastercard' }]}
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
-        expect(queryByText('Mastercard')).not.toBeNull();
+        expect(screen.queryByText('Mastercard')).not.toBeNull();
     });
 
     it('should use optionText with a string value including "." as text identifier', () => {
-        const { queryByText } = render(
-            <Form
-                onSubmit={jest.fn}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm defaultValues={{ type: 'mc' }} onSubmit={jest.fn()}>
                     <RadioButtonGroupInput
                         {...defaultProps}
                         optionText="details.name"
@@ -206,96 +216,100 @@ describe('<RadioButtonGroupInput />', () => {
                             { id: 'mc', details: { name: 'Mastercard' } },
                         ]}
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
-        expect(queryByText('Mastercard')).not.toBeNull();
+        expect(screen.queryByText('Mastercard')).not.toBeNull();
     });
 
     it('should use optionText with a function value as text identifier', () => {
-        const { queryByText } = render(
-            <Form
-                onSubmit={jest.fn}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm defaultValues={{ type: 'mc' }} onSubmit={jest.fn()}>
                     <RadioButtonGroupInput
                         {...defaultProps}
                         optionText={choice => choice.longname}
                         choices={[{ id: 'mc', longname: 'Mastercard' }]}
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
-        expect(queryByText('Mastercard')).not.toBeNull();
+        expect(screen.queryByText('Mastercard')).not.toBeNull();
     });
 
     it('should use optionText with an element value as text identifier', () => {
         const Foobar = ({ record }: { record?: any }) => (
             <span>{record.longname}</span>
         );
-        const { queryByText } = render(
-            <Form
-                onSubmit={jest.fn}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm defaultValues={{ type: 'mc' }} onSubmit={jest.fn()}>
                     <RadioButtonGroupInput
                         {...defaultProps}
                         optionText={<Foobar />}
                         choices={[{ id: 'mc', longname: 'Mastercard' }]}
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
-        expect(queryByText('Mastercard')).not.toBeNull();
+        expect(screen.queryByText('Mastercard')).not.toBeNull();
     });
 
     it('should translate the choices by default', () => {
-        const { queryByText } = render(
-            <TestTranslationProvider translate={x => `**${x}**`}>
-                <Form
-                    onSubmit={jest.fn}
-                    render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <TestTranslationProvider translate={x => `**${x}**`}>
+                    <SimpleForm
+                        defaultValues={{ type: 'mc' }}
+                        onSubmit={jest.fn()}
+                    >
                         <RadioButtonGroupInput
                             {...defaultProps}
                             choices={[{ id: 'mc', name: 'Mastercard' }]}
                         />
-                    )}
-                />
-            </TestTranslationProvider>
+                    </SimpleForm>
+                </TestTranslationProvider>
+            </AdminContext>
         );
-        expect(queryByText('**Mastercard**')).not.toBeNull();
+        expect(screen.queryByText('**Mastercard**')).not.toBeNull();
     });
 
     it('should not translate the choices if translateChoice is false', () => {
-        const { queryByText } = render(
-            <TestTranslationProvider translate={x => `**${x}**`}>
-                <Form
-                    onSubmit={jest.fn}
-                    render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <TestTranslationProvider translate={x => `**${x}**`}>
+                    <SimpleForm
+                        defaultValues={{ type: 'mc' }}
+                        onSubmit={jest.fn()}
+                    >
                         <RadioButtonGroupInput
                             {...defaultProps}
                             choices={[{ id: 'mc', name: 'Mastercard' }]}
                             translateChoice={false}
                         />
-                    )}
-                />
-            </TestTranslationProvider>
+                    </SimpleForm>
+                </TestTranslationProvider>
+            </AdminContext>
         );
-        expect(queryByText('**Mastercard**')).toBeNull();
-        expect(queryByText('Mastercard')).not.toBeNull();
+        expect(screen.queryByText('**Mastercard**')).toBeNull();
+        expect(screen.queryByText('Mastercard')).not.toBeNull();
     });
 
     it('should display helperText if prop is present in meta', () => {
-        const { queryByText } = render(
-            <Form
-                onSubmit={jest.fn}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ type: 'visa' }}
+                    onSubmit={jest.fn()}
+                >
                     <RadioButtonGroupInput
                         {...defaultProps}
                         helperText="Can I help you?"
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
-        expect(queryByText('Can I help you?')).not.toBeNull();
+        expect(screen.queryByText('Can I help you?')).not.toBeNull();
     });
 
     describe('error message', () => {
@@ -303,134 +317,133 @@ describe('<RadioButtonGroupInput />', () => {
             // This validator always returns an error
             const validate = () => 'ra.validation.error';
 
-            const { queryByText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    validateOnBlur
-                    render={() => (
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ type: 'visa' }}
+                        onSubmit={jest.fn()}
+                        mode="onBlur"
+                    >
                         <RadioButtonGroupInput
                             {...defaultProps}
                             validate={validate}
                         />
-                    )}
-                />
+                    </SimpleForm>
+                </AdminContext>
             );
-            expect(queryByText('ra.validation.required')).toBeNull();
+            expect(screen.queryByText('ra.validation.required')).toBeNull();
         });
 
-        it('should be displayed if field has been touched and is invalid', () => {
+        it('should be displayed if field has been touched and is invalid', async () => {
             // This validator always returns an error
             const validate = () => 'ra.validation.error';
 
-            const { getByLabelText, getByText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    validateOnBlur
-                    render={() => (
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ type: 'visa' }}
+                        onSubmit={jest.fn()}
+                        mode="onBlur"
+                    >
                         <RadioButtonGroupInput
                             {...defaultProps}
                             validate={validate}
                         />
-                    )}
-                />
+                    </SimpleForm>
+                </AdminContext>
             );
 
-            const input = getByLabelText('Mastercard') as HTMLInputElement;
-            input.focus();
+            const input = screen.getByLabelText(
+                'Mastercard'
+            ) as HTMLInputElement;
             fireEvent.click(input);
             expect(input.checked).toBe(true);
 
-            input.blur();
+            fireEvent.blur(input);
 
-            expect(getByText('ra.validation.error')).not.toBeNull();
+            await waitFor(() => {
+                expect(screen.getByText('ra.validation.error')).not.toBeNull();
+            });
         });
 
-        it('should be displayed even with a helper Text', () => {
+        it('should be displayed even with a helper Text', async () => {
             // This validator always returns an error
             const validate = () => 'ra.validation.error';
 
-            const { getByLabelText, getByText, queryByText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    validateOnBlur
-                    render={() => (
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ type: 'visa' }}
+                        onSubmit={jest.fn()}
+                        mode="onBlur"
+                    >
                         <RadioButtonGroupInput
                             {...defaultProps}
                             validate={validate}
                             helperText="Can I help you?"
                         />
-                    )}
-                />
+                    </SimpleForm>
+                </AdminContext>
             );
-            const input = getByLabelText('Mastercard') as HTMLInputElement;
-            input.focus();
+            const input = screen.getByLabelText(
+                'Mastercard'
+            ) as HTMLInputElement;
             fireEvent.click(input);
             expect(input.checked).toBe(true);
 
-            input.blur();
+            fireEvent.blur(input);
 
-            const error = getByText('ra.validation.error');
-            expect(error).toBeDefined();
-            expect(error.classList.contains('Mui-error')).toEqual(true);
-            expect(queryByText('Can I help you?')).toBeNull();
+            await waitFor(() => {
+                expect(screen.getByText('ra.validation.error')).not.toBeNull();
+            });
+            expect(screen.queryByText('Can I help you?')).toBeNull();
         });
     });
 
     it('should not render a LinearProgress if isLoading is true and a second has not passed yet', () => {
-        const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
-                render={() => (
-                    <RadioButtonGroupInput
-                        {...{
-                            ...defaultProps,
-                            isLoading: true,
-                        }}
-                    />
-                )}
-            />
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ type: 'visa' }}
+                    onSubmit={jest.fn()}
+                >
+                    <RadioButtonGroupInput {...defaultProps} isLoading />
+                </SimpleForm>
+            </AdminContext>
         );
 
-        expect(queryByRole('progressbar')).toBeNull();
+        expect(screen.queryByRole('progressbar')).toBeNull();
     });
 
     it('should render a LinearProgress if isLoading is true and a second has passed', async () => {
-        const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
-                render={() => (
-                    <RadioButtonGroupInput
-                        {...{
-                            ...defaultProps,
-                            isLoading: true,
-                        }}
-                    />
-                )}
-            />
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ type: 'visa' }}
+                    onSubmit={jest.fn()}
+                >
+                    <RadioButtonGroupInput {...defaultProps} isLoading />
+                </SimpleForm>
+            </AdminContext>
         );
 
         await new Promise(resolve => setTimeout(resolve, 1001));
 
-        expect(queryByRole('progressbar')).not.toBeNull();
+        expect(screen.queryByRole('progressbar')).not.toBeNull();
     });
 
     it('should not render a LinearProgress if isLoading is false', () => {
-        const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
-                render={() => (
-                    <RadioButtonGroupInput
-                        {...{
-                            ...defaultProps,
-                        }}
-                    />
-                )}
-            />
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ type: 'visa' }}
+                    onSubmit={jest.fn()}
+                >
+                    <RadioButtonGroupInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
 
-        expect(queryByRole('progressbar')).toBeNull();
+        expect(screen.queryByRole('progressbar')).toBeNull();
     });
 });

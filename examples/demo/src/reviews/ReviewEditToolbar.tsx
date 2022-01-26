@@ -30,7 +30,7 @@ const StyledMuiToolbar = styled(MuiToolbar)(({ theme }) => ({
 }));
 
 const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
-    const { invalid, resource, saving } = props;
+    const { resource, saving } = props;
     const redirect = useRedirect();
     const notify = useNotify();
 
@@ -47,7 +47,6 @@ const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
             ) : (
                 <Fragment>
                     <SaveButton
-                        invalid={invalid}
                         saving={saving}
                         mutationOptions={{
                             onSuccess: () => {

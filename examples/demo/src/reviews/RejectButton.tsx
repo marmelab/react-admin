@@ -2,16 +2,23 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import ThumbDown from '@mui/icons-material/ThumbDown';
-import { useTranslate, useUpdate, useNotify, useRedirect } from 'react-admin';
+import {
+    useTranslate,
+    useUpdate,
+    useNotify,
+    useRedirect,
+    useRecordContext,
+} from 'react-admin';
 import { Review } from '../types';
 
 /**
  * This custom button demonstrate using a custom action to update data
  */
-const RejectButton = ({ record }: { record: Review }) => {
+const RejectButton = () => {
     const translate = useTranslate();
     const notify = useNotify();
     const redirectTo = useRedirect();
+    const record = useRecordContext<Review>();
 
     const [reject, { isLoading }] = useUpdate(
         'reviews',

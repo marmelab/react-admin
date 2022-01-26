@@ -78,7 +78,7 @@ const UserEditForm = ({ save, ...props }: { save?: any }) => {
 
     return (
         <TabbedForm
-            defaultValue={{ role: 'user' }}
+            defaultValues={{ role: 'user' }}
             toolbar={<UserEditToolbar />}
             {...props}
             onSubmit={newSave}

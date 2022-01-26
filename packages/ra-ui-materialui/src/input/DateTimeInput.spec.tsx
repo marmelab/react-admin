@@ -1,17 +1,14 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, fireEvent } from '@testing-library/react';
-import { Form } from 'react-final-form';
-import { required, FormWithRedirect } from 'ra-core';
-import { renderWithRedux } from 'ra-test';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { required, testDataProvider } from 'ra-core';
 import format from 'date-fns/format';
-import { createTheme, ThemeProvider } from '@mui/material';
+import { useFormState } from 'react-hook-form';
 
+import { AdminContext } from '../AdminContext';
+import { SimpleForm } from '../form';
 import { DateTimeInput } from './DateTimeInput';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';
-import { FormApi } from 'final-form';
-
-const theme = createTheme();
 
 describe('<DateTimeInput />', () => {
     const defaultProps = {
@@ -20,13 +17,14 @@ describe('<DateTimeInput />', () => {
     };
 
     it('should render a date time input', () => {
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn}
-                render={() => <DateTimeInput {...defaultProps} />}
-            />
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <DateTimeInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
-        const input = getByLabelText(
+        const input = screen.getByLabelText(
             'resources.posts.fields.publishedAt'
         ) as HTMLInputElement;
         expect(input.type).toBe('datetime-local');
@@ -34,19 +32,26 @@ describe('<DateTimeInput />', () => {
 
     it('should not make the form dirty on initialization', () => {
         const publishedAt = new Date().toISOString();
-        let formApi: FormApi;
-        const { getByDisplayValue } = renderWithRedux(
-            <FormWithRedirect
-                onSubmit={jest.fn}
-                record={{ id: 1, publishedAt }}
-                render={({ form }) => {
-                    formApi = form;
-                    return <DateTimeInput {...defaultProps} />;
-                }}
-            />
+        const FormState = () => {
+            const { isDirty } = useFormState();
+
+            return <p>Dirty: {isDirty.toString()}</p>;
+        };
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    onSubmit={jest.fn()}
+                    record={{ id: 1, publishedAt }}
+                >
+                    <DateTimeInput {...defaultProps} />
+                    <FormState />
+                </SimpleForm>
+            </AdminContext>
         );
-        expect(getByDisplayValue(format(publishedAt, 'YYYY-MM-DDTHH:mm')));
-        expect(formApi.getState().dirty).toEqual(false);
+        expect(
+            screen.getByDisplayValue(format(publishedAt, 'YYYY-MM-DDTHH:mm'))
+        );
+        expect(screen.queryByText('Dirty: false')).not.toBeNull();
     });
 
     it('should display a default value inside an ArrayInput', () => {
@@ -56,140 +61,104 @@ describe('<DateTimeInput />', () => {
                 date,
             },
         ];
-        let formApi: FormApi;
-        const { getByDisplayValue } = renderWithRedux(
-            <ThemeProvider theme={theme}>
-                <FormWithRedirect
-                    onSubmit={jest.fn}
-                    render={({ form }) => {
-                        formApi = form;
-                        return (
-                            <ArrayInput
-                                defaultValue={backlinksDefaultValue}
-                                source="backlinks"
-                            >
-                                <SimpleFormIterator>
-                                    <DateTimeInput source="date" />
-                                </SimpleFormIterator>
-                            </ArrayInput>
-                        );
-                    }}
-                />
-            </ThemeProvider>
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <ArrayInput
+                        defaultValue={backlinksDefaultValue}
+                        source="backlinks"
+                    >
+                        <SimpleFormIterator>
+                            <DateTimeInput source="date" />
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </AdminContext>
         );
 
-        expect(getByDisplayValue(format(date, 'YYYY-MM-DDTHH:mm')));
-        expect(formApi.getState().values.backlinks[0].date).toEqual(
-            new Date('2011-10-05T14:48:00.000Z')
-        );
+        expect(screen.getByDisplayValue(format(date, 'YYYY-MM-DDTHH:mm')));
     });
 
-    it('should submit initial value with its timezone', () => {
-        let formApi;
+    it('should submit the form default value with its timezone', async () => {
         const publishedAt = new Date('Wed Oct 05 2011 16:48:00 GMT+0200');
         const onSubmit = jest.fn();
-        const { queryByDisplayValue } = renderWithRedux(
-            <Form
-                onSubmit={onSubmit}
-                initialValues={{ publishedAt }}
-                render={({ form }) => {
-                    formApi = form;
-
-                    return <DateTimeInput {...defaultProps} />;
-                }}
-            />
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={onSubmit} defaultValues={{ publishedAt }}>
+                    <DateTimeInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
         expect(
-            queryByDisplayValue(format(publishedAt, 'YYYY-MM-DDTHH:mm'))
+            screen.queryByDisplayValue(format(publishedAt, 'YYYY-MM-DDTHH:mm'))
         ).not.toBeNull();
-        expect(formApi.getState().values.publishedAt).toEqual(
-            new Date('2011-10-05T14:48:00.000Z')
-        );
-    });
-
-    it('should submit default value on input with its timezone', () => {
-        let formApi;
-        const publishedAt = new Date('Wed Oct 05 2011 16:48:00 GMT+0200');
-        const onSubmit = jest.fn();
-        const { queryByDisplayValue } = renderWithRedux(
-            <Form
-                onSubmit={onSubmit}
-                render={({ form }) => {
-                    formApi = form;
-
-                    return (
-                        <DateTimeInput
-                            {...defaultProps}
-                            defaultValue={publishedAt}
-                        />
-                    );
-                }}
-            />
-        );
-        expect(
-            queryByDisplayValue(format(publishedAt, 'YYYY-MM-DDTHH:mm'))
-        ).not.toBeNull();
-        expect(formApi.getState().values.publishedAt).toEqual(
-            new Date('2011-10-05T14:48:00.000Z')
-        );
-    });
-
-    it('should call `input.onChange` method when changed', () => {
-        let formApi;
-        const publishedAt = new Date('Wed Oct 05 2011 16:48:00 GMT+0200');
-        const { getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={({ form }) => {
-                    formApi = form;
-                    return <DateTimeInput {...defaultProps} />;
-                }}
-            />
-        );
-        const input = getByLabelText('resources.posts.fields.publishedAt');
-        fireEvent.change(input, {
-            target: { value: format(publishedAt, 'YYYY-MM-DDTHH:mm') },
+        fireEvent.click(screen.getByLabelText('ra.action.save'));
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith({
+                publishedAt,
+            });
         });
-        expect(formApi.getState().values.publishedAt).toEqual(
-            new Date('2011-10-05T14:48:00.000Z')
+    });
+
+    it('should submit the input default value with its timezone', async () => {
+        const publishedAt = new Date('Wed Oct 05 2011 16:48:00 GMT+0200');
+        const onSubmit = jest.fn();
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={onSubmit}>
+                    <DateTimeInput
+                        {...defaultProps}
+                        defaultValue={publishedAt}
+                    />
+                </SimpleForm>
+            </AdminContext>
         );
+        expect(
+            screen.queryByDisplayValue(format(publishedAt, 'YYYY-MM-DDTHH:mm'))
+        ).not.toBeNull();
+        fireEvent.click(screen.getByLabelText('ra.action.save'));
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith({
+                publishedAt,
+            });
+        });
     });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const { queryByText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    render={() => (
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm onSubmit={jest.fn()}>
                         <DateTimeInput
                             {...defaultProps}
                             validate={required()}
                         />
-                    )}
-                />
+                    </SimpleForm>
+                </AdminContext>
             );
-            expect(queryByText('ra.validation.required')).toBeNull();
+            expect(screen.queryByText('ra.validation.required')).toBeNull();
         });
 
-        it('should be displayed if field has been touched and is invalid', () => {
-            const { getByLabelText, queryByText } = render(
-                <Form
-                    onSubmit={jest.fn}
-                    validateOnBlur
-                    render={() => (
+        it('should be displayed if field has been touched and is invalid', async () => {
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm onSubmit={jest.fn()} mode="onBlur">
                         <DateTimeInput
                             {...defaultProps}
                             validate={required()}
                         />
-                    )}
-                />
+                    </SimpleForm>
+                </AdminContext>
             );
-            const input = getByLabelText(
+            const input = screen.getByLabelText(
                 'resources.posts.fields.publishedAt *'
             );
-            input.focus();
-            input.blur();
-            expect(queryByText('ra.validation.required')).not.toBeNull();
+            fireEvent.blur(input);
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('ra.validation.required')
+                ).not.toBeNull();
+            });
         });
     });
 });

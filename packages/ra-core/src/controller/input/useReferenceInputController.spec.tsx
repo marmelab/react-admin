@@ -5,17 +5,22 @@ import expect from 'expect';
 
 import { useReferenceInputController } from './useReferenceInputController';
 import { CoreAdminContext } from '../../core';
+import { Form, useInput } from '../../form';
 import { testDataProvider } from '../../dataProvider';
 
 const ReferenceInputController = props => {
     const { children, ...rest } = props;
-    return children(useReferenceInputController(rest)) as ReactElement;
+    const inputProps = useInput({
+        ...rest,
+    });
+    return children(
+        useReferenceInputController({ ...rest, ...inputProps })
+    ) as ReactElement;
 };
 
 describe('useReferenceInputController', () => {
     const defaultProps = {
         children: jest.fn(),
-        input: { value: undefined } as any,
         onChange: jest.fn(),
         reference: 'posts',
         resource: 'comments',
@@ -46,9 +51,13 @@ describe('useReferenceInputController', () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <ReferenceInputController {...defaultProps}>
-                    {children}
-                </ReferenceInputController>
+                <Form
+                    render={() => (
+                        <ReferenceInputController {...defaultProps}>
+                            {children}
+                        </ReferenceInputController>
+                    )}
+                />
             </CoreAdminContext>
         );
 
@@ -74,16 +83,18 @@ describe('useReferenceInputController', () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <ReferenceInputController
-                    {...{
-                        ...defaultProps,
-                        page: 5,
-                        perPage: 10,
-                        sort: { field: 'title', order: 'ASC' },
-                    }}
-                >
-                    {children}
-                </ReferenceInputController>
+                <Form
+                    render={() => (
+                        <ReferenceInputController
+                            {...defaultProps}
+                            page={5}
+                            perPage={10}
+                            sort={{ field: 'title', order: 'ASC' }}
+                        >
+                            {children}
+                        </ReferenceInputController>
+                    )}
+                />
             </CoreAdminContext>
         );
 
@@ -109,14 +120,14 @@ describe('useReferenceInputController', () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <ReferenceInputController
-                    {...{
-                        ...defaultProps,
-                        input: { value: 1 } as any,
-                    }}
-                >
-                    {children}
-                </ReferenceInputController>
+                <Form
+                    defaultValues={{ post_id: 1 }}
+                    render={() => (
+                        <ReferenceInputController {...defaultProps}>
+                            {children}
+                        </ReferenceInputController>
+                    )}
+                />
             </CoreAdminContext>
         );
 
@@ -131,16 +142,18 @@ describe('useReferenceInputController', () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <ReferenceInputController
-                    {...{
-                        ...defaultProps,
-                        input: { value: 1 } as any,
-                        loading: true,
-                        sort: { field: 'title', order: 'ASC' },
-                    }}
-                >
-                    {children}
-                </ReferenceInputController>
+                <Form
+                    defaultValues={{ post_id: 1 }}
+                    render={() => (
+                        <ReferenceInputController
+                            {...defaultProps}
+                            loading
+                            sort={{ field: 'title', order: 'ASC' }}
+                        >
+                            {children}
+                        </ReferenceInputController>
+                    )}
+                />
             </CoreAdminContext>
         );
 
@@ -223,12 +236,7 @@ describe('useReferenceInputController', () => {
             return (
                 <>
                     <button aria-label="Change sort" onClick={handleClick} />
-                    <ReferenceInputController
-                        {...{
-                            ...defaultProps,
-                            sort,
-                        }}
-                    >
+                    <ReferenceInputController {...defaultProps} sort={sort}>
                         {children}
                     </ReferenceInputController>
                 </>
@@ -236,7 +244,7 @@ describe('useReferenceInputController', () => {
         };
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Component />
+                <Form render={() => <Component />} />
             </CoreAdminContext>
         );
 
@@ -283,12 +291,17 @@ describe('useReferenceInputController', () => {
             });
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceInputController
-                        {...defaultProps}
-                        enableGetChoices={enableGetChoices}
-                    >
-                        {children}
-                    </ReferenceInputController>
+                    <Form
+                        defaultValues={{ post_id: 1 }}
+                        render={() => (
+                            <ReferenceInputController
+                                {...defaultProps}
+                                enableGetChoices={enableGetChoices}
+                            >
+                                {children}
+                            </ReferenceInputController>
+                        )}
+                    />
                 </CoreAdminContext>
             );
 
@@ -313,15 +326,17 @@ describe('useReferenceInputController', () => {
             const children = jest.fn().mockReturnValue(<p>child</p>);
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <ReferenceInputController
-                        {...{
-                            ...defaultProps,
-                            input: { value: 1 } as any,
-                            enableGetChoices: () => false,
-                        }}
-                    >
-                        {children}
-                    </ReferenceInputController>
+                    <Form
+                        defaultValues={{ post_id: 1 }}
+                        render={() => (
+                            <ReferenceInputController
+                                {...defaultProps}
+                                enableGetChoices={() => false}
+                            >
+                                {children}
+                            </ReferenceInputController>
+                        )}
+                    />
                 </CoreAdminContext>
             );
 

@@ -6,12 +6,11 @@ import {
     ReferenceInput,
     AutocompleteInput,
     BooleanInput,
-    FormWithRedirect,
+    Form,
     Toolbar,
     useEditContext,
 } from 'react-admin';
 import { Card, CardContent, Divider, Box } from '@mui/material';
-import omit from 'lodash/omit';
 
 import { Avatar } from './Avatar';
 import { ContactAside } from './ContactAside';
@@ -25,7 +24,7 @@ const ContactEditContent = () => {
     return (
         <Box mt={2} display="flex">
             <Box flex="1">
-                <FormWithRedirect
+                <Form
                     record={record}
                     onSubmit={save}
                     render={formProps => (
@@ -81,24 +80,7 @@ const ContactEditContent = () => {
                                     </Box>
                                 </Box>
                             </CardContent>
-                            <Toolbar
-                                {...omit(formProps, [
-                                    // FIXME Not super user friendly way to remove warnings
-                                    'dirtyFields',
-                                    'dirtyFieldsSinceLastSubmit',
-                                    'dirtySinceLastSubmit',
-                                    'hasSubmitErrors',
-                                    'hasValidationErrors',
-                                    'initialValues',
-                                    'modifiedSinceLastSubmit',
-                                    'submitError',
-                                    'submitErrors',
-                                    'submitFailed',
-                                    'submitSucceeded',
-                                    'submitting',
-                                    'valid',
-                                ])}
-                            />
+                            <Toolbar {...formProps} />
                         </Card>
                     )}
                 />

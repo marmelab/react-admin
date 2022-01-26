@@ -52,7 +52,7 @@ const defaultIcon = <Queue />;
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
-const omitId = ({ id, ...rest }: RaRecord) => rest;
+const omitId = ({ id, ...rest }: Partial<RaRecord>) => rest;
 
 const sanitizeRestProps = ({
     resource,
@@ -61,12 +61,12 @@ const sanitizeRestProps = ({
 }: Omit<CloneButtonProps, 'label' | 'scrollToTop' | 'icon'>) => rest;
 
 interface Props {
-    record?: RaRecord;
+    record?: Partial<RaRecord>;
     icon?: ReactElement;
     scrollToTop?: boolean;
 }
 
-export type CloneButtonProps = Props & ButtonProps;
+export type CloneButtonProps = Props & Omit<ButtonProps, 'record'>;
 
 CloneButton.propTypes = {
     icon: PropTypes.element,

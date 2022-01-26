@@ -14,6 +14,7 @@ import {
     TabbedForm,
     TextField,
     TextInput,
+    useRecordContext,
 } from 'react-admin';
 import { InputAdornment, styled } from '@mui/material';
 import { RichTextInput } from 'ra-input-rich-text';
@@ -23,12 +24,10 @@ import StarRatingField from '../reviews/StarRatingField';
 import Poster from './Poster';
 import { Product } from '../types';
 
-interface ProductTitleProps {
-    record?: Product;
-}
-
-const ProductTitle = ({ record }: ProductTitleProps) =>
-    record ? <span>Poster #{record.reference}</span> : null;
+const ProductTitle = () => {
+    const record = useRecordContext<Product>();
+    return record ? <span>Poster #{record.reference}</span> : null;
+};
 
 const PREFIX = 'ProductEdit';
 

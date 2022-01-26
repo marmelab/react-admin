@@ -1,9 +1,12 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { useInput, FieldTitle, InputProps } from 'ra-core';
-import { TextFieldProps } from '@mui/material/TextField';
+import { useInput, FieldTitle } from 'ra-core';
 
-import { ResettableTextField } from './ResettableTextField';
+import { CommonInputProps } from './CommonInputProps';
+import {
+    ResettableTextField,
+    ResettableTextFieldProps,
+} from './ResettableTextField';
 import { InputHelperText } from './InputHelperText';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 
@@ -23,13 +26,13 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  */
 export const TextInput = (props: TextInputProps) => {
     const {
+        defaultValue = '',
         label,
         format,
         helperText,
         onBlur,
         onFocus,
         onChange,
-        options,
         parse,
         resource,
         source,
@@ -37,27 +40,27 @@ export const TextInput = (props: TextInputProps) => {
         ...rest
     } = props;
     const {
+        field,
+        fieldState: { error, invalid, isTouched },
+        formState: { isSubmitted },
         id,
-        input,
         isRequired,
-        meta: { error, submitError, touched },
     } = useInput({
+        defaultValue,
         format,
-        onBlur,
-        onChange,
-        onFocus,
         parse,
         resource,
         source,
         type: 'text',
         validate,
+        onBlur,
+        onChange,
         ...rest,
     });
-
     return (
         <ResettableTextField
             id={id}
-            {...input}
+            {...field}
             label={
                 label !== '' &&
                 label !== false && (
@@ -69,15 +72,14 @@ export const TextInput = (props: TextInputProps) => {
                     />
                 )
             }
-            error={!!(touched && (error || submitError))}
+            error={(isTouched || isSubmitted) && invalid}
             helperText={
                 <InputHelperText
-                    touched={touched}
-                    error={error || submitError}
+                    touched={isTouched || isSubmitted}
+                    error={error?.message}
                     helperText={helperText}
                 />
             }
-            {...options}
             {...sanitizeInputRestProps(rest)}
         />
     );
@@ -95,5 +97,5 @@ TextInput.defaultProps = {
     options: {},
 };
 
-export type TextInputProps = InputProps<TextFieldProps> &
-    Omit<TextFieldProps, 'label' | 'helperText'>;
+export type TextInputProps = CommonInputProps &
+    Omit<ResettableTextFieldProps, 'label' | 'helperText'>;

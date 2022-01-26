@@ -7,10 +7,10 @@ import {
     PasswordInput,
     Toolbar,
     useTranslate,
-    FormWithRedirect,
+    Form,
     required,
     email,
-    FieldProps,
+    useRecordContext,
 } from 'react-admin';
 import { Box, Card, CardContent, Typography } from '@mui/material';
 
@@ -28,14 +28,16 @@ const VisitorEdit = () => {
     );
 };
 
-const VisitorTitle = ({ record }: FieldProps<Customer>) =>
-    record ? <FullNameField record={record} size="32" /> : null;
+const VisitorTitle = () => {
+    const record = useRecordContext<Customer>();
+    return record ? <FullNameField record={record} size="32" /> : null;
+};
 
 const VisitorForm = (props: any) => {
     const translate = useTranslate();
 
     return (
-        <FormWithRedirect
+        <Form
             {...props}
             validate={validatePasswords}
             render={({ handleSubmit, ...formProps }: any) => (
@@ -200,7 +202,6 @@ const VisitorForm = (props: any) => {
                         <Toolbar
                             record={formProps.record}
                             mutationMode="undoable"
-                            invalid={formProps.invalid}
                             saving={formProps.saving}
                             resource="customers"
                         />

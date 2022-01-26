@@ -7,7 +7,7 @@ import { PaginationPayload, RaRecord, SortPayload } from '../../types';
 import { ListControllerResult } from '../list';
 import { useReference } from '../useReference';
 import usePaginationState from '../usePaginationState';
-import { useSortState } from '..';
+import useSortState from '../useSortState';
 import useFilterState from '../useFilterState';
 import useSelectionState from '../useSelectionState';
 import { useResourceContext } from '../../core';
@@ -58,7 +58,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
     props: UseReferenceInputControllerParams
 ): ReferenceInputValue<RecordType> => {
     const {
-        input,
+        field,
         page: initialPage = 1,
         perPage: initialPerPage = 25,
         filter = defaultFilter,
@@ -130,14 +130,14 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         isLoading: referenceLoading,
         isFetching: referenceFetching,
     } = useReference<RecordType>({
-        id: input.value,
+        id: field.value,
         reference,
     });
     // add current value to possible sources
     let finalData: RecordType[], finalTotal: number;
     if (
         !referenceRecord ||
-        possibleValuesData.find(record => record.id === input.value)
+        possibleValuesData.find(record => record.id === field.value)
     ) {
         finalData = possibleValuesData;
         finalTotal = total;
@@ -148,7 +148,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
 
     // overall status
     const dataStatus = getDataStatus({
-        input,
+        field,
         matchingReferences: finalData,
         referenceRecord,
         translate,
@@ -255,7 +255,7 @@ export interface UseReferenceInputControllerParams {
     allowEmpty?: boolean;
     filter?: any;
     filterToQuery?: (filter: string) => any;
-    input?: any;
+    field?: any;
     page?: number;
     perPage?: number;
     record?: RaRecord;

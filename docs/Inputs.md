@@ -45,11 +45,11 @@ All input components accept the following props:
 <TextInput source="zb_title" label="Title" initialValue="Foo" />
 ```
 
-React-admin uses [react-final-form](https://final-form.org/docs/react-final-form/getting-started) to control form inputs. Each input component also accepts all react-final-form [FieldProps](https://final-form.org/docs/react-final-form/types/FieldProps), including:
+React-admin uses [react-hook-form](https://react-hook-form.com/) to control form inputs. Each input component also accepts all react-hook-form [useController](https://react-hook-form.com/api/usecontroller) hook options, with the addition of:
 
 | Prop           | Required | Type       | Default | Description                                                                                                                                                                                                     |
 | -------------- | -------- | ---------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `initialValue` | Optional | `mixed`    | -       | Value to be set when the property is `null` or `undefined`                                                                                                                                                      |
+| `defaultValue` | Optional | `mixed`    | -       | Value to be set when the property is `null` or `undefined`                                                                                                                                                      |
 | `format`       | Optional | `Function` | -       | Callback taking the value from the form state and the name of the field, and returns the input value. See the [Transforming Input Value](./Inputs.md#transforming-input-value-tofrom-record) section.           |
 | `parse`        | Optional | `Function` | -       | Callback taking the input value and name of the field, and returns the value you want stored in the form state. See the [Transforming Input Value](./Inputs.md#transforming-input-value-tofrom-record) section. |
 
@@ -82,7 +82,7 @@ Then you can display a text input to edit the author first name as follows:
 
 ### Transforming Input Value to/from Record
 
-The data format returned by the input component may not be what your API desires. Since React-admin uses react-final-form, we can use its [parse](https://final-form.org/docs/react-final-form/types/FieldProps#parse) and [format](https://final-form.org/docs/react-final-form/types/FieldProps#format) functions to transform the input value when saving to and loading from the record.
+The data format returned by the input component may not be what your API desires. You can use the `parse` and `format` functions to transform the input value when saving to and loading from the record.
 
 Mnemonic for the two functions:
 
@@ -124,12 +124,12 @@ const dateParser = v => {
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 
-React-admin relies on [react-final-form](https://final-form.org/docs/react-final-form/getting-started) for form handling. You can grab the current form values using react-final-form [useFormState](https://final-form.org/docs/react-final-form/api/useFormState) hook.
+React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form [useWatch](https://react-hook-form.com/api/usewatch) hook.
 
 ```jsx
 import * as React from 'react';
 import { Edit, SimpleForm, SelectInput } from 'react-admin';
-import { useFormState } from 'react-final-form';
+import { useWatch } from 'react-hook-form';
 
 const countries = ['USA', 'UK', 'France'];
 const cities = {
@@ -140,10 +140,12 @@ const cities = {
 const toChoices = items => items.map(item => ({ id: item, name: item }));
 
 const CityInput = props => {
-    const { values } = useFormState();
+    const country = useWatch({ name: 'country' });
+    const values = getValues();
+
     return (
         <SelectInput
-            choices={values.country ? toChoices(cities[values.country]) : []}
+            choices={country ? toChoices(cities[country]) : []}
             {...props}
         />
     );
@@ -251,44 +253,29 @@ import { FormDataConsumer } from 'react-admin';
  );
 ```
 
-**Tip**: When using a `FormDataConsumer` you can define [subscription](https://final-form.org/docs/react-final-form/types/FormProps#subscription) prop to pass to the `react-final-form`
-
-{% raw %}
-```jsx
-import { FormDataConsumer } from 'react-admin';
-
- const PostEdit = () => (
-     <Edit>
-         <SimpleForm>
-             <BooleanInput source="hasEmail" />
-             <FormDataConsumer subscription={{ values: true }}>
-                 {({ formData, ...rest }) => formData.hasEmail &&
-                      <TextInput source="email" {...rest} />
-                 }
-             </FormDataConsumer>
-         </SimpleForm>
-     </Edit>
- );
-```
-{% endraw %}
-
 ## Writing Your Own Input Component
 
-If you need a more specific input type, you can write it directly in React. You'll have to rely on react-final-form's [Field](https://final-form.org/docs/react-final-form/api/Field) component, or its [useField](https://final-form.org/docs/react-final-form/api/useField) hook, to handle the value update cycle.
+If you need a more specific input type, you can write it directly in React. You'll have to rely on react-hook-form's [useController](https://react-hook-form.com/api/usecontroller) hook, to handle the value update cycle.
 
-### Using `<Field>`
+### Using `useController`
 
 For instance, let's write a component to edit the latitude and longitude of the current record:
 
 ```jsx
 // in LatLongInput.js
-import { Field } from 'react-final-form';
-const LatLngInput = () => (
-    <span>
-        <Field name="lat" component="input" type="number" placeholder="latitude" />
-        &nbsp;
-        <Field name="lng" component="input" type="number" placeholder="longitude" />
-    </span>
+import { useController } from 'react-hook-form';
+
+const LatLngInput = () => {
+    const input1 = useController({ name: 'lat' });
+    const input2 = useController({ name: 'lng' });
+    
+    return (
+        <span>
+            <input {...input1.field} type="number" placeholder="latitude" />
+            &nbsp;
+            <input {...input2.field} type="number" placeholder="longitude" />
+        </span>
+    );
 );
 export default LatLngInput;
 
@@ -302,25 +289,33 @@ const ItemEdit = () => (
 );
 ```
 
-`LatLngInput` takes no props, because the `<Field>` component can access the current record via the form context. The `name` prop serves as a selector for the record property to edit. All the props passed to `Field` except `name` and `component` are passed to the child component (an `<input>` in that example). Executing this component will render roughly the following code:
+`LatLngInput` takes no props, because the `useController` component can access the current record via the form context. The `name` prop serves as a selector for the record property to edit. Executing this component will render roughly the following code:
 
 ```html
 <span>
-    <input type="number" placeholder="latitude" value={record.lat} />
-    <input type="number" placeholder="longitude" value={record.lng} />
+    <input name="lat" type="number" placeholder="latitude" value={record.lat} />
+    <input name="lng" type="number" placeholder="longitude" value={record.lng} />
 </span>
 ```
 
-**Tip**: React-final-form's `<Field>` component supports dot notation in the `name` prop, to allow binding to nested values:
+**Tip**: React-hook-form's `useController` component supports dot notation in the `name` prop, to allow binding to nested values:
 
 ```jsx
-const LatLongInput = () => (
-    <span>
-        <Field name="position.lat" component="input" type="number" placeholder="latitude" />
-        &nbsp;
-        <Field name="position.lng" component="input" type="number" placeholder="longitude" />
-    </span>
+import { useController } from 'react-hook-form';
+
+const LatLngInput = () => {
+    const input1 = useController({ name: 'position.lat' });
+    const input2 = useController({ name: 'position.lng' });
+    
+    return (
+        <span>
+            <input {...input1.field} type="number" placeholder="latitude" />
+            &nbsp;
+            <input {...input2.field} type="number" placeholder="longitude" />
+        </span>
+    );
 );
+export default LatLngInput;
 ```
 
 ### Using `<Labeled>`
@@ -329,17 +324,22 @@ This component lacks a label. React-admin provides the `<Labeled>` component for
 
 ```jsx
 // in LatLongInput.js
-import { Field } from 'react-final-form';
+import { useController } from 'react-hook-form';
 import { Labeled } from 'react-admin';
 
-const LatLngInput = () => (
-    <Labeled label="position">
-        <span>
-            <Field name="lat" component="input" type="number" placeholder="latitude" />
-            &nbsp;
-            <Field name="lng" component="input" type="number" placeholder="longitude" />
-        </span>
-    </Labeled>
+const LatLngInput = () => {
+    const input1 = useController({ name: 'lat' });
+    const input2 = useController({ name: 'lng' });
+    
+    return (
+        <Labeled label="position">
+            <span>
+                <input {...input1.field} type="number" placeholder="latitude" />
+                &nbsp;
+                <input {...input2.field} type="number" placeholder="longitude" />
+            </span>
+        </Labeled>
+    );
 );
 export default LatLngInput;
 ```
@@ -349,32 +349,32 @@ Now the component will render with a label:
 ```html
 <label>Position</label>
 <span>
-    <input type="number" placeholder="longitude" value={record.lat} />
-    <input type="number" placeholder="longitude" value={record.lng} />
+    <input name="lat" type="number" placeholder="longitude" value={record.lat} />
+    <input name="lng" type="number" placeholder="longitude" value={record.lng} />
 </span>
 ```
 
 ### Using Material-ui Field Components
 
-Instead of HTML `input` elements, you can use a material-ui component like `TextField`. To bind material-ui components to the form values, use the `useField()` hook:
+Instead of HTML `input` elements, you can use a material-ui component like `TextField`. To bind material-ui components to the form values, use the `useController()` hook:
 
 ```jsx
 // in LatLongInput.js
-import TextField from '@mui/material/TextField';
-import { useField } from 'react-final-form';
+import TextField from '@material-ui/core/TextField';
+import { useController } from 'react-hook-form';
 
 const BoundedTextField = ({ name, label }) => {
     const {
-        input: { onChange },
-        meta: { touched, error }
-    } = useField(name);
+        field,
+        fieldState: { isTouched, invalid, error },
+        formState: { isSubmitted }
+    } = useController(name);
     return (
         <TextField
-            name={name}
+            {...field}
             label={label}
-            onChange={onChange}
-            error={!!(touched && error)}
-            helperText={touched && error}
+            error={(isTouched || isSubmitted) && invalid)}
+            helperText={(isTouched || isSubmitted) && invalid ? error : ''}
         />
     );
 };
@@ -389,9 +389,9 @@ const LatLngInput = () => (
 
 **Tip**: Material-ui's `<TextField>` component already includes a label, so you don't need to use `<Labeled>` in this case.
 
-`useField()` returns two values: `input` and `meta`. To learn more about these props, please refer to the [useField](https://final-form.org/docs/react-final-form/api/useField) hook documentation in the react-final-form website.
+`useController()` returns three values: `field`, `fieldState`, and `formState`. To learn more about these props, please refer to the [useController](https://react-hook-form.com/api/usecontroller) hook documentation.
 
-Instead of HTML `input` elements or material-ui components, you can use react-admin input components, like `<NumberInput>` for instance. React-admin components already use `useField()`, and already include a label, so you don't need either `useField()` or `<Labeled>` when using them:
+Instead of HTML `input` elements or material-ui components, you can use react-admin input components, like `<NumberInput>` for instance. React-admin components already use `useController()`, and already include a label, so you don't need either `useController()` or `<Labeled>` when using them:
 
 ```jsx
 // in LatLongInput.js
@@ -408,33 +408,41 @@ export default LatLngInput;
 
 ### The `useInput()` Hook
 
-React-admin adds functionality to react-final-form:
+React-admin adds functionality to react-hook-form:
 
 - handling of custom event emitters like `onChange`,
 - support for an array of validators,
-- detection of required fields to add an asterisk to the field label.
+- detection of required fields to add an asterisk to the field label,
+- parse and form to translate record values to form values and vice-versa.
 
-So internally, react-admin components use another hook, which wraps react-final-form's `useField()` hook. It's called `useInput()` ; use it instead of `useField()` to create form inputs that have the exact same API as react-admin Input components:
+So internally, react-admin components use another hook, which wraps react-hook-form's `useController()` hook. It's called `useInput()` ; use it instead of `useController()` to create form inputs that have the exact same API as react-admin Input components:
 
 ```jsx
 // in LatLongInput.js
 import TextField from '@mui/material/TextField';
 import { useInput, required } from 'react-admin';
 
-const BoundedTextField = props => {
+const BoundedTextField = (props) => {
+    const { onChange, onBlur, ...rest } = props;
     const {
-        input: { name, onChange, ...rest },
-        meta: { touched, error },
+        field,
+        fieldState: { isTouched, invalid, error },
+        formState: { isSubmitted },
         isRequired
-    } = useInput(props);
+    } = useInput({
+        // Pass the event handlers to the hook but not the component as the field property already has them.
+        // useInput will call the provided onChange and onBlur in addition to the default needed by react-hook-form.
+        onChange,
+        onBlur,
+        ...props,
+    });
 
     return (
         <TextField
-            name={name}
+            {...field}
             label={props.label}
-            onChange={onChange}
-            error={!!(touched && error)}
-            helperText={touched && error}
+            error={(isTouched || isSubmitted) && invalid}
+            helperText={(isTouched || isSubmitted) && invalid ? error : ''}
             required={isRequired}
             {...rest}
         />
@@ -463,14 +471,15 @@ import { useInput } from 'react-admin';
 
 const SexInput = props => {
     const {
-        input,
-        meta: { touched, error }
+        field,
+        fieldState: { isTouched, invalid, error },
+        formState: { isSubmitted }
     } = useInput(props);
 
     return (
         <Select
             label="Sex"
-            {...input}
+            {...field}
         >
             <MenuItem value="M">Male</MenuItem>
             <MenuItem value="F">Female</MenuItem>
@@ -480,7 +489,7 @@ const SexInput = props => {
 export default SexInput;
 ```
 
-**Tip**: `useInput` accepts all arguments that you can pass to `useField`. That means that components using `useInput` accept props like [format](https://final-form.org/docs/react-final-form/types/FieldProps#format) and [parse](https://final-form.org/docs/react-final-form/types/FieldProps#parse), to convert values from the form to the input, and vice-versa:
+**Tip**: `useInput` accepts all arguments that you can pass to `useController`. Besides, components using `useInput` accept props like `format` and `parse`, to convert values from the form to the input, and vice-versa:
 
 ```jsx
 const parse = value => {/* ... */};

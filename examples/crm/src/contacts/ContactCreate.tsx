@@ -6,7 +6,7 @@ import {
     ReferenceInput,
     AutocompleteInput,
     BooleanInput,
-    FormWithRedirect,
+    Form,
     Toolbar,
     required,
     useCreateContext,
@@ -36,7 +36,7 @@ const ContactCreateContent = () => {
     return (
         <Box mt={2} display="flex">
             <Box flex="1">
-                <FormWithRedirect
+                <Form
                     record={record as any}
                     onSubmit={save}
                     render={formProps => (

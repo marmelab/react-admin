@@ -3,8 +3,7 @@ import { ChangeEvent, memo, useMemo } from 'react';
 import { InputAdornment } from '@mui/material';
 import { SxProps } from '@mui/system';
 import SearchIcon from '@mui/icons-material/Search';
-import { Form } from 'react-final-form';
-import { useTranslate, useListFilterContext } from 'ra-core';
+import { Form, useTranslate, useListFilterContext } from 'ra-core';
 
 import { TextInput } from '../../input';
 
@@ -29,7 +28,7 @@ export const FilterLiveSearch = memo(
         const { filterValues, setFilters } = useListFilterContext();
         const translate = useTranslate();
 
-        const onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
             if (event.target) {
                 setFilters(
                     { ...filterValues, [source]: event.target.value },
@@ -51,8 +50,10 @@ export const FilterLiveSearch = memo(
         const onSubmit = () => undefined;
 
         return (
-            <Form initialValues={initialValues} onSubmit={onSubmit}>
-                {() => (
+            <Form
+                defaultValues={initialValues}
+                onSubmit={onSubmit}
+                render={() => (
                     <TextInput
                         resettable
                         helperText={false}
@@ -65,14 +66,14 @@ export const FilterLiveSearch = memo(
                                 </InputAdornment>
                             ),
                         }}
-                        onChange={onSearchChange}
+                        onChange={handleChange}
                         size="small"
                         label={false}
                         hiddenLabel
                         {...rest}
                     />
                 )}
-            </Form>
+            />
         );
     }
 );

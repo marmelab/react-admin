@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { AutocompleteInput } from './AutocompleteInput';
+import { RaRecord } from 'ra-core';
+import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
 
 /**
  * An Input component for an autocomplete field, using an array of objects for the options
@@ -60,6 +61,29 @@ import { AutocompleteInput } from './AutocompleteInput';
  * @example
  * <AutocompleteArrayInput source="gender" choices={choices} translateChoice={false}/>
  */
-export const AutocompleteArrayInput = props => (
-    <AutocompleteInput {...props} multiple />
+export const AutocompleteArrayInput = <
+    OptionType extends RaRecord = RaRecord,
+    DisableClearable extends boolean | undefined = false,
+    SupportCreate extends boolean | undefined = false
+>({
+    defaultValue,
+    ...props
+}: AutocompleteArrayInputProps) => (
+    // @ts-ignore
+    <AutocompleteInput<OptionType, true, DisableClearable, SupportCreate>
+        {...props}
+        multiple
+        defaultValue={defaultValue ?? []}
+    />
 );
+
+export type AutocompleteArrayInputProps<
+    OptionType extends any = RaRecord,
+    DisableClearable extends boolean | undefined = false,
+    SupportCreate extends boolean | undefined = false
+> = Omit<
+    AutocompleteInputProps<OptionType, true, DisableClearable, SupportCreate>,
+    'defaultValue'
+> & {
+    defaultValue?: any[];
+};

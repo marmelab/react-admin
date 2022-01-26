@@ -4,12 +4,13 @@ import {
     BooleanInput,
     DateField,
     Edit,
-    FormWithRedirect,
+    Form,
     Labeled,
     ReferenceField,
     SelectInput,
     TextField,
     Toolbar,
+    useRecordContext,
     useTranslate,
 } from 'react-admin';
 import { Link as RouterLink } from 'react-router-dom';
@@ -29,12 +30,9 @@ const StyledEdit = styled(Edit)({
     [`&.${classes.root}`]: { alignItems: 'flex-start' },
 });
 
-interface OrderTitleProps {
-    record?: Order;
-}
-
-const OrderTitle = ({ record }: OrderTitleProps) => {
+const OrderTitle = () => {
     const translate = useTranslate();
+    const record = useRecordContext<Order>();
     return record ? (
         <span>
             {translate('resources.commands.title', {
@@ -44,45 +42,51 @@ const OrderTitle = ({ record }: OrderTitleProps) => {
     ) : null;
 };
 
-const CustomerDetails = ({ record }: { record?: Customer }) => (
-    <Box display="flex" flexDirection="column">
-        <Typography
-            component={RouterLink}
-            color="primary"
-            to={`/customers/${record?.id}`}
-            style={{ textDecoration: 'none' }}
-        >
-            {record?.first_name} {record?.last_name}
-        </Typography>
-        <Typography
-            component={Link}
-            color="primary"
-            href={`mailto:${record?.email}`}
-            style={{ textDecoration: 'none' }}
-        >
-            {record?.email}
-        </Typography>
-    </Box>
-);
+const CustomerDetails = () => {
+    const record = useRecordContext<Customer>();
+    return (
+        <Box display="flex" flexDirection="column">
+            <Typography
+                component={RouterLink}
+                color="primary"
+                to={`/customers/${record?.id}`}
+                style={{ textDecoration: 'none' }}
+            >
+                {record?.first_name} {record?.last_name}
+            </Typography>
+            <Typography
+                component={Link}
+                color="primary"
+                href={`mailto:${record?.email}`}
+                style={{ textDecoration: 'none' }}
+            >
+                {record?.email}
+            </Typography>
+        </Box>
+    );
+};
 
-const CustomerAddress = ({ record }: { record?: Customer }) => (
-    <Box>
-        <Typography>
-            {record?.first_name} {record?.last_name}
-        </Typography>
-        <Typography>{record?.address}</Typography>
-        <Typography>
-            {record?.city}, {record?.stateAbbr} {record?.zipcode}
-        </Typography>
-    </Box>
-);
+const CustomerAddress = () => {
+    const record = useRecordContext<Customer>();
+    return (
+        <Box>
+            <Typography>
+                {record?.first_name} {record?.last_name}
+            </Typography>
+            <Typography>{record?.address}</Typography>
+            <Typography>
+                {record?.city}, {record?.stateAbbr} {record?.zipcode}
+            </Typography>
+        </Box>
+    );
+};
 
 const Spacer = () => <Box m={1}>&nbsp;</Box>;
 
 const OrderForm = (props: any) => {
     const translate = useTranslate();
     return (
-        <FormWithRedirect
+        <Form
             {...props}
             render={({ handleSubmit, ...formProps }: any) => (
                 <form onSubmit={handleSubmit}>
@@ -220,7 +224,6 @@ const OrderForm = (props: any) => {
                             <Toolbar
                                 record={formProps.record}
                                 mutationMode="undoable"
-                                invalid={formProps.invalid}
                                 saving={formProps.saving}
                                 resource="commands"
                             />

@@ -1,48 +1,30 @@
 import * as React from 'react';
 import { createMemoryHistory } from 'history';
-import { Route, Routes } from 'react-router-dom';
-import {
-    minLength,
-    required,
-    SaveContextProvider,
-    CoreAdminContext,
-    testDataProvider,
-} from 'ra-core';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { minLength, required, testDataProvider } from 'ra-core';
 import {
     fireEvent,
     isInaccessible,
     render,
     screen,
+    waitFor,
 } from '@testing-library/react';
 
-import { defaultTheme } from '../defaultTheme';
+import { AdminContext } from '../AdminContext';
 import { TabbedForm } from './TabbedForm';
+import { TabbedFormClasses } from './TabbedFormView';
 import { FormTab } from './FormTab';
 import { TextInput } from '../input';
 
 describe('<TabbedForm />', () => {
-    const saveContextValue = {
-        save: jest.fn(),
-        saving: false,
-    };
-
     it('should display the tabs', () => {
         const history = createMemoryHistory();
         render(
-            <CoreAdminContext
-                dataProvider={testDataProvider()}
-                history={history}
-            >
-                <ThemeProvider theme={createTheme(defaultTheme)}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <TabbedForm>
-                            <FormTab label="tab1" />
-                            <FormTab label="tab2" />
-                        </TabbedForm>
-                    </SaveContextProvider>
-                </ThemeProvider>
-            </CoreAdminContext>
+            <AdminContext dataProvider={testDataProvider()} history={history}>
+                <TabbedForm>
+                    <FormTab label="tab1" />
+                    <FormTab label="tab2" />
+                </TabbedForm>
+            </AdminContext>
         );
 
         const tabs = screen.queryAllByRole('tab');
@@ -56,37 +38,23 @@ describe('<TabbedForm />', () => {
         const history = createMemoryHistory();
 
         const { rerender } = render(
-            <CoreAdminContext
-                dataProvider={testDataProvider()}
-                history={history}
-            >
-                <ThemeProvider theme={createTheme(defaultTheme)}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <TabbedForm submitOnEnter={false} toolbar={<Toolbar />}>
-                            <FormTab label="tab1" />
-                            <FormTab label="tab2" />
-                        </TabbedForm>
-                    </SaveContextProvider>
-                </ThemeProvider>
-            </CoreAdminContext>
+            <AdminContext dataProvider={testDataProvider()} history={history}>
+                <TabbedForm submitOnEnter={false} toolbar={<Toolbar />}>
+                    <FormTab label="tab1" />
+                    <FormTab label="tab2" />
+                </TabbedForm>
+            </AdminContext>
         );
 
         expect(screen.queryByText('submitOnEnter: false')).not.toBeNull();
 
         rerender(
-            <CoreAdminContext
-                dataProvider={testDataProvider()}
-                history={history}
-            >
-                <ThemeProvider theme={createTheme(defaultTheme)}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <TabbedForm submitOnEnter toolbar={<Toolbar />}>
-                            <FormTab label="tab1" />
-                            <FormTab label="tab2" />
-                        </TabbedForm>
-                    </SaveContextProvider>
-                </ThemeProvider>
-            </CoreAdminContext>
+            <AdminContext dataProvider={testDataProvider()} history={history}>
+                <TabbedForm submitOnEnter toolbar={<Toolbar />}>
+                    <FormTab label="tab1" />
+                    <FormTab label="tab2" />
+                </TabbedForm>
+            </AdminContext>
         );
 
         expect(screen.queryByText('submitOnEnter: true')).not.toBeNull();
@@ -95,39 +63,24 @@ describe('<TabbedForm />', () => {
     it('should set the style of an inactive Tab button with errors', async () => {
         const history = createMemoryHistory({ initialEntries: ['/posts/1'] });
         render(
-            <CoreAdminContext
-                dataProvider={testDataProvider()}
-                history={history}
-            >
-                <Routes>
-                    <Route
-                        path="/posts/:id/*"
-                        element={
-                            <ThemeProvider theme={createTheme(defaultTheme)}>
-                                <SaveContextProvider value={saveContextValue}>
-                                    <TabbedForm
-                                        classes={{ errorTabButton: 'error' }}
-                                        resource="posts"
-                                    >
-                                        <FormTab label="tab1">
-                                            <TextInput
-                                                source="title"
-                                                validate={required()}
-                                            />
-                                        </FormTab>
-                                        <FormTab label="tab2">
-                                            <TextInput
-                                                source="description"
-                                                validate={minLength(10)}
-                                            />
-                                        </FormTab>
-                                    </TabbedForm>
-                                </SaveContextProvider>
-                            </ThemeProvider>
-                        }
-                    />
-                </Routes>
-            </CoreAdminContext>
+            <AdminContext dataProvider={testDataProvider()} history={history}>
+                <TabbedForm resource="posts" mode="onBlur">
+                    <FormTab label="tab1">
+                        <TextInput
+                            defaultValue=""
+                            source="title"
+                            validate={required()}
+                        />
+                    </FormTab>
+                    <FormTab label="tab2">
+                        <TextInput
+                            defaultValue=""
+                            source="description"
+                            validate={minLength(10)}
+                        />
+                    </FormTab>
+                </TabbedForm>
+            </AdminContext>
         );
 
         const tabs = screen.getAllByRole('tab');
@@ -138,46 +91,39 @@ describe('<TabbedForm />', () => {
         fireEvent.change(input, { target: { value: 'foo' } });
         fireEvent.blur(input);
         fireEvent.click(tabs[0]);
-        expect(tabs[0].classList.contains('error')).toEqual(false);
-        expect(tabs[1].classList.contains('error')).toEqual(true);
+
+        await waitFor(() => {
+            expect(
+                tabs[1].classList.contains(TabbedFormClasses.errorTabButton)
+            ).toEqual(true);
+        });
+
+        expect(
+            tabs[0].classList.contains(TabbedFormClasses.errorTabButton)
+        ).toEqual(false);
     });
 
-    it('should set the style of an active Tab button with errors', () => {
+    it('should set the style of an active Tab button with errors', async () => {
         const history = createMemoryHistory({ initialEntries: ['/posts/1'] });
         render(
-            <CoreAdminContext
-                dataProvider={testDataProvider()}
-                history={history}
-            >
-                <Routes>
-                    <Route
-                        path="/posts/:id/*"
-                        element={
-                            <ThemeProvider theme={createTheme(defaultTheme)}>
-                                <SaveContextProvider value={saveContextValue}>
-                                    <TabbedForm
-                                        classes={{ errorTabButton: 'error' }}
-                                        resource="posts"
-                                    >
-                                        <FormTab label="tab1">
-                                            <TextInput
-                                                source="title"
-                                                validate={required()}
-                                            />
-                                        </FormTab>
-                                        <FormTab label="tab2">
-                                            <TextInput
-                                                source="description"
-                                                validate={required()}
-                                            />
-                                        </FormTab>
-                                    </TabbedForm>
-                                </SaveContextProvider>
-                            </ThemeProvider>
-                        }
-                    />
-                </Routes>
-            </CoreAdminContext>
+            <AdminContext dataProvider={testDataProvider()} history={history}>
+                <TabbedForm resource="posts" mode="onBlur">
+                    <FormTab label="tab1">
+                        <TextInput
+                            defaultValue=""
+                            source="title"
+                            validate={required()}
+                        />
+                    </FormTab>
+                    <FormTab label="tab2">
+                        <TextInput
+                            defaultValue=""
+                            source="description"
+                            validate={required()}
+                        />
+                    </FormTab>
+                </TabbedForm>
+            </AdminContext>
         );
 
         const tabs = screen.getAllByRole('tab');
@@ -186,43 +132,37 @@ describe('<TabbedForm />', () => {
             'resources.posts.fields.description *'
         );
         fireEvent.blur(input);
-        expect(tabs[0].classList.contains('error')).toEqual(false);
-        expect(tabs[1].classList.contains('error')).toEqual(true);
+        await waitFor(() => {
+            expect(
+                tabs[1].classList.contains(TabbedFormClasses.errorTabButton)
+            ).toEqual(true);
+        });
+        expect(
+            tabs[0].classList.contains(TabbedFormClasses.errorTabButton)
+        ).toEqual(false);
     });
 
-    it('should set the style of any Tab button with errors on submit', () => {
+    it('should set the style of any Tab button with errors on submit', async () => {
         const history = createMemoryHistory({ initialEntries: ['/posts/1'] });
         render(
-            <CoreAdminContext
-                dataProvider={testDataProvider()}
-                history={history}
-            >
-                <Routes>
-                    <Route
-                        path="/posts/:id/*"
-                        element={
-                            <ThemeProvider theme={createTheme(defaultTheme)}>
-                                <SaveContextProvider value={saveContextValue}>
-                                    <TabbedForm resource="posts">
-                                        <FormTab label="tab1">
-                                            <TextInput
-                                                source="title"
-                                                validate={required()}
-                                            />
-                                        </FormTab>
-                                        <FormTab label="tab2">
-                                            <TextInput
-                                                source="description"
-                                                validate={minLength(10)}
-                                            />
-                                        </FormTab>
-                                    </TabbedForm>
-                                </SaveContextProvider>
-                            </ThemeProvider>
-                        }
-                    />
-                </Routes>
-            </CoreAdminContext>
+            <AdminContext dataProvider={testDataProvider()} history={history}>
+                <TabbedForm resource="posts" mode="onBlur">
+                    <FormTab label="tab1">
+                        <TextInput
+                            defaultValue=""
+                            source="title"
+                            validate={required()}
+                        />
+                    </FormTab>
+                    <FormTab label="tab2">
+                        <TextInput
+                            defaultValue=""
+                            source="description"
+                            validate={minLength(10)}
+                        />
+                    </FormTab>
+                </TabbedForm>
+            </AdminContext>
         );
 
         const tabs = screen.getAllByRole('tab');
@@ -230,43 +170,40 @@ describe('<TabbedForm />', () => {
         const input = screen.getByLabelText(
             'resources.posts.fields.description'
         );
-        fireEvent.blur(input);
         fireEvent.change(input, { target: { value: 'fooooooooo' } });
         fireEvent.click(screen.getByLabelText('ra.action.save'));
-        expect(tabs[0].classList.contains('error')).toEqual(true);
-        expect(tabs[1].classList.contains('error')).toEqual(false);
+        await waitFor(() => {
+            expect(
+                tabs[0].classList.contains(TabbedFormClasses.errorTabButton)
+            ).toEqual(true);
+        });
+        expect(
+            tabs[1].classList.contains(TabbedFormClasses.errorTabButton)
+        ).toEqual(false);
     });
 
     it('should sync tabs with location by default', () => {
         const history = createMemoryHistory({ initialEntries: ['/'] });
 
         render(
-            <CoreAdminContext
-                dataProvider={testDataProvider()}
-                history={history}
-            >
-                <ThemeProvider theme={createTheme(defaultTheme)}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <TabbedForm
-                            classes={{ errorTabButton: 'error' }}
-                            resource="posts"
-                        >
-                            <FormTab label="tab1">
-                                <TextInput
-                                    source="title"
-                                    validate={required()}
-                                />
-                            </FormTab>
-                            <FormTab label="tab2">
-                                <TextInput
-                                    source="description"
-                                    validate={minLength(10)}
-                                />
-                            </FormTab>
-                        </TabbedForm>
-                    </SaveContextProvider>
-                </ThemeProvider>
-            </CoreAdminContext>
+            <AdminContext dataProvider={testDataProvider()} history={history}>
+                <TabbedForm resource="posts">
+                    <FormTab label="tab1">
+                        <TextInput
+                            defaultValue=""
+                            source="title"
+                            validate={required()}
+                        />
+                    </FormTab>
+                    <FormTab label="tab2">
+                        <TextInput
+                            defaultValue=""
+                            source="description"
+                            validate={minLength(10)}
+                        />
+                    </FormTab>
+                </TabbedForm>
+            </AdminContext>
         );
 
         const tabs = screen.getAllByRole('tab');
@@ -296,33 +233,19 @@ describe('<TabbedForm />', () => {
         const history = createMemoryHistory({ initialEntries: ['/'] });
 
         render(
-            <CoreAdminContext
-                dataProvider={testDataProvider()}
-                history={history}
-            >
-                <ThemeProvider theme={createTheme(defaultTheme)}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <TabbedForm
-                            classes={{ errorTabButton: 'error' }}
-                            resource="posts"
-                            syncWithLocation={false}
-                        >
-                            <FormTab label="tab1">
-                                <TextInput
-                                    source="title"
-                                    validate={required()}
-                                />
-                            </FormTab>
-                            <FormTab label="tab2">
-                                <TextInput
-                                    source="description"
-                                    validate={minLength(10)}
-                                />
-                            </FormTab>
-                        </TabbedForm>
-                    </SaveContextProvider>
-                </ThemeProvider>
-            </CoreAdminContext>
+            <AdminContext dataProvider={testDataProvider()} history={history}>
+                <TabbedForm resource="posts" syncWithLocation={false}>
+                    <FormTab label="tab1">
+                        <TextInput source="title" validate={required()} />
+                    </FormTab>
+                    <FormTab label="tab2">
+                        <TextInput
+                            source="description"
+                            validate={minLength(10)}
+                        />
+                    </FormTab>
+                </TabbedForm>
+            </AdminContext>
         );
 
         const tabs = screen.getAllByRole('tab');

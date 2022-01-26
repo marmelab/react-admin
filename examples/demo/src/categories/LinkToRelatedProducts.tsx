@@ -2,7 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import { useTranslate, FieldProps } from 'react-admin';
+import { useTranslate, useRecordContext } from 'react-admin';
 import { stringify } from 'query-string';
 
 import products from '../products';
@@ -23,8 +23,8 @@ const StyledButton = styled(Button)({
     },
 });
 
-const LinkToRelatedProducts = (props: FieldProps<Category>) => {
-    const { record } = props;
+const LinkToRelatedProducts = () => {
+    const record = useRecordContext<Category>();
     const translate = useTranslate();
 
     return record ? (

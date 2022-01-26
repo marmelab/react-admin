@@ -22,6 +22,7 @@ describe('Custom Forms', () => {
     });
 
     it('should allow to create a new post', () => {
+        cy.get(CreatePage.elements.postSelect).click();
         cy.get(CreatePage.elements.showPostCreateModalButton).click();
 
         CreatePage.setInputValue('input', 'title', 'Bazinga!');

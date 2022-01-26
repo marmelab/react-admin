@@ -9,12 +9,12 @@ import {
     useMemo,
     useRef,
 } from 'react';
-import { FormHelperText, styled } from '@mui/material';
+import { styled } from '@mui/material';
 import classNames from 'classnames';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
-import { RaRecord, ValidationError } from 'ra-core';
-import { FieldArrayRenderProps } from 'react-final-form-arrays';
+import { RaRecord } from 'ra-core';
+import { UseFieldArrayReturn } from 'react-hook-form';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { CSSTransitionProps } from 'react-transition-group/CSSTransition';
 
@@ -49,45 +49,24 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         variant,
         margin,
         TransitionProps,
-        defaultValue,
         getItemLabel = DefaultLabelFn,
     } = props;
-    const { fields, meta } = useArrayInput(props);
-    const { error, submitFailed } = meta;
-    const nodeRef = useRef(null);
-
-    // We need a unique id for each field for a proper enter/exit animation
-    // so we keep an internal map between the field position and an auto-increment id
-    const nextId = useRef(
-        fields && fields.length
-            ? fields.length
-            : defaultValue
-            ? defaultValue.length
-            : 0
-    );
-
-    // We check whether we have a defaultValue (which must be an array) before checking
-    // the fields prop which will always be empty for a new record.
-    // Without it, our ids wouldn't match the default value and we would get key warnings
-    // on the CssTransition element inside our render method
-    const ids = useRef(
-        nextId.current > 0 ? Array.from(Array(nextId.current).keys()) : []
-    );
+    const { append, fields, move, remove } = useArrayInput(props);
+    const nodeRef = useRef();
+    // const { error, submitFailed } = meta;
 
     const removeField = useCallback(
         (index: number) => {
-            ids.current.splice(index, 1);
-            fields.remove(index);
+            remove(index);
         },
-        [fields]
+        [remove]
     );
 
     const addField = useCallback(
         (item: any = undefined) => {
-            ids.current.push(nextId.current++);
-            fields.push(item);
+            append(item);
         },
-        [fields]
+        [append]
     );
 
     // add field and call the onClick event of the button passed as addButton prop
@@ -102,12 +81,9 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
 
     const handleReorder = useCallback(
         (origin: number, destination: number) => {
-            const item = ids.current[origin];
-            ids.current[origin] = ids.current[destination];
-            ids.current[destination] = item;
-            fields.move(origin, destination);
+            move(origin, destination);
         },
-        [fields]
+        [move]
     );
 
     const records = get(record, source);
@@ -129,16 +105,11 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                     className
                 )}
             >
-                {submitFailed && typeof error !== 'object' && error && (
-                    <FormHelperText error>
-                        <ValidationError error={error as string} />
-                    </FormHelperText>
-                )}
                 <TransitionGroup component={null}>
                     {fields.map((member, index) => (
                         <CSSTransition
                             nodeRef={nodeRef}
-                            key={ids.current[index]}
+                            key={member.id}
                             timeout={500}
                             classNames="fade"
                             {...TransitionProps}
@@ -151,8 +122,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                                 getItemLabel={getItemLabel}
                                 index={index}
                                 margin={margin}
-                                member={member}
-                                meta={meta}
+                                member={`${source}.${index}`}
                                 onRemoveField={removeField}
                                 onReorder={handleReorder}
                                 record={(records && records[index]) || {}}
@@ -199,10 +169,10 @@ SimpleFormIterator.propTypes = {
     removeButton: PropTypes.element,
     children: PropTypes.node,
     className: PropTypes.string,
-    // @ts-ignore
-    fields: PropTypes.object,
-    meta: PropTypes.object,
-    // @ts-ignore
+    field: PropTypes.object,
+    fields: PropTypes.array,
+    fieldState: PropTypes.object,
+    formState: PropTypes.object,
     record: PropTypes.object,
     source: PropTypes.string,
     resource: PropTypes.string,
@@ -212,8 +182,7 @@ SimpleFormIterator.propTypes = {
     TransitionProps: PropTypes.shape({}),
 };
 
-export interface SimpleFormIteratorProps
-    extends Partial<Omit<FieldArrayRenderProps<any, HTMLElement>, 'meta'>> {
+export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     addButton?: ReactElement;
     children?: ReactNode;
     className?: string;
@@ -239,7 +208,7 @@ export interface SimpleFormIteratorProps
 }
 
 const Root = styled('ul')(({ theme }) => ({
-    [`${SimpleFormIteratorPrefix} .${SimpleFormIteratorClasses.root}`]: {
+    [`${SimpleFormIteratorPrefix}.${SimpleFormIteratorClasses.root}`]: {
         padding: 0,
         marginBottom: 0,
         '& > li:last-child': {

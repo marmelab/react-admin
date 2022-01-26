@@ -2,16 +2,23 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import ThumbUp from '@mui/icons-material/ThumbUp';
-import { useTranslate, useUpdate, useNotify, useRedirect } from 'react-admin';
+import {
+    useTranslate,
+    useUpdate,
+    useNotify,
+    useRedirect,
+    useRecordContext,
+} from 'react-admin';
 import { Review } from './../types';
 
 /**
  * This custom button demonstrate using useUpdate to update data
  */
-const AcceptButton = ({ record }: { record: Review }) => {
+const AcceptButton = () => {
     const translate = useTranslate();
     const notify = useNotify();
     const redirectTo = useRedirect();
+    const record = useRecordContext<Review>();
 
     const [approve, { isLoading }] = useUpdate(
         'reviews',

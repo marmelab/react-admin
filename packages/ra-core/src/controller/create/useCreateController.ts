@@ -57,8 +57,7 @@ export const useCreateController = <
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
-    const recordToUse =
-        record ?? getRecordFromLocation(location) ?? emptyRecord;
+    const recordToUse = record ?? getRecordFromLocation(location) ?? undefined;
     const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
 
     const [create, { isLoading: saving }] = useCreate(
@@ -190,14 +189,13 @@ export interface CreateControllerResult<
     resource: string;
 }
 
-const emptyRecord = {};
 /**
  * Get the initial record from the location, whether it comes from the location
  * state or is serialized in the url search part.
  */
 export const getRecordFromLocation = ({ state, search }: Location) => {
-    if (state && state.record) {
-        return state.record;
+    if (state && (state as StateWithRecord).record) {
+        return (state as StateWithRecord).record;
     }
     if (search) {
         try {
@@ -218,6 +216,10 @@ export const getRecordFromLocation = ({ state, search }: Location) => {
         }
     }
     return null;
+};
+
+type StateWithRecord = {
+    record?: Partial<RaRecord>;
 };
 
 const getDefaultRedirectRoute = (hasShow, hasEdit) => {

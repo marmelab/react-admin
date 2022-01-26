@@ -2,7 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Icon from '@mui/icons-material/Stars';
 
-import { FieldProps } from 'react-admin';
+import { FieldProps, useRecordContext } from 'react-admin';
 
 const PREFIX = 'StarRatingField';
 
@@ -32,7 +32,9 @@ interface OwnProps {
     size?: 'large' | 'small';
 }
 
-const StarRatingField = ({ record, size = 'large' }: FieldProps & OwnProps) => {
+const StarRatingField = ({ size = 'large' }: FieldProps & OwnProps) => {
+    const record = useRecordContext();
+
     return record ? (
         <Root className={classes.root}>
             {Array(record.rating)

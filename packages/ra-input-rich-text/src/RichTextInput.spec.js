@@ -1,7 +1,8 @@
 import * as React from 'react';
 import debounce from 'lodash/debounce';
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import { Form } from 'react-final-form';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { testDataProvider } from 'ra-core';
+import { AdminContext, SimpleForm } from 'ra-ui-materialui';
 
 import { RichTextInput } from './RichTextInput';
 
@@ -28,39 +29,28 @@ describe('RichTextInput', () => {
     });
 
     it('should call handleChange only once when editing', async () => {
-        jest.useFakeTimers();
         const handleChange = jest.fn();
         debounce.mockImplementation(fn => fn);
-        const { getByTestId, rerender } = render(
-            <Form
-                initialValues={{ body: '<p>test</p>' }}
-                onSubmit={jest.fn()}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ body: '<p>test</p>' }}
+                    onSubmit={jest.fn()}
+                >
                     <RichTextInput source="body" onChange={handleChange} />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
         const quillNode = await waitFor(() => {
-            return getByTestId('quill');
+            return screen.getByTestId('quill');
         });
         const node = quillNode.querySelector('.ql-editor');
         fireEvent.input(node, {
             target: { innerHTML: '<p>test1</p>' },
         });
 
-        // ensuring the first 'text-change' event had been handled
-        jest.runOnlyPendingTimers();
-
-        rerender(
-            <Form
-                initialValues={{ body: '<p>test1</p>' }}
-                onSubmit={jest.fn()}
-                render={() => (
-                    <RichTextInput source="body" onChange={handleChange} />
-                )}
-            />
-        );
-
-        expect(handleChange).toHaveBeenCalledTimes(1);
+        await waitFor(() => {
+            expect(handleChange).toHaveBeenCalledTimes(1);
+        });
     });
 });

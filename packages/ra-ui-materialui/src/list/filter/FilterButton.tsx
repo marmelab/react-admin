@@ -53,7 +53,7 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
 
     const handleShow = useCallback(
         ({ source, defaultValue }) => {
-            showFilter(source, defaultValue);
+            showFilter(source, defaultValue === '' ? undefined : defaultValue);
             setOpen(false);
         },
         [showFilter, setOpen]

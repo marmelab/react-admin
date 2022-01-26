@@ -1,6 +1,6 @@
 import { useCallback, isValidElement } from 'react';
 import set from 'lodash/set';
-import useChoices, { OptionText, UseChoicesOptions } from './useChoices';
+import { useChoices, OptionText, UseChoicesOptions } from './useChoices';
 import { useTranslate } from '../i18n';
 
 /*
@@ -24,7 +24,7 @@ import { useTranslate } from '../i18n';
  * - getChoiceValue: Returns the choice value
  * - getSuggestions: A function taking a filter value (string) and returning the matching suggestions
  */
-const useSuggestions = ({
+export const useSuggestions = ({
     allowCreate,
     allowEmpty,
     choices,
@@ -92,8 +92,6 @@ const useSuggestions = ({
         getSuggestions,
     };
 };
-
-export default useSuggestions;
 
 const escapeRegExp = value =>
     value ? value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') : ''; // $& means the whole matched string
@@ -196,10 +194,22 @@ export const getSuggestionsFactory = ({
                     getChoiceValue(choice) === getChoiceValue(selectedItem)
             );
         } else {
-            suggestions = choices;
+            suggestions = [...choices];
         }
     } else {
-        suggestions = choices.filter(choice => matchSuggestion(filter, choice));
+        suggestions = choices.filter(
+            choice =>
+                matchSuggestion(filter, choice) ||
+                (selectedItem != null &&
+                    (!Array.isArray(selectedItem)
+                        ? getChoiceValue(choice) ===
+                          getChoiceValue(selectedItem)
+                        : selectedItem.some(
+                              selected =>
+                                  getChoiceValue(choice) ===
+                                  getChoiceValue(selected)
+                          )))
+        );
     }
 
     suggestions = limitSuggestions(suggestions, suggestionLimit);
@@ -241,9 +251,10 @@ export const getSuggestionsFactory = ({
     // Only keep unique items. Necessary because we might have fetched
     // the currently selected choice in addition of the possible choices
     // that may also contain it
-    return suggestions.filter(
+    const result = suggestions.filter(
         (suggestion, index) => suggestions.indexOf(suggestion) === index
     );
+    return result;
 };
 
 /**

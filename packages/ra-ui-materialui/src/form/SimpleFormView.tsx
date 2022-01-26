@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Children, ReactElement, ReactNode } from 'react';
+import { Children, cloneElement, ReactElement, ReactNode } from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { FormWithRedirectRenderProps, MutationMode, RaRecord } from 'ra-core';
+import { FormRenderProps, MutationMode, RaRecord } from 'ra-core';
 import { CardContentInner } from '../layout';
 import { Toolbar } from './Toolbar';
 import { FormInput } from './FormInput';
@@ -12,17 +12,14 @@ export const SimpleFormView = ({
     className,
     component: Component = CardContentInner,
     handleSubmit,
-    invalid,
     margin,
     mutationMode,
-    pristine,
     record,
     resource,
     saving,
     submitOnEnter = true,
     toolbar = DefaultToolbar,
     variant,
-    validating,
     ...rest
 }: SimpleFormViewProps): ReactElement => (
     <form
@@ -46,15 +43,13 @@ export const SimpleFormView = ({
             )}
         </Component>
         {toolbar &&
-            React.cloneElement(toolbar, {
-                invalid,
+            cloneElement(toolbar, {
+                className: 'toolbar',
                 mutationMode,
-                pristine,
                 record,
                 resource,
                 saving,
                 submitOnEnter,
-                validating,
             })}
     </form>
 );
@@ -76,7 +71,7 @@ SimpleFormView.propTypes = {
 
 const DefaultToolbar = <Toolbar />;
 
-export interface SimpleFormViewProps extends FormWithRedirectRenderProps {
+export interface SimpleFormViewProps extends FormRenderProps {
     children?: ReactNode;
     className?: string;
     component?: React.ComponentType<any>;
@@ -87,33 +82,6 @@ export interface SimpleFormViewProps extends FormWithRedirectRenderProps {
     toolbar?: ReactElement | false;
     variant?: 'standard' | 'outlined' | 'filled';
     submitOnEnter?: boolean;
-    __versions?: any; // react-final-form internal prop, missing in their type
 }
 
-const sanitizeRestProps = ({
-    active,
-    dirty,
-    dirtyFields,
-    dirtyFieldsSinceLastSubmit,
-    dirtySinceLastSubmit,
-    error,
-    errors,
-    form,
-    hasSubmitErrors,
-    hasValidationErrors,
-    initialValues,
-    modified = null,
-    modifiedSinceLastSubmit,
-    save = null,
-    submitError,
-    submitErrors,
-    submitFailed,
-    submitSucceeded,
-    submitting,
-    touched = null,
-    valid,
-    values,
-    visited = null,
-    __versions = null,
-    ...props
-}) => props;
+const sanitizeRestProps = ({ save = null, ...props }) => props;

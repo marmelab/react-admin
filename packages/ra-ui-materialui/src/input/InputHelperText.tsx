@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { isValidElement, ReactElement } from 'react';
 import { useTranslate, ValidationError, ValidationErrorMessage } from 'ra-core';
 
 export const InputHelperText = (props: InputHelperTextProps) => {
@@ -7,6 +8,8 @@ export const InputHelperText = (props: InputHelperTextProps) => {
 
     return touched && error ? (
         <ValidationError error={error} />
+    ) : isValidElement(helperText) ? (
+        helperText
     ) : typeof helperText === 'string' ? (
         <>{translate(helperText, { _: helperText })}</>
     ) : helperText !== false ? (
@@ -23,7 +26,7 @@ export const InputHelperText = (props: InputHelperTextProps) => {
 const defaultInnerHTML = { __html: '&#8203;' };
 
 export interface InputHelperTextProps {
-    helperText?: string | boolean;
+    helperText?: string | ReactElement | boolean;
     error?: ValidationErrorMessage;
     touched: boolean;
 }

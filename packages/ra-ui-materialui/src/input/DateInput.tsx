@@ -1,8 +1,9 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
-import { useInput, FieldTitle, InputProps } from 'ra-core';
+import { useInput, FieldTitle } from 'ra-core';
 
+import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 
@@ -31,10 +32,8 @@ import { InputHelperText } from './InputHelperText';
 export const DateInput = ({
     defaultValue,
     format = getStringFromDate,
-    initialValue,
     label,
     name,
-    options,
     source,
     resource,
     helperText,
@@ -47,14 +46,10 @@ export const DateInput = ({
     variant = 'filled',
     ...rest
 }: DateInputProps) => {
-    const { id, input, isRequired, meta } = useInput({
+    const { field, fieldState, formState, id, isRequired } = useInput({
         defaultValue,
         format,
-        initialValue,
         name,
-        onBlur,
-        onChange,
-        onFocus,
         parse,
         resource,
         source,
@@ -62,23 +57,21 @@ export const DateInput = ({
         ...rest,
     });
 
-    const { error, submitError, touched } = meta;
+    const { error, invalid, isTouched } = fieldState;
+    const { isSubmitted } = formState;
 
     return (
         <TextField
             id={id}
-            {...input}
-            // Workaround https://github.com/final-form/react-final-form/issues/529
-            // & https://github.com/final-form/react-final-form/issues/431
-            value={format(input.value) || ''}
+            {...field}
+            type="date"
             variant={variant}
             margin={margin}
-            type="date"
-            error={!!(touched && (error || submitError))}
+            error={(isTouched || isSubmitted) && invalid}
             helperText={
                 <InputHelperText
-                    touched={touched}
-                    error={error || submitError}
+                    touched={isTouched || isSubmitted}
+                    error={error?.message}
                     helperText={helperText}
                 />
             }
@@ -91,7 +84,6 @@ export const DateInput = ({
                 />
             }
             InputLabelProps={defaultInputLabelProps}
-            {...options}
             {...sanitizeInputRestProps(rest)}
         />
     );
@@ -108,7 +100,7 @@ DateInput.defaultProps = {
     options: {},
 };
 
-export type DateInputProps = InputProps<TextFieldProps> &
+export type DateInputProps = CommonInputProps &
     Omit<TextFieldProps, 'helperText' | 'label'>;
 
 /**

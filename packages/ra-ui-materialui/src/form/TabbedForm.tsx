@@ -8,8 +8,8 @@ import {
 } from 'react';
 import PropTypes from 'prop-types';
 import {
-    FormWithRedirect,
-    FormWithRedirectProps,
+    Form,
+    FormProps,
     MutationMode,
     RaRecord,
     RedirectionSideEffect,
@@ -84,7 +84,6 @@ import { useFormRootPath } from './useFormRootPath';
  * @prop {ReactElement} toolbar The element displayed at the bottom of the form, containing the SaveButton
  * @prop {string} variant Apply variant to all inputs. Possible values are 'standard', 'outlined', and 'filled' (default)
  * @prop {string} margin Apply variant to all inputs. Possible values are 'none', 'normal', and 'dense' (default)
- * @prop {boolean} sanitizeEmptyValues Whether or not deleted record attributes should be recreated with a `null` value (default: true)
  *
  * @param {Props} props
  */
@@ -92,7 +91,7 @@ export const TabbedForm = (props: TabbedFormProps) => {
     const formRootPathname = useFormRootPath();
 
     return (
-        <FormWithRedirect
+        <Form
             formRootPathname={formRootPathname}
             {...props}
             render={formProps => (
@@ -121,11 +120,10 @@ TabbedForm.propTypes = {
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
     validate: PropTypes.func,
-    sanitizeEmptyValues: PropTypes.bool,
 };
 
 export interface TabbedFormProps
-    extends Omit<FormWithRedirectProps, 'render'>,
+    extends Omit<FormProps, 'render'>,
         Omit<
             HtmlHTMLAttributes<HTMLFormElement>,
             'defaultValue' | 'onSubmit' | 'children'
@@ -139,7 +137,6 @@ export interface TabbedFormProps
     record?: RaRecord;
     redirect?: RedirectionSideEffect;
     resource?: string;
-    sanitizeEmptyValues?: boolean;
     save?: (
         data: Partial<RaRecord>,
         redirectTo: RedirectionSideEffect,

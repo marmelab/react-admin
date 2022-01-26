@@ -352,6 +352,10 @@ const injectedProps = [
     'setPagination',
     'limitChoicesToValue',
     'translateChoice',
+    // Datagrid may be used as an alternative to SelectInput
+    'field',
+    'fieldState',
+    'formState',
 ];
 
 const sanitizeRestProps = props =>

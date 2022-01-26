@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { useCallback, useState } from 'react';
-import { useForm } from 'react-final-form';
 import {
     AutocompleteArrayInput,
     ReferenceArrayInput,
@@ -16,6 +15,7 @@ import {
     DialogActions,
     TextField as MuiTextField,
 } from '@mui/material';
+import { useFormContext } from 'react-hook-form';
 
 const PREFIX = 'TagReferenceInput';
 
@@ -57,14 +57,14 @@ const TagReferenceInput = ({
     source: string;
     label?: string;
 }) => {
-    const { change } = useForm();
+    const { setValue } = useFormContext();
     const [filter, setFilter] = useState({ published: true });
     const filterToQuery = useTagsFilterToQuery();
     const locale = useLocale();
 
     const handleAddFilter = () => {
         setFilter(prev => ({ published: !prev.published }));
-        change('tags', []);
+        setValue('tags', []);
     };
 
     return (

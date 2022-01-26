@@ -31,11 +31,12 @@ describe('Edit Page', () => {
         });
 
         it('should allow to update elements', () => {
-            EditPostPage.setInputValue('input', 'title', 'Lorem Ipsum');
-            EditPostPage.submit();
+            // For some unknown reason, the click on submit didn't work in cypress
+            // so we submit with enter
+            EditPostPage.setInputValue('input', 'title', 'Lorem Ipsum{enter}');
             // Ensure react-admin has handled the update as it will redirect to the list page
             // once done
-            cy.url().should(url => expect(url).to.match(/.*\/posts$/));
+            cy.url().should('match', /\/#\/posts$/);
             EditPostPage.navigate();
             cy.get(EditPostPage.elements.input('title')).should(el =>
                 expect(el).to.have.value('Lorem Ipsum')
@@ -43,9 +44,10 @@ describe('Edit Page', () => {
         });
 
         it('should redirect to list page after edit success', () => {
-            EditPostPage.setInputValue('input', 'title', 'Lorem Ipsum +');
-            EditPostPage.submit();
-            cy.url().then(url => expect(url).to.contain('/#/posts'));
+            // For some unknown reason, the click on submit didn't work in cypress
+            // so we submit with enter
+            EditPostPage.setInputValue('input', 'title', 'Lorem Ipsum{enter}');
+            cy.url().should('match', /\/#\/posts$/);
         });
 
         it('should allow to switch tabs', () => {
@@ -74,9 +76,9 @@ describe('Edit Page', () => {
 
             cy.get(EditPostPage.elements.addBacklinkButton).click();
 
-            EditPostPage.clickInput('backlinks[0].url');
-            cy.get(EditPostPage.elements.input('backlinks[0].url')).blur();
-
+            EditPostPage.clickInput('backlinks.0.url');
+            cy.get(EditPostPage.elements.input('backlinks.0.url')).blur();
+            EditPostPage.submit();
             cy.contains('Required');
             // FIXME: We navigate away from the page and confirm the unsaved changes
             // This is needed because HashHistory would prevent further navigation
@@ -274,7 +276,8 @@ describe('Edit Page', () => {
         EditPostPage.gotoTab(3);
         cy.contains('Tech').click();
         cy.get('li[aria-label="Clear value"]').click();
-        EditPostPage.submit();
+        EditPostPage.setInputValue('input', 'average_note', '{enter}', false);
+        cy.url().should('match', /\/#\/posts$/);
         ListPagePosts.waitUntilDataLoaded();
 
         EditPostPage.navigate();

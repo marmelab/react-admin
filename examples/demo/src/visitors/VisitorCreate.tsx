@@ -10,7 +10,6 @@ import {
     required,
     email,
 } from 'react-admin';
-import { AnyObject } from 'react-final-form';
 import { Typography, Box } from '@mui/material';
 
 const PREFIX = 'VisitorCreate';
@@ -52,7 +51,7 @@ export {};
 export const validatePasswords = ({
     password,
     confirm_password,
-}: AnyObject) => {
+}: Record<string, string>) => {
     const errors = {} as any;
 
     if (password && confirm_password && password !== confirm_password) {
@@ -71,7 +70,7 @@ const VisitorCreate = () => {
         <Create>
             <StyledSimpleForm
                 // Here for the GQL provider
-                initialValues={{
+                defaultValues={{
                     birthday: date,
                     first_seen: date,
                     last_seen: date,
@@ -99,7 +98,6 @@ const VisitorCreate = () => {
                 <TextInput
                     type="email"
                     source="email"
-                    validation={{ email: true }}
                     fullWidth
                     formClassName={classes.email}
                     validate={[required(), email()]}
@@ -146,7 +144,7 @@ const SectionTitle = ({ label }: { label: string }) => {
 
     return (
         <Typography variant="h6" gutterBottom>
-            {translate(label)}
+            {translate(label as string)}
         </Typography>
     );
 };

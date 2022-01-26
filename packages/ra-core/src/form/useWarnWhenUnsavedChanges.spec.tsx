@@ -1,38 +1,37 @@
 import * as React from 'react';
-import { useEffect } from 'react';
 import expect from 'expect';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { Form, Field } from 'react-final-form';
-import { MemoryRouter, Route, Routes, useNavigate } from 'react-router-dom';
+import { useForm, useFormContext, FormProvider } from 'react-hook-form';
+import {
+    MemoryRouter,
+    Route,
+    Routes,
+    useNavigate,
+    useParams,
+} from 'react-router-dom';
 
-import useWarnWhenUnsavedChanges from './useWarnWhenUnsavedChanges';
+import { useWarnWhenUnsavedChanges } from './useWarnWhenUnsavedChanges';
 
-const FormBody = ({ handleSubmit, submitSucceeded }) => {
+const Form = ({ onSubmit }) => {
     useWarnWhenUnsavedChanges(true, '/form');
+    const params = useParams<'part'>();
     const navigate = useNavigate();
+    const form = useFormContext();
     const onLeave = () => {
         navigate('/somewhere');
     };
-    useEffect(() => {
-        if (submitSucceeded) {
-            setTimeout(() => {
-                navigate('/submitted');
-            }, 100);
-        }
-    }, [submitSucceeded, navigate]);
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onSubmit}>
+            <h1>Form {params.part}</h1>
             <label id="firstname-label">First Name</label>
-            <Field
-                name="firstName"
+            <input
+                {...form.register('firstName')}
                 aria-labelledby="firstname-label"
-                component="input"
             />
             <label id="author-label">Author</label>
-            <Field
-                name="author.name"
+            <input
+                {...form.register('author.name')}
                 aria-labelledby="author-label"
-                component="input"
             />
             <button type="button" onClick={() => navigate('/form')}>
                 Root form
@@ -51,25 +50,30 @@ const FormBody = ({ handleSubmit, submitSucceeded }) => {
     );
 };
 
-const FormUnderTest = ({ initialValues = {} }) => {
+const FormUnderTest = () => {
+    const navigate = useNavigate();
+    const form = useForm();
+    // Simulate react-admin save methods
+    const save = () =>
+        new Promise(resolve => {
+            setTimeout(() => navigate('/submitted'), 100);
+            resolve();
+        });
     const onSubmit = () => {
-        // The redirection can't happen on submit because final-form keep the form
-        // dirty state even after the submit.
-        return undefined;
+        save();
     };
     return (
-        <Form
-            onSubmit={onSubmit}
-            initialValues={initialValues}
-            component={FormBody}
-        />
+        <FormProvider {...form}>
+            <Form onSubmit={form.handleSubmit(onSubmit)} />
+        </FormProvider>
     );
 };
 
 const App = ({ initialEntries = ['/form'] }) => (
     <MemoryRouter initialEntries={initialEntries} initialIndex={0}>
         <Routes>
-            <Route path="/form/*" element={<FormUnderTest />} />
+            <Route path="/form" element={<FormUnderTest />} />
+            <Route path="/form/:part" element={<FormUnderTest />} />
             <Route path="/submitted" element={<span>Submitted</span>} />
             <Route path="/somewhere" element={<span>Somewhere</span>} />
         </Routes>
@@ -93,9 +97,11 @@ describe('useWarnWhenUnsavedChanges', () => {
     });
 
     it('should not warn when leaving form with no changes', async () => {
+        window.confirm = jest.fn().mockReturnValue(true);
         render(<App />);
-        fireEvent.click(screen.getByText('Submit'));
-        await waitFor(() => screen.getByText('Submitted'));
+        fireEvent.click(screen.getByText('Leave'));
+        await waitFor(() => screen.getByText('Somewhere'));
+        expect(window.confirm).not.toHaveBeenCalled();
     });
 
     test.each([
@@ -111,10 +117,8 @@ describe('useWarnWhenUnsavedChanges', () => {
             });
             expect(screen.getByDisplayValue('John Doe')).not.toBeNull();
             fireEvent.click(screen.getByText('Submit'));
-            await new Promise(resolve => setTimeout(resolve, 101));
-            // We don't check whether the redirection happened because final-form keeps the form
-            // dirty state even after the submit.
-            expect(window.confirm).not.toHaveBeenCalled();
+            await waitFor(() => expect(window.confirm).not.toHaveBeenCalled());
+            await waitFor(() => screen.getByText('Submitted'));
         }
     );
 
@@ -131,8 +135,7 @@ describe('useWarnWhenUnsavedChanges', () => {
             });
             expect(screen.getByDisplayValue('John Doe')).not.toBeNull();
             fireEvent.click(screen.getByText('Form part 1'));
-            // We don't check whether the redirection happened because final-form keeps the form
-            // dirty state even after the submit.
+            await waitFor(() => screen.getByText('Form part1'));
             expect(window.confirm).not.toHaveBeenCalled();
         }
     );
@@ -141,7 +144,7 @@ describe('useWarnWhenUnsavedChanges', () => {
         ['simple', 'First Name'],
         ['nested', 'Author'],
     ])(
-        'should not warn when navigating from a sub page of a form to the another part with submit button after updating %s field',
+        'should not warn when navigating from a sub page with submit button after updating %s field',
         async (_, field) => {
             window.confirm = jest.fn().mockReturnValue(true);
             render(<App initialEntries={['/form/part1']} />);
@@ -150,8 +153,7 @@ describe('useWarnWhenUnsavedChanges', () => {
             });
             expect(screen.getByDisplayValue('John Doe')).not.toBeNull();
             fireEvent.click(screen.getByText('Form part 2'));
-            // We don't check whether the redirection happened because final-form keeps the form
-            // dirty state even after the submit.
+            await waitFor(() => screen.getByText('Form part2'));
             expect(window.confirm).not.toHaveBeenCalled();
         }
     );
@@ -169,8 +171,7 @@ describe('useWarnWhenUnsavedChanges', () => {
             });
             expect(screen.getByDisplayValue('John Doe')).not.toBeNull();
             fireEvent.click(screen.getByText('Root form'));
-            // We don't check whether the redirection happened because final-form keeps the form
-            // dirty state even after the submit.
+            await waitFor(() => screen.getByText('Form'));
             expect(window.confirm).not.toHaveBeenCalled();
         }
     );

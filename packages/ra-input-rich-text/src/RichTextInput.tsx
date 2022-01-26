@@ -36,8 +36,9 @@ export const RichTextInput = (props: RichTextInputProps) => {
     const {
         id,
         isRequired,
-        input: { value, onChange },
-        meta: { touched, error },
+        field: { value, onChange },
+        fieldState: { invalid, isTouched, error },
+        formState: { isSubmitted },
     } = useInput({ source, ...rest });
 
     const lastValueChange = useRef(value);
@@ -100,7 +101,7 @@ export const RichTextInput = (props: RichTextInputProps) => {
 
     return (
         <StyledFormControl
-            error={!!(touched && error)}
+            error={isTouched && invalid}
             fullWidth={fullWidth}
             className={`ra-rich-text-input ${RaRichTextClasses.root}`}
             margin={margin}
@@ -117,13 +118,17 @@ export const RichTextInput = (props: RichTextInputProps) => {
             </InputLabel>
             <div data-testid="quill" ref={divRef} className={variant} />
             <FormHelperText
-                error={!!error}
-                className={!!error ? 'ra-rich-text-input-error' : ''}
+                error={(isTouched || isSubmitted) && invalid}
+                className={
+                    (isTouched || isSubmitted) && invalid
+                        ? 'ra-rich-text-input-error'
+                        : ''
+                }
             >
                 <InputHelperText
-                    error={error}
+                    error={error?.message}
                     helperText={helperText}
-                    touched={touched}
+                    touched={isTouched || isSubmitted}
                 />
             </FormHelperText>
         </StyledFormControl>
@@ -131,6 +136,7 @@ export const RichTextInput = (props: RichTextInputProps) => {
 };
 
 export interface RichTextInputProps {
+    debounce?: number;
     label?: string | false;
     options?: QuillOptionsStatic;
     source: string;

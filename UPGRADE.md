@@ -1967,6 +1967,298 @@ If you've declared custom Record types, you'll need to upgrade your code as foll
 }
 ```
 
+## react-final-form Has Been Replaced By react-hook-form
+
+### `<FormWithRedirect>` Has Been Renamed to `<Form>`
+
+The form components don't handle redirection anymore, as redirections are now handled in side effects (`<Create mutationOptions>` and `<Edit mutationOptions>`). As a consequence, the `<FormWithRedirect>` has been renamed to `<Form>`.
+
+To upgrade, replace all occurrences of `<FormWithRedirect>` with  `<Form>`.
+
+```diff
+- import { FormWithRedirect } from 'react-admin';
++ import { Form } from 'react-admin';
+
+export const MyForm = () => (
+-    <FormWithRedirect
++    <Form
+        render={() => ...}
+    />
+);
+```
+
+### Form Props Have Changed
+
+`<FormWithRedirect>` used to accept [`react-final-form` `<Form>` props](https://final-form.org/docs/react-final-form/types/FormProps). It now accepts [`react-hook-form` `useForm` props](https://react-hook-form.com/api/useform). This also affects the other form components (`<SimpleForm>`, `<TabbedForm>`, etc.)
+
+The most commonly used prop is probably `initialValues`, which is now named `defaultValues`:
+
+```diff
+const PostCreate = () => (
+    <Create>
+        <SimpleForm
+-            initialValues={{ title: 'A default title' }}
++            defaultValues={{ title: 'A default title' }}
+        >
+            ...
+        </SimpleForm>
+    </Create>
+)
+```
+
+We kept the `validate` function prop, which we automatically translate to a custom [`react-hook-form` `resolver`](https://react-hook-form.com/api/useform#validationResolver). So even if it's not technically a react-hook-form prop, you can still use `validate` as before.
+
+This also means you can now use [`yup`](https://github.com/jquense/yup), [`zod`](https://github.com/colinhacks/zod), [`joi`](https://github.com/sideway/joi), [superstruct](https://github.com/ianstormtaylor/superstruct), [vest](https://github.com/ealush/vest) or any [resolver](https://react-hook-form.com/api/useform#validationResolver) supported by `react-hook-form` to apply schema validation.
+
+### `sanitizeEmptyValues` Has Been Removed
+
+React-hook-form doesn't remove empty values like react-final-fom did. Therefore, you no longer need to opt out this behavior:
+
+```diff
+export const PostEdit = () => (
+    <Edit>
+-       <SimpleForm sanitizeEmptyValues={false}>
++       <SimpleForm>
+            <TextInput source="title" />
+            <JsonInput source="body" />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+If you actually need to remove empty values, you can use the `parse` prop on a per-input basis:
+
+```diff
++const convertEmptyStringToUndefined = v => v === '' ? undefined : v;
+
+-<TextInput source="title" />
++<TextInput source="title" parse={convertEmptyStringToUndefined} />
+```
+
+Or use the `transform` prop on the `<Create>`, `<Edit>`, or `<SaveButton>` components. 
+
+### `<FormWithRedirect>` Render Function Arguments Have Changed
+
+`<FormWithRedirect>` used to call its child function with an object containing parts of the `final-form` form state (`valid`, `invalid`, `pristine`, `dirty`). It now only passes the `handleSubmit` function, which must be passed down to the `onSubmit` prop of the underlying form. If you need to access the form state, call [the react-hook-form `useFormState` hook](https://react-hook-form.com/api/useformstate):
+
+```diff
+import { FormWithRedirect } from 'react-admin';
++ import { useFormState } from 'react-hook-form';
+
+const MyCustomForm = () => {
+    return (
+-        <FormWithRedirect
++        <Form
+-            render={({ valid, dirty, handleSubmit }) => (
++            render={({ handleSubmit }) => (
+                <form onSubmit={handleSubmit}>
+                    ...
+-                    <SubmitButton disabled={!dirty || !valid}>Save</SubmitButton>
++                    <SubmitButton>Save</SubmitButton>
+                </form>
+            )}
+        />
+    );
+};
+
+-const SubmitButton = ({ disabled, ...props }) => {
++const SubmitButton = (props) => {
++    const { isDirty, isValid } = useFormState();
+    return (
+-        <button disabled={disabled} {...props} />
++        <button disabled={!isDirty || !isValid} {...props} />
+    );
+}
+```
+
+### `<Toolbar>` Props Have Changed
+
+The `<Toolbar>` component used to receive the form state props (`dirty`, `invalid`, `pristine` and `valid`). They don't exist in `react-hook-form` and you can get the form state with its `useFormState` hook:
+
+```diff
+import Toolbar from '@mui/material/Toolbar';
+import { SaveButton } from 'react-admin';
+
+const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
+-    const { invalid, resource, saving } = props;
++    const { resource, saving } = props;
+
+    return (
+        <Toolbar>
+            <SaveButton
+-                invalid={invalid}
+                saving={saving}
+                submitOnEnter={true}
+            />
+        </Toolbar>
+    );
+};
+```
+
+### `initalValue` and `defaultValue` Have Been Merged Into `defaultValue`
+
+All React Admin inputs used to accept both a `initialValue` and a `defaultValue` prop and they had different meanings in `react-final-form`. With `react-hook-form` there's only `defaultValue`:
+
+```diff
+const PostCreate = () => (
+    <Create>
+        <SimpleForm>
+-            <TextInput source="title" initialValue="A default">
++            <TextInput source="title" defaultValue="A default">
+        </SimpleForm>
+    </Create>
+)
+```
+
+### `useInput` Signature And Return Value Have Changed
+
+Just like all inputs, `useInput` now only accept `defaultValue` and will ignore `initialValue`.
+
+Besides, `useInput` used to return `final-form` properties such as `input ` and `meta`. It now returns `field`, `fieldState` and `formState` (see https://react-hook-form.com/api/usecontroller).
+
+Note that the `error` returned by `fieldState` is a not just a simple string anymore but an object with a `message` property.
+
+```diff
+import TextField from '@material-ui/core/TextField';
+import { useInput, required } from 'react-admin';
+
+const MyInput = ({ helperText, ...props }) => {
+    const {
+-        input,
++        field,
+-        meta: { touched, error },
++        fieldState: { isTouched, invalid, error },
++        formState: { isSubmitted }
+        isRequired
+    } = useInput(props);
+
+    return (
+        <TextField
+-            {...input}
++            {...field}
+            label={props.label}
+-            error={touched && !!error}
++            error={(isTouched || isSubmitted) && invalid}
+-            helperText={touched && !!error ? error : helperText}
++            helperText={(isTouched || isSubmitted) && invalid ? error?.message : helperText}
+            required={isRequired}
+            {...rest}
+        />
+    );
+};
+
+const UserForm = () => (
+    <SimpleForm>
+-        <MyInput initialValue="John" />
++        <MyInput defaultValue="John" />
+    </SimpleForm>
+)
+```
+
+### Common Patterns To Access Form State And Values Have Changed
+
+If you used to rely on `react-final-form` hooks and components such as `useForm`, `useFormState` or `<FormSpy>`, you must replace them with their `react-hook-form` equivalent.
+
+For instance, if you used `useFormState` in a component to show something depending on another form value, use `useWatch` instead:
+
+```diff
+-import { useFormState } from 'react-final-form';
++import { useWatch } from 'react-hook-form';
+
+const CityInput = props => {
+-    const { values } = useFormState();
++    const country = useWatch({ name: 'country' });
+    return (
+        <SelectInput
+-            choices={values.country ? toChoices(cities[values.country]) : []}
++            choices={country ? toChoices(cities[country]) : []}
+            {...props}
+        />
+    );
+};
+```
+
+If you used `<FormSpy>`:
+
+```diff
+-import { FormSpy } from 'react-final-form';
++import { useWatch } from 'react-hook-form';
+
+const CityInput = props => {
++    const country = useWatch({ name: 'country' });
+    return (
+-        <FormSpy subscription={{ values: true }}>
+-            {({ values }) => (
+-                <SelectInput
+-                    choices={values.country ? toChoices(cities[values.country]) : []}
+-                    {...props}
+-                />
+-            )}
+-        </FormSpy>
++        <SelectInput
++             choices={country ? toChoices(cities[country]) : []}
++             {...props}
++        />
+    );
+};
+```
+
+If you had a component setting a form value imperatively via `useForm`, you should use `useFormContext`:
+
+```diff
+-import { useForm } from 'react-final-form';
++import { useFormContext } from 'react-hook-form';
+
+const ClearCountry = () => {
+-    const { change } = useForm();
++    const { setValue } = useFormContext();
+
+    const handleClick = () => {
+-        change('country', '');
++        setValue('country', '');
+    };
+
+    return <button onClick={handleClick}>Clear country</button>
+}
+```
+
+If you called `useForm` to access the form API, you should now call `useFormContext`:
+
+```diff
+-import { useForm } from 'react-final-form';
++import { useFormContext } from 'react-hook-form';
+
+const ResetFormButton = () => {
+-    const { reset } = useForm();
++    const { reset } = useFormContext();
+    return <Button onClick={() => reset()}>Reset</Button>
+}
+```
+
+## `allowEmpty` Has Been Removed From `SelectInput`, `AutocompleteInput` and `AutocompleteArrayInput`
+
+The `SelectInput`, `AutocompleteInput` and `AutocompleteArrayInput` components used to accept an `allowEmpty` prop. When set to `true`, a choice was added for setting the input value to an empty value (empty string by default).
+
+However, the underlying MaterialUI components now require that the current input value has a matching choice. Those components now always accept an empty value (an empty string by default). You can safely remove this prop.
+
+```diff
+const choices = [{ id: 1, name: 'value' }, { id: 2, name: 'value 2' }]
+
+const MyOptionalSelect = () => (
+-    <SelectInput choices={choices} allowEmpty />
++    <SelectInput choices={choices} />
+);
+```
+
+If you require the input to have a non-empty value, use the `required` validation.
+
+```diff
+const MyRequiredSelect = () => (
+-    <SelectInput choices={choices} />
++    <SelectInput choices={choices} validate={[required()]} />
+);
+```
+
 # Upgrade to 3.0
 
 We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.

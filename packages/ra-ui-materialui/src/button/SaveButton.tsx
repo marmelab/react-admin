@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { cloneElement, MouseEventHandler, ReactElement } from 'react';
+import {
+    cloneElement,
+    MouseEventHandler,
+    ReactElement,
+    useCallback,
+} from 'react';
 import { UseMutationOptions } from 'react-query';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
@@ -7,13 +12,14 @@ import Button, { ButtonProps } from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import ContentSave from '@mui/icons-material/Save';
 import classnames from 'classnames';
-import { useForm } from 'react-final-form';
+import { useFormContext } from 'react-hook-form';
 import {
     CreateParams,
     MutationMode,
     RaRecord,
     TransformData,
     UpdateParams,
+    useNotify,
     useSaveContext,
     useTranslate,
 } from 'ra-core';
@@ -64,28 +70,39 @@ export const SaveButton = <RecordType extends RaRecord = any>(
         ...rest
     } = props;
     const translate = useTranslate();
-    const form = useForm();
+    const notify = useNotify();
+    const form = useFormContext();
     const saveContext = useSaveContext();
     const hasSideEffects = !!mutationOptions || !!transform;
     const type = !submitOnEnter || hasSideEffects ? 'button' : 'submit';
 
-    const handleClick: MouseEventHandler<HTMLButtonElement> = event => {
-        if (onClick) {
-            onClick(event);
-        }
-        if (event.defaultPrevented) {
-            return;
-        }
-
-        if (hasSideEffects) {
-            event.preventDefault();
-            const values = form.getState().values;
-            saveContext?.save(values, {
-                ...mutationOptions,
-                transform,
-            });
-        }
-    };
+    const handleClick: MouseEventHandler<HTMLButtonElement> = useCallback(
+        async event => {
+            if (onClick) {
+                onClick(event);
+            }
+            if (event.defaultPrevented) {
+                return;
+            }
+            if (type === 'button') {
+                // this button doesn't submit the form, so it doesn't trigger useIsFormInvalid in <FormContent>
+                // therefore we need to check for errors manually
+                event.preventDefault();
+                const isFormValid = await form.trigger();
+                if (!isFormValid) {
+                    event.preventDefault();
+                    notify('ra.message.invalid_form', { type: 'warning' });
+                    return;
+                }
+                const values = form.getValues();
+                saveContext?.save(values, {
+                    ...mutationOptions,
+                    transform,
+                });
+            }
+        },
+        [form, notify, mutationOptions, saveContext, transform, onClick, type]
+    );
 
     const displayedLabel = label && translate(label, { _: label });
     return (

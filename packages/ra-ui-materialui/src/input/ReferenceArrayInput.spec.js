@@ -6,10 +6,10 @@ import {
     within,
     fireEvent,
 } from '@testing-library/react';
-import { Form } from 'react-final-form';
-import { CoreAdminContext, testDataProvider, useListContext } from 'ra-core';
-import { ThemeProvider, createTheme } from '@mui/material';
+import { testDataProvider, useListContext } from 'ra-core';
 
+import { AdminContext } from '../AdminContext';
+import { SimpleForm } from '../form';
 import { Datagrid } from '../list';
 import { TextField } from '../field';
 import {
@@ -19,8 +19,8 @@ import {
 
 describe('<ReferenceArrayInput />', () => {
     const defaultProps = {
-        input: {},
-        meta: {},
+        field: {},
+        fieldState: {},
         record: {},
         reference: 'tags',
         resource: 'posts',
@@ -40,7 +40,7 @@ describe('<ReferenceArrayInput />', () => {
                 {...{
                     ...defaultProps,
                     error: 'error',
-                    input: {},
+                    field: {},
                 }}
             >
                 <MyComponent />
@@ -51,13 +51,15 @@ describe('<ReferenceArrayInput />', () => {
     });
 
     it('should send an error to the children if warning is defined', () => {
-        const MyComponent = ({ meta }) => <div>{meta.helperText}</div>;
+        const MyComponent = ({ fieldState }) => (
+            <div>{fieldState.helperText}</div>
+        );
         const { queryByText, queryByRole } = render(
             <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
                     warning: 'fetch error',
-                    input: { value: [1, 2] },
+                    field: { value: [1, 2] },
                     choices: [{ id: 2 }],
                 }}
             >
@@ -69,12 +71,14 @@ describe('<ReferenceArrayInput />', () => {
     });
 
     it('should not send an error to the children if warning is not defined', () => {
-        const MyComponent = ({ meta }) => <div>{JSON.stringify(meta)}</div>;
+        const MyComponent = ({ fieldState }) => (
+            <div>{JSON.stringify(fieldState)}</div>
+        );
         const { queryByText, queryByRole } = render(
             <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
-                    input: { value: [1, 2] },
+                    field: { value: [1, 2] },
                     choices: [{ id: 1 }, { id: 2 }],
                 }}
             >
@@ -95,7 +99,7 @@ describe('<ReferenceArrayInput />', () => {
             <ReferenceArrayInputView
                 {...{
                     ...defaultProps,
-                    input: { value: [1] },
+                    field: { value: [1] },
                     choices: [1],
                 }}
             >
@@ -164,19 +168,21 @@ describe('<ReferenceArrayInput />', () => {
         expect(onChange).toBeCalledWith('foo');
     });
 
-    it('should pass meta down to child component', () => {
-        const MyComponent = ({ meta }) => <div>{JSON.stringify(meta)}</div>;
+    it('should pass fieldState down to child component', () => {
+        const MyComponent = ({ fieldState }) => (
+            <div>{JSON.stringify(fieldState)}</div>
+        );
         const { queryByText } = render(
             <ReferenceArrayInputView
                 {...defaultProps}
                 allowEmpty
-                meta={{ touched: false }}
+                fieldState={{ isTouched: false }}
             >
                 <MyComponent />
             </ReferenceArrayInputView>
         );
         expect(
-            queryByText(JSON.stringify({ touched: false, helperText: false }))
+            queryByText(JSON.stringify({ isTouched: false, helperText: false }))
         ).not.toBeNull();
     });
 
@@ -190,16 +196,13 @@ describe('<ReferenceArrayInput />', () => {
                 Promise.resolve({ data: [{ id: 1 }, { id: 2 }], total: 2 }),
         });
         render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <ReferenceArrayInput {...defaultProps}>
-                            <Children />
-                        </ReferenceArrayInput>
-                    )}
-                />
-            </CoreAdminContext>
+            <AdminContext dataProvider={dataProvider}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <ReferenceArrayInput {...defaultProps}>
+                        <Children />
+                    </ReferenceArrayInput>
+                </SimpleForm>
+            </AdminContext>
         );
         await waitFor(() => {
             expect(screen.getByLabelText('total').innerHTML).toEqual('2');
@@ -222,25 +225,22 @@ describe('<ReferenceArrayInput />', () => {
                 }),
         });
         render(
-            <ThemeProvider theme={createTheme()}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <Form
-                        onSubmit={jest.fn()}
-                        initialValues={{ tag_ids: [5] }}
-                        render={() => (
-                            <ReferenceArrayInput
-                                reference="tags"
-                                resource="posts"
-                                source="tag_ids"
-                            >
-                                <Datagrid rowClick="toggleSelection">
-                                    <TextField source="name" />
-                                </Datagrid>
-                            </ReferenceArrayInput>
-                        )}
-                    />
-                </CoreAdminContext>
-            </ThemeProvider>
+            <AdminContext dataProvider={dataProvider}>
+                <SimpleForm
+                    onSubmit={jest.fn()}
+                    defaultValues={{ tag_ids: [5] }}
+                >
+                    <ReferenceArrayInput
+                        reference="tags"
+                        resource="posts"
+                        source="tag_ids"
+                    >
+                        <Datagrid rowClick="toggleSelection">
+                            <TextField source="name" />
+                        </Datagrid>
+                    </ReferenceArrayInput>
+                </SimpleForm>
+            </AdminContext>
         );
 
         await waitFor(() => {

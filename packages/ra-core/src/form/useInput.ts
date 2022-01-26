@@ -1,59 +1,72 @@
-import { useCallback, ChangeEvent, FocusEvent, useEffect } from 'react';
+import { ReactElement, useEffect } from 'react';
 import {
-    useField as useFinalFormField,
-    FieldProps,
-    FieldRenderProps,
-    FieldInputProps,
-} from 'react-final-form';
+    ControllerFieldState,
+    ControllerRenderProps,
+    useController,
+    UseControllerProps,
+    UseControllerReturn,
+    useFormContext,
+    UseFormStateReturn,
+} from 'react-hook-form';
 import get from 'lodash/get';
-import { Validator, composeValidators } from './validate';
+
+import { useRecordContext } from '../controller';
+import { composeValidators, Validator } from './validate';
 import isRequired from './isRequired';
 import { useFormGroupContext } from './useFormGroupContext';
+import { useGetValidationErrorMessage } from './useGetValidationErrorMessage';
 import { useFormGroups } from './useFormGroups';
-import { useRecordContext } from '../controller';
+import { useApplyInputDefaultValues } from './useApplyInputDefaultValues';
 
-export interface InputProps<T = any>
-    extends Omit<
-        FieldProps<any, FieldRenderProps<any, HTMLElement>, HTMLElement>,
-        'validate' | 'children'
-    > {
-    defaultValue?: any;
-    id?: string;
-    input?: FieldInputProps<any, HTMLElement>;
-    meta?: any;
-    name?: string;
-    onBlur?: (event: FocusEvent<T>) => void;
-    onChange?: (event: ChangeEvent | any) => void;
-    onFocus?: (event: FocusEvent<T>) => void;
-    options?: T;
-    resource?: string;
-    source: string;
-    validate?: Validator | Validator[];
-    isRequired?: boolean;
-}
+export type InputProps<ValueType = any> = Omit<
+    UseControllerProps,
+    'name' | 'defaultValue' | 'rules'
+> &
+    Partial<UseControllerReturn> & {
+        alwaysOn?: any;
+        defaultValue?: any;
+        format?: (value: ValueType) => any;
+        id?: string;
+        isRequired?: boolean;
+        label?: string | ReactElement | false;
+        helperText?: string | ReactElement | false;
+        name?: string;
+        onBlur?: (...event: any[]) => void;
+        onChange?: (...event: any[]) => void;
+        parse?: (value: any) => ValueType;
+        resource?: string;
+        source: string;
+        validate?: Validator | Validator[];
+    };
 
-export interface UseInputValue extends FieldRenderProps<any, HTMLElement> {
+export type UseInputValue = {
     id: string;
     isRequired: boolean;
-}
+    field: ControllerRenderProps;
+    formState: UseFormStateReturn<Record<string, string>>;
+    fieldState: ControllerFieldState;
+};
 
-const useInput = ({
-    defaultValue,
-    initialValue,
-    id,
-    name,
-    source,
-    validate,
-    onBlur: customOnBlur,
-    onChange: customOnChange,
-    onFocus: customOnFocus,
-    isRequired: isRequiredOption,
-    ...options
-}: InputProps): UseInputValue => {
+export const useInput = (props: InputProps): UseInputValue => {
+    const {
+        defaultValue,
+        format,
+        id,
+        isRequired: isRequiredOption,
+        name,
+        onBlur,
+        onChange,
+        parse,
+        source,
+        validate,
+        ...options
+    } = props;
     const finalName = name || source;
     const formGroupName = useFormGroupContext();
     const formGroups = useFormGroups();
     const record = useRecordContext();
+    const getValidationErrorMessage = useGetValidationErrorMessage();
+    const formContext = useFormContext();
 
     useEffect(() => {
         if (!formGroups || formGroupName == null) {
@@ -71,73 +84,72 @@ const useInput = ({
         ? composeValidators(validate)
         : validate;
 
-    // Fetch the initialValue from the record if available or apply the provided initialValue.
+    // Fetch the defaultValue from the record if available or apply the provided defaultValue.
     // This ensure dynamically added inputs have their value set correctly (ArrayInput for example).
-    // We don't do this for the form level initialValues so that it works as it should in final-form
-    // (ie. field level initialValue override form level initialValues for this field).
-    const { input, meta } = useFinalFormField(finalName, {
-        initialValue: get(record, source, initialValue),
-        defaultValue,
-        validate: sanitizedValidate,
+    // We don't do this for the form level defaultValues so that it works as it should in react-hook-form
+    // (ie. field level defaultValue override form level defaultValues for this field).
+    const { field: controllerField, fieldState, formState } = useController({
+        name: finalName,
+        defaultValue: get(record, source, defaultValue),
+        rules: {
+            validate: async value => {
+                if (!sanitizedValidate) return true;
+                const error = await sanitizedValidate(
+                    value,
+                    formContext.getValues(),
+                    props
+                );
+
+                if (!error) return true;
+                return getValidationErrorMessage(error);
+            },
+        },
         ...options,
     });
 
-    // Extract the event handlers so that we can provide ours
-    // allowing users to provide theirs without breaking the form
-    const { onBlur, onChange, onFocus, ...inputProps } = input;
+    // Because our forms may received an asynchronously loaded record for instance,
+    // they may reset their default values which would override the input default value.
+    // This hook ensures that the input default value is applied when a new record is loaded but has
+    // no value for the input.
+    useApplyInputDefaultValues(props);
 
-    const handleBlur = useCallback(
-        event => {
-            onBlur(event);
-            if (typeof customOnBlur === 'function') {
-                customOnBlur(event);
-            }
-        },
-        [onBlur, customOnBlur]
-    );
-
-    const handleChange = useCallback(
-        event => {
-            onChange(event);
-            if (typeof customOnChange === 'function') {
-                customOnChange(event);
-            }
-        },
-        [onChange, customOnChange]
-    );
-
-    const handleFocus = useCallback(
-        event => {
-            onFocus(event);
-            if (typeof customOnFocus === 'function') {
-                customOnFocus(event);
-            }
-        },
-        [onFocus, customOnFocus]
-    );
-
-    // If there is an input prop, this input has already been enhanced by final-form
+    // If there is a field prop, this input has already been enhanced by react-hook-form
     // This is required in for inputs used inside other inputs (such as the SelectInput inside a ReferenceInput)
-    if (options.input) {
+    if (options.field) {
         return {
             id: id || source,
-            input: options.input,
-            meta: options.meta,
+            field: options.field,
+            fieldState: options.fieldState,
+            formState: options.formState,
             isRequired: isRequiredOption || isRequired(validate),
         };
     }
 
+    const field = {
+        ...controllerField,
+        value: format ? format(controllerField.value) : controllerField.value,
+        onBlur: (...event: any[]) => {
+            if (onBlur) {
+                onBlur(...event);
+            }
+            controllerField.onBlur();
+        },
+        onChange: (...event: any[]) => {
+            if (onChange) {
+                onChange(...event);
+            }
+            const eventOrValue = (event[0]?.target?.value || event[0]) as any;
+            controllerField.onChange(
+                parse ? parse(eventOrValue) : eventOrValue
+            );
+        },
+    };
+
     return {
         id: id || source,
-        input: {
-            ...inputProps,
-            onBlur: handleBlur,
-            onChange: handleChange,
-            onFocus: handleFocus,
-        },
-        meta,
+        field,
+        fieldState,
+        formState,
         isRequired: isRequiredOption || isRequired(validate),
     };
 };
-
-export default useInput;

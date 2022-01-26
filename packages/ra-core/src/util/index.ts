@@ -8,7 +8,6 @@ import removeKey from './removeKey';
 import Ready from './Ready';
 import warning from './warning';
 import useWhyDidYouUpdate from './useWhyDidYouUpdate';
-import { useSafeSetState, useTimeout } from './hooks';
 import { getMutationMode } from './getMutationMode';
 export * from './mergeRefs';
 
@@ -23,9 +22,8 @@ export {
     removeKey,
     warning,
     useWhyDidYouUpdate,
-    useSafeSetState,
-    useTimeout,
     getMutationMode,
 };
 
 export type { FieldTitleProps };
+export * from './hooks';
