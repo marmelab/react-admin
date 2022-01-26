@@ -60,7 +60,7 @@ export const Filter = (props: FilterProps) => {
                 filters={React.Children.toArray(children)}
                 hideFilter={hideFilter}
                 displayedFilters={displayedFilters}
-                initialValues={filterValues}
+                defaultValues={filterValues}
                 setFilters={setFilters}
                 {...sanitizeListRestProps(rest)}
             />

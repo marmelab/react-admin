@@ -28,7 +28,7 @@ export const FilterLiveSearch = memo(
         const { filterValues, setFilters } = useListFilterContext();
         const translate = useTranslate();
 
-        const onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
             if (event.target) {
                 setFilters(
                     { ...filterValues, [source]: event.target.value },
@@ -66,7 +66,7 @@ export const FilterLiveSearch = memo(
                                 </InputAdornment>
                             ),
                         }}
-                        onChange={onSearchChange}
+                        onChange={handleChange}
                         size="small"
                         label={false}
                         hiddenLabel
