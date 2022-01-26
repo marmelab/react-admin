@@ -33,6 +33,7 @@ body {
   padding: 0;
   background: #eaeaea;
   font-family: "Source Sans Pro", sans-serif;
+  font-size: 18px;
 }
 
 header {
@@ -207,7 +208,7 @@ nav {
   font-size: 32px;
   font-weight: bold;
   text-align: center;
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
 }
 
 .title.has-subtitle {
@@ -216,7 +217,6 @@ nav {
 
 .subtitle {
   font-family: "Source Sans Pro", sans-serif;
-  font-size: 15px;
   text-align: center;
   padding-bottom: 1em;
   opacity: 0.7;
@@ -374,7 +374,7 @@ nav {
 }
 
 .client p {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: bold;
   text-align: center;
 }
