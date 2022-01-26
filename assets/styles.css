@@ -382,8 +382,8 @@ nav {
 .clients .client .image {
   padding-left: 0;
   margin: 0px !important;
-  height: 100px;
-  width: 100px;
+  height: 115px;
+  width: 115px;
   background-color: transparent;
   vertical-align: bottom;
   padding-top: 4px;
@@ -391,8 +391,8 @@ nav {
 }
 
 .clients .client .image img {
-  max-width: 100px;
-  max-height: 100px;
+  max-width: 115px;
+  max-height: 115px;
   margin-top: auto;
   margin-bottom: auto;
 }
