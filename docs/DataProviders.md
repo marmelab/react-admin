@@ -108,7 +108,8 @@ Developers from the react-admin community have open-sourced Data Providers for m
 * **[Sails.js](https://sailsjs.com/)**: [mpampin/ra-data-json-sails](https://github.com/mpampin/ra-data-json-sails)
 * **[Spring Boot](https://spring.io/projects/spring-boot)**: [vishpat/ra-data-springboot-rest](https://github.com/vishpat/ra-data-springboot-rest) 
 * **[Strapi](https://strapi.io/)**: [nazirov91/ra-strapi-rest](https://github.com/nazirov91/ra-strapi-rest)
-- **[Supabase](https://supabase.io/)**: [marmelab/ra-supabase](https://github.com/marmelab/ra-supabase)
+* **[Supabase](https://supabase.io/)**: [marmelab/ra-supabase](https://github.com/marmelab/ra-supabase)
+* **[TreeQL / PHP-CRUD-API](https://treeql.org/)**: [itsjavi/ra-data-treeql](https://github.com/itsjavi/ra-data-treeql)
 
 If you've written a Data Provider for another backend, and open-sourced it, please help complete this list with your package.
 
