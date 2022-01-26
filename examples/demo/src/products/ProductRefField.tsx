@@ -6,7 +6,7 @@ import { Product } from '../types';
 const ProductRefField = () => {
     const record = useRecordContext<Product>();
     return record ? (
-        <Link to={`products/${record.id}`}>{record.reference}</Link>
+        <Link to={`/products/${record.id}`}>{record.reference}</Link>
     ) : null;
 };
 
