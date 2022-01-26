@@ -84,6 +84,7 @@ const Login = () => {
                                         label={translate('ra.auth.username')}
                                         disabled={loading}
                                         validate={required()}
+                                        fullWidth
                                     />
                                 </div>
                                 <div className={classes.input}>
@@ -93,6 +94,7 @@ const Login = () => {
                                         type="password"
                                         disabled={loading}
                                         validate={required()}
+                                        fullWidth
                                     />
                                 </div>
                             </div>
