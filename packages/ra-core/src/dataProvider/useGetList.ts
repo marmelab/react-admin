@@ -5,7 +5,7 @@ import {
     useQueryClient,
 } from 'react-query';
 
-import { RaRecord, GetListParams } from '../types';
+import { RaRecord, GetListParams, GetListResult } from '../types';
 import { useDataProvider } from './useDataProvider';
 
 /**
@@ -53,7 +53,7 @@ import { useDataProvider } from './useDataProvider';
 export const useGetList = <RecordType extends RaRecord = any>(
     resource: string,
     params: Partial<GetListParams> = {},
-    options?: UseQueryOptions<{ data: RecordType[]; total: number }, Error>
+    options?: UseQueryOptions<GetListResult<RecordType>, Error>
 ): UseGetListHookValue<RecordType> => {
     const {
         pagination = { page: 1, perPage: 25 },
@@ -64,9 +64,9 @@ export const useGetList = <RecordType extends RaRecord = any>(
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const result = useQuery<
-        { data: RecordType[]; total: number },
+        GetListResult<RecordType>,
         Error,
-        { data: RecordType[]; total: number }
+        GetListResult<RecordType>
     >(
         [resource, 'getList', { pagination, sort, filter, meta }],
         () =>
@@ -77,7 +77,11 @@ export const useGetList = <RecordType extends RaRecord = any>(
                     filter,
                     meta,
                 })
-                .then(({ data, total }) => ({ data, total })),
+                .then(({ data, total, pageInfo }) => ({
+                    data,
+                    total,
+                    pageInfo,
+                })),
         {
             onSuccess: ({ data }) => {
                 // optimistically populate the getOne cache
@@ -97,10 +101,23 @@ export const useGetList = <RecordType extends RaRecord = any>(
               ...result,
               data: result.data?.data,
               total: result.data?.total,
+              pageInfo: result.data?.pageInfo,
           }
-        : result) as UseQueryResult<RecordType[], Error> & { total?: number };
+        : result) as UseQueryResult<RecordType[], Error> & {
+        total?: number;
+        pageInfo?: {
+            hasNextPage?: boolean;
+            hasPreviousPage?: boolean;
+        };
+    };
 };
 
 export type UseGetListHookValue<
     RecordType extends RaRecord = any
-> = UseQueryResult<RecordType[], Error> & { total?: number };
+> = UseQueryResult<RecordType[], Error> & {
+    total?: number;
+    pageInfo?: {
+        hasNextPage?: boolean;
+        hasPreviousPage?: boolean;
+    };
+};

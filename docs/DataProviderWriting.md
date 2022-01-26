@@ -94,9 +94,9 @@ Data Providers methods must return a Promise for an object with a `data` propert
 
 | Method             | Response format                                                 |
 | ------------------ | --------------------------------------------------------------- |
-| `getList`          | `{ data: {Record[]}, total: {int}, validUntil?: {Date} }`       |
-| `getOne`           | `{ data: {Record}, validUntil?: {Date} }`                       |
-| `getMany`          | `{ data: {Record[]}, validUntil?: {Date} }`                     |
+| `getList`          | `{ data: {Record[]}, total: {int} }`       |
+| `getOne`           | `{ data: {Record} }`                       |
+| `getMany`          | `{ data: {Record[]} }`                     |
 | `getManyReference` | `{ data: {Record[]}, total: {int} }`                            |
 | `create`           | `{ data: {Record} }`                                            |
 | `update`           | `{ data: {Record} }`                                            |
@@ -198,7 +198,33 @@ dataProvider.deleteMany('posts', { ids: [123, 234] })
 // }
 ```
 
-**Tip**: The `validUntil` field in the response is optional. It enables the Application cache, a client-side optimization to speed up rendering and reduce network traffic. Check [the Caching documentation](./Caching.md#application-cache) for more details.
+## Partial Pagination
+
+The `getList()` and `getManyReference()` methods return paginated responses. Sometimes, executing a "count" server-side to return the `total` number of records is expensive. In this case, you can omit the `total` property in the response, and pass a `pageInfo` object instead, specifying if there are previous and next pages:
+
+```js
+dataProvider.getList('posts', {
+    pagination: { page: 1, perPage: 5 },
+    sort: { field: 'title', order: 'ASC' },
+    filter: { author_id: 12 },
+})
+.then(response => console.log(response));
+// {
+//     data: [
+//         { id: 126, title: "allo?", author_id: 12 },
+//         { id: 127, title: "bien le bonjour", author_id: 12 },
+//         { id: 124, title: "good day sunshine", author_id: 12 },
+//         { id: 123, title: "hello, world", author_id: 12 },
+//         { id: 125, title: "howdy partner", author_id: 12 },
+//     ],
+//     pageInfo: {
+//         hasPreviousPage: false,    
+//         hasNextPage: true,
+//     }
+// }
+```
+
+React-admin's `<Pagination>` component will automatically handle the `pageInfo` object and display the appropriate pagination controls.
 
 ## Error Format
 

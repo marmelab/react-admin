@@ -1,6 +1,12 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, fireEvent, waitFor, screen } from '@testing-library/react';
+import {
+    render,
+    fireEvent,
+    waitFor,
+    screen,
+    act,
+} from '@testing-library/react';
 import lolex from 'lolex';
 // TODO: we shouldn't import mui components in ra-core
 import { TextField } from '@mui/material';
@@ -15,23 +21,10 @@ import {
 } from './useListController';
 import { CoreAdminContext, createAdminStore } from '../../core';
 import { CRUD_CHANGE_LIST_PARAMS } from '../../actions';
-import { SORT_ASC } from './queryReducer';
 
 describe('useListController', () => {
     const defaultProps = {
         children: jest.fn(),
-        hasCreate: true,
-        hasEdit: true,
-        hasList: true,
-        hasShow: true,
-        query: {
-            page: 1,
-            perPage: 10,
-            sort: 'id',
-            order: SORT_ASC,
-            filter: {},
-            displayedFilters: {},
-        },
         resource: 'posts',
         debounce: 200,
     };
@@ -343,6 +336,93 @@ describe('useListController', () => {
         });
     });
 
+    describe('pagination', () => {
+        it('should compute hasNextPage and hasPreviousPage based on total', async () => {
+            const getList = jest
+                .fn()
+                .mockImplementation(() =>
+                    Promise.resolve({ data: [], total: 25 })
+                );
+            const dataProvider = testDataProvider({ getList });
+            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const props = {
+                ...defaultProps,
+                children,
+            };
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ListController {...props} />
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        page: 1,
+                        total: 25,
+                        hasNextPage: true,
+                        hasPreviousPage: false,
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].setPage(2);
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        page: 2,
+                        total: 25,
+                        hasNextPage: true,
+                        hasPreviousPage: true,
+                    })
+                );
+            });
+            act(() => {
+                // @ts-ignore
+                children.mock.calls.at(-1)[0].setPage(3);
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        page: 3,
+                        total: 25,
+                        hasNextPage: false,
+                        hasPreviousPage: true,
+                    })
+                );
+            });
+        });
+        it('should compute hasNextPage and hasPreviousPage based on pageInfo', async () => {
+            const getList = jest.fn().mockImplementation(() =>
+                Promise.resolve({
+                    data: [],
+                    pageInfo: { hasNextPage: true, hasPreviousPage: false },
+                })
+            );
+            const dataProvider = testDataProvider({ getList });
+            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const props = {
+                ...defaultProps,
+                children,
+            };
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ListController {...props} />
+                </CoreAdminContext>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        page: 1,
+                        total: undefined,
+                        hasNextPage: true,
+                        hasPreviousPage: false,
+                    })
+                );
+            });
+        });
+    });
     describe('getListControllerProps', () => {
         it('should only pick the props injected by the ListController', () => {
             expect(

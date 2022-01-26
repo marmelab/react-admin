@@ -101,6 +101,8 @@ const {
     perPage, // the number of results per page. Defaults to 25
     setPage, // a callback to change the page, e.g. setPage(3)
     setPerPage, // a callback to change the number of results per page, e.g. setPerPage(25)
+    hasPreviousPage, // boolean, true if the current page is not the first one
+    hasNextPage, // boolean, true if the current page is not the last one
     // sorting
     sort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
     setSort, // a callback to change the sort, e.g. setSort({ field: 'name', order: 'ASC' })

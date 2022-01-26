@@ -626,7 +626,9 @@ The [`<Pagination>`](./Pagination.md) component gets the following constants fro
 * `page`: The current page number (integer). First page is `1`.
 * `perPage`: The number of records per page.
 * `setPage`: `Function(page: number) => void`. A function that set the current page number.
-* `total`: The total number of records.
+* `total`: The total number of records (may be undefined when the data provider uses [Partial pagination](./DataProviderWriting.md#partial-pagination)).
+* `hasPreviousPage`: True if the page number is greater than 1.
+* `hasNextPage`: True if the page number is lower than the total number of pages.
 * `actions`: A component that displays the pagination buttons (default: `<PaginationActions>`)
 * `limit`: An element that is displayed if there is no data to show (default: `<PaginationLimit>`)
 
@@ -639,24 +641,29 @@ import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import ChevronRight from '@mui/icons-material/ChevronRight';
 
 const PostPagination = () => {
-    const { page, perPage, total, setPage } = useListContext();
-    const nbPages = Math.ceil(total / perPage) || 1;
+    const { page, hasPreviousPage, hasNextPage, setPage } = useListContext();
+    if (!hasPreviousPage && !hasNextPage) return null;
     return (
-        nbPages > 1 &&
-            <Toolbar>
-                {page > 1 &&
-                    <Button color="primary" key="prev" onClick={() => setPage(page - 1)}>
-                        <ChevronLeft />
-                        Prev
-                    </Button>
-                }
-                {page !== nbPages &&
-                    <Button color="primary" key="next" onClick={() => setPage(page + 1)}>
-                        Next
-                        <ChevronRight />
-                    </Button>
-                }
-            </Toolbar>
+        <Toolbar>
+            {hasPreviousPage &&
+                <Button 
+                    key="previous"
+                    onClick={() => setPage(page - 1)}
+                    startIcon={<ChevronLeft />}
+                >
+                    Previous
+                </Button>
+            }
+            {hasNextPage &&
+                <Button 
+                    key="next"
+                    onClick={() => setPage(page + 1)}
+                    startIcon={<ChevronRight />}
+                >
+                    Next                    
+                </Button>
+            }
+        </Toolbar>
     );
 }
 
@@ -676,7 +683,15 @@ import {
     PaginationActions as RaPaginationActions,
 } from 'react-admin';
 
-export const PaginationActions = props => <RaPaginationActions {...props} color="secondary" />;
+export const PaginationActions = props => (
+    <RaPaginationActions
+        {...props}
+        // these props are passed down to the MUI <Pagination> component
+        color="primary"
+        showFirstButton
+        showLastButton
+    />
+);
 
 export const Pagination = props => <RaPagination {...props} ActionsComponent={PaginationActions} />;
 

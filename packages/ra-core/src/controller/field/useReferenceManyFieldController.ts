@@ -150,6 +150,7 @@ export const useReferenceManyFieldController = (
     const {
         data,
         total,
+        pageInfo,
         error,
         isFetching,
         isLoading,
@@ -205,6 +206,12 @@ export const useReferenceManyFieldController = (
         setFilters,
         setPage,
         setPerPage,
+        hasNextPage: pageInfo
+            ? pageInfo.hasNextPage
+            : total != null
+            ? page * perPage < total
+            : undefined,
+        hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : page > 1,
         setSort,
         showFilter,
         total,

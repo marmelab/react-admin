@@ -115,9 +115,15 @@ const frenchMessages: TranslationMessages = {
             page_out_from_end: 'Fin de la pagination',
             page_out_from_begin: 'La page doit être supérieure à 1',
             page_range_info: '%{offsetBegin}-%{offsetEnd} sur %{total}',
+            partial_page_range_info:
+                '%{offsetBegin}-%{offsetEnd} sur plus de %{offsetEnd}',
             page_rows_per_page: 'Lignes par page :',
-            next: 'Suivant',
-            prev: 'Précédent',
+            current_page: 'Page %{page}',
+            page: 'Aller à la page %{page}',
+            first: 'Aller à la première page',
+            last: 'Aller à la dernière page',
+            next: 'Aller à la prochaine page',
+            previous: 'Aller à la page précédente',
             skip_nav: 'Aller au contenu',
         },
         sort: {

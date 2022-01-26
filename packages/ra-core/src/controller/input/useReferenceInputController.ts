@@ -110,7 +110,8 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
     // fetch possible values
     const {
         data: possibleValuesData = [],
-        total: possibleValuesTotal,
+        total,
+        pageInfo,
         isFetching: possibleValuesFetching,
         isLoading: possibleValuesLoading,
         error: possibleValuesError,
@@ -138,11 +139,11 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         !referenceRecord ||
         possibleValuesData.find(record => record.id === input.value)
     ) {
-        finalData = [...possibleValuesData];
-        finalTotal = possibleValuesTotal;
+        finalData = possibleValuesData;
+        finalTotal = total;
     } else {
         finalData = [referenceRecord, ...possibleValuesData];
-        finalTotal = possibleValuesTotal + 1;
+        finalTotal = total == null ? undefined : total + 1;
     }
 
     // overall status
@@ -170,6 +171,12 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
             setPage,
             perPage,
             setPerPage,
+            hasNextPage: pageInfo
+                ? pageInfo.hasNextPage
+                : finalTotal != null
+                ? page * perPage < finalTotal
+                : undefined,
+            hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : page > 1,
             sort,
             setSort,
             filterValues,
