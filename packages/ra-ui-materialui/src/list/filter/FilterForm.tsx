@@ -5,7 +5,6 @@ import {
     useEffect,
     useCallback,
     useContext,
-    useRef,
 } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
@@ -24,45 +23,26 @@ import classnames from 'classnames';
 import lodashSet from 'lodash/set';
 import lodashGet from 'lodash/get';
 import cloneDeep from 'lodash/cloneDeep';
-import isEqual from 'lodash/isEqual';
 
 import { FilterFormInput } from './FilterFormInput';
 import { FilterContext } from '../FilterContext';
 
 export const FilterForm = (props: FilterFormProps) => {
-    const {
-        filters: filtersProps,
-        defaultValues: defaultValuesProps,
-        ...rest
-    } = props;
+    const { filters: filtersProps, ...rest } = props;
 
     const { setFilters, displayedFilters, filterValues } = useListContext(
         props
     );
     const filters = useContext(FilterContext) || filtersProps;
 
-    const defaultValuesRef = useRef(
-        mergeInitialValuesWithDefaultValues(
-            defaultValuesProps || filterValues,
-            filters
-        )
-    );
-
     const form = useForm({
-        defaultValues: defaultValuesRef.current,
+        defaultValues: filterValues,
     });
 
-    // This effect ensures we correctly apply individual inputs default values
+    // Reapply filterValues when the URL changes or a user removes a filter
     useEffect(() => {
-        const newDefaultValues = mergeInitialValuesWithDefaultValues(
-            defaultValuesProps || filterValues,
-            filters
-        );
-
-        if (!isEqual(newDefaultValues, defaultValuesRef.current)) {
-            form.reset(newDefaultValues);
-        }
-    }, [defaultValuesProps, filterValues, filters, form]);
+        form.reset(filterValues);
+    }, [filterValues, filters, form]);
 
     useEffect(() => {
         const subscription = form.watch(async (values, { name, type }) => {

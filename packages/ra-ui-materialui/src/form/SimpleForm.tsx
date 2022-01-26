@@ -35,7 +35,6 @@ import { SimpleFormView } from './SimpleFormView';
  * @prop {ReactElement} toolbar The element displayed at the bottom of the form, containing the SaveButton
  * @prop {string} variant Apply variant to all inputs. Possible values are 'standard', 'outlined', and 'filled' (default)
  * @prop {string} margin Apply variant to all inputs. Possible values are 'none', 'normal', and 'dense' (default)
- * @prop {boolean} sanitizeEmptyValues Whether or not deleted record attributes should be recreated with a `null` value (default: true)
  *
  * @param {Props} props
  */
@@ -59,7 +58,6 @@ SimpleForm.propTypes = {
     submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.oneOfType([PropTypes.element, PropTypes.oneOf([false])]),
     validate: PropTypes.func,
-    sanitizeEmptyValues: PropTypes.bool,
 };
 
 export interface SimpleFormProps

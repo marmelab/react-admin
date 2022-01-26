@@ -782,7 +782,6 @@ Here are all the props you can set on the `<SimpleForm>` component:
 * [`margin`](#margin)
 * [`component`](#simpleform-component)
 * [`warnWhenUnsavedChanges`](#warning-about-unsaved-changes)
-* [`sanitizeEmptyValues`](#setting-empty-values-to-null)
 
 ```jsx
 export const PostCreate = () => (
@@ -854,7 +853,6 @@ Here are all the props accepted by the `<TabbedForm>` component:
 * `save`: The function invoked when the form is submitted. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 * `saving`: A boolean indicating whether a save operation is ongoing. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 * [`warnWhenUnsavedChanges`](#warning-about-unsaved-changes)
-* [`sanitizeEmptyValues`](#setting-empty-values-to-null)
 * [`syncWithLocation`](#sync-with-location)
 
 {% raw %}
@@ -2028,7 +2026,6 @@ const VisitorEdit = () => (
 
 {% raw %}
 ```jsx
-import { sanitizeEmptyValues } from 'react-admin';
 import { useForm } from 'react-hook-form';
 import { CardContent, Typography, Box } from '@material-ui/core';
 
@@ -2101,23 +2098,6 @@ const Form = ({ onSubmit }) => {
 ```
 
 **Tip**: You can customize the message displayed in the confirm dialog by setting the `ra.message.unsaved_changes` message in your i18nProvider.
-
-## Setting Empty Values To Null
-
-`<SimpleForm>` and `<TabbedForm>` recreate deleted or missing attributes based on its `defaultValue` in order to send them to the data provider with a `null` value, as most APIs requires all attributes for a given record, even if they are nullable.
-
-It is possible to opt-out this default behavior by passing the `sanitizeEmptyValues` prop:
-
-```jsx
-export const PostEdit = () => (
-    <Edit>
-        <SimpleForm sanitizeEmptyValues={false}>
-            <TextInput source="title" />
-            <JsonInput source="body" />
-        </SimpleForm>
-    </Edit>
-);
-```
 
 ## Recipes
 

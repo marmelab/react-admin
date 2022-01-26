@@ -1982,6 +1982,33 @@ We kept the `validate` function prop, which we automatically translate to a cust
 
 This also means you can now use [`yup`](https://github.com/jquense/yup), [`zod`](https://github.com/colinhacks/zod), [`joi`](https://github.com/sideway/joi), [superstruct](https://github.com/ianstormtaylor/superstruct), [vest](https://github.com/ealush/vest) or any [resolver](https://react-hook-form.com/api/useform#validationResolver) supported by `react-hook-form` to apply schema validation.
 
+### `sanitizeEmptyValues` Has Been Removed
+
+React-hook-form doesn't remove empty values like react-final-fom did. Therefore, you no longer need to opt out this behavior:
+
+```diff
+export const PostEdit = () => (
+    <Edit>
+-       <SimpleForm sanitizeEmptyValues={false}>
++       <SimpleForm>
+            <TextInput source="title" />
+            <JsonInput source="body" />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+If you actually need to remove empty values, you can use the `parse` prop on a per-input basis:
+
+```diff
++const convertEmptyStringToUndefined = v => v === '' ? undefined : v;
+
+-<TextInput source="title" />
++<TextInput source="title" parse={convertEmptyStringToUndefined} />
+```
+
+Or use the `transform` prop on the `<Create>`, `<Edit>`, or `<SaveButton>` components. 
+
 ### `<FormWithRedirect>` Render Function Arguments Have Changed
 
 `<FormWithRedirect>` used to call its child function with an object containing parts of the `final-form` form state (`valid`, `invalid`, `pristine`, `dirty`). It now only passes the `handleSubmit` function, which must be passed down to the `onSubmit` prop of the underlying form. If you need to access the form state, call [the react-hook-form `useFormState` hook](https://react-hook-form.com/api/useformstate):
@@ -2184,14 +2211,23 @@ const ResetFormButton = () => {
 
 The `SelectInput`, `AutocompleteInput` and `AutocompleteArrayInput` components used to accept an `allowEmpty` prop. When set to `true`, a choice was added for setting the input value to an empty value (empty string by default).
 
-However, the underlying MaterialUI components now require that the current input value has a matching choice. Those components now always accept an empty value (an empty string by default). If you require the input to have a non-empty value, use the `required` validation. You can safely remove this prop.
+However, the underlying MaterialUI components now require that the current input value has a matching choice. Those components now always accept an empty value (an empty string by default). You can safely remove this prop.
 
 ```diff
 const choices = [{ id: 1, name: 'value' }, { id: 2, name: 'value 2' }]
 
-const MySelect = () => (
+const MyOptionalSelect = () => (
 -    <SelectInput choices={choices} allowEmpty />
 +    <SelectInput choices={choices} />
+);
+```
+
+If you require the input to have a non-empty value, use the `required` validation.
+
+```diff
+const MyRequiredSelect = () => (
+-    <SelectInput choices={choices} />
++    <SelectInput choices={choices} validate={[required()]} />
 );
 ```
 

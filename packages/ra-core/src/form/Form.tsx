@@ -19,7 +19,10 @@ import { setSubmissionErrors } from './setSubmissionErrors';
 import { FormContent } from './FormContent';
 
 /**
- * Wrapper around react-hook-form's useForm. It sets up a [FormContext]{@link https://react-hook-form.com/api/useformcontext} and a FormGroupContext. It also handle submission validation.
+ * Creates a form context
+ *
+ * Wrapper around react-hook-form's useForm and FormContextProvider.
+ * Also sets up a FormGroupContext, and handles submission validation.
  *
  * Requires a render function.
  *
@@ -36,11 +39,11 @@ import { FormContent } from './FormContent';
  * @prop {Object} initialValues
  * @prop {Function} validate
  * @prop {Function} save
- * @prop {boolean} submitOnEnter
- * @prop {string} redirect
- * @prop {boolean} sanitizeEmptyValues
  *
+ * @see useForm
  * @see FormGroupContext
+ *
+ * @link https://react-hook-form.com/api/useformcontext
  */
 export const Form = (props: FormProps) => {
     const {
@@ -139,7 +142,6 @@ export interface FormOwnProps {
     record?: Partial<RaRecord>;
     render: FormRender;
     onSubmit?: (data: FieldValues) => any | Promise<any>;
-    sanitizeEmptyValues?: boolean;
     saving?: boolean;
     warnWhenUnsavedChanges?: boolean;
 }

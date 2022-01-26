@@ -43,7 +43,7 @@ export const FormContent = (props: FormContentProps) => {
     );
 };
 
-type FormContentProps = Omit<FormOwnProps, 'onSubmit' | 'sanitizeEmptyValues'> &
+type FormContentProps = Omit<FormOwnProps, 'onSubmit'> &
     FormRenderProps & {
         warnWhenUnsavedChanges?: boolean;
     };

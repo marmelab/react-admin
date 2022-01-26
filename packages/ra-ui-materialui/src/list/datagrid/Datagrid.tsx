@@ -346,15 +346,16 @@ export interface DatagridProps<RecordType extends RaRecord = any>
 }
 
 const injectedProps = [
-    'field',
-    'fieldState',
-    'formState',
     'allowEmpty',
     'isRequired',
     'setFilter',
     'setPagination',
     'limitChoicesToValue',
     'translateChoice',
+    // Datagrid may be used as an alternative to SelectInput
+    'field',
+    'fieldState',
+    'formState',
 ];
 
 const sanitizeRestProps = props =>
