@@ -213,7 +213,7 @@ export default {
             tags: [4, 3],
             category: 'tech',
             subcategory: 'computers',
-            // FIXME: Final form does not support a null value for arrays
+            // FIXME: react-hook-form does not support a null value for arrays
             // Must be undefined and not null
             pictures: undefined,
             backlinks: [
