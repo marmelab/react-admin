@@ -1,17 +1,13 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import ChevronLeft from '@mui/icons-material/ChevronLeft';
-import ChevronRight from '@mui/icons-material/ChevronRight';
 import PersonIcon from '@mui/icons-material/Person';
 import {
     Avatar,
-    Button,
     Card,
     CardActions,
     CardContent,
     CardHeader,
     Grid,
-    Toolbar,
     Typography,
     useMediaQuery,
     Theme,
