@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
+import { useTheme } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import { TextFieldProps } from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
@@ -101,6 +102,8 @@ import {
  *
  */
 export const SelectInput = (props: SelectInputProps) => {
+    const theme = useTheme();
+
     const {
         allowEmpty,
         choices = [],
@@ -119,7 +122,8 @@ export const SelectInput = (props: SelectInputProps) => {
         label,
         loaded,
         loading,
-        margin = 'dense',
+        margin = theme.components?.MuiTextField?.defaultProps?.margin ||
+            'dense',
         onBlur,
         onChange,
         onCreate,

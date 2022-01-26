@@ -296,6 +296,15 @@ const myTheme = merge({}, defaultTheme, {
         // Use the system font instead of the default Roboto font.
         fontFamily: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Arial', 'sans-serif'].join(','),
     },
+    components: {
+        MuiTextField: { // define the props of all instances of this component
+            defaultProps: {
+                variant: 'standard',
+                margin: 'normal',
+            }
+        },
+        MuiFormControl: {}
+    },
     overrides: {
         MuiButton: { // override the styles of all instances of this component
             root: { // Name of the rule
@@ -471,7 +480,7 @@ const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
 You can specify the `Sidebar` width by setting the `width` and `closedWidth` property on your custom material-ui theme:
 
 ```jsx
-import { defaultTheme } from "react-admin";
+import { defaultTheme } from 'react-admin';
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({

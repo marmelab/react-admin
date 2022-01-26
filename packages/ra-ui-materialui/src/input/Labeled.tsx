@@ -2,6 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
+import { useTheme } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { FieldTitle, useResourceContext } from 'ra-core';
@@ -22,6 +23,8 @@ import { FieldTitle, useResourceContext } from 'ra-core';
  * </Labeled>
  */
 export const Labeled = (props: LabeledProps) => {
+    const theme = useTheme();
+
     const {
         children,
         className,
@@ -30,7 +33,8 @@ export const Labeled = (props: LabeledProps) => {
         input,
         isRequired,
         label,
-        margin = 'dense',
+        margin = theme.components?.MuiFormControl?.defaultProps?.margin ||
+            'dense',
         meta,
         source,
         ...rest

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import { useTheme } from '@mui/material';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useInput, FieldTitle, InputProps } from 'ra-core';
 
@@ -38,6 +39,8 @@ export const NumberInput = ({
     inputProps: overrideInputProps,
     ...rest
 }: NumberInputProps) => {
+    const theme = useTheme();
+
     const {
         id,
         input,
@@ -62,7 +65,12 @@ export const NumberInput = ({
         <TextField
             id={id}
             {...input}
-            variant={variant}
+            variant={
+                theme.components?.MuiTextField?.defaultProps?.variant || variant
+            }
+            margin={
+                theme.components?.MuiTextField?.defaultProps?.margin || margin
+            }
             error={!!(touched && (error || submitError))}
             helperText={
                 <InputHelperText
@@ -79,7 +87,6 @@ export const NumberInput = ({
                     isRequired={isRequired}
                 />
             }
-            margin={margin}
             inputProps={inputProps}
             {...options}
             {...sanitizeInputRestProps(rest)}

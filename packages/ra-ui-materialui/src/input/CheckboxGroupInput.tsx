@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
+import { useTheme } from '@mui/material';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl, { FormControlProps } from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
@@ -80,6 +81,8 @@ import { LinearProgress } from '../layout';
  * The object passed as `options` props is passed to the material-ui <Checkbox> components
  */
 export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => {
+    const theme = useTheme();
+
     const {
         choices = [],
         className,
@@ -89,7 +92,8 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         label,
         loaded,
         loading,
-        margin = 'dense',
+        margin = theme.components?.MuiFormControl?.defaultProps?.margin ||
+            'dense',
         onBlur,
         onChange,
         onFocus,

@@ -6,6 +6,7 @@ import {
     FormHelperText,
     FormLabel,
     RadioGroup,
+    useTheme,
 } from '@mui/material';
 import { RadioGroupProps } from '@mui/material/RadioGroup';
 import { FormControlProps } from '@mui/material/FormControl';
@@ -76,6 +77,8 @@ import { LinearProgress } from '../layout';
  * The object passed as `options` props is passed to the material-ui <RadioButtonGroup> component
  */
 export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
+    const theme = useTheme();
+
     const {
         choices = [],
         format,
@@ -85,7 +88,8 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         label,
         loaded,
         loading,
-        margin = 'dense',
+        margin = theme.components?.MuiFormControl?.defaultProps?.margin ||
+            'dense',
         onBlur,
         onChange,
         onFocus,

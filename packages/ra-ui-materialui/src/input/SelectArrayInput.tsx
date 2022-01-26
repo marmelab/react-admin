@@ -9,6 +9,7 @@ import {
     FormHelperText,
     FormControl,
     Chip,
+    useTheme,
 } from '@mui/material';
 import classnames from 'classnames';
 import {
@@ -81,6 +82,8 @@ import {
  * ];
  */
 export const SelectArrayInput = (props: SelectArrayInputProps) => {
+    const theme = useTheme();
+
     const {
         choices = [],
         className,
@@ -93,7 +96,6 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         label,
         loaded,
         loading,
-        margin = 'dense',
         onBlur,
         onChange,
         onCreate,
@@ -106,7 +108,10 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         source,
         translateChoice,
         validate,
-        variant = 'filled',
+        variant = theme.components?.MuiFormControl?.defaultProps?.variant ||
+            'filled',
+        margin = theme.components?.MuiFormControl?.defaultProps?.margin ||
+            'dense',
         ...rest
     } = props;
 

@@ -8,6 +8,7 @@ import {
     IconButton,
     TextField as MuiTextField,
     TextFieldProps,
+    useTheme,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { InputProps, useTranslate } from 'ra-core';
@@ -16,14 +17,18 @@ import { InputProps, useTranslate } from 'ra-core';
  * An override of the default Material-UI TextField which is resettable
  */
 export const ResettableTextField = (props: ResettableTextFieldProps) => {
+    const theme = useTheme();
+
     const {
         clearAlwaysVisible,
         InputProps,
         value,
         resettable,
         disabled,
-        variant = 'filled',
-        margin = 'dense',
+        variant = theme.components?.MuiTextField?.defaultProps?.variant ||
+            'filled',
+        margin = theme.components?.MuiTextField?.defaultProps?.margin ||
+            'dense',
         ...rest
     } = props;
 

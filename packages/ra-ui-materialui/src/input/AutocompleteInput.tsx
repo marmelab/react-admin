@@ -18,6 +18,7 @@ import {
     Chip,
     TextField,
     TextFieldProps,
+    useTheme,
 } from '@mui/material';
 import {
     ChoicesInputProps,
@@ -101,6 +102,8 @@ import { InputHelperText } from './InputHelperText';
  * <AutocompleteInput source="author_id" options={{ color: 'secondary', InputLabelProps: { shrink: true } }} />
  */
 export const AutocompleteInput = (props: AutocompleteInputProps) => {
+    const theme = useTheme();
+
     const {
         allowEmpty,
         choices,
@@ -126,7 +129,6 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         loading,
         limitChoicesToValue,
         matchSuggestion,
-        margin = 'dense',
         meta: metaOverride,
         multiple = false,
         noOptionsText,
@@ -149,7 +151,10 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         TextFieldProps,
         translateChoice,
         validate,
-        variant = 'filled',
+        variant = theme.components?.MuiTextField?.defaultProps?.variant ||
+            'filled',
+        margin = theme.components?.MuiTextField?.defaultProps?.margin ||
+            'dense',
         ...rest
     } = props;
 

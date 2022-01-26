@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import { useTheme } from '@mui/material';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useInput, FieldTitle, InputProps } from 'ra-core';
 
@@ -36,6 +37,8 @@ export const DateTimeInput = ({
     variant = 'filled',
     ...rest
 }: DateTimeInputProps) => {
+    const theme = useTheme();
+
     const { id, input, isRequired, meta } = useInput({
         defaultValue,
         format,
@@ -60,8 +63,12 @@ export const DateTimeInput = ({
             // Workaround https://github.com/final-form/react-final-form/issues/529
             // and https://github.com/final-form/react-final-form/issues/431
             value={format(input.value) || ''}
-            variant={variant}
-            margin={margin}
+            variant={
+                theme.components?.MuiTextField?.defaultProps?.variant || variant
+            }
+            margin={
+                theme.components?.MuiTextField?.defaultProps?.margin || margin
+            }
             error={!!(touched && (error || submitError))}
             helperText={
                 <InputHelperText

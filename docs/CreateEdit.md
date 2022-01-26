@@ -1771,6 +1771,36 @@ export const PostEdit = () => (
 );
 ```
 
+**Tip**: If, for some reason, you need to define the `variant` globaly for all your app, you can creat your own theme, following [Material UI themes documentation](https://material-ui.com/customization/themes/).
+
+
+```jsx
+import { defaultTheme } from 'react-admin';
+import { createTheme } from '@mui/material/styles';
+
+const theme = createTheme({
+    ...defaultTheme,
+    components: {
+        MuiTextField: { // define the props of all instances of this component
+            defaultProps: {
+                variant: 'standard', // can be : 'standard' | 'filled' | 'outlined' -  react-admin default : 'filled'
+            }
+        },
+        MuiFormControl: {
+            defaultProps: {
+                variant: 'standard',
+            }
+        }
+    },
+});
+
+const App = () => (
+    <Admin theme={theme} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
+);
+```
+
 ### Margin
 
 By default, react-admin input components use the Material Design "dense" margin. If you want to use the "normal" or "none" margins, you can either set the `margin` prop on each Input component individually, or set the `margin` prop directly on the Form component. In that case, the Form component will transmit the `margin` to each Input.
@@ -1782,6 +1812,36 @@ export const PostEdit = () => (
             ...
         </SimpleForm>
     </Edit>
+);
+```
+
+**Tip**: As the `variant`, you can define `margin` globaly for all your app.
+
+
+```jsx
+import { defaultTheme } from 'react-admin';
+import { createTheme } from '@mui/material/styles';
+
+const theme = createTheme({
+    ...defaultTheme,
+    components: {
+        MuiTextField: { // define the props of all instances of this component
+            defaultProps: {
+                margin: 'normal', // can be : 'none' | 'dense' | 'normal'  -  react-admin default : 'dense' on desktop, 'normal' on mobile
+            }
+        },
+        MuiFormControl: {
+            defaultProps: {
+                margin: 'normal',
+            }
+        }
+    },
+});
+
+const App = () => (
+    <Admin theme={theme} dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        // ...
+    </Admin>
 );
 ```
 

@@ -57,7 +57,7 @@ You can use a `<Datagrid>` instead of a `<SingleFieldList>` - but not inside ano
 
 ```jsx
 import * as React from 'react';
-import { ReferenceManyField, Datagrid, DateField, EditButton, Show, SimpleShowLayout, TextField } from "react-admin";
+import { ReferenceManyField, Datagrid, DateField, EditButton, Show, SimpleShowLayout, TextField } from 'react-admin';
 
 const PostShow = props => (
   <Show {...props}>

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
@@ -10,12 +11,13 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 
 export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
+    const theme = useTheme();
+
     const {
         className,
         format = getStringFromBoolean,
         helperText,
         label,
-        margin = 'dense',
         onBlur,
         onChange,
         onFocus,
@@ -24,7 +26,10 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
         resource,
         source,
         validate,
-        variant = 'filled',
+        variant = theme.components?.MuiTextField?.defaultProps?.variant ||
+            'filled',
+        margin = theme.components?.MuiTextField?.defaultProps?.margin ||
+            'dense',
         nullLabel = 'ra.boolean.null',
         falseLabel = 'ra.boolean.false',
         trueLabel = 'ra.boolean.true',

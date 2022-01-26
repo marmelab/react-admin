@@ -8,7 +8,12 @@ import {
     InputProps,
 } from 'ra-core';
 import { useFieldArray } from 'react-final-form-arrays';
-import { InputLabel, FormControl, FormHelperText } from '@mui/material';
+import {
+    InputLabel,
+    FormControl,
+    FormHelperText,
+    useTheme,
+} from '@mui/material';
 
 import { LinearProgress } from '../../layout';
 import { InputHelperText } from '../InputHelperText';
@@ -58,6 +63,8 @@ import { ArrayInputContext } from './ArrayInputContext';
  * @see https://github.com/final-form/react-final-form-arrays
  */
 export const ArrayInput = (props: ArrayInputProps) => {
+    const theme = useTheme();
+
     const {
         className,
         defaultValue,
@@ -72,7 +79,8 @@ export const ArrayInput = (props: ArrayInputProps) => {
         validate,
         variant,
         disabled,
-        margin = 'dense',
+        margin = theme.components?.MuiTextField?.defaultProps?.margin ||
+            'dense',
         ...rest
     } = props;
     const sanitizedValidate = Array.isArray(validate)

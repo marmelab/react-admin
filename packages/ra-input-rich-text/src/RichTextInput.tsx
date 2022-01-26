@@ -9,6 +9,7 @@ import {
     InputLabel,
     styled,
     GlobalStyles,
+    useTheme,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 
@@ -16,6 +17,8 @@ import { RaRichTextClasses, RaRichTextStyles } from './styles';
 import QuillSnowStylesheet from './QuillSnowStylesheet';
 
 export const RichTextInput = (props: RichTextInputProps) => {
+    const theme = useTheme();
+
     const {
         options = {}, // Quill editor options
         toolbar = true,
@@ -26,7 +29,8 @@ export const RichTextInput = (props: RichTextInputProps) => {
         source,
         resource,
         variant,
-        margin = 'dense',
+        margin = theme.components?.MuiFormControl?.defaultProps?.margin ||
+            'dense',
         ...rest
     } = props;
     const quillInstance = useRef<Quill>();
