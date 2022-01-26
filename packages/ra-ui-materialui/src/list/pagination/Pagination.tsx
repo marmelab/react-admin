@@ -116,7 +116,9 @@ export const Pagination: FC<PaginationProps> = memo(props => {
             // @ts-ignore
             ActionsComponent={
                 actions ||
-                (total == null ? PartialPaginationActions : PaginationActions)
+                (!isLoading && total == null
+                    ? PartialPaginationActions
+                    : PaginationActions)
             }
             component="span"
             labelRowsPerPage={translate('ra.navigation.page_rows_per_page')}
