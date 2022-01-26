@@ -13,7 +13,6 @@ import {
 import classnames from 'classnames';
 import { FieldTitle, useInput, ChoicesProps, useChoices } from 'ra-core';
 import { InputHelperText } from './InputHelperText';
-import { SelectProps } from '@mui/material/Select';
 import { FormControlProps } from '@mui/material/FormControl';
 
 import { LinearProgress } from '../layout';

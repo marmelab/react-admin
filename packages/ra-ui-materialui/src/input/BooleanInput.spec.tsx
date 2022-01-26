@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { testDataProvider } from 'ra-core';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';

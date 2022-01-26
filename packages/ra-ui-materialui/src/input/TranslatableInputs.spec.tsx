@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { TextInput } from './TextInput';
-import { required, testDataProvider, useTranslatableContext } from 'ra-core';
+import { testDataProvider, useTranslatableContext } from 'ra-core';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Tabs } from '@mui/material';
 
