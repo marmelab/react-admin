@@ -32,14 +32,21 @@ export const PartialPaginationActions = React.forwardRef(
             onPageChange(event, page + 1);
         };
 
+        const previousLabel = translate('ra.navigation.previous', {
+            _: 'Go to previous page',
+        });
+        const nextLabel = translate('ra.navigation.next', {
+            _: 'Go to next page',
+        });
+
         return (
             <div ref={ref} {...other}>
                 <IconButton
                     onClick={handleBackButtonClick}
                     disabled={!hasPreviousPage}
                     color="inherit"
-                    aria-label={translate('ra.navigation.prev')}
-                    title={translate('ra.navigation.prev')}
+                    aria-label={previousLabel}
+                    title={previousLabel}
                     {...backIconButtonProps}
                 >
                     {theme.direction === 'rtl' ? (
@@ -52,8 +59,8 @@ export const PartialPaginationActions = React.forwardRef(
                     onClick={handleNextButtonClick}
                     disabled={!hasNextPage}
                     color="inherit"
-                    aria-label={translate('ra.navigation.next')}
-                    title={translate('ra.navigation.next')}
+                    aria-label={nextLabel}
+                    title={nextLabel}
                     {...nextIconButtonProps}
                 >
                     {theme.direction === 'rtl' ? (

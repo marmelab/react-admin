@@ -111,9 +111,14 @@ export interface TranslationMessages extends StringMap {
             page_out_from_end: string;
             page_out_from_begin: string;
             page_range_info: string;
+            partial_page_range_info: string;
             page_rows_per_page: string;
+            current_page: string;
+            page: string;
+            first: string;
+            last: string;
             next: string;
-            prev: string;
+            previous: string;
             skip_nav: string;
         };
         sort: {

@@ -75,11 +75,13 @@ export const Pagination: FC<PaginationProps> = memo(props => {
                 ? translate('ra.navigation.partial_page_range_info', {
                       offsetBegin: from,
                       offsetEnd: to,
+                      _: `%{from}-%{to} of more than %{to}`,
                   })
                 : translate('ra.navigation.page_range_info', {
                       offsetBegin: from,
                       offsetEnd: to,
                       total: count === -1 ? to : count,
+                      _: `%{from}-%{to} of %{count === -1 ? to : count}`,
                   }),
         [translate, hasNextPage]
     );

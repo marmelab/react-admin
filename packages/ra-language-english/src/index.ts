@@ -113,9 +113,13 @@ const englishMessages: TranslationMessages = {
             page_range_info: '%{offsetBegin}-%{offsetEnd} of %{total}',
             partial_page_range_info:
                 '%{offsetBegin}-%{offsetEnd} of more than %{offsetEnd}',
+            current_page: 'Page %{page}',
+            page: 'Go to page %{page}',
+            first: 'Go to first page',
+            last: 'Go to last page',
+            next: 'Go to next page',
+            previous: 'Go to previous page',
             page_rows_per_page: 'Rows per page:',
-            next: 'Next',
-            prev: 'Prev',
             skip_nav: 'Skip to content',
         },
         sort: {
