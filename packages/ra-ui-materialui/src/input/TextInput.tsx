@@ -53,6 +53,8 @@ export const TextInput = (props: TextInputProps) => {
         source,
         type: 'text',
         validate,
+        onBlur,
+        onChange,
         ...rest,
     });
     return (
