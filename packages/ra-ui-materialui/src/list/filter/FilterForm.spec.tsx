@@ -16,7 +16,7 @@ describe('<FilterForm />', () => {
         displayedFilters: {},
     };
 
-    it('should display correctly passed filters', async () => {
+    it('should display correctly passed filters', () => {
         const setFilters = jest.fn();
         const filters = [
             <TextInput source="title" label="Title" />,
