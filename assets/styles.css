@@ -335,6 +335,83 @@ nav {
   margin-top: 5px;
 }
 
+.clients {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  list-style: none;
+}
+
+.clients li {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.clients a {
+  text-decoration: none;
+  color: var(--black);
+}
+
+.clients a:hover {
+  color: var(--black);
+}
+
+.client {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: column;
+  font-size: 16px;
+  padding: 12px;
+  filter: opacity(80%) grayscale(95%);
+  transition: all 0.2s ease-out;
+}
+
+.client:hover {
+  filter: opacity(100%) grayscale(0%);
+}
+
+.client p {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  text-align: center;
+}
+
+.clients .client .image {
+  padding-left: 0;
+  margin: 0px !important;
+  height: 100px;
+  width: 100px;
+  background-color: transparent;
+  vertical-align: bottom;
+  padding-top: 4px;
+  display: flex;
+}
+
+.clients .client .image img {
+  max-width: 100px;
+  max-height: 100px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.clients .client p {
+  margin: 10px 0px 0px 0px !important;
+}
+
+.reveal-on-hover {
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+}
+
+.client > div {
+  padding-left: 160px;
+  margin-top: 20px;
+  position: relative;
+  text-align: left;
+}
+
 .testimonial {
   font-size: 16px;
   min-height: 150px;
