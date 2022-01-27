@@ -52,7 +52,7 @@ const items = await screen.findAllByText(/Item #[0-9]: /)
 
 ## Mocking Providers
 
-`<AdminContext>`accepts the same props as `<Admin>`, so you can pass a custom `dataProvider`, `authProvider`, or `i18nProvider` for testing purposes. 
+`<AdminContext>` accepts the same props as `<Admin>`, so you can pass a custom `dataProvider`, `authProvider`, or `i18nProvider` for testing purposes. 
 
 For instance, if the component to test calls the `useGetOne` hook:
 
