@@ -1,8 +1,13 @@
 import * as React from 'react';
-import { fireEvent } from '@testing-library/react';
+import {
+    render as baseRender,
+    fireEvent,
+    screen,
+} from '@testing-library/react';
+import { useLocation } from 'react-router-dom';
 import { useRecordContext } from 'ra-core';
-import { renderWithRedux } from 'ra-test';
 
+import { AdminContext } from '../../AdminContext';
 import DatagridRow from './DatagridRow';
 import DatagridContextProvider from './DatagridContextProvider';
 
@@ -15,11 +20,15 @@ const ExpandPanel = () => <span>expanded</span>;
 
 // remove validateDomNesting warnings by react-testing-library
 const render = element =>
-    renderWithRedux(
-        <table>
-            <tbody>{element}</tbody>
-        </table>
-    );
+    baseRender(element, {
+        wrapper: ({ children }) => (
+            <AdminContext>
+                <table>
+                    <tbody>{children}</tbody>
+                </table>
+            </AdminContext>
+        ),
+    });
 
 describe('<DatagridRow />', () => {
     const defaultProps = {
@@ -68,29 +77,44 @@ describe('<DatagridRow />', () => {
         });
     });
 
+    const LocationSpy = ({ children, spy }) => {
+        spy(useLocation());
+        return children;
+    };
+
     describe('rowClick', () => {
         it("should redirect to edit page if the 'edit' option is selected", () => {
-            const { getByText, history } = render(
-                <DatagridRow {...defaultProps} rowClick="edit">
-                    <TitleField />
-                </DatagridRow>
+            let spy = jest.fn();
+            render(
+                <LocationSpy spy={spy}>
+                    <DatagridRow {...defaultProps} rowClick="edit">
+                        <TitleField />
+                    </DatagridRow>
+                </LocationSpy>
             );
-            fireEvent.click(getByText('hello'));
-            expect(history.location.pathname).toEqual('/posts/15');
+            fireEvent.click(screen.getByText('hello'));
+            expect(spy).toHaveBeenCalledWith(
+                expect.objectContaining({ pathname: '/posts/15' })
+            );
         });
 
         it("should redirect to show page if the 'show' option is selected", () => {
-            const { getByText, history } = render(
-                <DatagridRow {...defaultProps} rowClick="show">
-                    <TitleField />
-                </DatagridRow>
+            let spy = jest.fn();
+            render(
+                <LocationSpy spy={spy}>
+                    <DatagridRow {...defaultProps} rowClick="show">
+                        <TitleField />
+                    </DatagridRow>
+                </LocationSpy>
             );
-            fireEvent.click(getByText('hello'));
-            expect(history.location.pathname).toEqual('/posts/15/show');
+            fireEvent.click(screen.getByText('hello'));
+            expect(spy).toHaveBeenCalledWith(
+                expect.objectContaining({ pathname: '/posts/15/show' })
+            );
         });
 
         it("should change the expand state if the 'expand' option is selected", () => {
-            const { queryAllByText, getByText } = render(
+            render(
                 <DatagridRow
                     {...defaultProps}
                     rowClick="expand"
@@ -99,11 +123,11 @@ describe('<DatagridRow />', () => {
                     <TitleField />
                 </DatagridRow>
             );
-            expect(queryAllByText('expanded')).toHaveLength(0);
-            fireEvent.click(getByText('hello'));
-            expect(queryAllByText('expanded')).toHaveLength(1);
-            fireEvent.click(getByText('hello'));
-            expect(queryAllByText('expanded')).toHaveLength(0);
+            expect(screen.queryAllByText('expanded')).toHaveLength(0);
+            fireEvent.click(screen.getByText('hello'));
+            expect(screen.queryAllByText('expanded')).toHaveLength(1);
+            fireEvent.click(screen.getByText('hello'));
+            expect(screen.queryAllByText('expanded')).toHaveLength(0);
         });
 
         it("should execute the onToggleItem function if the 'toggleSelection' option is selected", () => {
@@ -139,35 +163,50 @@ describe('<DatagridRow />', () => {
 
         it('should redirect to the custom path if onRowClick is a string', () => {
             const path = '/foo/bar';
-            const { getByText, history } = render(
-                <DatagridRow {...defaultProps} rowClick={path}>
-                    <TitleField />
-                </DatagridRow>
+            let spy = jest.fn();
+            render(
+                <LocationSpy spy={spy}>
+                    <DatagridRow {...defaultProps} rowClick={path}>
+                        <TitleField />
+                    </DatagridRow>
+                </LocationSpy>
             );
-            fireEvent.click(getByText('hello'));
-            expect(history.location.pathname).toEqual(path);
+            fireEvent.click(screen.getByText('hello'));
+            expect(spy).toHaveBeenCalledWith(
+                expect.objectContaining({ pathname: path })
+            );
         });
 
         it('should evaluate the function and redirect to the result of that function if onRowClick is a custom function', async () => {
             const customRowClick = () => '/bar/foo';
-            const { getByText, history } = render(
-                <DatagridRow {...defaultProps} rowClick={customRowClick}>
-                    <TitleField />
-                </DatagridRow>
+            let spy = jest.fn();
+            render(
+                <LocationSpy spy={spy}>
+                    <DatagridRow {...defaultProps} rowClick={customRowClick}>
+                        <TitleField />
+                    </DatagridRow>
+                </LocationSpy>
             );
-            fireEvent.click(getByText('hello'));
+            fireEvent.click(screen.getByText('hello'));
             await new Promise(resolve => setTimeout(resolve)); // waitFor one tick
-            expect(history.location.pathname).toEqual('/bar/foo');
+            expect(spy).toHaveBeenCalledWith(
+                expect.objectContaining({ pathname: '/bar/foo' })
+            );
         });
 
         it('should not call push if onRowClick is falsy', () => {
-            const { getByText, history } = render(
-                <DatagridRow {...defaultProps} rowClick="">
-                    <TitleField />
-                </DatagridRow>
+            let spy = jest.fn();
+            render(
+                <LocationSpy spy={spy}>
+                    <DatagridRow {...defaultProps} rowClick="">
+                        <TitleField />
+                    </DatagridRow>
+                </LocationSpy>
             );
-            fireEvent.click(getByText('hello'));
-            expect(history.location.pathname).toEqual('/');
+            fireEvent.click(screen.getByText('hello'));
+            expect(spy).toHaveBeenCalledWith(
+                expect.objectContaining({ pathname: '/' })
+            );
         });
     });
 });
