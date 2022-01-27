@@ -76,7 +76,7 @@ test('<MyComponent>', async () => {
 })
 ```
 
-**Tip**: If you're using TypeScript, the compiler will complain about missing methods in the data provider above. You can remove thoe warnings by using the `testDataProvider` helper:
+**Tip**: If you're using TypeScript, the compiler will complain about missing methods in the data provider above. You can remove these warnings by using the `testDataProvider` helper:
 
 ```jsx
 import React from 'react';
