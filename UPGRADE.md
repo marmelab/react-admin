@@ -2263,7 +2263,7 @@ const MyRequiredSelect = () => (
 
 You no longer need a special package to unit test your components. The `react-admin` package provides all you need.
 
-If you used `TextContext` from 'ra-test', use `AdminContext` instead:
+If you used `TestContext` from 'ra-test', use `AdminContext` instead:
 
 ```diff
 import React from 'react';

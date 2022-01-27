@@ -7,11 +7,11 @@ title: "Unit Testing"
 
 React-admin relies heavily on unit tests (powered by [Jest](https://facebook.github.io/jest/) and [react-testing-library](https://testing-library.com/docs/react-testing-library/intro)) to ensure that its code is working as expected.
 
-That means that each individual commponent and hook can be tested in isolation. That also means that if you have to test your own components and hooks based on react-admin, this should be straightforward.
+That means that each individual component and hook can be tested in isolation. That also means that if you have to test your own components and hooks based on react-admin, this should be straightforward.
 
 ## AdminContext Wrapper
 
-Some of react-admin's components depend on a context for translation, theming, data fetching, etc. If you write a component that depends on a react-admin commponent, chances are the test runner will complain about a missing context (or Redux provider).
+Some of react-admin's components depend on a context for translation, theming, data fetching, etc. If you write a component that depends on a react-admin component, chances are the test runner will complain about a missing context (or Redux provider).
 
 Wrap your tested component inside `<AdminContext>` to avoid this problem:
 
@@ -109,8 +109,8 @@ Here is an example with Jest and TestingLibrary, which is testing the [`UserShow
 ```jsx
 // UserShow.spec.js
 import * as React from "react";
-import { render } from '@testing-library/react';
-import { AdminContext, Tab, TextField } from 'react-admin';
+import { render, fireEvent } from '@testing-library/react';
+import { AdminContext } from 'react-admin';
 
 import UserShow from './UserShow';
 
@@ -131,7 +131,7 @@ describe('UserShow', () => {
                 })
             }
             const testUtils = render(
-                <AdminContext>
+                <AdminContext dataProvider={dataProvider}>
                     <UserShow permissions="user" id="1" />
                 </AdminContext>
             );
@@ -157,7 +157,7 @@ describe('UserShow', () => {
                 })
             }
             const testUtils = render(
-                <AdminContext>
+                <AdminContext dataProvider={dataProvider}>
                     <UserShow permissions="user" id="1" />
                 </AdminContext>
             );
@@ -175,7 +175,7 @@ describe('UserShow', () => {
                 })
             }
             const testUtils = render(
-                <AdminContext>
+                <AdminContext dataProvider={dataProvider}>
                     <UserShow permissions="user" id="1" />
                 </AdminContext>
             );
