@@ -7,7 +7,7 @@ import {
     useRecordContext,
 } from 'react-admin';
 
-import { Contact } from '../types';
+import { Contact, Company } from '../types';
 
 const PREFIX = 'TagsList';
 
@@ -36,8 +36,10 @@ const ColoredChipField = (props: any) => {
     );
 };
 
-export const TagsList = ({ record }: { record: Contact }) => {
+export const TagsList = (props: { record: Contact }) => {
+    const record = useRecordContext<Contact>(props);
     if (!record) return null;
+
     return (
         <StyledReferenceArrayField
             record={record}
