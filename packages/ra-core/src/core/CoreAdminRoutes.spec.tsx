@@ -4,7 +4,7 @@ import expect from 'expect';
 import { Route } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 
-import CoreAdminContext from './CoreAdminContext';
+import { CoreAdminContext } from './CoreAdminContext';
 import { CoreAdminRoutes } from './CoreAdminRoutes';
 import { Resource } from './Resource';
 import { CustomRoutes } from './CustomRoutes';

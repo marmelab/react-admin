@@ -3,7 +3,7 @@ import expect from 'expect';
 import { render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 
-import CoreAdminContext from './CoreAdminContext';
+import { CoreAdminContext } from './CoreAdminContext';
 import { Resource } from './Resource';
 import { testDataProvider } from '../dataProvider';
 
