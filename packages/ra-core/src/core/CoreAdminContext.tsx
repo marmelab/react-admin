@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ComponentType, useContext, useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { Provider, ReactReduxContext } from 'react-redux';
 import { History } from 'history';
