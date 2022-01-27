@@ -3,7 +3,7 @@ import { ComponentType } from 'react';
 import { QueryClient } from 'react-query';
 import { History } from 'history';
 
-import CoreAdminContext from './CoreAdminContext';
+import { CoreAdminContext } from './CoreAdminContext';
 import { CoreAdminUI } from './CoreAdminUI';
 import {
     AuthProvider,

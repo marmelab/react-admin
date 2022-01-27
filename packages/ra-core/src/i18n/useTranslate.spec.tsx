@@ -1,10 +1,10 @@
 import * as React from 'react';
 import expect from 'expect';
+import { render, screen } from '@testing-library/react';
 
 import useTranslate from './useTranslate';
 import TranslationProvider from './TranslationProvider';
 import { TranslationContext } from './TranslationContext';
-import { renderWithRedux } from 'ra-test';
 
 describe('useTranslate', () => {
     const Component = () => {
@@ -13,12 +13,12 @@ describe('useTranslate', () => {
     };
 
     it('should not fail when used outside of a translation provider', () => {
-        const { queryAllByText } = renderWithRedux(<Component />);
-        expect(queryAllByText('hello')).toHaveLength(1);
+        render(<Component />);
+        expect(screen.queryAllByText('hello')).toHaveLength(1);
     });
 
     it('should use the i18nProvider.translate() method', () => {
-        const { queryAllByText } = renderWithRedux(
+        render(
             <TranslationContext.Provider
                 value={{
                     locale: 'de',
@@ -33,12 +33,12 @@ describe('useTranslate', () => {
                 <Component />
             </TranslationContext.Provider>
         );
-        expect(queryAllByText('hello')).toHaveLength(0);
-        expect(queryAllByText('hallo')).toHaveLength(1);
+        expect(screen.queryAllByText('hello')).toHaveLength(0);
+        expect(screen.queryAllByText('hallo')).toHaveLength(1);
     });
 
     it('should use the i18n provider when using TranslationProvider', () => {
-        const { queryAllByText } = renderWithRedux(
+        render(
             <TranslationProvider
                 i18nProvider={{
                     translate: () => 'bonjour',
@@ -49,7 +49,7 @@ describe('useTranslate', () => {
                 <Component />
             </TranslationProvider>
         );
-        expect(queryAllByText('hello')).toHaveLength(0);
-        expect(queryAllByText('bonjour')).toHaveLength(1);
+        expect(screen.queryAllByText('hello')).toHaveLength(0);
+        expect(screen.queryAllByText('bonjour')).toHaveLength(1);
     });
 });

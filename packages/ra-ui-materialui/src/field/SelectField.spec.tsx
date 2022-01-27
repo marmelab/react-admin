@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { FC } from 'react';
 import expect from 'expect';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import {
     RaRecord,
     TestTranslationProvider,
     RecordContextProvider,
 } from 'ra-core';
-import { renderWithRedux } from 'ra-test';
 
 import { SelectField } from './SelectField';
 
@@ -40,31 +39,29 @@ describe('<SelectField />', () => {
     });
 
     it('should render the emptyText when the value for the source is not in the choices', () => {
-        const { queryByText } = render(
+        render(
             <SelectField
                 record={{ id: 123, foo: 2 }}
                 emptyText="Option not found"
                 {...defaultProps}
             />
         );
-        expect(queryByText('Option not found')).not.toBeNull();
+        expect(screen.queryByText('Option not found')).not.toBeNull();
     });
 
     it('should render the choice', () => {
-        const { queryAllByText } = render(
-            <SelectField {...defaultProps} record={{ id: 123, foo: 0 }} />
-        );
-        expect(queryAllByText('hello')).toHaveLength(1);
+        render(<SelectField {...defaultProps} record={{ id: 123, foo: 0 }} />);
+        expect(screen.queryAllByText('hello')).toHaveLength(1);
     });
 
     it('should use record from RecordContext', () => {
         const record = { id: 123, foo: 0 };
-        const { queryByText } = render(
+        render(
             <RecordContextProvider value={record}>
                 <SelectField {...defaultProps} />
             </RecordContextProvider>
         );
-        expect(queryByText('hello')).not.toBeNull();
+        expect(screen.queryByText('hello')).not.toBeNull();
     });
 
     it('should use custom className', () => {
@@ -79,18 +76,18 @@ describe('<SelectField />', () => {
     });
 
     it('should handle deep fields', () => {
-        const { queryAllByText } = render(
+        render(
             <SelectField
                 {...defaultProps}
                 source="foo.bar"
                 record={{ id: 123, foo: { bar: 0 } }}
             />
         );
-        expect(queryAllByText('hello')).toHaveLength(1);
+        expect(screen.queryAllByText('hello')).toHaveLength(1);
     });
 
     it('should use optionValue as value identifier', () => {
-        const { queryAllByText } = render(
+        render(
             <SelectField
                 {...defaultProps}
                 record={{ id: 123, foo: 0 }}
@@ -98,11 +95,11 @@ describe('<SelectField />', () => {
                 choices={[{ foobar: 0, name: 'hello' }]}
             />
         );
-        expect(queryAllByText('hello')).toHaveLength(1);
+        expect(screen.queryAllByText('hello')).toHaveLength(1);
     });
 
     it('should use optionText with a string value as text identifier', () => {
-        const { queryAllByText } = render(
+        render(
             <SelectField
                 {...defaultProps}
                 record={{ id: 123, foo: 0 }}
@@ -110,11 +107,11 @@ describe('<SelectField />', () => {
                 choices={[{ id: 0, foobar: 'hello' }]}
             />
         );
-        expect(queryAllByText('hello')).toHaveLength(1);
+        expect(screen.queryAllByText('hello')).toHaveLength(1);
     });
 
     it('should use optionText with a function value as text identifier', () => {
-        const { queryAllByText } = render(
+        render(
             <SelectField
                 {...defaultProps}
                 record={{ id: 123, foo: 0 }}
@@ -122,14 +119,14 @@ describe('<SelectField />', () => {
                 choices={[{ id: 0, foobar: 'hello' }]}
             />
         );
-        expect(queryAllByText('hello')).toHaveLength(1);
+        expect(screen.queryAllByText('hello')).toHaveLength(1);
     });
 
     it('should use optionText with an element value as text identifier', () => {
         const Foobar: FC<{ record?: RaRecord }> = ({ record }) => (
             <span>{record.foobar}</span>
         );
-        const { queryAllByText } = render(
+        render(
             <SelectField
                 {...defaultProps}
                 record={{ id: 123, foo: 0 }}
@@ -137,21 +134,21 @@ describe('<SelectField />', () => {
                 choices={[{ id: 0, foobar: 'hello' }]}
             />
         );
-        expect(queryAllByText('hello')).toHaveLength(1);
+        expect(screen.queryAllByText('hello')).toHaveLength(1);
     });
 
     it('should translate the choice by default', () => {
-        const { queryAllByText } = renderWithRedux(
+        render(
             <TestTranslationProvider messages={{ hello: 'bonjour' }}>
                 <SelectField {...defaultProps} record={{ id: 123, foo: 0 }} />
             </TestTranslationProvider>
         );
-        expect(queryAllByText('hello')).toHaveLength(0);
-        expect(queryAllByText('bonjour')).toHaveLength(1);
+        expect(screen.queryAllByText('hello')).toHaveLength(0);
+        expect(screen.queryAllByText('bonjour')).toHaveLength(1);
     });
 
     it('should not translate the choice if translateChoice is false', () => {
-        const { queryAllByText } = renderWithRedux(
+        render(
             <TestTranslationProvider messages={{ hello: 'bonjour' }}>
                 <SelectField
                     {...defaultProps}
@@ -160,7 +157,7 @@ describe('<SelectField />', () => {
                 />
             </TestTranslationProvider>
         );
-        expect(queryAllByText('hello')).toHaveLength(1);
-        expect(queryAllByText('bonjour')).toHaveLength(0);
+        expect(screen.queryAllByText('hello')).toHaveLength(1);
+        expect(screen.queryAllByText('bonjour')).toHaveLength(0);
     });
 });
