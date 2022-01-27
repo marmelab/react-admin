@@ -63,3 +63,37 @@ jobs:
       env:
         CI: true
 
+  e-commerce:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Use Node.js LTS
+      uses: actions/setup-node@v1
+      with:
+        node-version: '16.x'
+    - uses: bahmutov/npm-install@v1
+      with:
+        install-command: yarn --immutable
+    - name: Build
+      run: make build
+    - name: Build e-commerce
+      run: make build-demo
+
+  crm:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Use Node.js LTS
+      uses: actions/setup-node@v1
+      with:
+        node-version: '16.x'
+    - uses: bahmutov/npm-install@v1
+      with:
+        install-command: yarn --immutable
+    - name: Build
+      run: make build
+    - name: Build crm
+      run: make build-crm
+
