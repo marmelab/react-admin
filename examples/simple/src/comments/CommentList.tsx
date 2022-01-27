@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import PersonIcon from '@mui/icons-material/Person';
 import {
     Avatar,
@@ -32,40 +31,6 @@ import {
     useListContext,
     useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
-
-const PREFIX = 'CommentList';
-
-const classes = {
-    card: `${PREFIX}-card`,
-    cardContent: `${PREFIX}-cardContent`,
-    cardLink: `${PREFIX}-cardLink`,
-    cardLinkLink: `${PREFIX}-cardLinkLink`,
-    cardActions: `${PREFIX}-cardActions`,
-};
-
-// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
-const Root = styled(Grid)(({ theme }) => ({
-    [`& .${classes.card}`]: {
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-    },
-
-    [`& .${classes.cardContent}`]: theme.typography.body1,
-
-    [`& .${classes.cardLink}`]: {
-        ...theme.typography.body1,
-        flexGrow: 1,
-    },
-
-    [`& .${classes.cardLinkLink}`]: {
-        display: 'inline',
-    },
-
-    [`& .${classes.cardActions}`]: {
-        justifyContent: 'flex-end',
-    },
-}));
 
 const commentFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -105,10 +70,16 @@ const CommentGrid = () => {
 
     if (!data) return null;
     return (
-        <Root spacing={2} container>
+        <Grid spacing={2} container>
             {data.map(record => (
                 <Grid item key={record.id} sm={12} md={6} lg={4}>
-                    <Card className={classes.card}>
+                    <Card
+                        sx={{
+                            height: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                        }}
+                    >
                         <CardHeader
                             className="comment"
                             title={
@@ -129,7 +100,7 @@ const CommentGrid = () => {
                                 </Avatar>
                             }
                         />
-                        <CardContent className={classes.cardContent}>
+                        <CardContent>
                             <TextField
                                 record={record}
                                 source="body"
@@ -142,7 +113,7 @@ const CommentGrid = () => {
                                 }}
                             />
                         </CardContent>
-                        <CardContent className={classes.cardLink}>
+                        <CardContent sx={{ flexGrow: 1 }}>
                             <Typography component="span" variant="body2">
                                 {translate('comment.list.about')}&nbsp;
                             </Typography>
@@ -151,20 +122,17 @@ const CommentGrid = () => {
                                 source="post_id"
                                 reference="posts"
                             >
-                                <TextField
-                                    source="title"
-                                    className={classes.cardLinkLink}
-                                />
+                                <TextField source="title" />
                             </ReferenceField>
                         </CardContent>
-                        <CardActions className={classes.cardActions}>
+                        <CardActions sx={{ justifyContent: 'flex-end' }}>
                             <EditButton record={record} />
                             <ShowButton record={record} />
                         </CardActions>
                     </Card>
                 </Grid>
             ))}
-        </Root>
+        </Grid>
     );
 };
 
@@ -194,12 +162,12 @@ const ListView = () => {
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     const { defaultTitle } = useListContext();
     return (
-        <Root>
+        <>
             <Title defaultTitle={defaultTitle} />
             <ListToolbar filters={commentFilters} actions={<ListActions />} />
             {isSmall ? <CommentMobileList /> : <CommentGrid />}
             <Pagination rowsPerPageOptions={[6, 9, 12]} />
-        </Root>
+        </>
     );
 };
 

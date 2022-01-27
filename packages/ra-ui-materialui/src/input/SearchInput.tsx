@@ -29,7 +29,6 @@ export const SearchInput = (props: SearchInputProps) => {
                     </InputAdornment>
                 ),
             }}
-            className={SearchInputClasses.input}
             size="small"
             {...props}
         />
@@ -40,12 +39,6 @@ export type SearchInputProps = CommonInputProps & TextInputProps;
 
 const PREFIX = 'RaSearchInput';
 
-export const SearchInputClasses = {
-    input: `${PREFIX}-input`,
-};
-
 const StyledTextInput = styled(TextInput, { name: PREFIX })({
-    [`&.${SearchInputClasses.input}`]: {
-        marginTop: 0,
-    },
+    marginTop: 0,
 });

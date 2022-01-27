@@ -111,7 +111,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
 
     return (
         <StyledForm
-            className={classnames(className, FilterFormClasses.form)}
+            className={className}
             {...sanitizeRestProps(rest)}
             onSubmit={handleSubmit}
         >
@@ -192,19 +192,16 @@ const handleFormSubmit = () => {};
 const PREFIX = 'RaFilterForm';
 
 export const FilterFormClasses = {
-    form: `${PREFIX}-form`,
     clearFix: `${PREFIX}-clearFix`,
 };
 
 const StyledForm = styled('form', { name: PREFIX })(({ theme }) => ({
-    [`&.${FilterFormClasses.form}`]: {
-        marginTop: theme.spacing(-1),
-        minHeight: theme.spacing(8),
-        display: 'flex',
-        alignItems: 'flex-end',
-        flexWrap: 'wrap',
-        pointerEvents: 'none',
-    },
+    marginTop: theme.spacing(-1),
+    minHeight: theme.spacing(8),
+    display: 'flex',
+    alignItems: 'flex-end',
+    flexWrap: 'wrap',
+    pointerEvents: 'none',
 
     [`& .${FilterFormClasses.clearFix}`]: { clear: 'right' },
 }));
