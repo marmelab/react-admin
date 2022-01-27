@@ -40,7 +40,6 @@ FilterButtonMenuItem.propTypes = {
     filter: PropTypes.element.isRequired,
     onShow: PropTypes.func.isRequired,
     resource: PropTypes.string,
-    disabled: PropTypes.bool,
     autoFocus: PropTypes.bool,
 };
 
@@ -48,6 +47,5 @@ export interface FilterButtonMenuItemProps {
     filter: JSX.Element;
     onShow: (params: { source: string; defaultValue: any }) => void;
     resource: string;
-    disabled: boolean;
     autoFocus: boolean;
 }
