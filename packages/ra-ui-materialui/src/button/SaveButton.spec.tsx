@@ -266,7 +266,10 @@ describe('<SaveButton />', () => {
         );
         fireEvent.click(screen.getByText('ra.action.save'));
         await waitFor(() => {
-            expect(transform).toHaveBeenCalledWith({ id: 123, title: 'ipsum' });
+            expect(transform).toHaveBeenCalledWith(
+                { id: 123, title: 'ipsum' },
+                { previousData: { id: 123, title: 'lorem' } }
+            );
             expect(update).toHaveBeenCalledWith('posts', {
                 id: '123',
                 data: { id: 123, title: 'ipsum', transformed: true },

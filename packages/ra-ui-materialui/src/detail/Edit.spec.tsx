@@ -474,10 +474,14 @@ describe('<Edit />', () => {
             });
             fireEvent.click(screen.getByText('Update'));
             await waitFor(() => {
-                expect(transform).toHaveBeenCalledWith({
-                    id: 123,
-                    title: 'ipsum',
-                });
+                expect(transform).toHaveBeenCalledWith(
+                    {
+                        id: 123,
+                        title: 'ipsum',
+                    },
+                    { previousData: { id: 123, title: 'lorem' } }
+                );
+
                 expect(update).toHaveBeenCalledWith('foo', {
                     id: '123',
                     data: { id: 123, title: 'ipsum', transformed: true },
@@ -538,10 +542,139 @@ describe('<Edit />', () => {
             fireEvent.click(screen.getByText('Update'));
             await waitFor(() => {
                 expect(transform).not.toHaveBeenCalled();
-                expect(transformSave).toHaveBeenCalledWith({
-                    id: 123,
-                    title: 'ipsum',
+                expect(transformSave).toHaveBeenCalledWith(
+                    {
+                        id: 123,
+                        title: 'ipsum',
+                    },
+                    { previousData: { id: 123, title: 'lorem' } }
+                );
+                expect(update).toHaveBeenCalledWith('foo', {
+                    id: '123',
+                    data: { id: 123, title: 'ipsum', transformed: true },
+                    previousData: { id: 123, title: 'lorem' },
                 });
+            });
+        });
+        it('should be passed previousData via argument on transform called', async () => {
+            const update = jest
+                .fn()
+                .mockImplementationOnce((_, { data }) =>
+                    Promise.resolve({ data })
+                );
+            const dataProvider = {
+                getOne: () =>
+                    Promise.resolve({
+                        data: { id: 123, title: 'lorem' },
+                    }),
+                update,
+            } as any;
+            const transform = jest.fn().mockImplementationOnce(data => ({
+                ...data,
+                transformed: true,
+            }));
+            const FakeForm = ({ record, save }) => (
+                <>
+                    <span>{record.title}</span>
+                    <button onClick={() => save({ ...record, title: 'ipsum' })}>
+                        Update
+                    </button>
+                </>
+            );
+            const { queryAllByText, getByText } = renderWithRedux(
+                <QueryClientProvider client={new QueryClient()}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <Edit
+                            {...defaultEditProps}
+                            transform={transform}
+                            mutationMode="pessimistic"
+                        >
+                            <FakeForm />
+                        </Edit>
+                    </DataProviderContext.Provider>
+                </QueryClientProvider>
+            );
+            await waitFor(() => {
+                expect(queryAllByText('lorem')).toHaveLength(1);
+            });
+            fireEvent.click(getByText('Update'));
+            await waitFor(() => {
+                expect(transform).toHaveBeenCalledWith(
+                    {
+                        id: 123,
+                        title: 'ipsum',
+                    },
+                    { previousData: { id: 123, title: 'lorem' } }
+                );
+
+                expect(update).toHaveBeenCalledWith('foo', {
+                    id: '123',
+                    data: { id: 123, title: 'ipsum', transformed: true },
+                    previousData: { id: 123, title: 'lorem' },
+                });
+            });
+        });
+        it('should be passed previousData via argument on transformSave called', async () => {
+            const update = jest
+                .fn()
+                .mockImplementationOnce((_, { data }) =>
+                    Promise.resolve({ data })
+                );
+            const dataProvider = {
+                getOne: () =>
+                    Promise.resolve({
+                        data: { id: 123, title: 'lorem' },
+                    }),
+                update,
+            } as any;
+            const transform = jest.fn();
+            const transformSave = jest.fn().mockImplementationOnce(data => ({
+                ...data,
+                transformed: true,
+            }));
+            const FakeForm = ({ record, save }) => (
+                <>
+                    <span>{record.title}</span>
+                    <button
+                        onClick={() =>
+                            save(
+                                { ...record, title: 'ipsum' },
+                                {
+                                    transform: transformSave,
+                                }
+                            )
+                        }
+                    >
+                        Update
+                    </button>
+                </>
+            );
+            const { queryAllByText, getByText } = renderWithRedux(
+                <QueryClientProvider client={new QueryClient()}>
+                    <DataProviderContext.Provider value={dataProvider}>
+                        <Edit
+                            {...defaultEditProps}
+                            transform={transform}
+                            mutationMode="pessimistic"
+                        >
+                            <FakeForm />
+                        </Edit>
+                    </DataProviderContext.Provider>
+                </QueryClientProvider>
+            );
+            await waitFor(() => {
+                expect(queryAllByText('lorem')).toHaveLength(1);
+            });
+            fireEvent.click(getByText('Update'));
+            await waitFor(() => {
+                expect(transform).not.toHaveBeenCalled();
+                expect(transformSave).toHaveBeenCalledWith(
+                    {
+                        id: 123,
+                        title: 'ipsum',
+                    },
+                    { previousData: { id: 123, title: 'lorem' } }
+                );
                 expect(update).toHaveBeenCalledWith('foo', {
                     id: '123',
                     data: { id: 123, title: 'ipsum', transformed: true },
