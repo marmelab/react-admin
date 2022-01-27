@@ -5,85 +5,97 @@ title: "Unit Testing"
 
 # Unit Testing
 
-By default, react-admin acts as a declarative admin configuration: list some resources, define their controllers and, plug some built-in components or your own to define their fields or inputs.
+React-admin relies heavily on unit tests (powered by [Jest](https://facebook.github.io/jest/) and [react-testing-library](https://testing-library.com/docs/react-testing-library/intro)) to ensure that its code is working as expected.
 
-Thus, unit testing isn't really needed nor recommended at first, because the internal API of the framework is already tested by its maintainers and each custom component can be tested by its own by mocking react-admin. ([see how to do so with Jest](https://jestjs.io/docs/en/manual-mocks#mocking-node-modules))
+That means that each individual commponent and hook can be tested in isolation. That also means that if you have to test your own components and hooks based on react-admin, this should be straightforward.
 
-On the contrary, it is recommended to write end-to-end tests to secure your most common scenario at least.
+## AdminContext Wrapper
 
-That being said, there are still some cases, listed below, where a unit test can be useful.
+Some of react-admin's components depend on a context for translation, theming, data fetching, etc. If you write a component that depends on a react-admin commponent, chances are the test runner will complain about a missing context (or Redux provider).
 
-## Testing Custom Views
-
-One issue you may run into when attempting to render custom `Create` or `Edit` views is that you need to provide the component with the expected props contained within the react-admin redux store.
-
-Luckily, the `ra-test` package provides access to a `TestContext` wrapper component that can be used to initialise your component with many of the expected react-admin props:
+Wrap your tested component inside `<AdminContext>` to avoid this problem:
 
 ```jsx
-import * as React from "react";
-import { TestContext } from 'ra-test';
-import { render } from '@testing-library/react';
-import MyCustomEditView from './my-custom-edit-view';
+import React from 'react';
+import { AdminContext } from 'react-admin';
+import { render, screen } from '@testing-library/react';
 
-describe('MyCustomEditView', () => {
-    let testUtils;
+import MyComponent from './MyComponent';
 
-    beforeEach(() => {
-        const defaultEditProps = {
-            id: '123',
-            resource: 'foo',
-            location: {},
-            match: {},
-        };
-
-        testUtils = render(
-            <TestContext>
-                <MyCustomEditView {...defaultEditProps} />
-            </TestContext>
-        );
-    });
-
-    // Tests
-});
+test('<MyComponent>', async () => {
+    render(
+        <AdminContext>
+            <MyComponent />
+        </AdminContext>
+    );
+    const items = await screen.findAllByText(/Item #[0-9]: /)
+    expect(items).toHaveLength(10)
+})
 ```
 
-You can then provide additional props, as needed, to your component (such as the `defaultEditProps` provided above).
-
-At this point, your component should `mount` without errors and you can unit test your component.
-
-## Enabling reducers to ensure actions are dispatched
-
-If your component relies on a reducer, you can enable reducers using the `enableReducers` prop:
+**Tip**: you can also pass `AdminContext` as the `wrapper` option to the `render()` function:
 
 ```jsx
-testUtils = render(
-    <TestContext enableReducers>
-        <MyCustomEditView />
-    </TestContext>
-);
+import React from 'react';
+import { AdminContext } from 'react-admin';
+import { render, screen } from '@testing-library/react';
+
+import MyComponent from './MyComponent';
+
+test('<MyComponent>', async () => {
+    render(<MyComponent />, { wrapper: AdminContext });
+
+const items = await screen.findAllByText(/Item #[0-9]: /)
+    expect(items).toHaveLength(10)
+})
 ```
 
-This means that reducers will work as they will within the app.
+## Mocking Providers
 
-## Spying on the store 'dispatch'
+`<AdminContext>`accepts the same props as `<Admin>`, so you can pass a custom `dataProvider`, `authProvider`, or `i18nProvider` for testing purposes. 
 
-If you are using `useDispatch` within your components, it is likely you will want to test that actions have been dispatched with the correct arguments. You can return the `store` being used within the tests using a `renderProp`.
+For instance, if the component to test calls the `useGetOne` hook:
 
 ```jsx
-let dispatchSpy;
-testUtils = render(
-    <TestContext>
-        {({ store }) => {
-            dispatchSpy = jest.spyOn(store, 'dispatch');
-            return <MyCustomEditView />
-        }}
-    </TestContext>,
-);
+import React from 'react';
+import { AdminContext } from 'react-admin';
+import { render, screen } from '@testing-library/react';
 
-it('should send the user to another url', () => {
-    fireEvent.click(testUtils.getByText('Go to next'));
-    expect(dispatchSpy).toHaveBeenCalledWith(`/next-url`);
-});
+import MyComponent from './MyComponent';
+
+test('<MyComponent>', async () => {
+    render(
+        <AdminContext dataProvider={{
+            getOne: () => Promise.resolve({ data: { id: 1, name: 'foo' } }),
+        }}>
+            <MyComponent />
+        </AdminContext>
+    );
+    const items = await screen.findAllByText(/Item #[0-9]: /)
+    expect(items).toHaveLength(10)
+})
+```
+
+**Tip**: If you're using TypeScript, the compiler will complain about missing methods in the data provider above. You can remove thoe warnings by using the `testDataProvider` helper:
+
+```jsx
+import React from 'react';
+import { AdminContext, testDataProvider } from 'react-admin';
+import { render, screen } from '@testing-library/react';
+
+import MyComponent from './MyComponent';
+
+test('<MyComponent>', async () => {
+    render(
+        <AdminContext dataProvider={testDataProvider({
+            getOne: () => Promise.resolve({ data: { id: 1, name: 'foo' } }),
+        })}>
+            <MyComponent />
+        </AdminContext>
+    );
+    const items = await screen.findAllByText(/Item #[0-9]: /)
+    expect(items).toHaveLength(10)
+})
 ```
 
 ## Testing Permissions
@@ -98,7 +110,7 @@ Here is an example with Jest and TestingLibrary, which is testing the [`UserShow
 // UserShow.spec.js
 import * as React from "react";
 import { render } from '@testing-library/react';
-import { Tab, TextField } from 'react-admin';
+import { AdminContext, Tab, TextField } from 'react-admin';
 
 import UserShow from './UserShow';
 
@@ -119,9 +131,9 @@ describe('UserShow', () => {
                 })
             }
             const testUtils = render(
-                <TestContext>
+                <AdminContext>
                     <UserShow permissions="user" id="1" />
-                </TestContext>
+                </AdminContext>
             );
 
             expect(testUtils.queryByDisplayValue('1')).not.toBeNull();
@@ -145,9 +157,9 @@ describe('UserShow', () => {
                 })
             }
             const testUtils = render(
-                <TestContext>
+                <AdminContext>
                     <UserShow permissions="user" id="1" />
-                </TestContext>
+                </AdminContext>
             );
 
             expect(testUtils.queryByDisplayValue('1')).not.toBeNull();
@@ -163,9 +175,9 @@ describe('UserShow', () => {
                 })
             }
             const testUtils = render(
-                <TestContext>
+                <AdminContext>
                     <UserShow permissions="user" id="1" />
-                </TestContext>
+                </AdminContext>
             );
 
             fireEvent.click(testUtils.getByText('Security'));
