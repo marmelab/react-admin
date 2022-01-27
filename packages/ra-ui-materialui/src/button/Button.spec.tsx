@@ -2,12 +2,9 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 import expect from 'expect';
 import { MutationMode } from 'ra-core';
-import { TestContext } from 'ra-test';
-import { ThemeProvider } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
-import { Button } from './Button';
 
-const theme = createTheme();
+import { Button } from './Button';
+import { AdminContext } from '../AdminContext';
 
 const invalidButtonDomProps = {
     invalid: false,
@@ -24,11 +21,9 @@ describe('<Button />', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
         const { getByLabelText } = render(
-            <TestContext>
-                <ThemeProvider theme={theme}>
-                    <Button label="button" {...invalidButtonDomProps} />
-                </ThemeProvider>
-            </TestContext>
+            <AdminContext>
+                <Button label="button" {...invalidButtonDomProps} />
+            </AdminContext>
         );
 
         expect(spy).not.toHaveBeenCalled();

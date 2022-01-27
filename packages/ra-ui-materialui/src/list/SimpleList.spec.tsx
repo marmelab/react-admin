@@ -1,32 +1,39 @@
 import * as React from 'react';
-import { screen, waitFor, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import { ListContext, ResourceContextProvider } from 'ra-core';
-import { renderWithRedux } from 'ra-test';
 
+import { AdminContext } from '../AdminContext';
 import { SimpleList } from './SimpleList';
 import { TextField } from '../field';
 
+const Wrapper = ({ children }: any) => (
+    <AdminContext>
+        <ResourceContextProvider value="posts">
+            {children}
+        </ResourceContextProvider>
+    </AdminContext>
+);
+
 describe('<SimpleList />', () => {
     it('should render a list of items which provide a record context', async () => {
-        renderWithRedux(
-            <ResourceContextProvider value="posts">
-                <ListContext.Provider
-                    value={{
-                        isLoading: false,
-                        data: [
-                            { id: 1, title: 'foo' },
-                            { id: 2, title: 'bar' },
-                        ],
-                        total: 2,
-                        resource: 'posts',
-                    }}
-                >
-                    <SimpleList
-                        primaryText={record => record.id.toString()}
-                        secondaryText={<TextField source="title" />}
-                    />
-                </ListContext.Provider>
-            </ResourceContextProvider>
+        render(
+            <ListContext.Provider
+                value={{
+                    isLoading: false,
+                    data: [
+                        { id: 1, title: 'foo' },
+                        { id: 2, title: 'bar' },
+                    ],
+                    total: 2,
+                    resource: 'posts',
+                }}
+            >
+                <SimpleList
+                    primaryText={record => record.id.toString()}
+                    secondaryText={<TextField source="title" />}
+                />
+            </ListContext.Provider>,
+            { wrapper: Wrapper }
         );
 
         await waitFor(() => {
@@ -43,44 +50,46 @@ describe('<SimpleList />', () => {
         [
             'edit',
             'edit',
-            ['http://localhost/posts/1', 'http://localhost/posts/2'],
+            ['http://localhost/#/posts/1', 'http://localhost/#/posts/2'],
         ],
         [
             'show',
             'show',
-            ['http://localhost/posts/1/show', 'http://localhost/posts/2/show'],
+            [
+                'http://localhost/#/posts/1/show',
+                'http://localhost/#/posts/2/show',
+            ],
         ],
         [
             'custom',
             (record, id) => `/posts/${id}/custom`,
             [
-                'http://localhost/posts/1/custom',
-                'http://localhost/posts/2/custom',
+                'http://localhost/#/posts/1/custom',
+                'http://localhost/#/posts/2/custom',
             ],
         ],
     ])(
         'should render %s links for each item',
         async (_, link, expectedUrls) => {
-            renderWithRedux(
-                <ResourceContextProvider value="posts">
-                    <ListContext.Provider
-                        value={{
-                            isLoading: false,
-                            data: [
-                                { id: 1, title: 'foo' },
-                                { id: 2, title: 'bar' },
-                            ],
-                            total: 2,
-                            resource: 'posts',
-                        }}
-                    >
-                        <SimpleList
-                            linkType={link}
-                            primaryText={record => record.id.toString()}
-                            secondaryText={<TextField source="title" />}
-                        />
-                    </ListContext.Provider>
-                </ResourceContextProvider>
+            render(
+                <ListContext.Provider
+                    value={{
+                        isLoading: false,
+                        data: [
+                            { id: 1, title: 'foo' },
+                            { id: 2, title: 'bar' },
+                        ],
+                        total: 2,
+                        resource: 'posts',
+                    }}
+                >
+                    <SimpleList
+                        linkType={link}
+                        primaryText={record => record.id.toString()}
+                        secondaryText={<TextField source="title" />}
+                    />
+                </ListContext.Provider>,
+                { wrapper: Wrapper }
             );
 
             await waitFor(() => {
@@ -95,26 +104,25 @@ describe('<SimpleList />', () => {
     );
 
     it('should not render links if linkType is false', async () => {
-        renderWithRedux(
-            <ResourceContextProvider value="posts">
-                <ListContext.Provider
-                    value={{
-                        isLoading: false,
-                        data: [
-                            { id: 1, title: 'foo' },
-                            { id: 2, title: 'bar' },
-                        ],
-                        total: 2,
-                        resource: 'posts',
-                    }}
-                >
-                    <SimpleList
-                        linkType={false}
-                        primaryText={record => record.id.toString()}
-                        secondaryText={<TextField source="title" />}
-                    />
-                </ListContext.Provider>
-            </ResourceContextProvider>
+        render(
+            <ListContext.Provider
+                value={{
+                    isLoading: false,
+                    data: [
+                        { id: 1, title: 'foo' },
+                        { id: 2, title: 'bar' },
+                    ],
+                    total: 2,
+                    resource: 'posts',
+                }}
+            >
+                <SimpleList
+                    linkType={false}
+                    primaryText={record => record.id.toString()}
+                    secondaryText={<TextField source="title" />}
+                />
+            </ListContext.Provider>,
+            { wrapper: Wrapper }
         );
 
         await waitFor(() => {

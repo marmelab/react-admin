@@ -2259,6 +2259,95 @@ const MyRequiredSelect = () => (
 );
 ```
 
+## `ra-test` Has Been Removed
+
+You no longer need a special package to unit test your components. The `react-admin` package provides all you need.
+
+If you used `TestContext` from 'ra-test', use `AdminContext` instead:
+
+```diff
+import React from 'react';
+-import { TestContext } from 'ra-test';
++import { AdminContext } from 'react-admin';
+import { render, screen } from '@testing-library/react';
+
+import MyComponent from './MyComponent';
+
+test('<MyComponent>', async () => {
+    render(
+-       <TestContext>
++       <AdminContext>
+            <MyComponent />
+-       </TestContext>
++       </AdminContext>
+    );
+    const items = await screen.findAllByText(/Item #[0-9]: /)
+    expect(items).toHaveLength(10)
+})
+```
+
+`<AdminContext>` accepts the same props as `<Admin>`, so you can pass a custom `dataProvider`, `authProvider`, or `i18nProvider` for testing purposes. 
+
+For instance, if the component to test calls the `useGetOne` hook:
+
+```jsx
+import React from 'react';
+import { AdminContext } from 'react-admin';
+import { render, screen } from '@testing-library/react';
+
+import MyComponent from './MyComponent';
+
+test('<MyComponent>', async () => {
+    render(
+        <AdminContext dataProvider={{
+            getOne: () => Promise.resolve({ data: { id: 1, name: 'foo' } }),
+        }}>
+            <MyComponent />
+        </AdminContext>
+    );
+    const items = await screen.findAllByText(/Item #[0-9]: /)
+    expect(items).toHaveLength(10)
+})
+```
+
+If you used `renderWithRedux` from 'ra-test', replace it with react-testing-library's `render`, and use `AdminContext` as a wrapper:
+
+```diff
+import React from 'react';
+-import { renderWithRedux } from 'ra-test';
++import { AdminContext } from 'react-admin';
+import { render, screen } from '@testing-library/react';
+
+import MyComponent from './MyComponent';
+
+test('<MyComponent>', async () => {
+-   renderWithRedux(
++   render(
++       <AdminContext>
+            <MyComponent />
++       </AdminContext>
+    );
+    const items = await screen.findAllByText(/Item #[0-9]: /)
+    expect(items).toHaveLength(10)
+})
+```
+
+If you used `renderHook` from 'ra-test', replace it with [react-testing-library's `renderHook`](https://react-hooks-testing-library.com/):
+
+```diff
+-import { renderHook } from 'ra-test'
++import { renderHook } from '@testing-library/react-hooks'
+import useCounter from './useCounter'
+
+test('should use counter', () => {
+-   const { hookValue } = renderHook(() => useCounter())
++   const { result } = renderHook(() => useCounter())
+
+-   expect(hookValue.count).toBe(0)
++   expect(result.current.count).toBe(0)
+})
+```
+
 # Upgrade to 3.0
 
 We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.

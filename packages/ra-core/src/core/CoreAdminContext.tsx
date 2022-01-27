@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ComponentType, useContext, useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import { Provider, ReactReduxContext } from 'react-redux';
 import { History } from 'history';
@@ -26,8 +26,6 @@ import {
     InitialState,
 } from '../types';
 
-export type ChildrenFunction = () => ComponentType[];
-
 export interface AdminContextProps {
     authProvider?: AuthProvider | LegacyAuthProvider;
     basename?: string;
@@ -45,7 +43,7 @@ export interface AdminContextProps {
     theme?: object;
 }
 
-const CoreAdminContext = (props: AdminContextProps) => {
+export const CoreAdminContext = (props: AdminContextProps) => {
     const {
         authProvider,
         basename,
@@ -121,5 +119,3 @@ React-admin requires a valid dataProvider function to work.`);
 CoreAdminContext.defaultProps = {
     dataProvider: defaultDataProvider,
 };
-
-export default CoreAdminContext;

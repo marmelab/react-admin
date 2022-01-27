@@ -235,7 +235,6 @@ React-admin is a *distribution* of several packages, each of which handles a spe
 * `ra-ui-materialui`: The material-ui skin for react-admin.
 * `ra-data-*`: Data providers for various data backends.
 * `ra-language-*`: Interface translations for various languages.
-* `ra-test`: Utilities for testing react-admin apps and components.
 * `react-admin`: the standard distribution of react-admin
     
 You can build your own distribution of react-admin by combining different packages.

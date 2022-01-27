@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 import expect from 'expect';
-import { TestContext } from 'ra-test';
 import { MutationMode } from 'ra-core';
-import { ThemeProvider } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
+
+import { AdminContext } from '../AdminContext';
 import CreateButton from './CreateButton';
 
 const invalidButtonDomProps = {
@@ -22,14 +21,10 @@ describe('<CreateButton />', () => {
     it('should render a button with no DOM errors', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-        const theme = createTheme();
-
         const { getByLabelText } = render(
-            <TestContext>
-                <ThemeProvider theme={theme}>
-                    <CreateButton {...invalidButtonDomProps} />
-                </ThemeProvider>
-            </TestContext>
+            <AdminContext>
+                <CreateButton {...invalidButtonDomProps} />
+            </AdminContext>
         );
 
         expect(spy).not.toHaveBeenCalled();

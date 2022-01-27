@@ -7,14 +7,9 @@ import {
     fireEvent,
     act,
 } from '@testing-library/react';
-import {
-    CoreAdminContext,
-    DataProviderContext,
-    undoableEventEmitter,
-} from 'ra-core';
-import { QueryClientProvider, QueryClient } from 'react-query';
-import { renderWithRedux } from 'ra-test';
+import { CoreAdminContext, undoableEventEmitter } from 'ra-core';
 
+import { AdminContext } from '../AdminContext';
 import { Edit } from './Edit';
 
 describe('<Edit />', () => {
@@ -31,17 +26,15 @@ describe('<Edit />', () => {
                 Promise.resolve({ data: { id: 123, title: 'lorem' } }),
         } as any;
         const FakeForm = ({ record }) => <>{record.title}</>;
-        const { queryAllByText } = renderWithRedux(
-            <QueryClientProvider client={new QueryClient()}>
-                <DataProviderContext.Provider value={dataProvider}>
-                    <Edit {...defaultEditProps}>
-                        <FakeForm />
-                    </Edit>
-                </DataProviderContext.Provider>
-            </QueryClientProvider>
+        render(
+            <AdminContext dataProvider={dataProvider}>
+                <Edit {...defaultEditProps}>
+                    <FakeForm />
+                </Edit>
+            </AdminContext>
         );
         await waitFor(() => {
-            expect(queryAllByText('lorem')).toHaveLength(1);
+            expect(screen.queryAllByText('lorem')).toHaveLength(1);
         });
     });
 
@@ -63,23 +56,21 @@ describe('<Edit />', () => {
             </>
         );
 
-        const { queryAllByText, getByText } = renderWithRedux(
-            <QueryClientProvider client={new QueryClient()}>
-                <DataProviderContext.Provider value={dataProvider}>
-                    <Edit
-                        {...defaultEditProps}
-                        id="1234"
-                        mutationMode="pessimistic"
-                    >
-                        <FakeForm />
-                    </Edit>
-                </DataProviderContext.Provider>
-            </QueryClientProvider>
+        render(
+            <AdminContext dataProvider={dataProvider}>
+                <Edit
+                    {...defaultEditProps}
+                    id="1234"
+                    mutationMode="pessimistic"
+                >
+                    <FakeForm />
+                </Edit>
+            </AdminContext>
         );
         await waitFor(() => {
-            expect(queryAllByText('lorem')).toHaveLength(1);
+            expect(screen.queryAllByText('lorem')).toHaveLength(1);
         });
-        fireEvent.click(getByText('Update'));
+        fireEvent.click(screen.getByText('Update'));
         await waitFor(() => {
             expect(update).toHaveBeenCalledWith('foo', {
                 id: '1234',
@@ -259,23 +250,21 @@ describe('<Edit />', () => {
                     </button>
                 </>
             );
-            const { queryAllByText, getByText } = renderWithRedux(
-                <QueryClientProvider client={new QueryClient()}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Edit
-                            {...defaultEditProps}
-                            mutationMode="pessimistic"
-                            mutationOptions={{ onSuccess }}
-                        >
-                            <FakeForm />
-                        </Edit>
-                    </DataProviderContext.Provider>
-                </QueryClientProvider>
+            render(
+                <AdminContext dataProvider={dataProvider}>
+                    <Edit
+                        {...defaultEditProps}
+                        mutationMode="pessimistic"
+                        mutationOptions={{ onSuccess }}
+                    >
+                        <FakeForm />
+                    </Edit>
+                </AdminContext>
             );
             await waitFor(() => {
-                expect(queryAllByText('lorem')).toHaveLength(1);
+                expect(screen.queryAllByText('lorem')).toHaveLength(1);
             });
-            fireEvent.click(getByText('Update'));
+            fireEvent.click(screen.getByText('Update'));
             await waitFor(() => {
                 expect(onSuccess).toHaveBeenCalledWith(
                     {
@@ -315,23 +304,21 @@ describe('<Edit />', () => {
                     </button>
                 </>
             );
-            const { queryAllByText, getByText } = renderWithRedux(
-                <QueryClientProvider client={new QueryClient()}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Edit
-                            {...defaultEditProps}
-                            mutationMode="pessimistic"
-                            mutationOptions={{ onSuccess }}
-                        >
-                            <FakeForm />
-                        </Edit>
-                    </DataProviderContext.Provider>
-                </QueryClientProvider>
+            render(
+                <AdminContext dataProvider={dataProvider}>
+                    <Edit
+                        {...defaultEditProps}
+                        mutationMode="pessimistic"
+                        mutationOptions={{ onSuccess }}
+                    >
+                        <FakeForm />
+                    </Edit>
+                </AdminContext>
             );
             await waitFor(() => {
-                expect(queryAllByText('lorem')).toHaveLength(1);
+                expect(screen.queryAllByText('lorem')).toHaveLength(1);
             });
-            fireEvent.click(getByText('Update'));
+            fireEvent.click(screen.getByText('Update'));
             await waitFor(() => {
                 expect(onSuccessSave).toHaveBeenCalledWith(
                     {
@@ -365,23 +352,21 @@ describe('<Edit />', () => {
                     </button>
                 </>
             );
-            const { queryAllByText, getByText } = renderWithRedux(
-                <QueryClientProvider client={new QueryClient()}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Edit
-                            {...defaultEditProps}
-                            mutationMode="pessimistic"
-                            mutationOptions={{ onError }}
-                        >
-                            <FakeForm />
-                        </Edit>
-                    </DataProviderContext.Provider>
-                </QueryClientProvider>
+            render(
+                <AdminContext dataProvider={dataProvider}>
+                    <Edit
+                        {...defaultEditProps}
+                        mutationMode="pessimistic"
+                        mutationOptions={{ onError }}
+                    >
+                        <FakeForm />
+                    </Edit>
+                </AdminContext>
             );
             await waitFor(() => {
-                expect(queryAllByText('lorem')).toHaveLength(1);
+                expect(screen.queryAllByText('lorem')).toHaveLength(1);
             });
-            fireEvent.click(getByText('Update'));
+            fireEvent.click(screen.getByText('Update'));
             await waitFor(() => {
                 expect(onError).toHaveBeenCalledWith(
                     { message: 'not good' },
@@ -419,23 +404,21 @@ describe('<Edit />', () => {
                     </button>
                 </>
             );
-            const { queryAllByText, getByText } = renderWithRedux(
-                <QueryClientProvider client={new QueryClient()}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Edit
-                            {...defaultEditProps}
-                            mutationMode="pessimistic"
-                            mutationOptions={{ onError }}
-                        >
-                            <FakeForm />
-                        </Edit>
-                    </DataProviderContext.Provider>
-                </QueryClientProvider>
+            render(
+                <AdminContext dataProvider={dataProvider}>
+                    <Edit
+                        {...defaultEditProps}
+                        mutationMode="pessimistic"
+                        mutationOptions={{ onError }}
+                    >
+                        <FakeForm />
+                    </Edit>
+                </AdminContext>
             );
             await waitFor(() => {
-                expect(queryAllByText('lorem')).toHaveLength(1);
+                expect(screen.queryAllByText('lorem')).toHaveLength(1);
             });
-            fireEvent.click(getByText('Update'));
+            fireEvent.click(screen.getByText('Update'));
             await waitFor(() => {
                 expect(onErrorSave).toHaveBeenCalledWith(
                     {
@@ -475,23 +458,21 @@ describe('<Edit />', () => {
                     </button>
                 </>
             );
-            const { queryAllByText, getByText } = renderWithRedux(
-                <QueryClientProvider client={new QueryClient()}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Edit
-                            {...defaultEditProps}
-                            transform={transform}
-                            mutationMode="pessimistic"
-                        >
-                            <FakeForm />
-                        </Edit>
-                    </DataProviderContext.Provider>
-                </QueryClientProvider>
+            render(
+                <AdminContext dataProvider={dataProvider}>
+                    <Edit
+                        {...defaultEditProps}
+                        transform={transform}
+                        mutationMode="pessimistic"
+                    >
+                        <FakeForm />
+                    </Edit>
+                </AdminContext>
             );
             await waitFor(() => {
-                expect(queryAllByText('lorem')).toHaveLength(1);
+                expect(screen.queryAllByText('lorem')).toHaveLength(1);
             });
-            fireEvent.click(getByText('Update'));
+            fireEvent.click(screen.getByText('Update'));
             await waitFor(() => {
                 expect(transform).toHaveBeenCalledWith({
                     id: 123,
@@ -540,23 +521,21 @@ describe('<Edit />', () => {
                     </button>
                 </>
             );
-            const { queryAllByText, getByText } = renderWithRedux(
-                <QueryClientProvider client={new QueryClient()}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Edit
-                            {...defaultEditProps}
-                            transform={transform}
-                            mutationMode="pessimistic"
-                        >
-                            <FakeForm />
-                        </Edit>
-                    </DataProviderContext.Provider>
-                </QueryClientProvider>
+            render(
+                <AdminContext dataProvider={dataProvider}>
+                    <Edit
+                        {...defaultEditProps}
+                        transform={transform}
+                        mutationMode="pessimistic"
+                    >
+                        <FakeForm />
+                    </Edit>
+                </AdminContext>
             );
             await waitFor(() => {
-                expect(queryAllByText('lorem')).toHaveLength(1);
+                expect(screen.queryAllByText('lorem')).toHaveLength(1);
             });
-            fireEvent.click(getByText('Update'));
+            fireEvent.click(screen.getByText('Update'));
             await waitFor(() => {
                 expect(transform).not.toHaveBeenCalled();
                 expect(transformSave).toHaveBeenCalledWith({
@@ -579,16 +558,14 @@ describe('<Edit />', () => {
                 getOne: () => Promise.resolve({ data: { id: 123 } }),
             } as any;
             const Dummy = () => <div />;
-            const { queryAllByText } = renderWithRedux(
-                <QueryClientProvider client={new QueryClient()}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Edit {...defaultEditProps} aside={<Aside />}>
-                            <Dummy />
-                        </Edit>
-                    </DataProviderContext.Provider>
-                </QueryClientProvider>
+            render(
+                <AdminContext dataProvider={dataProvider}>
+                    <Edit {...defaultEditProps} aside={<Aside />}>
+                        <Dummy />
+                    </Edit>
+                </AdminContext>
             );
-            expect(queryAllByText('Hello')).toHaveLength(1);
+            expect(screen.queryAllByText('Hello')).toHaveLength(1);
         });
     });
 });

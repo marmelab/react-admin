@@ -1,12 +1,17 @@
 import * as React from 'react';
 import expect from 'expect';
-import { fireEvent, waitFor, act } from '@testing-library/react';
+import {
+    render,
+    fireEvent,
+    waitFor,
+    act,
+    screen,
+} from '@testing-library/react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import useTranslate from './useTranslate';
 import useSetLocale from './useSetLocale';
 import { TranslationContext, TranslationProvider } from './';
-import { renderWithRedux } from 'ra-test';
 
 describe('useSetLocale', () => {
     const Component = () => {
@@ -21,13 +26,13 @@ describe('useSetLocale', () => {
     };
 
     it('should not fail when used outside of a translation provider', () => {
-        const { queryAllByText } = renderWithRedux(<Component />);
-        expect(queryAllByText('hello')).toHaveLength(1);
+        render(<Component />);
+        expect(screen.queryAllByText('hello')).toHaveLength(1);
     });
 
     it('should use the setLocale function set in the translation context', async () => {
         const setLocale = jest.fn();
-        const { getByText } = renderWithRedux(
+        render(
             <TranslationContext.Provider
                 value={{
                     i18nProvider: {
@@ -41,7 +46,7 @@ describe('useSetLocale', () => {
                 <Component />
             </TranslationContext.Provider>
         );
-        fireEvent.click(getByText('Français'));
+        fireEvent.click(screen.getByText('Français'));
         await waitFor(() => {
             expect(setLocale).toHaveBeenCalledTimes(1);
         });
@@ -52,19 +57,19 @@ describe('useSetLocale', () => {
             if (locale === 'en') return { hello: 'hello' };
             if (locale === 'fr') return { hello: 'bonjour' };
         });
-        const { getByText, queryAllByText } = renderWithRedux(
+        render(
             <TranslationProvider locale="en" i18nProvider={i18nProvider}>
                 <Component />
             </TranslationProvider>
         );
-        expect(queryAllByText('hello')).toHaveLength(1);
-        expect(queryAllByText('bonjour')).toHaveLength(0);
+        expect(screen.queryAllByText('hello')).toHaveLength(1);
+        expect(screen.queryAllByText('bonjour')).toHaveLength(0);
         act(() => {
-            fireEvent.click(getByText('Français'));
+            fireEvent.click(screen.getByText('Français'));
         });
         await waitFor(() => {
-            expect(queryAllByText('hello')).toHaveLength(0);
-            expect(queryAllByText('bonjour')).toHaveLength(1);
+            expect(screen.queryAllByText('hello')).toHaveLength(0);
+            expect(screen.queryAllByText('bonjour')).toHaveLength(1);
         });
     });
 });

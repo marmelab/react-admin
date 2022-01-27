@@ -1,15 +1,10 @@
 import * as React from 'react';
 import expect from 'expect';
-import { ThemeProvider } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
-import { render } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
-import { TestContext } from 'ra-test';
+import { render, screen } from '@testing-library/react';
 import { MutationMode } from 'ra-core';
 
+import { AdminContext } from '../AdminContext';
 import { CloneButton } from './CloneButton';
-
-const theme = createTheme();
 
 const invalidButtonDomProps = {
     invalid: false,
@@ -24,37 +19,33 @@ const invalidButtonDomProps = {
 
 describe('<CloneButton />', () => {
     it('should pass a clone of the record in the location state', () => {
-        const { getByLabelText } = render(
-            <MemoryRouter>
-                <ThemeProvider theme={theme}>
-                    <CloneButton
-                        resource="posts"
-                        record={{ id: 123, foo: 'bar' }}
-                    />
-                </ThemeProvider>
-            </MemoryRouter>
+        render(
+            <AdminContext>
+                <CloneButton
+                    resource="posts"
+                    record={{ id: 123, foo: 'bar' }}
+                />
+            </AdminContext>
         );
 
-        expect(getByLabelText('ra.action.clone').getAttribute('href')).toEqual(
-            '/posts/create?source=%7B%22foo%22%3A%22bar%22%7D'
-        );
+        expect(
+            screen.getByLabelText('ra.action.clone').getAttribute('href')
+        ).toEqual('#/posts/create?source=%7B%22foo%22%3A%22bar%22%7D');
     });
 
     it('should render as button type with no DOM errors', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-        const { getByLabelText } = render(
-            <TestContext>
-                <ThemeProvider theme={theme}>
-                    <CloneButton {...invalidButtonDomProps} />
-                </ThemeProvider>
-            </TestContext>
+        render(
+            <AdminContext>
+                <CloneButton {...invalidButtonDomProps} />
+            </AdminContext>
         );
 
         expect(spy).not.toHaveBeenCalled();
-        expect(getByLabelText('ra.action.clone').getAttribute('href')).toEqual(
-            '/posts/create?source=%7B%22foo%22%3A%22bar%22%7D'
-        );
+        expect(
+            screen.getByLabelText('ra.action.clone').getAttribute('href')
+        ).toEqual('#/posts/create?source=%7B%22foo%22%3A%22bar%22%7D');
 
         spy.mockRestore();
     });
