@@ -119,13 +119,13 @@ describe('UserShow', () => {
         it('should display one tab', () => {
             const testUtils = render(<UserShow permissions="user" />);
 
-            const tabs = testUtils.queryByRole('tab');
-            expect(tabs.length).toEqual(1);
+            const tabs = testUtils.queryAllByRole('tab');
+            expect(tabs).toHaveLength(1);
         });
 
         it('should show the user identity in the first tab', () => {
             const dataProvider = {
-                getOne: jest.fn().resolve({
+                getOne: Promise.resolve({
                     id: 1,
                     name: 'Leila'
                 })
@@ -145,13 +145,13 @@ describe('UserShow', () => {
         it('should display two tabs', () => {
             const testUtils = render(<UserShow permissions="user" />);
 
-            const tabs = testUtils.queryByRole('tab');
-            expect(tabs.length).toEqual(2);
+            const tabs = testUtils.queryAllByRole('tab');
+            expect(tabs).toHaveLength(2);
         });
 
         it('should show the user identity in the first tab', () => {
             const dataProvider = {
-                getOne: jest.fn().resolve({
+                getOne: Promise.resolve({
                     id: 1,
                     name: 'Leila'
                 })
@@ -168,7 +168,7 @@ describe('UserShow', () => {
 
         it('should show the user role in the second tab', () => {
             const dataProvider = {
-                getOne: jest.fn().resolve({
+                getOne: Promise.resolve({
                     id: 1,
                     name: 'Leila',
                     role: 'admin'
