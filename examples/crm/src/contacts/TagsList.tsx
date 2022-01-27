@@ -7,7 +7,7 @@ import {
     useRecordContext,
 } from 'react-admin';
 
-import { Contact, Company } from '../types';
+import { Contact } from '../types';
 
 const PREFIX = 'TagsList';
 
