@@ -8,7 +8,7 @@ type Subscription = {
 const RA_PREFERENCE = 'ra_preference';
 const prefixLength = RA_PREFERENCE.length;
 
-// localStorage isn't available in incognoto mode. We need to detect it
+// localStorage isn't available in incognito mode. We need to detect it
 const testLocalStorage = () => {
     // eslint-disable-next-line eqeqeq
     if (window.localStorage == undefined) {
@@ -42,7 +42,7 @@ let localStorageAvailable = testLocalStorage();
 export const localStoragePreferenceProvider = (): PreferenceProvider => {
     const subscriptions: { [key: string]: Subscription } = {};
 
-    // Whenever the local storage change in another document, execute all subscribers.
+    // Whenever the local storage changes in another document, look for matching subscribers.
     // This allows to synchronize preferences across tabs
     const onLocalStorageChange = (event: StorageEvent): void => {
         if (event.key.substring(0, prefixLength) !== RA_PREFERENCE) {
