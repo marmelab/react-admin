@@ -2432,6 +2432,81 @@ test('should use counter', () => {
 })
 ```
 
+## `richt-text-input` Package Has Changed
+
+Our old `<RichTextInput>` was based on [Quill](https://quilljs.com/) but:
+- it wasn't accessible (button without labels, etc.)
+- it wasn't translatable (labels in Quill are in the CSS)
+- it wasn't using MUI components for its UI and looked off
+
+The new `<RichTextInput>` uses [TipTap](https://github.com/ueberdosis/tiptap), a UI less library to build rich text editors. It gives us the freedom to implement the UI how we want with MUI components. That solves all the above issues.
+
+If you used the `<RichTextInput>` without passing Quill options such as custom toolbars, you have nothing to do.
+
+If you customized the available buttons with the `toolbar` props, you can now use the components we provide:
+
+```diff
+const MyRichTextInput = (props) => (
+    <RichTextInput
+        {...props}
+-        toolbar={[ ['bold', 'italic', 'underline', 'link'] ]}
++        toolbar={
+            <RichTextInputToolbar>
+				<FormatButtons size={size} />
+				<LinkButtons size={size} />
+			</RichTextInputToolbar>
+        }
+    />
+)
+```
+
+If you customized the Quill instance to add custom handlers, you'll have to use [TipTap](https://github.com/ueberdosis/tiptap) primitives.
+
+```diff
+import {
+	RichTextInput,
++	DefaultEditorOptions,
++	RichTextInputToolbar,
++	RichTextInputLevelSelect,
++	FormatButtons,
++	AlignmentButtons,
++	ListButtons,
++	LinkButtons,
++	QuoteButtons,
++	ClearButtons,
+} from 'ra-input-rich-text';
+
+-const configureQuill = quill => quill.getModule('toolbar').addHandler('insertSmile', function (value) {
+-    const { index, length } = this.quill.getSelection();
+-    this.quill..insertText(index + length, ':-)', 'api');
+-});
+
+const MyRichTextInput = (props) => (
+    <RichTextInput
+        {...props}
+-        configureQuill={configureQuill}
++        toolbar={
++			<RichTextInputToolbar>
++				<RichTextInputLevelSelect size={size} />
++				<FormatButtons size={size} />
++				<AlignmentButtons {size} />
++				<ListButtons size={size} />
++				<LinkButtons size={size} />
++				<QuoteButtons size={size} />
++				<ClearButtons size={size} />
++				<ToggleButton
++					aria-label="Add a smile"
++					title="Add a smile"
++					onClick={() => editor.insertContent(':-)')}
++				>
++					<Remove fontSize="inherit" />
++			</ToggleButton>
++			</RichTextInputToolbar>
+		}
+    />
+}
+```
+
 # Upgrade to 3.0
 
 We took advantage of the major release to fix all the problems in react-admin that required a breaking change. As a consequence, you'll need to do many small changes in the code of existing react-admin v2 applications. Follow this step-by-step guide to upgrade to react-admin v3.

@@ -30,6 +30,7 @@ export const Labeled = (props: LabeledProps) => {
         field,
         isRequired,
         label,
+        labelId,
         margin = 'dense',
         fieldState,
         source,
@@ -55,7 +56,12 @@ export const Labeled = (props: LabeledProps) => {
             error={fieldState && fieldState.isTouched && !!fieldState.error}
             margin={margin}
         >
-            <InputLabel htmlFor={id} shrink className={LabeledClasses.label}>
+            <InputLabel
+                id={labelId}
+                htmlFor={id}
+                shrink
+                className={LabeledClasses.label}
+            >
                 <FieldTitle
                     label={label}
                     source={source}
@@ -97,12 +103,13 @@ Labeled.propTypes = {
 export interface LabeledProps {
     children: ReactElement;
     className?: string;
+    field?: any;
+    fieldState?: any;
     fullWidth?: boolean;
     id?: string;
-    field?: any;
     isRequired?: boolean;
     label?: string | ReactElement | false;
-    fieldState?: any;
+    labelId?: string;
     resource?: string;
     source?: string;
     [key: string]: any;

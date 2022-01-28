@@ -1,171 +1,272 @@
-import debounce from 'lodash/debounce';
-import React, { useRef, useEffect, useCallback, ComponentProps } from 'react';
-import Quill, { QuillOptionsStatic } from 'quill';
-import { useInput, FieldTitle } from 'ra-core';
-import { InputHelperText } from 'ra-ui-materialui';
+import * as React from 'react';
+import { ReactElement, ReactNode, useEffect } from 'react';
+import { useEditor, Editor, EditorOptions, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import Underline from '@tiptap/extension-underline';
+import Link from '@tiptap/extension-link';
+import TextAlign from '@tiptap/extension-text-align';
+import { FormHelperText } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { useInput, useResourceContext } from 'ra-core';
 import {
-    FormHelperText,
-    FormControl,
-    InputLabel,
-    styled,
-    GlobalStyles,
-} from '@mui/material';
-import PropTypes from 'prop-types';
+    CommonInputProps,
+    InputHelperText,
+    Labeled,
+    LabeledProps,
+} from 'ra-ui-materialui';
+import { TiptapEditorProvider } from './TiptapEditorProvider';
+import { RichTextInputToolbar } from './RichTextInputToolbar';
 
-import { RaRichTextClasses, RaRichTextStyles } from './styles';
-import QuillSnowStylesheet from './QuillSnowStylesheet';
-
+/**
+ * A rich text editor for the react-admin that is accessible and supports translations. Based on [Tiptap](https://www.tiptap.dev/).
+ * @param props The input props. Accept all common react-admin input props.
+ * @param {EditorOptions} props.editorOptions The options to pass to the Tiptap editor.
+ * @param {ReactNode} props.toolbar The toolbar containing the editors commands.
+ *
+ * @example <caption>Customizing the editors options</caption>
+ * import { RichTextInput, RichTextInputToolbar } from 'ra-input-rich-text';
+ * const MyRichTextInput = (props) => (
+ *     <RichTextInput
+ *         toolbar={<RichTextInputToolbar size="large" />}
+ *         label="Body"
+ *         source="body"
+ *         {...props}
+ *     />
+ * );
+ *
+ * @example <caption>Customizing the toolbar size</caption>
+ * import { RichTextInput, RichTextInputToolbar } from 'ra-input-rich-text';
+ * const MyRichTextInput = (props) => (
+ *     <RichTextInput
+ *         toolbar={<RichTextInputToolbar size="large" />}
+ *         label="Body"
+ *         source="body"
+ *         {...props}
+ *     />
+ * );
+ *
+ * @example <caption>Customizing the toolbar commands</caption>
+ * import { RichTextInput, RichTextInputToolbar } from 'ra-input-rich-text';
+ * const MyRichTextInput = ({ size, ...props }) => (
+ *     <RichTextInput
+ *         toolbar={(
+ *             <RichTextInputToolbar>
+ *                 <RichTextInputLevelSelect size={size} />
+ *                 <FormatButtons size={size} />
+ *                 <ListButtons size={size} />
+ *                 <LinkButtons size={size} />
+ *                 <QuoteButtons size={size} />
+ *                 <ClearButtons size={size} />
+ *             </RichTextInputToolbar>
+ *         )}
+ *         label="Body"
+ *         source="body"
+ *         {...props}
+ *     />
+ * );
+ */
 export const RichTextInput = (props: RichTextInputProps) => {
     const {
-        options = {}, // Quill editor options
-        toolbar = true,
-        fullWidth = true,
-        configureQuill,
+        defaultValue = '',
+        disabled = false,
+        editorOptions = DefaultEditorOptions,
+        fullWidth,
         helperText,
         label,
+        readOnly = false,
         source,
-        resource,
-        variant,
-        margin = 'dense',
-        ...rest
+        toolbar = <RichTextInputToolbar />,
     } = props;
-    const quillInstance = useRef<Quill>();
-    const divRef = useRef<HTMLDivElement>();
-    const editor = useRef<HTMLElement>();
 
+    const resource = useResourceContext(props);
     const {
         id,
+        field,
         isRequired,
-        field: { value, onChange },
-        fieldState: { invalid, isTouched, error },
+        fieldState,
         formState: { isSubmitted },
-    } = useInput({ source, ...rest });
+    } = useInput({ ...props, source, defaultValue });
 
-    const lastValueChange = useRef(value);
+    const editor = useEditor({
+        ...editorOptions,
+        content: field.value,
+        editorProps: {
+            attributes: {
+                id,
+                ...(disabled || readOnly
+                    ? EditorAttributesNotEditable
+                    : EditorAttributes),
+            },
+        },
+    });
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const onTextChange = useCallback(
-        debounce(() => {
-            const value =
-                editor.current.innerHTML === '<p><br></p>'
-                    ? ''
-                    : editor.current.innerHTML;
-
-            if (lastValueChange.current !== value) {
-                lastValueChange.current = value;
-                onChange(value);
-            }
-        }, 500),
-        [onChange]
-    );
+    const { error, invalid, isTouched } = fieldState;
 
     useEffect(() => {
-        quillInstance.current = new Quill(divRef.current, {
-            modules: { toolbar, clipboard: { matchVisual: false } },
-            theme: 'snow',
-            ...options,
+        if (!editor) return;
+
+        editor.setOptions({
+            editorProps: {
+                attributes: {
+                    id,
+                    ...(disabled || readOnly
+                        ? EditorAttributesNotEditable
+                        : EditorAttributes),
+                },
+            },
         });
-
-        if (configureQuill) {
-            configureQuill(quillInstance.current);
-        }
-
-        quillInstance.current.setContents(
-            quillInstance.current.clipboard.convert(value)
-        );
-
-        editor.current = divRef.current.querySelector('.ql-editor');
-        quillInstance.current.on('text-change', onTextChange);
-
-        return () => {
-            quillInstance.current.off('text-change', onTextChange);
-            if (onTextChange.cancel) {
-                onTextChange.cancel();
-            }
-            quillInstance.current = null;
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [disabled, editor, readOnly, id]);
 
     useEffect(() => {
-        if (lastValueChange.current !== value) {
-            const selection = quillInstance.current.getSelection();
-            quillInstance.current.setContents(
-                quillInstance.current.clipboard.convert(value)
-            );
-            if (selection && quillInstance.current.hasFocus()) {
-                quillInstance.current.setSelection(selection);
-            }
+        if (!editor) {
+            return;
         }
-    }, [value]);
+
+        const handleEditorUpdate = () => {
+            if (editor.isEmpty) {
+                field.onChange('');
+                field.onBlur();
+                return;
+            }
+
+            const html = editor.getHTML();
+            field.onChange(html);
+            field.onBlur();
+        };
+
+        editor.on('update', handleEditorUpdate);
+        return () => {
+            editor.off('update', handleEditorUpdate);
+        };
+    }, [editor, field]);
 
     return (
-        <StyledFormControl
-            error={isTouched && invalid}
+        <Labeled
+            isRequired={isRequired}
+            label={label}
+            labelId={`${id}-label`}
+            fieldState={fieldState}
+            source={source}
+            resource={resource}
             fullWidth={fullWidth}
-            className={`ra-rich-text-input ${RaRichTextClasses.root}`}
-            margin={margin}
         >
-            {/* @ts-ignore */}
-            <GlobalStyles styles={QuillSnowStylesheet} />
-            <InputLabel shrink htmlFor={id} className={RaRichTextClasses.label}>
-                <FieldTitle
-                    label={label}
-                    source={source}
-                    resource={resource}
-                    isRequired={isRequired}
-                />
-            </InputLabel>
-            <div data-testid="quill" ref={divRef} className={variant} />
-            <FormHelperText
-                error={(isTouched || isSubmitted) && invalid}
-                className={
-                    (isTouched || isSubmitted) && invalid
-                        ? 'ra-rich-text-input-error'
-                        : ''
-                }
-            >
-                <InputHelperText
-                    error={error?.message}
-                    helperText={helperText}
-                    touched={isTouched || isSubmitted}
-                />
-            </FormHelperText>
-        </StyledFormControl>
+            <RichTextInputContent
+                editor={editor}
+                error={error}
+                helperText={helperText}
+                id={id}
+                isTouched={isTouched}
+                isSubmitted={isSubmitted}
+                invalid={invalid}
+                toolbar={toolbar}
+            />
+        </Labeled>
     );
 };
 
-export interface RichTextInputProps {
-    debounce?: number;
-    label?: string | false;
-    options?: QuillOptionsStatic;
-    source: string;
-    toolbar?:
-        | boolean
-        | string[]
-        | Array<any>[]
-        | string
-        | {
-              container: string | string[] | Array<any>[];
-              handlers?: Record<string, Function>;
-          };
-    fullWidth?: boolean;
-    configureQuill?: (instance: Quill) => void;
-    helperText?: ComponentProps<typeof InputHelperText>['helperText'];
-    record?: Record<any, any>;
-    resource?: string;
-    variant?: string;
-    margin?: 'normal' | 'none' | 'dense';
-    [key: string]: any;
-}
+/**
+ * Extracted in a separate component so that we can remove fullWidth from the props injected by Labeled
+ * and avoid warnings about unknown props on Root.
+ */
+const RichTextInputContent = ({
+    editor,
+    error,
+    fullWidth,
+    helperText,
+    id,
+    isTouched,
+    isSubmitted,
+    invalid,
+    toolbar,
+}: RichTextInputContentProps) => (
+    <Root>
+        <TiptapEditorProvider value={editor}>
+            {toolbar}
+            <EditorContent
+                aria-labelledby={`${id}-label`}
+                className={classes.editorContent}
+                editor={editor}
+            />
+        </TiptapEditorProvider>
+        <FormHelperText
+            className={
+                (isTouched || isSubmitted) && invalid
+                    ? 'ra-rich-text-input-error'
+                    : ''
+            }
+            error={(isTouched || isSubmitted) && invalid}
+        >
+            <InputHelperText
+                touched={isTouched || isSubmitted}
+                error={error?.message}
+                helperText={helperText}
+            />
+        </FormHelperText>
+    </Root>
+);
 
-RichTextInput.propTypes = {
-    // @ts-ignore
-    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-    options: PropTypes.object,
-    source: PropTypes.string,
-    fullWidth: PropTypes.bool,
-    configureQuill: PropTypes.func,
+const EditorAttributes = {
+    role: 'textbox',
+    'aria-multiline': 'true',
 };
 
-const StyledFormControl = styled(FormControl)(RaRichTextStyles);
+const EditorAttributesNotEditable = {
+    role: 'textbox',
+    'aria-multiline': 'true',
+    contenteditable: false,
+    'aria-readonly': 'true',
+};
+
+export const DefaultEditorOptions = {
+    extensions: [
+        StarterKit,
+        Underline,
+        Link,
+        TextAlign.configure({
+            types: ['heading', 'paragraph'],
+        }),
+    ],
+};
+
+const PREFIX = 'RaRichTextInput';
+const classes = {
+    root: `${PREFIX}-root`,
+    editorContent: `${PREFIX}-editorContent`,
+};
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.root}`]: {
+        display: 'flex',
+        alignItems: 'center',
+        backgroundColor: theme.palette.primary.main,
+    },
+    [`& .${classes.editorContent}`]: {
+        '& > div': {
+            padding: theme.spacing(1),
+            borderStyle: 'solid',
+            borderWidth: '1px',
+            borderColor:
+                theme.palette.mode === 'light'
+                    ? 'rgba(0, 0, 0, 0.23)'
+                    : 'rgba(255, 255, 255, 0.23)',
+            borderRadius: theme.shape.borderRadius,
+        },
+    },
+}));
+
+export type RichTextInputProps = CommonInputProps &
+    Omit<LabeledProps, 'children'> & {
+        editorOptions?: Partial<EditorOptions>;
+        toolbar?: ReactNode;
+    };
+
+export type RichTextInputContentProps = {
+    editor?: Editor;
+    error?: any;
+    fullWidth?: boolean;
+    helperText?: string | ReactElement | false;
+    id: string;
+    isTouched: boolean;
+    isSubmitted: boolean;
+    invalid: boolean;
+    toolbar?: ReactNode;
+};
