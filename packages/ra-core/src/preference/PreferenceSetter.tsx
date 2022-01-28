@@ -1,11 +1,12 @@
-import { useEffect, useRef, isValidElement, ReactNode } from 'react';
-import { usePreference } from './usePreference';
+import * as React from 'react';
+import { useEffect, ReactNode } from 'react';
+import { usePreferenceProvider } from './usePreferenceProvider';
 
 /**
  * A component to set application preferences on mount declaratively
  *
  * To use it, just wrap any component that need to use the corresponding
- * preference with <PreferenceSetter path="my.preference" value="myvalue">.
+ * preference with <PreferenceSetter name="my.preference" value="myvalue">.
  * This wrapping needs to be done to ensure that the corresponding preference
  * is set before rendering the wrapped component.
  *
@@ -14,11 +15,11 @@ import { usePreference } from './usePreference';
  *
  * @example
  *
- *     <PreferenceSetter path="list.density" value="small">
+ *     <PreferenceSetter name="list.density" value="small">
  *         <MyPreferencesDependentComponent />
  *     </PreferenceSetter>
  *
- * @example // Using <PreferenceSetter> is equivalent to using `usePreference` and setting its value directly.
+ * @example // Using <PreferenceSetter> is equivalent to using `usePreferenceProvider` and setting its value directly.
  *
  * const [_, setDensity] = usePreference('list.density');
  *
@@ -27,34 +28,22 @@ import { usePreference } from './usePreference';
  * }, []);
  *
  * @param {Props}    props
- * @param {string}   props.path Preference name. Required. Separate with dots to namespace, e.g. 'posts.list.columns'
+ * @param {string}   props.name Preference name. Required. Separate with dots to namespace, e.g. 'posts.list.columns'
  * @param {any}      props.value Preference value. Required.
  * @param {children} props.children Children are rendered as is on mount
  */
 export const PreferenceSetter = ({
     value,
-    path,
+    name,
     children,
 }: PreferenceSetterProps) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_, setPreferences] = usePreference(path);
-    const isInitialized = useRef(false);
+    const { setItem } = usePreferenceProvider();
 
     useEffect(() => {
-        setPreferences(value);
-        isInitialized.current = true;
-    }, [path, value]); // eslint-disable-line react-hooks/exhaustive-deps
+        setItem(name, value);
+    }, [name, setItem, value]);
 
-    // do not render the children until the value is set
-    if (!isInitialized.current) {
-        return null;
-    }
-
-    if (!isValidElement(children)) {
-        throw new Error('PreferenceSetter child must be a valid element');
-    }
-
-    return children;
+    return <>{children}</>;
 };
 
 export interface Preferences {
@@ -62,7 +51,7 @@ export interface Preferences {
 }
 
 export interface PreferenceSetterProps {
-    path: string;
+    name: string;
     value: any;
     children: ReactNode;
 }
