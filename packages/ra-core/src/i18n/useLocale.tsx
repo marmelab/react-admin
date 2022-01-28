@@ -20,9 +20,7 @@ import { TranslationContext } from './TranslationContext';
  *     return <span>{availableLanguages[locale]}</span>;
  * }
  */
-const useLocale = () => {
+export const useLocale = () => {
     const { locale } = useContext(TranslationContext);
     return locale;
 };
-
-export default useLocale;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactElement, memo } from 'react';
 
-import useTranslate from '../i18n/useTranslate';
+import { useTranslate } from '../i18n';
 import getFieldLabelTranslationArgs from './getFieldLabelTranslationArgs';
 import { useResourceContext } from '../core/useResourceContext';
 

@@ -1307,6 +1307,10 @@ If you still relied on sagas, you have to port your saga code to react `useEffec
 
 - Removed `<ReferenceField linkType>` prop (use `<ReferenceField link>` instead)
 
+## Removed Deprecated HOCs
+
+- Removed `withTranslate` HOC (use `useTranslate` hook)
+
 ## Removed connected-react-router
 
 If you were dispatching `connected-react-router` actions to navigate, you'll now have to use `react-router` hooks:
