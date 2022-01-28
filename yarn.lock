@@ -12058,7 +12058,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"data-generator-retail@^4.0.0-alpha.0, data-generator-retail@^4.0.0-alpha.2, data-generator-retail@workspace:examples/data-generator":
+"data-generator-retail@^4.0.0-alpha.2, data-generator-retail@workspace:examples/data-generator":
   version: 0.0.0-use.local
   resolution: "data-generator-retail@workspace:examples/data-generator"
   dependencies:
@@ -24982,7 +24982,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-core@^4.0.0-alpha.0, ra-core@^4.0.0-alpha.2, ra-core@workspace:packages/ra-core":
+"ra-core@^4.0.0-alpha.2, ra-core@workspace:packages/ra-core":
   version: 0.0.0-use.local
   resolution: "ra-core@workspace:packages/ra-core"
   dependencies:
@@ -25033,7 +25033,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-fakerest@^4.0.0-alpha.0, ra-data-fakerest@^4.0.0-alpha.2, ra-data-fakerest@workspace:packages/ra-data-fakerest":
+"ra-data-fakerest@^4.0.0-alpha.2, ra-data-fakerest@workspace:packages/ra-data-fakerest":
   version: 0.0.0-use.local
   resolution: "ra-data-fakerest@workspace:packages/ra-data-fakerest"
   dependencies:
@@ -25156,10 +25156,10 @@ __metadata:
     "@tiptap/react": ^2.0.0-beta.63
     "@tiptap/starter-kit": ^2.0.0-beta.101
     clsx: ^1.1.1
-    data-generator-retail: ^4.0.0-alpha.0
-    ra-core: ^4.0.0-alpha.0
-    ra-data-fakerest: ^4.0.0-alpha.0
-    ra-ui-materialui: ^4.0.0-alpha.0
+    data-generator-retail: ^4.0.0-alpha.2
+    ra-core: ^4.0.0-alpha.2
+    ra-data-fakerest: ^4.0.0-alpha.2
+    ra-ui-materialui: ^4.0.0-alpha.2
     react: ^17.0.0
     react-dom: ^17.0.0
     react-hook-form: ^7.25.0
@@ -25227,7 +25227,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-ui-materialui@^4.0.0-alpha.0, ra-ui-materialui@^4.0.0-alpha.2, ra-ui-materialui@workspace:packages/ra-ui-materialui":
+"ra-ui-materialui@^4.0.0-alpha.2, ra-ui-materialui@workspace:packages/ra-ui-materialui":
   version: 0.0.0-use.local
   resolution: "ra-ui-materialui@workspace:packages/ra-ui-materialui"
   dependencies:
