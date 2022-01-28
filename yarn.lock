@@ -21626,13 +21626,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mutationobserver-shim@npm:^0.3.3":
-  version: 0.3.7
-  resolution: "mutationobserver-shim@npm:0.3.7"
-  checksum: 3f03ccf5693744454ec7b8152390cbf1f9dfb72eb6e5397df2e9d44812e528d79257c4f41d86345c68e2fbbb30b03578b0354152c5fec59af6bad2bbb9dc21e0
-  languageName: node
-  linkType: hard
-
 "mute-stream@npm:0.0.7":
   version: 0.0.7
   resolution: "mute-stream@npm:0.0.7"
@@ -25446,7 +25439,6 @@ __metadata:
     lerna: ~4.0.0
     lint-staged: ^8.1.7
     lolex: ~2.3.2
-    mutationobserver-shim: ^0.3.3
     prettier: ~2.1.1
     raf: ~3.4.1
     react: ^17.0.0
