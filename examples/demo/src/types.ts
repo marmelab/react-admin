@@ -1,10 +1,6 @@
-import { ReduxState, RaRecord, Identifier } from 'react-admin';
+import { RaRecord, Identifier } from 'react-admin';
 
 export type ThemeName = 'light' | 'dark';
-
-export interface AppState extends ReduxState {
-    theme: ThemeName;
-}
 
 export interface Category extends RaRecord {
     name: string;
