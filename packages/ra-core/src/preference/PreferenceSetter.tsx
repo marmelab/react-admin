@@ -36,6 +36,7 @@ export const PreferenceSetter = ({
     path,
     children,
 }: PreferenceSetterProps) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, setPreferences] = usePreference(path);
     const isInitialized = useRef(false);
 
