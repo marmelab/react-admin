@@ -1,5 +1,6 @@
 export * from './types';
 export * from './usePreference';
+export * from './usePreferenceProvider';
 export * from './PreferenceContext';
 export * from './PreferenceContextProvider';
 export * from './PreferenceSetter';

@@ -1,6 +1,6 @@
-import { useContext, useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
-import { PreferenceContext } from './PreferenceContext';
+import { usePreferenceProvider } from './usePreferenceProvider';
 
 /**
  * Read and write a preference value from the preferenceProvider
@@ -44,9 +44,7 @@ import { PreferenceContext } from './PreferenceContext';
  * };
  */
 export const usePreference = (key: string, defaultValue?: any) => {
-    const { getPreference, setPreference, subscribe } = useContext(
-        PreferenceContext
-    );
+    const { getPreference, setPreference, subscribe } = usePreferenceProvider();
     const [value, setValue] = useState(() => getPreference(key, defaultValue));
 
     useEffect(() => {
