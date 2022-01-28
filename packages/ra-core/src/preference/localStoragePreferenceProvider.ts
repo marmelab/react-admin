@@ -67,7 +67,7 @@ export const localStoragePreferenceProvider = (): PreferenceProvider => {
                 window.removeEventListener('storage', onLocalStorageChange);
             }
         },
-        getPreference<T = any>(key: string, defaultValue?: T): T {
+        getItem<T = any>(key: string, defaultValue?: T): T {
             const valueFromStorage = tryParse(
                 getStorage().getItem(`${RA_PREFERENCE}_${key}`)
             );
@@ -76,7 +76,7 @@ export const localStoragePreferenceProvider = (): PreferenceProvider => {
                 ? defaultValue
                 : valueFromStorage;
         },
-        setPreference<T = any>(key: string, value: T): void {
+        setItem<T = any>(key: string, value: T): void {
             if (value === undefined) {
                 getStorage().removeItem(`${RA_PREFERENCE}_${key}`);
             } else {
@@ -92,7 +92,7 @@ export const localStoragePreferenceProvider = (): PreferenceProvider => {
                 }
             });
         },
-        removePreference(key: string): void {
+        removeItem(key: string): void {
             getStorage().removeItem(`${RA_PREFERENCE}_${key}`);
         },
         reset(): void {

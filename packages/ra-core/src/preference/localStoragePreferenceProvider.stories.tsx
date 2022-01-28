@@ -19,7 +19,7 @@ const Preference = ({ name }) => {
 };
 
 const PreferenceSetter = ({ name }) => {
-    const [value, setValue] = usePreference(name);
+    const [value, setValue] = usePreference<string>(name);
     return (
         <>
             <dt>{name}</dt>

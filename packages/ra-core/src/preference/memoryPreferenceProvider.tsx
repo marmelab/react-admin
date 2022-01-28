@@ -30,10 +30,10 @@ export const memoryPreferenceProvider = (
         teardown: () => {
             Object.keys(storage).forEach(key => delete storage[key]);
         },
-        getPreference<T = any>(key: string, defaultValue?: T): T {
+        getItem<T = any>(key: string, defaultValue?: T): T {
             return get(storage, key, defaultValue);
         },
-        setPreference<T = any>(key: string, value: T): void {
+        setItem<T = any>(key: string, value: T): void {
             set(storage, key, value);
             Object.keys(subscriptions).forEach(id => {
                 if (subscriptions[id].key === key) {
@@ -41,7 +41,7 @@ export const memoryPreferenceProvider = (
                 }
             });
         },
-        removePreference(key: string): void {
+        removeItem(key: string): void {
             unset(storage, key);
         },
         reset(): void {

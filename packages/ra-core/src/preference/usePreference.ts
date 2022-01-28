@@ -43,9 +43,12 @@ import { usePreferenceProvider } from './usePreferenceProvider';
  *     );
  * };
  */
-export const usePreference = (key: string, defaultValue?: any) => {
-    const { getPreference, setPreference, subscribe } = usePreferenceProvider();
-    const [value, setValue] = useState(() => getPreference(key, defaultValue));
+export const usePreference = <T = any>(
+    key: string,
+    defaultValue?: T
+): UsePreferenceResult<T> => {
+    const { getItem, setItem, subscribe } = usePreferenceProvider();
+    const [value, setValue] = useState(() => getItem(key, defaultValue));
 
     useEffect(() => {
         const unsubscribe = subscribe(key, newValue => {
@@ -55,13 +58,22 @@ export const usePreference = (key: string, defaultValue?: any) => {
     }, [key, subscribe, defaultValue]);
 
     const set = useCallback(
-        (value, defaultValue) => {
-            setPreference(
+        (value, runtimeDefaultValue) => {
+            setItem(
                 key,
-                typeof value === 'undefined' ? defaultValue : value
+                typeof value === 'undefined'
+                    ? typeof runtimeDefaultValue === 'undefined'
+                        ? defaultValue
+                        : runtimeDefaultValue
+                    : value
             );
         },
-        [key, setPreference]
+        [key, setItem, defaultValue]
     );
     return [value, set];
 };
+
+export type UsePreferenceResult<T = any> = [
+    T,
+    (value: T, defaultValue?: T) => void
+];
