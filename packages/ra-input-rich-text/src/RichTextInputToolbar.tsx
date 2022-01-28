@@ -18,7 +18,7 @@ import {
  * @param {'small' | 'medium' | 'large'} props.size The default size to apply to the **default** children.
  *
  * @example <caption>Customizing the size</caption>
- * import { RichTextInput, RichTextInputToolbar } from 'ra-richtext-tiptap';
+ * import { RichTextInput, RichTextInputToolbar } from 'ra-input-rich-text';
  * const MyRichTextInput = (props) => (
  *     <RichTextInput
  *         toolbar={<RichTextInputToolbar size="large" />}
@@ -29,7 +29,7 @@ import {
  * );
  *
  * @example <caption>Customizing the children</caption>
- * import { RichTextInput, RichTextInputToolbar } from 'ra-richtext-tiptap';
+ * import { RichTextInput, RichTextInputToolbar } from 'ra-input-rich-text';
  * const MyRichTextInput = ({ size, ...props }) => (
  *     <RichTextInput
  *         toolbar={(
