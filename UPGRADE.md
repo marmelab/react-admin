@@ -2235,6 +2235,48 @@ const ResetFormButton = () => {
 }
 ```
 
+### Form Level Validation And Input Level Validation Are Mutually Exclusive
+
+With `react-hook-form`, you can't have both form level validation and input level validation. This is because form level validation is meant to be used for [schema based validation](https://react-hook-form.com/api/useform#validationResolver).
+
+If you used form level validation to run complex checks for multiple input values combinations, you can use a schema library such as [yup](https://github.com/jquense/yup):
+
+```diff
+import { BooleanInput, NumberInput, SimpleForm } from 'react-admin';
++import { yupResolver } from '@hookform/resolvers/yup';
+-const validateForm = values => {
+-    if (values.isBig && values.count < 6) {
+-        return {
+-            count: 'Must be greater than 5'
+-        }
+-    }
+-
+-    if (values.count < 0) {
+-        return {
+-            count: 'Must be greater than 0'
+-        }
+-    }
+-}
++const schema = object({
++  isBig: boolean(),
++  count: number().when('isBig', {
++    is: true,
++    then: (schema) => schema.min(5),
++    otherwise: (schema) => schema.min(0),
++  }),
++});
+
+const MyForm = () => (
+    <SimpleForm
+-        validate={validateForm}
++        resolver={yupResolver(schema)}
+    >
+        <BooleanInput source="isBig" />
+        <NumberInput source="count" />
+    </SimpleForm>
+)
+```
+
 ## `useRedirect()` No Longer Clears Forms When Called With `false`
 
 To implement a form that would reset after submittion and allow adding more data, you react-admin used to encourage calling `useRedirect()` with `false` to clear the form. This ,no longer works: `useRedirect()` manages redirectinos, not forms. You'll have to clear the form manually in your side effect:
