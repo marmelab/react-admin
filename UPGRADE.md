@@ -1310,6 +1310,7 @@ If you still relied on sagas, you have to port your saga code to react `useEffec
 ## Removed Deprecated HOCs
 
 - Removed `withTranslate` HOC (use `useTranslate` hook)
+- Removed `withDataProvider` HOC (use `useDataProvider` hook)
 
 ## Removed connected-react-router
 
