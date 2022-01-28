@@ -50,9 +50,11 @@ export const usePreference = (key: string, defaultValue?: any) => {
     const [value, setValue] = useState(() => getPreference(key, defaultValue));
 
     useEffect(() => {
-        const unsubscribe = subscribe(key, setValue);
+        const unsubscribe = subscribe(key, newValue => {
+            setValue(typeof newValue === 'undefined' ? defaultValue : newValue);
+        });
         return () => unsubscribe();
-    }, [key, subscribe]);
+    }, [key, subscribe, defaultValue]);
 
     const set = useCallback(
         (value, defaultValue) => {

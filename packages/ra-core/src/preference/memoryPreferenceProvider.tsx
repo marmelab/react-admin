@@ -8,6 +8,19 @@ type Subscription = {
     callback: (value: any) => void;
 };
 
+/**
+ * PreferenceProvider using memory
+ *
+ * @example
+ *
+ * import { memoryPreferenceProvider } from 'react-admin';
+ *
+ * const App = () => (
+ *    <Admin prefProvider={memoryPreferenceProvider()}>
+ *       ...
+ *   </Admin>
+ * );
+ */
 export const memoryPreferenceProvider = (
     storage: any = {}
 ): PreferenceProvider => {
@@ -17,10 +30,10 @@ export const memoryPreferenceProvider = (
         teardown: () => {
             Object.keys(storage).forEach(key => delete storage[key]);
         },
-        getPreference(key: string, defaultValue?: any): string {
+        getPreference<T = any>(key: string, defaultValue?: T): T {
             return get(storage, key, defaultValue);
         },
-        setPreference(key: string, value: string): void {
+        setPreference<T = any>(key: string, value: T): void {
             set(storage, key, value);
             Object.keys(subscriptions).forEach(id => {
                 if (subscriptions[id].key === key) {
