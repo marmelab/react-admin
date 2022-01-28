@@ -592,7 +592,19 @@ describe('useEditController', () => {
         await act(async () => saveCallback({ foo: 'bar' }));
         await new Promise(resolve => setTimeout(resolve, 10));
         expect(onError).toHaveBeenCalled();
-        expect(notificationsSpy).toEqual([]);
+        // we get the (optimistic) success notification but not the error notification
+        expect(notificationsSpy).toEqual([
+            {
+                message: 'ra.notification.updated',
+                type: 'info',
+                notificationOptions: {
+                    messageArgs: {
+                        smart_count: 1,
+                    },
+                    undoable: false,
+                },
+            },
+        ]);
     });
 
     it('should allow the save onError option to override the failure side effects override', async () => {
