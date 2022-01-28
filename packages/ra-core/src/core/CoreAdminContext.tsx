@@ -31,7 +31,7 @@ import {
     InitialState,
 } from '../types';
 
-export interface AdminContextProps {
+export interface CoreAdminContextProps {
     authProvider?: AuthProvider | LegacyAuthProvider;
     basename?: string;
     children?: AdminChildren;
@@ -49,7 +49,7 @@ export interface AdminContextProps {
     theme?: object;
 }
 
-export const CoreAdminContext = (props: AdminContextProps) => {
+export const CoreAdminContext = (props: CoreAdminContextProps) => {
     const {
         authProvider,
         basename,

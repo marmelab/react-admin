@@ -27,7 +27,7 @@ export interface CoreAdminUIProps {
     layout?: LayoutComponent;
     loading?: LoadingComponent;
     loginPage?: LoginComponent | boolean;
-    logout?: ComponentType;
+    logoutButton?: ComponentType;
     menu?: ComponentType;
     ready?: ComponentType;
     title?: TitleComponent;
@@ -42,15 +42,16 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
         layout = DefaultLayout,
         loading = Noop,
         loginPage: LoginPage = false,
-        logout,
+        logoutButton,
         menu, // deprecated, use a custom layout instead
         ready = Ready,
         title = 'React Admin',
     } = props;
 
-    const logoutElement = useMemo(() => logout && createElement(logout), [
-        logout,
-    ]);
+    const logoutElement = useMemo(
+        () => logoutButton && createElement(logoutButton),
+        [logoutButton]
+    );
 
     useEffect(() => {
         if (

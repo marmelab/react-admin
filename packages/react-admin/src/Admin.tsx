@@ -87,7 +87,6 @@ import { useEffect, useState } from 'react';
  */
 export const Admin = (props: AdminProps) => {
     const {
-        appLayout,
         authProvider,
         basename,
         catchAll,
@@ -101,7 +100,6 @@ export const Admin = (props: AdminProps) => {
         initialState,
         layout,
         loading,
-        locale,
         loginPage,
         logoutButton,
         menu, // deprecated, use a custom layout instead
@@ -112,19 +110,9 @@ export const Admin = (props: AdminProps) => {
         title = 'React Admin',
     } = props;
 
-    if (appLayout && process.env.NODE_ENV !== 'production') {
-        console.warn(
-            'You are using deprecated prop "appLayout", it was replaced by "layout", see https://github.com/marmelab/react-admin/issues/2918'
-        );
-    }
     if (loginPage === true && process.env.NODE_ENV !== 'production') {
         console.warn(
             'You passed true to the loginPage prop. You must either pass false to disable it or a component class to customize it'
-        );
-    }
-    if (locale && process.env.NODE_ENV !== 'production') {
-        console.warn(
-            'You are using deprecated prop "locale". You must now pass the initial locale to your i18nProvider'
         );
     }
 
@@ -141,7 +129,7 @@ export const Admin = (props: AdminProps) => {
             theme={theme}
         >
             <AdminUI
-                layout={appLayout || layout}
+                layout={layout}
                 dashboard={dashboard}
                 disableTelemetry={disableTelemetry}
                 menu={menu}
@@ -149,7 +137,7 @@ export const Admin = (props: AdminProps) => {
                 title={title}
                 loading={loading}
                 loginPage={loginPage}
-                logout={authProvider ? logoutButton : undefined}
+                logoutButton={authProvider ? logoutButton : undefined}
                 notification={notification}
                 ready={ready}
             >
