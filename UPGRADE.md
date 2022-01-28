@@ -813,7 +813,7 @@ const PostDetail = () => {
 
 ## Application Cache No Longer Uses `validUntil`
 
-React-admin's *application cache* used to reply on the dataProvider returning a `validUntil` property in the response. This is no longer the case, as the cache functionality is handled by react-query. Therefore, you can safely remove the `validUntil` property from your dataProvider response.
+React-admin's *application cache* used to rely on the dataProvider returning a `validUntil` property in the response. This is no longer the case, as the cache functionality is handled by react-query. Therefore, you can safely remove the `validUntil` property from your dataProvider response.
 
 ```diff
 const dataProvider = {
