@@ -11,6 +11,11 @@ import {
     convertLegacyDataProvider,
     defaultDataProvider,
 } from '../dataProvider';
+import {
+    PreferenceContextProvider,
+    PreferenceProvider,
+    memoryPreferenceProvider,
+} from '../preference';
 import createAdminStore from './createAdminStore';
 import TranslationProvider from '../i18n/TranslationProvider';
 import { ResourceDefinitionContextProvider } from './ResourceDefinitionContext';
@@ -33,6 +38,7 @@ export interface AdminContextProps {
     customReducers?: object;
     dashboard?: DashboardComponent;
     dataProvider?: DataProvider | LegacyDataProvider;
+    prefProvider?: PreferenceProvider;
     queryClient?: QueryClient;
     /**
      * @deprecated Wrap your Admin inside a Router to change the routing strategy
@@ -49,6 +55,7 @@ export const CoreAdminContext = (props: AdminContextProps) => {
         basename,
         dataProvider,
         i18nProvider,
+        prefProvider,
         children,
         history,
         customReducers,
@@ -85,17 +92,19 @@ React-admin requires a valid dataProvider function to work.`);
     const renderCore = () => (
         <AuthContext.Provider value={finalAuthProvider}>
             <DataProviderContext.Provider value={finalDataProvider}>
-                <QueryClientProvider client={finalQueryClient}>
-                    <NotificationContextProvider>
+                <PreferenceContextProvider value={prefProvider}>
+                    <QueryClientProvider client={finalQueryClient}>
                         <TranslationProvider i18nProvider={i18nProvider}>
                             <AdminRouter history={history} basename={basename}>
-                                <ResourceDefinitionContextProvider>
-                                    {children}
-                                </ResourceDefinitionContextProvider>
+                                <NotificationContextProvider>
+                                    <ResourceDefinitionContextProvider>
+                                        {children}
+                                    </ResourceDefinitionContextProvider>
+                                </NotificationContextProvider>
                             </AdminRouter>
                         </TranslationProvider>
-                    </NotificationContextProvider>
-                </QueryClientProvider>
+                    </QueryClientProvider>
+                </PreferenceContextProvider>
             </DataProviderContext.Provider>
         </AuthContext.Provider>
     );
@@ -118,4 +127,5 @@ React-admin requires a valid dataProvider function to work.`);
 
 CoreAdminContext.defaultProps = {
     dataProvider: defaultDataProvider,
+    prefProvider: memoryPreferenceProvider(),
 };
