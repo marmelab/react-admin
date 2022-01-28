@@ -520,15 +520,14 @@ For more custom layouts, write a component from scratch. It must contain a `{chi
 import * as React from 'react';
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@mui/material/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import {
     AppBar,
     Menu,
     Sidebar,
-    setSidebarVisibility,
     ComponentPropType,
+    useSidebarState,
 } from 'react-admin';
 
 const useStyles = makeStyles(theme => ({
@@ -567,11 +566,7 @@ const MyLayout = ({
 }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const open = useSelector(state => state.admin.ui.sidebarOpen);
-
-    useEffect(() => {
-        dispatch(setSidebarVisibility(true));
-    }, [setSidebarVisibility]);
+    const [open] = useSidebarState();
 
     return (
         <div className={classes.root}>
@@ -853,15 +848,14 @@ const App = () => (
 // in src/Menu.js
 import * as React from 'react';
 import { createElement } from 'react';
-import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
-import { DashboardMenuItem, Menu, MenuItemLink, useResourceDefinitions } from 'react-admin';
+import { DashboardMenuItem, Menu, MenuItemLink, useResourceDefinitions, useSidebarState } from 'react-admin';
 import DefaultIcon from '@mui/icons-material/ViewList';
 import LabelIcon from '@mui/icons-material/Label';
 
 export const Menu = (props) => {
     const resources = useResourceDefinitions()
-    const open = useSelector(state => state.admin.ui.sidebarOpen);
+    const [open] = useSidebarState();
     return (
         <Menu {...props}>
             <DashboardMenuItem />

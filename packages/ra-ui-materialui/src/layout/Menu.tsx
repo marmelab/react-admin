@@ -2,17 +2,16 @@ import * as React from 'react';
 import { ReactNode, createElement } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import lodashGet from 'lodash/get';
 import DefaultIcon from '@mui/icons-material/ViewList';
 import classnames from 'classnames';
 import {
     useResourceDefinitions,
     useGetResourceLabel,
-    ReduxState,
     useCreatePath,
 } from 'ra-core';
 
+import { useSidebarState } from './useSidebarState';
 import { DashboardMenuItem } from './DashboardMenuItem';
 import { MenuItemLink } from './MenuItemLink';
 
@@ -53,7 +52,7 @@ export const Menu = (props: MenuProps) => {
         ...rest
     } = props;
 
-    const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
+    const [open] = useSidebarState();
 
     return (
         <Root

@@ -23,4 +23,4 @@ export * from './TitleForRecord';
 export * from './TopToolbar';
 export * from './UserMenu';
 export * from './useResetErrorBoundaryOnLocationChange';
-export * from './useToggleSidebar';
+export * from './useSidebarState';

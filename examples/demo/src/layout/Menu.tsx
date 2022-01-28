@@ -9,7 +9,7 @@ import {
     DashboardMenuItem,
     MenuItemLink,
     MenuProps,
-    ReduxState,
+    useSidebarState,
 } from 'react-admin';
 
 import visitors from '../visitors';
@@ -57,7 +57,7 @@ const Menu = ({ dense = false }: MenuProps) => {
         menuCustomers: true,
     });
     const translate = useTranslate();
-    const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
+    const open = useSidebarState();
     useSelector((state: AppState) => state.theme); // force rerender on theme change
 
     const handleToggle = (menu: MenuName) => {

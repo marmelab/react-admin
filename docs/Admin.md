@@ -217,14 +217,13 @@ If you want to add or remove menu items, for instance to link to non-resources p
 // in src/Menu.js
 import * as React from 'react';
 import { createElement } from 'react';
-import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
-import { MenuItemLink, useResourceDefinitions } from 'react-admin';
+import { MenuItemLink, useResourceDefinitions, useSidebarState } from 'react-admin';
 import LabelIcon from '@mui/icons-material/Label';
 
 const Menu = ({ onMenuClick, logout }) => {
     const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
-    const open = useSelector(state => state.admin.ui.sidebarOpen);
+    const [open] = useSidebarState();
     const resources = useResourceDefinitions();
     
     return (
