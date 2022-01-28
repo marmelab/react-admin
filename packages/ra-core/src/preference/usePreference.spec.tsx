@@ -22,7 +22,7 @@ describe('usePreference', () => {
             <PreferenceContextProvider
                 value={
                     {
-                        getPreference: () => 'hello',
+                        getItem: () => 'hello',
                         setup: () => {},
                         teardown: () => {},
                         subscribe: () => () => {},
@@ -42,7 +42,7 @@ describe('usePreference', () => {
             <PreferenceContextProvider
                 value={
                     {
-                        getPreference: () => 'hello',
+                        getItem: () => 'hello',
                         setup: () => {},
                         teardown: () => {},
                         subscribe,
