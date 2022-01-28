@@ -581,18 +581,16 @@ describe('<Edit />', () => {
                     </button>
                 </>
             );
-            const { queryAllByText, getByText } = renderWithRedux(
-                <QueryClientProvider client={new QueryClient()}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Edit
-                            {...defaultEditProps}
-                            transform={transform}
-                            mutationMode="pessimistic"
-                        >
-                            <FakeForm />
-                        </Edit>
-                    </DataProviderContext.Provider>
-                </QueryClientProvider>
+            const { queryAllByText, getByText } = render(
+                <AdminContext dataProvider={dataProvider}>
+                    <Edit
+                        {...defaultEditProps}
+                        transform={transform}
+                        mutationMode="pessimistic"
+                    >
+                        <FakeForm />
+                    </Edit>
+                </AdminContext>
             );
             await waitFor(() => {
                 expect(queryAllByText('lorem')).toHaveLength(1);
@@ -649,18 +647,16 @@ describe('<Edit />', () => {
                     </button>
                 </>
             );
-            const { queryAllByText, getByText } = renderWithRedux(
-                <QueryClientProvider client={new QueryClient()}>
-                    <DataProviderContext.Provider value={dataProvider}>
-                        <Edit
-                            {...defaultEditProps}
-                            transform={transform}
-                            mutationMode="pessimistic"
-                        >
-                            <FakeForm />
-                        </Edit>
-                    </DataProviderContext.Provider>
-                </QueryClientProvider>
+            const { queryAllByText, getByText } = render(
+                <AdminContext dataProvider={dataProvider}>
+                    <Edit
+                        {...defaultEditProps}
+                        transform={transform}
+                        mutationMode="pessimistic"
+                    >
+                        <FakeForm />
+                    </Edit>
+                </AdminContext>
             );
             await waitFor(() => {
                 expect(queryAllByText('lorem')).toHaveLength(1);
