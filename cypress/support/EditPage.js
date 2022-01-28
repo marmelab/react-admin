@@ -6,7 +6,7 @@ export default url => ({
         removeBacklinkButton: '[aria-label="Remove"]',
         input: (name, type = 'input') => {
             if (type === 'rich-text-input') {
-                return `.ra-input-${name} .ql-editor`;
+                return `.ra-input-${name} .ProseMirror`;
             }
             if (type === 'checkbox-group-input') {
                 return `.ra-input-${name} label`;

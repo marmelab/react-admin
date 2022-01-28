@@ -4,7 +4,7 @@ export default url => ({
         body: 'body',
         input: (name, type = 'input') => {
             if (type === 'rich-text-input') {
-                return `.ra-input-${name} .ql-editor`;
+                return `.ra-input-${name} .ProseMirror`;
             }
             return `.create-page ${type}[name='${name}']`;
         },
@@ -18,7 +18,7 @@ export default url => ({
             ".create-page form div[role='toolbar'] button[type='button']:nth-child(3)",
         submitCommentable:
             ".create-page form div[role='toolbar'] button[type='button']:last-child",
-        descInput: '.ql-editor',
+        descInput: '.ProseMirror',
         tab: index => `.form-tab:nth-of-type(${index})`,
         title: '#react-admin-title',
         userMenu: 'button[aria-label="Profile"]',

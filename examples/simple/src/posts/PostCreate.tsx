@@ -7,8 +7,13 @@ import {
     BooleanInput,
     Create,
     DateInput,
+    FileField,
+    FileInput,
     FormDataConsumer,
+    maxValue,
+    minValue,
     NumberInput,
+    required,
     ReferenceInput,
     SaveButton,
     SelectInput,
@@ -16,14 +21,12 @@ import {
     SimpleFormIterator,
     TextInput,
     Toolbar,
-    required,
-    FileInput,
-    FileField,
     useNotify,
     usePermissions,
     useRedirect,
 } from 'react-admin';
 import { useFormContext, useWatch } from 'react-hook-form';
+import { DevTool } from '@hookform/devtools';
 
 const PostCreateToolbar = props => {
     const notify = useNotify();
@@ -105,20 +108,6 @@ const PostCreate = () => {
             <SimpleForm
                 toolbar={<PostCreateToolbar />}
                 defaultValues={defaultValues}
-                validate={values => {
-                    const errors = {} as any;
-                    ['title', 'teaser'].forEach(field => {
-                        if (!values[field]) {
-                            errors[field] = 'Required field';
-                        }
-                    });
-
-                    if (values.average_note < 0 || values.average_note > 5) {
-                        errors.average_note = 'Should be between 0 and 5';
-                    }
-
-                    return errors;
-                }}
             >
                 <FileInput
                     source="pdffile"
@@ -127,11 +116,26 @@ const PostCreate = () => {
                 >
                     <FileField source="src" title="title" />
                 </FileInput>
-                <TextInput autoFocus source="title" />
-                <TextInput source="teaser" fullWidth multiline />
+                <TextInput
+                    autoFocus
+                    source="title"
+                    validate={required('Required field')}
+                />
+                <TextInput
+                    source="teaser"
+                    fullWidth
+                    multiline
+                    validate={required('Required field')}
+                />
                 <RichTextInput source="body" fullWidth validate={required()} />
                 <DependantInput dependency="title">
-                    <NumberInput source="average_note" />
+                    <NumberInput
+                        source="average_note"
+                        validate={[
+                            minValue(0, 'Should be between 0 and 5'),
+                            maxValue(5, 'Should be between 0 and 5'),
+                        ]}
+                    />
                 </DependantInput>
 
                 <DateInput
@@ -192,6 +196,7 @@ const PostCreate = () => {
                         </SimpleFormIterator>
                     </ArrayInput>
                 )}
+                <DevTool />
             </SimpleForm>
         </Create>
     );
