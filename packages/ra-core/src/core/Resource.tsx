@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { isValidElement } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { ResourceProps } from '../types';
@@ -13,27 +14,25 @@ export const Resource = (props: ResourceProps) => {
                 {Create && (
                     <Route
                         path="create/*"
-                        element={
-                            React.isValidElement(Create) ? Create : <Create />
-                        }
+                        element={isValidElement(Create) ? Create : <Create />}
                     />
                 )}
                 {Show && (
                     <Route
                         path=":id/show/*"
-                        element={React.isValidElement(Show) ? Show : <Show />}
+                        element={isValidElement(Show) ? Show : <Show />}
                     />
                 )}
                 {Edit && (
                     <Route
                         path=":id/*"
-                        element={React.isValidElement(Edit) ? Edit : <Edit />}
+                        element={isValidElement(Edit) ? Edit : <Edit />}
                     />
                 )}
                 {List && (
                     <Route
                         path="/*"
-                        element={React.isValidElement(List) ? List : <List />}
+                        element={isValidElement(List) ? List : <List />}
                     />
                 )}
             </Routes>

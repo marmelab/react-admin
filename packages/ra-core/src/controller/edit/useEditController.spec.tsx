@@ -3,11 +3,10 @@ import expect from 'expect';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import { Routes, Route } from 'react-router';
 import { createMemoryHistory } from 'history';
-import { Provider } from 'react-redux';
 
 import { EditController } from './EditController';
 import { DataProvider } from '../../types';
-import { CoreAdminContext, createAdminStore } from '../../core';
+import { CoreAdminContext } from '../../core';
 import { useNotificationContext } from '../../notification';
 import { SaveContextProvider } from '..';
 import undoableEventEmitter from '../../dataProvider/undoableEventEmitter';
@@ -307,34 +306,37 @@ describe('useEditController', () => {
                 Promise.resolve({ data: { id, ...previousData, ...data } }),
         } as unknown) as DataProvider;
         const onSuccess = jest.fn();
-        const store = createAdminStore();
-        const dispatch = jest.spyOn(store, 'dispatch');
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
         render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <EditController
-                            {...defaultProps}
-                            mutationMode="pessimistic"
-                            mutationOptions={{ onSuccess }}
-                        >
-                            {({ save }) => {
-                                saveCallback = save;
-                                return null;
-                            }}
-                        </EditController>
-                    </SaveContextProvider>
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
+                <SaveContextProvider value={saveContextValue}>
+                    <EditController
+                        {...defaultProps}
+                        mutationMode="pessimistic"
+                        mutationOptions={{ onSuccess }}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </EditController>
+                </SaveContextProvider>
+            </CoreAdminContext>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         await new Promise(resolve => setTimeout(resolve, 10));
         expect(onSuccess).toHaveBeenCalled();
-        expect(dispatch).not.toHaveBeenCalledWith(
-            expect.objectContaining({
-                type: 'RA/SHOW_NOTIFICATION',
-            })
-        );
+        expect(notificationsSpy).toEqual([]);
     });
 
     it('should allow mutationOptions to override the default success side effects in optimistic mode', async () => {
@@ -345,34 +347,37 @@ describe('useEditController', () => {
                 Promise.resolve({ data: { id, ...previousData, ...data } }),
         } as unknown) as DataProvider;
         const onSuccess = jest.fn();
-        const store = createAdminStore();
-        const dispatch = jest.spyOn(store, 'dispatch');
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
         render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <EditController
-                            {...defaultProps}
-                            mutationMode="optimistic"
-                            mutationOptions={{ onSuccess }}
-                        >
-                            {({ save }) => {
-                                saveCallback = save;
-                                return null;
-                            }}
-                        </EditController>
-                    </SaveContextProvider>
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
+                <SaveContextProvider value={saveContextValue}>
+                    <EditController
+                        {...defaultProps}
+                        mutationMode="optimistic"
+                        mutationOptions={{ onSuccess }}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </EditController>
+                </SaveContextProvider>
+            </CoreAdminContext>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         await new Promise(resolve => setTimeout(resolve, 10));
         expect(onSuccess).toHaveBeenCalled();
-        expect(dispatch).not.toHaveBeenCalledWith(
-            expect.objectContaining({
-                type: 'RA/SHOW_NOTIFICATION',
-            })
-        );
+        expect(notificationsSpy).toEqual([]);
     });
 
     it('should allow mutationOptions to override the default success side effects in undoable mode', async () => {
@@ -383,33 +388,36 @@ describe('useEditController', () => {
                 Promise.resolve({ data: { id, ...previousData, ...data } }),
         } as unknown) as DataProvider;
         const onSuccess = jest.fn();
-        const store = createAdminStore();
-        const dispatch = jest.spyOn(store, 'dispatch');
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
         render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <EditController
-                            {...defaultProps}
-                            mutationOptions={{ onSuccess }}
-                        >
-                            {({ save }) => {
-                                saveCallback = save;
-                                return null;
-                            }}
-                        </EditController>
-                    </SaveContextProvider>
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
+                <SaveContextProvider value={saveContextValue}>
+                    <EditController
+                        {...defaultProps}
+                        mutationOptions={{ onSuccess }}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </EditController>
+                </SaveContextProvider>
+            </CoreAdminContext>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         await new Promise(resolve => setTimeout(resolve, 10));
         expect(onSuccess).toHaveBeenCalled();
-        expect(dispatch).not.toHaveBeenCalledWith(
-            expect.objectContaining({
-                type: 'RA/SHOW_NOTIFICATION',
-            })
-        );
+        expect(notificationsSpy).toEqual([]);
     });
 
     it('should allow the save onSuccess option to override the success side effects override', async () => {
@@ -421,25 +429,32 @@ describe('useEditController', () => {
         } as unknown) as DataProvider;
         const onSuccess = jest.fn();
         const onSuccessSave = jest.fn();
-        const store = createAdminStore();
-        const dispatch = jest.spyOn(store, 'dispatch');
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
         render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <EditController
-                            {...defaultProps}
-                            mutationMode="pessimistic"
-                            mutationOptions={{ onSuccess }}
-                        >
-                            {({ save }) => {
-                                saveCallback = save;
-                                return null;
-                            }}
-                        </EditController>
-                    </SaveContextProvider>
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
+                <SaveContextProvider value={saveContextValue}>
+                    <EditController
+                        {...defaultProps}
+                        mutationMode="pessimistic"
+                        mutationOptions={{ onSuccess }}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </EditController>
+                </SaveContextProvider>
+            </CoreAdminContext>
         );
         await act(async () =>
             saveCallback(
@@ -451,11 +466,7 @@ describe('useEditController', () => {
         );
         expect(onSuccess).not.toHaveBeenCalled();
         expect(onSuccessSave).toHaveBeenCalled();
-        expect(dispatch).not.toHaveBeenCalledWith(
-            expect.objectContaining({
-                type: 'RA/SHOW_NOTIFICATION',
-            })
-        );
+        expect(notificationsSpy).toEqual([]);
     });
 
     it('should execute error side effects on error in pessimistic mode', async () => {
@@ -510,37 +521,37 @@ describe('useEditController', () => {
             update: () => Promise.reject({ message: 'not good' }),
         } as unknown) as DataProvider;
         const onError = jest.fn();
-        const store = createAdminStore();
-        const dispatch = jest.spyOn(store, 'dispatch');
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
         render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <EditController
-                            {...defaultProps}
-                            mutationMode="pessimistic"
-                            mutationOptions={{ onError }}
-                        >
-                            {({ save }) => {
-                                saveCallback = save;
-                                return null;
-                            }}
-                        </EditController>
-                    </SaveContextProvider>
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
+                <SaveContextProvider value={saveContextValue}>
+                    <EditController
+                        {...defaultProps}
+                        mutationMode="pessimistic"
+                        mutationOptions={{ onError }}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </EditController>
+                </SaveContextProvider>
+            </CoreAdminContext>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         await new Promise(resolve => setTimeout(resolve, 10));
         expect(onError).toHaveBeenCalled();
-        expect(dispatch).not.toHaveBeenCalledWith({
-            type: 'RA/SHOW_NOTIFICATION',
-            payload: {
-                type: 'warning',
-                message: 'not good',
-                messageArgs: { _: 'not good' },
-            },
-        });
+        expect(notificationsSpy).toEqual([]);
     });
 
     it('should allow mutationOptions to override the default failure side effects in optimistic mode', async () => {
@@ -551,37 +562,37 @@ describe('useEditController', () => {
             update: () => Promise.reject({ message: 'not good' }),
         } as unknown) as DataProvider;
         const onError = jest.fn();
-        const store = createAdminStore();
-        const dispatch = jest.spyOn(store, 'dispatch');
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
         render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <EditController
-                            {...defaultProps}
-                            mutationMode="optimistic"
-                            mutationOptions={{ onError }}
-                        >
-                            {({ save }) => {
-                                saveCallback = save;
-                                return null;
-                            }}
-                        </EditController>
-                    </SaveContextProvider>
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
+                <SaveContextProvider value={saveContextValue}>
+                    <EditController
+                        {...defaultProps}
+                        mutationMode="optimistic"
+                        mutationOptions={{ onError }}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </EditController>
+                </SaveContextProvider>
+            </CoreAdminContext>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         await new Promise(resolve => setTimeout(resolve, 10));
         expect(onError).toHaveBeenCalled();
-        expect(dispatch).not.toHaveBeenCalledWith({
-            type: 'RA/SHOW_NOTIFICATION',
-            payload: {
-                type: 'warning',
-                message: 'not good',
-                messageArgs: { _: 'not good' },
-            },
-        });
+        expect(notificationsSpy).toEqual([]);
     });
 
     it('should allow the save onError option to override the failure side effects override', async () => {
@@ -593,25 +604,32 @@ describe('useEditController', () => {
         } as unknown) as DataProvider;
         const onError = jest.fn();
         const onErrorSave = jest.fn();
-        const store = createAdminStore();
-        const dispatch = jest.spyOn(store, 'dispatch');
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
         render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <SaveContextProvider value={saveContextValue}>
-                        <EditController
-                            {...defaultProps}
-                            mutationMode="pessimistic"
-                            mutationOptions={{ onError }}
-                        >
-                            {({ save }) => {
-                                saveCallback = save;
-                                return null;
-                            }}
-                        </EditController>
-                    </SaveContextProvider>
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
+                <SaveContextProvider value={saveContextValue}>
+                    <EditController
+                        {...defaultProps}
+                        mutationMode="pessimistic"
+                        mutationOptions={{ onError }}
+                    >
+                        {({ save }) => {
+                            saveCallback = save;
+                            return null;
+                        }}
+                    </EditController>
+                </SaveContextProvider>
+            </CoreAdminContext>
         );
         await act(async () =>
             saveCallback(
@@ -623,10 +641,7 @@ describe('useEditController', () => {
         );
         expect(onError).not.toHaveBeenCalled();
         expect(onErrorSave).toHaveBeenCalled();
-        const notify = dispatch.mock.calls.find(
-            params => params[0].type === 'RA/SHOW_NOTIFICATION'
-        );
-        expect(notify).toBeUndefined();
+        expect(notificationsSpy).toEqual([]);
     });
 
     it('should allow transform to transform the data before save', async () => {

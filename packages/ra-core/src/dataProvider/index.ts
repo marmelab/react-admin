@@ -3,7 +3,6 @@ import DataProviderContext from './DataProviderContext';
 import HttpError from './HttpError';
 import * as fetchUtils from './fetch';
 import undoableEventEmitter from './undoableEventEmitter';
-import withDataProvider from './withDataProvider';
 
 export * from './defaultDataProvider';
 export * from './testDataProvider';
@@ -29,5 +28,4 @@ export {
     fetchUtils,
     HttpError,
     undoableEventEmitter,
-    withDataProvider,
 };

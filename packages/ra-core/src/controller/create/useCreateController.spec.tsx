@@ -2,13 +2,12 @@ import React from 'react';
 import expect from 'expect';
 import { render, act } from '@testing-library/react';
 import { Location } from 'react-router-dom';
-import { Provider } from 'react-redux';
 
 import { getRecordFromLocation } from './useCreateController';
 import { CreateController } from './CreateController';
 import { testDataProvider } from '../../dataProvider';
 import { useNotificationContext } from '../../notification';
-import { CoreAdminContext, createAdminStore } from '../../core';
+import { CoreAdminContext } from '../../core';
 
 describe('useCreateController', () => {
     describe('getRecordFromLocation', () => {
@@ -168,29 +167,33 @@ describe('useCreateController', () => {
                 Promise.resolve({ data: { id: 123, ...data } }),
         });
         const onSuccess = jest.fn();
-        const store = createAdminStore();
-        const dispatch = jest.spyOn(store, 'dispatch');
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
         render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <CreateController
-                        {...defaultProps}
-                        mutationOptions={{ onSuccess }}
-                    >
-                        {({ save }) => {
-                            saveCallback = save;
-                            return null;
-                        }}
-                    </CreateController>
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
+                <CreateController
+                    {...defaultProps}
+                    mutationOptions={{ onSuccess }}
+                >
+                    {({ save }) => {
+                        saveCallback = save;
+                        return null;
+                    }}
+                </CreateController>
+            </CoreAdminContext>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         expect(onSuccess).toHaveBeenCalled();
-        const notify = dispatch.mock.calls.find(
-            params => params[0].type === 'RA/SHOW_NOTIFICATION'
-        );
-        expect(notify).toBeUndefined();
+        expect(notificationsSpy).toEqual([]);
     });
 
     it('should allow the save onSuccess option to override the success side effects override', async () => {
@@ -202,22 +205,29 @@ describe('useCreateController', () => {
         });
         const onSuccess = jest.fn();
         const onSuccessSave = jest.fn();
-        const store = createAdminStore();
-        const dispatch = jest.spyOn(store, 'dispatch');
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
         render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <CreateController
-                        {...defaultProps}
-                        mutationOptions={{ onSuccess }}
-                    >
-                        {({ save }) => {
-                            saveCallback = save;
-                            return null;
-                        }}
-                    </CreateController>
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
+                <CreateController
+                    {...defaultProps}
+                    mutationOptions={{ onSuccess }}
+                >
+                    {({ save }) => {
+                        saveCallback = save;
+                        return null;
+                    }}
+                </CreateController>
+            </CoreAdminContext>
         );
         await act(async () =>
             saveCallback(
@@ -229,10 +239,7 @@ describe('useCreateController', () => {
         );
         expect(onSuccess).not.toHaveBeenCalled();
         expect(onSuccessSave).toHaveBeenCalled();
-        const notify = dispatch.mock.calls.find(
-            params => params[0].type === 'RA/SHOW_NOTIFICATION'
-        );
-        expect(notify).toBeUndefined();
+        expect(notificationsSpy).toEqual([]);
     });
 
     it('should allow mutationOptions to override the default failure side effects', async () => {
@@ -243,29 +250,33 @@ describe('useCreateController', () => {
             create: () => Promise.reject({ message: 'not good' }),
         });
         const onError = jest.fn();
-        const store = createAdminStore();
-        const dispatch = jest.spyOn(store, 'dispatch');
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
         render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <CreateController
-                        {...defaultProps}
-                        mutationOptions={{ onError }}
-                    >
-                        {({ save }) => {
-                            saveCallback = save;
-                            return null;
-                        }}
-                    </CreateController>
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
+                <CreateController
+                    {...defaultProps}
+                    mutationOptions={{ onError }}
+                >
+                    {({ save }) => {
+                        saveCallback = save;
+                        return null;
+                    }}
+                </CreateController>
+            </CoreAdminContext>
         );
         await act(async () => saveCallback({ foo: 'bar' }));
         expect(onError).toHaveBeenCalled();
-        const notify = dispatch.mock.calls.find(
-            params => params[0].type === 'RA/SHOW_NOTIFICATION'
-        );
-        expect(notify).toBeUndefined();
+        expect(notificationsSpy).toEqual([]);
     });
 
     it('should allow the save onError option to override the failure side effects override', async () => {
@@ -277,22 +288,29 @@ describe('useCreateController', () => {
         });
         const onError = jest.fn();
         const onErrorSave = jest.fn();
-        const store = createAdminStore();
-        const dispatch = jest.spyOn(store, 'dispatch');
+
+        let notificationsSpy;
+        const Notification = () => {
+            const { notifications } = useNotificationContext();
+            React.useEffect(() => {
+                notificationsSpy = notifications;
+            }, [notifications]);
+            return null;
+        };
+
         render(
-            <Provider store={store}>
-                <CoreAdminContext dataProvider={dataProvider}>
-                    <CreateController
-                        {...defaultProps}
-                        mutationOptions={{ onError }}
-                    >
-                        {({ save }) => {
-                            saveCallback = save;
-                            return null;
-                        }}
-                    </CreateController>
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Notification />
+                <CreateController
+                    {...defaultProps}
+                    mutationOptions={{ onError }}
+                >
+                    {({ save }) => {
+                        saveCallback = save;
+                        return null;
+                    }}
+                </CreateController>
+            </CoreAdminContext>
         );
         await act(async () =>
             saveCallback(
@@ -304,10 +322,7 @@ describe('useCreateController', () => {
         );
         expect(onError).not.toHaveBeenCalled();
         expect(onErrorSave).toHaveBeenCalled();
-        const notify = dispatch.mock.calls.find(
-            params => params[0].type === 'RA/SHOW_NOTIFICATION'
-        );
-        expect(notify).toBeUndefined();
+        expect(notificationsSpy).toEqual([]);
     });
 
     it('should allow transform to transform the data before calling create', async () => {
