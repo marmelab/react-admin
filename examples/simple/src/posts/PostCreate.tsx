@@ -26,7 +26,6 @@ import {
     useRedirect,
 } from 'react-admin';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { DevTool } from '@hookform/devtools';
 
 const PostCreateToolbar = props => {
     const notify = useNotify();
@@ -196,7 +195,6 @@ const PostCreate = () => {
                         </SimpleFormIterator>
                     </ArrayInput>
                 )}
-                <DevTool />
             </SimpleForm>
         </Create>
     );
