@@ -46,6 +46,7 @@ export const defaultTheme = {
                         borderRadius: 'inherit',
                     },
                     '&:focus::after': {
+                        // This ensures we provide visual cues to users using the keyboard
                         // recreate a static ripple color
                         // use the currentColor to make it work both for outlined and contained buttons
                         // but to dim the background without dimming the text,

@@ -1,13 +1,13 @@
-# ra-richtext-tiptap
+# ra-input-rich-text
 
 A rich text editor for [React Admin](http://marmelab.com/react-admin), based on [TipTap](https://www.tiptap.dev/)
 
 ## Installation
 
 ```sh
-npm install ra-richtext-tiptap
+npm install ra-input-rich-text
 # or
-yarn add ra-richtext-tiptap
+yarn add ra-input-rich-text
 ```
 
 ## Usage
@@ -16,7 +16,7 @@ Use it as you would any react-admin inputs:
 
 ```jsx
 import { Edit, SimpleForm, TextInput } from 'react-admin';
-import { RichTextInput } from 'ra-richtext-tiptap';
+import { RichTextInput } from 'ra-input-rich-text';
 
 export const PostEdit = (props) => (
 	<Edit {...props}>
@@ -36,7 +36,7 @@ You can leverage this to change the buttons [size](#api):
 
 ```jsx
 import { Edit, SimpleForm, TextInput } from 'react-admin';
-import { RichTextInput, RichTextInputToolbar } from 'ra-richtext-tiptap';
+import { RichTextInput, RichTextInputToolbar } from 'ra-input-rich-text';
 
 export const PostEdit = (props) => (
 	<Edit {...props}>
@@ -60,7 +60,7 @@ import {
 	LinkButtons,
 	QuoteButtons,
 	ClearButtons,
-} from 'ra-richtext-tiptap';
+} from 'ra-input-rich-text';
 
 const MyRichTextInput = ({ size, ...props }) => (
 	<RichTextInput
@@ -99,7 +99,7 @@ import {
 	LinkButtons,
 	QuoteButtons,
 	ClearButtons,
-} from 'ra-richtext-tiptap';
+} from 'ra-input-rich-text';
 import HorizontalRule from '@tiptap/extension-horizontal-rule';
 import Remove from '@material-ui/icons/Remove';
 
@@ -139,3 +139,7 @@ export const MyEditorOptions = {
 	],
 };
 ```
+
+## License
+
+This data provider is licensed under the MIT License, and sponsored by [marmelab](https://marmelab.com).
