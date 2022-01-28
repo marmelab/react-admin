@@ -266,9 +266,6 @@ export interface ResourceDefinition {
  */
 export interface ReduxState {
     admin: {
-        ui: {
-            sidebarOpen: boolean;
-        };
         expandedRows: {
             [name: string]: Identifier[];
         };
