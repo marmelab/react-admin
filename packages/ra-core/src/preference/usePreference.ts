@@ -50,6 +50,7 @@ export const usePreference = <T = any>(
     const { getItem, setItem, subscribe } = usePreferenceProvider();
     const [value, setValue] = useState(() => getItem(key, defaultValue));
 
+    // subscribe to changes on this key, and change the state when they happen
     useEffect(() => {
         const unsubscribe = subscribe(key, newValue => {
             setValue(typeof newValue === 'undefined' ? defaultValue : newValue);
@@ -59,6 +60,9 @@ export const usePreference = <T = any>(
 
     const set = useCallback(
         (value, runtimeDefaultValue) => {
+            // we only set the value in the preferenceProvider;
+            // the value in the local state will be updated
+            // by the useEffect during the next render
             setItem(
                 key,
                 typeof value === 'undefined'
