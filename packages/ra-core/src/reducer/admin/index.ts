@@ -1,7 +1,6 @@
 import { combineReducers, Reducer } from 'redux';
 
 import { selectedIds } from './selectedIds';
-import { expandedRows } from './expandedRows';
 import { listParams } from './listParams';
 import { ReduxState } from '../../types';
 
@@ -16,6 +15,5 @@ export default combineReducers({
      * @see https://stackoverflow.com/questions/43375079/redux-warning-only-appearing-in-tests
      */
     selectedIds: selectedIds || defaultReducer,
-    expandedRows: expandedRows || defaultReducer,
     listParams: listParams || defaultReducer,
 }) as Reducer<ReduxState['admin']>;

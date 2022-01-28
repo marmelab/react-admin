@@ -72,9 +72,7 @@ export const localStoragePreferenceProvider = (): PreferenceProvider => {
                 getStorage().getItem(`${RA_PREFERENCE}.${key}`)
             );
             // eslint-disable-next-line eqeqeq
-            return valueFromStorage == 'undefined'
-                ? defaultValue
-                : valueFromStorage;
+            return valueFromStorage == null ? defaultValue : valueFromStorage;
         },
         setItem<T = any>(key: string, value: T): void {
             if (value === undefined) {

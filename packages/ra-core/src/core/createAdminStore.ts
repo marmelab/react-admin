@@ -26,7 +26,6 @@ export default ({ customReducers = {}, initialState }: Params = {}) => {
                       ...state,
                       admin: {
                           ...state.admin,
-                          expandedRows: {},
                           selectedIds: {},
                       },
                   },

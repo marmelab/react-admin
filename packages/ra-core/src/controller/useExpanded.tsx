@@ -1,8 +1,7 @@
 import { useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 
-import { toggleListItemExpand } from '../actions/listActions';
-import { Identifier, ReduxState } from '../types';
+import { usePreference } from '../preference';
+import { Identifier } from '../types';
 
 /**
  * State-like hook for controlling the expanded state of a list item
@@ -22,19 +21,30 @@ const useExpanded = (
     resource: string,
     id: Identifier
 ): [boolean, () => void] => {
-    const dispatch = useDispatch();
-    const expandedList = useSelector<ReduxState, Identifier[]>(
-        (reduxState: ReduxState) =>
-            reduxState.admin.expandedRows[resource] || undefined
+    const [expandedIds, setExpandedIds] = usePreference<Identifier[]>(
+        `${resource}.datagrid.expanded.`,
+        []
     );
-    const expanded =
-        expandedList === undefined
-            ? false
-            : expandedList.map(el => el == id).indexOf(true) !== -1; // eslint-disable-line eqeqeq
+    const expanded = Array.isArray(expandedIds)
+        ? // eslint-disable-next-line eqeqeq
+          expandedIds.map(el => el == id).indexOf(true) !== -1
+        : false;
 
     const toggleExpanded = useCallback(() => {
-        dispatch(toggleListItemExpand(resource, id));
-    }, [dispatch, resource, id]);
+        if (!Array.isArray(expandedIds)) {
+            setExpandedIds([id]);
+            return;
+        }
+        const index = expandedIds.findIndex(el => el == id); // eslint-disable-line eqeqeq
+        setExpandedIds(
+            index > -1
+                ? [
+                      ...expandedIds.slice(0, index),
+                      ...expandedIds.slice(index + 1),
+                  ]
+                : [...expandedIds, id]
+        );
+    }, [setExpandedIds, expandedIds, id]);
 
     return [expanded, toggleExpanded];
 };
