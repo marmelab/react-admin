@@ -2235,6 +2235,44 @@ const ResetFormButton = () => {
 }
 ```
 
+## `useRedirect()` No Longer Clears Forms When Called With `false`
+
+To implement a form that would reset after submittion and allow adding more data, you react-admin used to encourage calling `useRedirect()` with `false` to clear the form. This ,no longer works: `useRedirect()` manages redirectinos, not forms. You'll have to clear the form manually in your side effect:
+
+
+```diff
+-import { useNotify, useRedirect } from 'react-admin';
++import { useNotify } from 'react-admin';
++import { useFormContext } from 'react-hook-form';
+
+const PostCreateToolbar = props => {
+    const notify = useNotify();
+-   const redirect = useRedirect();
++   const { reset } = useFormContext();
+
+    return (
+        <Toolbar {...props}>
+            <SaveButton label="Save" submitOnEnter />
+            <SaveButton
+                label="Save and add"
+                submitOnEnter={false}
+                mutationOptions={{
+                    onSuccess: () => {
+-                       redirect(false);
++                       reset();
++                       window.scrollTo(0, 0);
+                        notify('ra.notification.created', {
+                            type: 'info',
+                            messageArgs: { smart_count: 1 },
+                        });
+                    },
+                }}
+            />
+        </Toolbar>
+    );
+};
+```
+
 ## `allowEmpty` Has Been Removed From `SelectInput`, `AutocompleteInput` and `AutocompleteArrayInput`
 
 The `SelectInput`, `AutocompleteInput` and `AutocompleteArrayInput` components used to accept an `allowEmpty` prop. When set to `true`, a choice was added for setting the input value to an empty value (empty string by default).
