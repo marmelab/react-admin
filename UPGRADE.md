@@ -2279,7 +2279,7 @@ const MyForm = () => (
 
 ## `useRedirect()` No Longer Clears Forms When Called With `false`
 
-To implement a form that would reset after submittion and allow adding more data, you react-admin used to encourage calling `useRedirect()` with `false` to clear the form. This ,no longer works: `useRedirect()` manages redirections, not forms. You'll have to clear the form manually in your side effect:
+To implement a form that would reset after submittion and allow adding more data, react-admin used to encourage you to call `useRedirect()` with `false` to clear the form. This no longer works: `useRedirect()` manages redirections, not forms. You'll have to clear the form manually in your side effect:
 
 
 ```diff
