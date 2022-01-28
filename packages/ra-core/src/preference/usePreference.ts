@@ -14,7 +14,7 @@ import { usePreferenceProvider } from './usePreferenceProvider';
  * @return {Object} A value and a setter for the value, in an array - just like for useState()
  *
  * @example
- * import { usePreference } from '@react-admin/ra-preferences';
+ * import { usePreference } from 'react-admin';
  *
  * const PostList = props => {
  *     const [density] = usePreference('posts.list.density', 'small');
