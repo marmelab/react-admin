@@ -92,3 +92,23 @@ export const DefaultValue = () => (
         </dl>
     </>
 );
+
+export const UIPreferences = () => {
+    const [fontSize, setSize] = usePreference('ui.size', 16);
+
+    return (
+        <>
+            <p>Customize the size of the title below</p>
+            <input
+                type="range"
+                min="10"
+                max="45"
+                value={fontSize}
+                onChange={e => setSize(parseInt(e.target.value, 10))}
+            />
+            <h1 style={{ fontSize }}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </h1>
+        </>
+    );
+};
