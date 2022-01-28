@@ -14,6 +14,6 @@ import { usePreference } from 'ra-core';
  * };
  */
 export const useSidebarState = (): useSidebarStateResult =>
-    usePreference('ui.sidebar.open', true);
+    usePreference('sidebar.open', true);
 
 export type useSidebarStateResult = [boolean, (open: boolean) => void];

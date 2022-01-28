@@ -5,7 +5,7 @@ type Subscription = {
     callback: (value: any) => void;
 };
 
-const RA_PREFERENCE = 'ra_preference';
+const RA_PREFERENCE = 'RaPreference';
 const prefixLength = RA_PREFERENCE.length;
 
 // localStorage isn't available in incognito mode. We need to detect it
@@ -69,7 +69,7 @@ export const localStoragePreferenceProvider = (): PreferenceProvider => {
         },
         getItem<T = any>(key: string, defaultValue?: T): T {
             const valueFromStorage = tryParse(
-                getStorage().getItem(`${RA_PREFERENCE}_${key}`)
+                getStorage().getItem(`${RA_PREFERENCE}.${key}`)
             );
             // eslint-disable-next-line eqeqeq
             return valueFromStorage == 'undefined'
@@ -78,10 +78,10 @@ export const localStoragePreferenceProvider = (): PreferenceProvider => {
         },
         setItem<T = any>(key: string, value: T): void {
             if (value === undefined) {
-                getStorage().removeItem(`${RA_PREFERENCE}_${key}`);
+                getStorage().removeItem(`${RA_PREFERENCE}.${key}`);
             } else {
                 getStorage().setItem(
-                    `${RA_PREFERENCE}_${key}`,
+                    `${RA_PREFERENCE}.${key}`,
                     JSON.stringify(value)
                 );
             }
@@ -93,7 +93,7 @@ export const localStoragePreferenceProvider = (): PreferenceProvider => {
             });
         },
         removeItem(key: string): void {
-            getStorage().removeItem(`${RA_PREFERENCE}_${key}`);
+            getStorage().removeItem(`${RA_PREFERENCE}.${key}`);
         },
         reset(): void {
             const storage = getStorage();
