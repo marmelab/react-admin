@@ -24,7 +24,7 @@ import { RichTextInputToolbar } from './RichTextInputToolbar';
  * @param {ReactNode} props.toolbar The toolbar containing the editors commands.
  *
  * @example <caption>Customizing the editors options</caption>
- * import { RichTextInput, RichTextInputToolbar } from 'ra-input-richtext';
+ * import { RichTextInput, RichTextInputToolbar } from 'ra-input-rich-text';
  * const MyRichTextInput = (props) => (
  *     <RichTextInput
  *         toolbar={<RichTextInputToolbar size="large" />}
@@ -35,7 +35,7 @@ import { RichTextInputToolbar } from './RichTextInputToolbar';
  * );
  *
  * @example <caption>Customizing the toolbar size</caption>
- * import { RichTextInput, RichTextInputToolbar } from 'ra-input-richtext';
+ * import { RichTextInput, RichTextInputToolbar } from 'ra-input-rich-text';
  * const MyRichTextInput = (props) => (
  *     <RichTextInput
  *         toolbar={<RichTextInputToolbar size="large" />}
@@ -46,7 +46,7 @@ import { RichTextInputToolbar } from './RichTextInputToolbar';
  * );
  *
  * @example <caption>Customizing the toolbar commands</caption>
- * import { RichTextInput, RichTextInputToolbar } from 'ra-input-richtext';
+ * import { RichTextInput, RichTextInputToolbar } from 'ra-input-rich-text';
  * const MyRichTextInput = ({ size, ...props }) => (
  *     <RichTextInput
  *         toolbar={(
