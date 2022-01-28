@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import { useGetList, UseGetManyHookValue } from '../../dataProvider';
 import { getStatusForInput as getDataStatus } from './referenceDataStatus';
-import useTranslate from '../../i18n/useTranslate';
+import { useTranslate } from '../../i18n';
 import { PaginationPayload, RaRecord, SortPayload } from '../../types';
 import { ListControllerResult } from '../list';
 import { useReference } from '../useReference';

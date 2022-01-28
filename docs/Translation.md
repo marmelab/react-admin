@@ -528,28 +528,6 @@ export default MyHelloButton;
 // and translate the `resources.customers.fields.first_name` key
 ```
 
-## `withTranslate` HOC
-
-If you're stuck with class components, react-admin also exports a `withTranslate` higher-order component, which injects the `translate` function as prop. 
-
-```jsx
-// in src/MyHelloButton.js
-import * as React from 'react';
-import { Component } from 'react';
-import { withTranslate } from 'react-admin';
-
-class MyHelloButton extends Component {
-    render() {
-        const { translate } = this.props;
-        return (
-            <button>{translate('myroot.hello.world')}</button>
-        );
-    } 
-};
-
-export default withTranslate(MyHelloButton);
-```
-
 ## Using Specific Polyglot Features
 
 Polyglot.js is a fantastic library: in addition to being small, fully maintained, and totally framework-agnostic, it provides some nice features such as interpolation and pluralization, that you can use in react-admin.

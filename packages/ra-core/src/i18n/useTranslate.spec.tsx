@@ -2,8 +2,8 @@ import * as React from 'react';
 import expect from 'expect';
 import { render, screen } from '@testing-library/react';
 
-import useTranslate from './useTranslate';
-import TranslationProvider from './TranslationProvider';
+import { useTranslate } from './useTranslate';
+import { TranslationProvider } from './TranslationProvider';
 import { TranslationContext } from './TranslationContext';
 
 describe('useTranslate', () => {

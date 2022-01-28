@@ -22,7 +22,7 @@ import { Translate } from '../types';
  *     return <MenuItem>{translate('settings')}</MenuItem>;
  * }
  */
-const useTranslate = (): Translate => {
+export const useTranslate = (): Translate => {
     const { i18nProvider, locale } = useContext(TranslationContext);
     const translate = useCallback(
         (key: string, options?: any) =>
@@ -34,5 +34,3 @@ const useTranslate = (): Translate => {
 };
 
 const identity = key => key;
-
-export default useTranslate;
