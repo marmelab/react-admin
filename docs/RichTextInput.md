@@ -5,7 +5,7 @@ title: "The RichTextInput Component"
 
 # `<RichTextInput>`
 
-`<RichTextInput>` is the ideal component if you want to allow your users to edit some HTML contents. It is powered by [Quill](https://quilljs.com/).
+`<RichTextInput>` is the ideal component if you want to allow your users to edit some HTML contents. It is powered by [TipTap](https://www.tiptap.dev/).
 
 ![RichTextInput](./img/rich-text-input.gif)
 
@@ -13,71 +13,134 @@ title: "The RichTextInput Component"
 
 ```sh
 npm install ra-input-rich-text
+# or
+yarn add ra-input-rich-text
 ```
 
-Then use it as a normal input component:
+Use it as you would any react-admin inputs:
 
 ```jsx
-import RichTextInput from 'ra-input-rich-text';
-
-<RichTextInput source="body" />
-```
-
-You can customize the rich text editor toolbar using the `toolbar` attribute, as described on the [Quill official toolbar documentation](https://quilljs.com/docs/modules/toolbar/).
-
-```jsx
-<RichTextInput source="body" toolbar={[ ['bold', 'italic', 'underline', 'link'] ]} />
-```
-
-If you need to add Quill `modules` or `themes`, you can do so by passing them in the `options` prop.
-
-{% raw %}
-```jsx
-<RichTextInput
-    source="body"
-    options={{
-        modules: {
-            history: { // History module
-                delay: 2000,
-                maxStack: 500,
-                userOnly: true
-            }
-        },
-        theme: "snow"
-    }}
-/>
-```
-{% endraw %}
-
-If you need more customization, you can access the quill object through the `configureQuill` callback that will be called just after its initialization.
-
-```jsx
-const configureQuill = quill => quill.getModule('toolbar').addHandler('bold', function (value) {
-    this.quill.format('bold', value)
-});
-
-// ...
-
-<RichTextInput source="text" configureQuill={configureQuill}/>
-```
-
-`<RichTextInput>` also accepts the [common input props](./Inputs.md#common-input-props).
-
-**Tip**: When used inside a material-ui `<Card>` (e.g. in the default `<Edit>` view), `<RichTextInput>` displays link tooltip as cut off when the user wants to add a hyperlink to a word located on the left side of the input. This is due to an incompatibility between material-ui's `<Card>` component and Quill's positioning algorithm for the link tooltip.
-
-To fix this problem, you should override the default card style, as follows:
-
-```diff
 import { Edit, SimpleForm, TextInput } from 'react-admin';
-+import { withStyles } from '@mui/material/styles';
+import { RichTextInput } from 'ra-input-rich-text';
 
--const PostEdit = props => (
-+const PostEdit = withStyles({ card: { overflow: 'initial' } })(() => (
-   <Edit>
-       <SimpleForm>
-            // ...
-       </SimpleForm>
-   </Edit>
--);
-+));
+export const PostEdit = (props) => (
+	<Edit {...props}>
+		<SimpleForm>
+			<TextInput source="title" />
+			<RichTextInput source="body" />
+		</SimpleForm>
+	</Edit>
+);
+```
+
+## Customizing the Toolbar
+
+The `<RichTextInput>` component has a `toolar` prop that accepts a `ReactNode`.
+
+You can leverage this to change the buttons [size](#api):
+
+```jsx
+import { Edit, SimpleForm, TextInput } from 'react-admin';
+import { RichTextInput, RichTextInputToolbar } from 'ra-input-rich-text';
+
+export const PostEdit = (props) => (
+	<Edit {...props}>
+		<SimpleForm>
+			<TextInput source="title" />
+			<RichTextInput source="body" toolbar={<RichTextInputToolbar size="large" />} />
+		</SimpleForm>
+	</Edit>
+);
+```
+
+Or to remove some prebuilt components like the `<AlignmentButtons>`:
+
+```jsx
+import {
+	RichTextInput,
+	RichTextInputToolbar,
+	RichTextInputLevelSelect,
+	FormatButtons,
+	ListButtons,
+	LinkButtons,
+	QuoteButtons,
+	ClearButtons,
+} from 'ra-input-rich-text';
+
+const MyRichTextInput = ({ size, ...props }) => (
+	<RichTextInput
+		toolbar={
+			<RichTextInputToolbar>
+				<RichTextInputLevelSelect size={size} />
+				<FormatButtons size={size} />
+				<ListButtons size={size} />
+				<LinkButtons size={size} />
+				<QuoteButtons size={size} />
+				<ClearButtons size={size} />
+			</RichTextInputToolbar>
+		}
+		label="Body"
+		source="body"
+		{...props}
+	/>
+);
+```
+
+## Customizing the editor
+
+You might want to add more Tiptap extensions. The `<RichTextInput>` component accepts an `editorOptions` prop which is the [object passed to Tiptap Editor](https://www.tiptap.dev/guide/configuration).
+
+If you just want to **add** extensions, don't forget to include those needed by default for our implementation. Here's an example to add the [HorizontalRule node](https://www.tiptap.dev/api/nodes/horizontal-rule):
+
+```jsx
+import {
+	DefaultEditorOptions,
+	RichTextInput,
+	RichTextInputToolbar,
+	RichTextInputLevelSelect,
+	FormatButtons,
+	AlignmentButtons,
+	ListButtons,
+	LinkButtons,
+	QuoteButtons,
+	ClearButtons,
+} from 'ra-input-rich-text';
+import HorizontalRule from '@tiptap/extension-horizontal-rule';
+import Remove from '@material-ui/icons/Remove';
+
+const MyRichTextInput = ({ size, ...props }) => (
+	<RichTextInput
+		editorOptions={MyEditorOptions}
+		toolbar={
+			<RichTextInputToolbar>
+				<RichTextInputLevelSelect size={size} />
+				<FormatButtons size={size} />
+				<AlignmentButtons {size} />
+				<ListButtons size={size} />
+				<LinkButtons size={size} />
+				<QuoteButtons size={size} />
+				<ClearButtons size={size} />
+				<ToggleButton
+					aria-label="Add an horizontal rule"
+					title="Add an horizontal rule"
+					onClick={() => editor.chain().focus().setHorizontalRule().run()}
+					selected={editor && editor.isActive('horizontalRule')}
+				>
+					<Remove fontSize="inherit" />
+			</ToggleButton>
+			</RichTextInputToolbar>
+		}
+		label="Body"
+		source="body"
+		{...props}
+	/>
+);
+
+export const MyEditorOptions = {
+	...DefaultEditorOptions,
+	extensions: [
+		...DefaultEditorOptions.extensions,
+        HorizontalRule,
+	],
+};
 ```
