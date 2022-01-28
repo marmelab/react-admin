@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { ReactNode, useEffect } from 'react';
-import { useEditor, EditorOptions, EditorContent } from '@tiptap/react';
+import { ReactElement, ReactNode, useEffect } from 'react';
+import { useEditor, Editor, EditorOptions, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
 import Link from '@tiptap/extension-link';
@@ -13,7 +13,6 @@ import {
     InputHelperText,
     Labeled,
     LabeledProps,
-    sanitizeInputRestProps,
 } from 'ra-ui-materialui';
 import { TiptapEditorProvider } from './TiptapEditorProvider';
 import { RichTextInputToolbar } from './RichTextInputToolbar';
@@ -70,13 +69,13 @@ export const RichTextInput = (props: RichTextInputProps) => {
     const {
         defaultValue = '',
         disabled = false,
-        readOnly = false,
         editorOptions = DefaultEditorOptions,
+        fullWidth,
         helperText,
-        toolbar = <RichTextInputToolbar />,
         label,
+        readOnly = false,
         source,
-        ...rest
+        toolbar = <RichTextInputToolbar />,
     } = props;
 
     const resource = useResourceContext(props);
@@ -86,7 +85,7 @@ export const RichTextInput = (props: RichTextInputProps) => {
         isRequired,
         fieldState,
         formState: { isSubmitted },
-    } = useInput({ ...props, defaultValue });
+    } = useInput({ ...props, source, defaultValue });
 
     const editor = useEditor({
         ...editorOptions,
@@ -143,36 +142,68 @@ export const RichTextInput = (props: RichTextInputProps) => {
 
     return (
         <Labeled
-            id={id}
             isRequired={isRequired}
             label={label}
+            labelId={`${id}-label`}
             fieldState={fieldState}
             source={source}
             resource={resource}
-            {...sanitizeInputRestProps(rest)}
+            fullWidth={fullWidth}
         >
-            <Root>
-                <TiptapEditorProvider value={editor}>
-                    {toolbar}
-                    <EditorContent
-                        className={classes.editorContent}
-                        editor={editor}
-                    />
-                </TiptapEditorProvider>
-                <FormHelperText
-                    className="ra-rich-text-input-error"
-                    error={(isTouched || isSubmitted) && invalid}
-                >
-                    <InputHelperText
-                        touched={isTouched || isSubmitted}
-                        error={error?.message}
-                        helperText={helperText}
-                    />
-                </FormHelperText>
-            </Root>
+            <RichTextInputContent
+                editor={editor}
+                error={error}
+                helperText={helperText}
+                id={id}
+                isTouched={isTouched}
+                isSubmitted={isSubmitted}
+                invalid={invalid}
+                toolbar={toolbar}
+            />
         </Labeled>
     );
 };
+
+/**
+ * Extracted in a separate component so that we can remove fullWidth from the props injected by Labeled
+ * and avoid warnings about unknown props on Root.
+ */
+const RichTextInputContent = ({
+    editor,
+    error,
+    fullWidth,
+    helperText,
+    id,
+    isTouched,
+    isSubmitted,
+    invalid,
+    toolbar,
+}: RichTextInputContentProps) => (
+    <Root>
+        <TiptapEditorProvider value={editor}>
+            {toolbar}
+            <EditorContent
+                aria-labelledby={`${id}-label`}
+                className={classes.editorContent}
+                editor={editor}
+            />
+        </TiptapEditorProvider>
+        <FormHelperText
+            className={
+                (isTouched || isSubmitted) && invalid
+                    ? 'ra-rich-text-input-error'
+                    : ''
+            }
+            error={(isTouched || isSubmitted) && invalid}
+        >
+            <InputHelperText
+                touched={isTouched || isSubmitted}
+                error={error?.message}
+                helperText={helperText}
+            />
+        </FormHelperText>
+    </Root>
+);
 
 const EditorAttributes = {
     role: 'textbox',
@@ -227,3 +258,15 @@ export type RichTextInputProps = CommonInputProps &
         editorOptions?: Partial<EditorOptions>;
         toolbar?: ReactNode;
     };
+
+export type RichTextInputContentProps = {
+    editor?: Editor;
+    error?: any;
+    fullWidth?: boolean;
+    helperText?: string | ReactElement | false;
+    id: string;
+    isTouched: boolean;
+    isSubmitted: boolean;
+    invalid: boolean;
+    toolbar?: ReactNode;
+};
