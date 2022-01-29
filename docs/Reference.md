@@ -202,7 +202,6 @@ title: "Reference"
 * [`useUpdateMany`](./useUpdateMany.md)
 * [`useUnselectAll`](./useUnselectAll.md)
 * [`useWarnWhenUnsavedChanges`](./CreateEdit.md#warning-about-unsaved-changes)
-* [`withDataProvider`](./Actions.md#legacy-components-query-mutation-and-withdataprovider)
 * [`<WithPermissions>`](./Authentication.md#usepermissions-hook)
 
 </div>
