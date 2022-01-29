@@ -23,6 +23,7 @@
         "react-scripts": "^5.0.0"
     },
     "devDependencies": {
+        "@craco/craco": "^6.4.3",
         "@testing-library/jest-dom": "^5.11.4",
         "@testing-library/react": "^11.1.0",
         "@testing-library/user-event": "^12.1.10",
@@ -33,15 +34,17 @@
         "@types/react": "^17.0.20",
         "@types/react-beautiful-dnd": "^13.0.0",
         "@types/react-dom": "^17.0.9",
+        "craco-alias": "^3.0.1",
+        "craco-esbuild": "^0.5.0",
         "rewire": "^5.0.0",
         "source-map-explorer": "^2.0.0",
         "typescript": "^4.4.0",
         "web-vitals": "^1.0.1"
     },
     "scripts": {
-        "start": "react-scripts start",
+        "start": "craco start",
         "build": "yarn node ./build.js",
-        "test": "react-scripts test",
+        "test": "craco test",
         "eject": "react-scripts eject"
     },
     "homepage": ".",
