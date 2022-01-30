@@ -18,7 +18,11 @@ import { useStoreContext } from './useStoreContext';
  *    return <Button onClick={hancleClick}>Reset datagrid preferences</Button>;
  * }
  */
-export const useRemoveFromStore = () => {
+export const useRemoveFromStore = (hookTimeKey?: string) => {
     const { removeItem } = useStoreContext();
-    return useCallback((key: string) => removeItem(key), [removeItem]);
+    return useCallback(
+        (key?: string) =>
+            removeItem(typeof key === 'undefined' ? hookTimeKey : key),
+        [removeItem, hookTimeKey]
+    );
 };

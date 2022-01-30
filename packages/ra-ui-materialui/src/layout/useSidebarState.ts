@@ -14,6 +14,6 @@ import { useStore } from 'ra-core';
  * };
  */
 export const useSidebarState = (): useSidebarStateResult =>
-    useStore('sidebar.open', true);
+    useStore<boolean>('sidebar.open', true);
 
 export type useSidebarStateResult = [boolean, (open: boolean) => void];

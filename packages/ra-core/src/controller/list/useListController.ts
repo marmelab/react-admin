@@ -9,7 +9,7 @@ import { SORT_ASC } from './queryReducer';
 import { defaultExporter } from '../../export';
 import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
 import { useResourceContext, useGetResourceLabel } from '../../core';
-import useRecordSelection from '../useRecordSelection';
+import { useRecordSelection } from '../useRecordSelection';
 import { useListParams } from './useListParams';
 
 /**

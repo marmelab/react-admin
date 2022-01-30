@@ -34,6 +34,7 @@ export const memoryStore = (storage: any = {}): Store => {
         setItem<T = any>(key: string, value: T): void {
             set(storage, key, value);
             Object.keys(subscriptions).forEach(id => {
+                if (!subscriptions[id]) return; // may happen if a component unmounts after a first subscriber was notified
                 if (subscriptions[id].key === key) {
                     subscriptions[id].callback(value);
                 }

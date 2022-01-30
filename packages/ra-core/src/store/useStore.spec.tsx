@@ -100,4 +100,16 @@ describe('useStore', () => {
         fireEvent.click(screen.getByText('update'));
         screen.getByText('hello');
     });
+
+    it('should accept an updater function as parameter', () => {
+        const { result } = renderHook(() => useStore('foo.bar'));
+        result.current[1]('hello');
+        let innerValue;
+        result.current[1](value => {
+            innerValue = value;
+            return 'world';
+        });
+        expect(innerValue).toBe('hello');
+        expect(result.current[0]).toBe('world');
+    });
 });

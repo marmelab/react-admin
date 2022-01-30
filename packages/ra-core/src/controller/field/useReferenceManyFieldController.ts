@@ -8,7 +8,7 @@ import { useNotify } from '../../notification';
 import { RaRecord, SortPayload } from '../../types';
 import { ListControllerResult } from '../list';
 import usePaginationState from '../usePaginationState';
-import useSelectionState from '../useSelectionState';
+import { useRecordSelection } from '../useRecordSelection';
 import useSortState from '../useSortState';
 
 export interface UseReferenceManyFieldControllerParams {
@@ -90,12 +90,7 @@ export const useReferenceManyFieldController = (
     );
 
     // selection logic
-    const {
-        selectedIds,
-        onSelect,
-        onToggleItem,
-        onUnselectItems,
-    } = useSelectionState();
+    const [selectedIds, selectionModifiers] = useRecordSelection(reference);
 
     // filter logic
     const filterRef = useRef(filter);
@@ -195,9 +190,9 @@ export const useReferenceManyFieldController = (
         hideFilter,
         isFetching,
         isLoading,
-        onSelect,
-        onToggleItem,
-        onUnselectItems,
+        onSelect: selectionModifiers.select,
+        onToggleItem: selectionModifiers.toggle,
+        onUnselectItems: selectionModifiers.clearSelection,
         page,
         perPage,
         refetch,

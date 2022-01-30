@@ -9,7 +9,7 @@ import { useReference } from '../useReference';
 import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
 import useFilterState from '../useFilterState';
-import useSelectionState from '../useSelectionState';
+import { useRecordSelection } from '../useRecordSelection';
 import { useResourceContext } from '../../core';
 
 const defaultReferenceSource = (resource: string, source: string) =>
@@ -100,12 +100,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
     // they never change
 
     // selection logic
-    const {
-        selectedIds,
-        onSelect,
-        onToggleItem,
-        onUnselectItems,
-    } = useSelectionState();
+    const [selectedIds, selectionModifiers] = useRecordSelection(reference);
 
     // fetch possible values
     const {
@@ -185,9 +180,9 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
             showFilter,
             hideFilter,
             selectedIds,
-            onSelect,
-            onToggleItem,
-            onUnselectItems,
+            onSelect: selectionModifiers.select,
+            onToggleItem: selectionModifiers.toggle,
+            onUnselectItems: selectionModifiers.clearSelection,
             refetch: refetchGetList,
             resource,
         },

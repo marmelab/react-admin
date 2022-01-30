@@ -22,7 +22,7 @@ const useExpanded = (
     id: Identifier
 ): [boolean, () => void] => {
     const [expandedIds, setExpandedIds] = useStore<Identifier[]>(
-        `${resource}.datagrid.expanded.`,
+        `${resource}.datagrid.expanded`,
         []
     );
     const expanded = Array.isArray(expandedIds)
@@ -31,20 +31,16 @@ const useExpanded = (
         : false;
 
     const toggleExpanded = useCallback(() => {
-        if (!Array.isArray(expandedIds)) {
-            setExpandedIds([id]);
-            return;
-        }
-        const index = expandedIds.findIndex(el => el == id); // eslint-disable-line eqeqeq
-        setExpandedIds(
-            index > -1
-                ? [
-                      ...expandedIds.slice(0, index),
-                      ...expandedIds.slice(index + 1),
-                  ]
-                : [...expandedIds, id]
-        );
-    }, [setExpandedIds, expandedIds, id]);
+        setExpandedIds(ids => {
+            if (!Array.isArray(ids)) {
+                return [id];
+            }
+            const index = ids.findIndex(el => el == id); // eslint-disable-line eqeqeq
+            return index > -1
+                ? [...ids.slice(0, index), ...ids.slice(index + 1)]
+                : [...ids, id];
+        });
+    }, [setExpandedIds, id]);
 
     return [expanded, toggleExpanded];
 };

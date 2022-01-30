@@ -50,6 +50,7 @@ export const localStorageStore = (): Store => {
         }
         const key = event.key.substring(prefixLength + 1);
         Object.keys(subscriptions).forEach(id => {
+            if (!subscriptions[id]) return; // may happen if a component unmounts after a first subscriber was notified
             if (subscriptions[id].key === key) {
                 subscriptions[id].callback(tryParse(event.newValue));
             }
@@ -85,6 +86,7 @@ export const localStorageStore = (): Store => {
             }
             // notify subscribers for this key
             Object.keys(subscriptions).forEach(id => {
+                if (!subscriptions[id]) return; // may happen if a component unmounts after a first subscriber was notified
                 if (subscriptions[id].key === key) {
                     subscriptions[id].callback(value);
                 }

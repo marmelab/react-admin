@@ -1,9 +1,7 @@
 import { useMemo } from 'react';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { setListSelectedIds, toggleListItem } from '../actions/listActions';
-import { Identifier, ReduxState } from '../types';
 
-const defaultRecords = [];
+import { useStore } from '../store';
+import { Identifier } from '../types';
 
 /**
  * Get the list of selected items for a resource, and callbacks to change the selection
@@ -12,38 +10,53 @@ const defaultRecords = [];
  *
  * @returns {Object} Destructure as [selectedIds, { select, toggle, clearSelection }].
  */
-const useRecordSelection = (
+export const useRecordSelection = (
     resource: string
 ): [
     Identifier[],
     {
-        select: (newIds: Identifier[]) => void;
+        select: (ids: Identifier[]) => void;
+        unselect: (ids: Identifier[]) => void;
         toggle: (id: Identifier) => void;
         clearSelection: () => void;
     }
 ] => {
-    const dispatch = useDispatch();
-    const selectedIds = useSelector<ReduxState, Identifier[]>(
-        (reduxState: ReduxState) =>
-            reduxState.admin.selectedIds[resource] || defaultRecords,
-        shallowEqual
-    );
+    const [ids, setIds] = useStore(`${resource}.selectedIds`, defaultSelection);
+
     const selectionModifiers = useMemo(
         () => ({
-            select: (newIds: Identifier[]) => {
-                dispatch(setListSelectedIds(resource, newIds));
+            select: (idsToAdd: Identifier[]) => {
+                if (!idsToAdd || idsToAdd.length === 0) return;
+                setIds(ids => {
+                    if (!Array.isArray(ids)) return [...idsToAdd];
+                    return [...ids, ...idsToAdd];
+                });
+            },
+            unselect(idsToRemove: Identifier[]) {
+                if (!idsToRemove || idsToRemove.length === 0) return;
+                setIds(ids => {
+                    if (!Array.isArray(ids)) return [];
+                    return ids.filter(id => !idsToRemove.includes(id));
+                });
             },
             toggle: (id: Identifier) => {
-                dispatch(toggleListItem(resource, id));
+                if (typeof id === 'undefined') return;
+                setIds(ids => {
+                    if (!Array.isArray(ids)) return [...ids];
+                    const index = ids.indexOf(id);
+                    return index > -1
+                        ? [...ids.slice(0, index), ...ids.slice(index + 1)]
+                        : [...ids, id];
+                });
             },
             clearSelection: () => {
-                dispatch(setListSelectedIds(resource, []));
+                setIds([]);
             },
         }),
-        [dispatch, resource]
+        [setIds]
     );
 
-    return [selectedIds, selectionModifiers];
+    return [ids, selectionModifiers];
 };
 
-export default useRecordSelection;
+const defaultSelection = [];

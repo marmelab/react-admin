@@ -15,5 +15,4 @@ export * from './form';
 export * from './notification';
 export * from './store';
 export * from './routing';
-export * from './sideEffect';
 export * from './types';

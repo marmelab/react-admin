@@ -28,9 +28,9 @@ export const BulkDeleteWithUndoButton = (
     const { selectedIds } = useListContext(props);
 
     const notify = useNotify();
-    const unselectAll = useUnselectAll();
-    const refresh = useRefresh();
     const resource = useResourceContext(props);
+    const unselectAll = useUnselectAll(resource);
+    const refresh = useRefresh();
     const [deleteMany, { isLoading }] = useDeleteMany();
 
     const handleClick = e => {
@@ -44,7 +44,7 @@ export const BulkDeleteWithUndoButton = (
                         messageArgs: { smart_count: selectedIds.length },
                         undoable: true,
                     });
-                    unselectAll(resource);
+                    unselectAll();
                 },
                 onError: (error: Error) => {
                     notify(

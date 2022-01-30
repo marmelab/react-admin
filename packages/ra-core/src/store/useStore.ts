@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 
 import { useStoreContext } from './useStoreContext';
 
@@ -49,6 +49,9 @@ export const useStore = <T = any>(
 ): useStoreResult<T> => {
     const { getItem, setItem, subscribe } = useStoreContext();
     const [value, setValue] = useState(() => getItem(key, defaultValue));
+    const valueRef = useRef<T>();
+
+    valueRef.current = value;
 
     // subscribe to changes on this key, and change the state when they happen
     useEffect(() => {
@@ -60,16 +63,18 @@ export const useStore = <T = any>(
 
     const set = useCallback(
         (value, runtimeDefaultValue) => {
+            const newValue =
+                typeof value === 'function' ? value(valueRef.current) : value;
             // we only set the value in the Store;
             // the value in the local state will be updated
             // by the useEffect during the next render
             setItem(
                 key,
-                typeof value === 'undefined'
+                typeof newValue === 'undefined'
                     ? typeof runtimeDefaultValue === 'undefined'
                         ? defaultValue
                         : runtimeDefaultValue
-                    : value
+                    : newValue
             );
         },
         [key, setItem, defaultValue]
@@ -77,4 +82,7 @@ export const useStore = <T = any>(
     return [value, set];
 };
 
-export type useStoreResult<T = any> = [T, (value: T, defaultValue?: T) => void];
+export type useStoreResult<T = any> = [
+    T,
+    (value: T | ((value: T) => void), defaultValue?: T) => void
+];
