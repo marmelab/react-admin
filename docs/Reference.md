@@ -180,7 +180,7 @@ title: "Reference"
 * [`useNotify`](./useNotify.md)
 * `usePaginationState`
 * [`usePermissions`](./Authentication.md#usepermissions-hook)
-* [`useStores`](https://marmelab.com/ra-enterprise/modules/ra-preferences#useStores-reading-and-writing-user-preferences)<img class="icon" src="./img/premium.svg" />
+* [`usePreferences`](https://marmelab.com/ra-enterprise/modules/ra-preferences#usepreferences-reading-and-writing-user-preferences)<img class="icon" src="./img/premium.svg" />
 * [`useRedirect`](./useRedirect.md)
 * `useReference`
 * `useReferenceArrayFieldController`
