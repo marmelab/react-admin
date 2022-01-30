@@ -3,7 +3,11 @@ import lodashGet from 'lodash/get';
 
 import { TranslationContext } from './TranslationContext';
 
-export default ({ translate, messages, children }: any) => (
+export const TestTranslationProvider = ({
+    translate,
+    messages,
+    children,
+}: any) => (
     <TranslationContext.Provider
         value={{
             locale: 'en',

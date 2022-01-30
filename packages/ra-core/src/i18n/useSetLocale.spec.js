@@ -9,8 +9,8 @@ import {
 } from '@testing-library/react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
-import useTranslate from './useTranslate';
-import useSetLocale from './useSetLocale';
+import { useTranslate } from './useTranslate';
+import { useSetLocale } from './useSetLocale';
 import { TranslationContext, TranslationProvider } from './';
 
 describe('useSetLocale', () => {

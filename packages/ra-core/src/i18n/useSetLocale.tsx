@@ -29,7 +29,7 @@ import { useNotify } from '../notification';
  *     );
  * }
  */
-const useSetLocale = (): SetLocale => {
+export const useSetLocale = (): SetLocale => {
     const { setLocale, i18nProvider } = useContext(TranslationContext);
     const notify = useNotify();
     return useCallback(
@@ -51,5 +51,3 @@ const useSetLocale = (): SetLocale => {
 };
 
 type SetLocale = (locale: String) => Promise<void>;
-
-export default useSetLocale;

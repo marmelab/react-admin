@@ -1,11 +1,5 @@
 require('raf/polyfill');
 
-/**
- * As jsDom do not support mutationobserver and
- * quill requires mutationobserver, thus a shim is needed
- */
-require('mutationobserver-shim');
-
 // Ignore warnings about act()
 // See https://github.com/testing-library/react-testing-library/issues/281,
 // https://github.com/facebook/react/issues/14769

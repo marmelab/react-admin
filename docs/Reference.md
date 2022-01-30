@@ -138,7 +138,6 @@ title: "Reference"
 * [`<TourProvider>`](https://marmelab.com/ra-enterprise/modules/ra-tour)<img class="icon" src="./img/premium.svg" />
 * [`<Tree>`](https://marmelab.com/ra-enterprise/modules/ra-tree#tree-component)<img class="icon" src="./img/premium.svg" />
 * [`<TreeWithDetails>`](https://marmelab.com/ra-enterprise/modules/ra-tree#treewithdetails-component)<img class="icon" src="./img/premium.svg" />
-* [`translate`](./Translation.md#withtranslate-hoc)
 * [`<Toolbar>`](./CreateEdit.md#toolbar)
 * `<TopToolbar>`
 * [`<UrlField>`](./UrlField.md)
@@ -203,8 +202,6 @@ title: "Reference"
 * [`useUpdateMany`](./useUpdateMany.md)
 * [`useUnselectAll`](./useUnselectAll.md)
 * [`useWarnWhenUnsavedChanges`](./CreateEdit.md#warning-about-unsaved-changes)
-* [`withDataProvider`](./Actions.md#legacy-components-query-mutation-and-withdataprovider)
-* [`withTranslate`](./Translation.md#withtranslate-hoc)
 * [`<WithPermissions>`](./Authentication.md#usepermissions-hook)
 
 </div>

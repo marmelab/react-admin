@@ -813,7 +813,7 @@ const PostDetail = () => {
 
 ## Application Cache No Longer Uses `validUntil`
 
-React-admin's *application cache* used to reply on the dataProvider returning a `validUntil` property in the response. This is no longer the case, as the cache functionality is handled by react-query. Therefore, you can safely remove the `validUntil` property from your dataProvider response.
+React-admin's *application cache* used to rely on the dataProvider returning a `validUntil` property in the response. This is no longer the case, as the cache functionality is handled by react-query. Therefore, you can safely remove the `validUntil` property from your dataProvider response.
 
 ```diff
 const dataProvider = {
@@ -1306,6 +1306,11 @@ If you still relied on sagas, you have to port your saga code to react `useEffec
 ## Removed Deprecated Props
 
 - Removed `<ReferenceField linkType>` prop (use `<ReferenceField link>` instead)
+
+## Removed Deprecated HOCs
+
+- Removed `withTranslate` HOC (use `useTranslate` hook)
+- Removed `withDataProvider` HOC (use `useDataProvider` hook)
 
 ## Removed connected-react-router
 
@@ -2235,9 +2240,51 @@ const ResetFormButton = () => {
 }
 ```
 
+### Form Level Validation And Input Level Validation Are Mutually Exclusive
+
+With `react-hook-form`, you can't have both form level validation and input level validation. This is because form level validation is meant to be used for [schema based validation](https://react-hook-form.com/api/useform#validationResolver).
+
+If you used form level validation to run complex checks for multiple input values combinations, you can use a schema library such as [yup](https://github.com/jquense/yup):
+
+```diff
+import { BooleanInput, NumberInput, SimpleForm } from 'react-admin';
++import { yupResolver } from '@hookform/resolvers/yup';
+-const validateForm = values => {
+-    if (values.isBig && values.count < 6) {
+-        return {
+-            count: 'Must be greater than 5'
+-        }
+-    }
+-
+-    if (values.count < 0) {
+-        return {
+-            count: 'Must be greater than 0'
+-        }
+-    }
+-}
++const schema = object({
++  isBig: boolean(),
++  count: number().when('isBig', {
++    is: true,
++    then: (schema) => schema.min(5),
++    otherwise: (schema) => schema.min(0),
++  }),
++});
+
+const MyForm = () => (
+    <SimpleForm
+-        validate={validateForm}
++        resolver={yupResolver(schema)}
+    >
+        <BooleanInput source="isBig" />
+        <NumberInput source="count" />
+    </SimpleForm>
+)
+```
+
 ## `useRedirect()` No Longer Clears Forms When Called With `false`
 
-To implement a form that would reset after submittion and allow adding more data, you react-admin used to encourage calling `useRedirect()` with `false` to clear the form. This ,no longer works: `useRedirect()` manages redirectinos, not forms. You'll have to clear the form manually in your side effect:
+To implement a form that would reset after submittion and allow adding more data, react-admin used to encourage you to call `useRedirect()` with `false` to clear the form. This no longer works: `useRedirect()` manages redirections, not forms. You'll have to clear the form manually in your side effect:
 
 
 ```diff
@@ -2384,6 +2431,81 @@ test('should use counter', () => {
 -   expect(hookValue.count).toBe(0)
 +   expect(result.current.count).toBe(0)
 })
+```
+
+## `richt-text-input` Package Has Changed
+
+Our old `<RichTextInput>` was based on [Quill](https://quilljs.com/) but:
+- it wasn't accessible (button without labels, etc.)
+- it wasn't translatable (labels in Quill are in the CSS)
+- it wasn't using MUI components for its UI and looked off
+
+The new `<RichTextInput>` uses [TipTap](https://github.com/ueberdosis/tiptap), a UI less library to build rich text editors. It gives us the freedom to implement the UI how we want with MUI components. That solves all the above issues.
+
+If you used the `<RichTextInput>` without passing Quill options such as custom toolbars, you have nothing to do.
+
+If you customized the available buttons with the `toolbar` props, you can now use the components we provide:
+
+```diff
+const MyRichTextInput = (props) => (
+    <RichTextInput
+        {...props}
+-        toolbar={[ ['bold', 'italic', 'underline', 'link'] ]}
++        toolbar={
+            <RichTextInputToolbar>
+				<FormatButtons size={size} />
+				<LinkButtons size={size} />
+			</RichTextInputToolbar>
+        }
+    />
+)
+```
+
+If you customized the Quill instance to add custom handlers, you'll have to use [TipTap](https://github.com/ueberdosis/tiptap) primitives.
+
+```diff
+import {
+	RichTextInput,
++	DefaultEditorOptions,
++	RichTextInputToolbar,
++	RichTextInputLevelSelect,
++	FormatButtons,
++	AlignmentButtons,
++	ListButtons,
++	LinkButtons,
++	QuoteButtons,
++	ClearButtons,
+} from 'ra-input-rich-text';
+
+-const configureQuill = quill => quill.getModule('toolbar').addHandler('insertSmile', function (value) {
+-    const { index, length } = this.quill.getSelection();
+-    this.quill..insertText(index + length, ':-)', 'api');
+-});
+
+const MyRichTextInput = (props) => (
+    <RichTextInput
+        {...props}
+-        configureQuill={configureQuill}
++        toolbar={
++			<RichTextInputToolbar>
++				<RichTextInputLevelSelect size={size} />
++				<FormatButtons size={size} />
++				<AlignmentButtons {size} />
++				<ListButtons size={size} />
++				<LinkButtons size={size} />
++				<QuoteButtons size={size} />
++				<ClearButtons size={size} />
++				<ToggleButton
++					aria-label="Add a smile"
++					title="Add a smile"
++					onClick={() => editor.insertContent(':-)')}
++				>
++					<Remove fontSize="inherit" />
++			</ToggleButton>
++			</RichTextInputToolbar>
+		}
+    />
+}
 ```
 
 # Upgrade to 3.0

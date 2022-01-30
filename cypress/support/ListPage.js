@@ -125,6 +125,6 @@ export default url => ({
     },
 
     toggleColumnSort(name) {
-        cy.get(this.elements.sortBy(name)).click();
+        cy.get(this.elements.sortBy(name)).click().blur();
     },
 });

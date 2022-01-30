@@ -480,17 +480,14 @@ There is no special react-admin sauce in that case. Here is an example implement
 // in src/comments/ApproveButton.js
 import * as React from 'react';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useNotify, useRedirect, fetchStart, fetchEnd, Button } from 'react-admin';
 
 const ApproveButton = ({ record }) => {
-    const dispatch = useDispatch();
     const redirect = useRedirect();
     const notify = useNotify();
     const [loading, setLoading] = useState(false);
     const handleClick = () => {
         setLoading(true);
-        dispatch(fetchStart()); // start the global loading indicator 
         const updatedRecord = { ...record, is_approved: true };
         fetch(`/comments/${record.id}`, { method: 'PUT', body: updatedRecord })
             .then(() => {
@@ -502,7 +499,6 @@ const ApproveButton = ({ record }) => {
             })
             .finally(() => {
                 setLoading(false);
-                dispatch(fetchEnd()); // stop the global loading indicator
             });
     };
     return <Button label="Approve" onClick={handleClick} disabled={loading} />;

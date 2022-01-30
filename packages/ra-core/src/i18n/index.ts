@@ -1,33 +1,14 @@
-import translate from './translate';
-import TranslationProvider, {
-    TranslationProviderProps,
-} from './TranslationProvider';
-import TestTranslationProvider from './TestTranslationProvider';
-import useLocale from './useLocale';
-import useSetLocale from './useSetLocale';
-import useTranslate from './useTranslate';
-
-// Alias to translate to avoid shadowed variable names error with tslint
-const withTranslate = translate;
-
-export {
-    translate, // deprecated
-    withTranslate, // deprecated
-    TranslationProvider,
-    TestTranslationProvider,
-    useLocale,
-    useSetLocale,
-    useTranslate,
-};
-
-export type { TranslationProviderProps };
-
 export const DEFAULT_LOCALE = 'en';
 
-export * from './TranslationUtils';
+export * from './TestTranslationProvider';
 export * from './TranslationContext';
 export * from './TranslationMessages';
 export * from './TranslatableContext';
 export * from './TranslatableContextProvider';
+export * from './TranslationProvider';
+export * from './TranslationUtils';
+export * from './useLocale';
+export * from './useSetLocale';
 export * from './useTranslatable';
 export * from './useTranslatableContext';
+export * from './useTranslate';

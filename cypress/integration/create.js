@@ -299,13 +299,31 @@ describe('Create Page', () => {
         );
     });
 
-    // FIXME Skipped as we are going to replace the RichTextInput with the tip tap version
-    it.skip('should not show rich text input error message when field is untouched', () => {
-        cy.get(CreatePage.elements.richTextInputError).should('not.have.value');
+    it('should not show rich text input error message when field is untouched', () => {
+        cy.get(CreatePage.elements.richTextInputError).should('not.exist');
     });
 
-    // FIXME Skipped as we are going to replace the RichTextInput with the tip tap version
-    it.skip('should show rich text input error message when form is submitted', () => {
+    it('should show rich text input error message when form is submitted', () => {
+        const values = [
+            {
+                type: 'input',
+                name: 'title',
+                value: 'Test title',
+            },
+            {
+                type: 'textarea',
+                name: 'teaser',
+                value: 'Test teaser',
+            },
+        ];
+        CreatePage.setValues(values);
+        CreatePage.submit(false);
+        cy.get(CreatePage.elements.richTextInputError)
+            .should('exist')
+            .contains('Required');
+    });
+
+    it('should not show rich text input error message when form is submitted and input is filled with text', () => {
         const values = [
             {
                 type: 'input',
@@ -318,29 +336,10 @@ describe('Create Page', () => {
         cy.get(CreatePage.elements.richTextInputError)
             .should('exist')
             .contains('Required');
-    });
 
-    // FIXME Skipped as we are going to replace the RichTextInput with the tip tap version
-    it.skip('should not show rich text input error message when form is submitted and input is filled with text', () => {
-        const values = [
-            {
-                type: 'input',
-                name: 'title',
-                value: 'Test title',
-            },
-        ];
-        CreatePage.setValues(values);
-        CreatePage.submit(false);
-        cy.get(CreatePage.elements.richTextInputError)
-            .should('exist')
-            .contains('Required');
-
-        // Quill take a little time to boot and Cypress is too fast which can leads to unstable tests
-        // so we wait a bit before interacting with the rich-text-input
-        cy.wait(250);
-        cy.get(CreatePage.elements.input('body', 'rich-text-input')).type(
-            'text'
-        );
+        cy.get(CreatePage.elements.input('body', 'rich-text-input'))
+            .type('text')
+            .blur();
         cy.get(CreatePage.elements.richTextInputError).should('not.exist');
     });
 

@@ -27,7 +27,7 @@ interface State {
  *         </Provider>
  *     );
  */
-const TranslationProvider = (props: TranslationProviderProps) => {
+export const TranslationProvider = (props: TranslationProviderProps) => {
     const { i18nProvider, children } = props;
 
     const [state, setState] = useSafeSetState<State>({
@@ -57,5 +57,3 @@ const TranslationProvider = (props: TranslationProviderProps) => {
         </TranslationContext.Provider>
     );
 };
-
-export default TranslationProvider;

@@ -2,8 +2,8 @@ import { useState, useMemo } from 'react';
 import { useResourceContext } from '../core';
 import { getFieldLabelTranslationArgs } from '../util';
 import { TranslatableContextValue } from './TranslatableContext';
-import useLocale from './useLocale';
-import useTranslate from './useTranslate';
+import { useLocale } from './useLocale';
+import { useTranslate } from './useTranslate';
 
 /**
  * Hook supplying the logic to translate a field value in multiple languages.

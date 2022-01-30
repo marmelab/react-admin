@@ -190,7 +190,7 @@ const PostEdit = () => {
                         source="body"
                         label=""
                         validate={required()}
-                        addLabel={false}
+                        fullWidth
                     />
                 </FormTab>
                 <FormTab label="post.form.miscellaneous">

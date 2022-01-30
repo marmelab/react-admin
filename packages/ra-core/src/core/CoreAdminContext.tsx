@@ -13,7 +13,7 @@ import {
 } from '../dataProvider';
 import { StoreContextProvider, StoreProvider, memoryStore } from '../store';
 import createAdminStore from './createAdminStore';
-import TranslationProvider from '../i18n/TranslationProvider';
+import { TranslationProvider } from '../i18n';
 import { ResourceDefinitionContextProvider } from './ResourceDefinitionContext';
 import { NotificationContextProvider } from '../notification';
 import {
