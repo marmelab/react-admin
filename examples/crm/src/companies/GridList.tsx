@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Box, Paper } from '@mui/material';
-import { useListContext } from 'react-admin';
+import { RecordContextProvider, useListContext } from 'react-admin';
 
 import { CompanyCard } from './CompanyCard';
 import { Company } from '../types';
@@ -33,7 +33,9 @@ const LoadedGridList = () => {
     return (
         <Box display="flex" flexWrap="wrap" width="100%" gap={1}>
             {data.map(record => (
-                <CompanyCard key={record.id} record={record} />
+                <RecordContextProvider key={record.id} value={record}>
+                    <CompanyCard />
+                </RecordContextProvider>
             ))}
         </Box>
     );

@@ -59,7 +59,7 @@ const StyledMuiLink = styled(MuiLink)(({ theme }) => ({
     },
 }));
 
-export const CompanyCard = (props: { record: Company }) => {
+export const CompanyCard = (props: { record?: Company }) => {
     const [elevation, setElevation] = useState(1);
     const createPath = useCreatePath();
     const record = useRecordContext<Company>(props);
@@ -80,7 +80,7 @@ export const CompanyCard = (props: { record: Company }) => {
         >
             <Paper className={classes.paper} elevation={elevation}>
                 <div className={classes.identity}>
-                    <CompanyAvatar record={record} />
+                    <CompanyAvatar />
                     <div className={classes.name}>
                         <Typography variant="subtitle2">
                             {record.name}
@@ -89,7 +89,6 @@ export const CompanyCard = (props: { record: Company }) => {
                             color="textSecondary"
                             source="sector"
                             choices={sectors}
-                            record={record}
                         />
                     </div>
                 </div>

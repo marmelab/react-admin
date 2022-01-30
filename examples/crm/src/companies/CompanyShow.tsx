@@ -8,6 +8,7 @@ import {
     useShowContext,
     useRecordContext,
     useListContext,
+    RecordContextProvider,
 } from 'react-admin';
 import {
     Box,
@@ -154,39 +155,39 @@ const ContactsIterator = () => {
         <Box>
             <List>
                 {data.map(contact => (
-                    <ListItem
-                        button
-                        key={contact.id}
-                        component={RouterLink}
-                        to={`/contacts/${contact.id}/show`}
-                    >
-                        <ListItemAvatar>
-                            <Avatar record={contact} />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={`${contact.first_name} ${contact.last_name}`}
-                            secondary={
-                                <>
-                                    {contact.title}{' '}
-                                    <TagsList record={contact} />
-                                </>
-                            }
-                        />
-                        <ListItemSecondaryAction>
-                            <Typography
-                                variant="body2"
-                                color="textSecondary"
-                                component="span"
-                            >
-                                last activity{' '}
-                                {formatDistance(
-                                    new Date(contact.last_seen),
-                                    now
-                                )}{' '}
-                                ago <Status status={contact.status} />
-                            </Typography>
-                        </ListItemSecondaryAction>
-                    </ListItem>
+                    <RecordContextProvider key={contact.id} value={contact}>
+                        <ListItem
+                            button
+                            component={RouterLink}
+                            to={`/contacts/${contact.id}/show`}
+                        >
+                            <ListItemAvatar>
+                                <Avatar record={contact} />
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={`${contact.first_name} ${contact.last_name}`}
+                                secondary={
+                                    <>
+                                        {contact.title} <TagsList />
+                                    </>
+                                }
+                            />
+                            <ListItemSecondaryAction>
+                                <Typography
+                                    variant="body2"
+                                    color="textSecondary"
+                                    component="span"
+                                >
+                                    last activity{' '}
+                                    {formatDistance(
+                                        new Date(contact.last_seen),
+                                        now
+                                    )}{' '}
+                                    ago <Status status={contact.status} />
+                                </Typography>
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                    </RecordContextProvider>
                 ))}
             </List>
             <Box textAlign="center" mt={1}>
