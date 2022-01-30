@@ -123,7 +123,9 @@ const useGetMany = (
             ...state,
             data,
             loading: state.loading || data?.includes(undefined),
-            loaded: data?.length !== 0 && !data?.includes(undefined),
+            loaded:
+                state.loaded ||
+                (data?.length !== 0 && !data?.includes(undefined)),
         });
     }
     dataProvider = useDataProvider(); // not the best way to pass the dataProvider to a function outside the hook, but I couldn't find a better one
