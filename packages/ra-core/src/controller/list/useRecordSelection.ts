@@ -26,11 +26,8 @@ export const useRecordSelection = (
     const selectionModifiers = useMemo(
         () => ({
             select: (idsToAdd: Identifier[]) => {
-                if (!idsToAdd || idsToAdd.length === 0) return;
-                setIds(ids => {
-                    if (!Array.isArray(ids)) return [...idsToAdd];
-                    return [...ids, ...idsToAdd];
-                });
+                if (!idsToAdd) return;
+                setIds([...idsToAdd]);
             },
             unselect(idsToRemove: Identifier[]) {
                 if (!idsToRemove || idsToRemove.length === 0) return;
