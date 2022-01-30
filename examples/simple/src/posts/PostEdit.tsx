@@ -161,7 +161,6 @@ const PostEdit = ({ permissions, ...props }) => {
                                         scopedFormData &&
                                         scopedFormData.user_id ? (
                                             <SelectInput
-                                                label="Role"
                                                 source={getSource('role')}
                                                 choices={[
                                                     {
@@ -178,6 +177,7 @@ const PostEdit = ({ permissions, ...props }) => {
                                                     },
                                                 ]}
                                                 {...rest}
+                                                label="Role"
                                             />
                                         ) : null
                                     }
@@ -229,6 +229,16 @@ const PostEdit = ({ permissions, ...props }) => {
                     />
                     <BooleanInput source="commentable" defaultValue />
                     <TextInput disabled source="views" />
+                    <ArrayInput source="pictures">
+                        <SimpleFormIterator>
+                            <TextInput source="url" initialValue="" />
+                            <ArrayInput source="metas.authors">
+                                <SimpleFormIterator>
+                                    <TextInput source="name" initialValue="" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleFormIterator>
+                    </ArrayInput>
                 </FormTab>
                 <FormTab label="post.form.comments">
                     <ReferenceManyField

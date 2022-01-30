@@ -19,8 +19,9 @@ const ResetViewsButton = ({ resource, selectedIds }) => {
         {
             action: CRUD_UPDATE_MANY,
             onSuccess: () => {
-                notify('ra.notification.updated', 'info', {
-                    smart_count: selectedIds.length,
+                notify('ra.notification.updated', {
+                    type: 'info',
+                    messageArgs: { smart_count: selectedIds.length },
                 });
                 unselectAll(resource);
             },
@@ -29,7 +30,7 @@ const ResetViewsButton = ({ resource, selectedIds }) => {
                     typeof error === 'string'
                         ? error
                         : error.message || 'ra.notification.http_error',
-                    'warning'
+                    { type: 'warning' }
                 ),
             mutationMode: 'optimistic',
         }

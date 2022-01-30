@@ -44,6 +44,9 @@ const useStyles = makeStyles(
             marginTop: '1em',
             maxWidth: '60em',
         },
+        panelSumary: {
+            userSelect: 'all',
+        },
         panelDetails: {
             whiteSpace: 'pre-wrap',
         },
@@ -85,7 +88,10 @@ const Error = (props: ErrorProps): JSX.Element => {
                 {process.env.NODE_ENV !== 'production' && (
                     <>
                         <Accordion className={classes.panel}>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                            <AccordionSummary
+                                className={classes.panelSumary}
+                                expandIcon={<ExpandMoreIcon />}
+                            >
                                 {translate(error.toString(), {
                                     _: error.toString(),
                                 })}

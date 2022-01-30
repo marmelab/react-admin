@@ -15,7 +15,7 @@ import {
 export interface ListProps extends ResourceComponentProps {
     actions?: ReactElement | false;
     aside?: ReactElement;
-    bulkActionButtons?: ReactElement | false;
+    bulkActionButtons?: ReactElement | boolean;
     classes?: any;
     className?: string;
     component?: ElementType;

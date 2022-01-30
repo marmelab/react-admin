@@ -129,7 +129,10 @@ export const performUndoableQuery = ({
                         console.error(error);
                     }
                     return logoutIfAccessDenied(error).then(loggedOut => {
-                        if (loggedOut) return;
+                        if (loggedOut) {
+                            dispatch({ type: FETCH_END });
+                            return;
+                        }
                         dispatch({
                             type: `${action}_FAILURE`,
                             error: error.message ? error.message : error,

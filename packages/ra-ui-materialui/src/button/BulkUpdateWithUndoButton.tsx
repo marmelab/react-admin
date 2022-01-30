@@ -49,12 +49,11 @@ const BulkUpdateWithUndoButton = (props: BulkUpdateWithUndoButtonProps) => {
         label,
         onClick,
         onSuccess = () => {
-            notify(
-                'ra.notification.updated',
-                'info',
-                { smart_count: selectedIds.length },
-                true
-            );
+            notify('ra.notification.updated', {
+                type: 'info',
+                messageArgs: { smart_count: selectedIds.length },
+                undoable: true,
+            });
             unselectAll(resource);
             refresh();
         },
@@ -63,14 +62,16 @@ const BulkUpdateWithUndoButton = (props: BulkUpdateWithUndoButtonProps) => {
                 typeof error === 'string'
                     ? error
                     : error.message || 'ra.notification.http_error',
-                'warning',
                 {
-                    _:
-                        typeof error === 'string'
-                            ? error
-                            : error && error.message
-                            ? error.message
-                            : undefined,
+                    type: 'warning',
+                    messageArgs: {
+                        _:
+                            typeof error === 'string'
+                                ? error
+                                : error && error.message
+                                ? error.message
+                                : undefined,
+                    },
                 }
             );
             refresh();

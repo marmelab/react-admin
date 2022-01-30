@@ -57,7 +57,7 @@ const ExportButton = (props: ExportButtonProps) => {
                 )
                 .catch(error => {
                     console.error(error);
-                    notify('ra.notification.http_error', 'warning');
+                    notify('ra.notification.http_error', { type: 'warning' });
                 });
             if (typeof onClick === 'function') {
                 onClick(event);

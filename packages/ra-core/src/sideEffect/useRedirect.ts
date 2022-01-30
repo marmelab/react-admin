@@ -51,9 +51,9 @@ const useRedirect = () => {
                         state,
                         search: undefined,
                     });
-                } else {
-                    dispatch(refreshView());
                 }
+                dispatch(refreshView());
+
                 return;
             }
 

@@ -12,7 +12,7 @@ import {
     CircularProgress,
     TextField,
 } from '@material-ui/core';
-import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
+import { createTheme, makeStyles } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import LockIcon from '@material-ui/icons/Lock';
 import { Notification, useTranslate, useLogin, useNotify } from 'react-admin';
@@ -99,14 +99,16 @@ const Login = () => {
                         : typeof error === 'undefined' || !error.message
                         ? 'ra.auth.sign_in_error'
                         : error.message,
-                    'warning',
                     {
-                        _:
-                            typeof error === 'string'
-                                ? error
-                                : error && error.message
-                                ? error.message
-                                : undefined,
+                        type: 'warning',
+                        messageArgs: {
+                            _:
+                                typeof error === 'string'
+                                    ? error
+                                    : error && error.message
+                                    ? error.message
+                                    : undefined,
+                        },
                     }
                 );
             }
@@ -197,7 +199,7 @@ Login.propTypes = {
 // Because otherwise the useStyles() hook used in Login won't get
 // the right theme
 const LoginWithTheme = (props: any) => (
-    <ThemeProvider theme={createMuiTheme(lightTheme)}>
+    <ThemeProvider theme={createTheme(lightTheme)}>
         <Login {...props} />
     </ThemeProvider>
 );

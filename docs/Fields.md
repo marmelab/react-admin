@@ -38,7 +38,7 @@ const PurpleTextField = ({ source }) => {
 ```
 {% endraw %}
 
-React-admin Field components also accept a `record` prop. This allows you to use them outside of a `RecordContext`, or to use another `record` than the one in the current context.
+React-admin Field components also accept a `record` prop. This allows you to use them outside a `RecordContext`, or to use another `record` than the one in the current context.
 
 ```jsx
 // a post looks like
@@ -310,7 +310,7 @@ import { ImageField } from 'react-admin';
 </div>
 ```
 
-This field is also often used within the [<ImageInput />](./Inputs.md#imageinput) component to display a preview.
+This field is also often used within the [`<ImageInput />`](./Inputs.md#imageinput) component to display a preview.
 
 #### Properties
 
@@ -373,7 +373,7 @@ import { FileField } from 'react-admin';
 </div>
 ```
 
-This field is also often used within an [<FileInput />](./Inputs.md#fileinput) component to display preview.
+This field is also often used within a [`<FileInput />`](./Inputs.md#fileinput) component to display preview.
 
 #### Properties
 
@@ -988,7 +988,7 @@ Also, you can filter the query used to populate the possible values. Use the `fi
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component fetches a list of referenced records by lookup in an associative table, and passes the records down to its child component, which must be an iterator component.
 
-For instance, here is how to fetch the authors related to a book record by matching `book.id` to `book_authors.post_id`, then matching `book_authors.author_id` to `authors.id`, and then display the author last_name for each, in a `<ChipField>`:
+For instance, here is how to fetch the authors related to a book record by matching `book.id` to `book_authors.book_id`, then matching `book_authors.author_id` to `authors.id`, and then display the author last_name for each, in a `<ChipField>`:
 
 ```jsx
 import * as React from 'react';

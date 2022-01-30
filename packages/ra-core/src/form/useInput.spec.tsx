@@ -2,10 +2,10 @@ import * as React from 'react';
 import { FunctionComponent, ReactElement } from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { Form, useFormState } from 'react-final-form';
+import { renderWithRedux } from 'ra-test';
 import FormWithRedirect from './FormWithRedirect';
 import useInput, { InputProps } from './useInput';
 import { required } from './validate';
-import { renderWithRedux } from '../../../ra-test/esm';
 
 const Input: FunctionComponent<
     { children: (props: any) => ReactElement } & InputProps
@@ -306,8 +306,8 @@ describe('useInput', () => {
     it('does not apply the initialValue true when the field is of type checkbox and has a value', () => {
         const { queryByText } = renderWithRedux(
             <FormWithRedirect
-                onSubmit={jest.fn()}
                 record={{ id: 1, is_published: false }}
+                onSubmit={jest.fn()}
                 render={() => (
                     <BooleanInput source="is_published" initialValue={true} />
                 )}
@@ -319,8 +319,8 @@ describe('useInput', () => {
     it('does not apply the initialValue false when the field is of type checkbox and has a value', () => {
         const { queryByText } = renderWithRedux(
             <FormWithRedirect
-                onSubmit={jest.fn()}
                 record={{ id: 1, is_published: true }}
+                onSubmit={jest.fn()}
                 render={() => (
                     <BooleanInput source="is_published" initialValue={false} />
                 )}

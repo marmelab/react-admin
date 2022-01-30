@@ -6,7 +6,7 @@ import { EditController } from './EditController';
 import { renderWithRedux } from 'ra-test';
 import { DataProviderContext } from '../../dataProvider';
 import { DataProvider } from '../../types';
-import { SaveContextProvider } from '../../../esm';
+import { SaveContextProvider } from '../../controller';
 
 describe('useEditController', () => {
     const defaultProps = {

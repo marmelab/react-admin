@@ -319,7 +319,7 @@ export const useReferenceArrayInputController = (
         // Indeed it wouldn't work well regarding sorting and pagination
         ids: matchingReferencesIds || EmptyArray,
         loaded,
-        loading: dataStatus.waiting,
+        loading: dataStatus.waiting && isGetMatchingEnabled,
         onSelect,
         onToggleItem,
         onUnselectItems,

@@ -47,8 +47,8 @@ All input components accept the following props:
 React-admin uses [react-final-form](https://final-form.org/docs/react-final-form/getting-started) to control form inputs. Each input component also accepts all react-final-form [FieldProps](https://final-form.org/docs/react-final-form/types/FieldProps), including:
 
 | Prop           | Required | Type       | Default | Description                                                                                                                                                                                                     |
-| -------------- | -------- | ---------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `initialValue` | Optional | `mixed`    | -       | Value to be set when the property is `null` or `undefined`                                                                                                                                                      |
+| -------------- | -------- | ---------- | ------- |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `initialValue` | Optional | `mixed`    | -       | Value to be set when the property is `undefined`                                                                                                                                                                |
 | `format`       | Optional | `Function` | -       | Callback taking the value from the form state and the name of the field, and returns the input value. See the [Transforming Input Value](./Inputs.md#transforming-input-value-tofrom-record) section.           |
 | `parse`        | Optional | `Function` | -       | Callback taking the input value and name of the field, and returns the value you want stored in the form state. See the [Transforming Input Value](./Inputs.md#transforming-input-value-tofrom-record) section. |
 
@@ -1228,7 +1228,7 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
 
 `<ArrayInput>` expects a single child, which must be a *form iterator* component. A form iterator is a component accepting a `fields` object as passed by [react-final-form-array](https://github.com/final-form/react-final-form-arrays#fieldarrayrenderprops), and defining a layout for an array of fields. For instance, the `<SimpleFormIterator>` component displays an array of react-admin Inputs in an unordered list (`<ul>`), one sub-form by list item (`<li>`). It also provides controls for adding and removing a sub-record (a backlink in this example).
 
-You can pass `disableAdd` and `disableRemove` as props of `SimpleFormIterator`, to disable `ADD` and `REMOVE` button respectively. Default value of both is `false`.
+You can pass `disableAdd`, `disableRemove` and `disableReordering` as props of `SimpleFormIterator`, to disable `ADD`, `REMOVE` and the `UP/DOWN` button(s) respectively. Default value of each is `false`.
 
 ```jsx
 import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admin';
@@ -1241,7 +1241,7 @@ import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admi
 </ArrayInput>
 ```
 
-You can also use `addButton` and `removeButton` props to pass your custom add and remove buttons to `SimpleFormIterator`.
+You can also use `addButton`, `removeButton` and `reOrderButtons` props to pass your custom add, remove and reordering buttons to `SimpleFormIterator`.
 
 ```jsx
 import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admin';
@@ -1477,7 +1477,7 @@ const PostCreate = (props) => {
                     onCreate={() => {
                         const newTagName = prompt('Enter a new tag');
                         const newTag = { id: newTagName.toLowerCase(), name: newTagName };
-                        categories.push(newTag);
+                        tags.push(newTag);
                         return newTag;
                     }}
                     source="tags"
@@ -1869,7 +1869,7 @@ const PostCreate = (props) => {
                     onCreate={() => {
                         const newTagName = prompt('Enter a new tag');
                         const newTag = { id: newTagName.toLowerCase(), name: newTagName };
-                        categories.push(newTag);
+                        tags.push(newTag);
                         return newTag;
                     }}
                     source="tags"
@@ -2077,14 +2077,14 @@ You can tweak how this component fetches the possible values using the `perPage`
 
 ```jsx
 <ReferenceArrayInput
-  label="Tags"
-  reference="tags"
-  source="tags"
-  enableGetChoices={({ q }) => (q ? q.length >= 2 : false)}
+    label="Tags"
+    reference="tags"
+    source="tags"
+    enableGetChoices={({ q }) => (q ? q.length >= 2 : false)}
 >
-  <AutocompleteArrayInput
-    shouldRenderSuggestions={(value: string) => value.length >= 2}
-  />
+    <AutocompleteArrayInput
+        shouldRenderSuggestions={value => value.length >= 2}
+    />
 </ReferenceArrayInput>
 ```
 
@@ -2566,7 +2566,7 @@ const PostEdit = (props) => (
                             scopedFormData && scopedFormData.name ? (
                                 <SelectInput
                                     source={getSource('role')} // Will translate to "authors[0].role"
-                                    choices={['main', 'coauthor']}
+                                    choices={[{id:1, name:'Head Writer'}, {id:2, name:'Co-Writer'}]
                                     {...rest}
                                 />
                             ) : null

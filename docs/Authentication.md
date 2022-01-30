@@ -64,6 +64,7 @@ Beyond ready-to-use providers, you may find help in these third-party tutorials 
 * **[Auth0](https://auth0.com/docs/libraries/auth0-single-page-app-sdk)**: [spintech-software/react-admin-auth0-example](https://github.com/spintech-software/react-admin-auth0-example)
 * **[Azure Active Directory](https://github.com/AzureAD/microsoft-authentication-library-for-js/tree/dev/lib/msal-browser)**: [victorp13/react-admin-msal](https://github.com/victorp13/react-admin-msal)
 * **[Loopback](https://loopback.io/doc/en/lb4/Authentication-overview.html)**: [appsmith dev.to tutorial](https://dev.to/appsmith/building-an-admin-dashboard-with-react-admin-86i#adding-authentication-to-reactadmin)
+* **[OpenID Connect (OIDC)](https://openid.net/connect/)**: [marmelab/ra-example-oauth](https://github.com/marmelab/ra-example-oauth)
 
 If you have released a reusable `authProvider`, or a tutorial for another auth backend, please open a PR to add it to this list!
 
@@ -103,6 +104,14 @@ const authProvider = {
             .catch(() => {
                 throw new Error('Network error')
             });
+    },
+    checkAuth: () => {
+        // Required for the authentication to work
+        return Promise.resolve();
+    },
+    getPermissions: () => {
+        // Required for the authentication to work
+        return Promise.resolve();
     },
     // ...
 };
@@ -626,7 +635,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useLogin, useNotify, Notification, defaultTheme } from 'react-admin';
 import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
 const MyLoginPage = ({ theme }) => {
     const [email, setEmail] = useState('');
@@ -642,7 +651,7 @@ const MyLoginPage = ({ theme }) => {
     };
 
     return (
-        <ThemeProvider theme={createMuiTheme(defaultTheme)}>
+        <ThemeProvider theme={createTheme(defaultTheme)}>
             <form onSubmit={submit}>
                 <input
                     name="email"
@@ -942,7 +951,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { useLogin, useNotify, Notification, defaultTheme } from 'react-admin';
 import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
 const MyLoginPage = ({ theme }) => {
     const [email, setEmail] = useState('');
@@ -957,7 +966,7 @@ const MyLoginPage = ({ theme }) => {
     };
 
     return (
-        <ThemeProvider theme={createMuiTheme(defaultTheme)}>
+        <ThemeProvider theme={createTheme(defaultTheme)}>
             <form onSubmit={submit}>
                 <input
                     name="email"

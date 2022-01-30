@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { cloneElement, Children, FC, ReactElement } from 'react';
+import { cloneElement, Children, ReactElement } from 'react';
 import PropTypes from 'prop-types';
+import isEqual from 'lodash/isEqual';
 import {
     isRequired,
     FieldTitle,
@@ -57,23 +58,24 @@ import { ArrayInputContext } from './ArrayInputContext';
  *
  * @see https://github.com/final-form/react-final-form-arrays
  */
-export const ArrayInput: FC<ArrayInputProps> = ({
-    className,
-    defaultValue,
-    label,
-    loaded,
-    loading,
-    children,
-    helperText,
-    record,
-    resource,
-    source,
-    validate,
-    variant,
-    disabled,
-    margin = 'dense',
-    ...rest
-}) => {
+export const ArrayInput = (props: ArrayInputProps) => {
+    const {
+        className,
+        defaultValue,
+        label,
+        loaded,
+        loading,
+        children,
+        helperText,
+        record,
+        resource,
+        source,
+        validate,
+        variant,
+        disabled,
+        margin = 'dense',
+        ...rest
+    } = props;
     const sanitizedValidate = Array.isArray(validate)
         ? composeSyncValidators(validate)
         : validate;
@@ -82,6 +84,8 @@ export const ArrayInput: FC<ArrayInputProps> = ({
         initialValue: defaultValue,
         validate: sanitizedValidate,
         ...rest,
+        isEqual: (allPreviousValues, allNewValues) =>
+            isEqual(allPreviousValues, allNewValues),
     });
 
     if (loading) {

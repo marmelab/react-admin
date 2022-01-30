@@ -9,7 +9,7 @@ import classnames from 'classnames';
 import Labeled from '../input/Labeled';
 
 /**
- * Tab element for the SimpleShowLayout.
+ * Tab element for the TabbedShowLayout.
  *
  * The `<Tab>` component accepts the following props:
  *
@@ -100,6 +100,7 @@ export const Tab = ({
                             <Labeled
                                 label={field.props.label}
                                 source={field.props.source}
+                                fullWidth={field.props.fullWidth}
                                 basePath={basePath}
                                 record={record}
                                 resource={resource}

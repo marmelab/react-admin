@@ -81,7 +81,9 @@ export const useShowController = <RecordType extends Record = Record>(
         onFailure:
             onFailure ??
             (() => {
-                notify('ra.notification.item_doesnt_exist', 'warning');
+                notify('ra.notification.item_doesnt_exist', {
+                    type: 'warning',
+                });
                 redirect('list', basePath);
                 refresh();
             }),

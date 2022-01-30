@@ -43,6 +43,7 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
     const logout = useLogout();
     const notify = useNotify();
     const history = useHistory();
+
     const logoutIfAccessDenied = useCallback(
         (error?: any, disableNotification?: boolean) =>
             authProvider
@@ -71,15 +72,13 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                             .checkAuth({})
                             .then(() => {
                                 if (logoutUser) {
-                                    notify(
-                                        'ra.notification.logged_out',
-                                        'warning'
-                                    );
+                                    notify('ra.notification.logged_out', {
+                                        type: 'warning',
+                                    });
                                 } else {
-                                    notify(
-                                        'ra.notification.not_authorized',
-                                        'warning'
-                                    );
+                                    notify('ra.notification.not_authorized', {
+                                        type: 'warning',
+                                    });
                                 }
                             })
                             .catch(() => {});

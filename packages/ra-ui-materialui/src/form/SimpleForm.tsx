@@ -60,7 +60,7 @@ SimpleForm.propTypes = {
     save: PropTypes.func,
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
-    toolbar: PropTypes.element,
+    toolbar: PropTypes.oneOfType([PropTypes.element, PropTypes.oneOf([false])]),
     undoable: PropTypes.bool,
     validate: PropTypes.func,
     version: PropTypes.number,
@@ -82,7 +82,7 @@ export interface SimpleFormProps
     mutationMode?: MutationMode;
     resource?: string;
     submitOnEnter?: boolean;
-    toolbar?: ReactElement;
+    toolbar?: ReactElement | false;
     /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;
     variant?: 'standard' | 'outlined' | 'filled';

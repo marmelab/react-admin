@@ -212,7 +212,7 @@ const PostShow = props => {
     const redirect = useRedirect();
 
     const onFailure = (error) => {
-        notify(`Could not load post: ${error.message}`)
+        notify(`Could not load post: ${error.message}`);
         redirect('/posts');
         refresh();
     };
@@ -233,7 +233,7 @@ The default `onFailure` function is:
 
 ```jsx
 (error) => {
-    notify('ra.notification.item_doesnt_exist', 'warning');
+    notify('ra.notification.item_doesnt_exist', { type: 'warning' });
     redirect('list', basePath);
     refresh();
 }

@@ -4,14 +4,14 @@ import { Root } from 'ra-no-code';
 import { defaultTheme } from 'react-admin';
 import {
     unstable_createMuiStrictModeTheme,
-    createMuiTheme,
+    createTheme,
 } from '@material-ui/core/styles';
 
 // FIXME MUI bug https://github.com/mui-org/material-ui/issues/13394
 const theme =
     process.env.NODE_ENV !== 'production'
         ? unstable_createMuiStrictModeTheme(defaultTheme)
-        : createMuiTheme(defaultTheme);
+        : createTheme(defaultTheme);
 
 ReactDOM.render(
     <React.StrictMode>

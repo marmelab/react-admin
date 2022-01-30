@@ -6,21 +6,24 @@ import {
     ListItemText,
     ListItemSecondaryAction,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import CancelIcon from '@material-ui/icons/CancelOutlined';
 import { useTranslate, useListFilterContext } from 'ra-core';
 import { shallowEqual } from 'react-redux';
 import matches from 'lodash/matches';
 import pickBy from 'lodash/pickBy';
 
-const useStyles = makeStyles(theme => ({
-    listItem: {
-        paddingLeft: '2em',
-    },
-    listItemText: {
-        margin: 0,
-    },
-}));
+const useStyles = makeStyles(
+    (theme: Theme) => ({
+        listItem: {
+            paddingLeft: '2em',
+        },
+        listItemText: {
+            margin: 0,
+        },
+    }),
+    { name: 'RaFilterListItem' }
+);
 
 /**
  * Button to enable/disable a list filter.

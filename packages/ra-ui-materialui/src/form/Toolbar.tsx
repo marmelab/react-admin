@@ -14,7 +14,7 @@ import MuiToolbar, {
 import withWidth from '@material-ui/core/withWidth';
 import { makeStyles } from '@material-ui/core/styles';
 import classnames from 'classnames';
-import { Record, RedirectionSideEffect, MutationMode } from 'ra-core';
+import { RedirectionSideEffect, MutationMode } from 'ra-core';
 import { FormRenderProps } from 'react-final-form';
 
 import { SaveButton, DeleteButton } from '../button';
@@ -210,8 +210,7 @@ const Toolbar: FC<ToolbarProps> = props => {
     );
 };
 
-export interface ToolbarProps<RecordType extends Record = Record>
-    extends Omit<MuiToolbarProps, 'classes'> {
+export interface ToolbarProps extends Omit<MuiToolbarProps, 'classes'> {
     children?: ReactNode;
     alwaysEnableSaveButton?: boolean;
     className?: string;
@@ -225,7 +224,7 @@ export interface ToolbarProps<RecordType extends Record = Record>
     submitOnEnter?: boolean;
     redirect?: RedirectionSideEffect;
     basePath?: string;
-    record?: RecordType;
+    record?: any;
     resource?: string;
     /** @deprecated use mutationMode: undoable instead */
     undoable?: boolean;

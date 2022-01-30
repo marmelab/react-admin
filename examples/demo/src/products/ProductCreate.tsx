@@ -29,7 +29,7 @@ const ProductCreate = (props: CreateProps) => {
     const classes = useStyles();
     return (
         <Create {...props}>
-            <TabbedForm>
+            <TabbedForm initialValues={{ sales: 0 }}>
                 <FormTab label="resources.products.tabs.image">
                     <TextInput
                         autoFocus
