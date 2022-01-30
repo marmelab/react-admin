@@ -11,7 +11,7 @@ import { useStoreContext } from './useStoreContext';
  * is set before rendering the wrapped component.
  *
  * Tip: <StoreSetter> is a great helper for mocking the store in
- * unit tests. Prefer it to calling the storeProvider manually.
+ * unit tests. Prefer it to calling the Store manually.
  *
  * @example
  *

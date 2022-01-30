@@ -1,4 +1,4 @@
-import { StoreProvider } from './types';
+import { Store } from './types';
 
 type Subscription = {
     key: string;
@@ -27,7 +27,7 @@ const testLocalStorage = () => {
 let localStorageAvailable = testLocalStorage();
 
 /**
- * StoreProvider using localStorage, or memory storage in incognito mode
+ * Store using localStorage, or memory storage in incognito mode
  *
  * @example
  *
@@ -39,7 +39,7 @@ let localStorageAvailable = testLocalStorage();
  *   </Admin>
  * );
  */
-export const localStorageStore = (): StoreProvider => {
+export const localStorageStore = (): Store => {
     const subscriptions: { [key: string]: Subscription } = {};
 
     // Whenever the local storage changes in another document, look for matching subscribers.

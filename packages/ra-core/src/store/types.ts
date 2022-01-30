@@ -1,4 +1,4 @@
-export interface StoreProvider {
+export interface Store {
     setup: () => void;
     teardown: () => void;
     getItem: <T = any>(key: string, defaultValue?: T) => T;

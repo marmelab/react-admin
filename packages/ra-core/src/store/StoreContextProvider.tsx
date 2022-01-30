@@ -1,27 +1,25 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import { StoreContext } from './StoreContext';
-import { StoreProvider } from './types';
+import { Store } from './types';
 
 export const StoreContextProvider = ({
-    value: StoreProvider,
+    value: Store,
     children,
 }: StoreContextProviderProps) => {
     useEffect(() => {
-        StoreProvider.setup();
+        Store.setup();
         return () => {
-            StoreProvider.teardown();
+            Store.teardown();
         };
-    }, [StoreProvider]);
+    }, [Store]);
 
     return (
-        <StoreContext.Provider value={StoreProvider}>
-            {children}
-        </StoreContext.Provider>
+        <StoreContext.Provider value={Store}>{children}</StoreContext.Provider>
     );
 };
 
 export interface StoreContextProviderProps {
-    value: StoreProvider;
+    value: Store;
     children: React.ReactNode;
 }

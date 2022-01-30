@@ -1,7 +1,7 @@
 import set from 'lodash/set';
 import unset from 'lodash/unset';
 import get from 'lodash/get';
-import { StoreProvider } from './types';
+import { Store } from './types';
 
 type Subscription = {
     key: string;
@@ -9,7 +9,7 @@ type Subscription = {
 };
 
 /**
- * StoreProvider using memory
+ * Store using memory
  *
  * @example
  *
@@ -21,7 +21,7 @@ type Subscription = {
  *   </Admin>
  * );
  */
-export const memoryStore = (storage: any = {}): StoreProvider => {
+export const memoryStore = (storage: any = {}): Store => {
     const subscriptions: { [key: string]: Subscription } = {};
     return {
         setup: () => {},

@@ -3,9 +3,9 @@ import { useState, useCallback, useEffect } from 'react';
 import { useStoreContext } from './useStoreContext';
 
 /**
- * Read and write a store value from the StoreProvider
+ * Read and write a store value from the Store
  *
- * useState-like hook using the StoreProvider for persistence.
+ * useState-like hook using the Store for persistence.
  * Each time a store value is changed, all components using this value will be re-rendered.
  *
  * @param {string} key Name of the store key. Separate with dots to namespace, e.g. 'posts.list.columns'.
@@ -60,7 +60,7 @@ export const useStore = <T = any>(
 
     const set = useCallback(
         (value, runtimeDefaultValue) => {
-            // we only set the value in the StoreProvider;
+            // we only set the value in the Store;
             // the value in the local state will be updated
             // by the useEffect during the next render
             setItem(

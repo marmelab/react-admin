@@ -1,8 +1,8 @@
 import { createContext } from 'react';
 
-import { StoreProvider } from './types';
+import { Store } from './types';
 import { memoryStore } from './memoryStore';
 
-const defaultStoreProvider = memoryStore();
+const defaultStore = memoryStore();
 
-export const StoreContext = createContext<StoreProvider>(defaultStoreProvider);
+export const StoreContext = createContext<Store>(defaultStore);

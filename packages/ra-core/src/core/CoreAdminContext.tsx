@@ -11,7 +11,7 @@ import {
     convertLegacyDataProvider,
     defaultDataProvider,
 } from '../dataProvider';
-import { StoreContextProvider, StoreProvider, memoryStore } from '../store';
+import { StoreContextProvider, Store, memoryStore } from '../store';
 import createAdminStore from './createAdminStore';
 import { TranslationProvider } from '../i18n';
 import { ResourceDefinitionContextProvider } from './ResourceDefinitionContext';
@@ -34,7 +34,7 @@ export interface CoreAdminContextProps {
     customReducers?: object;
     dashboard?: DashboardComponent;
     dataProvider?: DataProvider | LegacyDataProvider;
-    store?: StoreProvider;
+    store?: Store;
     queryClient?: QueryClient;
     /**
      * @deprecated Wrap your Admin inside a Router to change the routing strategy
