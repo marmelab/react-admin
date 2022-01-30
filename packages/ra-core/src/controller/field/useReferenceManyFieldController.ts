@@ -8,7 +8,7 @@ import { useNotify } from '../../notification';
 import { RaRecord, SortPayload } from '../../types';
 import { ListControllerResult } from '../list';
 import usePaginationState from '../usePaginationState';
-import { useRecordSelection } from '../useRecordSelection';
+import { useRecordSelection } from '../list/useRecordSelection';
 import useSortState from '../useSortState';
 
 export interface UseReferenceManyFieldControllerParams {

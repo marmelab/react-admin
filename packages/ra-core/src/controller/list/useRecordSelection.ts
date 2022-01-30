@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
-import { useStore } from '../store';
-import { Identifier } from '../types';
+import { useStore } from '../../store';
+import { Identifier } from '../../types';
 
 /**
  * Get the list of selected items for a resource, and callbacks to change the selection

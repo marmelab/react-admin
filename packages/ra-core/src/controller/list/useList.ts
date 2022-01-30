@@ -6,7 +6,7 @@ import { FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useResourceContext } from '../../core';
 import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
-import { useRecordSelection } from '../useRecordSelection';
+import { useRecordSelection } from './useRecordSelection';
 import { ListControllerResult } from './useListController';
 
 const refetch = () => {

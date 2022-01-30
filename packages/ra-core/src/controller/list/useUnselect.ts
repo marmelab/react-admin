@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 import { useRecordSelection } from './useRecordSelection';
-import { Identifier } from '../types';
+import { Identifier } from '../../types';
 
 /**
  * Hook to Unselect the rows of a datagrid

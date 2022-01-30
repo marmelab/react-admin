@@ -9,7 +9,7 @@ import { useReference } from '../useReference';
 import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
 import useFilterState from '../useFilterState';
-import { useRecordSelection } from '../useRecordSelection';
+import { useRecordSelection } from '../list/useRecordSelection';
 import { useResourceContext } from '../../core';
 
 const defaultReferenceSource = (resource: string, source: string) =>

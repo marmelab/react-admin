@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
-import { useStore } from '../store';
-import { Identifier } from '../types';
+import { useStore } from '../../store';
+import { Identifier } from '../../types';
 
 /**
  * State-like hook for controlling the expanded state of a list item
@@ -17,7 +17,7 @@ import { Identifier } from '../types';
  * const expandIcon = expanded ? ExpandLess : ExpandMore;
  * const onExpandClick = () => toggleExpanded();
  */
-const useExpanded = (
+export const useExpanded = (
     resource: string,
     id: Identifier
 ): [boolean, () => void] => {
@@ -44,5 +44,3 @@ const useExpanded = (
 
     return [expanded, toggleExpanded];
 };
-
-export default useExpanded;
