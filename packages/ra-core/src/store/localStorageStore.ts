@@ -41,6 +41,14 @@ let localStorageAvailable = testLocalStorage();
  */
 export const localStorageStore = (): Store => {
     const subscriptions: { [key: string]: Subscription } = {};
+    const publish = (key: string, value: any) => {
+        Object.keys(subscriptions).forEach(id => {
+            if (!subscriptions[id]) return; // may happen if a component unmounts after a first subscriber was notified
+            if (subscriptions[id].key === key) {
+                subscriptions[id].callback(value);
+            }
+        });
+    };
 
     // Whenever the local storage changes in another document, look for matching subscribers.
     // This allows to synchronize state across tabs
@@ -49,10 +57,19 @@ export const localStorageStore = (): Store => {
             return;
         }
         const key = event.key.substring(prefixLength + 1);
+        const value = tryParse(event.newValue);
         Object.keys(subscriptions).forEach(id => {
             if (!subscriptions[id]) return; // may happen if a component unmounts after a first subscriber was notified
             if (subscriptions[id].key === key) {
-                subscriptions[id].callback(tryParse(event.newValue));
+                if (value === null) {
+                    // an event with a null value is sent when the key is deleted.
+                    // to enable default value, we need to call setValue(undefined) instead of setValue(null)
+                    subscriptions[id].callback(undefined);
+                } else {
+                    subscriptions[id].callback(
+                        value == null ? undefined : value
+                    );
+                }
             }
         });
     };
@@ -84,22 +101,19 @@ export const localStorageStore = (): Store => {
                     JSON.stringify(value)
                 );
             }
-            // notify subscribers for this key
-            Object.keys(subscriptions).forEach(id => {
-                if (!subscriptions[id]) return; // may happen if a component unmounts after a first subscriber was notified
-                if (subscriptions[id].key === key) {
-                    subscriptions[id].callback(value);
-                }
-            });
+            publish(key, value);
         },
         removeItem(key: string): void {
             getStorage().removeItem(`${RA_STORE}.${key}`);
+            publish(key, undefined);
         },
         reset(): void {
             const storage = getStorage();
             for (var i = 0; i < storage.length; i++) {
                 if (storage.key(i).substring(0, prefixLength) === RA_STORE) {
+                    const key = storage.key(i).substring(prefixLength + 1);
                     storage.removeItem(storage.key(i));
+                    publish(key, undefined);
                 }
             }
         },

@@ -23,6 +23,14 @@ type Subscription = {
  */
 export const memoryStore = (storage: any = {}): Store => {
     const subscriptions: { [key: string]: Subscription } = {};
+    const publish = (key: string, value: any) => {
+        Object.keys(subscriptions).forEach(id => {
+            if (!subscriptions[id]) return; // may happen if a component unmounts after a first subscriber was notified
+            if (subscriptions[id].key === key) {
+                subscriptions[id].callback(value);
+            }
+        });
+    };
     return {
         setup: () => {},
         teardown: () => {
@@ -33,18 +41,17 @@ export const memoryStore = (storage: any = {}): Store => {
         },
         setItem<T = any>(key: string, value: T): void {
             set(storage, key, value);
-            Object.keys(subscriptions).forEach(id => {
-                if (!subscriptions[id]) return; // may happen if a component unmounts after a first subscriber was notified
-                if (subscriptions[id].key === key) {
-                    subscriptions[id].callback(value);
-                }
-            });
+            publish(key, value);
         },
         removeItem(key: string): void {
             unset(storage, key);
+            publish(key, undefined);
         },
         reset(): void {
-            Object.keys(storage).forEach(key => delete storage[key]);
+            Object.keys(storage).forEach(key => {
+                unset(storage, key);
+                publish(key, undefined);
+            });
         },
         subscribe: (key: string, callback: (value: string) => void) => {
             const id = Math.random().toString();

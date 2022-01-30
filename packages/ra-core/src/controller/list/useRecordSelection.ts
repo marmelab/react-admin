@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { useStore } from '../../store';
+import { useStore, useRemoveFromStore } from '../../store';
 import { Identifier } from '../../types';
 
 /**
@@ -21,7 +21,9 @@ export const useRecordSelection = (
         clearSelection: () => void;
     }
 ] => {
-    const [ids, setIds] = useStore(`${resource}.selectedIds`, defaultSelection);
+    const storeKey = `${resource}.selectedIds`;
+    const [ids, setIds] = useStore(storeKey, defaultSelection);
+    const reset = useRemoveFromStore(storeKey);
 
     const selectionModifiers = useMemo(
         () => ({
@@ -47,10 +49,10 @@ export const useRecordSelection = (
                 });
             },
             clearSelection: () => {
-                setIds([]);
+                reset();
             },
         }),
-        [setIds]
+        [setIds, reset]
     );
 
     return [ids, selectionModifiers];
