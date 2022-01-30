@@ -39,7 +39,7 @@ With a synchronous store, this doesn't happen:
 
 ## Why Not Use Redux?
 
-React-admin v1, v2 and v3 used Redux to store the global state. This had major shorcomings:
+React-admin v1, v2 and v3 used Redux to store the global state. This had major shortcomings:
 
 - To store a new piece of content, developers had to declare it globally via reducers. The logic was split between actions, reducers, selectors, and even sagas.
 - The `useSelector` function is interesting to grab branches of a tree state, but it's overkill when we only need a key/value store. All our needs for a store live perfectly in a key/value store

@@ -30,7 +30,7 @@ import { useStoreContext } from './useStoreContext';
  * @param {Props}    props
  * @param {string}   props.name Store item key. Required. Separate with dots to namespace, e.g. 'posts.list.columns'
  * @param {any}      props.value Store item value. Required.
- * @param {children} props.children Children are rendered as is on mount
+ * @param {children} props.children Children are rendered as is, on mount
  */
 export const StoreSetter = ({ value, name, children }: StoreSetterProps) => {
     const { setItem } = useStoreContext();

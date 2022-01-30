@@ -3,9 +3,9 @@ import { useState, useCallback, useEffect } from 'react';
 import { useStoreContext } from './useStoreContext';
 
 /**
- * Read and write a store value from the Store
+ * Read and write a value from the Store
  *
- * useState-like hook using the Store for persistence.
+ * useState-like hook using the global Store for persistence.
  * Each time a store value is changed, all components using this value will be re-rendered.
  *
  * @param {string} key Name of the store key. Separate with dots to namespace, e.g. 'posts.list.columns'.
