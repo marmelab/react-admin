@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { usePreference } from '../preference';
+import { useStore } from '../store';
 import { Identifier } from '../types';
 
 /**
@@ -21,7 +21,7 @@ const useExpanded = (
     resource: string,
     id: Identifier
 ): [boolean, () => void] => {
-    const [expandedIds, setExpandedIds] = usePreference<Identifier[]>(
+    const [expandedIds, setExpandedIds] = useStore<Identifier[]>(
         `${resource}.datagrid.expanded.`,
         []
     );

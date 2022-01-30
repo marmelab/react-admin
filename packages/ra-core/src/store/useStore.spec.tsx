@@ -2,24 +2,24 @@ import * as React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 
-import { usePreference } from './usePreference';
-import { PreferenceContextProvider } from './PreferenceContextProvider';
-import { memoryPreferenceProvider } from './memoryPreferenceProvider';
+import { useStore } from './useStore';
+import { StoreContextProvider } from './StoreContextProvider';
+import { memoryStore } from './memoryStore';
 
-describe('usePreference', () => {
+describe('useStore', () => {
     it('should return undefined values by default', () => {
-        const { result } = renderHook(() => usePreference('foo.bar'));
+        const { result } = renderHook(() => useStore('foo.bar'));
         expect(result.current[0]).toBeUndefined();
     });
 
-    const Preference = ({ name }) => {
-        const [value] = usePreference(name);
+    const StoreReader = ({ name }) => {
+        const [value] = useStore(name);
         return <>{value}</>;
     };
 
     it('should return the value from the provider', () => {
         render(
-            <PreferenceContextProvider
+            <StoreContextProvider
                 value={
                     {
                         getItem: () => 'hello',
@@ -29,8 +29,8 @@ describe('usePreference', () => {
                     } as any
                 }
             >
-                <Preference name="foo.bar" />
-            </PreferenceContextProvider>
+                <StoreReader name="foo.bar" />
+            </StoreContextProvider>
         );
         screen.getByText('hello');
     });
@@ -39,7 +39,7 @@ describe('usePreference', () => {
         const unsubscribe = jest.fn();
         const subscribe = jest.fn().mockImplementation(() => unsubscribe);
         const { unmount } = render(
-            <PreferenceContextProvider
+            <StoreContextProvider
                 value={
                     {
                         getItem: () => 'hello',
@@ -49,8 +49,8 @@ describe('usePreference', () => {
                     } as any
                 }
             >
-                <Preference name="foo.bar" />
-            </PreferenceContextProvider>
+                <StoreReader name="foo.bar" />
+            </StoreContextProvider>
         );
         expect(subscribe).toHaveBeenCalledWith('foo.bar', expect.any(Function));
         unmount();
@@ -58,43 +58,43 @@ describe('usePreference', () => {
     });
 
     it('should allow to set values', () => {
-        const { result } = renderHook(() => usePreference('foo.bar'));
+        const { result } = renderHook(() => useStore('foo.bar'));
         result.current[1]('hello');
         expect(result.current[0]).toBe('hello');
     });
 
-    it('should update all components using the same preference on update', () => {
-        const UpdatePreference = () => {
+    it('should update all components using the same store key on update', () => {
+        const UpdateStore = () => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const [_, setValue] = usePreference('foo.bar');
+            const [_, setValue] = useStore('foo.bar');
             return <button onClick={() => setValue('world')}>update</button>;
         };
         render(
-            <PreferenceContextProvider
-                value={memoryPreferenceProvider({ foo: { bar: 'hello' } })}
+            <StoreContextProvider
+                value={memoryStore({ foo: { bar: 'hello' } })}
             >
-                <Preference name="foo.bar" />
-                <UpdatePreference />
-            </PreferenceContextProvider>
+                <StoreReader name="foo.bar" />
+                <UpdateStore />
+            </StoreContextProvider>
         );
         screen.getByText('hello');
         fireEvent.click(screen.getByText('update'));
         screen.getByText('world');
     });
 
-    it('should not update components using other preference key on update', () => {
-        const UpdatePreference = () => {
+    it('should not update components using other store key on update', () => {
+        const UpdateStore = () => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const [_, setValue] = usePreference('other.key');
+            const [_, setValue] = useStore('other.key');
             return <button onClick={() => setValue('world')}>update</button>;
         };
         render(
-            <PreferenceContextProvider
-                value={memoryPreferenceProvider({ foo: { bar: 'hello' } })}
+            <StoreContextProvider
+                value={memoryStore({ foo: { bar: 'hello' } })}
             >
-                <Preference name="foo.bar" />
-                <UpdatePreference />
-            </PreferenceContextProvider>
+                <StoreReader name="foo.bar" />
+                <UpdateStore />
+            </StoreContextProvider>
         );
         screen.getByText('hello');
         fireEvent.click(screen.getByText('update'));

@@ -13,7 +13,7 @@ export * from './util';
 export * from './controller';
 export * from './form';
 export * from './notification';
-export * from './preference';
+export * from './store';
 export * from './routing';
 export * from './sideEffect';
 export * from './types';

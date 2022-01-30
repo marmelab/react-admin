@@ -1,12 +1,12 @@
-import { PreferenceProvider } from './types';
+import { StoreProvider } from './types';
 
 type Subscription = {
     key: string;
     callback: (value: any) => void;
 };
 
-const RA_PREFERENCE = 'RaPreference';
-const prefixLength = RA_PREFERENCE.length;
+const RA_STORE = 'RaStore';
+const prefixLength = RA_STORE.length;
 
 // localStorage isn't available in incognito mode. We need to detect it
 const testLocalStorage = () => {
@@ -27,25 +27,25 @@ const testLocalStorage = () => {
 let localStorageAvailable = testLocalStorage();
 
 /**
- * PreferenceProvider using localStorage, or memory storage in incognito mode
+ * StoreProvider using localStorage, or memory storage in incognito mode
  *
  * @example
  *
  * import { localStorageProvider } from 'react-admin';
  *
  * const App = () => (
- *    <Admin prefProvider={localStorageProvider()}>
+ *    <Admin store={localStorageProvider()}>
  *       ...
  *   </Admin>
  * );
  */
-export const localStoragePreferenceProvider = (): PreferenceProvider => {
+export const localStorageStore = (): StoreProvider => {
     const subscriptions: { [key: string]: Subscription } = {};
 
     // Whenever the local storage changes in another document, look for matching subscribers.
-    // This allows to synchronize preferences across tabs
+    // This allows to synchronize state across tabs
     const onLocalStorageChange = (event: StorageEvent): void => {
-        if (event.key.substring(0, prefixLength) !== RA_PREFERENCE) {
+        if (event.key.substring(0, prefixLength) !== RA_STORE) {
             return;
         }
         const key = event.key.substring(prefixLength + 1);
@@ -69,17 +69,17 @@ export const localStoragePreferenceProvider = (): PreferenceProvider => {
         },
         getItem<T = any>(key: string, defaultValue?: T): T {
             const valueFromStorage = tryParse(
-                getStorage().getItem(`${RA_PREFERENCE}.${key}`)
+                getStorage().getItem(`${RA_STORE}.${key}`)
             );
             // eslint-disable-next-line eqeqeq
             return valueFromStorage == null ? defaultValue : valueFromStorage;
         },
         setItem<T = any>(key: string, value: T): void {
             if (value === undefined) {
-                getStorage().removeItem(`${RA_PREFERENCE}.${key}`);
+                getStorage().removeItem(`${RA_STORE}.${key}`);
             } else {
                 getStorage().setItem(
-                    `${RA_PREFERENCE}.${key}`,
+                    `${RA_STORE}.${key}`,
                     JSON.stringify(value)
                 );
             }
@@ -91,14 +91,12 @@ export const localStoragePreferenceProvider = (): PreferenceProvider => {
             });
         },
         removeItem(key: string): void {
-            getStorage().removeItem(`${RA_PREFERENCE}.${key}`);
+            getStorage().removeItem(`${RA_STORE}.${key}`);
         },
         reset(): void {
             const storage = getStorage();
             for (var i = 0; i < storage.length; i++) {
-                if (
-                    storage.key(i).substring(0, prefixLength) === RA_PREFERENCE
-                ) {
+                if (storage.key(i).substring(0, prefixLength) === RA_STORE) {
                     storage.removeItem(storage.key(i));
                 }
             }

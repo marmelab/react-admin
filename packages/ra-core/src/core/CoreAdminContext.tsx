@@ -11,11 +11,7 @@ import {
     convertLegacyDataProvider,
     defaultDataProvider,
 } from '../dataProvider';
-import {
-    PreferenceContextProvider,
-    PreferenceProvider,
-    memoryPreferenceProvider,
-} from '../preference';
+import { StoreContextProvider, StoreProvider, memoryStore } from '../store';
 import createAdminStore from './createAdminStore';
 import TranslationProvider from '../i18n/TranslationProvider';
 import { ResourceDefinitionContextProvider } from './ResourceDefinitionContext';
@@ -38,7 +34,7 @@ export interface CoreAdminContextProps {
     customReducers?: object;
     dashboard?: DashboardComponent;
     dataProvider?: DataProvider | LegacyDataProvider;
-    prefProvider?: PreferenceProvider;
+    store?: StoreProvider;
     queryClient?: QueryClient;
     /**
      * @deprecated Wrap your Admin inside a Router to change the routing strategy
@@ -55,7 +51,7 @@ export const CoreAdminContext = (props: CoreAdminContextProps) => {
         basename,
         dataProvider,
         i18nProvider,
-        prefProvider,
+        store,
         children,
         history,
         customReducers,
@@ -92,7 +88,7 @@ React-admin requires a valid dataProvider function to work.`);
     const renderCore = () => (
         <AuthContext.Provider value={finalAuthProvider}>
             <DataProviderContext.Provider value={finalDataProvider}>
-                <PreferenceContextProvider value={prefProvider}>
+                <StoreContextProvider value={store}>
                     <QueryClientProvider client={finalQueryClient}>
                         <TranslationProvider i18nProvider={i18nProvider}>
                             <AdminRouter history={history} basename={basename}>
@@ -104,12 +100,12 @@ React-admin requires a valid dataProvider function to work.`);
                             </AdminRouter>
                         </TranslationProvider>
                     </QueryClientProvider>
-                </PreferenceContextProvider>
+                </StoreContextProvider>
             </DataProviderContext.Provider>
         </AuthContext.Provider>
     );
 
-    const [store] = useState(() =>
+    const [reduxStore] = useState(() =>
         needsNewRedux
             ? createAdminStore({
                   customReducers,
@@ -119,7 +115,7 @@ React-admin requires a valid dataProvider function to work.`);
     );
 
     if (needsNewRedux) {
-        return <Provider store={store}>{renderCore()}</Provider>;
+        return <Provider store={reduxStore}>{renderCore()}</Provider>;
     } else {
         return renderCore();
     }
@@ -127,5 +123,5 @@ React-admin requires a valid dataProvider function to work.`);
 
 CoreAdminContext.defaultProps = {
     dataProvider: defaultDataProvider,
-    prefProvider: memoryPreferenceProvider(),
+    store: memoryStore(),
 };

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ComponentType } from 'react';
-import { CoreAdminProps, localStoragePreferenceProvider } from 'ra-core';
+import { CoreAdminProps, localStorageStore } from 'ra-core';
 import { AdminUI, AdminContext } from 'ra-ui-materialui';
 import { ThemeOptions } from '@mui/material';
 
@@ -104,7 +104,7 @@ export const Admin = (props: AdminProps) => {
         logoutButton,
         menu, // deprecated, use a custom layout instead
         notification,
-        prefProvider,
+        store,
         ready,
         theme,
         title = 'React Admin',
@@ -122,7 +122,7 @@ export const Admin = (props: AdminProps) => {
             basename={basename}
             dataProvider={dataProvider}
             i18nProvider={i18nProvider}
-            prefProvider={prefProvider}
+            store={store}
             history={history}
             customReducers={customReducers}
             initialState={initialState}
@@ -149,7 +149,7 @@ export const Admin = (props: AdminProps) => {
 
 Admin.defaultProps = {
     i18nProvider: defaultI18nProvider,
-    prefProvider: localStoragePreferenceProvider(),
+    store: localStorageStore(),
 };
 
 export default Admin;

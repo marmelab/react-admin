@@ -1,15 +1,15 @@
 import { useCallback } from 'react';
 
-import { usePreferenceProvider } from './usePreferenceProvider';
+import { useStoreContext } from './useStoreContext';
 
 /**
- * Get a callback to remove an item from the preferences
+ * Get a callback to remove an item from the store
  *
  * @example
- * import { useRemovePreference } from 'react-admin';
+ * import { useRemoveFromStore } from 'react-admin';
  *
  * const ResetDatagridPrefs = () {
- *    const removeItem = useRemovePreference();
+ *    const removeItem = useRemoveFromStore();
  *
  *    const hancleClick = () => {
  *        removeItem('datagrid.prefs');
@@ -18,7 +18,7 @@ import { usePreferenceProvider } from './usePreferenceProvider';
  *    return <Button onClick={hancleClick}>Reset datagrid preferences</Button>;
  * }
  */
-export const useRemovePreference = () => {
-    const { removeItem } = usePreferenceProvider();
+export const useRemoveFromStore = () => {
+    const { removeItem } = useStoreContext();
     return useCallback((key: string) => removeItem(key), [removeItem]);
 };

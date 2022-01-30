@@ -1,4 +1,4 @@
-import { usePreference } from 'ra-core';
+import { useStore } from 'ra-core';
 
 /**
  * A hook that returns the sidebar open state and a function to toggle it.
@@ -14,6 +14,6 @@ import { usePreference } from 'ra-core';
  * };
  */
 export const useSidebarState = (): useSidebarStateResult =>
-    usePreference('sidebar.open', true);
+    useStore('sidebar.open', true);
 
 export type useSidebarStateResult = [boolean, (open: boolean) => void];

@@ -1,15 +1,15 @@
 import * as React from 'react';
 
-import { localStoragePreferenceProvider } from './localStoragePreferenceProvider';
-import { PreferenceContextProvider } from './PreferenceContextProvider';
-import { usePreference } from './usePreference';
+import { memoryStore } from './memoryStore';
+import { StoreContextProvider } from './StoreContextProvider';
+import { useStore } from './useStore';
 
 export default {
-    title: 'ra-core/preference/localStorage',
+    title: 'ra-core/store/memory',
 };
 
-const Preference = ({ name }) => {
-    const [value] = usePreference(name);
+const StoreReader = ({ name }) => {
+    const [value] = useStore(name);
     return (
         <>
             <dt>{name}</dt>
@@ -18,8 +18,8 @@ const Preference = ({ name }) => {
     );
 };
 
-const PreferenceSetter = ({ name }) => {
-    const [value, setValue] = usePreference<string>(name);
+const StoreSetter = ({ name }) => {
+    const [value, setValue] = useStore(name);
     return (
         <>
             <dt>{name}</dt>
@@ -40,17 +40,17 @@ const PreferenceSetter = ({ name }) => {
 
 export const Basic = () => {
     return (
-        <PreferenceContextProvider value={localStoragePreferenceProvider()}>
+        <StoreContextProvider value={memoryStore()}>
             <h1>Values</h1>
             <dl>
-                <Preference name="foo.bar" />
-                <Preference name="foo.baz" />
+                <StoreReader name="foo.bar" />
+                <StoreReader name="foo.baz" />
             </dl>
             <h1>Setter</h1>
             <dl>
-                <PreferenceSetter name="foo.bar" />
-                <PreferenceSetter name="foo.baz" />
+                <StoreSetter name="foo.bar" />
+                <StoreSetter name="foo.baz" />
             </dl>
-        </PreferenceContextProvider>
+        </StoreContextProvider>
     );
 };

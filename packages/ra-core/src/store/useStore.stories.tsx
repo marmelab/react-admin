@@ -1,13 +1,13 @@
 import * as React from 'react';
 
-import { usePreference } from './usePreference';
+import { useStore } from './useStore';
 
 export default {
-    title: 'ra-core/preference/usePreference',
+    title: 'ra-core/store/useStore',
 };
 
-const Preference = ({ name }) => {
-    const [value] = usePreference(name);
+const StoreReader = ({ name }) => {
+    const [value] = useStore(name);
     return (
         <>
             <dt>{name}</dt>
@@ -16,8 +16,8 @@ const Preference = ({ name }) => {
     );
 };
 
-const PreferenceSetter = ({ name }) => {
-    const [value, setValue] = usePreference(name);
+const StoreSetter = ({ name }) => {
+    const [value, setValue] = useStore(name);
     return (
         <>
             <dt>{name}</dt>
@@ -40,19 +40,19 @@ export const Basic = () => (
     <>
         <h1>Values</h1>
         <dl>
-            <Preference name="foo.bar" />
-            <Preference name="foo.baz" />
+            <StoreReader name="foo.bar" />
+            <StoreReader name="foo.baz" />
         </dl>
         <h1>Setter</h1>
         <dl>
-            <PreferenceSetter name="foo.bar" />
-            <PreferenceSetter name="foo.baz" />
+            <StoreSetter name="foo.bar" />
+            <StoreSetter name="foo.baz" />
         </dl>
     </>
 );
 
-const PreferenceRaw = ({ name }) => {
-    const [value] = usePreference(name);
+const StoreRaw = ({ name }) => {
+    const [value] = useStore(name);
     return (
         <>
             {value === undefined
@@ -66,10 +66,10 @@ const PreferenceRaw = ({ name }) => {
     );
 };
 
-export const MissingValue = () => <PreferenceRaw name="key_with_no_value" />;
+export const MissingValue = () => <StoreRaw name="key_with_no_value" />;
 
-const PreferenceWithDefault = ({ name, defaultValue }) => {
-    const [value] = usePreference(name, defaultValue);
+const StoreWithDefault = ({ name, defaultValue }) => {
+    const [value] = useStore(name, defaultValue);
     return (
         <>
             <dt>{name}</dt>
@@ -82,19 +82,19 @@ export const DefaultValue = () => (
     <>
         <h1>Values</h1>
         <dl>
-            <PreferenceWithDefault name="name1" defaultValue="default" />
-            <PreferenceWithDefault name="name2" defaultValue="default" />
+            <StoreWithDefault name="name1" defaultValue="default" />
+            <StoreWithDefault name="name2" defaultValue="default" />
         </dl>
         <h1>Setter</h1>
         <dl>
-            <PreferenceSetter name="name1" />
-            <PreferenceSetter name="name2" />
+            <StoreSetter name="name1" />
+            <StoreSetter name="name2" />
         </dl>
     </>
 );
 
-export const UIPreferences = () => {
-    const [fontSize, setSize] = usePreference('ui.size', 16);
+export const UIStore = () => {
+    const [fontSize, setSize] = useStore('ui.size', 16);
 
     return (
         <>

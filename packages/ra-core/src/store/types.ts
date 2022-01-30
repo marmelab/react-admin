@@ -1,4 +1,4 @@
-export interface PreferenceProvider {
+export interface StoreProvider {
     setup: () => void;
     teardown: () => void;
     getItem: <T = any>(key: string, defaultValue?: T) => T;

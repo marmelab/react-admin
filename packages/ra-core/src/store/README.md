@@ -1,8 +1,8 @@
-# Preferences
+# Store
 
-The Preferences is react-admin's global, synchronous store. We use it to store state shared between several componenents and/or state that must be persisted across page reloads.
+The Store is react-admin's global, synchronous store. We use it to store state shared between several componenents and/or state that must be persisted across page reloads.
 
-Here are a few examples of elements stored in the pregferences:
+Here are a few examples of elements stored in the store:
 
 - Is the sidebar open or collapsed?
 - Which rows of a datagrid are selected?
@@ -10,14 +10,14 @@ Here are a few examples of elements stored in the pregferences:
 
 ## Architecture
 
-Preferences use an adapter pattern to allow developers to store their preferences in memory, in localStorage, and to synchronize it with an API.
+The store use an adapter pattern to allow developers to store the state in memory, in localStorage, and to synchronize it with an API.
 
-Preferences rely on React state and update events that broadcast a change in the state to all components subscribed to that state.
+Stores rely on React state and update events that broadcast a change in the state to all components subscribed to that state.
 
-The Preferences API is modeled after the `useState` API.
+The Store API is modeled after the `useState` API.
 
 ```jsx
-const [value, setValue] = usePreference(key, defaultValue);
+const [value, setValue] = useStore(key, defaultValue);
 ```
 
 ## Why Use A Synchronous Store?

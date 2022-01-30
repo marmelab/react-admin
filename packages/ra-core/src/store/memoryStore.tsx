@@ -1,7 +1,7 @@
 import set from 'lodash/set';
 import unset from 'lodash/unset';
 import get from 'lodash/get';
-import { PreferenceProvider } from './types';
+import { StoreProvider } from './types';
 
 type Subscription = {
     key: string;
@@ -9,21 +9,19 @@ type Subscription = {
 };
 
 /**
- * PreferenceProvider using memory
+ * StoreProvider using memory
  *
  * @example
  *
- * import { memoryPreferenceProvider } from 'react-admin';
+ * import { memoryStore } from 'react-admin';
  *
  * const App = () => (
- *    <Admin prefProvider={memoryPreferenceProvider()}>
+ *    <Admin store={memoryStore()}>
  *       ...
  *   </Admin>
  * );
  */
-export const memoryPreferenceProvider = (
-    storage: any = {}
-): PreferenceProvider => {
+export const memoryStore = (storage: any = {}): StoreProvider => {
     const subscriptions: { [key: string]: Subscription } = {};
     return {
         setup: () => {},
