@@ -70,7 +70,10 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
     },
     reference: {
         component: ReferenceInput,
-        representation: (props: ReferenceInputProps, children: InferredElement) =>
+        representation: (
+            props: ReferenceInputProps,
+            children: InferredElement
+        ) =>
             `<ReferenceInput source="${props.source}" reference="${
                 props.reference
             }">${children.getRepresentation()}</ReferenceInput>`,
