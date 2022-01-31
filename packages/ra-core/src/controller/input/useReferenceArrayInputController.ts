@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
+import { useMemo, useEffect, useRef, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import isEqual from 'lodash/isEqual';
 import difference from 'lodash/difference';
@@ -59,8 +59,10 @@ export const useReferenceArrayInputController = (
     // We store the current input value in a ref so that we are able to fetch
     // only the missing references when the input value changes
     const inputValue = useRef(input.value);
-    const [idsToFetch, setIdsToFetch] = useState(input.value);
-    const [idsToGetFromStore, setIdsToGetFromStore] = useState(EmptyArray);
+    const [idsToFetch, setIdsToFetch] = useSafeSetState(input.value);
+    const [idsToGetFromStore, setIdsToGetFromStore] = useSafeSetState(
+        EmptyArray
+    );
     const referenceRecordsFromStore = useSelector((state: ReduxState) =>
         idsToGetFromStore.map(id => state.admin.resources[reference].data[id])
     );
@@ -186,7 +188,7 @@ export const useReferenceArrayInputController = (
     }, [setPagination, initialPage, initialPerPage]);
 
     // filter logic
-    const [queryFilter, setFilter] = useState('');
+    const [queryFilter, setFilter] = useSafeSetState('');
     const filterRef = useRef(defaultFilter);
     const [displayedFilters, setDisplayedFilters] = useSafeSetState<{
         [key: string]: boolean;
