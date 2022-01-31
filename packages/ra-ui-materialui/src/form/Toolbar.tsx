@@ -124,7 +124,7 @@ const Toolbar: FC<ToolbarProps> = props => {
     // Use form pristine and validating to enable or disable the save button
     // if alwaysEnableSaveButton is undefined
     const disabled = !valueOrDefault(
-        alwaysEnableSaveButton !== false ?? undefined,
+        alwaysEnableSaveButton !== false ? alwaysEnableSaveButton : undefined,
         !pristine && !validating
     );
 
