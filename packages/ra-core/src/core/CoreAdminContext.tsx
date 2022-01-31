@@ -13,7 +13,7 @@ import {
 } from '../dataProvider';
 import { StoreContextProvider, Store, memoryStore } from '../store';
 import createAdminStore from './createAdminStore';
-import { TranslationProvider } from '../i18n';
+import { I18nContextProvider } from '../i18n';
 import { ResourceDefinitionContextProvider } from './ResourceDefinitionContext';
 import { NotificationContextProvider } from '../notification';
 import {
@@ -90,15 +90,15 @@ React-admin requires a valid dataProvider function to work.`);
             <DataProviderContext.Provider value={finalDataProvider}>
                 <StoreContextProvider value={store}>
                     <QueryClientProvider client={finalQueryClient}>
-                        <TranslationProvider i18nProvider={i18nProvider}>
-                            <AdminRouter history={history} basename={basename}>
+                        <AdminRouter history={history} basename={basename}>
+                            <I18nContextProvider value={i18nProvider}>
                                 <NotificationContextProvider>
                                     <ResourceDefinitionContextProvider>
                                         {children}
                                     </ResourceDefinitionContextProvider>
                                 </NotificationContextProvider>
-                            </AdminRouter>
-                        </TranslationProvider>
+                            </I18nContextProvider>
+                        </AdminRouter>
                     </QueryClientProvider>
                 </StoreContextProvider>
             </DataProviderContext.Provider>

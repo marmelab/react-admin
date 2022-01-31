@@ -1,9 +1,9 @@
-import { useContext } from 'react';
-
-import { TranslationContext } from './TranslationContext';
+import { useMemo } from 'react';
+import { useI18nProvider } from './useI18nProvider';
+import { useStore } from '../store/useStore';
 
 /**
- * Get the current locale from the TranslationContext
+ * Get the current locale from the I18nContext
  *
  * This hook re-renders when the locale changes.
  *
@@ -21,6 +21,10 @@ import { TranslationContext } from './TranslationContext';
  * }
  */
 export const useLocale = () => {
-    const { locale } = useContext(TranslationContext);
+    const i18nProvider = useI18nProvider();
+    const defaultLocale = useMemo(() => i18nProvider.getLocale(), [
+        i18nProvider,
+    ]);
+    const [locale] = useStore<string>('locale', defaultLocale);
     return locale;
 };

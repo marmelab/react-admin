@@ -1,10 +1,7 @@
-import { useContext, useCallback } from 'react';
-
-import { TranslationContext } from './TranslationContext';
-import { useNotify } from '../notification';
+import { useStore } from '../store/useStore';
 
 /**
- * Set the current locale using the TranslationContext
+ * Set the current locale using the I18nContext
  *
  * This hook re-renders when the locale changes.
  *
@@ -29,25 +26,7 @@ import { useNotify } from '../notification';
  *     );
  * }
  */
-export const useSetLocale = (): SetLocale => {
-    const { setLocale, i18nProvider } = useContext(TranslationContext);
-    const notify = useNotify();
-    return useCallback(
-        (newLocale: string) =>
-            new Promise(resolve => {
-                // so we systematically return a Promise for the messages
-                // i18nProvider may return a Promise for language changes,
-                resolve(i18nProvider.changeLocale(newLocale));
-            })
-                .then(() => {
-                    setLocale(newLocale);
-                })
-                .catch(error => {
-                    notify('ra.notification.i18n_error', { type: 'warning' });
-                    console.error(error);
-                }),
-        [i18nProvider, notify, setLocale]
-    );
+export const useSetLocale = () => {
+    const [_, setLocale] = useStore<string>('locale');
+    return setLocale;
 };
-
-type SetLocale = (locale: String) => Promise<void>;

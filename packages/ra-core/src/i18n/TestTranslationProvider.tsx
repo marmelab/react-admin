@@ -1,29 +1,25 @@
 import * as React from 'react';
 import lodashGet from 'lodash/get';
 
-import { TranslationContext } from './TranslationContext';
+import { I18nContext } from './I18nContext';
 
 export const TestTranslationProvider = ({
     translate,
     messages,
     children,
 }: any) => (
-    <TranslationContext.Provider
+    <I18nContext.Provider
         value={{
-            locale: 'en',
-            setLocale: () => Promise.resolve(),
-            i18nProvider: {
-                translate: messages
-                    ? (key: string, options?: any) =>
-                          lodashGet(messages, key)
-                              ? lodashGet(messages, key)
-                              : options._
-                    : translate,
-                changeLocale: () => Promise.resolve(),
-                getLocale: () => 'en',
-            },
+            translate: messages
+                ? (key: string, options?: any) =>
+                      lodashGet(messages, key)
+                          ? lodashGet(messages, key)
+                          : options._
+                : translate,
+            changeLocale: () => Promise.resolve(),
+            getLocale: () => 'en',
         }}
     >
         {children}
-    </TranslationContext.Provider>
+    </I18nContext.Provider>
 );
