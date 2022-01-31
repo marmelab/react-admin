@@ -3,7 +3,7 @@ import set from 'lodash/set';
 
 import removeEmpty from '../../util/removeEmpty';
 import removeKey from '../../util/removeKey';
-import { ListParams } from '../../actions';
+import { ListParams } from './useListParams';
 
 export const SET_SORT = 'SET_SORT';
 export const SORT_ASC = 'ASC';

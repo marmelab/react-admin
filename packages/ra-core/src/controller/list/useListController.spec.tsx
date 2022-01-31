@@ -11,16 +11,15 @@ import lolex from 'lolex';
 // TODO: we shouldn't import mui components in ra-core
 import { TextField } from '@mui/material';
 import { createMemoryHistory } from 'history';
-import { Provider } from 'react-redux';
 
 import { testDataProvider } from '../../dataProvider';
+import { useStore, memoryStore } from '../../store';
 import { ListController } from './ListController';
 import {
     getListControllerProps,
     sanitizeListRestProps,
 } from './useListController';
-import { CoreAdminContext, createAdminStore } from '../../core';
-import { CRUD_CHANGE_LIST_PARAMS } from '../../actions';
+import { CoreAdminContext } from '../../core';
 
 describe('useListController', () => {
     const defaultProps = {
@@ -71,40 +70,35 @@ describe('useListController', () => {
         });
 
         it('should take only last change in case of a burst of changes (case of inputs being currently edited)', () => {
-            expect.assertions(2);
-
             const props = {
                 ...defaultProps,
                 children: childFunction,
             };
+            const store = memoryStore();
+            const storeSpy = jest.spyOn(store, 'setItem');
 
-            const store = createAdminStore({
-                initialState: { admin: { listParams: {} } },
-            });
-            const dispatch = jest.spyOn(store, 'dispatch');
             render(
-                <Provider store={store}>
-                    <CoreAdminContext dataProvider={testDataProvider()}>
-                        <ListController {...props} />
-                    </CoreAdminContext>
-                </Provider>
+                <CoreAdminContext
+                    dataProvider={testDataProvider()}
+                    store={store}
+                >
+                    <ListController {...props} />
+                </CoreAdminContext>
             );
             const searchInput = screen.getByLabelText('search');
 
             fireEvent.change(searchInput, { target: { value: 'hel' } });
             fireEvent.change(searchInput, { target: { value: 'hell' } });
             fireEvent.change(searchInput, { target: { value: 'hello' } });
-
             clock.tick(210);
 
-            const changeParamsCalls = dispatch.mock.calls.filter(
-                call => call[0].type === CRUD_CHANGE_LIST_PARAMS
-            );
-            expect(changeParamsCalls).toHaveLength(1);
-
-            const state = store.getState();
-            expect(state.admin.listParams.posts.filter).toEqual({
-                q: 'hello',
+            expect(storeSpy).toHaveBeenCalledTimes(1);
+            expect(storeSpy).toHaveBeenCalledWith('posts.listParams', {
+                filter: { q: 'hello' },
+                order: 'ASC',
+                page: 1,
+                perPage: 10,
+                sort: 'id',
             });
         });
 
@@ -114,19 +108,6 @@ describe('useListController', () => {
                 children: childFunction,
             };
 
-            const store = createAdminStore({
-                initialState: {
-                    admin: {
-                        listParams: {
-                            posts: {
-                                filter: { q: 'hello' },
-                                displayedFilters: { q: true },
-                            },
-                        },
-                    },
-                },
-            });
-            const dispatch = jest.spyOn(store, 'dispatch');
             const history = createMemoryHistory({
                 initialEntries: [
                     `/posts?filter=${JSON.stringify({
@@ -134,21 +115,18 @@ describe('useListController', () => {
                     })}&displayedFilters=${JSON.stringify({ q: true })}`,
                 ],
             });
+            const store = memoryStore();
+            const storeSpy = jest.spyOn(store, 'setItem');
             render(
-                <Provider store={store}>
-                    <CoreAdminContext
-                        dataProvider={testDataProvider()}
-                        history={history}
-                    >
-                        <ListController {...props} />
-                    </CoreAdminContext>
-                </Provider>
+                <CoreAdminContext
+                    dataProvider={testDataProvider()}
+                    history={history}
+                    store={store}
+                >
+                    <ListController {...props} />
+                </CoreAdminContext>
             );
-            expect(
-                dispatch.mock.calls.filter(
-                    call => call[0].type === CRUD_CHANGE_LIST_PARAMS
-                )
-            ).toHaveLength(1);
+            expect(storeSpy).toHaveBeenCalledTimes(1);
 
             const searchInput = screen.getByLabelText('search');
             // FIXME: For some reason, triggering the change event with an empty string
@@ -156,16 +134,15 @@ describe('useListController', () => {
             fireEvent.change(searchInput, { target: { value: '' } });
             clock.tick(210);
 
-            expect(
-                dispatch.mock.calls.filter(
-                    call => call[0].type === CRUD_CHANGE_LIST_PARAMS
-                )
-            ).toHaveLength(2);
+            expect(storeSpy).toHaveBeenCalledTimes(2);
 
-            const state = store.getState();
-            expect(state.admin.listParams.posts.filter).toEqual({});
-            expect(state.admin.listParams.posts.displayedFilters).toEqual({
-                q: true,
+            expect(storeSpy).toHaveBeenCalledWith('posts.listParams', {
+                filter: {},
+                displayedFilters: { q: true },
+                order: 'ASC',
+                page: 1,
+                perPage: 10,
+                sort: 'id',
             });
         });
 
