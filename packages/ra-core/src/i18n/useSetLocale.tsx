@@ -25,6 +25,7 @@ import { useStore } from '../store/useStore';
  * }
  */
 export const useSetLocale = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, setLocale] = useStore<string>('locale');
     return setLocale;
 };

@@ -13,7 +13,7 @@ import { TextField } from '@mui/material';
 import { createMemoryHistory } from 'history';
 
 import { testDataProvider } from '../../dataProvider';
-import { useStore, memoryStore } from '../../store';
+import { memoryStore } from '../../store';
 import { ListController } from './ListController';
 import {
     getListControllerProps,

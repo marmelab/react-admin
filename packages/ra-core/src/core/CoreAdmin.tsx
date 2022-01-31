@@ -1,7 +1,4 @@
 import * as React from 'react';
-import { ComponentType } from 'react';
-import { QueryClient } from 'react-query';
-import { History } from 'history';
 
 import { CoreAdminContext, CoreAdminContextProps } from './CoreAdminContext';
 import { CoreAdminUI, CoreAdminUIProps } from './CoreAdminUI';
