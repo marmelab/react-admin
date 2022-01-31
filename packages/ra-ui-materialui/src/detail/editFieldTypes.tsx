@@ -7,6 +7,7 @@ import {
     DateInput,
     NumberInput,
     ReferenceInput,
+    ReferenceInputProps,
     ReferenceArrayInput,
     ReferenceArrayInputProps,
     SelectInput,
@@ -69,7 +70,10 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
     },
     reference: {
         component: ReferenceInput,
-        representation: (props: InputProps, children: InferredElement) =>
+        representation: (
+            props: ReferenceInputProps,
+            children: InferredElement
+        ) =>
             `<ReferenceInput source="${props.source}" reference="${
                 props.reference
             }">${children.getRepresentation()}</ReferenceInput>`,
