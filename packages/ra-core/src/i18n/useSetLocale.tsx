@@ -1,9 +1,7 @@
 import { useStore } from '../store/useStore';
 
 /**
- * Set the current locale using the I18nContext
- *
- * This hook re-renders when the locale changes.
+ * Set the current locale in the I18nContext and re-render the app when the locale changes.
  *
  * @example
  *

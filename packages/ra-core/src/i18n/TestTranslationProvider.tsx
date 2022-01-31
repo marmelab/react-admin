@@ -1,14 +1,14 @@
 import * as React from 'react';
 import lodashGet from 'lodash/get';
 
-import { I18nContext } from './I18nContext';
+import { I18nContextProvider } from './I18nContextProvider';
 
 export const TestTranslationProvider = ({
     translate,
     messages,
     children,
 }: any) => (
-    <I18nContext.Provider
+    <I18nContextProvider
         value={{
             translate: messages
                 ? (key: string, options?: any) =>
@@ -21,5 +21,5 @@ export const TestTranslationProvider = ({
         }}
     >
         {children}
-    </I18nContext.Provider>
+    </I18nContextProvider>
 );

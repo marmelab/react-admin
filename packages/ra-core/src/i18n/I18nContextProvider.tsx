@@ -6,6 +6,9 @@ import { useStore } from '../store/useStore';
 import { useNotify } from '../notification';
 import { I18nProvider } from '../types';
 
+/**
+ * Store the i18nProvider in a context, and rerender children when the locale changes
+ */
 export const I18nContextProvider = ({
     value = defaulti18nContext,
     children,

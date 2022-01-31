@@ -3,9 +3,7 @@ import { useI18nProvider } from './useI18nProvider';
 import { useStore } from '../store/useStore';
 
 /**
- * Get the current locale from the I18nContext
- *
- * This hook re-renders when the locale changes.
+ * Get the current locale
  *
  * @example
  *
