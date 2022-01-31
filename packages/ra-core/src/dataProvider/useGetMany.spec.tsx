@@ -307,14 +307,14 @@ describe('useGetMany', () => {
             refetch: expect.any(Function),
         });
         expect(hookValue.mock.calls[5][0]).toEqual({
-            data: [{ id: 1, title: 'foo' }, undefined],
+            data: [{ id: 1, title: 'foo' }],
             error: null,
             loaded: true,
             loading: true,
             refetch: expect.any(Function),
         });
         expect(hookValue.mock.calls[6][0]).toEqual({
-            data: [{ id: 1, title: 'foo' }, undefined],
+            data: [{ id: 1, title: 'foo' }],
             error: null,
             loaded: true,
             loading: true,

@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { useSelector } from 'react-redux';
 import { createSelector } from 'reselect';
@@ -11,7 +11,6 @@ import { CRUD_GET_MANY } from '../actions/dataActions/crudGetMany';
 import { Identifier, Record, ReduxState, DataProviderProxy } from '../types';
 import { useSafeSetState } from '../util/hooks';
 import useDataProvider from './useDataProvider';
-import { useEffect } from 'react';
 import { useVersion } from '../controller';
 import { Refetch } from './useQueryWithStore';
 
@@ -119,13 +118,17 @@ const useGetMany = (
         refetch,
     });
     if (!isEqual(state.data, data)) {
-        setState({
+        const newState = {
             ...state,
-            data,
+            data: data?.includes(undefined) ? state.data : data,
             loading:
                 state.data?.length !== 0 &&
                 (state.loading || data?.includes(undefined)),
-        });
+        };
+
+        if (!isEqual(state, newState)) {
+            setState(newState);
+        }
     }
     dataProvider = useDataProvider(); // not the best way to pass the dataProvider to a function outside the hook, but I couldn't find a better one
     useEffect(
