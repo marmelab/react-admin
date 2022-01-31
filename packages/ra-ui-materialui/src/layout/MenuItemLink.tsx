@@ -162,7 +162,13 @@ export const MenuItemLinkClasses = {
     icon: `${PREFIX}-icon`,
 };
 
-const StyledMenuItem = styled(MenuItem, { name: PREFIX })(({ theme }) => ({
+const StyledMenuItem = styled(MenuItem, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => [
+        { [`&.${MenuItemLinkClasses.active}`]: styles.active },
+        styles.root,
+    ],
+})(({ theme }) => ({
     [`&.${MenuItemLinkClasses.root}`]: {
         color: theme.palette.text.secondary,
     },
