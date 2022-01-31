@@ -7,8 +7,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import { memoryStore } from '../store';
 import Authenticated from './Authenticated';
 import { useNotificationContext } from '../notification';
-import { CoreAdminContext, createAdminStore } from '../core';
-import { testDataProvider } from '../dataProvider';
+import { CoreAdminContext } from '../core';
 
 describe('useAuthenticated', () => {
     const Foo = () => <div>Foo</div>;

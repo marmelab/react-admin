@@ -9,8 +9,7 @@ import {
     ListItemSecondaryAction,
 } from '@mui/material';
 import CancelIcon from '@mui/icons-material/CancelOutlined';
-import { useTranslate, useListFilterContext } from 'ra-core';
-import { shallowEqual } from 'react-redux';
+import { useTranslate, useListFilterContext, shallowEqual } from 'ra-core';
 import matches from 'lodash/matches';
 import pickBy from 'lodash/pickBy';
 

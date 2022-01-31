@@ -28,3 +28,4 @@ export {
 
 export type { FieldTitleProps };
 export * from './hooks';
+export * from './shallowEqual';
