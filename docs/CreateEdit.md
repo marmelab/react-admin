@@ -1693,7 +1693,7 @@ export const PostEdit = (props) => (
 
 Here are the props received by the `Toolbar` component when passed as the `toolbar` prop of the `SimpleForm` or `TabbedForm` components:
 
-* `alwaysEnableSaveButton`: Force enabling the `<SaveButton>`. If it's not defined, the `<SaveButton>` will be enabled using the `pristine` prop (disabled if pristine, enabled otherwise).
+* `alwaysEnableSaveButton`: Force enabling the `<SaveButton>`. If it's not defined or is `false`, the `<SaveButton>` will be enabled using the `pristine` prop (disabled if pristine, enabled otherwise).
 * `handleSubmitWithRedirect`: The function to call in order to submit the form. It accepts a single parameter overriding the form's default redirect.
 * `handleSubmit` which is the same prop as in [react-final-form](https://final-form.org/docs/react-final-form/types/FormRenderProps#handlesubmit)
 * `invalid`: A boolean indicating whether the form is invalid
