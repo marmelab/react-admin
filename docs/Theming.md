@@ -334,11 +334,11 @@ const App = () => (
 
 ## Changing the Theme Programmatically
 
-React-admin provides the `useSetTheme` hook to update the theme programmatically:
+React-admin provides the `useTheme` hook to read and update the theme programmatically. It uses the same syntax as `useState`:
 
 ```jsx
-import { defaultTheme, useSetTheme } from 'react-admin';
-import { Button, useTheme } from '@mui/material';
+import { defaultTheme, useTheme } from 'react-admin';
+import { Button } from '@mui/material';
 
 const lightTheme = defaultTheme;
 const darkTheme = {
@@ -349,8 +349,7 @@ const darkTheme = {
 };
 
 const ThemeToggler = () => {
-    const setTheme = useSetTheme();
-    const theme = useTheme();
+    const [theme, setTheme] = useTheme();
 
     return (
         <Button onClick={() => setTheme(theme.palette.mode === 'dark' ? lightTheme : darkTheme)}>
