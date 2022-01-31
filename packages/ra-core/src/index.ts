@@ -1,9 +1,7 @@
 import createAppReducer from './reducer';
-import adminReducer from './reducer/admin';
 
-export { createAppReducer, adminReducer };
+export { createAppReducer };
 export * from './core';
-export * from './actions';
 export * from './auth';
 export * from './dataProvider';
 export * from './export';
