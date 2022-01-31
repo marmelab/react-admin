@@ -25469,6 +25469,7 @@ __metadata:
     ra-i18n-polyglot: ^4.0.0-alpha.2
     ra-language-english: ^4.0.0-alpha.2
     ra-ui-materialui: ^4.0.0-alpha.2
+    react-hook-form: ^7.25.0
     react-redux: ^7.1.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
