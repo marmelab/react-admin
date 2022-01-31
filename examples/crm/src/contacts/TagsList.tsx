@@ -7,8 +7,6 @@ import {
     useRecordContext,
 } from 'react-admin';
 
-import { Contact } from '../types';
-
 const PREFIX = 'TagsList';
 
 const classes = {
@@ -36,23 +34,15 @@ const ColoredChipField = (props: any) => {
     );
 };
 
-export const TagsList = ({ record }: { record: Contact }) => {
-    if (!record) return null;
-    return (
-        <StyledReferenceArrayField
-            record={record}
-            resource="contacts"
-            source="tags"
-            reference="tags"
-            className={classes.root}
-        >
-            <SingleFieldList linkType={false} component="span">
-                <ColoredChipField
-                    source="name"
-                    variant="outlined"
-                    size="small"
-                />
-            </SingleFieldList>
-        </StyledReferenceArrayField>
-    );
-};
+export const TagsList = () => (
+    <StyledReferenceArrayField
+        resource="contacts"
+        source="tags"
+        reference="tags"
+        className={classes.root}
+    >
+        <SingleFieldList linkType={false} component="span">
+            <ColoredChipField source="name" variant="outlined" size="small" />
+        </SingleFieldList>
+    </StyledReferenceArrayField>
+);

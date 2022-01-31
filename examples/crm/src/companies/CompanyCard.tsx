@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Paper, Typography, Link as MuiLink } from '@mui/material';
 import ContactsIcon from '@mui/icons-material/AccountCircle';
 import DealIcon from '@mui/icons-material/MonetizationOn';
-import { useCreatePath, SelectField } from 'react-admin';
+import { useCreatePath, SelectField, useRecordContext } from 'react-admin';
 import { Link } from 'react-router-dom';
 
 import { sectors } from './sectors';
@@ -59,9 +59,12 @@ const StyledMuiLink = styled(MuiLink)(({ theme }) => ({
     },
 }));
 
-export const CompanyCard = ({ record }: { record: Company }) => {
+export const CompanyCard = (props: { record?: Company }) => {
     const [elevation, setElevation] = useState(1);
     const createPath = useCreatePath();
+    const record = useRecordContext<Company>(props);
+    if (!record) return null;
+
     return (
         <StyledMuiLink
             // @ts-ignore
@@ -77,7 +80,7 @@ export const CompanyCard = ({ record }: { record: Company }) => {
         >
             <Paper className={classes.paper} elevation={elevation}>
                 <div className={classes.identity}>
-                    <CompanyAvatar record={record} />
+                    <CompanyAvatar />
                     <div className={classes.name}>
                         <Typography variant="subtitle2">
                             {record.name}
@@ -86,7 +89,6 @@ export const CompanyCard = ({ record }: { record: Company }) => {
                             color="textSecondary"
                             source="sector"
                             choices={sectors}
-                            record={record}
                         />
                     </div>
                 </div>

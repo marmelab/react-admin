@@ -1121,7 +1121,7 @@ const CommentGrid = () => {
 
 ## `currentSort` Renamed To `sort`
 
-If one of your components displays the curent sort order, it probably uses the injected `currentSort` prop (or reads it from the `ListContext`). This prop has been renamed to `sort` in v4.
+If one of your components displays the current sort order, it probably uses the injected `currentSort` prop (or reads it from the `ListContext`). This prop has been renamed to `sort` in v4.
 
 Upgrade your code by replacing `currentSort` with `sort`:
 
@@ -1380,9 +1380,9 @@ export const PostEdit = (props) => (
 
 ## The `record` Prop Is No Longer Injected
 
-The List and Show components that took Field as children (e.g. `<Datagrid>`, `<SimpleShowLayout>`) used to clone these childrena and to inject the current `record` as prop. This is no longer the case, and Field components have to "pull" the record using `useRecordContext` instead. 
+The List and Show components that took Field as children (e.g. `<Datagrid>`, `<SimpleShowLayout>`) used to clone these children a and to inject the current `record` as prop. This is no longer the case, and Field components have to "pull" the record using `useRecordContext` instead. 
 
-All the react-admin Field components have been updated to use this `useRecordContext` hook. But you will need to update your custom fields:
+All the react-admin Field components have been updated to use the `useRecordContext` hook. But you will need to update your custom fields:
 
 ```diff
 +import { useRecordContext } from 'react-admin';
@@ -1431,7 +1431,7 @@ const record = useRecordContext<Customer>();
 
 ## Removed The `basePath` Prop
 
-Many components received, or passed down, a prop named `basePath`. This was necessary to build internal routes that worked when react-admin was used under a subpath. 
+Many components received, or passed down, a prop named `basePath`. This was necessary to build internal routes that worked when react-admin was used under a sub-path. 
 
 React-admin v4 now uses a context to keep the app basePath, so the `basePath` prop is no longer necessary. Every component that received it doesn't need it anymore. You can safely remove it from your code. 
 

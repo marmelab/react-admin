@@ -15,6 +15,7 @@ import {
     useGetIdentity,
     BulkActionsToolbar,
     BulkDeleteButton,
+    RecordContextProvider,
 } from 'react-admin';
 import {
     List,
@@ -63,57 +64,61 @@ const ContactListContent = () => {
             </BulkActionsToolbar>
             <List>
                 {data.map(contact => (
-                    <ListItem
-                        button
-                        key={contact.id}
-                        component={Link}
-                        to={`/contacts/${contact.id}/show`}
-                    >
-                        <ListItemIcon>
-                            <Checkbox
-                                edge="start"
-                                checked={selectedIds.includes(contact.id)}
-                                tabIndex={-1}
-                                disableRipple
-                                onClick={e => {
-                                    e.stopPropagation();
-                                    onToggleItem(contact.id);
-                                }}
+                    <RecordContextProvider value={contact}>
+                        <ListItem
+                            button
+                            key={contact.id}
+                            component={Link}
+                            to={`/contacts/${contact.id}/show`}
+                        >
+                            <ListItemIcon>
+                                <Checkbox
+                                    edge="start"
+                                    checked={selectedIds.includes(contact.id)}
+                                    tabIndex={-1}
+                                    disableRipple
+                                    onClick={e => {
+                                        e.stopPropagation();
+                                        onToggleItem(contact.id);
+                                    }}
+                                />
+                            </ListItemIcon>
+                            <ListItemAvatar>
+                                <Avatar />
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={`${contact.first_name} ${contact.last_name}`}
+                                secondary={
+                                    <>
+                                        {contact.title} at{' '}
+                                        <ReferenceField
+                                            source="company_id"
+                                            reference="companies"
+                                            link={false}
+                                        >
+                                            <TextField source="name" />
+                                        </ReferenceField>{' '}
+                                        {contact.nb_notes &&
+                                            `- ${contact.nb_notes} notes `}
+                                        <TagsList />
+                                    </>
+                                }
                             />
-                        </ListItemIcon>
-                        <ListItemAvatar>
-                            <Avatar record={contact} />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={`${contact.first_name} ${contact.last_name}`}
-                            secondary={
-                                <>
-                                    {contact.title} at{' '}
-                                    <ReferenceField
-                                        record={contact}
-                                        source="company_id"
-                                        reference="companies"
-                                        link={false}
-                                    >
-                                        <TextField source="name" />
-                                    </ReferenceField>{' '}
-                                    {contact.nb_notes &&
-                                        `- ${contact.nb_notes} notes `}
-                                    <TagsList record={contact} />
-                                </>
-                            }
-                        />
-                        <ListItemSecondaryAction>
-                            <Typography variant="body2" color="textSecondary">
-                                last activity{' '}
-                                {formatDistance(
-                                    new Date(contact.last_seen),
-                                    now
-                                )}{' '}
-                                ago <Status status={contact.status} />
-                            </Typography>
-                        </ListItemSecondaryAction>
-                    </ListItem>
+                            <ListItemSecondaryAction>
+                                <Typography
+                                    variant="body2"
+                                    color="textSecondary"
+                                >
+                                    last activity{' '}
+                                    {formatDistance(
+                                        new Date(contact.last_seen),
+                                        now
+                                    )}{' '}
+                                    ago <Status status={contact.status} />
+                                </Typography>
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                    </RecordContextProvider>
                 ))}
             </List>
         </>
