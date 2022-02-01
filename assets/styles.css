@@ -175,7 +175,7 @@ nav {
 #header-content {
   padding-bottom: 60px;
   position: relative;
-
+  justify-content: center;
   z-index: 2;
   display: flex;
   color: var(--white);
@@ -184,8 +184,8 @@ nav {
 #intro-text {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
   justify-content: flex-start;
+  align-items: center;
 }
 
 #page-title {
@@ -198,9 +198,11 @@ nav {
 #page-subtitle {
   font-family: "Roboto", sans-serif !important;
   font-size: 1.1em !important;
-  margin: 1em 0 2em 0;
-  text-align: right;
+  margin: 1em auto 2em auto;
+  text-align: center;
   font-weight: normal;
+  line-height: 1.5;
+  max-width: 600px;
 }
 
 .title {
@@ -242,9 +244,16 @@ nav {
   background: var(--yellowkindof);
 }
 
+.two-cols {
+  max-width: 960px;
+  margin: auto;
+  display: flex;
+}
+
 #laptop {
   position: relative;
   flex-grow: 1;
+  margin: auto;
 }
 
 #laptop > div {
@@ -287,6 +296,35 @@ nav {
 
 #preview {
   margin-left: 3%;
+  position: relative;
+}
+
+#preview .tryme {
+  background: #15d798;
+  border-radius: 11px;
+  padding: 10px 30px;
+  color: #ffffff;
+  display: inline-block;
+  font: normal bold 26px/1 "Open Sans", sans-serif;
+  text-align: center;
+  position: absolute;
+  border-style: none;
+  bottom: 120px;
+  left: 150px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+#preview .tryme:hover {
+  background: #1befa9;
+}
+
+#preview .arrow {
+  position: absolute;
+  width: 150px;
+  height: auto;
+  bottom: 0;
+  left: -67px;
 }
 
 #preview img {
@@ -364,7 +402,7 @@ nav {
   justify-content: space-around;
   flex-direction: column;
   font-size: 16px;
-  padding: 12px;
+  padding: 0 6px;
   filter: opacity(80%) grayscale(95%);
   transition: all 0.2s ease-out;
 }
@@ -659,6 +697,7 @@ nav {
   }
   #page-title {
     font-size: 30px;
+    text-align: center;
   }
   #intro-text {
     align-items: center;
@@ -666,6 +705,7 @@ nav {
   }
   #header-content {
     flex-direction: column;
+    margin: 0 20px;
   }
   #lego {
     display: none;
