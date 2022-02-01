@@ -1,4 +1,4 @@
-import { useStore } from '../store/useStore';
+import { useLocaleState } from './useLocaleState';
 
 /**
  * Set the current locale in the I18nContext and re-render the app when the locale changes.
@@ -26,6 +26,6 @@ import { useStore } from '../store/useStore';
  */
 export const useSetLocale = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_, setLocale] = useStore<string>('locale');
+    const [_, setLocale] = useLocaleState();
     return setLocale;
 };

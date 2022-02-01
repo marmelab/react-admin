@@ -1,6 +1,4 @@
-import { useMemo } from 'react';
-import { useI18nProvider } from './useI18nProvider';
-import { useStore } from '../store/useStore';
+import { useLocaleState } from './useLocaleState';
 
 /**
  * Get the current locale
@@ -19,10 +17,6 @@ import { useStore } from '../store/useStore';
  * }
  */
 export const useLocale = () => {
-    const i18nProvider = useI18nProvider();
-    const defaultLocale = useMemo(() => i18nProvider.getLocale(), [
-        i18nProvider,
-    ]);
-    const [locale] = useStore<string>('locale', defaultLocale);
+    const [locale] = useLocaleState();
     return locale;
 };

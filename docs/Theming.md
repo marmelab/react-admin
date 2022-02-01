@@ -760,7 +760,7 @@ To make it easier to customize, we export some components and hooks used by the 
 
 - `<LoadingIndicator>`: A `CircularProgress` bound to the dataProvider activity.
 - `<SidebarToggleButton>`: An `IconButton` used to toggle the `<Sidebar>`.
-- `useToggleSidebar`: A hook that returns the sidebar open state and a function to toggle it. Used internally by `<SidebarToggleButton>`.
+- `useSidebarState`: A hook that returns the sidebar open state and a function to toggle it. Used internally by `<SidebarToggleButton>`.
 
 ## Adding Dark Mode Support
 

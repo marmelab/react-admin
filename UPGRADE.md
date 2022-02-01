@@ -1193,7 +1193,7 @@ const SortButton = () => {
 
 ## Removed Reducers
 
-If your code used `useSelector` to read the react-admin application state, it will likely break. React-admin v4 uses Redux much less than v3, and the shape of the Redux state has changed.
+If your code used `useSelector` to read the react-admin application state, it will break. React-admin v4 doesn't use Redux anymore.
 
 React-admin no longer uses Redux for **data fetching**. Instead, it uses react-query. If you used to read data from the Redux store (which was a bad practice by the way), you'll have to use specialized data provider hooks instead.
 
@@ -1265,7 +1265,43 @@ export const Menu = (props) => {
 };
 ```
 
-Reducers for the **list parameters** (current sort & filters, selected ids, expanded rows) have moved up to the root reducer (so they don't need the resource to be registered first). This shouldn't impact you if you used the react-admin hooks (`useListParams`, `useSelection`) to read the state.
+React-admin no longer uses Redux for storing the **list parameters** (current sort & filters, selected ids, expanded rows). This shouldn't impact you if you used the react-admin hooks (`useListParams`, `useRecordSelection`, `useExpanded`) to read the state.
+
+React-admin no longer uses Redux to store the **sidebar state**. The introduction of a custom hook, `useSidebarState`, facilitates the migration.
+
+```diff
+import * as React from 'react';
+import { createElement } from 'react';
+-import { useSelector } from 'react-redux';
+import { useMediaQuery } from '@material-ui/core';
+-import { MenuItemLink, useResourceDefinitions } from 'react-admin';
++import { MenuItemLink, useResourceDefinitions, useSidebarState } from 'react-admin';
+import LabelIcon from '@mui/icons-material/Label';
+
+const Menu = ({ onMenuClick, logout }) => {
+    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+-   const open = useSelector(state => state.admin.ui.sidebarOpen);
++   const [open] = useSidebarState();
+    const resources = useResourceDefinitions();
+    
+    return (
+        <div>
+            {Object.keys(resources).map(name => (
+                <MenuItemLink
+                    key={name}
+                    to={`/${name}`}
+                    primaryText={resources[name].options && resources[name].options.label || name}
+                    leftIcon={createElement(resources[name].icon)}
+                    onClick={onMenuClick}
+                    sidebarIsOpen={open}
+                />
+            ))}
+            {isXSmall && logout}
+        </div>
+    );
+}
+export default Menu;
+```
 
 React-admin no longer uses Redux for **notifications**. Instead, it uses a custom context. This change is backwards compatible, as the APIs for the `useNotify` and the `<Notification>` component are the same. If you used to `dispatch` a `showNotification` action, you'll have to use the `useNotify` hook instead:
 
@@ -1284,6 +1320,15 @@ const NotifyButton = () => {
     return <button onClick={handleClick}>Notify</button>;
 };
 ```
+
+## Removed Action Creators
+
+As React-admin no longer uses Redux, each time your code used react-redux' `dispatch` with an action creator, you'll have to replace it with a hook. 
+
+- `dispatch(fetchStart())` and `dispatch(fetchEnd())` must be replaced by `useQuery()` and `useMutation()`
+- `dispatch(setSidebarVisibility(true))` must be replaced by `useSidebarState()`
+
+React-admin used `dispatch` in many other places, but they were already behind a hook (`useRecordSelection`, `useListParams`, `useExpanded`, `useNotify`, `useSidebarState`), and not documented. If you dispatched react-admin actions manually, you'll have to look for the hok alternative.
 
 ## Redux-Saga Was Removed
 
@@ -1632,6 +1677,56 @@ Besides, some props supported by the previous implementation aren't anymore:
 ## `useGetMainList` Was Removed
 
 `useGetMainList` was a modified version of `useGetList` designed to keep previous data on screen upon navigation. As [this is now supported natively by react-query](https://react-query.tanstack.com/guides/paginated-queries#better-paginated-queries-with-keeppreviousdata), this hook is no longer necessary and has been removed. Use `useGetList()` instead.
+
+## `useUnselectAll` Syntax Changed
+
+You must now pass the resource name when calling the hook:
+
+```diff
+import { useUnselectAll } from 'react-admin';
+
+const UnselectAllButton = () => {
+-   const unselectAll = useUnselectAll();
++   const unselectAll = useUnselectAll('posts');
+    const handleClick = () => {
+-       unselectAll('posts');
++       unselectAll();
+    }
+    return <button onClick={handleClick}>Unselect all</button>;
+};
+```
+
+## Renamed `<TranslationProvider>` to `<I18nContextProvider>`
+
+If you created a custom app (without the `<Admin>` component), you may have used the `<TranslationProvider>` component. It has been renamed to `<I18nContextProvider>`, and accepts an `i18nProvider`.
+
+```diff
+-<TranslationProvider locale="en" i18nProvider={i18nProvider}>
++<I18nContextProvider value={i18nProvider}>
+   ...
+-</TranslationProvider>
++</I18nContextProvider>
+```
+
+## Renamed `useToggleSidebar` to `useSidebarState`
+
+The `useToggleSidebar` hook has been renamed to `useSidebarState`. The second value returned by the hook is no longer a toggle function, but a value updater. 
+
+```diff
+const MyButton = () => {
+-   const [open, toggleSidebar] = useToggleSidebar();
++   const [open, setOpen] = useSidebarState();
+    return (
+        <Button
+            color="inherit"
+-           onClick={() => toggleSidebar()}
++           onClick={() => setOpen(!open)}
+        >
+            {open ? 'Open' : 'Close'}
+        </Button>
+    );
+};
+```
 
 ## The MUI `<ThemeProvider>` is not set by `<Layout>` anymore
 

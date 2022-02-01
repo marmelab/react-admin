@@ -7,6 +7,7 @@ export * from './TranslationMessages';
 export * from './TranslatableContext';
 export * from './TranslatableContextProvider';
 export * from './TranslationUtils';
+export * from './useLocaleState';
 export * from './useLocale';
 export * from './useSetLocale';
 export * from './useTranslatable';

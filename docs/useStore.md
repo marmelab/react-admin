@@ -33,17 +33,32 @@ When one component calls `setValue` on a key, all the components that read the s
 ## Example
 
 ```jsx
-const HelpButton = () => {
-    const [helpOpen, setHelpOpen] = useStore('help.open', false);
+import { useStore } from 'react-admin';
+
+const PostList = props => {
+    const [density] = useStore('posts.list.density', 'small');
+
     return (
-        <>
-            <Button onClick={() => setHelpOpen(v => !v)}>
-                {helpOpen ? 'Hide' : 'Show'} help
-            </Button>
-            <Popover open={helpOpen} onClose={() => setHelpOpen(false)}>
-                French
-            </Popover>
-        </>
+        <List {...props}>
+            <Datagrid size={density}>
+                ...
+            </Datagrid>
+        </List>
+    );
+}
+
+// Clicking on this button will trigger a rerender of the PostList
+const ChangeDensity: FC<any> = () => {
+    const [density, setDensity] = useStore('posts.list.density', 'small');
+
+    const changeDensity = (): void => {
+        setDensity(density === 'small' ? 'medium' : 'small');
+    };
+
+    return (
+        <Button onClick={changeDensity}>
+            Change density (current {density})
+        </Button>
     );
 };
 ```
