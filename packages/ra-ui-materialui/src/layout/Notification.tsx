@@ -130,34 +130,41 @@ export const NotificationClasses = {
     multiLine: `${PREFIX}-multiLine`,
 };
 
-const StyledSnackbar = styled(Snackbar, { name: PREFIX })(
-    ({ theme, type }: NotificationProps & { theme?: Theme }) => ({
-        [`& .${NotificationClasses.success}`]: {
-            backgroundColor: theme.palette.success.main,
-            color: theme.palette.success.contrastText,
-        },
+const StyledSnackbar = styled(Snackbar, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => [
+        { [`& .${NotificationClasses.success}`]: styles.success },
+        { [`& .${NotificationClasses.error}`]: styles.error },
+        { [`& .${NotificationClasses.warning}`]: styles.warning },
+        { [`& .${NotificationClasses.undo}`]: styles.undo },
+        { [`& .${NotificationClasses.multiLine}`]: styles.multiLine },
+    ],
+})(({ theme, type }: NotificationProps & { theme?: Theme }) => ({
+    [`& .${NotificationClasses.success}`]: {
+        backgroundColor: theme.palette.success.main,
+        color: theme.palette.success.contrastText,
+    },
 
-        [`& .${NotificationClasses.error}`]: {
-            backgroundColor: theme.palette.error.dark,
-            color: theme.palette.error.contrastText,
-        },
+    [`& .${NotificationClasses.error}`]: {
+        backgroundColor: theme.palette.error.dark,
+        color: theme.palette.error.contrastText,
+    },
 
-        [`& .${NotificationClasses.warning}`]: {
-            backgroundColor: theme.palette.error.light,
-            color: theme.palette.error.contrastText,
-        },
+    [`& .${NotificationClasses.warning}`]: {
+        backgroundColor: theme.palette.error.light,
+        color: theme.palette.error.contrastText,
+    },
 
-        [`& .${NotificationClasses.undo}`]: {
-            color:
-                type === 'success'
-                    ? theme.palette.success.contrastText
-                    : theme.palette.primary.light,
-        },
-        [`& .${NotificationClasses.multiLine}`]: {
-            whiteSpace: 'pre-wrap',
-        },
-    })
-);
+    [`& .${NotificationClasses.undo}`]: {
+        color:
+            type === 'success'
+                ? theme.palette.success.contrastText
+                : theme.palette.primary.light,
+    },
+    [`& .${NotificationClasses.multiLine}`]: {
+        whiteSpace: 'pre-wrap',
+    },
+}));
 
 export interface NotificationProps extends Omit<SnackbarProps, 'open'> {
     type?: string;

@@ -13,7 +13,7 @@ export const CardActions = props => {
 
     return (
         <Root
-            className={classnames(CardActionsClasses.cardActions, className)}
+            className={classnames(CardActionsClasses.root, className)}
             {...rest}
         >
             {children}
@@ -29,16 +29,17 @@ CardActions.propTypes = {
 const PREFIX = 'RaCardActions';
 
 export const CardActionsClasses = {
-    cardActions: `${PREFIX}-cardActions`,
+    root: `${PREFIX}-root`,
 };
 
-const Root = styled('div', { name: PREFIX })({
-    [`&.${CardActionsClasses.cardActions}`]: {
-        zIndex: 2,
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-end',
-        flexWrap: 'wrap',
-        padding: 0,
-    },
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => [styles.root],
+})({
+    zIndex: 2,
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-end',
+    flexWrap: 'wrap',
+    padding: 0,
 });

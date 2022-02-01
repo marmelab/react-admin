@@ -144,7 +144,14 @@ export const ConfirmClasses = {
     iconPaddingStyle: `${PREFIX}-iconPaddingStyle`,
 };
 
-const StyledDialog = styled(Dialog, { name: PREFIX })(({ theme }) => ({
+const StyledDialog = styled(Dialog, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => [
+        { [`& .${ConfirmClasses.confirmPrimary}`]: styles.confirmPrimary },
+        { [`& .${ConfirmClasses.confirmWarning}`]: styles.confirmWarning },
+        { [`& .${ConfirmClasses.iconPaddingStyle}`]: styles.iconPaddingStyle },
+    ],
+})(({ theme }) => ({
     [`& .${ConfirmClasses.confirmPrimary}`]: {
         color: theme.palette.primary.main,
     },

@@ -111,9 +111,7 @@ const StyledDrawer = styled(Drawer, {
         styles.root,
     ],
 })(({ open, theme }) => ({
-    [`&.${SidebarClasses.root}`]: {
-        height: 'calc(100vh - 3em)',
-    },
+    height: 'calc(100vh - 3em)',
 
     [`& .${SidebarClasses.docked}`]: {},
     [`& .${SidebarClasses.paper}`]: {},
