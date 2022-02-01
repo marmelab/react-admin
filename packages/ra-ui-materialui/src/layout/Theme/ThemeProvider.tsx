@@ -20,7 +20,14 @@ export const ThemeProvider = ({
     theme: themeOverride,
 }: ThemeProviderProps) => {
     const [theme] = useTheme(themeOverride);
-    const themeValue = useMemo(() => createTheme(theme), [theme]);
+    const themeValue = useMemo(() => {
+        try {
+            return createTheme(theme);
+        } catch (e) {
+            console.warn('Failed to reuse custom theme from store', e);
+            return createTheme();
+        }
+    }, [theme]);
 
     return <MuiThemeProvider theme={themeValue}>{children}</MuiThemeProvider>;
 };
