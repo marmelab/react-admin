@@ -2,7 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { forwardRef, memo } from 'react';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { Layout, AppBar, UserMenu, useLocale, useSetLocale } from 'react-admin';
+import { Layout, AppBar, UserMenu, useLocaleState } from 'react-admin';
 import { MenuItem, MenuItemProps, ListItemIcon } from '@mui/material';
 import Language from '@mui/icons-material/Language';
 
@@ -23,8 +23,7 @@ const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
 
 const SwitchLanguage = forwardRef<HTMLLIElement, MenuItemProps>(
     (props, ref) => {
-        const locale = useLocale();
-        const setLocale = useSetLocale();
+        const [locale, setLocale] = useLocaleState();
 
         return (
             <StyledMenuItem

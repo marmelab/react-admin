@@ -23,6 +23,8 @@ import { useLocaleState } from './useLocaleState';
  *         }</ul>
  *     );
  * }
+ *
+ * @deprecated use useLocaleState instead
  */
 export const useSetLocale = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

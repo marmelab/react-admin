@@ -3,13 +3,7 @@ import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
-import {
-    useTranslate,
-    useLocale,
-    useSetLocale,
-    useTheme,
-    Title,
-} from 'react-admin';
+import { useTranslate, useLocaleState, useTheme, Title } from 'react-admin';
 import { darkTheme, lightTheme } from '../layout/themes';
 
 const PREFIX = 'Configuration';
@@ -26,9 +20,7 @@ const StyledCard = styled(Card)({
 
 const Configuration = () => {
     const translate = useTranslate();
-    const locale = useLocale();
-    const setLocale = useSetLocale();
-
+    const [locale, setLocale] = useLocaleState();
     const [theme, setTheme] = useTheme();
 
     return (

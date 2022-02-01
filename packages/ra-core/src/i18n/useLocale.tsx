@@ -15,6 +15,8 @@ import { useLocaleState } from './useLocaleState';
  *     const locale = useLocale();
  *     return <span>{availableLanguages[locale]}</span>;
  * }
+ *
+ * @deprecated use useLocaleState instead
  */
 export const useLocale = () => {
     const [locale] = useLocaleState();
