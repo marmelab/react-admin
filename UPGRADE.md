@@ -2042,6 +2042,31 @@ If you actually need to remove empty values, you can use the `parse` prop on a p
 
 Or use the `transform` prop on the `<Create>`, `<Edit>`, or `<SaveButton>` components. 
 
+### Custom Form Inputs Must Use `useController` instead of `<Field>`
+
+To interface a custom form input with `react-hook-form`, you must use the `useController` hook instead of `<Field>`.
+
+```diff
+-import { Field } from 'react-final-form';
++import { useController } from 'react-hook-form';
+
+const LatLngInput = () => {
++   const input1 = useController({ name: 'position.lat' });
++   const input2 = useController({ name: 'position.lng' });
+    
+    return (
+        <span>
+-           <Field name="lat" component="input" type="number" placeholder="latitude" />
++           <input {...input1.field} type="number" placeholder="latitude" />
+            &nbsp;
+-           <Field name="lng" component="input" type="number" placeholder="longitude" />
++           <input {...input2.field} type="number" placeholder="longitude" />
+        </span>
+    );
+);
+export default LatLngInput;
+```
+
 ### `<FormWithRedirect>` Render Function Arguments Have Changed
 
 `<FormWithRedirect>` used to call its child function with an object containing parts of the `final-form` form state (`valid`, `invalid`, `pristine`, `dirty`). It now only passes the `handleSubmit` function, which must be passed down to the `onSubmit` prop of the underlying form. If you need to access the form state, call [the react-hook-form `useFormState` hook](https://react-hook-form.com/api/useformstate):
