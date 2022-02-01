@@ -130,7 +130,6 @@ title: "Reference"
 * `<Tab>`
 * [`<TabbedForm>`](./CreateEdit.md#the-tabbedform-component)
 * [`<TabbedShowLayout>`](./TabbedShowLayout.md#tabbedshowlayout)
-* [`<TestContext>`](./UnitTesting.md#testing-custom-views)
 * [`<TextField>`](./TextField.md)
 * [`<TextInput>`](./TextInput.md)
 * `<Title>`
@@ -156,6 +155,7 @@ title: "Reference"
 * [`useDelete`](./useDelete.md)
 * [`useDeleteMany`](./useDeleteMany.md)
 * [`useEditController`](./CreateEdit.md#useeditcontroller)
+* `useExpanded`
 * `useFilterState`
 * [`useGetIdentity`](./Authentication.md#usegetidentity-hook)
 * [`useGetList`](./useGetList.md)
@@ -181,6 +181,7 @@ title: "Reference"
 * `usePaginationState`
 * [`usePermissions`](./Authentication.md#usepermissions-hook)
 * [`usePreferences`](https://marmelab.com/ra-enterprise/modules/ra-preferences#usepreferences-reading-and-writing-user-preferences)<img class="icon" src="./img/premium.svg" />
+* `useRecordSelection`
 * [`useRedirect`](./useRedirect.md)
 * `useReference`
 * `useReferenceArrayFieldController`
@@ -188,18 +189,24 @@ title: "Reference"
 * `useReferenceInputController`
 * `useReferenceManyFieldController`
 * [`useRefresh`](./useRefresh.md)
+* [`useRemoveFromStore`](./useRemoveFromStore.md)
+* [`useResetStore`](./useResetStore.md)
 * [`useResourceAppLocation`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useresourceapplocation-access-current-resource-app-location)<img class="icon" src="./img/premium.svg" />
 * [`useSearch`](https://marmelab.com/ra-enterprise/modules/ra-search#the-usesearch-hook)<img class="icon" src="./img/premium.svg" />
-* [`useSetLocale`](./Translation.md#usesetlocale-changing-locale-at-runtime)
+* `useSidebarState`
 * [`useShowController`](./useShowController.md#useshowcontroller)
 * `useSortState`
+* [`useStore`](./useStore.md)
+* [`useStoreContext`](./useStoreContext.md)
 * [`useStyles`](./Theming.md#overriding-a-component-style)
 * `useSuggestions`
+* [`useTheme`](./Theming.md#changing-the-theme-programmatically)
 * [`useTour`](https://marmelab.com/ra-enterprise/modules/ra-tour)<img class="icon" src="./img/premium.svg" />
 * [`useTranslate`](./Translation.md#usetranslate-hook)
 * [`useUpdate`](./useUpdate.md)
 * `useUpdateLoading`
 * [`useUpdateMany`](./useUpdateMany.md)
+* `useUnselect`
 * [`useUnselectAll`](./useUnselectAll.md)
 * [`useWarnWhenUnsavedChanges`](./CreateEdit.md#warning-about-unsaved-changes)
 * [`<WithPermissions>`](./Authentication.md#usepermissions-hook)
