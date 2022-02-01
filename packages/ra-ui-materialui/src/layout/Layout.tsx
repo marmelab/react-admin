@@ -99,18 +99,27 @@ export const LayoutClasses = {
     content: `${PREFIX}-content`,
 };
 
-const StyledLayout = styled('div', { name: PREFIX })(({ theme }) => ({
-    [`&.${LayoutClasses.root}`]: {
-        display: 'flex',
-        flexDirection: 'column',
-        zIndex: 1,
-        minHeight: '100vh',
-        backgroundColor: theme.palette.background.default,
-        position: 'relative',
-        minWidth: 'fit-content',
-        width: '100%',
-        color: theme.palette.getContrastText(theme.palette.background.default),
-    },
+const StyledLayout = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => [
+        styles.root,
+        { [`& .${LayoutClasses.appFrame}`]: styles.appFrame },
+        {
+            [`& .${LayoutClasses.contentWithSidebar}`]: styles.contentWithSidebar,
+        },
+        { [`& .${LayoutClasses.content}`]: styles.content },
+    ],
+})(({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    zIndex: 1,
+    minHeight: '100vh',
+    backgroundColor: theme.palette.background.default,
+    position: 'relative',
+    minWidth: 'fit-content',
+    width: '100%',
+    color: theme.palette.getContrastText(theme.palette.background.default),
+
     [`& .${LayoutClasses.appFrame}`]: {
         display: 'flex',
         flexDirection: 'column',

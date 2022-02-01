@@ -143,7 +143,14 @@ export const AppBarClasses = {
     title: `${PREFIX}-title`,
 };
 
-const StyledAppBar = styled(MuiAppBar, { name: PREFIX })(({ theme }) => ({
+const StyledAppBar = styled(MuiAppBar, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => [
+        { [`& .${AppBarClasses.toolbar}`]: styles.toolbar },
+        { [`& .${AppBarClasses.menuButton}`]: styles.menuButton },
+        { [`& .${AppBarClasses.title}`]: styles.title },
+    ],
+})(({ theme }) => ({
     [`& .${AppBarClasses.toolbar}`]: {
         paddingRight: 24,
     },

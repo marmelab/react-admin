@@ -56,7 +56,17 @@ export const SidebarToggleButtonClasses = {
     menuButtonIconOpen: `${PREFIX}-menuButtonIconOpen`,
 };
 
-const StyledIconButton = styled(IconButton, { name: PREFIX })(({ theme }) => ({
+const StyledIconButton = styled(IconButton, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => [
+        {
+            [`& .${SidebarToggleButtonClasses.menuButtonIconClosed}`]: styles.menuButtonIconClosed,
+        },
+        {
+            [`& .${SidebarToggleButtonClasses.menuButtonIconOpen}`]: styles.menuButtonIconOpen,
+        },
+    ],
+})(({ theme }) => ({
     [`& .${SidebarToggleButtonClasses.menuButtonIconClosed}`]: {
         transition: theme.transitions.create(['transform'], {
             easing: theme.transitions.easing.sharp,

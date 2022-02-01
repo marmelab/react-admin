@@ -152,7 +152,19 @@ export const ErrorClasses = {
     advice: `${PREFIX}-advice`,
 };
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => [
+        styles.root,
+        { [`&.${ErrorClasses.container}`]: styles.container },
+        { [`& .${ErrorClasses.title}`]: styles.title },
+        { [`& .${ErrorClasses.icon}`]: styles.icon },
+        { [`& .${ErrorClasses.panel}`]: styles.panel },
+        { [`& .${ErrorClasses.panelDetails}`]: styles.panelDetails },
+        { [`& .${ErrorClasses.toolbar}`]: styles.toolbar },
+        { [`& .${ErrorClasses.advice}`]: styles.advice },
+    ],
+})(({ theme }) => ({
     [`&.${ErrorClasses.container}`]: {
         display: 'flex',
         flexDirection: 'column',

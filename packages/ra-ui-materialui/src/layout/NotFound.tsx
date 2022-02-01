@@ -16,7 +16,7 @@ export const NotFound = props => {
     useAuthenticated();
     return (
         <Root
-            className={classnames(NotFoundClasses.container, className)}
+            className={classnames(NotFoundClasses.root, className)}
             {...sanitizeRestProps(rest)}
         >
             <Title defaultTitle={title} />
@@ -55,24 +55,30 @@ NotFound.propTypes = {
 const PREFIX = 'RaNotFound';
 
 export const NotFoundClasses = {
-    container: `${PREFIX}-container`,
+    root: `${PREFIX}-root`,
     icon: `${PREFIX}-icon`,
     message: `${PREFIX}-message`,
     toolbar: `${PREFIX}-toolbar`,
 };
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
-    [`&.${NotFoundClasses.container}`]: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        [theme.breakpoints.up('md')]: {
-            height: '100%',
-        },
-        [theme.breakpoints.down('md')]: {
-            height: '100vh',
-            marginTop: '-3em',
-        },
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => [
+        styles.root,
+        { [`& .${NotFoundClasses.icon}`]: styles.icon },
+        { [`& .${NotFoundClasses.message}`]: styles.message },
+        { [`& .${NotFoundClasses.toolbar}`]: styles.toolbar },
+    ],
+})(({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    [theme.breakpoints.up('md')]: {
+        height: '100%',
+    },
+    [theme.breakpoints.down('md')]: {
+        height: '100vh',
+        marginTop: '-3em',
     },
 
     [`& .${NotFoundClasses.icon}`]: {

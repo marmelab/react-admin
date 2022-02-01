@@ -53,7 +53,13 @@ export const LoadingIndicatorClasses = {
     loadedIcon: `${PREFIX}-loadedIcon`,
 };
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => [
+        { [`& .${LoadingIndicatorClasses.loader}`]: styles.loader },
+        { [`& .${LoadingIndicatorClasses.loadedIcon}`]: styles.loadedIcon },
+    ],
+})(({ theme }) => ({
     [`& .${LoadingIndicatorClasses.loader}`]: {
         marginLeft: theme.spacing(2),
         marginRight: theme.spacing(2),

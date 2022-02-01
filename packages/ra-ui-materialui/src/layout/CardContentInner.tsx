@@ -39,18 +39,19 @@ export const CardContentInnerClasses = {
     root: `${PREFIX}-root`,
 };
 
-const Root = styled(CardContent, { name: PREFIX })(({ theme }) => ({
-    [`&.${CardContentInnerClasses.root}`]: {
-        paddingTop: 0,
-        paddingBottom: 0,
-        '&:first-of-type': {
-            paddingTop: 16,
-        },
-        '&:last-child': {
-            paddingBottom: 16,
-            [theme.breakpoints.only('xs')]: {
-                paddingBottom: 70,
-            },
+const Root = styled(CardContent, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => [styles.root],
+})(({ theme }) => ({
+    paddingTop: 0,
+    paddingBottom: 0,
+    '&:first-of-type': {
+        paddingTop: 16,
+    },
+    '&:last-child': {
+        paddingBottom: 16,
+        [theme.breakpoints.only('xs')]: {
+            paddingBottom: 70,
         },
     },
 }));

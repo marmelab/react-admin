@@ -14,7 +14,7 @@ export const Loading = props => {
 
     const translate = useTranslate();
     return (
-        <Root className={classnames(LoadingClasses.container, className)}>
+        <Root className={classnames(LoadingClasses.root, className)}>
             <div className={LoadingClasses.message}>
                 <CircularProgress
                     className={LoadingClasses.icon}
@@ -41,23 +41,28 @@ Loading.defaultProps = {
 const PREFIX = 'RaLoading';
 
 export const LoadingClasses = {
-    container: `${PREFIX}-container`,
+    root: `${PREFIX}-root`,
     icon: `${PREFIX}-icon`,
     message: `${PREFIX}-message`,
 };
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
-    [`&.${LoadingClasses.container}`]: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        [theme.breakpoints.up('md')]: {
-            height: '100%',
-        },
-        [theme.breakpoints.down('xl')]: {
-            height: '100vh',
-            marginTop: '-3em',
-        },
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => [
+        styles.root,
+        { [`& .${LoadingClasses.icon}`]: styles.icon },
+        { [`& .${LoadingClasses.message}`]: styles.message },
+    ],
+})(({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    [theme.breakpoints.up('md')]: {
+        height: '100%',
+    },
+    [theme.breakpoints.down('xl')]: {
+        height: '100vh',
+        marginTop: '-3em',
     },
 
     [`& .${LoadingClasses.icon}`]: {

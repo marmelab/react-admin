@@ -56,9 +56,10 @@ export const LinearProgressClasses = {
     root: `${PREFIX}-root`,
 };
 
-const StyledProgress = styled(Progress, { name: PREFIX })(({ theme }) => ({
-    [`&.${LinearProgressClasses.root}`]: {
-        margin: `${theme.spacing(1)} 0`,
-        width: theme.spacing(20),
-    },
+const StyledProgress = styled(Progress, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => [styles.root],
+})(({ theme }) => ({
+    margin: `${theme.spacing(1)} 0`,
+    width: theme.spacing(20),
 }));

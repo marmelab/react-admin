@@ -7,6 +7,7 @@ import authProvider from './authProvider';
 import { Login, Layout } from './layout';
 import { Dashboard } from './dashboard';
 import englishMessages from './i18n/en';
+import { lightTheme } from './layout/themes';
 
 import visitors from './visitors';
 import orders from './orders';
@@ -40,6 +41,7 @@ const App = () => {
             layout={Layout}
             i18nProvider={i18nProvider}
             disableTelemetry
+            theme={lightTheme}
         >
             <CustomRoutes>
                 <Route path="/configuration" element={<Configuration />} />

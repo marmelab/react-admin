@@ -58,7 +58,7 @@ export const Menu = (props: MenuProps) => {
     return (
         <Root
             className={classnames(
-                MenuClasses.main,
+                MenuClasses.root,
                 {
                     [MenuClasses.open]: open,
                     [MenuClasses.closed]: !open,
@@ -88,13 +88,20 @@ Menu.propTypes = {
 const PREFIX = 'RaMenu';
 
 export const MenuClasses = {
-    main: `${PREFIX}-main`,
+    root: `${PREFIX}-root`,
     open: `${PREFIX}-open`,
     closed: `${PREFIX}-closed`,
 };
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
-    [`&.${MenuClasses.main}`]: {
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => [
+        styles.root,
+        { [`&.${MenuClasses.open}`]: styles.open },
+        { [`&.${MenuClasses.closed}`]: styles.closed },
+    ],
+})(({ theme }) => ({
+    [`&.${MenuClasses.root}`]: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-start',

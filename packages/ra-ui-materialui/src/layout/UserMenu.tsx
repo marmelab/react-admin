@@ -32,7 +32,7 @@ export const UserMenu = (props: UserMenuProps) => {
     const handleClose = () => setAnchorEl(null);
 
     return (
-        <Root className={UserMenuClasses.user}>
+        <Root className={UserMenuClasses.root}>
             {loaded && identity?.fullName ? (
                 <Button
                     aria-label={label && translate(label, { _: label })}
@@ -108,14 +108,22 @@ export interface UserMenuProps {
 const PREFIX = 'RaUserMenu';
 
 export const UserMenuClasses = {
-    user: `${PREFIX}-user`,
+    root: `${PREFIX}-root`,
     userButton: `${PREFIX}-userButton`,
     avatar: `${PREFIX}-avatar`,
 };
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
-    [`&.${UserMenuClasses.user}`]: {},
-
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => [
+        {
+            [`& .${UserMenuClasses.userButton}`]: styles.userButton,
+        },
+        {
+            [`& .${UserMenuClasses.avatar}`]: styles.avatar,
+        },
+    ],
+})(({ theme }) => ({
     [`& .${UserMenuClasses.userButton}`]: {
         textTransform: 'none',
     },
