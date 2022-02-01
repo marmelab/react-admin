@@ -14,7 +14,7 @@ import { useStore } from '../store/useStore';
  *     fr: 'Français',
  * }
  * const LocaleSwitcher = () => {
- *     const [locale, setLocale] = useSetLocale();
+ *     const [locale, setLocale] = useLocaleState();
  *     return (
  *         <div>
  *             <div>Language</div>

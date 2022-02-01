@@ -171,7 +171,7 @@ title: "Reference"
 * [`useListController`](./useListController.md)
 * `useListParams`
 * `useLoading`
-* [`useLocale`](./Translation.md#uselocale-getting-the-current-locale)
+* [`useLocaleState`](./Translation.md#uselocalestate-reading-and-setting-the-locale-at-runtime)
 * [`useLock`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
 * [`useLogin`](./Authentication.md#uselogin-hook)
 * [`useLogout`](./Authentication.md#uselogout-hook)

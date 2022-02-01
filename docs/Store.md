@@ -72,14 +72,14 @@ This way, each time the application is loaded, the store will be reset to an emp
 
 The react-admin Store is persistent. This means that if a unit test modifies an item in the store, the value will be changed for the next test. This will cause random test failures when you use `useStore()` in your tests, or any feature depending on the store (e.g. datagrid row selection, sidebar state, language selection).
 
-To isolate you unit tests, pass a new `memoryContext` for each test:
+To isolate you unit tests, pass a new `memoryStore` for each test:
 
 ```jsx
 import { memoryStore } from 'react-admin';
 
 test('<MyComponent>', async () => {
     const { getByText } = render(
-        <AdminContext store={memoryContext()}>
+        <AdminContext store={memoryStore()}>
             <MyComponent />
         </AdminContext>
     );
@@ -95,7 +95,7 @@ import { StoreContextProvider, memoryStore } from 'react-admin';
 
 test('<MyComponent>', async () => {
     const { getByText } = render(
-        <StoreContextProvider value={memoryContext()}>
+        <StoreContextProvider value={memoryStore()}>
             <MyComponent />
         </StoreContextProvider>
     );

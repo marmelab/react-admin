@@ -7,7 +7,7 @@ title: "Translation"
 
 The react-admin user interface uses English as the default language. But you can also display the UI and content in other languages, allow changing language at runtime, even lazy-loading optional languages to avoid increasing the bundle size with all translations. 
 
-You will use translation features mostly via the `i18nProvider`, and a set of hooks (`useTranslate`, `useLocaleState`, `useSetLocale`).
+You will use translation features mostly via the `i18nProvider`, and a set of hooks (`useTranslate`, `useLocaleState`).
 
 **Tip**: We'll use a bit of custom vocabulary in this chapter:
  
@@ -254,7 +254,7 @@ import Button from '@mui/material/Button';
 import { useLocaleState } from 'react-admin';
 
 const LocaleSwitcher = () => {
-    const [locale, setLocale] = useSetLocale();
+    const [locale, setLocale] = useLocaleState();
     return (
         <div>
             <div>Language</div>
