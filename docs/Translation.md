@@ -16,7 +16,7 @@ You will use translation features mostly via the `i18nProvider`, and a set of ho
 
 ## Introducing the `i18nProvider`
 
-Just like for data fetching and authentication, react-admin relies on a simple object for translations. It's called the `i18nProvider`, and it manages translation and language change using two methods:
+Just like for data fetching and authentication, react-admin relies on a simple object for translations. It's called the `i18nProvider`, and it manages translation and language changes using tree methods:
 
 ```js
 const i18nProvider = {
@@ -46,6 +46,8 @@ If you want to add or update translations, you'll have to provide your own `i18n
 React-admin components use translation keys for their labels, and rely on the `i18nProvider` to translate them. For instance:
 
 ```jsx
+import { Button, useTranslate } from 'react-admin';
+
 const SaveButton = ({ doSave }) => {
     const translate = useTranslate(); // returns the i18nProvider.translate() method
     return (
