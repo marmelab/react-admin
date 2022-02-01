@@ -56,6 +56,7 @@ const items = await screen.findAllByText(/Item #[0-9]: /)
 
 For instance, if the component to test calls the `useGetOne` hook:
 
+{% raw %}
 ```jsx
 import React from 'react';
 import { AdminContext } from 'react-admin';
@@ -75,6 +76,7 @@ test('<MyComponent>', async () => {
     expect(items).toHaveLength(10)
 })
 ```
+{% endraw %}
 
 **Tip**: If you're using TypeScript, the compiler will complain about missing methods in the data provider above. You can remove these warnings by using the `testDataProvider` helper:
 
@@ -92,6 +94,42 @@ test('<MyComponent>', async () => {
         })}>
             <MyComponent />
         </AdminContext>
+    );
+    const items = await screen.findAllByText(/Item #[0-9]: /)
+    expect(items).toHaveLength(10)
+})
+```
+
+## Resetting The Store
+
+The react-admin Store is persistent. This means that if a test modifies an item in the store, the updated value will be changed in the next test. This will cause seemingly random test failures when you use `useStore()` in your tests, or any feature depending on the store (e.g. datagrid row selection, sidebar state, language selection).
+
+To isolate you unit tests, pass a new `memoryContext` at each test:
+
+```jsx
+import { memoryStore } from 'react-admin';
+
+test('<MyComponent>', async () => {
+    const { getByText } = render(
+        <AdminContext store={memoryContext()}>
+            <MyComponent />
+        </AdminContext>
+    );
+    const items = await screen.findAllByText(/Item #[0-9]: /)
+    expect(items).toHaveLength(10)
+})
+```
+
+If you don't need `<AdminContext>`, you can just wrap your component with a `<StoreContextProvider>`:
+
+```jsx
+import { StoreContextProvider, memoryStore } from 'react-admin';
+
+test('<MyComponent>', async () => {
+    const { getByText } = render(
+        <StoreContextProvider value={memoryContext()}>
+            <MyComponent />
+        </StoreContextProvider>
     );
     const items = await screen.findAllByText(/Item #[0-9]: /)
     expect(items).toHaveLength(10)
