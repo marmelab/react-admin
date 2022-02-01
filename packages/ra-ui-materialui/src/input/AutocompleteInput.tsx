@@ -185,8 +185,8 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
     );
 
     const classes = useStyles(props);
-    let inputEl = useRef<HTMLInputElement>();
-    let anchorEl = useRef<any>();
+    const inputEl = useRef<HTMLInputElement>();
+    const anchorEl = useRef<any>();
     const translate = useTranslate();
 
     const {
@@ -320,7 +320,9 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                 selectedItem === null
                 ? ''
                 : inputText
-                ? inputText(getChoiceText(selectedItem).props.record)
+                ? /* @ts-ignore */ inputText(
+                      getChoiceText(selectedItem).props.record
+                  )
                 : getChoiceText(selectedItem)
         );
     }, [
@@ -377,7 +379,9 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
             setFilterValue(
                 input.value
                     ? inputText
-                        ? inputText(getChoiceText(selectedItem).props.record)
+                        ? /* @ts-ignore */ inputText(
+                              getChoiceText(selectedItem).props.record
+                          )
                         : getChoiceText(selectedItem)
                     : ''
             );
