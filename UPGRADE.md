@@ -1328,7 +1328,7 @@ As React-admin no longer uses Redux, each time your code used react-redux' `disp
 - `dispatch(fetchStart())` and `dispatch(fetchEnd())` must be replaced by `useQuery()` and `useMutation()`
 - `dispatch(setSidebarVisibility(true))` must be replaced by `useSidebarState()`
 
-React-admin used `dispatch` in many other places, but they were already behind a hook (`useRecordSelection`, `useListParams`, `useExpanded`, `useNotify`, `useSidebarState`), and not documented. If you dispatched react-admin actions manually, you'll have to look for the hok alternative.
+React-admin used `dispatch` in many other places, but they were already behind a hook (`useRecordSelection`, `useListParams`, `useExpanded`, `useNotify`, `useSidebarState`), and not documented. If you dispatched react-admin actions manually, you'll have to look for the hook alternative.
 
 ## Redux-Saga Was Removed
 
