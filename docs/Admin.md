@@ -44,6 +44,7 @@ Here are all the props accepted by the component:
 - [`history`](#history)
 - [`basename`](#basename)
 - [`ready`](#ready)
+- [`store`](#store)
 
 ## `dataProvider`
 
@@ -513,6 +514,20 @@ const Ready = () => (
 const App = () => (
     <Admin ready={Ready}>
         ...
+    </Admin>
+);
+```
+
+## `store`
+
+The `<Admin>` component initializes a [Store](./Store.md) using `localStorage` as the storage engine. You can override this by passing a custom `store` prop:
+
+```jsx
+import { Admin, Resource, memoryStore } from 'react-admin';
+
+const App = () => (
+    <Admin dataProvider={dataProvider} store={memoryStore()}>
+        <Resource name="posts" />
     </Admin>
 );
 ```
