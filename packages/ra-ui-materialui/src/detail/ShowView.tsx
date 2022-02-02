@@ -34,7 +34,7 @@ export const ShowView = (props: ShowViewProps) => {
     }
     return (
         <Root
-            className={classnames('show-page', ShowClasses.root, className)}
+            className={classnames('show-page', className)}
             {...sanitizeRestProps(rest)}
         >
             <TitleForRecord
@@ -86,16 +86,16 @@ const sanitizeRestProps = ({
 const PREFIX = 'RaShow';
 
 export const ShowClasses = {
-    root: `${PREFIX}-root`,
     main: `${PREFIX}-main`,
     noActions: `${PREFIX}-noActions`,
     card: `${PREFIX}-card`,
 };
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
-    [`&.${ShowClasses.root}`]: {
-        paddingTop: theme.spacing(1),
-    },
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    paddingTop: theme.spacing(1),
     [`& .${ShowClasses.main}`]: {
         display: 'flex',
     },

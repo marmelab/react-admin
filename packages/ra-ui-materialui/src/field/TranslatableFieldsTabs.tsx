@@ -9,18 +9,15 @@ import { AppBarProps } from '../layout';
 
 const PREFIX = 'RaTranslatableFieldsTabs';
 
-const classes = {
-    root: `${PREFIX}-root`,
-};
-
-const StyledAppBar = styled(AppBar)(({ theme }) => ({
-    [`&.${classes.root}`]: {
-        boxShadow: 'none',
-        borderRadius: 0,
-        borderTopLeftRadius: theme.shape.borderRadius,
-        borderTopRightRadius: theme.shape.borderRadius,
-        border: `1px solid ${theme.palette.divider}`,
-    },
+const StyledAppBar = styled(AppBar, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    boxShadow: 'none',
+    borderRadius: 0,
+    borderTopLeftRadius: theme.shape.borderRadius,
+    borderTopRightRadius: theme.shape.borderRadius,
+    border: `1px solid ${theme.palette.divider}`,
 }));
 
 /**
@@ -30,7 +27,7 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
 export const TranslatableFieldsTabs = (
     props: TranslatableFieldsTabsProps & AppBarProps
 ): ReactElement => {
-    const { groupKey, TabsProps: tabsProps } = props;
+    const { groupKey, TabsProps: tabsProps, className } = props;
     const { locales, selectLocale, selectedLocale } = useTranslatableContext();
 
     const handleChange = (event, newLocale): void => {
@@ -38,11 +35,7 @@ export const TranslatableFieldsTabs = (
     };
 
     return (
-        <StyledAppBar
-            color="default"
-            position="static"
-            className={classes.root}
-        >
+        <StyledAppBar color="default" position="static" className={className}>
             <Tabs
                 value={selectedLocale}
                 onChange={handleChange}

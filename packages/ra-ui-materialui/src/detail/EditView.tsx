@@ -48,7 +48,7 @@ export const EditView = (props: EditViewProps) => {
     }
     return (
         <Root
-            className={classnames('edit-page', EditClasses.root, className)}
+            className={classnames('edit-page', className)}
             {...sanitizeRestProps(rest)}
         >
             <TitleForRecord
@@ -160,14 +160,15 @@ const sanitizeRestProps = ({
 const PREFIX = 'RaEdit';
 
 export const EditClasses = {
-    root: `${PREFIX}-root`,
     main: `${PREFIX}-main`,
     noActions: `${PREFIX}-noActions`,
     card: `${PREFIX}-card`,
 };
 
-const Root = styled('div', { name: PREFIX })({
-    [`&.${EditClasses.root}`]: {},
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
     [`& .${EditClasses.main}`]: {
         display: 'flex',
     },

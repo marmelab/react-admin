@@ -208,7 +208,10 @@ export const TabbedShowLayoutClasses = {
     content: `${PREFIX}-content`,
 };
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     flex: 1,
     [`& .${TabbedShowLayoutClasses.content}`]: {
         padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
