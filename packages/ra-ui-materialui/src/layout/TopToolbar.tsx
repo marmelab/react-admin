@@ -15,7 +15,10 @@ TopToolbar.propTypes = {
 export default TopToolbar;
 const PREFIX = 'RaTopToolbar';
 
-const StyledToolbar = styled(Toolbar, { name: PREFIX, overridesResolver: (props, styles) => styles.root })(({ theme }) => ({
+const StyledToolbar = styled(Toolbar, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     display: 'flex',
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
