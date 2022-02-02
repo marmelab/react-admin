@@ -101,7 +101,7 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
         return (
             <StyledMenuItem
                 // @ts-ignore
-                className={classnames(MenuItemLinkClasses.root, className, {
+                className={classnames(className, {
                     [MenuItemLinkClasses.active]: !!match,
                 })}
                 component={LinkRef}
@@ -156,18 +156,13 @@ MenuItemLink.propTypes = {
 const PREFIX = 'RaMenuItemLink';
 
 export const MenuItemLinkClasses = {
-    root: `${PREFIX}-root`,
     active: `${PREFIX}-active`,
     icon: `${PREFIX}-icon`,
 };
 
 const StyledMenuItem = styled(MenuItem, {
     name: PREFIX,
-    overridesResolver: (props, styles) => [
-        styles.root,
-        { [`&.${MenuItemLinkClasses.active}`]: styles.active },
-        { [`&.${MenuItemLinkClasses.icon}`]: styles.icon },
-    ],
+    overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     color: theme.palette.text.secondary,
 

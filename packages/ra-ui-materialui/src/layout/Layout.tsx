@@ -39,10 +39,7 @@ export const Layout = (props: LayoutProps) => {
     };
 
     return (
-        <StyledLayout
-            className={classnames('layout', LayoutClasses.root, className)}
-            {...rest}
-        >
+        <StyledLayout className={classnames('layout', className)} {...rest}>
             <SkipNavigationButton />
             <div className={LayoutClasses.appFrame}>
                 <AppBar logout={logout} open={open} title={title} />
@@ -91,7 +88,6 @@ export interface LayoutState {
 
 const PREFIX = 'RaLayout';
 export const LayoutClasses = {
-    root: `${PREFIX}-root`,
     appFrame: `${PREFIX}-appFrame`,
     contentWithSidebar: `${PREFIX}-contentWithSidebar`,
     content: `${PREFIX}-content`,
@@ -99,14 +95,7 @@ export const LayoutClasses = {
 
 const StyledLayout = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => [
-        styles.root,
-        { [`& .${LayoutClasses.appFrame}`]: styles.appFrame },
-        {
-            [`& .${LayoutClasses.contentWithSidebar}`]: styles.contentWithSidebar,
-        },
-        { [`& .${LayoutClasses.content}`]: styles.content },
-    ],
+    overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',

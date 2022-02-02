@@ -66,7 +66,6 @@ export interface SidebarProps extends DrawerProps {
 const PREFIX = 'RaSidebar';
 
 export const SidebarClasses = {
-    root: `${PREFIX}-root`,
     docked: `${PREFIX}-docked`,
     paper: `${PREFIX}-paper`,
     paperAnchorLeft: `${PREFIX}-paperAnchorLeft`,
@@ -84,31 +83,7 @@ export const SidebarClasses = {
 const StyledDrawer = styled(Drawer, {
     name: PREFIX,
     slot: 'Root',
-    overridesResolver: (props, styles) => [
-        { [`& .${SidebarClasses.docked}`]: styles.docked },
-        { [`& .${SidebarClasses.paper}`]: styles.paper },
-        { [`& .${SidebarClasses.paperAnchorLeft}`]: styles.paperAnchorLeft },
-        { [`& .${SidebarClasses.paperAnchorRight}`]: styles.paperAnchorRight },
-        { [`& .${SidebarClasses.paperAnchorTop}`]: styles.paperAnchorTop },
-        {
-            [`& .${SidebarClasses.paperAnchorBottom}`]: styles.paperAnchorBottom,
-        },
-        {
-            [`& .${SidebarClasses.paperAnchorDockedLeft}`]: styles.paperAnchorDockedLeft,
-        },
-        {
-            [`& .${SidebarClasses.paperAnchorDockedTop}`]: styles.paperAnchorDockedTop,
-        },
-        {
-            [`& .${SidebarClasses.paperAnchorDockedRight}`]: styles.paperAnchorDockedRight,
-        },
-        {
-            [`& .${SidebarClasses.paperAnchorDockedBottom}`]: styles.paperAnchorDockedBottom,
-        },
-        { [`& .${SidebarClasses.modal}`]: styles.modal },
-        { [`& .${SidebarClasses.fixed}`]: styles.fixed },
-        styles.root,
-    ],
+    overridesResolver: (props, styles) => styles.root,
 })(({ open, theme }) => ({
     height: 'calc(100vh - 3em)',
 

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTranslate } from 'ra-core';
 
@@ -14,7 +13,7 @@ export const Loading = props => {
 
     const translate = useTranslate();
     return (
-        <Root className={classnames(LoadingClasses.root, className)}>
+        <Root className={className}>
             <div className={LoadingClasses.message}>
                 <CircularProgress
                     className={LoadingClasses.icon}
@@ -48,11 +47,7 @@ export const LoadingClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => [
-        styles.root,
-        { [`& .${LoadingClasses.icon}`]: styles.icon },
-        { [`& .${LoadingClasses.message}`]: styles.message },
-    ],
+    overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',

@@ -4,7 +4,6 @@ import Progress, {
     LinearProgressProps as ProgressProps,
 } from '@mui/material/LinearProgress';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import { useTimeout } from 'ra-core';
 
 /**
@@ -31,10 +30,7 @@ export const LinearProgress = ({
     const oneSecondHasPassed = useTimeout(timeout);
 
     return oneSecondHasPassed ? (
-        <StyledProgress
-            className={classnames(LinearProgressClasses.root, className)}
-            {...rest}
-        />
+        <StyledProgress className={className} {...rest} />
     ) : null;
 };
 
@@ -52,13 +48,9 @@ export interface LinearProgressProps extends ProgressProps {
 
 const PREFIX = 'RaLinearProgress';
 
-export const LinearProgressClasses = {
-    root: `${PREFIX}-root`,
-};
-
 const StyledProgress = styled(Progress, {
     name: PREFIX,
-    overridesResolver: (props, styles) => [styles.root],
+    overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     margin: `${theme.spacing(1)} 0`,
     width: theme.spacing(20),

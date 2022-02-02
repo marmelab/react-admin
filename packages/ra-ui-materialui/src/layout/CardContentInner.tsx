@@ -2,7 +2,6 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import CardContent from '@mui/material/CardContent';
 
 /**
@@ -15,11 +14,7 @@ import CardContent from '@mui/material/CardContent';
 export const CardContentInner = (props: CardContentInnerProps): JSX.Element => {
     const { className, children } = props;
 
-    return (
-        <Root className={classnames(CardContentInnerClasses.root, className)}>
-            {children}
-        </Root>
-    );
+    return <Root className={className}>{children}</Root>;
 };
 
 CardContentInner.propTypes = {
@@ -41,7 +36,7 @@ export const CardContentInnerClasses = {
 
 const Root = styled(CardContent, {
     name: PREFIX,
-    overridesResolver: (props, styles) => [styles.root],
+    overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     paddingTop: 0,
     paddingBottom: 0,

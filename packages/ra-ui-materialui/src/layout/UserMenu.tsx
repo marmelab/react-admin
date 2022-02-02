@@ -20,6 +20,7 @@ export const UserMenu = (props: UserMenuProps) => {
 
     const {
         children,
+        className,
         label = 'ra.auth.user_menu',
         icon = defaultIcon,
         logout,
@@ -32,7 +33,7 @@ export const UserMenu = (props: UserMenuProps) => {
     const handleClose = () => setAnchorEl(null);
 
     return (
-        <Root className={UserMenuClasses.root}>
+        <Root className={className}>
             {loaded && identity?.fullName ? (
                 <Button
                     aria-label={label && translate(label, { _: label })}
@@ -99,7 +100,7 @@ UserMenu.propTypes = {
 
 export interface UserMenuProps {
     children?: React.ReactNode;
-
+    className?: string;
     label?: string;
     logout?: React.ReactNode;
     icon?: React.ReactNode;
@@ -108,21 +109,13 @@ export interface UserMenuProps {
 const PREFIX = 'RaUserMenu';
 
 export const UserMenuClasses = {
-    root: `${PREFIX}-root`,
     userButton: `${PREFIX}-userButton`,
     avatar: `${PREFIX}-avatar`,
 };
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => [
-        {
-            [`& .${UserMenuClasses.userButton}`]: styles.userButton,
-        },
-        {
-            [`& .${UserMenuClasses.avatar}`]: styles.avatar,
-        },
-    ],
+    overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     [`& .${UserMenuClasses.userButton}`]: {
         textTransform: 'none',

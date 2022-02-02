@@ -1347,6 +1347,7 @@ If you still relied on sagas, you have to port your saga code to react `useEffec
 - Removed `<ReferenceInputController>` (use `useReferenceInputController` instead)
 - Removed `<ReferenceArrayInputController>` (use `useReferenceArrayInputController` instead)
 - Removed declarative side effects in dataProvider hooks (e.g. `{ onSuccess: { refresh: true } }`). Use function side effects instead (e.g. `{ onSuccess: () => { refresh(); } }`)
+- Removed `<CardActions>` (use `<TopToolbar>` instead)
 
 ## Removed Deprecated Props
 

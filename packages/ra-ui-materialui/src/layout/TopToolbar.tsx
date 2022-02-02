@@ -2,17 +2,9 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Toolbar, { ToolbarProps } from '@mui/material/Toolbar';
-import classnames from 'classnames';
 
 export const TopToolbar = (props: ToolbarProps) => {
-    const { className, ...rest } = props;
-
-    return (
-        <StyledToolbar
-            className={classnames(TopToolbarClasses.root, className)}
-            {...rest}
-        />
-    );
+    return <StyledToolbar {...props} />;
 };
 
 TopToolbar.propTypes = {
@@ -23,27 +15,24 @@ TopToolbar.propTypes = {
 export default TopToolbar;
 const PREFIX = 'RaTopToolbar';
 
-export const TopToolbarClasses = {
-    root: `${PREFIX}-root`,
-};
-
-const StyledToolbar = styled(Toolbar, { name: PREFIX })(({ theme }) => ({
-    [`&.${TopToolbarClasses.root}`]: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-        alignItems: 'flex-end',
-        paddingBottom: theme.spacing(1),
-        minHeight: theme.spacing(6),
-        [theme.breakpoints.up('xs')]: {
-            paddingLeft: 0,
-            paddingRight: 0,
-        },
-        [theme.breakpoints.down('md')]: {
-            paddingRight: theme.spacing(2),
-        },
-        [theme.breakpoints.down('sm')]: {
-            padding: theme.spacing(1),
-            backgroundColor: theme.palette.background.paper,
-        },
+const StyledToolbar = styled(Toolbar, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    display: 'flex',
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
+    paddingBottom: theme.spacing(1),
+    minHeight: theme.spacing(6),
+    [theme.breakpoints.up('xs')]: {
+        paddingLeft: 0,
+        paddingRight: 0,
+    },
+    [theme.breakpoints.down('md')]: {
+        paddingRight: theme.spacing(2),
+    },
+    [theme.breakpoints.down('sm')]: {
+        padding: theme.spacing(1),
+        backgroundColor: theme.palette.background.paper,
     },
 }));
