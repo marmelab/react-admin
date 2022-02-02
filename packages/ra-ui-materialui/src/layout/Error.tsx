@@ -3,7 +3,6 @@ import { ComponentType, ErrorInfo, Fragment, HtmlHTMLAttributes } from 'react';
 import { FallbackProps } from 'react-error-boundary';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import {
     Button,
     Accordion,
@@ -45,10 +44,7 @@ export const Error = (
     return (
         <Fragment>
             {title && <Title title={title} />}
-            <Root
-                className={classnames(ErrorClasses.container, className)}
-                {...rest}
-            >
+            <Root className={className} {...rest}>
                 <h1 className={ErrorClasses.title} role="alert">
                     <ErrorIcon className={ErrorClasses.icon} />
                     {translate('ra.page.error')}
@@ -154,28 +150,17 @@ export const ErrorClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => [
-        styles.root,
-        { [`&.${ErrorClasses.container}`]: styles.container },
-        { [`& .${ErrorClasses.title}`]: styles.title },
-        { [`& .${ErrorClasses.icon}`]: styles.icon },
-        { [`& .${ErrorClasses.panel}`]: styles.panel },
-        { [`& .${ErrorClasses.panelDetails}`]: styles.panelDetails },
-        { [`& .${ErrorClasses.toolbar}`]: styles.toolbar },
-        { [`& .${ErrorClasses.advice}`]: styles.advice },
-    ],
+    overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    [`&.${ErrorClasses.container}`]: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        [theme.breakpoints.down('md')]: {
-            padding: '1em',
-        },
-        fontFamily: 'Roboto, sans-serif',
-        opacity: 0.5,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    [theme.breakpoints.down('md')]: {
+        padding: '1em',
     },
+    fontFamily: 'Roboto, sans-serif',
+    opacity: 0.5,
 
     [`& .${ErrorClasses.title}`]: {
         display: 'flex',

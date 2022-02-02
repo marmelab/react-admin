@@ -30,10 +30,9 @@ const defaultAnchorOrigin: SnackbarOrigin = {
  */
 export const Notification = (props: NotificationProps) => {
     const {
-        classes: classesOverride,
+        className,
         type = 'info',
         autoHideDuration = 4000,
-        className,
         multiLine = false,
         anchorOrigin = defaultAnchorOrigin,
         ...rest
@@ -74,6 +73,7 @@ export const Notification = (props: NotificationProps) => {
 
     return (
         <StyledSnackbar
+            className={className}
             open={open}
             message={
                 messageInfo.message &&
@@ -92,7 +92,6 @@ export const Notification = (props: NotificationProps) => {
             ContentProps={{
                 className: classnames(
                     NotificationClasses[messageInfo.type || type],
-                    className,
                     { [NotificationClasses.multiLine]: multiLine }
                 ),
             }}
@@ -132,13 +131,7 @@ export const NotificationClasses = {
 
 const StyledSnackbar = styled(Snackbar, {
     name: PREFIX,
-    overridesResolver: (props, styles) => [
-        { [`& .${NotificationClasses.success}`]: styles.success },
-        { [`& .${NotificationClasses.error}`]: styles.error },
-        { [`& .${NotificationClasses.warning}`]: styles.warning },
-        { [`& .${NotificationClasses.undo}`]: styles.undo },
-        { [`& .${NotificationClasses.multiLine}`]: styles.multiLine },
-    ],
+    overridesResolver: (props, styles) => styles.root,
 })(({ theme, type }: NotificationProps & { theme?: Theme }) => ({
     [`& .${NotificationClasses.success}`]: {
         backgroundColor: theme.palette.success.main,

@@ -58,7 +58,6 @@ export const Menu = (props: MenuProps) => {
     return (
         <Root
             className={classnames(
-                MenuClasses.root,
                 {
                     [MenuClasses.open]: open,
                     [MenuClasses.closed]: !open,
@@ -88,33 +87,26 @@ Menu.propTypes = {
 const PREFIX = 'RaMenu';
 
 export const MenuClasses = {
-    root: `${PREFIX}-root`,
     open: `${PREFIX}-open`,
     closed: `${PREFIX}-closed`,
 };
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => [
-        styles.root,
-        { [`&.${MenuClasses.open}`]: styles.open },
-        { [`&.${MenuClasses.closed}`]: styles.closed },
-    ],
+    overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    [`&.${MenuClasses.root}`]: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        marginTop: '0.5em',
-        marginBottom: '1em',
-        [theme.breakpoints.only('xs')]: {
-            marginTop: 0,
-        },
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    marginTop: '0.5em',
+    marginBottom: '1em',
+    [theme.breakpoints.only('xs')]: {
+        marginTop: 0,
     },
+    transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
 
     [`&.${MenuClasses.open}`]: {
         width: lodashGet(theme, 'menu.width', MENU_WIDTH),

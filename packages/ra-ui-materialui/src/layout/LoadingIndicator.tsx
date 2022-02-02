@@ -14,13 +14,12 @@ export const LoadingIndicator = (props: LoadingIndicatorProps) => {
 
     const theme = useTheme();
     return (
-        <Root>
+        <Root className={className}>
             {loading ? (
                 <CircularProgress
                     className={classNames(
                         'app-loader',
-                        LoadingIndicatorClasses.loader,
-                        className
+                        LoadingIndicatorClasses.loader
                     )}
                     color="inherit"
                     size={theme.spacing(2)}
@@ -55,10 +54,7 @@ export const LoadingIndicatorClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => [
-        { [`& .${LoadingIndicatorClasses.loader}`]: styles.loader },
-        { [`& .${LoadingIndicatorClasses.loadedIcon}`]: styles.loadedIcon },
-    ],
+    overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     [`& .${LoadingIndicatorClasses.loader}`]: {
         marginLeft: theme.spacing(2),

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import HotTub from '@mui/icons-material/HotTub';
 import History from '@mui/icons-material/History';
-import classnames from 'classnames';
 
 import { useAuthenticated, useTranslate } from 'ra-core';
 import { Title } from './Title';
@@ -15,10 +14,7 @@ export const NotFound = props => {
     const translate = useTranslate();
     useAuthenticated();
     return (
-        <Root
-            className={classnames(NotFoundClasses.root, className)}
-            {...sanitizeRestProps(rest)}
-        >
+        <Root className={className} {...sanitizeRestProps(rest)}>
             <Title defaultTitle={title} />
             <div className={NotFoundClasses.message}>
                 <HotTub className={NotFoundClasses.icon} />
@@ -55,7 +51,6 @@ NotFound.propTypes = {
 const PREFIX = 'RaNotFound';
 
 export const NotFoundClasses = {
-    root: `${PREFIX}-root`,
     icon: `${PREFIX}-icon`,
     message: `${PREFIX}-message`,
     toolbar: `${PREFIX}-toolbar`,
@@ -63,12 +58,7 @@ export const NotFoundClasses = {
 
 const Root = styled('div', {
     name: PREFIX,
-    overridesResolver: (props, styles) => [
-        styles.root,
-        { [`& .${NotFoundClasses.icon}`]: styles.icon },
-        { [`& .${NotFoundClasses.message}`]: styles.message },
-        { [`& .${NotFoundClasses.toolbar}`]: styles.toolbar },
-    ],
+    overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',

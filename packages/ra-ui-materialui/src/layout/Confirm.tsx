@@ -33,6 +33,7 @@ import { useTranslate } from 'ra-core';
  */
 export const Confirm = (props: ConfirmProps) => {
     const {
+        className,
         isOpen = false,
         loading,
         title,
@@ -63,6 +64,7 @@ export const Confirm = (props: ConfirmProps) => {
 
     return (
         <StyledDialog
+            className={className}
             open={isOpen}
             onClose={onClose}
             onClick={handleClick}
@@ -109,6 +111,7 @@ export const Confirm = (props: ConfirmProps) => {
 
 export interface ConfirmProps {
     cancel?: string;
+    className?: string;
     confirm?: string;
     confirmColor?: string;
     ConfirmIcon?: ReactComponentLike;
@@ -124,6 +127,7 @@ export interface ConfirmProps {
 
 Confirm.propTypes = {
     cancel: PropTypes.string,
+    className: PropTypes.string,
     confirm: PropTypes.string,
     confirmColor: PropTypes.string,
     ConfirmIcon: PropTypes.elementType,
@@ -146,11 +150,7 @@ export const ConfirmClasses = {
 
 const StyledDialog = styled(Dialog, {
     name: PREFIX,
-    overridesResolver: (props, styles) => [
-        { [`& .${ConfirmClasses.confirmPrimary}`]: styles.confirmPrimary },
-        { [`& .${ConfirmClasses.confirmWarning}`]: styles.confirmWarning },
-        { [`& .${ConfirmClasses.iconPaddingStyle}`]: styles.iconPaddingStyle },
-    ],
+    overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     [`& .${ConfirmClasses.confirmPrimary}`]: {
         color: theme.palette.primary.main,

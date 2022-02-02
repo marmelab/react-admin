@@ -19,6 +19,7 @@ export const SidebarToggleButton = (props: SidebarToggleButtonProps) => {
 
     return (
         <Tooltip
+            className={className}
             title={translate(
                 open ? 'ra.action.close_menu' : 'ra.action.open_menu',
                 {
@@ -30,7 +31,6 @@ export const SidebarToggleButton = (props: SidebarToggleButtonProps) => {
             <StyledIconButton
                 color="inherit"
                 onClick={() => toggleSidebar()}
-                className={className}
                 size="large"
             >
                 <MenuIcon
@@ -58,14 +58,7 @@ export const SidebarToggleButtonClasses = {
 
 const StyledIconButton = styled(IconButton, {
     name: PREFIX,
-    overridesResolver: (props, styles) => [
-        {
-            [`& .${SidebarToggleButtonClasses.menuButtonIconClosed}`]: styles.menuButtonIconClosed,
-        },
-        {
-            [`& .${SidebarToggleButtonClasses.menuButtonIconOpen}`]: styles.menuButtonIconOpen,
-        },
-    ],
+    overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     [`& .${SidebarToggleButtonClasses.menuButtonIconClosed}`]: {
         transition: theme.transitions.create(['transform'], {

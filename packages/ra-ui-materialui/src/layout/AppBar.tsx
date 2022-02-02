@@ -73,8 +73,12 @@ export const AppBar: FC<AppBarProps> = memo(props => {
     );
 
     return (
-        <Container>
-            <StyledAppBar className={className} color={color} {...rest}>
+        <Container className={className}>
+            <StyledAppBar
+                className={AppBarClasses.appBar}
+                color={color}
+                {...rest}
+            >
                 <Toolbar
                     disableGutters
                     variant={isXSmall ? 'regular' : 'dense'}
@@ -136,6 +140,7 @@ export interface AppBarProps extends Omit<MuiAppBarProps, 'title'> {
 const PREFIX = 'RaAppBar';
 
 export const AppBarClasses = {
+    appBar: `${PREFIX}-appBar`,
     toolbar: `${PREFIX}-toolbar`,
     menuButton: `${PREFIX}-menuButton`,
     menuButtonIconClosed: `${PREFIX}-menuButtonIconClosed`,
@@ -145,11 +150,7 @@ export const AppBarClasses = {
 
 const StyledAppBar = styled(MuiAppBar, {
     name: PREFIX,
-    overridesResolver: (props, styles) => [
-        { [`& .${AppBarClasses.toolbar}`]: styles.toolbar },
-        { [`& .${AppBarClasses.menuButton}`]: styles.menuButton },
-        { [`& .${AppBarClasses.title}`]: styles.title },
-    ],
+    overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     [`& .${AppBarClasses.toolbar}`]: {
         paddingRight: 24,
