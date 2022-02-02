@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { useContext, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { QueryClientProvider, QueryClient } from 'react-query';
-import { Provider, ReactReduxContext } from 'react-redux';
 import { History } from 'history';
 
 import { AdminRouter } from '../routing';
@@ -12,7 +11,6 @@ import {
     defaultDataProvider,
 } from '../dataProvider';
 import { StoreContextProvider, Store, memoryStore } from '../store';
-import createAdminStore from './createAdminStore';
 import { I18nContextProvider } from '../i18n';
 import { ResourceDefinitionContextProvider } from './ResourceDefinitionContext';
 import { NotificationContextProvider } from '../notification';
@@ -24,7 +22,6 @@ import {
     AdminChildren,
     DashboardComponent,
     LegacyDataProvider,
-    InitialState,
 } from '../types';
 
 export interface CoreAdminContextProps {
@@ -40,7 +37,6 @@ export interface CoreAdminContextProps {
      */
     history?: History;
     i18nProvider?: I18nProvider;
-    initialState?: InitialState;
     theme?: object;
 }
 
@@ -54,9 +50,7 @@ export const CoreAdminContext = (props: CoreAdminContextProps) => {
         children,
         history,
         queryClient,
-        initialState,
     } = props;
-    const needsNewRedux = !useContext(ReactReduxContext);
 
     if (!dataProvider) {
         throw new Error(`Missing dataProvider prop.
@@ -83,7 +77,7 @@ React-admin requires a valid dataProvider function to work.`);
         [dataProvider]
     );
 
-    const renderCore = () => (
+    return (
         <AuthContext.Provider value={finalAuthProvider}>
             <DataProviderContext.Provider value={finalDataProvider}>
                 <StoreContextProvider value={store}>
@@ -102,20 +96,6 @@ React-admin requires a valid dataProvider function to work.`);
             </DataProviderContext.Provider>
         </AuthContext.Provider>
     );
-
-    const [reduxStore] = useState(() =>
-        needsNewRedux
-            ? createAdminStore({
-                  initialState,
-              })
-            : undefined
-    );
-
-    if (needsNewRedux) {
-        return <Provider store={reduxStore}>{renderCore()}</Provider>;
-    } else {
-        return renderCore();
-    }
 };
 
 CoreAdminContext.defaultProps = {
