@@ -16,12 +16,12 @@ import {
     Identifier,
     RaRecord,
     RecordContextProvider,
+    shallowEqual,
     useExpanded,
     useResourceContext,
     useTranslate,
     useCreatePath,
 } from 'ra-core';
-import { shallowEqual } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 

@@ -9,9 +9,10 @@ import {
 } from '@testing-library/react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
+import { StoreContextProvider, memoryStore } from '../store';
 import { useTranslate } from './useTranslate';
 import { useSetLocale } from './useSetLocale';
-import { TranslationContext, TranslationProvider } from './';
+import { I18nContextProvider } from './I18nContextProvider';
 
 describe('useSetLocale', () => {
     const Component = () => {
@@ -30,37 +31,38 @@ describe('useSetLocale', () => {
         expect(screen.queryAllByText('hello')).toHaveLength(1);
     });
 
-    it('should use the setLocale function set in the translation context', async () => {
-        const setLocale = jest.fn();
+    it('should use the dataProvider.changeLocale function', async () => {
+        const changeLocale = jest.fn().mockResolvedValue();
         render(
-            <TranslationContext.Provider
-                value={{
-                    i18nProvider: {
+            <StoreContextProvider value={memoryStore()}>
+                <I18nContextProvider
+                    value={{
                         translate: () => '',
-                        changeLocale: () => Promise.resolve(),
-                    },
-                    locale: 'de',
-                    setLocale,
-                }}
-            >
-                <Component />
-            </TranslationContext.Provider>
+                        changeLocale,
+                        getLocale: () => 'de',
+                    }}
+                >
+                    <Component />
+                </I18nContextProvider>
+            </StoreContextProvider>
         );
         fireEvent.click(screen.getByText('Français'));
         await waitFor(() => {
-            expect(setLocale).toHaveBeenCalledTimes(1);
+            expect(changeLocale).toHaveBeenCalledTimes(1);
         });
     });
 
-    it('should use the i18n provider when using TranslationProvider', async () => {
+    it('should render the I18NcontextProvider children with the new locale', async () => {
         const i18nProvider = polyglotI18nProvider(locale => {
             if (locale === 'en') return { hello: 'hello' };
             if (locale === 'fr') return { hello: 'bonjour' };
         });
         render(
-            <TranslationProvider locale="en" i18nProvider={i18nProvider}>
-                <Component />
-            </TranslationProvider>
+            <StoreContextProvider value={memoryStore()}>
+                <I18nContextProvider value={i18nProvider}>
+                    <Component />
+                </I18nContextProvider>
+            </StoreContextProvider>
         );
         expect(screen.queryAllByText('hello')).toHaveLength(1);
         expect(screen.queryAllByText('bonjour')).toHaveLength(0);

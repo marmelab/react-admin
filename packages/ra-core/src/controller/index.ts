@@ -1,5 +1,3 @@
-import useRecordSelection from './useRecordSelection';
-import useExpanded from './useExpanded';
 import useFilterState from './useFilterState';
 import useSortState, { SortProps } from './useSortState';
 import usePaginationState, { PaginationHookResult } from './usePaginationState';
@@ -10,8 +8,6 @@ export type { PaginationHookResult, SortProps };
 
 export {
     useCheckMinimumRequiredProps,
-    useRecordSelection,
-    useExpanded,
     useFilterState,
     usePaginationState,
     useSortState,

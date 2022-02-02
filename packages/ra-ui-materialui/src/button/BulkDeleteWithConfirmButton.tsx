@@ -35,10 +35,10 @@ export const BulkDeleteWithConfirmButton = (
     const { selectedIds } = useListContext(props);
     const [isOpen, setOpen] = useSafeSetState(false);
     const notify = useNotify();
-    const unselectAll = useUnselectAll();
+    const resource = useResourceContext(props);
+    const unselectAll = useUnselectAll(resource);
     const refresh = useRefresh();
     const translate = useTranslate();
-    const resource = useResourceContext(props);
     const [deleteMany, { isLoading }] = useDeleteMany(
         resource,
         { ids: selectedIds },
@@ -49,7 +49,7 @@ export const BulkDeleteWithConfirmButton = (
                     type: 'info',
                     messageArgs: { smart_count: selectedIds.length },
                 });
-                unselectAll(resource);
+                unselectAll();
                 setOpen(false);
             },
             onError: (error: Error) => {

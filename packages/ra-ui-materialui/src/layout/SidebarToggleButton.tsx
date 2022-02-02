@@ -3,7 +3,8 @@ import { styled } from '@mui/material/styles';
 import { IconButton, Tooltip } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useTranslate } from 'ra-core';
-import { useToggleSidebar } from './useToggleSidebar';
+
+import { useSidebarState } from './useSidebarState';
 
 /**
  * A button that toggles the sidebar. Used by default in the <AppBar>.
@@ -15,7 +16,7 @@ export const SidebarToggleButton = (props: SidebarToggleButtonProps) => {
     const translate = useTranslate();
 
     const { className } = props;
-    const [open, toggleSidebar] = useToggleSidebar();
+    const [open, setOpen] = useSidebarState();
 
     return (
         <Tooltip
@@ -30,7 +31,7 @@ export const SidebarToggleButton = (props: SidebarToggleButtonProps) => {
         >
             <StyledIconButton
                 color="inherit"
-                onClick={() => toggleSidebar()}
+                onClick={() => setOpen(!open)}
                 size="large"
             >
                 <MenuIcon

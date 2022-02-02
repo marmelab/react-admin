@@ -1,14 +1,13 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
-import { Provider } from 'react-redux';
-
 import { createMemoryHistory } from 'history';
 import { Routes, Route, useLocation } from 'react-router-dom';
-import { CoreAdminContext, createAdminStore } from '../core';
+
+import { memoryStore } from '../store';
+import { CoreAdminContext } from '../core';
 import { useNotificationContext } from '../notification';
 import Authenticated from './Authenticated';
-import { testDataProvider } from '../dataProvider';
 
 describe('<Authenticated>', () => {
     const Foo = () => <div>Foo</div>;
@@ -21,25 +20,18 @@ describe('<Authenticated>', () => {
             checkError: () => Promise.reject('bad method'),
             getPermissions: () => Promise.reject('bad method'),
         };
-        const store = createAdminStore();
-        const dispatch = jest.spyOn(store, 'dispatch');
+        const store = memoryStore();
+        const reset = jest.spyOn(store, 'reset');
 
         render(
-            <Provider store={store}>
-                <CoreAdminContext
-                    authProvider={authProvider}
-                    dataProvider={testDataProvider()}
-                >
-                    <Authenticated>
-                        <Foo />
-                    </Authenticated>
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext authProvider={authProvider} store={store}>
+                <Authenticated>
+                    <Foo />
+                </Authenticated>
+            </CoreAdminContext>
         );
         expect(screen.queryByText('Foo')).not.toBeNull();
-        await waitFor(() => {
-            expect(dispatch).toHaveBeenCalledTimes(0);
-        });
+        expect(reset).toHaveBeenCalledTimes(0);
     });
 
     it('should logout, redirect to login and show a notification after a tick if the auth fails', async () => {
@@ -50,16 +42,15 @@ describe('<Authenticated>', () => {
             checkError: jest.fn().mockResolvedValue(''),
             getPermissions: jest.fn().mockResolvedValue(''),
         };
-        const store = createAdminStore();
-        const dispatch = jest.spyOn(store, 'dispatch');
+        const store = memoryStore();
+        const reset = jest.spyOn(store, 'reset');
         const history = createMemoryHistory();
 
         const Login = () => {
             const location = useLocation();
-
             return (
                 <div aria-label="nextPathname">
-                    {location.state.nextPathname}
+                    {(location.state as any).nextPathname}
                 </div>
             );
         };
@@ -74,31 +65,29 @@ describe('<Authenticated>', () => {
         };
 
         render(
-            <Provider store={store}>
-                <CoreAdminContext
-                    authProvider={authProvider}
-                    dataProvider={testDataProvider()}
-                    history={history}
-                >
-                    <Notification />
-                    <Routes>
-                        <Route
-                            path="/"
-                            element={
-                                <Authenticated>
-                                    <Foo />
-                                </Authenticated>
-                            }
-                        />
-                        <Route path="/login" element={<Login />} />
-                    </Routes>
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext
+                authProvider={authProvider}
+                store={store}
+                history={history}
+            >
+                <Notification />
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            <Authenticated>
+                                <Foo />
+                            </Authenticated>
+                        }
+                    />
+                    <Route path="/login" element={<Login />} />
+                </Routes>
+            </CoreAdminContext>
         );
         await waitFor(() => {
             expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({});
             expect(authProvider.logout.mock.calls[0][0]).toEqual({});
-            expect(dispatch).toHaveBeenCalledTimes(1);
+            expect(reset).toHaveBeenCalledTimes(1);
             expect(notificationsSpy).toEqual([
                 {
                     message: 'ra.auth.auth_check_error',
@@ -106,9 +95,6 @@ describe('<Authenticated>', () => {
                     notificationOptions: {},
                 },
             ]);
-            expect(dispatch.mock.calls[0][0]).toEqual({
-                type: 'RA/CLEAR_STATE',
-            });
             expect(screen.getByLabelText('nextPathname').innerHTML).toEqual(
                 '/'
             );

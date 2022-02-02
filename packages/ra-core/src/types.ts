@@ -265,26 +265,7 @@ export interface ResourceDefinition {
  * Redux state type
  */
 export interface ReduxState {
-    admin: {
-        ui: {
-            sidebarOpen: boolean;
-        };
-        expandedRows: {
-            [name: string]: Identifier[];
-        };
-        selectedIds: {
-            [name: string]: Identifier[];
-        };
-        listParams: {
-            [name: string]: {
-                sort: string;
-                order: string;
-                page: number;
-                perPage: number;
-                filter: any;
-            };
-        };
-    };
+    admin: {};
 
     // leave space for custom reducers
     [key: string]: any;

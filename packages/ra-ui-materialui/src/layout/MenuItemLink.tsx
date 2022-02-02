@@ -8,9 +8,7 @@ import React, {
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link, LinkProps, useMatch } from 'react-router-dom';
-import { ReduxState, setSidebarVisibility } from 'ra-core';
 import {
     MenuItem,
     MenuItemProps,
@@ -20,6 +18,8 @@ import {
     useMediaQuery,
     Theme,
 } from '@mui/material';
+
+import { useSidebarState } from './useSidebarState';
 
 /**
  * Displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized.
@@ -81,17 +81,16 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
         ...rest
     } = props;
 
-    const dispatch = useDispatch();
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
-    const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
+    const [open, setOpen] = useSidebarState();
     const handleMenuTap = useCallback(
         e => {
             if (isSmall) {
-                dispatch(setSidebarVisibility(false));
+                setOpen(false);
             }
             onClick && onClick(e);
         },
-        [dispatch, isSmall, onClick]
+        [setOpen, isSmall, onClick]
     );
 
     const match = useMatch(

@@ -1,24 +1,7 @@
 import * as React from 'react';
-import { ComponentType } from 'react';
-import { QueryClient } from 'react-query';
-import { History } from 'history';
 
-import { CoreAdminContext } from './CoreAdminContext';
-import { CoreAdminUI } from './CoreAdminUI';
-import {
-    AuthProvider,
-    LegacyAuthProvider,
-    CatchAllComponent,
-    AdminChildren,
-    DashboardComponent,
-    DataProvider,
-    LegacyDataProvider,
-    I18nProvider,
-    InitialState,
-    LayoutComponent,
-    LoginComponent,
-    TitleComponent,
-} from '../types';
+import { CoreAdminContext, CoreAdminContextProps } from './CoreAdminContext';
+import { CoreAdminUI, CoreAdminUIProps } from './CoreAdminUI';
 
 /**
  * Main admin component, entry point to the application.
@@ -101,7 +84,6 @@ import {
  */
 export const CoreAdmin = (props: CoreAdminProps) => {
     const {
-        appLayout,
         authProvider,
         basename,
         catchAll,
@@ -133,7 +115,7 @@ export const CoreAdmin = (props: CoreAdminProps) => {
             initialState={initialState}
         >
             <CoreAdminUI
-                layout={appLayout || layout}
+                layout={layout}
                 dashboard={dashboard}
                 disableTelemetry={disableTelemetry}
                 menu={menu}
@@ -141,7 +123,7 @@ export const CoreAdmin = (props: CoreAdminProps) => {
                 title={title}
                 loading={loading}
                 loginPage={loginPage}
-                logout={authProvider ? logoutButton : undefined}
+                logoutButton={authProvider ? logoutButton : undefined}
             >
                 {children}
             </CoreAdminUI>
@@ -149,29 +131,4 @@ export const CoreAdmin = (props: CoreAdminProps) => {
     );
 };
 
-export interface CoreAdminProps {
-    appLayout?: LayoutComponent;
-    authProvider?: AuthProvider | LegacyAuthProvider;
-    basename?: string;
-    catchAll?: CatchAllComponent;
-    children?: AdminChildren;
-    customReducers?: object;
-    dashboard?: DashboardComponent;
-    dataProvider: DataProvider | LegacyDataProvider;
-    disableTelemetry?: boolean;
-    /**
-     * @deprecated Wrap your Admin inside a Router to change the routing strategy
-     */
-    history?: History;
-    i18nProvider?: I18nProvider;
-    initialState?: InitialState;
-    layout?: LayoutComponent;
-    loading?: ComponentType;
-    locale?: string;
-    loginPage?: LoginComponent | boolean;
-    logoutButton?: ComponentType;
-    menu?: ComponentType;
-    queryClient?: QueryClient;
-    ready?: ComponentType;
-    title?: TitleComponent;
-}
+export type CoreAdminProps = CoreAdminContextProps & CoreAdminUIProps;

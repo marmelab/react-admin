@@ -7,6 +7,7 @@ describe('List Page', () => {
     const LoginPage = loginPageFactory('/#/login');
 
     beforeEach(() => {
+        window.localStorage.clear();
         ListPagePosts.navigate();
     });
 

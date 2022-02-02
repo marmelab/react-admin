@@ -25,8 +25,8 @@ export const BulkUpdateWithConfirmButton = (
     const notify = useNotify();
     const refresh = useRefresh();
     const translate = useTranslate();
-    const unselectAll = useUnselectAll();
     const resource = useResourceContext(props);
+    const unselectAll = useUnselectAll(resource);
     const [isOpen, setOpen] = useState(false);
     const { selectedIds } = useListContext(props);
 
@@ -44,7 +44,7 @@ export const BulkUpdateWithConfirmButton = (
                 type: 'info',
                 messageArgs: { smart_count: selectedIds.length },
             });
-            unselectAll(resource);
+            unselectAll();
             setOpen(false);
         },
         onError = (error: Error | string) => {

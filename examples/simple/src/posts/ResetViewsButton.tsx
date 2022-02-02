@@ -5,7 +5,7 @@ import { useUpdateMany, useNotify, useUnselectAll, Button } from 'react-admin';
 
 const ResetViewsButton = ({ resource, selectedIds }) => {
     const notify = useNotify();
-    const unselectAll = useUnselectAll();
+    const unselectAll = useUnselectAll(resource);
     const [updateMany, { isLoading }] = useUpdateMany(
         resource,
         { ids: selectedIds, data: { views: 0 } },
@@ -16,7 +16,7 @@ const ResetViewsButton = ({ resource, selectedIds }) => {
                     messageArgs: { smart_count: selectedIds.length },
                     undoable: true,
                 });
-                unselectAll(resource);
+                unselectAll();
             },
             onError: (error: Error | string) =>
                 notify(

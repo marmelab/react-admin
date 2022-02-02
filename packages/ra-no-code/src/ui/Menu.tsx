@@ -2,11 +2,10 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { ReactNode, FC } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 import lodashGet from 'lodash/get';
 import classnames from 'classnames';
 
-import { DashboardMenuItem, ReduxState } from 'react-admin';
+import { DashboardMenuItem, useSidebarState } from 'react-admin';
 import { NewResourceMenuItem } from './NewResourceMenuItem';
 import { useResourcesConfiguration } from '../ResourceConfiguration';
 import { ResourceMenuItem } from './ResourceMenuItem';
@@ -47,7 +46,7 @@ export const CLOSED_MENU_WIDTH = 55;
 
 export const Menu: FC<MenuProps> = (props: MenuProps) => {
     const { className, dense, hasDashboard, ...rest } = props;
-    const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
+    const [open] = useSidebarState();
     const [resources] = useResourcesConfiguration();
 
     return (

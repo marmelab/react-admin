@@ -10,6 +10,7 @@ import warning from './warning';
 import useWhyDidYouUpdate from './useWhyDidYouUpdate';
 import { getMutationMode } from './getMutationMode';
 export * from './mergeRefs';
+export * from './useEventCallback';
 
 export {
     escapePath,
@@ -27,3 +28,4 @@ export {
 
 export type { FieldTitleProps };
 export * from './hooks';
+export * from './shallowEqual';

@@ -1,10 +1,10 @@
 import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce';
 import pickBy from 'lodash/pickBy';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+import { useStore } from '../../store';
 import queryReducer, {
     SET_FILTER,
     HIDE_FILTER,
@@ -14,9 +14,17 @@ import queryReducer, {
     SET_SORT,
     SORT_ASC,
 } from './queryReducer';
-import { changeListParams, ListParams } from '../../actions';
-import { SortPayload, ReduxState, FilterPayload } from '../../types';
+import { SortPayload, FilterPayload } from '../../types';
 import removeEmpty from '../../util/removeEmpty';
+
+export interface ListParams {
+    sort: string;
+    order: string;
+    page: number;
+    perPage: number;
+    filter: any;
+    displayedFilters: any;
+}
 
 /**
  * Get the list parameters (page, sort, filters) and modifiers.
@@ -75,15 +83,11 @@ export const useListParams = ({
     debounce = 500,
     disableSyncWithLocation = false,
 }: ListParamsOptions): [Parameters, Modifiers] => {
-    const dispatch = useDispatch();
     const location = useLocation();
     const navigate = useNavigate();
     const [localParams, setLocalParams] = useState(defaultParams);
-    const params = useSelector(
-        (reduxState: ReduxState) =>
-            reduxState.admin.listParams[resource] || defaultParams,
-        shallowEqual
-    );
+    const storeKey = `${resource}.listParams`;
+    const [params, setParams] = useStore(storeKey, defaultParams);
     const tempParams = useRef<ListParams>();
 
     const requestSignature = [
@@ -118,7 +122,7 @@ export const useListParams = ({
     // to the list
     useEffect(() => {
         if (Object.keys(queryFromLocation).length > 0) {
-            dispatch(changeListParams(resource, query));
+            setParams(query);
         }
     }, [location.search]); // eslint-disable-line
 

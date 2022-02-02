@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { CoreAdminContext, AdminContextProps } from 'ra-core';
+import { CoreAdminContext, CoreAdminContextProps } from 'ra-core';
 
 import { defaultTheme } from './defaultTheme';
 import { ThemeProvider } from './layout/Theme';
 
-export const AdminContext = (props: AdminContextProps) => {
-    const { theme = defaultTheme, ...rest } = props;
+export const AdminContext = (props: CoreAdminContextProps) => {
+    const { theme = defaultTheme, children, ...rest } = props;
     return (
-        <ThemeProvider theme={theme}>
-            <CoreAdminContext {...rest} />
-        </ThemeProvider>
+        <CoreAdminContext {...rest}>
+            <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        </CoreAdminContext>
     );
 };
 

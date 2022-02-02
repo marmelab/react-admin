@@ -7,7 +7,7 @@ title: "Translation"
 
 The react-admin user interface uses English as the default language. But you can also display the UI and content in other languages, allow changing language at runtime, even lazy-loading optional languages to avoid increasing the bundle size with all translations. 
 
-You will use translation features mostly via the `i18nProvider`, and a set of hooks (`useTranslate`, `useLocale`, `useSetLocale`).
+You will use translation features mostly via the `i18nProvider`, and a set of hooks (`useTranslate`, `useLocaleState`).
 
 **Tip**: We'll use a bit of custom vocabulary in this chapter:
  
@@ -16,7 +16,7 @@ You will use translation features mostly via the `i18nProvider`, and a set of ho
 
 ## Introducing the `i18nProvider`
 
-Just like for data fetching and authentication, react-admin relies on a simple object for translations. It's called the `i18nProvider`, and it manages translation and language change using two methods:
+Just like for data fetching and authentication, react-admin relies on a simple object for translations. It's called the `i18nProvider`, and it manages translation and language changes using tree methods:
 
 ```js
 const i18nProvider = {
@@ -46,6 +46,8 @@ If you want to add or update translations, you'll have to provide your own `i18n
 React-admin components use translation keys for their labels, and rely on the `i18nProvider` to translate them. For instance:
 
 ```jsx
+import { Button, useTranslate } from 'react-admin';
+
 const SaveButton = ({ doSave }) => {
     const translate = useTranslate(); // returns the i18nProvider.translate() method
     return (
@@ -157,6 +159,8 @@ const App = () => (
 export default App;
 ```
 
+Note that if the app provides a language switcher, and a user selects a different language, this choice is persisted across reloads until the user logs out.
+
 ## Available Locales
 
 You can find translation packages for the following languages:
@@ -212,9 +216,15 @@ These packages are not directly interoperable with react-admin, but the upgrade 
 
 If you want to contribute a new translation, feel free to submit a pull request to update [this page](https://github.com/marmelab/react-admin/blob/master/docs/Translation.md) with a link to your package.
 
-## `useSetLocale`: Changing Locale At Runtime
+## `useLocaleState`: Reading and Setting The Locale At Runtime
 
-If you want to offer the ability to change locale at runtime, you must provide an `i18nProvider` that contains the messages for all possible locales:
+The `useLocaleState` hook allows to read and update the locale. It uses a syntax similar to react's `useState` hook.
+
+```jsx
+const [locale, setLocale] = useLocaleState();
+```
+
+If you want to offer the ability to change locale at runtime, this hook will come in handy. First, you must provide an `i18nProvider` that contains the messages for all possible locales:
 
 ```jsx
 import * as React from "react";
@@ -238,40 +248,15 @@ const App = () => (
 export default App;
 ```
 
-Then, use the `useSetLocale` hook to change locale. For instance, the following component allows the user to switch the interface language between English and French:
+Then, use the `useLocaleState` hook to read and update the locale. For instance, the following component allows the user to switch the interface language between English and French:
 
 ```jsx
 import * as React from "react";
 import Button from '@mui/material/Button';
-import { useSetLocale } from 'react-admin';
+import { useLocaleState } from 'react-admin';
 
 const LocaleSwitcher = () => {
-    const setLocale = useSetLocale();
-    return (
-        <div>
-            <div>Language</div>
-            <Button onClick={() => setLocale('fr')}>English</Button>
-            <Button onClick={() => setLocale('en')}>French</Button>
-        </div>
-    );
-};
-
-export default LocaleSwitcher;
-```
-
-## `useLocale`: Getting The Current Locale
-
-Your language switcher component probably needs to know the current locale, in order to disable/transform the button for the current language. The `useLocale` hook returns the current locale:
-
-```jsx
-import * as React from 'react';
-import { Component } from 'react';
-import Button from '@mui/material/Button';
-import { useLocale, useSetLocale } from 'react-admin';
-
-const LocaleSwitcher = () => {
-    const locale = useLocale();
-    const setLocale = useSetLocale();
+    const [locale, setLocale] = useLocaleState();
     return (
         <div>
             <div>Language</div>
@@ -352,55 +337,7 @@ const App = () => (
 export default App;
 ```
 
-Beware that users from all around the world may use your application, so make sure the `i18nProvider` returns default messages even for unknown locales?
-
-## Restoring The Locale Choice
-
-The `<LanguageSwitcher>` component is part of `ra-preferences`, an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> module. It displays a button in the App Bar letting users choose their preferred language, and **persists that choice in localStorage**. Users only have to set their preferred locale once per browser.
-
-```jsx
-import * as React from 'react';
-import { LanguageSwitcher } from '@react-admin/ra-preferences';
-import polyglotI18nProvider from 'ra-i18n-polyglot';
-import englishMessages from 'ra-language-english';
-import frenchMessages from 'ra-language-french';
-import { Admin, Resource, List, SimpleList, Layout, AppBar } from 'react-admin';
-import { Box, Typography } from '@material-ui/core';
-
-const MyAppBar = props => (
-    <AppBar {...props}>
-        <Box flex="1">
-            <Typography variant="h6" id="react-admin-title"></Typography>
-        </Box>
-        <LanguageSwitcher
-            languages={[
-                { locale: 'en', name: 'English' },
-                { locale: 'fr', name: 'Français' },
-            ]}
-            defaultLanguage="English"
-        />
-    </AppBar>
-);
-
-const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
-
-const i18nProvider = polyglotI18nProvider(
-    locale => (locale === 'fr' ? frenchMessages : englishMessages),
-    'en' // Default locale
-);
-
-const App = () => (
-    <Admin
-        i18nProvider={i18nProvider}
-        dataProvider={dataProvider}
-        layout={MyLayout}
-    >
-        <Resource name="posts" list={PostList} />
-    </Admin>
-);
-```
-
-Check [the `ra-preferences` documentation](https://marmelab.com/ra-enterprise/modules/ra-preferences) for more details.
+Beware that users from all around the world may use your application, so make sure the `i18nProvider` returns default messages, even for unknown locales.
 
 ## Translation Messages
 

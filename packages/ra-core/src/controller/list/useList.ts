@@ -3,9 +3,10 @@ import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
 import { removeEmpty, useSafeSetState } from '../../util';
 import { FilterPayload, RaRecord, SortPayload } from '../../types';
+import { useResourceContext } from '../../core';
 import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
-import useSelectionState from '../useSelectionState';
+import { useRecordSelection } from './useRecordSelection';
 import { ListControllerResult } from './useListController';
 
 const refetch = () => {
@@ -61,6 +62,8 @@ export const useList = <RecordType extends RaRecord = any>(
         perPage: initialPerPage = 1000,
         sort: initialSort = defaultSort,
     } = props;
+    const resource = useResourceContext(props);
+
     const [fetchingState, setFetchingState] = useSafeSetState<boolean>(
         isFetching
     );
@@ -91,12 +94,7 @@ export const useList = <RecordType extends RaRecord = any>(
     );
 
     // selection logic
-    const {
-        selectedIds,
-        onSelect,
-        onToggleItem,
-        onUnselectItems,
-    } = useSelectionState();
+    const [selectedIds, selectionModifiers] = useRecordSelection(resource);
 
     // filter logic
     const filterRef = useRef(filter);
@@ -236,9 +234,9 @@ export const useList = <RecordType extends RaRecord = any>(
         hideFilter,
         isFetching: fetchingState,
         isLoading: loadingState,
-        onSelect,
-        onToggleItem,
-        onUnselectItems,
+        onSelect: selectionModifiers.select,
+        onToggleItem: selectionModifiers.toggle,
+        onUnselectItems: selectionModifiers.clearSelection,
         page,
         perPage,
         resource: undefined,
@@ -262,6 +260,7 @@ export interface UseListOptions<RecordType extends RaRecord = any> {
     page?: number;
     perPage?: number;
     sort?: SortPayload;
+    resource?: string;
 }
 
 export type UseListValue<

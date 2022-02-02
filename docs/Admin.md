@@ -44,6 +44,7 @@ Here are all the props accepted by the component:
 - [`history`](#history)
 - [`basename`](#basename)
 - [`ready`](#ready)
+- [`store`](#store)
 
 ## `dataProvider`
 
@@ -217,14 +218,13 @@ If you want to add or remove menu items, for instance to link to non-resources p
 // in src/Menu.js
 import * as React from 'react';
 import { createElement } from 'react';
-import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
-import { MenuItemLink, useResourceDefinitions } from 'react-admin';
+import { MenuItemLink, useResourceDefinitions, useSidebarState } from 'react-admin';
 import LabelIcon from '@mui/icons-material/Label';
 
 const Menu = ({ onMenuClick, logout }) => {
     const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
-    const open = useSelector(state => state.admin.ui.sidebarOpen);
+    const [open] = useSidebarState();
     const resources = useResourceDefinitions();
     
     return (
@@ -514,6 +514,20 @@ const Ready = () => (
 const App = () => (
     <Admin ready={Ready}>
         ...
+    </Admin>
+);
+```
+
+## `store`
+
+The `<Admin>` component initializes a [Store](./Store.md) using `localStorage` as the storage engine. You can override this by passing a custom `store` prop:
+
+```jsx
+import { Admin, Resource, memoryStore } from 'react-admin';
+
+const App = () => (
+    <Admin dataProvider={dataProvider} store={memoryStore()}>
+        <Resource name="posts" />
     </Admin>
 );
 ```

@@ -334,11 +334,11 @@ const App = () => (
 
 ## Changing the Theme Programmatically
 
-React-admin provides the `useSetTheme` hook to update the theme programmatically:
+React-admin provides the `useTheme` hook to read and update the theme programmatically. It uses the same syntax as `useState`:
 
 ```jsx
-import { defaultTheme, useSetTheme } from 'react-admin';
-import { Button, useTheme } from '@mui/material';
+import { defaultTheme, useTheme } from 'react-admin';
+import { Button } from '@mui/material';
 
 const lightTheme = defaultTheme;
 const darkTheme = {
@@ -349,8 +349,7 @@ const darkTheme = {
 };
 
 const ThemeToggler = () => {
-    const setTheme = useSetTheme();
-    const theme = useTheme();
+    const [theme, setTheme] = useTheme();
 
     return (
         <Button onClick={() => setTheme(theme.palette.mode === 'dark' ? lightTheme : darkTheme)}>
@@ -520,15 +519,14 @@ For more custom layouts, write a component from scratch. It must contain a `{chi
 import * as React from 'react';
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
 import { makeStyles } from '@mui/material/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import {
     AppBar,
     Menu,
     Sidebar,
-    setSidebarVisibility,
     ComponentPropType,
+    useSidebarState,
 } from 'react-admin';
 
 const useStyles = makeStyles(theme => ({
@@ -567,11 +565,7 @@ const MyLayout = ({
 }) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const open = useSelector(state => state.admin.ui.sidebarOpen);
-
-    useEffect(() => {
-        dispatch(setSidebarVisibility(true));
-    }, [setSidebarVisibility]);
+    const [open] = useSidebarState();
 
     return (
         <div className={classes.root}>
@@ -766,7 +760,7 @@ To make it easier to customize, we export some components and hooks used by the 
 
 - `<LoadingIndicator>`: A `CircularProgress` bound to the dataProvider activity.
 - `<SidebarToggleButton>`: An `IconButton` used to toggle the `<Sidebar>`.
-- `useToggleSidebar`: A hook that returns the sidebar open state and a function to toggle it. Used internally by `<SidebarToggleButton>`.
+- `useSidebarState`: A hook that returns the sidebar open state and a function to toggle it. Used internally by `<SidebarToggleButton>`.
 
 ## Adding Dark Mode Support
 
@@ -853,15 +847,14 @@ const App = () => (
 // in src/Menu.js
 import * as React from 'react';
 import { createElement } from 'react';
-import { useSelector } from 'react-redux';
 import { useMediaQuery } from '@material-ui/core';
-import { DashboardMenuItem, Menu, MenuItemLink, useResourceDefinitions } from 'react-admin';
+import { DashboardMenuItem, Menu, MenuItemLink, useResourceDefinitions, useSidebarState } from 'react-admin';
 import DefaultIcon from '@mui/icons-material/ViewList';
 import LabelIcon from '@mui/icons-material/Label';
 
 export const Menu = (props) => {
     const resources = useResourceDefinitions()
-    const open = useSelector(state => state.admin.ui.sidebarOpen);
+    const [open] = useSidebarState();
     return (
         <Menu {...props}>
             <DashboardMenuItem />
