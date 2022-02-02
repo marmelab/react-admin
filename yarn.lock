@@ -6330,7 +6330,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-redux@npm:^7.1.1, @types/react-redux@npm:^7.1.20":
+"@types/react-redux@npm:^7.1.20":
   version: 7.1.22
   resolution: "@types/react-redux@npm:7.1.22"
   dependencies:
@@ -25407,7 +25407,6 @@ __metadata:
     "@types/classnames": ^2.2.9
     "@types/jest": ^26.0.19
     "@types/react": ^17.0.20
-    "@types/react-redux": ^7.1.1
     "@typescript-eslint/eslint-plugin": ^5.9.1
     "@typescript-eslint/parser": ^5.9.1
     cheerio: ~1.0.0-rc.2
