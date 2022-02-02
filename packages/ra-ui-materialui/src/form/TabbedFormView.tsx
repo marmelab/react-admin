@@ -90,7 +90,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                 See https://github.com/marmelab/react-admin/issues/1866 */}
                 {Children.map(children, (tab: ReactElement, index) => {
                     if (!tab) {
-                        return;
+                        return null;
                     }
                     const tabPath = getTabbedFormTabFullPath(tab, index);
                     const hidden = syncWithLocation
@@ -177,7 +177,10 @@ export const TabbedFormClasses = {
     content: `${PREFIX}-content`,
 };
 
-const Root = styled('form', { name: PREFIX })(({ theme }) => ({
+const Root = styled('form', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`& .MuiTab-root.${TabbedFormClasses.errorTabButton}`]: {
         color: theme.palette.error.main,
     },

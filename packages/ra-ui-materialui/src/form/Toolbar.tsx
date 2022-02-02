@@ -167,7 +167,10 @@ export const ToolbarClasses = {
     spacer: `${PREFIX}-spacer`,
 };
 
-const StyledToolbar = styled(MuiToolbar, { name: PREFIX })(({ theme }) => ({
+const StyledToolbar = styled(MuiToolbar, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`&.${ToolbarClasses.toolbar}`]: {
         backgroundColor:
             theme.palette.mode === 'light'
