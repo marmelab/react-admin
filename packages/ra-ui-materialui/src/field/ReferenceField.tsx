@@ -193,11 +193,11 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
 
     if (resourceLinkPath) {
         return (
-            <Root>
+            <Root className={className}>
                 <RecordContextProvider value={referenceRecord}>
                     <Link
                         to={resourceLinkPath as string}
-                        className={`${ReferenceFieldClasses.link} ${className}`}
+                        className={ReferenceFieldClasses.link}
                         onClick={stopPropagation}
                     >
                         {children}
@@ -249,6 +249,9 @@ export const ReferenceFieldClasses = {
     link: `${PREFIX}-link`,
 };
 
-const Root = styled('span', { name: PREFIX })(({ theme }) => ({
+const Root = styled('span', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`& .${ReferenceFieldClasses.link}`]: {},
 }));

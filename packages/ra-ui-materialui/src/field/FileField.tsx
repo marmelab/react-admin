@@ -3,7 +3,6 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography from '@mui/material/Typography';
-import classnames from 'classnames';
 import { useRecordContext } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
@@ -50,19 +49,13 @@ export const FileField = (props: FileFieldProps) => {
                 {emptyText}
             </Typography>
         ) : (
-            <Root
-                className={classnames(FileFieldClasses.root, className)}
-                {...sanitizeFieldRestProps(rest)}
-            />
+            <Root className={className} {...sanitizeFieldRestProps(rest)} />
         );
     }
 
     if (Array.isArray(sourceValue)) {
         return (
-            <StyledList
-                className={classnames(FileFieldClasses.root, className)}
-                {...sanitizeFieldRestProps(rest)}
-            >
+            <ul className={className} {...sanitizeFieldRestProps(rest)}>
                 {sourceValue.map((file, index) => {
                     const fileTitleValue = get(file, title) || title;
                     const srcValue = get(file, src) || title;
@@ -82,17 +75,14 @@ export const FileField = (props: FileFieldProps) => {
                         </li>
                     );
                 })}
-            </StyledList>
+            </ul>
         );
     }
 
     const titleValue = get(record, title) || title;
 
     return (
-        <Root
-            className={classnames(FileFieldClasses.root, className)}
-            {...sanitizeFieldRestProps(rest)}
-        >
+        <Root className={className} {...sanitizeFieldRestProps(rest)}>
             <a
                 href={sourceValue}
                 title={titleValue}
@@ -133,14 +123,9 @@ FileField.propTypes = {
 
 const PREFIX = 'RaFileField';
 
-export const FileFieldClasses = {
-    root: `${PREFIX}-root`,
-};
-
-const Root = styled('div', { name: PREFIX })({
-    [`&.${FileFieldClasses.root}`]: { display: 'inline-block' },
-});
-
-const StyledList = styled('ul')({
-    [`&.${FileFieldClasses.root}`]: { display: 'inline-block' },
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
+    display: 'inline-block',
 });

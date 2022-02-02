@@ -142,13 +142,13 @@ export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props =
     const { isLoading, total } = useListContext(props);
 
     return (
-        <Root>
+        <Root className={className}>
             {isLoading ? (
                 <LinearProgress
                     className={ReferenceArrayFieldClasses.progress}
                 />
             ) : (
-                <span className={className}>
+                <span>
                     {children}
                     {pagination && total !== undefined ? pagination : null}
                 </span>
@@ -169,16 +169,13 @@ export const ReferenceArrayFieldClasses = {
     progress: `${PREFIX}-progress`,
 };
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`& .${ReferenceArrayFieldClasses.progress}`]: {
         marginTop: theme.spacing(2),
     },
 }));
-
-ReferenceArrayFieldView.propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.element.isRequired,
-    reference: PropTypes.string.isRequired,
-};
 
 const PureReferenceArrayFieldView = memo(ReferenceArrayFieldView);

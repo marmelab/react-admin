@@ -96,7 +96,10 @@ export const ImageFieldClasses = {
     image: `${PREFIX}-image`,
 };
 
-const List = styled('ul', { name: PREFIX })({
+const List = styled('ul', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
     [`&.${ImageFieldClasses.list}`]: {
         display: 'flex',
         listStyleType: 'none',

@@ -23,6 +23,7 @@ export const TranslatableFieldsTabContent = (
         locale,
         record,
         resource,
+        className,
         ...other
     } = props;
     const { selectedLocale, getLabel, getSource } = useTranslatableContext();
@@ -33,7 +34,7 @@ export const TranslatableFieldsTabContent = (
             hidden={selectedLocale !== locale}
             id={`translatable-content-${groupKey}${locale}`}
             aria-labelledby={`translatable-header-${groupKey}${locale}`}
-            className={TranslatableFieldsTabContentClasses.root}
+            className={className}
             {...other}
         >
             {Children.map(children, field =>
@@ -74,6 +75,7 @@ export const TranslatableFieldsTabContent = (
 
 export type TranslatableFieldsTabContentProps = {
     children: ReactNode;
+    className?: string;
     formGroupKeyPrefix?: string;
     groupKey: string;
     locale: string;
@@ -83,18 +85,15 @@ export type TranslatableFieldsTabContentProps = {
 
 const PREFIX = 'RaTranslatableFieldsTabContent';
 
-export const TranslatableFieldsTabContentClasses = {
-    root: `${PREFIX}-root`,
-};
-
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
-    [`&.${TranslatableFieldsTabContentClasses.root}`]: {
-        flexGrow: 1,
-        padding: theme.spacing(2),
-        borderRadius: 0,
-        borderBottomLeftRadius: theme.shape.borderRadius,
-        borderBottomRightRadius: theme.shape.borderRadius,
-        border: `1px solid ${theme.palette.divider}`,
-        borderTop: 0,
-    },
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    flexGrow: 1,
+    padding: theme.spacing(2),
+    borderRadius: 0,
+    borderBottomLeftRadius: theme.shape.borderRadius,
+    borderBottomRightRadius: theme.shape.borderRadius,
+    border: `1px solid ${theme.palette.divider}`,
+    borderTop: 0,
 }));

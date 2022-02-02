@@ -75,12 +75,13 @@ export const TranslatableFields = (
         selector = <TranslatableFieldsTabs groupKey={groupKey} />,
         children,
         resource,
+        className,
     } = props;
     const record = useRecordContext(props);
     const context = useTranslatable({ defaultLocale, locales });
 
     return (
-        <Root className={TranslatableFieldsClasses.root}>
+        <Root className={className}>
             <TranslatableContextProvider value={context}>
                 {selector}
                 {locales.map(locale => (
@@ -101,6 +102,7 @@ export const TranslatableFields = (
 
 export interface TranslatableFieldsProps extends UseTranslatableOptions {
     children: ReactNode;
+    className?: string;
     record?: RaRecord;
     resource?: string;
     selector?: ReactElement;
@@ -109,14 +111,11 @@ export interface TranslatableFieldsProps extends UseTranslatableOptions {
 
 const PREFIX = 'RaTranslatableFields';
 
-export const TranslatableFieldsClasses = {
-    root: `${PREFIX}-root`,
-};
-
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
-    [`&.${TranslatableFieldsClasses.root}`]: {
-        flexGrow: 1,
-        marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(0.5),
-    },
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    flexGrow: 1,
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(0.5),
 }));
