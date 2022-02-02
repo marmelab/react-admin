@@ -21,7 +21,7 @@ import { useStoreContext } from './useStoreContext';
  *
  * @example // Using <StoreSetter> is equivalent to using `useStoreContext` and setting its value directly.
  *
- * const [_, setDensity] = useStore('list.density');
+ * const [, setDensity] = useStore('list.density');
  *
  * useEffect(() => {
  *     setDensity('small');

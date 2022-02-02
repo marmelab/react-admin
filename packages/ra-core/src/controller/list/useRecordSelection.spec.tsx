@@ -68,7 +68,7 @@ describe('useRecordSelection', () => {
         const { result } = renderHook(() => useRecordSelection('foo'), {
             wrapper,
         });
-        const [selected1, { toggle, clearSelection }] = result.current;
+        const [, { toggle, clearSelection }] = result.current;
         toggle(123);
         const [selected2] = result.current;
         expect(selected2).toEqual([123]);

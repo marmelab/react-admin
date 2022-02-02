@@ -27,7 +27,6 @@ import { useLocaleState } from './useLocaleState';
  * @deprecated use useLocaleState instead
  */
 export const useSetLocale = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_, setLocale] = useLocaleState();
+    const [, setLocale] = useLocaleState();
     return setLocale;
 };

@@ -25,8 +25,7 @@ describe('localStorageStore', () => {
 
     it('should update all components using the same store item on update', () => {
         const UpdateStore = () => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const [_, setValue] = useStore('foo.bar');
+            const [, setValue] = useStore('foo.bar');
             return <button onClick={() => setValue('world')}>update</button>;
         };
         render(
@@ -44,8 +43,7 @@ describe('localStorageStore', () => {
 
     it('should not update components using other store key on update', () => {
         const UpdateStore = () => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const [_, setValue] = useStore('other.key');
+            const [, setValue] = useStore('other.key');
             return <button onClick={() => setValue('world')}>update</button>;
         };
         render(

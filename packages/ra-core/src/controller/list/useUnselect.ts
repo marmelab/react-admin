@@ -12,8 +12,7 @@ import { Identifier } from '../../types';
  * unselect([123, 456]);
  */
 export const useUnselect = (resource: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_, { unselect }] = useRecordSelection(resource);
+    const [, { unselect }] = useRecordSelection(resource);
     return useCallback(
         (ids: Identifier[]) => {
             unselect(ids);
