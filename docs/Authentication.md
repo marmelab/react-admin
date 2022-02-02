@@ -305,7 +305,7 @@ export default {
 
 ### Logout Configuration
 
-If you enable authentication, react-admin adds a logout button in the user menu in the top bar (or in the sliding menu on mobile). When the user clicks on the logout button, this calls the `authProvider.logout()` method, and removes potentially sensitive data from the Redux store. Then the user gets redirected to the login page. The two previous sections also illustrated that react-admin can call `authProvider.logout()` itself, when the API returns a 403 error or when the local credentials expire. 
+If you enable authentication, react-admin adds a logout button in the user menu in the top bar (or in the sliding menu on mobile). When the user clicks on the logout button, this calls the `authProvider.logout()` method, and removes potentially sensitive data sored in [the react-admin Store](./Store.md). Then the user gets redirected to the login page. The two previous sections also illustrated that react-admin can call `authProvider.logout()` itself, when the API returns a 403 error or when the local credentials expire. 
 
 It's the responsibility of the `authProvider.logout()` method to clean up the current authentication data. For instance, if the authentication was a token stored in local storage, here is the code to remove it:
 

@@ -600,6 +600,3 @@ When a user browses to `/register`, the `<Register>` component will appear outsi
 
 **Tip**: Custom routes can be [a `<Redirect>` route](https://reacttraining.com/react-router/web/api/Redirect), too.
 
-## Using react-admin without `<Admin>` and `<Resource>`
-
-Using `<Admin>` and `<Resource>` is completely optional. If you feel like bootstrapping a redux app yourself, it's totally possible. Head to [Including in another app](./CustomApp.md) for a detailed how-to.

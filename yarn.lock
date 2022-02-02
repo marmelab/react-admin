@@ -12402,7 +12402,6 @@ __metadata:
     "@types/query-string": 5.1.0
     "@types/react": ^17.0.20
     "@types/react-dom": ^17.0.9
-    "@types/react-redux": ^7.1.1
     "@types/recharts": ^1.8.10
     classnames: ~2.2.5
     data-generator-retail: ^4.0.0-alpha.2
@@ -12428,7 +12427,6 @@ __metadata:
     react-admin: ^4.0.0-alpha.2
     react-app-polyfill: ^2.0.0
     react-dom: ^17.0.0
-    react-redux: ^7.1.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
     react-scripts: ^5.0.0
@@ -24986,7 +24984,6 @@ __metadata:
     "@types/node-polyglot": ^0.4.31
     "@types/query-string": 5.1.0
     "@types/react": ^17.0.20
-    "@types/react-redux": ^7.1.1
     classnames: ~2.2.5
     cross-env: ^5.2.0
     date-fns: ^1.29.0
@@ -25006,11 +25003,9 @@ __metadata:
     react-hook-form: ^7.25.0
     react-is: ^17.0.2
     react-query: ^3.32.1
-    react-redux: ^7.1.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
     react-test-renderer: ^16.9.0 || ^17.0.0
-    redux: ^3.7.2 || ^4.0.3
     reselect: ~3.0.0
     tsup: ^5.11.11
     typescript: ^4.4.0
@@ -25019,10 +25014,8 @@ __metadata:
     react: ^16.9.0 || ^17.0.0
     react-dom: ^16.9.0 || ^17.0.0
     react-hook-form: ^7.25.0
-    react-redux: ^7.1.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
-    redux: ^3.7.2 || ^4.0.3
   languageName: unknown
   linkType: soft
 
@@ -25209,7 +25202,6 @@ __metadata:
     react-dom: ^17.0.0
     react-dropzone: ^10.1.7
     react-query: ^3.32.1
-    react-redux: ^7.1.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
     rimraf: ^2.6.3
@@ -25250,12 +25242,10 @@ __metadata:
     react-error-boundary: ^3.1.4
     react-hook-form: ^7.25.0
     react-query: ^3.32.1
-    react-redux: ^7.1.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
     react-test-renderer: ~16.8.6
     react-transition-group: ^4.4.1
-    redux: ^3.7.2 || ^4.0.3
     rimraf: ^2.6.3
     tsup: ^5.11.11
   peerDependencies:
@@ -25264,10 +25254,8 @@ __metadata:
     ra-core: ^4.0.0-alpha.2
     react: ^16.9.0 || ^17.0.0
     react-dom: ^16.9.0 || ^17.0.0
-    react-redux: ^7.1.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
-    redux: ^3.7.2 || ^4.0.3
   languageName: unknown
   linkType: soft
 
@@ -25470,10 +25458,8 @@ __metadata:
     ra-language-english: ^4.0.0-alpha.2
     ra-ui-materialui: ^4.0.0-alpha.2
     react-hook-form: ^7.25.0
-    react-redux: ^7.1.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
-    redux: ^3.7.2 || ^4.0.3
     rimraf: ^2.6.3
     tsup: ^5.11.11
   peerDependencies:
@@ -25803,7 +25789,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-redux@npm:^7.1.0, react-redux@npm:^7.2.0":
+"react-redux@npm:^7.2.0":
   version: 7.2.6
   resolution: "react-redux@npm:7.2.6"
   dependencies:
@@ -26439,7 +26425,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"redux@npm:^3.7.2 || ^4.0.3, redux@npm:^4.0.0, redux@npm:^4.0.4":
+"redux@npm:^4.0.0, redux@npm:^4.0.4":
   version: 4.1.2
   resolution: "redux@npm:4.1.2"
   dependencies:

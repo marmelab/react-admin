@@ -13,7 +13,6 @@ export type {
 export { FormDataConsumer, ValidationError };
 export * from './Form';
 export * from './validate';
-export * from './constants';
 export * from './FormGroupContext';
 export * from './FormGroupContextProvider';
 export * from './useApplyInputDefaultValues';

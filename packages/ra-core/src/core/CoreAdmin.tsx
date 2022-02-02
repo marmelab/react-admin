@@ -6,7 +6,7 @@ import { CoreAdminUI, CoreAdminUIProps } from './CoreAdminUI';
 /**
  * Main admin component, entry point to the application.
  *
- * Initializes the various contexts (auth, data, i18n, redux, router)
+ * Initializes the various contexts (auth, data, i18n, router)
  * and defines the main routes.
  *
  * Expects a list of resources as children, or a function returning a list of
