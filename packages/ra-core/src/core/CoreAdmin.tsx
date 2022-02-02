@@ -88,7 +88,6 @@ export const CoreAdmin = (props: CoreAdminProps) => {
         basename,
         catchAll,
         children,
-        customReducers,
         dashboard,
         dataProvider,
         disableTelemetry,
@@ -111,7 +110,6 @@ export const CoreAdmin = (props: CoreAdminProps) => {
             i18nProvider={i18nProvider}
             queryClient={queryClient}
             history={history}
-            customReducers={customReducers}
             initialState={initialState}
         >
             <CoreAdminUI

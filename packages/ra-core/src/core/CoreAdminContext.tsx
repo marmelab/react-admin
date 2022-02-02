@@ -31,7 +31,6 @@ export interface CoreAdminContextProps {
     authProvider?: AuthProvider | LegacyAuthProvider;
     basename?: string;
     children?: AdminChildren;
-    customReducers?: object;
     dashboard?: DashboardComponent;
     dataProvider?: DataProvider | LegacyDataProvider;
     store?: Store;
@@ -54,7 +53,6 @@ export const CoreAdminContext = (props: CoreAdminContextProps) => {
         store,
         children,
         history,
-        customReducers,
         queryClient,
         initialState,
     } = props;
@@ -108,7 +106,6 @@ React-admin requires a valid dataProvider function to work.`);
     const [reduxStore] = useState(() =>
         needsNewRedux
             ? createAdminStore({
-                  customReducers,
                   initialState,
               })
             : undefined

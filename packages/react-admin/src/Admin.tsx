@@ -91,7 +91,6 @@ export const Admin = (props: AdminProps) => {
         basename,
         catchAll,
         children,
-        customReducers,
         dashboard,
         dataProvider,
         disableTelemetry,
@@ -124,7 +123,6 @@ export const Admin = (props: AdminProps) => {
             i18nProvider={i18nProvider}
             store={store}
             history={history}
-            customReducers={customReducers}
             initialState={initialState}
             theme={theme}
         >

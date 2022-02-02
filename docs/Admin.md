@@ -37,7 +37,6 @@ Here are all the props accepted by the component:
 - [`menu`](#menu)
 - [`theme`](#theme)
 - [`layout`](#layout)
-- [`customReducers`](#customreducers)
 - [`loginPage`](#loginpage)
 - [`logoutButton`](#logoutbutton)
 - [`initialState`](#initialstate)
@@ -334,59 +333,6 @@ export default MyLayout;
 ```
 
 For more details on custom layouts, check [the Theming documentation](./Theming.md#using-a-custom-layout).
-
-## `customReducers`
-
-The `<Admin>` app uses [Redux](https://redux.js.org/) to manage state. The state has the following keys:
-
-```json
-{
-    "admin": { /*...*/ }, // used by react-admin
-    "routing": { /*...*/ }, // used by connected-react-router
-}
-```
-
-If your components dispatch custom actions, you probably need to register your own reducers to update the state with these actions. Let's imagine that you want to keep the bitcoin exchange rate inside the `bitcoinRate` key in the state. You probably have a reducer looking like the following:
-
-```jsx
-// in src/bitcoinRateReducer.js
-export default (previousState = 0, { type, payload }) => {
-    if (type === 'BITCOIN_RATE_RECEIVED') {
-        return payload.rate;
-    }
-    return previousState;
-}
-```
-
-To register this reducer in the `<Admin>` app, simply pass it in the `customReducers` prop:
-
-{% raw %}
-```jsx
-// in src/App.js
-import * as React from "react";
-import { Admin } from 'react-admin';
-
-import bitcoinRateReducer from './bitcoinRateReducer';
-
-const App = () => (
-    <Admin customReducers={{ bitcoinRate: bitcoinRateReducer }} dataProvider={simpleRestProvider('http://path.to.my.api')}>
-        ...
-    </Admin>
-);
-
-export default App;
-```
-{% endraw %}
-
-Now the state will look like:
-
-```json
-{
-    "admin": { /*...*/ }, // used by react-admin
-    "routing": { /*...*/ }, // used by connected-react-router
-    "bitcoinRate": 123, // managed by rateReducer
-}
-```
 
 ## `loginPage`
 

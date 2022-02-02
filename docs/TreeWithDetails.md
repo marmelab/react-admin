@@ -54,7 +54,6 @@ const App = () => (
         dataProvider={dataProvider}
         i18nProvider={i18nProvider}
         locale="en"
-        customReducers={{ tree }}
     >
         <Resource list={CategoriesList} />
     </Admin>

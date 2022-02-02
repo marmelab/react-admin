@@ -8,12 +8,11 @@ interface Window {
 }
 
 interface Params {
-    customReducers?: any;
     initialState?: InitialState;
 }
 
-export default ({ customReducers = {}, initialState }: Params = {}) => {
-    const appReducer = createAppReducer(customReducers);
+export default ({ initialState }: Params = {}) => {
+    const appReducer = createAppReducer();
 
     const typedWindow = typeof window !== 'undefined' && (window as Window);
 
