@@ -22,9 +22,9 @@ export const BulkUpdateWithUndoButton = (
     const { selectedIds } = useListContext(props);
 
     const notify = useNotify();
-    const unselectAll = useUnselectAll();
-    const refresh = useRefresh();
     const resource = useResourceContext(props);
+    const unselectAll = useUnselectAll(resource);
+    const refresh = useRefresh();
 
     const {
         classes: classesOverride,
@@ -38,7 +38,7 @@ export const BulkUpdateWithUndoButton = (
                 messageArgs: { smart_count: selectedIds.length },
                 undoable: true,
             });
-            unselectAll(resource);
+            unselectAll();
             refresh();
         },
         onError = (error: Error | string) => {

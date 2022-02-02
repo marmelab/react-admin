@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { ReactElement, ReactNode } from 'react';
-import { useSelector } from 'react-redux';
 import {
     List,
     MenuItem,
@@ -11,7 +10,7 @@ import {
     Tooltip,
 } from '@mui/material';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import { useTranslate, ReduxState } from 'react-admin';
+import { useTranslate, useSidebarState } from 'react-admin';
 
 const PREFIX = 'SubMenu';
 
@@ -53,9 +52,7 @@ const SubMenu = (props: Props) => {
     const { handleToggle, isOpen, name, icon, children, dense } = props;
     const translate = useTranslate();
 
-    const sidebarIsOpen = useSelector<ReduxState, boolean>(
-        state => state.admin.ui.sidebarOpen
-    );
+    const [sidebarIsOpen] = useSidebarState();
 
     const header = (
         <MenuItem dense={dense} onClick={handleToggle}>

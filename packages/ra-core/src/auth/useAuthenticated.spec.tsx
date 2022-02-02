@@ -1,13 +1,13 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
-import { Provider } from 'react-redux';
 import { createMemoryHistory } from 'history';
 import { Routes, Route, useLocation } from 'react-router-dom';
+
+import { memoryStore } from '../store';
 import Authenticated from './Authenticated';
 import { useNotificationContext } from '../notification';
-import { CoreAdminContext, createAdminStore } from '../core';
-import { testDataProvider } from '../dataProvider';
+import { CoreAdminContext } from '../core';
 
 describe('useAuthenticated', () => {
     const Foo = () => <div>Foo</div>;
@@ -20,23 +20,18 @@ describe('useAuthenticated', () => {
             checkError: () => Promise.reject('bad method'),
             getPermissions: () => Promise.reject('bad method'),
         };
-        const store = createAdminStore();
-        const dispatch = jest.spyOn(store, 'dispatch');
+        const store = memoryStore();
+        const reset = jest.spyOn(store, 'reset');
         render(
-            <Provider store={store}>
-                <CoreAdminContext
-                    authProvider={authProvider}
-                    dataProvider={testDataProvider()}
-                >
-                    <Authenticated>
-                        <Foo />
-                    </Authenticated>
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext authProvider={authProvider} store={store}>
+                <Authenticated>
+                    <Foo />
+                </Authenticated>
+            </CoreAdminContext>
         );
         expect(authProvider.checkAuth).toBeCalledTimes(1);
         expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({});
-        expect(dispatch).toHaveBeenCalledTimes(0);
+        expect(reset).toHaveBeenCalledTimes(0);
     });
 
     it('should call authProvider on update', () => {
@@ -47,26 +42,21 @@ describe('useAuthenticated', () => {
             checkError: () => Promise.reject('bad method'),
             getPermissions: () => Promise.reject('bad method'),
         };
-        const store = createAdminStore();
-        const dispatch = jest.spyOn(store, 'dispatch');
+        const store = memoryStore();
+        const reset = jest.spyOn(store, 'reset');
 
         const FooWrapper = props => (
-            <Provider store={store}>
-                <CoreAdminContext
-                    authProvider={authProvider}
-                    dataProvider={testDataProvider()}
-                >
-                    <Authenticated {...props}>
-                        <Foo />
-                    </Authenticated>
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext authProvider={authProvider} store={store}>
+                <Authenticated {...props}>
+                    <Foo />
+                </Authenticated>
+            </CoreAdminContext>
         );
         const { rerender } = render(<FooWrapper />);
         rerender(<FooWrapper authParams={{ foo: 'bar' }} />);
         expect(authProvider.checkAuth).toBeCalledTimes(2);
         expect(authProvider.checkAuth.mock.calls[1][0]).toEqual({ foo: 'bar' });
-        expect(dispatch).toHaveBeenCalledTimes(0);
+        expect(reset).toHaveBeenCalledTimes(0);
     });
 
     it('should not block rendering by default', async () => {
@@ -77,25 +67,18 @@ describe('useAuthenticated', () => {
             checkError: () => Promise.reject('bad method'),
             getPermissions: () => Promise.reject('bad method'),
         };
-        const store = createAdminStore();
-        const dispatch = jest.spyOn(store, 'dispatch');
+        const store = memoryStore();
+        const reset = jest.spyOn(store, 'reset');
 
         render(
-            <Provider store={store}>
-                <CoreAdminContext
-                    authProvider={authProvider}
-                    dataProvider={testDataProvider()}
-                >
-                    <Authenticated>
-                        <Foo />
-                    </Authenticated>
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext authProvider={authProvider} store={store}>
+                <Authenticated>
+                    <Foo />
+                </Authenticated>
+            </CoreAdminContext>
         );
         expect(screen.queryByText('Foo')).toBeDefined();
-        await waitFor(() => {
-            expect(dispatch).toHaveBeenCalledTimes(0);
-        });
+        expect(reset).toHaveBeenCalledTimes(0);
     });
 
     it('should logout, redirect to login and show a notification after a tick if the auth fails', async () => {
@@ -106,16 +89,15 @@ describe('useAuthenticated', () => {
             checkError: jest.fn().mockResolvedValue(''),
             getPermissions: jest.fn().mockResolvedValue(''),
         };
-        const store = createAdminStore();
-        const dispatch = jest.spyOn(store, 'dispatch');
+        const store = memoryStore();
+        const reset = jest.spyOn(store, 'reset');
         const history = createMemoryHistory();
 
         const Login = () => {
             const location = useLocation();
-
             return (
                 <div aria-label="nextPathname">
-                    {location.state.nextPathname}
+                    {(location.state as any).nextPathname}
                 </div>
             );
         };
@@ -130,27 +112,29 @@ describe('useAuthenticated', () => {
         };
 
         render(
-            <Provider store={store}>
-                <CoreAdminContext authProvider={authProvider} history={history}>
-                    <Notification />
-                    <Routes>
-                        <Route
-                            path="/"
-                            element={
-                                <Authenticated>
-                                    <Foo />
-                                </Authenticated>
-                            }
-                        />
-                        <Route path="/login" element={<Login />} />
-                    </Routes>
-                </CoreAdminContext>
-            </Provider>
+            <CoreAdminContext
+                authProvider={authProvider}
+                history={history}
+                store={store}
+            >
+                <Notification />
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            <Authenticated>
+                                <Foo />
+                            </Authenticated>
+                        }
+                    />
+                    <Route path="/login" element={<Login />} />
+                </Routes>
+            </CoreAdminContext>
         );
         await waitFor(() => {
             expect(authProvider.checkAuth.mock.calls[0][0]).toEqual({});
             expect(authProvider.logout.mock.calls[0][0]).toEqual({});
-            expect(dispatch).toHaveBeenCalledTimes(1);
+            expect(reset).toHaveBeenCalledTimes(1);
             expect(notificationsSpy).toEqual([
                 {
                     message: 'ra.auth.auth_check_error',
@@ -158,9 +142,6 @@ describe('useAuthenticated', () => {
                     notificationOptions: {},
                 },
             ]);
-            expect(dispatch.mock.calls[0][0]).toEqual({
-                type: 'RA/CLEAR_STATE',
-            });
             expect(screen.getByLabelText('nextPathname').innerHTML).toEqual(
                 '/'
             );

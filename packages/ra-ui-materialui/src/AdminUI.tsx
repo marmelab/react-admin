@@ -25,6 +25,6 @@ AdminUI.defaultProps = {
     catchAll: NotFound,
     loading: LoadingPage,
     loginPage: Login,
-    logout: Logout,
+    logoutButton: Logout,
     notification: Notification,
 };

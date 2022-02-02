@@ -108,7 +108,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
         }
     };
 
-    return total > 0 ? (
+    return (total == null && data.length > 0) || total > 0 ? (
         <Root className={className} {...sanitizeListRestProps(rest)}>
             {data.map((record, rowIndex) => (
                 <RecordContextProvider key={record.id} value={record}>

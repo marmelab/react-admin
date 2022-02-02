@@ -7,11 +7,10 @@ import React, {
 } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { shallowEqual } from 'react-redux';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
 import FormHelperText from '@mui/material/FormHelperText';
 import classnames from 'classnames';
-import { useInput, useTranslate } from 'ra-core';
+import { useInput, useTranslate, shallowEqual } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
 import { Labeled } from './Labeled';

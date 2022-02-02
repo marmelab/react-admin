@@ -2,23 +2,22 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
 import { Drawer, DrawerProps, useMediaQuery, Theme } from '@mui/material';
 import lodashGet from 'lodash/get';
-import { setSidebarVisibility, ReduxState, useLocale } from 'ra-core';
+import { useLocale } from 'ra-core';
+
+import { useSidebarState } from './useSidebarState';
 
 export const Sidebar = (props: SidebarProps) => {
     const { children, closedSize, size, ...rest } = props;
-    const dispatch = useDispatch();
     const isXSmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('sm')
     );
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
-    const open = useSelector<ReduxState, boolean>(
-        state => state.admin.ui.sidebarOpen
-    );
+    const [open, setOpen] = useSidebarState();
     useLocale(); // force redraw on locale change
-    const toggleSidebar = () => dispatch(setSidebarVisibility(!open));
+
+    const toggleSidebar = () => setOpen(!open);
 
     return isXSmall ? (
         <StyledDrawer

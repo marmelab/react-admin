@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ComponentType } from 'react';
-import { CoreAdminProps } from 'ra-core';
+import { CoreAdminProps, localStorageStore } from 'ra-core';
 import { AdminUI, AdminContext } from 'ra-ui-materialui';
 import { ThemeOptions } from '@mui/material';
 
@@ -87,7 +87,6 @@ import { useEffect, useState } from 'react';
  */
 export const Admin = (props: AdminProps) => {
     const {
-        appLayout,
         authProvider,
         basename,
         catchAll,
@@ -101,29 +100,19 @@ export const Admin = (props: AdminProps) => {
         initialState,
         layout,
         loading,
-        locale,
         loginPage,
         logoutButton,
         menu, // deprecated, use a custom layout instead
         notification,
+        store,
         ready,
         theme,
         title = 'React Admin',
     } = props;
 
-    if (appLayout && process.env.NODE_ENV !== 'production') {
-        console.warn(
-            'You are using deprecated prop "appLayout", it was replaced by "layout", see https://github.com/marmelab/react-admin/issues/2918'
-        );
-    }
     if (loginPage === true && process.env.NODE_ENV !== 'production') {
         console.warn(
             'You passed true to the loginPage prop. You must either pass false to disable it or a component class to customize it'
-        );
-    }
-    if (locale && process.env.NODE_ENV !== 'production') {
-        console.warn(
-            'You are using deprecated prop "locale". You must now pass the initial locale to your i18nProvider'
         );
     }
 
@@ -133,13 +122,14 @@ export const Admin = (props: AdminProps) => {
             basename={basename}
             dataProvider={dataProvider}
             i18nProvider={i18nProvider}
+            store={store}
             history={history}
             customReducers={customReducers}
             initialState={initialState}
             theme={theme}
         >
             <AdminUI
-                layout={appLayout || layout}
+                layout={layout}
                 dashboard={dashboard}
                 disableTelemetry={disableTelemetry}
                 menu={menu}
@@ -147,7 +137,7 @@ export const Admin = (props: AdminProps) => {
                 title={title}
                 loading={loading}
                 loginPage={loginPage}
-                logout={authProvider ? logoutButton : undefined}
+                logoutButton={authProvider ? logoutButton : undefined}
                 notification={notification}
                 ready={ready}
             >
@@ -159,6 +149,7 @@ export const Admin = (props: AdminProps) => {
 
 Admin.defaultProps = {
     i18nProvider: defaultI18nProvider,
+    store: localStorageStore(),
 };
 
 export default Admin;

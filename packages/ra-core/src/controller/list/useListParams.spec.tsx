@@ -3,11 +3,11 @@ import expect from 'expect';
 import { render, screen } from '@testing-library/react';
 import { stringify } from 'query-string';
 import { createMemoryHistory } from 'history';
-import { Provider } from 'react-redux';
 import { fireEvent, waitFor } from '@testing-library/react';
 
-import { CoreAdminContext, createAdminStore } from '../../core';
+import { CoreAdminContext } from '../../core';
 import { testDataProvider } from '../../dataProvider';
+import { useStore } from '../../store/useStore';
 import { useListParams, getQuery, getNumberOrDefault } from './useListParams';
 import { SORT_DESC, SORT_ASC } from './queryReducer';
 
@@ -366,54 +366,68 @@ describe('useListParams', () => {
             return <button onClick={handleClick}>update</button>;
         };
 
-        it('should synchronize parameters with location and redux state when sync is enabled', async () => {
+        it('should synchronize parameters with location and store when sync is enabled', async () => {
             const history = createMemoryHistory();
             const navigate = jest.spyOn(history, 'push');
-            const store = createAdminStore({});
-            const dispatch = jest.spyOn(store, 'dispatch');
-
+            let storeValue;
+            const StoreReader = () => {
+                const [value] = useStore('posts.listParams');
+                React.useEffect(() => {
+                    storeValue = value;
+                }, [value]);
+                return null;
+            };
             render(
-                <Provider store={store}>
-                    <CoreAdminContext
-                        history={history}
-                        dataProvider={testDataProvider()}
-                    >
-                        <Component />
-                    </CoreAdminContext>
-                </Provider>
+                <CoreAdminContext
+                    history={history}
+                    dataProvider={testDataProvider()}
+                >
+                    <Component />
+                    <StoreReader />
+                </CoreAdminContext>
             );
 
             fireEvent.click(screen.getByText('update'));
             await waitFor(() => {
                 expect(navigate).toHaveBeenCalled();
             });
-            await waitFor(() => {
-                expect(dispatch).toHaveBeenCalled();
+
+            expect(storeValue).toEqual({
+                sort: 'id',
+                order: 'ASC',
+                page: 10,
+                perPage: 10,
+                filter: {},
             });
         });
 
         test('should not synchronize parameters with location and redux state when sync is not enabled', async () => {
             const history = createMemoryHistory();
             const navigate = jest.spyOn(history, 'push');
-            const store = createAdminStore({});
-            const dispatch = jest.spyOn(store, 'dispatch');
+            let storeValue;
+            const StoreReader = () => {
+                const [value] = useStore('posts.listParams');
+                React.useEffect(() => {
+                    storeValue = value;
+                }, [value]);
+                return null;
+            };
 
             render(
-                <Provider store={store}>
-                    <CoreAdminContext
-                        history={history}
-                        dataProvider={testDataProvider()}
-                    >
-                        <Component />
-                    </CoreAdminContext>
-                </Provider>
+                <CoreAdminContext
+                    history={history}
+                    dataProvider={testDataProvider()}
+                >
+                    <Component />
+                    <StoreReader />
+                </CoreAdminContext>
             );
 
             fireEvent.click(screen.getByText('update'));
 
             await waitFor(() => {
                 expect(navigate).not.toHaveBeenCalled();
-                expect(dispatch).not.toHaveBeenCalled();
+                expect(storeValue).toBeUndefined();
             });
         });
     });

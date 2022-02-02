@@ -1,6 +1,5 @@
 import { combineReducers, Reducer } from 'redux';
 
-import admin from './admin';
 import { ReduxState } from '../types';
 
 interface CustomReducers {
@@ -9,6 +8,7 @@ interface CustomReducers {
 
 export default (customReducers: CustomReducers) =>
     combineReducers({
-        admin,
+        // FIXME: to be removed when we remove the provider
+        admin: (state = null) => state,
         ...customReducers,
     }) as Reducer<ReduxState>;

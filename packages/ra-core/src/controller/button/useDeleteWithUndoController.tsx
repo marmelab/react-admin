@@ -2,7 +2,7 @@ import { useCallback, ReactEventHandler } from 'react';
 import { UseMutationOptions } from 'react-query';
 
 import { useDelete } from '../../dataProvider';
-import { useUnselect } from '../../sideEffect';
+import { useUnselect } from '../../controller';
 import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import { RaRecord, DeleteParams } from '../../types';
@@ -54,7 +54,7 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
     } = props;
     const resource = useResourceContext(props);
     const notify = useNotify();
-    const unselect = useUnselect();
+    const unselect = useUnselect(resource);
     const redirect = useRedirect();
     const [deleteOne, { isLoading }] = useDelete<RecordType>();
 
@@ -71,7 +71,7 @@ const useDeleteWithUndoController = <RecordType extends RaRecord = any>(
                             messageArgs: { smart_count: 1 },
                             undoable: true,
                         });
-                        unselect(resource, [record.id]);
+                        unselect([record.id]);
                         redirect(redirectTo, resource);
                     },
                     onError: (error: Error) => {

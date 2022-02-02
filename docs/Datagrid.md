@@ -223,7 +223,7 @@ const CustomResetViewsButton = () => {
     const { selectedIds } = useListContext();
     const refresh = useRefresh();
     const notify = useNotify();
-    const unselectAll = useUnselectAll();
+    const unselectAll = useUnselectAll('posts');
     const [updateMany, { isLoading }] = useUpdateMany(
         'posts',
         { ids: selectedIds, data: { views: 0 } },
@@ -231,7 +231,7 @@ const CustomResetViewsButton = () => {
             onSuccess: () => {
                 refresh();
                 notify('Posts updated');
-                unselectAll('posts');
+                unselectAll();
             },
             onError: error => notify('Error: posts not updated', { type: 'warning' }),
         }
@@ -271,7 +271,7 @@ const CustomResetViewsButton = () => {
     const [open, setOpen] = useState(false);
     const refresh = useRefresh();
     const notify = useNotify();
-    const unselectAll = useUnselectAll();
+    const unselectAll = useUnselectAll('posts');
     const [updateMany, { isLoading }] = useUpdateMany(
         'posts',
         { ids: selectedIds, data: { views: 0 } },
@@ -279,7 +279,7 @@ const CustomResetViewsButton = () => {
             onSuccess: () => {
                 refresh();
                 notify('Posts updated');
-                unselectAll('posts');
+                unselectAll();
             },
             onError: error => notify('Error: posts not updated', { type: 'warning' }),
         }
@@ -336,7 +336,7 @@ const CustomResetViewsButton = () => {
     const { selectedIds } = useListContext();
 -   const refresh = useRefresh();
     const notify = useNotify();
-    const unselectAll = useUnselectAll();
+    const unselectAll = useUnselectAll('posts');
     const [updateMany, { isLoading }] = useUpdateMany(
         'posts',
         { ids: selectedIds, data: { views: 0 } },
@@ -345,7 +345,7 @@ const CustomResetViewsButton = () => {
 -               refresh();
 -               notify('Posts updated');
 +               notify('Posts updated', { undoable: true }); // the last argument forces the display of 'undo' in the notification
-                unselectAll('posts');
+                unselectAll();
             },
             onError: error => notify('Error: posts not updated', { type: 'warning' }),
 +           mutationMode: 'undoable'

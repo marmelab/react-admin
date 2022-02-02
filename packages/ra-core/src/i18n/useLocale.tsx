@@ -1,11 +1,7 @@
-import { useContext } from 'react';
-
-import { TranslationContext } from './TranslationContext';
+import { useLocaleState } from './useLocaleState';
 
 /**
- * Get the current locale from the TranslationContext
- *
- * This hook re-renders when the locale changes.
+ * Get the current locale
  *
  * @example
  *
@@ -19,8 +15,10 @@ import { TranslationContext } from './TranslationContext';
  *     const locale = useLocale();
  *     return <span>{availableLanguages[locale]}</span>;
  * }
+ *
+ * @deprecated use useLocaleState instead
  */
 export const useLocale = () => {
-    const { locale } = useContext(TranslationContext);
+    const [locale] = useLocaleState();
     return locale;
 };

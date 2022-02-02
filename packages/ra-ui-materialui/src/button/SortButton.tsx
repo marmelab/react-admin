@@ -11,11 +11,11 @@ import {
 } from '@mui/material';
 import SortIcon from '@mui/icons-material/Sort';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import { shallowEqual } from 'react-redux';
 import {
     useListSortContext,
     useTranslate,
     getFieldLabelTranslationArgs,
+    shallowEqual,
 } from 'ra-core';
 
 /**

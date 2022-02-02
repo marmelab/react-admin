@@ -11,12 +11,11 @@ This hook returns a function that unselects all lines in the current `<Datagrid>
 import { useUnselectAll } from 'react-admin';
 
 const UnselectAllButton = () => {
-    const unselectAll = useUnselectAll();
+    const unselectAll = useUnselectAll('posts');
     const handleClick = () => {
-        unselectAll('posts');
+        unselectAll();
     }
     return <button onClick={handleClick}>Unselect all</button>;
 };
 ```
 
-The resource can be passed to the `useUnselectAll` hook or to the `unselectAll` callback; it is up to you.

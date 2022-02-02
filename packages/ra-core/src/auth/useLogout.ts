@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
-import { clearState } from '../actions/clearActions';
+import { useResetStore } from '../store';
 import { useLocation, useNavigate, Path } from 'react-router-dom';
 
 /**
@@ -25,7 +24,7 @@ import { useLocation, useNavigate, Path } from 'react-router-dom';
  */
 const useLogout = (): Logout => {
     const authProvider = useAuthProvider();
-    const dispatch = useDispatch();
+    const resetStore = useResetStore();
     const navigate = useNavigate();
     const location = useLocation();
     const locationRef = useRef(location);
@@ -53,7 +52,7 @@ const useLogout = (): Logout => {
         ) =>
             authProvider.logout(params).then(redirectToFromProvider => {
                 if (redirectToFromProvider === false) {
-                    dispatch(clearState());
+                    resetStore();
                     // do not redirect
                     return;
                 }
@@ -83,11 +82,11 @@ const useLogout = (): Logout => {
                     newLocation.search = redirectToParts[1];
                 }
                 navigate(newLocation, newLocationOptions);
-                dispatch(clearState());
+                resetStore();
 
                 return redirectToFromProvider;
             }),
-        [authProvider, dispatch, navigate]
+        [authProvider, resetStore, navigate]
     );
 
     const logoutWithoutProvider = useCallback(
@@ -102,10 +101,10 @@ const useLogout = (): Logout => {
                     },
                 }
             );
-            dispatch(clearState());
+            resetStore();
             return Promise.resolve();
         },
-        [dispatch, location, navigate]
+        [resetStore, location, navigate]
     );
 
     return authProvider ? logout : logoutWithoutProvider;

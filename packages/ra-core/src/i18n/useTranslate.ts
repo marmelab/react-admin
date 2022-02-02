@@ -1,7 +1,7 @@
-import { useContext, useCallback } from 'react';
+import { useCallback } from 'react';
 
-import { TranslationContext } from './TranslationContext';
 import { Translate } from '../types';
+import { useI18nProvider } from './useI18nProvider';
 
 /**
  * Translate a string using the current locale and the translations from the i18nProvider
@@ -23,12 +23,12 @@ import { Translate } from '../types';
  * }
  */
 export const useTranslate = (): Translate => {
-    const { i18nProvider, locale } = useContext(TranslationContext);
+    const i18nProvider = useI18nProvider();
     const translate = useCallback(
         (key: string, options?: any) =>
             i18nProvider.translate(key, options) as string,
         // update the hook each time the locale changes
-        [i18nProvider, locale] // eslint-disable-line react-hooks/exhaustive-deps
+        [i18nProvider] // eslint-disable-line react-hooks/exhaustive-deps
     );
     return i18nProvider ? translate : identity;
 };

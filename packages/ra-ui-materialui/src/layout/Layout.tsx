@@ -6,16 +6,16 @@ import React, {
     HtmlHTMLAttributes,
 } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { useSelector } from 'react-redux';
 import classnames from 'classnames';
 import { styled } from '@mui/material/styles';
-import { CoreLayoutProps, ReduxState } from 'ra-core';
+import { CoreLayoutProps } from 'ra-core';
 
 import { AppBar as DefaultAppBar, AppBarProps } from './AppBar';
 import { Sidebar as DefaultSidebar } from './Sidebar';
 import { Menu as DefaultMenu, MenuProps } from './Menu';
 import { Error, ErrorProps } from './Error';
 import { SkipNavigationButton } from '../button';
+import { useSidebarState } from './useSidebarState';
 
 export const Layout = (props: LayoutProps) => {
     const {
@@ -31,10 +31,8 @@ export const Layout = (props: LayoutProps) => {
         ...rest
     } = props;
 
+    const [open] = useSidebarState();
     const [errorInfo, setErrorInfo] = useState<ErrorInfo>(null);
-    const open = useSelector<ReduxState, boolean>(
-        state => state.admin.ui.sidebarOpen
-    );
 
     const handleError = (error: Error, info: ErrorInfo) => {
         setErrorInfo(info);

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import LabelIcon from '@mui/icons-material/Label';
 import classnames from 'classnames';
 import {
@@ -9,7 +8,7 @@ import {
     DashboardMenuItem,
     MenuItemLink,
     MenuProps,
-    ReduxState,
+    useSidebarState,
 } from 'react-admin';
 
 import visitors from '../visitors';
@@ -19,7 +18,6 @@ import products from '../products';
 import categories from '../categories';
 import reviews from '../reviews';
 import SubMenu from './SubMenu';
-import { AppState } from '../types';
 
 const PREFIX = 'Menu';
 
@@ -57,8 +55,7 @@ const Menu = ({ dense = false }: MenuProps) => {
         menuCustomers: true,
     });
     const translate = useTranslate();
-    const open = useSelector((state: ReduxState) => state.admin.ui.sidebarOpen);
-    useSelector((state: AppState) => state.theme); // force rerender on theme change
+    const open = useSidebarState();
 
     const handleToggle = (menu: MenuName) => {
         setState(state => ({ ...state, [menu]: !state[menu] }));

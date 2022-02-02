@@ -7,7 +7,7 @@ import {
 import { UseMutationOptions } from 'react-query';
 
 import { useDelete } from '../../dataProvider';
-import { useUnselect } from '../../sideEffect';
+import { useUnselect } from '../../controller';
 import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import { RaRecord, MutationMode, DeleteParams } from '../../types';
@@ -76,7 +76,7 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
     const resource = useResourceContext(props);
     const [open, setOpen] = useState(false);
     const notify = useNotify();
-    const unselect = useUnselect();
+    const unselect = useUnselect(resource);
     const redirect = useRedirect();
     const [deleteOne, { isLoading }] = useDelete<RecordType>();
 
@@ -104,7 +104,7 @@ const useDeleteWithConfirmController = <RecordType extends RaRecord = any>(
                             messageArgs: { smart_count: 1 },
                             undoable: mutationMode === 'undoable',
                         });
-                        unselect(resource, [record.id]);
+                        unselect([record.id]);
                         redirect(redirectTo, resource);
                     },
                     onError: (error: Error) => {
