@@ -79,6 +79,7 @@ import { LinearProgress } from '../layout';
 export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
     const {
         choices = [],
+        className,
         format,
         helperText,
         isFetching,
@@ -129,7 +130,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
                 label={label}
                 source={source}
                 resource={resource}
-                className={rest.className}
+                className={className}
                 isRequired={isRequired}
                 margin={margin}
                 fieldState={fieldState}
@@ -142,6 +143,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
     return (
         <StyledFormControl
             component="fieldset"
+            className={className}
             margin={margin}
             error={(isTouched || isSubmitted) && invalid}
             {...sanitizeRestProps(rest)}
@@ -255,13 +257,12 @@ export const RadioButtonGroupInputClasses = {
     label: `${PREFIX}-label`,
 };
 
-const StyledFormControl = styled(FormControl, { name: PREFIX })(
-    ({ theme }) => ({
-        [`& .${RadioButtonGroupInputClasses.label}`]: {
-            transform: 'translate(0, 5px) scale(0.75)',
-            transformOrigin: `top ${
-                theme.direction === 'ltr' ? 'left' : 'right'
-            }`,
-        },
-    })
-);
+const StyledFormControl = styled(FormControl, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    [`& .${RadioButtonGroupInputClasses.label}`]: {
+        transform: 'translate(0, 5px) scale(0.75)',
+        transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
+    },
+}));

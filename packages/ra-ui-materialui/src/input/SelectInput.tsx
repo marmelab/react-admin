@@ -366,12 +366,13 @@ const sanitizeRestProps = ({
 
 const PREFIX = 'RaSelectInput';
 
-const StyledResettableTextField = styled(ResettableTextField, { name: PREFIX })(
-    ({ theme }) => ({
-        ...ResettableTextFieldStyles,
-        minWidth: theme.spacing(20),
-    })
-);
+const StyledResettableTextField = styled(ResettableTextField, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    ...ResettableTextFieldStyles,
+    minWidth: theme.spacing(20),
+}));
 
 export type SelectInputProps = Omit<CommonInputProps, 'source'> &
     ChoicesProps &

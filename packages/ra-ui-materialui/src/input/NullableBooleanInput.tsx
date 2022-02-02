@@ -97,7 +97,10 @@ export const NullableBooleanInputClasses = {
     input: `${PREFIX}-input`,
 };
 
-const StyledTextField = styled(TextField, { name: PREFIX })(({ theme }) => ({
+const StyledTextField = styled(TextField, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`&.${NullableBooleanInputClasses.input}`]: { width: theme.spacing(16) },
 }));
 

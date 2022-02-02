@@ -119,6 +119,7 @@ export const AutocompleteInput = <
         choices,
         clearText = 'ra.action.clear_input_value',
         closeText = 'ra.action.close',
+        className,
         create,
         createLabel,
         createItemLabel,
@@ -375,7 +376,7 @@ If you provided a React element for the optionText prop, you must also provide t
     };
 
     return (
-        <Root>
+        <Root className={className}>
             <Autocomplete
                 blurOnSelect
                 clearText={translate(clearText, { _: clearText })}
@@ -511,7 +512,10 @@ export const AutocompleteClasses = {
     input: `${PREFIX}-input`,
 };
 
-const Root = styled('span', { name: PREFIX })(({ theme }) => ({
+const Root = styled('span', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`& .${AutocompleteClasses.input}`]: {
         minWidth: theme.spacing(20),
     },
