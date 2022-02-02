@@ -39,7 +39,6 @@ Here are all the props accepted by the component:
 - [`layout`](#layout)
 - [`loginPage`](#loginpage)
 - [`logoutButton`](#logoutbutton)
-- [`initialState`](#initialstate)
 - [`history`](#history)
 - [`basename`](#basename)
 - [`ready`](#ready)
@@ -365,38 +364,6 @@ import MyLogoutButton from './MyLogoutButton';
 const App = () => (
     <Admin loginPage={MyLoginPage} logoutButton={MyLogoutButton}>
         ...
-    </Admin>
-);
-```
-
-## `initialState`
-
-The `initialState` prop lets you pass preloaded state to Redux. See the [Redux Documentation](https://redux.js.org/docs/api/createStore.html#createstorereducer-preloadedstate-enhancer) for more details.
-
-It accepts either a function or an object:
-
-```jsx
-const initialState = {
-    theme: 'dark',
-    grid: 5,
-};
-
-const App = () => (
-    <Admin initialState={initialState} dataProvider={simpleRestProvider('http://path.to.my.api')}>
-        // ...
-    </Admin>
-);
-```
-
-```jsx
-const initialState = () => ({
-    theme: localStorage.getItem('theme'),
-    grid: localStorage.getItem('grid'),
-});
-
-const App = () => (
-    <Admin initialState={initialState} dataProvider={simpleRestProvider('http://path.to.my.api')}>
-        // ...
     </Admin>
 );
 ```

@@ -27,11 +27,7 @@ describe('<Resource>', () => {
     it('renders resource routes by default', () => {
         const history = createMemoryHistory();
         render(
-            <CoreAdminContext
-                history={history}
-                dataProvider={testDataProvider()}
-                initialState={{ admin: { resources: { posts: {} } } }}
-            >
+            <CoreAdminContext history={history}>
                 <Resource {...resource} />
             </CoreAdminContext>
         );

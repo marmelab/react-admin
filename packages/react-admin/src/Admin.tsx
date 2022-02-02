@@ -96,7 +96,6 @@ export const Admin = (props: AdminProps) => {
         disableTelemetry,
         history,
         i18nProvider,
-        initialState,
         layout,
         loading,
         loginPage,
@@ -123,7 +122,6 @@ export const Admin = (props: AdminProps) => {
             i18nProvider={i18nProvider}
             store={store}
             history={history}
-            initialState={initialState}
             theme={theme}
         >
             <AdminUI

@@ -93,7 +93,6 @@ export const CoreAdmin = (props: CoreAdminProps) => {
         disableTelemetry,
         history,
         i18nProvider,
-        initialState,
         queryClient,
         layout,
         loading,
@@ -110,7 +109,6 @@ export const CoreAdmin = (props: CoreAdminProps) => {
             i18nProvider={i18nProvider}
             queryClient={queryClient}
             history={history}
-            initialState={initialState}
         >
             <CoreAdminUI
                 layout={layout}

@@ -271,8 +271,6 @@ export interface ReduxState {
     [key: string]: any;
 }
 
-export type InitialState = object | (() => object);
-
 /**
  * Misc types
  */
