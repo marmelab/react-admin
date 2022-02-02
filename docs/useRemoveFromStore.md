@@ -16,7 +16,7 @@ const remove = useRemoveFromStore();
 remove(key);
 ```
 
-The `key` should be a string, and is used to access local storage.  It can be passed either when calling the hook, or when calling the callback:
+The `key` should be a string, and is used to access local storage. It can be passed either when calling the hook, or when calling the callback:
 
 ```jsx
 const remove = useRemoveFromStore(key);
@@ -26,6 +26,9 @@ remove();
 ## Example
 
 ```jsx
+import { useRemoveFromStore } from 'react-admin';
+import { Button } from '@mui/material';
+
 const ResetPreferences = () => {
     const removeItem = useRemoveFromStore();
     return (

@@ -19,6 +19,8 @@ reset();
 ## Example
 
 ```jsx
+import { useResetStore, Button } from 'react-admin';
+
 const ResetButton = () => {
     const reset = useResetStore();
     return (

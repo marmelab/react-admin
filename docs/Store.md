@@ -7,7 +7,7 @@ title: "The Store"
 
 React-admin contains a global, synchronous, persistent store for storing user preferences. Think of the Store as a key-value database that persists between page loads.
 
-Users expect that UI choices, like changing the interface language or theme, should only be made once. Let's call these choices "preferences". The react-admin Store is the perfect place to store preferenes.
+Users expect that UI choices, like changing the interface language or theme, should only be made once. Let's call these choices "preferences". The react-admin Store is the perfect place to store preferences.
 
 The store uses the browser local storage (or a memory storage when `localStorage` isn't available). The store is emptied when the user logs out.
 
@@ -25,6 +25,9 @@ React-admin provides the following hooks to interact with the Store:
 For instance, here is how to use it to show or hide a help panel:
 
 ```jsx
+import { useStore } from 'react-admin';
+import { Button, Popover } from '@mui/material';
+
 const HelpButton = () => {
     const [helpOpen, setHelpOpen] = useStore('help.open', false);
     return (
@@ -42,7 +45,7 @@ const HelpButton = () => {
 
 ## Store-Based Hooks
 
-React-admin components don't acess the store directly ; instead, they use purpose-driven hooks, which you can use, too:
+React-admin components don't access the store directly ; instead, they use purpose-driven hooks, which you can use, too:
 
 - `useSidebarState()` for the open/closed sidebar state
 - `useLocaleState()` for the locale
@@ -72,10 +75,10 @@ This way, each time the application is loaded, the store will be reset to an emp
 
 The react-admin Store is persistent. This means that if a unit test modifies an item in the store, the value will be changed for the next test. This will cause random test failures when you use `useStore()` in your tests, or any feature depending on the store (e.g. datagrid row selection, sidebar state, language selection).
 
-To isolate you unit tests, pass a new `memoryStore` for each test:
+To isolate your unit tests, pass a new `memoryStore` for each test:
 
 ```jsx
-import { memoryStore } from 'react-admin';
+import { AdminContext, memoryStore } from 'react-admin';
 
 test('<MyComponent>', async () => {
     const { getByText } = render(

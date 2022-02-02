@@ -11,11 +11,11 @@ import { useStoreContext } from './useStoreContext';
  * const ResetPrefs = () {
  *    const reset = useResetStore();
  *
- *    const hancleClick = () => {
+ *    const handleClick = () => {
  *        reset();
  *    };
  *
- *    return <Button onClick={hancleClick}>Reset preferences</Button>;
+ *    return <Button onClick={handleClick}>Reset preferences</Button>;
  * }
  */
 export const useResetStore = () => {

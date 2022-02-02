@@ -33,7 +33,7 @@ When one component calls `setValue` on a key, all the components that read the s
 ## Example
 
 ```jsx
-import { useStore } from 'react-admin';
+import { List, Datagrid } from 'react-admin';
 
 const PostList = props => {
     const [density] = useStore('posts.list.density', 'small');
@@ -47,11 +47,15 @@ const PostList = props => {
     );
 }
 
-// Clicking on this button will trigger a rerender of the PostList
-const ChangeDensity: FC<any> = () => {
+// anywhere else in the app
+import { useStore } from 'react-admin';
+import { Button } from '@mui/material';
+
+const ChangeDensity = () => {
     const [density, setDensity] = useStore('posts.list.density', 'small');
 
-    const changeDensity = (): void => {
+    // Clicking on this button will trigger a rerender of the PostList
+    const changeDensity = () => {
         setDensity(density === 'small' ? 'medium' : 'small');
     };
 

@@ -337,7 +337,7 @@ const App = () => (
 export default App;
 ```
 
-Beware that users from all around the world may use your application, so make sure the `i18nProvider` returns default messages even for unknown locales?
+Beware that users from all around the world may use your application, so make sure the `i18nProvider` returns default messages, even for unknown locales.
 
 ## Translation Messages
 

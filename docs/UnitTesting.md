@@ -104,19 +104,19 @@ test('<MyComponent>', async () => {
 
 The react-admin Store is persistent. This means that if a test modifies an item in the store, the updated value will be changed in the next test. This will cause seemingly random test failures when you use `useStore()` in your tests, or any feature depending on the store (e.g. datagrid row selection, sidebar state, language selection).
 
-To isolate you unit tests, pass a new `memoryContext` at each test:
+To isolate your unit tests, pass a new `memoryStore` at each test:
 
 ```jsx
 import { memoryStore } from 'react-admin';
 
 test('<MyComponent>', async () => {
     const { getByText } = render(
-        <AdminContext store={memoryContext()}>
+        <AdminContext store={memoryStore()}>
             <MyComponent />
         </AdminContext>
     );
-    const items = await screen.findAllByText(/Item #[0-9]: /)
-    expect(items).toHaveLength(10)
+    const items = await screen.findAllByText(/Item #[0-9]: /);
+    expect(items).toHaveLength(10);
 })
 ```
 
@@ -127,12 +127,12 @@ import { StoreContextProvider, memoryStore } from 'react-admin';
 
 test('<MyComponent>', async () => {
     const { getByText } = render(
-        <StoreContextProvider value={memoryContext()}>
+        <StoreContextProvider value={memoryStore()}>
             <MyComponent />
         </StoreContextProvider>
     );
-    const items = await screen.findAllByText(/Item #[0-9]: /)
-    expect(items).toHaveLength(10)
+    const items = await screen.findAllByText(/Item #[0-9]: /);
+    expect(items).toHaveLength(10);
 })
 ```
 
