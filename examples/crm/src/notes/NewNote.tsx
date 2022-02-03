@@ -6,7 +6,6 @@ import {
     useListContext,
     useCreate,
     useUpdate,
-    useRefresh,
     useNotify,
     useGetIdentity,
     Identifier,

@@ -26,6 +26,9 @@ const useLogout = (): Logout => {
     const authProvider = useAuthProvider();
     const resetStore = useResetStore();
     const navigate = useNavigate();
+    // useNavigate forces rerenders on every navigation, even if we don't use the result
+    // see https://github.com/remix-run/react-router/issues/7634
+    // so se use a ref to bail out of rerenders when we don't need to
     const navigateRef = useRef(navigate);
     const location = useLocation();
     const locationRef = useRef(location);
