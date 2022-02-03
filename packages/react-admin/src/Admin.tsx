@@ -9,7 +9,7 @@ import { defaultI18nProvider } from './defaultI18nProvider';
 /**
  * Main admin component, entry point to the application.
  *
- * Initializes the various contexts (auth, data, i18n, redux, router)
+ * Initializes the various contexts (auth, data, i18n, router)
  * and defines the main routes.
  *
  * Expects a list of resources as children, or a function returning a list of
@@ -91,13 +91,11 @@ export const Admin = (props: AdminProps) => {
         basename,
         catchAll,
         children,
-        customReducers,
         dashboard,
         dataProvider,
         disableTelemetry,
         history,
         i18nProvider,
-        initialState,
         layout,
         loading,
         loginPage,
@@ -124,8 +122,6 @@ export const Admin = (props: AdminProps) => {
             i18nProvider={i18nProvider}
             store={store}
             history={history}
-            customReducers={customReducers}
-            initialState={initialState}
             theme={theme}
         >
             <AdminUI

@@ -118,7 +118,7 @@ export const useListParams = ({
 
     // if the location includes params (for example from a link like
     // the categories products on the demo), we need to persist them in the
-    // redux state as well so that we don't lose them after a redirection back
+    // store as well so that we don't lose them after a redirection back
     // to the list
     useEffect(() => {
         if (Object.keys(queryFromLocation).length > 0) {
@@ -135,7 +135,7 @@ export const useListParams = ({
                 if (disableSyncWithLocation) {
                     setLocalParams(tempParams.current);
                 } else {
-                    // the useEffect above will apply the changes to the params in the redux state
+                    // the useEffect above will apply the changes to the params in the store
                     navigate(
                         {
                             search: `?${stringify({
@@ -276,7 +276,7 @@ export const parseQueryFromLocation = ({ search }): Partial<ListParams> => {
 /**
  * Check if user has already set custom sort, page, or filters for this list
  *
- * User params come from the Redux store as the params props. By default,
+ * User params come from the store as the params props. By default,
  * this object is:
  *
  * { filter: {}, order: null, page: 1, perPage: null, sort: null }

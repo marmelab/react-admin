@@ -114,7 +114,7 @@ const dateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
 const defaultInputLabelProps = { shrink: true };
 
 /**
- * Converts a date from the Redux store, with timezone, to a date string
+ * Converts a date from the dataProvider, with timezone, to a date string
  * without timezone for use in an <input type="datetime-local" />.
  *
  * @param {Date | String} value date string or object

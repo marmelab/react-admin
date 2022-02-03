@@ -1,5 +1,335 @@
 # Upgrade to 4.0
 
+## Redux Is Gone
+
+React-admin no longer relies on Redux. Instead, it relies on [React context](https://reactjs.org/docs/context.html) and third-party libraries (e.g [react-query](https://react-query.tanstack.com/)). 
+
+If your app didn't use `customReducers`, `initialState`, `useSelector`, or `useDispatch`, you can safely ignore this section.
+
+### Running Inside A Redux App
+
+You could run a react-admin app inside an existing Redux app, provided that you initialized the react-admin reducers. This is no longer necessary, so you can directly put your custom reducers in your Redux store:
+
+```diff
+-import { createAdminStore, Admin } from 'react-admin';
++import { Admin } from 'react-admin';
++import { createStore, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+
+const App = () => (
+    <Provider
+-       store={createAdminStore({
+-           authProvider,
+-           dataProvider,
+-           history,
+-           customReducers,
+-       })}
++       store={createStore(combineReducers(customReducers))}
+    >
+        <Admin
+            authProvider={authProvider}
+            dataProvider={dataProvider}
+            history={history}
+            title="My Admin"
+        >
+            ...
+        </Admin>
+    </Provider>
+);
+```
+
+### Using Custom Reducers
+
+If your app used custom reducers, then you need to create a store manually, and wrap the app with a `Provider` component.
+
+```diff
+import customReducers from './customReducers';
++import { createStore, combineReducers } from 'redux';
++import { Provider } from 'react-redux';
+
+const App = () => (
++   <Provider store={createStore(combineReducers(customReducers))}>
+        <Admin
+            dataProvider={dataProvider}
+-           customReducers={customReducers}
+        >
+            ...
+        </Admin>
++   </Provider>
+);
+```
+
+### `<Admin initialState>` Is Gone
+
+The `<Admin initialState>` prop used to be used to initialize the store. As there is no Redux store anymore, you cannot set the react-admin defaults this way.
+
+Apart from initializing the Redux store for unit tests (which is no longer necessary, as react-admin components don't use Redux anymore), the only use case for `initialState` was to initialize the sidebar `open` state to `false`. To achieve the same in v4, initialize the store and set the `sidebar.open` state to `false`:
+
+```diff
+-import { Admin } from 'react-admin';
++import { Admin, localStorageStore } from 'react-admin';
+
++const store = localStorageStore();
++store.setItem('sidebar.open', false);
+
+const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+-       initialState={{ admin : { ui: { sidebarOpen: false } } }}
++       store={store}
+    >
+        ...
+    </Admin>
+);
+```
+
+### `useSelector` Won't Return Anything
+
+If your code used `useSelector` to read the react-admin application state, it will break. React-admin v4 doesn't use Redux anymore.
+
+React-admin no longer uses Redux for **data fetching**. Instead, it uses react-query. If you used to read data from the Redux store (which was a bad practice by the way), you'll have to use specialized data provider hooks instead.
+
+```diff
+import * as React from "react";
+-import { useSelector } from 'react-redux';
++import { useGetOne } from 'react-admin';
+import { Loading, Error } from '../ui';
+
+const UserProfile = ({ record }) => {
+-   const data = useSelector(state => state.resources.users.data[record.id]);
++   const { data, isLoading, error } = useGetOne(
++       'users',
++       { id: record.id }
++   );
++   if (isLoading) { return <Loading />; }
++   if (error) { return <Error />; }
+    return <div>User {data.username}</div>;
+};
+```
+
+Besides, the `loadedOnce` reducer, used internally for the previous version of the List page logic, is no longer necessary and has been removed.
+
+A non-documented hack allowed to **read records directly from the Redux store**. You now have to use the dataProvider hooks to get them. 
+
+```diff
+-import { useSelector } from 'react-redux';
++import { useGetOne } from 'react-admin';
+
+const BookAuthor = ({ record }) => {
+-   const author = useSelector(state =>
+-       state.admin.resources.users.data[record.authorId]
+-   );
++   const { data: author, isLoading, error } = useGetOne(
++       'users',
++       { id: record.authorId }
++   );
++   if (isLoading) { return <Loading />; }
++   if (error) { return <Error />; }
+    return <div>Author {data.username}</div>;
+};
+```
+
+React-admin no longer relies on Redux to fetch **relationships**. Instead, the cache of previously fetched relationships is managed by react-query.
+
+If you need to get the records related to the current one via a one-to-many relationship (e.g. to fetch all the books of a given author), you can use the `useGetManyReference` hook instead of the `oneToMany` reducer.
+
+If you need to get possible values for a relationship, use the `useGetList` hook instead of the `possibleValues` reducer.
+
+React-admin no longer uses Redux for **resource definitions**. Instead, it uses a custom context. If you used the `useResourceDefinition` hook, this change is backwards compatible. But if you used to read the Redux state directly, you'll have to upgrade your code. This often happens for custom menus, using the `getResources` selector:
+
+```diff
+// in src/Menu.js
+import * as React from 'react';
+import { createElement } from 'react';
+-import { useSelector } from 'react-redux';
+import { useMediaQuery } from '@material-ui/core';
+-import { DashboardMenuItem, Menu, MenuItemLink, getResources } from 'react-admin';
++import { DashboardMenuItem, Menu, MenuItemLink, useResourceDefinitions } from 'react-admin';
+import DefaultIcon from '@mui/icons-material/ViewList';
+import LabelIcon from '@mui/icons-material/Label';
+
+export const Menu = (props) => {
+-   const resources = useSelector(getResources);
++   const resourcesDefinitions = useResourceDefinitions();
++   const resources = Object.keys(resourcesDefinitions).map(name => resourcesDefinitions[name]);
+    const open = useSelector(state => state.admin.ui.sidebarOpen);
+    return (
+        <Menu {...props}>
+            <DashboardMenuItem />
+            {resources.map(resource => (
+                <MenuItemLink
+                    key={resource.name}
+                    to={`/${resource.name}`}
+                    primaryText={
+                        (resource.options && resource.options.label) ||
+                        resource.name
+                    }
+                    leftIcon={
+                        resource.icon ? <resource.icon /> : <DefaultIcon />
+                    }
+                    onClick={props.onMenuClick}
+                    sidebarIsOpen={open}
+                />
+            ))}
+            {/* add your custom menus here */}
+        </Menu>
+    );
+};
+```
+
+React-admin no longer uses Redux for storing the **list parameters** (current sort & filters, selected ids, expanded rows). This shouldn't impact you if you used the react-admin hooks (`useListParams`, `useRecordSelection`, `useExpanded`) to read the state.
+
+React-admin no longer uses Redux to store the **sidebar state**. The introduction of a custom hook, `useSidebarState`, facilitates the migration.
+
+```diff
+import * as React from 'react';
+import { createElement } from 'react';
+-import { useSelector } from 'react-redux';
+import { useMediaQuery } from '@material-ui/core';
+-import { MenuItemLink, useResourceDefinitions } from 'react-admin';
++import { MenuItemLink, useResourceDefinitions, useSidebarState } from 'react-admin';
+import LabelIcon from '@mui/icons-material/Label';
+
+const Menu = ({ onMenuClick, logout }) => {
+    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
+-   const open = useSelector(state => state.admin.ui.sidebarOpen);
++   const [open] = useSidebarState();
+    const resources = useResourceDefinitions();
+    
+    return (
+        <div>
+            {Object.keys(resources).map(name => (
+                <MenuItemLink
+                    key={name}
+                    to={`/${name}`}
+                    primaryText={resources[name].options && resources[name].options.label || name}
+                    leftIcon={createElement(resources[name].icon)}
+                    onClick={onMenuClick}
+                    sidebarIsOpen={open}
+                />
+            ))}
+            {isXSmall && logout}
+        </div>
+    );
+}
+export default Menu;
+```
+
+React-admin no longer uses Redux for **notifications**. Instead, it uses a custom context. This change is backwards compatible, as the APIs for the `useNotify` and the `<Notification>` component are the same. If you used to `dispatch` a `showNotification` action, you'll have to use the `useNotify` hook instead:
+
+```diff
+-import { useDispatch } from 'react-redux';
+-import { showNotification } from 'react-admin';
++import { useNotify } from 'react-admin';
+
+const NotifyButton = () => {
+-   const dispatch = useDispatch();
++   const notify = useNotify();
+    const handleClick = () => {
+-       dispatch(showNotification('Comment approved', 'success'));
++       notify('Comment approved', { type: 'success' });
+    }
+    return <button onClick={handleClick}>Notify</button>;
+};
+```
+
+### Action Creators Are Gone
+
+As React-admin no longer uses Redux, each time your code used react-redux' `dispatch` with an action creator, you'll have to replace it with a hook. 
+
+- `dispatch(fetchStart())` and `dispatch(fetchEnd())` must be replaced by `useQuery()` and `useMutation()`
+- `dispatch(setSidebarVisibility(true))` must be replaced by `useSidebarState()`
+- `dispatch(showNotification('Comment approved', 'success'))` must be replaced by `useNotify()`
+- `dispatch(push('/comments'))` must be replaced by `useNavigate()`
+
+React-admin used `dispatch` in many other places, but they were already behind a hook (`useRecordSelection`, `useListParams`, `useExpanded`, `useNotify`, `useSidebarState`), and not documented. If you dispatched react-admin actions manually, you'll have to look for the hook alternatives.
+
+### Redux-Saga Was Removed
+
+The use of sagas has been deprecated for a while. React-admin v4 will no longer uses sagas.
+
+This means that the `<Admin customSagas>` prop is no longer supported.
+
+If you still relied on sagas, you have to port your saga code to react `useEffect`, which is the standard way to write side effects in modern react.
+
+### No More Data Actions
+
+React-admin doesn't dispatch Redux actions like `RA/CRUD_GET_ONE_SUCCESS` and `RA/FETCH_END`. If you relied on these actions for your custom reducers, you must now use react-query `onSuccess` callback or React's `useEffect` instead.
+
+The following actions no longer exist:
+
+- `RA/CRUD_GET_ONE`
+- `RA/CRUD_GET_ONE_LOADING`
+- `RA/CRUD_GET_ONE_FAILURE`
+- `RA/CRUD_GET_ONE_SUCCESS`
+- `RA/CRUD_GET_LIST`
+- `RA/CRUD_GET_LIST_LOADING`
+- `RA/CRUD_GET_LIST_FAILURE`
+- `RA/CRUD_GET_LIST_SUCCESS`
+- `RA/CRUD_GET_ALL`
+- `RA/CRUD_GET_ALL_LOADING`
+- `RA/CRUD_GET_ALL_FAILURE`
+- `RA/CRUD_GET_ALL_SUCCESS`
+- `RA/CRUD_GET_MANY`
+- `RA/CRUD_GET_MANY_LOADING`
+- `RA/CRUD_GET_MANY_FAILURE`
+- `RA/CRUD_GET_MANY_SUCCESS`
+- `RA/CRUD_GET_MANY_REFERENCE`
+- `RA/CRUD_GET_MANY_REFERENCE_LOADING`
+- `RA/CRUD_GET_MANY_REFERENCE_FAILURE`
+- `RA/CRUD_GET_MANY_REFERENCE_SUCCESS`
+- `RA/CRUD_CREATE`
+- `RA/CRUD_CREATE_LOADING`
+- `RA/CRUD_CREATE_FAILURE`
+- `RA/CRUD_CREATE_SUCCESS`
+- `RA/CRUD_UPDATE`
+- `RA/CRUD_UPDATE_LOADING`
+- `RA/CRUD_UPDATE_FAILURE`
+- `RA/CRUD_UPDATE_SUCCESS`
+- `RA/CRUD_UPDATE_MANY`
+- `RA/CRUD_UPDATE_MANY_LOADING`
+- `RA/CRUD_UPDATE_MANY_FAILURE`
+- `RA/CRUD_UPDATE_MANY_SUCCESS`
+- `RA/CRUD_DELETE`
+- `RA/CRUD_DELETE_LOADING`
+- `RA/CRUD_DELETE_FAILURE`
+- `RA/CRUD_DELETE_SUCCESS`
+- `RA/CRUD_DELETE_MANY`
+- `RA/CRUD_DELETE_MANY_LOADING`
+- `RA/CRUD_DELETE_MANY_FAILURE`
+- `RA/CRUD_DELETE_MANY_SUCCESS`
+- `RA/FETCH_START`
+- `RA/FETCH_END`
+- `RA/FETCH_ERROR`
+- `RA/FETCH_CANCEL`
+
+Other actions related to data fetching were also removed:
+
+- `RA/REFRESH_VIEW`
+- `RA/SET_AUTOMATIC_REFRESH`
+- `RA/START_OPTIMISTIC_MODE`
+- `RA/STOP_OPTIMISTIC_MODE`
+
+### Removed connected-react-router
+
+If you were dispatching `connected-react-router` actions to navigate, you'll now have to use `react-router` hooks:
+
+```diff
+-import { useDispatch } from 'react-redux';
+-import { push } from 'connected-react-router';
++import { useNavigate } from 'react-router';
+
+const MyComponent = () => {
+-    const dispatch = useDispatch();
++    const navigate = useNavigate();
+
+    const myHandler = () => {
+-        dispatch(push('/my-url'));
++        navigate('/my-url');
+    }
+}
+```
+
 ## The Way To Define Custom Routes Has Changed
 
 Custom routes used to be provided to the `Admin` component through the `customRoutes` prop. This was awkward to use as you had to provide an array of `<Route>` elements. Besides, we had to provide the `<RouteWithoutLayout>` component to support custom routes rendered without the `<Layout>` and keep TypeScript happy.
@@ -224,86 +554,6 @@ const BanUserButton = ({ userId }) => {
 ```
 
 Refer to [the react-query documentation](https://react-query.tanstack.com/overview) for more information.
-
-## No More Records in Redux State
-
-As Redux is no longer used for data fetching, the Redux state doesn't contain any data cached from the dataProvider anymore. If you relied on `useSelector` to get a record or a list of records, you now have to use the dataProvider hooks to get them. 
-
-```diff
--import { useSelector } from 'react-redux';
-+import { useGetOne } from 'react-admin';
-
-const BookAuthor = ({ record }) => {
--   const author = useSelector(state =>
--       state.admin.resources.users.data[record.authorId]
--   );
-+   const { data: author, isLoading, error } = useGetOne(
-+       'users',
-+       { id: record.authorId }
-+   );
-+   if (isLoading) { return <Loading />; }
-+   if (error) { return <Error />; }
-    return <div>Author {data.username}</div>;
-};
-```
-
-## No More Data Actions
-
-As Redux is no longer used for data fetching, react-admin doesn't dispatch Redux actions like `RA/CRUD_GET_ONE_SUCCESS` and `RA/FETCH_END`. If you relied on these actions for your custom reducers, you must now use react-query `onSuccess` callback or React's `useEffect` instead.
-
-The following actions no longer exist:
-
-- `RA/CRUD_GET_ONE`
-- `RA/CRUD_GET_ONE_LOADING`
-- `RA/CRUD_GET_ONE_FAILURE`
-- `RA/CRUD_GET_ONE_SUCCESS`
-- `RA/CRUD_GET_LIST`
-- `RA/CRUD_GET_LIST_LOADING`
-- `RA/CRUD_GET_LIST_FAILURE`
-- `RA/CRUD_GET_LIST_SUCCESS`
-- `RA/CRUD_GET_ALL`
-- `RA/CRUD_GET_ALL_LOADING`
-- `RA/CRUD_GET_ALL_FAILURE`
-- `RA/CRUD_GET_ALL_SUCCESS`
-- `RA/CRUD_GET_MANY`
-- `RA/CRUD_GET_MANY_LOADING`
-- `RA/CRUD_GET_MANY_FAILURE`
-- `RA/CRUD_GET_MANY_SUCCESS`
-- `RA/CRUD_GET_MANY_REFERENCE`
-- `RA/CRUD_GET_MANY_REFERENCE_LOADING`
-- `RA/CRUD_GET_MANY_REFERENCE_FAILURE`
-- `RA/CRUD_GET_MANY_REFERENCE_SUCCESS`
-- `RA/CRUD_CREATE`
-- `RA/CRUD_CREATE_LOADING`
-- `RA/CRUD_CREATE_FAILURE`
-- `RA/CRUD_CREATE_SUCCESS`
-- `RA/CRUD_UPDATE`
-- `RA/CRUD_UPDATE_LOADING`
-- `RA/CRUD_UPDATE_FAILURE`
-- `RA/CRUD_UPDATE_SUCCESS`
-- `RA/CRUD_UPDATE_MANY`
-- `RA/CRUD_UPDATE_MANY_LOADING`
-- `RA/CRUD_UPDATE_MANY_FAILURE`
-- `RA/CRUD_UPDATE_MANY_SUCCESS`
-- `RA/CRUD_DELETE`
-- `RA/CRUD_DELETE_LOADING`
-- `RA/CRUD_DELETE_FAILURE`
-- `RA/CRUD_DELETE_SUCCESS`
-- `RA/CRUD_DELETE_MANY`
-- `RA/CRUD_DELETE_MANY_LOADING`
-- `RA/CRUD_DELETE_MANY_FAILURE`
-- `RA/CRUD_DELETE_MANY_SUCCESS`
-- `RA/FETCH_START`
-- `RA/FETCH_END`
-- `RA/FETCH_ERROR`
-- `RA/FETCH_CANCEL`
-
-Other actions related to data fetching were also removed:
-
-- `RA/REFRESH_VIEW`
-- `RA/SET_AUTOMATIC_REFRESH`
-- `RA/START_OPTIMISTIC_MODE`
-- `RA/STOP_OPTIMISTIC_MODE`
 
 ## Changed Signature Of Data Provider Hooks
 
@@ -1191,153 +1441,6 @@ const SortButton = () => {
 };
 ```
 
-## Removed Reducers
-
-If your code used `useSelector` to read the react-admin application state, it will break. React-admin v4 doesn't use Redux anymore.
-
-React-admin no longer uses Redux for **data fetching**. Instead, it uses react-query. If you used to read data from the Redux store (which was a bad practice by the way), you'll have to use specialized data provider hooks instead.
-
-```diff
-import * as React from "react";
--import { useSelector } from 'react-redux';
-+import { useGetOne } from 'react-admin';
-import { Loading, Error } from '../ui';
-
-const UserProfile = ({ record }) => {
--   const data = useSelector(state => state.resources.users.data[record.id]);
-+   const { data, isLoading, error } = useGetOne(
-+       'users',
-+       { id: record.id }
-+   );
-+   if (isLoading) { return <Loading />; }
-+   if (error) { return <Error />; }
-    return <div>User {data.username}</div>;
-};
-```
-
-Besides, the `loadedOnce` reducer, used internally for the previous version of the List page logic, is no longer necessary and has been removed.
-
-React-admin no longer relies on Redux to fetch **relationships**. Instead, the cache of previously fetched relationships is managed by react-query.
-
-If you need to get the records related to the current one via a one-to-many relationship (e.g. to fetch all the books of a given author), you can use the `useGetManyReference` hook instead of the `oneToMany` reducer.
-
-If you need to get possible values for a relationship, use the `useGetList` hook instead of the `possibleValues` reducer.
-
-React-admin no longer uses Redux for **resource definitions**. Instead, it uses a custom context. If you used the `useResourceDefinition` hook, this change is backwards compatible. But if you used to read the Redux state directly, you'll have to upgrade your code. This often happens for custom menus, using the `getResources` selector:
-
-```diff
-// in src/Menu.js
-import * as React from 'react';
-import { createElement } from 'react';
--import { useSelector } from 'react-redux';
-import { useMediaQuery } from '@material-ui/core';
--import { DashboardMenuItem, Menu, MenuItemLink, getResources } from 'react-admin';
-+import { DashboardMenuItem, Menu, MenuItemLink, useResourceDefinitions } from 'react-admin';
-import DefaultIcon from '@mui/icons-material/ViewList';
-import LabelIcon from '@mui/icons-material/Label';
-
-export const Menu = (props) => {
--   const resources = useSelector(getResources);
-+   const resourcesDefinitions = useResourceDefinitions();
-+   const resources = Object.keys(resourcesDefinitions).map(name => resourcesDefinitions[name]);
-    const open = useSelector(state => state.admin.ui.sidebarOpen);
-    return (
-        <Menu {...props}>
-            <DashboardMenuItem />
-            {resources.map(resource => (
-                <MenuItemLink
-                    key={resource.name}
-                    to={`/${resource.name}`}
-                    primaryText={
-                        (resource.options && resource.options.label) ||
-                        resource.name
-                    }
-                    leftIcon={
-                        resource.icon ? <resource.icon /> : <DefaultIcon />
-                    }
-                    onClick={props.onMenuClick}
-                    sidebarIsOpen={open}
-                />
-            ))}
-            {/* add your custom menus here */}
-        </Menu>
-    );
-};
-```
-
-React-admin no longer uses Redux for storing the **list parameters** (current sort & filters, selected ids, expanded rows). This shouldn't impact you if you used the react-admin hooks (`useListParams`, `useRecordSelection`, `useExpanded`) to read the state.
-
-React-admin no longer uses Redux to store the **sidebar state**. The introduction of a custom hook, `useSidebarState`, facilitates the migration.
-
-```diff
-import * as React from 'react';
-import { createElement } from 'react';
--import { useSelector } from 'react-redux';
-import { useMediaQuery } from '@material-ui/core';
--import { MenuItemLink, useResourceDefinitions } from 'react-admin';
-+import { MenuItemLink, useResourceDefinitions, useSidebarState } from 'react-admin';
-import LabelIcon from '@mui/icons-material/Label';
-
-const Menu = ({ onMenuClick, logout }) => {
-    const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
--   const open = useSelector(state => state.admin.ui.sidebarOpen);
-+   const [open] = useSidebarState();
-    const resources = useResourceDefinitions();
-    
-    return (
-        <div>
-            {Object.keys(resources).map(name => (
-                <MenuItemLink
-                    key={name}
-                    to={`/${name}`}
-                    primaryText={resources[name].options && resources[name].options.label || name}
-                    leftIcon={createElement(resources[name].icon)}
-                    onClick={onMenuClick}
-                    sidebarIsOpen={open}
-                />
-            ))}
-            {isXSmall && logout}
-        </div>
-    );
-}
-export default Menu;
-```
-
-React-admin no longer uses Redux for **notifications**. Instead, it uses a custom context. This change is backwards compatible, as the APIs for the `useNotify` and the `<Notification>` component are the same. If you used to `dispatch` a `showNotification` action, you'll have to use the `useNotify` hook instead:
-
-```diff
--import { useDispatch } from 'react-redux';
--import { showNotification } from 'react-admin';
-+import { useNotify } from 'react-admin';
-
-const NotifyButton = () => {
--   const dispatch = useDispatch();
-+   const notify = useNotify();
-    const handleClick = () => {
--       dispatch(showNotification('Comment approved', 'success'));
-+       notify('Comment approved', { type: 'success' });
-    }
-    return <button onClick={handleClick}>Notify</button>;
-};
-```
-
-## Removed Action Creators
-
-As React-admin no longer uses Redux, each time your code used react-redux' `dispatch` with an action creator, you'll have to replace it with a hook. 
-
-- `dispatch(fetchStart())` and `dispatch(fetchEnd())` must be replaced by `useQuery()` and `useMutation()`
-- `dispatch(setSidebarVisibility(true))` must be replaced by `useSidebarState()`
-
-React-admin used `dispatch` in many other places, but they were already behind a hook (`useRecordSelection`, `useListParams`, `useExpanded`, `useNotify`, `useSidebarState`), and not documented. If you dispatched react-admin actions manually, you'll have to look for the hook alternative.
-
-## Redux-Saga Was Removed
-
-The use of sagas has been deprecated for a while. React-admin v4 doesn't support them anymore. That means that the Redux actions don't include meta parameters anymore to trigger sagas, the Redux store doesn't include the saga middleware, and the saga-based side effects were removed.
-
-In particular, the data action creators (like `crudGetList`) don't support the `onSuccess` and `onFailure` callbacks anymore. You should use the related data provider hook (e.g. `useGetList`) instead.
-
-If you still relied on sagas, you have to port your saga code to react `useEffect`, which is the standard way to write side effects in modern react.
-
 ## Removed Deprecated Elements
 
 - Removed `<BulkDeleteAction>` (use `<BulkDeleteButton>` instead)
@@ -1357,26 +1460,6 @@ If you still relied on sagas, you have to port your saga code to react `useEffec
 
 - Removed `withTranslate` HOC (use `useTranslate` hook)
 - Removed `withDataProvider` HOC (use `useDataProvider` hook)
-
-## Removed connected-react-router
-
-If you were dispatching `connected-react-router` actions to navigate, you'll now have to use `react-router` hooks:
-
-```diff
--import { useDispatch } from 'react-redux';
--import { push } from 'connected-react-router';
-+import { useNavigate } from 'react-router';
-
-const MyComponent = () => {
--    const dispatch = useDispatch();
-+    const navigate = useNavigate();
-
-    const myHandler = () => {
--        dispatch(push('/my-url'));
-+        navigate('/my-url');
-    }
-}
-```
 
 ## Removed the undoable prop in Favor of mutationMode
 

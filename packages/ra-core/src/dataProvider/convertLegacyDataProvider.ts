@@ -8,7 +8,7 @@ import {
     GET_ONE,
     UPDATE,
     UPDATE_MANY,
-} from '../core';
+} from './dataFetchActions';
 import { LegacyDataProvider, DataProvider } from '../types';
 
 const defaultDataProvider = () => Promise.resolve();

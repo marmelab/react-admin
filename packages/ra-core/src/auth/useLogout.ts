@@ -6,7 +6,7 @@ import { useLocation, useNavigate, Path } from 'react-router-dom';
 
 /**
  * Get a callback for calling the authProvider.logout() method,
- * redirect to the login page, and clear the Redux state.
+ * redirect to the login page, and clear the store.
  *
  * @see useAuthProvider
  *

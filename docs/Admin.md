@@ -37,10 +37,8 @@ Here are all the props accepted by the component:
 - [`menu`](#menu)
 - [`theme`](#theme)
 - [`layout`](#layout)
-- [`customReducers`](#customreducers)
 - [`loginPage`](#loginpage)
 - [`logoutButton`](#logoutbutton)
-- [`initialState`](#initialstate)
 - [`history`](#history)
 - [`basename`](#basename)
 - [`ready`](#ready)
@@ -335,59 +333,6 @@ export default MyLayout;
 
 For more details on custom layouts, check [the Theming documentation](./Theming.md#using-a-custom-layout).
 
-## `customReducers`
-
-The `<Admin>` app uses [Redux](https://redux.js.org/) to manage state. The state has the following keys:
-
-```json
-{
-    "admin": { /*...*/ }, // used by react-admin
-    "routing": { /*...*/ }, // used by connected-react-router
-}
-```
-
-If your components dispatch custom actions, you probably need to register your own reducers to update the state with these actions. Let's imagine that you want to keep the bitcoin exchange rate inside the `bitcoinRate` key in the state. You probably have a reducer looking like the following:
-
-```jsx
-// in src/bitcoinRateReducer.js
-export default (previousState = 0, { type, payload }) => {
-    if (type === 'BITCOIN_RATE_RECEIVED') {
-        return payload.rate;
-    }
-    return previousState;
-}
-```
-
-To register this reducer in the `<Admin>` app, simply pass it in the `customReducers` prop:
-
-{% raw %}
-```jsx
-// in src/App.js
-import * as React from "react";
-import { Admin } from 'react-admin';
-
-import bitcoinRateReducer from './bitcoinRateReducer';
-
-const App = () => (
-    <Admin customReducers={{ bitcoinRate: bitcoinRateReducer }} dataProvider={simpleRestProvider('http://path.to.my.api')}>
-        ...
-    </Admin>
-);
-
-export default App;
-```
-{% endraw %}
-
-Now the state will look like:
-
-```json
-{
-    "admin": { /*...*/ }, // used by react-admin
-    "routing": { /*...*/ }, // used by connected-react-router
-    "bitcoinRate": 123, // managed by rateReducer
-}
-```
-
 ## `loginPage`
 
 If you want to customize the Login page, or switch to another authentication strategy than a username/password form, pass a component of your own as the `loginPage` prop. React-admin will display this component whenever the `/login` route is called.
@@ -419,38 +364,6 @@ import MyLogoutButton from './MyLogoutButton';
 const App = () => (
     <Admin loginPage={MyLoginPage} logoutButton={MyLogoutButton}>
         ...
-    </Admin>
-);
-```
-
-## `initialState`
-
-The `initialState` prop lets you pass preloaded state to Redux. See the [Redux Documentation](https://redux.js.org/docs/api/createStore.html#createstorereducer-preloadedstate-enhancer) for more details.
-
-It accepts either a function or an object:
-
-```jsx
-const initialState = {
-    theme: 'dark',
-    grid: 5,
-};
-
-const App = () => (
-    <Admin initialState={initialState} dataProvider={simpleRestProvider('http://path.to.my.api')}>
-        // ...
-    </Admin>
-);
-```
-
-```jsx
-const initialState = () => ({
-    theme: localStorage.getItem('theme'),
-    grid: localStorage.getItem('grid'),
-});
-
-const App = () => (
-    <Admin initialState={initialState} dataProvider={simpleRestProvider('http://path.to.my.api')}>
-        // ...
     </Admin>
 );
 ```
@@ -687,6 +600,3 @@ When a user browses to `/register`, the `<Register>` component will appear outsi
 
 **Tip**: Custom routes can be [a `<Redirect>` route](https://reacttraining.com/react-router/web/api/Redirect), too.
 
-## Using react-admin without `<Admin>` and `<Resource>`
-
-Using `<Admin>` and `<Resource>` is completely optional. If you feel like bootstrapping a redux app yourself, it's totally possible. Head to [Including in another app](./CustomApp.md) for a detailed how-to.
