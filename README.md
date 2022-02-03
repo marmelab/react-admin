@@ -9,7 +9,7 @@ A frontend Framework for building data-driven applications running in the browse
 ## Features
 
 * Adapts to any backend (REST, GraphQL, SOAP, etc.)
-* Powered by [material-ui](https://material-ui.com/), [redux](https://redux.js.org/), [react-hook-form](https://react-hook-form.com), [react-router](https://reacttraining.com/react-router/) and a few more
+* Powered by [material-ui](https://material-ui.com/), [react-hook-form](https://react-hook-form.com), [react-router](https://reacttraining.com/react-router/) and a few more
 * Super-fast UI thanks to optimistic rendering (renders before the server returns)
 * Undo updates and deletes for a few seconds
 * Relationships (many to one, one to many)
@@ -201,7 +201,7 @@ You can use Gitpod(An Online Open Source VS Code like IDE which is free for Open
 
 When developing, most of the time we use the **simple example** to do visual check. It's the same application that we use in CodeSandbox to reproduce errors (see https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple). The source is located under `examples/simple/`. Call `make run` to launch that example on port 8080 (http://localhost:8080). This command includes a `watch` on the react-admin source, so any of the changes you make to the react-admin packages triggers a live update of the simple example in your browser. 
 
-However, the simple example is sometimes too limited. You can use the **demo example** (the source for https://marmelab.com/react-admin-demo/), which is more complete. The source is located under `examples/demo/`. Call `make run-demo` to launch the demo example with a REST dataProvider, or `make run-graphql-demo` to run it with a GraphQL dataProvider. Unfortunately, due to the fact that we use Create React App for this demo, these commands don't watch the changes made in the packages. You'll have to rebuild the react-admin packages after a change (using `make build`, or the more targeted `make build-ra-core`, `make build-ra-ui-materialui`, etc) to see the effect in the demo app.
+However, the simple example is sometimes too limited. You can use the **demo example** (the source for https://marmelab.com/react-admin-demo/), which is more complete. The source is located under `examples/demo/`. Call `make run-demo` to launch the demo example with a REST dataProvider, or `make run-graphql-demo` to run it with a GraphQL dataProvider. Unfortunately, due to the fact that we use Create React App for this demo, these commands don't watch the changes made in the packages. You'll have to rebuild the react-admin packages after a change (using `make build`, or the more targeted `make build-ra-core`, `make build-ra-ui-materialui`, etc.) to see the effect in the demo app.
 
 Both of these examples work without server - the API is simulated on the client-side. 
 
@@ -246,9 +246,9 @@ Unit tests use `jest`, so you should be able to run a subset of tests, or run te
 yarn jest
 ```
 
-Besides, tests related to the modified files are ran automatically at commit using a git pre-commit hook. This means you won't be able to commit your changes if they break the tests. 
+Besides, tests related to the modified files are run automatically at commit using a git pre-commit hook. This means you won't be able to commit your changes if they break the tests. 
 
-When working on the end to end tests, you can leverage [cypress](https://www.cypress.io/) runner by starting the simple example yourself (`make run-simple` or `yarn run-simple`) and starting cypress in another terminal (`make test-e2e-local` or `yarn test-e2e-local`).
+When working on the end-to-end tests, you can leverage [cypress](https://www.cypress.io/) runner by starting the simple example yourself (`make run-simple` or `yarn run-simple`) and starting cypress in another terminal (`make test-e2e-local` or `yarn test-e2e-local`).
 
 ### Coding Standards
 
@@ -258,7 +258,7 @@ If you have coding standards problems, you can fix them automatically using `pre
 make prettier
 ```
 
-However, these commands are ran automatically at each commit so you shouldn't have to worry about them.
+However, these commands are run automatically at each commit so you shouldn't have to worry about them.
 
 ### Documentation
 

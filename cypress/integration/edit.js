@@ -133,7 +133,7 @@ describe('Edit Page', () => {
             expect(el).to.have.value('Edmond Schulist')
         );
 
-        // This validate that the current redux form values are not kept after we navigate
+        // This validates that the current form values are not kept after we navigate
         EditCommentPage.setInputValue('input', 'body', 'Test');
 
         cy.on('window:confirm', message => {
@@ -188,7 +188,7 @@ describe('Edit Page', () => {
             expect(el).to.have.value('Sed quo et et fugiat modi')
         );
 
-        // This validate that the current redux form values are not kept after we navigate
+        // This validates that the current form values are not kept after we navigate
         EditPostPage.setInputValue('input', 'title', 'Another title');
 
         cy.on('window:confirm', message => {
