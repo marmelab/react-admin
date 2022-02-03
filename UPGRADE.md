@@ -340,9 +340,8 @@ const MyComponent = () => {
 ## Routing
 
 React-admin v4 uses react-router v6, which changes quite a few things internally.
-This should be mostly transparent for you unless:
 
-You will need to update your code if it contains any of the following keywords:
+This should be mostly transparent for you unless your code contains any of the following keywords:
 
 - `history`
 - `customRoutes`
@@ -413,7 +412,7 @@ See [https://reactrouter.com/docs/en/v6/upgrading/v5#use-usenavigate-instead-of-
 
 ### Change The `<Route>` Syntax
 
-If your admin contains component that add new sub routes (like react-admin's `<TabbedForm>` and `<TabbedShowLayout>`, you'll need to update the `<Route>` syntax. 
+If your admin contains components that add new sub routes (like react-admin's `<TabbedForm>` and `<TabbedShowLayout>`, you'll need to update the `<Route>` syntax. 
 
 See [https://reactrouter.com/docs/en/v6/upgrading/v5](https://reactrouter.com/docs/en/v6/upgrading/v5) for details.
 
