@@ -461,53 +461,28 @@ const App = () => (
 
 You don't need to make that change if you were using `HashHistory` or `MemoryHistory`.
 
-## Admin Child Function Result Has Changed
+## Data Provider
 
-In order to define the resources and their views according to users permissions, we used to support a function as a child of `<Admin>`. Just like the `customRoutes`, this function had to return an array of elements.
+React-admin v3 used Redux to communicate with the data provider ; react-admin v4 uses react-query. This leads to a few necessary changes in your code if you used one of the following keywords:
 
-You can now return a fragment and this fragment may contain `null` elements. Besides, if you don't need to check the permissions for a resource, you may even include it as a direct child of `<Admin>`.
+- `useQuery`
+- `useQueryWithStore`
+- `useMutation`
+- `<Query>`
+- `<Mutation>`
+- `useDataProvider`
+- `useGetOne`
+- `useGetList`
+- `useGetMany`
+- `useGetReference`
+- `useCreate`
+- `useUpdate`
+- `useUpdateMany`
+- `useDelete`
+- `useDeleteMany`
+- `validUntil`
 
-```diff
-<Admin>
--    {permissions => [
--       <Resource name="posts" {...posts} />,
--       <Resource name="comments" {...comments} />,
--       permissions ? <Resource name="users" {...users} /> : null,
--       <Resource name="tags" {...tags} />,
--   ]}
-+   <Resource name="posts" {...posts} />
-+   <Resource name="comments" {...comments} />
-+   <Resource name="tags" {...tags} />
-+   {permissions => (
-+       <>
-+           {permissions ? <Resource name="users" {...users} /> : null}
-+       </> 
-+   )}
-</Admin>
-```
-
-Last thing, you can return any element supported by `<Admin>`, including the new `<CustomRoutes>`:
-
-```jsx
-import { Admin, Resource, CustomRoutes } from 'react-admin';
-
-const MyAdmin = () => (
-    <Admin>
-        <Resource name="posts" {...posts} />
-        {permissions => (
-            <>
-                {permissions ? <Resource name="users" {...posts} /> : null}
-                <CustomRoutes>
-                    {permissions ? <Route path="/a_path" element={<ARoute />} /> : null}
-                    <Route path="/another_path" element={<AnotherRoute />} />
-                </CustomRoutes>
-            </>
-        )}
-    </Admin>
-)
-```
-
-## `useQuery`, `useMutation`, and `useQueryWithStore` Have Been Removed
+### `useQuery`, `useMutation`, and `useQueryWithStore` Have Been Removed
 
 React-admin v4 uses react-query rather than Redux for data fetching. The base react-query data fetching hooks (`useQuery`, `useMutation`, and `useQueryWithStore`) are no longer necessary as their functionality is provided by react-query.
 
@@ -560,7 +535,7 @@ const BanUserButton = ({ userId }) => {
 
 Refer to [the react-query documentation](https://react-query.tanstack.com/overview) for more information.
 
-## `<Query>` and `<Mutation>` Have Been Removed
+### `<Query>` and `<Mutation>` Have Been Removed
 
 The component version of `useQuery` and `useMutation` have been removed. Use the related hook in your components instead.
 
@@ -588,7 +563,7 @@ const UserProfile = ({ record }) => {
 }
 ```
 
-## `useDataProvider` No Longer Accepts Side Effects
+### `useDataProvider` No Longer Accepts Side Effects
 
 `useDataProvider` returns a wrapper around the application `dataProvider` instance. In previous react-admin versions, the wrapper methods used to accept an `options` object, allowing to pass `onSuccess` and `onFailure` callbacks. This is no longer the case - the wrapper returns an object with the same method signatures as the original `dataProvider`.
 
@@ -624,7 +599,7 @@ const BanUserButton = ({ userId }) => {
 
 Refer to [the react-query documentation](https://react-query.tanstack.com/overview) for more information.
 
-## Changed Signature Of Data Provider Hooks
+### Changed Signature Of Data Provider Hooks
 
 Specialized data provider hooks (like `useGetOne`, `useGetList`, `useGetMany` and `useUpdate`) have a new signature. There are 2 changes:
 
@@ -790,6 +765,108 @@ To upgrade, check every instance of your code of the following hooks:
 And update the calls. If you're using TypeScript, your code won't compile until you properly upgrade the calls. 
 
 These hooks are now powered by react-query, so the state argument contains way more than just `isLoading` (`reset`, `status`, `refetch`, etc.). Check the [`useQuery`](https://react-query.tanstack.com/reference/useQuery) and the [`useMutation`](https://react-query.tanstack.com/reference/useMutation) documentation on the react-query website for more details. 
+
+### Application Cache No Longer Uses `validUntil`
+
+React-admin's *application cache* used to rely on the dataProvider returning a `validUntil` property in the response. This is no longer the case, as the cache functionality is handled by react-query. Therefore, you can safely remove the `validUntil` property from your dataProvider response.
+
+```diff
+const dataProvider = {
+    getOne: (resource, { id }) => {
+        return fetch(`/api/${resource}/${id}`)
+            .then(r => r.json())
+            .then(data => {
+-               const validUntil = new Date();
+-               validUntil.setTime(validUntil.getTime() + 5 * 60 * 1000);
+                return { 
+                    data,
+-                   validUntil
+                };
+            }));
+    }
+};
+```
+
+This also implies that the `cacheDataProviderProxy` function was removed.
+
+```diff
+// in src/dataProvider.js
+import simpleRestProvider from 'ra-data-simple-rest';
+-import { cacheDataProviderProxy } from 'react-admin'; 
+
+const dataProvider = simpleRestProvider('http://path.to.my.api/');
+
+-export default cacheDataProviderProxy(dataProvider);
++export default dataProvider;
+```
+
+Instead, you must set up the cache duration at the react-query QueryClient level:
+
+```jsx
+import { QueryClient } from 'react-query';
+import { Admin, Resource } from 'react-admin';
+
+const App = () => {
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: {
+                staleTime: 5 * 60 * 1000, // 5 minutes
+            },
+        },
+    });
+    return (
+        <Admin dataProvider={dataProvider} queryClient={queryClient}>
+            <Resource name="posts" />
+        </Admin>
+    );
+}
+```
+
+## Admin Child Function Result Has Changed
+
+In order to define the resources and their views according to users permissions, we used to support a function as a child of `<Admin>`. Just like the `customRoutes`, this function had to return an array of elements.
+
+You can now return a fragment and this fragment may contain `null` elements. Besides, if you don't need to check the permissions for a resource, you may even include it as a direct child of `<Admin>`.
+
+```diff
+<Admin>
+-    {permissions => [
+-       <Resource name="posts" {...posts} />,
+-       <Resource name="comments" {...comments} />,
+-       permissions ? <Resource name="users" {...users} /> : null,
+-       <Resource name="tags" {...tags} />,
+-   ]}
++   <Resource name="posts" {...posts} />
++   <Resource name="comments" {...comments} />
++   <Resource name="tags" {...tags} />
++   {permissions => (
++       <>
++           {permissions ? <Resource name="users" {...users} /> : null}
++       </> 
++   )}
+</Admin>
+```
+
+Last thing, you can return any element supported by `<Admin>`, including the new `<CustomRoutes>`:
+
+```jsx
+import { Admin, Resource, CustomRoutes } from 'react-admin';
+
+const MyAdmin = () => (
+    <Admin>
+        <Resource name="posts" {...posts} />
+        {permissions => (
+            <>
+                {permissions ? <Resource name="users" {...posts} /> : null}
+                <CustomRoutes>
+                    {permissions ? <Route path="/a_path" element={<ARoute />} /> : null}
+                    <Route path="/another_path" element={<AnotherRoute />} />
+                </CustomRoutes>
+            </>
+        )}
+    </Admin>
+)
+```
 
 ## List `ids` Prop And `RecordMap` Type Are Gone
 
@@ -1126,62 +1203,6 @@ const PostDetail = () => {
 +       <Card>
             ...
         </Card>
-    );
-}
-```
-
-## Application Cache No Longer Uses `validUntil`
-
-React-admin's *application cache* used to rely on the dataProvider returning a `validUntil` property in the response. This is no longer the case, as the cache functionality is handled by react-query. Therefore, you can safely remove the `validUntil` property from your dataProvider response.
-
-```diff
-const dataProvider = {
-    getOne: (resource, { id }) => {
-        return fetch(`/api/${resource}/${id}`)
-            .then(r => r.json())
-            .then(data => {
--               const validUntil = new Date();
--               validUntil.setTime(validUntil.getTime() + 5 * 60 * 1000);
-                return { 
-                    data,
--                   validUntil
-                };
-            }));
-    }
-};
-```
-
-This also implies that the `cacheDataProviderProxy` function was removed.
-
-```diff
-// in src/dataProvider.js
-import simpleRestProvider from 'ra-data-simple-rest';
--import { cacheDataProviderProxy } from 'react-admin'; 
-
-const dataProvider = simpleRestProvider('http://path.to.my.api/');
-
--export default cacheDataProviderProxy(dataProvider);
-+export default dataProvider;
-```
-
-Instead, you must set up the cache duration at the react-query QueryClient level:
-
-```jsx
-import { QueryClient } from 'react-query';
-import { Admin, Resource } from 'react-admin';
-
-const App = () => {
-    const queryClient = new QueryClient({
-        defaultOptions: {
-            queries: {
-                staleTime: 5 * 60 * 1000, // 5 minutes
-            },
-        },
-    });
-    return (
-        <Admin dataProvider={dataProvider} queryClient={queryClient}>
-            <Resource name="posts" />
-        </Admin>
     );
 }
 ```
@@ -1723,7 +1744,9 @@ In general, you should use `isLoading`. It's false as long as the data has never
 
 The new props are actually returned by react-query's `useQuery` hook. Check [their documentation](https://react-query.tanstack.com/reference/useQuery) for more information.
 
-## Changes In Translation Messages
+## I18n
+
+### Changes In Translation Messages
 
 The `ra.navigation.prev` message was renamed to `ra.navigation.previous`. Update your translation files accordingly.
 
@@ -1749,6 +1772,18 @@ const messages = {
             skip_nav: 'Skip to content',
         },
         // ...
+```
+
+### Renamed `<TranslationProvider>` to `<I18nContextProvider>`
+
+If you created a custom app (without the `<Admin>` component), you may have used the `<TranslationProvider>` component. It has been renamed to `<I18nContextProvider>`, and accepts an `i18nProvider`.
+
+```diff
+-<TranslationProvider locale="en" i18nProvider={i18nProvider}>
++<I18nContextProvider value={i18nProvider}>
+   ...
+-</TranslationProvider>
++</I18nContextProvider>
 ```
 
 ## Unit Tests for Data Provider Dependent Components Need A QueryClientContext
@@ -1828,18 +1863,6 @@ const UnselectAllButton = () => {
     }
     return <button onClick={handleClick}>Unselect all</button>;
 };
-```
-
-## Renamed `<TranslationProvider>` to `<I18nContextProvider>`
-
-If you created a custom app (without the `<Admin>` component), you may have used the `<TranslationProvider>` component. It has been renamed to `<I18nContextProvider>`, and accepts an `i18nProvider`.
-
-```diff
--<TranslationProvider locale="en" i18nProvider={i18nProvider}>
-+<I18nContextProvider value={i18nProvider}>
-   ...
--</TranslationProvider>
-+</I18nContextProvider>
 ```
 
 ## Renamed `useToggleSidebar` to `useSidebarState`
