@@ -63,7 +63,25 @@ const App = () => (
 
 The `<Admin initialState>` prop used to be used to initialize the store. As there is no store, you cannot set the react-admin defaults this way.
 
-Apart from initializing the Redux store for unit tests (which is no longer necessary, as react-admin components don't use Redux anymore), the only use case for `initialState` was to initialize the sidebar `open` state to `false`. This is no longer possible, as users can now close the sidebar once and for all (their choice is persisted in `localStorage`).
+Apart from initializing the Redux store for unit tests (which is no longer necessary, as react-admin components don't use Redux anymore), the only use case for `initialState` was to initialize the sidebar `open` state to `false`. To achieve the same in v4, initialize the store and set the `sidebar.open` state to `false`:
+
+```diff
+-import { Admin } from 'react-admin';
++import { Admin, localStorageStore } from 'react-admin';
+
++const store = localStorageStore();
++store.setItem('sidebar.open', false);
+
+const App = () => (
+    <Admin
+        dataProvider={dataProvider}
+-       initialState={{ admin : { ui: { sidebarOpen: false } } }}
++       store={store}
+    >
+        ...
+    </Admin>
+);
+```
 
 ### `useSelector` Won't Return Anything
 
