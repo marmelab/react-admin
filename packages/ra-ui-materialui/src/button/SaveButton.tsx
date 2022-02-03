@@ -184,7 +184,10 @@ export const SaveButtonClasses = {
     icon: `${PREFIX}-icon`,
 };
 
-const StyledButton = styled(Button, { name: PREFIX })(({ theme }) => ({
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`&.${SaveButtonClasses.button}`]: {
         position: 'relative',
     },

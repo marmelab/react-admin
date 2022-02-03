@@ -26,7 +26,10 @@ export const SkipToContentButtonClasses = {
     skipToContentButton: `${PREFIX}-skipToContentButton`,
 };
 
-const StyledButton = styled(Button)(({ theme }) => ({
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`&.${SkipToContentButtonClasses.skipToContentButton}`]: {
         position: 'fixed',
         padding: theme.spacing(1),

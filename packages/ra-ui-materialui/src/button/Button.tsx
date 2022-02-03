@@ -179,7 +179,10 @@ export const ButtonClasses = {
     largeIcon: `${PREFIX}-largeIcon`,
 };
 
-const StyledButton = styled(MuiButton, { name: PREFIX })({
+const StyledButton = styled(MuiButton, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
     [`& .${ButtonClasses.button}`]: {
         display: 'inline-flex',
         alignItems: 'center',

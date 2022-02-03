@@ -96,7 +96,10 @@ export const CreateButtonClasses = {
     floating: `${PREFIX}-floating`,
 };
 
-const StyledFab = styled(Fab, { name: PREFIX })(({ theme }) => ({
+const StyledFab = styled(Fab, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`&.${CreateButtonClasses.floating}`]: {
         color: theme.palette.getContrastText(theme.palette.primary.main),
         margin: 0,

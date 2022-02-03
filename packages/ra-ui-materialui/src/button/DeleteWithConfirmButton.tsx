@@ -142,7 +142,10 @@ export const DeleteWithConfirmButtonClasses = {
     deleteButton: `${PREFIX}-deleteButton`,
 };
 
-const StyledButton = styled(Button, { name: PREFIX })(({ theme }) => ({
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`&.${DeleteWithConfirmButtonClasses.deleteButton}`]: {
         color: theme.palette.error.main,
         '&:hover': {

@@ -128,7 +128,10 @@ export const BulkUpdateWithUndoButtonClasses = {
     updateButton: `${PREFIX}-updateButton`,
 };
 
-const StyledButton = styled(Button, { name: PREFIX })(({ theme }) => ({
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`&.${BulkUpdateWithUndoButtonClasses.updateButton}`]: {
         color: theme.palette.error.main,
         '&:hover': {

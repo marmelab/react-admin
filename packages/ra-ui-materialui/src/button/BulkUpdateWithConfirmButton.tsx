@@ -174,7 +174,10 @@ export const BulkUpdateWithConfirmButtonClasses = {
     updateButton: `${PREFIX}-updateButton`,
 };
 
-const StyledButton = styled(Button, { name: PREFIX })(({ theme }) => ({
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`&.${BulkUpdateWithConfirmButtonClasses.updateButton}`]: {
         color: theme.palette.error.main,
         '&:hover': {
