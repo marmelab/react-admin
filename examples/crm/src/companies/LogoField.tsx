@@ -8,7 +8,10 @@ const classes = {
     image: `${PREFIX}-image`,
 };
 
-const StyledImage = styled('img')({
+const StyledImage = styled('img', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
     [`&.${classes.image}`]: {
         objectFit: 'contain',
     },

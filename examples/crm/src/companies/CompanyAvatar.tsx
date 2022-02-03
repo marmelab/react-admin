@@ -15,7 +15,10 @@ const classes = {
     large: `${PREFIX}-large`,
 };
 
-const StyledAvatar = styled(Avatar)({
+const StyledAvatar = styled(Avatar, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
     [`& .${classes.avatar}`]: {
         width: 60,
         height: 60,

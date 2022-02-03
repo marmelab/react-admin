@@ -9,14 +9,11 @@ import {
 
 const PREFIX = 'TagsList';
 
-const classes = {
-    root: `${PREFIX}-root`,
-};
-
-const StyledReferenceArrayField = styled(ReferenceArrayField)({
-    [`&.${classes.root}`]: {
-        display: 'inline-block',
-    },
+const StyledReferenceArrayField = styled(ReferenceArrayField, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
+    display: 'inline-block',
 });
 
 const ColoredChipField = (props: any) => {
@@ -39,7 +36,6 @@ export const TagsList = () => (
         resource="contacts"
         source="tags"
         reference="tags"
-        className={classes.root}
     >
         <SingleFieldList linkType={false} component="span">
             <ColoredChipField source="name" variant="outlined" size="small" />

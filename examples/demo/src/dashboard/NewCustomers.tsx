@@ -24,7 +24,10 @@ const classes = {
     linkContent: `${PREFIX}-linkContent`,
 };
 
-const StyledCardWithIcon = styled(CardWithIcon)(({ theme }) => ({
+const StyledCardWithIcon = styled(CardWithIcon, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`& .${classes.link}`]: {
         borderRadius: 0,
     },

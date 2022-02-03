@@ -22,7 +22,10 @@ const classes = {
     inline: `${PREFIX}-inline`,
 };
 
-const StyledEdit = styled(Edit)({
+const StyledEdit = styled(Edit, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
     [`& .${classes.inline}`]: {
         display: 'inline-block',
         marginLeft: '1em',

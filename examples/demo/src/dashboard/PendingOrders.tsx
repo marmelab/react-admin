@@ -15,14 +15,14 @@ import { Customer, Order } from '../types';
 const PREFIX = 'PendingOrders';
 
 const classes = {
-    root: `${PREFIX}-root`,
     cost: `${PREFIX}-cost`,
 };
 
-const StyledCard = styled(Card)(({ theme }) => ({
-    [`&.${classes.root}`]: {
-        flex: 1,
-    },
+const StyledCard = styled(Card, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    flex: 1,
 
     [`& .${classes.cost}`]: {
         marginRight: '1em',
@@ -37,10 +37,10 @@ interface Props {
 
 const PendingOrders = (props: Props) => {
     const { orders = [], customers = {} } = props;
-
     const translate = useTranslate();
+
     return (
-        <StyledCard className={classes.root}>
+        <StyledCard>
             <CardHeader title={translate('pos.dashboard.pending_orders')} />
             <List dense={true}>
                 {orders.map(record => (

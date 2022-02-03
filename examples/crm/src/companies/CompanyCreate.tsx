@@ -22,7 +22,10 @@ const classes = {
     inline: `${PREFIX}-inline`,
 };
 
-const StyledCreate = styled(Create)({
+const StyledCreate = styled(Create, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
     [`& .${classes.inline}`]: {
         display: 'inline-block',
         marginLeft: '1em',

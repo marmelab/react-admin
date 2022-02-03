@@ -16,7 +16,10 @@ const classes = {
     title: `${PREFIX}-title`,
 };
 
-const StyledCard = styled(Card)(({ theme }) => ({
+const StyledCard = styled(Card, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`&.${classes.card}`]: {
         minHeight: 52,
         display: 'flex',

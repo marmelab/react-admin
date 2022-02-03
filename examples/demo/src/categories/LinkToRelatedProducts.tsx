@@ -15,7 +15,10 @@ const classes = {
     link: `${PREFIX}-link`,
 };
 
-const StyledButton = styled(Button)({
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
     [`& .${classes.icon}`]: { paddingRight: '0.5em' },
     [`&.${classes.link}`]: {
         display: 'inline-flex',

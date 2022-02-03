@@ -42,7 +42,10 @@ const classes = {
     createButton: `${PREFIX}-createButton`,
 };
 
-const StyledTopToolbar = styled(TopToolbar)(({ theme }) => ({
+const StyledTopToolbar = styled(TopToolbar, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`& .${classes.createButton}`]: {
         marginLeft: theme.spacing(2),
     },

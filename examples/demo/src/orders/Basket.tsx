@@ -17,12 +17,15 @@ const classes = {
     rightAlignedCell: `${PREFIX}-rightAlignedCell`,
 };
 
-const StyledTable = styled(Table)({
+const StyledTable = styled(Table, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
     [`& .${classes.rightAlignedCell}`]: { textAlign: 'right' },
 });
 
 const Basket = (props: FieldProps<Order>) => {
-    const { record } = props;
+    const { record, className } = props;
 
     const translate = useTranslate();
 
@@ -43,7 +46,7 @@ const Basket = (props: FieldProps<Order>) => {
     if (isLoading || !record || !products) return null;
 
     return (
-        <StyledTable>
+        <StyledTable className={className}>
             <TableHead>
                 <TableRow>
                     <TableCell>

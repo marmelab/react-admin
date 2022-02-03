@@ -13,7 +13,10 @@ const classes = {
     button: `${PREFIX}-button`,
 };
 
-const StyledCard = styled(Card)({
+const StyledCard = styled(Card, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
     [`& .${classes.label}`]: { width: '10em', display: 'inline-block' },
     [`& .${classes.button}`]: { margin: '1em' },
 });

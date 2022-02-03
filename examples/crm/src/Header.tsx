@@ -7,14 +7,15 @@ import { UserMenu, Logout, LoadingIndicator } from 'react-admin';
 const PREFIX = 'Header';
 
 const classes = {
-    root: `${PREFIX}-root`,
     logo: `${PREFIX}-logo`,
 };
 
-const Root = styled('nav')({
-    [`&.${classes.root}`]: {
-        flexGrow: 1,
-    },
+const Root = styled('nav', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
+    flexGrow: 1,
+
     [`& .${classes.logo}`]: {
         width: 50,
         height: 43.54,
@@ -34,7 +35,7 @@ const Header = () => {
     }
 
     return (
-        <Root className={classes.root}>
+        <Root>
             <AppBar position="static" color="primary">
                 <Toolbar variant="dense">
                     <Box flex={1} display="flex" justifyContent="space-between">

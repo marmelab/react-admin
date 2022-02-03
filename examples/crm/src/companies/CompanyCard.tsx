@@ -22,7 +22,10 @@ const classes = {
     statIcon: `${PREFIX}-statIcon`,
 };
 
-const StyledMuiLink = styled(MuiLink)(({ theme }) => ({
+const StyledMuiLink = styled(MuiLink, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`& .${classes.paper}`]: {
         height: 200,
         width: 184,

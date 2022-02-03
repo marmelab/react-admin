@@ -17,16 +17,17 @@ import { Category } from '../types';
 const PREFIX = 'CategoryList';
 
 const classes = {
-    root: `${PREFIX}-root`,
     media: `${PREFIX}-media`,
     title: `${PREFIX}-title`,
     actionSpacer: `${PREFIX}-actionSpacer`,
 };
 
-const StyledGrid = styled(Grid)({
-    [`&.${classes.root}`]: {
-        marginTop: '1em',
-    },
+const StyledGrid = styled(Grid, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
+    marginTop: '1em',
+
     [`& .${classes.media}`]: {
         height: 140,
     },
@@ -45,7 +46,7 @@ const CategoryGrid = () => {
         return null;
     }
     return (
-        <StyledGrid container spacing={2} className={classes.root}>
+        <StyledGrid container spacing={2}>
             {data.map(record => (
                 <Grid key={record.id} xs={12} sm={6} md={4} lg={3} xl={2} item>
                     <Card>
