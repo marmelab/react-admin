@@ -36,7 +36,11 @@ const PostReferenceInput = props => {
     return (
         <div>
             <ReferenceInput {...props} defaultValue="">
-                <SelectInput create={<PostQuickCreate />} optionText="title" />
+                <SelectInput
+                    create={<PostQuickCreate />}
+                    optionText="title"
+                    fullWidth
+                />
             </ReferenceInput>
             {postId ? (
                 <Fragment>

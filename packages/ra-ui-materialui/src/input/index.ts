@@ -4,6 +4,7 @@ export * from './AutocompleteArrayInput';
 export * from './BooleanInput';
 export * from './CheckboxGroupInput';
 export * from './CommonInputProps';
+export * from './DatagridInput';
 export * from './DateInput';
 export * from './DateTimeInput';
 export * from './FileInput';

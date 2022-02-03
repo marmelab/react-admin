@@ -43,7 +43,6 @@ const addTagsSearchSupport = (dataProvider: DataProvider) => ({
                             /(_q)$/,
                             ''
                         );
-
                         return (
                             matchPublished &&
                             get(item, fieldName).match(searchRegExp) !== null

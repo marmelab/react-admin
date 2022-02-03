@@ -223,7 +223,15 @@ const sanitizeRestProps = ({
 }: any) => sanitizeInputRestProps(rest);
 
 CheckboxGroupInput.propTypes = {
-    choices: PropTypes.arrayOf(PropTypes.object),
+    // @ts-ignore
+    choices: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.oneOfType([
+                PropTypes.string.isRequired,
+                PropTypes.number.isRequired,
+            ]).isRequired,
+        })
+    ),
     className: PropTypes.string,
     source: PropTypes.string,
     optionText: PropTypes.oneOfType([

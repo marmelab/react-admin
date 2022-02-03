@@ -8,9 +8,9 @@ import {
     useRef,
     useState,
 } from 'react';
+import debounce from 'lodash/debounce';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
-import debounce from 'lodash/debounce';
 import { styled } from '@mui/material/styles';
 import {
     Autocomplete,
@@ -23,6 +23,7 @@ import {
     ChoicesProps,
     FieldTitle,
     RaRecord,
+    useChoicesContext,
     useInput,
     useSuggestions,
     UseSuggestionsOptions,
@@ -116,7 +117,7 @@ export const AutocompleteInput = <
     >
 ) => {
     const {
-        choices,
+        choices: choicesProp,
         clearText = 'ra.action.clear_input_value',
         closeText = 'ra.action.close',
         className,
@@ -128,19 +129,20 @@ export const AutocompleteInput = <
         defaultValue = '',
         emptyText,
         emptyValue = '',
+        field: fieldOverride,
         format,
         helperText,
         id: idOverride,
-        field: fieldOverride,
         inputText,
-        isFetching,
-        isLoading,
+        isFetching: isFetchingProp,
+        isLoading: isLoadingProp,
         isRequired: isRequiredOverride,
         label,
         limitChoicesToValue,
         matchSuggestion,
         margin = 'dense',
         fieldState: fieldStateOverride,
+        filterToQuery = DefaultFilterToQuery,
         formState: formStateOverride,
         multiple = false,
         noOptionsText,
@@ -151,10 +153,10 @@ export const AutocompleteInput = <
         optionText = 'name',
         optionValue = 'id',
         parse,
-        resource,
-        setFilter,
+        resource: resourceProp,
         shouldRenderSuggestions,
-        source,
+        setFilter,
+        source: sourceProp,
         suggestionLimit,
         TextFieldProps,
         translateChoice,
@@ -162,6 +164,20 @@ export const AutocompleteInput = <
         variant = 'filled',
         ...rest
     } = props;
+
+    const {
+        data: choices,
+        isLoading,
+        resource,
+        source,
+        setFilters,
+    } = useChoicesContext({
+        choices: choicesProp,
+        isFetching: isFetchingProp,
+        isLoading: isLoadingProp,
+        resource: resourceProp,
+        source: sourceProp,
+    });
 
     const translate = useTranslate();
     const {
@@ -191,7 +207,12 @@ export const AutocompleteInput = <
         Multiple,
         DisableClearable,
         SupportCreate
-    >(field.value, props);
+    >(field.value, {
+        choices,
+        // @ts-ignore
+        multiple,
+        optionValue,
+    });
 
     useEffect(() => {
         // eslint-disable-next-line eqeqeq
@@ -230,12 +251,6 @@ If you provided a React element for the optionText prop, you must also provide t
 
     const [filterValue, setFilterValue] = useState('');
 
-    // eslint-disable-next-line
-    const debouncedSetFilter = useCallback(
-        debounce(setFilter || DefaultSetFilter, debounceDelay),
-        [debounceDelay, setFilter]
-    );
-
     const handleChange = (newValue: any) => {
         if (multiple) {
             if (Array.isArray(newValue)) {
@@ -251,6 +266,22 @@ If you provided a React element for the optionText prop, you must also provide t
         }
     };
 
+    // eslint-disable-next-line
+    const debouncedSetFilter = useCallback(
+        debounce(filter => {
+            if (setFilter) {
+                return setFilter(filter);
+            }
+
+            if (choicesProp) {
+                return;
+            }
+
+            setFilters(filterToQuery(filter), undefined, true);
+        }, debounceDelay),
+        [debounceDelay, setFilters, setFilter]
+    );
+
     // We must reset the filter every time the value changes to ensure we
     // display at least some choices even if the input has a value.
     // Otherwise, it would only display the currently selected one and the user
@@ -259,9 +290,7 @@ If you provided a React element for the optionText prop, you must also provide t
     useEffect(() => {
         if (!isEqual(currentValue.current, field.value)) {
             currentValue.current = field.value;
-            if (setFilter) {
-                debouncedSetFilter('');
-            }
+            debouncedSetFilter('');
         }
     }, [field.value]); // eslint-disable-line
 
@@ -309,36 +338,36 @@ If you provided a React element for the optionText prop, you must also provide t
 
     const handleInputChange = (event: any, newInputValue: string) => {
         setFilterValue(newInputValue);
-
-        if (setFilter) {
-            debouncedSetFilter(newInputValue);
-        }
+        debouncedSetFilter(newInputValue);
     };
 
-    const doesQueryMatchSuggestion = useMemo(() => {
-        let selectedItemTexts = [];
+    const doesQueryMatchSuggestion = useCallback(
+        filter => {
+            let selectedItemTexts = [];
 
-        if (multiple) {
-            selectedItemTexts = selectedChoice.map(item =>
-                getOptionLabel(item)
-            );
-        } else {
-            selectedItemTexts = [getOptionLabel(selectedChoice)];
-        }
+            if (multiple) {
+                selectedItemTexts = selectedChoice.map(item =>
+                    getOptionLabel(item)
+                );
+            } else {
+                selectedItemTexts = [getOptionLabel(selectedChoice)];
+            }
 
-        const hasOption = !!choices
-            ? choices.some(choice => getOptionLabel(choice) === filterValue)
-            : false;
+            const hasOption = !!choices
+                ? choices.some(choice => getOptionLabel(choice) === filter)
+                : false;
 
-        return selectedItemTexts.includes(filterValue) || hasOption;
-    }, [choices, getOptionLabel, filterValue, multiple, selectedChoice]);
+            return selectedItemTexts.includes(filter) || hasOption;
+        },
+        [choices, getOptionLabel, multiple, selectedChoice]
+    );
 
     const filterOptions = (options, params) => {
         const { inputValue } = params;
         if (
             (onCreate || create) &&
             inputValue !== '' &&
-            !doesQueryMatchSuggestion
+            !doesQueryMatchSuggestion(filterValue)
         ) {
             return options.concat(getCreateItem(inputValue));
         }
@@ -363,11 +392,11 @@ If you provided a React element for the optionText prop, you must also provide t
     }, [choices, oneSecondHasPassed]);
 
     const suggestions = useMemo(() => {
-        if (setFilter && choices?.length === 0 && !oneSecondHasPassed) {
+        if (setFilters && choices?.length === 0 && !oneSecondHasPassed) {
             return currentChoices.current;
         }
         return getSuggestions(filterValue);
-    }, [choices, filterValue, getSuggestions, oneSecondHasPassed, setFilter]);
+    }, [choices, filterValue, getSuggestions, oneSecondHasPassed, setFilters]);
 
     const isOptionEqualToValue = (option, value) => {
         // eslint-disable-next-line eqeqeq
@@ -497,6 +526,7 @@ export interface AutocompleteInputProps<
             'onChange' | 'options' | 'renderInput'
         > {
     debounce?: number;
+    filterToQuery?: (searchText: string) => any;
     inputText?: (option: any) => string;
     setFilter?: (value: string) => void;
     shouldRenderSuggestions?: any;
@@ -519,8 +549,6 @@ const Root = styled('span', {
         minWidth: theme.spacing(20),
     },
 }));
-
-const DefaultSetFilter = () => {};
 
 /**
  * Returns the selected choice (or choices if multiple) by matching the input value with the choices.
@@ -575,9 +603,13 @@ const getSelectedItems = (
     multiple
 ) => {
     if (multiple) {
-        return choices.filter(choice =>
-            (value || []).includes(get(choice, optionValue))
-        );
+        return (value || [])
+            .map(item =>
+                choices.find(choice => item === get(choice, optionValue))
+            )
+            .filter(item => !!item);
     }
     return choices.find(choice => get(choice, optionValue) === value) || '';
 };
+
+const DefaultFilterToQuery = searchText => ({ q: searchText });

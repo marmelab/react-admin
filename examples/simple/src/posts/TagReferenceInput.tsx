@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import {
-    AutocompleteArrayInput,
+    DatagridInput,
     ReferenceArrayInput,
+    TextField,
     useCreate,
     useCreateSuggestionContext,
     useLocaleState,
@@ -17,19 +18,6 @@ import {
 } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 
-const useTagsFilterToQuery = () => {
-    const [locale] = useLocaleState();
-    return useCallback(
-        (filter: string) =>
-            filter
-                ? {
-                      [`name.${locale}_q`]: filter,
-                  }
-                : {},
-        [locale]
-    );
-};
-
 const TagReferenceInput = ({
     ...props
 }: {
@@ -38,12 +26,11 @@ const TagReferenceInput = ({
     label?: string;
 }) => {
     const { setValue } = useFormContext();
-    const [filter, setFilter] = useState({ published: true });
-    const filterToQuery = useTagsFilterToQuery();
+    const [published, setPublished] = useState(true);
     const [locale] = useLocaleState();
 
-    const handleAddFilter = () => {
-        setFilter(prev => ({ published: !prev.published }));
+    const handleChangePublishedFilter = () => {
+        setPublished(prev => !prev);
         setValue('tags', []);
     };
 
@@ -56,22 +43,17 @@ const TagReferenceInput = ({
                 width: '50%',
             }}
         >
-            <ReferenceArrayInput
-                {...props}
-                filter={filter}
-                filterToQuery={filterToQuery}
-            >
-                <AutocompleteArrayInput
-                    create={<CreateTag />}
-                    optionText={`name.${locale}`}
-                />
+            <ReferenceArrayInput {...props} perPage={5} filters={published}>
+                <DatagridInput>
+                    <TextField source="name.en" />
+                </DatagridInput>
             </ReferenceArrayInput>
             <Button
                 name="change-filter"
+                onClick={handleChangePublishedFilter}
                 sx={{ margin: '0 24px', position: 'relative' }}
-                onClick={handleAddFilter}
             >
-                Filter {filter ? 'Unpublished' : 'Published'} Tags
+                Filter {published ? 'Unpublished' : 'Published'} Tags
             </Button>
         </Box>
     );

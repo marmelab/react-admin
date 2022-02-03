@@ -11,6 +11,7 @@ export type {
 };
 
 export { FormDataConsumer, ValidationError };
+export * from './choices';
 export * from './Form';
 export * from './validate';
 export * from './FormGroupContext';

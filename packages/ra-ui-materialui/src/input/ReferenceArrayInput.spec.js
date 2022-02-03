@@ -6,11 +6,11 @@ import {
     within,
     fireEvent,
 } from '@testing-library/react';
-import { testDataProvider, useListContext } from 'ra-core';
+import { testDataProvider, useChoicesContext } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
-import { Datagrid } from '../list';
+import { DatagridInput } from './DatagridInput';
 import { TextField } from '../field';
 import {
     ReferenceArrayInput,
@@ -186,9 +186,9 @@ describe('<ReferenceArrayInput />', () => {
         ).not.toBeNull();
     });
 
-    it('should provide a ListContext with all available choices', async () => {
+    it('should provide a ChoicesContext with all available choices', async () => {
         const Children = () => {
-            const { total } = useListContext();
+            const { total } = useChoicesContext();
             return <div aria-label="total">{total}</div>;
         };
         const dataProvider = testDataProvider({
@@ -235,9 +235,9 @@ describe('<ReferenceArrayInput />', () => {
                         resource="posts"
                         source="tag_ids"
                     >
-                        <Datagrid rowClick="toggleSelection">
+                        <DatagridInput>
                             <TextField source="name" />
-                        </Datagrid>
+                        </DatagridInput>
                     </ReferenceArrayInput>
                 </SimpleForm>
             </AdminContext>

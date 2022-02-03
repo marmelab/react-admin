@@ -48,7 +48,7 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
                         className={BulkActionsToolbarClasses.icon}
                         aria-label={translate('ra.action.unselect')}
                         title={translate('ra.action.unselect')}
-                        onClick={onUnselectItems}
+                        onClick={() => onUnselectItems()}
                         size="small"
                     >
                         <CloseIcon fontSize="small" />

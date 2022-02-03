@@ -5,14 +5,11 @@ import {
     getFieldLabelTranslationArgs,
     InputProps,
     useReferenceArrayInputController,
-    useInput,
-    useTranslate,
     SortPayload,
     PaginationPayload,
     Translate,
     ResourceContextProvider,
-    ReferenceArrayInputContextProvider,
-    ListContextProvider,
+    ChoicesContextProvider,
 } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -99,12 +96,6 @@ import { ReferenceError } from './ReferenceError';
  */
 export const ReferenceArrayInput = ({
     children,
-    id: idOverride,
-    onBlur,
-    onChange,
-    validate,
-    parse,
-    format,
     ...props
 }: ReferenceArrayInputProps) => {
     if (React.Children.count(children) !== 1) {
@@ -113,45 +104,13 @@ export const ReferenceArrayInput = ({
         );
     }
 
-    const { field, fieldState, formState, id, isRequired } = useInput({
-        id: idOverride,
-        onBlur,
-        onChange,
-        source: props.source,
-        validate,
-        parse,
-        format,
-        ...props,
-    });
+    const controllerProps = useReferenceArrayInputController(props);
 
-    const controllerProps = useReferenceArrayInputController({
-        ...props,
-        field,
-    });
-
-    const translate = useTranslate();
     return (
         <ResourceContextProvider value={props.reference}>
-            <ReferenceArrayInputContextProvider value={controllerProps}>
-                <ListContextProvider value={controllerProps}>
-                    <ReferenceArrayInputView
-                        id={id}
-                        field={field}
-                        isRequired={isRequired}
-                        fieldState={fieldState}
-                        formState={formState}
-                        translate={translate}
-                        children={children}
-                        {...props}
-                        choices={controllerProps.choices}
-                        isFetching={controllerProps.isFetching}
-                        isLoading={controllerProps.isLoading}
-                        setFilter={controllerProps.setFilter}
-                        setPagination={controllerProps.setPagination}
-                        setSort={controllerProps.setSort}
-                    />
-                </ListContextProvider>
-            </ReferenceArrayInputContextProvider>
+            <ChoicesContextProvider value={controllerProps}>
+                {children}
+            </ChoicesContextProvider>
         </ResourceContextProvider>
     );
 };

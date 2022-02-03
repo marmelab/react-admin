@@ -63,19 +63,18 @@ describe('useReferenceInputController', () => {
 
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
-            expect(dataProvider.getList).toBeCalledWith('posts', {
-                filter: {
-                    q: '',
-                },
-                pagination: {
-                    page: 1,
-                    perPage: 25,
-                },
-                sort: {
-                    field: 'id',
-                    order: 'DESC',
-                },
-            });
+        });
+        expect(dataProvider.getList).toBeCalledWith('posts', {
+            filter: {},
+            meta: undefined,
+            pagination: {
+                page: 1,
+                perPage: 25,
+            },
+            sort: {
+                field: 'id',
+                order: 'ASC',
+            },
         });
     });
 
@@ -101,9 +100,8 @@ describe('useReferenceInputController', () => {
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
             expect(dataProvider.getList).toBeCalledWith('posts', {
-                filter: {
-                    q: '',
-                },
+                filter: {},
+                meta: undefined,
                 pagination: {
                     page: 5,
                     perPage: 10,
@@ -158,71 +156,37 @@ describe('useReferenceInputController', () => {
         );
 
         await waitFor(() => {
-            expect(children).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    possibleValues: {
-                        sort: {
-                            field: 'title',
-                            order: 'ASC',
-                        },
-                        data: [
-                            { id: 1, title: 'foo' },
-                            { id: 2, title: 'bar' },
-                        ],
-                        displayedFilters: [],
-                        error: null,
-                        filterValues: {
-                            q: '',
-                        },
-                        isFetching: false,
-                        isLoading: false,
-                        page: 1,
-                        perPage: 25,
-                        hasPreviousPage: false,
-                        hasNextPage: false,
-                        hideFilter: expect.any(Function),
-                        onSelect: expect.any(Function),
-                        onToggleItem: expect.any(Function),
-                        onUnselectItems: expect.any(Function),
-                        setFilters: expect.any(Function),
-                        setPage: expect.any(Function),
-                        setPerPage: expect.any(Function),
-                        setSort: expect.any(Function),
-                        showFilter: expect.any(Function),
-                        refetch: expect.any(Function),
-                        resource: 'comments',
-                        selectedIds: [],
-                        total: 2,
-                    },
-                    referenceRecord: {
-                        data: {
-                            id: 1,
-                            title: 'foo',
-                        },
-                        error: null,
-                        isLoading: false,
-                        isFetching: false,
-                        refetch: expect.any(Function),
-                    },
-                    dataStatus: {
-                        error: null,
-                        loading: false,
-                        warning: null,
-                    },
-                    choices: [
-                        { id: 1, title: 'foo' },
-                        { id: 2, title: 'bar' },
-                    ],
-                    error: null,
-                    filter: { q: '' },
-                    isFetching: false,
-                    isLoading: false,
-                    pagination: { page: 1, perPage: 25 },
-                    sort: { field: 'title', order: 'ASC' },
-                    warning: null,
-                })
-            );
+            expect(children).toBeCalledTimes(4);
         });
+        expect(children).toHaveBeenCalledWith(
+            expect.objectContaining({
+                data: [
+                    { id: 1, title: 'foo' },
+                    { id: 2, title: 'bar' },
+                ],
+                displayedFilters: {},
+                error: null,
+                filter: {},
+                filterValues: {},
+                isFetching: false,
+                isLoading: false,
+                page: 1,
+                perPage: 25,
+                hasPreviousPage: false,
+                hasNextPage: false,
+                hideFilter: expect.any(Function),
+                setFilters: expect.any(Function),
+                setPage: expect.any(Function),
+                setPerPage: expect.any(Function),
+                setSort: expect.any(Function),
+                showFilter: expect.any(Function),
+                sort: { field: 'title', order: 'ASC' },
+                refetch: expect.any(Function),
+                resource: 'posts',
+                source: 'post_id',
+                total: 2,
+            })
+        );
     });
 
     it('should refetch reference getList when its props change', async () => {
@@ -250,36 +214,35 @@ describe('useReferenceInputController', () => {
 
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
-            expect(dataProvider.getList).toHaveBeenCalledWith('posts', {
-                filter: {
-                    q: '',
-                },
-                pagination: {
-                    page: 1,
-                    perPage: 25,
-                },
-                sort: {
-                    field: 'title',
-                    order: 'ASC',
-                },
-            });
         });
+        expect(dataProvider.getList).toHaveBeenCalledWith('posts', {
+            filter: {},
+            meta: undefined,
+            pagination: {
+                page: 1,
+                perPage: 25,
+            },
+            sort: {
+                field: 'title',
+                order: 'ASC',
+            },
+        });
+
         fireEvent.click(screen.getByLabelText('Change sort'));
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(2);
-            expect(dataProvider.getList).toHaveBeenCalledWith('posts', {
-                filter: {
-                    q: '',
-                },
-                pagination: {
-                    page: 1,
-                    perPage: 25,
-                },
-                sort: {
-                    field: 'body',
-                    order: 'DESC',
-                },
-            });
+        });
+        expect(dataProvider.getList).toHaveBeenCalledWith('posts', {
+            filter: {},
+            meta: undefined,
+            pagination: {
+                page: 1,
+                perPage: 25,
+            },
+            sort: {
+                field: 'body',
+                order: 'DESC',
+            },
         });
     });
 
@@ -287,7 +250,7 @@ describe('useReferenceInputController', () => {
         it('should not fetch possible values using getList on load but only when enableGetChoices returns true', async () => {
             const children = jest.fn().mockReturnValue(<p>child</p>);
             const enableGetChoices = jest.fn().mockImplementation(({ q }) => {
-                return q.length > 2;
+                return !!q && q.length > 2;
             });
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -308,17 +271,17 @@ describe('useReferenceInputController', () => {
             // not call on start
             await waitFor(() => {
                 expect(dataProvider.getList).toBeCalledTimes(0);
-                expect(enableGetChoices).toHaveBeenCalledWith({ q: '' });
+                expect(enableGetChoices).toHaveBeenCalledWith({});
             });
 
-            const { setFilter } = children.mock.calls[0][0];
-            setFilter('hello world');
+            const { setFilters } = children.mock.calls[0][0];
+            setFilters({ q: 'hello world' });
 
             await waitFor(() => {
                 expect(dataProvider.getList).toBeCalledTimes(1);
-                expect(enableGetChoices).toHaveBeenCalledWith({
-                    q: 'hello world',
-                });
+            });
+            expect(enableGetChoices).toHaveBeenCalledWith({
+                q: 'hello world',
             });
         });
 
