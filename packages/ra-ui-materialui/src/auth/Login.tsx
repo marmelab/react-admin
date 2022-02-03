@@ -29,14 +29,7 @@ import { LoginForm as DefaultLoginForm } from './LoginForm';
  *     );
  */
 export const Login = (props: LoginProps) => {
-    const {
-        title,
-        classes: classesOverride,
-        className,
-        children,
-        backgroundImage,
-        ...rest
-    } = props;
+    const { title, className, children, backgroundImage, ...rest } = props;
     const containerRef = useRef<HTMLDivElement>();
     let backgroundImageLoaded = false;
     const checkAuth = useCheckAuth();
@@ -108,7 +101,10 @@ export const LoginClasses = {
     icon: `${PREFIX}-icon`,
 };
 
-const Root = styled('div', { name: 'RaLogin' })(({ theme }) => ({
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`&.${LoginClasses.main}`]: {
         display: 'flex',
         flexDirection: 'column',

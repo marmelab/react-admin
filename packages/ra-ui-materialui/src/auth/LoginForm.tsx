@@ -13,7 +13,7 @@ import {
 import { TextInput } from '../input';
 
 export const LoginForm = (props: LoginFormProps) => {
-    const { redirectTo } = props;
+    const { redirectTo, className } = props;
     const [loading, setLoading] = useSafeSetState(false);
     const login = useLogin();
     const translate = useTranslate();
@@ -53,7 +53,7 @@ export const LoginForm = (props: LoginFormProps) => {
             onSubmit={submit}
             mode="onChange"
             render={({ handleSubmit }) => (
-                <Root onSubmit={handleSubmit} noValidate>
+                <Root onSubmit={handleSubmit} noValidate className={className}>
                     <div className={LoginFormClasses.form}>
                         <div className={LoginFormClasses.input}>
                             <TextInput
@@ -110,7 +110,10 @@ export const LoginFormClasses = {
     icon: `${PREFIX}-icon`,
 };
 
-const Root = styled('form', { name: 'RaLoginForm' })(({ theme }) => ({
+const Root = styled('form', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`& .${LoginFormClasses.form}`]: {
         padding: '0 1em 1em 1em',
     },
@@ -130,6 +133,7 @@ const Root = styled('form', { name: 'RaLoginForm' })(({ theme }) => ({
 
 export interface LoginFormProps {
     redirectTo?: string;
+    className?: string;
 }
 
 interface FormData {
