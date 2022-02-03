@@ -12,6 +12,7 @@ import {
 import { CreateButton } from '../button';
 
 export const Empty = (props: EmptyProps) => {
+    const { className } = props;
     const { hasCreate } = useResourceDefinition(props);
     const resource = useResourceContext(props);
 
@@ -27,7 +28,7 @@ export const Empty = (props: EmptyProps) => {
     const inviteMessage = translate('ra.page.invite');
 
     return (
-        <Root>
+        <Root className={className}>
             <div className={EmptyClasses.message}>
                 <Inbox className={EmptyClasses.icon} />
                 <Typography variant="h4" paragraph>
@@ -55,6 +56,7 @@ export const Empty = (props: EmptyProps) => {
 export interface EmptyProps {
     resource?: string;
     hasCreate?: boolean;
+    className?: string;
 }
 
 const PREFIX = 'RaEmpty';
@@ -65,7 +67,10 @@ export const EmptyClasses = {
     toolbar: `${PREFIX}-toolbar`,
 };
 
-const Root = styled('span', { name: PREFIX })(({ theme }) => ({
+const Root = styled('span', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     flex: 1,
     [`& .${EmptyClasses.message}`]: {
         textAlign: 'center',

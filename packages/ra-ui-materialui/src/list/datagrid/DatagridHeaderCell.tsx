@@ -106,7 +106,10 @@ export const DatagridHeaderCellClasses = {
     icon: `${PREFIX}-icon`,
 };
 
-const StyledTableCell = styled(TableCell, { name: PREFIX })(({ theme }) => ({
+const StyledTableCell = styled(TableCell, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`& .MuiSvgIcon-root`]: {
         display: 'none',
     },

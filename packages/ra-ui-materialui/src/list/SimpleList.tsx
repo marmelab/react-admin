@@ -282,6 +282,9 @@ export const SimpleListClasses = {
     tertiary: `${PREFIX}-tertiary`,
 };
 
-const Root = styled(List, { name: PREFIX })({
+const Root = styled(List, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
     [`& .${SimpleListClasses.tertiary}`]: { float: 'right', opacity: 0.541176 },
 });
