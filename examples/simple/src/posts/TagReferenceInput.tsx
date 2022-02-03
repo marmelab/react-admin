@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { useState } from 'react';
 import {
-    DatagridInput,
+    AutocompleteArrayInput,
     ReferenceArrayInput,
-    TextField,
     useCreate,
     useCreateSuggestionContext,
     useLocaleState,
@@ -44,9 +43,10 @@ const TagReferenceInput = ({
             }}
         >
             <ReferenceArrayInput {...props} perPage={5} filters={published}>
-                <DatagridInput>
-                    <TextField source="name.en" />
-                </DatagridInput>
+                <AutocompleteArrayInput
+                    create={<CreateTag />}
+                    optionText={`name.${locale}`}
+                />
             </ReferenceArrayInput>
             <Button
                 name="change-filter"
