@@ -296,7 +296,6 @@ export const SelectInput = (props: SelectInputProps) => {
 };
 
 SelectInput.propTypes = {
-    allowEmpty: PropTypes.bool,
     emptyText: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     emptyValue: PropTypes.any,
     choices: PropTypes.arrayOf(PropTypes.object),
