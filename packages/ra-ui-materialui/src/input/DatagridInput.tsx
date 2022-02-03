@@ -7,7 +7,11 @@ import {
     useChoicesContext,
     useInput,
 } from 'ra-core';
-import { CommonInputProps, SupportCreateSuggestionOptions } from '.';
+import {
+    CommonInputProps,
+    InputHelperText,
+    SupportCreateSuggestionOptions,
+} from '.';
 import {
     Datagrid,
     DatagridProps,
@@ -20,7 +24,7 @@ import {
 const defaultPagination = <DefaultPagination />;
 
 /**
- * An input for select items displayed in a datagrid
+ * An input for selecting items displayed in a datagrid
  *
  * @example
  * const membersFilters = [
@@ -123,6 +127,10 @@ export const DatagridInput = (props: DatagridInputProps) => {
             ) : null}
             <Datagrid {...rest} />
             {pagination !== false && pagination}
+            <InputHelperText
+                touched={fieldState.isTouched || formState.isSubmitted}
+                error={fieldState.error?.message}
+            />
         </ListContextProvider>
     );
 };

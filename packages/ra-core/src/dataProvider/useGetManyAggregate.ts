@@ -92,9 +92,9 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
     return useQuery<RecordType[], Error, RecordType[]>(
         [resource, 'getMany', { ids: ids.map(id => String(id)), meta }],
         () =>
-            new Promise((resolve, reject) =>
+            new Promise((resolve, reject) => {
                 // debounced / batched fetch
-                callGetManyQueries({
+                return callGetManyQueries({
                     resource,
                     ids,
                     meta,
@@ -102,8 +102,8 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
                     reject,
                     dataProvider,
                     queryClient,
-                })
-            ),
+                });
+            }),
         {
             placeholderData,
             onSuccess: data => {

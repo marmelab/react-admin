@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { Resource, required } from 'ra-core';
+import { Resource } from 'ra-core';
 import { createMemoryHistory } from 'history';
 
 import { Edit } from '../detail';
@@ -49,8 +49,8 @@ const BookEdit = () => {
                 <DatagridInput
                     source="author"
                     choices={choices}
-                    validate={required()}
                     fullWidth
+                    rowClick="toggleSelection"
                 >
                     <TextField source="name" />
                 </DatagridInput>
@@ -141,13 +141,8 @@ const BookEditWithReference = () => (
         }}
     >
         <SimpleForm>
-            <ReferenceArrayInput
-                reference="authors"
-                source="author"
-                perPage={2}
-                fullWidth
-            >
-                <DatagridInput>
+            <ReferenceArrayInput reference="authors" source="author" fullWidth>
+                <DatagridInput rowClick="toggleSelection">
                     <TextField source="name" />
                 </DatagridInput>
             </ReferenceArrayInput>

@@ -2,19 +2,11 @@ import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
-    getFieldLabelTranslationArgs,
     InputProps,
     useReferenceArrayInputController,
-    SortPayload,
-    PaginationPayload,
-    Translate,
     ResourceContextProvider,
     ChoicesContextProvider,
 } from 'ra-core';
-
-import { CommonInputProps } from './CommonInputProps';
-import { sanitizeInputRestProps } from './sanitizeInputRestProps';
-import { ReferenceError } from './ReferenceError';
 
 /**
  * An Input component for fields containing a list of references to another resource.
@@ -137,125 +129,6 @@ ReferenceArrayInput.defaultProps = {
     filterToQuery: searchText => (searchText ? { q: searchText } : {}),
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
-};
-
-const sanitizeRestProps = ({
-    filterToQuery,
-    perPage,
-    reference,
-    referenceSource,
-    resource,
-    ...rest
-}: any) => sanitizeInputRestProps(rest);
-
-export type ReferenceArrayInputViewProps = CommonInputProps & {
-    allowEmpty?: boolean;
-    children: ReactElement;
-    choices: any[];
-    className?: string;
-    error?: string;
-    id: string;
-    isFetching: boolean;
-    isLoading: boolean;
-    onChange: any;
-    options?: any;
-    reference: string;
-    resource?: string;
-    setFilter: (v: string) => void;
-    setPagination: (pagination: PaginationPayload) => void;
-    setSort: (sort: SortPayload) => void;
-    translate: Translate;
-    warning?: string;
-};
-
-export const ReferenceArrayInputView = ({
-    allowEmpty,
-    children,
-    choices,
-    className,
-    error,
-    field,
-    fieldState,
-    formState,
-    isFetching,
-    isLoading,
-    isRequired,
-    label,
-    onChange,
-    options,
-    reference,
-    resource,
-    setFilter,
-    setPagination,
-    setSort,
-    source,
-    translate,
-    warning,
-    ...rest
-}: ReferenceArrayInputViewProps) => {
-    const translatedLabel =
-        typeof label === 'string'
-            ? translate(
-                  ...getFieldLabelTranslationArgs({
-                      label,
-                      resource,
-                      source,
-                  })
-              )
-            : label;
-
-    if (error) {
-        return <ReferenceError label={translatedLabel} error={error} />;
-    }
-
-    return React.cloneElement(children, {
-        allowEmpty,
-        choices,
-        className,
-        error,
-        field,
-        fieldState: {
-            ...fieldState,
-            helperText: warning || false,
-        },
-        formState,
-        isRequired,
-        label: translatedLabel,
-        isFetching,
-        isLoading,
-        onChange,
-        options,
-        resource: reference,
-        setFilter,
-        setPagination,
-        setSort,
-        source,
-        translateChoice: false,
-        limitChoicesToValue: true,
-        ...sanitizeRestProps(rest),
-        ...children.props,
-    });
-};
-
-ReferenceArrayInputView.propTypes = {
-    allowEmpty: PropTypes.bool,
-    children: PropTypes.element,
-    choices: PropTypes.array,
-    className: PropTypes.string,
-    error: PropTypes.string,
-    loading: PropTypes.bool,
-    field: PropTypes.object.isRequired,
-    label: PropTypes.string,
-    fieldState: PropTypes.object,
-    onChange: PropTypes.func,
-    options: PropTypes.object,
-    resource: PropTypes.string,
-    setFilter: PropTypes.func,
-    setPagination: PropTypes.func,
-    setSort: PropTypes.func,
-    source: PropTypes.string,
-    translate: PropTypes.func.isRequired,
-    warning: PropTypes.string,
 };
 
 export interface ReferenceArrayInputProps extends InputProps {

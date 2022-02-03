@@ -12,20 +12,13 @@ import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { DatagridInput } from './DatagridInput';
 import { TextField } from '../field';
-import {
-    ReferenceArrayInput,
-    ReferenceArrayInputView,
-} from './ReferenceArrayInput';
+import { ReferenceArrayInput } from './ReferenceArrayInput';
 
 describe('<ReferenceArrayInput />', () => {
     const defaultProps = {
-        field: {},
-        fieldState: {},
-        record: {},
         reference: 'tags',
         resource: 'posts',
         source: 'tag_ids',
-        translate: x => `*${x}*`,
     };
 
     afterEach(async () => {
@@ -33,162 +26,28 @@ describe('<ReferenceArrayInput />', () => {
         await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
     });
 
-    it('should display an error if error is defined', () => {
-        const MyComponent = () => <div>MyComponent</div>;
-        const { queryByDisplayValue, queryByText } = render(
-            <ReferenceArrayInputView
-                {...{
-                    ...defaultProps,
-                    error: 'error',
-                    field: {},
-                }}
-            >
-                <MyComponent />
-            </ReferenceArrayInputView>
-        );
-        expect(queryByDisplayValue('error')).not.toBeNull();
-        expect(queryByText('MyComponent')).toBeNull();
-    });
-
-    it('should send an error to the children if warning is defined', () => {
-        const MyComponent = ({ fieldState }) => (
-            <div>{fieldState.helperText}</div>
-        );
-        const { queryByText, queryByRole } = render(
-            <ReferenceArrayInputView
-                {...{
-                    ...defaultProps,
-                    warning: 'fetch error',
-                    field: { value: [1, 2] },
-                    choices: [{ id: 2 }],
-                }}
-            >
-                <MyComponent />
-            </ReferenceArrayInputView>
-        );
-        expect(queryByRole('textbox')).toBeNull();
-        expect(queryByText('fetch error')).not.toBeNull();
-    });
-
-    it('should not send an error to the children if warning is not defined', () => {
-        const MyComponent = ({ fieldState }) => (
-            <div>{JSON.stringify(fieldState)}</div>
-        );
-        const { queryByText, queryByRole } = render(
-            <ReferenceArrayInputView
-                {...{
-                    ...defaultProps,
-                    field: { value: [1, 2] },
-                    choices: [{ id: 1 }, { id: 2 }],
-                }}
-            >
-                <MyComponent />
-            </ReferenceArrayInputView>
-        );
-        expect(queryByRole('textbox')).toBeNull();
-        expect(
-            queryByText(JSON.stringify({ helperText: false }))
-        ).not.toBeNull();
-    });
-
-    it('should render enclosed component if references present in input are available in state', () => {
-        const MyComponent = ({ choices }) => (
-            <div>{JSON.stringify(choices)}</div>
-        );
-        const { queryByRole, queryByText } = render(
-            <ReferenceArrayInputView
-                {...{
-                    ...defaultProps,
-                    field: { value: [1] },
-                    choices: [1],
-                }}
-            >
-                <MyComponent />
-            </ReferenceArrayInputView>
-        );
-        expect(queryByRole('textbox')).toBeNull();
-        expect(queryByText(JSON.stringify([1]))).not.toBeNull();
-    });
-
-    it('should render enclosed component even if the choices are empty', () => {
-        const MyComponent = ({ choices }) => (
-            <div>{JSON.stringify(choices)}</div>
-        );
-        const { queryByRole, queryByText } = render(
-            <ReferenceArrayInputView
-                {...{
-                    ...defaultProps,
-                    choices: [],
-                }}
-            >
-                <MyComponent />
-            </ReferenceArrayInputView>
-        );
-        expect(queryByRole('progressbar')).toBeNull();
-        expect(queryByRole('textbox')).toBeNull();
-        expect(queryByText(JSON.stringify([]))).not.toBeNull();
-    });
-
-    it('should pass the correct resource down to child component', () => {
-        let resourceProp;
-        const MyComponent = ({ resource }) => {
-            resourceProp = resource;
-            return <div />;
+    it('should pass the correct resource down to child component', async () => {
+        const MyComponent = () => {
+            const { resource } = useChoicesContext();
+            return <div>{resource}</div>;
         };
-        const onChange = jest.fn();
         render(
-            <ReferenceArrayInputView
-                {...defaultProps}
-                allowEmpty
-                onChange={onChange}
-            >
-                <MyComponent />
-            </ReferenceArrayInputView>
+            <AdminContext>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <ReferenceArrayInput {...defaultProps}>
+                        <MyComponent />
+                    </ReferenceArrayInput>
+                </SimpleForm>
+            </AdminContext>
         );
-        expect(resourceProp).toEqual('tags');
-    });
-
-    it('should pass onChange down to child component', () => {
-        let onChangeCallback;
-        const MyComponent = ({ onChange }) => {
-            onChangeCallback = onChange;
-            return <div />;
-        };
-        const onChange = jest.fn();
-        render(
-            <ReferenceArrayInputView
-                {...defaultProps}
-                allowEmpty
-                onChange={onChange}
-            >
-                <MyComponent />
-            </ReferenceArrayInputView>
-        );
-        onChangeCallback('foo');
-        expect(onChange).toBeCalledWith('foo');
-    });
-
-    it('should pass fieldState down to child component', () => {
-        const MyComponent = ({ fieldState }) => (
-            <div>{JSON.stringify(fieldState)}</div>
-        );
-        const { queryByText } = render(
-            <ReferenceArrayInputView
-                {...defaultProps}
-                allowEmpty
-                fieldState={{ isTouched: false }}
-            >
-                <MyComponent />
-            </ReferenceArrayInputView>
-        );
-        expect(
-            queryByText(JSON.stringify({ isTouched: false, helperText: false }))
-        ).not.toBeNull();
+        await waitFor(() => {
+            expect(screen.queryByText('tags')).not.toBeNull();
+        });
     });
 
     it('should provide a ChoicesContext with all available choices', async () => {
         const Children = () => {
-            const { total } = useChoicesContext();
+            const { total } = useChoicesContext({});
             return <div aria-label="total">{total}</div>;
         };
         const dataProvider = testDataProvider({

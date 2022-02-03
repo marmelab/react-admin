@@ -53,7 +53,7 @@ import { useDataProvider } from './useDataProvider';
 export const useGetList = <RecordType extends RaRecord = any>(
     resource: string,
     params: Partial<GetListParams> = {},
-    options?: UseQueryOptions<GetListResult<RecordType>, Error>
+    options: UseQueryOptions<GetListResult<RecordType>, Error>
 ): UseGetListHookValue<RecordType> => {
     const {
         pagination = { page: 1, perPage: 25 },

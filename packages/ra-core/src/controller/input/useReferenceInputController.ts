@@ -138,7 +138,6 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         }),
         [params.sort, params.order]
     );
-
     return {
         sort: currentSort,
         data: finalData,

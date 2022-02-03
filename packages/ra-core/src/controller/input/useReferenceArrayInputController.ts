@@ -55,9 +55,15 @@ export const useReferenceArrayInputController = <
         isLoading: isLoadingGetMany,
         isFetching: isFetchingGetMany,
         refetch: refetchGetMany,
-    } = useGetManyAggregate<RecordType>(reference, {
-        ids: value || EmptyArray,
-    });
+    } = useGetManyAggregate<RecordType>(
+        reference,
+        {
+            ids: value || EmptyArray,
+        },
+        {
+            enabled: value != null && value.length > 0,
+        }
+    );
 
     const [params, paramsModifiers] = useReferenceParams({
         resource: reference,

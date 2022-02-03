@@ -362,6 +362,8 @@ describe('useReferenceArrayInputController', () => {
     });
 
     it('should not call getMany when props other than input are changed from outside', async () => {
+        const record = { tag_ids: [5] };
+        const onSubmit = jest.fn();
         const children = jest.fn(() => <div />);
         const dataProvider = testDataProvider({
             // @ts-ignore
@@ -376,8 +378,8 @@ describe('useReferenceArrayInputController', () => {
         const { rerender } = render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <Form
-                    onSubmit={jest.fn()}
-                    record={{ tag_ids: [5] }}
+                    onSubmit={onSubmit}
+                    record={record}
                     render={() => (
                         <ReferenceArrayInputController {...defaultProps}>
                             {children}
@@ -390,8 +392,8 @@ describe('useReferenceArrayInputController', () => {
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
                 <Form
-                    onSubmit={jest.fn()}
-                    record={{ tag_ids: [5] }}
+                    onSubmit={onSubmit}
+                    record={record}
                     render={() => (
                         <ReferenceArrayInputController
                             {...defaultProps}
@@ -414,8 +416,8 @@ describe('useReferenceArrayInputController', () => {
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
                 <Form
-                    record={{ tag_ids: [5] }}
-                    onSubmit={jest.fn()}
+                    record={record}
+                    onSubmit={onSubmit}
                     render={() => (
                         <ReferenceArrayInputController
                             {...defaultProps}
@@ -439,11 +441,11 @@ describe('useReferenceArrayInputController', () => {
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
                 <Form
-                    onSubmit={jest.fn()}
+                    record={record}
+                    onSubmit={onSubmit}
                     render={() => (
                         <ReferenceArrayInputController
                             {...defaultProps}
-                            field={{ value: [5] }}
                             filter={{ permanentFilter: 'bar' }}
                             sort={{ field: 'foo', order: 'ASC' }}
                             perPage={42}
