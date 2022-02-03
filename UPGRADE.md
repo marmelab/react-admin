@@ -61,7 +61,7 @@ const App = () => (
 
 ### `<Admin initialState>` Is Gone
 
-The `<Admin initialState>` prop used to be used to initialize the store. As there is no store, you cannot set the react-admin defaults this way.
+The `<Admin initialState>` prop used to be used to initialize the store. As there is no Redux store anymore, you cannot set the react-admin defaults this way.
 
 Apart from initializing the Redux store for unit tests (which is no longer necessary, as react-admin components don't use Redux anymore), the only use case for `initialState` was to initialize the sidebar `open` state to `false`. To achieve the same in v4, initialize the store and set the `sidebar.open` state to `false`:
 
@@ -242,7 +242,7 @@ As React-admin no longer uses Redux, each time your code used react-redux' `disp
 - `dispatch(showNotification('Comment approved', 'success'))` must be replaced by `useNotify()`
 - `dispatch(push('/comments'))` must be replaced by `useNavigate()`
 
-React-admin used `dispatch` in many other places, but they were already behind a hook (`useRecordSelection`, `useListParams`, `useExpanded`, `useNotify`, `useSidebarState`), and not documented. If you dispatched react-admin actions manually, you'll have to look for the hook alternative.
+React-admin used `dispatch` in many other places, but they were already behind a hook (`useRecordSelection`, `useListParams`, `useExpanded`, `useNotify`, `useSidebarState`), and not documented. If you dispatched react-admin actions manually, you'll have to look for the hook alternatives.
 
 ### Redux-Saga Was Removed
 
