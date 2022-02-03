@@ -412,7 +412,7 @@ See [https://reactrouter.com/docs/en/v6/upgrading/v5#use-usenavigate-instead-of-
 
 ### Change The `<Route>` Syntax
 
-If your admin contains components that add new sub routes (like react-admin's `<TabbedForm>` and `<TabbedShowLayout>`, you'll need to update the `<Route>` syntax. 
+If your admin contains components that add new sub routes (like react-admin's `<TabbedForm>` and `<TabbedShowLayout>`), you'll need to update the `<Route>` syntax. 
 
 See [https://reactrouter.com/docs/en/v6/upgrading/v5](https://reactrouter.com/docs/en/v6/upgrading/v5) for details.
 
