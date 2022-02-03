@@ -2,7 +2,7 @@
 
 ## Redux Is Gone
 
-React-admin no longer relies on Redux. Instead, it relies on [React context](https://reactjs.org/docs/context.html) and third-party libraries (e.g [react-query](https://react-query.tanstack.com/)). 
+React-admin no longer relies on Redux. Instead, it relies on [React context](https://reactjs.org/docs/context.html) and third-party libraries (e.g. [react-query](https://react-query.tanstack.com/)). 
 
 You will need to update your code if it contains any of the following keywords:
 
@@ -242,7 +242,7 @@ const NotifyButton = () => {
 
 ### Action Creators Are Gone
 
-As React-admin no longer uses Redux, each time your code used react-redux' `dispatch` with an action creator, you'll have to replace it with a hook. 
+As React-admin no longer uses Redux, each time your code used react-redux's `dispatch` with an action creator, you'll have to replace it with a hook. 
 
 - `dispatch(fetchStart())` and `dispatch(fetchEnd())` must be replaced by `useQuery()` and `useMutation()`
 - `dispatch(setSidebarVisibility(true))` must be replaced by `useSidebarState()`
