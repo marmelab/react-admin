@@ -337,11 +337,25 @@ const MyComponent = () => {
 }
 ```
 
-## The Way To Define Custom Routes Has Changed
+## Routing
 
-Custom routes used to be provided to the `Admin` component through the `customRoutes` prop. This was awkward to use as you had to provide an array of `<Route>` elements. Besides, we had to provide the `<RouteWithoutLayout>` component to support custom routes rendered without the `<Layout>` and keep TypeScript happy.
+React-admin v4 uses react-router v6, which changes quite a few things internally.
+This should be mostly transparent for you unless:
 
-As we upgraded to react-router v6 (more on that later), we had to come up with another way to support custom routes.
+You will need to update your code if it contains any of the following keywords:
+
+- `history`
+- `customRoutes`
+- `useHistory`
+- `push`
+- `<Route>`
+- `<RouteWithoutLayout>`
+
+### The Way To Define Custom Routes Has Changed
+
+Custom routes used to be provided to the `<Admin>` component through the `customRoutes` prop. This was awkward to use as you had to provide an array of `<Route>` elements. Besides, we had to provide the `<RouteWithoutLayout>` component to support custom routes rendered without the `<Layout>` and keep TypeScript happy.
+
+As we upgraded to react-router v6, we had to come up with another way to support custom routes.
 
 Meet the `<CustomRoutes>` component. You can pass it as a child of `<Admin>`, just like a `<Resource>`. It accepts react-router `<Route>` as its children (and only that). You can specify whether the custom routes it contains should be rendered with the `<Layout>` or not by setting the `noLayout` prop. It's `false` by default.
 
@@ -391,6 +405,62 @@ Note that `<CustomRoutes>` handles `null` elements and fragments correctly, so y
     }
 ```
 
+See [https://reactrouter.com/docs/en/v6/upgrading/v5#advantages-of-route-element](https://reactrouter.com/docs/en/v6/upgrading/v5#advantages-of-route-element) for more details about the new `<Route>` element
+
+### Use `useNavigate` instead of `useHistory`
+
+See [https://reactrouter.com/docs/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory](https://reactrouter.com/docs/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory) to upgrade.
+
+### Change The `<Route>` Syntax
+
+If your admin contains component that add new sub routes (like react-admin's `<TabbedForm>` and `<TabbedShowLayout>`, you'll need to update the `<Route>` syntax. 
+
+See [https://reactrouter.com/docs/en/v6/upgrading/v5](https://reactrouter.com/docs/en/v6/upgrading/v5) for details.
+
+### Using A Custom History
+
+To use a `BrowserHistory` instead of the default `HashHistory`, you previously had to pass a custom `<Admin history>` prop. You can now wrap your app with the history component you need:
+
+```diff
+-import { createBrowserHistory } from 'react-router';
++import { BrowserRouter } from 'react-router';
+import { Admin, Resource } from 'react-admin';
+
+const App = () => (
++   <BrowserRouter>
+        <Admin 
+            dataProvider={...}
+-           history={createBrowserHistory()}
+        >    
+            <Resource name="posts" />
+        </Admin>
++   </BrowserRouter>
+);
+```
+
+### Mounting React-Admin In A Sub Path
+
+If you were using react-admin in a sub path (e.g. `/admin`), and if you were using `BrowserHistory`, you'll have to update your code to set this base path as the `<Admin basename>` prop:
+
+```diff
+import { Admin, Resource } from 'react-admin';
+
+const App = () => (
++   <BrowserRouter>
+        <Admin
+            dataProvider={dataProvider}
+            authProvider={authProvider}
+-           history={createBrowserHistory()}
++           basename="/admin"
+        >
+            <Resource name="posts" />
+        </Admin>
++   </BrowserRouter>
+);
+```
+
+You don't need to make that change if you were using `HashHistory` or `MemoryHistory`.
+
 ## Admin Child Function Result Has Changed
 
 In order to define the resources and their views according to users permissions, we used to support a function as a child of `<Admin>`. Just like the `customRoutes`, this function had to return an array of elements.
@@ -436,14 +506,6 @@ const MyAdmin = () => (
     </Admin>
 )
 ```
-
-## React Router Upgraded to v6
-
-This should be mostly transparent for you unless:
-
-- you had custom routes: see [https://reactrouter.com/docs/en/v6/upgrading/v5#advantages-of-route-element](https://reactrouter.com/docs/en/v6/upgrading/v5#advantages-of-route-element) to upgrade.
-- you used `useHistory` to navigate: see [https://reactrouter.com/docs/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory](https://reactrouter.com/docs/en/v6/upgrading/v5#use-usenavigate-instead-of-usehistory) to upgrade.
-- you had custom components similar to our `TabbedForm` or `TabbedShowLayout` (declaring multiple sub routes): see [https://reactrouter.com/docs/en/v6/upgrading/v5](https://reactrouter.com/docs/en/v6/upgrading/v5) to upgrade.
 
 ## `useQuery`, `useMutation`, and `useQueryWithStore` Have Been Removed
 
@@ -1594,25 +1656,6 @@ When a function (not a component) received the `basePath` as argument, it now re
 
 In most cases, the injected `basePath` was the `resource` with a leading slash (e.g. basename: `/posts`, resource: `posts`).
 
-## Changed The Way To Mount React-Admin In A Sub Path
-
-If you were using react-admin in a sub path (e.g. `/admin`), and if you were using `BrowserHistory`, you'll have to update your code to set this base path as the `<Admin basename>` prop:
-
-```diff
-import { Admin, Resource } from 'react-admin';
-
-const App = () => (
-    <Admin
-        dataProvider={dataProvider}
-        authProvider={authProvider}
-+       basename="/admin"
-    >
-        <Resource name="posts" />
-    </Admin>
-);
-```
-
-You don't need to make that change if you were using `HashHistory` or `MemoryHistory`.
 
 ## `addLabel` Prop No Longer Considered For Show Labelling 
 
