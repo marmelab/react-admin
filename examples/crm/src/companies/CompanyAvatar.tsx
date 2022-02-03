@@ -9,31 +9,12 @@ import { Company } from '../types';
 const PREFIX = 'CompanyAvatar';
 
 const classes = {
-    avatar: `${PREFIX}-avatar`,
     img: `${PREFIX}-img`,
-    small: `${PREFIX}-small`,
-    large: `${PREFIX}-large`,
 };
 
-const StyledAvatar = styled(Avatar, {
-    name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
-})({
-    [`& .${classes.avatar}`]: {
-        width: 60,
-        height: 60,
-        backgroundColor: 'aliceblue',
-    },
+const StyledAvatar = styled(Avatar)({
     [`& .${classes.img}`]: {
         objectFit: 'contain',
-    },
-    [`& .${classes.small}`]: {
-        width: 20,
-        height: 20,
-    },
-    [`& .${classes.large}`]: {
-        width: 40,
-        height: 40,
     },
 });
 
@@ -48,7 +29,7 @@ export const CompanyAvatar = (props: {
         <StyledAvatar
             src={process.env.PUBLIC_URL + record.logo}
             alt={record.name}
-            className={classes.avatar}
+            sx={{ bgcolor: 'aliceblue' }}
             imgProps={{ className: clsx(classes.img, size) }}
         />
     );
