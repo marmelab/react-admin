@@ -139,7 +139,6 @@ export const SaveButton = <RecordType extends RaRecord = any>(
 const defaultIcon = <ContentSave />;
 
 interface Props<RecordType extends RaRecord = any> {
-    classes?: object;
     className?: string;
     disabled?: boolean;
     icon?: ReactElement;
@@ -167,7 +166,6 @@ export type SaveButtonProps<RecordType extends RaRecord = any> = Props<
 
 SaveButton.propTypes = {
     className: PropTypes.string,
-    classes: PropTypes.object,
     invalid: PropTypes.bool,
     label: PropTypes.string,
     saving: PropTypes.bool,

@@ -14,7 +14,6 @@ import { UseQueryOptions, UseMutationOptions } from 'react-query';
 export interface EditProps<RecordType extends RaRecord = any> {
     actions?: ReactElement | false;
     aside?: ReactElement;
-    classes?: any;
     className?: string;
     component?: ElementType;
     id?: Identifier;
@@ -34,7 +33,6 @@ export interface EditProps<RecordType extends RaRecord = any> {
 export interface CreateProps<RecordType extends RaRecord = any> {
     actions?: ReactElement | false;
     aside?: ReactElement;
-    classes?: any;
     className?: string;
     component?: ElementType;
     record?: Partial<RecordType>;

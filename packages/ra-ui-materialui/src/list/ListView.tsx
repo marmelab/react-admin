@@ -143,7 +143,6 @@ export interface ListViewProps {
      * @deprecated pass the bulkActionButtons prop to the List child (Datagrid or SimpleList) instead
      */
     bulkActionButtons?: ReactElement | false;
-    classes?: any;
     className?: string;
     children: ReactElement;
     component?: ElementType;

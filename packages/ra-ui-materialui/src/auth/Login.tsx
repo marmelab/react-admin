@@ -29,14 +29,7 @@ import { LoginForm as DefaultLoginForm } from './LoginForm';
  *     );
  */
 export const Login = (props: LoginProps) => {
-    const {
-        title,
-        classes: classesOverride,
-        className,
-        children,
-        backgroundImage,
-        ...rest
-    } = props;
+    const { title, className, children, backgroundImage, ...rest } = props;
     const containerRef = useRef<HTMLDivElement>();
     let backgroundImageLoaded = false;
     const checkAuth = useCheckAuth();
@@ -96,7 +89,6 @@ export interface LoginProps
         LoginComponentProps {
     backgroundImage?: string;
     children?: ReactNode;
-    classes?: object;
     className?: string;
 }
 
@@ -138,7 +130,6 @@ const Root = styled('div', { name: 'RaLogin' })(({ theme }) => ({
 Login.propTypes = {
     backgroundImage: PropTypes.string,
     children: PropTypes.node,
-    classes: PropTypes.object,
     className: PropTypes.string,
 };
 

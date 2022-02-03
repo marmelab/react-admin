@@ -5,7 +5,7 @@ import Tabs, { TabsProps } from '@mui/material/Tabs';
 import { useParams } from 'react-router-dom';
 
 export const TabbedFormTabs = (props: TabbedFormTabsProps) => {
-    const { children, classes, url, syncWithLocation, value, ...rest } = props;
+    const { children, url, syncWithLocation, value, ...rest } = props;
 
     const params = useParams();
 
@@ -31,7 +31,6 @@ export const TabbedFormTabs = (props: TabbedFormTabsProps) => {
                 return cloneElement(tab, {
                     intent: 'header',
                     value: syncWithLocation ? tabPath : index,
-                    classes,
                     syncWithLocation,
                 });
             })}
@@ -41,7 +40,6 @@ export const TabbedFormTabs = (props: TabbedFormTabsProps) => {
 
 TabbedFormTabs.propTypes = {
     children: PropTypes.node,
-    classes: PropTypes.object,
     url: PropTypes.string,
     tabsWithErrors: PropTypes.arrayOf(PropTypes.string),
 };
@@ -53,7 +51,6 @@ export const getTabbedFormTabFullPath = (
     tab.props.path != null ? tab.props.path : index > 0 ? index.toString() : '';
 
 export interface TabbedFormTabsProps extends TabsProps {
-    classes?: any;
     url?: string;
     tabsWithErrors?: string[];
     syncWithLocation?: boolean;
