@@ -16,8 +16,8 @@ const Root = styled('nav')({
         flexGrow: 1,
     },
     [`& .${classes.logo}`]: {
-        width: 50,
-        height: 43.54,
+        height: 30,
+        marginRight: '1em',
     },
 });
 
