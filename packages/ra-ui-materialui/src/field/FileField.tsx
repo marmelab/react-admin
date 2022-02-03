@@ -7,6 +7,7 @@ import { useRecordContext } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { SxProps } from '@mui/system';
 
 /**
  * Render a link to a file based on a path contained in a record field
@@ -109,6 +110,7 @@ export interface FileFieldProps extends PublicFieldProps, InjectedFieldProps {
     ping?: string;
     rel?: string;
     classes?: object;
+    sx?: SxProps;
 }
 
 FileField.propTypes = {

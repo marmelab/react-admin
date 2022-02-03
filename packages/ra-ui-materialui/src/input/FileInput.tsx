@@ -16,6 +16,7 @@ import { Labeled } from './Labeled';
 import { FileInputPreview } from './FileInputPreview';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
+import { SxProps } from '@mui/system';
 
 export const FileInput = (props: FileInputProps) => {
     const {
@@ -261,4 +262,5 @@ export type FileInputProps = DropzoneOptions &
         placeholder?: ReactNode;
         inputProps?: any;
         validateFileRemoval?(file): boolean | Promise<boolean>;
+        sx?: SxProps;
     };
