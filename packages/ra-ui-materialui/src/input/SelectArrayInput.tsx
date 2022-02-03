@@ -10,7 +10,13 @@ import {
     FormControl,
     Chip,
 } from '@mui/material';
-import { FieldTitle, useInput, ChoicesProps, useChoices } from 'ra-core';
+import {
+    ChoicesProps,
+    FieldTitle,
+    useInput,
+    useChoicesContext,
+    useChoices,
+} from 'ra-core';
 import { InputHelperText } from './InputHelperText';
 import { FormControlProps } from '@mui/material/FormControl';
 
@@ -76,7 +82,7 @@ import {
  */
 export const SelectArrayInput = (props: SelectArrayInputProps) => {
     const {
-        choices = [],
+        choices: choicesProp,
         className,
         create,
         createLabel,
@@ -94,8 +100,8 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         optionText,
         optionValue,
         parse,
-        resource,
-        source,
+        resource: resourceProp,
+        source: sourceProp,
         translateChoice,
         validate,
         variant = 'filled',
@@ -104,12 +110,18 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
 
     const inputLabel = useRef(null);
 
+    const { data: choices, source, resource } = useChoicesContext({
+        choices: choicesProp,
+        resource: resourceProp,
+        source: sourceProp,
+    });
     const { getChoiceText, getChoiceValue, getDisableValue } = useChoices({
         optionText,
         optionValue,
         disableValue,
         translateChoice,
     });
+
     const {
         field,
         isRequired,
@@ -235,7 +247,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                         <div className={SelectArrayInputClasses.chips}>
                             {selected
                                 .map(item =>
-                                    choices.find(
+                                    (choices || []).find(
                                         choice =>
                                             getChoiceValue(choice) === item
                                     )
@@ -272,9 +284,10 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
 
 export type SelectArrayInputProps = ChoicesProps &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
-    CommonInputProps &
+    Omit<CommonInputProps, 'source'> &
     Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> & {
         disableValue?: string;
+        source?: string;
     };
 
 SelectArrayInput.propTypes = {
