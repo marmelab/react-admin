@@ -4,7 +4,14 @@
 
 React-admin no longer relies on Redux. Instead, it relies on [React context](https://reactjs.org/docs/context.html) and third-party libraries (e.g [react-query](https://react-query.tanstack.com/)). 
 
-If your app didn't use `customReducers`, `initialState`, `useSelector`, or `useDispatch`, you can safely ignore this section.
+You will need to update your code if it contains any of the following keywords:
+
+- `createAdminStore`
+- `customReducers`
+- `customSagas`
+- `initialState`
+- `useSelector`
+- `useDispatch`
 
 ### Running Inside A Redux App
 
