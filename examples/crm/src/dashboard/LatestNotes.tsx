@@ -26,16 +26,12 @@ const Root = styled('div')(({ theme }) => ({
         marginBottom: theme.spacing(2),
     },
 
-    [`& .${classes.noteText}`]: {
-        backgroundColor: '#edf3f0',
-        padding: theme.spacing(1),
-        borderRadius: 10,
-    },
+    [`& .${classes.noteText}`]: {},
 
     [`& .${classes.noteTextText}`]: {
         display: '-webkit-box',
-        '-webkit-line-clamp': 3,
-        '-webkit-box-orient': 'vertical',
+        WebkitLineClamp: 3,
+        WebkitBoxOrient: 'vertical',
         overflow: 'hidden',
     },
 }));
@@ -100,7 +96,10 @@ export const LatestNotes = () => {
                             key={`${note.type}_${note.id}`}
                             className={classes.note}
                         >
-                            <Typography color="textSecondary" gutterBottom>
+                            <Typography
+                                color="textSecondary"
+                                sx={{ opacity: 0.5 }}
+                            >
                                 on{' '}
                                 {note.type === 'dealNote' ? (
                                     <Deal note={note} />
