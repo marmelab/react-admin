@@ -7,14 +7,18 @@ import classnames from 'classnames';
 import { useResourceContext, useTranslate } from 'ra-core';
 
 export const FilterFormInput = props => {
-    const { filterElement, handleHide, variant, margin } = props;
+    const { filterElement, handleHide, variant, margin, className } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
 
     return (
         <Root
             data-source={filterElement.props.source}
-            className={classnames('filter-field', FilterFormInputClasses.body)}
+            className={classnames(
+                'filter-field',
+                FilterFormInputClasses.body,
+                className
+            )}
         >
             {!filterElement.props.alwaysOn && (
                 <IconButton
@@ -65,7 +69,10 @@ export const FilterFormInputClasses = {
     hideButton: `${PREFIX}-hideButton`,
 };
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`&.${FilterFormInputClasses.body}`]: {
         display: 'flex',
         alignItems: 'flex-end',

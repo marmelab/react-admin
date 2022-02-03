@@ -12,6 +12,7 @@ export const PaginationActions: FC<PaginationActionsProps> = memo(props => {
         count,
         onPageChange,
         size = 'small',
+        className,
         ...rest
     } = props;
     const translate = useTranslate();
@@ -19,7 +20,7 @@ export const PaginationActions: FC<PaginationActionsProps> = memo(props => {
     const nbPages = Math.ceil(count / rowsPerPage) || 1;
 
     if (nbPages === 1) {
-        return <Root />;
+        return <Root className={className} />;
     }
 
     const getItemAriaLabel = (
@@ -42,7 +43,7 @@ export const PaginationActions: FC<PaginationActionsProps> = memo(props => {
     };
 
     return (
-        <Root>
+        <Root className={className}>
             <Pagination
                 size={size}
                 count={nbPages}
@@ -80,7 +81,10 @@ PaginationActions.propTypes = {
 
 const PREFIX = 'RaPaginationActions';
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     flexShrink: 0,
     ml: 4,
 }));

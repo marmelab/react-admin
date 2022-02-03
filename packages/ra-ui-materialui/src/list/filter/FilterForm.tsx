@@ -194,7 +194,10 @@ export const FilterFormClasses = {
     clearFix: `${PREFIX}-clearFix`,
 };
 
-const StyledForm = styled('form', { name: PREFIX })(({ theme }) => ({
+const StyledForm = styled('form', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     marginTop: theme.spacing(-1),
     minHeight: theme.spacing(8),
     display: 'flex',

@@ -12,6 +12,7 @@ import CancelIcon from '@mui/icons-material/CancelOutlined';
 import { useTranslate, useListFilterContext, shallowEqual } from 'ra-core';
 import matches from 'lodash/matches';
 import pickBy from 'lodash/pickBy';
+import classnames from 'classnames';
 
 const arePropsEqual = (prevProps, nextProps) =>
     prevProps.label === nextProps.label &&
@@ -140,8 +141,12 @@ const arePropsEqual = (prevProps, nextProps) =>
  * );
  */
 export const FilterListItem = memo(
-    (props: { label: string | ReactElement; value: any }) => {
-        const { label, value } = props;
+    (props: {
+        label: string | ReactElement;
+        value: any;
+        className?: string;
+    }) => {
+        const { label, value, className } = props;
         const { filterValues, setFilters } = useListFilterContext();
         const translate = useTranslate();
 
@@ -172,7 +177,10 @@ export const FilterListItem = memo(
             <StyledListItem
                 onClick={toggleFilter}
                 selected={isSelected}
-                className={FilterListItemClasses.listItem}
+                className={classnames(
+                    FilterListItemClasses.listItem,
+                    className
+                )}
                 disablePadding
             >
                 <ListItemButton
@@ -210,7 +218,10 @@ export const FilterListItemClasses = {
     listItemText: `${PREFIX}-listItemText`,
 };
 
-const StyledListItem = styled(ListItem, { name: PREFIX })(({ theme }) => ({
+const StyledListItem = styled(ListItem, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`&.${FilterListItemClasses.listItem}`]: {},
     [`& .${FilterListItemClasses.listItemButton}`]: {
         paddingRight: '2em',
