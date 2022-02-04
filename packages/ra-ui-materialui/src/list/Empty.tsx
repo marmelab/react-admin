@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ReactElement } from 'react';
 import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Inbox from '@material-ui/icons/Inbox';
@@ -17,6 +18,7 @@ export const Empty = (props: EmptyProps) => {
     const resource = useResourceContext(props);
     const classes = useStyles(props);
     const translate = useTranslate();
+    const { icon = <Inbox className={classes.icon} /> } = props;
 
     const getResourceLabel = useGetResourceLabel();
     const resourceName = translate(`resources.${resource}.forcedCaseName`, {
@@ -30,7 +32,7 @@ export const Empty = (props: EmptyProps) => {
     return (
         <>
             <div className={classes.message}>
-                <Inbox className={classes.icon} />
+                {icon}
                 <Typography variant="h4" paragraph>
                     {translate(`resources.${resource}.empty`, {
                         _: emptyMessage,
@@ -55,6 +57,7 @@ export const Empty = (props: EmptyProps) => {
 
 export interface EmptyProps {
     classes?: ClassesOverride<typeof useStyles>;
+    icon?: ReactElement;
     resource?: string;
 }
 
