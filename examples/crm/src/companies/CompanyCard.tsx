@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { useState } from 'react';
-import { Paper, Typography, Link as MuiLink } from '@mui/material';
+import { Paper, Typography, Link as MuiLink, Box } from '@mui/material';
 import ContactsIcon from '@mui/icons-material/AccountCircle';
 import DealIcon from '@mui/icons-material/MonetizationOn';
 import { useCreatePath, SelectField, useRecordContext } from 'react-admin';
@@ -11,57 +10,6 @@ import { sectors } from './sectors';
 import { CompanyAvatar } from './CompanyAvatar';
 import { Company } from '../types';
 
-const PREFIX = 'CompanyCard';
-
-const classes = {
-    paper: `${PREFIX}-paper`,
-    identity: `${PREFIX}-identity`,
-    name: `${PREFIX}-name`,
-    stats: `${PREFIX}-stats`,
-    singleStat: `${PREFIX}-singleStat`,
-    statIcon: `${PREFIX}-statIcon`,
-};
-
-const StyledMuiLink = styled(MuiLink, {
-    name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
-    [`& .${classes.paper}`]: {
-        height: 200,
-        width: 184,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        padding: '1em',
-    },
-
-    [`& .${classes.identity}`]: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-
-    [`& .${classes.name}`]: {
-        textAlign: 'center',
-        marginTop: theme.spacing(1),
-    },
-
-    [`& .${classes.stats}`]: {
-        display: 'flex',
-        justifyContent: 'space-around',
-        width: '100%',
-    },
-
-    [`& .${classes.singleStat}`]: {
-        display: 'flex',
-        alignItems: 'center',
-    },
-
-    [`& .${classes.statIcon}`]: {
-        marginRight: theme.spacing(1),
-    },
-}));
-
 export const CompanyCard = (props: { record?: Company }) => {
     const [elevation, setElevation] = useState(1);
     const createPath = useCreatePath();
@@ -69,8 +17,7 @@ export const CompanyCard = (props: { record?: Company }) => {
     if (!record) return null;
 
     return (
-        <StyledMuiLink
-            // @ts-ignore
+        <MuiLink
             component={Link}
             to={createPath({
                 resource: 'companies',
@@ -81,10 +28,31 @@ export const CompanyCard = (props: { record?: Company }) => {
             onMouseEnter={() => setElevation(3)}
             onMouseLeave={() => setElevation(1)}
         >
-            <Paper className={classes.paper} elevation={elevation}>
-                <div className={classes.identity}>
+            <Paper
+                sx={{
+                    height: 200,
+                    width: 187.7,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    padding: '1em',
+                }}
+                elevation={elevation}
+            >
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
                     <CompanyAvatar />
-                    <div className={classes.name}>
+                    <Box
+                        sx={{
+                            textAlign: 'center',
+                            marginTop: 1,
+                        }}
+                    >
                         <Typography variant="subtitle2">
                             {record.name}
                         </Typography>
@@ -93,13 +61,24 @@ export const CompanyCard = (props: { record?: Company }) => {
                             source="sector"
                             choices={sectors}
                         />
-                    </div>
-                </div>
-                <div className={classes.stats}>
-                    <div className={classes.singleStat}>
+                    </Box>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-around',
+                        width: '100%',
+                    }}
+                >
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}
+                    >
                         <ContactsIcon
                             color="disabled"
-                            className={classes.statIcon}
+                            sx={{ marginRight: 1 }}
                         />
                         <div>
                             <Typography
@@ -114,12 +93,14 @@ export const CompanyCard = (props: { record?: Company }) => {
                                     : 'contact'}
                             </Typography>
                         </div>
-                    </div>
-                    <div className={classes.singleStat}>
-                        <DealIcon
-                            color="disabled"
-                            className={classes.statIcon}
-                        />
+                    </Box>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <DealIcon color="disabled" sx={{ marginRight: 1 }} />
                         <div>
                             <Typography
                                 variant="subtitle2"
@@ -131,9 +112,9 @@ export const CompanyCard = (props: { record?: Company }) => {
                                 {record.nb_deals > 1 ? 'deals' : 'deal'}
                             </Typography>
                         </div>
-                    </div>
-                </div>
+                    </Box>
+                </Box>
             </Paper>
-        </StyledMuiLink>
+        </MuiLink>
     );
 };

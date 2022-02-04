@@ -23,7 +23,7 @@ const Header = () => {
                         <Box display="flex" alignItems="center">
                             <Box
                                 component="img"
-                                sx={{ width: 50, height: 43.54 }}
+                                sx={{ marginRight: '1em', height: 30 }}
                                 src={
                                     'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg'
                                 }
