@@ -102,7 +102,10 @@ const Notification = (props: NotificationProps) => {
                 className: classnames(
                     styles[notification.type || type],
                     className,
-                    { [styles['multiLine']]: multiLine }
+                    {
+                        [styles['multiLine']]:
+                            notification.multiLine || multiLine,
+                    }
                 ),
             }}
             action={
