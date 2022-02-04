@@ -31,7 +31,7 @@ export const Logout: FunctionComponent<
     ]);
     return (
         <StyledMenuItem
-            className={classnames('logout', LogoutClasses.menuItem, className)}
+            className={classnames('logout', className)}
             onClick={handleClick}
             ref={ref}
             // @ts-ignore
@@ -63,9 +63,7 @@ const StyledMenuItem = styled(MenuItem, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    [`&.${LogoutClasses.menuItem}`]: {
-        color: theme.palette.text.secondary,
-    },
+    color: theme.palette.text.secondary,
 
     [`& .${LogoutClasses.icon}`]: { minWidth: theme.spacing(5) },
 }));
