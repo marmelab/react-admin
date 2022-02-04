@@ -26,6 +26,10 @@ const useLogout = (): Logout => {
     const authProvider = useAuthProvider();
     const resetStore = useResetStore();
     const navigate = useNavigate();
+    // useNavigate forces rerenders on every navigation, even if we don't use the result
+    // see https://github.com/remix-run/react-router/issues/7634
+    // so we use a ref to bail out of rerenders when we don't need to
+    const navigateRef = useRef(navigate);
     const location = useLocation();
     const locationRef = useRef(location);
 
@@ -42,7 +46,8 @@ const useLogout = (): Logout => {
      */
     useEffect(() => {
         locationRef.current = location;
-    }, [location]);
+        navigateRef.current = navigate;
+    }, [location, navigate]);
 
     const logout = useCallback(
         (
@@ -81,12 +86,12 @@ const useLogout = (): Logout => {
                 if (redirectToParts[1]) {
                     newLocation.search = redirectToParts[1];
                 }
-                navigate(newLocation, newLocationOptions);
+                navigateRef.current(newLocation, newLocationOptions);
                 resetStore();
 
                 return redirectToFromProvider;
             }),
-        [authProvider, resetStore, navigate]
+        [authProvider, resetStore]
     );
 
     const logoutWithoutProvider = useCallback(

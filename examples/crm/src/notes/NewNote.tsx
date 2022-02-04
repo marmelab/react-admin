@@ -3,9 +3,9 @@ import { styled } from '@mui/material/styles';
 import { useState, FormEvent } from 'react';
 import {
     useRecordContext,
+    useListContext,
     useCreate,
     useUpdate,
-    useRefresh,
     useNotify,
     useGetIdentity,
     Identifier,
@@ -50,15 +50,14 @@ export const NewNote = ({
     showStatus?: boolean;
     reference: 'contacts' | 'deals';
 }) => {
-    const record = useRecordContext();
     const resource = useResourceContext();
+    const record = useRecordContext();
+    const { refetch } = useListContext();
     const [text, setText] = useState('');
     const [status, setStatus] = useState(record && record.status);
     const [date, setDate] = useState(getCurrentDate());
     const [create, { isLoading }] = useCreate();
     const [update] = useUpdate();
-    // FIXME: use refetch instead when ReferenceManyField exposes it in the ListContext
-    const refresh = useRefresh();
     const notify = useNotify();
     const { identity } = useGetIdentity();
     if (!record || !identity) return null;
@@ -90,7 +89,7 @@ export const NewNote = ({
                 onSuccess: () => {
                     setText('');
                     notify('Note added successfully');
-                    refresh();
+                    refetch();
                 },
             }
         );

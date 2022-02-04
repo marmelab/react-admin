@@ -1,6 +1,5 @@
 import escapePath from './escapePath';
 import FieldTitle, { FieldTitleProps } from './FieldTitle';
-import getFetchedAt from './getFetchedAt';
 import getFieldLabelTranslationArgs from './getFieldLabelTranslationArgs';
 import ComponentPropType from './ComponentPropType';
 import removeEmpty from './removeEmpty';
@@ -15,7 +14,6 @@ export * from './useEventCallback';
 export {
     escapePath,
     FieldTitle,
-    getFetchedAt,
     getFieldLabelTranslationArgs,
     ComponentPropType,
     Ready,
