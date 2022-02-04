@@ -59,11 +59,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
             <StyledButton
                 onClick={handleDialogOpen}
                 label={label}
-                className={classnames(
-                    'ra-delete-button',
-                    DeleteWithConfirmButtonClasses.deleteButton,
-                    className
-                )}
+                className={classnames('ra-delete-button', className)}
                 key="button"
                 {...rest}
             >
@@ -138,22 +134,16 @@ DeleteWithConfirmButton.propTypes = {
 
 const PREFIX = 'RaDeleteWithConfirmButton';
 
-export const DeleteWithConfirmButtonClasses = {
-    deleteButton: `${PREFIX}-deleteButton`,
-};
-
 const StyledButton = styled(Button, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    [`&.${DeleteWithConfirmButtonClasses.deleteButton}`]: {
-        color: theme.palette.error.main,
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.error.main, 0.12),
-            // Reset on mouse devices
-            '@media (hover: none)': {
-                backgroundColor: 'transparent',
-            },
+    color: theme.palette.error.main,
+    '&:hover': {
+        backgroundColor: alpha(theme.palette.error.main, 0.12),
+        // Reset on mouse devices
+        '@media (hover: none)': {
+            backgroundColor: 'transparent',
         },
     },
 }));

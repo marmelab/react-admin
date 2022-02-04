@@ -84,7 +84,6 @@ export const Toolbar = <
     return (
         <StyledToolbar
             className={classnames(
-                ToolbarClasses.toolbar,
                 {
                     [ToolbarClasses.mobileToolbar]: isXs,
                     [ToolbarClasses.desktopToolbar]: !isXs,
@@ -160,7 +159,6 @@ Toolbar.propTypes = {
 const PREFIX = 'RaToolbar';
 
 export const ToolbarClasses = {
-    toolbar: `${PREFIX}-toolbar`,
     desktopToolbar: `${PREFIX}-desktopToolbar`,
     mobileToolbar: `${PREFIX}-mobileToolbar`,
     defaultToolbar: `${PREFIX}-defaultToolbar`,
@@ -171,12 +169,10 @@ const StyledToolbar = styled(MuiToolbar, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    [`&.${ToolbarClasses.toolbar}`]: {
-        backgroundColor:
-            theme.palette.mode === 'light'
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-    },
+    backgroundColor:
+        theme.palette.mode === 'light'
+            ? theme.palette.grey[100]
+            : theme.palette.grey[900],
 
     [`&.${ToolbarClasses.desktopToolbar}`]: {
         marginTop: theme.spacing(2),

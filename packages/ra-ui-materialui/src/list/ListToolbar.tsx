@@ -5,7 +5,6 @@ import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { Toolbar, ToolbarProps } from '@mui/material';
 import { Exporter } from 'ra-core';
-import classnames from 'classnames';
 
 import { FilterForm } from './filter';
 import { FilterContext } from './FilterContext';
@@ -15,7 +14,7 @@ export const ListToolbar: FC<ListToolbarProps> = memo(props => {
 
     return Array.isArray(filters) ? (
         <FilterContext.Provider value={filters}>
-            <Root className={classnames(ListToolbarClasses.toolbar, className)}>
+            <Root className={className}>
                 <FilterForm />
                 <span />
                 {actions &&
@@ -26,7 +25,7 @@ export const ListToolbar: FC<ListToolbarProps> = memo(props => {
             </Root>
         </FilterContext.Provider>
     ) : (
-        <Root className={classnames(ListToolbarClasses.toolbar, className)}>
+        <Root className={className}>
             {filters &&
                 React.cloneElement(filters, {
                     ...rest,
@@ -64,26 +63,19 @@ export interface ListToolbarProps
 
 const PREFIX = 'RaListToolbar';
 
-export const ListToolbarClasses = {
-    toolbar: `${PREFIX}-toolbar`,
-    actions: `${PREFIX}-actions`,
-};
-
 const Root = styled(Toolbar, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    [`&.${ListToolbarClasses.toolbar}`]: {
-        justifyContent: 'space-between',
-        alignItems: 'flex-end',
-        minHeight: 'auto',
-        paddingRight: 0,
-        [theme.breakpoints.up('xs')]: {
-            paddingLeft: 0,
-        },
-        [theme.breakpoints.down('sm')]: {
-            paddingLeft: theme.spacing(2),
-            backgroundColor: theme.palette.background.paper,
-        },
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    minHeight: 'auto',
+    paddingRight: 0,
+    [theme.breakpoints.up('xs')]: {
+        paddingLeft: 0,
+    },
+    [theme.breakpoints.down('sm')]: {
+        paddingLeft: theme.spacing(2),
+        backgroundColor: theme.palette.background.paper,
     },
 }));

@@ -12,7 +12,6 @@ import CancelIcon from '@mui/icons-material/CancelOutlined';
 import { useTranslate, useListFilterContext, shallowEqual } from 'ra-core';
 import matches from 'lodash/matches';
 import pickBy from 'lodash/pickBy';
-import classnames from 'classnames';
 
 const arePropsEqual = (prevProps, nextProps) =>
     prevProps.label === nextProps.label &&
@@ -177,10 +176,7 @@ export const FilterListItem = memo(
             <StyledListItem
                 onClick={toggleFilter}
                 selected={isSelected}
-                className={classnames(
-                    FilterListItemClasses.listItem,
-                    className
-                )}
+                className={className}
                 disablePadding
             >
                 <ListItemButton
@@ -213,7 +209,6 @@ export const FilterListItem = memo(
 const PREFIX = 'RaFilterListItem';
 
 export const FilterListItemClasses = {
-    listItem: `${PREFIX}-listItem`,
     listItemButton: `${PREFIX}-listItemButton`,
     listItemText: `${PREFIX}-listItemText`,
 };
@@ -222,7 +217,6 @@ const StyledListItem = styled(ListItem, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    [`&.${FilterListItemClasses.listItem}`]: {},
     [`& .${FilterListItemClasses.listItemButton}`]: {
         paddingRight: '2em',
         paddingLeft: '2em',

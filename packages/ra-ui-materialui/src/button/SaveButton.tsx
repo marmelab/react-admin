@@ -56,7 +56,6 @@ export const SaveButton = <RecordType extends RaRecord = any>(
     props: SaveButtonProps<RecordType>
 ) => {
     const {
-        className,
         icon = defaultIcon,
         invalid,
         label = 'ra.action.save',
@@ -107,7 +106,6 @@ export const SaveButton = <RecordType extends RaRecord = any>(
     const displayedLabel = label && translate(label, { _: label });
     return (
         <StyledButton
-            className={classnames(SaveButtonClasses.button, className)}
             variant={variant}
             type={type}
             color="primary"
@@ -139,7 +137,6 @@ export const SaveButton = <RecordType extends RaRecord = any>(
 const defaultIcon = <ContentSave />;
 
 interface Props<RecordType extends RaRecord = any> {
-    classes?: object;
     className?: string;
     disabled?: boolean;
     icon?: ReactElement;
@@ -167,7 +164,6 @@ export type SaveButtonProps<RecordType extends RaRecord = any> = Props<
 
 SaveButton.propTypes = {
     className: PropTypes.string,
-    classes: PropTypes.object,
     invalid: PropTypes.bool,
     label: PropTypes.string,
     saving: PropTypes.bool,
@@ -179,7 +175,6 @@ SaveButton.propTypes = {
 const PREFIX = 'RaSaveButton';
 
 export const SaveButtonClasses = {
-    button: `${PREFIX}-button`,
     leftIcon: `${PREFIX}-leftIcon`,
     icon: `${PREFIX}-icon`,
 };
@@ -188,9 +183,7 @@ const StyledButton = styled(Button, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    [`&.${SaveButtonClasses.button}`]: {
-        position: 'relative',
-    },
+    position: 'relative',
 
     [`& .${SaveButtonClasses.leftIcon}`]: {
         marginRight: theme.spacing(1),

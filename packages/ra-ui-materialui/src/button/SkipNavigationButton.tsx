@@ -2,7 +2,6 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import { Button } from './Button';
 import { useTranslate } from 'ra-core';
-import classnames from 'classnames';
 
 export const SkipNavigationButton = () => {
     const translate = useTranslate();
@@ -10,10 +9,7 @@ export const SkipNavigationButton = () => {
     return (
         <StyledButton
             onClick={skipToContent}
-            className={classnames(
-                SkipToContentButtonClasses.skipToContentButton,
-                'skip-nav-button'
-            )}
+            className={'skip-nav-button'}
             label={translate('ra.navigation.skip_nav')}
             variant="contained"
         />
@@ -22,37 +18,31 @@ export const SkipNavigationButton = () => {
 
 const PREFIX = 'RaSkipNavigationButton';
 
-export const SkipToContentButtonClasses = {
-    skipToContentButton: `${PREFIX}-skipToContentButton`,
-};
-
 const StyledButton = styled(Button, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    [`&.${SkipToContentButtonClasses.skipToContentButton}`]: {
-        position: 'fixed',
-        padding: theme.spacing(1),
+    position: 'fixed',
+    padding: theme.spacing(1),
+    backgroundColor: theme.palette.background.default,
+    color: theme.palette.getContrastText(theme.palette.background.default),
+    transition: theme.transitions.create(['top', 'opacity'], {
+        easing: theme.transitions.easing.easeIn,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    left: theme.spacing(2),
+    top: theme.spacing(-10),
+    zIndex: 5000,
+    '&:hover': {
+        opacity: 0.8,
         backgroundColor: theme.palette.background.default,
-        color: theme.palette.getContrastText(theme.palette.background.default),
+    },
+    '&:focus': {
+        top: theme.spacing(2),
         transition: theme.transitions.create(['top', 'opacity'], {
-            easing: theme.transitions.easing.easeIn,
-            duration: theme.transitions.duration.leavingScreen,
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
         }),
-        left: theme.spacing(2),
-        top: theme.spacing(-10),
-        zIndex: 5000,
-        '&:hover': {
-            opacity: 0.8,
-            backgroundColor: theme.palette.background.default,
-        },
-        '&:focus': {
-            top: theme.spacing(2),
-            transition: theme.transitions.create(['top', 'opacity'], {
-                easing: theme.transitions.easing.easeOut,
-                duration: theme.transitions.duration.enteringScreen,
-            }),
-        },
     },
 }));
 

@@ -7,19 +7,6 @@ import { useTranslatableContext } from 'ra-core';
 import { TranslatableFieldsTab } from './TranslatableFieldsTab';
 import { AppBarProps } from '../layout';
 
-const PREFIX = 'RaTranslatableFieldsTabs';
-
-const StyledAppBar = styled(AppBar, {
-    name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
-    boxShadow: 'none',
-    borderRadius: 0,
-    borderTopLeftRadius: theme.shape.borderRadius,
-    borderTopRightRadius: theme.shape.borderRadius,
-    border: `1px solid ${theme.palette.divider}`,
-}));
-
 /**
  * Default locale selector for the TranslatableFields component. Generates a tab for each specified locale.
  * @see TranslatableFields
@@ -60,3 +47,16 @@ export interface TranslatableFieldsTabsProps {
     TabsProps?: TabsProps;
     groupKey?: string;
 }
+
+const PREFIX = 'RaTranslatableFieldsTabs';
+
+const StyledAppBar = styled(AppBar, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    boxShadow: 'none',
+    borderRadius: 0,
+    borderTopLeftRadius: theme.shape.borderRadius,
+    borderTopRightRadius: theme.shape.borderRadius,
+    border: `1px solid ${theme.palette.divider}`,
+}));

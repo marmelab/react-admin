@@ -14,11 +14,7 @@ export const FilterFormInput = props => {
     return (
         <Root
             data-source={filterElement.props.source}
-            className={classnames(
-                'filter-field',
-                FilterFormInputClasses.body,
-                className
-            )}
+            className={classnames('filter-field', className)}
         >
             {!filterElement.props.alwaysOn && (
                 <IconButton
@@ -64,7 +60,6 @@ FilterFormInput.propTypes = {
 const PREFIX = 'RaFilterFormInput';
 
 export const FilterFormInputClasses = {
-    body: `${PREFIX}-body`,
     spacer: `${PREFIX}-spacer`,
     hideButton: `${PREFIX}-hideButton`,
 };
@@ -73,11 +68,9 @@ const Root = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    [`&.${FilterFormInputClasses.body}`]: {
-        display: 'flex',
-        alignItems: 'flex-end',
-        pointerEvents: 'auto',
-    },
+    display: 'flex',
+    alignItems: 'flex-end',
+    pointerEvents: 'auto',
 
     [`& .${FilterFormInputClasses.spacer}`]: { width: theme.spacing(2) },
     [`& .${FilterFormInputClasses.hideButton}`]: {},

@@ -77,7 +77,6 @@ export const BulkDeleteWithUndoButton = (
         <StyledButton
             onClick={handleClick}
             label={label}
-            className={BulkDeleteWithUndoButtonClasses.deleteButton}
             disabled={isLoading}
             {...sanitizeRestProps(rest)}
         >
@@ -104,22 +103,16 @@ export interface BulkDeleteWithUndoButtonProps
 
 const PREFIX = 'RaBulkDeleteWithUndoButton';
 
-export const BulkDeleteWithUndoButtonClasses = {
-    deleteButton: `${PREFIX}-deleteButton`,
-};
-
 const StyledButton = styled(Button, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    [`&.${BulkDeleteWithUndoButtonClasses.deleteButton}`]: {
-        color: theme.palette.error.main,
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.error.main, 0.12),
-            // Reset on mouse devices
-            '@media (hover: none)': {
-                backgroundColor: 'transparent',
-            },
+    color: theme.palette.error.main,
+    '&:hover': {
+        backgroundColor: alpha(theme.palette.error.main, 0.12),
+        // Reset on mouse devices
+        '@media (hover: none)': {
+            backgroundColor: 'transparent',
         },
     },
 }));
