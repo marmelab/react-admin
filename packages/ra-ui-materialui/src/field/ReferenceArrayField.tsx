@@ -15,6 +15,7 @@ import {
 import { fieldPropTypes, PublicFieldProps, InjectedFieldProps } from './types';
 import { LinearProgress } from '../layout';
 import { styled } from '@mui/material/styles';
+import { SxProps } from '@mui/system';
 
 /**
  * A container component that fetches records from another resource specified
@@ -131,6 +132,7 @@ export interface ReferenceArrayFieldProps
     reference: string;
     resource?: string;
     sort?: SortPayload;
+    sx?: SxProps;
 }
 
 export interface ReferenceArrayFieldViewProps

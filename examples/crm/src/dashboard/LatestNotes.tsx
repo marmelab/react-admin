@@ -16,18 +16,10 @@ import { Contact as ContactType } from '../types';
 const PREFIX = 'LatestNotes';
 
 const classes = {
-    note: `${PREFIX}-note`,
-    noteText: `${PREFIX}-noteText`,
     noteTextText: `${PREFIX}-noteTextText`,
 };
 
 const Root = styled('div')(({ theme }) => ({
-    [`& .${classes.note}`]: {
-        marginBottom: theme.spacing(2),
-    },
-
-    [`& .${classes.noteText}`]: {},
-
     [`& .${classes.noteTextText}`]: {
         display: '-webkit-box',
         WebkitLineClamp: 3,
@@ -91,10 +83,10 @@ export const LatestNotes = () => {
             <Card>
                 <CardContent>
                     {allNotes.map(note => (
-                        <div
+                        <Box
                             id={`${note.type}_${note.id}`}
                             key={`${note.type}_${note.id}`}
-                            className={classes.note}
+                            sx={{ marginBottom: 2 }}
                         >
                             <Typography
                                 color="textSecondary"
@@ -115,12 +107,12 @@ export const LatestNotes = () => {
                                     }
                                 )}
                             </Typography>
-                            <div className={classes.noteText}>
+                            <div>
                                 <Typography className={classes.noteTextText}>
                                     {note.text}
                                 </Typography>
                             </div>
-                        </div>
+                        </Box>
                     ))}
                 </CardContent>
             </Card>

@@ -7,12 +7,7 @@ import {
     useRecordContext,
 } from 'react-admin';
 
-const PREFIX = 'TagsList';
-
-const StyledReferenceArrayField = styled(ReferenceArrayField, {
-    name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
-})({
+const StyledReferenceArrayField = styled(ReferenceArrayField)({
     display: 'inline-block',
 });
 
