@@ -140,11 +140,11 @@ export interface ReferenceArrayFieldViewProps
         ListControllerProps {}
 
 export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props => {
-    const { children, pagination, className } = props;
+    const { children, pagination, className, sx } = props;
     const { isLoading, total } = useListContext(props);
 
     return (
-        <Root className={className}>
+        <Root className={className} sx={sx}>
             {isLoading ? (
                 <LinearProgress
                     className={ReferenceArrayFieldClasses.progress}
