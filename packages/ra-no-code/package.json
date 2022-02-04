@@ -50,7 +50,6 @@
         "ra-data-local-storage": "^4.0.0-alpha.2",
         "react-admin": "^4.0.0-alpha.2",
         "react-dropzone": "^10.1.7",
-        "react-query": "^3.32.1",
-        "react-redux": "^7.1.0"
+        "react-query": "^3.32.1"
     }
 }

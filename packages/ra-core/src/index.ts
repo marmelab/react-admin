@@ -1,6 +1,3 @@
-import createAppReducer from './reducer';
-
-export { createAppReducer };
 export * from './core';
 export * from './auth';
 export * from './dataProvider';

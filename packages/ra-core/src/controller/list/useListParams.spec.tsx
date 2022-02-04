@@ -81,7 +81,7 @@ describe('useListParams', () => {
                 },
             });
         });
-        it('Sets the values from the redux store if location does not have them', () => {
+        it('Sets the values from the store if location does not have them', () => {
             const query = getQuery({
                 queryFromLocation: {},
                 params: {
@@ -111,7 +111,7 @@ describe('useListParams', () => {
                 },
             });
         });
-        it('Extends the values from the redux store with those from the props', () => {
+        it('Extends the values from the store with those from the props', () => {
             const query = getQuery({
                 queryFromLocation: {},
                 params: {
@@ -140,7 +140,7 @@ describe('useListParams', () => {
                 },
             });
         });
-        it('Uses the filterDefaultValues if neither the location or the redux store have them', () => {
+        it('Uses the filterDefaultValues if neither the location or the store have them', () => {
             const query = getQuery({
                 queryFromLocation: {},
                 params: {},
@@ -401,7 +401,7 @@ describe('useListParams', () => {
             });
         });
 
-        test('should not synchronize parameters with location and redux state when sync is not enabled', async () => {
+        test('should not synchronize parameters with location and store when sync is not enabled', async () => {
             const history = createMemoryHistory();
             const navigate = jest.spyOn(history, 'push');
             let storeValue;

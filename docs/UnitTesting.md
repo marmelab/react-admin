@@ -11,7 +11,7 @@ That means that each individual component and hook can be tested in isolation. T
 
 ## AdminContext Wrapper
 
-Some of react-admin's components depend on a context for translation, theming, data fetching, etc. If you write a component that depends on a react-admin component, chances are the test runner will complain about a missing context (or Redux provider).
+Some of react-admin's components depend on a context for translation, theming, data fetching, etc. If you write a component that depends on a react-admin component, chances are the test runner will complain about a missing context.
 
 Wrap your tested component inside `<AdminContext>` to avoid this problem:
 

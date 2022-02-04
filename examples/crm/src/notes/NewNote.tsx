@@ -50,9 +50,9 @@ export const NewNote = ({
     showStatus?: boolean;
     reference: 'contacts' | 'deals';
 }) => {
+    const resource = useResourceContext();
     const record = useRecordContext();
     const { refetch } = useListContext();
-    const resource = useResourceContext();
     const [text, setText] = useState('');
     const [status, setStatus] = useState(record && record.status);
     const [date, setDate] = useState(getCurrentDate());

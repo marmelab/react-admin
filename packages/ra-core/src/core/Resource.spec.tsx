@@ -5,7 +5,6 @@ import { createMemoryHistory } from 'history';
 
 import { CoreAdminContext } from './CoreAdminContext';
 import { Resource } from './Resource';
-import { testDataProvider } from '../dataProvider';
 
 const PostList = () => <div>PostList</div>;
 const PostEdit = () => <div>PostEdit</div>;
@@ -27,11 +26,7 @@ describe('<Resource>', () => {
     it('renders resource routes by default', () => {
         const history = createMemoryHistory();
         render(
-            <CoreAdminContext
-                history={history}
-                dataProvider={testDataProvider()}
-                initialState={{ admin: { resources: { posts: {} } } }}
-            >
+            <CoreAdminContext history={history}>
                 <Resource {...resource} />
             </CoreAdminContext>
         );

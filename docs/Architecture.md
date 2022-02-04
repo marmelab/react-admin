@@ -154,12 +154,6 @@ const MyRefreshButton = () => {
 };
 ```
 
-## Redux As An Implementation Detail
-
-React-admin uses [Redux](https://react-redux.js.org/) for some of its state management. Redux has performance advantages over pure React contexts. But we don't document the action creators or the Redux state, because we see Redux as an implementation detail. Instead of dispatching actions, react-admin developers use hooks.
-
-Previous versions of react-admin used to put a greater emphasis on Redux. It's no longer the case, and we even consider that we could remove Redux completely in the future - if React ever implements Context selectors. 
-
 ## Minimal API Surface
 
 Before adding a new hook or a new prop to an existing component, we always check if there isn't a simple way to implement the feature in pure React. If it's the case, then we don't add the new prop. We prefer to keep the react-admin API, code, test, and documentation simple. This choice is crucial to keep the maintenance burden low, and the learning curve acceptable.

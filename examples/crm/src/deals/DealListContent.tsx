@@ -55,7 +55,7 @@ export const DealListContent = () => {
     const [deals, setDeals] = useState<DealsByColumn>(
         isLoading ? initialDeals : getDealsByColumn(unorderedDeals)
     );
-    // we use the raw dataProvider to avoid too many updates to the Redux store after updates (which would create junk)
+    // we use the raw dataProvider to avoid too many updates (which would create junk)
     const dataProvider = useContext(DataProviderContext);
 
     // update deals by columns when the dataProvider response updates

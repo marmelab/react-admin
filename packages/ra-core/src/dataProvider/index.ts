@@ -4,6 +4,7 @@ import HttpError from './HttpError';
 import * as fetchUtils from './fetch';
 import undoableEventEmitter from './undoableEventEmitter';
 
+export * from './dataFetchActions';
 export * from './defaultDataProvider';
 export * from './testDataProvider';
 export * from './useDataProvider';

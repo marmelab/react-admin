@@ -564,7 +564,6 @@ const MyLayout = ({
     title,
 }) => {
     const classes = useStyles();
-    const dispatch = useDispatch();
     const [open] = useSidebarState();
 
     return (

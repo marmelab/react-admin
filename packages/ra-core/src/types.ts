@@ -262,18 +262,6 @@ export interface ResourceDefinition {
 }
 
 /**
- * Redux state type
- */
-export interface ReduxState {
-    admin: {};
-
-    // leave space for custom reducers
-    [key: string]: any;
-}
-
-export type InitialState = object | (() => object);
-
-/**
  * Misc types
  */
 

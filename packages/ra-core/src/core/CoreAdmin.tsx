@@ -6,7 +6,7 @@ import { CoreAdminUI, CoreAdminUIProps } from './CoreAdminUI';
 /**
  * Main admin component, entry point to the application.
  *
- * Initializes the various contexts (auth, data, i18n, redux, router)
+ * Initializes the various contexts (auth, data, i18n, router)
  * and defines the main routes.
  *
  * Expects a list of resources as children, or a function returning a list of
@@ -88,13 +88,11 @@ export const CoreAdmin = (props: CoreAdminProps) => {
         basename,
         catchAll,
         children,
-        customReducers,
         dashboard,
         dataProvider,
         disableTelemetry,
         history,
         i18nProvider,
-        initialState,
         queryClient,
         layout,
         loading,
@@ -111,8 +109,6 @@ export const CoreAdmin = (props: CoreAdminProps) => {
             i18nProvider={i18nProvider}
             queryClient={queryClient}
             history={history}
-            customReducers={customReducers}
-            initialState={initialState}
         >
             <CoreAdminUI
                 layout={layout}

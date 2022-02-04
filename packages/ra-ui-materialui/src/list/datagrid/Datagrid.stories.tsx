@@ -72,16 +72,7 @@ const SubWrapper = ({ children }) => {
 };
 
 const Wrapper = ({ children }) => (
-    <CoreAdminContext
-        dataProvider={testDataProvider()}
-        initialState={{
-            admin: {
-                resources: {
-                    books: { list: { expanded: [], selectedIds: [] } },
-                },
-            },
-        }}
-    >
+    <CoreAdminContext>
         <SubWrapper>{children}</SubWrapper>
     </CoreAdminContext>
 );
@@ -330,13 +321,6 @@ export const Standalone = () => (
             dataProvider={testDataProvider({
                 getList: () => Promise.resolve({ data, total: 4 }),
             })}
-            initialState={{
-                admin: {
-                    resources: {
-                        books: { list: { expanded: [], selectedIds: [] } },
-                    },
-                },
-            }}
         >
             <h1>Static</h1>
             <MyCustomList />

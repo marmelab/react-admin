@@ -63,6 +63,9 @@ const uploadCapableDataProvider = addUploadFeature(
 
 const sometimesFailsDataProvider = new Proxy(uploadCapableDataProvider, {
     get: (target, name) => (resource, params) => {
+        if (typeof name === 'symbol' || name === 'then') {
+            return;
+        }
         // set session_ended=true in localStorage to trigger an API auth error
         if (localStorage.getItem('session_ended')) {
             const error = new Error('Session ended') as ResponseError;
@@ -85,14 +88,18 @@ const sometimesFailsDataProvider = new Proxy(uploadCapableDataProvider, {
 });
 
 const delayedDataProvider = new Proxy(sometimesFailsDataProvider, {
-    get: (target, name) => (resource, params) =>
-        new Promise(resolve =>
+    get: (target, name) => (resource, params) => {
+        if (typeof name === 'symbol' || name === 'then') {
+            return;
+        }
+        return new Promise(resolve =>
             setTimeout(
                 () =>
                     resolve(sometimesFailsDataProvider[name](resource, params)),
                 300
             )
-        ),
+        );
+    },
 });
 
 interface ResponseError extends Error {

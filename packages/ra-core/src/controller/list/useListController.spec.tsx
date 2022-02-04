@@ -238,18 +238,7 @@ describe('useListController', () => {
             };
 
             render(
-                <CoreAdminContext
-                    dataProvider={testDataProvider()}
-                    initialState={{
-                        admin: {
-                            listParams: {
-                                posts: {
-                                    filter: { q: 'hello' },
-                                },
-                            },
-                        },
-                    }}
-                >
+                <CoreAdminContext>
                     <ListController {...props} />
                 </CoreAdminContext>
             );
@@ -271,18 +260,7 @@ describe('useListController', () => {
 
         it('should support to sync calls', async () => {
             render(
-                <CoreAdminContext
-                    dataProvider={testDataProvider()}
-                    initialState={{
-                        admin: {
-                            listParams: {
-                                posts: {
-                                    filter: { q: 'hello' },
-                                },
-                            },
-                        },
-                    }}
-                >
+                <CoreAdminContext>
                     <ListController {...defaultProps}>
                         {({ displayedFilters, showFilter }) => (
                             <>

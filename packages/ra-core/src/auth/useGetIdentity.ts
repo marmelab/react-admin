@@ -64,8 +64,6 @@ const useGetIdentity = () => {
             };
             callAuthProvider();
         } else {
-            // fallback for pre-3.9 authProviders, which had no getIdentity method
-            // FIXME to be removed for the next major
             setState({
                 loading: false,
                 loaded: true,
