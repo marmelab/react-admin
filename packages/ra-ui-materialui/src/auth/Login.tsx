@@ -91,7 +91,6 @@ export interface LoginProps
 
 const PREFIX = 'RaLogin';
 export const LoginClasses = {
-    main: `${PREFIX}-main`,
     card: `${PREFIX}-card`,
     avatar: `${PREFIX}-avatar`,
     icon: `${PREFIX}-icon`,
