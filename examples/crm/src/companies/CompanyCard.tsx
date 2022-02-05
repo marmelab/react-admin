@@ -31,7 +31,7 @@ export const CompanyCard = (props: { record?: Company }) => {
             <Paper
                 sx={{
                     height: 200,
-                    width: 187.7,
+                    width: 184,
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',

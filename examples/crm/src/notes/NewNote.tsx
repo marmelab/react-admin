@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { useState, FormEvent } from 'react';
 import {
     useRecordContext,
@@ -11,37 +10,9 @@ import {
     Identifier,
     useResourceContext,
 } from 'react-admin';
-import { TextField as TextInput, Button } from '@mui/material';
+import { Box, TextField as TextInput, Button } from '@mui/material';
 
 import { StatusSelector } from './StatusSelector';
-
-const PREFIX = 'NewNote';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    toolbar: `${PREFIX}-toolbar`,
-    small: `${PREFIX}-small`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`&.${classes.root}`]: {
-        marginTop: theme.spacing(4),
-        marginBottom: theme.spacing(1),
-    },
-
-    [`& .${classes.toolbar}`]: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        marginTop: theme.spacing(1),
-    },
-
-    [`& .${classes.small}`]: {
-        marginRight: '1em',
-        '& .MuiFilledInput-input': {
-            paddingTop: 10,
-        },
-    },
-}));
 
 export const NewNote = ({
     showStatus,
@@ -96,7 +67,12 @@ export const NewNote = ({
         return false;
     };
     return (
-        <Root className={classes.root}>
+        <Box
+            sx={{
+                marginTop: 4,
+                marginBottom: 1,
+            }}
+        >
             <form onSubmit={handleSubmit}>
                 <TextInput
                     label="Add a note"
@@ -110,7 +86,13 @@ export const NewNote = ({
                     }
                     rows={3}
                 />
-                <div className={classes.toolbar}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        marginTop: 1,
+                    }}
+                >
                     <span>
                         {text ? (
                             <>
@@ -118,7 +100,13 @@ export const NewNote = ({
                                     <StatusSelector
                                         status={status}
                                         setStatus={setStatus}
-                                        className={classes.small}
+                                        sx={{
+                                            marginRight: '1em',
+                                            '& .MuiFilledInput-input': {
+                                                paddingTop: '10px',
+                                            },
+                                            width: 150,
+                                        }}
                                     />
                                 )}
                                 <TextInput
@@ -133,7 +121,12 @@ export const NewNote = ({
                                     ) => {
                                         setDate(event.target.value);
                                     }}
-                                    className={classes.small}
+                                    sx={{
+                                        marginRight: '1em',
+                                        '& .MuiFilledInput-input': {
+                                            paddingTop: '10px',
+                                        },
+                                    }}
                                 />
                             </>
                         ) : null}
@@ -146,9 +139,9 @@ export const NewNote = ({
                     >
                         Add this note
                     </Button>
-                </div>
+                </Box>
             </form>
-        </Root>
+        </Box>
     );
 };
 

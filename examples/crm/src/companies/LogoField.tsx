@@ -1,18 +1,6 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { useRecordContext } from 'react-admin';
-
-const PREFIX = 'LogoField';
-
-const classes = {
-    image: `${PREFIX}-image`,
-};
-
-const StyledImage = styled('img')({
-    [`&.${classes.image}`]: {
-        objectFit: 'contain',
-    },
-});
+import { Box } from '@mui/material';
 
 const sizeInPixel = {
     medium: 42,
@@ -29,13 +17,14 @@ export const LogoField = ({
     const record = useRecordContext<{ logo: string; name: string }>();
     if (!record) return null;
     return (
-        <StyledImage
+        <Box
+            component="img"
             src={process.env.PUBLIC_URL + record.logo}
             alt={record.name}
             title={record.name}
             width={sizeInPixel[size]}
             height={sizeInPixel[size]}
-            className={classes.image}
+            sx={{ objectFit: 'contain' }}
         />
     );
 };

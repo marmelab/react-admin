@@ -3,7 +3,7 @@ import { TextField, MenuItem } from '@mui/material';
 
 import { Status } from '../misc/Status';
 
-export const StatusSelector = ({ status, setStatus, className = '' }: any) => {
+export const StatusSelector = ({ status, setStatus, sx }: any) => {
     return (
         <TextField
             select
@@ -15,8 +15,7 @@ export const StatusSelector = ({ status, setStatus, className = '' }: any) => {
             label={false}
             margin="none"
             size="small"
-            sx={{ width: 150 }}
-            className={className}
+            sx={sx}
         >
             <MenuItem value="cold">
                 Cold <Status status="cold" />

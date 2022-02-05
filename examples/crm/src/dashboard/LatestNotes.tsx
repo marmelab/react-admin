@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { Card, CardContent, Typography, Box } from '@mui/material';
 import NoteIcon from '@mui/icons-material/Note';
 import {
@@ -12,21 +11,6 @@ import {
 import { formatDistance } from 'date-fns';
 
 import { Contact as ContactType } from '../types';
-
-const PREFIX = 'LatestNotes';
-
-const classes = {
-    noteTextText: `${PREFIX}-noteTextText`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`& .${classes.noteTextText}`]: {
-        display: '-webkit-box',
-        WebkitLineClamp: 3,
-        WebkitBoxOrient: 'vertical',
-        overflow: 'hidden',
-    },
-}));
 
 export const LatestNotes = () => {
     const { identity } = useGetIdentity();
@@ -71,7 +55,7 @@ export const LatestNotes = () => {
         .slice(0, 5);
 
     return (
-        <Root>
+        <div>
             <Box display="flex" alignItems="center" marginBottom="1em">
                 <Box ml={2} mr={2} display="flex">
                     <NoteIcon color="disabled" fontSize="large" />
@@ -108,7 +92,14 @@ export const LatestNotes = () => {
                                 )}
                             </Typography>
                             <div>
-                                <Typography className={classes.noteTextText}>
+                                <Typography
+                                    sx={{
+                                        display: '-webkit-box',
+                                        WebkitLineClamp: 3,
+                                        WebkitBoxOrient: 'vertical',
+                                        overflow: 'hidden',
+                                    }}
+                                >
                                     {note.text}
                                 </Typography>
                             </div>
@@ -116,7 +107,7 @@ export const LatestNotes = () => {
                     ))}
                 </CardContent>
             </Card>
-        </Root>
+        </div>
     );
 };
 

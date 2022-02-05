@@ -1,42 +1,36 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { useListContext } from 'react-admin';
-import { Link } from '@mui/material';
+import { Box, Link } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-
-const PREFIX = 'ContactList';
-
-const classes = {
-    ul: `${PREFIX}-ul`,
-    li: `${PREFIX}-li`,
-};
-
-const Root = styled('ul')({
-    [`&.${classes.ul}`]: {
-        listStyle: 'none',
-        padding: 0,
-        margin: 0,
-        display: 'inline-block',
-    },
-    [`& .${classes.li}`]: {
-        display: 'inline',
-        '&:after': {
-            content: '", "',
-        },
-        '&:last-child:after': {
-            content: '""',
-        },
-    },
-});
 
 export const ContactList = () => {
     const { data, isLoading } = useListContext();
 
     if (isLoading) return <div style={{ height: '2em' }} />;
     return (
-        <Root className={classes.ul}>
+        <Box
+            component="ul"
+            sx={{
+                listStyle: 'none',
+                padding: 0,
+                margin: 0,
+                display: 'inline-block',
+            }}
+        >
             {data.map(contact => (
-                <li key={contact.id} className={classes.li}>
+                <Box
+                    component="li"
+                    key={contact.id}
+                    sx={{
+                        display: 'inline',
+                        '&:after': {
+                            content: '", "',
+                        },
+                        '&:last-child:after': {
+                            content: '""',
+                        },
+                    }}
+                >
                     <Link
                         component={RouterLink}
                         to={`/contacts/${contact.id}`}
@@ -44,8 +38,8 @@ export const ContactList = () => {
                     >
                         {contact.first_name} {contact.last_name}
                     </Link>
-                </li>
+                </Box>
             ))}
-        </Root>
+        </Box>
     );
 };

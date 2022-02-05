@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
     CreateButton,
     ExportButton,
@@ -17,18 +16,6 @@ import { DealCreate } from './DealCreate';
 import { DealShow } from './DealShow';
 import { OnlyMineInput } from './OnlyMineInput';
 import { typeChoices } from './types';
-
-const PREFIX = 'DealList';
-
-const classes = {
-    createButton: `${PREFIX}-createButton`,
-};
-
-const StyledTopToolbar = styled(TopToolbar)(({ theme }) => ({
-    [`& .${classes.createButton}`]: {
-        marginLeft: theme.spacing(2),
-    },
-}));
 
 export const DealList = () => {
     const { identity } = useGetIdentity();
@@ -63,14 +50,14 @@ const dealFilters = [
 
 const DealActions = () => {
     return (
-        <StyledTopToolbar>
+        <TopToolbar>
             <FilterButton />
             <ExportButton />
             <CreateButton
                 variant="contained"
                 label="New Deal"
-                className={classes.createButton}
+                sx={{ marginLeft: 2 }}
             />
-        </StyledTopToolbar>
+        </TopToolbar>
     );
 };

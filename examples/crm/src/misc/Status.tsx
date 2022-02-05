@@ -14,6 +14,7 @@ const getColorFromStatus = (status: string) =>
 
 export const Status = ({ status }: { status: string }) => (
     <Box
+        marginLeft={0.5}
         width={10}
         height={10}
         display="inline-block"

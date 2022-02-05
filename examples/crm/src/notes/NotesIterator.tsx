@@ -1,21 +1,9 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import { Box } from '@mui/material';
 import { useListContext } from 'react-admin';
 
 import { Note } from './Note';
 import { NewNote } from './NewNote';
-
-const PREFIX = 'NotesIterator';
-
-const classes = {
-    root: `${PREFIX}-root`,
-};
-
-const Root = styled('div')({
-    [`&.${classes.root}`]: {
-        marginTop: '0.5em',
-    },
-});
 
 export const NotesIterator = ({
     showStatus,
@@ -29,7 +17,7 @@ export const NotesIterator = ({
     return (
         <>
             <NewNote showStatus={showStatus} reference={reference} />
-            <Root className={classes.root}>
+            <Box sx={{ marginTop: '0.5em' }}>
                 {data.map((note, index) => (
                     <Note
                         note={note}
@@ -39,7 +27,7 @@ export const NotesIterator = ({
                         key={index}
                     />
                 ))}
-            </Root>
+            </Box>
         </>
     );
 };
