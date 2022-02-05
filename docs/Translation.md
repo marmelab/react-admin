@@ -337,12 +337,12 @@ const App = () => (
 export default App;
 ```
 
-**Tip**: `resolveBrowserLocale` returns the main locale string ('en', 'fr', etc.), if you use a locale with a region (e.g. 'en-US', 'en-GB'), you must pass `true` as a second argument to `resolveBrowserLocale`
+**Tip**: `resolveBrowserLocale` returns the main locale string ('en', 'fr', etc.), if you use a locale with a region (e.g. 'en-US', 'en-GB'), you must pass `true` as a second argument to `resolveBrowserLocale` in orther to obtain the full locale string
 
 ```jsx
 const i18nProvider = polyglotI18nProvider(
     locale => messages[locale] ? messages[locale] : messages.en,
-    resolveBrowserLocale('en', true) // en => Default locale when the browser locale can't be resolved, true => Return full locale
+    resolveBrowserLocale('en', true) // 'en' => Default locale when browser locale can't be resolved, true => Return full locale
 );
 ```
 
