@@ -160,6 +160,8 @@ export const SelectInput = (props: SelectInputProps) => {
         defaultValue,
         format,
         parse,
+        onBlur,
+        onChange,
         resource,
         source,
         validate,

@@ -48,9 +48,11 @@ export const DateInput = ({
 }: DateInputProps) => {
     const { field, fieldState, formState, id, isRequired } = useInput({
         defaultValue,
-        format,
         name,
+        format,
         parse,
+        onBlur,
+        onChange,
         resource,
         source,
         validate,

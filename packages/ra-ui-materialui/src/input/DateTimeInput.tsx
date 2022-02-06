@@ -39,6 +39,8 @@ export const DateTimeInput = ({
         defaultValue,
         format,
         parse,
+        onBlur,
+        onChange,
         resource,
         source,
         validate,

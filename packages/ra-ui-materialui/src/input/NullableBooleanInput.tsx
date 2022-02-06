@@ -42,6 +42,8 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
     } = useInput({
         format,
         parse,
+        onBlur,
+        onChange,
         resource,
         source,
         validate,
