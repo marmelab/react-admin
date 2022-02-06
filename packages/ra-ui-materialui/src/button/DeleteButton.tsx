@@ -7,6 +7,7 @@ import {
     RedirectionSideEffect,
     MutationMode,
     DeleteParams,
+    useRecordContext,
 } from 'ra-core';
 
 import { ButtonProps } from './Button';
@@ -50,7 +51,8 @@ import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
 export const DeleteButton = <RecordType extends RaRecord = any>(
     props: DeleteButtonProps<RecordType>
 ) => {
-    const { mutationMode = 'undoable', record, ...rest } = props;
+    const { mutationMode = 'undoable', ...rest } = props;
+    const record = useRecordContext();
     if (!record || record.id == null) {
         return null;
     }
