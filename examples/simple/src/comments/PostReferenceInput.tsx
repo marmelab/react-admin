@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Fragment, useState, useCallback } from 'react';
-import { styled } from '@mui/material/styles';
 import { useWatch } from 'react-hook-form';
 
 import {
@@ -15,19 +14,6 @@ import { ReferenceInput, SelectInput, useTranslate } from 'react-admin'; // esli
 
 import PostQuickCreate from './PostQuickCreate';
 import PostPreview from './PostPreview';
-
-const PREFIX = 'PostReferenceInput';
-
-const classes = {
-    button: `${PREFIX}-button`,
-};
-
-const Root = styled('div')({
-    [`& .${classes.button}`]: {
-        margin: '10px 24px',
-        position: 'relative',
-    },
-});
 
 const PostReferenceInput = props => {
     const translate = useTranslate();
@@ -48,7 +34,7 @@ const PostReferenceInput = props => {
     }, [setShowPreviewDialog]);
 
     return (
-        <Root>
+        <div>
             <ReferenceInput {...props} defaultValue="">
                 <SelectInput create={<PostQuickCreate />} optionText="title" />
             </ReferenceInput>
@@ -56,7 +42,7 @@ const PostReferenceInput = props => {
                 <Fragment>
                     <Button
                         data-testid="button-show-post"
-                        className={classes.button}
+                        sx={{ margin: '10px 24px', position: 'relative' }}
                         onClick={handleShowClick}
                     >
                         {translate('ra.action.show')}
@@ -85,7 +71,7 @@ const PostReferenceInput = props => {
                     </Dialog>
                 </Fragment>
             ) : null}
-        </Root>
+        </div>
     );
 };
 

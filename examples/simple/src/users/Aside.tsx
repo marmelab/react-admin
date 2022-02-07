@@ -24,6 +24,21 @@ const Root = styled('div')(({ theme }) => ({
 
 const Aside = () => {
     return (
+        /*<Box
+              sx={{
+                  width: {
+                      sm: 200,
+                      md: 0,
+                  },
+                  margin: {
+                      sm: '1em',
+                      md: 0,
+                  },
+                  overflowX: {
+                      md: 'hidden',
+                  },
+              }}
+        >*/
         <Root className={classes.root}>
             <Typography variant="h6">App Users</Typography>
             <Typography variant="body2">
