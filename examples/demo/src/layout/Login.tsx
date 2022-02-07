@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { useLocation } from 'react-router-dom';
 
@@ -24,6 +23,7 @@ import {
 } from 'react-admin';
 
 import { lightTheme } from './themes';
+import Box from '@mui/material/Box';
 
 const Login = () => {
     const [loading, setLoading] = useState(false);
@@ -65,19 +65,44 @@ const Login = () => {
         <Form
             onSubmit={handleSubmit}
             render={({ handleSubmit }) => (
-                <StyledForm onSubmit={handleSubmit} noValidate>
-                    <div className={classes.main}>
-                        <Card className={classes.card}>
-                            <div className={classes.avatar}>
-                                <Avatar className={classes.icon}>
+                <form onSubmit={handleSubmit} noValidate>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            minHeight: '100vh',
+                            alignItems: 'center',
+                            justifyContent: 'flex-start',
+                            background:
+                                'url(https://source.unsplash.com/random/1600x900)',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundSize: 'cover',
+                        }}
+                    >
+                        <Card sx={{ minWidth: '300px', marginTop: '6em' }}>
+                            <Box
+                                sx={{
+                                    margin: '1em',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <Avatar sx={{ bgcolor: 'secondary.main' }}>
                                     <LockIcon />
                                 </Avatar>
-                            </div>
-                            <div className={classes.hint}>
+                            </Box>
+                            <Box
+                                sx={{
+                                    marginTop: '1em',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    color: theme => theme.palette.grey[500],
+                                }}
+                            >
                                 Hint: demo / demo
-                            </div>
-                            <div className={classes.form}>
-                                <div className={classes.input}>
+                            </Box>
+                            <Box sx={{ padding: '0 1em 1em 1em' }}>
+                                <Box sx={{ marginTop: '1em' }}>
                                     <TextInput
                                         autoFocus
                                         source="username"
@@ -86,8 +111,8 @@ const Login = () => {
                                         validate={required()}
                                         fullWidth
                                     />
-                                </div>
-                                <div className={classes.input}>
+                                </Box>
+                                <Box sx={{ marginTop: '1em' }}>
                                     <TextInput
                                         source="password"
                                         label={translate('ra.auth.password')}
@@ -96,9 +121,9 @@ const Login = () => {
                                         validate={required()}
                                         fullWidth
                                     />
-                                </div>
-                            </div>
-                            <CardActions className={classes.actions}>
+                                </Box>
+                            </Box>
+                            <CardActions sx={{ padding: '0 1em 1em 1em' }}>
                                 <Button
                                     variant="contained"
                                     type="submit"
@@ -117,8 +142,8 @@ const Login = () => {
                             </CardActions>
                         </Card>
                         <Notification />
-                    </div>
-                </StyledForm>
+                    </Box>
+                </form>
             )}
         />
     );
@@ -144,63 +169,3 @@ interface FormValues {
     username?: string;
     password?: string;
 }
-
-const PREFIX = 'LoginWithTheme';
-
-const classes = {
-    main: `${PREFIX}-main`,
-    card: `${PREFIX}-card`,
-    avatar: `${PREFIX}-avatar`,
-    icon: `${PREFIX}-icon`,
-    hint: `${PREFIX}-hint`,
-    form: `${PREFIX}-form`,
-    input: `${PREFIX}-input`,
-    actions: `${PREFIX}-actions`,
-};
-
-const StyledForm = styled('form')(({ theme }) => ({
-    [`& .${classes.main}`]: {
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        background: 'url(https://source.unsplash.com/random/1600x900)',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-    },
-
-    [`& .${classes.card}`]: {
-        minWidth: 300,
-        marginTop: '6em',
-    },
-
-    [`& .${classes.avatar}`]: {
-        margin: '1em',
-        display: 'flex',
-        justifyContent: 'center',
-    },
-
-    [`& .${classes.icon}`]: {
-        backgroundColor: theme.palette.secondary.main,
-    },
-
-    [`& .${classes.hint}`]: {
-        marginTop: '1em',
-        display: 'flex',
-        justifyContent: 'center',
-        color: theme.palette.grey[500],
-    },
-
-    [`& .${classes.form}`]: {
-        padding: '0 1em 1em 1em',
-    },
-
-    [`& .${classes.input}`]: {
-        marginTop: '1em',
-    },
-
-    [`& .${classes.actions}`]: {
-        padding: '0 1em 1em 1em',
-    },
-}));
