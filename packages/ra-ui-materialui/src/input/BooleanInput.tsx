@@ -40,6 +40,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
         parse,
         resource,
         source,
+        onBlur,
         onChange,
         type: 'checkbox',
         validate,
