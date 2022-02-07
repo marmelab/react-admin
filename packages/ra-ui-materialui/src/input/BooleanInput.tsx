@@ -21,7 +21,6 @@ export const BooleanInput = (props: BooleanInputProps) => {
         helperText,
         onBlur,
         onChange,
-        onFocus,
         disabled,
         parse,
         resource,

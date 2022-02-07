@@ -27,7 +27,6 @@ export const DateTimeInput = ({
     margin = 'dense',
     onBlur,
     onChange,
-    onFocus,
     source,
     resource,
     parse = parseDateTime,

@@ -146,7 +146,6 @@ export const AutocompleteInput = <
         onBlur,
         onChange,
         onCreate,
-        onFocus,
         openText = 'ra.action.open',
         optionText = 'name',
         optionValue = 'id',

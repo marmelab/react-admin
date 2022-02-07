@@ -102,7 +102,6 @@ export const ReferenceArrayInput = ({
     id: idOverride,
     onBlur,
     onChange,
-    onFocus,
     validate,
     parse,
     format,

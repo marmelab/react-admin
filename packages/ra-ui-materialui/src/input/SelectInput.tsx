@@ -121,7 +121,6 @@ export const SelectInput = (props: SelectInputProps) => {
         onBlur,
         onChange,
         onCreate,
-        onFocus,
         optionText,
         optionValue,
         parse,

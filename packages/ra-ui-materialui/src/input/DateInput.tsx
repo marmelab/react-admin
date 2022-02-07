@@ -40,7 +40,6 @@ export const DateInput = ({
     margin = 'dense',
     onBlur,
     onChange,
-    onFocus,
     parse,
     validate,
     variant = 'filled',

@@ -92,7 +92,6 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         onBlur,
         onChange,
         onCreate,
-        onFocus,
         optionText,
         optionValue,
         parse,
