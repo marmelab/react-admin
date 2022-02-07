@@ -217,7 +217,6 @@ const PostEdit = () => {
                                 onAddChoice={choice => categories.push(choice)}
                             />
                         }
-                        allowEmpty
                         resettable
                         source="category"
                         choices={categories}
