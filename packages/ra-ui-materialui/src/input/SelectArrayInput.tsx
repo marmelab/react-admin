@@ -110,11 +110,12 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
 
     const inputLabel = useRef(null);
 
-    const { data: choices, source, resource } = useChoicesContext({
+    const { allChoices, source, resource } = useChoicesContext({
         choices: choicesProp,
         resource: resourceProp,
         source: sourceProp,
     });
+
     const { getChoiceText, getChoiceValue, getDisableValue } = useChoices({
         optionText,
         optionValue,
@@ -171,7 +172,9 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
 
     const createItem = create || onCreate ? getCreateItem() : null;
     const finalChoices =
-        create || onCreate ? [...(choices || []), createItem] : choices || [];
+        create || onCreate
+            ? [...(allChoices || []), createItem]
+            : allChoices || [];
 
     const renderMenuItemOption = useCallback(
         choice =>
@@ -247,7 +250,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                         <div className={SelectArrayInputClasses.chips}>
                             {selected
                                 .map(item =>
-                                    (choices || []).find(
+                                    (allChoices || []).find(
                                         choice =>
                                             getChoiceValue(choice) === item
                                     )

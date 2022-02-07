@@ -11,7 +11,6 @@ import {
     useTranslate,
     ChoicesProps,
     useChoices,
-    warning,
 } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -133,16 +132,11 @@ export const SelectInput = (props: SelectInputProps) => {
         ...rest
     } = props;
     const translate = useTranslate();
-    const { data: choices, source, resource } = useChoicesContext({
+    const { allChoices, source, resource } = useChoicesContext({
         choices: choicesProp,
         resource: resourceProp,
         source: sourceProp,
     });
-
-    warning(
-        choices === undefined,
-        `If you're not wrapping the SelectInput inside a ReferenceInput, you must provide the choices prop`
-    );
 
     const { getChoiceText, getChoiceValue, getDisableValue } = useChoices({
         optionText,
@@ -212,7 +206,7 @@ export const SelectInput = (props: SelectInputProps) => {
 
     const createItem = create || onCreate ? getCreateItem() : null;
     const finalChoices =
-        create || onCreate ? [...choices, createItem] : choices;
+        create || onCreate ? [...allChoices, createItem] : allChoices;
 
     const renderMenuItem = useCallback(
         choice => {

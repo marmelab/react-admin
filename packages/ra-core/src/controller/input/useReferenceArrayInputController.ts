@@ -126,7 +126,9 @@ export const useReferenceArrayInputController = <
     );
     return {
         sort: currentSort,
-        data: finalMatchingReferences,
+        allChoices: finalMatchingReferences,
+        availableChoices: matchingReferences,
+        selectedChoices: finalReferenceRecords,
         displayedFilters: params.displayedFilters,
         error: errorGetMany || errorGetList,
         filter,

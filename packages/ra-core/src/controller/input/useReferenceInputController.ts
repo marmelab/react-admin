@@ -140,7 +140,9 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
     );
     return {
         sort: currentSort,
-        data: finalData,
+        allChoices: finalData,
+        availableChoices: possibleValuesData,
+        selectedChoices: [referenceRecord],
         displayedFilters: params.displayedFilters,
         error: referenceError || possibleValuesError,
         filter: params.filter,

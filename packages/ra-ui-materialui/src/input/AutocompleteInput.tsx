@@ -166,7 +166,7 @@ export const AutocompleteInput = <
     } = props;
 
     const {
-        data: choices,
+        allChoices,
         isLoading,
         resource,
         source,
@@ -178,6 +178,7 @@ export const AutocompleteInput = <
         resource: resourceProp,
         source: sourceProp,
     });
+    console.log({ allChoices });
 
     const translate = useTranslate();
     const {
@@ -208,7 +209,7 @@ export const AutocompleteInput = <
         DisableClearable,
         SupportCreate
     >(field.value, {
-        choices,
+        choices: allChoices,
         // @ts-ignore
         multiple,
         optionValue,
@@ -237,7 +238,7 @@ If you provided a React element for the optionText prop, you must also provide t
     }, [shouldRenderSuggestions, noOptionsText]);
 
     const { getChoiceText, getChoiceValue, getSuggestions } = useSuggestions({
-        choices,
+        choices: allChoices,
         emptyText,
         emptyValue,
         limitChoicesToValue,
@@ -353,13 +354,13 @@ If you provided a React element for the optionText prop, you must also provide t
                 selectedItemTexts = [getOptionLabel(selectedChoice)];
             }
 
-            const hasOption = !!choices
-                ? choices.some(choice => getOptionLabel(choice) === filter)
+            const hasOption = !!allChoices
+                ? allChoices.some(choice => getOptionLabel(choice) === filter)
                 : false;
 
             return selectedItemTexts.includes(filter) || hasOption;
         },
-        [choices, getOptionLabel, multiple, selectedChoice]
+        [allChoices, getOptionLabel, multiple, selectedChoice]
     );
 
     const filterOptions = (options, params) => {
@@ -384,19 +385,25 @@ If you provided a React element for the optionText prop, you must also provide t
     // To avoid displaying an empty list of choices while a search is in progress,
     // we store the last choices in a ref. We'll display those last choices until
     // a second has passed.
-    const currentChoices = useRef(choices);
+    const currentChoices = useRef(allChoices);
     useEffect(() => {
-        if (choices && (choices.length > 0 || oneSecondHasPassed)) {
-            currentChoices.current = choices;
+        if (allChoices && (allChoices.length > 0 || oneSecondHasPassed)) {
+            currentChoices.current = allChoices;
         }
-    }, [choices, oneSecondHasPassed]);
+    }, [allChoices, oneSecondHasPassed]);
 
     const suggestions = useMemo(() => {
-        if (setFilters && choices?.length === 0 && !oneSecondHasPassed) {
+        if (setFilters && allChoices?.length === 0 && !oneSecondHasPassed) {
             return currentChoices.current;
         }
         return getSuggestions(filterValue);
-    }, [choices, filterValue, getSuggestions, oneSecondHasPassed, setFilters]);
+    }, [
+        allChoices,
+        filterValue,
+        getSuggestions,
+        oneSecondHasPassed,
+        setFilters,
+    ]);
 
     const isOptionEqualToValue = (option, value) => {
         // eslint-disable-next-line eqeqeq

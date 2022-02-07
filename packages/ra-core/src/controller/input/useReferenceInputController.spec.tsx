@@ -160,10 +160,15 @@ describe('useReferenceInputController', () => {
         });
         expect(children).toHaveBeenCalledWith(
             expect.objectContaining({
-                data: [
+                allChoices: [
                     { id: 1, title: 'foo' },
                     { id: 2, title: 'bar' },
                 ],
+                availableChoices: [
+                    { id: 1, title: 'foo' },
+                    { id: 2, title: 'bar' },
+                ],
+                selectedChoices: [{ id: 1, title: 'foo' }],
                 displayedFilters: {},
                 error: null,
                 filter: {},

@@ -5,14 +5,17 @@ import { ChoicesContext, ChoicesContextValue } from './ChoicesContext';
 
 export const useChoicesContext = <ChoicesType extends RaRecord = RaRecord>(
     options: Partial<ChoicesContextValue> & { choices?: ChoicesType[] } = {}
-) => {
+): ChoicesContextValue => {
     const context = useContext(ChoicesContext) as ChoicesContextValue<
         ChoicesType
     >;
-    const list = useList<ChoicesType>({ data: options.choices });
+    const { data, ...list } = useList<ChoicesType>({ data: options.choices });
     const result = useMemo(
         () => ({
             ...list,
+            allChoices: data,
+            availableChoices: options.availableChoices ?? data,
+            selectedChoices: options.selectedChoices ?? data,
             displayedFilters: options.displayedFilters ?? list.displayedFilters,
             error: options.error ?? list.error,
             filter: options.filter ?? list.filter,
@@ -35,7 +38,7 @@ export const useChoicesContext = <ChoicesType extends RaRecord = RaRecord>(
             source: options.source,
             total: options.total ?? list.total,
         }),
-        [options, list]
+        [data, list, options]
     );
     if (!context || options.choices) {
         return result;

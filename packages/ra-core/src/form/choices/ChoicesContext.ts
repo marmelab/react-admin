@@ -10,7 +10,9 @@ export const ChoicesContext = createContext<ChoicesContextValue>(undefined);
 
 export type ChoicesContextValue<RecordType extends RaRecord = any> = {
     sort: SortPayload;
-    data: RecordType[];
+    allChoices: RecordType[];
+    availableChoices: RecordType[];
+    selectedChoices: RecordType[];
     displayedFilters: any;
     error?: any;
     filter?: FilterPayload;

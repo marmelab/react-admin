@@ -64,7 +64,12 @@ export const DatagridInput = (props: DatagridInputProps) => {
         ...rest
     } = props;
 
-    const choicesContext = useChoicesContext({
+    const {
+        allChoices,
+        availableChoices,
+        selectedChoices,
+        ...choicesContext
+    } = useChoicesContext({
         choices,
         resource: resourceProp,
         source: sourceProp,
@@ -99,12 +104,20 @@ export const DatagridInput = (props: DatagridInputProps) => {
     const listContext = React.useMemo(
         () => ({
             ...choicesContext,
+            data: availableChoices,
             onSelect,
             onToggleItem,
             onUnselectItems,
             selectedIds: field.value,
         }),
-        [choicesContext, field, onSelect, onToggleItem, onUnselectItems]
+        [
+            availableChoices,
+            choicesContext,
+            field,
+            onSelect,
+            onToggleItem,
+            onUnselectItems,
+        ]
     );
     return (
         <ListContextProvider value={listContext}>
