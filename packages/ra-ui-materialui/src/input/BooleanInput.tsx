@@ -21,6 +21,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
         helperText,
         onBlur,
         onChange,
+        onFocus,
         disabled,
         parse,
         resource,
@@ -64,6 +65,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
                         name={field.name}
                         color="primary"
                         onChange={handleChange}
+                        onFocus={onFocus}
                         checked={field.value}
                         {...sanitizeInputRestProps(rest)}
                         disabled={disabled}
