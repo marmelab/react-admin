@@ -7,21 +7,30 @@ import {
 
 describe('TranslationUtils', () => {
     describe('resolveBrowserLocale', () => {
+        let languageGetter;
         beforeEach(() => {
+            //https://stackoverflow.com/questions/52868727/how-to-mock-window-navigator-language-using-jest
             // @ts-ignore
-            global.window = {};
+            languageGetter = jest.spyOn(window.navigator, 'language', 'get');
+            languageGetter.mockReturnValue('en-US');
         });
 
         it("should return default locale if there's no available locale in browser", () => {
             // @ts-ignore
-            window.navigator = {};
+            languageGetter.mockReturnValue(undefined);
             expect(resolveBrowserLocale()).toEqual(DEFAULT_LOCALE);
         });
 
         it('should splice browser language to take first two locale letters', () => {
             // @ts-ignore
-            window.navigator = { language: 'en-US' };
             expect(resolveBrowserLocale()).toEqual('en');
+        });
+
+        it('should return the full locale', () => {
+            // @ts-ignore
+            expect(
+                resolveBrowserLocale(DEFAULT_LOCALE, { fullLocale: true })
+            ).toEqual('en-US');
         });
     });
 

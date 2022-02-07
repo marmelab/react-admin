@@ -38,8 +38,8 @@ interface AllNavigatorLanguage extends NavigatorLanguage {
  * @param {boolean} options.fullLocale Defaults to false
  */
 export const resolveBrowserLocale = (
-    defaultLocale: string = DEFAULT_LOCALE,
-    options: { fullLocale?: boolean }
+    defaultLocale?: string,
+    options?: { fullLocale?: boolean }
 ): string => {
     // from http://blog.ksol.fr/user-locale-detection-browser-javascript/
     // Rely on the window.navigator object to determine user locale
@@ -49,8 +49,14 @@ export const resolveBrowserLocale = (
         userLanguage,
     } = window.navigator as AllNavigatorLanguage;
 
-    const locale = language || browserLanguage || userLanguage || defaultLocale;
-    return options.fullLocale ? locale : locale.split('-')[0];
+    const locale =
+        language ||
+        browserLanguage ||
+        userLanguage ||
+        defaultLocale ||
+        DEFAULT_LOCALE;
+
+    return options?.fullLocale ? locale : locale.split('-')[0];
 };
 
 /**
