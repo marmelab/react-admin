@@ -102,7 +102,6 @@ export const ReferenceArrayInput = ({
     id: idOverride,
     onBlur,
     onChange,
-    onFocus,
     validate,
     parse,
     format,
@@ -194,7 +193,6 @@ export type ReferenceArrayInputViewProps = CommonInputProps & {
     allowEmpty?: boolean;
     children: ReactElement;
     choices: any[];
-    classes?: object;
     className?: string;
     error?: string;
     id: string;

@@ -7,14 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import { useTranslate } from 'ra-core';
 
 export const FileInputPreview = (props: FileInputPreviewProps) => {
-    const {
-        children,
-        classes: classesOverride,
-        className,
-        onRemove,
-        file,
-        ...rest
-    } = props;
+    const { children, className, onRemove, file, ...rest } = props;
 
     const translate = useTranslate();
 
@@ -76,7 +69,6 @@ const Root = styled('div', {
 export interface FileInputPreviewProps {
     children: ReactNode;
     className?: string;
-    classes?: object;
     onRemove: () => void;
     file: any;
 }

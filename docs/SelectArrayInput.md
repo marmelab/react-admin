@@ -13,7 +13,6 @@ To let users choose several values in a list using a dropdown, use `<SelectArray
 
 | Prop              | Required | Type                       | Default            | Description                                                                                                                            |
 |-------------------|----------|----------------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| `allowEmpty`      | Optional | `boolean`                  | `false`            | If true, the first option is an empty one                                                                                              |
 | `choices`         | Required | `Object[]`                 | -                  | List of items to show as options                                                                                                       |
 | `create`          | Optional | `Element`                  | `-`                | A React Element to render when users want to create a new choice                                                                       |
 | `createLabel`     | Optional | `string`                   | `ra.action.create` | The label for the menu item allowing users to create a new choice. Used when the filter is empty                                       |

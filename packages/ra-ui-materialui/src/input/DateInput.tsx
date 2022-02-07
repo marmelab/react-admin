@@ -40,7 +40,6 @@ export const DateInput = ({
     margin = 'dense',
     onBlur,
     onChange,
-    onFocus,
     parse,
     validate,
     variant = 'filled',
@@ -48,9 +47,11 @@ export const DateInput = ({
 }: DateInputProps) => {
     const { field, fieldState, formState, id, isRequired } = useInput({
         defaultValue,
-        format,
         name,
+        format,
         parse,
+        onBlur,
+        onChange,
         resource,
         source,
         validate,

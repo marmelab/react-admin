@@ -25,7 +25,6 @@ import { SxProps } from '@mui/system';
 export const FileField = (props: FileFieldProps) => {
     const {
         className,
-        classes: classesOverride,
         emptyText,
         source,
         title,

@@ -80,7 +80,6 @@ export const Menu: FC<MenuProps> = (props: MenuProps) => {
 };
 
 export interface MenuProps {
-    classes?: object;
     className?: string;
     dense?: boolean;
     hasDashboard?: boolean;

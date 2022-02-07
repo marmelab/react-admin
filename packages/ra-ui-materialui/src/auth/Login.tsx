@@ -85,7 +85,6 @@ export interface LoginProps
         LoginComponentProps {
     backgroundImage?: string;
     children?: ReactNode;
-    classes?: object;
     className?: string;
 }
 
@@ -128,7 +127,6 @@ const Root = styled('div', {
 Login.propTypes = {
     backgroundImage: PropTypes.string,
     children: PropTypes.node,
-    classes: PropTypes.object,
     className: PropTypes.string,
 };
 

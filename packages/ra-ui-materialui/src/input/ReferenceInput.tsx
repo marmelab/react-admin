@@ -93,15 +93,7 @@ import { ReferenceError } from './ReferenceError';
  * </ReferenceInput>
  */
 export const ReferenceInput = (props: ReferenceInputProps) => {
-    const {
-        format,
-        onBlur,
-        onChange,
-        onFocus,
-        parse,
-        validate,
-        ...rest
-    } = props;
+    const { format, onBlur, onChange, parse, validate, ...rest } = props;
     const inputProps = useInput({
         format,
         onBlur,

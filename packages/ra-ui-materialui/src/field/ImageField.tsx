@@ -11,15 +11,7 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 import { SxProps } from '@mui/system';
 
 export const ImageField = (props: ImageFieldProps) => {
-    const {
-        className,
-        classes: classesOverride,
-        emptyText,
-        source,
-        src,
-        title,
-        ...rest
-    } = props;
+    const { className, emptyText, source, src, title, ...rest } = props;
     const record = useRecordContext(props);
     const sourceValue = get(record, source);
 

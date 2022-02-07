@@ -92,7 +92,6 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         margin = 'dense',
         onBlur,
         onChange,
-        onFocus,
         optionText,
         optionValue,
         parse,

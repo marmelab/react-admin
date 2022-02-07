@@ -19,7 +19,6 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
         margin = 'dense',
         onBlur,
         onChange,
-        onFocus,
         parse = getBooleanFromString,
         resource,
         source,
@@ -42,6 +41,8 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
     } = useInput({
         format,
         parse,
+        onBlur,
+        onChange,
         resource,
         source,
         validate,
