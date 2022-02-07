@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { ReactElement, ReactNode } from 'react';
 import {
     List,
@@ -11,33 +10,6 @@ import {
 } from '@mui/material';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import { useTranslate, useSidebarState } from 'react-admin';
-
-const PREFIX = 'SubMenu';
-
-const classes = {
-    icon: `${PREFIX}-icon`,
-    sidebarIsOpen: `${PREFIX}-sidebarIsOpen`,
-    sidebarIsClosed: `${PREFIX}-sidebarIsClosed`,
-};
-
-// TODO jss-to-styled codemod: The Fragment root was replaced by div. Change the tag if needed.
-const Root = styled('div')(({ theme }) => ({
-    [`& .${classes.icon}`]: { minWidth: theme.spacing(5) },
-
-    [`& .${classes.sidebarIsOpen}`]: {
-        '& a': {
-            transition: 'padding-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
-            paddingLeft: theme.spacing(4),
-        },
-    },
-
-    [`& .${classes.sidebarIsClosed}`]: {
-        '& a': {
-            transition: 'padding-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
-            paddingLeft: theme.spacing(2),
-        },
-    },
-}));
 
 interface Props {
     dense: boolean;
@@ -56,7 +28,7 @@ const SubMenu = (props: Props) => {
 
     const header = (
         <MenuItem dense={dense} onClick={handleToggle}>
-            <ListItemIcon className={classes.icon}>
+            <ListItemIcon sx={{ minWidth: 5 }}>
                 {isOpen ? <ExpandMore /> : icon}
             </ListItemIcon>
             <Typography variant="inherit" color="textSecondary">
@@ -66,7 +38,7 @@ const SubMenu = (props: Props) => {
     );
 
     return (
-        <Root>
+        <div>
             {sidebarIsOpen || isOpen ? (
                 header
             ) : (
@@ -79,16 +51,18 @@ const SubMenu = (props: Props) => {
                     dense={dense}
                     component="div"
                     disablePadding
-                    className={
-                        sidebarIsOpen
-                            ? classes.sidebarIsOpen
-                            : classes.sidebarIsClosed
-                    }
+                    sx={{
+                        '& a': {
+                            transition:
+                                'padding-left 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms',
+                            paddingLeft: sidebarIsOpen ? 4 : 2,
+                        },
+                    }}
                 >
                     {children}
                 </List>
             </Collapse>
-        </Root>
+        </div>
     );
 };
 
