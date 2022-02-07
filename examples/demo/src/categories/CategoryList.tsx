@@ -25,7 +25,7 @@ const CategoryGrid = () => {
                     <Card>
                         <CardMedia
                             image={`https://marmelab.com/posters/${record.name}-1.jpeg`}
-                            sx={{ height: '140px' }}
+                            sx={{ height: 140 }}
                         />
                         <CardContent sx={{ paddingBottom: '0.5em' }}>
                             <Typography

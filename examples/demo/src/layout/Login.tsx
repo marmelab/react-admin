@@ -79,7 +79,7 @@ const Login = () => {
                             backgroundSize: 'cover',
                         }}
                     >
-                        <Card sx={{ minWidth: '300px', marginTop: '6em' }}>
+                        <Card sx={{ minWidth: 300, marginTop: '6em' }}>
                             <Box
                                 sx={{
                                     margin: '1em',

@@ -22,7 +22,7 @@ const CardWithIcon = (props: Props) => {
         // @ts-ignore
         <Card
             sx={{
-                minHeight: '52px',
+                minHeight: 52,
                 display: 'flex',
                 flexDirection: 'column',
                 flex: '1',
