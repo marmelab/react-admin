@@ -31,7 +31,6 @@ export const TextInput = (props: TextInputProps) => {
         format,
         helperText,
         onBlur,
-        onFocus,
         onChange,
         parse,
         resource,
