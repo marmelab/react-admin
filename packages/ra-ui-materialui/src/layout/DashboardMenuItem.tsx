@@ -20,7 +20,6 @@ export const DashboardMenuItem = (props: DashboardMenuItemProps) => {
 };
 
 export interface DashboardMenuItemProps {
-    classes?: object;
     locale?: string;
     onClick?: () => void;
     dense?: boolean;
@@ -31,7 +30,6 @@ export interface DashboardMenuItemProps {
 }
 
 DashboardMenuItem.propTypes = {
-    classes: PropTypes.object,
     locale: PropTypes.string,
     onClick: PropTypes.func,
     dense: PropTypes.bool,

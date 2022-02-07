@@ -193,7 +193,6 @@ export type ReferenceArrayInputViewProps = CommonInputProps & {
     allowEmpty?: boolean;
     children: ReactElement;
     choices: any[];
-    classes?: object;
     className?: string;
     error?: string;
     id: string;

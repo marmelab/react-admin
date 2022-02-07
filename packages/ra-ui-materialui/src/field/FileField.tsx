@@ -25,7 +25,6 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 export const FileField = (props: FileFieldProps) => {
     const {
         className,
-        classes: classesOverride,
         emptyText,
         source,
         title,
@@ -118,7 +117,6 @@ export interface FileFieldProps extends PublicFieldProps, InjectedFieldProps {
     download?: boolean | string;
     ping?: string;
     rel?: string;
-    classes?: object;
 }
 
 FileField.propTypes = {

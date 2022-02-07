@@ -73,7 +73,6 @@ export interface LayoutProps
     extends CoreLayoutProps,
         Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'> {
     appBar?: ComponentType<AppBarProps>;
-    classes?: any;
     className?: string;
     error?: ComponentType<ErrorProps>;
     menu?: ComponentType<MenuProps>;

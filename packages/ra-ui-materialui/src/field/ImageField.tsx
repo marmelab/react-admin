@@ -10,15 +10,7 @@ import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
 export const ImageField = (props: ImageFieldProps) => {
-    const {
-        className,
-        classes: classesOverride,
-        emptyText,
-        source,
-        src,
-        title,
-        ...rest
-    } = props;
+    const { className, emptyText, source, src, title, ...rest } = props;
     const record = useRecordContext(props);
     const sourceValue = get(record, source);
 
@@ -110,5 +102,4 @@ const List = styled('ul', { name: PREFIX })({
 export interface ImageFieldProps extends PublicFieldProps, InjectedFieldProps {
     src?: string;
     title?: string;
-    classes?: object;
 }

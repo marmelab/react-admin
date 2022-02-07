@@ -72,7 +72,6 @@ export const DeleteButton = <RecordType extends RaRecord = any>(
 
 export interface DeleteButtonProps<RecordType extends RaRecord = any>
     extends Omit<ButtonProps, 'record'> {
-    classes?: object;
     className?: string;
     confirmTitle?: string;
     confirmContent?: string;
