@@ -413,9 +413,9 @@ React-admin adds functionality to react-hook-form:
 - handling of custom event emitters like `onChange`,
 - support for an array of validators,
 - detection of required fields to add an asterisk to the field label,
-- parse and form to translate record values to form values and vice-versa.
+- parse and format to translate record values to form values and vice-versa.
 
-So internally, react-admin components use another hook, which wraps react-hook-form's `useController()` hook. It's called `useInput()` ; use it instead of `useController()` to create form inputs that have the exact same API as react-admin Input components:
+So internally, react-admin components use another hook, which wraps react-hook-form's `useController()` hook. It's called `useInput()`; use it instead of `useController()` to create form inputs that have the exact same API as react-admin Input components:
 
 ```jsx
 // in LatLongInput.js
