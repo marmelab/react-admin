@@ -85,9 +85,9 @@ export const useInput = (props: InputProps): UseInputValue => {
         : validate;
 
     // Fetch the defaultValue from the record if available or apply the provided defaultValue.
-    // This ensure dynamically added inputs have their value set correctly (ArrayInput for example).
+    // This ensures dynamically added inputs have their value set correctly (ArrayInput for example).
     // We don't do this for the form level defaultValues so that it works as it should in react-hook-form
-    // (ie. field level defaultValue override form level defaultValues for this field).
+    // (i.e. field level defaultValue override form level defaultValues for this field).
     const { field: controllerField, fieldState, formState } = useController({
         name: finalName,
         defaultValue: get(record, source, defaultValue),
@@ -107,7 +107,7 @@ export const useInput = (props: InputProps): UseInputValue => {
         ...options,
     });
 
-    // Because our forms may received an asynchronously loaded record for instance,
+    // Because our forms may receive an asynchronously loaded record for instance,
     // they may reset their default values which would override the input default value.
     // This hook ensures that the input default value is applied when a new record is loaded but has
     // no value for the input.

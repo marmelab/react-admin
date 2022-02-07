@@ -40,6 +40,8 @@ export const BooleanInput = (props: BooleanInputProps) => {
         parse,
         resource,
         source,
+        onBlur,
+        onChange,
         type: 'checkbox',
         validate,
         ...rest,
@@ -63,6 +65,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
                         name={field.name}
                         color="primary"
                         onChange={handleChange}
+                        onFocus={onFocus}
                         checked={field.value}
                         {...sanitizeInputRestProps(rest)}
                         disabled={disabled}
