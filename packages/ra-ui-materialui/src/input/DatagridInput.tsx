@@ -24,6 +24,8 @@ import {
 const defaultPagination = <DefaultPagination />;
 
 /**
+ * WIP: This component is not yet ready to be used.
+ *
  * An input for selecting items displayed in a datagrid
  *
  * @example

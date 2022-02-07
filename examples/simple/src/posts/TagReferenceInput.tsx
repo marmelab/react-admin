@@ -42,7 +42,7 @@ const TagReferenceInput = ({
                 width: '50%',
             }}
         >
-            <ReferenceArrayInput {...props} perPage={5} filters={published}>
+            <ReferenceArrayInput {...props} perPage={5} filter={{ published }}>
                 <AutocompleteArrayInput
                     create={<CreateTag />}
                     optionText={`name.${locale}`}
