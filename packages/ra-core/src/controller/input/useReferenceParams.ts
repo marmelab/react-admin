@@ -59,7 +59,7 @@ import {
  */
 export const useReferenceParams = ({
     resource,
-    filterDefaultValues,
+    filter,
     sort = defaultSort,
     page = 1,
     perPage = 10,
@@ -71,7 +71,7 @@ export const useReferenceParams = ({
     const requestSignature = [
         resource,
         params,
-        filterDefaultValues,
+        filter,
         JSON.stringify(sort),
         page,
         perPage,
@@ -81,7 +81,7 @@ export const useReferenceParams = ({
         () =>
             getQuery({
                 params: params,
-                filterDefaultValues,
+                filterDefaultValues: filter,
                 sort,
                 page,
                 perPage,
@@ -277,7 +277,7 @@ export interface ReferenceParamsOptions {
     perPage?: number;
     sort?: SortPayload;
     // default value for a filter when displayed but not yet set
-    filterDefaultValues?: FilterPayload;
+    filter?: FilterPayload;
     debounce?: number;
 }
 

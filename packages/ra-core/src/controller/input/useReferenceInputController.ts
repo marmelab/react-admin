@@ -54,7 +54,6 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         debounce,
         enableGetChoices,
         filter,
-        filterDefaultValues,
         page: initialPage = 1,
         perPage: initialPerPage = 25,
         reference,
@@ -68,7 +67,6 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         perPage: initialPerPage,
         sort: initialSort,
         debounce,
-        filterDefaultValues,
     });
 
     // selection logic
@@ -174,7 +172,6 @@ export interface UseReferenceInputControllerParams {
     allowEmpty?: boolean;
     debounce?: number;
     filter?: FilterPayload;
-    filterDefaultValues?: any;
     page?: number;
     perPage?: number;
     record?: RaRecord;

@@ -37,7 +37,6 @@ export const useReferenceArrayInputController = <
         debounce,
         enableGetChoices,
         filter,
-        filterDefaultValues,
         perPage: initialPerPage = 25,
         sort: initialSort = { field: 'id', order: 'DESC' },
         options = {},
@@ -70,7 +69,7 @@ export const useReferenceArrayInputController = <
         perPage: initialPerPage,
         sort: initialSort,
         debounce,
-        filterDefaultValues,
+        filter,
     });
 
     // filter out not found references - happens when the dataProvider doesn't guarantee referential integrity
@@ -179,7 +178,6 @@ export interface UseReferenceArrayInputParams<
 > {
     debounce?: number;
     filter?: FilterPayload;
-    filterDefaultValues?: any;
     options?: any;
     page?: number;
     perPage?: number;
