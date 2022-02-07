@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
     Avatar,
     Box,
@@ -16,26 +15,6 @@ import { subDays } from 'date-fns';
 
 import CardWithIcon from './CardWithIcon';
 import { Customer } from '../types';
-
-const PREFIX = 'NewCustomers';
-
-const classes = {
-    link: `${PREFIX}-link`,
-    linkContent: `${PREFIX}-linkContent`,
-};
-
-const StyledCardWithIcon = styled(CardWithIcon, {
-    name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
-    [`& .${classes.link}`]: {
-        borderRadius: 0,
-    },
-
-    [`& .${classes.linkContent}`]: {
-        color: theme.palette.primary.main,
-    },
-}));
 
 const NewCustomers = () => {
     const translate = useTranslate();
@@ -60,7 +39,7 @@ const NewCustomers = () => {
 
     const nb = visitors ? visitors.reduce((nb: number) => ++nb, 0) : 0;
     return (
-        <StyledCardWithIcon
+        <CardWithIcon
             to="/customers"
             icon={CustomerIcon}
             title={translate('pos.dashboard.new_customers')}
@@ -87,17 +66,17 @@ const NewCustomers = () => {
             </List>
             <Box flexGrow={1}>&nbsp;</Box>
             <Button
-                className={classes.link}
+                sx={{ borderRadius: 0 }}
                 component={Link}
                 to="/customers"
                 size="small"
                 color="primary"
             >
-                <Box p={1} className={classes.linkContent}>
+                <Box p={1} sx={{ color: 'primary.main' }}>
                     {translate('pos.dashboard.all_customers')}
                 </Box>
             </Button>
-        </StyledCardWithIcon>
+        </CardWithIcon>
     );
 };
 

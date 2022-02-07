@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { EditButton, List, useListContext } from 'react-admin';
 import inflection from 'inflection';
 import {
@@ -14,47 +13,21 @@ import {
 import LinkToRelatedProducts from './LinkToRelatedProducts';
 import { Category } from '../types';
 
-const PREFIX = 'CategoryList';
-
-const classes = {
-    media: `${PREFIX}-media`,
-    title: `${PREFIX}-title`,
-    actionSpacer: `${PREFIX}-actionSpacer`,
-};
-
-const StyledGrid = styled(Grid, {
-    name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
-})({
-    marginTop: '1em',
-
-    [`& .${classes.media}`]: {
-        height: 140,
-    },
-    [`& .${classes.title}`]: {
-        paddingBottom: '0.5em',
-    },
-    [`& .${classes.actionSpacer}`]: {
-        display: 'flex',
-        justifyContent: 'space-around',
-    },
-});
-
 const CategoryGrid = () => {
     const { data, isLoading } = useListContext<Category>();
     if (isLoading) {
         return null;
     }
     return (
-        <StyledGrid container spacing={2}>
+        <Grid container spacing={2} sx={{ marginTop: '1em' }}>
             {data.map(record => (
                 <Grid key={record.id} xs={12} sm={6} md={4} lg={3} xl={2} item>
                     <Card>
                         <CardMedia
                             image={`https://marmelab.com/posters/${record.name}-1.jpeg`}
-                            className={classes.media}
+                            sx={{ height: '140px' }}
                         />
-                        <CardContent className={classes.title}>
+                        <CardContent sx={{ paddingBottom: '0.5em' }}>
                             <Typography
                                 variant="h5"
                                 component="h2"
@@ -64,7 +37,12 @@ const CategoryGrid = () => {
                             </Typography>
                         </CardContent>
                         <CardActions
-                            classes={{ spacing: classes.actionSpacer }}
+                            sx={{
+                                '.MuiCardActions-spacing': {
+                                    display: 'flex',
+                                    justifyContent: 'space-around',
+                                },
+                            }}
                         >
                             <LinkToRelatedProducts />
                             <EditButton record={record} />
@@ -72,7 +50,7 @@ const CategoryGrid = () => {
                     </Card>
                 </Grid>
             ))}
-        </StyledGrid>
+        </Grid>
     );
 };
 
