@@ -1,4 +1,3 @@
-import Authenticated, { AuthenticatedProps } from './Authenticated';
 import AuthContext from './AuthContext';
 import useAuthProvider from './useAuthProvider';
 import useAuthState from './useAuthState';
@@ -12,6 +11,7 @@ import useGetPermissions from './useGetPermissions';
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 import convertLegacyAuthProvider from './convertLegacyAuthProvider';
 
+export * from './Authenticated';
 export * from './types';
 export * from './useAuthenticated';
 export * from './useCheckAuth';
@@ -32,8 +32,7 @@ export {
     // hook with immediate effect
     useLogoutIfAccessDenied,
     // components
-    Authenticated,
     WithPermissions,
 };
 
-export type { AuthenticatedProps, WithPermissionsProps };
+export type { WithPermissionsProps };
