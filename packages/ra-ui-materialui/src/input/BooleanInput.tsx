@@ -48,8 +48,8 @@ export const BooleanInput = (props: BooleanInputProps) => {
     });
 
     const handleChange = useCallback(
-        (event, value) => {
-            field.onChange(value);
+        event => {
+            field.onChange(event);
             // Ensure field is considered as touched
             field.onBlur();
         },
