@@ -108,7 +108,6 @@ export const ReferenceArrayInput = ({
 };
 
 ReferenceArrayInput.propTypes = {
-    allowEmpty: PropTypes.bool,
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
     filter: PropTypes.object,
@@ -132,7 +131,6 @@ ReferenceArrayInput.defaultProps = {
 };
 
 export interface ReferenceArrayInputProps extends InputProps {
-    allowEmpty?: boolean;
     children: ReactElement;
     className?: string;
     label?: string;

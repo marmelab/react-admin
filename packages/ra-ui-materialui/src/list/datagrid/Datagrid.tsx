@@ -346,7 +346,6 @@ export interface DatagridProps<RecordType extends RaRecord = any>
 }
 
 const injectedProps = [
-    'allowEmpty',
     'isRequired',
     'setFilter',
     'setPagination',

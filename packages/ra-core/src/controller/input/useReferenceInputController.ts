@@ -169,7 +169,6 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
 };
 
 export interface UseReferenceInputControllerParams {
-    allowEmpty?: boolean;
     debounce?: number;
     filter?: FilterPayload;
     page?: number;

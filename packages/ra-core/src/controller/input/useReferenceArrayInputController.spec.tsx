@@ -187,10 +187,7 @@ describe('useReferenceArrayInputController', () => {
                 <Form
                     onSubmit={jest.fn()}
                     render={() => (
-                        <ReferenceArrayInputController
-                            {...defaultProps}
-                            allowEmpty
-                        >
+                        <ReferenceArrayInputController {...defaultProps}>
                             {children}
                         </ReferenceArrayInputController>
                     )}
@@ -651,7 +648,6 @@ describe('useReferenceArrayInputController', () => {
                         render={() => (
                             <ReferenceArrayInputController
                                 {...defaultProps}
-                                allowEmpty
                                 enableGetChoices={enableGetChoices}
                             >
                                 {children}
@@ -735,7 +731,6 @@ describe('useReferenceArrayInputController', () => {
                         render={() => (
                             <ReferenceArrayInputController
                                 {...defaultProps}
-                                allowEmpty
                                 enableGetChoices={enableGetChoices}
                             >
                                 {children}

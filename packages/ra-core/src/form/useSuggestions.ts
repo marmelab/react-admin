@@ -7,7 +7,6 @@ import { useTranslate } from '../i18n';
  * Returns helper functions for suggestions handling.
  *
  * @param allowDuplicates A boolean indicating whether a suggestion can be added several times
- * @param allowEmpty A boolean indicating whether an empty suggestion should be added
  * @param choices An array of available choices
  * @param emptyText The text to use for the empty suggestion. Defaults to an empty string
  * @param emptyValue The value to use for the empty suggestion. Defaults to `null`
@@ -26,7 +25,6 @@ import { useTranslate } from '../i18n';
  */
 export const useSuggestions = ({
     allowCreate,
-    allowEmpty,
     choices,
     createText = 'ra.action.create',
     createValue = '@@create',
@@ -51,7 +49,6 @@ export const useSuggestions = ({
     const getSuggestions = useCallback(
         getSuggestionsFactory({
             allowCreate,
-            allowEmpty,
             choices,
             createText,
             createValue,
@@ -68,7 +65,6 @@ export const useSuggestions = ({
         }),
         [
             allowCreate,
-            allowEmpty,
             choices,
             createText,
             createValue,
@@ -99,7 +95,6 @@ const escapeRegExp = value =>
 export interface UseSuggestionsOptions extends UseChoicesOptions {
     allowCreate?: boolean;
     allowDuplicates?: boolean;
-    allowEmpty?: boolean;
     choices: any[];
     createText?: string;
     createValue?: any;
@@ -162,7 +157,6 @@ const defaultMatchSuggestion = getChoiceText => (
  */
 export const getSuggestionsFactory = ({
     allowCreate = false,
-    allowEmpty = false,
     choices = [],
     createText = 'ra.action.create',
     createValue = '@@create',
@@ -235,17 +229,6 @@ export const getSuggestionsFactory = ({
                 })
             );
         }
-    }
-
-    if (allowEmpty) {
-        suggestions.unshift(
-            getSuggestion({
-                optionText,
-                optionValue,
-                text: emptyText,
-                value: emptyValue,
-            })
-        );
     }
 
     // Only keep unique items. Necessary because we might have fetched

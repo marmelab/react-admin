@@ -113,7 +113,6 @@ export const ReferenceInput = (props: ReferenceInputProps) => {
 };
 
 ReferenceInput.propTypes = {
-    allowEmpty: PropTypes.bool,
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
     classes: PropTypes.object,
@@ -140,7 +139,6 @@ ReferenceInput.defaultProps = {
 };
 
 export interface ReferenceInputProps extends InputProps {
-    allowEmpty?: boolean;
     children: ReactElement;
     className?: string;
     filterToQuery?: (filter: string) => any;

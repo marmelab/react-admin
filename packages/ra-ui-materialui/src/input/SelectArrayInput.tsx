@@ -321,7 +321,6 @@ SelectArrayInput.defaultProps = {
 
 const sanitizeRestProps = ({
     addLabel,
-    allowEmpty,
     alwaysOn,
     choices,
     classNamInputWithOptionsPropse,

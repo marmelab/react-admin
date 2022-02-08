@@ -50,20 +50,6 @@ describe('getSuggestions', () => {
         ).toEqual([{ id: 1, value: '**one' }]);
     });
 
-    it('should add emptySuggestion if allowEmpty is true', () => {
-        expect(
-            getSuggestions({
-                ...defaultOptions,
-                allowEmpty: true,
-            })('')
-        ).toEqual([
-            { id: null, value: '' },
-            { id: 1, value: 'one' },
-            { id: 2, value: 'two' },
-            { id: 3, value: 'three' },
-        ]);
-    });
-
     it('should add createSuggestion if allowCreate is true', () => {
         expect(
             getSuggestions({
@@ -125,10 +111,8 @@ describe('getSuggestions', () => {
             getSuggestions({
                 ...defaultOptions,
                 suggestionLimit: 2,
-                allowEmpty: true,
             })('')
         ).toEqual([
-            { id: null, value: '' },
             { id: 1, value: 'one' },
             { id: 2, value: 'two' },
         ]);
