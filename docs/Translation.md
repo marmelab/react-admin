@@ -337,6 +337,15 @@ const App = () => (
 export default App;
 ```
 
+**Tip**: `resolveBrowserLocale` returns the main locale string ('en', 'fr', etc.), if you use a locale with a region (e.g. 'en-US', 'en-GB'), you must pass { fullLocale:`true` } as a second argument to `resolveBrowserLocale` in order to obtain the full locale string.
+
+```jsx
+const i18nProvider = polyglotI18nProvider(
+    locale => messages[locale] ? messages[locale] : messages.en,
+    resolveBrowserLocale('en', { fullLocale: true }) // 'en' => Default locale when browser locale can't be resolved, { fullLocale: true } => Return full locale
+);
+```
+
 Beware that users from all around the world may use your application, so make sure the `i18nProvider` returns default messages, even for unknown locales.
 
 ## Translation Messages
