@@ -55,7 +55,7 @@ export const FileField = (props: FileFieldProps) => {
 
     if (Array.isArray(sourceValue)) {
         return (
-            <ul className={className} {...sanitizeFieldRestProps(rest)}>
+            <StyledList className={className} {...sanitizeFieldRestProps(rest)}>
                 {sourceValue.map((file, index) => {
                     const fileTitleValue = get(file, title) || title;
                     const srcValue = get(file, src) || title;
@@ -75,7 +75,7 @@ export const FileField = (props: FileFieldProps) => {
                         </li>
                     );
                 })}
-            </ul>
+            </StyledList>
         );
     }
 
@@ -108,7 +108,6 @@ export interface FileFieldProps extends PublicFieldProps, InjectedFieldProps {
     download?: boolean | string;
     ping?: string;
     rel?: string;
-    classes?: object;
     sx?: SxProps;
 }
 
@@ -128,5 +127,9 @@ const Root = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })({
+    display: 'inline-block',
+});
+
+const StyledList = styled('ul')({
     display: 'inline-block',
 });

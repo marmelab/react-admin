@@ -106,6 +106,5 @@ const List = styled('ul', {
 export interface ImageFieldProps extends PublicFieldProps, InjectedFieldProps {
     src?: string;
     title?: string;
-    classes?: object;
     sx?: SxProps;
 }
