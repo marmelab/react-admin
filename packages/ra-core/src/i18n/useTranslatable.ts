@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { useResourceContext } from '../core';
 import { getFieldLabelTranslationArgs } from '../util';
 import { TranslatableContextValue } from './TranslatableContext';
-import { useLocale } from './useLocale';
+import { useLocaleState } from './useLocaleState';
 import { useTranslate } from './useTranslate';
 
 /**
@@ -23,7 +23,7 @@ import { useTranslate } from './useTranslate';
 export const useTranslatable = (
     options: UseTranslatableOptions
 ): TranslatableContextValue => {
-    const localeFromUI = useLocale();
+    const [localeFromUI] = useLocaleState();
     const { defaultLocale = localeFromUI, locales } = options;
     const [selectedLocale, setSelectedLocale] = useState(defaultLocale);
     const resource = useResourceContext({});

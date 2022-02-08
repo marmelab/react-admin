@@ -9,7 +9,7 @@ import {
     useGetList,
     RaRecord,
     ReferenceField,
-    useLocale,
+    useLocaleState,
     useRecordContext,
 } from 'react-admin';
 import {
@@ -65,7 +65,7 @@ interface EventListProps {
 
 const EventList = ({ record }: EventListProps) => {
     const translate = useTranslate();
-    const locale = useLocale();
+    const [locale] = useLocaleState();
     const { data: orders } = useGetList<OrderRecord>('commands', {
         pagination: { page: 1, perPage: 100 },
         sort: { field: 'date', order: 'DESC' },
