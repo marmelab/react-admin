@@ -19,7 +19,6 @@ const CommentCreate = () => (
             <PostReferenceInput
                 source="post_id"
                 reference="posts"
-                allowEmpty
                 validate={required()}
                 perPage={10000}
                 sort={defaultSort}

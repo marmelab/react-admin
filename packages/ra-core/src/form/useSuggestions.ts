@@ -15,7 +15,7 @@ import { useTranslate } from '../i18n';
  * @param optionText Either a string defining the property to use to get the choice text, a function or a React element
  * @param optionValue The property to use to get the choice value
  * @param selectedItem The currently selected item. May be an array of selected items
- * @param suggestionLimit The maximum number of suggestions returned, excluding the empty one if `allowEmpty` is `true`
+ * @param suggestionLimit The maximum number of suggestions returned
  * @param translateChoice A boolean indicating whether to option text should be translated
  *
  * @returns An object with helper functions:

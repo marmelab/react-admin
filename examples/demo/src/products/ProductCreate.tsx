@@ -94,11 +94,7 @@ const ProductCreate = (props: CreateProps) => {
                             ),
                         }}
                     />
-                    <ReferenceInput
-                        source="category_id"
-                        reference="categories"
-                        allowEmpty
-                    >
+                    <ReferenceInput source="category_id" reference="categories">
                         <SelectInput source="name" />
                     </ReferenceInput>
                     <NumberInput
