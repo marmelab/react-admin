@@ -1,12 +1,6 @@
-import { cloneElement, ReactElement } from 'react';
+import { ReactElement } from 'react';
 
 import { useAuthenticated } from './useAuthenticated';
-
-export interface AuthenticatedProps {
-    children: ReactElement<any>;
-    authParams?: object;
-    location?: object; // kept for backwards compatibility, unused
-}
 
 /**
  * Restrict access to children to authenticated users.
@@ -36,17 +30,15 @@ export interface AuthenticatedProps {
  *         </Admin>
  *     );
  */
-const Authenticated = (props: AuthenticatedProps) => {
-    const {
-        authParams,
-        children,
-        location, // kept for backwards compatibility, unused
-        ...rest
-    } = props;
+export const Authenticated = (props: AuthenticatedProps) => {
+    const { authParams, children } = props;
     useAuthenticated({ params: authParams });
     // render the child even though the useAuthenticated() call isn't finished (optimistic rendering)
     // the above hook will log out if the authProvider doesn't validate that the user is authenticated
-    return cloneElement(children, rest);
+    return children;
 };
 
-export default Authenticated;
+export interface AuthenticatedProps {
+    children: ReactElement<any>;
+    authParams?: object;
+}
