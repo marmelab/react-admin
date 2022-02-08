@@ -28,7 +28,7 @@ const Menu = ({ dense = false }: MenuProps) => {
         menuCustomers: true,
     });
     const translate = useTranslate();
-    const open = useSidebarState();
+    const [open] = useSidebarState();
 
     const handleToggle = (menu: MenuName) => {
         setState(state => ({ ...state, [menu]: !state[menu] }));

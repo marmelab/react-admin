@@ -88,11 +88,11 @@ const OrderChart = (props: { orders?: Order[] }) => {
                             <CartesianGrid strokeDasharray="3 3" />
                             <Tooltip
                                 cursor={{ strokeDasharray: '3 3' }}
-                                formatter={value =>
+                                formatter={(value: any) =>
                                     new Intl.NumberFormat(undefined, {
                                         style: 'currency',
                                         currency: 'USD',
-                                    }).format(value as any)
+                                    }).format(value)
                                 }
                                 labelFormatter={(label: any) =>
                                     dateFormatter(label)
