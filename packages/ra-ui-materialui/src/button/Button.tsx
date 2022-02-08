@@ -95,11 +95,7 @@ export const Button = (props: ButtonProps) => {
             {...restProps}
             {...linkParams}
         >
-            {alignIcon === 'left' &&
-                children &&
-                React.cloneElement(children, {
-                    className: ButtonClasses[`${size}Icon`],
-                })}
+            {alignIcon === 'left' && children ? children : null}
             {label && (
                 <span
                     className={classnames({
@@ -110,11 +106,7 @@ export const Button = (props: ButtonProps) => {
                     {translate(label, { _: label })}
                 </span>
             )}
-            {alignIcon === 'right' &&
-                children &&
-                React.cloneElement(children, {
-                    className: ButtonClasses[`${size}Icon`],
-                })}
+            {alignIcon === 'right' && children ? children : null}
         </StyledButton>
     );
 };
@@ -174,9 +166,6 @@ export const ButtonClasses = {
     button: `${PREFIX}-button`,
     label: `${PREFIX}-label`,
     labelRightIcon: `${PREFIX}-labelRightIcon`,
-    smallIcon: `${PREFIX}-smallIcon`,
-    mediumIcon: `${PREFIX}-mediumIcon`,
-    largeIcon: `${PREFIX}-largeIcon`,
 };
 
 const StyledButton = styled(MuiButton, {
@@ -193,13 +182,13 @@ const StyledButton = styled(MuiButton, {
     [`& .${ButtonClasses.labelRightIcon}`]: {
         paddingRight: '0.5em',
     },
-    [`& .${ButtonClasses.smallIcon}`]: {
+    [`&.MuiButton-sizeSmall .MuiSvgIcon-root, &.MuiButton-sizeSmall .MuiIcon-root`]: {
         fontSize: 20,
     },
-    [`& .${ButtonClasses.mediumIcon}`]: {
+    [`&.MuiButton-sizeMedium .MuiSvgIcon-root, &.MuiButton-sizeSmall .MuiIcon-root`]: {
         fontSize: 22,
     },
-    [`& .${ButtonClasses.largeIcon}`]: {
+    [`&.MuiButton-sizeLarge .MuiSvgIcon-root, &.MuiButton-sizeSmall .MuiIcon-root`]: {
         fontSize: 24,
     },
 });
