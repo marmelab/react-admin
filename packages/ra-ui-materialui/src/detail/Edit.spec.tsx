@@ -7,7 +7,12 @@ import {
     fireEvent,
     act,
 } from '@testing-library/react';
-import { CoreAdminContext, undoableEventEmitter } from 'ra-core';
+import {
+    CoreAdminContext,
+    undoableEventEmitter,
+    useRecordContext,
+    useSaveContext,
+} from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { Edit } from './Edit';
@@ -25,7 +30,10 @@ describe('<Edit />', () => {
             getOne: () =>
                 Promise.resolve({ data: { id: 123, title: 'lorem' } }),
         } as any;
-        const FakeForm = ({ record }) => <>{record.title}</>;
+        const FakeForm = () => {
+            const record = useRecordContext();
+            return <>{record.title}</>;
+        };
         render(
             <AdminContext dataProvider={dataProvider}>
                 <Edit {...defaultEditProps}>
@@ -47,14 +55,18 @@ describe('<Edit />', () => {
                 Promise.resolve({ data: { id: 1234, title: 'lorem' } }),
             update,
         } as any;
-        const FakeForm = ({ record, save }) => (
-            <>
-                <span>{record.title}</span>
-                <button onClick={() => save({ ...record, title: 'ipsum' })}>
-                    Update
-                </button>
-            </>
-        );
+        const FakeForm = () => {
+            const record = useRecordContext();
+            const { save } = useSaveContext();
+            return (
+                <>
+                    <span>{record.title}</span>
+                    <button onClick={() => save({ ...record, title: 'ipsum' })}>
+                        Update
+                    </button>
+                </>
+            );
+        };
 
         render(
             <AdminContext dataProvider={dataProvider}>
@@ -92,14 +104,21 @@ describe('<Edit />', () => {
                 update,
             } as any;
             const onSuccess = jest.fn();
-            const FakeForm = ({ record, save }: any) => (
-                <>
-                    <span>{record.title}</span>
-                    <button onClick={() => save({ ...record, title: 'ipsum' })}>
-                        Update
-                    </button>
-                </>
-            );
+            const FakeForm = () => {
+                const record = useRecordContext();
+                const { save } = useSaveContext();
+
+                return (
+                    <>
+                        <span>{record.title}</span>
+                        <button
+                            onClick={() => save({ ...record, title: 'ipsum' })}
+                        >
+                            Update
+                        </button>
+                    </>
+                );
+            };
 
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -142,14 +161,20 @@ describe('<Edit />', () => {
                 update,
             } as any;
             const onSuccess = jest.fn();
-            const FakeForm = ({ record, save }: any) => (
-                <>
-                    <span>{record.title}</span>
-                    <button onClick={() => save({ ...record, title: 'ipsum' })}>
-                        Update
-                    </button>
-                </>
-            );
+            const FakeForm = () => {
+                const record = useRecordContext();
+                const { save } = useSaveContext();
+                return (
+                    <>
+                        <span>{record.title}</span>
+                        <button
+                            onClick={() => save({ ...record, title: 'ipsum' })}
+                        >
+                            Update
+                        </button>
+                    </>
+                );
+            };
 
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -189,14 +214,21 @@ describe('<Edit />', () => {
                 update,
             } as any;
             const onSuccess = jest.fn();
-            const FakeForm = ({ record, save }: any) => (
-                <>
-                    <span>{record.title}</span>
-                    <button onClick={() => save({ ...record, title: 'ipsum' })}>
-                        Update
-                    </button>
-                </>
-            );
+            const FakeForm = () => {
+                const record = useRecordContext();
+                const { save } = useSaveContext();
+
+                return (
+                    <>
+                        <span>{record.title}</span>
+                        <button
+                            onClick={() => save({ ...record, title: 'ipsum' })}
+                        >
+                            Update
+                        </button>
+                    </>
+                );
+            };
 
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
@@ -242,14 +274,20 @@ describe('<Edit />', () => {
                 update: (_, { data }) => Promise.resolve({ data }),
             } as any;
             const onSuccess = jest.fn();
-            const FakeForm = ({ record, save }) => (
-                <>
-                    <span>{record.title}</span>
-                    <button onClick={() => save({ ...record, title: 'ipsum' })}>
-                        Update
-                    </button>
-                </>
-            );
+            const FakeForm = () => {
+                const record = useRecordContext();
+                const { save } = useSaveContext();
+                return (
+                    <>
+                        <span>{record.title}</span>
+                        <button
+                            onClick={() => save({ ...record, title: 'ipsum' })}
+                        >
+                            Update
+                        </button>
+                    </>
+                );
+            };
             render(
                 <AdminContext dataProvider={dataProvider}>
                     <Edit
@@ -287,23 +325,27 @@ describe('<Edit />', () => {
             } as any;
             const onSuccess = jest.fn();
             const onSuccessSave = jest.fn();
-            const FakeForm = ({ record, save }) => (
-                <>
-                    <span>{record.title}</span>
-                    <button
-                        onClick={() =>
-                            save(
-                                { ...record, title: 'ipsum' },
-                                {
-                                    onSuccess: onSuccessSave,
-                                }
-                            )
-                        }
-                    >
-                        Update
-                    </button>
-                </>
-            );
+            const FakeForm = () => {
+                const record = useRecordContext();
+                const { save } = useSaveContext();
+                return (
+                    <>
+                        <span>{record.title}</span>
+                        <button
+                            onClick={() =>
+                                save(
+                                    { ...record, title: 'ipsum' },
+                                    {
+                                        onSuccess: onSuccessSave,
+                                    }
+                                )
+                            }
+                        >
+                            Update
+                        </button>
+                    </>
+                );
+            };
             render(
                 <AdminContext dataProvider={dataProvider}>
                     <Edit
@@ -344,14 +386,20 @@ describe('<Edit />', () => {
                 update: () => Promise.reject({ message: 'not good' }),
             } as any;
             const onError = jest.fn();
-            const FakeForm = ({ record, save }) => (
-                <>
-                    <span>{record.title}</span>
-                    <button onClick={() => save({ ...record, title: 'ipsum' })}>
-                        Update
-                    </button>
-                </>
-            );
+            const FakeForm = () => {
+                const record = useRecordContext();
+                const { save } = useSaveContext();
+                return (
+                    <>
+                        <span>{record.title}</span>
+                        <button
+                            onClick={() => save({ ...record, title: 'ipsum' })}
+                        >
+                            Update
+                        </button>
+                    </>
+                );
+            };
             render(
                 <AdminContext dataProvider={dataProvider}>
                     <Edit
@@ -387,23 +435,27 @@ describe('<Edit />', () => {
             } as any;
             const onError = jest.fn();
             const onErrorSave = jest.fn();
-            const FakeForm = ({ record, save }) => (
-                <>
-                    <span>{record.title}</span>
-                    <button
-                        onClick={() =>
-                            save(
-                                { ...record, title: 'ipsum' },
-                                {
-                                    onError: onErrorSave,
-                                }
-                            )
-                        }
-                    >
-                        Update
-                    </button>
-                </>
-            );
+            const FakeForm = () => {
+                const record = useRecordContext();
+                const { save } = useSaveContext();
+                return (
+                    <>
+                        <span>{record.title}</span>
+                        <button
+                            onClick={() =>
+                                save(
+                                    { ...record, title: 'ipsum' },
+                                    {
+                                        onError: onErrorSave,
+                                    }
+                                )
+                            }
+                        >
+                            Update
+                        </button>
+                    </>
+                );
+            };
             render(
                 <AdminContext dataProvider={dataProvider}>
                     <Edit
@@ -450,14 +502,20 @@ describe('<Edit />', () => {
                 ...data,
                 transformed: true,
             }));
-            const FakeForm = ({ record, save }) => (
-                <>
-                    <span>{record.title}</span>
-                    <button onClick={() => save({ ...record, title: 'ipsum' })}>
-                        Update
-                    </button>
-                </>
-            );
+            const FakeForm = () => {
+                const record = useRecordContext();
+                const { save } = useSaveContext();
+                return (
+                    <>
+                        <span>{record.title}</span>
+                        <button
+                            onClick={() => save({ ...record, title: 'ipsum' })}
+                        >
+                            Update
+                        </button>
+                    </>
+                );
+            };
             render(
                 <AdminContext dataProvider={dataProvider}>
                     <Edit
@@ -508,23 +566,27 @@ describe('<Edit />', () => {
                 ...data,
                 transformed: true,
             }));
-            const FakeForm = ({ record, save }) => (
-                <>
-                    <span>{record.title}</span>
-                    <button
-                        onClick={() =>
-                            save(
-                                { ...record, title: 'ipsum' },
-                                {
-                                    transform: transformSave,
-                                }
-                            )
-                        }
-                    >
-                        Update
-                    </button>
-                </>
-            );
+            const FakeForm = () => {
+                const record = useRecordContext();
+                const { save } = useSaveContext();
+                return (
+                    <>
+                        <span>{record.title}</span>
+                        <button
+                            onClick={() =>
+                                save(
+                                    { ...record, title: 'ipsum' },
+                                    {
+                                        transform: transformSave,
+                                    }
+                                )
+                            }
+                        >
+                            Update
+                        </button>
+                    </>
+                );
+            };
             render(
                 <AdminContext dataProvider={dataProvider}>
                     <Edit
@@ -573,14 +635,20 @@ describe('<Edit />', () => {
                 ...data,
                 transformed: true,
             }));
-            const FakeForm = ({ record, save }) => (
-                <>
-                    <span>{record.title}</span>
-                    <button onClick={() => save({ ...record, title: 'ipsum' })}>
-                        Update
-                    </button>
-                </>
-            );
+            const FakeForm = () => {
+                const record = useRecordContext();
+                const { save } = useSaveContext();
+                return (
+                    <>
+                        <span>{record.title}</span>
+                        <button
+                            onClick={() => save({ ...record, title: 'ipsum' })}
+                        >
+                            Update
+                        </button>
+                    </>
+                );
+            };
             const { queryAllByText, getByText } = render(
                 <AdminContext dataProvider={dataProvider}>
                     <Edit
@@ -630,23 +698,27 @@ describe('<Edit />', () => {
                 ...data,
                 transformed: true,
             }));
-            const FakeForm = ({ record, save }) => (
-                <>
-                    <span>{record.title}</span>
-                    <button
-                        onClick={() =>
-                            save(
-                                { ...record, title: 'ipsum' },
-                                {
-                                    transform: transformSave,
-                                }
-                            )
-                        }
-                    >
-                        Update
-                    </button>
-                </>
-            );
+            const FakeForm = () => {
+                const record = useRecordContext();
+                const { save } = useSaveContext();
+                return (
+                    <>
+                        <span>{record.title}</span>
+                        <button
+                            onClick={() =>
+                                save(
+                                    { ...record, title: 'ipsum' },
+                                    {
+                                        transform: transformSave,
+                                    }
+                                )
+                            }
+                        >
+                            Update
+                        </button>
+                    </>
+                );
+            };
             const { queryAllByText, getByText } = render(
                 <AdminContext dataProvider={dataProvider}>
                     <Edit
