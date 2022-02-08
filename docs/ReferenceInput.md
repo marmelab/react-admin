@@ -25,7 +25,6 @@ import { ReferenceInput, SelectInput } from 'react-admin';
 
 | Prop               | Required | Type                                        | Default                               | Description                                                                                                           |
 |--------------------|----------|---------------------------------------------|---------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
-| `allowEmpty`       | Optional | `boolean`                                   | `false`                               | If true, add an empty item to the list of choices to allow for empty value                                            |
 | `filter`           | Optional | `Object`                                    | `{}`                                  | Permanent filters to use for getting the suggestion list                                                              |
 | `perPage`          | Optional | `number`                                    | 25                                    | Number of suggestions to show                                                                                         |
 | `reference`        | Required | `string`                                    | ''                                    | Name of the reference resource, e.g. 'posts'.                                                                         |
