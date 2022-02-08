@@ -7,7 +7,6 @@ import {
     ComponentType,
 } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import LinearProgress from '@mui/material/LinearProgress';
 import {
     sanitizeListRestProps,
