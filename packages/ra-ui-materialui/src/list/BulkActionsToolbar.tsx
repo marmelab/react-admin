@@ -18,7 +18,12 @@ import {
 import TopToolbar from '../layout/TopToolbar';
 
 export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
-    const { label = 'ra.action.bulk_actions', children, ...rest } = props;
+    const {
+        label = 'ra.action.bulk_actions',
+        children,
+        className,
+        ...rest
+    } = props;
     const {
         filterValues,
         resource,
@@ -29,7 +34,7 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
     const translate = useTranslate();
 
     return (
-        <Root>
+        <Root className={className}>
             <Toolbar
                 data-test="bulk-actions-toolbar"
                 className={classnames(BulkActionsToolbarClasses.toolbar, {
@@ -80,6 +85,7 @@ export interface BulkActionsToolbarProps {
     children?: ReactNode;
     label?: string;
     selectedIds?: Identifier[];
+    className?: string;
 }
 
 const PREFIX = 'RaBulkActionsToolbar';
@@ -93,7 +99,10 @@ export const BulkActionsToolbarClasses = {
     icon: `${PREFIX}-icon`,
 };
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     position: 'relative',
     [`& .${BulkActionsToolbarClasses.toolbar}`]: {
         position: 'absolute',

@@ -78,10 +78,7 @@ export const ListView = <RecordType extends RaRecord = any>(
         empty !== false;
 
     return (
-        <Root
-            className={classnames('list-page', ListClasses.root, className)}
-            {...rest}
-        >
+        <Root className={classnames('list-page', className)} {...rest}>
             <Title title={title} defaultTitle={defaultTitle} />
             {shouldRenderEmptyPage ? renderEmpty() : renderList()}
             {aside}
@@ -158,17 +155,17 @@ export interface ListViewProps {
 const PREFIX = 'RaList';
 
 export const ListClasses = {
-    root: `${PREFIX}-root`,
     main: `${PREFIX}-main`,
     content: `${PREFIX}-content`,
     actions: `${PREFIX}-actions`,
     noResults: `${PREFIX}-noResults`,
 };
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
-    [`&.${ListClasses.root}`]: {
-        display: 'flex',
-    },
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    display: 'flex',
 
     [`& .${ListClasses.main}`]: {
         flex: '1 1 auto',

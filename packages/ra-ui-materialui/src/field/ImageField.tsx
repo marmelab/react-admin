@@ -8,6 +8,7 @@ import { useRecordContext } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { SxProps } from '@mui/system';
 
 export const ImageField = (props: ImageFieldProps) => {
     const { className, emptyText, source, src, title, ...rest } = props;
@@ -88,7 +89,10 @@ export const ImageFieldClasses = {
     image: `${PREFIX}-image`,
 };
 
-const List = styled('ul', { name: PREFIX })({
+const List = styled('ul', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
     [`&.${ImageFieldClasses.list}`]: {
         display: 'flex',
         listStyleType: 'none',
@@ -102,4 +106,5 @@ const List = styled('ul', { name: PREFIX })({
 export interface ImageFieldProps extends PublicFieldProps, InjectedFieldProps {
     src?: string;
     title?: string;
+    sx?: SxProps;
 }

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { useTranslate, useRecordContext } from 'react-admin';
@@ -8,27 +7,12 @@ import { stringify } from 'query-string';
 import products from '../products';
 import { Category } from '../types';
 
-const PREFIX = 'LinkToRelatedProducts';
-
-const classes = {
-    icon: `${PREFIX}-icon`,
-    link: `${PREFIX}-link`,
-};
-
-const StyledButton = styled(Button)({
-    [`& .${classes.icon}`]: { paddingRight: '0.5em' },
-    [`&.${classes.link}`]: {
-        display: 'inline-flex',
-        alignItems: 'center',
-    },
-});
-
 const LinkToRelatedProducts = () => {
     const record = useRecordContext<Category>();
     const translate = useTranslate();
 
     return record ? (
-        <StyledButton
+        <Button
             size="small"
             color="primary"
             // @ts-ignore
@@ -39,11 +23,11 @@ const LinkToRelatedProducts = () => {
                     filter: JSON.stringify({ category_id: record.id }),
                 }),
             }}
-            className={classes.link}
+            sx={{ display: 'inline-flex', alignItems: 'center' }}
         >
-            <products.icon className={classes.icon} />
+            <products.icon sx={{ paddingRight: '0.5em' }} />
             {translate('resources.categories.fields.products')}
-        </StyledButton>
+        </Button>
     ) : null;
 };
 

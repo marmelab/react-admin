@@ -11,7 +11,6 @@ import {
 import PropTypes from 'prop-types';
 import Menu from '@mui/material/Menu';
 import ContentFilter from '@mui/icons-material/FilterList';
-import classnames from 'classnames';
 import lodashGet from 'lodash/get';
 import { useListContext, useResourceContext } from 'ra-core';
 
@@ -61,10 +60,7 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
 
     if (hiddenFilters.length === 0) return null;
     return (
-        <Root
-            className={classnames(FilterButtonClasses.root, className)}
-            {...sanitizeRestProps(rest)}
-        >
+        <Root className={className} {...sanitizeRestProps(rest)}>
             <Button
                 className="add-filter"
                 label="ra.action.add_filter"
@@ -119,10 +115,9 @@ export interface FilterButtonProps extends HtmlHTMLAttributes<HTMLDivElement> {
 
 const PREFIX = 'RaFilterButton';
 
-export const FilterButtonClasses = {
-    root: `${PREFIX}-root`,
-};
-
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
-    [`&.${FilterButtonClasses.root}`]: { display: 'inline-block' },
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    display: 'inline-block',
 }));

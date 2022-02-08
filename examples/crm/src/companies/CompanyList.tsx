@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
     List,
     TopToolbar,
@@ -11,18 +10,6 @@ import {
 
 import { ImageList } from './GridList';
 import { CompanyListFilter } from './CompanyListFilter';
-
-const PREFIX = 'CompanyList';
-
-const classes = {
-    createButton: `${PREFIX}-createButton`,
-};
-
-const StyledTopToolbar = styled(TopToolbar)(({ theme }) => ({
-    [`& .${classes.createButton}`]: {
-        marginLeft: theme.spacing(2),
-    },
-}));
 
 export const CompanyList = () => {
     const { identity } = useGetIdentity();
@@ -43,13 +30,13 @@ export const CompanyList = () => {
 
 const CompanyListActions = () => {
     return (
-        <StyledTopToolbar>
+        <TopToolbar>
             <ExportButton />
             <CreateButton
                 variant="contained"
                 label="New Company"
-                className={classes.createButton}
+                sx={{ marginLeft: 2 }}
             />
-        </StyledTopToolbar>
+        </TopToolbar>
     );
 };

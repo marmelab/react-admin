@@ -20,6 +20,7 @@ import {
 import { LinearProgress } from '../layout';
 import { Link } from '../Link';
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
+import { SxProps } from '@mui/system';
 
 /**
  * Fetch reference record, and delegate rendering to child component.
@@ -117,6 +118,7 @@ export interface ReferenceFieldProps<RecordType extends RaRecord = any>
     source: string;
     translateChoice?: Function | boolean;
     link?: LinkToType;
+    sx?: SxProps;
 }
 
 /**
@@ -170,6 +172,7 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
         isLoading,
         referenceRecord,
         resourceLinkPath,
+        sx,
     } = props;
 
     if (error) {
@@ -193,11 +196,11 @@ export const ReferenceFieldView: FC<ReferenceFieldViewProps> = props => {
 
     if (resourceLinkPath) {
         return (
-            <Root>
+            <Root className={className} sx={sx}>
                 <RecordContextProvider value={referenceRecord}>
                     <Link
                         to={resourceLinkPath as string}
-                        className={`${ReferenceFieldClasses.link} ${className}`}
+                        className={ReferenceFieldClasses.link}
                         onClick={stopPropagation}
                     >
                         {children}
@@ -239,6 +242,7 @@ export interface ReferenceFieldViewProps
     translateChoice?: Function | boolean;
     resourceLinkPath?: string | false;
     children?: ReactElement;
+    sx?: SxProps;
 }
 
 const PureReferenceFieldView = memo(ReferenceFieldView);
@@ -249,6 +253,9 @@ export const ReferenceFieldClasses = {
     link: `${PREFIX}-link`,
 };
 
-const Root = styled('span', { name: PREFIX })(({ theme }) => ({
+const Root = styled('span', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`& .${ReferenceFieldClasses.link}`]: {},
 }));

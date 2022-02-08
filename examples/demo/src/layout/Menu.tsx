@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { useState } from 'react';
+import Box from '@mui/material/Box';
 import LabelIcon from '@mui/icons-material/Label';
-import classnames from 'classnames';
+
 import {
     useTranslate,
     DashboardMenuItem,
@@ -18,33 +18,6 @@ import products from '../products';
 import categories from '../categories';
 import reviews from '../reviews';
 import SubMenu from './SubMenu';
-
-const PREFIX = 'Menu';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    open: `${PREFIX}-open`,
-    closed: `${PREFIX}-closed`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`&.${classes.root}`]: {
-        marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(1),
-        transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-    },
-
-    [`&.${classes.open}`]: {
-        width: 200,
-    },
-
-    [`&.${classes.closed}`]: {
-        width: 50,
-    },
-}));
 
 type MenuName = 'menuCatalog' | 'menuSales' | 'menuCustomers';
 
@@ -62,11 +35,17 @@ const Menu = ({ dense = false }: MenuProps) => {
     };
 
     return (
-        <Root
-            className={classnames(classes.root, {
-                [classes.open]: open,
-                [classes.closed]: !open,
-            })}
+        <Box
+            sx={{
+                width: open ? 200 : 50,
+                marginTop: 1,
+                marginBottom: 1,
+                transition: theme =>
+                    theme.transitions.create('width', {
+                        easing: theme.transitions.easing.sharp,
+                        duration: theme.transitions.duration.leavingScreen,
+                    }),
+            }}
         >
             {' '}
             <DashboardMenuItem />
@@ -157,7 +136,7 @@ const Menu = ({ dense = false }: MenuProps) => {
                 leftIcon={<reviews.icon />}
                 dense={dense}
             />
-        </Root>
+        </Box>
     );
 };
 

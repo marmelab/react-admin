@@ -55,7 +55,10 @@ const FileInputPreviewClasses = {
     removeIcon: `${PREFIX}-removeIcon`,
 };
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`& .${FileInputPreviewClasses.removeButton}`]: {},
 
     [`& .${FileInputPreviewClasses.removeIcon}`]: {

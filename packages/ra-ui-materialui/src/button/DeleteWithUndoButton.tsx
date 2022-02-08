@@ -45,11 +45,7 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
             onClick={handleDelete}
             disabled={isLoading}
             label={label}
-            className={classnames(
-                'ra-delete-button',
-                DeleteWithUndoButtonClasses.deleteButton,
-                className
-            )}
+            className={classnames('ra-delete-button', className)}
             key="button"
             {...rest}
         >
@@ -96,19 +92,16 @@ DeleteWithUndoButton.propTypes = {
 
 const PREFIX = 'RaDeleteWithUndoButton';
 
-const DeleteWithUndoButtonClasses = {
-    deleteButton: `${PREFIX}-deleteButton`,
-};
-
-const StyledButton = styled(Button, { name: PREFIX })(({ theme }) => ({
-    [`&.${DeleteWithUndoButtonClasses.deleteButton}`]: {
-        color: theme.palette.error.main,
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.error.main, 0.12),
-            // Reset on mouse devices
-            '@media (hover: none)': {
-                backgroundColor: 'transparent',
-            },
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    color: theme.palette.error.main,
+    '&:hover': {
+        backgroundColor: alpha(theme.palette.error.main, 0.12),
+        // Reset on mouse devices
+        '@media (hover: none)': {
+            backgroundColor: 'transparent',
         },
     },
 }));

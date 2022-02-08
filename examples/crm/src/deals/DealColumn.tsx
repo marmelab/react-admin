@@ -1,45 +1,11 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { Droppable } from 'react-beautiful-dnd';
 import { Identifier } from 'react-admin';
 
 import { DealCard } from './DealCard';
 import { stageNames } from './stages';
 import { RecordMap } from './DealListContent';
-
-const PREFIX = 'DealColumn';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    droppable: `${PREFIX}-droppable`,
-};
-
-const Root = styled('div')({
-    [`&.${classes.root}`]: {
-        flex: 1,
-        paddingTop: 8,
-        paddingBottom: 16,
-        backgroundColor: '#eaeaee',
-        '&:first-child': {
-            paddingLeft: 5,
-            borderTopLeftRadius: 5,
-        },
-        '&:last-child': {
-            paddingRight: 5,
-            borderTopRightRadius: 5,
-        },
-    },
-    [`& .${classes.droppable}`]: {
-        display: 'flex',
-        flexDirection: 'column',
-        borderRadius: 5,
-        padding: 5,
-        '&.isDraggingOver': {
-            backgroundColor: '#dadadf',
-        },
-    },
-});
 
 export const DealColumn = ({
     stage,
@@ -51,28 +17,51 @@ export const DealColumn = ({
     data: RecordMap;
 }) => {
     return (
-        <Root className={classes.root}>
+        <Box
+            sx={{
+                flex: 1,
+                paddingTop: '8px',
+                paddingBottom: '16px',
+                bgcolor: '#eaeaee',
+                '&:first-child': {
+                    paddingLeft: '5px',
+                    borderTopLeftRadius: 5,
+                },
+                '&:last-child': {
+                    paddingRight: '5px',
+                    borderTopRightRadius: 5,
+                },
+            }}
+        >
             <Typography align="center" variant="subtitle1">
                 {/* @ts-ignore */}
                 {stageNames[stage]}
             </Typography>
             <Droppable droppableId={stage}>
                 {(droppableProvided, snapshot) => (
-                    <div
+                    <Box
                         ref={droppableProvided.innerRef}
                         {...droppableProvided.droppableProps}
                         className={
-                            classes.droppable +
-                            (snapshot.isDraggingOver ? ' isDraggingOver' : '')
+                            snapshot.isDraggingOver ? ' isDraggingOver' : ''
                         }
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            borderRadius: 5,
+                            padding: '5px',
+                            '&.isDraggingOver': {
+                                bgcolor: '#dadadf',
+                            },
+                        }}
                     >
                         {dealIds.map((id, index) => (
                             <DealCard key={id} index={index} deal={data[id]} />
                         ))}
                         {droppableProvided.placeholder}
-                    </div>
+                    </Box>
                 )}
             </Droppable>
-        </Root>
+        </Box>
     );
 };

@@ -101,7 +101,6 @@ export const BulkUpdateWithConfirmButton = (
             <StyledButton
                 onClick={handleClick}
                 label={label}
-                className={BulkUpdateWithConfirmButtonClasses.updateButton}
                 {...sanitizeRestProps(rest)}
             >
                 {icon}
@@ -170,19 +169,16 @@ BulkUpdateWithConfirmButton.propTypes = {
 
 const PREFIX = 'RaBulkUpdateWithConfirmButton';
 
-export const BulkUpdateWithConfirmButtonClasses = {
-    updateButton: `${PREFIX}-updateButton`,
-};
-
-const StyledButton = styled(Button, { name: PREFIX })(({ theme }) => ({
-    [`&.${BulkUpdateWithConfirmButtonClasses.updateButton}`]: {
-        color: theme.palette.error.main,
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.error.main, 0.12),
-            // Reset on mouse devices
-            '@media (hover: none)': {
-                backgroundColor: 'transparent',
-            },
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    color: theme.palette.error.main,
+    '&:hover': {
+        backgroundColor: alpha(theme.palette.error.main, 0.12),
+        // Reset on mouse devices
+        '@media (hover: none)': {
+            backgroundColor: 'transparent',
         },
     },
 }));

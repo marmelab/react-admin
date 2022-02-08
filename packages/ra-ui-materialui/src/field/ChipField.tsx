@@ -61,6 +61,9 @@ const ChipFieldClasses = {
     chip: `${PREFIX}-chip`,
 };
 
-const StyledChip = styled(Chip, { name: 'PREFIX' })({
+const StyledChip = styled(Chip, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
     [`&.${ChipFieldClasses.chip}`]: { margin: 4, cursor: 'inherit' },
 });

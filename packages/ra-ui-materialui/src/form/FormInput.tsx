@@ -22,7 +22,8 @@ export const FormInput = <
             className={classnames(
                 'ra-input',
                 `ra-input-${input.props.source}`,
-                input.props.formClassName
+                input.props.formClassName,
+                className
             )}
         >
             {input.props.addLabel ? (
@@ -32,13 +33,9 @@ export const FormInput = <
                     {...sanitizeRestProps(rest)}
                 >
                     {React.cloneElement(input, {
-                        className: classnames(
-                            {
-                                [FormInputClasses.input]: !input.props
-                                    .fullWidth,
-                            },
-                            className
-                        ),
+                        className: classnames({
+                            [FormInputClasses.input]: !input.props.fullWidth,
+                        }),
                         id: input.props.id || input.props.source,
                         ...rest,
                         ...inputProps,
@@ -46,12 +43,9 @@ export const FormInput = <
                 </Labeled>
             ) : (
                 React.cloneElement(input, {
-                    className: classnames(
-                        {
-                            [FormInputClasses.input]: !input.props.fullWidth,
-                        },
-                        className
-                    ),
+                    className: classnames({
+                        [FormInputClasses.input]: !input.props.fullWidth,
+                    }),
                     id: input.props.id || input.props.source,
                     ...rest,
                     ...inputProps,
@@ -90,7 +84,10 @@ export const FormInputClasses = {
     input: `${PREFIX}-input`,
 };
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`& .${FormInputClasses.input}`]: { width: theme.spacing(32) },
 }));
 

@@ -1,22 +1,10 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
+import Box from '@mui/material/Box';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import { useTranslate, useLocaleState, useTheme, Title } from 'react-admin';
 import { darkTheme, lightTheme } from '../layout/themes';
-
-const PREFIX = 'Configuration';
-
-const classes = {
-    label: `${PREFIX}-label`,
-    button: `${PREFIX}-button`,
-};
-
-const StyledCard = styled(Card)({
-    [`& .${classes.label}`]: { width: '10em', display: 'inline-block' },
-    [`& .${classes.button}`]: { margin: '1em' },
-});
 
 const Configuration = () => {
     const translate = useTranslate();
@@ -24,15 +12,15 @@ const Configuration = () => {
     const [theme, setTheme] = useTheme();
 
     return (
-        <StyledCard>
+        <Card>
             <Title title={translate('pos.configuration')} />
             <CardContent>
-                <div className={classes.label}>
+                <Box sx={{ width: '10em', display: 'inline-block' }}>
                     {translate('pos.theme.name')}
-                </div>
+                </Box>
                 <Button
                     variant="contained"
-                    className={classes.button}
+                    sx={{ margin: '1em' }}
                     color={
                         theme?.palette?.mode === 'light'
                             ? 'primary'
@@ -44,7 +32,7 @@ const Configuration = () => {
                 </Button>
                 <Button
                     variant="contained"
-                    className={classes.button}
+                    sx={{ margin: '1em' }}
                     color={
                         theme?.palette?.mode === 'dark'
                             ? 'primary'
@@ -56,10 +44,12 @@ const Configuration = () => {
                 </Button>
             </CardContent>
             <CardContent>
-                <div className={classes.label}>{translate('pos.language')}</div>
+                <Box sx={{ width: '10em', display: 'inline-block' }}>
+                    {translate('pos.language')}
+                </Box>
                 <Button
                     variant="contained"
-                    className={classes.button}
+                    sx={{ margin: '1em' }}
                     color={locale === 'en' ? 'primary' : 'secondary'}
                     onClick={() => setLocale('en')}
                 >
@@ -67,14 +57,14 @@ const Configuration = () => {
                 </Button>
                 <Button
                     variant="contained"
-                    className={classes.button}
+                    sx={{ margin: '1em' }}
                     color={locale === 'fr' ? 'primary' : 'secondary'}
                     onClick={() => setLocale('fr')}
                 >
                     fr
                 </Button>
             </CardContent>
-        </StyledCard>
+        </Card>
     );
 };
 

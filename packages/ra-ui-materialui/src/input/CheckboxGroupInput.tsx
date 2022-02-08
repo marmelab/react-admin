@@ -14,7 +14,6 @@ import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { CheckboxGroupInputItem } from './CheckboxGroupInputItem';
 import { InputHelperText } from './InputHelperText';
-import classnames from 'classnames';
 import { Labeled } from './Labeled';
 import { LinearProgress } from '../layout';
 
@@ -172,7 +171,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
             component="fieldset"
             margin={margin}
             error={(isTouched || isSubmitted) && invalid}
-            className={classnames(CheckboxGroupInputClasses.root, className)}
+            className={className}
             {...sanitizeRestProps(rest)}
         >
             <FormLabel
@@ -256,19 +255,15 @@ export type CheckboxGroupInputProps = CommonInputProps &
 const PREFIX = 'RaCheckboxGroupInput';
 
 export const CheckboxGroupInputClasses = {
-    root: `${PREFIX}-root`,
     label: `${PREFIX}-label`,
 };
 
-const StyledFormControl = styled(FormControl, { name: PREFIX })(
-    ({ theme }) => ({
-        [`&.${CheckboxGroupInputClasses.root}`]: {},
-
-        [`& .${CheckboxGroupInputClasses.label}`]: {
-            transform: 'translate(0, 8px) scale(0.75)',
-            transformOrigin: `top ${
-                theme.direction === 'ltr' ? 'left' : 'right'
-            }`,
-        },
-    })
-);
+const StyledFormControl = styled(FormControl, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    [`& .${CheckboxGroupInputClasses.label}`]: {
+        transform: 'translate(0, 8px) scale(0.75)',
+        transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
+    },
+}));

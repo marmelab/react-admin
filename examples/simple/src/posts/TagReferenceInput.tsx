@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { useCallback, useState } from 'react';
 import {
     AutocompleteArrayInput,
     ReferenceArrayInput,
     useCreate,
     useCreateSuggestionContext,
-    useLocale,
+    useLocaleState,
 } from 'react-admin';
 import {
+    Box,
     Button,
     Dialog,
     DialogContent,
@@ -17,28 +17,8 @@ import {
 } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 
-const PREFIX = 'TagReferenceInput';
-
-const classes = {
-    button: `${PREFIX}-button`,
-    input: `${PREFIX}-input`,
-};
-
-const StyledDialog = styled(Dialog)({
-    [`& .${classes.button}`]: {
-        margin: '0 24px',
-        position: 'relative',
-    },
-    [`& .${classes.input}`]: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        width: '50%',
-    },
-});
-
 const useTagsFilterToQuery = () => {
-    const locale = useLocale();
+    const [locale] = useLocaleState();
     return useCallback(
         (filter: string) =>
             filter
@@ -60,7 +40,7 @@ const TagReferenceInput = ({
     const { setValue } = useFormContext();
     const [filter, setFilter] = useState({ published: true });
     const filterToQuery = useTagsFilterToQuery();
-    const locale = useLocale();
+    const [locale] = useLocaleState();
 
     const handleAddFilter = () => {
         setFilter(prev => ({ published: !prev.published }));
@@ -68,7 +48,14 @@ const TagReferenceInput = ({
     };
 
     return (
-        <div className={classes.input}>
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                width: '50%',
+            }}
+        >
             <ReferenceArrayInput
                 {...props}
                 filter={filter}
@@ -81,12 +68,12 @@ const TagReferenceInput = ({
             </ReferenceArrayInput>
             <Button
                 name="change-filter"
-                className={classes.button}
+                sx={{ margin: '0 24px', position: 'relative' }}
                 onClick={handleAddFilter}
             >
                 Filter {filter ? 'Unpublished' : 'Published'} Tags
             </Button>
-        </div>
+        </Box>
     );
 };
 
@@ -111,7 +98,7 @@ const CreateTag = () => {
         return false;
     };
     return (
-        <StyledDialog open onClose={onCancel}>
+        <Dialog open onClose={onCancel}>
             <form onSubmit={handleSubmit}>
                 <DialogContent>
                     <MuiTextField
@@ -126,7 +113,7 @@ const CreateTag = () => {
                     <Button onClick={onCancel}>Cancel</Button>
                 </DialogActions>
             </form>
-        </StyledDialog>
+        </Dialog>
     );
 };
 

@@ -1,25 +1,7 @@
 import React from 'react';
-import { styled } from '@mui/material/styles';
 import { Tabs, Tab, Toolbar, AppBar, Box, Typography } from '@mui/material';
 import { Link, matchPath, useLocation } from 'react-router-dom';
 import { UserMenu, Logout, LoadingIndicator } from 'react-admin';
-
-const PREFIX = 'Header';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    logo: `${PREFIX}-logo`,
-};
-
-const Root = styled('nav')({
-    [`&.${classes.root}`]: {
-        flexGrow: 1,
-    },
-    [`& .${classes.logo}`]: {
-        height: 30,
-        marginRight: '1em',
-    },
-});
 
 const Header = () => {
     const location = useLocation();
@@ -34,13 +16,14 @@ const Header = () => {
     }
 
     return (
-        <Root className={classes.root}>
+        <Box component="nav" sx={{ flexGrow: 1 }}>
             <AppBar position="static" color="primary">
                 <Toolbar variant="dense">
                     <Box flex={1} display="flex" justifyContent="space-between">
                         <Box display="flex" alignItems="center">
-                            <img
-                                className={classes.logo}
+                            <Box
+                                component="img"
+                                sx={{ marginRight: '1em', height: 30 }}
                                 src={
                                     'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg'
                                 }
@@ -90,7 +73,7 @@ const Header = () => {
                     </Box>
                 </Toolbar>
             </AppBar>
-        </Root>
+        </Box>
     );
 };
 

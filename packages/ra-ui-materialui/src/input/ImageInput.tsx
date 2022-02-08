@@ -1,29 +1,24 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-
 import { FileInput, FileInputProps, FileInputClasses } from './FileInput';
 
-export const ImageInput = (props: ImageInputProps) => {
-    return (
-        <StyledFileInput
-            labelMultiple="ra.input.image.upload_several"
-            labelSingle="ra.input.image.upload_single"
-            className={ImageInputClasses.root}
-            {...props}
-        />
-    );
-};
+export const ImageInput = (props: ImageInputProps) => (
+    <StyledFileInput
+        labelMultiple="ra.input.image.upload_several"
+        labelSingle="ra.input.image.upload_single"
+        {...props}
+    />
+);
 
 export type ImageInputProps = FileInputProps;
 
 const PREFIX = 'RaImageInput';
 
-export const ImageInputClasses = {
-    root: `${PREFIX}-root`,
-};
-
-const StyledFileInput = styled(FileInput, { name: PREFIX })(({ theme }) => ({
-    [`&.${ImageInputClasses.root}`]: { width: '100%' },
+const StyledFileInput = styled(FileInput, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    width: '100%',
 
     [`& .${FileInputClasses.dropZone}`]: {
         background: theme.palette.background.default,

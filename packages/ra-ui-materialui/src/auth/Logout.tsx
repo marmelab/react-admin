@@ -17,13 +17,7 @@ import { useTranslate, useLogout } from 'ra-core';
 export const Logout: FunctionComponent<
     LogoutProps & MenuItemProps<'li'>
 > = React.forwardRef(function Logout(props, ref) {
-    const {
-        className,
-        classes: classesOverride,
-        redirectTo,
-        icon,
-        ...rest
-    } = props;
+    const { className, redirectTo, icon, ...rest } = props;
 
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
@@ -37,7 +31,7 @@ export const Logout: FunctionComponent<
     ]);
     return (
         <StyledMenuItem
-            className={classnames('logout', LogoutClasses.menuItem, className)}
+            className={classnames('logout', className)}
             onClick={handleClick}
             ref={ref}
             // @ts-ignore
@@ -61,14 +55,14 @@ Logout.propTypes = {
 const PREFIX = 'RaLogout';
 
 export const LogoutClasses = {
-    menuItem: `${PREFIX}-menuItem`,
     icon: `${PREFIX}-icon`,
 };
 
-const StyledMenuItem = styled(MenuItem, { name: 'RaLogout' })(({ theme }) => ({
-    [`&.${LogoutClasses.menuItem}`]: {
-        color: theme.palette.text.secondary,
-    },
+const StyledMenuItem = styled(MenuItem, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    color: theme.palette.text.secondary,
 
     [`& .${LogoutClasses.icon}`]: { minWidth: theme.spacing(5) },
 }));

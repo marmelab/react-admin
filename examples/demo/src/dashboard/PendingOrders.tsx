@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import List from '@mui/material/List';
@@ -8,27 +7,10 @@ import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
 import { Link } from 'react-router-dom';
 import { useTranslate } from 'react-admin';
 import { Customer, Order } from '../types';
-
-const PREFIX = 'PendingOrders';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    cost: `${PREFIX}-cost`,
-};
-
-const StyledCard = styled(Card)(({ theme }) => ({
-    [`&.${classes.root}`]: {
-        flex: 1,
-    },
-
-    [`& .${classes.cost}`]: {
-        marginRight: '1em',
-        color: theme.palette.text.primary,
-    },
-}));
 
 interface Props {
     orders?: Order[];
@@ -37,10 +19,10 @@ interface Props {
 
 const PendingOrders = (props: Props) => {
     const { orders = [], customers = {} } = props;
-
     const translate = useTranslate();
+
     return (
-        <StyledCard className={classes.root}>
+        <Card sx={{ flex: 1 }}>
             <CardHeader title={translate('pos.dashboard.pending_orders')} />
             <List dense={true}>
                 {orders.map(record => (
@@ -80,14 +62,20 @@ const PendingOrders = (props: Props) => {
                             })}
                         />
                         <ListItemSecondaryAction>
-                            <span className={classes.cost}>
+                            <Box
+                                component="span"
+                                sx={{
+                                    marginRight: '1em',
+                                    color: 'text.primary',
+                                }}
+                            >
                                 {record.total}$
-                            </span>
+                            </Box>
                         </ListItemSecondaryAction>
                     </ListItem>
                 ))}
             </List>
-        </StyledCard>
+        </Card>
     );
 };
 

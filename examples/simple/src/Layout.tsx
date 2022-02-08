@@ -1,44 +1,28 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { forwardRef, memo } from 'react';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { Layout, AppBar, UserMenu, useLocaleState } from 'react-admin';
 import { MenuItem, MenuItemProps, ListItemIcon } from '@mui/material';
 import Language from '@mui/icons-material/Language';
 
-const PREFIX = 'Layout';
-
-const classes = {
-    menuItem: `${PREFIX}-menuItem`,
-    icon: `${PREFIX}-icon`,
-};
-
-const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
-    [`&.${classes.menuItem}`]: {
-        color: theme.palette.text.secondary,
-    },
-
-    [`& .${classes.icon}`]: { minWidth: theme.spacing(5) },
-}));
-
 const SwitchLanguage = forwardRef<HTMLLIElement, MenuItemProps>(
     (props, ref) => {
         const [locale, setLocale] = useLocaleState();
 
         return (
-            <StyledMenuItem
+            <MenuItem
                 ref={ref}
-                className={classes.menuItem}
+                sx={{ color: 'text.secondary' }}
                 onClick={event => {
                     setLocale(locale === 'en' ? 'fr' : 'en');
                     props.onClick(event);
                 }}
             >
-                <ListItemIcon className={classes.icon}>
+                <ListItemIcon sx={{ minWidth: 5 }}>
                     <Language />
                 </ListItemIcon>
                 Switch Language
-            </StyledMenuItem>
+            </MenuItem>
         );
     }
 );

@@ -6,9 +6,9 @@ import { useChoices } from 'ra-core';
 
 export const CheckboxGroupInputItem = props => {
     const {
-        classes: classesOverride,
         id,
         choice,
+        className,
         onChange,
         optionText,
         optionValue,
@@ -31,6 +31,7 @@ export const CheckboxGroupInputItem = props => {
             htmlFor={`${id}_${getChoiceValue(choice)}`}
             key={getChoiceValue(choice)}
             onChange={onChange}
+            className={className}
             control={
                 <Checkbox
                     id={`${id}_${getChoiceValue(choice)}`}
@@ -58,7 +59,10 @@ export const CheckboxGroupInputItemClasses = {
     checkbox: `${PREFIX}-checkbox`,
 };
 
-const StyledFormControlLabel = styled(FormControlLabel, { name: PREFIX })({
+const StyledFormControlLabel = styled(FormControlLabel, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
     [`& .${CheckboxGroupInputItemClasses.checkbox}`]: {
         height: 32,
     },

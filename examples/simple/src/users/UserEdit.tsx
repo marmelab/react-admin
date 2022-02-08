@@ -1,6 +1,5 @@
 /* eslint react/jsx-key: off */
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
     CloneButton,
     DeleteWithConfirmButton,
@@ -20,26 +19,6 @@ import {
 import UserTitle from './UserTitle';
 import Aside from './Aside';
 
-const PREFIX = 'UserEdit';
-
-const classes = {
-    toolbar: `${PREFIX}-toolbar`,
-};
-
-const StyledEdit = styled(Edit)({
-    [`& .${classes.toolbar}`]: {
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
-});
-
-const StyledToolbar = styled(Toolbar)({
-    [`& .RaToolbar-toolbar`]: {
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
-});
-
 /**
  * Custom Toolbar for the Edit form
  *
@@ -47,10 +26,13 @@ const StyledToolbar = styled(Toolbar)({
  */
 const UserEditToolbar = props => {
     return (
-        <StyledToolbar {...props}>
+        <Toolbar
+            sx={{ display: 'flex', justifyContent: 'space-between' }}
+            {...props}
+        >
             <SaveButton />
             <DeleteWithConfirmButton />
-        </StyledToolbar>
+        </Toolbar>
     );
 };
 
@@ -110,13 +92,9 @@ const UserEditForm = ({ save, ...props }: { save?: any }) => {
 };
 const UserEdit = () => {
     return (
-        <StyledEdit
-            title={<UserTitle />}
-            aside={<Aside />}
-            actions={<EditActions />}
-        >
+        <Edit title={<UserTitle />} aside={<Aside />} actions={<EditActions />}>
             <UserEditForm />
-        </StyledEdit>
+        </Edit>
     );
 };
 

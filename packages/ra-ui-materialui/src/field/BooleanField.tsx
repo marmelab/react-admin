@@ -4,7 +4,6 @@ import { memo, FunctionComponent } from 'react';
 import { SvgIconComponent } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import classnames from 'classnames';
 import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
 import { Tooltip, Typography, TypographyProps } from '@mui/material';
@@ -42,7 +41,7 @@ export const BooleanField: FunctionComponent<BooleanFieldProps> = memo(
                 <StyledTypography
                     component="span"
                     variant="body2"
-                    className={classnames(BooleanFieldClasses.root, className)}
+                    className={className}
                     {...sanitizeFieldRestProps(rest)}
                 >
                     <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
@@ -106,12 +105,9 @@ export interface BooleanFieldProps
 
 const PREFIX = 'RaBooleanField';
 
-const BooleanFieldClasses = {
-    root: `${PREFIX}-root`,
-};
-
-const StyledTypography = styled(Typography, { name: PREFIX })({
-    [`&.${BooleanFieldClasses.root}`]: {
-        display: 'flex',
-    },
+const StyledTypography = styled(Typography, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
+    display: 'flex',
 });

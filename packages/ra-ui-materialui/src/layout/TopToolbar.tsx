@@ -3,9 +3,7 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import Toolbar, { ToolbarProps } from '@mui/material/Toolbar';
 
-export const TopToolbar = (props: ToolbarProps) => {
-    return <StyledToolbar {...props} />;
-};
+export const TopToolbar = (props: ToolbarProps) => <StyledToolbar {...props} />;
 
 TopToolbar.propTypes = {
     children: PropTypes.node,

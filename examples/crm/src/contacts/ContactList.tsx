@@ -1,6 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
     List as RaList,
     SimpleListLoading,
@@ -35,18 +34,6 @@ import { Status } from '../misc/Status';
 import { TagsList } from './TagsList';
 import { ContactListFilter } from './ContactListFilter';
 import { Contact } from '../types';
-
-const PREFIX = 'ContactList';
-
-const classes = {
-    createButton: `${PREFIX}-createButton`,
-};
-
-const StyledTopToolbar = styled(TopToolbar)(({ theme }) => ({
-    [`& .${classes.createButton}`]: {
-        marginLeft: theme.spacing(2),
-    },
-}));
 
 const ContactListContent = () => {
     const { data, isLoading, onToggleItem, selectedIds } = useListContext<
@@ -126,15 +113,15 @@ const ContactListContent = () => {
 };
 
 const ContactListActions = () => (
-    <StyledTopToolbar>
+    <TopToolbar>
         <SortButton fields={['last_name', 'first_name', 'last_seen']} />
         <ExportButton />
         <CreateButton
             variant="contained"
             label="New Contact"
-            className={classes.createButton}
+            sx={{ marginLeft: 2 }}
         />
-    </StyledTopToolbar>
+    </TopToolbar>
 );
 
 export const ContactList = () => {

@@ -31,7 +31,7 @@ export const CreateView = (props: CreateViewProps) => {
 
     return (
         <Root
-            className={classnames('create-page', CreateClasses.root, className)}
+            className={classnames('create-page', className)}
             {...sanitizeRestProps(rest)}
         >
             <Title title={title} record={record} defaultTitle={defaultTitle} />
@@ -125,15 +125,15 @@ const sanitizeRestProps = ({
 const PREFIX = 'RaCreate';
 
 export const CreateClasses = {
-    root: `${PREFIX}-root`,
     main: `${PREFIX}-main`,
     noActions: `${PREFIX}-noActions`,
     card: `${PREFIX}-card`,
 };
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
-    [`&.${CreateClasses.root}`]: {},
-
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`& .${CreateClasses.main}`]: {
         display: 'flex',
     },

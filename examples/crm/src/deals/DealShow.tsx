@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
     ShowBase,
     TextField,
@@ -17,19 +16,6 @@ import { NotesIterator } from '../notes';
 import { ContactList } from './ContactList';
 import { stageNames } from './stages';
 
-const PREFIX = 'DealShow';
-
-const classes = {
-    dialog: `${PREFIX}-dialog`,
-};
-
-const Root = styled('div')({
-    [`& .${classes.dialog}`]: {
-        position: 'absolute',
-        top: 50,
-    },
-});
-
 export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
     const redirect = useRedirect();
 
@@ -43,7 +29,12 @@ export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
             onClose={handleClose}
             fullWidth
             maxWidth="md"
-            classes={{ paper: classes.dialog }}
+            sx={{
+                '.MuiDialog-paper': {
+                    position: 'absolute',
+                    top: 50,
+                },
+            }}
         >
             <DialogContent>
                 {!!id ? (
@@ -60,7 +51,7 @@ const DealShowContent = () => {
     const record = useRecordContext();
     if (!record) return null;
     return (
-        <Root>
+        <div>
             <Box display="flex">
                 <Box
                     width={100}
@@ -174,6 +165,6 @@ const DealShowContent = () => {
                     </Box>
                 </Box>
             </Box>
-        </Root>
+        </div>
     );
 };

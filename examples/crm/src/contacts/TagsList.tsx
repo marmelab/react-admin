@@ -1,23 +1,10 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
     ReferenceArrayField,
     SingleFieldList,
     ChipField,
     useRecordContext,
 } from 'react-admin';
-
-const PREFIX = 'TagsList';
-
-const classes = {
-    root: `${PREFIX}-root`,
-};
-
-const StyledReferenceArrayField = styled(ReferenceArrayField)({
-    [`&.${classes.root}`]: {
-        display: 'inline-block',
-    },
-});
 
 const ColoredChipField = (props: any) => {
     const record = useRecordContext();
@@ -35,14 +22,14 @@ const ColoredChipField = (props: any) => {
 };
 
 export const TagsList = () => (
-    <StyledReferenceArrayField
+    <ReferenceArrayField
+        sx={{ display: 'inline-block' }}
         resource="contacts"
         source="tags"
         reference="tags"
-        className={classes.root}
     >
         <SingleFieldList linkType={false} component="span">
             <ColoredChipField source="name" variant="outlined" size="small" />
         </SingleFieldList>
-    </StyledReferenceArrayField>
+    </ReferenceArrayField>
 );

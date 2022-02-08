@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { useState, FormEvent } from 'react';
 import {
     useGetMany,
@@ -225,29 +224,18 @@ export const TagsListEdit = () => {
     );
 };
 
-const PREFIX = 'TagsListEdit';
-
-const classes = {
-    root: `${PREFIX}-root`,
-};
-
-const StyledRoundButton = styled('button')({
-    [`&.${classes.root}`]: {
-        width: 30,
-        height: 30,
-        borderRadius: 15,
-        display: 'inline-block',
-        margin: 8,
-    },
-});
-
 const RoundButton = ({ color, handleClick, selected }: any) => (
-    <StyledRoundButton
+    <Box
+        component="button"
         type="button"
-        className={classes.root}
-        style={{
-            backgroundColor: color,
+        sx={{
+            bgcolor: color,
+            width: 30,
+            height: 30,
+            borderRadius: 15,
             border: selected ? '2px solid grey' : 'none',
+            display: 'inline-block',
+            margin: 8,
         }}
         onClick={handleClick}
     />

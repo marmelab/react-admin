@@ -28,7 +28,7 @@ export const FieldWithLabel = ({
     children.type?.displayName !== 'Labeled' &&
     // @ts-ignore
     children.type?.displayName !== 'FieldWithLabel' ? (
-        <Root className={`${className} ${FieldWithLabelClasses.root}`}>
+        <Root className={className}>
             <Typography
                 color="textSecondary"
                 className={FieldWithLabelClasses.label}
@@ -41,9 +41,7 @@ export const FieldWithLabel = ({
             {children}
         </Root>
     ) : (
-        <div className={`${className} ${FieldWithLabelClasses.root}`}>
-            {children}
-        </div>
+        <div className={className}>{children}</div>
     );
 
 FieldWithLabel.displayName = 'FieldWithLabel';
@@ -57,14 +55,14 @@ export interface FieldWithLabelProps {
 const PREFIX = 'RaFieldWithLabel';
 
 export const FieldWithLabelClasses = {
-    root: `${PREFIX}-root`,
     label: `${PREFIX}-label`,
 };
 
-const Root = styled(Stack, { name: PREFIX })(({ theme }) => ({
-    [`&.${FieldWithLabelClasses.root}`]: {
-        marginBottom: '0.2em',
-    },
+const Root = styled(Stack, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    marginBottom: '0.2em',
     [`& .${FieldWithLabelClasses.label}`]: {
         fontSize: '0.75em',
         marginBottom: '0.2em',

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
+    Box,
     Card,
     Typography,
     Dialog,
@@ -28,23 +28,6 @@ import {
     useCreate,
     useCreatePath,
 } from 'react-admin';
-
-const PREFIX = 'CommentEdit';
-
-const classes = {
-    actions: `${PREFIX}-actions`,
-    card: `${PREFIX}-card`,
-};
-
-const Root = styled('div')({
-    [`& .${classes.actions}`]: {
-        float: 'right',
-    },
-    [`& .${classes.card}`]: {
-        marginTop: '1em',
-        maxWidth: '30em',
-    },
-});
 
 const LinkToRelatedPost = ({ record }: { record?: RaRecord }) => {
     const createPath = useCreatePath();
@@ -127,16 +110,16 @@ const CommentEdit = props => {
 
     return (
         <EditContextProvider value={controllerProps}>
-            <Root className="edit-page">
+            <div className="edit-page">
                 <Title defaultTitle={`Comment #${record ? record.id : ''}`} />
-                <div className={classes.actions}>
+                <Box sx={{ float: 'right' }}>
                     <TopToolbar>
                         <ShowButton record={record} />
                         {/* FIXME: added because react-router HashHistory cannot block navigation induced by address bar changes */}
                         <CreateButton resource="posts" label="Create post" />
                     </TopToolbar>
-                </div>
-                <Card className={classes.card}>
+                </Box>
+                <Card sx={{ marginTop: '1em', maxWidth: '30em' }}>
                     {record && (
                         <SimpleForm
                             resource={resource}
@@ -182,7 +165,7 @@ const CommentEdit = props => {
                         </SimpleForm>
                     )}
                 </Card>
-            </Root>
+            </div>
         </EditContextProvider>
     );
 };

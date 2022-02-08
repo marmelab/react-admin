@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
     Create,
     SimpleForm,
@@ -17,18 +16,6 @@ import { Dialog } from '@mui/material';
 import { stageChoices } from './stages';
 import { typeChoices } from './types';
 import { Deal } from '../types';
-
-const PREFIX = 'DealCreate';
-
-const classes = {
-    root: `${PREFIX}-root`,
-};
-
-const StyledDialog = styled(Dialog)({
-    [`& .${classes.root}`]: {
-        width: 500,
-    },
-});
 
 export const DealCreate = ({ open }: { open: boolean }) => {
     const redirect = useRedirect();
@@ -63,11 +50,11 @@ export const DealCreate = ({ open }: { open: boolean }) => {
     };
 
     return (
-        <StyledDialog open={open} onClose={handleClose}>
+        <Dialog open={open} onClose={handleClose}>
             <Create<Deal>
                 resource="deals"
-                className={classes.root}
                 mutationOptions={{ onSuccess }}
+                sx={{ width: 500 }}
             >
                 <SimpleForm defaultValues={{ index: 0 }}>
                     <TextInput
@@ -105,6 +92,6 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                     <NumberInput source="amount" fullWidth defaultValue={0} />
                 </SimpleForm>
             </Create>
-        </StyledDialog>
+        </Dialog>
     );
 };

@@ -122,26 +122,27 @@ export const LabeledClasses = {
     value: `${PREFIX}-value`,
 };
 
-const StyledFormControl = styled(FormControl, { name: PREFIX })(
-    ({ theme }) => ({
-        [`& .${LabeledClasses.label}`]: {
-            position: 'relative',
-            marginLeft: -14,
-            maxWidth: 'fit-content',
-        },
+const StyledFormControl = styled(FormControl, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    [`& .${LabeledClasses.label}`]: {
+        position: 'relative',
+        marginLeft: -14,
+        maxWidth: 'fit-content',
+    },
 
-        [`& .${LabeledClasses.value}`]: {
-            fontFamily: theme.typography.fontFamily,
-            color: 'currentColor',
-            padding: `calc(${theme.spacing(1)} 0 ${theme.spacing(1)} / 2)`,
-            border: 0,
-            boxSizing: 'content-box',
-            verticalAlign: 'middle',
-            background: 'none',
-            margin: 0, // Reset for Safari
-            marginTop: -12,
-            display: 'block',
-            width: '100%',
-        },
-    })
-);
+    [`& .${LabeledClasses.value}`]: {
+        fontFamily: theme.typography.fontFamily,
+        color: 'currentColor',
+        padding: `calc(${theme.spacing(1)} 0 ${theme.spacing(1)} / 2)`,
+        border: 0,
+        boxSizing: 'content-box',
+        verticalAlign: 'middle',
+        background: 'none',
+        margin: 0, // Reset for Safari
+        marginTop: -12,
+        display: 'block',
+        width: '100%',
+    },
+}));

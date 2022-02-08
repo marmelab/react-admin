@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
     Avatar,
     Box,
@@ -17,37 +16,6 @@ import CardWithIcon from './CardWithIcon';
 import StarRatingField from '../reviews/StarRatingField';
 import { Customer, Review } from '../types';
 
-const PREFIX = 'PendingReviews';
-
-const classes = {
-    avatar: `${PREFIX}-avatar`,
-    listItemText: `${PREFIX}-listItemText`,
-    link: `${PREFIX}-link`,
-    linkContent: `${PREFIX}-linkContent`,
-};
-
-const StyledCardWithIcon = styled(CardWithIcon)(({ theme }) => ({
-    [`& .${classes.avatar}`]: {
-        background: theme.palette.background.paper,
-    },
-
-    [`& .${classes.listItemText}`]: {
-        overflowY: 'hidden',
-        height: '4em',
-        display: '-webkit-box',
-        WebkitLineClamp: 2,
-        WebkitBoxOrient: 'vertical',
-    },
-
-    [`& .${classes.link}`]: {
-        borderRadius: 0,
-    },
-
-    [`& .${classes.linkContent}`]: {
-        color: theme.palette.primary.main,
-    },
-}));
-
 interface Props {
     reviews?: Review[];
     customers?: { [key: string]: Customer };
@@ -57,7 +25,7 @@ interface Props {
 const PendingReviews = ({ reviews = [], customers = {}, nb }: Props) => {
     const translate = useTranslate();
     return (
-        <StyledCardWithIcon
+        <CardWithIcon
             to="/reviews"
             icon={CommentIcon}
             title={translate('pos.dashboard.pending_reviews')}
@@ -78,7 +46,7 @@ const PendingReviews = ({ reviews = [], customers = {}, nb }: Props) => {
                                     src={`${
                                         customers[record.customer_id].avatar
                                     }?size=32x32`}
-                                    className={classes.avatar}
+                                    sx={{ bgcolor: 'background.paper' }}
                                 />
                             ) : (
                                 <Avatar />
@@ -88,25 +56,31 @@ const PendingReviews = ({ reviews = [], customers = {}, nb }: Props) => {
                         <ListItemText
                             primary={<StarRatingField record={record} />}
                             secondary={record.comment}
-                            className={classes.listItemText}
-                            style={{ paddingRight: 0 }}
+                            sx={{
+                                overflowY: 'hidden',
+                                height: '4em',
+                                display: '-webkit-box',
+                                WebkitLineClamp: 2,
+                                WebkitBoxOrient: 'vertical',
+                                paddingRight: 0,
+                            }}
                         />
                     </ListItem>
                 ))}
             </List>
             <Box flexGrow={1}>&nbsp;</Box>
             <Button
-                className={classes.link}
+                sx={{ borderRadius: 0 }}
                 component={Link}
                 to="/reviews"
                 size="small"
                 color="primary"
             >
-                <Box p={1} className={classes.linkContent}>
+                <Box p={1} sx={{ color: 'primary.main' }}>
                     {translate('pos.dashboard.all_reviews')}
                 </Box>
             </Button>
-        </StyledCardWithIcon>
+        </CardWithIcon>
     );
 };
 

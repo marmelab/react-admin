@@ -28,6 +28,7 @@ export interface EditProps<RecordType extends RaRecord = any> {
     resource?: string;
     transform?: TransformData;
     title?: string | ReactElement;
+    sx?: SxProps;
 }
 
 export interface CreateProps<RecordType extends RaRecord = any> {
@@ -45,6 +46,7 @@ export interface CreateProps<RecordType extends RaRecord = any> {
     >;
     transform?: TransformData;
     title?: string | ReactElement;
+    sx?: SxProps;
 }
 
 export interface ShowProps<RecordType extends RaRecord = any> {

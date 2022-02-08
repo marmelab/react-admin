@@ -7,7 +7,6 @@ import {
     ComponentType,
 } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import LinearProgress from '@mui/material/LinearProgress';
 import {
     sanitizeListRestProps,
@@ -58,24 +57,19 @@ export const SingleFieldList = (props: SingleFieldListProps) => {
         className,
         children,
         linkType = 'edit',
-        component = Root,
+        component: Component = Root,
         ...rest
     } = props;
     const { data, isLoading } = useListContext(props);
     const resource = useResourceContext(props);
     const createPath = useCreatePath();
 
-    const Component = component;
-
     if (isLoading === true) {
         return <LinearProgress />;
     }
 
     return (
-        <Component
-            className={classnames(SingleFieldListClasses.root, className)}
-            {...sanitizeListRestProps(rest)}
-        >
+        <Component className={className} {...sanitizeListRestProps(rest)}>
             {data.map(record => {
                 const resourceLinkPath = !linkType
                     ? false
@@ -142,17 +136,17 @@ export interface SingleFieldListProps<RecordType extends RaRecord = any>
 const PREFIX = 'RaSingleFieldList';
 
 export const SingleFieldListClasses = {
-    root: `${PREFIX}-root`,
     link: `${PREFIX}-link`,
 };
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
-    [`&.${SingleFieldListClasses.root}`]: {
-        display: 'flex',
-        flexWrap: 'wrap',
-        marginTop: theme.spacing(-1),
-        marginBottom: theme.spacing(-1),
-    },
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    display: 'flex',
+    flexWrap: 'wrap',
+    marginTop: theme.spacing(-1),
+    marginBottom: theme.spacing(-1),
 
     [`& .${SingleFieldListClasses.link}`]: {
         textDecoration: 'none',

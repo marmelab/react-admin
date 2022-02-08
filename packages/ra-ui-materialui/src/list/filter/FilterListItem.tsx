@@ -140,8 +140,12 @@ const arePropsEqual = (prevProps, nextProps) =>
  * );
  */
 export const FilterListItem = memo(
-    (props: { label: string | ReactElement; value: any }) => {
-        const { label, value } = props;
+    (props: {
+        label: string | ReactElement;
+        value: any;
+        className?: string;
+    }) => {
+        const { label, value, className } = props;
         const { filterValues, setFilters } = useListFilterContext();
         const translate = useTranslate();
 
@@ -172,7 +176,7 @@ export const FilterListItem = memo(
             <StyledListItem
                 onClick={toggleFilter}
                 selected={isSelected}
-                className={FilterListItemClasses.listItem}
+                className={className}
                 disablePadding
             >
                 <ListItemButton
@@ -205,13 +209,14 @@ export const FilterListItem = memo(
 const PREFIX = 'RaFilterListItem';
 
 export const FilterListItemClasses = {
-    listItem: `${PREFIX}-listItem`,
     listItemButton: `${PREFIX}-listItemButton`,
     listItemText: `${PREFIX}-listItemText`,
 };
 
-const StyledListItem = styled(ListItem, { name: PREFIX })(({ theme }) => ({
-    [`&.${FilterListItemClasses.listItem}`]: {},
+const StyledListItem = styled(ListItem, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`& .${FilterListItemClasses.listItemButton}`]: {
         paddingRight: '2em',
         paddingLeft: '2em',

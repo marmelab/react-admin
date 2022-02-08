@@ -1,25 +1,11 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { TextField, MenuItem } from '@mui/material';
-import clsx from 'clsx';
 
 import { Status } from '../misc/Status';
 
-const PREFIX = 'StatusSelector';
-
-const classes = {
-    root: `${PREFIX}-root`,
-};
-
-const StyledTextField = styled(TextField)({
-    [`&.${classes.root}`]: {
-        width: 150,
-    },
-});
-
-export const StatusSelector = ({ status, setStatus, className = '' }: any) => {
+export const StatusSelector = ({ status, setStatus, sx }: any) => {
     return (
-        <StyledTextField
+        <TextField
             select
             value={status}
             onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
@@ -29,7 +15,7 @@ export const StatusSelector = ({ status, setStatus, className = '' }: any) => {
             label={false}
             margin="none"
             size="small"
-            className={clsx(className, classes.root)}
+            sx={sx}
         >
             <MenuItem value="cold">
                 Cold <Status status="cold" />
@@ -43,6 +29,6 @@ export const StatusSelector = ({ status, setStatus, className = '' }: any) => {
             <MenuItem value="in-contract">
                 In Contract <Status status="in-contract" />
             </MenuItem>
-        </StyledTextField>
+        </TextField>
     );
 };

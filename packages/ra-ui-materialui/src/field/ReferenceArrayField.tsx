@@ -15,6 +15,7 @@ import {
 import { fieldPropTypes, PublicFieldProps, InjectedFieldProps } from './types';
 import { LinearProgress } from '../layout';
 import { styled } from '@mui/material/styles';
+import { SxProps } from '@mui/system';
 
 /**
  * A container component that fetches records from another resource specified
@@ -131,6 +132,7 @@ export interface ReferenceArrayFieldProps
     reference: string;
     resource?: string;
     sort?: SortPayload;
+    sx?: SxProps;
 }
 
 export interface ReferenceArrayFieldViewProps
@@ -138,17 +140,17 @@ export interface ReferenceArrayFieldViewProps
         ListControllerProps {}
 
 export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props => {
-    const { children, pagination, className } = props;
+    const { children, pagination, className, sx } = props;
     const { isLoading, total } = useListContext(props);
 
     return (
-        <Root>
+        <Root className={className} sx={sx}>
             {isLoading ? (
                 <LinearProgress
                     className={ReferenceArrayFieldClasses.progress}
                 />
             ) : (
-                <span className={className}>
+                <span>
                     {children}
                     {pagination && total !== undefined ? pagination : null}
                 </span>
@@ -169,16 +171,13 @@ export const ReferenceArrayFieldClasses = {
     progress: `${PREFIX}-progress`,
 };
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`& .${ReferenceArrayFieldClasses.progress}`]: {
         marginTop: theme.spacing(2),
     },
 }));
-
-ReferenceArrayFieldView.propTypes = {
-    className: PropTypes.string,
-    children: PropTypes.element.isRequired,
-    reference: PropTypes.string.isRequired,
-};
 
 const PureReferenceArrayFieldView = memo(ReferenceArrayFieldView);

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { HtmlHTMLAttributes, ReactNode, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import { Card, Avatar } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import LockIcon from '@mui/icons-material/Lock';
@@ -29,7 +28,7 @@ import { LoginForm as DefaultLoginForm } from './LoginForm';
  *     );
  */
 export const Login = (props: LoginProps) => {
-    const { title, className, children, backgroundImage, ...rest } = props;
+    const { title, children, backgroundImage, ...rest } = props;
     const containerRef = useRef<HTMLDivElement>();
     let backgroundImageLoaded = false;
     const checkAuth = useCheckAuth();
@@ -67,11 +66,7 @@ export const Login = (props: LoginProps) => {
         }
     });
     return (
-        <Root
-            className={classnames(LoginClasses.main, className)}
-            {...rest}
-            ref={containerRef}
-        >
+        <Root {...rest} ref={containerRef}>
             <Card className={LoginClasses.card}>
                 <div className={LoginClasses.avatar}>
                     <Avatar className={LoginClasses.icon}>
@@ -94,25 +89,26 @@ export interface LoginProps
 
 const PREFIX = 'RaLogin';
 export const LoginClasses = {
-    main: `${PREFIX}-main`,
     card: `${PREFIX}-card`,
     avatar: `${PREFIX}-avatar`,
     icon: `${PREFIX}-icon`,
 };
 
-const Root = styled('div', { name: 'RaLogin' })(({ theme }) => ({
-    [`&.${LoginClasses.main}`]: {
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-        height: '1px',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        backgroundImage:
-            'radial-gradient(circle at 50% 14em, #313264 0%, #00023b 60%, #00023b 100%)',
-    },
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    minHeight: '100vh',
+    height: '1px',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundImage:
+        'radial-gradient(circle at 50% 14em, #313264 0%, #00023b 60%, #00023b 100%)',
+
     [`& .${LoginClasses.card}`]: {
         minWidth: 300,
         marginTop: '6em',

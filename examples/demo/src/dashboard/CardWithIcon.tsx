@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { FC, createElement } from 'react';
 import { Card, Box, Typography, Divider } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -7,43 +6,6 @@ import { ReactNode } from 'react';
 
 import cartouche from './cartouche.png';
 import cartoucheDark from './cartoucheDark.png';
-
-const PREFIX = 'CardWithIcon';
-
-const classes = {
-    card: `${PREFIX}-card`,
-    main: `${PREFIX}-main`,
-    title: `${PREFIX}-title`,
-};
-
-const StyledCard = styled(Card)(({ theme }) => ({
-    [`&.${classes.card}`]: {
-        minHeight: 52,
-        display: 'flex',
-        flexDirection: 'column',
-        flex: '1',
-        '& a': {
-            textDecoration: 'none',
-            color: 'inherit',
-        },
-    },
-
-    [`& .${classes.main}`]: {
-        overflow: 'inherit',
-        padding: 16,
-        background: `url(${
-            theme.palette.mode === 'dark' ? cartoucheDark : cartouche
-        }) no-repeat`,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        '& .icon': {
-            color: theme.palette.mode === 'dark' ? 'inherit' : '#dc2440',
-        },
-    },
-
-    [`& .${classes.title}`]: {},
-}));
 
 interface Props {
     icon: FC<any>;
@@ -58,28 +20,54 @@ const CardWithIcon = (props: Props) => {
 
     return (
         // @ts-ignore
-        <StyledCard className={classes.card}>
+        <Card
+            sx={{
+                minHeight: 52,
+                display: 'flex',
+                flexDirection: 'column',
+                flex: '1',
+                '& a': {
+                    textDecoration: 'none',
+                    color: 'inherit',
+                },
+            }}
+        >
             <Link to={to}>
-                <div className={classes.main}>
+                <Box
+                    sx={{
+                        overflow: 'inherit',
+                        padding: '16px',
+                        background: theme =>
+                            `url(${
+                                theme.palette.mode === 'dark'
+                                    ? cartoucheDark
+                                    : cartouche
+                            }) no-repeat`,
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        '& .icon': {
+                            color: theme =>
+                                theme.palette.mode === 'dark'
+                                    ? 'inherit'
+                                    : '#dc2440',
+                        },
+                    }}
+                >
                     <Box width="3em" className="icon">
                         {createElement(icon, { fontSize: 'large' })}
                     </Box>
                     <Box textAlign="right">
-                        <Typography
-                            className={classes.title}
-                            color="textSecondary"
-                        >
-                            {title}
-                        </Typography>
+                        <Typography color="textSecondary">{title}</Typography>
                         <Typography variant="h5" component="h2">
                             {subtitle || ' '}
                         </Typography>
                     </Box>
-                </div>
+                </Box>
             </Link>
             {children && <Divider />}
             {children}
-        </StyledCard>
+        </Card>
     );
 };
 

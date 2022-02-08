@@ -25,6 +25,7 @@ export const ResettableTextField = forwardRef(
             disabled,
             variant = 'filled',
             margin = 'dense',
+            className,
             ...rest
         } = props;
 
@@ -59,7 +60,6 @@ export const ResettableTextField = forwardRef(
             inputAdornedEnd,
             selectAdornment,
             visibleClearIcon,
-            ...restClasses
         } = ResettableTextFieldClasses;
 
         const { endAdornment, ...InputPropsWithoutEndAdornment } =
@@ -155,7 +155,6 @@ export const ResettableTextField = forwardRef(
 
         return (
             <StyledTextField
-                classes={restClasses}
                 value={value}
                 InputProps={{
                     classes:
@@ -168,6 +167,7 @@ export const ResettableTextField = forwardRef(
                 disabled={disabled}
                 variant={variant}
                 margin={margin}
+                className={className}
                 {...rest}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
@@ -236,6 +236,7 @@ export const ResettableTextFieldStyles = {
     },
 };
 
-const StyledTextField = styled(MuiTextField, { name: PREFIX })(
-    ResettableTextFieldStyles
-);
+const StyledTextField = styled(MuiTextField, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(ResettableTextFieldStyles);

@@ -81,7 +81,10 @@ export const SimpleListLoadingClasses = {
     tertiary: `${PREFIX}-tertiary`,
 };
 
-const StyledList = styled(List, { name: PREFIX })(({ theme }) => ({
+const StyledList = styled(List, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`& .${SimpleListLoadingClasses.primary}`]: {
         width: '30vw',
         display: 'inline-block',

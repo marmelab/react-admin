@@ -66,6 +66,7 @@ export const TranslatableInputs = (
     props: TranslatableInputsProps
 ): ReactElement => {
     const {
+        className,
         defaultLocale,
         locales,
         groupKey = '',
@@ -77,7 +78,7 @@ export const TranslatableInputs = (
     const context = useTranslatable({ defaultLocale, locales });
 
     return (
-        <Root className={TranslatableInputsClasses.root}>
+        <Root className={className}>
             <TranslatableContextProvider value={context}>
                 {selector}
                 {locales.map(locale => (
@@ -97,6 +98,7 @@ export const TranslatableInputs = (
 };
 
 export interface TranslatableInputsProps extends UseTranslatableOptions {
+    className?: string;
     selector?: ReactElement;
     children: ReactNode;
     groupKey?: string;
@@ -106,14 +108,11 @@ export interface TranslatableInputsProps extends UseTranslatableOptions {
 
 const PREFIX = 'RaTranslatableInputs';
 
-export const TranslatableInputsClasses = {
-    root: `${PREFIX}-root`,
-};
-
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
-    [`&.${TranslatableInputsClasses.root}`]: {
-        flexGrow: 1,
-        marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(0.5),
-    },
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    flexGrow: 1,
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(0.5),
 }));

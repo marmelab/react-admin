@@ -9,7 +9,6 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
 import FormHelperText from '@mui/material/FormHelperText';
-import classnames from 'classnames';
 import { useInput, useTranslate, shallowEqual } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -17,6 +16,7 @@ import { Labeled } from './Labeled';
 import { FileInputPreview } from './FileInputPreview';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
+import { SxProps } from '@mui/system';
 
 export const FileInput = (props: FileInputProps) => {
     const {
@@ -149,7 +149,7 @@ export const FileInput = (props: FileInputProps) => {
         <StyledLabeled
             id={id}
             label={label}
-            className={classnames(FileInputClasses.root, className)}
+            className={className}
             source={source}
             resource={resource}
             isRequired={isRequired}
@@ -234,10 +234,13 @@ export const FileInputClasses = {
     dropZone: `${PREFIX}-dropZone`,
     preview: `${PREFIX}-preview`,
     removeButton: `${PREFIX}-removeButton`,
-    root: `${PREFIX}-root`,
 };
 
-const StyledLabeled = styled(Labeled, { name: PREFIX })(({ theme }) => ({
+const StyledLabeled = styled(Labeled, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    width: '100%',
     [`& .${FileInputClasses.dropZone}`]: {
         background: theme.palette.background.default,
         cursor: 'pointer',
@@ -245,10 +248,8 @@ const StyledLabeled = styled(Labeled, { name: PREFIX })(({ theme }) => ({
         textAlign: 'center',
         color: theme.palette.getContrastText(theme.palette.background.default),
     },
-
     [`& .${FileInputClasses.preview}`]: {},
     [`& .${FileInputClasses.removeButton}`]: {},
-    [`&.${FileInputClasses.root}`]: { width: '100%' },
 }));
 
 export type FileInputProps = DropzoneOptions &
@@ -261,4 +262,5 @@ export type FileInputProps = DropzoneOptions &
         placeholder?: ReactNode;
         inputProps?: any;
         validateFileRemoval?(file): boolean | Promise<boolean>;
+        sx?: SxProps;
     };

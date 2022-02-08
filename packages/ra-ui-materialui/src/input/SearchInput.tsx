@@ -39,6 +39,9 @@ export type SearchInputProps = CommonInputProps & TextInputProps;
 
 const PREFIX = 'RaSearchInput';
 
-const StyledTextInput = styled(TextInput, { name: PREFIX })({
+const StyledTextInput = styled(TextInput, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
     marginTop: 0,
 });

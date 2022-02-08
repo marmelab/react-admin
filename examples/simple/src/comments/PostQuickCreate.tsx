@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
     Dialog,
     DialogTitle,
@@ -20,16 +19,6 @@ import {
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
 import CancelButton from './PostQuickCreateCancelButton';
-
-const PREFIX = 'PostQuickCreate';
-
-const classes = {
-    form: `${PREFIX}-form`,
-};
-
-const StyledSimpleForm = styled(SimpleForm)({
-    [`& .${classes.form}`]: { padding: 0 },
-});
 
 const PostQuickCreate = props => {
     const [create] = useCreate();
@@ -67,7 +56,7 @@ const PostQuickCreate = props => {
         >
             <DialogTitle>{translate('simple.create-post')}</DialogTitle>
             <DialogContent>
-                <StyledSimpleForm
+                <SimpleForm
                     id="post-quick-create"
                     onSubmit={handleSave}
                     saving={submitting}
@@ -86,7 +75,7 @@ const PostQuickCreate = props => {
                         fullWidth={true}
                         multiline={true}
                     />
-                </StyledSimpleForm>
+                </SimpleForm>
             </DialogContent>
             <DialogActions>
                 <SaveButton form="post-quick-create" submitOnEnter />

@@ -112,7 +112,10 @@ export const SimpleShowLayoutClasses = {
     row: `${PREFIX}-row`,
 };
 
-const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     flex: 1,
     padding: `${theme.spacing(1)} ${theme.spacing(2)}`,
     [`& .${SimpleShowLayoutClasses.stack}`]: {},

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { Card, CardContent, Typography, Box } from '@mui/material';
 import NoteIcon from '@mui/icons-material/Note';
 import {
@@ -12,29 +11,6 @@ import {
 import { formatDistance } from 'date-fns';
 
 import { Contact as ContactType } from '../types';
-
-const PREFIX = 'LatestNotes';
-
-const classes = {
-    note: `${PREFIX}-note`,
-    noteText: `${PREFIX}-noteText`,
-    noteTextText: `${PREFIX}-noteTextText`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`& .${classes.note}`]: {
-        marginBottom: theme.spacing(2),
-    },
-
-    [`& .${classes.noteText}`]: {},
-
-    [`& .${classes.noteTextText}`]: {
-        display: '-webkit-box',
-        WebkitLineClamp: 3,
-        WebkitBoxOrient: 'vertical',
-        overflow: 'hidden',
-    },
-}));
 
 export const LatestNotes = () => {
     const { identity } = useGetIdentity();
@@ -79,7 +55,7 @@ export const LatestNotes = () => {
         .slice(0, 5);
 
     return (
-        <Root>
+        <div>
             <Box display="flex" alignItems="center" marginBottom="1em">
                 <Box ml={2} mr={2} display="flex">
                     <NoteIcon color="disabled" fontSize="large" />
@@ -91,10 +67,10 @@ export const LatestNotes = () => {
             <Card>
                 <CardContent>
                     {allNotes.map(note => (
-                        <div
+                        <Box
                             id={`${note.type}_${note.id}`}
                             key={`${note.type}_${note.id}`}
-                            className={classes.note}
+                            sx={{ marginBottom: 2 }}
                         >
                             <Typography
                                 color="textSecondary"
@@ -115,16 +91,23 @@ export const LatestNotes = () => {
                                     }
                                 )}
                             </Typography>
-                            <div className={classes.noteText}>
-                                <Typography className={classes.noteTextText}>
+                            <div>
+                                <Typography
+                                    sx={{
+                                        display: '-webkit-box',
+                                        WebkitLineClamp: 3,
+                                        WebkitBoxOrient: 'vertical',
+                                        overflow: 'hidden',
+                                    }}
+                                >
                                     {note.text}
                                 </Typography>
                             </div>
-                        </div>
+                        </Box>
                     ))}
                 </CardContent>
             </Card>
-        </Root>
+        </div>
     );
 };
 

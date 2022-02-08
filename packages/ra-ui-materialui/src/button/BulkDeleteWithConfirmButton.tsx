@@ -97,7 +97,6 @@ export const BulkDeleteWithConfirmButton = (
             <StyledButton
                 onClick={handleClick}
                 label={label}
-                className={BulkDeleteWithConfirmButtonClasses.deleteButton}
                 {...sanitizeRestProps(rest)}
             >
                 {icon}
@@ -152,19 +151,16 @@ export interface BulkDeleteWithConfirmButtonProps
 
 const PREFIX = 'RaBulkDeleteWithConfirmButton';
 
-export const BulkDeleteWithConfirmButtonClasses = {
-    deleteButton: `${PREFIX}-deleteButton`,
-};
-
-const StyledButton = styled(Button, { name: PREFIX })(({ theme }) => ({
-    [`&.${BulkDeleteWithConfirmButtonClasses.deleteButton}`]: {
-        color: theme.palette.error.main,
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.error.main, 0.12),
-            // Reset on mouse devices
-            '@media (hover: none)': {
-                backgroundColor: 'transparent',
-            },
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    color: theme.palette.error.main,
+    '&:hover': {
+        backgroundColor: alpha(theme.palette.error.main, 0.12),
+        // Reset on mouse devices
+        '@media (hover: none)': {
+            backgroundColor: 'transparent',
         },
     },
 }));

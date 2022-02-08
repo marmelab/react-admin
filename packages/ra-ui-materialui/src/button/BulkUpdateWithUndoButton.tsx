@@ -27,7 +27,6 @@ export const BulkUpdateWithUndoButton = (
     const refresh = useRefresh();
 
     const {
-        classes: classesOverride,
         data,
         label = 'ra.action.update',
         icon = defaultIcon,
@@ -84,7 +83,6 @@ export const BulkUpdateWithUndoButton = (
         <StyledButton
             onClick={handleClick}
             label={label}
-            className={BulkUpdateWithUndoButtonClasses.updateButton}
             disabled={isLoading}
             {...sanitizeRestProps(rest)}
         >
@@ -114,7 +112,6 @@ export interface BulkUpdateWithUndoButtonProps
 }
 
 BulkUpdateWithUndoButton.propTypes = {
-    classes: PropTypes.object,
     label: PropTypes.string,
     resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
@@ -124,19 +121,16 @@ BulkUpdateWithUndoButton.propTypes = {
 
 const PREFIX = 'RaBulkUpdateWithUndoButton';
 
-export const BulkUpdateWithUndoButtonClasses = {
-    updateButton: `${PREFIX}-updateButton`,
-};
-
-const StyledButton = styled(Button, { name: PREFIX })(({ theme }) => ({
-    [`&.${BulkUpdateWithUndoButtonClasses.updateButton}`]: {
-        color: theme.palette.error.main,
-        '&:hover': {
-            backgroundColor: alpha(theme.palette.error.main, 0.12),
-            // Reset on mouse devices
-            '@media (hover: none)': {
-                backgroundColor: 'transparent',
-            },
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    color: theme.palette.error.main,
+    '&:hover': {
+        backgroundColor: alpha(theme.palette.error.main, 0.12),
+        // Reset on mouse devices
+        '@media (hover: none)': {
+            backgroundColor: 'transparent',
         },
     },
 }));

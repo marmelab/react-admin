@@ -1,34 +1,10 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { ReferenceField, useRedirect } from 'react-admin';
-import { Card, Typography } from '@mui/material';
+import { Box, Card, Typography } from '@mui/material';
 import { Draggable } from 'react-beautiful-dnd';
 
 import { LogoField } from '../companies/LogoField';
 import { Deal } from '../types';
-
-const PREFIX = 'DealCard';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    cardContent: `${PREFIX}-cardContent`,
-    cardText: `${PREFIX}-cardText`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`&.${classes.root}`]: {
-        marginBottom: theme.spacing(1),
-    },
-
-    [`& .${classes.cardContent}`]: {
-        padding: theme.spacing(1),
-        display: 'flex',
-    },
-
-    [`& .${classes.cardText}`]: {
-        marginLeft: theme.spacing(1),
-    },
-}));
 
 export const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
     const redirect = useRedirect();
@@ -40,8 +16,8 @@ export const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
     return (
         <Draggable draggableId={String(deal.id)} index={index}>
             {(provided, snapshot) => (
-                <Root
-                    className={classes.root}
+                <Box
+                    sx={{ marginBottom: 1 }}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
@@ -56,7 +32,12 @@ export const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
                         }}
                         elevation={snapshot.isDragging ? 3 : 1}
                     >
-                        <div className={classes.cardContent}>
+                        <Box
+                            sx={{
+                                padding: 1,
+                                display: 'flex',
+                            }}
+                        >
                             <ReferenceField
                                 source="company_id"
                                 record={deal}
@@ -65,7 +46,7 @@ export const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
                             >
                                 <LogoField size="small" />
                             </ReferenceField>
-                            <div className={classes.cardText}>
+                            <Box sx={{ marginLeft: 1 }}>
                                 <Typography variant="body2" gutterBottom>
                                     {deal.name}
                                 </Typography>
@@ -82,10 +63,10 @@ export const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
                                     })}
                                     , {deal.type}
                                 </Typography>
-                            </div>
-                        </div>
+                            </Box>
+                        </Box>
                     </Card>
-                </Root>
+                </Box>
             )}
         </Draggable>
     );

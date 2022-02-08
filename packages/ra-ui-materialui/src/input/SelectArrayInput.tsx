@@ -10,7 +10,6 @@ import {
     FormControl,
     Chip,
 } from '@mui/material';
-import classnames from 'classnames';
 import { FieldTitle, useInput, ChoicesProps, useChoices } from 'ra-core';
 import { InputHelperText } from './InputHelperText';
 import { FormControlProps } from '@mui/material/FormControl';
@@ -210,7 +209,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         <>
             <StyledFormControl
                 margin={margin}
-                className={classnames(SelectArrayInputClasses.root, className)}
+                className={className}
                 error={(isTouched || isSubmitted) && invalid}
                 variant={variant}
                 {...sanitizeRestProps(rest)}
@@ -349,22 +348,20 @@ const sanitizeRestProps = ({
 const PREFIX = 'RaSelectArrayInput';
 
 export const SelectArrayInputClasses = {
-    root: `${PREFIX}-root`,
     chips: `${PREFIX}-chips`,
     chip: `${PREFIX}-chip`,
 };
 
-const StyledFormControl = styled(FormControl, { name: PREFIX })(
-    ({ theme }) => ({
-        [`&.${SelectArrayInputClasses.root}`]: {},
+const StyledFormControl = styled(FormControl, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    [`& .${SelectArrayInputClasses.chips}`]: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
 
-        [`& .${SelectArrayInputClasses.chips}`]: {
-            display: 'flex',
-            flexWrap: 'wrap',
-        },
-
-        [`& .${SelectArrayInputClasses.chip}`]: {
-            margin: theme.spacing(1 / 4),
-        },
-    })
-);
+    [`& .${SelectArrayInputClasses.chip}`]: {
+        margin: theme.spacing(1 / 4),
+    },
+}));
