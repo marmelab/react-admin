@@ -1,4 +1,5 @@
-import { ReactElement } from 'react';
+import * as React from 'react';
+import { ReactNode } from 'react';
 
 import { useAuthenticated } from './useAuthenticated';
 
@@ -35,10 +36,10 @@ export const Authenticated = (props: AuthenticatedProps) => {
     useAuthenticated({ params: authParams });
     // render the child even though the useAuthenticated() call isn't finished (optimistic rendering)
     // the above hook will log out if the authProvider doesn't validate that the user is authenticated
-    return children;
+    return <>{children}</>;
 };
 
 export interface AuthenticatedProps {
-    children: ReactElement<any>;
+    children: ReactNode;
     authParams?: object;
 }
