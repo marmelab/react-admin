@@ -2798,3 +2798,50 @@ import { BooleanInput } from 'react-admin';
 +   onChange={e => { console.log(e.target.checked); }}
 />
 ```
+
+## `<ReferenceInput>` and `<ReferenceArrayInput>` Now Provide A ChoicesContext
+
+The `ReferenceInput` and `ReferenceArrayInput` components used to inject props to their children. They now provide a `ChoicesContext` with support for sorting, paginating and filtering through methods and properties that match those of the `ListContext`. 
+
+As a result, `<ReferenceInput>` no longer accepts the `filterToQuery` prop. It is now the responsibility of the child input to call the `setFilters` function provided through the `ChoicesContext` with the expected filter. If you used the `filterToQuery` prop to convert an `<AutocompleteInput>` search, you'll have to move the `filterToQuery` prop on the `<AutocompleteInput>` itself:
+
+```diff
+const UserListFilter = [
+    <ReferenceInput
+        source="email"
+-        filterToQuery={search => ({ email: search })}
+    >
+-        <AutocompleteInput />
++        <AutocompleteInput filterToQuery={search => ({ email: search })} />
+    </ReferenceInput>
+]
+```
+
+The other changes only impact you if you had a custom child component for either the `<ReferenceInput>` or `<ReferenceArrayInput>`.
+
+The `ChoicesContext` provides access to the choices via 3 properties:
+- `availableChoices`: The choices which are not selected but matches the parameters (sorting, pagination and filters)
+- `selectedChoices`: The selected choices. 
+- `allChoices`: Merge of both available and selected choices. 
+
+The `ReferenceInput` and `ReferenceArrayInput` components also handled the form binding and injected final-form `input` and `meta` to their child. They don't need to do that anymore and simply watch the form value changes ti ensure they load the required data when needed.
+
+```diff
+const MyCustomAutocomplete = (props) => {
+-    const { choices, input, meta, resource, setFilter, source } = props;
++    const { allChoices, setFilters } = useChoicesContext(props); 
+
+-    const { input, meta } = useInput({ input, meta });
++    const { field, fieldState } = useInput(props);
+
+    const handleTextInputChange = (event) => {
+-        setFilter(event.target.value);
+         // Note that we don't force you to use `q` anymore
++        setFilters({ q: event.target.value });
+    };
+
+    return (
+        //...
+    )
+}
+```
