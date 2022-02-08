@@ -2799,11 +2799,13 @@ import { BooleanInput } from 'react-admin';
 />
 ```
 
-## `<ReferenceInput>` and `<ReferenceArrayInput>` Now Provide A ChoicesContext
+## `<ReferenceInput>` and `<ReferenceArrayInput>` Now Provide A `ChoicesContext`
 
-The `ReferenceInput` and `ReferenceArrayInput` components used to inject props to their children. They now provide a `ChoicesContext` with support for sorting, paginating and filtering through methods and properties that match those of the `ListContext`. 
+`<ReferenceInput>` and `<ReferenceArrayInput>` used to inject props to their children. They now provide a `ChoicesContext` with support for sorting, paginating and filtering through methods and properties that match those of the `ListContext`. All their methods now have the same signature. As a result, several changes were made to both components:
 
-As a result, `<ReferenceInput>` no longer accepts the `filterToQuery` prop. It is now the responsibility of the child input to call the `setFilters` function provided through the `ChoicesContext` with the expected filter. If you used the `filterToQuery` prop to convert an `<AutocompleteInput>` search, you'll have to move the `filterToQuery` prop on the `<AutocompleteInput>` itself:
+### `<ReferenceInput>` No Longer Accepts The `filterToQuery` Prop
+
+It is now the responsibility of the child input to call the `setFilters` function provided through the `ChoicesContext` with the expected filter. If you used the `filterToQuery` prop to convert an `<AutocompleteInput>` search, you'll have to move the `filterToQuery` prop on the `<AutocompleteInput>` itself:
 
 ```diff
 const UserListFilter = [
@@ -2816,6 +2818,50 @@ const UserListFilter = [
     </ReferenceInput>
 ]
 ```
+
+### `<ReferenceArrayInput>` No Longer Provides a `ListContext`
+
+As the `ChoicesContext` now provide an API very similar to the `ListContext`, it no longer sets up a `ListContext`. If you used this to display a `<Datagrid>`, we will soon provide the `<DatagridInput>` for this purpose.
+
+### `<ReferenceArrayInputContext>`, `<ReferenceArrayInputContextProvider>` And `useReferenceArrayInputContext` Have Been Removed
+
+As we now have a common interface to fetch choices related data and methods with the `ChoicesContext`, we removed the `<ReferenceArrayInputContext>` and `<ReferenceArrayInputContextProvider>` components as well as the `useReferenceArrayInputContext` hook.
+
+```diff
+-import { useReferenceArrayInputContext } from 'react-admin';
+-import { useChoicesContext } from 'react-admin';
+
+const MyCustomInput = () => {
+-    const {
+-        choices, 
+-        error, 
+-        warning, 
+-        loaded, 
+-        loading, 
+-        setFilter, 
+-        setPagination, 
+-        setSort, 
+-        setSortForList,
+-    } = useReferenceArrayInputContext();
++    const {
++        allChoices,
++        availableChoices,
++        selectedChoices,
++        filter,
++        filterValues,
++        page,
++        perPage,
++        setFilters,
++        setPage,
++        setPerPage,
++        setSort,
++        sort,
++    } useChoicesContext();
+    return // ...
+}
+```
+
+### Other Changes
 
 The other changes only impact you if you had a custom child component for either the `<ReferenceInput>` or `<ReferenceArrayInput>`.
 
