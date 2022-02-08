@@ -20,7 +20,7 @@ import {
     TextField,
     UrlField,
     useShowController,
-    useLocale,
+    useLocaleState,
     useRecordContext,
 } from 'react-admin';
 import PostTitle from './PostTitle';
@@ -38,7 +38,7 @@ const CreateRelatedComment = () => {
 
 const PostShow = () => {
     const controllerProps = useShowController();
-    const locale = useLocale();
+    const [locale] = useLocaleState();
     return (
         <ShowContextProvider value={controllerProps}>
             <ShowView title={<PostTitle />}>
