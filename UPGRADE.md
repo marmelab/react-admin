@@ -2786,7 +2786,7 @@ const MyRichTextInput = (props) => (
 
 ## `BooleanInput` Change Handlers Receive an Event Object
 
-In previous versions BooleanInput's `onChange` event handlers recive the checked state of the input. Now they recive the event object, so you have to take the checked state from there.
+In previous versions BooleanInput's `onChange` event handlers only received the checked state of the input. Now they receive the event object, so you have to take the checked state from there.
 
 ```diff
 import { BooleanInput } from 'react-admin';
