@@ -47,6 +47,8 @@ You may override the tabs labels using translation keys following this format: `
 You may override the language selector using the `selector` prop, which accepts a React element:
 
 ```jsx
+import { useTranslatableContext } from 'react-admin';
+
 const Selector = () => {
     const {
         locales,
@@ -102,12 +104,14 @@ If you have multiple `TranslatableFields` on the same page, you should specify a
 
 The `TranslatableFields` component is not meant to be used inside a `List` as you probably don't want to have tabs inside multiple lines. The simple solution to display a translatable value would be to specify its source like this: `name.en`. However, you may want to display its translation for the current admin locale.
 
-In this case, you'll have to get the current locale through the `useLocale` hook and set the translatable field `source` dynamically.
+In this case, you'll have to get the current locale through the `useLocaleState` hook and set the translatable field `source` dynamically.
 
 {% raw %}
 ```jsx
+import { List, Datagrid, TextField, ReferenceArrayField, SingleFieldList, ChipField, useLocaleState } from 'react-admin';
+
 const PostList = () => {
-    const locale = useLocale();
+    const [locale] = useLocaleState();
 
     return (
         <List>
