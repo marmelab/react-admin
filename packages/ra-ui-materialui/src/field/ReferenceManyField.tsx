@@ -1,4 +1,4 @@
-import React, { FC, cloneElement, Children, ReactElement } from 'react';
+import React, { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     FilterPayload,
@@ -11,7 +11,6 @@ import {
 } from 'ra-core';
 
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
-import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 
 /**
  * Render related records to the current one.
@@ -142,17 +141,12 @@ ReferenceManyField.defaultProps = {
 };
 
 export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => {
-    const { children, pagination, reference, ...rest } = props;
+    const { children, pagination } = props;
 
     return (
         <>
-            {cloneElement(Children.only(children), {
-                ...sanitizeFieldRestProps(rest),
-                resource: reference,
-            })}
-            {pagination &&
-                props.total !== undefined &&
-                cloneElement(pagination)}
+            {children}
+            {pagination && props.total !== undefined ? pagination : null}
         </>
     );
 };

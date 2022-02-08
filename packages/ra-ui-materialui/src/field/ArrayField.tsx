@@ -1,13 +1,5 @@
 import * as React from 'react';
-import {
-    cloneElement,
-    Children,
-    useEffect,
-    useState,
-    memo,
-    FC,
-    ReactElement,
-} from 'react';
+import { useEffect, useState, memo, FC, ReactElement } from 'react';
 import get from 'lodash/get';
 import { ListContextProvider, useRecordContext } from 'ra-core';
 
@@ -79,7 +71,7 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *     TagsField.defaultProps = { addLabel: true };
  */
 export const ArrayField: FC<ArrayFieldProps> = memo(props => {
-    const { children, resource, source, addLabel, ...rest } = props;
+    const { children, resource, source } = props;
     const record = useRecordContext(props);
     const [data, setData] = useState(initialState);
 
@@ -114,13 +106,7 @@ export const ArrayField: FC<ArrayFieldProps> = memo(props => {
                 total: data.length,
             }}
         >
-            {cloneElement(Children.only(children), {
-                data,
-                isLoading: false,
-                sort: { field: null, order: null },
-                resource,
-                ...rest,
-            })}
+            {children}
         </ListContextProvider>
     );
 });

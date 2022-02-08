@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import { CoreAdminContext, testDataProvider } from 'ra-core';
+import {
+    CoreAdminContext,
+    ResourceContextProvider,
+    testDataProvider,
+} from 'ra-core';
 import { ThemeProvider, createTheme } from '@mui/material';
 
 import { ArrayField } from './ArrayField';
@@ -22,7 +26,9 @@ describe('<ArrayField />', () => {
     const Wrapper = ({ children }) => (
         <ThemeProvider theme={createTheme()}>
             <CoreAdminContext dataProvider={testDataProvider()}>
-                {children}
+                <ResourceContextProvider value="posts">
+                    {children}
+                </ResourceContextProvider>
             </CoreAdminContext>
         </ThemeProvider>
     );
@@ -30,7 +36,7 @@ describe('<ArrayField />', () => {
     it('should not fail for empty records', () => {
         render(
             <Wrapper>
-                <ArrayField source="arr" resource="posts" record={{ id: 123 }}>
+                <ArrayField source="arr" record={{ id: 123 }}>
                     <DummyIterator />
                 </ArrayField>
             </Wrapper>
@@ -42,7 +48,6 @@ describe('<ArrayField />', () => {
             <Wrapper>
                 <ArrayField
                     source="arr"
-                    resource="posts"
                     record={{
                         id: 123,
                         arr: [],
@@ -62,7 +67,6 @@ describe('<ArrayField />', () => {
             <Wrapper>
                 <ArrayField
                     source="arr"
-                    resource="posts"
                     record={{
                         id: 123,
                         arr: [
@@ -93,7 +97,6 @@ describe('<ArrayField />', () => {
             <Wrapper>
                 <ArrayField
                     source="arr"
-                    resource="posts"
                     record={{
                         id: 123,
                         arr: [
