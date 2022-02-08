@@ -7,7 +7,7 @@ title: "useListContext"
 
 Whenever react-admin displays a List, it creates a `ListContext` to store the list data, as well as filters, pagination, sort state, and callbacks to update them.
 
-The `ListContext` is available to descendents of:
+The `ListContext` is available to descendants of:
 
 - `<List>`,
 - `<ListGuesser>`,
@@ -19,7 +19,7 @@ All descendent components can therefore access the list context, using the `useL
 
 ## Usage
 
-Call `useListContext` in a component, then use this component as a descendant of a List component.
+Call `useListContext` in a component, then use this component as a descendant of a `List` component.
 
 ```jsx
 // in src/posts/Aside.js
