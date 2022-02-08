@@ -2870,7 +2870,7 @@ The `ChoicesContext` provides access to the choices via 3 properties:
 - `selectedChoices`: The selected choices. 
 - `allChoices`: Merge of both available and selected choices. 
 
-The `ReferenceInput` and `ReferenceArrayInput` components also handled the form binding and injected final-form `input` and `meta` to their child. They don't need to do that anymore and simply watch the form value changes ti ensure they load the required data when needed.
+The `ReferenceInput` and `ReferenceArrayInput` components also handled the form binding and injected final-form `input` and `meta` to their child. They don't need to do that anymore, and simply watch the form value changes to ensure they load the required data when needed.
 
 ```diff
 const MyCustomAutocomplete = (props) => {
