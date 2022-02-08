@@ -1,17 +1,10 @@
 import * as React from 'react';
-import {
-    cloneElement,
-    MouseEventHandler,
-    ReactElement,
-    useCallback,
-} from 'react';
+import { MouseEventHandler, ReactElement, useCallback } from 'react';
 import { UseMutationOptions } from 'react-query';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import Button, { ButtonProps } from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
 import ContentSave from '@mui/icons-material/Save';
-import classnames from 'classnames';
 import { useFormContext } from 'react-hook-form';
 import {
     CreateParams,
@@ -24,7 +17,7 @@ import {
     useTranslate,
 } from 'ra-core';
 
-import { sanitizeButtonRestProps } from './Button';
+import { Button, ButtonProps, sanitizeButtonRestProps } from './Button';
 
 /**
  * Submit button for resource forms (Edit and Create).
@@ -112,24 +105,11 @@ export const SaveButton = <RecordType extends RaRecord = any>(
             aria-label={displayedLabel}
             disabled={disabled}
             onClick={handleClick}
+            label={displayedLabel}
             // TODO: find a way to display the loading state (LoadingButton from mui Lab?)
             {...sanitizeButtonRestProps(rest)}
         >
-            {saving ? (
-                <CircularProgress
-                    size={18}
-                    thickness={2}
-                    className={SaveButtonClasses.leftIcon}
-                />
-            ) : (
-                cloneElement(icon, {
-                    className: classnames(
-                        SaveButtonClasses.leftIcon,
-                        SaveButtonClasses.icon
-                    ),
-                })
-            )}
-            {displayedLabel}
+            {saving ? <CircularProgress size={18} thickness={2} /> : icon}
         </StyledButton>
     );
 };
@@ -174,22 +154,9 @@ SaveButton.propTypes = {
 
 const PREFIX = 'RaSaveButton';
 
-export const SaveButtonClasses = {
-    leftIcon: `${PREFIX}-leftIcon`,
-    icon: `${PREFIX}-icon`,
-};
-
 const StyledButton = styled(Button, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     position: 'relative',
-
-    [`& .${SaveButtonClasses.leftIcon}`]: {
-        marginRight: theme.spacing(1),
-    },
-
-    [`& .${SaveButtonClasses.icon}`]: {
-        fontSize: 18,
-    },
 }));
