@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Children, cloneElement, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { Card, CardContent } from '@mui/material';
@@ -27,15 +27,8 @@ export const EditView = (props: EditViewProps) => {
         ...rest
     } = props;
 
-    const { hasList, hasShow } = useResourceDefinition();
-    const {
-        defaultTitle,
-        record,
-        redirect,
-        resource,
-        save,
-        saving,
-    } = useEditContext(props);
+    const { hasShow } = useResourceDefinition();
+    const { defaultTitle, record } = useEditContext(props);
 
     const finalActions =
         typeof actions === 'undefined' && hasShow ? (
@@ -56,50 +49,16 @@ export const EditView = (props: EditViewProps) => {
                 record={record}
                 defaultTitle={defaultTitle}
             />
-            {finalActions &&
-                cloneElement(finalActions, {
-                    data: record,
-                    hasShow,
-                    hasList,
-                    resource,
-                    //  Ensure we don't override any user provided props
-                    ...finalActions.props,
-                })}
+            {finalActions}
             <div
                 className={classnames(EditClasses.main, {
                     [EditClasses.noActions]: !finalActions,
                 })}
             >
                 <Content className={EditClasses.card}>
-                    {record ? (
-                        cloneElement(Children.only(children), {
-                            record,
-                            redirect:
-                                typeof children.props.redirect === 'undefined'
-                                    ? redirect
-                                    : children.props.redirect,
-                            resource,
-                            save:
-                                typeof children.props.save === 'undefined'
-                                    ? save
-                                    : children.props.save,
-                            saving,
-                            mutationMode,
-                        })
-                    ) : (
-                        <CardContent>&nbsp;</CardContent>
-                    )}
+                    {record ? children : <CardContent>&nbsp;</CardContent>}
                 </Content>
-                {aside &&
-                    React.cloneElement(aside, {
-                        record,
-                        resource,
-                        save:
-                            typeof children.props.save === 'undefined'
-                                ? save
-                                : children.props.save,
-                        saving,
-                    })}
+                {aside}
             </div>
         </Root>
     );

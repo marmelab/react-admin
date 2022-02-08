@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Children, cloneElement, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { Card } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -20,14 +20,7 @@ export const CreateView = (props: CreateViewProps) => {
         ...rest
     } = props;
 
-    const {
-        defaultTitle,
-        record,
-        redirect,
-        resource,
-        save,
-        saving,
-    } = useCreateContext(props);
+    const { defaultTitle, record } = useCreateContext(props);
 
     return (
         <Root
@@ -35,42 +28,14 @@ export const CreateView = (props: CreateViewProps) => {
             {...sanitizeRestProps(rest)}
         >
             <Title title={title} record={record} defaultTitle={defaultTitle} />
-            {actions &&
-                cloneElement(actions, {
-                    resource,
-                    //  Ensure we don't override any user provided props
-                    ...actions.props,
-                })}
+            {actions}
             <div
                 className={classnames(CreateClasses.main, {
                     [CreateClasses.noActions]: !actions,
                 })}
             >
-                <Content className={CreateClasses.card}>
-                    {cloneElement(Children.only(children), {
-                        record,
-                        redirect:
-                            typeof children.props.redirect === 'undefined'
-                                ? redirect
-                                : children.props.redirect,
-                        resource,
-                        save:
-                            typeof children.props.save === 'undefined'
-                                ? save
-                                : children.props.save,
-                        saving,
-                    })}
-                </Content>
-                {aside &&
-                    cloneElement(aside, {
-                        record,
-                        resource,
-                        save:
-                            typeof children.props.save === 'undefined'
-                                ? save
-                                : children.props.save,
-                        saving,
-                    })}
+                <Content className={CreateClasses.card}>{children}</Content>
+                {aside}
             </div>
         </Root>
     );
