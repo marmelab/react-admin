@@ -3,7 +3,7 @@ import { MouseEventHandler, ReactElement, useCallback } from 'react';
 import { UseMutationOptions } from 'react-query';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import CircularProgress from '@mui/material/CircularProgress';
+import { Button, ButtonProps, CircularProgress } from '@mui/material';
 import ContentSave from '@mui/icons-material/Save';
 import { useFormContext } from 'react-hook-form';
 import {
@@ -17,7 +17,7 @@ import {
     useTranslate,
 } from 'ra-core';
 
-import { Button, ButtonProps, sanitizeButtonRestProps } from './Button';
+import { sanitizeButtonRestProps } from './Button';
 
 /**
  * Submit button for resource forms (Edit and Create).
@@ -105,11 +105,11 @@ export const SaveButton = <RecordType extends RaRecord = any>(
             aria-label={displayedLabel}
             disabled={disabled}
             onClick={handleClick}
-            label={displayedLabel}
             // TODO: find a way to display the loading state (LoadingButton from mui Lab?)
             {...sanitizeButtonRestProps(rest)}
         >
             {saving ? <CircularProgress size={18} thickness={2} /> : icon}
+            {displayedLabel}
         </StyledButton>
     );
 };
@@ -159,4 +159,10 @@ const StyledButton = styled(Button, {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     position: 'relative',
+    [`& .MuiSvgIcon-root, & .MuiIcon-root, & .MuiCircularProgress-root`]: {
+        marginRight: theme.spacing(1),
+    },
+    [`& .MuiSvgIcon-root, & .MuiIcon-root`]: {
+        fontSize: 18,
+    },
 }));
