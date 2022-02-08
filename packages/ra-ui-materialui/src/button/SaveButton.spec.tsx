@@ -2,7 +2,6 @@ import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
 import {
-    CoreAdminContext,
     Form,
     MutationMode,
     required,
@@ -357,7 +356,7 @@ describe('<SaveButton />', () => {
         };
 
         render(
-            <CoreAdminContext dataProvider={testDataProvider()}>
+            <AdminContext dataProvider={testDataProvider()}>
                 <>
                     <Form
                         onSubmit={jest.fn()}
@@ -377,7 +376,7 @@ describe('<SaveButton />', () => {
                     />
                     <Notification />
                 </>
-            </CoreAdminContext>
+            </AdminContext>
         );
 
         fireEvent.click(screen.getByText('ra.action.save'));
