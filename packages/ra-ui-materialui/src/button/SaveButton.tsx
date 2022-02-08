@@ -54,7 +54,7 @@ export const SaveButton = <RecordType extends RaRecord = any>(
         label = 'ra.action.save',
         onClick,
         mutationOptions,
-        saving = true,
+        saving,
         disabled = saving,
         submitOnEnter,
         transform,
