@@ -97,7 +97,6 @@ export const ReferenceArrayInput = ({
     }
 
     const controllerProps = useReferenceArrayInputController(props);
-    console.log({ controllerProps });
     return (
         <ResourceContextProvider value={props.reference}>
             <ChoicesContextProvider value={controllerProps}>

@@ -178,7 +178,6 @@ export const AutocompleteInput = <
         resource: resourceProp,
         source: sourceProp,
     });
-    console.log({ allChoices });
 
     const translate = useTranslate();
     const {
