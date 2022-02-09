@@ -54,9 +54,8 @@ export default (
     const isFirstRender = useRef(true);
 
     const setPerPage = useCallback(
-        perPage =>
-            setPagination({ perPage, page: initialPagination.page || 1 }),
-        [initialPagination.page]
+        perPage => setPagination({ perPage, page: 1 }),
+        []
     );
     const setPage = useCallback(page => setPagination({ page }), []);
 
