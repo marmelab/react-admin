@@ -1454,6 +1454,49 @@ export const PostEdit = () => (
 
 Use the `<Title>` component instead.
 
+## No More Props Injection In `<AppBar>`
+
+When a React element was provided as the `userMenu` prop, the `<AppBar>` used to clone it and inject the `logout` prop (a React element). This is no longer the case and if you provided a custom user menu, you now have to include the logout yourself.
+
+```diff
+-import { UserMenu } from 'react-admin';
++import { Logout, UserMenu } from 'react-admin';
+
+-export const MyUserMenu = (props) => (
++export const MyUserMenu = () => (
+-    <UserMenu {...props}>
++    <UserMenu {...props} logout={<Logout />}>
+        <MenuItemLink
+            to="/configuration"
+            primaryText="pos.configuration"
+            leftIcon={<SettingsIcon />}
+            sidebarIsOpen
+        />
+    </UserMenu>
+)
+```
+
+## `<MenuItemLink>` Automatically Translate `primaryText`
+
+You can pass a translation key directly as the `primaryText` prop for `<MenuItemLink>`.
+
+```diff
+const CustomUserMenu = (props: any) => {
+-    const translate = useTranslate();
+    return (
+        <UserMenu {...props}>
+            <MenuItemLink
+                to="/configuration"
+-                primaryText={translate('pos.configuration')}
++                primaryText="pos.configuration"
+                leftIcon={<SettingsIcon />}
+                sidebarIsOpen
+            />
+        </UserMenu>
+    )
+);
+```
+
 ## `useListContext` No Longer Returns An `ids` Prop
 
 The `ListContext` used to return two props for the list data: `data` and `ids`. To render the list data, you had to iterate over the `ids`. 
