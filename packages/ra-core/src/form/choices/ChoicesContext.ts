@@ -9,14 +9,14 @@ import { FilterPayload, RaRecord, SortPayload } from '../../types';
 export const ChoicesContext = createContext<ChoicesContextValue>(undefined);
 
 export type ChoicesContextValue<RecordType extends RaRecord = any> = {
-    sort: SortPayload;
     allChoices: RecordType[];
     availableChoices: RecordType[];
-    selectedChoices: RecordType[];
     displayedFilters: any;
     error?: any;
     filter?: FilterPayload;
     filterValues: any;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
     hideFilter: (filterName: string) => void;
     isFetching: boolean;
     isLoading: boolean;
@@ -24,6 +24,7 @@ export type ChoicesContextValue<RecordType extends RaRecord = any> = {
     perPage: number;
     refetch: () => void;
     resource: string;
+    selectedChoices: RecordType[];
     setFilters: (
         filters: any,
         displayedFilters: any,
@@ -33,8 +34,7 @@ export type ChoicesContextValue<RecordType extends RaRecord = any> = {
     setPerPage: (page: number) => void;
     setSort: (sort: SortPayload) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
+    sort: SortPayload;
     source: string;
     total: number;
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
 };

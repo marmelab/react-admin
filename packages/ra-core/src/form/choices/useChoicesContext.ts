@@ -12,37 +12,50 @@ export const useChoicesContext = <ChoicesType extends RaRecord = RaRecord>(
     const { data, ...list } = useList<ChoicesType>({ data: options.choices });
     const result = useMemo(
         () => ({
-            ...list,
-            allChoices: data,
-            availableChoices: options.availableChoices ?? data,
-            selectedChoices: options.selectedChoices ?? data,
-            displayedFilters: options.displayedFilters ?? list.displayedFilters,
-            error: options.error ?? list.error,
-            filter: options.filter ?? list.filter,
-            filterValues: options.filterValues ?? list.filterValues,
-            hasNextPage: options.hasNextPage ?? list.hasNextPage,
-            hasPreviousPage: options.hasPreviousPage ?? list.hasPreviousPage,
-            hideFilter: options.hideFilter ?? list.hideFilter,
-            isFetching: options.isFetching ?? list.isFetching,
-            isLoading: options.isLoading ?? list.isLoading,
-            page: options.page ?? list.page,
-            perPage: options.perPage ?? list.perPage,
-            refetch: options.refetch ?? list.refetch,
-            resource: options.resource ?? list.resource,
-            setFilters: options.setFilters ?? list.setFilters,
-            setPage: options.setPage ?? list.setPage,
-            setPerPage: options.setPerPage ?? list.setPerPage,
-            setSort: options.setSort ?? list.setSort,
-            showFilter: options.showFilter ?? list.showFilter,
-            sort: options.sort ?? list.sort,
-            source: options.source,
+            allChoices: context.allChoices ?? data,
+            availableChoices:
+                context.availableChoices ?? options.availableChoices ?? data,
+            selectedChoices:
+                context.selectedChoices ?? options.selectedChoices ?? data,
+            displayedFilters:
+                context.displayedFilters ??
+                options.displayedFilters ??
+                list.displayedFilters,
+            error: context.error ?? options.error ?? list.error,
+            filter: context.filter ?? options.filter ?? list.filter,
+            filterValues:
+                context.filterValues ??
+                options.filterValues ??
+                list.filterValues,
+            hasNextPage:
+                context.hasNextPage ?? options.hasNextPage ?? list.hasNextPage,
+            hasPreviousPage:
+                context.hasPreviousPage ??
+                options.hasPreviousPage ??
+                list.hasPreviousPage,
+            hideFilter:
+                context.hideFilter ?? options.hideFilter ?? list.hideFilter,
+            isFetching:
+                context.isFetching ?? options.isFetching ?? list.isFetching,
+            isLoading: context.isLoading ?? options.isLoading ?? list.isLoading,
+            page: context.page ?? options.page ?? list.page,
+            perPage: context.perPage ?? options.perPage ?? list.perPage,
+            refetch: context.refetch ?? options.refetch ?? list.refetch,
+            resource: context.resource ?? options.resource ?? list.resource,
+            setFilters:
+                context.setFilters ?? options.setFilters ?? list.setFilters,
+            setPage: context.setPage ?? options.setPage ?? list.setPage,
+            setPerPage:
+                context.setPerPage ?? options.setPerPage ?? list.setPerPage,
+            setSort: context.setSort ?? options.setSort ?? list.setSort,
+            showFilter:
+                context.showFilter ?? options.showFilter ?? list.showFilter,
+            sort: context.sort ?? options.sort ?? list.sort,
+            source: context.source ?? options.source,
             total: options.total ?? list.total,
         }),
-        [data, list, options]
+        [context, data, list, options]
     );
-    if (!context || options.choices) {
-        return result;
-    }
 
-    return context;
+    return result;
 };
