@@ -75,18 +75,8 @@ import { ReferenceError } from './ReferenceError';
  *     <SelectInput optionText="title" />
  * </ReferenceInput>
  *
- * The enclosed component may filter results. ReferenceInput passes a `setFilter`
- * function as prop to its child component. It uses the value to create a filter
- * for the query - by default { q: [searchText] }. You can customize the mapping
- * searchText => searchQuery by setting a custom `filterToQuery` function prop:
- *
- * @example
- * <ReferenceInput
- *      source="post_id"
- *      reference="posts"
- *      filterToQuery={searchText => ({ title: searchText })}>
- *     <AutocompleteInput optionText="title" />
- * </ReferenceInput>
+ * The enclosed component may filter results. ReferenceInput create a ChoicesContext which provides
+ * a `setFilters` function. You can call this function to filter the results.
  */
 export const ReferenceInput = (props: ReferenceInputProps) => {
     const { children, label, reference } = props;
@@ -117,7 +107,6 @@ ReferenceInput.propTypes = {
     className: PropTypes.string,
     classes: PropTypes.object,
     filter: PropTypes.object,
-    filterToQuery: PropTypes.func.isRequired,
     label: PropTypes.string,
     onChange: PropTypes.func,
     perPage: PropTypes.number,
@@ -133,7 +122,6 @@ ReferenceInput.propTypes = {
 
 ReferenceInput.defaultProps = {
     filter: {},
-    filterToQuery: searchText => (searchText ? { q: searchText } : {}),
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
 };
@@ -141,7 +129,6 @@ ReferenceInput.defaultProps = {
 export interface ReferenceInputProps extends InputProps {
     children: ReactElement;
     className?: string;
-    filterToQuery?: (filter: string) => any;
     label?: string;
     perPage?: number;
     reference: string;

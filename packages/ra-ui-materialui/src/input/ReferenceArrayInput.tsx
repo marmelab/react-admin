@@ -72,19 +72,8 @@ import {
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  *
- * The enclosed component may filter results. ReferenceArrayInput passes a
- * `setFilter` function as prop to its child component. It uses the value to
- * create a filter for the query - by default { q: [searchText] }. You can
- * customize the mapping searchText => searchQuery by setting a custom
- * `filterToQuery` function prop:
- *
- * @example
- * <ReferenceArrayInput
- *      source="tag_ids"
- *      reference="tags"
- *      filterToQuery={searchText => ({ name: searchText })}>
- *     <SelectArrayInput optionText="name" />
- * </ReferenceArrayInput>
+ * The enclosed component may filter results. ReferenceArrayInput create a ChoicesContext which provides
+ * a `setFilters` function. You can call this function to filter the results.
  */
 export const ReferenceArrayInput = ({
     children,
@@ -110,7 +99,6 @@ ReferenceArrayInput.propTypes = {
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
     filter: PropTypes.object,
-    filterToQuery: PropTypes.func.isRequired,
     label: PropTypes.string,
     perPage: PropTypes.number,
     reference: PropTypes.string.isRequired,
@@ -124,7 +112,6 @@ ReferenceArrayInput.propTypes = {
 
 ReferenceArrayInput.defaultProps = {
     filter: {},
-    filterToQuery: searchText => (searchText ? { q: searchText } : {}),
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
 };

@@ -26,10 +26,8 @@ const defaultReferenceSource = (resource: string, source: string) =>
  *      source: 'post_id',
  * });
  *
- * The hook also allow to filter results. It returns a `setFilter`
- * function. It uses the value to create a filter
- * for the query - by default { q: [searchText] }. You can customize the mapping
- * searchText => searchQuery by setting a custom `filterToQuery` function option
+ * The hook also allow to filter results. It returns a `setFilters`
+ * function. It uses the value to create a filter for the query.
  * You can also add a permanentFilter to further filter the result:
  *
  * @example
@@ -44,7 +42,6 @@ const defaultReferenceSource = (resource: string, source: string) =>
  *      permanentFilter: {
  *          author: 'john'
  *      },
- *      filterToQuery: searchText => ({ title: searchText })
  * });
  */
 export const useReferenceInputController = <RecordType extends RaRecord = any>(
