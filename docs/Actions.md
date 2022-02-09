@@ -378,10 +378,11 @@ const ApproveButton = ({ record }) => {
 
 React-admin provides the following hooks to handle the most common side effects:
 
-- [`useNotify`](./useNotify.md): Return a function to display a notification. 
-- [`useRedirect`](./useRedirect.md): Return a function to redirect the user to another page. 
+- [`useNotify`](./useNotify.md): Return a function to display a notification.
+- [`useRedirect`](./useRedirect.md): Return a function to redirect the user to another page.
 - [`useRefresh`](./useRefresh.md): Return a function to force a rerender of the current view (equivalent to pressing the Refresh button).
-- [`useUnselectAll`](./useUnselectAll.md): Return a function to unselect all lines in the current `Datagrid`. 
+- [`useUnselect`](./useUnselect.md): Return a function to unselect lines in the current `Datagrid` based on the ids passed to it.
+- [`useUnselectAll`](./useUnselectAll.md): Return a function to unselect all lines in the current `Datagrid`.
 
 ## Optimistic Rendering and Undo
 
