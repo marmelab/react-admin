@@ -11,7 +11,7 @@ import { ChoicesContextValue } from '../../form';
  *
  * @example
  *
- * const { choices, error, loaded, loading } = useReferenceArrayInputController({
+ * const { allChoices, availableChoices, selectedChoices, error, loaded, loading } = useReferenceArrayInputController({
  *      record: { referenceIds: ['id1', 'id2']};
  *      reference: 'reference';
  *      resource: 'resource';

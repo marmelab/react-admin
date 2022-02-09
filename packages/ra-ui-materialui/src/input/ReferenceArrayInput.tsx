@@ -22,8 +22,8 @@ import {
  * ReferenceArrayInput component fetches the current resources (using
  * `dataProvider.getMany()`) as well as possible resources (using
  * `dataProvider.getList()`) in the reference endpoint. It then
- * delegates rendering to a subcomponent, to which it passes the possible
- * choices as the `choices` attribute.
+ * delegates rendering to its child component, to which it makes the possible
+ * choices available through the ChoicesContext.
  *
  * Use it with a selector component as child, like `<SelectArrayInput>`
  * or <CheckboxGroupInput>.

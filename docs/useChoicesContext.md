@@ -69,6 +69,7 @@ const {
     total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
     isFetching, // boolean that is true on mount, and false once the data was fetched
     isLoading, // boolean that is false until the data is available
+    error, // Will contain any error that occurred while fetching data
     // pagination
     page, // the current page. Starts at 1
     perPage, // the number of results per page. Defaults to 25
@@ -80,14 +81,15 @@ const {
     sort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
     setSort, // a callback to change the sort, e.g. setSort({ field: 'name', orfer: 'ASC' })
     // filtering
+    filter, // The permanent filter values, e.g. { title: 'lorem', nationality: 'fr' }
     filterValues, // a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
     displayedFilters, // a dictionary of the displayed filters, e.g. { title: true, nationality: true }
     setFilters, // a callback to update the filters, e.g. setFilters(filters, displayedFilters)
     showFilter, // a callback to show one of the filters, e.g. showFilter('title', defaultValue)
     hideFilter, // a callback to hide one of the filters, e.g. hideFilter('title')
     // misc
-    defaultTitle, // the translated title based on the resource, e.g. 'Posts'
     resource, // the resource name, deduced from the location. e.g. 'posts'
     refetch, // callback for fetching the list data again
+    source, // the name of the field containing the currently selected record(s).
 } = useChoicesContext();
 ```
