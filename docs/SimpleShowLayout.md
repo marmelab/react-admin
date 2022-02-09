@@ -9,7 +9,7 @@ The `<SimpleShowLayout>` pulls the `record` from the `RecordContext`. It renders
 
 ## Usage
 
-Use `<SimpleShowLayout>` as descendent of a `<Show>` component (or any component creating a `<RecordContext>`), and set the fields to be displayed as children:
+Use `<SimpleShowLayout>` as descendant of a `<Show>` component (or any component creating a `<RecordContext>`), and set the fields to be displayed as children:
 
 ```jsx
 const PostShow = () => (

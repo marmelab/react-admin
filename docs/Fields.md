@@ -571,7 +571,7 @@ const UserShow = () => (
 );
 ```
 
-The solution is to *split* the `<UserShow>` component into two: one that fetches the record, and one that renders the show layout. In descendents of `<Show>`, you can use the `useRecordContext()` hook.
+The solution is to *split* the `<UserShow>` component into two: one that fetches the record, and one that renders the show layout. In descendants of `<Show>`, you can use the `useRecordContext()` hook.
 
 ```jsx
 const UserShow = () => (

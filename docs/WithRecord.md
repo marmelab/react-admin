@@ -29,12 +29,12 @@ Note that if `record` is undefined, `<WithRecord>` doesn't call the `render` cal
 
 As soon as there is a record available, react-admin puts it in a `RecordContext`. This means that `<WithRecord>` works out of the box:
 
-- in descendents of the `<Show>` and `<ShowBase>` component
-- in descendents of the `<Edit>` and `<EditBase>` component
-- in descendents of the `<Create>` and `<CreateBase>` component
-- in descendents of the `<Datagrid>` component
-- in descendents of the `<SimpleList>` component
-- in descendents of the `<ReferenceField>` component
+- in descendants of the `<Show>` and `<ShowBase>` component
+- in descendants of the `<Edit>` and `<EditBase>` component
+- in descendants of the `<Create>` and `<CreateBase>` component
+- in descendants of the `<Datagrid>` component
+- in descendants of the `<SimpleList>` component
+- in descendants of the `<ReferenceField>` component
 
 ## See Also
 

@@ -150,7 +150,7 @@ const BookList = () => {
 
 `<Datagrid>` does more than the previous table: it renders table headers depending on the current sort, and allows you to change the sort order by clicking a column header. Also, for each row, `<Datagrid>` creates a `RecordContext`, which lets you use react-admin Field and Buttons without explicitly passing the row data.
 
-## `ListContext` Exposes List Data To Descendents
+## `ListContext` Exposes List Data To Descendants
 
 `<Datagrid>` requires a `data` prop to render, but it can grab it from a `ListContext` instead. Creating such a context with `<ListContextProvider>` also allows to use other react-admin components specialized in filtering (`<FilterForm>`) and pagination (`<Pagination>`), and to reduce the boilerplate code even further:
 
@@ -501,7 +501,7 @@ If you're using another List layout, check [the `<SortButton>` component](./Sort
 
 As the sort values are taken from the URL, you can link to a pre-sorted list by setting the `sort` and `order` query parameters.
 
-For instance, if you have a list of posts ordered by publication date, and you want to provide a button to sort the list by number of views descendent:
+For instance, if you have a list of posts ordered by publication date, and you want to provide a button to sort the list by number of views descendant:
 
 {% raw %}
 ```jsx

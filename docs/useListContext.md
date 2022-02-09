@@ -15,7 +15,7 @@ The `ListContext` is available to descendants of:
 - `<ReferenceArrayField>`,
 - `<ReferenceManyField>`
 
-All descendent components can therefore access the list context, using the `useListContext` hook. As a matter of fact, react-admin's `<Datagrid>`, `<FilterForm>`, and `<Pagination>` components all use the `useListContext` hook.
+All descendant components can therefore access the list context, using the `useListContext` hook. As a matter of fact, react-admin's `<Datagrid>`, `<FilterForm>`, and `<Pagination>` components all use the `useListContext` hook.
 
 ## Usage
 
