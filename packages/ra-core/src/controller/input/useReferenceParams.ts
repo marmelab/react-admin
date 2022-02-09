@@ -70,8 +70,8 @@ export const useReferenceParams = ({
 
     const requestSignature = [
         resource,
-        params,
-        filter,
+        JSON.stringify(params),
+        JSON.stringify(filter),
         JSON.stringify(sort),
         page,
         perPage,

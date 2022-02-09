@@ -93,8 +93,8 @@ export const useListParams = ({
     const requestSignature = [
         location.search,
         resource,
-        disableSyncWithLocation ? localParams : params,
-        filterDefaultValues,
+        JSON.stringify(disableSyncWithLocation ? localParams : params),
+        JSON.stringify(filterDefaultValues),
         JSON.stringify(sort),
         perPage,
         disableSyncWithLocation,
