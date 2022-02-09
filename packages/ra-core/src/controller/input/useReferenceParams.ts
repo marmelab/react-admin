@@ -197,9 +197,8 @@ export const validQueryParams = [
 ];
 
 /**
- * Merge list params from 3 different sources:
- *   - the query string
- *   - the params stored in the state (from previous navigation)
+ * Merge list params from 2 different sources:
+ *   - the params stored in the local state
  *   - the props passed to the List component (including the filter defaultValues)
  */
 export const getQuery = ({
