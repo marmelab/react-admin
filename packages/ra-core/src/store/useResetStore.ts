@@ -1,5 +1,3 @@
-import { useCallback } from 'react';
-
 import { useStoreContext } from './useStoreContext';
 
 /**
@@ -20,5 +18,5 @@ import { useStoreContext } from './useStoreContext';
  */
 export const useResetStore = () => {
     const { reset } = useStoreContext();
-    return useCallback(() => reset(), [reset]);
+    return reset;
 };

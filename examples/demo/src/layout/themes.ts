@@ -12,6 +12,16 @@ export const darkTheme = {
         width: 200,
     },
     components: {
+        RaMenuItemLink: {
+            styleOverrides: {
+                root: {
+                    borderLeft: '3px solid #000',
+                    '&.RaMenuItemLink-active': {
+                        borderLeft: '3px solid #90caf9',
+                    },
+                },
+            },
+        },
         MuiAppBar: {
             styleOverrides: {
                 colorSecondary: {
@@ -76,9 +86,9 @@ export const lightTheme = {
             styleOverrides: {
                 root: {
                     borderLeft: '3px solid #fff',
-                },
-                active: {
-                    borderLeft: '3px solid #4f3cc9',
+                    '&.RaMenuItemLink-active': {
+                        borderLeft: '3px solid #4f3cc9',
+                    },
                 },
             },
         },

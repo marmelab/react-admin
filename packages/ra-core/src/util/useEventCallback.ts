@@ -24,5 +24,5 @@ export const useEventCallback = <Args extends unknown[], Return>(
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fn, ...dependencies]);
 
-    return useCallback((...args: Args) => ref.current(...args), [ref]);
+    return useCallback((...args: Args) => ref.current(...args), []);
 };
