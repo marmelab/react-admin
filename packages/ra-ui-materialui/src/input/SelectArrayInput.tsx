@@ -91,8 +91,8 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         format,
         helperText,
         label,
-        isFetching,
-        isLoading,
+        isFetching: isFetchingProp,
+        isLoading: isLoadingProp,
         margin = 'dense',
         onBlur,
         onChange,
@@ -110,8 +110,10 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
 
     const inputLabel = useRef(null);
 
-    const { allChoices, source, resource } = useChoicesContext({
+    const { allChoices, isLoading, source, resource } = useChoicesContext({
         choices: choicesProp,
+        isLoading: isLoadingProp,
+        isFetching: isFetchingProp,
         resource: resourceProp,
         source: sourceProp,
     });

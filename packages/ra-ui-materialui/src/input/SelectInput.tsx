@@ -115,8 +115,8 @@ export const SelectInput = (props: SelectInputProps) => {
         format,
         filter,
         helperText,
-        isFetching,
-        isLoading,
+        isFetching: isFetchingProp,
+        isLoading: isLoadingProp,
         label,
         margin = 'dense',
         onBlur,
@@ -132,8 +132,10 @@ export const SelectInput = (props: SelectInputProps) => {
         ...rest
     } = props;
     const translate = useTranslate();
-    const { allChoices, source, resource } = useChoicesContext({
+    const { allChoices, isLoading, source, resource } = useChoicesContext({
         choices: choicesProp,
+        isLoading: isLoadingProp,
+        isFetching: isFetchingProp,
         resource: resourceProp,
         source: sourceProp,
     });
