@@ -190,6 +190,7 @@ title: "Reference"
 * [`usePreferences`](https://marmelab.com/ra-enterprise/modules/ra-preferences#usepreferences-reading-and-writing-user-preferences)<img class="icon" src="./img/premium.svg" />
 * [`useQuery`](./Actions.md#usequery-hook)
 * [`useQueryWithStore`](./Actions.md#usequerywithstore-hook)
+* `useRecordContext`
 * [`useRedirect`](./Actions.md#useredirect)
 * `useReference`
 * `useReferenceArrayFieldController`
