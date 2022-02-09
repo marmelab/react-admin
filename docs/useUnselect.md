@@ -11,8 +11,8 @@ This hook returns a function that unselects lines in the current `<Datagrid>` th
 import { useListContext, useUnselect } from 'react-admin';
 
 const UnselectButton = () => {
-    const { selectedIds } = useListContext();
-    const unselect = useUnselect('posts');
+    const { resource, selectedIds } = useListContext();
+    const unselect = useUnselect(resource);
 
     const handleClick = () => {
         unselect(selectedIds);
