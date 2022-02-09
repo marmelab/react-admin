@@ -5,6 +5,7 @@ import { ReferenceInput } from './ReferenceInput';
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { testDataProvider, useChoicesContext } from 'ra-core';
+import { QueryClient } from 'react-query';
 
 describe('<ReferenceInput />', () => {
     const defaultProps = {
@@ -12,6 +13,31 @@ describe('<ReferenceInput />', () => {
         resource: 'comments',
         source: 'post_id',
     };
+
+    it('should display an error if error is defined', async () => {
+        const MyComponent = () => <span id="mycomponent" />;
+        render(
+            <AdminContext
+                queryClient={
+                    new QueryClient({
+                        defaultOptions: { queries: { retry: false } },
+                    })
+                }
+                dataProvider={testDataProvider({
+                    getList: () => Promise.reject(new Error('fetch error')),
+                })}
+            >
+                <SimpleForm onSubmit={jest.fn()}>
+                    <ReferenceInput {...defaultProps}>
+                        <MyComponent />
+                    </ReferenceInput>
+                </SimpleForm>
+            </AdminContext>
+        );
+        await waitFor(() => {
+            expect(screen.queryByDisplayValue('fetch error')).not.toBeNull();
+        });
+    });
 
     it('should pass the correct resource down to child component', async () => {
         const MyComponent = () => {

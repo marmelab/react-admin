@@ -13,6 +13,7 @@ import { SimpleForm } from '../form';
 import { DatagridInput } from './DatagridInput';
 import { TextField } from '../field';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
+import { QueryClient } from 'react-query';
 
 describe('<ReferenceArrayInput />', () => {
     const defaultProps = {
@@ -26,6 +27,30 @@ describe('<ReferenceArrayInput />', () => {
         await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
     });
 
+    it('should display an error if error is defined', async () => {
+        const MyComponent = () => <span id="mycomponent" />;
+        render(
+            <AdminContext
+                queryClient={
+                    new QueryClient({
+                        defaultOptions: { queries: { retry: false } },
+                    })
+                }
+                dataProvider={testDataProvider({
+                    getList: () => Promise.reject(new Error('fetch error')),
+                })}
+            >
+                <SimpleForm onSubmit={jest.fn()}>
+                    <ReferenceArrayInput {...defaultProps}>
+                        <MyComponent />
+                    </ReferenceArrayInput>
+                </SimpleForm>
+            </AdminContext>
+        );
+        await waitFor(() => {
+            expect(screen.queryByDisplayValue('fetch error')).not.toBeNull();
+        });
+    });
     it('should pass the correct resource down to child component', async () => {
         const MyComponent = () => {
             const { resource } = useChoicesContext();
