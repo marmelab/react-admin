@@ -7,7 +7,7 @@ import { useShowContext, useResourceDefinition } from 'ra-core';
 
 import { ShowProps } from '../types';
 import { ShowActions } from './ShowActions';
-import { TitleForRecord } from '../layout';
+import { Title } from '../layout';
 
 const defaultActions = <ShowActions />;
 
@@ -37,11 +37,7 @@ export const ShowView = (props: ShowViewProps) => {
             className={classnames('show-page', className)}
             {...sanitizeRestProps(rest)}
         >
-            <TitleForRecord
-                title={title}
-                record={record}
-                defaultTitle={defaultTitle}
-            />
+            <Title title={title} defaultTitle={defaultTitle} />
             {finalActions !== false && finalActions}
             <div
                 className={classnames(ShowClasses.main, {

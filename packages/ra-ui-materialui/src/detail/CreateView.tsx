@@ -20,14 +20,14 @@ export const CreateView = (props: CreateViewProps) => {
         ...rest
     } = props;
 
-    const { defaultTitle, record } = useCreateContext(props);
+    const { defaultTitle } = useCreateContext(props);
 
     return (
         <Root
             className={classnames('create-page', className)}
             {...sanitizeRestProps(rest)}
         >
-            <Title title={title} record={record} defaultTitle={defaultTitle} />
+            <Title title={title} defaultTitle={defaultTitle} />
             {actions}
             <div
                 className={classnames(CreateClasses.main, {

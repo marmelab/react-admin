@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { useTranslate, TitleProps } from 'react-admin';
+import { useTranslate, useRecordContext } from 'react-admin';
 
-export default ({ record }: TitleProps) => {
+export default () => {
     const translate = useTranslate();
+    const record = useRecordContext();
     return (
         <span>
             {record

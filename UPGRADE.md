@@ -1413,6 +1413,26 @@ const PostShow = () => (
 };
 ```
 
+## No More Props Injection In `<Title>`
+
+`<Title>` no longer clone the `title` prop and inject it the `record`. Call the `useRecordContext` hook to get the current record.
+
+```diff
+-const PostTitle = ({ record }) => {
+-const PostTitle = () => {
++    const record = useRecordContext();
+    return <span>Post {record ? `"${record.title}"` : ''}</span>;
+};
+
+export const PostEdit = () => (
+    <Edit title={<PostTitle />}>
+        ...
+    </Edit>
+);
+```
+
+Use the `<Title>` component instead.
+
 ## `useListContext` No Longer Returns An `ids` Prop
 
 The `ListContext` used to return two props for the list data: `data` and `ids`. To render the list data, you had to iterate over the `ids`. 

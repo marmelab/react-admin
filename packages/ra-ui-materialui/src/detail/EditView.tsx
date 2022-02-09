@@ -12,7 +12,7 @@ import {
 } from 'ra-core';
 
 import { EditActions as DefaultActions } from './EditActions';
-import { TitleForRecord } from '../layout';
+import { Title } from '../layout';
 import { EditProps } from '../types';
 
 export const EditView = (props: EditViewProps) => {
@@ -44,11 +44,7 @@ export const EditView = (props: EditViewProps) => {
             className={classnames('edit-page', className)}
             {...sanitizeRestProps(rest)}
         >
-            <TitleForRecord
-                title={title}
-                record={record}
-                defaultTitle={defaultTitle}
-            />
+            <Title title={title} defaultTitle={defaultTitle} />
             {finalActions}
             <div
                 className={classnames(EditClasses.main, {
