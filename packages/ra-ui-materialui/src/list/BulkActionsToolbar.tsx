@@ -1,7 +1,13 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { Children, ReactNode, cloneElement, isValidElement } from 'react';
+import {
+    Children,
+    ReactNode,
+    cloneElement,
+    isValidElement,
+    useCallback,
+} from 'react';
 import PropTypes from 'prop-types';
+import { styled } from '@mui/material/styles';
 import classnames from 'classnames';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -33,6 +39,10 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
 
     const translate = useTranslate();
 
+    const handleUnselectAllClick = useCallback(() => {
+        onUnselectItems();
+    }, [onUnselectItems]);
+
     return (
         <Root className={className}>
             <Toolbar
@@ -48,7 +58,7 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
                         className={BulkActionsToolbarClasses.icon}
                         aria-label={translate('ra.action.unselect')}
                         title={translate('ra.action.unselect')}
-                        onClick={() => onUnselectItems()}
+                        onClick={handleUnselectAllClick}
                         size="small"
                     >
                         <CloseIcon fontSize="small" />
