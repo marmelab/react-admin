@@ -18,9 +18,9 @@ import { useDataProvider } from './useDataProvider';
  *
  * The return value updates according to the request state:
  *
- * - start: { loading: true, loaded: false, refetch }
- * - success: { data: [data from response], loading: false, loaded: true, refetch }
- * - error: { error: [error from response], loading: false, loaded: false, refetch }
+ * - start: { isLoading: true, isFetching: true, refetch }
+ * - success: { data: [data from response], isLoading: false, isFetching: false, refetch }
+ * - error: { error: [error from response], isLoading: false, isFetching: false, refetch }
  *
  * This hook will return the cached result when called a second time
  * with the same parameters, until the response arrives.
@@ -45,15 +45,15 @@ import { useDataProvider } from './useDataProvider';
  * @prop params.ids The ids to get, e.g. [123, 456, 789]
  * @prop params.meta Optional meta parameters
 
- * @returns The current request state. Destructure as { data, error, loading, loaded, refetch }.
+ * @returns The current request state. Destructure as { data, error, isLoading, isFetching, refetch }.
  *
  * @example
  *
  * import { useGetManyAggregate } from 'react-admin';
  *
  * const PostTags = ({ record }) => {
- *     const { data, loading, error } = useGetManyAggregate('tags', { ids: record.tagIds });
- *     if (loading) { return <Loading />; }
+ *     const { data, isLoading, error } = useGetManyAggregate('tags', { ids: record.tagIds });
+ *     if (isLoading) { return <Loading />; }
  *     if (error) { return <p>ERROR</p>; }
  *     return (
  *          <ul>
