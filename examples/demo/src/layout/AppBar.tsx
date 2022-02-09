@@ -1,29 +1,20 @@
 import * as React from 'react';
-import { forwardRef } from 'react';
-import { AppBar, UserMenu, MenuItemLink, useTranslate } from 'react-admin';
+import { AppBar, UserMenu, MenuItemLink, Logout } from 'react-admin';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 import Logo from './Logo';
 
-const ConfigurationMenu = forwardRef<any, any>((props, ref) => {
-    const translate = useTranslate();
-    return (
+const CustomUserMenu = (props: any) => (
+    <UserMenu {...props} logout={<Logout />}>
         <MenuItemLink
-            ref={ref}
             to="/configuration"
-            primaryText={translate('pos.configuration')}
+            primaryText="pos.configuration"
             leftIcon={<SettingsIcon />}
             onClick={props.onClick}
             sidebarIsOpen
         />
-    );
-});
-
-const CustomUserMenu = (props: any) => (
-    <UserMenu {...props}>
-        <ConfigurationMenu />
     </UserMenu>
 );
 
