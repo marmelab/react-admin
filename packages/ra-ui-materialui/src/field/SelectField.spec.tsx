@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { FC } from 'react';
 import expect from 'expect';
 import { render, screen } from '@testing-library/react';
 import {
-    RaRecord,
-    TestTranslationProvider,
     RecordContextProvider,
+    TestTranslationProvider,
+    useRecordContext,
 } from 'ra-core';
 
 import { SelectField } from './SelectField';
@@ -123,9 +122,10 @@ describe('<SelectField />', () => {
     });
 
     it('should use optionText with an element value as text identifier', () => {
-        const Foobar: FC<{ record?: RaRecord }> = ({ record }) => (
-            <span>{record.foobar}</span>
-        );
+        const Foobar = () => {
+            const record = useRecordContext();
+            return <span>{record.foobar}</span>;
+        };
         render(
             <SelectField
                 {...defaultProps}

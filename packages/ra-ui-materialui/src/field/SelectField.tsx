@@ -43,8 +43,8 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
  * <SelectField source="author_id" choices={choices} optionText={optionRenderer} />
  *
- * `optionText` also accepts a React Element, that will be cloned and receive
- * the related choice as the `record` prop. You can use Field components there.
+ * `optionText` also accepts a React Element, that can access the
+ * the related choice through the `useRecordContext` hook. You can use Field components there.
  * @example
  * const choices = [
  *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
