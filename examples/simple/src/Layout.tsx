@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { forwardRef, memo } from 'react';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { Layout, AppBar, UserMenu, useLocaleState } from 'react-admin';
+import { AppBar, Layout, Logout, UserMenu, useLocaleState } from 'react-admin';
 import { MenuItem, MenuItemProps, ListItemIcon } from '@mui/material';
 import Language from '@mui/icons-material/Language';
 
@@ -28,7 +28,7 @@ const SwitchLanguage = forwardRef<HTMLLIElement, MenuItemProps>(
 );
 
 const MyUserMenu = props => (
-    <UserMenu {...props}>
+    <UserMenu {...props} logout={<Logout />}>
         <SwitchLanguage />
     </UserMenu>
 );
