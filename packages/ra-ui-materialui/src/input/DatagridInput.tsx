@@ -12,14 +12,10 @@ import {
     InputHelperText,
     SupportCreateSuggestionOptions,
 } from '.';
-import {
-    Datagrid,
-    DatagridProps,
-    FilterContext,
-    FilterForm,
-    FilterButton,
-    Pagination as DefaultPagination,
-} from '../list';
+import { Datagrid, DatagridProps } from '../list/datagrid';
+import { FilterButton, FilterForm } from '../list/filter';
+import { FilterContext } from '../list/FilterContext';
+import { Pagination as DefaultPagination } from '../list/pagination';
 
 const defaultPagination = <DefaultPagination />;
 
