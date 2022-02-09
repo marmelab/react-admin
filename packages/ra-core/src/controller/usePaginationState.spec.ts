@@ -77,4 +77,38 @@ describe('usePaginationState', () => {
             perPage: 100,
         });
     });
+
+    it('should reset the current page to 1 when perPage state changes', () => {
+        const { hookValue, childrenMock } = renderHook(() =>
+            usePaginationState()
+        );
+        expect(hookValue.pagination).toEqual({ page: 1, perPage: 25 });
+
+        act(() => hookValue.setPerPage(100));
+
+        expect(childrenMock).toBeCalledTimes(2);
+
+        act(() => hookValue.setPage(2));
+
+        expect(childrenMock.mock.calls[1][0].pagination).toEqual({
+            page: 1,
+            perPage: 100,
+        });
+    });
+
+    it('should reset the current page to initial page when perPage state changes', () => {
+        const { hookValue, childrenMock } = renderHook(() =>
+            usePaginationState({ page: 2, perPage: 25 })
+        );
+        expect(hookValue.pagination).toEqual({ page: 2, perPage: 25 });
+
+        act(() => hookValue.setPerPage(100));
+
+        expect(childrenMock).toBeCalledTimes(2);
+
+        expect(childrenMock.mock.calls[1][0].pagination).toEqual({
+            page: 2,
+            perPage: 100,
+        });
+    });
 });

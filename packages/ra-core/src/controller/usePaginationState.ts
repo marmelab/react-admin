@@ -53,7 +53,11 @@ export default (
     });
     const isFirstRender = useRef(true);
 
-    const setPerPage = useCallback(perPage => setPagination({ perPage }), []);
+    const setPerPage = useCallback(
+        perPage =>
+            setPagination({ perPage, page: initialPagination.page || 1 }),
+        [initialPagination.page]
+    );
     const setPage = useCallback(page => setPagination({ page }), []);
 
     useEffect(() => {
