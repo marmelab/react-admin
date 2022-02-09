@@ -6,9 +6,6 @@ import {
 
 export * from './useReferenceArrayInputController';
 export * from './useReferenceInputController';
-export * from './ReferenceArrayInputContext';
-export * from './ReferenceArrayInputContextProvider';
-export * from './useReferenceArrayInputContext';
 
 export {
     getStatusForInput,

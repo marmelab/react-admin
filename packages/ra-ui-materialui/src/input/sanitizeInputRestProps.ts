@@ -1,6 +1,5 @@
 export const sanitizeInputRestProps = ({
     afterSubmit,
-    allowEmpty,
     allowNull,
     alwaysOn,
     beforeSubmit,

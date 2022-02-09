@@ -18,35 +18,6 @@ import { useGetValidationErrorMessage } from './useGetValidationErrorMessage';
 import { useFormGroups } from './useFormGroups';
 import { useApplyInputDefaultValues } from './useApplyInputDefaultValues';
 
-export type InputProps<ValueType = any> = Omit<
-    UseControllerProps,
-    'name' | 'defaultValue' | 'rules'
-> &
-    Partial<UseControllerReturn> & {
-        alwaysOn?: any;
-        defaultValue?: any;
-        format?: (value: ValueType) => any;
-        id?: string;
-        isRequired?: boolean;
-        label?: string | ReactElement | false;
-        helperText?: string | ReactElement | false;
-        name?: string;
-        onBlur?: (...event: any[]) => void;
-        onChange?: (...event: any[]) => void;
-        parse?: (value: any) => ValueType;
-        resource?: string;
-        source: string;
-        validate?: Validator | Validator[];
-    };
-
-export type UseInputValue = {
-    id: string;
-    isRequired: boolean;
-    field: ControllerRenderProps;
-    formState: UseFormStateReturn<Record<string, string>>;
-    fieldState: ControllerFieldState;
-};
-
 export const useInput = (props: InputProps): UseInputValue => {
     const {
         defaultValue,
@@ -113,18 +84,6 @@ export const useInput = (props: InputProps): UseInputValue => {
     // no value for the input.
     useApplyInputDefaultValues(props);
 
-    // If there is a field prop, this input has already been enhanced by react-hook-form
-    // This is required in for inputs used inside other inputs (such as the SelectInput inside a ReferenceInput)
-    if (options.field) {
-        return {
-            id: id || source,
-            field: options.field,
-            fieldState: options.fieldState,
-            formState: options.formState,
-            isRequired: isRequiredOption || isRequired(validate),
-        };
-    }
-
     const field = {
         ...controllerField,
         value: format ? format(controllerField.value) : controllerField.value,
@@ -155,4 +114,33 @@ export const useInput = (props: InputProps): UseInputValue => {
         formState,
         isRequired: isRequiredOption || isRequired(validate),
     };
+};
+
+export type InputProps<ValueType = any> = Omit<
+    UseControllerProps,
+    'name' | 'defaultValue' | 'rules'
+> &
+    Partial<UseControllerReturn> & {
+        alwaysOn?: any;
+        defaultValue?: any;
+        format?: (value: ValueType) => any;
+        id?: string;
+        isRequired?: boolean;
+        label?: string | ReactElement | false;
+        helperText?: string | ReactElement | false;
+        name?: string;
+        onBlur?: (...event: any[]) => void;
+        onChange?: (...event: any[]) => void;
+        parse?: (value: any) => ValueType;
+        resource?: string;
+        source: string;
+        validate?: Validator | Validator[];
+    };
+
+export type UseInputValue = {
+    id: string;
+    isRequired: boolean;
+    field: ControllerRenderProps;
+    formState: UseFormStateReturn<Record<string, string>>;
+    fieldState: ControllerFieldState;
 };

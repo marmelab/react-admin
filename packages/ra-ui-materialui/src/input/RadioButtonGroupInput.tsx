@@ -10,7 +10,13 @@ import {
 import { RadioGroupProps } from '@mui/material/RadioGroup';
 import { FormControlProps } from '@mui/material/FormControl';
 import get from 'lodash/get';
-import { useInput, FieldTitle, ChoicesProps, warning } from 'ra-core';
+import {
+    useInput,
+    FieldTitle,
+    ChoicesProps,
+    warning,
+    useChoicesContext,
+} from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
@@ -78,12 +84,12 @@ import { LinearProgress } from '../layout';
  */
 export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
     const {
-        choices = [],
+        choices: choicesProp,
         className,
         format,
         helperText,
-        isFetching,
-        isLoading,
+        isFetching: isFetchingProp,
+        isLoading: isLoadingProp,
         label,
         margin = 'dense',
         onBlur,
@@ -91,13 +97,21 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         optionText,
         optionValue,
         parse,
-        resource,
+        resource: resourceProp,
         row,
-        source,
+        source: sourceProp,
         translateChoice,
         validate,
         ...rest
     } = props;
+
+    const { allChoices, isLoading, resource, source } = useChoicesContext({
+        choices: choicesProp,
+        isFetching: isFetchingProp,
+        isLoading: isLoadingProp,
+        resource: resourceProp,
+        source: sourceProp,
+    });
 
     warning(
         source === undefined,
@@ -105,7 +119,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
     );
 
     warning(
-        choices === undefined,
+        allChoices === undefined,
         `If you're not wrapping the RadioButtonGroupInput inside a ReferenceInput, you must provide the choices prop`
     );
 
@@ -166,7 +180,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
                 {...field}
                 {...sanitizeRestProps(rest)}
             >
-                {choices.map(choice => (
+                {allChoices.map(choice => (
                     <RadioButtonGroupInputItem
                         key={get(choice, optionValue)}
                         choice={choice}

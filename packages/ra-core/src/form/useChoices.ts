@@ -11,7 +11,7 @@ export type OptionTextFunc = (choice: any) => string | OptionTextElement;
 export type OptionText = OptionTextElement | OptionTextFunc | string;
 
 export interface ChoicesProps {
-    choices?: object[];
+    choices?: RaRecord[];
     isFetching?: boolean;
     isLoading?: boolean;
     optionValue?: string;

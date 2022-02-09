@@ -2,7 +2,7 @@ import * as React from 'react';
 import { CoreAdminContext, Form, testDataProvider } from 'ra-core';
 import { ThemeProvider, createTheme } from '@mui/material';
 
-import { Datagrid } from '../list';
+import { DatagridInput } from '../input';
 import { TextField } from '../field';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 
@@ -37,9 +37,9 @@ export const WithDatagridChild = () => (
                         resource="posts"
                         source="tag_ids"
                     >
-                        <Datagrid rowClick="toggleSelection">
+                        <DatagridInput rowClick="toggleSelection">
                             <TextField source="name" />
-                        </Datagrid>
+                        </DatagridInput>
                     </ReferenceArrayInput>
                 )}
             />

@@ -2,21 +2,11 @@ import * as React from 'react';
 import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
-    getFieldLabelTranslationArgs,
     InputProps,
     useReferenceArrayInputController,
-    useInput,
-    useTranslate,
-    SortPayload,
-    PaginationPayload,
-    Translate,
     ResourceContextProvider,
-    ReferenceArrayInputContextProvider,
-    ListContextProvider,
+    ChoicesContextProvider,
 } from 'ra-core';
-
-import { CommonInputProps } from './CommonInputProps';
-import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { ReferenceError } from './ReferenceError';
 
 /**
@@ -33,8 +23,8 @@ import { ReferenceError } from './ReferenceError';
  * ReferenceArrayInput component fetches the current resources (using
  * `dataProvider.getMany()`) as well as possible resources (using
  * `dataProvider.getList()`) in the reference endpoint. It then
- * delegates rendering to a subcomponent, to which it passes the possible
- * choices as the `choices` attribute.
+ * delegates rendering to its child component, to which it makes the possible
+ * choices available through the ChoicesContext.
  *
  * Use it with a selector component as child, like `<SelectArrayInput>`
  * or <CheckboxGroupInput>.
@@ -83,85 +73,38 @@ import { ReferenceError } from './ReferenceError';
  *     <SelectArrayInput optionText="name" />
  * </ReferenceArrayInput>
  *
- * The enclosed component may filter results. ReferenceArrayInput passes a
- * `setFilter` function as prop to its child component. It uses the value to
- * create a filter for the query - by default { q: [searchText] }. You can
- * customize the mapping searchText => searchQuery by setting a custom
- * `filterToQuery` function prop:
- *
- * @example
- * <ReferenceArrayInput
- *      source="tag_ids"
- *      reference="tags"
- *      filterToQuery={searchText => ({ name: searchText })}>
- *     <SelectArrayInput optionText="name" />
- * </ReferenceArrayInput>
+ * The enclosed component may filter results. ReferenceArrayInput create a ChoicesContext which provides
+ * a `setFilters` function. You can call this function to filter the results.
  */
-export const ReferenceArrayInput = ({
-    children,
-    id: idOverride,
-    onBlur,
-    onChange,
-    validate,
-    parse,
-    format,
-    ...props
-}: ReferenceArrayInputProps) => {
+export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
+    const { children, label, reference } = props;
     if (React.Children.count(children) !== 1) {
         throw new Error(
             '<ReferenceArrayInput> only accepts a single child (like <Datagrid>)'
         );
     }
 
-    const { field, fieldState, formState, id, isRequired } = useInput({
-        id: idOverride,
-        onBlur,
-        onChange,
-        source: props.source,
-        validate,
-        parse,
-        format,
-        ...props,
-    });
+    const controllerProps = useReferenceArrayInputController(props);
 
-    const controllerProps = useReferenceArrayInputController({
-        ...props,
-        field,
-    });
+    // This is not a form error but an unrecoverable error from the
+    // useReferenceInputController hook
+    if (controllerProps.error) {
+        return <ReferenceError label={label} error={controllerProps.error} />;
+    }
 
-    const translate = useTranslate();
     return (
-        <ResourceContextProvider value={props.reference}>
-            <ReferenceArrayInputContextProvider value={controllerProps}>
-                <ListContextProvider value={controllerProps}>
-                    <ReferenceArrayInputView
-                        id={id}
-                        field={field}
-                        isRequired={isRequired}
-                        fieldState={fieldState}
-                        formState={formState}
-                        translate={translate}
-                        children={children}
-                        {...props}
-                        choices={controllerProps.choices}
-                        isFetching={controllerProps.isFetching}
-                        isLoading={controllerProps.isLoading}
-                        setFilter={controllerProps.setFilter}
-                        setPagination={controllerProps.setPagination}
-                        setSort={controllerProps.setSort}
-                    />
-                </ListContextProvider>
-            </ReferenceArrayInputContextProvider>
+        <ResourceContextProvider value={reference}>
+            <ChoicesContextProvider value={controllerProps}>
+                {children}
+            </ChoicesContextProvider>
         </ResourceContextProvider>
     );
 };
 
 ReferenceArrayInput.propTypes = {
-    allowEmpty: PropTypes.bool,
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
     filter: PropTypes.object,
-    filterToQuery: PropTypes.func.isRequired,
     label: PropTypes.string,
     perPage: PropTypes.number,
     reference: PropTypes.string.isRequired,
@@ -175,132 +118,11 @@ ReferenceArrayInput.propTypes = {
 
 ReferenceArrayInput.defaultProps = {
     filter: {},
-    filterToQuery: searchText => (searchText ? { q: searchText } : {}),
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
 };
 
-const sanitizeRestProps = ({
-    filterToQuery,
-    perPage,
-    reference,
-    referenceSource,
-    resource,
-    ...rest
-}: any) => sanitizeInputRestProps(rest);
-
-export type ReferenceArrayInputViewProps = CommonInputProps & {
-    allowEmpty?: boolean;
-    children: ReactElement;
-    choices: any[];
-    className?: string;
-    error?: string;
-    id: string;
-    isFetching: boolean;
-    isLoading: boolean;
-    onChange: any;
-    options?: any;
-    reference: string;
-    resource?: string;
-    setFilter: (v: string) => void;
-    setPagination: (pagination: PaginationPayload) => void;
-    setSort: (sort: SortPayload) => void;
-    translate: Translate;
-    warning?: string;
-};
-
-export const ReferenceArrayInputView = ({
-    allowEmpty,
-    children,
-    choices,
-    className,
-    error,
-    field,
-    fieldState,
-    formState,
-    isFetching,
-    isLoading,
-    isRequired,
-    label,
-    onChange,
-    options,
-    reference,
-    resource,
-    setFilter,
-    setPagination,
-    setSort,
-    source,
-    translate,
-    warning,
-    ...rest
-}: ReferenceArrayInputViewProps) => {
-    const translatedLabel =
-        typeof label === 'string'
-            ? translate(
-                  ...getFieldLabelTranslationArgs({
-                      label,
-                      resource,
-                      source,
-                  })
-              )
-            : label;
-
-    if (error) {
-        return <ReferenceError label={translatedLabel} error={error} />;
-    }
-
-    return React.cloneElement(children, {
-        allowEmpty,
-        choices,
-        className,
-        error,
-        field,
-        fieldState: {
-            ...fieldState,
-            helperText: warning || false,
-        },
-        formState,
-        isRequired,
-        label: translatedLabel,
-        isFetching,
-        isLoading,
-        onChange,
-        options,
-        resource: reference,
-        setFilter,
-        setPagination,
-        setSort,
-        source,
-        translateChoice: false,
-        limitChoicesToValue: true,
-        ...sanitizeRestProps(rest),
-        ...children.props,
-    });
-};
-
-ReferenceArrayInputView.propTypes = {
-    allowEmpty: PropTypes.bool,
-    children: PropTypes.element,
-    choices: PropTypes.array,
-    className: PropTypes.string,
-    error: PropTypes.string,
-    loading: PropTypes.bool,
-    field: PropTypes.object.isRequired,
-    label: PropTypes.string,
-    fieldState: PropTypes.object,
-    onChange: PropTypes.func,
-    options: PropTypes.object,
-    resource: PropTypes.string,
-    setFilter: PropTypes.func,
-    setPagination: PropTypes.func,
-    setSort: PropTypes.func,
-    source: PropTypes.string,
-    translate: PropTypes.func.isRequired,
-    warning: PropTypes.string,
-};
-
 export interface ReferenceArrayInputProps extends InputProps {
-    allowEmpty?: boolean;
     children: ReactElement;
     className?: string;
     label?: string;

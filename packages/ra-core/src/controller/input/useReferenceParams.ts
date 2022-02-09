@@ -1,38 +1,21 @@
-import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
-import { parse, stringify } from 'query-string';
+import { useCallback, useMemo, useState, useRef } from 'react';
 import lodashDebounce from 'lodash/debounce';
-import pickBy from 'lodash/pickBy';
-import { useNavigate, useLocation } from 'react-router-dom';
 
-import { useStore } from '../../store';
-import queryReducer, {
-    SET_FILTER,
+import { SortPayload, FilterPayload } from '../../types';
+import removeEmpty from '../../util/removeEmpty';
+import {
+    queryReducer,
     HIDE_FILTER,
-    SHOW_FILTER,
+    SET_FILTER,
     SET_PAGE,
     SET_PER_PAGE,
     SET_SORT,
+    SHOW_FILTER,
     SORT_ASC,
-} from './queryReducer';
-import { SortPayload, FilterPayload } from '../../types';
-import removeEmpty from '../../util/removeEmpty';
-
-export interface ListParams {
-    sort: string;
-    order: string;
-    page: number;
-    perPage: number;
-    filter: any;
-    displayedFilters: any;
-}
+} from '../list';
 
 /**
- * Get the list parameters (page, sort, filters) and modifiers.
- *
- * These parameters are merged from 3 sources:
- *   - the query string from the URL
- *   - the params stored in the state (from previous navigation)
- *   - the options passed to the hook (including the filter defaultValues)
+ * Get the reference inputs parameters (page, sort, filters) and modifiers.
  *
  * @returns {Array} A tuple [parameters, modifiers].
  * Destructure as [
@@ -42,9 +25,8 @@ export interface ListParams {
  *
  * @example
  *
- * const [listParams, listParamsActions] = useListParams({
+ * const [referenceParams, referenceParamsActions] = useReferenceParams({
  *      resource: 'posts',
- *      location: location // From react-router. Injected to your component by react-admin inside a List
  *      filterDefaultValues: {
  *          published: true
  *      },
@@ -64,7 +46,7 @@ export interface ListParams {
  *      filterValues,
  *      displayedFilters,
  *      requestSignature
- * } = listParams;
+ * } = referenceParams;
  *
  * const {
  *      setFilters,
@@ -73,58 +55,39 @@ export interface ListParams {
  *      setPage,
  *      setPerPage,
  *      setSort,
- * } = listParamsActions;
+ * } = referenceParamsActions;
  */
-export const useListParams = ({
+export const useReferenceParams = ({
     resource,
-    filterDefaultValues,
+    filter,
     sort = defaultSort,
+    page = 1,
     perPage = 10,
     debounce = 500,
-    disableSyncWithLocation = false,
-}: ListParamsOptions): [Parameters, Modifiers] => {
-    const location = useLocation();
-    const navigate = useNavigate();
-    const [localParams, setLocalParams] = useState(defaultParams);
-    const storeKey = `${resource}.listParams`;
-    const [params, setParams] = useStore(storeKey, defaultParams);
-    const tempParams = useRef<ListParams>();
+}: ReferenceParamsOptions): [Parameters, Modifiers] => {
+    const [params, setParams] = useState(defaultParams);
+    const tempParams = useRef<ReferenceParams>();
 
     const requestSignature = [
-        location.search,
         resource,
-        JSON.stringify(disableSyncWithLocation ? localParams : params),
-        JSON.stringify(filterDefaultValues),
+        JSON.stringify(params),
+        JSON.stringify(filter),
         JSON.stringify(sort),
+        page,
         perPage,
-        disableSyncWithLocation,
     ];
-
-    const queryFromLocation = disableSyncWithLocation
-        ? {}
-        : parseQueryFromLocation(location);
 
     const query = useMemo(
         () =>
             getQuery({
-                queryFromLocation,
-                params: disableSyncWithLocation ? localParams : params,
-                filterDefaultValues,
+                params: params,
+                filterDefaultValues: filter,
                 sort,
+                page,
                 perPage,
             }),
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
-
-    // if the location includes params (for example from a link like
-    // the categories products on the demo), we need to persist them in the
-    // store as well so that we don't lose them after a redirection back
-    // to the list
-    useEffect(() => {
-        if (Object.keys(queryFromLocation).length > 0) {
-            setParams(query);
-        }
-    }, [location.search]); // eslint-disable-line
 
     const changeParams = useCallback(action => {
         if (!tempParams.current) {
@@ -132,27 +95,7 @@ export const useListParams = ({
             tempParams.current = queryReducer(query, action);
             // schedule side effects for next tick
             setTimeout(() => {
-                if (disableSyncWithLocation) {
-                    setLocalParams(tempParams.current);
-                } else {
-                    // the useEffect above will apply the changes to the params in the store
-                    navigate(
-                        {
-                            search: `?${stringify({
-                                ...tempParams.current,
-                                filter: JSON.stringify(
-                                    tempParams.current.filter
-                                ),
-                                displayedFilters: JSON.stringify(
-                                    tempParams.current.displayedFilters
-                                ),
-                            })}`,
-                        },
-                        {
-                            state: { _scrollToTop: action.type === SET_PAGE },
-                        }
-                    );
-                }
+                setParams(tempParams.current);
                 tempParams.current = undefined;
             }, 0);
         } else {
@@ -195,7 +138,7 @@ export const useListParams = ({
     }, debounce);
 
     const setFilters = useCallback(
-        (filter, displayedFilters, debounce = true) =>
+        (filter, displayedFilters, debounce = true) => {
             debounce
                 ? debouncedSetFilters(filter, displayedFilters)
                 : changeParams({
@@ -204,7 +147,8 @@ export const useListParams = ({
                           filter: removeEmpty(filter),
                           displayedFilters,
                       },
-                  }),
+                  });
+        },
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
@@ -224,7 +168,6 @@ export const useListParams = ({
             },
         });
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
-
     return [
         {
             displayedFilters: displayedFilterValues,
@@ -253,74 +196,28 @@ export const validQueryParams = [
     'displayedFilters',
 ];
 
-const parseObject = (query, field) => {
-    if (query[field] && typeof query[field] === 'string') {
-        try {
-            query[field] = JSON.parse(query[field]);
-        } catch (err) {
-            delete query[field];
-        }
-    }
-};
-
-export const parseQueryFromLocation = ({ search }): Partial<ListParams> => {
-    const query = pickBy(
-        parse(search),
-        (v, k) => validQueryParams.indexOf(k) !== -1
-    );
-    parseObject(query, 'filter');
-    parseObject(query, 'displayedFilters');
-    return query;
-};
-
 /**
- * Check if user has already set custom sort, page, or filters for this list
- *
- * User params come from the store as the params props. By default,
- * this object is:
- *
- * { filter: {}, order: null, page: 1, perPage: null, sort: null }
- *
- * To check if the user has custom params, we must compare the params
- * to these initial values.
- *
- * @param {Object} params
- */
-export const hasCustomParams = (params: ListParams) => {
-    return (
-        params &&
-        params.filter &&
-        (Object.keys(params.filter).length > 0 ||
-            params.order != null ||
-            params.page !== 1 ||
-            params.perPage != null ||
-            params.sort != null)
-    );
-};
-
-/**
- * Merge list params from 3 different sources:
- *   - the query string
- *   - the params stored in the state (from previous navigation)
+ * Merge list params from 2 different sources:
+ *   - the params stored in the local state
  *   - the props passed to the List component (including the filter defaultValues)
  */
 export const getQuery = ({
-    queryFromLocation,
     params,
     filterDefaultValues,
     sort,
+    page,
     perPage,
 }) => {
-    const query: Partial<ListParams> =
-        Object.keys(queryFromLocation).length > 0
-            ? queryFromLocation
-            : hasCustomParams(params)
-            ? { ...params }
-            : { filter: filterDefaultValues || {} };
+    const query: Partial<ReferenceParams> = hasCustomParams(params)
+        ? { ...params }
+        : { filter: filterDefaultValues || {} };
 
     if (!query.sort) {
         query.sort = sort.field;
         query.order = sort.order;
+    }
+    if (query.page == null) {
+        query.page = page;
     }
     if (query.perPage == null) {
         query.perPage = perPage;
@@ -333,7 +230,32 @@ export const getQuery = ({
         ...query,
         page: getNumberOrDefault(query.page, 1),
         perPage: getNumberOrDefault(query.perPage, 10),
-    } as ListParams;
+    } as ReferenceParams;
+};
+
+/**
+ * Check if user has already set custom sort, page, or filters for this list
+ *
+ * User params come from the Redux store as the params props. By default,
+ * this object is:
+ *
+ * { filter: {}, order: null, page: 1, perPage: null, sort: null }
+ *
+ * To check if the user has custom params, we must compare the params
+ * to these initial values.
+ *
+ * @param {Object} params
+ */
+export const hasCustomParams = (params: ReferenceParams) => {
+    return (
+        params &&
+        params.filter &&
+        (Object.keys(params.filter).length > 0 ||
+            params.order != null ||
+            params.page !== 1 ||
+            params.perPage != null ||
+            params.sort != null)
+    );
 };
 
 export const getNumberOrDefault = (
@@ -348,19 +270,26 @@ export const getNumberOrDefault = (
     return isNaN(parsedNumber) ? defaultValue : parsedNumber;
 };
 
-export interface ListParamsOptions {
+export interface ReferenceParamsOptions {
     resource: string;
+    page?: number;
     perPage?: number;
     sort?: SortPayload;
     // default value for a filter when displayed but not yet set
-    filterDefaultValues?: FilterPayload;
+    filter?: FilterPayload;
     debounce?: number;
-    // Whether to disable the synchronization of the list parameters with
-    // the current location (URL search parameters)
-    disableSyncWithLocation?: boolean;
 }
 
-interface Parameters extends ListParams {
+export interface ReferenceParams {
+    sort: string;
+    order: string;
+    page: number;
+    perPage: number;
+    filter: any;
+    displayedFilters: any;
+}
+
+interface Parameters extends ReferenceParams {
     filterValues: object;
     displayedFilters: {
         [key: string]: boolean;

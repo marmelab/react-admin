@@ -7,7 +7,6 @@ import { useTranslate } from '../i18n';
  * Returns helper functions for suggestions handling.
  *
  * @param allowDuplicates A boolean indicating whether a suggestion can be added several times
- * @param allowEmpty A boolean indicating whether an empty suggestion should be added
  * @param choices An array of available choices
  * @param emptyText The text to use for the empty suggestion. Defaults to an empty string
  * @param emptyValue The value to use for the empty suggestion. Defaults to `null`
@@ -16,7 +15,7 @@ import { useTranslate } from '../i18n';
  * @param optionText Either a string defining the property to use to get the choice text, a function or a React element
  * @param optionValue The property to use to get the choice value
  * @param selectedItem The currently selected item. May be an array of selected items
- * @param suggestionLimit The maximum number of suggestions returned, excluding the empty one if `allowEmpty` is `true`
+ * @param suggestionLimit The maximum number of suggestions returned
  * @param translateChoice A boolean indicating whether to option text should be translated
  *
  * @returns An object with helper functions:
@@ -26,7 +25,6 @@ import { useTranslate } from '../i18n';
  */
 export const useSuggestions = ({
     allowCreate,
-    allowEmpty,
     choices,
     createText = 'ra.action.create',
     createValue = '@@create',
@@ -51,7 +49,6 @@ export const useSuggestions = ({
     const getSuggestions = useCallback(
         getSuggestionsFactory({
             allowCreate,
-            allowEmpty,
             choices,
             createText,
             createValue,
@@ -68,7 +65,6 @@ export const useSuggestions = ({
         }),
         [
             allowCreate,
-            allowEmpty,
             choices,
             createText,
             createValue,
@@ -99,7 +95,6 @@ const escapeRegExp = value =>
 export interface UseSuggestionsOptions extends UseChoicesOptions {
     allowCreate?: boolean;
     allowDuplicates?: boolean;
-    allowEmpty?: boolean;
     choices: any[];
     createText?: string;
     createValue?: any;
@@ -162,7 +157,6 @@ const defaultMatchSuggestion = getChoiceText => (
  */
 export const getSuggestionsFactory = ({
     allowCreate = false,
-    allowEmpty = false,
     choices = [],
     createText = 'ra.action.create',
     createValue = '@@create',
@@ -235,17 +229,6 @@ export const getSuggestionsFactory = ({
                 })
             );
         }
-    }
-
-    if (allowEmpty) {
-        suggestions.unshift(
-            getSuggestion({
-                optionText,
-                optionValue,
-                text: emptyText,
-                value: emptyValue,
-            })
-        );
     }
 
     // Only keep unique items. Necessary because we might have fetched

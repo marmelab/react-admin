@@ -8,7 +8,13 @@ import FormControl, { FormControlProps } from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
 import FormHelperText from '@mui/material/FormHelperText';
 import { CheckboxProps } from '@mui/material/Checkbox';
-import { FieldTitle, useInput, ChoicesProps, warning } from 'ra-core';
+import {
+    FieldTitle,
+    useInput,
+    ChoicesProps,
+    warning,
+    useChoicesContext,
+} from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
@@ -81,28 +87,35 @@ import { LinearProgress } from '../layout';
  */
 export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => {
     const {
-        choices = [],
+        choices: choicesProp,
         className,
         classes: classesOverride,
         format,
         helperText,
         label,
-        isLoading,
-        isFetching,
+        isLoading: isLoadingProp,
+        isFetching: isFetchingProp,
         margin = 'dense',
         onBlur,
         onChange,
         optionText,
         optionValue,
         parse,
-        resource,
+        resource: resourceProp,
         row,
-        source,
-        translate,
+        source: sourceProp,
         translateChoice,
         validate,
         ...rest
     } = props;
+
+    const { allChoices, isLoading, resource, source } = useChoicesContext({
+        choices: choicesProp,
+        isFetching: isFetchingProp,
+        isLoading: isLoadingProp,
+        resource: resourceProp,
+        source: sourceProp,
+    });
 
     warning(
         source === undefined,
@@ -110,7 +123,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
     );
 
     warning(
-        choices === undefined,
+        allChoices === undefined,
         `If you're not wrapping the CheckboxGroupInput inside a ReferenceArrayInput, you must provide the choices prop`
     );
 
@@ -186,7 +199,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                 />
             </FormLabel>
             <FormGroup row={row}>
-                {choices.map(choice => (
+                {allChoices.map(choice => (
                     <CheckboxGroupInputItem
                         key={get(choice, optionValue)}
                         choice={choice}
@@ -223,7 +236,15 @@ const sanitizeRestProps = ({
 }: any) => sanitizeInputRestProps(rest);
 
 CheckboxGroupInput.propTypes = {
-    choices: PropTypes.arrayOf(PropTypes.object),
+    // @ts-ignore
+    choices: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.oneOfType([
+                PropTypes.string.isRequired,
+                PropTypes.number.isRequired,
+            ]).isRequired,
+        })
+    ),
     className: PropTypes.string,
     source: PropTypes.string,
     optionText: PropTypes.oneOfType([

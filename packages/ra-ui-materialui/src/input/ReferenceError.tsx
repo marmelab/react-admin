@@ -8,11 +8,19 @@ export const ReferenceError = ({
     error,
 }: {
     label: string | ReactElement | false;
-    error: string;
-}) => <TextField error disabled label={label} value={error} margin="normal" />;
+    error: Error;
+}) => (
+    <TextField
+        error
+        disabled
+        label={label}
+        value={error?.message}
+        margin="normal"
+    />
+);
 
 ReferenceError.propTypes = {
-    error: PropTypes.string.isRequired,
+    error: PropTypes.object.isRequired,
     label: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.element,

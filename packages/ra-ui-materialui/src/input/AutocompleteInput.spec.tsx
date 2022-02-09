@@ -298,7 +298,7 @@ describe('<AutocompleteInput />', () => {
         expect(input.value).toEqual('');
     });
 
-    it('should repopulate the suggestions after the suggestions are dismissed', () => {
+    it('should repopulate the suggestions after the suggestions are dismissed', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm onSubmit={jest.fn()} defaultValues={{ role: null }}>
@@ -312,13 +312,17 @@ describe('<AutocompleteInput />', () => {
         const input = screen.getByLabelText('resources.users.fields.role');
         fireEvent.focus(input);
         fireEvent.change(input, { target: { value: 'bar' } });
-        expect(screen.queryByText('foo')).toBeNull();
+        await waitFor(() => {
+            expect(screen.queryByText('foo')).toBeNull();
+        });
 
-        // Temporary workaround until we can upgrade testing-library in v4
-        input.blur();
-        input.focus();
+        fireEvent.blur(input);
+        fireEvent.focus(input);
         fireEvent.change(input, { target: { value: 'foo' } });
-        expect(screen.queryByText('foo')).not.toBeNull();
+
+        await waitFor(() => {
+            expect(screen.queryByText('foo')).not.toBeNull();
+        });
     });
 
     it('should not rerender searchText while having focus and new choices arrive', () => {

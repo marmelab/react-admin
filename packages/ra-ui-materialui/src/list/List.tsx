@@ -5,8 +5,7 @@ import { ListBase, ListControllerProps, RaRecord } from 'ra-core';
 
 import { TitlePropType } from '../layout/Title';
 
-import { ListView } from './ListView';
-import { ListViewProps } from '.';
+import { ListView, ListViewProps } from './ListView';
 
 /**
  * List page component

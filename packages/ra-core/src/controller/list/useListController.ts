@@ -166,7 +166,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         hasNextPage: pageInfo
             ? pageInfo.hasNextPage
             : total != null
-            ? query.page * perPage < total
+            ? query.page * query.perPage < total
             : undefined,
         hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : query.page > 1,
     };

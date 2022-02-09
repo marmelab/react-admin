@@ -36,12 +36,10 @@ describe('useReferenceArrayInputController', () => {
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
                     <Form
+                        defaultValues={{ tag_ids: [1, 2] }}
                         onSubmit={jest.fn()}
                         render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                field={{ value: [1, 2] }}
-                            >
+                            <ReferenceArrayInputController {...defaultProps}>
                                 {children}
                             </ReferenceArrayInputController>
                         )}
@@ -63,11 +61,9 @@ describe('useReferenceArrayInputController', () => {
                 <CoreAdminContext dataProvider={dataProvider}>
                     <Form
                         onSubmit={jest.fn()}
+                        defaultValues={{ tag_ids: [1, 2] }}
                         render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                field={{ value: [1, 2] }}
-                            >
+                            <ReferenceArrayInputController {...defaultProps}>
                                 {children}
                             </ReferenceArrayInputController>
                         )}
@@ -75,8 +71,10 @@ describe('useReferenceArrayInputController', () => {
                 </CoreAdminContext>
             );
             await waitFor(() => {
-                expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
                 expect(dataProvider.getList).toHaveBeenCalledTimes(1);
+            });
+            await waitFor(() => {
+                expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
             });
             expect(screen.queryByText('false')).not.toBeNull();
         });
@@ -85,7 +83,9 @@ describe('useReferenceArrayInputController', () => {
     describe('error', () => {
         it('should set error in case of references fetch error and there are no selected reference in the input value', async () => {
             jest.spyOn(console, 'error').mockImplementation(() => {});
-            const children = jest.fn(({ error }) => <div>{error}</div>);
+            const children = jest.fn(({ error }) => (
+                <div>{error?.message}</div>
+            ));
             render(
                 <CoreAdminContext
                     dataProvider={testDataProvider({
@@ -105,15 +105,15 @@ describe('useReferenceArrayInputController', () => {
             );
 
             await waitFor(() => {
-                expect(
-                    screen.getByText('ra.input.references.all_missing')
-                ).not.toBeNull();
+                expect(screen.getByText('boom')).not.toBeNull();
             });
         });
 
         it('should set error in case of references fetch error and there are no data found for the references already selected', async () => {
             jest.spyOn(console, 'error').mockImplementation(() => {});
-            const children = jest.fn(({ error }) => <div>{error}</div>);
+            const children = jest.fn(({ error }) => (
+                <div>{error?.message}</div>
+            ));
             render(
                 <CoreAdminContext
                     dataProvider={testDataProvider({
@@ -135,14 +135,14 @@ describe('useReferenceArrayInputController', () => {
                 </CoreAdminContext>
             );
             await waitFor(() => {
-                expect(
-                    screen.queryByText('ra.input.references.all_missing')
-                ).not.toBeNull();
+                expect(screen.queryByText('boom')).not.toBeNull();
             });
         });
 
         it.skip('should not display an error in case of references fetch error but data from at least one selected reference was found', async () => {
-            const children = jest.fn(({ error }) => <div>{error}</div>);
+            const children = jest.fn(({ error }) => (
+                <div>{error?.message}</div>
+            ));
             render(
                 <CoreAdminContext
                     dataProvider={testDataProvider({
@@ -170,146 +170,7 @@ describe('useReferenceArrayInputController', () => {
             await waitFor(
                 () => new Promise(resolve => setTimeout(resolve, 100))
             );
-            expect(
-                screen.queryByText('ra.input.references.all_missing')
-            ).toBeNull();
-        });
-    });
-
-    describe('warning', () => {
-        it('should set warning if references fetch fails but selected references are not empty', async () => {
-            jest.spyOn(console, 'error').mockImplementation(() => {});
-            const children = jest.fn(({ warning }) => <div>{warning}</div>);
-            render(
-                <CoreAdminContext
-                    dataProvider={testDataProvider({
-                        getList: () => Promise.reject(new Error('boom')),
-                        getMany: () =>
-                            // @ts-ignore
-                            Promise.resolve({
-                                data: [{ id: 1, name: 'foo ' }],
-                            }),
-                    })}
-                >
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                field={{ value: [1, 2] }}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
-                </CoreAdminContext>
-            );
-            await waitFor(() => {
-                expect(
-                    screen.queryByText('ra.input.references.many_missing')
-                ).not.toBeNull();
-            });
-        });
-
-        it('should set warning if references were found but selected references are not complete', async () => {
-            const children = jest.fn(({ warning }) => <div>{warning}</div>);
-            render(
-                <CoreAdminContext
-                    dataProvider={testDataProvider({
-                        getList: () =>
-                            // @ts-ignore
-                            Promise.resolve({
-                                data: [{ id: 1, name: 'foo' }],
-                                total: 1,
-                            }),
-                        getMany: () => Promise.resolve({ data: [] }),
-                    })}
-                >
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                field={{ value: [1, 2] }}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
-                </CoreAdminContext>
-            );
-            await waitFor(() => {
-                expect(
-                    screen.queryByText('ra.input.references.many_missing')
-                ).not.toBeNull();
-            });
-        });
-
-        it('should set warning if references were found but selected references are empty', async () => {
-            const children = jest.fn(({ warning }) => <div>{warning}</div>);
-            render(
-                <CoreAdminContext
-                    dataProvider={testDataProvider({
-                        getList: () =>
-                            // @ts-ignore
-                            Promise.resolve({
-                                data: [],
-                                total: 0,
-                            }),
-                        getMany: () =>
-                            // @ts-ignore
-                            Promise.resolve({ data: [{ id: 5 }, { id: 6 }] }),
-                    })}
-                >
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                field={{ value: [1, 2] }}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
-                </CoreAdminContext>
-            );
-            await waitFor(() => {
-                expect(
-                    screen.queryByText('ra.input.references.many_missing')
-                ).not.toBeNull();
-            });
-        });
-
-        it('should not set warning if all references were found', async () => {
-            const children = jest.fn(({ warning }) => <div>{warning}</div>);
-            render(
-                <CoreAdminContext
-                    dataProvider={testDataProvider({
-                        getList: () => Promise.resolve({ data: [], total: 0 }),
-                        getMany: () =>
-                            // @ts-ignore
-                            Promise.resolve({ data: [{ id: 1 }, { id: 2 }] }),
-                    })}
-                >
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                field={{ value: [1, 2] }}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
-                </CoreAdminContext>
-            );
-            await waitFor(() => {
-                expect(
-                    screen.queryByText('ra.input.references.many_missing')
-                ).toBeNull();
-            });
+            expect(screen.queryByText('boom')).toBeNull();
         });
     });
 
@@ -326,10 +187,7 @@ describe('useReferenceArrayInputController', () => {
                 <Form
                     onSubmit={jest.fn()}
                     render={() => (
-                        <ReferenceArrayInputController
-                            {...defaultProps}
-                            allowEmpty
-                        >
+                        <ReferenceArrayInputController {...defaultProps}>
                             {children}
                         </ReferenceArrayInputController>
                     )}
@@ -345,7 +203,8 @@ describe('useReferenceArrayInputController', () => {
                 field: 'id',
                 order: 'DESC',
             },
-            filter: { q: '' },
+            filter: {},
+            meta: undefined,
         });
     });
 
@@ -382,13 +241,17 @@ describe('useReferenceArrayInputController', () => {
                 field: 'foo',
                 order: 'ASC',
             },
-            filter: { permanentFilter: 'foo', q: '' },
+            filter: { permanentFilter: 'foo' },
+            meta: undefined,
         });
     });
 
-    it('should call getList when setFilter is called', async () => {
-        const children = jest.fn(({ setFilter }) => (
-            <button aria-label="Filter" onClick={() => setFilter('bar')} />
+    it('should call getList when setFilters is called', async () => {
+        const children = jest.fn(({ setFilters }) => (
+            <button
+                aria-label="Filter"
+                onClick={() => setFilters({ q: 'bar' })}
+            />
         ));
         const dataProvider = testDataProvider({
             getList: jest
@@ -424,51 +287,6 @@ describe('useReferenceArrayInputController', () => {
         });
     });
 
-    it('should use custom filterToQuery function prop', async () => {
-        const children = jest.fn(({ setFilter }) => (
-            <button aria-label="Filter" onClick={() => setFilter('bar')} />
-        ));
-
-        const dataProvider = testDataProvider({
-            getList: jest
-                .fn()
-                .mockResolvedValue(Promise.resolve({ data: [], total: 0 })),
-        });
-        render(
-            <CoreAdminContext dataProvider={dataProvider}>
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <ReferenceArrayInputController
-                            {...defaultProps}
-                            filterToQuery={searchText => ({
-                                foo: searchText,
-                            })}
-                        >
-                            {children}
-                        </ReferenceArrayInputController>
-                    )}
-                />
-            </CoreAdminContext>
-        );
-
-        fireEvent.click(screen.getByLabelText('Filter'));
-
-        await waitFor(() => {
-            expect(dataProvider.getList).toHaveBeenCalledWith('tags', {
-                pagination: {
-                    page: 1,
-                    perPage: 25,
-                },
-                sort: {
-                    field: 'id',
-                    order: 'DESC',
-                },
-                filter: { foo: 'bar' },
-            });
-        });
-    });
-
     it('should call getMany on mount if value is set', async () => {
         const children = jest.fn(() => <div />);
         const dataProvider = testDataProvider({
@@ -483,11 +301,9 @@ describe('useReferenceArrayInputController', () => {
             <CoreAdminContext dataProvider={dataProvider}>
                 <Form
                     onSubmit={jest.fn()}
+                    defaultValues={{ tag_ids: [5, 6] }}
                     render={() => (
-                        <ReferenceArrayInputController
-                            {...defaultProps}
-                            field={{ value: [5, 6] }}
-                        >
+                        <ReferenceArrayInputController {...defaultProps}>
                             {children}
                         </ReferenceArrayInputController>
                     )}
@@ -501,9 +317,12 @@ describe('useReferenceArrayInputController', () => {
         });
     });
 
-    it('should not call getMany when calling setFilter', async () => {
-        const children = jest.fn(({ setFilter }) => (
-            <button aria-label="Filter" onClick={() => setFilter('bar')} />
+    it('should not call getMany when calling setFilters', async () => {
+        const children = jest.fn(({ setFilters }) => (
+            <button
+                aria-label="Filter"
+                onClick={() => setFilters({ q: 'bar' })}
+            />
         ));
         const dataProvider = testDataProvider({
             // @ts-ignore
@@ -519,11 +338,9 @@ describe('useReferenceArrayInputController', () => {
             <CoreAdminContext dataProvider={dataProvider}>
                 <Form
                     onSubmit={jest.fn()}
+                    defaultValues={{ tag_ids: [5] }}
                     render={() => (
-                        <ReferenceArrayInputController
-                            {...defaultProps}
-                            field={{ value: [5] }}
-                        >
+                        <ReferenceArrayInputController {...defaultProps}>
                             {children}
                         </ReferenceArrayInputController>
                     )}
@@ -535,11 +352,15 @@ describe('useReferenceArrayInputController', () => {
 
         await waitFor(() => {
             expect(dataProvider.getList).toHaveBeenCalledTimes(2);
+        });
+        await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
         });
     });
 
     it('should not call getMany when props other than input are changed from outside', async () => {
+        const record = { tag_ids: [5] };
+        const onSubmit = jest.fn();
         const children = jest.fn(() => <div />);
         const dataProvider = testDataProvider({
             // @ts-ignore
@@ -554,12 +375,10 @@ describe('useReferenceArrayInputController', () => {
         const { rerender } = render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <Form
-                    onSubmit={jest.fn()}
+                    onSubmit={onSubmit}
+                    record={record}
                     render={() => (
-                        <ReferenceArrayInputController
-                            {...defaultProps}
-                            field={{ value: [5] }}
-                        >
+                        <ReferenceArrayInputController {...defaultProps}>
                             {children}
                         </ReferenceArrayInputController>
                     )}
@@ -570,11 +389,11 @@ describe('useReferenceArrayInputController', () => {
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
                 <Form
-                    onSubmit={jest.fn()}
+                    onSubmit={onSubmit}
+                    record={record}
                     render={() => (
                         <ReferenceArrayInputController
                             {...defaultProps}
-                            field={{ value: [5] }}
                             filter={{ permanentFilter: 'bar' }}
                         >
                             {children}
@@ -586,17 +405,19 @@ describe('useReferenceArrayInputController', () => {
 
         await waitFor(() => {
             expect(dataProvider.getList).toHaveBeenCalledTimes(2);
+        });
+        await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
         });
 
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
                 <Form
-                    onSubmit={jest.fn()}
+                    record={record}
+                    onSubmit={onSubmit}
                     render={() => (
                         <ReferenceArrayInputController
                             {...defaultProps}
-                            field={{ value: [5] }}
                             filter={{ permanentFilter: 'bar' }}
                             sort={{ field: 'foo', order: 'ASC' }}
                         >
@@ -609,17 +430,19 @@ describe('useReferenceArrayInputController', () => {
 
         await waitFor(() => {
             expect(dataProvider.getList).toHaveBeenCalledTimes(3);
+        });
+        await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
         });
 
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
                 <Form
-                    onSubmit={jest.fn()}
+                    record={record}
+                    onSubmit={onSubmit}
                     render={() => (
                         <ReferenceArrayInputController
                             {...defaultProps}
-                            field={{ value: [5] }}
                             filter={{ permanentFilter: 'bar' }}
                             sort={{ field: 'foo', order: 'ASC' }}
                             perPage={42}
@@ -633,6 +456,8 @@ describe('useReferenceArrayInputController', () => {
 
         await waitFor(() => {
             expect(dataProvider.getList).toHaveBeenCalledTimes(4);
+        });
+        await waitFor(() => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
         });
     });
@@ -649,12 +474,10 @@ describe('useReferenceArrayInputController', () => {
         const { rerender } = render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <Form
+                    record={{ tag_ids: [5] }}
                     onSubmit={jest.fn()}
                     render={() => (
-                        <ReferenceArrayInputController
-                            {...defaultProps}
-                            field={{ value: [5] }}
-                        >
+                        <ReferenceArrayInputController {...defaultProps}>
                             {children}
                         </ReferenceArrayInputController>
                     )}
@@ -669,12 +492,10 @@ describe('useReferenceArrayInputController', () => {
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
                 <Form
+                    record={{ tag_ids: [5, 6] }}
                     onSubmit={jest.fn()}
                     render={() => (
-                        <ReferenceArrayInputController
-                            {...defaultProps}
-                            field={{ value: [5, 6] }}
-                        >
+                        <ReferenceArrayInputController {...defaultProps}>
                             {children}
                         </ReferenceArrayInputController>
                     )}
@@ -749,7 +570,8 @@ describe('useReferenceArrayInputController', () => {
                     field: 'id',
                     order: 'DESC',
                 },
-                filter: { q: '' },
+                filter: {},
+                meta: undefined,
             });
         });
 
@@ -757,14 +579,15 @@ describe('useReferenceArrayInputController', () => {
         await waitFor(() => {
             expect(dataProvider.getList).toHaveBeenCalledWith('tags', {
                 pagination: {
-                    page: 2,
+                    page: 1,
                     perPage: 50,
                 },
                 sort: {
                     field: 'id',
                     order: 'DESC',
                 },
-                filter: { q: '' },
+                filter: {},
+                meta: undefined,
             });
         });
 
@@ -779,7 +602,8 @@ describe('useReferenceArrayInputController', () => {
                     field: 'name',
                     order: 'ASC',
                 },
-                filter: { q: '' },
+                filter: {},
+                meta: undefined,
             });
         });
     });
@@ -802,7 +626,7 @@ describe('useReferenceArrayInputController', () => {
             </CoreAdminContext>
         );
         expect(children).toHaveBeenCalledWith(
-            expect.objectContaining({ resource: 'posts' })
+            expect.objectContaining({ resource: 'tags' })
         );
     });
 
@@ -824,7 +648,6 @@ describe('useReferenceArrayInputController', () => {
                         render={() => (
                             <ReferenceArrayInputController
                                 {...defaultProps}
-                                allowEmpty
                                 enableGetChoices={enableGetChoices}
                             >
                                 {children}
@@ -838,10 +661,10 @@ describe('useReferenceArrayInputController', () => {
             await waitFor(() => {
                 expect(dataProvider.getList).not.toHaveBeenCalled();
             });
-            expect(enableGetChoices).toHaveBeenCalledWith({ q: '' });
+            expect(enableGetChoices).toHaveBeenCalledWith({});
 
-            const { setFilter } = children.mock.calls[0][0];
-            setFilter('hello world');
+            const { setFilters } = children.mock.calls[0][0];
+            setFilters({ q: 'hello world' });
 
             await waitFor(() => {
                 expect(dataProvider.getList).toHaveBeenCalledTimes(1);
@@ -876,10 +699,10 @@ describe('useReferenceArrayInputController', () => {
                 <CoreAdminContext dataProvider={dataProvider}>
                     <Form
                         onSubmit={jest.fn()}
+                        record={{ tag_ids: [5, 6] }}
                         render={() => (
                             <ReferenceArrayInputController
                                 {...defaultProps}
-                                field={{ value: [5, 6] }}
                                 enableGetChoices={() => false}
                             >
                                 {children}
@@ -908,7 +731,6 @@ describe('useReferenceArrayInputController', () => {
                         render={() => (
                             <ReferenceArrayInputController
                                 {...defaultProps}
-                                allowEmpty
                                 enableGetChoices={enableGetChoices}
                             >
                                 {children}

@@ -5,12 +5,12 @@ import MenuItem from '@mui/material/MenuItem';
 import { TextFieldProps } from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 import {
+    useChoicesContext,
     useInput,
     FieldTitle,
     useTranslate,
     ChoicesProps,
     useChoices,
-    warning,
 } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -103,7 +103,7 @@ import {
  */
 export const SelectInput = (props: SelectInputProps) => {
     const {
-        choices = [],
+        choices: choicesProp,
         className,
         create,
         createLabel,
@@ -113,9 +113,10 @@ export const SelectInput = (props: SelectInputProps) => {
         emptyText,
         emptyValue,
         format,
+        filter,
         helperText,
-        isFetching,
-        isLoading,
+        isFetching: isFetchingProp,
+        isLoading: isLoadingProp,
         label,
         margin = 'dense',
         onBlur,
@@ -124,23 +125,20 @@ export const SelectInput = (props: SelectInputProps) => {
         optionText,
         optionValue,
         parse,
-        resource,
-        source,
+        resource: resourceProp,
+        source: sourceProp,
         translateChoice,
         validate,
         ...rest
     } = props;
     const translate = useTranslate();
-
-    warning(
-        source === undefined,
-        `If you're not wrapping the SelectInput inside a ReferenceInput, you must provide the source prop`
-    );
-
-    warning(
-        choices === undefined,
-        `If you're not wrapping the SelectInput inside a ReferenceInput, you must provide the choices prop`
-    );
+    const { allChoices, isLoading, source, resource } = useChoicesContext({
+        choices: choicesProp,
+        isLoading: isLoadingProp,
+        isFetching: isFetchingProp,
+        resource: resourceProp,
+        source: sourceProp,
+    });
 
     const { getChoiceText, getChoiceValue, getDisableValue } = useChoices({
         optionText,
@@ -148,7 +146,6 @@ export const SelectInput = (props: SelectInputProps) => {
         disableValue,
         translateChoice,
     });
-
     const {
         field,
         fieldState,
@@ -211,7 +208,7 @@ export const SelectInput = (props: SelectInputProps) => {
 
     const createItem = create || onCreate ? getCreateItem() : null;
     const finalChoices =
-        create || onCreate ? [...choices, createItem] : choices;
+        create || onCreate ? [...allChoices, createItem] : allChoices;
 
     const renderMenuItem = useCallback(
         choice => {
