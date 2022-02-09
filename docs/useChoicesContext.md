@@ -22,10 +22,10 @@ Call `useChoicesContext` in a component, then use this component as a descendant
 import { AutocompleteInput, useChoicesContext } from 'react-admin';
 
 export const PostInput = (props) => {
-    const { setFilters } = useChoicesContext();
+    const { setFilters, displayedFilters } = useChoicesContext();
 
     const handleCheckboxChange = (event, checked) => {
-        setFilters({ published: checked });
+        setFilters({ published: checked }, displayedFilters);
     };
 
     return (
