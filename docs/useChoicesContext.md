@@ -9,7 +9,7 @@ The [`<ReferenceInput>`](./ReferenceInput.md) and [`<ReferenceArrayInput>`](./Re
 
 The `ChoicesContext` is very similar to the [`ListContext`](./useListContext.md) with the exception that it does not return a `data` property but 3 choices related properties:
 
-- `availableChoices`: The choices which are not selected but matches the parameters (sorting, pagination and filters)
+- `availableChoices`: The choices that are not selected but match the parameters (sorting, pagination and filters)
 - `selectedChoices`: The selected choices. 
 - `allChoices`: Merge of both available and selected choices. 
 

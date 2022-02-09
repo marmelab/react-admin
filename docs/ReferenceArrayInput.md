@@ -25,7 +25,7 @@ http://myapi.com/tags?id=[1,23,4]
 http://myapi.com/tags?page=1&perPage=25
 ```
 
-Once it receives the deduplicated reference resources, this component delegates rendering its child component, by providing the possible choices through the `ChoicesContext`. This context value can be accessed with the [`useChoicesContext`](./useChoicesContext.md) hook.
+Once it receives the deduplicated reference resources, this component delegates rendering to its child component, by providing the possible choices through the `ChoicesContext`. This context value can be accessed with the [`useChoicesContext`](./useChoicesContext.md) hook.
 
 This means you can use `<ReferenceArrayInput>` with [`<SelectArrayInput>`](./SelectArrayInput.md), or with the component of your choice, provided they detect a `ChoicesContext` is available and get their choices from it.
 

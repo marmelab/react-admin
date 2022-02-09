@@ -2856,7 +2856,7 @@ const MyCustomInput = () => {
 +        setPerPage,
 +        setSort,
 +        sort,
-+    } useChoicesContext();
++    } = useChoicesContext();
     return // ...
 }
 ```
