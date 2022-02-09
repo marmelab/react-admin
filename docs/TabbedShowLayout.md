@@ -13,7 +13,7 @@ Switching tabs will update the current url. By default, it uses the tabs indexes
 
 ## Usage 
 
-Use `<TabbedShowLayout>` as descendent of a `<Show>` component (or any component creating a `<RecordContext>`), define the tabs via `<Tab>` children, and set the fields to be displayed as children of each tab:
+Use `<TabbedShowLayout>` as descendant of a `<Show>` component (or any component creating a `<RecordContext>`), define the tabs via `<Tab>` children, and set the fields to be displayed as children of each tab:
 
 {% raw %}
 ```jsx

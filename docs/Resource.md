@@ -12,7 +12,7 @@ In react-admin terms, a *resource* is a string that refers to an entity type (li
 A `<Resource>` component has 3 responsibilities:
 
 - It defines the components for the CRUD routes of a given resource (to display a list of records, the details of a record, or to create a new one).
-- It creates a context that lets every descendent component know the current resource name (this context is called `ResourceContext`).
+- It creates a context that lets every descendant component know the current resource name (this context is called `ResourceContext`).
 - It stores the resource definition (its name, icon, and label) inside a shared context (this context is called `ResourceDefinitionContext`).
 
 `<Resource>` components can only be used as children of [the `<Admin>` component](./Admin.md).
@@ -121,7 +121,7 @@ const App = () => (
 
 ## Resource Context
 
-`<Resource>` also creates a `ResourceContext`, that gives access to the current resource name to all descendents of the main page components (`list`, `create`, `edit`, `show`). 
+`<Resource>` also creates a `ResourceContext`, that gives access to the current resource name to all descendants of the main page components (`list`, `create`, `edit`, `show`). 
 
 to read the current resource name, use the `useResourceContext()` hook.
 
