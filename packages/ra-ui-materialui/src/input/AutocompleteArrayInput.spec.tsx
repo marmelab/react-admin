@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { testDataProvider, TestTranslationProvider } from 'ra-core';
+import {
+    testDataProvider,
+    TestTranslationProvider,
+    useRecordContext,
+} from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
@@ -478,9 +482,10 @@ describe('<AutocompleteArrayInput />', () => {
     });
 
     it('should allow customized rendering of suggesting item', () => {
-        const SuggestionItem = ({ record }: { record?: any }) => (
-            <div aria-label={record.name} />
-        );
+        const SuggestionItem = props => {
+            const record = useRecordContext();
+            return <div {...props} aria-label={record && record.name} />;
+        };
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
