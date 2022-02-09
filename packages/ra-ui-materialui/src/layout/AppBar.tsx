@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC } from 'react';
 import { styled } from '@mui/material/styles';
-import { Children, cloneElement, memo } from 'react';
+import { Children, memo } from 'react';
 import PropTypes from 'prop-types';
 import {
     AppBar as MuiAppBar,
@@ -101,7 +101,7 @@ export const AppBar: FC<AppBarProps> = memo(props => {
                             <UserMenu logout={logout} />
                         ) : null
                     ) : (
-                        cloneElement(userMenu, { logout })
+                        userMenu
                     )}
                 </Toolbar>
             </StyledAppBar>
