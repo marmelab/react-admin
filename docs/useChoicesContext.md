@@ -89,5 +89,5 @@ const {
     defaultTitle, // the translated title based on the resource, e.g. 'Posts'
     resource, // the resource name, deduced from the location. e.g. 'posts'
     refetch, // callback for fetching the list data again
-} = useListContext();
+} = useChoicesContext();
 ```
