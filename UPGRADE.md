@@ -1415,7 +1415,7 @@ const PostShow = () => (
 
 ## No More Props Injection In `<Title>`
 
-`<Title>` no longer clone the `title` prop and inject it the `record`. Call the `useRecordContext` hook to get the current record.
+`<Title>` no longer clones the `title` prop and injects it to the `record`. Call the `useRecordContext` hook to get the current record.
 
 ```diff
 -const PostTitle = ({ record }) => {
