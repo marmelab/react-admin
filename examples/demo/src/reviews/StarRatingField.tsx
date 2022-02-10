@@ -2,7 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Icon from '@mui/icons-material/Stars';
 
-import { FieldProps, useRecordContext } from 'react-admin';
+import { FieldProps, Labeled, useRecordContext } from 'react-admin';
 
 const PREFIX = 'StarRatingField';
 
@@ -36,25 +36,26 @@ const StarRatingField = ({ size = 'large' }: FieldProps & OwnProps) => {
     const record = useRecordContext();
 
     return record ? (
-        <Root className={classes.root}>
-            {Array(record.rating)
-                .fill(true)
-                .map((_, i) => (
-                    <Icon
-                        key={i}
-                        className={
-                            size === 'large' ? classes.large : classes.small
-                        }
-                    />
-                ))}
-        </Root>
+        <Labeled source="rating">
+            <Root className={classes.root}>
+                {Array(record.rating)
+                    .fill(true)
+                    .map((_, i) => (
+                        <Icon
+                            key={i}
+                            className={
+                                size === 'large' ? classes.large : classes.small
+                            }
+                        />
+                    ))}
+            </Root>
+        </Labeled>
     ) : null;
 };
 
 StarRatingField.defaultProps = {
     label: 'resources.reviews.fields.rating',
     source: 'rating',
-    addLabel: true,
 };
 
 export default StarRatingField;

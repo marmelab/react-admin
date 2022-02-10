@@ -39,10 +39,6 @@ export const RichTextField: FC<RichTextFieldProps> = memo<RichTextFieldProps>(
     }
 );
 
-RichTextField.defaultProps = {
-    addLabel: true,
-};
-
 RichTextField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,

@@ -28,7 +28,7 @@ export const PostShow = () => (
                 <TextField source="teaser" />
             </Tab>
             <Tab label="body" path="body">
-                <RichTextField source="body" addLabel={false} />
+                <RichTextField source="body" label={false} />
             </Tab>
             <Tab label="Miscellaneous" path="miscellaneous">
                 <TextField label="Password (if protected post)" source="password" type="password" />
@@ -38,7 +38,7 @@ export const PostShow = () => (
                 <TextField label="Nb views" source="views" />
             </Tab>
             <Tab label="comments" path="comments">
-                <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
+                <ReferenceManyField reference="comments" target="post_id" label={false}>
                     <Datagrid>
                         <TextField source="body" />
                         <DateField source="created_at" />
@@ -165,7 +165,7 @@ export const PostShow = () => (
                 <TextField source="teaser" />
             </Tab>
             <Tab label="body" path="body">
-                <RichTextField source="body" addLabel={false} />
+                <RichTextField source="body" label={false} />
             </Tab>
             <Tab label="Miscellaneous" path="miscellaneous">
                 <TextField label="Password (if protected post)" source="password" type="password" />
@@ -175,7 +175,7 @@ export const PostShow = () => (
                 <TextField label="Nb views" source="views" />
             </Tab>
             <Tab label="comments" path="comments">
-                <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
+                <ReferenceManyField reference="comments" target="post_id" label={false}>
                     <Datagrid>
                         <TextField source="body" />
                         <DateField source="created_at" />

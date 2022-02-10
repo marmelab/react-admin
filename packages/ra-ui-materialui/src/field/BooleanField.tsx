@@ -75,10 +75,6 @@ export const BooleanField: FunctionComponent<BooleanFieldProps> = memo(
     }
 );
 
-BooleanField.defaultProps = {
-    addLabel: true,
-};
-
 BooleanField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,

@@ -97,10 +97,6 @@ export const FileField = (props: FileFieldProps) => {
     );
 };
 
-FileField.defaultProps = {
-    addLabel: true,
-};
-
 export interface FileFieldProps extends PublicFieldProps, InjectedFieldProps {
     src?: string;
     title?: string;

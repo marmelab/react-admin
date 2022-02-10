@@ -105,7 +105,6 @@ export const ReferenceArrayField: FC<ReferenceArrayFieldProps> = props => {
 
 ReferenceArrayField.propTypes = {
     ...fieldPropTypes,
-    addLabel: PropTypes.bool,
     className: PropTypes.string,
     children: PropTypes.element.isRequired,
     label: fieldPropTypes.label,
@@ -115,10 +114,6 @@ ReferenceArrayField.propTypes = {
     sortBy: PropTypes.string,
     sortByOrder: fieldPropTypes.sortByOrder,
     source: PropTypes.string.isRequired,
-};
-
-ReferenceArrayField.defaultProps = {
-    addLabel: true,
 };
 
 export interface ReferenceArrayFieldProps

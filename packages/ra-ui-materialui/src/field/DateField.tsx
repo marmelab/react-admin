@@ -81,10 +81,6 @@ export const DateField: FC<DateFieldProps> = memo(props => {
     );
 });
 
-DateField.defaultProps = {
-    addLabel: true,
-};
-
 DateField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,

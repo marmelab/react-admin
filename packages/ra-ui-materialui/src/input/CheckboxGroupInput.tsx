@@ -173,6 +173,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                 className={className}
                 isRequired={isRequired}
                 margin={margin}
+                {...rest}
             >
                 <LinearProgress />
             </Labeled>
@@ -225,7 +226,6 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
 };
 
 const sanitizeRestProps = ({
-    fullWidth,
     refetch,
     setFilter,
     setPagination,

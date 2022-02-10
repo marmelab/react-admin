@@ -27,14 +27,12 @@ export const Labeled = (props: LabeledProps) => {
         className,
         fullWidth,
         id,
-        field,
         isRequired,
         label,
         labelId,
         margin = 'dense',
         fieldState,
         source,
-        ...rest
     } = props;
 
     const resource = useResourceContext(props);
@@ -44,11 +42,9 @@ export const Labeled = (props: LabeledProps) => {
         const name = children && children.type && children.type.name;
 
         throw new Error(
-            `Cannot create label for component <${name}>: You must set either the label or source props. You can also disable automated label insertion by setting 'addLabel: false' in the component default props`
+            `Cannot create label for component <${name}>: You must set either the label or source props. You can also disable automated label insertion by setting 'label: false' in the component props`
         );
     }
-    const restProps = fullWidth ? { ...rest, fullWidth } : rest;
-
     return (
         <StyledFormControl
             className={className}
@@ -56,28 +52,22 @@ export const Labeled = (props: LabeledProps) => {
             error={fieldState && fieldState.isTouched && !!fieldState.error}
             margin={margin}
         >
-            <InputLabel
-                id={labelId}
-                htmlFor={id}
-                shrink
-                className={LabeledClasses.label}
-            >
-                <FieldTitle
-                    label={label}
-                    source={source}
-                    resource={resource}
-                    isRequired={isRequired}
-                />
-            </InputLabel>
-            <div className={LabeledClasses.value}>
-                {children && typeof children.type !== 'string'
-                    ? React.cloneElement(children, {
-                          field,
-                          resource,
-                          ...restProps,
-                      })
-                    : children}
-            </div>
+            {label === false ? null : (
+                <InputLabel
+                    id={labelId}
+                    htmlFor={id}
+                    shrink
+                    className={LabeledClasses.label}
+                >
+                    <FieldTitle
+                        label={label}
+                        source={source}
+                        resource={resource}
+                        isRequired={isRequired}
+                    />
+                </InputLabel>
+            )}
+            <div className={LabeledClasses.value}>{children}</div>
         </StyledFormControl>
     );
 };

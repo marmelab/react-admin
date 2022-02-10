@@ -51,6 +51,7 @@ export const TranslatableFieldsTabContent = (
                                 {cloneElement(field, {
                                     ...field.props,
                                     label: getLabel(field.props.source),
+                                    record,
                                     source: getSource(
                                         field.props.source,
                                         locale
@@ -63,6 +64,7 @@ export const TranslatableFieldsTabContent = (
                             cloneElement(field, {
                                 ...field.props,
                                 label: getLabel(field.props.source),
+                                record,
                                 source: getSource(field.props.source, locale),
                             })
                         )}

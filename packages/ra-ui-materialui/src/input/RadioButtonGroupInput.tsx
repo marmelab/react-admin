@@ -226,7 +226,6 @@ RadioButtonGroupInput.defaultProps = {
 };
 
 const sanitizeRestProps = ({
-    addLabel,
     afterSubmit,
     allowNull,
     beforeSubmit,

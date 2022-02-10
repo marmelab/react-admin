@@ -113,7 +113,6 @@ export interface ReferenceManyFieldProps
 }
 
 ReferenceManyField.propTypes = {
-    addLabel: PropTypes.bool,
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
     filter: PropTypes.object,
@@ -137,7 +136,6 @@ ReferenceManyField.defaultProps = {
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     source: 'id',
-    addLabel: true,
 };
 
 export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => {

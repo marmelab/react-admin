@@ -21,7 +21,6 @@ const ProductReferenceField = (
 
 ProductReferenceField.defaultProps = {
     source: 'product_id',
-    addLabel: true,
 };
 
 export default ProductReferenceField;

@@ -80,7 +80,6 @@ export const NumberField: FC<NumberFieldProps> = memo(props => {
 NumberField.displayName = 'NumberField';
 
 NumberField.defaultProps = {
-    addLabel: true,
     textAlign: 'right',
 };
 
