@@ -60,7 +60,7 @@ import { LinearProgress } from '../layout';
  * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
  * <CheckboxGroupInput source="recipients" choices={choices} optionText={optionRenderer} />
  *
- * `optionText` also accepts a React Element, that can access the
+ * `optionText` also accepts a React Element, that can access 
  * the related choice through the `useRecordContext` hook. You can use Field components there.
  * @example
  * const choices = [
