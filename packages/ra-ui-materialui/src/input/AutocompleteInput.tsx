@@ -71,7 +71,7 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
  * <AutocompleteInput source="author_id" choices={choices} optionText={optionRenderer} />
  *
- * `optionText` also accepts a React Element, that can access 
+ * `optionText` also accepts a React Element, that can access
  * the related choice through the `useRecordContext` hook. You can use Field components there.
  * Note that you must also specify the `matchSuggestion` and `inputText` props
  * @example
