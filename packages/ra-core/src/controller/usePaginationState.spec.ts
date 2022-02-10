@@ -19,13 +19,13 @@ describe('usePaginationState', () => {
         const { hookValue, childrenMock, rerender } = renderHook(() =>
             usePaginationState({ perPage: 50, page: 10 })
         );
-        expect(hookValue.pagination).toEqual({ page: 10, perPage: 50 });
+        expect(hookValue.pagination).toEqual({ perPage: 50, page: 10 });
         rerender(() => usePaginationState({ perPage: 100, page: 10 }));
 
         expect(childrenMock).toBeCalledTimes(3);
 
         expect(childrenMock.mock.calls[2][0].pagination).toEqual({
-            page: 10,
+            page: 1,
             perPage: 100,
         });
     });
@@ -67,6 +67,22 @@ describe('usePaginationState', () => {
             usePaginationState()
         );
         expect(hookValue.pagination).toEqual({ page: 1, perPage: 25 });
+
+        act(() => hookValue.setPerPage(100));
+
+        expect(childrenMock).toBeCalledTimes(2);
+
+        expect(childrenMock.mock.calls[1][0].pagination).toEqual({
+            page: 1,
+            perPage: 100,
+        });
+    });
+
+    it('should reset the current page to 1 when perPage state changes', () => {
+        const { hookValue, childrenMock } = renderHook(() =>
+            usePaginationState({ page: 2, perPage: 25 })
+        );
+        expect(hookValue.pagination).toEqual({ page: 2, perPage: 25 });
 
         act(() => hookValue.setPerPage(100));
 

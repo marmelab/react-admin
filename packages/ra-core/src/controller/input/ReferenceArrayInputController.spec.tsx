@@ -794,7 +794,7 @@ describe('<ReferenceArrayInputController />', () => {
         });
     });
 
-    it('should props compatible with the ListContext', async () => {
+    it('should set props compatible with the ListContext', async () => {
         const children = ({
             setPage,
             setPerPage,
@@ -869,7 +869,7 @@ describe('<ReferenceArrayInputController />', () => {
                 },
                 payload: {
                     pagination: {
-                        page: 2,
+                        page: 1,
                         perPage: 50,
                     },
                     sort: {
