@@ -10,7 +10,7 @@ import {
     useMemo,
 } from 'react';
 import { Typography } from '@mui/material';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { RaRecord } from 'ra-core';
 
 import { FormInput } from '../../form/FormInput';
@@ -93,7 +93,7 @@ export const SimpleFormIteratorItem = React.forwardRef(
                                     index,
                                     max: total,
                                     reOrder,
-                                    className: classNames(
+                                    className: clsx(
                                         'button-reorder',
                                         `button-reorder-${source}-${index}`
                                     ),
@@ -141,7 +141,7 @@ export const SimpleFormIteratorItem = React.forwardRef(
                                     removeButton.props.onClick,
                                     index
                                 ),
-                                className: classNames(
+                                className: clsx(
                                     'button-remove',
                                     `button-remove-${source}-${index}`
                                 ),

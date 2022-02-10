@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { useTheme } from '@mui/material/styles';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useLoading } from 'ra-core';
@@ -17,7 +17,7 @@ export const LoadingIndicator = (props: LoadingIndicatorProps) => {
         <Root className={className}>
             {loading ? (
                 <CircularProgress
-                    className={classNames(
+                    className={clsx(
                         'app-loader',
                         LoadingIndicatorClasses.loader
                     )}

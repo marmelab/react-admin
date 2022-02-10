@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import { ReactNode, FC } from 'react';
 import PropTypes from 'prop-types';
 import lodashGet from 'lodash/get';
-import classnames from 'classnames';
+import clsx from 'clsx';
 
 import { DashboardMenuItem, useSidebarState } from 'react-admin';
 import { NewResourceMenuItem } from './NewResourceMenuItem';
@@ -52,7 +52,7 @@ export const Menu: FC<MenuProps> = (props: MenuProps) => {
     return (
         <Root>
             <div
-                className={classnames(
+                className={clsx(
                     classes.main,
                     {
                         [classes.open]: open,

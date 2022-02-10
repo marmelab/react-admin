@@ -20,7 +20,7 @@ import {
     SortPayload,
 } from 'ra-core';
 import { Table, TableProps } from '@mui/material';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import union from 'lodash/union';
 import difference from 'lodash/difference';
 
@@ -234,7 +234,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                 ) : null}
                 <Table
                     ref={ref}
-                    className={classnames(DatagridClasses.table, className)}
+                    className={clsx(DatagridClasses.table, className)}
                     size={size}
                     {...sanitizeRestProps(rest)}
                 >

@@ -4,7 +4,7 @@ import { Children, cloneElement, ReactElement, ElementType } from 'react';
 import PropTypes from 'prop-types';
 import { SxProps } from '@mui/system';
 import Card from '@mui/material/Card';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { ComponentPropType, useListContext, RaRecord } from 'ra-core';
 
 import { Title, TitlePropType } from '../layout/Title';
@@ -78,7 +78,7 @@ export const ListView = <RecordType extends RaRecord = any>(
         empty !== false;
 
     return (
-        <Root className={classnames('list-page', className)} {...rest}>
+        <Root className={clsx('list-page', className)} {...rest}>
             <Title title={title} defaultTitle={defaultTitle} />
             {shouldRenderEmptyPage ? renderEmpty() : renderList()}
             {aside}

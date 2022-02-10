@@ -5750,15 +5750,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/classnames@npm:^2.2.9":
-  version: 2.3.0
-  resolution: "@types/classnames@npm:2.3.0"
-  dependencies:
-    classnames: "*"
-  checksum: 2a9eea8f5a9382b4aad2865f3ac414f298186447a45d53c227bc12d0c0e97b080765526632e8b2ae85013f28a275b42533fc60222a98ff556cce6efbd2d8d25b
-  languageName: node
-  linkType: hard
-
 "@types/color-convert@npm:^2.0.0":
   version: 2.0.0
   resolution: "@types/color-convert@npm:2.0.0"
@@ -10419,7 +10410,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:2.3.1":
+"classnames@npm:^2.2.5":
   version: 2.3.1
   resolution: "classnames@npm:2.3.1"
   checksum: e3b832219042802464e648c41c2e8be96c2c64d2522cfa22fbb5ec088418406c61ab351a682c077c07f691c8b00c9f0ee7939b20fabc6c23da69063252a4ab89
@@ -12392,7 +12383,6 @@ __metadata:
     "@apollo/client": ^3.3.19
     "@mui/icons-material": ^5.0.1
     "@mui/material": ^5.0.2
-    "@types/classnames": ^2.2.9
     "@types/fetch-mock": ^7.3.2
     "@types/inflection": ^1.5.28
     "@types/jest": ^26.0.19
@@ -12402,7 +12392,7 @@ __metadata:
     "@types/react": ^17.0.20
     "@types/react-dom": ^17.0.9
     "@types/recharts": ^1.8.10
-    classnames: ~2.2.5
+    clsx: ^1.1.1
     data-generator-retail: ^4.0.0-alpha.2
     date-fns: ^1.29.0
     fakerest: ^3.0.0
@@ -24974,7 +24964,7 @@ __metadata:
     "@types/node-polyglot": ^0.4.31
     "@types/query-string": 5.1.0
     "@types/react": ^17.0.20
-    classnames: ~2.2.5
+    clsx: ^1.1.1
     cross-env: ^5.2.0
     date-fns: ^1.29.0
     eventemitter3: ^3.0.0
@@ -25178,7 +25168,7 @@ __metadata:
     "@mui/material": ^5.0.2
     "@testing-library/react": ^11.2.3
     "@testing-library/user-event": ^13.1.5
-    classnames: ~2.2.5
+    clsx: ^1.1.1
     cross-env: ^5.2.0
     date-fns: ^1.29.0
     inflection: ~1.12.0
@@ -25211,7 +25201,7 @@ __metadata:
     "@testing-library/react": ^11.2.3
     "@types/query-string": 5.1.0
     autosuggest-highlight: ^3.1.1
-    classnames: ~2.2.5
+    clsx: ^1.1.1
     cross-env: ^5.2.0
     css-mediaquery: ^0.1.2
     downshift: 3.2.7
@@ -25356,7 +25346,6 @@ __metadata:
     "@testing-library/jest-dom": ^5.11.4
     "@testing-library/react": ^11.1.0
     "@testing-library/user-event": ^12.1.10
-    "@types/classnames": ^2.2.9
     "@types/faker": ^5.1.7
     "@types/jest": ^26.0.19
     "@types/lodash": ~4.14.168
@@ -25394,7 +25383,6 @@ __metadata:
     "@storybook/addons": ^6.3.12
     "@storybook/react": ^6.3.12
     "@storybook/testing-react": ^0.0.22
-    "@types/classnames": ^2.2.9
     "@types/jest": ^26.0.19
     "@types/react": ^17.0.20
     "@typescript-eslint/eslint-plugin": ^5.9.1

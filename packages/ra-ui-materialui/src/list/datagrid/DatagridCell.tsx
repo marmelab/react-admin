@@ -1,13 +1,13 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import TableCell, { TableCellProps } from '@mui/material/TableCell';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { RaRecord } from 'ra-core';
 
 const DatagridCell = React.forwardRef<HTMLTableCellElement, DatagridCellProps>(
     ({ className, field, record, resource, ...rest }, ref) => (
         <TableCell
-            className={classnames(className, field.props.cellClassName)}
+            className={clsx(className, field.props.cellClassName)}
             align={field.props.textAlign}
             ref={ref}
             {...rest}

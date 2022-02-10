@@ -10,7 +10,7 @@ import {
     useRef,
 } from 'react';
 import { styled } from '@mui/material';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { RaRecord } from 'ra-core';
@@ -99,12 +99,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     );
     return fields ? (
         <SimpleFormIteratorContext.Provider value={context}>
-            <Root
-                className={classNames(
-                    SimpleFormIteratorClasses.root,
-                    className
-                )}
-            >
+            <Root className={clsx(SimpleFormIteratorClasses.root, className)}>
                 <TransitionGroup component={null}>
                     {fields.map((member, index) => (
                         <CSSTransition
@@ -145,7 +140,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                                 onClick: handleAddButtonClick(
                                     addButton.props.onClick
                                 ),
-                                className: classNames(
+                                className: clsx(
                                     'button-add',
                                     `button-add-${source}`
                                 ),

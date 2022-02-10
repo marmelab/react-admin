@@ -2,7 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { HtmlHTMLAttributes, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { RaRecord } from 'ra-core';
 
 import { Labeled } from '../input/Labeled';
@@ -19,7 +19,7 @@ export const FormInput = <
         : { id: undefined, className: undefined };
     return input ? (
         <Root
-            className={classnames(
+            className={clsx(
                 'ra-input',
                 `ra-input-${input.props.source}`,
                 input.props.formClassName,
@@ -33,7 +33,7 @@ export const FormInput = <
                     {...sanitizeRestProps(rest)}
                 >
                     {React.cloneElement(input, {
-                        className: classnames({
+                        className: clsx({
                             [FormInputClasses.input]: !input.props.fullWidth,
                         }),
                         id: input.props.id || input.props.source,
@@ -43,7 +43,7 @@ export const FormInput = <
                 </Labeled>
             ) : (
                 React.cloneElement(input, {
-                    className: classnames({
+                    className: clsx({
                         [FormInputClasses.input]: !input.props.fullWidth,
                     }),
                     id: input.props.id || input.props.source,

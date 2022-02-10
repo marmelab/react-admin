@@ -11,7 +11,7 @@ import {
     Theme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import {
     MutationMode,
     RaRecord,
@@ -87,7 +87,7 @@ export const Button = (props: ButtonProps) => {
         )
     ) : (
         <StyledButton
-            className={classnames(ButtonClasses.button, className)}
+            className={clsx(ButtonClasses.button, className)}
             color={color}
             size={size}
             aria-label={label ? translate(label, { _: label }) : undefined}
@@ -98,7 +98,7 @@ export const Button = (props: ButtonProps) => {
             {alignIcon === 'left' && children ? children : null}
             {label && (
                 <span
-                    className={classnames({
+                    className={clsx({
                         [ButtonClasses.label]: alignIcon === 'left',
                         [ButtonClasses.labelRightIcon]: alignIcon !== 'left',
                     })}

@@ -3,7 +3,7 @@ import { isValidElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
 import MuiTab from '@mui/material/Tab';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { useTranslate, useFormGroup } from 'ra-core';
 import { useFormState } from 'react-hook-form';
 import { TabbedFormClasses } from './TabbedFormView';
@@ -33,7 +33,7 @@ export const FormTabHeader = ({
             }
             value={value}
             icon={icon}
-            className={classnames('form-tab', className, {
+            className={clsx('form-tab', className, {
                 [TabbedFormClasses.errorTabButton]:
                     !formGroup.isValid && (formGroup.isTouched || isSubmitted),
                 error:

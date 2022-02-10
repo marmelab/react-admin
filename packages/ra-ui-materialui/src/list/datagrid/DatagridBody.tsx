@@ -2,7 +2,7 @@ import * as React from 'react';
 import { cloneElement, memo, FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { TableBody, TableBodyProps } from '@mui/material';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { Identifier, RaRecord } from 'ra-core';
 
 import { DatagridClasses } from './useDatagridStyles';
@@ -30,18 +30,14 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
     ) => (
         <TableBody
             ref={ref}
-            className={classnames(
-                'datagrid-body',
-                className,
-                DatagridClasses.tbody
-            )}
+            className={clsx('datagrid-body', className, DatagridClasses.tbody)}
             {...rest}
         >
             {data.map((record, rowIndex) =>
                 cloneElement(
                     row,
                     {
-                        className: classnames(DatagridClasses.row, {
+                        className: clsx(DatagridClasses.row, {
                             [DatagridClasses.rowEven]: rowIndex % 2 === 0,
                             [DatagridClasses.rowOdd]: rowIndex % 2 !== 0,
                             [DatagridClasses.clickableRow]: rowClick,

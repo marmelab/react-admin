@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import Tab, { TabProps } from '@mui/material/Tab';
 import { useFormGroup, useTranslate } from 'ra-core';
 import { capitalize } from 'inflection';
-import classnames from 'classnames';
+import clsx from 'clsx';
 
 /**
  * Single tab that selects a locale in a TranslatableInputs component.
@@ -22,7 +22,7 @@ export const TranslatableInputsTab = (
             label={translate(`ra.locales.${locale}`, {
                 _: capitalize(locale),
             })}
-            className={classnames(TranslatableInputsTabClasses.root, {
+            className={clsx(TranslatableInputsTabClasses.root, {
                 [TranslatableInputsTabClasses.error]: !isValid && isTouched,
             })}
             {...rest}
