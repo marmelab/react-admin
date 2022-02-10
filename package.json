@@ -37,7 +37,6 @@
         "@types/react": "^17.0.20",
         "@typescript-eslint/eslint-plugin": "^5.9.1",
         "@typescript-eslint/parser": "^5.9.1",
-        "cheerio": "~1.0.0-rc.2",
         "concurrently": "^5.1.0",
         "cross-env": "^5.2.0",
         "eslint": "^8.6.0",
