@@ -1462,8 +1462,7 @@ When a React element was provided as the `userMenu` prop, the `<AppBar>` used to
 -import { UserMenu } from 'react-admin';
 +import { Logout, UserMenu } from 'react-admin';
 
--export const MyUserMenu = (props) => (
-+export const MyUserMenu = () => (
+export const MyUserMenu = (props) => (
 -    <UserMenu {...props}>
 +    <UserMenu {...props} logout={<Logout />}>
         <MenuItemLink
@@ -1476,7 +1475,7 @@ When a React element was provided as the `userMenu` prop, the `<AppBar>` used to
 )
 ```
 
-## `<MenuItemLink>` Automatically Translate `primaryText`
+## `<MenuItemLink>` Automatically Translates `primaryText`
 
 You can pass a translation key directly as the `primaryText` prop for `<MenuItemLink>`.
 
