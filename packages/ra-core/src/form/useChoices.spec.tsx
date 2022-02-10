@@ -4,6 +4,7 @@ import { render, screen } from '@testing-library/react';
 
 import { useChoices } from './useChoices';
 import { TestTranslationProvider } from '../i18n';
+import { useRecordContext } from '../controller';
 
 describe('useChoices hook', () => {
     const defaultProps = {
@@ -56,9 +57,10 @@ describe('useChoices hook', () => {
     });
 
     it('should use optionText with an element value as text identifier', () => {
-        const Foobar = ({ record }: { record?: any }) => (
-            <span>{record.foobar}</span>
-        );
+        const Foobar = () => {
+            const record = useRecordContext();
+            return <span>{record.foobar}</span>;
+        };
         render(
             <Component
                 {...defaultProps}

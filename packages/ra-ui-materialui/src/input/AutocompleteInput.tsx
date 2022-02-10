@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-    cloneElement,
     isValidElement,
     useCallback,
     useEffect,
@@ -72,8 +71,8 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
  * <AutocompleteInput source="author_id" choices={choices} optionText={optionRenderer} />
  *
- * `optionText` also accepts a React Element, that will be cloned and receive
- * the related choice as the `record` prop. You can use Field components there.
+ * `optionText` also accepts a React Element, that can access
+ * the related choice through the `useRecordContext` hook. You can use Field components there.
  * Note that you must also specify the `matchSuggestion` and `inputText` props
  * @example
  * const choices = [
@@ -83,8 +82,11 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  * const matchSuggestion = (filterValue, choice) => choice.first_name.match(filterValue) || choice.last_name.match(filterValue)
  * const inputText = (record) => `${record.fullName} (${record.language})`;
  *
- * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
- * <SelectInput source="gender" choices={choices} optionText={<FullNameField />} matchSuggestion={matchSuggestion} inputText={inputText} />
+ * const FullNameField = () => {
+ *     const record = useRecordContext();
+ *     return <span>{record.first_name} {record.last_name}</span>;
+ * }
+ * <AutocompleteInput source="author" choices={choices} optionText={<FullNameField />} matchSuggestion={matchSuggestion} inputText={inputText} />
  *
  * The choices are translated by default, so you can use translation identifiers as choices:
  * @example
@@ -496,16 +498,9 @@ If you provided a React element for the optionText prop, you must also provide t
                 onChange={handleAutocompleteChange}
                 onBlur={field.onBlur}
                 onInputChange={handleInputChange}
-                renderOption={(props, record) => {
-                    if (isValidElement(optionText)) {
-                        return cloneElement(optionText, {
-                            record: record as RaRecord,
-                            ...props,
-                        });
-                    }
-
-                    return <li {...props}>{getChoiceText(record)}</li>;
-                }}
+                renderOption={(props, record) => (
+                    <li {...props}>{getChoiceText(record)}</li>
+                )}
             />
             {createElement}
         </Root>

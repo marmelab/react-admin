@@ -1,8 +1,10 @@
-import { ReactElement, isValidElement, cloneElement, useCallback } from 'react';
+import * as React from 'react';
+import { ReactElement, isValidElement, useCallback } from 'react';
 import get from 'lodash/get';
 
 import { useTranslate } from '../i18n';
 import { RaRecord } from '../types';
+import { RecordContextProvider } from '../controller';
 
 export type OptionTextElement = ReactElement<{
     record: RaRecord;
@@ -48,9 +50,11 @@ export const useChoices = ({
     const getChoiceText = useCallback(
         choice => {
             if (isValidElement<{ record: any }>(optionText)) {
-                return cloneElement<{ record: any }>(optionText, {
-                    record: choice,
-                });
+                return (
+                    <RecordContextProvider value={choice}>
+                        {optionText}
+                    </RecordContextProvider>
+                );
             }
             const choiceName =
                 typeof optionText === 'function'

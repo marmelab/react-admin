@@ -1413,6 +1413,27 @@ const PostShow = () => (
 };
 ```
 
+## `<AutocompleteInput>`, `<AutocompleteArrayInput>`, `<SelectInput>`, `<SelectArrayInput>`, `<CheckboxGroupInput>` and `<RadioButtonGroupInput>` No Longer Inject Props To React Elements Passed as `optionText`
+
+To access the record, you can use the `useRecordContext` hook.
+
+```diff
+const choices = [
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen' },
+];
+
+-const FullNameField = ({ record }) => {
++const FullNameField = () => {
++    const record = useRecordContext();    
+    return <span>{record.first_name} {record.last_name}</span>;
+}
+
+const AuthorsInput = () => {
+    <RadioButtonGroupInput source="authors" choices={choices} optionText={<FullNameField />}/>
+}
+```
+
 ## No More Props Injection In `<Title>`
 
 `<Title>` no longer clones the `title` prop and injects it to the `record`. Call the `useRecordContext` hook to get the current record.

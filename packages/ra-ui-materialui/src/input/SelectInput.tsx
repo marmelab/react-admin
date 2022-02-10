@@ -60,15 +60,18 @@ import {
  * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
  * <SelectInput source="author_id" choices={choices} optionText={optionRenderer} />
  *
- * `optionText` also accepts a React Element, that will be cloned and receive
- * the related choice as the `record` prop. You can use Field components there.
+ * `optionText` also accepts a React Element, that can access
+ * the related choice through the `useRecordContext` hook. You can use Field components there.
  * @example
  * const choices = [
  *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
- * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
- * <SelectInput source="gender" choices={choices} optionText={<FullNameField />}/>
+ * const FullNameField = () => {
+ *     const record = useRecordContext();
+ *     return <span>{record.first_name} {record.last_name}</span>;
+ * }
+ * <SelectInput source="author" choices={choices} optionText={<FullNameField />}/>
  *
  * The choices are translated by default, so you can use translation identifiers as choices:
  * @example
@@ -168,7 +171,7 @@ export const SelectInput = (props: SelectInputProps) => {
 
     const renderEmptyItemOption = useCallback(() => {
         return React.isValidElement(emptyText)
-            ? React.cloneElement(emptyText)
+            ? emptyText
             : emptyText === ''
             ? ' ' // em space, forces the display of an empty line of normal height
             : translate(emptyText, { _: emptyText });

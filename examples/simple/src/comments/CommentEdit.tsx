@@ -27,6 +27,7 @@ import {
     useCreateSuggestionContext,
     useCreate,
     useCreatePath,
+    useRecordContext,
 } from 'react-admin';
 
 const LinkToRelatedPost = ({ record }: { record?: RaRecord }) => {
@@ -46,11 +47,12 @@ const LinkToRelatedPost = ({ record }: { record?: RaRecord }) => {
     );
 };
 
-const OptionRenderer = ({ record, ...rest }: { record?: RaRecord }) => {
+const OptionRenderer = (props: any) => {
+    const record = useRecordContext();
     return record.id === '@@ra-create' ? (
-        <div {...rest}>{record.name}</div>
+        <div {...props}>{record.name}</div>
     ) : (
-        <div {...rest}>
+        <div {...props}>
             {record?.title} - {record?.id}
         </div>
     );

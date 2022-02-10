@@ -1,7 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { testDataProvider, TestTranslationProvider } from 'ra-core';
+import {
+    testDataProvider,
+    TestTranslationProvider,
+    useRecordContext,
+} from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
@@ -138,15 +142,16 @@ describe('<CheckboxGroupInput />', () => {
     });
 
     it('should use optionText with an element value as text identifier', () => {
-        const Foobar = ({ record }) => (
-            <span data-testid="label">{record.foobar}</span>
-        );
+        const Foobar = () => {
+            const record = useRecordContext();
+            return <span data-testid="label">{record.foobar}</span>;
+        };
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm onSubmit={jest.fn}>
                     <CheckboxGroupInput
                         {...defaultProps}
-                        optionText={<Foobar record={{}} />}
+                        optionText={<Foobar />}
                         choices={[{ id: 'foo', foobar: 'Bar' }]}
                     />
                 </SimpleForm>

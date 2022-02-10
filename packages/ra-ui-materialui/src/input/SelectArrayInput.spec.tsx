@@ -1,7 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { testDataProvider, TestTranslationProvider } from 'ra-core';
+import {
+    testDataProvider,
+    TestTranslationProvider,
+    useRecordContext,
+} from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
@@ -170,7 +174,10 @@ describe('<SelectArrayInput />', () => {
     });
 
     it('should use optionText with an element value as text identifier', () => {
-        const Foobar = ({ record = undefined }) => <span>{record.foobar}</span>;
+        const Foobar = () => {
+            const record = useRecordContext();
+            return <span>{record.foobar}</span>;
+        };
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm onSubmit={jest.fn()}>

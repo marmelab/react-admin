@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { required, testDataProvider, TestTranslationProvider } from 'ra-core';
+import {
+    required,
+    testDataProvider,
+    TestTranslationProvider,
+    useRecordContext,
+} from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
@@ -249,10 +254,10 @@ describe('<SelectInput />', () => {
     });
 
     it('should use optionText with an element value as text identifier', () => {
-        const Foobar = ({ record }: { record?: any }) => (
-            <span data-value={record.id} aria-label={record.foobar} />
-        );
-
+        const Foobar = () => {
+            const record = useRecordContext();
+            return <span data-value={record.id} aria-label={record.foobar} />;
+        };
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm onSubmit={jest.fn()}>

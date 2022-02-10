@@ -5,6 +5,7 @@ import {
     FormDataConsumer,
     testDataProvider,
     TestTranslationProvider,
+    useRecordContext,
 } from 'ra-core';
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
@@ -433,9 +434,10 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should allow customized rendering of suggesting item', () => {
-        const SuggestionItem = ({ record, ...rest }: { record?: any }) => (
-            <div {...rest} aria-label={record && record.name} />
-        );
+        const SuggestionItem = props => {
+            const record = useRecordContext();
+            return <div {...props} aria-label={record && record.name} />;
+        };
 
         render(
             <AdminContext dataProvider={testDataProvider()}>

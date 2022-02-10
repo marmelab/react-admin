@@ -1,7 +1,11 @@
 import * as React from 'react';
 import expect from 'expect';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { testDataProvider, TestTranslationProvider } from 'ra-core';
+import {
+    testDataProvider,
+    TestTranslationProvider,
+    useRecordContext,
+} from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
@@ -238,9 +242,10 @@ describe('<RadioButtonGroupInput />', () => {
     });
 
     it('should use optionText with an element value as text identifier', () => {
-        const Foobar = ({ record }: { record?: any }) => (
-            <span>{record.longname}</span>
-        );
+        const Foobar = () => {
+            const record = useRecordContext();
+            return <span data-testid="label">{record.longname}</span>;
+        };
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm defaultValues={{ type: 'mc' }} onSubmit={jest.fn()}>

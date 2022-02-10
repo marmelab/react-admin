@@ -60,8 +60,8 @@ import { LinearProgress } from '../layout';
  * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
  * <CheckboxGroupInput source="recipients" choices={choices} optionText={optionRenderer} />
  *
- * `optionText` also accepts a React Element, that will be cloned and receive
- * the related choice as the `record` prop. You can use Field components there.
+ * `optionText` also accepts a React Element, that can access
+ * the related choice through the `useRecordContext` hook. You can use Field components there.
  * @example
  * const choices = [
  *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
@@ -81,7 +81,7 @@ import { LinearProgress } from '../layout';
  * However, in some cases (e.g. inside a `<ReferenceArrayInput>`), you may not want
  * the choice to be translated. In that case, set the `translateChoice` prop to false.
  * @example
- * <CheckboxGroupInput source="gender" choices={choices} translateChoice={false}/>
+ * <CheckboxGroupInput source="tags" choices={choices} translateChoice={false}/>
  *
  * The object passed as `options` props is passed to the material-ui <Checkbox> components
  */
@@ -236,15 +236,7 @@ const sanitizeRestProps = ({
 }: any) => sanitizeInputRestProps(rest);
 
 CheckboxGroupInput.propTypes = {
-    // @ts-ignore
-    choices: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.oneOfType([
-                PropTypes.string.isRequired,
-                PropTypes.number.isRequired,
-            ]).isRequired,
-        })
-    ),
+    choices: PropTypes.arrayOf(PropTypes.any),
     className: PropTypes.string,
     source: PropTypes.string,
     optionText: PropTypes.oneOfType([
