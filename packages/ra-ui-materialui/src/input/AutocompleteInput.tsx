@@ -86,7 +86,7 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  *     const record = useRecordContext();
  *     return <span>{record.first_name} {record.last_name}</span>;
  * }
- * <SelectInput source="author" choices={choices} optionText={<FullNameField />} matchSuggestion={matchSuggestion} inputText={inputText} />
+ * <AutocompleteInput source="author" choices={choices} optionText={<FullNameField />} matchSuggestion={matchSuggestion} inputText={inputText} />
  *
  * The choices are translated by default, so you can use translation identifiers as choices:
  * @example

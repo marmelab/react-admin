@@ -35,19 +35,23 @@ import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
  * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
  * <AutocompleteArrayInput source="author_id" choices={choices} optionText={optionRenderer} />
  *
- * `optionText` also accepts a React Element, that will be cloned and receive
- * the related choice as the `record` prop. You can use Field components there.
- * Note that you must also specify the `matchSuggestion` prop
+ * `optionText` also accepts a React Element, that can access
+ * the related choice through the `useRecordContext` hook. You can use Field components there.
+ * Note that you must also specify the `matchSuggestion` and `inputText` props
  * @example
  * const choices = [
  *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
- * const matchSuggestion = (filterValue, choice) => choice.first_name.match(filterValue) || choice.last_name.match(filterValue);
+ * const matchSuggestion = (filterValue, choice) => choice.first_name.match(filterValue) || choice.last_name.match(filterValue)
  * const inputText = (record) => `${record.fullName} (${record.language})`;
- * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
  *
- * <SelectInput source="gender" choices={choices} optionText={<FullNameField />} matchSuggestion={matchSuggestion} />
+ * const FullNameField = () => {
+ *     const record = useRecordContext();
+ *     return <span>{record.first_name} {record.last_name}</span>;
+ * }
+ *
+ * <AutocompleteArrayInput source="gender" choices={choices} optionText={<FullNameField />} matchSuggestion={matchSuggestion} />
  *
  * The choices are translated by default, so you can use translation identifiers as choices:
  * @example
