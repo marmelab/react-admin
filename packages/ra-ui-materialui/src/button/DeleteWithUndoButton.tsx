@@ -4,7 +4,7 @@ import { ReactElement, ReactEventHandler } from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import ActionDelete from '@mui/icons-material/Delete';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { UseMutationOptions } from 'react-query';
 import {
     RaRecord,
@@ -45,7 +45,7 @@ export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
             onClick={handleDelete}
             disabled={isLoading}
             label={label}
-            className={classnames('ra-delete-button', className)}
+            className={clsx('ra-delete-button', className)}
             key="button"
             {...rest}
         >

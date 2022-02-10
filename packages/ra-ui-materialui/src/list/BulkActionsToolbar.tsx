@@ -8,7 +8,7 @@ import {
 } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { lighten } from '@mui/material/styles';
@@ -47,7 +47,7 @@ export const BulkActionsToolbar = (props: BulkActionsToolbarProps) => {
         <Root className={className}>
             <Toolbar
                 data-test="bulk-actions-toolbar"
-                className={classnames(BulkActionsToolbarClasses.toolbar, {
+                className={clsx(BulkActionsToolbarClasses.toolbar, {
                     [BulkActionsToolbarClasses.collapsed]:
                         selectedIds.length === 0,
                 })}

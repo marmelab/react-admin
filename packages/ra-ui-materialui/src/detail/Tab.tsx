@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Tab as MuiTab, TabProps as MuiTabProps, Stack } from '@mui/material';
 import { ResponsiveStyleValue } from '@mui/system';
 import { useTranslate, RaRecord } from 'ra-core';
-import classnames from 'classnames';
+import clsx from 'clsx';
 
 import { FieldWithLabel } from './FieldWithLabel';
 
@@ -79,7 +79,7 @@ export const Tab = ({
             label={translate(label, { _: label })}
             value={value}
             icon={icon}
-            className={classnames('show-tab', className)}
+            className={clsx('show-tab', className)}
             {...(syncWithLocation ? propsForLink : {})} // to avoid TypeScript screams, see https://github.com/mui-org/material-ui/issues/9106#issuecomment-451270521
             {...rest}
         />
@@ -91,7 +91,7 @@ export const Tab = ({
                 field && isValidElement<any>(field) ? (
                     <FieldWithLabel
                         key={field.props.source}
-                        className={classnames(
+                        className={clsx(
                             'ra-field',
                             field.props.source &&
                                 `ra-field-${field.props.source}`,

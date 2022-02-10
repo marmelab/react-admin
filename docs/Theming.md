@@ -112,7 +112,7 @@ Sometimes you want the format to depend on the value. The following example show
 import * as React from 'react';
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 import { makeStyles } from '@mui/material/styles';
-import classnames from 'classnames';
+import clsx from 'clsx';
 
 const useStyles = makeStyles({
     small: { color: 'black' },
@@ -123,7 +123,7 @@ const ColoredNumberField = props => {
     const classes = useStyles();
     return (
         <NumberField
-            className={classnames({
+            className={clsx({
                 [classes.small]: props.record[props.source] < 100,
                 [classes.big]: props.record[props.source] >= 100,
             })}
@@ -155,7 +155,7 @@ Furthermore, you may extract this highlighting strategy into a Higher Order Comp
 import * as React from 'react';
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 import { makeStyles } from '@mui/material/styles';
-import classnames from 'classnames';
+import clsx from 'clsx';
 
 const useStyles = makeStyles({
     small: { color: 'black' },
@@ -166,7 +166,7 @@ const colored = WrappedComponent => props => {
     const classes = useStyles();
     return (
         <WrappedComponent
-            className={classnames({
+            className={clsx({
                 [classes.small]: props.record[props.source] < 500,
                 [classes.big]: props.record[props.source] >= 500,
             })}

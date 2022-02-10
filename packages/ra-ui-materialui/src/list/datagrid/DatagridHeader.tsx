@@ -10,7 +10,7 @@ import {
     useTranslate,
 } from 'ra-core';
 import { Checkbox, TableCell, TableHead, TableRow } from '@mui/material';
-import classnames from 'classnames';
+import clsx from 'clsx';
 
 import DatagridHeaderCell from './DatagridHeaderCell';
 import { DatagridClasses } from './useDatagridStyles';
@@ -82,17 +82,14 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
         : [];
 
     return (
-        <TableHead className={classnames(className, DatagridClasses.thead)}>
+        <TableHead className={clsx(className, DatagridClasses.thead)}>
             <TableRow
-                className={classnames(
-                    DatagridClasses.row,
-                    DatagridClasses.headerRow
-                )}
+                className={clsx(DatagridClasses.row, DatagridClasses.headerRow)}
             >
                 {hasExpand && (
                     <TableCell
                         padding="none"
-                        className={classnames(
+                        className={clsx(
                             DatagridClasses.headerCell,
                             DatagridClasses.expandHeader
                         )}
@@ -123,7 +120,7 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                 {Children.map(children, (field, index) =>
                     isValidElement(field) ? (
                         <DatagridHeaderCell
-                            className={classnames(
+                            className={clsx(
                                 DatagridClasses.headerCell,
                                 `column-${(field.props as any).source}`
                             )}

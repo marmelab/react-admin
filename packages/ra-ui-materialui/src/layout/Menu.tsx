@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import lodashGet from 'lodash/get';
 import DefaultIcon from '@mui/icons-material/ViewList';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import {
     useResourceDefinitions,
     useGetResourceLabel,
@@ -56,7 +56,7 @@ export const Menu = (props: MenuProps) => {
 
     return (
         <Root
-            className={classnames(
+            className={clsx(
                 {
                     [MenuClasses.open]: open,
                     [MenuClasses.closed]: !open,

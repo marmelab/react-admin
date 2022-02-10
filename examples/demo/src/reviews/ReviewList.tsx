@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { Fragment, useCallback } from 'react';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { BulkDeleteButton, List, BulkActionProps } from 'react-admin';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import { Drawer, useMediaQuery, Theme } from '@mui/material';
@@ -69,7 +69,7 @@ const ReviewList = () => {
         <Root className={classes.root}>
             <Fragment>
                 <List
-                    className={classnames(classes.list, {
+                    className={clsx(classes.list, {
                         [classes.listWithDrawer]: !!match,
                     })}
                     bulkActionButtons={<ReviewsBulkActionButtons />}

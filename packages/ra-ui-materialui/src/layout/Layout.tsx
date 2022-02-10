@@ -6,7 +6,7 @@ import React, {
     HtmlHTMLAttributes,
 } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { styled } from '@mui/material/styles';
 import { CoreLayoutProps } from 'ra-core';
 
@@ -39,7 +39,7 @@ export const Layout = (props: LayoutProps) => {
     };
 
     return (
-        <StyledLayout className={classnames('layout', className)} {...rest}>
+        <StyledLayout className={clsx('layout', className)} {...rest}>
             <SkipNavigationButton />
             <div className={LayoutClasses.appFrame}>
                 <AppBar logout={logout} open={open} title={title} />

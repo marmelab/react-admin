@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import { alpha } from '@mui/material/styles';
 import ActionCheck from '@mui/icons-material/CheckCircle';
 import AlertError from '@mui/icons-material/ErrorOutline';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { useTranslate } from 'ra-core';
 
 /**
@@ -93,7 +93,7 @@ export const Confirm = (props: ConfirmProps) => {
                 <Button
                     disabled={loading}
                     onClick={handleConfirm}
-                    className={classnames('ra-confirm', {
+                    className={clsx('ra-confirm', {
                         [ConfirmClasses.confirmWarning]:
                             confirmColor === 'warning',
                         [ConfirmClasses.confirmPrimary]:

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import { Link as RRLink, LinkProps as RRLinkProps } from 'react-router-dom';
 import { styled, Link as MuiLink } from '@mui/material';
 
@@ -10,7 +10,7 @@ export const Link = (props: LinkProps) => {
     return (
         <StyledLink
             to={to}
-            className={classNames(LinkClasses.link, className)}
+            className={clsx(LinkClasses.link, className)}
             {...rest}
         >
             {children}

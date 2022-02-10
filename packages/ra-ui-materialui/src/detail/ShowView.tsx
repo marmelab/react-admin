@@ -2,7 +2,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Card } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { useShowContext, useResourceDefinition } from 'ra-core';
 
 import { ShowProps } from '../types';
@@ -34,7 +34,7 @@ export const ShowView = (props: ShowViewProps) => {
     }
     return (
         <Root
-            className={classnames('show-page', className)}
+            className={clsx('show-page', className)}
             {...sanitizeRestProps(rest)}
         >
             <TitleForRecord
@@ -44,7 +44,7 @@ export const ShowView = (props: ShowViewProps) => {
             />
             {finalActions !== false && finalActions}
             <div
-                className={classnames(ShowClasses.main, {
+                className={clsx(ShowClasses.main, {
                     [ShowClasses.noActions]: !finalActions,
                 })}
             >

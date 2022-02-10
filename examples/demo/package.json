@@ -8,7 +8,7 @@
         "@mui/material": "^5.0.2",
         "@types/inflection": "^1.5.28",
         "@types/recharts": "^1.8.10",
-        "classnames": "~2.2.5",
+        "clsx": "^1.1.1",
         "data-generator-retail": "^4.0.0-alpha.2",
         "date-fns": "^1.29.0",
         "fakerest": "^3.0.0",
@@ -51,7 +51,6 @@
         "not op_mini all"
     ],
     "devDependencies": {
-        "@types/classnames": "^2.2.9",
         "@types/fetch-mock": "^7.3.2",
         "@types/jest": "^26.0.19",
         "@types/node": "^12.12.14",

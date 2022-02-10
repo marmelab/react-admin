@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import IconButton from '@mui/material/IconButton';
 import ActionHide from '@mui/icons-material/HighlightOff';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { useResourceContext, useTranslate } from 'ra-core';
 
 export const FilterFormInput = props => {
@@ -14,11 +14,11 @@ export const FilterFormInput = props => {
     return (
         <Root
             data-source={filterElement.props.source}
-            className={classnames('filter-field', className)}
+            className={clsx('filter-field', className)}
         >
             {!filterElement.props.alwaysOn && (
                 <IconButton
-                    className={classnames(
+                    className={clsx(
                         'hide-filter',
                         FilterFormInputClasses.hideButton
                     )}

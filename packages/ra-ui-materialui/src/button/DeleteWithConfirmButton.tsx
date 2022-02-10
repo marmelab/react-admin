@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import ActionDelete from '@mui/icons-material/Delete';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import inflection from 'inflection';
 import { UseMutationOptions } from 'react-query';
 import {
@@ -59,7 +59,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
             <StyledButton
                 onClick={handleDialogOpen}
                 label={label}
-                className={classnames('ra-delete-button', className)}
+                className={clsx('ra-delete-button', className)}
                 key="button"
                 {...rest}
             >

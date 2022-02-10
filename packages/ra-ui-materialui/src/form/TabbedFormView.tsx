@@ -9,7 +9,7 @@ import {
     useState,
 } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import {
     Routes,
     Route,
@@ -71,7 +71,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
 
     return (
         <Root
-            className={classnames('tabbed-form', className)}
+            className={clsx('tabbed-form', className)}
             onSubmit={handleSubmit}
             {...sanitizeRestProps(rest)}
         >

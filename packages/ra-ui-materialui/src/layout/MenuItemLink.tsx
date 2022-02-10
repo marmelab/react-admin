@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { Link, LinkProps, useMatch } from 'react-router-dom';
 import {
     MenuItem,
@@ -101,7 +101,7 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
         return (
             <StyledMenuItem
                 // @ts-ignore
-                className={classnames(className, {
+                className={clsx(className, {
                     [MenuItemLinkClasses.active]: !!match,
                 })}
                 component={LinkRef}

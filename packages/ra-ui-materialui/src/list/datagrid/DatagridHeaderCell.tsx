@@ -2,7 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { memo } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { TableCell, TableSortLabel, Tooltip } from '@mui/material';
 import { TableCellProps } from '@mui/material/TableCell';
 import {
@@ -22,7 +22,7 @@ export const DatagridHeaderCell = (
 
     return (
         <StyledTableCell
-            className={classnames(className, field.props.headerClassName)}
+            className={clsx(className, field.props.headerClassName)}
             align={field.props.textAlign}
             variant="head"
             {...rest}

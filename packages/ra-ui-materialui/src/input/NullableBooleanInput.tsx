@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { useInput, useTranslate, FieldTitle } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -71,7 +71,7 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
                     helperText={helperText}
                 />
             }
-            className={classnames(NullableBooleanInputClasses.input, className)}
+            className={clsx(NullableBooleanInputClasses.input, className)}
             variant={variant}
             {...sanitizeInputRestProps(rest)}
         >

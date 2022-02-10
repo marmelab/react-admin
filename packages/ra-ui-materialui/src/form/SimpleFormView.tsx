@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Children, cloneElement, ReactElement, ReactNode } from 'react';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { FormRenderProps, MutationMode, RaRecord } from 'ra-core';
 import { CardContentInner } from '../layout';
@@ -23,7 +23,7 @@ export const SimpleFormView = ({
     ...rest
 }: SimpleFormViewProps): ReactElement => (
     <form
-        className={classnames('simple-form', className)}
+        className={clsx('simple-form', className)}
         onSubmit={handleSubmit}
         {...sanitizeRestProps(rest)}
     >

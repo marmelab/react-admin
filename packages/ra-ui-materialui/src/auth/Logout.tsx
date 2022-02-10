@@ -6,7 +6,7 @@ import { ListItemIcon, MenuItem, useMediaQuery } from '@mui/material';
 import { MenuItemProps } from '@mui/material/MenuItem';
 
 import ExitIcon from '@mui/icons-material/PowerSettingsNew';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { useTranslate, useLogout } from 'ra-core';
 
 /**
@@ -31,7 +31,7 @@ export const Logout: FunctionComponent<
     ]);
     return (
         <StyledMenuItem
-            className={classnames('logout', className)}
+            className={clsx('logout', className)}
             onClick={handleClick}
             ref={ref}
             // @ts-ignore

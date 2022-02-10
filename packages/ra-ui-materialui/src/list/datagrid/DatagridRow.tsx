@@ -10,7 +10,7 @@ import React, {
     ReactElement,
 } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { TableCell, TableRow, TableRowProps, Checkbox } from '@mui/material';
 import {
     Identifier,
@@ -23,7 +23,6 @@ import {
     useCreatePath,
 } from 'ra-core';
 import { useNavigate } from 'react-router-dom';
-import classNames from 'classnames';
 
 import DatagridCell from './DatagridCell';
 import ExpandRowButton from './ExpandRowButton';
@@ -152,12 +151,9 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                     >
                         {expandable && (
                             <ExpandRowButton
-                                className={classNames(
-                                    DatagridClasses.expandIcon,
-                                    {
-                                        [DatagridClasses.expanded]: expanded,
-                                    }
-                                )}
+                                className={clsx(DatagridClasses.expandIcon, {
+                                    [DatagridClasses.expanded]: expanded,
+                                })}
                                 expanded={expanded}
                                 onClick={handleToggleExpand}
                                 expandContentId={`${id}-expand`}
@@ -186,7 +182,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                             key={`${id}-${
                                 (field.props as any).source || index
                             }`}
-                            className={classnames(
+                            className={clsx(
                                 `column-${(field.props as any).source}`,
                                 DatagridClasses.rowCell
                             )}

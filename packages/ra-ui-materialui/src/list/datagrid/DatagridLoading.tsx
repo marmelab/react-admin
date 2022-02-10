@@ -11,7 +11,7 @@ import {
     Checkbox,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { useTimeout, Identifier, RaRecord } from 'ra-core';
 
 import { DatagridClasses } from './useDatagridStyles';
@@ -31,10 +31,7 @@ const DatagridLoading = ({
     const oneSecondHasPassed = useTimeout(1000);
 
     return oneSecondHasPassed ? (
-        <Table
-            className={classnames(DatagridClasses.table, className)}
-            size={size}
-        >
+        <Table className={clsx(DatagridClasses.table, className)} size={size}>
             <TableHead>
                 <TableRow className={DatagridClasses.row}>
                     {expand && (

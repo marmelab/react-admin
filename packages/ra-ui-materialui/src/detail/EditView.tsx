@@ -3,7 +3,7 @@ import { ReactElement } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { Card, CardContent } from '@mui/material';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import {
     EditControllerProps,
     ComponentPropType,
@@ -41,7 +41,7 @@ export const EditView = (props: EditViewProps) => {
     }
     return (
         <Root
-            className={classnames('edit-page', className)}
+            className={clsx('edit-page', className)}
             {...sanitizeRestProps(rest)}
         >
             <TitleForRecord
@@ -51,7 +51,7 @@ export const EditView = (props: EditViewProps) => {
             />
             {finalActions}
             <div
-                className={classnames(EditClasses.main, {
+                className={clsx(EditClasses.main, {
                     [EditClasses.noActions]: !finalActions,
                 })}
             >

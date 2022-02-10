@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { Table, TableBody, TableCell, TableRow } from '@mui/material';
 import { FieldProps, useTranslate } from 'react-admin';
 
@@ -70,7 +70,7 @@ const Totals = (props: FieldProps<Order>) => {
                         {translate('resources.commands.fields.basket.total')}
                     </TableCell>
                     <TableCell
-                        className={classnames(
+                        className={clsx(
                             classes.boldCell,
                             classes.rightAlignedCell
                         )}
