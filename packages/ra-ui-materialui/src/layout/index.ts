@@ -18,7 +18,6 @@ export * from './Sidebar';
 export * from './SidebarToggleButton';
 export * from './Theme';
 export * from './Title';
-export * from './TitleForRecord';
 export * from './TopToolbar';
 export * from './UserMenu';
 export * from './useResetErrorBoundaryOnLocationChange';
