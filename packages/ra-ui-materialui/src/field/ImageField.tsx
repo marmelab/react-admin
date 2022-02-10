@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import Typography from '@mui/material/Typography';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { useRecordContext } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
@@ -33,7 +33,7 @@ export const ImageField = (props: ImageFieldProps) => {
     if (Array.isArray(sourceValue)) {
         return (
             <List
-                className={classnames(ImageFieldClasses.list, className)}
+                className={clsx(ImageFieldClasses.list, className)}
                 {...sanitizeFieldRestProps(rest)}
             >
                 {sourceValue.map((file, index) => {

@@ -4,7 +4,7 @@ import { ReactElement, memo } from 'react';
 import PropTypes from 'prop-types';
 import { Fab, useMediaQuery, Theme } from '@mui/material';
 import ContentAdd from '@mui/icons-material/Add';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { Link } from 'react-router-dom';
 import { useTranslate, useResourceContext, useCreatePath } from 'ra-core';
 
@@ -46,7 +46,7 @@ const CreateButton = (props: CreateButtonProps) => {
             to={createPath({ resource, type: 'create' })}
             state={scrollStates[String(scrollToTop)]}
             color="primary"
-            className={classnames(CreateButtonClasses.floating, className)}
+            className={clsx(CreateButtonClasses.floating, className)}
             aria-label={label && translate(label)}
             {...sanitizeButtonRestProps(rest)}
         >

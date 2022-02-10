@@ -1,16 +1,11 @@
 import * as React from 'react';
-import { cloneElement, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { createPortal } from 'react-dom';
 import PropTypes from 'prop-types';
 import { useTranslate, RaRecord, warning } from 'ra-core';
 
-export const Title = ({
-    className,
-    defaultTitle,
-    record,
-    title,
-    ...rest
-}: TitleProps) => {
+export const Title = (props: TitleProps) => {
+    const { className, defaultTitle, title, ...rest } = props;
     const translate = useTranslate();
     const container =
         typeof document !== 'undefined'
@@ -30,7 +25,7 @@ export const Title = ({
             {translate(title, { _: title })}
         </span>
     ) : (
-        cloneElement(title, { className, record, ...rest })
+        title
     );
     return createPortal(titleElement, container);
 };

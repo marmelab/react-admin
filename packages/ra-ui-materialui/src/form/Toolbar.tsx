@@ -8,7 +8,7 @@ import {
     useMediaQuery,
     Theme,
 } from '@mui/material';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import {
     RaRecord,
     MutationMode,
@@ -83,7 +83,7 @@ export const Toolbar = <
 
     return (
         <StyledToolbar
-            className={classnames(
+            className={clsx(
                 {
                     [ToolbarClasses.mobileToolbar]: isXs,
                     [ToolbarClasses.desktopToolbar]: !isXs,

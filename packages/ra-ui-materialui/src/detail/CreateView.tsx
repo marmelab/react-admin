@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Card } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { RaRecord, CreateControllerProps, useCreateContext } from 'ra-core';
-import classnames from 'classnames';
+import clsx from 'clsx';
 
 import { CreateProps } from '../types';
 import { Title } from '../layout';
@@ -20,17 +20,17 @@ export const CreateView = (props: CreateViewProps) => {
         ...rest
     } = props;
 
-    const { defaultTitle, record } = useCreateContext(props);
+    const { defaultTitle } = useCreateContext(props);
 
     return (
         <Root
-            className={classnames('create-page', className)}
+            className={clsx('create-page', className)}
             {...sanitizeRestProps(rest)}
         >
-            <Title title={title} record={record} defaultTitle={defaultTitle} />
+            <Title title={title} defaultTitle={defaultTitle} />
             {actions}
             <div
-                className={classnames(CreateClasses.main, {
+                className={clsx(CreateClasses.main, {
                     [CreateClasses.noActions]: !actions,
                 })}
             >

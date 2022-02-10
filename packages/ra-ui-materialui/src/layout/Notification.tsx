@@ -3,7 +3,7 @@ import { styled, Theme } from '@mui/material/styles';
 import { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Snackbar, SnackbarProps, SnackbarOrigin } from '@mui/material';
-import classnames from 'classnames';
+import clsx from 'clsx';
 
 import {
     useNotificationContext,
@@ -90,10 +90,9 @@ export const Notification = (props: NotificationProps) => {
             TransitionProps={{ onExited: handleExited }}
             onClose={handleRequestClose}
             ContentProps={{
-                className: classnames(
-                    NotificationClasses[messageInfo.type || type],
-                    { [NotificationClasses.multiLine]: multiLine }
-                ),
+                className: clsx(NotificationClasses[messageInfo.type || type], {
+                    [NotificationClasses.multiLine]: multiLine,
+                }),
             }}
             action={
                 messageInfo.notificationOptions.undoable ? (

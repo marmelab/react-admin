@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 import { Stack } from '@mui/material';
 import { ResponsiveStyleValue, SxProps } from '@mui/system';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import {
     RaRecord,
     useRecordContext,
@@ -70,7 +70,7 @@ export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
                         field && isValidElement<any>(field) ? (
                             <FieldWithLabel
                                 key={field.props.source}
-                                className={classnames(
+                                className={clsx(
                                     'ra-field',
                                     field.props.source &&
                                         `ra-field-${field.props.source}`,

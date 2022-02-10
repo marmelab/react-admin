@@ -4,7 +4,7 @@ import { memo, FC } from 'react';
 import get from 'lodash/get';
 import Chip, { ChipProps } from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { useRecordContext } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
@@ -31,7 +31,7 @@ export const ChipField: FC<ChipFieldProps> = memo(props => {
 
     return (
         <StyledChip
-            className={classnames(ChipFieldClasses.chip, className)}
+            className={clsx(ChipFieldClasses.chip, className)}
             label={value}
             {...sanitizeFieldRestProps(rest)}
         />

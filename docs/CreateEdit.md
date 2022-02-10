@@ -131,10 +131,11 @@ export const PostEdit = () => (
 );
 ```
 
-More interestingly, you can pass an element as `title`. React-admin clones this element and, in the `<EditView>`, injects the current `record`. This allows to customize the title according to the current record:
+More interestingly, you can pass an element as `title`. You can access the current `record` by calling the `useRecordContext` hook. This allows to customize the title according to the current record:
 
 ```jsx
-const PostTitle = ({ record }) => {
+const PostTitle = () => {
+    const record = useRecordContext();
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
 export const PostEdit = () => (

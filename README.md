@@ -67,7 +67,7 @@ The `<Resource>` component is a configuration component that allows to define su
 ```jsx
 // in posts.js
 import * as React from "react";
-import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, TextInput, DateInput } from 'react-admin';
+import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, TextInput, DateInput, useRecordContext } from 'react-admin';
 import BookIcon from '@mui/icons-material/Book';
 export const PostIcon = BookIcon;
 
@@ -84,7 +84,8 @@ export const PostList = (props) => (
     </List>
 );
 
-const PostTitle = ({ record }) => {
+const PostTitle = () => {
+    const record = useRecordContext();
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
 

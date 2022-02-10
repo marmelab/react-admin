@@ -2,7 +2,7 @@ import * as React from 'react';
 import { forwardRef, useCallback } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import {
     InputAdornment,
     IconButton,
@@ -95,7 +95,7 @@ export const ResettableTextField = forwardRef(
                                 size="large"
                             >
                                 <ClearIcon
-                                    className={classNames(
+                                    className={clsx(
                                         clearIcon,
                                         visibleClearIcon
                                     )}
@@ -142,7 +142,7 @@ export const ResettableTextField = forwardRef(
                             size="large"
                         >
                             <ClearIcon
-                                className={classNames(clearIcon, {
+                                className={clsx(clearIcon, {
                                     [visibleClearIcon]:
                                         clearAlwaysVisible || value,
                                 })}

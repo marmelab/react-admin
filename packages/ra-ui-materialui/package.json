@@ -55,7 +55,7 @@
     },
     "dependencies": {
         "autosuggest-highlight": "^3.1.1",
-        "classnames": "~2.2.5",
+        "clsx": "^1.1.1",
         "css-mediaquery": "^0.1.2",
         "downshift": "3.2.7",
         "inflection": "~1.12.0",

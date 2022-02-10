@@ -2,12 +2,12 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Card } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import classnames from 'classnames';
+import clsx from 'clsx';
 import { useShowContext, useResourceDefinition } from 'ra-core';
 
 import { ShowProps } from '../types';
 import { ShowActions } from './ShowActions';
-import { TitleForRecord } from '../layout';
+import { Title } from '../layout';
 
 const defaultActions = <ShowActions />;
 
@@ -34,17 +34,13 @@ export const ShowView = (props: ShowViewProps) => {
     }
     return (
         <Root
-            className={classnames('show-page', className)}
+            className={clsx('show-page', className)}
             {...sanitizeRestProps(rest)}
         >
-            <TitleForRecord
-                title={title}
-                record={record}
-                defaultTitle={defaultTitle}
-            />
+            <Title title={title} defaultTitle={defaultTitle} />
             {finalActions !== false && finalActions}
             <div
-                className={classnames(ShowClasses.main, {
+                className={clsx(ShowClasses.main, {
                     [ShowClasses.noActions]: !finalActions,
                 })}
             >
