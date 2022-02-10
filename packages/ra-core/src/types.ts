@@ -71,49 +71,49 @@ export type LegacyAuthProvider = (
  * dataProvider types
  */
 
-export type DataProvider = {
+export type DataProvider<ResourceType extends string = string> = {
     getList: <RecordType extends RaRecord = any>(
-        resource: string,
+        resource: ResourceType,
         params: GetListParams
     ) => Promise<GetListResult<RecordType>>;
 
     getOne: <RecordType extends RaRecord = any>(
-        resource: string,
+        resource: ResourceType,
         params: GetOneParams
     ) => Promise<GetOneResult<RecordType>>;
 
     getMany: <RecordType extends RaRecord = any>(
-        resource: string,
+        resource: ResourceType,
         params: GetManyParams
     ) => Promise<GetManyResult<RecordType>>;
 
     getManyReference: <RecordType extends RaRecord = any>(
-        resource: string,
+        resource: ResourceType,
         params: GetManyReferenceParams
     ) => Promise<GetManyReferenceResult<RecordType>>;
 
     update: <RecordType extends RaRecord = any>(
-        resource: string,
+        resource: ResourceType,
         params: UpdateParams
     ) => Promise<UpdateResult<RecordType>>;
 
     updateMany: <RecordType extends RaRecord = any>(
-        resource: string,
+        resource: ResourceType,
         params: UpdateManyParams
     ) => Promise<UpdateManyResult<RecordType>>;
 
     create: <RecordType extends RaRecord = any>(
-        resource: string,
+        resource: ResourceType,
         params: CreateParams
     ) => Promise<CreateResult<RecordType>>;
 
     delete: <RecordType extends RaRecord = any>(
-        resource: string,
+        resource: ResourceType,
         params: DeleteParams<RecordType>
     ) => Promise<DeleteResult<RecordType>>;
 
     deleteMany: <RecordType extends RaRecord = any>(
-        resource: string,
+        resource: ResourceType,
         params: DeleteManyParams<RecordType>
     ) => Promise<DeleteManyResult<RecordType>>;
 
