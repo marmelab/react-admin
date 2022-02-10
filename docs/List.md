@@ -125,16 +125,17 @@ This allows you to further control how the default actions behave. For example, 
 {% raw %}
 ```jsx
 import * as React from 'react';
-import { cloneElement, useMemo } from 'react';
+import { cloneElement, useMemo, useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
     useListContext,
+    FilterContext,
     TopToolbar,
     CreateButton,
     ExportButton,
     FilterButton,
     Button,
-    sanitizeListRestProps    
+    sanitizeListRestProps
 } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
 
@@ -144,12 +145,12 @@ const ListActions = (props) => {
         maxResults,
         ...rest
     } = props;
-    const {
-        total,
-    } = useListContext();
+    const { total } = useListContext();
+    const filters = useContext(FilterContext);
+
     return (
         <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
-            <FilterButton />
+            { filters && <FilterButton /> }
             <CreateButton />
             <ExportButton disabled={total === 0} maxResults={maxResults} />
             {/* Add your custom actions */}
