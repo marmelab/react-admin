@@ -1462,9 +1462,10 @@ When a React element was provided as the `userMenu` prop, the `<AppBar>` used to
 -import { UserMenu } from 'react-admin';
 +import { Logout, UserMenu } from 'react-admin';
 
-export const MyUserMenu = (props) => (
+-export const MyUserMenu = (props) => (
++export const MyUserMenu = () => (
 -    <UserMenu {...props}>
-+    <UserMenu {...props} logout={<Logout />}>
++    <UserMenu logout={<Logout />}>
         <MenuItemLink
             to="/configuration"
             primaryText="pos.configuration"

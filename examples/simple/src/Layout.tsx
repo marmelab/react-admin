@@ -27,8 +27,8 @@ const SwitchLanguage = forwardRef<HTMLLIElement, MenuItemProps>(
     }
 );
 
-const MyUserMenu = props => (
-    <UserMenu {...props} logout={<Logout />}>
+const MyUserMenu = () => (
+    <UserMenu logout={<Logout />}>
         <SwitchLanguage />
     </UserMenu>
 );

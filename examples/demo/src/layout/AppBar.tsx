@@ -6,13 +6,12 @@ import SettingsIcon from '@mui/icons-material/Settings';
 
 import Logo from './Logo';
 
-const CustomUserMenu = (props: any) => (
-    <UserMenu {...props} logout={<Logout />}>
+const CustomUserMenu = () => (
+    <UserMenu logout={<Logout />}>
         <MenuItemLink
             to="/configuration"
             primaryText="pos.configuration"
             leftIcon={<SettingsIcon />}
-            onClick={props.onClick}
             sidebarIsOpen
         />
     </UserMenu>
