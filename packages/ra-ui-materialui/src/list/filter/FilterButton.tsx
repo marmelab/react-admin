@@ -43,7 +43,11 @@ const FilterButton = (props: FilterButtonProps): JSX.Element => {
     const anchorEl = useRef();
     const classes = useStyles(props);
 
-    const hiddenFilters = filters?.filter(
+    if (filters === undefined) {
+        throw new Error('FilterButton requires filters prop to be set');
+    }
+
+    const hiddenFilters = filters.filter(
         (filterElement: JSX.Element) =>
             !filterElement.props.alwaysOn &&
             !displayedFilters[filterElement.props.source] &&
@@ -72,10 +76,6 @@ const FilterButton = (props: FilterButtonProps): JSX.Element => {
         },
         [showFilter, setOpen]
     );
-
-    if (!hiddenFilters) {
-        throw new Error('FilterButton requires filters prop to be set');
-    }
 
     if (hiddenFilters.length === 0) return null;
     return (
