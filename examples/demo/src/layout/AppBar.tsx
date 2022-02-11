@@ -1,22 +1,32 @@
 import * as React from 'react';
-import { AppBar, Logout, MenuItemLink, UserMenu } from 'react-admin';
+import { AppBar, Logout, UserMenu, useTranslate } from 'react-admin';
+import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 import Logo from './Logo';
 
-const ConfigurationMenu = React.forwardRef((props, ref) => (
-    <MenuItemLink
-        ref={ref}
-        {...props}
-        to="/configuration"
-        primaryText="pos.configuration"
-        leftIcon={<SettingsIcon />}
-        sidebarIsOpen
-    />
-));
-
+const ConfigurationMenu = React.forwardRef((props, ref) => {
+    const translate = useTranslate();
+    return (
+        <MenuItem
+            component={Link}
+            // @ts-ignore
+            ref={ref}
+            {...props}
+            to="/configuration"
+        >
+            <ListItemIcon>
+                <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText>{translate('pos.configuration')}</ListItemText>
+        </MenuItem>
+    );
+});
 const CustomUserMenu = () => (
     <UserMenu>
         <ConfigurationMenu />
