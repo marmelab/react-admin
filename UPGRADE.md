@@ -1454,29 +1454,41 @@ export const PostEdit = () => (
 
 Use the `<Title>` component instead.
 
-## No More Props Injection In `<AppBar>`
+## `<AppBar>` and `<UserMenu>` No Longer Inject Props
 
 When a React element was provided as the `userMenu` prop, the `<AppBar>` used to clone it and inject the `logout` prop (a React element). This is no longer the case and if you provided a custom user menu, you now have to include the logout yourself.
 
-Besides, the `<UserMenu>` no longer accepts a `logout` prop. Instead, you should pass the `<Logout>` component as one of the `<UserMenu>` children.
+Besides, the `<UserMenu>` used to clone its children to inject the `onClick` prop, allowing them to close the menu. It now provides a `onClose` function through a new `UserContext` accessible by calling the `useUserMenu` hook.
+
+Finally, the `<UserMenu>` no longer accepts a `logout` prop. Instead, you should pass the `<Logout>` component as one of the `<UserMenu>` children.
 
 ```diff
--import { UserMenu } from 'react-admin';
-+import { Logout, UserMenu } from 'react-admin';
+-import { MenuItemLink, UserMenu } from 'react-admin';
++import { Logout, MenuItemLink, UserMenu, useUserMenu } from 'react-admin';
 
--export const MyUserMenu = (props) => (
-+export const MyUserMenu = () => (
--    <UserMenu {...props}>
-+    <UserMenu>
+-const ConfigurationMenu = (props) => {
++const ConfigurationMenu = () => {
++    const { onClose } = useUserMenu();
+    return (
         <MenuItemLink
             to="/configuration"
             primaryText="pos.configuration"
             leftIcon={<SettingsIcon />}
             sidebarIsOpen
+-            onClick={props.onClick}
++            onClick={onClose}
         />
+    );
+};
+
+-const CustomUserMenu = (props) => (
++const CustomUserMenu = () => (
+-    <UserMenu {...props}>
++    <UserMenu>
+        <ConfigurationMenu />
 +        <Logout />
     </UserMenu>
-)
+);
 ```
 
 ## `<MenuItemLink>` Automatically Translates `primaryText`

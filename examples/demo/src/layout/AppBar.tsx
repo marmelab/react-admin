@@ -1,19 +1,34 @@
 import * as React from 'react';
-import { AppBar, UserMenu, MenuItemLink, Logout } from 'react-admin';
+import {
+    AppBar,
+    Logout,
+    MenuItemLink,
+    UserMenu,
+    useUserMenu,
+} from 'react-admin';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 import Logo from './Logo';
 
-const CustomUserMenu = () => (
-    <UserMenu logout={<Logout />}>
+const ConfigurationMenu = () => {
+    const { onClose } = useUserMenu();
+    return (
         <MenuItemLink
             to="/configuration"
             primaryText="pos.configuration"
             leftIcon={<SettingsIcon />}
             sidebarIsOpen
+            onClick={onClose}
         />
+    );
+};
+
+const CustomUserMenu = () => (
+    <UserMenu>
+        <ConfigurationMenu />
+        <Logout />
     </UserMenu>
 );
 

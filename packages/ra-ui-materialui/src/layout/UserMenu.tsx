@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useCallback, useMemo, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { useTranslate, useGetIdentity } from 'ra-core';
@@ -12,25 +12,34 @@ import {
     PopoverOrigin,
 } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import { UserMenuContextProvider } from './UserMenuContextProvider';
 
 /**
  * The UserMenu component renders a Mui Button that shows a Menu with at least the logout action.
  * It accepts children that must be Mui MenuItem components.
  *
  * @example
- * import { Logout, MenuItemLink, UserMenu } from 'react-admin';
+ * import { Logout, MenuItemLink, UserMenu, useUserMenu } from 'react-admin';
  *
- * export const MyUserMenu = () => (
- *     <UserMenu>
+ * const ConfigurationMenu = () => {
+ *     const { onClose } = useUserMenu();
+ *     return (
  *         <MenuItemLink
  *             to="/configuration"
  *             primaryText="pos.configuration"
  *             leftIcon={<SettingsIcon />}
  *             sidebarIsOpen
+ *             onClick={onClose}
  *         />
+ *     );
+ * };
+ *
+ * export const MyUserMenu = () => (
+ *     <UserMenu>
+ *         <ConfigurationMenu />
  *         <Logout />
  *     </UserMenu>
- * )
+ * );
  * @param props
  * @param {ReactNode} props.children React node/s to be rendered as children of the UserMenu. Must be Mui MenuItem components
  * @param {string} props.className CSS class applied to the MuiAppBar component
@@ -50,11 +59,11 @@ export const UserMenu = (props: UserMenuProps) => {
         icon = defaultIcon,
     } = props;
 
+    const handleMenu = event => setAnchorEl(event.currentTarget);
+    const handleClose = useCallback(() => setAnchorEl(null), []);
+    const context = useMemo(() => ({ onClose: handleClose }), [handleClose]);
     if (!children) return null;
     const open = Boolean(anchorEl);
-
-    const handleMenu = event => setAnchorEl(event.currentTarget);
-    const handleClose = () => setAnchorEl(null);
 
     return (
         <Root className={className}>
@@ -92,17 +101,19 @@ export const UserMenu = (props: UserMenuProps) => {
                     </IconButton>
                 </Tooltip>
             )}
-            <Menu
-                id="menu-appbar"
-                disableScrollLock
-                anchorEl={anchorEl}
-                anchorOrigin={AnchorOrigin}
-                transformOrigin={TransformOrigin}
-                open={open}
-                onClose={handleClose}
-            >
-                {children}
-            </Menu>
+            <UserMenuContextProvider value={context}>
+                <Menu
+                    id="menu-appbar"
+                    disableScrollLock
+                    anchorEl={anchorEl}
+                    anchorOrigin={AnchorOrigin}
+                    transformOrigin={TransformOrigin}
+                    open={open}
+                    onClose={handleClose}
+                >
+                    {children}
+                </Menu>
+            </UserMenuContextProvider>
         </Root>
     );
 };
