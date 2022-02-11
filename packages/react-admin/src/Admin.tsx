@@ -99,7 +99,6 @@ export const Admin = (props: AdminProps) => {
         layout,
         loading,
         loginPage,
-        logoutButton,
         menu, // deprecated, use a custom layout instead
         notification,
         store,
@@ -133,7 +132,6 @@ export const Admin = (props: AdminProps) => {
                 title={title}
                 loading={loading}
                 loginPage={loginPage}
-                logoutButton={authProvider ? logoutButton : undefined}
                 notification={notification}
                 ready={ready}
             >
