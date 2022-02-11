@@ -1454,6 +1454,34 @@ export const PostEdit = () => (
 
 Use the `<Title>` component instead.
 
+## `<Admin>`, `<Layout>`, `<AppBar>` And `<UserMenu>` No Longer Accept A `logout` Prop
+
+As we already provide a way to override the user menu displayed in the `<AppBar>`, we removed the `logout` prop from the `<Admin>`, `<Layout>`, `<AppBar>` and `<UserMenu>` components.
+
+If you passed your own logout component through this prop, you must now provide a custom user menu:
+
+```
+-import { Admin, Logout } from 'react-admin';
++import { Admin, AppBar, Layout, Logout, UserMenu } from 'react-admin';
+
+const MyCustomLogout = () => <Logout className="my-class-name" />;
+
++ const MyUserMenu = () => <UserMenu><MyCustomLogout /></UserMenu>;
+
++ const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
+
++ const MyLayout = () => <Layout appBar={MyAppBar} />;
+
+const MyAdmin = () => (
+    <Admin
+-        logout={<MyCustomLogout />}
++        layout={<MyLayout />}
+    >
+        // ....
+    </Admin>
+)
+```
+
 ## `<AppBar>` and `<UserMenu>` No Longer Inject Props
 
 When a React element was provided as the `userMenu` prop, the `<AppBar>` used to clone it and inject the `logout` prop (a React element). This is no longer the case and if you provided a custom user menu, you now have to include the logout yourself.

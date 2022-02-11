@@ -9,12 +9,7 @@ import {
     useLocaleState,
     useUserMenu,
 } from 'react-admin';
-import {
-    MenuItem,
-    MenuItemProps,
-    ListItemIcon,
-    ListItemText,
-} from '@mui/material';
+import { MenuItem, MenuItemProps, ListItemIcon } from '@mui/material';
 import Language from '@mui/icons-material/Language';
 
 const SwitchLanguage = forwardRef<HTMLLIElement, MenuItemProps>(
@@ -35,7 +30,7 @@ const SwitchLanguage = forwardRef<HTMLLIElement, MenuItemProps>(
                 <ListItemIcon sx={{ minWidth: 5 }}>
                     <Language />
                 </ListItemIcon>
-                <ListItemText>Switch Language</ListItemText>
+                Switch Language
             </MenuItem>
         );
     }

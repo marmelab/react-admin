@@ -30,7 +30,6 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
         catchAll: CatchAll,
         dashboard,
         loading: LoadingPage,
-        logout,
         menu,
         ready: Ready,
         title,
@@ -63,12 +62,7 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
                 path="/*"
                 element={
                     <div>
-                        <Layout
-                            dashboard={dashboard}
-                            logout={logout}
-                            menu={menu}
-                            title={title}
-                        >
+                        <Layout dashboard={dashboard} menu={menu} title={title}>
                             <Routes>
                                 {customRoutesWithLayout}
                                 {Children.map(resources, resource => (
