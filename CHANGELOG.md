@@ -1,5 +1,23 @@
 # Changelog
 
+## v3.19.8
+
+* Fix `<FilterButton>` throws bad error if no filters are present ([#7227](https://github.com/marmelab/react-admin/pull/7227)) ([WiXSL](https://github.com/WiXSL))
+* Fix `page` remains the same when changing `perPage` in `<ReferenceXXX>` Fields ([#7213](https://github.com/marmelab/react-admin/pull/7213)) ([WiXSL](https://github.com/WiXSL))
+* Fix `useNotify` doesn't allow multi line notifications ([#7188](https://github.com/marmelab/react-admin/pull/7188)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<AutocompleteInput>` erases input while typing ([#7173](https://github.com/marmelab/react-admin/pull/7173)) ([WiXSL](https://github.com/WiXSL))
+* Fix `resolveBrowserLocale` tests ([#7194](https://github.com/marmelab/react-admin/pull/7194)) ([FernandoKGA](https://github.com/FernandoKGA))
+* Fix `<Toolbar alwaysEnableSaveButton>` doesn't accept `false` ([#7167](https://github.com/marmelab/react-admin/pull/7167)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<ReferenceArrayInput>` logs console warning in certain cases ([#7165](https://github.com/marmelab/react-admin/pull/7165)) ([WiXSL](https://github.com/WiXSL))
+* Fix DOM warnings when using `<SelectArrayInput>` as child of `<ReferenceArrayInput>` ([#7015](https://github.com/marmelab/react-admin/pull/7015)) ([ZachSelindh](https://github.com/ZachSelindh))
+* Fix failing admin test when running all tests together ([#7136](https://github.com/marmelab/react-admin/pull/7136)) ([thdk](https://github.com/thdk))
+* Fix GraphQL data provider swallows the Apollo Error ([#6956](https://github.com/marmelab/react-admin/pull/6956)) ([hlubek](https://github.com/hlubek))
+* [TypeScript] Fix `BooleanInputProps` isn't exported ([#7144](https://github.com/marmelab/react-admin/pull/7144)) ([alanpoulain](https://github.com/alanpoulain))
+* [Doc] Fix bad url in Inputs documentation ([#7230](https://github.com/marmelab/react-admin/pull/7230)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add SQLite data provider ([#7201](https://github.com/marmelab/react-admin/pull/7201)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add TreeQL / PHP-CRUD-API data provider ([#7141](https://github.com/marmelab/react-admin/pull/7141)) ([itsjavi](https://github.com/itsjavi))
+* [Doc] Fix `<XXXInput initialValue>` description when the value is `null` ([#7139](https://github.com/marmelab/react-admin/pull/7139)) ([WiXSL](https://github.com/WiXSL))
+
 ## v3.19.7
 
 * Fix `<SimpleFormIterator>` assigns items indexes incorrectly ([#7123](https://github.com/marmelab/react-admin/pull/7123)) ([WiXSL](https://github.com/WiXSL))
