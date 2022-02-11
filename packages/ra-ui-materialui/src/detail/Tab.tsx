@@ -75,8 +75,12 @@ export const Tab = ({
 
     const renderHeader = () => (
         <MuiTab
-            key={label}
-            label={translate(label, { _: label })}
+            key={`tab-header-${value}`}
+            label={
+                typeof label === 'string'
+                    ? translate(label, { _: label })
+                    : label
+            }
             value={value}
             icon={icon}
             className={clsx('show-tab', className)}
@@ -114,7 +118,8 @@ Tab.propTypes = {
     children: PropTypes.node,
     context: PropTypes.oneOf(['header', 'content']),
     icon: PropTypes.element,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
+        .isRequired,
     path: PropTypes.string,
     spacing: PropTypes.any,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -127,7 +132,7 @@ export interface TabProps extends Omit<MuiTabProps, 'children'> {
     className?: string;
     divider?: ReactNode;
     icon?: ReactElement;
-    label: string;
+    label: string | ReactElement;
     path?: string;
     record?: RaRecord;
     spacing?: ResponsiveStyleValue<number | string>;
