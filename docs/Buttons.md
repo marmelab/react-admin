@@ -422,7 +422,6 @@ To override the style of all instances of `<MenuItemLink>` using the [material-u
 | ------------ | -------- | --------------- | ------------------- | ----------------------------------- |
 | `children`   | Optional | `ReactElement`  | -                   | elements to use as menu items       |
 | `label`      | Required | `string`        | 'ra.auth.user_menu' | label or translation message to use |
-| `logout`     | Optional | `ReactElement`  | -                   | logout component                    |
 | `icon`       | Optional | `ReactElement`  | `<AccountCircle>`   | iconElement, e.g. `<CommentIcon />` |
 
 #### `sx`: CSS API

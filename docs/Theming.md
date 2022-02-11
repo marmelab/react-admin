@@ -600,7 +600,6 @@ const useStyles = makeStyles(theme => ({
 const MyLayout = ({
     children,
     dashboard,
-    logout,
     title,
 }) => {
     const classes = useStyles();
@@ -609,10 +608,10 @@ const MyLayout = ({
     return (
         <div className={classes.root}>
             <div className={classes.appFrame}>
-                <AppBar title={title} open={open} logout={logout} />
+                <AppBar title={title} open={open} />
                 <main className={classes.contentWithSidebar}>
                     <Sidebar>
-                        <Menu logout={logout} hasDashboard={!!dashboard} />
+                        <Menu hasDashboard={!!dashboard} />
                     </Sidebar>
                     <div className={classes.content}>
                         {children}
@@ -629,7 +628,6 @@ MyLayout.propTypes = {
         PropTypes.func,
         PropTypes.string,
     ]),
-    logout: ComponentPropType,
     title: PropTypes.string.isRequired,
 };
 
@@ -1027,13 +1025,19 @@ const App = () => (
 It is possible to use a completely [custom logout button](./Admin.md#logoutbutton) or you can simply override some properties of the default button. If you want to change the icon, you can use the default `<Logout>` component and pass a different icon as the `icon` prop.
 
 ```jsx
-import { Admin, Logout } from 'react-admin';
+import { Admin, AppBar, Layout, Logout, UserMenu } from 'react-admin';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 const MyLogoutButton = props => <Logout {...props} icon={<ExitToAppIcon/>} />;
 
+const MyUserMenu = () => <UserMenu><MyLogoutButton /></UserMenu>;
+
+const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
+
+const MyLayout = () => <Layout appBar={MyAppBar} />;
+
 const App = () => (
-    <Admin logoutButton={MyLogoutButton}>
+    <Admin layout={MyLayout}>
         // ...
     </Admin>
 );

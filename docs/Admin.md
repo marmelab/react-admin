@@ -220,7 +220,7 @@ import { useMediaQuery } from '@material-ui/core';
 import { MenuItemLink, useResourceDefinitions, useSidebarState } from 'react-admin';
 import LabelIcon from '@mui/icons-material/Label';
 
-const Menu = ({ onMenuClick, logout }) => {
+const Menu = ({ onMenuClick }) => {
     const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
     const [open] = useSidebarState();
     const resources = useResourceDefinitions();
@@ -244,7 +244,6 @@ const Menu = ({ onMenuClick, logout }) => {
                 onClick={onMenuClick}
                 sidebarIsOpen={open}
             />
-            {isXSmall && logout}
         </div>
     );
 }
@@ -253,8 +252,6 @@ export default Menu;
 ```
 
 **Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views. It supports a custom text and icon (which must be a material-ui `<SvgIcon>`).
-
-**Tip**: Note that we include the `logout` item only on small devices. Indeed, the `logout` button is already displayed in the AppBar on larger devices.
 
 Then, pass it to the `<Admin>` component as the `menu` prop:
 
