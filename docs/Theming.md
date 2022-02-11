@@ -395,26 +395,56 @@ export default MyLayout;
 
 ### UserMenu Customization
 
-You can replace the default user menu by your own by setting the `userMenu` prop of the `<AppBar>` component. For instance, to add custom menu items, just decorate the default [`<UserMenu>`](./Buttons.md#usermenu) by adding children to it:
+You can replace the default user menu by your own by setting the `userMenu` prop of the `<AppBar>` component. For instance, to add custom menu items, you can render the default [`<UserMenu>`](./Buttons.md#usermenu) and add children to it. Don't forget to include the `<Logout>` component if you want to keep the logout menu item. Besides, in order to properly close the menu once an item is added, call the `onClose` method retrieved from the UserContext through the `useUserMenu` hook. This is handled for you if you use `<MenuItemLink>`:
 
 ```jsx
 import * as React from 'react';
-import { AppBar, UserMenu, MenuItemLink } from 'react-admin';
+import { AppBar, Logout, MenuItemLink, UserMenu, useUserMenu } from 'react-admin';
 import SettingsIcon from '@mui/icons-material/Settings';
 
-const ConfigurationMenu = forwardRef(({ onClick }, ref) => (
-    <MenuItemLink
-        ref={ref}
-        to="/configuration"
-        primaryText="Configuration"
-        leftIcon={<SettingsIcon />}
-        onClick={onClick} // close the menu on click
-    />
-));
+// It's important to pass the ref to allow MaterialUI to manage the keyboard navigation
+const ConfigurationMenu = React.forwardRef((props, ref) => {
+    return (
+        <MenuItemLink
+            ref={ref}
+            // It's important to pass the props to allow MaterialUI to manage the keyboard navigation
+            {...props}
+            to="/configuration"
+            primaryText="Configuration"
+            leftIcon={<SettingsIcon />}
+        />
+    );
+});
+
+// It's important to pass the ref to allow MaterialUI to manage the keyboard navigation
+const SwitchLanguage = forwardRef((props, ref) => {
+    const [locale, setLocale] = useLocaleState();
+    // We are not using MenuItemLink so we retrieve the onClose function from the UserContext
+    const { onClose } = useUserMenu();
+
+    return (
+        <MenuItem
+            ref={ref}
+            // It's important to pass the props to allow MaterialUI to manage the keyboard navigation
+            {...props}
+            sx={{ color: 'text.secondary' }}
+            onClick={event => {
+                setLocale(locale === 'en' ? 'fr' : 'en');
+                onClose(); // Close the menu
+            }}
+        >
+            <ListItemIcon sx={{ minWidth: 5 }}>
+                <Language />
+            </ListItemIcon>
+            Switch Language
+        </MenuItem>
+    );
+});
 
 const MyUserMenu = props => (
     <UserMenu {...props}>
         <ConfigurationMenu />
+        <SwitchLanguage />
     </UserMenu>
 );
 
