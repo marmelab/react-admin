@@ -90,7 +90,7 @@ The title can be either a string or an element of your own.
 
 ![Actions Toolbar](./img/actions-toolbar.png)
 
-You can replace the list of default actions by your own element using the `actions` prop:
+You can replace the list of default actions by your own elements using the `actions` prop:
 
 ```jsx
 import * as React from 'react';
@@ -119,17 +119,17 @@ export const PostList = (props) => (
         </List>
 );
 ```
+Note that in order to add the `<FilterButton>` component among your custom actions, either the parent `List` must have its `filters` prop set up or you must pass the filters to the button itself. 
 
 This allows you to further control how the default actions behave. For example, you could disable the `<ExportButton>` when the list is empty:
 
 {% raw %}
 ```jsx
 import * as React from 'react';
-import { cloneElement, useMemo, useContext } from 'react';
+import { cloneElement, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import {
     useListContext,
-    FilterContext,
     TopToolbar,
     CreateButton,
     ExportButton,
@@ -146,11 +146,10 @@ const ListActions = (props) => {
         ...rest
     } = props;
     const { total } = useListContext();
-    const filters = useContext(FilterContext);
 
     return (
         <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
-            { filters && <FilterButton /> }
+            <FilterButton />
             <CreateButton />
             <ExportButton disabled={total === 0} maxResults={maxResults} />
             {/* Add your custom actions */}
