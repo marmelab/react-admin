@@ -399,7 +399,9 @@ You can replace the default user menu by your own by setting the `userMenu` prop
 
 ```jsx
 import * as React from 'react';
-import { AppBar, Logout, MenuItemLink, UserMenu, useUserMenu } from 'react-admin';
+import { AppBar, Logout, UserMenu, useUserMenu } from 'react-admin';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 // It's important to pass the ref to allow MaterialUI to manage the keyboard navigation
@@ -410,9 +412,14 @@ const ConfigurationMenu = React.forwardRef((props, ref) => {
             // It's important to pass the props to allow MaterialUI to manage the keyboard navigation
             {...props}
             to="/configuration"
-            primaryText="Configuration"
-            leftIcon={<SettingsIcon />}
-        />
+        >
+            <ListItemIcon>
+                <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText>
+               Configuration
+            </ListItemText>
+        </MenuItemLink>
     );
 });
 
@@ -436,7 +443,9 @@ const SwitchLanguage = forwardRef((props, ref) => {
             <ListItemIcon sx={{ minWidth: 5 }}>
                 <Language />
             </ListItemIcon>
-            Switch Language
+            <ListItemText>
+                Switch Language
+            </ListItemText>
         </MenuItem>
     );
 });
@@ -445,6 +454,7 @@ const MyUserMenu = props => (
     <UserMenu {...props}>
         <ConfigurationMenu />
         <SwitchLanguage />
+        <Logout />
     </UserMenu>
 );
 

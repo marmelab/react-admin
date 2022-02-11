@@ -1465,21 +1465,34 @@ Finally, the `<UserMenu>` no longer accepts a `logout` prop. Instead, you should
 ```diff
 -import { MenuItemLink, UserMenu } from 'react-admin';
 +import { Logout, MenuItemLink, UserMenu, useUserMenu } from 'react-admin';
+import { Link } from 'react-router-dom';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 -const ConfigurationMenu = (props) => {
-+const ConfigurationMenu = () => {
+// It's important to pass the ref to allow MaterialUI to manage the keyboard navigation
++const ConfigurationMenu = forwardRef((props, ref) => {
 +    const { onClose } = useUserMenu();
     return (
-        <MenuItemLink
+        <MenuItem
+            // It's important to pass the props to allow MaterialUI to manage the keyboard navigation
+            {...props}
+            component={Link}
             to="/configuration"
-            primaryText="pos.configuration"
-            leftIcon={<SettingsIcon />}
-            sidebarIsOpen
 -            onClick={props.onClick}
 +            onClick={onClose}
-        />
+        >
+            <ListItemIcon>
+                <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText>
+                Configuration
+            </ListItemText>
+        </MenuItem>
     );
-};
+});
 
 -const CustomUserMenu = (props) => (
 +const CustomUserMenu = () => (
@@ -1496,20 +1509,19 @@ Finally, the `<UserMenu>` no longer accepts a `logout` prop. Instead, you should
 You can pass a translation key directly as the `primaryText` prop for `<MenuItemLink>`.
 
 ```diff
-const CustomUserMenu = (props: any) => {
+const MyMenuItem = forwardRef((props, ref) => {
 -    const translate = useTranslate();
     return (
-        <UserMenu {...props}>
-            <MenuItemLink
-                to="/configuration"
--                primaryText={translate('pos.configuration')}
-+                primaryText="pos.configuration"
-                leftIcon={<SettingsIcon />}
-                sidebarIsOpen
-            />
-        </UserMenu>
+        <MenuItemLink
+            ref={ref}
+            {...props}
+            to="/configuration"
+-            primaryText={translate('pos.configuration')}
++            primaryText="pos.configuration"
+            leftIcon={<SettingsIcon />}
+        />
     )
-);
+});
 ```
 
 ## `useListContext` No Longer Returns An `ids` Prop
