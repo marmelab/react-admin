@@ -90,7 +90,7 @@ The title can be either a string or an element of your own.
 
 ![Actions Toolbar](./img/actions-toolbar.png)
 
-You can replace the list of default actions by your own element using the `actions` prop:
+You can replace the list of default actions by your own elements using the `actions` prop:
 
 ```jsx
 import * as React from 'react';
@@ -119,6 +119,7 @@ export const PostList = (props) => (
         </List>
 );
 ```
+Note that in order to add the `<FilterButton>` component among your custom actions, either the parent `List` must have its `filters` prop set up or you must pass the filters to the button itself. 
 
 This allows you to further control how the default actions behave. For example, you could disable the `<ExportButton>` when the list is empty:
 
@@ -134,7 +135,7 @@ import {
     ExportButton,
     FilterButton,
     Button,
-    sanitizeListRestProps    
+    sanitizeListRestProps
 } from 'react-admin';
 import IconEvent from '@material-ui/icons/Event';
 
@@ -144,9 +145,8 @@ const ListActions = (props) => {
         maxResults,
         ...rest
     } = props;
-    const {
-        total,
-    } = useListContext();
+    const { total } = useListContext();
+
     return (
         <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
             <FilterButton />
