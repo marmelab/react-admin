@@ -2116,7 +2116,7 @@ const Toolbar = (props) => {
 
 We removed the `handleSubmit` and `handleSubmitWithRedirect` props completely. Instead, when provided any of the side effects props, the `<SaveButton>` will render a simple button and will call the `save` function with them. It also takes care of preventing the default form submit.
 
-If you relied on `handleSubmit` or `handleSubmitWithRedirect`, you can now use the `SaveButton` and override any of the side effect props: `onSuccess`, `onFailure` or `transform`.
+If you relied on `handleSubmit` or `handleSubmitWithRedirect`, you can now use the `SaveButton` and override any of the side effect props: `onSuccess`, `onError` or `transform`.
 
 ### The `save` Function Signature Changed
 
@@ -2345,7 +2345,7 @@ To interface a custom form input with `react-hook-form`, you must use the `useCo
 const LatLngInput = () => {
 +   const input1 = useController({ name: 'position.lat' });
 +   const input2 = useController({ name: 'position.lng' });
-    
+
     return (
         <span>
 -           <Field name="lat" component="input" type="number" placeholder="latitude" />

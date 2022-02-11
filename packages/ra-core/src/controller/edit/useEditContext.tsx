@@ -6,7 +6,7 @@ import { EditContext } from './EditContext';
 import { EditControllerResult } from './useEditController';
 
 /**
- * Hook to read the edit controller props from the CreateContext.
+ * Hook to read the edit controller props from the EditContext.
  *
  * Mostly used within a <EditContext.Provider> (e.g. as a descendent of <Edit>).
  *
