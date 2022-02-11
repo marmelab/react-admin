@@ -20,6 +20,7 @@ const SwitchLanguage = forwardRef<HTMLLIElement, MenuItemProps>(
         return (
             <MenuItem
                 ref={ref}
+                {...props}
                 sx={{ color: 'text.secondary' }}
                 onClick={event => {
                     setLocale(locale === 'en' ? 'fr' : 'en');
