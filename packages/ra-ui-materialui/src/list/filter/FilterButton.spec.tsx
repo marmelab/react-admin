@@ -54,7 +54,7 @@ describe('<FilterButton />', () => {
             const hiddenFilter = (
                 <TextInput source="Returned" label="Returned" disabled={true} />
             );
-            const { getByLabelText } = render(
+            const { getByRole, getByLabelText } = render(
                 <ThemeProvider theme={theme}>
                     <FilterButton
                         {...defaultProps}
@@ -65,9 +65,12 @@ describe('<FilterButton />', () => {
 
             fireEvent.click(getByLabelText('ra.action.add_filter'));
 
-            const filter = getByLabelText('Returned') as HTMLInputElement;
+            const disabledFilter = getByRole('menuitem');
 
-            expect(filter.disabled).toEqual(true);
+            expect(disabledFilter).not.toBeNull();
+            expect(disabledFilter.getAttribute('aria-disabled')).toEqual(
+                'true'
+            );
         });
     });
 });
