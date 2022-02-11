@@ -73,12 +73,12 @@ export const Toolbar = <
     } = props;
     const record = useRecordContext(props);
     const isXs = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
-    const { isValidating } = useFormState();
+    const { isDirty, isValidating } = useFormState();
     // Use form pristine and validating to enable or disable the save button
     // if alwaysEnableSaveButton is undefined
     const disabled = !valueOrDefault(
         alwaysEnableSaveButton,
-        !isValidating && !saving
+        isDirty && !isValidating && !saving
     );
 
     return (

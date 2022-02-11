@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { Button, ButtonProps, CircularProgress } from '@mui/material';
 import ContentSave from '@mui/icons-material/Save';
-import { useFormContext, useFormState } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import {
     CreateParams,
     MutationMode,
@@ -65,7 +65,6 @@ export const SaveButton = <RecordType extends RaRecord = any>(
     const notify = useNotify();
     const form = useFormContext();
     const saveContext = useSaveContext();
-    const { isDirty } = useFormState();
     const hasSideEffects = !!mutationOptions || !!transform;
     const type = !submitOnEnter || hasSideEffects ? 'button' : 'submit';
 
@@ -104,7 +103,7 @@ export const SaveButton = <RecordType extends RaRecord = any>(
             type={type}
             color="primary"
             aria-label={displayedLabel}
-            disabled={disabled || !isDirty}
+            disabled={disabled}
             onClick={handleClick}
             // TODO: find a way to display the loading state (LoadingButton from mui Lab?)
             {...sanitizeButtonRestProps(rest)}
