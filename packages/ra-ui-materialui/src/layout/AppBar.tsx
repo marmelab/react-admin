@@ -23,7 +23,6 @@ import { HideOnScroll } from './HideOnScroll';
  *
  * @param {Object} props
  * @param {ReactNode} props.children React node/s to be rendered as children of the AppBar
- * @param {Object} props.classes CSS class names
  * @param {string} props.className CSS class applied to the MuiAppBar component
  * @param {string} props.color The color of the AppBar
  * @param {Component} props.logout The logout button component that will be pass to the UserMenu component
@@ -98,7 +97,7 @@ export const AppBar: FC<AppBarProps> = memo(props => {
                     <LoadingIndicator />
                     {typeof userMenu === 'boolean' ? (
                         userMenu === true ? (
-                            <UserMenu logout={logout} />
+                            <UserMenu>{logout}</UserMenu>
                         ) : null
                     ) : (
                         userMenu

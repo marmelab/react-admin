@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { ReactNode, useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { Children, cloneElement, isValidElement, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslate, useGetIdentity } from 'ra-core';
 import {
@@ -13,6 +13,31 @@ import {
 } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
+/**
+ * The UserMenu component renders a Mui Button that shows a Menu with at least the logout action.
+ * It accepts children that must be Mui MenuItem components.
+ *
+ * @example
+ * import { Logout, MenuItemLink, UserMenu } from 'react-admin';
+ *
+ * export const MyUserMenu = () => (
+ *     <UserMenu>
+ *         <MenuItemLink
+ *             to="/configuration"
+ *             primaryText="pos.configuration"
+ *             leftIcon={<SettingsIcon />}
+ *             sidebarIsOpen
+ *         />
+ *         <Logout />
+ *     </UserMenu>
+ * )
+ * @param props
+ * @param {ReactNode} props.children React node/s to be rendered as children of the UserMenu. Must be Mui MenuItem components
+ * @param {string} props.className CSS class applied to the MuiAppBar component
+ * @param {string} props.label The label of the UserMenu button. Accepts translation keys
+ * @param {Element} props.icon The icon of the UserMenu button.
+ *
+ */
 export const UserMenu = (props: UserMenuProps) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const translate = useTranslate();
@@ -23,10 +48,9 @@ export const UserMenu = (props: UserMenuProps) => {
         className,
         label = 'ra.auth.user_menu',
         icon = defaultIcon,
-        logout,
     } = props;
 
-    if (!logout && !children) return null;
+    if (!children) return null;
     const open = Boolean(anchorEl);
 
     const handleMenu = event => setAnchorEl(event.currentTarget);
@@ -77,14 +101,7 @@ export const UserMenu = (props: UserMenuProps) => {
                 open={open}
                 onClose={handleClose}
             >
-                {Children.map(children, menuItem =>
-                    isValidElement(menuItem)
-                        ? cloneElement<any>(menuItem, {
-                              onClick: handleClose,
-                          })
-                        : null
-                )}
-                {logout}
+                {children}
             </Menu>
         </Root>
     );
@@ -94,16 +111,14 @@ UserMenu.propTypes = {
     children: PropTypes.node,
     classes: PropTypes.object,
     label: PropTypes.string,
-    logout: PropTypes.element,
     icon: PropTypes.node,
 };
 
 export interface UserMenuProps {
-    children?: React.ReactNode;
+    children?: ReactNode;
     className?: string;
     label?: string;
-    logout?: React.ReactNode;
-    icon?: React.ReactNode;
+    icon?: ReactNode;
 }
 
 const PREFIX = 'RaUserMenu';

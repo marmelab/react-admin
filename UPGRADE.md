@@ -1458,6 +1458,8 @@ Use the `<Title>` component instead.
 
 When a React element was provided as the `userMenu` prop, the `<AppBar>` used to clone it and inject the `logout` prop (a React element). This is no longer the case and if you provided a custom user menu, you now have to include the logout yourself.
 
+Besides, the `<UserMenu>` no longer accepts a `logout` prop. Instead, you should pass the `<Logout>` component as one of the `<UserMenu>` children.
+
 ```diff
 -import { UserMenu } from 'react-admin';
 +import { Logout, UserMenu } from 'react-admin';
@@ -1465,13 +1467,14 @@ When a React element was provided as the `userMenu` prop, the `<AppBar>` used to
 -export const MyUserMenu = (props) => (
 +export const MyUserMenu = () => (
 -    <UserMenu {...props}>
-+    <UserMenu logout={<Logout />}>
++    <UserMenu>
         <MenuItemLink
             to="/configuration"
             primaryText="pos.configuration"
             leftIcon={<SettingsIcon />}
             sidebarIsOpen
         />
++        <Logout />
     </UserMenu>
 )
 ```
