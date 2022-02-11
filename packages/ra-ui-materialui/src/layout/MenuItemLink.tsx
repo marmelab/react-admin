@@ -14,7 +14,6 @@ import {
 } from '@mui/material';
 
 import { useSidebarState } from './useSidebarState';
-import { useUserMenu } from './useUserMenu';
 import { useTranslate } from 'ra-core';
 
 /**
@@ -79,7 +78,6 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
 
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     const translate = useTranslate();
-    const userMenuContext = useUserMenu();
 
     const [open, setOpen] = useSidebarState();
     const handleMenuTap = useCallback(
@@ -87,10 +85,9 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
             if (isSmall) {
                 setOpen(false);
             }
-            userMenuContext && userMenuContext.onClose();
             onClick && onClick(e);
         },
-        [setOpen, isSmall, onClick, userMenuContext]
+        [setOpen, isSmall, onClick]
     );
 
     const match = useMatch(
@@ -100,7 +97,6 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
     const renderMenuItem = () => {
         return (
             <StyledMenuItem
-                // @ts-ignore
                 className={clsx(className, {
                     [MenuItemLinkClasses.active]: !!match,
                 })}
