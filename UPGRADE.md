@@ -1460,7 +1460,7 @@ As we already provide a way to override the user menu displayed in the `<AppBar>
 
 If you passed your own logout component through this prop, you must now provide a custom user menu:
 
-```
+```diff
 -import { Admin, Logout } from 'react-admin';
 +import { Admin, AppBar, Layout, Logout, UserMenu } from 'react-admin';
 
@@ -1492,7 +1492,7 @@ Finally, the `<UserMenu>` no longer accepts a `logout` prop. Instead, you should
 
 ```diff
 -import { MenuItemLink, UserMenu } from 'react-admin';
-+import { Logout, MenuItemLink, UserMenu, useUserMenu } from 'react-admin';
++import { Logout, UserMenu, useUserMenu } from 'react-admin';
 import { Link } from 'react-router-dom';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
