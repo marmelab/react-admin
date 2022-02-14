@@ -62,7 +62,6 @@ const PostShow = () => {
                         <RichTextField
                             source="body"
                             stripTags={false}
-                            label=""
                             label={false}
                         />
                     </Tab>

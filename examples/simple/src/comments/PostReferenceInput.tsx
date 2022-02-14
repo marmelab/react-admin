@@ -37,7 +37,7 @@ const PostReferenceInput = props => {
         <>
             <ReferenceInput {...props} defaultValue="">
                 <SelectInput
-                    sx={{ width: '100%' }}
+                    fullWidth
                     create={<PostQuickCreate />}
                     optionText="title"
                 />
