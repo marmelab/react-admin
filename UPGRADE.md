@@ -1454,9 +1454,9 @@ export const PostEdit = () => (
 
 Use the `<Title>` component instead.
 
-## `<Admin>`, `<Layout>`, `<AppBar>` And `<UserMenu>` No Longer Accept A `logout` Prop
+## `<Admin>`, `<Layout>`, `<AppBar>` And `<UserMenu>` No Longer Accept A `logout` Or `logoutButton` Prop
 
-As we already provide a way to override the user menu displayed in the `<AppBar>`, we removed the `logout` prop from the `<Admin>`, `<Layout>`, `<AppBar>` and `<UserMenu>` components.
+As we already provide a way to override the user menu displayed in the `<AppBar>`, we removed the `logoutButton` prop from the `<Admin>` component and the `logout` prop from the `<Layout>`, `<AppBar>` and `<UserMenu>` components.
 
 If you passed your own logout component through this prop, you must now provide a custom user menu:
 
@@ -1474,7 +1474,7 @@ const MyCustomLogout = () => <Logout className="my-class-name" />;
 
 const MyAdmin = () => (
     <Admin
--        logout={<MyCustomLogout />}
+-        logoutButton={<MyCustomLogout />}
 +        layout={<MyLayout />}
     >
         // ....
