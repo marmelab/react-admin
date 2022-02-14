@@ -75,6 +75,9 @@ const PostShow = () => (
             <FieldWithLabel label="My Custom Title">
                 <TextField source="title" />
             </FieldWithLabel>
+            <FieldWithLabel label="my.custom.translationKey">
+                <TextField source="description" />
+            </FieldWithLabel>
         </Stack>
     </Show>
 );

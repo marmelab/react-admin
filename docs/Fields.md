@@ -174,6 +174,13 @@ You can customize this automated label by specifying a `label` prop. `<SimpleSho
 
 **Tip**: If your admin has to support multiple languages, don't use the `label` prop, and put the localized labels in a dictionary instead. See the [Translation documentation](./Translation.md#translating-resource-and-field-names) for details.
 
+**Tip**: You can opt out of the label decoration by passing `false` to the `label` prop.
+
+```jsx
+// No label will be added
+<TextField source="author.name" label={false} />
+```
+
 **Note**: This prop has no effect when rendering a field outside a `<Datagrid>`, a `<SimpleShowLayout>`, a `<TabbedShowLayout>`, a `<SimpleForm>`, or a `<TabbedForm>`.
 
 ## `record`

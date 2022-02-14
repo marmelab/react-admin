@@ -115,6 +115,36 @@ const PostShow = () => (
 );
 ```
 
+
+The `<FieldWithLabel label>` uses the humanized source by default. You can customize it by passing a `label` prop to the fields:
+
+```jsx
+const PostShow = () => (
+    <Show>
+        <TabbedShowLayout>
+            <Tab label="main">
+                <TextField label="My Custom Title" source="title" />
+                <TextField label="my.custom.translationKey" source="description" />
+            </Tab>
+        </TabbedShowLayout>
+    </Show>
+);
+
+// translates to
+const PostShow = () => (
+    <Show>
+        <TabbedShowLayout>
+            <FieldWithLabel label="My Custom Title">
+                <TextField source="title" />
+            </FieldWithLabel>
+            <FieldWithLabel label="my.custom.translationKey">
+                <TextField source="description" />
+            </FieldWithLabel>
+        </TabbedShowLayout>
+    </Show>
+);
+```
+
 You can disable the `<FieldWithLabel>` decoration by passing setting `label={false}` on a field:
 
 ```jsx
