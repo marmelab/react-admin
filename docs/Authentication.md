@@ -936,13 +936,13 @@ const App = () => (
 
 ## Recipes
 
-### Customizing The Login and Logout Components
+### Customizing The Login Component
 
 Using `authProvider` is enough to implement a full-featured authorization system if the authentication relies on a username and password.
 
 But what if you want to use an email instead of a username? What if you want to use a Single-Sign-On (SSO) with a third-party authentication service? What if you want to use two-factor authentication?
 
-For all these cases, it's up to you to implement your own `LoginPage` component, which will be displayed under the `/login` route instead of the default username/password form, and your own `LogoutButton` component, which will be displayed in the sidebar. Pass both these components to the `<Admin>` component:
+For all these cases, it's up to you to implement your own `LoginPage` component, which will be displayed under the `/login` route instead of the default username/password form. Pass this component to the `<Admin>` component:
 
 ```jsx
 // in src/App.js
@@ -958,7 +958,7 @@ const App = () => (
 );
 ```
 
-Use the `useLogin` and `useLogout` hooks in your custom `LoginPage` and `LogoutButton` components.
+Use the `useLogin` hook in your custom `LoginPage` component.
 
 ```jsx
 // in src/MyLoginPage.js
@@ -1003,6 +1003,8 @@ const MyLoginPage = ({ theme }) => {
 
 export default MyLoginPage;
 
+### Customizing The Logout Component
+
 // in src/MyLogoutButton.js
 import * as React from 'react';
 import { forwardRef } from 'react';
@@ -1033,6 +1035,24 @@ export default MyLogoutButton;
 // ...
 -   const handleClick = () => logout();
 +   const handleClick = () => logout('/custom-login');
+```
+
+To use it, you must provide a custom `UserMenu`:
+
+```jsx
+import MyLogoutButton from './MyLogoutButton';
+
+const MyUserMenu = () => <UserMenu><MyLogoutButton /></UserMenu>;
+
+const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
+
+const MyLayout = () => <Layout appBar={MyAppBar} />;
+
+const App = () => (
+    <Admin layout={MyLayout}>
+        // ...
+    </Admin>
+);
 ```
 
 ### Restricting Access to Resources or Views

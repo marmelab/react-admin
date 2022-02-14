@@ -400,6 +400,8 @@ You can replace the default user menu by your own by setting the `userMenu` prop
 ```jsx
 import * as React from 'react';
 import { AppBar, Logout, UserMenu, useUserMenu } from 'react-admin';
+import { Link } from 'react-router-dom';
+import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -407,8 +409,9 @@ import SettingsIcon from '@mui/icons-material/Settings';
 // It's important to pass the ref to allow MaterialUI to manage the keyboard navigation
 const ConfigurationMenu = React.forwardRef((props, ref) => {
     return (
-        <MenuItemLink
+        <MenuItem
             ref={ref}
+            component={Link}
             // It's important to pass the props to allow MaterialUI to manage the keyboard navigation
             {...props}
             to="/configuration"
@@ -419,7 +422,7 @@ const ConfigurationMenu = React.forwardRef((props, ref) => {
             <ListItemText>
                Configuration
             </ListItemText>
-        </MenuItemLink>
+        </MenuItem>
     );
 });
 
