@@ -1000,8 +1000,6 @@ Just use an empty `filter` query parameter to force empty filters:
 
 ## Using a Custom Login Page
 
-### Changing the Background Image
-
 By default, the login page displays a gradient background. If you want to change the background, you can use the default Login page component and pass an image URL as the `backgroundImage` prop.
 
 ```jsx
@@ -1022,8 +1020,6 @@ const App = () => (
 ```
 
 ## Using a Custom Logout Button
-
-### Changing the Icon
 
 It is possible to use a completely [custom logout button](./Authentication.md#customizing-the-logout-component) or you can simply override some properties of the default button. If you want to change the icon, you can use the default `<Logout>` component and pass a different icon as the `icon` prop.
 
