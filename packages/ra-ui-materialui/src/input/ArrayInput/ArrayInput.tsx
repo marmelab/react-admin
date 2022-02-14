@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { cloneElement, Children, ReactElement, useEffect, useRef } from 'react';
+import clsx from 'clsx';
 import {
     isRequired,
     FieldTitle,
@@ -166,7 +167,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
         <FormControl
             fullWidth
             margin="normal"
-            className={className}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
             error={(isDirty || isSubmitted) && invalid}
             {...sanitizeInputRestProps(rest)}
         >

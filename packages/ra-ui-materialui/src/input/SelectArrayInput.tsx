@@ -2,6 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import {
     Select,
     MenuItem,
@@ -213,7 +214,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                 label={label}
                 source={source}
                 resource={resource}
-                className={className}
+                className={clsx('ra-input', `ra-input-${source}`, className)}
                 isRequired={isRequired}
                 margin={margin}
             >
@@ -226,7 +227,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         <>
             <StyledFormControl
                 margin={margin}
-                className={className}
+                className={clsx('ra-input', `ra-input-${source}`, className)}
                 error={(isTouched || isSubmitted) && invalid}
                 variant={variant}
                 {...sanitizeRestProps(rest)}

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import {
     FormControl,
     FormHelperText,
@@ -144,7 +145,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
                 label={label}
                 source={source}
                 resource={resource}
-                className={className}
+                className={clsx('ra-input', `ra-input-${source}`, className)}
                 isRequired={isRequired}
                 margin={margin}
                 fieldState={fieldState}
@@ -157,7 +158,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
     return (
         <StyledFormControl
             component="fieldset"
-            className={className}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
             margin={margin}
             error={(isTouched || isSubmitted) && invalid}
             {...sanitizeRestProps(rest)}

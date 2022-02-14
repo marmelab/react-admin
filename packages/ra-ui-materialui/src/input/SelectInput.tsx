@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ReactElement, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import MenuItem from '@mui/material/MenuItem';
 import { TextFieldProps } from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
@@ -239,7 +240,7 @@ export const SelectInput = (props: SelectInputProps) => {
                 label={label}
                 source={source}
                 resource={resource}
-                className={className}
+                className={clsx('ra-input', `ra-input-${source}`, className)}
                 isRequired={isRequired}
                 fieldState={fieldState}
                 field={field}
@@ -255,6 +256,7 @@ export const SelectInput = (props: SelectInputProps) => {
             <StyledResettableTextField
                 id={id}
                 {...field}
+                className={clsx('ra-input', `ra-input-${source}`, className)}
                 onChange={handleChangeWithCreateSupport}
                 select
                 label={
@@ -268,7 +270,6 @@ export const SelectInput = (props: SelectInputProps) => {
                         />
                     )
                 }
-                className={className}
                 clearAlwaysVisible
                 error={(isTouched || isSubmitted) && invalid}
                 helperText={

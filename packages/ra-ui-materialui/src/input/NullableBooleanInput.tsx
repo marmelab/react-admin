@@ -53,6 +53,12 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
         <StyledTextField
             id={id}
             {...field}
+            className={clsx(
+                'ra-input',
+                `ra-input-${source}`,
+                NullableBooleanInputClasses.input,
+                className
+            )}
             select
             margin={margin}
             label={
@@ -71,7 +77,6 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
                     helperText={helperText}
                 />
             }
-            className={clsx(NullableBooleanInputClasses.input, className)}
             variant={variant}
             {...sanitizeInputRestProps(rest)}
         >

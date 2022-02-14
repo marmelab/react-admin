@@ -10,6 +10,7 @@ import {
 import debounce from 'lodash/debounce';
 import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
+import clsx from 'clsx';
 import {
     Autocomplete,
     AutocompleteProps,
@@ -119,6 +120,7 @@ export const AutocompleteInput = <
 ) => {
     const {
         choices: choicesProp,
+        className,
         clearText = 'ra.action.clear_input_value',
         closeText = 'ra.action.close',
         create,
@@ -413,6 +415,7 @@ If you provided a React element for the optionText prop, you must also provide t
         <>
             <Autocomplete
                 blurOnSelect
+                className={clsx('ra-input', `ra-input-${source}`, className)}
                 clearText={translate(clearText, { _: clearText })}
                 closeText={translate(closeText, { _: closeText })}
                 openOnFocus

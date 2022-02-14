@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ReactElement, ReactNode, useEffect } from 'react';
+import clsx from 'clsx';
 import { useEditor, Editor, EditorOptions, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
@@ -67,6 +68,7 @@ import { RichTextInputToolbar } from './RichTextInputToolbar';
  */
 export const RichTextInput = (props: RichTextInputProps) => {
     const {
+        className,
         defaultValue = '',
         disabled = false,
         editorOptions = DefaultEditorOptions,
@@ -151,6 +153,7 @@ export const RichTextInput = (props: RichTextInputProps) => {
             fullWidth={fullWidth}
         >
             <RichTextInputContent
+                className={clsx('ra-input', `ra-input-${source}`, className)}
                 editor={editor}
                 error={error}
                 helperText={helperText}
@@ -169,6 +172,7 @@ export const RichTextInput = (props: RichTextInputProps) => {
  * and avoid warnings about unknown props on Root.
  */
 const RichTextInputContent = ({
+    className,
     editor,
     error,
     fullWidth,
@@ -179,7 +183,7 @@ const RichTextInputContent = ({
     invalid,
     toolbar,
 }: RichTextInputContentProps) => (
-    <Root>
+    <Root className={className}>
         <TiptapEditorProvider value={editor}>
             {toolbar}
             <EditorContent
@@ -260,6 +264,7 @@ export type RichTextInputProps = CommonInputProps &
     };
 
 export type RichTextInputContentProps = {
+    className?: string;
     editor?: Editor;
     error?: any;
     fullWidth?: boolean;

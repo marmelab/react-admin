@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import { useInput, FieldTitle } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -26,6 +27,7 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  */
 export const TextInput = (props: TextInputProps) => {
     const {
+        className,
         defaultValue = '',
         label,
         format,
@@ -60,6 +62,7 @@ export const TextInput = (props: TextInputProps) => {
         <ResettableTextField
             id={id}
             {...field}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
             label={
                 label !== '' &&
                 label !== false && (

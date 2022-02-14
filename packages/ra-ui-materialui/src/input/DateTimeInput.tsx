@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useInput, FieldTitle } from 'ra-core';
 
@@ -20,6 +21,7 @@ const parseDateTime = (value: string) => new Date(value);
  * Input component for entering a date and a time with timezone, using the browser locale
  */
 export const DateTimeInput = ({
+    className,
     defaultValue,
     format = formatDateTime,
     label,
@@ -53,6 +55,7 @@ export const DateTimeInput = ({
         <TextField
             id={id}
             {...field}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
             type="datetime-local"
             variant={variant}
             margin={margin}

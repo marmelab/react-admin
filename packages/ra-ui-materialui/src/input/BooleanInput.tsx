@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormGroup, { FormGroupProps } from '@mui/material/FormGroup';
@@ -57,7 +58,10 @@ export const BooleanInput = (props: BooleanInputProps) => {
     );
 
     return (
-        <FormGroup className={className} {...sanitizeInputRestProps(rest)}>
+        <FormGroup
+            className={clsx('ra-input', `ra-input-${source}`, className)}
+            {...sanitizeInputRestProps(rest)}
+        >
             <FormControlLabel
                 control={
                     <Switch

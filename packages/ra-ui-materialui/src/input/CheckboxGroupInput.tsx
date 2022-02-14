@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
+import clsx from 'clsx';
 import { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
@@ -170,7 +171,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                 label={label}
                 source={source}
                 resource={resource}
-                className={className}
+                className={clsx('ra-input', `ra-input-${source}`, className)}
                 isRequired={isRequired}
                 margin={margin}
                 {...rest}
@@ -185,7 +186,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
             component="fieldset"
             margin={margin}
             error={(isTouched || isSubmitted) && invalid}
-            className={className}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
             {...sanitizeRestProps(rest)}
         >
             <FormLabel
