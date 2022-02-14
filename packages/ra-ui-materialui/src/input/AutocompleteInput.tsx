@@ -121,7 +121,6 @@ export const AutocompleteInput = <
         choices: choicesProp,
         clearText = 'ra.action.clear_input_value',
         closeText = 'ra.action.close',
-        className,
         create,
         createLabel,
         createItemLabel,
