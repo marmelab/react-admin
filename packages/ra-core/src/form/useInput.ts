@@ -100,7 +100,7 @@ export const useInput = (props: InputProps): UseInputValue => {
             const eventOrValue = (typeof event[0]?.target?.checked ===
                 'boolean' && event[0]?.target?.value === 'on'
                 ? event[0].target.checked
-                : event[0]?.target?.value || event[0]) as any;
+                : event[0]?.target?.value ?? event[0]) as any;
             controllerField.onChange(
                 parse ? parse(eventOrValue) : eventOrValue
             );
