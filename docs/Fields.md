@@ -132,26 +132,6 @@ All Field components accept the following props:
 | [`emptyText`](#emptytext)     | Optional | `string`                       | ''       | Defines a text to be shown when a field has no value (not supported in array fields)                                                                    |
 | [`sx`](#sx)                   | Optional | `SxProps`                      | ''       | MUI shortcut for defining custom styles with access to the theme                                                                                        |
 
-## Adding a Label For Usage In Forms
-
-Defines the visibility of the label when the field is used in a form (`<SimpleForm>` or `<TabbedForm>`). It’s true for all react-admin Field components.
-
-If you create a custom Field component, and you want to use it in a form, wrap it inside a `<Labeled>` component:
-
-```jsx
-const MyCustomMyField = props => (
-    return (
-        <Labeled {...props}>
-            {/* ... */}
-        </Labeled>
-    )
-);
-```
-
-**Tip**: Ensure you pass the props (at least `label` and `source`) to ensure the label is properly set and to leverage the automatic label inference from the `source` when no label is provided.
-
-**Note**: This prop has no effect when rendering a field outside a Form.
-
 ## `className`
 
 CSS class name passed to the root component. 
@@ -479,11 +459,7 @@ export default TextField;
 
 ## Adding A Label To Custom Field Components
 
-When you use one of the react-admin `Field` components in an `Edit`, `Create` or `Show` view, react-admin includes a label on top of the field value, as in the following example:
-
-![field labels](./img/field-addlabel.png)
-
-For your custom fields, however, the label doesn't appear by default. You need to opt-in to this feature by wrapping your component inside a `<Labeled>` component:
+If you want to have a label for your custom fields in an `Edit`, `Create` or `Show` view, uou need to wrap your component inside a `<Labeled>` component:
 
 ```diff
 const FullNameField = (props) => {
@@ -497,6 +473,8 @@ const FullNameField = (props) => {
     );
 }
 ```
+
+![field labels](./img/field-addlabel.png)
 
 You can also leverage the default label resolution mechanism by providing the `resource` and `source` props instead of the `label`:
 
