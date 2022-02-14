@@ -293,7 +293,7 @@ To create a custom filter UI, we'll have to override the default List Toolbar co
 The new element can use [the `useListContext` hook](./useListContext.md) to interact with the list filter more easily. The hook returns the following constants:
 
 - `filterValues`: Value of the filters based on the URI, e.g. `{ "commentable": true, "q": "lorem" }`
-- `setFilters()`: Callback to set the filter values, e.g. `setFilters({ "commentable":true })`
+- `setFilters()`: Callback to set the filter values, e.g. `setFilters([{ field: "commentable", value: true }])`
 - `displayedFilters`: Names of the filters displayed in the form, e.g. `['commentable', 'title']`
 - `showFilter()`: Callback to display an additional filter in the form, e.g. `showFilter('views')`
 - `hideFilter()`: Callback to hide a filter in the form, e.g. `hideFilter('title')`
@@ -361,7 +361,7 @@ const PostFilterForm = () => {
   };
 
   const resetFilter = () => {
-    setFilters({}, []);
+    setFilters([], []);
   };
 
   return (

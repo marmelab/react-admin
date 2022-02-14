@@ -3,28 +3,47 @@ import removeEmpty from './removeEmpty';
 
 describe('removeEmpty', () => {
     it('should not remove any properties with no empty values', () => {
-        const obj = { foo: 'fooval', bar: 'barval' };
-        expect(removeEmpty({ ...obj })).toEqual(obj);
+        const obj = [
+            { field: 'foo', value: 'fooval' },
+            { field: 'bar', value: 'barval' },
+        ];
+        expect(removeEmpty(obj)).toEqual(obj);
     });
 
-    it('should remove the empty values with empty values', () => {
-        const input = { foo: '', bar: null };
-        expect(removeEmpty(input)).toEqual({});
+    it('should remove the empty values', () => {
+        const input = [
+            { field: 'foo', value: '' },
+            { field: 'bar', value: null },
+        ];
+        expect(removeEmpty(input)).toEqual([]);
     });
 
-    it('should remove whole empty object with a nested empty value', () => {
-        const input = { foo: 'val', bar: { baz: '' } };
-        expect(removeEmpty(input)).toEqual({ foo: 'val' });
+    it('should remove compound keys with an empty value', () => {
+        const input = [
+            { field: 'foo', value: 'val' },
+            { field: 'bar.baz', value: '' },
+        ];
+        expect(removeEmpty(input)).toEqual([{ field: 'foo', value: 'val' }]);
     });
 
     it('should remove nested undefined values', () => {
-        const input = { foo: 'val', bar: { baz: undefined } };
-        expect(removeEmpty(input)).toEqual({ foo: 'val' });
+        const input = [
+            { field: 'foo', value: 'val' },
+            { field: 'bar.baz', value: undefined },
+        ];
+        expect(removeEmpty(input)).toEqual([{ field: 'foo', value: 'val' }]);
     });
 
     it('should preserve dates', () => {
         const date = new Date();
-        const input = { foo: 'val', bar: { baz: '' }, date };
-        expect(removeEmpty(input)).toEqual({ foo: 'val', date });
+        const input = [
+            { field: 'foo', value: 'val' },
+            { field: 'bar.baz', value: '' },
+            { field: 'date', value: date },
+        ];
+        expect(removeEmpty(input)).toEqual([
+            { field: 'foo', value: 'val' },
+            { field: 'date', value: date },
+        ]);
     });
 });

@@ -120,10 +120,20 @@ export type DataProvider = {
     [key: string]: any;
 };
 
+export interface FilterItem {
+    field: string;
+    value: any;
+    operator?: string; // default: '='
+}
+
 export interface GetListParams {
-    pagination: PaginationPayload;
-    sort: SortPayload;
-    filter: any;
+    pagination?: PaginationPayload;
+    sort?: SortPayload;
+    /**
+     * @deprecated use filters instead
+     */
+    filter?: { [key: string]: string };
+    filters?: FilterItem[];
     meta?: any;
 }
 export interface GetListResult<RecordType extends RaRecord = any> {
@@ -154,9 +164,13 @@ export interface GetManyResult<RecordType extends RaRecord = any> {
 export interface GetManyReferenceParams {
     target: string;
     id: Identifier;
-    pagination: PaginationPayload;
-    sort: SortPayload;
-    filter: any;
+    pagination?: PaginationPayload;
+    sort?: SortPayload;
+    /**
+     * @deprecated use filters instead
+     */
+    filter?: { [key: string]: string };
+    filters?: FilterItem[];
     meta?: any;
 }
 export interface GetManyReferenceResult<RecordType extends RaRecord = any> {

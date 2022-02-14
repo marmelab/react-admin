@@ -18,7 +18,7 @@ import { ListControllerResult } from './useListController';
  * @prop {Function} setPerPage a callback to change the number of results per page, e.g. setPerPage(25)
  * @prop {Object}   sort a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
  * @prop {Function} setSort a callback to change the sort, e.g. setSort({ field: 'name', order: 'ASC' })
- * @prop {Object}   filterValues a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
+ * @prop {Object}   filters an array of filter values, e.g. [{ field: 'title', value: 'lorem' }, { field: 'nationality', value: 'fr' }]
  * @prop {Function} setFilters a callback to update the filters, e.g. setFilters(filters, displayedFilters)
  * @prop {Object}   displayedFilters a dictionary of the displayed filters, e.g. { title: true, nationality: true }
  * @prop {Function} showFilter a callback to show one of the filters, e.g. showFilter('title', defaultValue)
@@ -57,7 +57,7 @@ export const ListContext = createContext<ListControllerResult>({
     data: null,
     defaultTitle: null,
     displayedFilters: null,
-    filterValues: null,
+    filters: null,
     hasNextPage: null,
     hasPreviousPage: null,
     hideFilter: null,

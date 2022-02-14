@@ -65,6 +65,7 @@ describe('useReferenceInputController', () => {
             expect(dataProvider.getList).toBeCalledTimes(1);
         });
         expect(dataProvider.getList).toBeCalledWith('posts', {
+            filters: [],
             filter: {},
             meta: undefined,
             pagination: {
@@ -100,6 +101,7 @@ describe('useReferenceInputController', () => {
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
             expect(dataProvider.getList).toBeCalledWith('posts', {
+                filters: [],
                 filter: {},
                 meta: undefined,
                 pagination: {
@@ -171,8 +173,7 @@ describe('useReferenceInputController', () => {
                 selectedChoices: [{ id: 1, title: 'foo' }],
                 displayedFilters: {},
                 error: null,
-                filter: {},
-                filterValues: {},
+                filters: [],
                 isFetching: false,
                 isLoading: false,
                 page: 1,
@@ -222,6 +223,7 @@ describe('useReferenceInputController', () => {
         });
         expect(dataProvider.getList).toHaveBeenCalledWith('posts', {
             filter: {},
+            filters: [],
             meta: undefined,
             pagination: {
                 page: 1,
@@ -239,6 +241,7 @@ describe('useReferenceInputController', () => {
         });
         expect(dataProvider.getList).toHaveBeenCalledWith('posts', {
             filter: {},
+            filters: [],
             meta: undefined,
             pagination: {
                 page: 1,
@@ -254,9 +257,13 @@ describe('useReferenceInputController', () => {
     describe('enableGetChoices', () => {
         it('should not fetch possible values using getList on load but only when enableGetChoices returns true', async () => {
             const children = jest.fn().mockReturnValue(<p>child</p>);
-            const enableGetChoices = jest.fn().mockImplementation(({ q }) => {
-                return !!q && q.length > 2;
-            });
+            const enableGetChoices = jest
+                .fn()
+                .mockImplementation(
+                    filters =>
+                        filters.find(filter => filter.field === 'q')?.value
+                            .length > 2
+                );
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
                     <Form
@@ -276,18 +283,18 @@ describe('useReferenceInputController', () => {
             // not call on start
             await waitFor(() => {
                 expect(dataProvider.getList).toBeCalledTimes(0);
-                expect(enableGetChoices).toHaveBeenCalledWith({});
+                expect(enableGetChoices).toHaveBeenCalledWith([]);
             });
 
             const { setFilters } = children.mock.calls[0][0];
-            setFilters({ q: 'hello world' });
+            setFilters([{ field: 'q', value: 'hello world' }]);
 
             await waitFor(() => {
                 expect(dataProvider.getList).toBeCalledTimes(1);
             });
-            expect(enableGetChoices).toHaveBeenCalledWith({
-                q: 'hello world',
-            });
+            expect(enableGetChoices).toHaveBeenCalledWith([
+                { field: 'q', value: 'hello world' },
+            ]);
         });
 
         it('should fetch current value using getMany even if enableGetChoices is returning false', async () => {

@@ -107,7 +107,9 @@ describe('useReferenceManyFieldController', () => {
                     target: 'author_id',
                     pagination: { page: 1, perPage: 25 },
                     sort: { field: 'id', order: 'DESC' },
+                    filters: [],
                     filter: {},
+                    meta: undefined,
                 }
             );
         });
@@ -227,7 +229,9 @@ describe('useReferenceManyFieldController', () => {
                     target: 'author_id',
                     pagination: { page: 1, perPage: 25 },
                     sort: { field: 'id', order: 'DESC' },
+                    filters: [],
                     filter: {},
+                    meta: undefined,
                 }
             );
         });
@@ -266,7 +270,9 @@ describe('useReferenceManyFieldController', () => {
                     target: 'author_id',
                     pagination: { page: 1, perPage: 25 },
                     sort: { field: 'id', order: 'ASC' },
+                    filters: [],
                     filter: {},
+                    meta: undefined,
                 }
             );
         });

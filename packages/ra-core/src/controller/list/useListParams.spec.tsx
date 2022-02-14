@@ -20,18 +20,16 @@ describe('useListParams', () => {
                     perPage: 15,
                     sort: 'name',
                     order: SORT_ASC,
-                    filter: { name: 'marmelab' },
+                    filters: [{ field: 'name', value: 'marmelab' }],
                 },
-                params: {
+                savedParams: {
                     page: 1,
                     perPage: 10,
                     sort: 'city',
                     order: SORT_DESC,
-                    filter: {
-                        city: 'Dijon',
-                    },
+                    filters: [{ field: 'city', value: 'Dijon' }],
                 },
-                filterDefaultValues: {},
+                filterDefaultValues: [],
                 perPage: 50,
                 sort: {
                     field: 'company',
@@ -44,26 +42,22 @@ describe('useListParams', () => {
                 perPage: 15,
                 sort: 'name',
                 order: SORT_ASC,
-                filter: {
-                    name: 'marmelab',
-                },
+                filters: [{ field: 'name', value: 'marmelab' }],
             });
         });
         it('Extends the values from the location with those from the props', () => {
             const query = getQuery({
                 queryFromLocation: {
-                    filter: { name: 'marmelab' },
+                    filters: [{ field: 'name', value: 'marmelab' }],
                 },
-                params: {
+                savedParams: {
                     page: 1,
                     perPage: 10,
                     sort: 'city',
                     order: SORT_DESC,
-                    filter: {
-                        city: 'Dijon',
-                    },
+                    filters: [{ field: 'city', value: 'Dijon' }],
                 },
-                filterDefaultValues: {},
+                filterDefaultValues: [],
                 perPage: 50,
                 sort: {
                     field: 'company',
@@ -76,24 +70,20 @@ describe('useListParams', () => {
                 perPage: 50,
                 sort: 'company',
                 order: SORT_DESC,
-                filter: {
-                    name: 'marmelab',
-                },
+                filters: [{ field: 'name', value: 'marmelab' }],
             });
         });
-        it('Sets the values from the store if location does not have them', () => {
+        it('Uses the values from the store if location does not have them', () => {
             const query = getQuery({
                 queryFromLocation: {},
-                params: {
+                savedParams: {
                     page: 2,
                     perPage: 10,
                     sort: 'city',
                     order: SORT_DESC,
-                    filter: {
-                        city: 'Dijon',
-                    },
+                    filters: [{ field: 'city', value: 'Dijon' }],
                 },
-                filterDefaultValues: {},
+                filterDefaultValues: [],
                 perPage: 50,
                 sort: {
                     field: 'company',
@@ -106,23 +96,19 @@ describe('useListParams', () => {
                 perPage: 10,
                 sort: 'city',
                 order: SORT_DESC,
-                filter: {
-                    city: 'Dijon',
-                },
+                filters: [{ field: 'city', value: 'Dijon' }],
             });
         });
         it('Extends the values from the store with those from the props', () => {
             const query = getQuery({
                 queryFromLocation: {},
-                params: {
+                savedParams: {
                     page: 2,
                     sort: 'city',
                     order: SORT_DESC,
-                    filter: {
-                        city: 'Dijon',
-                    },
+                    filters: [{ field: 'city', value: 'Dijon' }],
                 },
-                filterDefaultValues: {},
+                filterDefaultValues: [],
                 perPage: 50,
                 sort: {
                     field: 'company',
@@ -135,16 +121,14 @@ describe('useListParams', () => {
                 perPage: 50,
                 sort: 'city',
                 order: SORT_DESC,
-                filter: {
-                    city: 'Dijon',
-                },
+                filters: [{ field: 'city', value: 'Dijon' }],
             });
         });
         it('Uses the filterDefaultValues if neither the location or the store have them', () => {
             const query = getQuery({
                 queryFromLocation: {},
-                params: {},
-                filterDefaultValues: { city: 'Nancy' },
+                savedParams: {},
+                filterDefaultValues: [{ field: 'city', value: 'Nancy' }],
                 perPage: 50,
                 sort: {
                     field: 'company',
@@ -157,9 +141,7 @@ describe('useListParams', () => {
                 perPage: 50,
                 sort: 'company',
                 order: SORT_DESC,
-                filter: {
-                    city: 'Nancy',
-                },
+                filters: [{ field: 'city', value: 'Nancy' }],
             });
         });
     });
@@ -217,7 +199,9 @@ describe('useListParams', () => {
                             '?' +
                             stringify({
                                 displayedFilters: JSON.stringify({ foo: true }),
-                                filter: JSON.stringify({ foo: 'bar' }),
+                                filters: JSON.stringify([
+                                    { field: 'foo', value: 'bar' },
+                                ]),
                                 sort: 'id',
                                 order: 'ASC',
                                 page: 1,
@@ -256,7 +240,9 @@ describe('useListParams', () => {
                             '?' +
                             stringify({
                                 displayedFilters: JSON.stringify({ foo: true }),
-                                filter: JSON.stringify({ foo: 'bar' }),
+                                filters: JSON.stringify([
+                                    { field: 'foo', value: 'bar' },
+                                ]),
                                 sort: 'id',
                                 order: 'ASC',
                                 page: 1,
@@ -298,7 +284,9 @@ describe('useListParams', () => {
                                 displayedFilters: JSON.stringify({
                                     'foo.bar': true,
                                 }),
-                                filter: JSON.stringify({ foo: { bar: 'baz' } }),
+                                filters: JSON.stringify([
+                                    { field: 'foo.bar', value: 'baz' },
+                                ]),
                                 sort: 'id',
                                 order: 'ASC',
                                 page: 1,
@@ -340,7 +328,9 @@ describe('useListParams', () => {
                                 displayedFilters: JSON.stringify({
                                     'foo.bar': true,
                                 }),
-                                filter: JSON.stringify({ foo: { bar: 'baz' } }),
+                                filters: JSON.stringify([
+                                    { field: 'foo.bar', value: 'baz' },
+                                ]),
                                 sort: 'id',
                                 order: 'ASC',
                                 page: 1,
@@ -397,7 +387,7 @@ describe('useListParams', () => {
                 order: 'ASC',
                 page: 10,
                 perPage: 10,
-                filter: {},
+                filters: [],
             });
         });
 

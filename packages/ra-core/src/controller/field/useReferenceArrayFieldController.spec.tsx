@@ -9,10 +9,7 @@ import { CoreAdminContext } from '../../core';
 const ReferenceArrayFieldController = props => {
     const { children, ...rest } = props;
     const controllerProps = useReferenceArrayFieldController({
-        sort: {
-            field: 'id',
-            order: 'ASC',
-        },
+        sort: { field: 'id', order: 'ASC' },
         ...rest,
     });
     return children(controllerProps);
@@ -60,7 +57,7 @@ describe('<useReferenceArrayFieldController />', () => {
         );
     });
 
-    it('should call dataProvider.getMAny on mount and return the result in the data prop', async () => {
+    it('should call dataProvider.getMany on mount and return the result in the data prop', async () => {
         const children = jest.fn().mockReturnValue('child');
         render(
             <CoreAdminContext dataProvider={dataProvider}>
@@ -99,25 +96,23 @@ describe('<useReferenceArrayFieldController />', () => {
                     resource="foo"
                     reference="bar"
                     record={{ id: 1, barIds: [1, 2] }}
-                    filter={{ title: 'bar1' }}
+                    filter={[{ field: 'title', value: 'bar1' }]}
                     source="barIds"
                 >
                     {children}
                 </ReferenceArrayFieldController>
             </CoreAdminContext>
         );
-        await waitFor(() =>
-            expect(dataProvider.getMany).toHaveBeenCalledTimes(1)
-        );
-        expect(children).toHaveBeenCalledWith(
-            expect.objectContaining({
-                sort: { field: 'id', order: 'ASC' },
-                isFetching: false,
-                isLoading: false,
-                data: [{ id: 1, title: 'bar1' }],
-                error: null,
-            })
-        );
+        await waitFor(() => {
+            expect(children).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    isFetching: false,
+                    isLoading: false,
+                    data: [{ id: 1, title: 'bar1' }],
+                    error: null,
+                })
+            );
+        });
     });
 
     it('should filter array data based on the filter props', async () => {
@@ -138,7 +133,9 @@ describe('<useReferenceArrayFieldController />', () => {
                     resource="foo"
                     reference="bar"
                     record={{ id: 1, barIds: [1, 2, 3, 4] }}
-                    filter={{ items: ['two', 'four', 'five'] }}
+                    filter={[
+                        { field: 'items', value: ['two', 'four', 'five'] },
+                    ]}
                     source="barIds"
                 >
                     {children}

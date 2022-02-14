@@ -39,7 +39,7 @@ import { ListControllerResult } from './useListController';
  */
 export const ListFilterContext = createContext<ListFilterContextValue>({
     displayedFilters: null,
-    filterValues: null,
+    filters: null,
     hideFilter: null,
     setFilters: null,
     showFilter: null,
@@ -49,7 +49,7 @@ export const ListFilterContext = createContext<ListFilterContextValue>({
 export type ListFilterContextValue = Pick<
     ListControllerResult,
     | 'displayedFilters'
-    | 'filterValues'
+    | 'filters'
     | 'hideFilter'
     | 'setFilters'
     | 'showFilter'
@@ -63,7 +63,7 @@ export const usePickFilterContext = (
         () =>
             pick(context, [
                 'displayedFilters',
-                'filterValues',
+                'filters',
                 'hideFilter',
                 'setFilters',
                 'showFilter',
@@ -72,7 +72,7 @@ export const usePickFilterContext = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [
             context.displayedFilters,
-            context.filterValues,
+            context.filters,
             context.hideFilter,
             context.setFilters,
             context.showFilter,

@@ -1,12 +1,15 @@
 import get from 'lodash/get';
 
-import { RaRecord, SortPayload } from '../../types';
+import { FilterItem, RaRecord, SortPayload } from '../../types';
 import { useGetManyAggregate } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';
 import { useNotify } from '../../notification';
+import { convertFiltersToFilterItems } from '../list/convertFiltersToFilterItems';
 
 export interface UseReferenceArrayFieldControllerParams {
-    filter?: any;
+    // permanent filter
+    filter?: FilterItem[];
+    filterDefaultValues?: FilterItem[];
     page?: number;
     perPage?: number;
     record?: RaRecord;
@@ -17,7 +20,7 @@ export interface UseReferenceArrayFieldControllerParams {
 }
 
 const emptyArray = [];
-const defaultFilter = {};
+const defaultFilter = [];
 const defaultSort = { field: null, order: null };
 
 /**
@@ -48,6 +51,7 @@ export const useReferenceArrayFieldController = (
 ): ListControllerResult => {
     const {
         filter = defaultFilter,
+        filterDefaultValues = defaultFilter,
         page = 1,
         perPage = 1000,
         record,
@@ -84,7 +88,8 @@ export const useReferenceArrayFieldController = (
     const listProps = useList({
         data,
         error,
-        filter,
+        filter: convertFiltersToFilterItems(filter),
+        filterDefaultValues,
         isFetching,
         isLoading,
         page,

@@ -48,7 +48,17 @@ export default (
         const query = {
             sort: JSON.stringify([field, order]),
             range: JSON.stringify([rangeStart, rangeEnd]),
-            filter: JSON.stringify(params.filter),
+            filter: JSON.stringify(
+                params.filters.reduce((acc, curr) => {
+                    acc[
+                        typeof curr.operator === 'undefined' ||
+                        curr.operator === '='
+                            ? curr.field
+                            : `${curr.field}_${curr.operator}`
+                    ] = curr.value;
+                    return acc;
+                }, {})
+            ),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
         const options =
@@ -103,10 +113,19 @@ export default (
         const query = {
             sort: JSON.stringify([field, order]),
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
-            filter: JSON.stringify({
-                ...params.filter,
-                [params.target]: params.id,
-            }),
+            filter: JSON.stringify(
+                params.filters
+                    .concat({ field: params.target, value: params.id })
+                    .reduce((acc, curr) => {
+                        acc[
+                            typeof curr.operator === 'undefined' ||
+                            curr.operator === '='
+                                ? curr.field
+                                : `${curr.field}_${curr.operator}`
+                        ] = curr.value;
+                        return acc;
+                    }, {})
+            ),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
         const options =

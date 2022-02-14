@@ -49,7 +49,7 @@ export const useReferenceOneFieldController = (
             id: get(record, source),
             pagination: { page: 1, perPage: 1 },
             sort: { field: 'id', order: 'ASC' },
-            filter: {},
+            filters: [],
         },
         {
             enabled: !!record,

@@ -35,7 +35,7 @@ import { useDataProvider } from './useDataProvider';
  * @prop params.id The identifier of the record to look for in target, e.g. '123'
  * @prop params.pagination The request pagination { page, perPage }, e.g. { page: 1, perPage: 10 }
  * @prop params.sort The request sort { field, order }, e.g. { field: 'id', order: 'DESC' }
- * @prop params.filter The request filters, e.g. { title: 'hello, world' }
+ * @prop params.filters The request filters, e.g. [{ field: 'title', value: 'hello, world' }]
  * @prop params.meta Optional meta parameters
  *
  *
@@ -68,11 +68,15 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
         id,
         pagination = { page: 1, perPage: 25 },
         sort = { field: 'id', order: 'DESC' },
-        filter = {},
+        filters = [],
         meta,
     } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
+    const filterObject = filters.reduce((acc, curr) => {
+        acc[curr.field] = curr.value;
+        return acc;
+    }, {});
     const result = useQuery<
         GetManyReferenceResult<RecordType>,
         Error,
@@ -81,7 +85,7 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
         [
             resource,
             'getManyReference',
-            { target, id, pagination, sort, filter, meta },
+            { target, id, pagination, sort, filters, meta },
         ],
         () =>
             dataProvider
@@ -90,7 +94,9 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
                     id,
                     pagination,
                     sort,
-                    filter,
+                    filters,
+                    // FIXME: remove in V5
+                    filter: filterObject,
                     meta,
                 })
                 .then(({ data, total, pageInfo }) => ({

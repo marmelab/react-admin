@@ -29,7 +29,7 @@ import { useDataProvider } from './useDataProvider';
  * @typedef Params
  * @prop params.pagination The request pagination { page, perPage }, e.g. { page: 1, perPage: 10 }
  * @prop params.sort The request sort { field, order }, e.g. { field: 'id', order: 'DESC' }
- * @prop params.filter The request filters, e.g. { title: 'hello, world' }
+ * @prop params.filters The request filters, e.g. [{ field: 'title', value: 'hello, world' }]
  * @prop params.meta Optional meta parameters
  *
  * @returns The current request state. Destructure as { data, total, error, isLoading, refetch }.
@@ -52,29 +52,35 @@ import { useDataProvider } from './useDataProvider';
  */
 export const useGetList = <RecordType extends RaRecord = any>(
     resource: string,
-    params: Partial<GetListParams> = {},
+    params: Partial<Omit<GetListParams, 'filter'>> = {},
     options?: UseQueryOptions<GetListResult<RecordType>, Error>
 ): UseGetListHookValue<RecordType> => {
     const {
         pagination = { page: 1, perPage: 25 },
         sort = { field: 'id', order: 'DESC' },
-        filter = {},
+        filters = [],
         meta,
     } = params;
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
+    const filterObject = filters.reduce((acc, curr) => {
+        acc[curr.field] = curr.value;
+        return acc;
+    }, {});
     const result = useQuery<
         GetListResult<RecordType>,
         Error,
         GetListResult<RecordType>
     >(
-        [resource, 'getList', { pagination, sort, filter, meta }],
+        [resource, 'getList', { pagination, sort, filters, meta }],
         () =>
             dataProvider
                 .getList<RecordType>(resource, {
                     pagination,
                     sort,
-                    filter,
+                    filters,
+                    // FIXME: remove in V5
+                    filter: filterObject,
                     meta,
                 })
                 .then(({ data, total, pageInfo }) => ({

@@ -11,12 +11,22 @@ export const OnlyMineInput = ({ alwaysOn }: { alwaysOn: boolean }) => {
     const { identity } = useGetIdentity();
 
     const handleChange = () => {
-        const newFilterValues = { ...filterValues };
-        if (typeof filterValues.sales_id !== 'undefined') {
-            delete newFilterValues.sales_id;
-        } else {
-            newFilterValues.sales_id = identity && identity?.id;
-        }
+        const index = filterValues.findIndex(
+            filter => filter.field === 'sales_id'
+        );
+        const newFilterValues =
+            index !== -1
+                ? filterValues
+                      .slice(0, index)
+                      .concat(filterValues.slice(index + 1))
+                : [
+                      ...filterValues,
+                      {
+                          field: 'sales_id',
+                          value: identity && identity?.id,
+                      },
+                  ];
+
         setFilters(newFilterValues, displayedFilters);
     };
     return (

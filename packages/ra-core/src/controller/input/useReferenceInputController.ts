@@ -1,10 +1,12 @@
 import { useCallback, useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
+
 import { useGetList } from '../../dataProvider';
-import { FilterPayload, RaRecord, SortPayload } from '../../types';
+import { FilterItem, FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useReference } from '../useReference';
 import { ChoicesContextValue } from '../../form';
 import { useReferenceParams } from './useReferenceParams';
+import { convertFiltersToFilterItems } from '../list/convertFiltersToFilterItems';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
@@ -51,6 +53,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         debounce,
         enableGetChoices,
         filter,
+        filterDefaultValues,
         page: initialPage = 1,
         perPage: initialPerPage = 25,
         reference,
@@ -64,13 +67,14 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         perPage: initialPerPage,
         sort: initialSort,
         debounce,
+        filterDefaultValues,
     });
 
     // selection logic
     const currentValue = useWatch({ name: source });
 
     const isGetMatchingEnabled = enableGetChoices
-        ? enableGetChoices(params.filterValues)
+        ? enableGetChoices(params.filters)
         : true;
 
     // fetch possible values
@@ -90,11 +94,12 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
                 perPage: params.perPage,
             },
             sort: { field: params.sort, order: params.order },
-            filter: { ...params.filter, ...filter },
+            filters: [
+                ...params.filters,
+                ...convertFiltersToFilterItems(filter),
+            ],
         },
-        {
-            enabled: isGetMatchingEnabled,
-        }
+        { enabled: isGetMatchingEnabled }
     );
 
     // fetch current value
@@ -140,8 +145,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         selectedChoices: [referenceRecord],
         displayedFilters: params.displayedFilters,
         error: referenceError || possibleValuesError,
-        filter: params.filter,
-        filterValues: params.filterValues,
+        filters: params.filters,
         hideFilter: paramsModifiers.hideFilter,
         isFetching: referenceFetching || possibleValuesFetching,
         isLoading: referenceLoading || possibleValuesLoading,
@@ -167,7 +171,8 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
 
 export interface UseReferenceInputControllerParams {
     debounce?: number;
-    filter?: FilterPayload;
+    filter?: FilterItem[] | FilterPayload;
+    filterDefaultValues?: FilterItem[];
     page?: number;
     perPage?: number;
     record?: RaRecord;

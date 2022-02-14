@@ -1,10 +1,11 @@
 import { useCallback, useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 
-import { FilterPayload, RaRecord, SortPayload } from '../../types';
+import { FilterItem, FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useGetList, useGetManyAggregate } from '../../dataProvider';
 import { useReferenceParams } from './useReferenceParams';
 import { ChoicesContextValue } from '../../form';
+import { convertFiltersToFilterItems } from '../list/convertFiltersToFilterItems';
 
 /**
  * Prepare data for the ReferenceArrayInput components
@@ -37,6 +38,7 @@ export const useReferenceArrayInputController = <
         debounce,
         enableGetChoices,
         filter,
+        filterDefaultValues,
         perPage: initialPerPage = 25,
         sort: initialSort = { field: 'id', order: 'DESC' },
         options = {},
@@ -56,12 +58,8 @@ export const useReferenceArrayInputController = <
         refetch: refetchGetMany,
     } = useGetManyAggregate<RecordType>(
         reference,
-        {
-            ids: value || EmptyArray,
-        },
-        {
-            enabled: value != null && value.length > 0,
-        }
+        { ids: value || emptyArray },
+        { enabled: value != null && value.length > 0 }
     );
 
     const [params, paramsModifiers] = useReferenceParams({
@@ -69,7 +67,7 @@ export const useReferenceArrayInputController = <
         perPage: initialPerPage,
         sort: initialSort,
         debounce,
-        filter,
+        filterDefaultValues,
     });
 
     // filter out not found references - happens when the dataProvider doesn't guarantee referential integrity
@@ -78,7 +76,7 @@ export const useReferenceArrayInputController = <
         : [];
 
     const isGetMatchingEnabled = enableGetChoices
-        ? enableGetChoices(params.filterValues)
+        ? enableGetChoices(params.filters)
         : true;
 
     const {
@@ -97,7 +95,10 @@ export const useReferenceArrayInputController = <
                 perPage: params.perPage,
             },
             sort: { field: params.sort, order: params.order },
-            filter: { ...params.filter, ...filter },
+            filters: [
+                ...params.filters,
+                ...convertFiltersToFilterItems(filter),
+            ],
         },
         { retry: false, enabled: isGetMatchingEnabled, ...options }
     );
@@ -130,8 +131,7 @@ export const useReferenceArrayInputController = <
         selectedChoices: finalReferenceRecords,
         displayedFilters: params.displayedFilters,
         error: errorGetMany || errorGetList,
-        filter,
-        filterValues: params.filterValues,
+        filters: params.filters,
         hideFilter: paramsModifiers.hideFilter,
         isFetching: isFetchingGetMany || isFetchingGetList,
         isLoading: isLoadingGetMany || isLoadingGetList,
@@ -155,7 +155,7 @@ export const useReferenceArrayInputController = <
     };
 };
 
-const EmptyArray = [];
+const emptyArray = [];
 
 // concatenate and deduplicate two lists of records
 const mergeReferences = <RecordType extends RaRecord = any>(
@@ -177,7 +177,9 @@ export interface UseReferenceArrayInputParams<
     RecordType extends RaRecord = any
 > {
     debounce?: number;
-    filter?: FilterPayload;
+    // permanent filter
+    filter?: FilterItem[] | FilterPayload;
+    filterDefaultValues?: FilterItem[];
     options?: any;
     page?: number;
     perPage?: number;
@@ -186,5 +188,5 @@ export interface UseReferenceArrayInputParams<
     resource?: string;
     sort?: SortPayload;
     source: string;
-    enableGetChoices?: (filters: any) => boolean;
+    enableGetChoices?: (filters: FilterItem[]) => boolean;
 }

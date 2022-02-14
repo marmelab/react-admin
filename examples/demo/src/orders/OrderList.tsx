@@ -124,11 +124,24 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
 
     const handleChange = useCallback(
         (event: React.ChangeEvent<{}>, value: any) => {
-            setFilters &&
-                setFilters(
-                    { ...filterValues, status: value },
-                    displayedFilters
-                );
+            const index = filterValues.findIndex(
+                filter => filter.field === 'status'
+            );
+            const newFilterValues =
+                index !== -1
+                    ? filterValues.map(filter =>
+                          filter.field === 'status'
+                              ? { field: 'status', value }
+                              : filter
+                      )
+                    : [
+                          ...filterValues,
+                          {
+                              field: 'status',
+                              value,
+                          },
+                      ];
+            setFilters && setFilters(newFilterValues, displayedFilters);
         },
         [displayedFilters, filterValues, setFilters]
     );

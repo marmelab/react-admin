@@ -6,7 +6,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import { useStore } from '../../store';
 import queryReducer, {
-    SET_FILTER,
+    SET_FILTERS,
     HIDE_FILTER,
     SHOW_FILTER,
     SET_PAGE,
@@ -14,16 +14,17 @@ import queryReducer, {
     SET_SORT,
     SORT_ASC,
 } from './queryReducer';
-import { SortPayload, FilterPayload } from '../../types';
+import { SortPayload, FilterItem } from '../../types';
 import removeEmpty from '../../util/removeEmpty';
+import { convertFiltersToFilterItems } from './convertFiltersToFilterItems';
 
 export interface ListParams {
     sort: string;
     order: string;
     page: number;
     perPage: number;
-    filter: any;
-    displayedFilters: any;
+    filters: FilterItem[];
+    displayedFilters: { [key: string]: boolean };
 }
 
 /**
@@ -36,7 +37,7 @@ export interface ListParams {
  *
  * @returns {Array} A tuple [parameters, modifiers].
  * Destructure as [
- *    { page, perPage, sort, order, filter, filterValues, displayedFilters, requestSignature },
+ *    { page, perPage, sort, order, filters, displayedFilters, requestSignature },
  *    { setFilters, hideFilter, showFilter, setPage, setPerPage, setSort }
  * ]
  *
@@ -60,8 +61,7 @@ export interface ListParams {
  *      perPage,
  *      sort,
  *      order,
- *      filter,
- *      filterValues,
+ *      filters,
  *      displayedFilters,
  *      requestSignature
  * } = listParams;
@@ -85,15 +85,16 @@ export const useListParams = ({
 }: ListParamsOptions): [Parameters, Modifiers] => {
     const location = useLocation();
     const navigate = useNavigate();
-    const [localParams, setLocalParams] = useState(defaultParams);
-    const storeKey = `${resource}.listParams`;
-    const [params, setParams] = useStore(storeKey, defaultParams);
-    const tempParams = useRef<ListParams>();
+    const [localParams, setLocalParams] = useState<Partial<ListParams>>();
+    const [storeParams, setStoreParams] = useStore<Partial<ListParams>>(
+        `${resource}.listParams`
+    );
+    const tempParams = useRef<Partial<ListParams>>();
 
     const requestSignature = [
         location.search,
         resource,
-        JSON.stringify(disableSyncWithLocation ? localParams : params),
+        JSON.stringify(disableSyncWithLocation ? localParams : storeParams),
         JSON.stringify(filterDefaultValues),
         JSON.stringify(sort),
         perPage,
@@ -108,7 +109,9 @@ export const useListParams = ({
         () =>
             getQuery({
                 queryFromLocation,
-                params: disableSyncWithLocation ? localParams : params,
+                savedParams: disableSyncWithLocation
+                    ? localParams
+                    : storeParams,
                 filterDefaultValues,
                 sort,
                 perPage,
@@ -122,7 +125,7 @@ export const useListParams = ({
     // to the list
     useEffect(() => {
         if (Object.keys(queryFromLocation).length > 0) {
-            setParams(query);
+            setStoreParams(query);
         }
     }, [location.search]); // eslint-disable-line
 
@@ -140,8 +143,8 @@ export const useListParams = ({
                         {
                             search: `?${stringify({
                                 ...tempParams.current,
-                                filter: JSON.stringify(
-                                    tempParams.current.filter
+                                filters: JSON.stringify(
+                                    tempParams.current.filters
                                 ),
                                 displayedFilters: JSON.stringify(
                                     tempParams.current.displayedFilters
@@ -181,27 +184,34 @@ export const useListParams = ({
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
-    const filterValues = query.filter || emptyObject;
-    const displayedFilterValues = query.displayedFilters || emptyObject;
-
-    const debouncedSetFilters = lodashDebounce((filter, displayedFilters) => {
-        changeParams({
-            type: SET_FILTER,
-            payload: {
-                filter: removeEmpty(filter),
-                displayedFilters,
-            },
-        });
-    }, debounce);
+    const debouncedSetFilters = lodashDebounce(
+        (
+            filters: FilterItem[],
+            displayedFilters: { [key: string]: boolean }
+        ) => {
+            changeParams({
+                type: SET_FILTERS,
+                payload: {
+                    filters: removeEmpty(filters),
+                    displayedFilters,
+                },
+            });
+        },
+        debounce
+    );
 
     const setFilters = useCallback(
-        (filter, displayedFilters, debounce = true) =>
+        (
+            filters: FilterItem[],
+            displayedFilters: { [key: string]: boolean },
+            debounce = true
+        ) =>
             debounce
-                ? debouncedSetFilters(filter, displayedFilters)
+                ? debouncedSetFilters(filters, displayedFilters)
                 : changeParams({
-                      type: SET_FILTER,
+                      type: SET_FILTERS,
                       payload: {
-                          filter: removeEmpty(filter),
+                          filters: removeEmpty(filters),
                           displayedFilters,
                       },
                   }),
@@ -227,8 +237,8 @@ export const useListParams = ({
 
     return [
         {
-            displayedFilters: displayedFilterValues,
-            filterValues,
+            filters: query.filters || emptyArray,
+            displayedFilters: query.displayedFilters || emptyObject,
             requestSignature,
             ...query,
         },
@@ -249,6 +259,8 @@ export const validQueryParams = [
     'perPage',
     'sort',
     'order',
+    'filters',
+    // @FIXME: remove in v5
     'filter',
     'displayedFilters',
 ];
@@ -268,8 +280,17 @@ export const parseQueryFromLocation = ({ search }): Partial<ListParams> => {
         parse(search),
         (v, k) => validQueryParams.indexOf(k) !== -1
     );
-    parseObject(query, 'filter');
+    parseObject(query, 'filters');
     parseObject(query, 'displayedFilters');
+    // @FIXME: remove in v5
+    // support for old filter syntax filter={foo: 'bar'} instead of filters={[{ key: 'foo', value: 'bar' }]}
+    if (!query.filters && query.filter && typeof query.filter === 'string') {
+        try {
+            const filterObject = JSON.parse(query.filter);
+            query.filters = convertFiltersToFilterItems(filterObject);
+        } catch (err) {}
+        delete query.filter;
+    }
     return query;
 };
 
@@ -279,20 +300,19 @@ export const parseQueryFromLocation = ({ search }): Partial<ListParams> => {
  * User params come from the store as the params props. By default,
  * this object is:
  *
- * { filter: {}, order: null, page: 1, perPage: null, sort: null }
+ * { filters: [], order: null, page: 1, perPage: null, sort: null }
  *
  * To check if the user has custom params, we must compare the params
  * to these initial values.
  *
  * @param {Object} params
  */
-export const hasCustomParams = (params: ListParams) => {
+export const hasCustomParams = (params: Partial<ListParams>) => {
     return (
         params &&
-        params.filter &&
-        (Object.keys(params.filter).length > 0 ||
+        ((params.filters && params.filters.length > 0) ||
             params.order != null ||
-            params.page !== 1 ||
+            (params.page && params.page !== 1) ||
             params.perPage != null ||
             params.sort != null)
     );
@@ -306,17 +326,23 @@ export const hasCustomParams = (params: ListParams) => {
  */
 export const getQuery = ({
     queryFromLocation,
-    params,
+    savedParams,
     filterDefaultValues,
     sort,
     perPage,
-}) => {
+}: {
+    queryFromLocation: Partial<ListParams>;
+    savedParams?: Partial<ListParams>;
+    filterDefaultValues?: FilterItem[];
+    sort: SortPayload;
+    perPage: number;
+}): ListParams => {
     const query: Partial<ListParams> =
         Object.keys(queryFromLocation).length > 0
             ? queryFromLocation
-            : hasCustomParams(params)
-            ? { ...params }
-            : { filter: filterDefaultValues || {} };
+            : hasCustomParams(savedParams)
+            ? { ...savedParams }
+            : { filters: filterDefaultValues || [] };
 
     if (!query.sort) {
         query.sort = sort.field;
@@ -353,7 +379,7 @@ export interface ListParamsOptions {
     perPage?: number;
     sort?: SortPayload;
     // default value for a filter when displayed but not yet set
-    filterDefaultValues?: FilterPayload;
+    filterDefaultValues?: FilterItem[];
     debounce?: number;
     // Whether to disable the synchronization of the list parameters with
     // the current location (URL search parameters)
@@ -361,10 +387,6 @@ export interface ListParamsOptions {
 }
 
 interface Parameters extends ListParams {
-    filterValues: object;
-    displayedFilters: {
-        [key: string]: boolean;
-    };
     requestSignature: any[];
 }
 
@@ -373,16 +395,18 @@ interface Modifiers {
     setPage: (page: number) => void;
     setPerPage: (pageSize: number) => void;
     setSort: (sort: SortPayload) => void;
-    setFilters: (filters: any, displayedFilters: any) => void;
+    setFilters: (
+        filters: FilterItem[],
+        displayedFilters: { [key: string]: boolean }
+    ) => void;
     hideFilter: (filterName: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
 }
 
 const emptyObject = {};
+const emptyArray = [];
 
 const defaultSort = {
     field: 'id',
     order: SORT_ASC,
 };
-
-const defaultParams = {};

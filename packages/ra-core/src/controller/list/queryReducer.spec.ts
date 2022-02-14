@@ -14,67 +14,69 @@ describe('Query Reducer', () => {
             expect(updatedState.page).toEqual(2);
         });
         it('should not update the filter', () => {
-            const initialFilter = {};
+            const initialFilter = [];
             const updatedState = queryReducer(
-                {
-                    filter: initialFilter,
-                    page: 1,
-                },
+                { filters: initialFilter, page: 1 },
                 {
                     type: 'SET_PAGE',
                     payload: 2,
                 }
             );
-            expect(updatedState.filter).toEqual(initialFilter);
+            expect(updatedState.filters).toEqual(initialFilter);
         });
     });
-    describe('SET_FILTER action', () => {
+    describe('SET_FILTERS action', () => {
         it('should add new filter with given value when set', () => {
             const updatedState = queryReducer(
                 {},
                 {
-                    type: 'SET_FILTER',
-                    payload: { filter: { title: 'foo' } },
+                    type: 'SET_FILTERS',
+                    payload: { filters: [{ field: 'title', value: 'foo' }] },
                 }
             );
-            expect(updatedState.filter).toEqual({ title: 'foo' });
+            expect(updatedState.filters).toEqual([
+                { field: 'title', value: 'foo' },
+            ]);
         });
 
         it('should replace existing filter with given value', () => {
             const updatedState = queryReducer(
+                { filters: [{ field: 'title', value: 'foo' }] },
                 {
-                    filter: {
-                        title: 'foo',
-                    },
-                },
-                {
-                    type: 'SET_FILTER',
-                    payload: { filter: { title: 'bar' } },
+                    type: 'SET_FILTERS',
+                    payload: { filters: [{ field: 'title', value: 'bar' }] },
                 }
             );
 
-            expect(updatedState.filter).toEqual({ title: 'bar' });
+            expect(updatedState.filters).toEqual([
+                { field: 'title', value: 'bar' },
+            ]);
         });
 
         it('should add new filter and displayedFilter with given value when set', () => {
             const updatedState = queryReducer(
                 {},
                 {
-                    type: 'SET_FILTER',
+                    type: 'SET_FILTERS',
                     payload: {
-                        filter: { title: 'foo' },
+                        filters: [{ field: 'title', value: 'foo' }],
                         displayedFilters: { title: true },
                     },
                 }
             );
-            expect(updatedState.filter).toEqual({ title: 'foo' });
+            expect(updatedState.filters).toEqual([
+                { field: 'title', value: 'foo' },
+            ]);
             expect(updatedState.displayedFilters).toEqual({ title: true });
         });
 
         it('should reset page to 1', () => {
             const updatedState = queryReducer(
                 { page: 3 },
-                { type: 'SET_FILTER', payload: {} }
+                {
+                    type: 'SET_FILTERS',
+                    payload: { filters: [], displayedFilters: {} },
+                }
             );
             expect(updatedState.page).toEqual(1);
         });
@@ -83,7 +85,7 @@ describe('Query Reducer', () => {
         it('should add the filter to the displayed filters and set the filter value', () => {
             const updatedState = queryReducer(
                 {
-                    filter: { bar: 1 },
+                    filters: [{ field: 'bar', value: 1 }],
                     displayedFilters: { bar: true },
                 },
                 {
@@ -91,7 +93,10 @@ describe('Query Reducer', () => {
                     payload: { filterName: 'foo', defaultValue: 'bar' },
                 }
             );
-            expect(updatedState.filter).toEqual({ bar: 1, foo: 'bar' });
+            expect(updatedState.filters).toEqual([
+                { field: 'bar', value: 1 },
+                { field: 'foo', value: 'bar' },
+            ]);
             expect(updatedState.displayedFilters).toEqual({
                 bar: true,
                 foo: true,
@@ -100,13 +105,15 @@ describe('Query Reducer', () => {
 
         it('should work with false default value', () => {
             const updatedState = queryReducer(
-                { filter: {}, displayedFilters: {} },
+                { filters: [], displayedFilters: {} },
                 {
                     type: 'SHOW_FILTER',
                     payload: { filterName: 'foo', defaultValue: false },
                 }
             );
-            expect(updatedState.filter).toEqual({ foo: false });
+            expect(updatedState.filters).toEqual([
+                { field: 'foo', value: false },
+            ]);
             expect(updatedState.displayedFilters).toEqual({
                 foo: true,
             });
@@ -115,7 +122,7 @@ describe('Query Reducer', () => {
         it('should work without default value', () => {
             const updatedState = queryReducer(
                 {
-                    filter: { bar: 1 },
+                    filters: [{ field: 'bar', value: 1 }],
                     displayedFilters: { bar: true },
                 },
                 {
@@ -123,7 +130,7 @@ describe('Query Reducer', () => {
                     payload: { filterName: 'foo' },
                 }
             );
-            expect(updatedState.filter).toEqual({ bar: 1 });
+            expect(updatedState.filters).toEqual([{ field: 'bar', value: 1 }]);
             expect(updatedState.displayedFilters).toEqual({
                 bar: true,
                 foo: true,
@@ -133,7 +140,7 @@ describe('Query Reducer', () => {
         it('should not change an already shown filter', () => {
             const updatedState = queryReducer(
                 {
-                    filter: { foo: 1 },
+                    filters: [{ field: 'bar', value: 1 }],
                     displayedFilters: { foo: true },
                 },
                 {
@@ -141,7 +148,7 @@ describe('Query Reducer', () => {
                     payload: { filterName: 'foo', defaultValue: 'bar' },
                 }
             );
-            expect(updatedState.filter).toEqual({ foo: 1 });
+            expect(updatedState.filters).toEqual([{ field: 'bar', value: 1 }]);
             expect(updatedState.displayedFilters).toEqual({ foo: true });
         });
     });
@@ -149,7 +156,10 @@ describe('Query Reducer', () => {
         it('should remove the filter from the displayed filters and reset the filter value', () => {
             const updatedState = queryReducer(
                 {
-                    filter: { foo: 2, bar: 1 },
+                    filters: [
+                        { field: 'foo', value: 2 },
+                        { field: 'bar', value: 1 },
+                    ],
                     displayedFilters: { foo: true, bar: true },
                 },
                 {
@@ -157,7 +167,7 @@ describe('Query Reducer', () => {
                     payload: 'bar',
                 }
             );
-            expect(updatedState.filter).toEqual({ foo: 2 });
+            expect(updatedState.filters).toEqual([{ field: 'foo', value: 2 }]);
             expect(updatedState.displayedFilters).toEqual({
                 foo: true,
             });
@@ -166,7 +176,7 @@ describe('Query Reducer', () => {
         it('should do nothing if the filter is already hidden', () => {
             const updatedState = queryReducer(
                 {
-                    filter: { foo: 2 },
+                    filters: [{ field: 'foo', value: 2 }],
                     displayedFilters: { foo: true },
                 },
                 {
@@ -174,7 +184,7 @@ describe('Query Reducer', () => {
                     payload: 'bar',
                 }
             );
-            expect(updatedState.filter).toEqual({ foo: 2 });
+            expect(updatedState.filters).toEqual([{ field: 'foo', value: 2 }]);
             expect(updatedState.displayedFilters).toEqual({
                 foo: true,
             });
@@ -211,11 +221,7 @@ describe('Query Reducer', () => {
         });
         it("should set order as the opposite of the one in previous state when sort hasn't change", () => {
             const updatedState = queryReducer(
-                {
-                    sort: 'foo',
-                    order: SORT_DESC,
-                    page: 1,
-                },
+                { sort: 'foo', order: SORT_DESC, page: 1 },
                 {
                     type: 'SET_SORT',
                     payload: { field: 'foo' },
@@ -229,11 +235,7 @@ describe('Query Reducer', () => {
         });
         it("should set order as the opposite of the one in previous state even if order is specified in the payload when sort hasn't change", () => {
             const updatedState = queryReducer(
-                {
-                    sort: 'foo',
-                    order: SORT_DESC,
-                    page: 1,
-                },
+                { sort: 'foo', order: SORT_DESC, page: 1 },
                 {
                     type: 'SET_SORT',
                     payload: { field: 'foo', order: SORT_DESC },
@@ -249,9 +251,7 @@ describe('Query Reducer', () => {
     describe('SET_PER_PAGE action', () => {
         it('should update per page count', () => {
             const updatedState = queryReducer(
-                {
-                    perPage: 10,
-                },
+                { perPage: 10 },
                 {
                     type: 'SET_PER_PAGE',
                     payload: 25,

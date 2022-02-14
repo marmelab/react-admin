@@ -1,18 +1,19 @@
 import get from 'lodash/get';
-import { useCallback, useEffect, useRef } from 'react';
-import isEqual from 'lodash/isEqual';
+import { useCallback } from 'react';
 
 import { useSafeSetState, removeEmpty } from '../../util';
 import { useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
-import { RaRecord, SortPayload } from '../../types';
+import { RaRecord, SortPayload, FilterItem, FilterPayload } from '../../types';
 import { ListControllerResult } from '../list';
 import usePaginationState from '../usePaginationState';
 import { useRecordSelection } from '../list/useRecordSelection';
 import useSortState from '../useSortState';
+import { convertFiltersToFilterItems } from '../list/convertFiltersToFilterItems';
 
 export interface UseReferenceManyFieldControllerParams {
-    filter?: any;
+    filterDefaultValues?: FilterItem[];
+    filter?: FilterItem[] | FilterPayload;
     page?: number;
     perPage?: number;
     record?: RaRecord;
@@ -23,7 +24,7 @@ export interface UseReferenceManyFieldControllerParams {
     target: string;
 }
 
-const defaultFilter = {};
+const defaultFilter = [];
 
 /**
  * Fetch reference records, and return them when available
@@ -65,7 +66,8 @@ export const useReferenceManyFieldController = (
         reference,
         record,
         target,
-        filter = defaultFilter,
+        filter,
+        filterDefaultValues,
         source,
         page: initialPage,
         perPage: initialPerPage,
@@ -93,23 +95,21 @@ export const useReferenceManyFieldController = (
     const [selectedIds, selectionModifiers] = useRecordSelection(reference);
 
     // filter logic
-    const filterRef = useRef(filter);
     const [displayedFilters, setDisplayedFilters] = useSafeSetState<{
         [key: string]: boolean;
     }>({});
-    const [filterValues, setFilterValues] = useSafeSetState<{
-        [key: string]: any;
-    }>(filter);
+    const [filterValues, setFilterValues] = useSafeSetState<FilterItem[]>(
+        filterDefaultValues || defaultFilter
+    );
     const hideFilter = useCallback(
         (filterName: string) => {
             setDisplayedFilters(previousState => {
                 const { [filterName]: _, ...newState } = previousState;
                 return newState;
             });
-            setFilterValues(previousState => {
-                const { [filterName]: _, ...newState } = previousState;
-                return newState;
-            });
+            setFilterValues(previousState =>
+                previousState.filter(filter => filter.field !== filterName)
+            );
         },
         [setDisplayedFilters, setFilterValues]
     );
@@ -119,28 +119,27 @@ export const useReferenceManyFieldController = (
                 ...previousState,
                 [filterName]: true,
             }));
-            setFilterValues(previousState => ({
-                ...previousState,
-                [filterName]: defaultValue,
-            }));
+            setFilterValues(previousState =>
+                defaultValue
+                    ? previousState
+                          .filter(filter => filter.field !== filterName)
+                          .concat({ field: filterName, value: defaultValue })
+                    : previousState
+            );
         },
         [setDisplayedFilters, setFilterValues]
     );
     const setFilters = useCallback(
-        (filters, displayedFilters) => {
+        (
+            filters: FilterItem[],
+            displayedFilters: { [key: string]: boolean }
+        ) => {
             setFilterValues(removeEmpty(filters));
             setDisplayedFilters(displayedFilters);
             setPage(1);
         },
         [setDisplayedFilters, setFilterValues, setPage]
     );
-    // handle filter prop change
-    useEffect(() => {
-        if (!isEqual(filter, filterRef.current)) {
-            filterRef.current = filter;
-            setFilterValues(filter);
-        }
-    });
 
     const {
         data,
@@ -157,7 +156,7 @@ export const useReferenceManyFieldController = (
             id: get(record, source),
             pagination: { page, perPage },
             sort,
-            filter: filterValues,
+            filters: [...filterValues, ...convertFiltersToFilterItems(filter)],
         },
         {
             onError: error =>
@@ -186,7 +185,7 @@ export const useReferenceManyFieldController = (
         defaultTitle: null,
         displayedFilters,
         error,
-        filterValues,
+        filters: filterValues,
         hideFilter,
         isFetching,
         isLoading,

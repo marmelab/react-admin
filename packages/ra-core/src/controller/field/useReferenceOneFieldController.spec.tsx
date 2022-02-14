@@ -103,6 +103,7 @@ describe('useReferenceOneFieldController', () => {
                 pagination: { page: 1, perPage: 1 },
                 sort: { field: 'id', order: 'ASC' },
                 filter: {},
+                filters: [],
             });
         });
     });
@@ -172,6 +173,7 @@ describe('useReferenceOneFieldController', () => {
                     target: 'author_id',
                     pagination: { page: 1, perPage: 1 },
                     sort: { field: 'id', order: 'ASC' },
+                    filters: [],
                     filter: {},
                 }
             );
@@ -214,6 +216,7 @@ describe('useReferenceOneFieldController', () => {
                     target: 'author_id',
                     pagination: { page: 1, perPage: 1 },
                     sort: { field: 'id', order: 'ASC' },
+                    filters: [],
                     filter: {},
                 }
             );

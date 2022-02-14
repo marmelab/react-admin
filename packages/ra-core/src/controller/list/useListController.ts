@@ -7,10 +7,17 @@ import { useNotify } from '../../notification';
 import { useGetList, UseGetListHookValue } from '../../dataProvider';
 import { SORT_ASC } from './queryReducer';
 import { defaultExporter } from '../../export';
-import { FilterPayload, SortPayload, RaRecord, Exporter } from '../../types';
+import {
+    FilterPayload,
+    SortPayload,
+    RaRecord,
+    Exporter,
+    FilterItem,
+} from '../../types';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
+import { convertFiltersToFilterItems } from './convertFiltersToFilterItems';
 
 /**
  * Prepare data for the List view
@@ -35,10 +42,10 @@ export const useListController = <RecordType extends RaRecord = any>(
     const {
         disableAuthentication,
         exporter = defaultExporter,
-        filterDefaultValues,
+        filterDefaultValues = defaultFilter,
         sort = defaultSort,
         perPage = 10,
-        filter,
+        filter = defaultFilter,
         debounce = 500,
         disableSyncWithLocation,
         queryOptions,
@@ -62,7 +69,7 @@ export const useListController = <RecordType extends RaRecord = any>(
 
     const [query, queryModifiers] = useListParams({
         resource,
-        filterDefaultValues,
+        filterDefaultValues: convertFiltersToFilterItems(filterDefaultValues),
         sort,
         perPage,
         debounce,
@@ -87,7 +94,7 @@ export const useListController = <RecordType extends RaRecord = any>(
                 perPage: query.perPage,
             },
             sort: { field: query.sort, order: query.order },
-            filter: { ...query.filter, ...filter },
+            filters: [...query.filters, ...convertFiltersToFilterItems(filter)],
         },
         {
             keepPreviousData: true,
@@ -144,8 +151,7 @@ export const useListController = <RecordType extends RaRecord = any>(
         displayedFilters: query.displayedFilters,
         error,
         exporter,
-        filter,
-        filterValues: query.filterValues,
+        filters: query.filters,
         hideFilter: queryModifiers.hideFilter,
         isFetching,
         isLoading,
@@ -180,8 +186,8 @@ export interface ListControllerProps<RecordType extends RaRecord = any> {
      */
     disableSyncWithLocation?: boolean;
     exporter?: Exporter | false;
-    filter?: FilterPayload;
-    filterDefaultValues?: object;
+    filter?: FilterItem[] | FilterPayload;
+    filterDefaultValues?: FilterItem[] | FilterPayload;
     perPage?: number;
     queryOptions?: UseQueryOptions<{
         data: RecordType[];
@@ -207,8 +213,7 @@ export interface ListControllerResult<RecordType extends RaRecord = any> {
     displayedFilters: any;
     error?: any;
     exporter?: Exporter | false;
-    filter?: FilterPayload;
-    filterValues: any;
+    filters: FilterItem[];
     hideFilter: (filterName: string) => void;
     isFetching: boolean;
     isLoading: boolean;
@@ -221,7 +226,7 @@ export interface ListControllerResult<RecordType extends RaRecord = any> {
     resource: string;
     selectedIds: RecordType['id'][];
     setFilters: (
-        filters: any,
+        filters: FilterItem[],
         displayedFilters: any,
         debounce?: boolean
     ) => void;
@@ -233,6 +238,8 @@ export interface ListControllerResult<RecordType extends RaRecord = any> {
     hasNextPage: boolean;
     hasPreviousPage: boolean;
 }
+
+const defaultFilter = [];
 
 export const injectedProps = [
     'sort',

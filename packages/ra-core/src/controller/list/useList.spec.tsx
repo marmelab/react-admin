@@ -31,7 +31,7 @@ describe('<useList />', () => {
         render(
             <UseList
                 data={data}
-                filter={{ title: 'world' }}
+                filter={[{ field: 'title', value: 'world' }]}
                 sort={{ field: 'id', order: 'ASC' }}
                 callback={callback}
             />
@@ -61,7 +61,7 @@ describe('<useList />', () => {
         render(
             <UseList
                 data={data}
-                filter={{ items: ['two', 'four', 'five'] }}
+                filter={[{ field: 'items', value: ['two', 'four', 'five'] }]}
                 sort={{ field: 'id', order: 'ASC' }}
                 callback={callback}
             />
@@ -200,7 +200,7 @@ describe('<useList />', () => {
 
         const { rerender } = render(
             <UseList
-                filter={{ title: 'world' }}
+                filter={[{ field: 'title', value: 'world' }]}
                 sort={{ field: 'id', order: 'ASC' }}
                 callback={callback}
             />
@@ -211,7 +211,7 @@ describe('<useList />', () => {
                 data={data}
                 isFetching={true}
                 isLoading={false}
-                filter={{ title: 'world' }}
+                filter={[{ field: 'title', value: 'world' }]}
                 sort={{ field: 'id', order: 'ASC' }}
                 callback={callback}
             />

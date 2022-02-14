@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { FilterPayload, RaRecord, SortPayload } from '../../types';
+import { FilterItem, RaRecord, SortPayload } from '../../types';
 
 /**
  * Context to store choices and functions to retrieve them.
@@ -11,10 +11,9 @@ export const ChoicesContext = createContext<ChoicesContextValue>(undefined);
 export type ChoicesContextValue<RecordType extends RaRecord = any> = {
     allChoices: RecordType[];
     availableChoices: RecordType[];
-    displayedFilters: any;
+    displayedFilters: { [key: string]: boolean };
     error?: any;
-    filter?: FilterPayload;
-    filterValues: any;
+    filters: FilterItem[];
     hasNextPage: boolean;
     hasPreviousPage: boolean;
     hideFilter: (filterName: string) => void;
@@ -26,8 +25,8 @@ export type ChoicesContextValue<RecordType extends RaRecord = any> = {
     resource: string;
     selectedChoices: RecordType[];
     setFilters: (
-        filters: any,
-        displayedFilters: any,
+        filters: FilterItem[],
+        displayedFilters: { [key: string]: boolean },
         debounce?: boolean
     ) => void;
     setPage: (page: number) => void;

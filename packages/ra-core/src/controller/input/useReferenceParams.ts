@@ -1,12 +1,12 @@
 import { useCallback, useMemo, useState, useRef } from 'react';
 import lodashDebounce from 'lodash/debounce';
 
-import { SortPayload, FilterPayload } from '../../types';
+import { SortPayload, FilterItem } from '../../types';
 import removeEmpty from '../../util/removeEmpty';
 import {
     queryReducer,
     HIDE_FILTER,
-    SET_FILTER,
+    SET_FILTERS,
     SET_PAGE,
     SET_PER_PAGE,
     SET_SORT,
@@ -19,7 +19,7 @@ import {
  *
  * @returns {Array} A tuple [parameters, modifiers].
  * Destructure as [
- *    { page, perPage, sort, order, filter, filterValues, displayedFilters, requestSignature },
+ *    { page, perPage, sort, order, filters, displayedFilters, requestSignature },
  *    { setFilters, hideFilter, showFilter, setPage, setPerPage, setSort }
  * ]
  *
@@ -42,8 +42,7 @@ import {
  *      perPage,
  *      sort,
  *      order,
- *      filter,
- *      filterValues,
+ *      filters,
  *      displayedFilters,
  *      requestSignature
  * } = referenceParams;
@@ -59,19 +58,19 @@ import {
  */
 export const useReferenceParams = ({
     resource,
-    filter,
+    filterDefaultValues,
     sort = defaultSort,
     page = 1,
     perPage = 10,
     debounce = 500,
 }: ReferenceParamsOptions): [Parameters, Modifiers] => {
-    const [params, setParams] = useState(defaultParams);
-    const tempParams = useRef<ReferenceParams>();
+    const [params, setParams] = useState<Partial<ReferenceParams>>();
+    const tempParams = useRef<Partial<ReferenceParams>>();
 
     const requestSignature = [
         resource,
         JSON.stringify(params),
-        JSON.stringify(filter),
+        JSON.stringify(filterDefaultValues),
         JSON.stringify(sort),
         page,
         perPage,
@@ -80,8 +79,8 @@ export const useReferenceParams = ({
     const query = useMemo(
         () =>
             getQuery({
-                params: params,
-                filterDefaultValues: filter,
+                params,
+                filterDefaultValues,
                 sort,
                 page,
                 perPage,
@@ -124,27 +123,34 @@ export const useReferenceParams = ({
         requestSignature // eslint-disable-line react-hooks/exhaustive-deps
     );
 
-    const filterValues = query.filter || emptyObject;
-    const displayedFilterValues = query.displayedFilters || emptyObject;
-
-    const debouncedSetFilters = lodashDebounce((filter, displayedFilters) => {
-        changeParams({
-            type: SET_FILTER,
-            payload: {
-                filter: removeEmpty(filter),
-                displayedFilters,
-            },
-        });
-    }, debounce);
+    const debouncedSetFilters = lodashDebounce(
+        (
+            filters: FilterItem[],
+            displayedFilters: { [key: string]: boolean }
+        ) => {
+            changeParams({
+                type: SET_FILTERS,
+                payload: {
+                    filters: removeEmpty(filters),
+                    displayedFilters,
+                },
+            });
+        },
+        debounce
+    );
 
     const setFilters = useCallback(
-        (filter, displayedFilters, debounce = true) => {
+        (
+            filters: FilterItem[],
+            displayedFilters: { [key: string]: boolean },
+            debounce: boolean = true
+        ) => {
             debounce
-                ? debouncedSetFilters(filter, displayedFilters)
+                ? debouncedSetFilters(filters, displayedFilters)
                 : changeParams({
-                      type: SET_FILTER,
+                      type: SET_FILTERS,
                       payload: {
-                          filter: removeEmpty(filter),
+                          filters: removeEmpty(filters),
                           displayedFilters,
                       },
                   });
@@ -168,10 +174,11 @@ export const useReferenceParams = ({
             },
         });
     }, requestSignature); // eslint-disable-line react-hooks/exhaustive-deps
+
     return [
         {
-            displayedFilters: displayedFilterValues,
-            filterValues,
+            filters: query.filters || emptyArray,
+            displayedFilters: query.displayedFilters || emptyObject,
             requestSignature,
             ...query,
         },
@@ -199,7 +206,7 @@ export const validQueryParams = [
 /**
  * Merge list params from 2 different sources:
  *   - the params stored in the local state
- *   - the props passed to the List component (including the filter defaultValues)
+ *   - the props passed to the Reference component (including the filter defaultValues)
  */
 export const getQuery = ({
     params,
@@ -207,10 +214,16 @@ export const getQuery = ({
     sort,
     page,
     perPage,
-}) => {
+}: {
+    params?: Partial<ReferenceParams>;
+    filterDefaultValues?: FilterItem[];
+    sort: SortPayload;
+    page: number;
+    perPage: number;
+}): ReferenceParams => {
     const query: Partial<ReferenceParams> = hasCustomParams(params)
         ? { ...params }
-        : { filter: filterDefaultValues || {} };
+        : { filters: filterDefaultValues || [] };
 
     if (!query.sort) {
         query.sort = sort.field;
@@ -236,23 +249,22 @@ export const getQuery = ({
 /**
  * Check if user has already set custom sort, page, or filters for this list
  *
- * User params come from the Redux store as the params props. By default,
+ * User params come from the store as the params props. By default,
  * this object is:
  *
- * { filter: {}, order: null, page: 1, perPage: null, sort: null }
+ * { filters: [], order: null, page: 1, perPage: null, sort: null }
  *
  * To check if the user has custom params, we must compare the params
  * to these initial values.
  *
  * @param {Object} params
  */
-export const hasCustomParams = (params: ReferenceParams) => {
+export const hasCustomParams = (params: Partial<ReferenceParams>) => {
     return (
         params &&
-        params.filter &&
-        (Object.keys(params.filter).length > 0 ||
+        ((params.filters && params.filters.length > 0) ||
             params.order != null ||
-            params.page !== 1 ||
+            (params.page && params.page !== 1) ||
             params.perPage != null ||
             params.sort != null)
     );
@@ -276,7 +288,7 @@ export interface ReferenceParamsOptions {
     perPage?: number;
     sort?: SortPayload;
     // default value for a filter when displayed but not yet set
-    filter?: FilterPayload;
+    filterDefaultValues?: FilterItem[];
     debounce?: number;
 }
 
@@ -285,15 +297,13 @@ export interface ReferenceParams {
     order: string;
     page: number;
     perPage: number;
-    filter: any;
-    displayedFilters: any;
-}
-
-interface Parameters extends ReferenceParams {
-    filterValues: object;
+    filters: FilterItem[];
     displayedFilters: {
         [key: string]: boolean;
     };
+}
+
+interface Parameters extends ReferenceParams {
     requestSignature: any[];
 }
 
@@ -302,16 +312,20 @@ interface Modifiers {
     setPage: (page: number) => void;
     setPerPage: (pageSize: number) => void;
     setSort: (sort: SortPayload) => void;
-    setFilters: (filters: any, displayedFilters: any) => void;
+    setFilters: (
+        filters: FilterItem[],
+        displayedFilters: {
+            [key: string]: boolean;
+        }
+    ) => void;
     hideFilter: (filterName: string) => void;
     showFilter: (filterName: string, defaultValue: any) => void;
 }
 
 const emptyObject = {};
+const emptyArray = [];
 
 const defaultSort = {
     field: 'id',
     order: SORT_ASC,
 };
-
-const defaultParams = {};

@@ -203,6 +203,7 @@ describe('useReferenceArrayInputController', () => {
                 field: 'id',
                 order: 'DESC',
             },
+            filters: [],
             filter: {},
             meta: undefined,
         });
@@ -241,6 +242,7 @@ describe('useReferenceArrayInputController', () => {
                 field: 'foo',
                 order: 'ASC',
             },
+            filters: [{ field: 'permanentFilter', value: 'foo' }],
             filter: { permanentFilter: 'foo' },
             meta: undefined,
         });
@@ -250,7 +252,7 @@ describe('useReferenceArrayInputController', () => {
         const children = jest.fn(({ setFilters }) => (
             <button
                 aria-label="Filter"
-                onClick={() => setFilters({ q: 'bar' })}
+                onClick={() => setFilters([{ field: 'q', value: 'bar' }])}
             />
         ));
         const dataProvider = testDataProvider({
@@ -283,6 +285,8 @@ describe('useReferenceArrayInputController', () => {
                     order: 'DESC',
                 },
                 filter: { q: 'bar' },
+                filters: [{ field: 'q', value: 'bar' }],
+                meta: undefined,
             });
         });
     });
@@ -321,7 +325,7 @@ describe('useReferenceArrayInputController', () => {
         const children = jest.fn(({ setFilters }) => (
             <button
                 aria-label="Filter"
-                onClick={() => setFilters({ q: 'bar' })}
+                onClick={() => setFilters([{ field: 'q', value: 'bar' }])}
             />
         ));
         const dataProvider = testDataProvider({
@@ -571,6 +575,7 @@ describe('useReferenceArrayInputController', () => {
                     order: 'DESC',
                 },
                 filter: {},
+                filters: [],
                 meta: undefined,
             });
         });
@@ -587,6 +592,7 @@ describe('useReferenceArrayInputController', () => {
                     order: 'DESC',
                 },
                 filter: {},
+                filters: [],
                 meta: undefined,
             });
         });
@@ -603,6 +609,7 @@ describe('useReferenceArrayInputController', () => {
                     order: 'ASC',
                 },
                 filter: {},
+                filters: [],
                 meta: undefined,
             });
         });
@@ -633,9 +640,13 @@ describe('useReferenceArrayInputController', () => {
     describe('enableGetChoices', () => {
         it('should not fetch possible values using getList on load but only when enableGetChoices returns true', async () => {
             const children = jest.fn().mockReturnValue(<div />);
-            const enableGetChoices = jest.fn().mockImplementation(({ q }) => {
-                return q ? q.length > 2 : false;
-            });
+            const enableGetChoices = jest
+                .fn()
+                .mockImplementation(
+                    filters =>
+                        filters.find(filter => filter.field === 'q')?.value
+                            .length > 2
+                );
             const dataProvider = testDataProvider({
                 getList: jest
                     .fn()
@@ -661,10 +672,10 @@ describe('useReferenceArrayInputController', () => {
             await waitFor(() => {
                 expect(dataProvider.getList).not.toHaveBeenCalled();
             });
-            expect(enableGetChoices).toHaveBeenCalledWith({});
+            expect(enableGetChoices).toHaveBeenCalledWith([]);
 
             const { setFilters } = children.mock.calls[0][0];
-            setFilters({ q: 'hello world' });
+            setFilters([{ field: 'q', value: 'hello world' }]);
 
             await waitFor(() => {
                 expect(dataProvider.getList).toHaveBeenCalledTimes(1);
@@ -678,9 +689,13 @@ describe('useReferenceArrayInputController', () => {
                     field: 'id',
                     order: 'DESC',
                 },
+                filters: [{ field: 'q', value: 'hello world' }],
                 filter: { q: 'hello world' },
+                meta: undefined,
             });
-            expect(enableGetChoices).toHaveBeenCalledWith({ q: 'hello world' });
+            expect(enableGetChoices).toHaveBeenCalledWith([
+                { field: 'q', value: 'hello world' },
+            ]);
         });
 
         it('should fetch current value using getMany even if enableGetChoices is returning false', async () => {

@@ -10,7 +10,7 @@ const UseGetList = ({
     resource = 'posts',
     pagination = { page: 1, perPage: 10 },
     sort = { field: 'id', order: 'DESC' },
-    filter = {},
+    filters = [],
     options = {},
     meta = undefined,
     callback = null,
@@ -18,7 +18,7 @@ const UseGetList = ({
 }) => {
     const hookValue = useGetList(
         resource,
-        { pagination, sort, filter, meta },
+        { pagination, sort, filters, meta },
         options
     );
     if (callback) callback(hookValue);
@@ -40,6 +40,7 @@ describe('useGetList', () => {
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledTimes(1);
             expect(dataProvider.getList).toBeCalledWith('posts', {
+                filters: [],
                 filter: {},
                 pagination: { page: 1, perPage: 20 },
                 sort: { field: 'id', order: 'DESC' },
@@ -111,6 +112,7 @@ describe('useGetList', () => {
         );
         await waitFor(() => {
             expect(dataProvider.getList).toBeCalledWith('posts', {
+                filters: [],
                 filter: {},
                 pagination: { page: 1, perPage: 20 },
                 sort: { field: 'id', order: 'DESC' },
@@ -129,7 +131,7 @@ describe('useGetList', () => {
                 {
                     pagination: { page: 1, perPage: 10 },
                     sort: { field: 'id', order: 'DESC' },
-                    filter: {},
+                    filters: [],
                 },
             ],
             {

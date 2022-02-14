@@ -1,8 +1,7 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect } from 'react';
 import get from 'lodash/get';
-import isEqual from 'lodash/isEqual';
 import { removeEmpty, useSafeSetState } from '../../util';
-import { FilterPayload, RaRecord, SortPayload } from '../../types';
+import { RaRecord, SortPayload, FilterItem } from '../../types';
 import { useResourceContext } from '../../core';
 import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
@@ -55,7 +54,8 @@ export const useList = <RecordType extends RaRecord = any>(
     const {
         data,
         error,
-        filter = defaultFilter,
+        filter = defaultFilters,
+        filterDefaultValues = defaultFilters,
         isFetching = false,
         isLoading = false,
         page: initialPage = 1,
@@ -97,26 +97,26 @@ export const useList = <RecordType extends RaRecord = any>(
     const [selectedIds, selectionModifiers] = useRecordSelection(resource);
 
     // filter logic
-    const filterRef = useRef(filter);
+    const [filterValues, setFilterValues] = useSafeSetState<FilterItem[]>(
+        filterDefaultValues
+    );
     const [displayedFilters, setDisplayedFilters] = useSafeSetState<{
         [key: string]: boolean;
     }>({});
-    const [filterValues, setFilterValues] = useSafeSetState<{
-        [key: string]: any;
-    }>(filter);
+
     const hideFilter = useCallback(
         (filterName: string) => {
             setDisplayedFilters(previousState => {
                 const { [filterName]: _, ...newState } = previousState;
                 return newState;
             });
-            setFilterValues(previousState => {
-                const { [filterName]: _, ...newState } = previousState;
-                return newState;
-            });
+            setFilterValues(previousState =>
+                previousState.filter(filter => filter.field !== filterName)
+            );
         },
         [setDisplayedFilters, setFilterValues]
     );
+
     const showFilter = useCallback(
         (filterName: string, defaultValue: any) => {
             setDisplayedFilters(previousState => ({
@@ -124,16 +124,21 @@ export const useList = <RecordType extends RaRecord = any>(
                 [filterName]: true,
             }));
             setFilterValues(previousState =>
-                removeEmpty({
-                    ...previousState,
-                    [filterName]: defaultValue,
-                })
+                defaultValue
+                    ? previousState
+                          .filter(filter => filter.field !== filterName)
+                          .concat({ field: filterName, value: defaultValue })
+                    : previousState
             );
         },
         [setDisplayedFilters, setFilterValues]
     );
+
     const setFilters = useCallback(
-        (filters, displayedFilters) => {
+        (
+            filters: FilterItem[],
+            displayedFilters: { [key: string]: boolean }
+        ) => {
             setFilterValues(removeEmpty(filters));
             if (displayedFilters) {
                 setDisplayedFilters(displayedFilters);
@@ -142,13 +147,6 @@ export const useList = <RecordType extends RaRecord = any>(
         },
         [setDisplayedFilters, setFilterValues, setPage]
     );
-    // handle filter prop change
-    useEffect(() => {
-        if (!isEqual(filter, filterRef.current)) {
-            filterRef.current = filter;
-            setFilterValues(filter);
-        }
-    });
 
     // We do all the data processing (filtering, sorting, paginating) client-side
     useEffect(
@@ -156,23 +154,25 @@ export const useList = <RecordType extends RaRecord = any>(
             if (isLoading || !data) return;
 
             // 1. filter
-            let tempData = data.filter(record =>
-                Object.entries(filterValues).every(
-                    ([filterName, filterValue]) => {
-                        const recordValue = get(record, filterName);
-                        const result = Array.isArray(recordValue)
-                            ? Array.isArray(filterValue)
-                                ? recordValue.some(item =>
-                                      filterValue.includes(item)
-                                  )
-                                : recordValue.includes(filterValue)
-                            : Array.isArray(filterValue)
-                            ? filterValue.includes(recordValue)
-                            : filterValue == recordValue; // eslint-disable-line eqeqeq
-                        return result;
-                    }
-                )
-            );
+            const allFilters = [].concat(filterValues, filter);
+            let tempData =
+                allFilters.length > 0
+                    ? data.filter(record =>
+                          allFilters.every(({ field, operator, value }) => {
+                              // FIXME: only supports operator = for now
+                              const recordValue = get(record, field);
+                              return Array.isArray(recordValue)
+                                  ? Array.isArray(value)
+                                      ? recordValue.some(item =>
+                                            value.includes(item)
+                                        )
+                                      : recordValue.includes(value)
+                                  : Array.isArray(value)
+                                  ? value.includes(recordValue)
+                                  : value == recordValue; // eslint-disable-line eqeqeq
+                          })
+                      )
+                    : data;
 
             const filteredLength = tempData.length;
 
@@ -200,6 +200,7 @@ export const useList = <RecordType extends RaRecord = any>(
         [
             // eslint-disable-next-line react-hooks/exhaustive-deps
             JSON.stringify(data),
+            filter,
             filterValues,
             isLoading,
             page,
@@ -223,12 +224,11 @@ export const useList = <RecordType extends RaRecord = any>(
     }, [isLoading, loadingState, setLoadingState]);
 
     return {
-        sort,
         data: finalItems.data,
         defaultTitle: '',
-        error,
         displayedFilters,
-        filterValues,
+        error,
+        filters: filterValues,
         hasNextPage: page * perPage < finalItems.total,
         hasPreviousPage: page > 1,
         hideFilter,
@@ -247,6 +247,7 @@ export const useList = <RecordType extends RaRecord = any>(
         setPerPage,
         setSort,
         showFilter,
+        sort,
         total: finalItems.total,
     };
 };
@@ -254,7 +255,8 @@ export const useList = <RecordType extends RaRecord = any>(
 export interface UseListOptions<RecordType extends RaRecord = any> {
     data?: RecordType[];
     error?: any;
-    filter?: FilterPayload;
+    filter?: FilterItem[];
+    filterDefaultValues?: FilterItem[];
     isFetching?: boolean;
     isLoading?: boolean;
     page?: number;
@@ -267,5 +269,5 @@ export type UseListValue<
     RecordType extends RaRecord = any
 > = ListControllerResult<RecordType>;
 
-const defaultFilter = {};
+const defaultFilters = [];
 const defaultSort = { field: null, order: null };

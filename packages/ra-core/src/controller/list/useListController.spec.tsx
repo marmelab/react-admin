@@ -20,6 +20,7 @@ import {
     sanitizeListRestProps,
 } from './useListController';
 import { CoreAdminContext } from '../../core';
+import { FilterItem } from '../../types';
 
 describe('useListController', () => {
     const defaultProps = {
@@ -51,16 +52,22 @@ describe('useListController', () => {
 
     describe('setFilters', () => {
         let clock;
-        let childFunction = ({ setFilters, filterValues }) => (
+        let childFunction = ({
+            setFilters,
+            filters,
+        }: {
+            setFilters: any;
+            filters?: FilterItem[];
+        }) => (
             // TODO: we shouldn't import mui components in ra-core
             <TextField
                 inputProps={{
                     'aria-label': 'search',
                 }}
                 type="text"
-                value={filterValues.q || ''}
+                value={filters.find(f => f.field === 'q')?.value || ''}
                 onChange={event => {
-                    setFilters({ q: event.target.value });
+                    setFilters([{ field: 'q', value: event.target.value }]);
                 }}
             />
         );
@@ -94,7 +101,7 @@ describe('useListController', () => {
 
             expect(storeSpy).toHaveBeenCalledTimes(1);
             expect(storeSpy).toHaveBeenCalledWith('posts.listParams', {
-                filter: { q: 'hello' },
+                filters: [{ field: 'q', value: 'hello' }],
                 order: 'ASC',
                 page: 1,
                 perPage: 10,
@@ -137,7 +144,7 @@ describe('useListController', () => {
             expect(storeSpy).toHaveBeenCalledTimes(2);
 
             expect(storeSpy).toHaveBeenCalledWith('posts.listParams', {
-                filter: {},
+                filters: [],
                 displayedFilters: { q: true },
                 order: 'ASC',
                 page: 1,
@@ -173,7 +180,9 @@ describe('useListController', () => {
             expect(getList).toHaveBeenCalledTimes(1);
             expect(getList).toHaveBeenCalledWith(
                 'posts',
-                expect.objectContaining({ filter: { foo: 1 } })
+                expect.objectContaining({
+                    filters: [{ field: 'foo', value: 1 }],
+                })
             );
 
             // Check that the permanent filter is not included in the displayedFilters and filterValues (passed to Filter form and button)
@@ -181,7 +190,7 @@ describe('useListController', () => {
             expect(children).toHaveBeenCalledWith(
                 expect.objectContaining({
                     displayedFilters: {},
-                    filterValues: {},
+                    filters: [],
                 })
             );
 
@@ -195,7 +204,9 @@ describe('useListController', () => {
             expect(getList).toHaveBeenCalledTimes(2);
             expect(getList).toHaveBeenCalledWith(
                 'posts',
-                expect.objectContaining({ filter: { foo: 2 } })
+                expect.objectContaining({
+                    filters: [{ field: 'foo', value: 2 }],
+                })
             );
             expect(children).toHaveBeenCalledTimes(2);
         });

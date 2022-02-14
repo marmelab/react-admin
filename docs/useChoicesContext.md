@@ -25,7 +25,7 @@ export const PostInput = (props) => {
     const { setFilters, displayedFilters } = useChoicesContext();
 
     const handleCheckboxChange = (event, checked) => {
-        setFilters({ published: checked }, displayedFilters);
+        setFilters([{ field: 'published', value: checked }], displayedFilters);
     };
 
     return (
@@ -81,7 +81,6 @@ const {
     sort, // a sort object { field, order }, e.g. { field: 'date', order: 'DESC' }
     setSort, // a callback to change the sort, e.g. setSort({ field: 'name', orfer: 'ASC' })
     // filtering
-    filter, // The permanent filter values, e.g. { title: 'lorem', nationality: 'fr' }
     filterValues, // a dictionary of filter values, e.g. { title: 'lorem', nationality: 'fr' }
     displayedFilters, // a dictionary of the displayed filters, e.g. { title: true, nationality: true }
     setFilters, // a callback to update the filters, e.g. setFilters(filters, displayedFilters)

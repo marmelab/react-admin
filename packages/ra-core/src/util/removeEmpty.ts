@@ -1,7 +1,5 @@
 import { shallowEqual } from './shallowEqual';
-
-const isObject = obj =>
-    obj && Object.prototype.toString.call(obj) === '[object Object]';
+import { FilterItem } from '../types';
 
 const isEmpty = obj =>
     obj instanceof Date
@@ -11,15 +9,7 @@ const isEmpty = obj =>
           obj === undefined ||
           shallowEqual(obj, {});
 
-const removeEmpty = object =>
-    Object.keys(object).reduce((acc, key) => {
-        let child = object[key];
-
-        if (isObject(object[key])) {
-            child = removeEmpty(object[key]);
-        }
-
-        return isEmpty(child) ? acc : { ...acc, [key]: child };
-    }, {});
+const removeEmpty = (filters: FilterItem[]) =>
+    filters.filter(filterItem => !isEmpty(filterItem.value));
 
 export default removeEmpty;

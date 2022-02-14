@@ -22,11 +22,7 @@ export const useChoicesContext = <ChoicesType extends RaRecord = RaRecord>(
                 options.displayedFilters ??
                 list.displayedFilters,
             error: context?.error ?? options.error ?? list.error,
-            filter: context?.filter ?? options.filter ?? list.filter,
-            filterValues:
-                context?.filterValues ??
-                options.filterValues ??
-                list.filterValues,
+            filters: context?.filters ?? options.filters ?? list.filters,
             hasNextPage:
                 context?.hasNextPage ?? options.hasNextPage ?? list.hasNextPage,
             hasPreviousPage:
