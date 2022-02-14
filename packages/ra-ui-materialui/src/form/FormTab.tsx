@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ComponentType, CSSProperties, ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import { FormGroupContextProvider, RaRecord } from 'ra-core';
 
 import { FormTabHeader } from './FormTabHeader';
@@ -9,7 +9,6 @@ export const FormTab = (props: FormTabProps) => {
     const {
         className,
         contentClassName,
-        contentComponent: Component = DefaultComponent,
         children,
         hidden,
         icon,
@@ -35,7 +34,9 @@ export const FormTab = (props: FormTabProps) => {
 
     const renderContent = () => (
         <FormGroupContextProvider name={value.toString()}>
-            <Component
+            <Stack
+                alignItems="flex-start"
+                sx={{ paddingLeft: 1, paddingRight: 1 }}
                 style={hidden ? hiddenStyle : null}
                 className={contentClassName}
                 id={`tabpanel-${value}`}
@@ -45,7 +46,7 @@ export const FormTab = (props: FormTabProps) => {
                 aria-hidden={hidden || undefined}
             >
                 {children}
-            </Component>
+            </Stack>
         </FormGroupContextProvider>
     );
 
@@ -56,11 +57,6 @@ export interface FormTabProps {
     className?: string;
     children?: ReactNode;
     contentClassName?: string;
-    contentComponent?: ComponentType<{
-        className?: string;
-        id?: string;
-        style: CSSProperties;
-    }>;
     hidden?: boolean;
     icon?: ReactElement;
     intent?: 'header' | 'content';
@@ -77,13 +73,3 @@ export interface FormTabProps {
 FormTab.displayName = 'FormTab';
 
 const hiddenStyle = { display: 'none' };
-
-const DefaultComponent = ({ children, ...props }) => (
-    <Stack
-        alignItems="flex-start"
-        sx={{ paddingLeft: 1, paddingRight: 1 }}
-        {...props}
-    >
-        {children}
-    </Stack>
-);
