@@ -81,7 +81,7 @@ export const useCreateController = <
                     : transform
                     ? transform(data)
                     : data
-            ).then(data =>
+            ).then(data => {
                 create(
                     resource,
                     { data },
@@ -126,8 +126,8 @@ export const useCreateController = <
                                   );
                               },
                     }
-                )
-            );
+                );
+            });
         },
         [
             create,

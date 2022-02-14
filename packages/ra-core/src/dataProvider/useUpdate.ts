@@ -263,9 +263,15 @@ export const useUpdate = <RecordType extends RaRecord = any>(
             unknown,
             Partial<UseUpdateMutateParams<RecordType>>,
             unknown
-        > & { mutationMode?: MutationMode } = {}
+        > & { mutationMode?: MutationMode; returnPromise?: boolean } = {}
     ) => {
-        const { mutationMode, onSuccess, onSettled, onError } = updateOptions;
+        const {
+            mutationMode,
+            returnPromise,
+            onSuccess,
+            onSettled,
+            onError,
+        } = updateOptions;
 
         // store the hook time params *at the moment of the call*
         // because they may change afterwards, which would break the undoable mode
@@ -276,7 +282,19 @@ export const useUpdate = <RecordType extends RaRecord = any>(
             mode.current = mutationMode;
         }
 
+        if (returnPromise && mode.current !== 'pessimistic') {
+            console.warn(
+                'The returnPromise parameter can only be used if the mutationMode is set to pessimistic'
+            );
+        }
+
         if (mode.current === 'pessimistic') {
+            if (returnPromise) {
+                return mutation.mutateAsync(
+                    { resource: callTimeResource, ...callTimeParams },
+                    { onSuccess, onSettled, onError }
+                );
+            }
             return mutation.mutate(
                 { resource: callTimeResource, ...callTimeParams },
                 { onSuccess, onSettled, onError }
@@ -411,7 +429,10 @@ export type UseUpdateOptions<
     Partial<UseUpdateMutateParams<RecordType>>
 > & { mutationMode?: MutationMode };
 
-export type UseUpdateResult<RecordType extends RaRecord = any> = [
+export type UseUpdateResult<
+    RecordType extends RaRecord = any,
+    TReturnPromise extends boolean = boolean
+> = [
     (
         resource?: string,
         params?: Partial<UpdateParams<RecordType>>,
@@ -420,8 +441,8 @@ export type UseUpdateResult<RecordType extends RaRecord = any> = [
             unknown,
             Partial<UseUpdateMutateParams<RecordType>>,
             unknown
-        > & { mutationMode?: MutationMode }
-    ) => Promise<void>,
+        > & { mutationMode?: MutationMode; returnPromise?: TReturnPromise }
+    ) => Promise<TReturnPromise extends true ? RecordType : void>,
     UseMutationResult<
         RecordType,
         unknown,
