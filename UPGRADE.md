@@ -1564,7 +1564,7 @@ This is no longer the case and makes custom layout easier.
 
 This makes custom layouts easier as you don't need to worry about passing props through your intermediate components anymore:
 
-```jsx
+```diff
 -const LineWrapper = ({ children, ...props }) => (
 -    <div style="display: flex">
 -        {Children.map(children, child => cloneElement(child, { ...props, ...child.props }))}
