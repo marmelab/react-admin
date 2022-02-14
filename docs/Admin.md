@@ -38,7 +38,6 @@ Here are all the props accepted by the component:
 - [`theme`](#theme)
 - [`layout`](#layout)
 - [`loginPage`](#loginpage)
-- [`logoutButton`](#logoutbutton)
 - [`history`](#history)
 - [`basename`](#basename)
 - [`ready`](#ready)
@@ -346,24 +345,9 @@ const App = () => (
 
 You can also disable it completely along with the `/login` route by passing `false` to this prop.
 
-See The [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more details.
+See The [Authentication documentation](./Authentication.md#customizing-the-login-component) for more details.
 
-**Tip**: Before considering writing your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [Material UI theme](#theme). See the [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more details.
-
-## `logoutButton`
-
-If you customize the `loginPage`, you probably need to override the `logoutButton`, too - because they share the authentication strategy.
-
-```jsx
-import MyLoginPage from './MyLoginPage';
-import MyLogoutButton from './MyLogoutButton';
-
-const App = () => (
-    <Admin loginPage={MyLoginPage} logoutButton={MyLogoutButton}>
-        ...
-    </Admin>
-);
-```
+**Tip**: Before considering writing your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [Material UI theme](#theme). See the [Authentication documentation](./Authentication.md#customizing-the-login-component) for more details.
 
 ## `history`
 

@@ -754,13 +754,13 @@ const MyPage = () => {
 
 ### `useLogout()` Hook
 
-Just like `useLogin()`, `useLogout()` returns a callback that you can use to call `authProvider.logout()`. Use it to build a custom Logout button, like the following: 
+Just like `useLogin()`, `useLogout()` returns a callback that you can use to call `authProvider.logout()`. Use it to build a custom Logout button and use it in a custom UserMenu, like the following: 
 
 ```jsx
-// in src/MyLogoutButton.js
+// in src/MyLayout.js
 import * as React from 'react';
 import { forwardRef } from 'react';
-import { useLogout } from 'react-admin';
+import { AppBar, Layout, UserMenu, useLogout } from 'react-admin';
 import { MenuItem } from '@mui/material';
 import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 
@@ -777,20 +777,34 @@ const MyLogoutButton = forwardRef((props, ref) => {
     );
 });
 
-export default MyLogoutButton;
+const MyUserMenu = () => (
+    <UserMenu>
+        <MyLogoutButton />
+    </UserMenu>
+);
+
+const MyAppBar = () => (
+    <AppBar userMenu={<UserMenu />} />
+);
+
+const MyLayout = () => (
+    <Layout appBar={MyAppBar} />
+);
+
+export default MyLayout;
 ```
 
-Then pass the Logout button to the `<Admin>` component, as follows:
+Then pass the layout to you admin:
 
 ```jsx
 // in src/App.js
 import * as React from "react";
 import { Admin } from 'react-admin';
 
-import MyLogoutButton from './MyLogoutButton';
+import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin logoutButton={MyLogoutButton} authProvider={authProvider}>
+    <Admin layout={MyLayout} authProvider={authProvider}>
     ...
     </Admin>
 );
@@ -936,10 +950,9 @@ import * as React from "react";
 import { Admin } from 'react-admin';
 
 import MyLoginPage from './MyLoginPage';
-import MyLogoutButton from './MyLogoutButton';
 
 const App = () => (
-    <Admin loginPage={MyLoginPage} logoutButton={MyLogoutButton} authProvider={authProvider}>
+    <Admin loginPage={MyLoginPage} authProvider={authProvider}>
     ...
     </Admin>
 );
@@ -1162,7 +1175,7 @@ What if you want to check the permissions inside a [custom menu](./Admin.md#menu
 import * as React from "react";
 import { MenuItemLink, usePermissions } from 'react-admin';
 
-const Menu = ({ onMenuClick, logout }) => {
+const Menu = ({ onMenuClick }) => {
     const { permissions } = usePermissions();
     return (
         <div>
@@ -1171,7 +1184,6 @@ const Menu = ({ onMenuClick, logout }) => {
             {permissions === 'admin' &&
                 <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
             }
-            {logout}
         </div>
     );
 }
