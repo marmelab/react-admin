@@ -1633,6 +1633,12 @@ const myTheme = {
 }
 ```
 
+## The `addLabel` prop Has Been Removed From All Inputs and Fields
+
+Inputs and fields used to support an `addLabel` prop that instructed components such as the `<SimpleForm>` to decorate the input or the field with a label. This is no longer the case as inputs are now responsible for their label display and you must wrap fields inside a `<FieldWithLabel>` to add a label for them.
+
+If you used the `addLabel` prop to hide inputs label by passing `false`, you can pass `false` to the `label` prop instead.
+
 ## `useListContext` No Longer Returns An `ids` Prop
 
 The `ListContext` used to return two props for the list data: `data` and `ids`. To render the list data, you had to iterate over the `ids`. 
