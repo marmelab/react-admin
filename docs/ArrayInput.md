@@ -1,6 +1,6 @@
 ---
 layout: default
-title: "The ArrayField Component"
+title: "The ArrayInput Component"
 ---
 
 # `<ArrayInput>`
