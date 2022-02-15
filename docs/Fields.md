@@ -466,7 +466,7 @@ export default TextField;
 
 ## Adding A Label To Custom Field Components
 
-If you want to have a label for your custom fields in an `Edit`, `Create` or `Show` view, uou need to wrap your component inside a `<Labeled>` component:
+If you want to have a label for your custom fields in an `Edit`, `Create` or `Show` view, you need to wrap your component inside a `<Labeled>` component:
 
 ```diff
 const FullNameField = (props) => {
