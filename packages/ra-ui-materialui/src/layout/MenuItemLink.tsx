@@ -1,10 +1,4 @@
-import React, {
-    forwardRef,
-    cloneElement,
-    useCallback,
-    ReactElement,
-    ReactNode,
-} from 'react';
+import React, { forwardRef, useCallback, ReactElement, ReactNode } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -20,6 +14,7 @@ import {
 } from '@mui/material';
 
 import { useSidebarState } from './useSidebarState';
+import { useTranslate } from 'ra-core';
 
 /**
  * Displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized.
@@ -82,6 +77,8 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
     } = props;
 
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
+    const translate = useTranslate();
+
     const [open, setOpen] = useSidebarState();
     const handleMenuTap = useCallback(
         e => {
@@ -100,7 +97,6 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
     const renderMenuItem = () => {
         return (
             <StyledMenuItem
-                // @ts-ignore
                 className={clsx(className, {
                     [MenuItemLinkClasses.active]: !!match,
                 })}
@@ -113,12 +109,12 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
             >
                 {leftIcon && (
                     <ListItemIcon className={MenuItemLinkClasses.icon}>
-                        {cloneElement(leftIcon, {
-                            titleAccess: primaryText,
-                        })}
+                        {leftIcon}
                     </ListItemIcon>
                 )}
-                {primaryText}
+                {typeof primaryText === 'string'
+                    ? translate(primaryText, { _: primaryText })
+                    : primaryText}
             </StyledMenuItem>
         );
     };
@@ -126,7 +122,15 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
     return open ? (
         renderMenuItem()
     ) : (
-        <Tooltip title={primaryText} placement="right" {...tooltipProps}>
+        <Tooltip
+            title={
+                typeof primaryText === 'string'
+                    ? translate(primaryText, { _: primaryText })
+                    : primaryText
+            }
+            placement="right"
+            {...tooltipProps}
+        >
             {renderMenuItem()}
         </Tooltip>
     );

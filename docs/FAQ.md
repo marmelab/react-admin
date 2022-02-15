@@ -160,7 +160,7 @@ But with the default menu, resources without `list` prop aren't shown.
 In order to have a specific resource without `list` prop listed on the menu, you have to [write your own custom menu](./Theming.md#using-a-custom-menu).
 
 ```jsx
- const MyMenu = ({ resources, onMenuClick, logout }) => (
+ const MyMenu = ({ resources, onMenuClick }) => (
     <div>
         {resources.map(resource => (
             <MenuItemLink to={`/${resource.name}`} primaryText={resource.name} onClick={onMenuClick} />

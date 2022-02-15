@@ -395,26 +395,69 @@ export default MyLayout;
 
 ### UserMenu Customization
 
-You can replace the default user menu by your own by setting the `userMenu` prop of the `<AppBar>` component. For instance, to add custom menu items, just decorate the default [`<UserMenu>`](./Buttons.md#usermenu) by adding children to it:
+You can replace the default user menu by your own by setting the `userMenu` prop of the `<AppBar>` component. For instance, to add custom menu items, you can render the default [`<UserMenu>`](./Buttons.md#usermenu) and add children to it. Don't forget to include the `<Logout>` component if you want to keep the logout menu item. Besides, in order to properly close the menu once an item is added, call the `onClose` method retrieved from the UserContext through the `useUserMenu` hook. This is handled for you if you use `<MenuItemLink>`:
 
 ```jsx
 import * as React from 'react';
-import { AppBar, UserMenu, MenuItemLink } from 'react-admin';
+import { AppBar, Logout, UserMenu, useUserMenu } from 'react-admin';
+import { Link } from 'react-router-dom';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import SettingsIcon from '@mui/icons-material/Settings';
 
-const ConfigurationMenu = forwardRef(({ onClick }, ref) => (
-    <MenuItemLink
-        ref={ref}
-        to="/configuration"
-        primaryText="Configuration"
-        leftIcon={<SettingsIcon />}
-        onClick={onClick} // close the menu on click
-    />
-));
+// It's important to pass the ref to allow MaterialUI to manage the keyboard navigation
+const ConfigurationMenu = React.forwardRef((props, ref) => {
+    return (
+        <MenuItem
+            ref={ref}
+            component={Link}
+            // It's important to pass the props to allow MaterialUI to manage the keyboard navigation
+            {...props}
+            to="/configuration"
+        >
+            <ListItemIcon>
+                <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText>
+               Configuration
+            </ListItemText>
+        </MenuItem>
+    );
+});
+
+// It's important to pass the ref to allow MaterialUI to manage the keyboard navigation
+const SwitchLanguage = forwardRef((props, ref) => {
+    const [locale, setLocale] = useLocaleState();
+    // We are not using MenuItemLink so we retrieve the onClose function from the UserContext
+    const { onClose } = useUserMenu();
+
+    return (
+        <MenuItem
+            ref={ref}
+            // It's important to pass the props to allow MaterialUI to manage the keyboard navigation
+            {...props}
+            sx={{ color: 'text.secondary' }}
+            onClick={event => {
+                setLocale(locale === 'en' ? 'fr' : 'en');
+                onClose(); // Close the menu
+            }}
+        >
+            <ListItemIcon sx={{ minWidth: 5 }}>
+                <Language />
+            </ListItemIcon>
+            <ListItemText>
+                Switch Language
+            </ListItemText>
+        </MenuItem>
+    );
+});
 
 const MyUserMenu = props => (
     <UserMenu {...props}>
         <ConfigurationMenu />
+        <SwitchLanguage />
+        <Logout />
     </UserMenu>
 );
 
@@ -560,7 +603,6 @@ const useStyles = makeStyles(theme => ({
 const MyLayout = ({
     children,
     dashboard,
-    logout,
     title,
 }) => {
     const classes = useStyles();
@@ -569,10 +611,10 @@ const MyLayout = ({
     return (
         <div className={classes.root}>
             <div className={classes.appFrame}>
-                <AppBar title={title} open={open} logout={logout} />
+                <AppBar title={title} open={open} />
                 <main className={classes.contentWithSidebar}>
                     <Sidebar>
-                        <Menu logout={logout} hasDashboard={!!dashboard} />
+                        <Menu hasDashboard={!!dashboard} />
                     </Sidebar>
                     <div className={classes.content}>
                         {children}
@@ -589,7 +631,6 @@ MyLayout.propTypes = {
         PropTypes.func,
         PropTypes.string,
     ]),
-    logout: ComponentPropType,
     title: PropTypes.string.isRequired,
 };
 
@@ -959,8 +1000,6 @@ Just use an empty `filter` query parameter to force empty filters:
 
 ## Using a Custom Login Page
 
-### Changing the Background Image
-
 By default, the login page displays a gradient background. If you want to change the background, you can use the default Login page component and pass an image URL as the `backgroundImage` prop.
 
 ```jsx
@@ -982,18 +1021,22 @@ const App = () => (
 
 ## Using a Custom Logout Button
 
-### Changing the Icon
-
-It is possible to use a completely [custom logout button](./Admin.md#logoutbutton) or you can simply override some properties of the default button. If you want to change the icon, you can use the default `<Logout>` component and pass a different icon as the `icon` prop.
+It is possible to use a completely [custom logout button](./Authentication.md#customizing-the-logout-component) or you can simply override some properties of the default button. If you want to change the icon, you can use the default `<Logout>` component and pass a different icon as the `icon` prop.
 
 ```jsx
-import { Admin, Logout } from 'react-admin';
+import { Admin, AppBar, Layout, Logout, UserMenu } from 'react-admin';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 const MyLogoutButton = props => <Logout {...props} icon={<ExitToAppIcon/>} />;
 
+const MyUserMenu = () => <UserMenu><MyLogoutButton /></UserMenu>;
+
+const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
+
+const MyLayout = () => <Layout appBar={MyAppBar} />;
+
 const App = () => (
-    <Admin logoutButton={MyLogoutButton}>
+    <Admin layout={MyLayout}>
         // ...
     </Admin>
 );

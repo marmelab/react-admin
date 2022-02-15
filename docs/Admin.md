@@ -38,7 +38,6 @@ Here are all the props accepted by the component:
 - [`theme`](#theme)
 - [`layout`](#layout)
 - [`loginPage`](#loginpage)
-- [`logoutButton`](#logoutbutton)
 - [`history`](#history)
 - [`basename`](#basename)
 - [`ready`](#ready)
@@ -220,7 +219,7 @@ import { useMediaQuery } from '@material-ui/core';
 import { MenuItemLink, useResourceDefinitions, useSidebarState } from 'react-admin';
 import LabelIcon from '@mui/icons-material/Label';
 
-const Menu = ({ onMenuClick, logout }) => {
+const Menu = ({ onMenuClick }) => {
     const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
     const [open] = useSidebarState();
     const resources = useResourceDefinitions();
@@ -244,7 +243,6 @@ const Menu = ({ onMenuClick, logout }) => {
                 onClick={onMenuClick}
                 sidebarIsOpen={open}
             />
-            {isXSmall && logout}
         </div>
     );
 }
@@ -253,8 +251,6 @@ export default Menu;
 ```
 
 **Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views. It supports a custom text and icon (which must be a material-ui `<SvgIcon>`).
-
-**Tip**: Note that we include the `logout` item only on small devices. Indeed, the `logout` button is already displayed in the AppBar on larger devices.
 
 Then, pass it to the `<Admin>` component as the `menu` prop:
 
@@ -349,24 +345,9 @@ const App = () => (
 
 You can also disable it completely along with the `/login` route by passing `false` to this prop.
 
-See The [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more details.
+See The [Authentication documentation](./Authentication.md#customizing-the-login-component) for more details.
 
-**Tip**: Before considering writing your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [Material UI theme](#theme). See the [Authentication documentation](./Authentication.md#customizing-the-login-and-logout-components) for more details.
-
-## `logoutButton`
-
-If you customize the `loginPage`, you probably need to override the `logoutButton`, too - because they share the authentication strategy.
-
-```jsx
-import MyLoginPage from './MyLoginPage';
-import MyLogoutButton from './MyLogoutButton';
-
-const App = () => (
-    <Admin loginPage={MyLoginPage} logoutButton={MyLogoutButton}>
-        ...
-    </Admin>
-);
-```
+**Tip**: Before considering writing your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [Material UI theme](#theme). See the [Authentication documentation](./Authentication.md#customizing-the-login-component) for more details.
 
 ## `history`
 

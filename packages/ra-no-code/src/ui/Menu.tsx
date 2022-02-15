@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { ReactNode, FC } from 'react';
+import { FC } from 'react';
 import PropTypes from 'prop-types';
 import lodashGet from 'lodash/get';
 import clsx from 'clsx';
@@ -83,12 +83,10 @@ export interface MenuProps {
     className?: string;
     dense?: boolean;
     hasDashboard?: boolean;
-    logout?: ReactNode;
 }
 
 Menu.propTypes = {
     className: PropTypes.string,
     dense: PropTypes.bool,
     hasDashboard: PropTypes.bool,
-    logout: PropTypes.element,
 };

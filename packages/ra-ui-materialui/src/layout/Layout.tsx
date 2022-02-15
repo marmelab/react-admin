@@ -24,7 +24,6 @@ export const Layout = (props: LayoutProps) => {
         className,
         dashboard,
         error: errorComponent,
-        logout,
         menu: Menu = DefaultMenu,
         sidebar: Sidebar = DefaultSidebar,
         title,
@@ -42,7 +41,7 @@ export const Layout = (props: LayoutProps) => {
         <StyledLayout className={clsx('layout', className)} {...rest}>
             <SkipNavigationButton />
             <div className={LayoutClasses.appFrame}>
-                <AppBar logout={logout} open={open} title={title} />
+                <AppBar open={open} title={title} />
                 <main className={LayoutClasses.contentWithSidebar}>
                     <Sidebar>
                         <Menu hasDashboard={!!dashboard} />

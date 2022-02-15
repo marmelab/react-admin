@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { createElement, ComponentType, useMemo, useEffect } from 'react';
+import { ComponentType, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import { CoreAdminRoutes } from './CoreAdminRoutes';
@@ -27,7 +27,6 @@ export interface CoreAdminUIProps {
     layout?: LayoutComponent;
     loading?: LoadingComponent;
     loginPage?: LoginComponent | boolean;
-    logoutButton?: ComponentType;
     menu?: ComponentType;
     ready?: ComponentType;
     title?: TitleComponent;
@@ -42,16 +41,10 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
         layout = DefaultLayout,
         loading = Noop,
         loginPage: LoginPage = false,
-        logoutButton,
         menu, // deprecated, use a custom layout instead
         ready = Ready,
         title = 'React Admin',
     } = props;
-
-    const logoutElement = useMemo(
-        () => logoutButton && createElement(logoutButton),
-        [logoutButton]
-    );
 
     useEffect(() => {
         if (
@@ -80,7 +73,6 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
                         dashboard={dashboard}
                         layout={layout}
                         loading={loading}
-                        logout={logoutElement}
                         menu={menu}
                         ready={ready}
                         title={title}

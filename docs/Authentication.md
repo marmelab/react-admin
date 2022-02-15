@@ -754,13 +754,13 @@ const MyPage = () => {
 
 ### `useLogout()` Hook
 
-Just like `useLogin()`, `useLogout()` returns a callback that you can use to call `authProvider.logout()`. Use it to build a custom Logout button, like the following: 
+Just like `useLogin()`, `useLogout()` returns a callback that you can use to call `authProvider.logout()`. Use it to build a custom Logout button and use it in a custom UserMenu, like the following: 
 
 ```jsx
-// in src/MyLogoutButton.js
+// in src/MyLayout.js
 import * as React from 'react';
 import { forwardRef } from 'react';
-import { useLogout } from 'react-admin';
+import { AppBar, Layout, UserMenu, useLogout } from 'react-admin';
 import { MenuItem } from '@mui/material';
 import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 
@@ -777,20 +777,34 @@ const MyLogoutButton = forwardRef((props, ref) => {
     );
 });
 
-export default MyLogoutButton;
+const MyUserMenu = () => (
+    <UserMenu>
+        <MyLogoutButton />
+    </UserMenu>
+);
+
+const MyAppBar = () => (
+    <AppBar userMenu={<UserMenu />} />
+);
+
+const MyLayout = () => (
+    <Layout appBar={MyAppBar} />
+);
+
+export default MyLayout;
 ```
 
-Then pass the Logout button to the `<Admin>` component, as follows:
+Then pass the layout to you admin:
 
 ```jsx
 // in src/App.js
 import * as React from "react";
 import { Admin } from 'react-admin';
 
-import MyLogoutButton from './MyLogoutButton';
+import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin logoutButton={MyLogoutButton} authProvider={authProvider}>
+    <Admin layout={MyLayout} authProvider={authProvider}>
     ...
     </Admin>
 );
@@ -922,13 +936,13 @@ const App = () => (
 
 ## Recipes
 
-### Customizing The Login and Logout Components
+### Customizing The Login Component
 
 Using `authProvider` is enough to implement a full-featured authorization system if the authentication relies on a username and password.
 
 But what if you want to use an email instead of a username? What if you want to use a Single-Sign-On (SSO) with a third-party authentication service? What if you want to use two-factor authentication?
 
-For all these cases, it's up to you to implement your own `LoginPage` component, which will be displayed under the `/login` route instead of the default username/password form, and your own `LogoutButton` component, which will be displayed in the sidebar. Pass both these components to the `<Admin>` component:
+For all these cases, it's up to you to implement your own `LoginPage` component, which will be displayed under the `/login` route instead of the default username/password form. Pass this component to the `<Admin>` component:
 
 ```jsx
 // in src/App.js
@@ -936,16 +950,15 @@ import * as React from "react";
 import { Admin } from 'react-admin';
 
 import MyLoginPage from './MyLoginPage';
-import MyLogoutButton from './MyLogoutButton';
 
 const App = () => (
-    <Admin loginPage={MyLoginPage} logoutButton={MyLogoutButton} authProvider={authProvider}>
+    <Admin loginPage={MyLoginPage} authProvider={authProvider}>
     ...
     </Admin>
 );
 ```
 
-Use the `useLogin` and `useLogout` hooks in your custom `LoginPage` and `LogoutButton` components.
+Use the `useLogin` hook in your custom `LoginPage` component.
 
 ```jsx
 // in src/MyLoginPage.js
@@ -989,7 +1002,11 @@ const MyLoginPage = ({ theme }) => {
 };
 
 export default MyLoginPage;
+```
 
+### Customizing The Logout Component
+
+```jsx
 // in src/MyLogoutButton.js
 import * as React from 'react';
 import { forwardRef } from 'react';
@@ -1020,6 +1037,24 @@ export default MyLogoutButton;
 // ...
 -   const handleClick = () => logout();
 +   const handleClick = () => logout('/custom-login');
+```
+
+To use it, you must provide a custom `UserMenu`:
+
+```jsx
+import MyLogoutButton from './MyLogoutButton';
+
+const MyUserMenu = () => <UserMenu><MyLogoutButton /></UserMenu>;
+
+const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
+
+const MyLayout = () => <Layout appBar={MyAppBar} />;
+
+const App = () => (
+    <Admin layout={MyLayout}>
+        // ...
+    </Admin>
+);
 ```
 
 ### Restricting Access to Resources or Views
@@ -1162,7 +1197,7 @@ What if you want to check the permissions inside a [custom menu](./Admin.md#menu
 import * as React from "react";
 import { MenuItemLink, usePermissions } from 'react-admin';
 
-const Menu = ({ onMenuClick, logout }) => {
+const Menu = ({ onMenuClick }) => {
     const { permissions } = usePermissions();
     return (
         <div>
@@ -1171,7 +1206,6 @@ const Menu = ({ onMenuClick, logout }) => {
             {permissions === 'admin' &&
                 <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
             }
-            {logout}
         </div>
     );
 }

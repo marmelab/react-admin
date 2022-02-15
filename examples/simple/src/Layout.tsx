@@ -1,21 +1,30 @@
 import * as React from 'react';
 import { forwardRef, memo } from 'react';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import { Layout, AppBar, UserMenu, useLocaleState } from 'react-admin';
+import {
+    AppBar,
+    Layout,
+    Logout,
+    UserMenu,
+    useLocaleState,
+    useUserMenu,
+} from 'react-admin';
 import { MenuItem, MenuItemProps, ListItemIcon } from '@mui/material';
 import Language from '@mui/icons-material/Language';
 
 const SwitchLanguage = forwardRef<HTMLLIElement, MenuItemProps>(
     (props, ref) => {
         const [locale, setLocale] = useLocaleState();
+        const { onClose } = useUserMenu();
 
         return (
             <MenuItem
                 ref={ref}
+                {...props}
                 sx={{ color: 'text.secondary' }}
                 onClick={event => {
                     setLocale(locale === 'en' ? 'fr' : 'en');
-                    props.onClick(event);
+                    onClose();
                 }}
             >
                 <ListItemIcon sx={{ minWidth: 5 }}>
@@ -27,9 +36,10 @@ const SwitchLanguage = forwardRef<HTMLLIElement, MenuItemProps>(
     }
 );
 
-const MyUserMenu = props => (
-    <UserMenu {...props}>
+const MyUserMenu = () => (
+    <UserMenu>
         <SwitchLanguage />
+        <Logout />
     </UserMenu>
 );
 

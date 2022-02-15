@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC } from 'react';
 import { styled } from '@mui/material/styles';
-import { Children, cloneElement, memo } from 'react';
+import { Children, memo } from 'react';
 import PropTypes from 'prop-types';
 import {
     AppBar as MuiAppBar,
@@ -23,10 +23,8 @@ import { HideOnScroll } from './HideOnScroll';
  *
  * @param {Object} props
  * @param {ReactNode} props.children React node/s to be rendered as children of the AppBar
- * @param {Object} props.classes CSS class names
  * @param {string} props.className CSS class applied to the MuiAppBar component
  * @param {string} props.color The color of the AppBar
- * @param {Component} props.logout The logout button component that will be pass to the UserMenu component
  * @param {boolean} props.open State of the <Admin/> Sidebar
  * @param {Element | boolean} props.userMenu A custom user menu component for the AppBar. <UserMenu/> component by default. Pass false to disable.
  *
@@ -60,7 +58,6 @@ export const AppBar: FC<AppBarProps> = memo(props => {
         children,
         className,
         color = 'secondary',
-        logout,
         open,
         title,
         userMenu = DefaultUserMenu,
@@ -98,10 +95,10 @@ export const AppBar: FC<AppBarProps> = memo(props => {
                     <LoadingIndicator />
                     {typeof userMenu === 'boolean' ? (
                         userMenu === true ? (
-                            <UserMenu logout={logout} />
+                            <UserMenu />
                         ) : null
                     ) : (
-                        cloneElement(userMenu, { logout })
+                        userMenu
                     )}
                 </Toolbar>
             </StyledAppBar>
@@ -120,7 +117,6 @@ AppBar.propTypes = {
         'transparent',
     ]),
     container: ComponentPropType,
-    logout: PropTypes.element,
     // @deprecated
     open: PropTypes.bool,
     userMenu: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
@@ -130,7 +126,6 @@ const DefaultUserMenu = <UserMenu />;
 
 export interface AppBarProps extends Omit<MuiAppBarProps, 'title'> {
     container?: React.ElementType<any>;
-    logout?: React.ReactNode;
     // @deprecated
     open?: boolean;
     title?: string | JSX.Element;

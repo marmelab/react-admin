@@ -1454,6 +1454,106 @@ export const PostEdit = () => (
 
 Use the `<Title>` component instead.
 
+## `<Admin>`, `<Layout>`, `<AppBar>` And `<UserMenu>` No Longer Accept A `logout` Or `logoutButton` Prop
+
+As we already provide a way to override the user menu displayed in the `<AppBar>`, we removed the `logoutButton` prop from the `<Admin>` component and the `logout` prop from the `<Layout>`, `<AppBar>` and `<UserMenu>` components.
+
+If you passed your own logout component through this prop, you must now provide a custom user menu:
+
+```diff
+-import { Admin, Logout } from 'react-admin';
++import { Admin, AppBar, Layout, Logout, UserMenu } from 'react-admin';
+
+const MyCustomLogout = () => <Logout className="my-class-name" />;
+
++ const MyUserMenu = () => <UserMenu><MyCustomLogout /></UserMenu>;
+
++ const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
+
++ const MyLayout = () => <Layout appBar={MyAppBar} />;
+
+const MyAdmin = () => (
+    <Admin
+-        logoutButton={<MyCustomLogout />}
++        layout={<MyLayout />}
+    >
+        // ....
+    </Admin>
+)
+```
+
+## `<AppBar>` and `<UserMenu>` No Longer Inject Props
+
+When a React element was provided as the `userMenu` prop, the `<AppBar>` used to clone it and inject the `logout` prop (a React element). This is no longer the case and if you provided a custom user menu, you now have to include the logout yourself.
+
+Besides, the `<UserMenu>` used to clone its children to inject the `onClick` prop, allowing them to close the menu. It now provides a `onClose` function through a new `UserContext` accessible by calling the `useUserMenu` hook.
+
+Finally, the `<UserMenu>` no longer accepts a `logout` prop. Instead, you should pass the `<Logout>` component as one of the `<UserMenu>` children. Besides, you should not use an `<MenuItemLink>` in `<UserMenu>` as they also close the `<SideBar>` on mobile:
+
+```diff
+-import { MenuItemLink, UserMenu } from 'react-admin';
++import { Logout, UserMenu, useUserMenu } from 'react-admin';
+import { Link } from 'react-router-dom';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import SettingsIcon from '@mui/icons-material/Settings';
+
+-const ConfigurationMenu = (props) => {
+// It's important to pass the ref to allow MaterialUI to manage the keyboard navigation
++const ConfigurationMenu = forwardRef((props, ref) => {
++    const { onClose } = useUserMenu();
+    return (
+-        <MenuItemLink
+        <MenuItem
+            // It's important to pass the props to allow MaterialUI to manage the keyboard navigation
+            {...props}
+            component={Link}
+            to="/configuration"
+-            onClick={props.onClick}
++            onClick={onClose}
+        >
+            <ListItemIcon>
+                <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText>
+                Configuration
+            </ListItemText>
+-        </MenuItemLink>
+        </MenuItem>
+    );
+});
+
+-const CustomUserMenu = (props) => (
++const CustomUserMenu = () => (
+-    <UserMenu {...props}>
++    <UserMenu>
+        <ConfigurationMenu />
++        <Logout />
+    </UserMenu>
+);
+```
+
+## `<MenuItemLink>` Automatically Translates `primaryText`
+
+You can pass a translation key directly as the `primaryText` prop for `<MenuItemLink>`.
+
+```diff
+const MyMenuItem = forwardRef((props, ref) => {
+-    const translate = useTranslate();
+    return (
+        <MenuItemLink
+            ref={ref}
+            {...props}
+            to="/configuration"
+-            primaryText={translate('pos.configuration')}
++            primaryText="pos.configuration"
+            leftIcon={<SettingsIcon />}
+        />
+    )
+});
+```
+
 ## `useListContext` No Longer Returns An `ids` Prop
 
 The `ListContext` used to return two props for the list data: `data` and `ids`. To render the list data, you had to iterate over the `ids`. 

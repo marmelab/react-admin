@@ -2,7 +2,12 @@ import * as React from 'react';
 import { styled, Theme } from '@mui/material/styles';
 import { useCallback, FunctionComponent, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import { ListItemIcon, MenuItem, useMediaQuery } from '@mui/material';
+import {
+    ListItemIcon,
+    ListItemText,
+    MenuItem,
+    useMediaQuery,
+} from '@mui/material';
 import { MenuItemProps } from '@mui/material/MenuItem';
 
 import ExitIcon from '@mui/icons-material/PowerSettingsNew';
@@ -41,7 +46,7 @@ export const Logout: FunctionComponent<
             <ListItemIcon className={LogoutClasses.icon}>
                 {icon ? icon : <ExitIcon />}
             </ListItemIcon>
-            {translate('ra.auth.logout')}
+            <ListItemText>{translate('ra.auth.logout')}</ListItemText>
         </StyledMenuItem>
     );
 });

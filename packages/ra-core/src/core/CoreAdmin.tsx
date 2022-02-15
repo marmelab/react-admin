@@ -97,7 +97,6 @@ export const CoreAdmin = (props: CoreAdminProps) => {
         layout,
         loading,
         loginPage,
-        logoutButton,
         menu, // deprecated, use a custom layout instead
         title = 'React Admin',
     } = props;
@@ -119,7 +118,6 @@ export const CoreAdmin = (props: CoreAdminProps) => {
                 title={title}
                 loading={loading}
                 loginPage={loginPage}
-                logoutButton={authProvider ? logoutButton : undefined}
             >
                 {children}
             </CoreAdminUI>

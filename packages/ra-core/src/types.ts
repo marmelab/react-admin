@@ -287,9 +287,7 @@ export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;
 export interface CoreLayoutProps {
     children?: ReactNode;
     dashboard?: DashboardComponent;
-    logout?: ReactNode;
     menu?: ComponentType<{
-        logout?: ReactNode;
         hasDashboard?: boolean;
     }>;
     title?: TitleComponent;
