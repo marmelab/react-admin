@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { FormGroupContextProvider, RaRecord } from 'ra-core';
+import { Box, BoxProps } from '@mui/material';
 
 import { FormInput } from './FormInput';
 import { FormTabHeader } from './FormTabHeader';
@@ -19,23 +20,25 @@ export const FormTab = (props: FormTabProps) => {
         path,
         record,
         resource,
+        syncWithLocation,
         variant,
         value,
         ...rest
     } = props;
+
     const renderHeader = () => (
         <FormTabHeader
             label={label}
             value={value}
             icon={icon}
             className={className}
-            {...rest}
+            syncWithLocation={syncWithLocation}
         />
     );
 
     const renderContent = () => (
         <FormGroupContextProvider name={value.toString()}>
-            <span
+            <Box
                 style={hidden ? hiddenStyle : null}
                 className={contentClassName}
                 id={`tabpanel-${value}`}
@@ -43,6 +46,7 @@ export const FormTab = (props: FormTabProps) => {
                 // Set undefined instead of false because WAI-ARIA Authoring Practices 1.1
                 // notes that aria-hidden="false" currently behaves inconsistently across browsers.
                 aria-hidden={hidden || undefined}
+                {...rest}
             >
                 {React.Children.map(
                     children,
@@ -57,7 +61,7 @@ export const FormTab = (props: FormTabProps) => {
                             />
                         )
                 )}
-            </span>
+            </Box>
         </FormGroupContextProvider>
     );
 
@@ -82,7 +86,7 @@ FormTab.propTypes = {
     variant: PropTypes.oneOf(['standard', 'outlined', 'filled']),
 };
 
-export interface FormTabProps {
+export interface FormTabProps extends BoxProps {
     className?: string;
     children?: ReactNode;
     contentClassName?: string;

@@ -447,6 +447,7 @@ If you provided a React element for the optionText prop, you must also provide t
                         }
                         margin={margin}
                         variant={variant}
+                        size="small"
                         className={AutocompleteClasses.input}
                         {...TextFieldProps}
                         {...params}
@@ -468,6 +469,7 @@ If you provided a React element for the optionText prop, you must also provide t
                                     zIndex: 100,
                                 },
                             }}
+                            size="small"
                             {...getTagProps({ index })}
                         />
                     ))

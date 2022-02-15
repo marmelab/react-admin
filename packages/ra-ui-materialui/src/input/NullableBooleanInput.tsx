@@ -52,6 +52,7 @@ export const NullableBooleanInput = (props: NullableBooleanInputProps) => {
     return (
         <StyledTextField
             id={id}
+            size="small"
             {...field}
             select
             margin={margin}

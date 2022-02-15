@@ -63,6 +63,7 @@ export const NumberInput = ({
             id={id}
             {...field}
             type="number"
+            size="small"
             variant={variant}
             error={(isTouched || isSubmitted) && invalid}
             helperText={

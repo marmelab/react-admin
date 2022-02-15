@@ -54,6 +54,7 @@ export const DateTimeInput = ({
             id={id}
             {...field}
             type="datetime-local"
+            size="small"
             variant={variant}
             margin={margin}
             error={(isTouched || isSubmitted) && invalid}

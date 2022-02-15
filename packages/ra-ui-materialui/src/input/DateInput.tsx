@@ -66,6 +66,7 @@ export const DateInput = ({
             id={id}
             {...field}
             type="date"
+            size="small"
             variant={variant}
             margin={margin}
             error={(isTouched || isSubmitted) && invalid}

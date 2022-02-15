@@ -268,6 +268,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                         </div>
                     )}
                     data-testid="selectArray"
+                    size="small"
                     {...field}
                     onChange={handleChangeWithCreateSupport}
                     value={field.value || []}
