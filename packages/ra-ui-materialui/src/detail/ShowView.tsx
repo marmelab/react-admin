@@ -91,7 +91,6 @@ const Root = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    paddingTop: theme.spacing(1),
     [`& .${ShowClasses.main}`]: {
         display: 'flex',
     },
