@@ -7,7 +7,7 @@ import {
     useRecordContext,
     WithRecord,
 } from 'ra-core';
-import { Labeled } from '../input/Labeled';
+import { Labeled } from '../Labeled';
 import { TextField, NumberField } from '../field';
 import { TabbedShowLayout } from './TabbedShowLayout';
 import { Tab } from './Tab';
