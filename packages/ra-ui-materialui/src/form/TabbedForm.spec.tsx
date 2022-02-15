@@ -164,7 +164,7 @@ describe('<TabbedForm />', () => {
         ).toEqual(false);
     });
 
-    it.only('should sync tabs with location by default', () => {
+    it('should sync tabs with location by default', () => {
         const history = createMemoryHistory({ initialEntries: ['/'] });
 
         render(
