@@ -85,6 +85,7 @@ const matchSuggestion = (filter, choice) => {
     return (
         choice.first_name.toLowerCase().includes(filter.toLowerCase())
         || choice.last_name.toLowerCase().includes(filter.toLowerCase())
+    );
 };
 
 <AutocompleteInput

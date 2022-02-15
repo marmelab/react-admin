@@ -59,13 +59,13 @@ The optional `title` prop points to the file title property, used for `title` at
 
 If the record actually contains an array of files in its property defined by the `source` prop, the `src` prop will be needed to determine the `href` value of the links, for example:
 
-```js
+```json
 // This is the record
 {
     files: [
         { url: 'image1.jpg', desc: 'First image' },
         { url: 'image2.jpg', desc: 'Second image' },
-    ],
+    ]
 }
 
 <FileField source="files" src="url" title="desc" />

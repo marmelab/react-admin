@@ -352,7 +352,7 @@ Beware that users from all around the world may use your application, so make su
 
 The `message` returned by the `polyglotI18nProvider` function argument should be a dictionary where the keys identify interface components, and values are the translated string. This dictionary is a simple JavaScript object looking like the following:
 
-```js
+```json
 {
     ra: {
         action: {
@@ -384,7 +384,7 @@ However, before humanizing names, react-admin checks the `messages` dictionary f
 
 This lets you translate your own resource and field names by passing a `messages` object with a `resources` key:
 
-```js
+```json
 {
     resources: {
         shoe: {
@@ -585,14 +585,16 @@ ie: `Sind Sie sicher, dass Sie diesen Kommentar löschen möchten?`
 
 To do this, simply add a `forcedCaseName` key next to the `name` key in your translation file.
 
-```js
-resources: {
-    comments: {
-        name: 'Kommentar |||| Kommentare',
-        forcedCaseName: 'Kommentar |||| Kommentare',
-        fields: {
-            id: 'Id',
-            name: 'Bezeichnung',
+```json
+{
+    resources: {
+        comments: {
+            name: 'Kommentar |||| Kommentare',
+            forcedCaseName: 'Kommentar |||| Kommentare',
+            fields: {
+                id: 'Id',
+                name: 'Bezeichnung',
+            }
         }
     }
 }
@@ -633,7 +635,7 @@ Some of your records may contain fields that are translated in multiple language
 
 They both expect the translatable values to have the following structure:
 
-```js
+```json
 {
     name: {
         en: 'The english value',

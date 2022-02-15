@@ -64,7 +64,7 @@ export const BookShow = () => (
 
 When rendered for the following record:
 
-```jsx
+```json
 { 
     id: 123,
     title: "War And Peace",
@@ -319,7 +319,7 @@ Fields use the `source` as a *path* to read the actual value (using [`lodash.get
 
 For instance, if you have a record like the following:
 
-```jsx
+```json
 { 
     id: 123,
     title: "War And Peace",
@@ -343,7 +343,7 @@ If you want to format a field depending on the value, create another component w
 ```jsx
 const FormattedNumberField = ({ source }) => {
     const record = useRecordContext();
-    return <NumberField sx={{ color: record && record[source] < 0 : 'red' : '' }} source={source} />;
+    return <NumberField sx={{ color: record && record[source] < 0 ? 'red' : '' }} source={source} />;
 };
 FormattedNumberField.defaultProps = {
     textAlign: 'right',
@@ -419,7 +419,7 @@ It must be a regular React component, accepting a `source` attribute and retriev
 
 Let's see an example for an API returning user records with `firstName` and `lastName` properties.
 
-```js
+```json
 {
     id: 123,
     firstName: 'John',

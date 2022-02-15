@@ -56,6 +56,6 @@ const DeleteButton = ({ record }) => {
         );
     }
     if (error) { return <p>ERROR</p>; }
-    return <button disabled={isLoading} onClick={handleClick}>Delete</div>;
+    return <button disabled={isLoading} onClick={handleClick}>Delete</button>;
 };
 ```
