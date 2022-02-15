@@ -1,9 +1,12 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
-import { Typography, Stack } from '@mui/material';
+import { ElementType, ReactElement } from 'react';
+import { Stack, StackProps, Theme, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { Property } from 'csstype';
+import clsx from 'clsx';
 
 import { FieldTitle } from 'ra-core';
+import { ResponsiveStyleValue } from '@mui/system';
 
 /**
  * Wrap a field or an input with a label if necessary.
@@ -20,11 +23,15 @@ import { FieldTitle } from 'ra-core';
 export const Labeled = ({
     children,
     className = '',
+    color = 'textSecondary',
+    component = 'span',
+    fullWidth,
     isRequired,
     label,
     resource,
     source,
-}: FieldWithLabelProps) =>
+    ...rest
+}: LabeledProps) =>
     label !== false &&
     children.props.label !== false &&
     typeof children.type !== 'string' &&
@@ -32,11 +39,15 @@ export const Labeled = ({
     children.type?.displayName !== 'Labeled' &&
     // @ts-ignore
     children.type?.displayName !== 'Labeled' ? (
-        <Root className={className}>
-            <Typography
-                color="textSecondary"
-                className={FieldWithLabelClasses.label}
-            >
+        <Root
+            // @ts-ignore https://github.com/mui/material-ui/issues/29875
+            component={component}
+            className={clsx(className, {
+                [LabeledClasses.fullWidth]: fullWidth,
+            })}
+            {...rest}
+        >
+            <Typography color={color} className={LabeledClasses.label}>
                 <FieldTitle
                     label={label || children.props.label}
                     source={source || children.props.source}
@@ -52,9 +63,17 @@ export const Labeled = ({
 
 Labeled.displayName = 'Labeled';
 
-export interface FieldWithLabelProps {
+export interface LabeledProps extends StackProps {
     children: ReactElement;
     className?: string;
+    color?:
+        | ResponsiveStyleValue<Property.Color | Property.Color[]>
+        | ((
+              theme: Theme
+          ) => ResponsiveStyleValue<Property.Color | Property.Color[]>);
+    component?: ElementType;
+    fullWidth?: boolean;
+    htmlFor?: string;
     isRequired?: boolean;
     label?: string | ReactElement | false;
     resource?: string;
@@ -63,16 +82,23 @@ export interface FieldWithLabelProps {
 
 const PREFIX = 'RaFieldWithLabel';
 
-export const FieldWithLabelClasses = {
+export const LabeledClasses = {
     label: `${PREFIX}-label`,
+    fullWidth: `${PREFIX}-fullWidth`,
 };
 
 const Root = styled(Stack, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
+    display: 'inline-flex',
     marginBottom: '0.2em',
-    [`& .${FieldWithLabelClasses.label}`]: {
+
+    [`&.${LabeledClasses.fullWidth}`]: {
+        width: '100%',
+    },
+
+    [`& .${LabeledClasses.label}`]: {
         fontSize: '0.75em',
         marginBottom: '0.2em',
     },
