@@ -190,7 +190,6 @@ describe('<TabbedForm />', () => {
             </AdminContext>
         );
 
-        screen.debug();
         const tabs = screen.getAllByRole('tab');
         fireEvent.click(tabs[1]);
         expect(history.location.pathname).toEqual('/1');
