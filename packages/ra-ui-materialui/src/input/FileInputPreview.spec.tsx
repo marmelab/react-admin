@@ -42,6 +42,28 @@ describe('<FileInputPreview />', () => {
         expect(onRemoveSpy).toHaveBeenCalled();
     });
 
+    it('should render a disabled delete button if passed prop `disabled`', () => {
+        const onRemoveSpy = jest.fn();
+
+        const { getByLabelText } = render(
+            <FileInputPreview
+                {...defaultProps}
+                disableRemove={true}
+                onRemove={onRemoveSpy}
+            >
+                <div>Child</div>
+            </FileInputPreview>
+        );
+
+        const deleteButton = getByLabelText('ra.action.delete');
+
+        expect(deleteButton['disabled']).toEqual(true);
+
+        fireEvent.click(deleteButton);
+
+        expect(onRemoveSpy).not.toHaveBeenCalled();
+    });
+
     it('should render passed children', () => {
         const { queryByText } = render(
             <FileInputPreview {...defaultProps}>
