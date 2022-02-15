@@ -31,6 +31,19 @@ describe('<DateField />', () => {
         expect(queryByText(date)).not.toBeNull();
     });
 
+    it('should render a date string', () => {
+        const { queryByText } = render(
+            <DateField
+                record={{ id: 123, foo: '2017-04-23' }}
+                source="foo"
+                locales="en-US"
+            />
+        );
+
+        const date = new Date('2017-04-23').toLocaleDateString('en-US');
+        expect(queryByText(date)).not.toBeNull();
+    });
+
     it('should use record from RecordContext', () => {
         const { queryByText } = render(
             <RecordContextProvider
