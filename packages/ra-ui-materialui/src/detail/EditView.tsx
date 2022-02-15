@@ -124,8 +124,6 @@ const Root = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })({
-    display: 'flex',
-    flexDirection: 'column',
     [`& .${EditClasses.main}`]: {
         display: 'flex',
     },

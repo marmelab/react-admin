@@ -42,7 +42,6 @@ describe('<TranslatableFields />', () => {
             </ThemeProvider>
         );
 
-        screen.debug();
         expect(
             screen.getByLabelText('ra.locales.en').getAttribute('hidden')
         ).toBeNull();

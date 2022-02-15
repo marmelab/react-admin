@@ -76,4 +76,4 @@ const BookShow = () => (
 
 * [`Labeled`]
 
-[`Labeled`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/Labeled.tsx
+[`Labeled`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/Labeled.tsx
