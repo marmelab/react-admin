@@ -1488,7 +1488,7 @@ When a React element was provided as the `userMenu` prop, the `<AppBar>` used to
 
 Besides, the `<UserMenu>` used to clone its children to inject the `onClick` prop, allowing them to close the menu. It now provides a `onClose` function through a new `UserContext` accessible by calling the `useUserMenu` hook.
 
-Finally, the `<UserMenu>` no longer accepts a `logout` prop. Instead, you should pass the `<Logout>` component as one of the `<UserMenu>` children.
+Finally, the `<UserMenu>` no longer accepts a `logout` prop. Instead, you should pass the `<Logout>` component as one of the `<UserMenu>` children. Besides, you should not use an `<MenuItemLink>` in `<UserMenu>` as they also close the `<SideBar>` on mobile:
 
 ```diff
 -import { MenuItemLink, UserMenu } from 'react-admin';
@@ -1504,6 +1504,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 +const ConfigurationMenu = forwardRef((props, ref) => {
 +    const { onClose } = useUserMenu();
     return (
+-        <MenuItemLink
         <MenuItem
             // It's important to pass the props to allow MaterialUI to manage the keyboard navigation
             {...props}
@@ -1518,6 +1519,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
             <ListItemText>
                 Configuration
             </ListItemText>
+-        </MenuItemLink>
         </MenuItem>
     );
 });

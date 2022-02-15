@@ -1002,9 +1002,11 @@ const MyLoginPage = ({ theme }) => {
 };
 
 export default MyLoginPage;
+```
 
 ### Customizing The Logout Component
 
+```jsx
 // in src/MyLogoutButton.js
 import * as React from 'react';
 import { forwardRef } from 'react';
