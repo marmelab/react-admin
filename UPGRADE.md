@@ -1494,7 +1494,7 @@ Finally, the `<UserMenu>` no longer accepts a `logout` prop. Instead, you should
 -import { MenuItemLink, UserMenu } from 'react-admin';
 +import { Logout, UserMenu, useUserMenu } from 'react-admin';
 import { Link } from 'react-router-dom';
-import MenuItem from '@mui/material/MenuItem';
++import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -1502,10 +1502,10 @@ import SettingsIcon from '@mui/icons-material/Settings';
 -const ConfigurationMenu = (props) => {
 // It's important to pass the ref to allow MaterialUI to manage the keyboard navigation
 +const ConfigurationMenu = forwardRef((props, ref) => {
-+    const { onClose } = useUserMenu();
++   const { onClose } = useUserMenu();
     return (
--        <MenuItemLink
-        <MenuItem
+-       <MenuItemLink
++       <MenuItem
             // It's important to pass the props to allow MaterialUI to manage the keyboard navigation
             {...props}
             component={Link}
@@ -1519,8 +1519,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
             <ListItemText>
                 Configuration
             </ListItemText>
--        </MenuItemLink>
-        </MenuItem>
+-       </MenuItemLink>
++       </MenuItem>
     );
 });
 
@@ -1529,7 +1529,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 -    <UserMenu {...props}>
 +    <UserMenu>
         <ConfigurationMenu />
-+        <Logout />
++       <Logout />
     </UserMenu>
 );
 ```
