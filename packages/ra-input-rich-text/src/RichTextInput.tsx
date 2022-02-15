@@ -146,8 +146,8 @@ export const RichTextInput = (props: RichTextInputProps) => {
         <Labeled
             isRequired={isRequired}
             label={label}
-            labelId={`${id}-label`}
-            fieldState={fieldState}
+            id={`${id}-label`}
+            color={fieldState.invalid ? 'error' : undefined}
             source={source}
             resource={resource}
             fullWidth={fullWidth}
@@ -259,7 +259,9 @@ const Root = styled('div')(({ theme }) => ({
 
 export type RichTextInputProps = CommonInputProps &
     Omit<LabeledProps, 'children'> & {
+        disabled?: boolean;
         editorOptions?: Partial<EditorOptions>;
+        readOnly?: boolean;
         toolbar?: ReactNode;
     };
 

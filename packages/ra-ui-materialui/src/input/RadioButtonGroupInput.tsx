@@ -141,15 +141,12 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
     if (isLoading) {
         return (
             <Labeled
-                id={id}
+                htmlFor={id}
                 label={label}
                 source={source}
                 resource={resource}
                 className={clsx('ra-input', `ra-input-${source}`, className)}
                 isRequired={isRequired}
-                margin={margin}
-                fieldState={fieldState}
-                field={field}
             >
                 <LinearProgress />
             </Labeled>

@@ -42,11 +42,9 @@ export const TranslatableFieldsTabContent = (
                     <div key={field.props.source}>
                         {field.props.addLabel ? (
                             <Labeled
-                                record={record}
                                 resource={resource}
                                 label={field.props.label}
                                 source={field.props.source}
-                                disabled={false}
                             >
                                 {cloneElement(field, {
                                     ...field.props,

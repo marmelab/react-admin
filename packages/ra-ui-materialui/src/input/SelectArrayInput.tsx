@@ -216,7 +216,6 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                 resource={resource}
                 className={clsx('ra-input', `ra-input-${source}`, className)}
                 isRequired={isRequired}
-                margin={margin}
             >
                 <LinearProgress />
             </Labeled>

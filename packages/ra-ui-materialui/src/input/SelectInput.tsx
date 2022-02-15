@@ -236,15 +236,11 @@ export const SelectInput = (props: SelectInputProps) => {
     if (isLoading) {
         return (
             <Labeled
-                id={id}
                 label={label}
                 source={source}
                 resource={resource}
                 className={clsx('ra-input', `ra-input-${source}`, className)}
                 isRequired={isRequired}
-                fieldState={fieldState}
-                field={field}
-                margin={margin}
             >
                 <LinearProgress />
             </Labeled>

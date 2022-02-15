@@ -168,12 +168,12 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
     if (isLoading) {
         return (
             <Labeled
+                id={id}
                 label={label}
                 source={source}
                 resource={resource}
                 className={clsx('ra-input', `ra-input-${source}`, className)}
                 isRequired={isRequired}
-                margin={margin}
                 {...rest}
             >
                 <LinearProgress />
