@@ -158,6 +158,7 @@ export const AutocompleteInput = <
         resource: resourceProp,
         shouldRenderSuggestions,
         setFilter,
+        size = 'small',
         source: sourceProp,
         suggestionLimit,
         TextFieldProps,
@@ -447,10 +448,10 @@ If you provided a React element for the optionText prop, you must also provide t
                         }
                         margin={margin}
                         variant={variant}
-                        size="small"
                         className={AutocompleteClasses.input}
                         {...TextFieldProps}
                         {...params}
+                        size={size}
                     />
                 )}
                 multiple={multiple}
