@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { RaRecord } from 'ra-core';
 
-import { Labeled } from '../input/Labeled';
+import { Labeled } from '../Labeled';
 
 export const FormInput = <
     RecordType extends RaRecord | Omit<RaRecord, 'id'> = any

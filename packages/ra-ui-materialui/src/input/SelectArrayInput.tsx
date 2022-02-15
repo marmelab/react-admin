@@ -23,7 +23,7 @@ import { FormControlProps } from '@mui/material/FormControl';
 
 import { LinearProgress } from '../layout';
 import { CommonInputProps } from './CommonInputProps';
-import { Labeled } from './Labeled';
+import { Labeled } from '../Labeled';
 import {
     SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,

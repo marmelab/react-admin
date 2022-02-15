@@ -13,7 +13,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import { useInput, useTranslate, shallowEqual } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
-import { Labeled } from './Labeled';
+import { Labeled } from '../Labeled';
 import { FileInputPreview } from './FileInputPreview';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';

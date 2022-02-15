@@ -6,7 +6,7 @@ import {
     useRecordContext,
     WithRecord,
 } from 'ra-core';
-import { FieldWithLabel } from './FieldWithLabel';
+import { Labeled } from '../Labeled';
 import { TextField, NumberField } from '../field';
 import { SimpleShowLayout } from './SimpleShowLayout';
 
@@ -57,9 +57,9 @@ export const CustomLabel = () => (
             <SimpleShowLayout>
                 <TextField label="Identifier" source="id" />
                 <TextField source="title" />
-                <FieldWithLabel label="Author name">
+                <Labeled label="Author name">
                     <TextField source="author" />
-                </FieldWithLabel>
+                </Labeled>
                 <TextField label={false} source="summary" />
                 <NumberField source="year" />
             </SimpleShowLayout>

@@ -6,28 +6,32 @@ import { styled } from '@mui/material/styles';
 import { FieldTitle } from 'ra-core';
 
 /**
- * Wrap a field with a label if necessary.
+ * Wrap a field or an input with a label if necessary.
  *
  * The label is displayed if:
- * - the field has a label prop that is not false, or
- * - the field has a source prop
+ * - the field or input has a label prop that is not false, or
+ * - the field or input has a source prop
  *
  * @example
- * <FieldWithLabel>
+ * <Labeled>
  *     <FooComponent source="title" />
- * </FieldWithLabel>
+ * </Labeled>
  */
-export const FieldWithLabel = ({
-    label,
+export const Labeled = ({
     children,
     className = '',
+    isRequired,
+    label,
+    resource,
+    source,
 }: FieldWithLabelProps) =>
+    label !== false &&
     children.props.label !== false &&
     typeof children.type !== 'string' &&
     // @ts-ignore
     children.type?.displayName !== 'Labeled' &&
     // @ts-ignore
-    children.type?.displayName !== 'FieldWithLabel' ? (
+    children.type?.displayName !== 'Labeled' ? (
         <Root className={className}>
             <Typography
                 color="textSecondary"
@@ -35,7 +39,9 @@ export const FieldWithLabel = ({
             >
                 <FieldTitle
                     label={label || children.props.label}
-                    source={children.props.source}
+                    source={source || children.props.source}
+                    resource={resource}
+                    isRequired={isRequired}
                 />
             </Typography>
             {children}
@@ -44,12 +50,15 @@ export const FieldWithLabel = ({
         <div className={className}>{children}</div>
     );
 
-FieldWithLabel.displayName = 'FieldWithLabel';
+Labeled.displayName = 'Labeled';
 
 export interface FieldWithLabelProps {
     children: ReactElement;
     className?: string;
-    label?: string | ReactElement;
+    isRequired?: boolean;
+    label?: string | ReactElement | false;
+    resource?: string;
+    source?: string;
 }
 
 const PREFIX = 'RaFieldWithLabel';

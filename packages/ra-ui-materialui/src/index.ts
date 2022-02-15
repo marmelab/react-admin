@@ -4,6 +4,7 @@ export * from './defaultTheme';
 export * from './detail';
 export * from './form';
 export * from './field';
+export * from './Labeled';
 export * from './input';
 export * from './layout';
 export * from './Link';

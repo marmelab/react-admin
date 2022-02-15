@@ -17,7 +17,7 @@ import { LinearProgress } from '../../layout';
 import { CommonInputProps } from '../CommonInputProps';
 import { InputHelperText } from '../InputHelperText';
 import { sanitizeInputRestProps } from '../sanitizeInputRestProps';
-import { Labeled } from '../Labeled';
+import { Labeled } from '../../Labeled';
 import { ArrayInputContext } from './ArrayInputContext';
 
 /**
@@ -151,13 +151,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
 
     if (isLoading) {
         return (
-            <Labeled
-                label={label}
-                source={source}
-                resource={resource}
-                className={className}
-                margin={margin}
-            >
+            <Labeled label={label} className={className}>
                 <LinearProgress />
             </Labeled>
         );

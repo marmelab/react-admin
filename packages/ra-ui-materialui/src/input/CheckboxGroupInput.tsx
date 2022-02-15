@@ -21,7 +21,7 @@ import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { CheckboxGroupInputItem } from './CheckboxGroupInputItem';
 import { InputHelperText } from './InputHelperText';
-import { Labeled } from './Labeled';
+import { Labeled } from '../Labeled';
 import { LinearProgress } from '../layout';
 
 /**

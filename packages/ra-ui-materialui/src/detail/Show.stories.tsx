@@ -4,7 +4,7 @@ import { Resource, useRecordContext } from 'ra-core';
 import { createMemoryHistory } from 'history';
 import { Box, Card, Stack } from '@mui/material';
 import { TextField } from '../field';
-import { Labeled } from '../input';
+import { Labeled } from '../Labeled';
 import { SimpleShowLayout } from './SimpleShowLayout';
 import { EditButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';

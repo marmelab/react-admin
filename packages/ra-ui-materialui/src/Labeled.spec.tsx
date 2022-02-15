@@ -9,9 +9,9 @@ import {
     NoLabel,
     NonField,
     NoDoubleLabel,
-} from './FieldWithLabel.stories';
+} from './Labeled.stories';
 
-describe('<FieldWithLabel />', () => {
+describe('<Labeled />', () => {
     it('should render the child', () => {
         render(<Basic />);
         screen.getByText('War and Peace');
@@ -42,7 +42,7 @@ describe('<FieldWithLabel />', () => {
         screen.getByText('War and Peace');
     });
 
-    it('should not add label to a FieldWithLabel child', () => {
+    it('should not add label to a Labeled child', () => {
         render(<NoDoubleLabel />);
         expect(screen.queryAllByText('My custom Title')).toHaveLength(1);
     });

@@ -23,7 +23,7 @@ import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 import { RadioButtonGroupInputItem } from './RadioButtonGroupInputItem';
-import { Labeled } from './Labeled';
+import { Labeled } from '../Labeled';
 import { LinearProgress } from '../layout';
 
 /**

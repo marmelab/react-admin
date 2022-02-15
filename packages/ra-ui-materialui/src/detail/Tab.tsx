@@ -7,7 +7,7 @@ import { ResponsiveStyleValue } from '@mui/system';
 import { useTranslate, RaRecord } from 'ra-core';
 import clsx from 'clsx';
 
-import { FieldWithLabel } from './FieldWithLabel';
+import { Labeled } from '../Labeled';
 
 /**
  * Tab element for the TabbedShowLayout.
@@ -93,7 +93,7 @@ export const Tab = ({
         <Stack className={contentClassName} spacing={spacing} divider={divider}>
             {React.Children.map(children, field =>
                 field && isValidElement<any>(field) ? (
-                    <FieldWithLabel
+                    <Labeled
                         key={field.props.source}
                         className={clsx(
                             'ra-field',
@@ -103,7 +103,7 @@ export const Tab = ({
                         )}
                     >
                         {field}
-                    </FieldWithLabel>
+                    </Labeled>
                 ) : null
             )}
         </Stack>

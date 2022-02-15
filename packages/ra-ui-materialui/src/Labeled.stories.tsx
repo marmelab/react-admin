@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { RecordContextProvider, ResourceContext } from 'ra-core';
-import { TextField } from '../field/TextField';
-import { FieldWithLabel } from './FieldWithLabel';
+import { TextField } from './field';
+import { Labeled } from './Labeled';
 
-export default { title: 'ra-ui-materialui/detail/FieldWithLabel' };
+export default { title: 'ra-ui-materialui/detail/Labeled' };
 
 const record = {
     id: 1,
@@ -17,9 +17,9 @@ const record = {
 export const Basic = () => (
     <ResourceContext.Provider value="books">
         <RecordContextProvider value={record}>
-            <FieldWithLabel>
+            <Labeled>
                 <TextField source="title" />
-            </FieldWithLabel>
+            </Labeled>
         </RecordContextProvider>
     </ResourceContext.Provider>
 );
@@ -27,9 +27,9 @@ export const Basic = () => (
 export const CustomLabel = () => (
     <ResourceContext.Provider value="books">
         <RecordContextProvider value={record}>
-            <FieldWithLabel>
+            <Labeled>
                 <TextField label="My custom Title" source="title" />
-            </FieldWithLabel>
+            </Labeled>
         </RecordContextProvider>
     </ResourceContext.Provider>
 );
@@ -37,9 +37,9 @@ export const CustomLabel = () => (
 export const ExplicitLabel = () => (
     <ResourceContext.Provider value="books">
         <RecordContextProvider value={record}>
-            <FieldWithLabel label="My custom Title">
+            <Labeled label="My custom Title">
                 <TextField source="title" />
-            </FieldWithLabel>
+            </Labeled>
         </RecordContextProvider>
     </ResourceContext.Provider>
 );
@@ -47,27 +47,27 @@ export const ExplicitLabel = () => (
 export const NoLabel = () => (
     <ResourceContext.Provider value="books">
         <RecordContextProvider value={record}>
-            <FieldWithLabel>
+            <Labeled>
                 <TextField label={false} source="title" />
-            </FieldWithLabel>
+            </Labeled>
         </RecordContextProvider>
     </ResourceContext.Provider>
 );
 
 export const NonField = () => (
-    <FieldWithLabel>
+    <Labeled>
         <span>War and Peace</span>
-    </FieldWithLabel>
+    </Labeled>
 );
 
 export const NoDoubleLabel = () => (
     <ResourceContext.Provider value="books">
         <RecordContextProvider value={record}>
-            <FieldWithLabel>
-                <FieldWithLabel label="My custom Title">
+            <Labeled>
+                <Labeled label="My custom Title">
                     <TextField source="title" />
-                </FieldWithLabel>
-            </FieldWithLabel>
+                </Labeled>
+            </Labeled>
         </RecordContextProvider>
     </ResourceContext.Provider>
 );

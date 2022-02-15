@@ -8,7 +8,7 @@ import {
     ReactNode,
 } from 'react';
 import { useTranslatableContext, RaRecord } from 'ra-core';
-import { Labeled } from '../input';
+import { Labeled } from '../Labeled';
 
 /**
  * Default container for a group of translatable fields inside a TranslatableFields components.
