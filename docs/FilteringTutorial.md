@@ -171,6 +171,62 @@ If you use the FilterList, you'll probably need a search input. As the FilterLis
 
 ![Filter Live Search](./img/filter-live-search.gif)
 
+## Filter Operators
+
+The internal format for storing filters and sending them to the dataProvider is an object, e.g.:
+
+```js
+{ commentable: true, q: "lorem " }
+```
+
+This is fine for equality filters, but how can you do more complex filters, like "between", "contains", "starts with", "greater than", etc.?
+
+As there is no standard way to pass such complex filters to APIs, react-admin makes no decision about it. It's up to you to decide how to store them in the filter object.
+
+The demos show one possible way: suffix the filter name with an operator, e.g. "_gte" for "greater than or equal to".
+
+```jsx
+const postFilters = [
+    <DateInput source="released_gte" label="Released after" />
+    <DateInput source="released_lte" label="Released before" />
+];
+```
+
+Some API backend (e.g. JSON Server) know how to handle this syntax. If your API doesn't understand these 'virtual fields', you will have to transform them into the expected syntax in the Data Provider.
+
+```jsx
+// in dataProvider.js
+export default {
+    getList: (resource, params) => {
+        // transform a filter object to a filters array with operators
+        // filter is like { commentable: true, released_gte: '2018-01-01' }
+        const filter = params.filter;
+        const operators = { '_gte': '>=', '_lte': '<=', '_neq': '!=' };
+        // filters is like [
+        //    { field: "commentable", operator: "=", value: true},
+        //    { field: "released", operator: ">=", value: '2018-01-01'}
+        // ]
+        const filters = Object.keys(filter).map(key => {
+            const operator = operators[key.slice(-4)];
+            return operator
+                ? { field: key.slice(0, -4), operator, value: filter[key] }
+                : { field: key, operator: '=', value: filter[key] };
+        });
+        const query = {
+            pagination: params.pagination,
+            sort: params.sort,
+            filter: filters,
+        };
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        return httpClient(url).then(({ json }) => ({
+            data: json,
+            total: parseInt(headers.get('content-range').split('/').pop(),10),
+        });
+    },
+    // ...
+}
+```
+
 ## Saved Queries: Let Users Save Filter And Sort
 
 [![Saved Queries in FilterList](https://marmelab.com/ra-enterprise/modules/assets/ra-preferences-SavedQueriesList.gif)](https://marmelab.com/ra-enterprise/modules/assets/ra-preferences-SavedQueriesList.gif)
