@@ -13,7 +13,6 @@ import { Typography } from '@mui/material';
 import clsx from 'clsx';
 import { RaRecord } from 'ra-core';
 
-import { FormInput } from '../../form/FormInput';
 import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
 import { useSimpleFormIterator } from './useSimpleFormIterator';
 import { ArrayInputContextValue } from './ArrayInputContext';
@@ -31,14 +30,12 @@ export const SimpleFormIteratorItem = React.forwardRef(
             disableRemove,
             getItemLabel,
             index,
-            margin,
             member,
             record,
             removeButton,
             reOrderButtons,
             resource,
             source,
-            variant,
         } = props;
 
         const { total, reOrder, remove } = useSimpleFormIterator();
@@ -108,29 +105,20 @@ export const SimpleFormIteratorItem = React.forwardRef(
                                     return null;
                                 }
                                 const { source, ...inputProps } = input.props;
-                                return (
-                                    <FormInput
-                                        input={cloneElement(input, {
-                                            source: source
-                                                ? `${member}.${source}`
-                                                : member,
-                                            index: source ? undefined : index2,
-                                            label:
-                                                typeof input.props.label ===
-                                                'undefined'
-                                                    ? source
-                                                        ? `resources.${resource}.fields.${source}`
-                                                        : undefined
-                                                    : input.props.label,
-                                            disabled,
-                                            ...inputProps,
-                                        })}
-                                        record={record}
-                                        resource={resource}
-                                        variant={variant}
-                                        margin={margin}
-                                    />
-                                );
+                                return cloneElement(input, {
+                                    source: source
+                                        ? `${member}.${source}`
+                                        : member,
+                                    index: source ? undefined : index2,
+                                    label:
+                                        typeof input.props.label === 'undefined'
+                                            ? source
+                                                ? `resources.${resource}.fields.${source}`
+                                                : undefined
+                                            : input.props.label,
+                                    disabled,
+                                    ...inputProps,
+                                });
                             }
                         )}
                     </section>
@@ -163,7 +151,6 @@ export type SimpleFormIteratorItemProps = Partial<ArrayInputContextValue> & {
     disableReordering?: boolean;
     getItemLabel?: (index: number) => string;
     index: number;
-    margin?: 'none' | 'normal' | 'dense';
     member: string;
     onRemoveField: (index: number) => void;
     onReorder: (origin: number, destination: number) => void;
@@ -172,5 +159,4 @@ export type SimpleFormIteratorItemProps = Partial<ArrayInputContextValue> & {
     reOrderButtons?: ReactElement;
     resource: string;
     source: string;
-    variant?: 'standard' | 'outlined' | 'filled';
 };

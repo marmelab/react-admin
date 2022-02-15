@@ -46,8 +46,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         disableAdd,
         disableRemove,
         disableReordering,
-        variant,
-        margin,
         TransitionProps,
         getItemLabel = DefaultLabelFn,
     } = props;
@@ -116,7 +114,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                                 fields={fields}
                                 getItemLabel={getItemLabel}
                                 index={index}
-                                margin={margin}
                                 member={`${source}.${index}`}
                                 onRemoveField={removeField}
                                 onReorder={handleReorder}
@@ -125,7 +122,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                                 reOrderButtons={reOrderButtons}
                                 resource={resource}
                                 source={source}
-                                variant={variant}
                                 ref={nodeRef}
                             >
                                 {children}
@@ -187,7 +183,6 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     disableRemove?: boolean | DisableRemoveFunction;
     disableReordering?: boolean;
     getItemLabel?: (index: number) => string;
-    margin?: 'none' | 'normal' | 'dense';
     meta?: {
         // the type defined in FieldArrayRenderProps says error is boolean, which is wrong.
         error?: any;
@@ -199,7 +194,6 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     resource?: string;
     source?: string;
     TransitionProps?: CSSTransitionProps;
-    variant?: 'standard' | 'outlined' | 'filled';
 }
 
 const Root = styled('ul')(({ theme }) => ({
