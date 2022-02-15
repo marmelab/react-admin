@@ -24,6 +24,7 @@ export const FilterButtonMenuItem = forwardRef<any, FilterButtonMenuItemProps>(
                 onClick={handleShow}
                 autoFocus={autoFocus}
                 ref={ref}
+                disabled={filter.props.disabled}
             >
                 <FieldTitle
                     label={filter.props.label}

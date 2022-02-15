@@ -496,6 +496,8 @@ export const PostList = () => (
 
 **Tip**: Don't mix up this `filters` prop, expecting an array of `<Input>` elements, with the `filter` props, which expects an object to define permanent filters (see below).
 
+**Tip**: Filters will render as disabled inputs or menu items (depending on filter context) if passed the prop `disabled`.
+
 Filter Inputs are regular inputs. `<List>` hides them all by default, except those that have the `alwaysOn` prop. 
 
 You can also display filters as a sidebar:
@@ -702,4 +704,3 @@ const PostList = () => (
 {% endraw %}
 
 **Tip**: The `List` component `classes` can also be customized for all instances of the component with its global css name `RaList` as [describe here](https://marmelab.com/blog/2019/12/18/react-admin-3-1.html#theme-overrides)
-
