@@ -109,17 +109,25 @@ export const useCreate = <RecordType extends RaRecord = any>(
     const create = (
         callTimeResource: string = resource,
         callTimeParams: Partial<CreateParams<RecordType>> = {},
-        createOptions?: MutateOptions<
+        createOptions: MutateOptions<
             RecordType,
             unknown,
             Partial<UseCreateMutateParams<RecordType>>,
             unknown
-        >
-    ) =>
+        > & { returnPromise?: boolean } = {}
+    ) => {
+        const { returnPromise, ...reactCreateOptions } = createOptions;
+        if (returnPromise) {
+            return mutation.mutateAsync(
+                { resource: callTimeResource, ...callTimeParams },
+                createOptions
+            );
+        }
         mutation.mutate(
             { resource: callTimeResource, ...callTimeParams },
-            createOptions
+            reactCreateOptions
         );
+    };
 
     return [create, mutation];
 };
@@ -138,7 +146,10 @@ export type UseCreateOptions<
     Partial<UseCreateMutateParams<RecordType>>
 >;
 
-export type UseCreateResult<RecordType extends RaRecord = any> = [
+export type UseCreateResult<
+    RecordType extends RaRecord = any,
+    TReturnPromise extends boolean = boolean
+> = [
     (
         resource?: string,
         params?: Partial<CreateParams<Partial<RecordType>>>,
@@ -147,8 +158,8 @@ export type UseCreateResult<RecordType extends RaRecord = any> = [
             unknown,
             Partial<UseCreateMutateParams<RecordType>>,
             unknown
-        >
-    ) => void,
+        > & { returnPromise?: TReturnPromise }
+    ) => TReturnPromise extends true ? Promise<RecordType> : void,
     UseMutationResult<
         RecordType,
         unknown,
