@@ -25,6 +25,7 @@ export const FileInput = (
         accept,
         children,
         className,
+        disableRemove,
         format,
         helperText,
         label,
@@ -187,6 +188,7 @@ export const FileInput = (
                                 file={file}
                                 onRemove={onRemove(file)}
                                 className={FileInputClasses.removeButton}
+                                disableRemove={disableRemove}
                             >
                                 {cloneElement(childrenElement as ReactElement, {
                                     record: file,
@@ -208,6 +210,7 @@ FileInput.propTypes = {
     ]),
     children: PropTypes.element,
     className: PropTypes.string,
+    disableRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     id: PropTypes.string,
     isRequired: PropTypes.bool,
     label: PropTypes.string,
@@ -254,6 +257,7 @@ export interface FileInputProps
     labelMultiple?: string;
     labelSingle?: string;
     placeholder?: ReactNode;
+    disableRemove?: Function | boolean;
 }
 
 export interface FileInputOptions extends DropzoneOptions {

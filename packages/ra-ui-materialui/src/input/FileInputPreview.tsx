@@ -12,6 +12,7 @@ export const FileInputPreview = (props: FileInputPreviewProps) => {
         classes: classesOverride,
         className,
         onRemove,
+        disableRemove,
         file,
         ...rest
     } = props;
@@ -28,6 +29,15 @@ export const FileInputPreview = (props: FileInputPreviewProps) => {
         };
     }, [file]);
 
+    const isDisabled = file => {
+        if (typeof disableRemove === 'boolean') {
+            return disableRemove;
+        } else if (typeof disableRemove === 'function') {
+            return disableRemove(file);
+        }
+        return false;
+    };
+
     return (
         <Root className={className} {...rest}>
             <IconButton
@@ -35,9 +45,16 @@ export const FileInputPreview = (props: FileInputPreviewProps) => {
                 onClick={onRemove}
                 aria-label={translate('ra.action.delete')}
                 title={translate('ra.action.delete')}
+                disabled={isDisabled(file)}
                 size="large"
             >
-                <RemoveCircle className={FileInputPreviewClasses.removeIcon} />
+                <RemoveCircle
+                    className={
+                        isDisabled(file)
+                            ? FileInputPreviewClasses.disabledRemoveIcon
+                            : FileInputPreviewClasses.removeIcon
+                    }
+                />
             </IconButton>
             {children}
         </Root>
@@ -49,6 +66,7 @@ FileInputPreview.propTypes = {
     className: PropTypes.string,
     file: PropTypes.object,
     onRemove: PropTypes.func.isRequired,
+    disableRemove: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
 };
 
 FileInputPreview.defaultProps = {
@@ -60,6 +78,7 @@ const PREFIX = 'RaFileInputPreview';
 const FileInputPreviewClasses = {
     removeButton: `${PREFIX}-removeButton`,
     removeIcon: `${PREFIX}-removeIcon`,
+    disabledRemoveIcon: `${PREFIX}-disabledRemoveIcon`,
 };
 
 const Root = styled('div', { name: PREFIX })(({ theme }) => ({
@@ -67,6 +86,9 @@ const Root = styled('div', { name: PREFIX })(({ theme }) => ({
 
     [`& .${FileInputPreviewClasses.removeIcon}`]: {
         color: theme.palette.error.main,
+    },
+    [`& .${FileInputPreviewClasses.disabledRemoveIcon}`]: {
+        color: theme.palette.text.disabled,
     },
 }));
 
@@ -76,4 +98,5 @@ export interface FileInputPreviewProps {
     classes?: object;
     onRemove: () => void;
     file: any;
+    disableRemove?: Function | boolean;
 }
