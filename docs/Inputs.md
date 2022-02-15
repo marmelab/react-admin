@@ -310,6 +310,8 @@ If the default Dropzone label doesn't fit with your need, you can pass a `placeh
 
 Note that the file upload returns a [File](https://developer.mozilla.org/en/docs/Web/API/File) object. It is your responsibility to handle it depending on your API behavior. You can for instance encode it in base64, or send it as a multi-part form data. Check [this example](./DataProviders.md#extending-a-data-provider-example-of-file-upload) for base64 encoding data by extending the REST Client.
 
+The `FileInput` component accepts the prop `disableRemove`, which can be a boolean or function that accepts an uploaded file as an argument and returns a boolean. This prop is passed directly to the `FileInputPreview` component. When it returns true, the `FileInputPreview` remove button will be disabled, allowing for conditionally allowing users to remove files from the form.
+
 #### CSS API
 
 | Rule name       | Description                                                                       |
