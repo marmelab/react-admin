@@ -25216,6 +25216,8 @@ __metadata:
     prop-types: ^15.7.0
     query-string: ^5.1.1
     ra-core: ^4.0.0-alpha.2
+    ra-i18n-polyglot: ^4.0.0-alpha.2
+    ra-language-english: ^4.0.0-alpha.2
     react: ^17.0.0
     react-dom: ^17.0.0
     react-dropzone: ^10.1.7
