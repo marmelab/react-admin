@@ -33,8 +33,6 @@ import { SimpleFormView } from './SimpleFormView';
  * @prop {boolean} submitOnEnter
  * @prop {string} redirect
  * @prop {ReactElement} toolbar The element displayed at the bottom of the form, containing the SaveButton
- * @prop {string} variant Apply variant to all inputs. Possible values are 'standard', 'outlined', and 'filled' (default)
- * @prop {string} margin Apply variant to all inputs. Possible values are 'none', 'normal', and 'dense' (default)
  *
  * @param {Props} props
  */
@@ -70,10 +68,8 @@ export interface SimpleFormProps
     className?: string;
     component?: React.ComponentType<any>;
     initialValues?: any;
-    margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
     resource?: string;
     submitOnEnter?: boolean;
     toolbar?: ReactElement | false;
-    variant?: 'standard' | 'outlined' | 'filled';
 }
