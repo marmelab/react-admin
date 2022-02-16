@@ -247,7 +247,7 @@ describe('<CheckboxGroupInput />', () => {
         });
     });
 
-    it('should parse selected values types to numbers if some are numbers', () => {
+    it('should parse selected values types to numbers if some choices are numbers', () => {
         const handleSubmit = jest.fn();
         const { getByLabelText } = render(
             <Form
