@@ -285,12 +285,13 @@ describe('<CheckboxGroupInput />', () => {
         expect(screen.queryByRole('progressbar')).toBeNull();
     });
 
-    it('should render a LinearProgress if loading is true and a second has passed', async () => {
+    it('should render a LinearProgress if loading is true, choices are empty and a second has passed', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm mode="onBlur" onSubmit={jest.fn()}>
                     <CheckboxGroupInput
                         {...defaultProps}
+                        choices={[]}
                         isFetching
                         isLoading
                     />
