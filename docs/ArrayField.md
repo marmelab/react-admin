@@ -9,7 +9,7 @@ Display a collection using `<Field>` child components.
 
 Ideal for embedded arrays of objects, e.g. `tags` and `backlinks` in the following `post` object:
 
-```json
+```js
 {
     id: 123,
     tags: [

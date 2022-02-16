@@ -11,7 +11,7 @@ You may have inputs which are translated in multiple languages and want users to
 
 It expects the translatable values to have the following structure:
 
-```json
+```js
 {
     name: {
         en: 'The english value',

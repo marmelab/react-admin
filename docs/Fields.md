@@ -64,7 +64,7 @@ export const BookShow = () => (
 
 When rendered for the following record:
 
-```json
+```js
 { 
     id: 123,
     title: "War And Peace",

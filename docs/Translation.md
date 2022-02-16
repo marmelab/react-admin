@@ -352,7 +352,7 @@ Beware that users from all around the world may use your application, so make su
 
 The `message` returned by the `polyglotI18nProvider` function argument should be a dictionary where the keys identify interface components, and values are the translated string. This dictionary is a simple JavaScript object looking like the following:
 
-```json
+```js
 {
     ra: {
         action: {

@@ -56,7 +56,7 @@ The optional `title` prop points to the picture title property, used for both `a
 
 If the record actually contains an array of images in the property defined by the `source` prop, the `src` prop will be needed to determine the `src` value of the images, for example:
 
-```json
+```js
 // This is the record
 {
     pictures: [

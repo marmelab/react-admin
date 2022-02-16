@@ -7,7 +7,7 @@ title: "The TranslatableFields Component"
 
 You may have fields which are translated in multiple languages and want users to verify each translation. To display them, you can use the `<TranslatableFields>` component, which expects the translatable values to have the following structure:
 
-```json
+```js
 {
     name: {
         en: 'The english value',
