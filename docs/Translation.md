@@ -384,7 +384,7 @@ However, before humanizing names, react-admin checks the `messages` dictionary f
 
 This lets you translate your own resource and field names by passing a `messages` object with a `resources` key:
 
-```json
+```js
 {
     resources: {
         shoe: {
@@ -585,7 +585,7 @@ ie: `Sind Sie sicher, dass Sie diesen Kommentar löschen möchten?`
 
 To do this, simply add a `forcedCaseName` key next to the `name` key in your translation file.
 
-```json
+```js
 {
     resources: {
         comments: {
@@ -635,7 +635,7 @@ Some of your records may contain fields that are translated in multiple language
 
 They both expect the translatable values to have the following structure:
 
-```json
+```js
 {
     name: {
         en: 'The english value',

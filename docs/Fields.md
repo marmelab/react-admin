@@ -319,7 +319,7 @@ Fields use the `source` as a *path* to read the actual value (using [`lodash.get
 
 For instance, if you have a record like the following:
 
-```json
+```js
 { 
     id: 123,
     title: "War And Peace",
@@ -419,7 +419,7 @@ It must be a regular React component, accepting a `source` attribute and retriev
 
 Let's see an example for an API returning user records with `firstName` and `lastName` properties.
 
-```json
+```js
 {
     id: 123,
     firstName: 'John',
