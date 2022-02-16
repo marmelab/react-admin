@@ -18,7 +18,7 @@ export interface UseReferenceResult<RecordType extends RaRecord = any> {
  * @typedef UseReferenceResult
  * @type {Object}
  * @property {boolean} isFetching: boolean indicating if the reference is loading
- * @property {boolean} isLoading: boolean indicating if the reference has loaded
+ * @property {boolean} isLoading: boolean indicating if the reference has loaded at least once
  * @property {Object} referenceRecord: the referenced record.
  */
 

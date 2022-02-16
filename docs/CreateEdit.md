@@ -695,7 +695,6 @@ const MyCreate = props => {
         resource, // the resource name, deduced from the location. e.g. 'posts'
         save, // the create callback, to be passed to the underlying form as submit handler
         saving, // boolean that becomes true when the dataProvider is called to create the record
-        version, // integer used by the refresh feature
     } = createControllerProps;
     return (
         <CreateContextProvider value={createControllerProps}>
@@ -707,7 +706,6 @@ const MyCreate = props => {
                     resource,
                     save,
                     saving,
-                    version,
                 })}
             </div>
         </CreateContextProvider>
@@ -739,14 +737,13 @@ const MyEdit = props => {
     const {
         defaultTitle, // the translated title based on the resource, e.g. 'Post #123'
         error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onError` side effect.
-        loaded, // boolean that is false until the record is available
-        loading, // boolean that is true on mount, and false once the record was fetched
+        isFetching, // boolean that is true while the record is being fetched, and false once the record is fetched
+        isLoading, // boolean that is true until the record is available for the first time
         record, // record fetched via dataProvider.getOne() based on the id from the location
         redirect, // the default redirection route. Defaults to 'list'
         resource, // the resource name, deduced from the location. e.g. 'posts'
         save, // the update callback, to be passed to the underlying form as submit handler
         saving, // boolean that becomes true when the dataProvider is called to update the record
-        version, // integer used by the refresh feature
     } = controllerProps;
     return (
         <EditContextProvider value={controllerProps}>
@@ -758,7 +755,6 @@ const MyEdit = props => {
                     resource,
                     save,
                     saving,
-                    version,
                 })}
             </div>
         </EditContextProvider>
