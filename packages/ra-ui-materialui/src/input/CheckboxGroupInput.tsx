@@ -68,7 +68,11 @@ import { LinearProgress } from '../layout';
  *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
- * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
+ * const FullNameField = () => {
+ *     const record = useRecordContext();
+ *     return <span>{record.first_name} {record.last_name}</span>;
+ * };
+ *
  * <CheckboxGroupInput source="recipients" choices={choices} optionText={<FullNameField />}/>
  *
  * The choices are translated by default, so you can use translation identifiers as choices:
@@ -99,13 +103,13 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         margin = 'dense',
         onBlur,
         onChange,
-        optionText,
-        optionValue,
+        optionText = 'name',
+        optionValue = 'id',
         parse,
         resource: resourceProp,
-        row,
+        row = true,
         source: sourceProp,
-        translateChoice,
+        translateChoice = true,
         validate,
         ...rest
     } = props;
@@ -251,19 +255,13 @@ CheckboxGroupInput.propTypes = {
     translateChoice: PropTypes.bool,
 };
 
-CheckboxGroupInput.defaultProps = {
-    optionText: 'name',
-    optionValue: 'id',
-    translateChoice: true,
-    fullWidth: true,
-    row: true,
-};
-
-export type CheckboxGroupInputProps = CommonInputProps &
+export type CheckboxGroupInputProps = Omit<CommonInputProps, 'source'> &
     ChoicesProps &
     CheckboxProps &
     FormControlProps & {
         row?: boolean;
+        // Optional as this input can be used inside a ReferenceInput
+        source?: string;
     };
 
 const PREFIX = 'RaCheckboxGroupInput';
