@@ -395,10 +395,10 @@ const AuthorShow = () => (
             <DateField source="date_of_birth" />
             <ReferenceOneField label="Genre" reference="book_details" target="book_id">
                 <TextField source="genre" />
-            </ReferenceManyToManyField>
+            </ReferenceOneField>
             <ReferenceOneField label="ISBN" reference="book_details" target="book_id">
                 <TextField source="ISBN" />
-            </ReferenceManyToManyField>
+            </ReferenceOneField>
             <EditButton />
         </SimpleShowLayout>
     </Show>

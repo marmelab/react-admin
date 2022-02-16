@@ -472,7 +472,7 @@ export const UserCreate = () => {
                 {permissions === 'admin' &&
                     <TextInput source="role" validate={[required()]} />}
             </SimpleForm>
-        </Create>;
+        </Create>
     )
 }
 ```
@@ -716,7 +716,7 @@ If you call `useAuthenticated()` with a `params` option, those parameters are pa
 
 ```jsx
 const MyPage = () => {
-    useAuthenticated({ params: foo: 'bar' } }); // calls authProvider.checkAuth({ foo: 'bar' })
+    useAuthenticated({ params: { foo: 'bar' } }); // calls authProvider.checkAuth({ foo: 'bar' })
     return (
         <div>
             ...
@@ -1107,7 +1107,7 @@ export const UserCreate = () => {
                 {permissions === 'admin' &&
                     <TextInput source="role" validate={[required()]} />}
             </SimpleForm>
-        </Create>;
+        </Create>
     );
 }
 ```
@@ -1131,7 +1131,7 @@ export const UserEdit = () => {
                         <TextInput source="role" validate={required()} />
                     </FormTab>}
             </TabbedForm>
-        </Edit>;
+        </Edit>
     );
 };
 ```
@@ -1160,7 +1160,7 @@ export const UserList = () => {
                 {permissions === 'admin' && <EditButton />}
                 <ShowButton />
             </Datagrid>
-        </List>;
+        </List>
     );
 };
 ```

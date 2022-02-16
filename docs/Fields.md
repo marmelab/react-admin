@@ -64,7 +64,7 @@ export const BookShow = () => (
 
 When rendered for the following record:
 
-```jsx
+```js
 { 
     id: 123,
     title: "War And Peace",
@@ -308,7 +308,7 @@ Fields use the `source` as a *path* to read the actual value (using [`lodash.get
 
 For instance, if you have a record like the following:
 
-```jsx
+```js
 { 
     id: 123,
     title: "War And Peace",
@@ -332,7 +332,7 @@ If you want to format a field depending on the value, create another component w
 ```jsx
 const FormattedNumberField = ({ source }) => {
     const record = useRecordContext();
-    return <NumberField sx={{ color: record && record[source] < 0 : 'red' : '' }} source={source} />;
+    return <NumberField sx={{ color: record && record[source] < 0 ? 'red' : '' }} source={source} />;
 };
 FormattedNumberField.defaultProps = {
     textAlign: 'right',

@@ -217,7 +217,7 @@ const PostEdit = () => (
                             scopedFormData && scopedFormData.name ? (
                                 <SelectInput
                                     source={getSource('role')} // Will translate to "authors[0].role"
-                                    choices={[{id:1, name:'Head Writer'}, {id:2, name:'Co-Writer'}]
+                                    choices={[{ id: 1, name: 'Head Writer' }, { id: 2, name: 'Co-Writer' }]}
                                     {...rest}
                                 />
                             ) : null
@@ -268,7 +268,7 @@ import { useController } from 'react-hook-form';
 const LatLngInput = () => {
     const input1 = useController({ name: 'lat' });
     const input2 = useController({ name: 'lng' });
-    
+
     return (
         <span>
             <input {...input1.field} type="number" placeholder="latitude" />
@@ -276,7 +276,7 @@ const LatLngInput = () => {
             <input {...input2.field} type="number" placeholder="longitude" />
         </span>
     );
-);
+};
 export default LatLngInput;
 
 // in ItemEdit.js
@@ -314,7 +314,7 @@ const LatLngInput = () => {
             <input {...input2.field} type="number" placeholder="longitude" />
         </span>
     );
-);
+};
 export default LatLngInput;
 ```
 
@@ -340,7 +340,7 @@ const LatLngInput = () => {
             </span>
         </Labeled>
     );
-);
+};
 export default LatLngInput;
 ```
 
@@ -373,7 +373,7 @@ const BoundedTextField = ({ name, label }) => {
         <TextField
             {...field}
             label={label}
-            error={(isTouched || isSubmitted) && invalid)}
+            error={(isTouched || isSubmitted) && invalid}
             helperText={(isTouched || isSubmitted) && invalid ? error : ''}
         />
     );

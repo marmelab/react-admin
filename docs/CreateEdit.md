@@ -2178,7 +2178,7 @@ export const UserCreate = () => {
                 {permissions === 'admin' &&
                     <TextInput source="role" validate={[required()]} />}
             </SimpleForm>
-        </Create>;
+        </Create>
     );
 }
 ```

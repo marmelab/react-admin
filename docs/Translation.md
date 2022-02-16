@@ -586,13 +586,15 @@ ie: `Sind Sie sicher, dass Sie diesen Kommentar löschen möchten?`
 To do this, simply add a `forcedCaseName` key next to the `name` key in your translation file.
 
 ```js
-resources: {
-    comments: {
-        name: 'Kommentar |||| Kommentare',
-        forcedCaseName: 'Kommentar |||| Kommentare',
-        fields: {
-            id: 'Id',
-            name: 'Bezeichnung',
+{
+    resources: {
+        comments: {
+            name: 'Kommentar |||| Kommentare',
+            forcedCaseName: 'Kommentar |||| Kommentare',
+            fields: {
+                id: 'Id',
+                name: 'Bezeichnung',
+            }
         }
     }
 }

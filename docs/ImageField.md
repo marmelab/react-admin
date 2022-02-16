@@ -62,7 +62,7 @@ If the record actually contains an array of images in the property defined by th
     pictures: [
         { url: 'image1.jpg', desc: 'First image' },
         { url: 'image2.jpg', desc: 'Second image' },
-    ],
+    ]
 }
 
 <ImageField source="pictures" src="url" title="desc" />

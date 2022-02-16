@@ -220,17 +220,17 @@ Your dataProvider may contain custom methods, e.g. for calling RPC endpoints on 
 
 For instance, if your `dataProvider` exposes a `banUser()` method:
 
-```jsx
+```js
 const dataProvider = {
-    getList: /** ... **/,
-    getOne: /** ... **/,
-    getMany: /** ... **/,
-    getManyReference /** ... **/,
-    create: /** ... **/,
-    update: /** ... **/,
-    updateMany /** ... **/,
-    delete: /** ... **/,
-    deleteMany /** ... **/,
+    getList: /* ... */,
+    getOne: /* ... */,
+    getMany: /* ... */,
+    getManyReference /* ... */,
+    create: /* ... */,
+    update: /* ... */,
+    updateMany /* ... */,
+    delete: /* ... */,
+    deleteMany /* ... */,
     banUser: (userId) => {
         return fetch(`/api/user/${userId}/ban`, { method: 'POST' })
             .then(response => response.json());
@@ -305,7 +305,7 @@ We won't re-explain all these options here, but we'll focus on the most useful o
 
 {% raw %}
 ```jsx
-import { List; Datagrid, TextField } from 'react-admin';
+import { List, Datagrid, TextField } from 'react-admin';
 
 const PostList = () => (
     <List
@@ -397,7 +397,7 @@ const ApproveButton = ({ record }) => {
     const redirect = useRedirect();
     const [approve, { isLoading }] = useUpdate(
         'comments',
-        { id: record.id, data: { isApproved: true } }
+        { id: record.id, data: { isApproved: true } },
         {
             onSuccess: (data) => {
                 redirect('/comments');

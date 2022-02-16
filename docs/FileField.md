@@ -65,7 +65,7 @@ If the record actually contains an array of files in its property defined by the
     files: [
         { url: 'image1.jpg', desc: 'First image' },
         { url: 'image2.jpg', desc: 'Second image' },
-    ],
+    ]
 }
 
 <FileField source="files" src="url" title="desc" />
