@@ -140,12 +140,10 @@ const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => 
             let newValue;
 
             if (
-                !choices.every(
+                choices.every(
                     item => typeof get(item, optionValue) === 'number'
                 )
             ) {
-                newValue = event.target.value;
-            } else {
                 try {
                     // try to convert string value to number, e.g. '123'
                     newValue = JSON.parse(event.target.value);
@@ -153,6 +151,8 @@ const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => 
                     // impossible to convert value, e.g. 'abc'
                     newValue = event.target.value;
                 }
+            } else {
+                newValue = event.target.value;
             }
 
             if (isChecked) {
