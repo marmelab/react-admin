@@ -67,8 +67,8 @@ const {
     availableChoices, // an array of the available choices records, e.g. [{ id: 123, title: 'hello world' }, { ... }],. 
     selectedChoices, // an array of the selected choices records, e.g. [{ id: 123, title: 'hello world' }, { ... }],. 
     total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
-    isFetching, // boolean that is true on mount, and false once the data was fetched
-    isLoading, // boolean that is true until the data is available
+    isFetching, // boolean that is true while the record is being fetched, and false once the record is fetched
+    isLoading, // boolean that is true until the data is available for the first time
     error, // Will contain any error that occurred while fetching data
     // pagination
     page, // the current page. Starts at 1
