@@ -9,24 +9,24 @@ import { BooleanInput } from './BooleanInput';
 
 export default { title: 'ra-ui-materialui/input/BooleanInput' };
 
-const i18nProvider = polyglotI18nProvider(() => englishMessages);
-
 export const Basic = () => (
-    <AdminContext i18nProvider={i18nProvider}>
-        <Create resource="posts">
-            <SimpleForm>
-                <BooleanInput source="published" />
-            </SimpleForm>
-        </Create>
-    </AdminContext>
+    <Wrapper>
+        <BooleanInput source="published" />
+    </Wrapper>
 );
 
 export const Disabled = () => (
+    <Wrapper>
+        <BooleanInput source="published" disabled />
+    </Wrapper>
+);
+
+const i18nProvider = polyglotI18nProvider(() => englishMessages);
+
+const Wrapper = ({ children }) => (
     <AdminContext i18nProvider={i18nProvider}>
         <Create resource="posts">
-            <SimpleForm>
-                <BooleanInput source="published" disabled />
-            </SimpleForm>
+            <SimpleForm>{children}</SimpleForm>
         </Create>
     </AdminContext>
 );
