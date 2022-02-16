@@ -78,7 +78,7 @@ const classes = {
 };
 const Root = styled('div')(({ theme }) => ({
     [`&.${classes.root}`]: {
-        display: 'inline-flex',
+        display: 'flex',
         marginBottom: theme.spacing(1),
         alignItems: 'center',
         '& > *': {
