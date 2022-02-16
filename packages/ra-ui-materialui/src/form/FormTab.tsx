@@ -17,6 +17,7 @@ export const FormTab = (props: FormTabProps) => {
         intent,
         label,
         margin,
+        onChange,
         path,
         record,
         resource,
@@ -33,6 +34,7 @@ export const FormTab = (props: FormTabProps) => {
             icon={icon}
             className={className}
             syncWithLocation={syncWithLocation}
+            onChange={onChange}
         />
     );
 

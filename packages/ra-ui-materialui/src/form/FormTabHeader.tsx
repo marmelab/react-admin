@@ -2,10 +2,11 @@ import * as React from 'react';
 import { isValidElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
-import MuiTab from '@mui/material/Tab';
+import { Tab as MuiTab } from '@mui/material';
 import clsx from 'clsx';
 import { useTranslate, useFormGroup } from 'ra-core';
 import { useFormState } from 'react-hook-form';
+
 import { TabbedFormClasses } from './TabbedFormView';
 
 export const FormTabHeader = ({
@@ -13,6 +14,7 @@ export const FormTabHeader = ({
     value,
     icon,
     className,
+    onChange,
     syncWithLocation,
     ...rest
 }: FormTabHeaderProps): ReactElement => {
@@ -42,6 +44,7 @@ export const FormTabHeader = ({
             {...(syncWithLocation ? propsForLink : {})} // to avoid TypeScript screams, see https://github.com/mui-org/material-ui/issues/9106#issuecomment-451270521
             id={`tabheader-${value}`}
             aria-controls={`tabpanel-${value}`}
+            onChange={onChange}
             {...rest}
         />
     );
@@ -54,6 +57,7 @@ interface FormTabHeaderProps {
     intent?: 'header' | 'content';
     label: string | ReactElement;
     margin?: 'none' | 'normal' | 'dense';
+    onChange?: (event: any) => void;
     path?: string;
     resource?: string;
     syncWithLocation?: boolean;
