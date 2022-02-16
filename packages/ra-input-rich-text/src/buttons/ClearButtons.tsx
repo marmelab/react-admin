@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { ToggleButton, ToggleButtonGroupProps } from '@mui/material';
+import { ToggleButton, ToggleButtonProps } from '@mui/material';
 import FormatClear from '@mui/icons-material/FormatClear';
 import { useTranslate } from 'ra-core';
 import { useTiptapEditor } from '../useTiptapEditor';
 
-export const ClearButtons = (props: ToggleButtonGroupProps) => {
+export const ClearButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
     const editor = useTiptapEditor();
     const translate = useTranslate();
 
@@ -14,11 +14,12 @@ export const ClearButtons = (props: ToggleButtonGroupProps) => {
 
     return (
         <ToggleButton
-            value="clear"
             aria-label={label}
             title={label}
+            {...props}
+            disabled={!editor?.isEditable}
+            value="clear"
             onClick={() => editor.chain().focus().unsetAllMarks().run()}
-            selected={false}
         >
             <FormatClear fontSize="inherit" />
         </ToggleButton>
