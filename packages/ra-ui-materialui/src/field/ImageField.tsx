@@ -72,10 +72,6 @@ export const ImageField = (props: ImageFieldProps) => {
 // What? TypeScript loses the displayName if we don't set it explicitly
 ImageField.displayName = 'ImageField';
 
-ImageField.defaultProps = {
-    addLabel: true,
-};
-
 ImageField.propTypes = {
     ...fieldPropTypes,
     src: PropTypes.string,

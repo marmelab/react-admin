@@ -68,7 +68,6 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *              ))}
  *          </ul>
  *     );
- *     TagsField.defaultProps = { addLabel: true };
  */
 export const ArrayField: FC<ArrayFieldProps> = memo(props => {
     const { children, resource, source } = props;
@@ -110,10 +109,6 @@ export const ArrayField: FC<ArrayFieldProps> = memo(props => {
         </ListContextProvider>
     );
 });
-
-ArrayField.defaultProps = {
-    addLabel: true,
-};
 
 ArrayField.propTypes = {
     ...fieldPropTypes,

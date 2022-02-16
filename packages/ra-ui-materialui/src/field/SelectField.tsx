@@ -121,10 +121,6 @@ SelectField.defaultProps = {
     translateChoice: true,
 };
 
-SelectField.defaultProps = {
-    addLabel: true,
-};
-
 SelectField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,

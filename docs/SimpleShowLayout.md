@@ -5,7 +5,7 @@ title: "SimpleShowLayout"
 
 # `<SimpleShowLayout>`
 
-The `<SimpleShowLayout>` pulls the `record` from the `RecordContext`. It renders the record fields in a single-column layout (via material-ui's `<Stack>` component). `<SimpleShowLayout>` delegates the actual rendering of fields to its children. It wraps each field inside [a `<FieldWithLabel>` component](./FieldWithLabel.md) to add a label.
+The `<SimpleShowLayout>` pulls the `record` from the `RecordContext`. It renders the record fields in a single-column layout (via material-ui's `<Stack>` component). `<SimpleShowLayout>` delegates the actual rendering of fields to its children. It wraps each field inside [a `<Labeled>` component](./Labeled.md) to add a label.
 
 ## Usage
 
@@ -36,27 +36,27 @@ Additional props are passed to the root component (`<div>`).
 
 ## Fields
 
-`<SimpleShowLayout>` renders each child inside a `<FieldWithLabel>` component. The above snippet roughly translates to:
+`<SimpleShowLayout>` renders each child inside a `<Labeled>` component. The above snippet roughly translates to:
 
 ```jsx
 const PostShow = () => (
     <Show>
         <Stack>
-            <FieldWithLabel label="Title">
+            <Labeled label="Title">
                 <TextField source="title" />
-            </FieldWithLabel>
-            <FieldWithLabel label="Body">
+            </Labeled>
+            <Labeled label="Body">
                 <RichTextField source="body" />
-            </FieldWithLabel>
-            <FieldWithLabel label="Nb Views">
+            </Labeled>
+            <Labeled label="Nb Views">
                 <NumberField source="nb_views" />
-            </FieldWithLabel>
+            </Labeled>
         </Stack>
     </Show>
 );
 ```
 
-The `<FieldWithLabel label>` uses the humanized source by default. You can customize it by passing a `label` prop to the fields:
+The `<Labeled label>` uses the humanized source by default. You can customize it by passing a `label` prop to the fields:
 
 ```jsx
 const PostShow = () => (
@@ -72,15 +72,18 @@ const PostShow = () => (
 const PostShow = () => (
     <Show>
         <Stack>
-            <FieldWithLabel label="My Custom Title">
+            <Labeled label="My Custom Title">
                 <TextField source="title" />
-            </FieldWithLabel>
+            </Labeled>
+            <Labeled label="my.custom.translationKey">
+                <TextField source="description" />
+            </Labeled>
         </Stack>
     </Show>
 );
 ```
 
-You can disable the `<FieldWithLabel>` decoration by passing setting `label={false}` on a field:
+You can disable the `<Labeled>` decoration by passing setting `label={false}` on a field:
 
 ```jsx
 const PostShow = () => (
@@ -212,9 +215,9 @@ To override the style of all instances of `<SimpleShowLayout>` using the [materi
 ## API
 
 * [`<SimpleShowLayout>`]
-* [`<FieldWithLabel>`]
+* [`<Labeled>`]
 * [`useRecordContext`]
 
 [`<SimpleShowLayout>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/SimpleShowLayout.tsx
-[`<FieldWithLabel>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/FieldWithLabel.tsx
+[`<Labeled>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/Labeled.tsx
 [`useRecordContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/useRecordContext.ts

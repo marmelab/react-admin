@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
+import clsx from 'clsx';
 import { useCallback, FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
@@ -20,7 +21,7 @@ import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { CheckboxGroupInputItem } from './CheckboxGroupInputItem';
 import { InputHelperText } from './InputHelperText';
-import { Labeled } from './Labeled';
+import { Labeled } from '../Labeled';
 import { LinearProgress } from '../layout';
 
 /**
@@ -167,12 +168,13 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
     if (isLoading) {
         return (
             <Labeled
+                id={id}
                 label={label}
                 source={source}
                 resource={resource}
-                className={className}
+                className={clsx('ra-input', `ra-input-${source}`, className)}
                 isRequired={isRequired}
-                margin={margin}
+                {...rest}
             >
                 <LinearProgress />
             </Labeled>
@@ -184,7 +186,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
             component="fieldset"
             margin={margin}
             error={(isTouched || isSubmitted) && invalid}
-            className={className}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
             {...sanitizeRestProps(rest)}
         >
             <FormLabel
@@ -225,7 +227,6 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
 };
 
 const sanitizeRestProps = ({
-    fullWidth,
     refetch,
     setFilter,
     setPagination,

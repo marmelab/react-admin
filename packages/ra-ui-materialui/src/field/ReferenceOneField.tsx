@@ -92,7 +92,6 @@ export interface ReferenceOneFieldProps
 }
 
 ReferenceOneField.propTypes = {
-    addLabel: PropTypes.bool,
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
     label: fieldPropTypes.label,
@@ -103,6 +102,5 @@ ReferenceOneField.propTypes = {
 };
 
 ReferenceOneField.defaultProps = {
-    addLabel: true,
     source: 'id',
 };

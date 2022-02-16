@@ -819,30 +819,34 @@ export const PostCreate = () => (
 
 ### Label Decoration
 
-`<SimpleForm>` scans its children for the `addLabel` prop, and automatically wraps a child in a `<Labeled>` component when found. This displays a label on top of the child, based on the `label` prop. This is not necessary for `<Input>` components, as they already contain their label. Also, all the react-admin `<Field>` components have a default prop `addLabel: true`, which explains why react-admin shows a label on top of Fields when they are used as children of `<SimpleForm>`. 
+All react-admin inputs handle the display of their label by wrapping their content inside a `<Labeled>` component.
 
-For your own components that don't include a label by default, set the `addLabel` prop if you want to use them as `<SimpleForm>` children.
+You can wrap your own components inside the `<Labeled>` component too. You can either provide it the `label` prop directly or leverage the automatic label inference by providing it the `source` prop:
 
 ```jsx
-const IdentifierField = ({ record }) => (
-    <Typography>{record.id}</Typography>
+const IdentifierField = ({ label, record }) => (
+    <Labeled label={label}>
+        <Typography>{record.id}</Typography>
+    </Labeled>
 );
 
+// Here Labeled will try to translate the label with the translation key `resources.posts.fields.body`
+// and with an inferred default of `Body`
 const BodyField = ({ record }) => (
-    <Identifier label="body">
+    <Labeled source="body">
         <Typography>
             {record.body}
         </Typography>
-    </Identifier>
+    </Labeled>
 );
 
 const PostEdit = () => (
     <Create>
         <SimpleForm>
-            <IdentifierField addLabel label="Identifier" /> {/* SimpleForm will add a label */}
-            <TextField source="title" /> {/* SimpleForm will add a label, too (TextField has addLabel:true in defaultProps) */}
-            <BodyField /> {/* SimpleForm will NOT add a label */}
-            <NumberInput source="nb_views" /> {/* SimpleForm will NOT add a label */}
+            <IdentifierField label="Identifier" />
+            <TextField source="title" />
+            <BodyField />
+            <NumberInput source="nb_views" />
         </SimpleForm>
     </Create>
 );
@@ -899,7 +903,7 @@ export const PostEdit = () => (
                 <TextInput multiline source="teaser" validate={required()} />
             </FormTab>
             <FormTab label="body">
-                <RichTextInput source="body" validate={required()} addLabel={false} />
+                <RichTextInput source="body" validate={required()} label={false} />
             </FormTab>
             <FormTab label="Miscellaneous">
                 <TextInput label="Password (if protected post)" source="password" type="password" />
@@ -909,7 +913,7 @@ export const PostEdit = () => (
                 <TextInput disabled label="Nb views" source="views" />
             </FormTab>
             <FormTab label="comments">
-                <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
+                <ReferenceManyField reference="comments" target="post_id" label={false}>
                     <Datagrid>
                         <TextField source="body" />
                         <DateField source="created_at" />
@@ -943,7 +947,7 @@ export const PostEdit = () => (
                 <TextInput multiline source="teaser" validate={required()} />
             </FormTab>
             <FormTab label="body">
-                <RichTextInput source="body" validate={required()} addLabel={false} />
+                <RichTextInput source="body" validate={required()} label={false} />
             </FormTab>
             <FormTab label="Miscellaneous">
                 <TextInput label="Password (if protected post)" source="password" type="password" />
@@ -953,7 +957,7 @@ export const PostEdit = () => (
                 <TextInput disabled label="Nb views" source="views" />
             </FormTab>
             <FormTab label="comments">
-                <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
+                <ReferenceManyField reference="comments" target="post_id" label={false}>
                     <Datagrid>
                         <TextField source="body" />
                         <DateField source="created_at" />
@@ -970,31 +974,37 @@ export const PostEdit = () => (
 
 ### Label Decoration
 
-`<FormTab>` scans its children for the `addLabel` prop, and automatically wraps a child in a `<Labeled>` component when found. This displays a label on top of the child, based on the `label` prop. This is not necessary for `<Input>` components, as they already contain their label. Also, all the react-admin `<Field>` components have a default prop `addLabel: true`, which explains why react-admin shows a label on top of Fields when they are used as children of `<FormTab>`. 
+All react-admin inputs handle the display of their label by wrapping their content inside a `<Labeled>` component.
 
-For your own components that don't include a label by default, set the `addLabel` prop if you want to use them as `<FormTab>` children.
+You can wrap your own components inside the `<Labeled>` component too. You can either provide it the `label` prop directly or leverage the automatic label inference by providing it the `source` prop:
 
 ```jsx
-const IdentifierField = ({ record }) => (
-    <Typography>{record.id}</Typography>
+const IdentifierField = ({ label, record }) => (
+    <Labeled label={label}>
+        <Typography>{record.id}</Typography>
+    </Labeled>
 );
 
+// Here Labeled will try to translate the label with the translation key `resources.posts.fields.body`
+// and with an inferred default of `Body`
 const BodyField = ({ record }) => (
-    <Identifier label="body">
-        <Typography>
-            {record.body}
-        </Typography>
-    </Identifier>
+    <Labeled source="body">
+        <Identifier label="body">
+            <Typography>
+                {record.body}
+            </Typography>
+        </Identifier>
+    </Labeled>
 );
 
 const PostEdit = () => (
     <Create>
         <TabbedForm>
             <FormTab label="main">
-                <IdentifierField addLabel label="Identifier" /> {/* FormTab will add a label */}
-                <TextField source="title" /> {/* FormTab will add a label, too (TextField has addLabel:true) in defaultProps */}
-                <BodyField /> {/* FormTab will NOT add a label */}
-                <NumberInput source="nb_views" /> {/* FormTab will NOT add a label */}
+                <IdentifierField label="Identifier" />
+                <TextField source="title" />
+                <BodyField />
+                <NumberInput source="nb_views" />
             </FormTab>
         </TabbedForm>
     </Create>

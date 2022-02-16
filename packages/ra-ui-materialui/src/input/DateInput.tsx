@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useInput, FieldTitle } from 'ra-core';
 
@@ -30,6 +31,7 @@ import { InputHelperText } from './InputHelperText';
  * <DateInput source="published_at" parse={val => new Date(val)} />
  */
 export const DateInput = ({
+    className,
     defaultValue,
     format = getStringFromDate,
     label,
@@ -65,6 +67,7 @@ export const DateInput = ({
         <TextField
             id={id}
             {...field}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
             type="date"
             variant={variant}
             margin={margin}

@@ -29,10 +29,6 @@ export const TextField: FC<TextFieldProps> = memo(props => {
 // what? TypeScript loses the displayName if we don't set it explicitly
 TextField.displayName = 'TextField';
 
-TextField.defaultProps = {
-    addLabel: true,
-};
-
 TextField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,

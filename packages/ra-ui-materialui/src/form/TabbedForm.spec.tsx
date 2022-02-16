@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { createMemoryHistory } from 'history';
-import { minLength, required, testDataProvider } from 'ra-core';
+import {
+    minLength,
+    required,
+    ResourceContextProvider,
+    testDataProvider,
+} from 'ra-core';
 import {
     fireEvent,
     isInaccessible,
@@ -31,55 +36,28 @@ describe('<TabbedForm />', () => {
         expect(tabs.length).toEqual(2);
     });
 
-    it('should pass submitOnEnter to <Toolbar />', () => {
-        const Toolbar = ({ submitOnEnter }: any) => (
-            <p>submitOnEnter: {submitOnEnter.toString()}</p>
-        );
-        const history = createMemoryHistory();
-
-        const { rerender } = render(
-            <AdminContext dataProvider={testDataProvider()} history={history}>
-                <TabbedForm submitOnEnter={false} toolbar={<Toolbar />}>
-                    <FormTab label="tab1" />
-                    <FormTab label="tab2" />
-                </TabbedForm>
-            </AdminContext>
-        );
-
-        expect(screen.queryByText('submitOnEnter: false')).not.toBeNull();
-
-        rerender(
-            <AdminContext dataProvider={testDataProvider()} history={history}>
-                <TabbedForm submitOnEnter toolbar={<Toolbar />}>
-                    <FormTab label="tab1" />
-                    <FormTab label="tab2" />
-                </TabbedForm>
-            </AdminContext>
-        );
-
-        expect(screen.queryByText('submitOnEnter: true')).not.toBeNull();
-    });
-
     it('should set the style of an inactive Tab button with errors', async () => {
         const history = createMemoryHistory({ initialEntries: ['/posts/1'] });
         render(
             <AdminContext dataProvider={testDataProvider()} history={history}>
-                <TabbedForm resource="posts" mode="onBlur">
-                    <FormTab label="tab1">
-                        <TextInput
-                            defaultValue=""
-                            source="title"
-                            validate={required()}
-                        />
-                    </FormTab>
-                    <FormTab label="tab2">
-                        <TextInput
-                            defaultValue=""
-                            source="description"
-                            validate={minLength(10)}
-                        />
-                    </FormTab>
-                </TabbedForm>
+                <ResourceContextProvider value="posts">
+                    <TabbedForm mode="onBlur">
+                        <FormTab label="tab1">
+                            <TextInput
+                                defaultValue=""
+                                source="title"
+                                validate={required()}
+                            />
+                        </FormTab>
+                        <FormTab label="tab2">
+                            <TextInput
+                                defaultValue=""
+                                source="description"
+                                validate={minLength(10)}
+                            />
+                        </FormTab>
+                    </TabbedForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -107,22 +85,24 @@ describe('<TabbedForm />', () => {
         const history = createMemoryHistory({ initialEntries: ['/posts/1'] });
         render(
             <AdminContext dataProvider={testDataProvider()} history={history}>
-                <TabbedForm resource="posts" mode="onBlur">
-                    <FormTab label="tab1">
-                        <TextInput
-                            defaultValue=""
-                            source="title"
-                            validate={required()}
-                        />
-                    </FormTab>
-                    <FormTab label="tab2">
-                        <TextInput
-                            defaultValue=""
-                            source="description"
-                            validate={required()}
-                        />
-                    </FormTab>
-                </TabbedForm>
+                <ResourceContextProvider value="posts">
+                    <TabbedForm mode="onBlur">
+                        <FormTab label="tab1">
+                            <TextInput
+                                defaultValue=""
+                                source="title"
+                                validate={required()}
+                            />
+                        </FormTab>
+                        <FormTab label="tab2">
+                            <TextInput
+                                defaultValue=""
+                                source="description"
+                                validate={required()}
+                            />
+                        </FormTab>
+                    </TabbedForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -146,22 +126,24 @@ describe('<TabbedForm />', () => {
         const history = createMemoryHistory({ initialEntries: ['/posts/1'] });
         render(
             <AdminContext dataProvider={testDataProvider()} history={history}>
-                <TabbedForm resource="posts" mode="onBlur">
-                    <FormTab label="tab1">
-                        <TextInput
-                            defaultValue=""
-                            source="title"
-                            validate={required()}
-                        />
-                    </FormTab>
-                    <FormTab label="tab2">
-                        <TextInput
-                            defaultValue=""
-                            source="description"
-                            validate={minLength(10)}
-                        />
-                    </FormTab>
-                </TabbedForm>
+                <ResourceContextProvider value="posts">
+                    <TabbedForm mode="onBlur">
+                        <FormTab label="tab1">
+                            <TextInput
+                                defaultValue=""
+                                source="title"
+                                validate={required()}
+                            />
+                        </FormTab>
+                        <FormTab label="tab2">
+                            <TextInput
+                                defaultValue=""
+                                source="description"
+                                validate={minLength(10)}
+                            />
+                        </FormTab>
+                    </TabbedForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -187,22 +169,24 @@ describe('<TabbedForm />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()} history={history}>
-                <TabbedForm resource="posts">
-                    <FormTab label="tab1">
-                        <TextInput
-                            defaultValue=""
-                            source="title"
-                            validate={required()}
-                        />
-                    </FormTab>
-                    <FormTab label="tab2">
-                        <TextInput
-                            defaultValue=""
-                            source="description"
-                            validate={minLength(10)}
-                        />
-                    </FormTab>
-                </TabbedForm>
+                <ResourceContextProvider value="posts">
+                    <TabbedForm>
+                        <FormTab label="tab1">
+                            <TextInput
+                                defaultValue=""
+                                source="title"
+                                validate={required()}
+                            />
+                        </FormTab>
+                        <FormTab label="tab2">
+                            <TextInput
+                                defaultValue=""
+                                source="description"
+                                validate={minLength(10)}
+                            />
+                        </FormTab>
+                    </TabbedForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 
@@ -234,17 +218,19 @@ describe('<TabbedForm />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()} history={history}>
-                <TabbedForm resource="posts" syncWithLocation={false}>
-                    <FormTab label="tab1">
-                        <TextInput source="title" validate={required()} />
-                    </FormTab>
-                    <FormTab label="tab2">
-                        <TextInput
-                            source="description"
-                            validate={minLength(10)}
-                        />
-                    </FormTab>
-                </TabbedForm>
+                <ResourceContextProvider value="posts">
+                    <TabbedForm syncWithLocation={false}>
+                        <FormTab label="tab1">
+                            <TextInput source="title" validate={required()} />
+                        </FormTab>
+                        <FormTab label="tab2">
+                            <TextInput
+                                source="description"
+                                validate={minLength(10)}
+                            />
+                        </FormTab>
+                    </TabbedForm>
+                </ResourceContextProvider>
             </AdminContext>
         );
 

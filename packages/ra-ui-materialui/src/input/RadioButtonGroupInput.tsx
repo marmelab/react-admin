@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import {
     FormControl,
     FormHelperText,
@@ -22,7 +23,7 @@ import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
 import { RadioButtonGroupInputItem } from './RadioButtonGroupInputItem';
-import { Labeled } from './Labeled';
+import { Labeled } from '../Labeled';
 import { LinearProgress } from '../layout';
 
 /**
@@ -140,15 +141,12 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
     if (isLoading) {
         return (
             <Labeled
-                id={id}
+                htmlFor={id}
                 label={label}
                 source={source}
                 resource={resource}
-                className={className}
+                className={clsx('ra-input', `ra-input-${source}`, className)}
                 isRequired={isRequired}
-                margin={margin}
-                fieldState={fieldState}
-                field={field}
             >
                 <LinearProgress />
             </Labeled>
@@ -157,7 +155,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
     return (
         <StyledFormControl
             component="fieldset"
-            className={className}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
             margin={margin}
             error={(isTouched || isSubmitted) && invalid}
             {...sanitizeRestProps(rest)}
@@ -226,7 +224,6 @@ RadioButtonGroupInput.defaultProps = {
 };
 
 const sanitizeRestProps = ({
-    addLabel,
     afterSubmit,
     allowNull,
     beforeSubmit,

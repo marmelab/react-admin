@@ -46,7 +46,6 @@ const SegmentsField = (props: FieldProps) => {
 };
 
 SegmentsField.defaultProps = {
-    addLabel: true,
     source: 'groups',
 };
 

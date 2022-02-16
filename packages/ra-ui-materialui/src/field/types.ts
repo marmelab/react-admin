@@ -11,7 +11,6 @@ export interface FieldProps<RecordType extends RaRecord = any>
         InjectedFieldProps<RecordType> {}
 
 export interface PublicFieldProps {
-    addLabel?: boolean;
     sortBy?: string;
     sortByOrder?: SortOrder;
     source?: string;
@@ -33,7 +32,6 @@ export interface InjectedFieldProps<RecordType extends RaRecord = any> {
 }
 
 export const fieldPropTypes = {
-    addLabel: PropTypes.bool,
     sortBy: PropTypes.string,
     sortByOrder: PropTypes.oneOf<SortOrder>(['ASC', 'DESC']),
     source: PropTypes.string,

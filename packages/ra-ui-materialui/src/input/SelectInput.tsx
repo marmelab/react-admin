@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ReactElement, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import MenuItem from '@mui/material/MenuItem';
 import { TextFieldProps } from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
@@ -20,7 +21,7 @@ import {
 } from './ResettableTextField';
 import { InputHelperText } from './InputHelperText';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
-import { Labeled } from './Labeled';
+import { Labeled } from '../Labeled';
 import { LinearProgress } from '../layout';
 import {
     useSupportCreateSuggestion,
@@ -235,15 +236,11 @@ export const SelectInput = (props: SelectInputProps) => {
     if (isLoading) {
         return (
             <Labeled
-                id={id}
                 label={label}
                 source={source}
                 resource={resource}
-                className={className}
+                className={clsx('ra-input', `ra-input-${source}`, className)}
                 isRequired={isRequired}
-                fieldState={fieldState}
-                field={field}
-                margin={margin}
             >
                 <LinearProgress />
             </Labeled>
@@ -255,6 +252,7 @@ export const SelectInput = (props: SelectInputProps) => {
             <StyledResettableTextField
                 id={id}
                 {...field}
+                className={clsx('ra-input', `ra-input-${source}`, className)}
                 onChange={handleChangeWithCreateSupport}
                 select
                 label={
@@ -268,7 +266,6 @@ export const SelectInput = (props: SelectInputProps) => {
                         />
                     )
                 }
-                className={className}
                 clearAlwaysVisible
                 error={(isTouched || isSubmitted) && invalid}
                 helperText={
@@ -327,7 +324,6 @@ SelectInput.defaultProps = {
 };
 
 const sanitizeRestProps = ({
-    addLabel,
     afterSubmit,
     allowNull,
     beforeSubmit,

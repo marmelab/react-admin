@@ -1,4 +1,3 @@
-export * from './FormInput';
 export * from './TabbedForm';
 export * from './FormTab';
 export * from './FormTabHeader';

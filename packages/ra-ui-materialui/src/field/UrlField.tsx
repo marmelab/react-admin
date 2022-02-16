@@ -36,10 +36,6 @@ export const UrlField: FC<UrlFieldProps> = memo(props => {
     );
 });
 
-UrlField.defaultProps = {
-    addLabel: true,
-};
-
 UrlField.propTypes = fieldPropTypes;
 UrlField.displayName = 'UrlField';
 

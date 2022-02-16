@@ -86,7 +86,4 @@ const TagsField = ({ record }) => (
         ))}
     </ul>
 )
-TagsField.defaultProps = {
-    addLabel: true
-};
 ```

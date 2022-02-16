@@ -38,10 +38,6 @@ export const FunctionField = <RecordType extends RaRecord = any>(
     );
 };
 
-FunctionField.defaultProps = {
-    addLabel: true,
-};
-
 FunctionField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,

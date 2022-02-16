@@ -3,8 +3,8 @@ import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { FormGroupContextProvider, RaRecord } from 'ra-core';
 
-import { FormInput } from './FormInput';
 import { FormTabHeader } from './FormTabHeader';
+import { Stack } from '@mui/material';
 
 export const FormTab = (props: FormTabProps) => {
     const {
@@ -35,7 +35,9 @@ export const FormTab = (props: FormTabProps) => {
 
     const renderContent = () => (
         <FormGroupContextProvider name={value.toString()}>
-            <span
+            <Stack
+                alignItems="flex-start"
+                sx={{ paddingLeft: 1, paddingRight: 1 }}
                 style={hidden ? hiddenStyle : null}
                 className={contentClassName}
                 id={`tabpanel-${value}`}
@@ -44,20 +46,8 @@ export const FormTab = (props: FormTabProps) => {
                 // notes that aria-hidden="false" currently behaves inconsistently across browsers.
                 aria-hidden={hidden || undefined}
             >
-                {React.Children.map(
-                    children,
-                    (input: ReactElement) =>
-                        input && (
-                            <FormInput
-                                input={input}
-                                record={record}
-                                resource={resource}
-                                variant={input.props.variant || variant}
-                                margin={input.props.margin || margin}
-                            />
-                        )
-                )}
-            </span>
+                {children}
+            </Stack>
         </FormGroupContextProvider>
     );
 

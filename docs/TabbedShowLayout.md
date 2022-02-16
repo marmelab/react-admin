@@ -5,7 +5,7 @@ title: "TabbedShowLayout"
 
 # `<TabbedShowLayout>`
 
-The `<TabbedShowLayout>` pulls the `record` from the `RecordContext`. It renders a set of `<Tabs>`, each of which contains a list of record fields in a single-column layout (via material-ui's `<Stack>` component). `<TabbedShowLayout>` delegates the actual rendering of fields to its children, which should be `<Tab>` components. `<Tab>`  wraps each field inside a `<FieldWithLabel>` component to add a label.
+The `<TabbedShowLayout>` pulls the `record` from the `RecordContext`. It renders a set of `<Tabs>`, each of which contains a list of record fields in a single-column layout (via material-ui's `<Stack>` component). `<TabbedShowLayout>` delegates the actual rendering of fields to its children, which should be `<Tab>` components. `<Tab>`  wraps each field inside a `<Labeled>` component to add a label.
 
 Switching tabs will update the current url. By default, it uses the tabs indexes and the first tab will be displayed at the root url. You can customize the path by providing a `path` prop to each `Tab` component. If you'd like the first one to act as an index page, just omit the `path` prop.
 
@@ -28,7 +28,7 @@ export const PostShow = () => (
                 <TextField source="teaser" />
             </Tab>
             <Tab label="body" path="body">
-                <RichTextField source="body" addLabel={false} />
+                <RichTextField source="body" label={false} />
             </Tab>
             <Tab label="Miscellaneous" path="miscellaneous">
                 <TextField label="Password (if protected post)" source="password" type="password" />
@@ -38,7 +38,7 @@ export const PostShow = () => (
                 <TextField label="Nb views" source="views" />
             </Tab>
             <Tab label="comments" path="comments">
-                <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
+                <ReferenceManyField reference="comments" target="post_id" label={false}>
                     <Datagrid>
                         <TextField source="body" />
                         <DateField source="created_at" />
@@ -101,7 +101,7 @@ export const PostShow = () => (
 
 ## Tab Fields
 
-`<Tab>` renders each child inside a `<FieldWithLabel>` component. This component uses the humanized source as label by default. You can customize it by passing a `label` prop to the fields:
+`<Tab>` renders each child inside a `<Labeled>` component. This component uses the humanized source as label by default. You can customize it by passing a `label` prop to the fields:
 
 ```jsx
 const PostShow = () => (
@@ -115,7 +115,37 @@ const PostShow = () => (
 );
 ```
 
-You can disable the `<FieldWithLabel>` decoration by passing setting `label={false}` on a field:
+
+The `<Labeled label>` uses the humanized source by default. You can customize it by passing a `label` prop to the fields:
+
+```jsx
+const PostShow = () => (
+    <Show>
+        <TabbedShowLayout>
+            <Tab label="main">
+                <TextField label="My Custom Title" source="title" />
+                <TextField label="my.custom.translationKey" source="description" />
+            </Tab>
+        </TabbedShowLayout>
+    </Show>
+);
+
+// translates to
+const PostShow = () => (
+    <Show>
+        <TabbedShowLayout>
+            <Labeled label="My Custom Title">
+                <TextField source="title" />
+            </Labeled>
+            <Labeled label="my.custom.translationKey">
+                <TextField source="description" />
+            </Labeled>
+        </TabbedShowLayout>
+    </Show>
+);
+```
+
+You can disable the `<Labeled>` decoration by passing setting `label={false}` on a field:
 
 ```jsx
 const PostShow = () => (
@@ -165,7 +195,7 @@ export const PostShow = () => (
                 <TextField source="teaser" />
             </Tab>
             <Tab label="body" path="body">
-                <RichTextField source="body" addLabel={false} />
+                <RichTextField source="body" label={false} />
             </Tab>
             <Tab label="Miscellaneous" path="miscellaneous">
                 <TextField label="Password (if protected post)" source="password" type="password" />
@@ -175,7 +205,7 @@ export const PostShow = () => (
                 <TextField label="Nb views" source="views" />
             </Tab>
             <Tab label="comments" path="comments">
-                <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
+                <ReferenceManyField reference="comments" target="post_id" label={false}>
                     <Datagrid>
                         <TextField source="body" />
                         <DateField source="created_at" />
@@ -294,10 +324,10 @@ To style the tabs, the `<Tab>` component accepts two props:
 
 * [`<TabbedShowLayout>`]
 * [`<Tab>`]
-* [`<FieldWithLabel>`]
+* [`<Labeled>`]
 * [`useRecordContext`]
 
-[`<FieldWithLabel>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/FieldWithLabel.tsx
+[`<Labeled>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/Labeled.tsx
 [`<TabbedShowLayout>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/TabbedShowLayout.tsx
 [`<Tab>`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/detail/Tab.tsx
 [`useRecordContext`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-core/src/controller/useRecordContext.ts

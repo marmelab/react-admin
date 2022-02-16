@@ -34,7 +34,7 @@ export const FieldTitle = (props: FieldTitleProps) => {
                     source,
                 })
             )}
-            {isRequired && ' *'}
+            {isRequired && <span aria-hidden="true">&thinsp;*</span>}
         </span>
     );
 };

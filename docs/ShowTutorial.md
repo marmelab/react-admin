@@ -55,13 +55,13 @@ You can pass this `BookShow` component as the `show` prop of the `<Resource name
 
 This example uses the `useGetOne` hook instead of `fetch` because `useGetOne` already contains the authentication and request state logic. But you could totally write a Show view with `fetch`.
 
-## `<FieldWithLabel>` Displays Labels Over Fields
+## `<Labeled>` Displays Labels Over Fields
 
-When you build Show views like the one above, you have to repeat quite a lot of code for each field. React-admin Field components can help avoid that repetition. The following example leverages the `<FieldWithLabel>`, `<TextField>`, and `<DateField>` components for that purpose:
+When you build Show views like the one above, you have to repeat quite a lot of code for each field. React-admin Field components can help avoid that repetition. The following example leverages the `<Labeled>`, `<TextField>`, and `<DateField>` components for that purpose:
 
 ```jsx
 import { useParams } from 'react-router-dom';
-import { useGetOne, useRedirect, Title, FieldWithLabel, TextField, DateField } from 'react-admin';
+import { useGetOne, useRedirect, Title, Labeled, TextField, DateField } from 'react-admin';
 import { Card, Stack } from '@mui/material';
 
 const BookShow = () => {
@@ -78,12 +78,12 @@ const BookShow = () => {
             <Title title="Book Show"/>
             <Card>
                 <Stack spacing={1}>
-                    <FieldWithLabel label="Title">
+                    <Labeled label="Title">
                         <TextField source="title" record={data} />
-                    </FieldWithLabel>
-                    <FieldWithLabel label="Publication Date">
+                    </Labeled>
+                    <Labeled label="Publication Date">
                         <DateField source="published_at" record={data} />
-                    </FieldWithLabel>
+                    </Labeled>
                 </Stack>
             </Card>
         </div>
@@ -97,7 +97,7 @@ Field components require a `record` to render, but they can grab it from a `Reco
 
 ```jsx
 import { useParams } from 'react-router-dom';
-import { useGetOne, useRedirect, RecordContextProvider, Title, FieldWithLabel, TextField, DateField } from 'react-admin';
+import { useGetOne, useRedirect, RecordContextProvider, Title, Labeled, TextField, DateField } from 'react-admin';
 import { Card, Stack } from '@mui/material';
 
 const BookShow = () => {
@@ -115,12 +115,12 @@ const BookShow = () => {
                 <Title title="Book Show"/>
                 <Card>
                     <Stack spacing={1}>
-                        <FieldWithLabel label="Title">
+                        <Labeled label="Title">
                             <TextField source="title" />
-                        </FieldWithLabel>
-                        <FieldWithLabel label="Publication Date">
+                        </Labeled>
+                        <Labeled label="Publication Date">
                             <DateField source="published_at" />
-                        </FieldWithLabel>
+                        </Labeled>
                     </Stack>
                 </Card>
             </div>
@@ -377,8 +377,8 @@ const BookShow = () => (
             <Grid item xs={12} sm={4}>
                 <Typography>Details</Typography>
                 <Stack spacing={1}>
-                    <FieldWithLabel label="ISBN"><TextField source="isbn" /></FieldWithLabel>
-                    <FieldWithLabel label="Last rating"><DateField source="last_rated_at" /></FieldWithLabel>
+                    <Labeled label="ISBN"><TextField source="isbn" /></Labeled>
+                    <Labeled label="Last rating"><DateField source="last_rated_at" /></Labeled>
                 </Stack>
             </Grid>
         </Grid>

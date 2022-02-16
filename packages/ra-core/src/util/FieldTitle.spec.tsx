@@ -77,18 +77,13 @@ describe('FieldTitle', () => {
         expect(container.firstChild.textContent).toEqual('foo');
     });
 
-    it('should add a trailing asterisk if the field is required', () => {
-        const { container } = render(<FieldTitle label="foo" isRequired />);
-        expect(container.firstChild.textContent).toEqual('foo *');
-    });
-
     it('should return null if label is false', () => {
-        const { container } = render(<FieldTitle label={false} isRequired />);
+        const { container } = render(<FieldTitle label={false} />);
         expect(container.firstChild).toBeNull();
     });
 
     it('should return null if label is empty string', () => {
-        const { container } = render(<FieldTitle label="" isRequired />);
+        const { container } = render(<FieldTitle label="" />);
         expect(container.firstChild).toBeNull();
     });
 });

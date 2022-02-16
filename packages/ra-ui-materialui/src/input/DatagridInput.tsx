@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { cloneElement, ReactElement, ReactNode, useCallback } from 'react';
+import clsx from 'clsx';
 import {
     ChoicesProps,
     Identifier,
@@ -53,6 +54,7 @@ const defaultPagination = <DefaultPagination />;
 export const DatagridInput = (props: DatagridInputProps) => {
     const {
         choices,
+        className,
         pagination = defaultPagination,
         filters,
         source: sourceProp,
@@ -64,6 +66,7 @@ export const DatagridInput = (props: DatagridInputProps) => {
         allChoices,
         availableChoices,
         selectedChoices,
+        source,
         ...choicesContext
     } = useChoicesContext({
         choices,
@@ -73,6 +76,7 @@ export const DatagridInput = (props: DatagridInputProps) => {
     const { field, fieldState, formState } = useInput({
         ...props,
         ...choicesContext,
+        source,
     });
 
     const onSelect = useCallback(
@@ -116,33 +120,35 @@ export const DatagridInput = (props: DatagridInputProps) => {
         ]
     );
     return (
-        <ListContextProvider value={listContext}>
-            {filters ? (
-                Array.isArray(filters) ? (
-                    <FilterContext.Provider value={filters}>
+        <div className={clsx('ra-input', `ra-input-${source}`, className)}>
+            <ListContextProvider value={listContext}>
+                {filters ? (
+                    Array.isArray(filters) ? (
+                        <FilterContext.Provider value={filters}>
+                            <>
+                                <FilterForm />
+                                <FilterButton />
+                            </>
+                        </FilterContext.Provider>
+                    ) : (
                         <>
-                            <FilterForm />
-                            <FilterButton />
+                            {cloneElement(filters, {
+                                context: 'form',
+                            })}
+                            {cloneElement(filters, {
+                                context: 'button',
+                            })}
                         </>
-                    </FilterContext.Provider>
-                ) : (
-                    <>
-                        {cloneElement(filters, {
-                            context: 'form',
-                        })}
-                        {cloneElement(filters, {
-                            context: 'button',
-                        })}
-                    </>
-                )
-            ) : null}
-            <Datagrid {...rest} />
-            {pagination !== false && pagination}
-            <InputHelperText
-                touched={fieldState.isTouched || formState.isSubmitted}
-                error={fieldState.error?.message}
-            />
-        </ListContextProvider>
+                    )
+                ) : null}
+                <Datagrid {...rest} />
+                {pagination !== false && pagination}
+                <InputHelperText
+                    touched={fieldState.isTouched || formState.isSubmitted}
+                    error={fieldState.error?.message}
+                />
+            </ListContextProvider>
+        </div>
     );
 };
 

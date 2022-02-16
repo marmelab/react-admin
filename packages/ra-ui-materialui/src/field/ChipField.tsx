@@ -38,10 +38,6 @@ export const ChipField: FC<ChipFieldProps> = memo(props => {
     );
 });
 
-ChipField.defaultProps = {
-    addLabel: true,
-};
-
 ChipField.propTypes = {
     // @ts-ignore
     ...ChipField.propTypes,
