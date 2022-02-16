@@ -138,13 +138,23 @@ const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => 
     const handleCheck = useCallback(
         (event, isChecked) => {
             let newValue;
-            try {
-                // try to convert string value to number, e.g. '123'
-                newValue = JSON.parse(event.target.value);
-            } catch (e) {
-                // impossible to convert value, e.g. 'abc'
+
+            if (
+                choices.every(
+                    item => typeof get(item, optionValue) === 'number'
+                )
+            ) {
+                try {
+                    // try to convert string value to number, e.g. '123'
+                    newValue = JSON.parse(event.target.value);
+                } catch (e) {
+                    // impossible to convert value, e.g. 'abc'
+                    newValue = event.target.value;
+                }
+            } else {
                 newValue = event.target.value;
             }
+
             if (isChecked) {
                 finalFormOnChange([...(value || []), ...[newValue]]);
             } else {
@@ -152,7 +162,7 @@ const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => 
             }
             finalFormOnBlur(); // HACK: See https://github.com/final-form/react-final-form/issues/365#issuecomment-515045503
         },
-        [finalFormOnChange, finalFormOnBlur, value]
+        [choices, finalFormOnBlur, optionValue, finalFormOnChange, value]
     );
 
     if (loading) {
