@@ -187,12 +187,12 @@ The demos show one possible way: suffix the filter name with an operator, e.g. "
 
 ```jsx
 const postFilters = [
-    <DateInput source="released_gte" label="Released after" />
+    <DateInput source="released_gte" label="Released after" />,
     <DateInput source="released_lte" label="Released before" />
 ];
 ```
 
-Some API backend (e.g. JSON Server) know how to handle this syntax. If your API doesn't understand these 'virtual fields', you will have to transform them into the expected syntax in the Data Provider.
+Some API backends (e.g. JSON Server) know how to handle this syntax. If your API doesn't understand these 'virtual fields', you will have to transform them into the expected syntax in the Data Provider.
 
 ```jsx
 // in dataProvider.js
@@ -221,7 +221,7 @@ export default {
         return httpClient(url).then(({ json }) => ({
             data: json,
             total: parseInt(headers.get('content-range').split('/').pop(),10),
-        });
+        }));
     },
     // ...
 }
