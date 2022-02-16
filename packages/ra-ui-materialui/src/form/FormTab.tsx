@@ -2,9 +2,9 @@ import * as React from 'react';
 import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { FormGroupContextProvider, RaRecord } from 'ra-core';
+import { Stack, StackProps } from '@mui/material';
 
 import { FormTabHeader } from './FormTabHeader';
-import { Stack } from '@mui/material';
 
 export const FormTab = (props: FormTabProps) => {
     const {
@@ -15,21 +15,23 @@ export const FormTab = (props: FormTabProps) => {
         icon,
         intent,
         label,
-        margin,
+        onChange,
         path,
         record,
         resource,
-        variant,
+        syncWithLocation,
         value,
         ...rest
     } = props;
+
     const renderHeader = () => (
         <FormTabHeader
             label={label}
             value={value}
             icon={icon}
             className={className}
-            {...rest}
+            syncWithLocation={syncWithLocation}
+            onChange={onChange}
         />
     );
 
@@ -45,6 +47,7 @@ export const FormTab = (props: FormTabProps) => {
                 // Set undefined instead of false because WAI-ARIA Authoring Practices 1.1
                 // notes that aria-hidden="false" currently behaves inconsistently across browsers.
                 aria-hidden={hidden || undefined}
+                {...rest}
             >
                 {children}
             </Stack>
@@ -63,16 +66,14 @@ FormTab.propTypes = {
     icon: PropTypes.element,
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
         .isRequired,
-    margin: PropTypes.oneOf(['none', 'dense', 'normal']),
     path: PropTypes.string,
     // @ts-ignore
     record: PropTypes.object,
     resource: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    variant: PropTypes.oneOf(['standard', 'outlined', 'filled']),
 };
 
-export interface FormTabProps {
+export interface FormTabProps extends StackProps {
     className?: string;
     children?: ReactNode;
     contentClassName?: string;
@@ -80,13 +81,11 @@ export interface FormTabProps {
     icon?: ReactElement;
     intent?: 'header' | 'content';
     label: string | ReactElement;
-    margin?: 'none' | 'normal' | 'dense';
     path?: string;
     record?: RaRecord;
     resource?: string;
     syncWithLocation?: boolean;
     value?: string | number;
-    variant?: 'standard' | 'outlined' | 'filled';
 }
 
 FormTab.displayName = 'FormTab';

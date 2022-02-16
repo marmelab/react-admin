@@ -25,7 +25,7 @@ export const FilterFormInput = props => {
                     onClick={handleHide}
                     data-key={filterElement.props.source}
                     title={translate('ra.action.remove_filter')}
-                    size="large"
+                    size="small"
                 >
                     <ActionHide />
                 </IconButton>
@@ -69,7 +69,9 @@ const Root = styled('div', {
     pointerEvents: 'auto',
 
     [`& .${FilterFormInputClasses.spacer}`]: { width: theme.spacing(2) },
-    [`& .${FilterFormInputClasses.hideButton}`]: {},
+    [`& .${FilterFormInputClasses.hideButton}`]: {
+        marginBottom: theme.spacing(1),
+    },
 }));
 
 const emptyRecord = {};

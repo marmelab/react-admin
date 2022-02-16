@@ -158,6 +158,7 @@ export const AutocompleteInput = <
         resource: resourceProp,
         shouldRenderSuggestions,
         setFilter,
+        size = 'small',
         source: sourceProp,
         suggestionLimit,
         TextFieldProps,
@@ -450,6 +451,7 @@ If you provided a React element for the optionText prop, you must also provide t
                         variant={variant}
                         {...TextFieldProps}
                         {...params}
+                        size={size}
                     />
                 )}
                 multiple={multiple}
@@ -468,6 +470,7 @@ If you provided a React element for the optionText prop, you must also provide t
                                     zIndex: 100,
                                 },
                             }}
+                            size="small"
                             {...getTagProps({ index })}
                         />
                     ))

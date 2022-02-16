@@ -11,7 +11,6 @@ import {
     Theme,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import clsx from 'clsx';
 import {
     MutationMode,
     RaRecord,
@@ -52,6 +51,7 @@ export const Button = (props: ButtonProps) => {
         ...rest
     } = props;
     const translate = useTranslate();
+    const translatedLabel = label ? translate(label, { _: label }) : undefined;
     const linkParams = getLinkParams(locationDescriptor);
 
     const isXSmall = useMediaQuery((theme: Theme) =>
@@ -61,9 +61,9 @@ export const Button = (props: ButtonProps) => {
 
     return isXSmall ? (
         label && !disabled ? (
-            <Tooltip title={translate(label, { _: label })}>
+            <Tooltip title={translatedLabel}>
                 <IconButton
-                    aria-label={translate(label, { _: label })}
+                    aria-label={translatedLabel}
                     className={className}
                     color={color}
                     {...restProps}
@@ -87,26 +87,17 @@ export const Button = (props: ButtonProps) => {
         )
     ) : (
         <StyledButton
-            className={clsx(ButtonClasses.button, className)}
+            className={className}
             color={color}
             size={size}
-            aria-label={label ? translate(label, { _: label }) : undefined}
+            aria-label={translatedLabel}
             disabled={disabled}
+            startIcon={alignIcon === 'left' && children ? children : undefined}
+            endIcon={alignIcon === 'right' && children ? children : undefined}
             {...restProps}
             {...linkParams}
         >
-            {alignIcon === 'left' && children ? children : null}
-            {label && (
-                <span
-                    className={clsx({
-                        [ButtonClasses.label]: alignIcon === 'left',
-                        [ButtonClasses.labelRightIcon]: alignIcon !== 'left',
-                    })}
-                >
-                    {translate(label, { _: label })}
-                </span>
-            )}
-            {alignIcon === 'right' && children ? children : null}
+            {translatedLabel}
         </StyledButton>
     );
 };
@@ -162,34 +153,13 @@ Button.propTypes = {
 
 const PREFIX = 'RaButton';
 
-export const ButtonClasses = {
-    button: `${PREFIX}-button`,
-    label: `${PREFIX}-label`,
-    labelRightIcon: `${PREFIX}-labelRightIcon`,
-};
-
 const StyledButton = styled(MuiButton, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })({
-    [`& .${ButtonClasses.button}`]: {
-        display: 'inline-flex',
-        alignItems: 'center',
-    },
-    [`& .${ButtonClasses.label}`]: {
-        paddingLeft: '0.5em',
-    },
-    [`& .${ButtonClasses.labelRightIcon}`]: {
-        paddingRight: '0.5em',
-    },
-    [`&.MuiButton-sizeSmall .MuiSvgIcon-root, &.MuiButton-sizeSmall .MuiIcon-root`]: {
-        fontSize: 20,
-    },
-    [`&.MuiButton-sizeMedium .MuiSvgIcon-root, &.MuiButton-sizeSmall .MuiIcon-root`]: {
-        fontSize: 22,
-    },
-    [`&.MuiButton-sizeLarge .MuiSvgIcon-root, &.MuiButton-sizeSmall .MuiIcon-root`]: {
-        fontSize: 24,
+    '&.MuiButton-sizeSmall': {
+        // fix for icon misalignment on small buttons, see https://github.com/mui/material-ui/pull/30240
+        lineHeight: 1.5,
     },
 });
 

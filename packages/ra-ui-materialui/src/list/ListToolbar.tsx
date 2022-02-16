@@ -70,7 +70,9 @@ const Root = styled(Toolbar, {
     justifyContent: 'space-between',
     alignItems: 'flex-end',
     minHeight: 'auto',
-    paddingRight: 0,
+    [theme.breakpoints.up('sm')]: {
+        paddingRight: 0,
+    },
     [theme.breakpoints.up('xs')]: {
         paddingLeft: 0,
     },

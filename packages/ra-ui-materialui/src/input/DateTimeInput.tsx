@@ -57,6 +57,7 @@ export const DateTimeInput = ({
             {...field}
             className={clsx('ra-input', `ra-input-${source}`, className)}
             type="datetime-local"
+            size="small"
             variant={variant}
             margin={margin}
             error={(isTouched || isSubmitted) && invalid}

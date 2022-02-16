@@ -66,6 +66,7 @@ export const NumberInput = ({
             {...field}
             className={clsx('ra-input', `ra-input-${source}`, className)}
             type="number"
+            size="small"
             variant={variant}
             error={(isTouched || isSubmitted) && invalid}
             helperText={

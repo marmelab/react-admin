@@ -18,8 +18,8 @@ export const PasswordInput = (props: PasswordInputProps) => {
 
     return (
         <TextInput
-            {...rest}
             type={visible ? 'text' : 'password'}
+            size="small"
             InputProps={{
                 endAdornment: (
                     <InputAdornment position="end">
@@ -37,6 +37,7 @@ export const PasswordInput = (props: PasswordInputProps) => {
                     </InputAdornment>
                 ),
             }}
+            {...rest}
         />
     );
 };
