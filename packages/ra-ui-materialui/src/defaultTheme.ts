@@ -65,26 +65,6 @@ export const defaultTheme = {
                 },
             },
         },
-        MuiFormControl: {
-            styleOverrides: {
-                root: {
-                    width: 256,
-                },
-                fullWidth: {
-                    width: '100%',
-                },
-            },
-        },
-        MuiAutocomplete: {
-            styleOverrides: {
-                root: {
-                    width: 256,
-                },
-                fullWidth: {
-                    width: '100%',
-                },
-            },
-        },
         MuiFilledInput: {
             styleOverrides: {
                 root: {

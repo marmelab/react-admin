@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ReactElement, ReactNode } from 'react';
+import PropTypes from 'prop-types';
 import { FormGroupContextProvider, RaRecord } from 'ra-core';
 
 import { FormTabHeader } from './FormTabHeader';
@@ -51,6 +52,24 @@ export const FormTab = (props: FormTabProps) => {
     );
 
     return intent === 'header' ? renderHeader() : renderContent();
+};
+
+FormTab.propTypes = {
+    className: PropTypes.string,
+    contentClassName: PropTypes.string,
+    children: PropTypes.node,
+    intent: PropTypes.oneOf(['header', 'content']),
+    hidden: PropTypes.bool,
+    icon: PropTypes.element,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
+        .isRequired,
+    margin: PropTypes.oneOf(['none', 'dense', 'normal']),
+    path: PropTypes.string,
+    // @ts-ignore
+    record: PropTypes.object,
+    resource: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    variant: PropTypes.oneOf(['standard', 'outlined', 'filled']),
 };
 
 export interface FormTabProps {

@@ -58,7 +58,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         cloneElement(
             tabs,
             {
-                classes: TabbedFormClasses,
                 onChange: handleTabChange,
                 syncWithLocation,
                 url: formRootPathname,
@@ -101,7 +100,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                     return isValidElement<any>(tab)
                         ? React.cloneElement(tab, {
                               intent: 'content',
-                              classes: TabbedFormClasses,
                               resource,
                               record,
                               hidden,

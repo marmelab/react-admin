@@ -80,7 +80,7 @@ export interface LabeledProps extends StackProps {
     source?: string;
 }
 
-const PREFIX = 'RaFieldWithLabel';
+const PREFIX = 'RaLabeled';
 
 export const LabeledClasses = {
     label: `${PREFIX}-label`,

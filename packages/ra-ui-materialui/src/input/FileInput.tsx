@@ -154,7 +154,6 @@ export const FileInput = (props: FileInputProps) => {
             source={source}
             resource={resource}
             isRequired={isRequired}
-            fieldState={fieldState}
             {...sanitizeInputRestProps(rest)}
         >
             <>
