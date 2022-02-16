@@ -139,8 +139,11 @@ const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => 
         (event, isChecked) => {
             let newValue;
 
-            // @ts-ignore
-            if (!choices.every(item => typeof item.id === 'number')) {
+            if (
+                !choices.every(
+                    item => typeof get(item, optionValue) === 'number'
+                )
+            ) {
                 newValue = event.target.value;
             } else {
                 try {
@@ -159,7 +162,7 @@ const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => 
             }
             finalFormOnBlur(); // HACK: See https://github.com/final-form/react-final-form/issues/365#issuecomment-515045503
         },
-        [finalFormOnChange, finalFormOnBlur, value]
+        [choices, finalFormOnBlur, optionValue, finalFormOnChange, value]
     );
 
     if (loading) {
