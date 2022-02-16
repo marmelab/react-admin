@@ -138,13 +138,19 @@ const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => 
     const handleCheck = useCallback(
         (event, isChecked) => {
             let newValue;
-            try {
-                // try to convert string value to number, e.g. '123'
-                newValue = JSON.parse(event.target.value);
-            } catch (e) {
-                // impossible to convert value, e.g. 'abc'
+
+            if (value.every(item => typeof item !== 'number')) {
                 newValue = event.target.value;
+            } else {
+                try {
+                    // try to convert string value to number, e.g. '123'
+                    newValue = JSON.parse(event.target.value);
+                } catch (e) {
+                    // impossible to convert value, e.g. 'abc'
+                    newValue = event.target.value;
+                }
             }
+
             if (isChecked) {
                 finalFormOnChange([...(value || []), ...[newValue]]);
             } else {
