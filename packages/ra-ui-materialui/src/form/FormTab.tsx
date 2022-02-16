@@ -15,13 +15,11 @@ export const FormTab = (props: FormTabProps) => {
         icon,
         intent,
         label,
-        margin,
         onChange,
         path,
         record,
         resource,
         syncWithLocation,
-        variant,
         value,
         ...rest
     } = props;
@@ -68,13 +66,11 @@ FormTab.propTypes = {
     icon: PropTypes.element,
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
         .isRequired,
-    margin: PropTypes.oneOf(['none', 'dense', 'normal']),
     path: PropTypes.string,
     // @ts-ignore
     record: PropTypes.object,
     resource: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    variant: PropTypes.oneOf(['standard', 'outlined', 'filled']),
 };
 
 export interface FormTabProps extends StackProps {
@@ -85,13 +81,11 @@ export interface FormTabProps extends StackProps {
     icon?: ReactElement;
     intent?: 'header' | 'content';
     label: string | ReactElement;
-    margin?: 'none' | 'normal' | 'dense';
     path?: string;
     record?: RaRecord;
     resource?: string;
     syncWithLocation?: boolean;
     value?: string | number;
-    variant?: 'standard' | 'outlined' | 'filled';
 }
 
 FormTab.displayName = 'FormTab';
