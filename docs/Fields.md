@@ -464,39 +464,6 @@ const TextField = ({ source }) => {
 export default TextField;
 ```
 
-## Adding A Label To Custom Field Components
-
-If you want to have a label for your custom fields in an `Edit`, `Create` or `Show` view, you need to wrap your component inside a `<Labeled>` component:
-
-```diff
-const FullNameField = (props) => {
-    const record = useRecordContext(props);
-    return (
--        <span>
-+        <Labeled label="Name">
-            {record.firstName} {record.lastName}
--        </span>
-+        </Labeled>
-    );
-}
-```
-
-![field labels](./img/field-addlabel.png)
-
-You can also leverage the default label resolution mechanism by providing the `resource` and `source` props instead of the `label`:
-
-```jsx
-import { Labeled } from 'react-admin';
-
-const MyShowLayout = () => (
-    <div>
-        <Labeled resource="users" source="name">
-            <TextField source="name" />
-        </Labeled>
-    </div>
-);
-```
-
 ## Hiding A Field Based On The Value Of Another
 
 In a Show view, you may want to display or hide fields based on the value of another field - for instance, show an `email` field only if the `hasEmail` boolean field is `true`.
