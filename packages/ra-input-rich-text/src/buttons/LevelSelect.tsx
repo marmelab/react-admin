@@ -6,11 +6,9 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { Editor } from '@tiptap/react';
 import { useTranslate } from 'ra-core';
 import clsx from 'clsx';
-import { useTiptapEditor } from './useTiptapEditor';
+import { useTiptapEditor } from '../useTiptapEditor';
 
-export const RichTextInputLevelSelect = (
-    props: RichTextInputLevelSelectProps
-) => {
+export const LevelSelect = (props: LevelSelectProps) => {
     const translate = useTranslate();
     const editor = useTiptapEditor();
     const [anchorElement, setAnchorElement] = useState<HTMLDivElement | null>(
@@ -66,6 +64,7 @@ export const RichTextInputLevelSelect = (
                     aria-label={translate('ra.tiptap.current_level', {
                         _: 'Current level',
                     })}
+                    disabled={!editor?.isEditable}
                     onClick={handleClickListItem}
                     className={clsx({
                         [classes.sizeSmall]: size === 'small',
@@ -200,6 +199,6 @@ const Root = styled('div')(({ theme }) => ({
     },
 }));
 
-export type RichTextInputLevelSelectProps = {
+export type LevelSelectProps = {
     size?: 'small' | 'medium' | 'large';
 };

@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 import { styled } from '@mui/material/styles';
-import { RichTextInputLevelSelect } from './RichTextInputLevelSelect';
 import {
     AlignmentButtons,
+    ClearButtons,
     FormatButtons,
+    LevelSelect,
     ListButtons,
     LinkButtons,
     QuoteButtons,
-    ClearButtons,
 } from './buttons';
 
 /**
@@ -53,7 +53,7 @@ export const RichTextInputToolbar = (props: RichTextInputToolbarProps) => {
         size = 'medium',
         children = (
             <>
-                <RichTextInputLevelSelect size={size} />
+                <LevelSelect size={size} />
                 <FormatButtons size={size} />
                 <AlignmentButtons size={size} />
                 <ListButtons size={size} />
