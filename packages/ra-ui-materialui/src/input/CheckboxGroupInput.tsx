@@ -139,7 +139,8 @@ const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = props => 
         (event, isChecked) => {
             let newValue;
 
-            if (value.every(item => typeof item !== 'number')) {
+            // @ts-ignore
+            if (!choices.every(item => typeof item.id === 'number')) {
                 newValue = event.target.value;
             } else {
                 try {

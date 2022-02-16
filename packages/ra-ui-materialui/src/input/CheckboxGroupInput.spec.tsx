@@ -217,7 +217,7 @@ describe('<CheckboxGroupInput />', () => {
         expect(queryByText('Can I help you?')).not.toBeNull();
     });
 
-    it('should not parse selected values types to numbers if all values types are non numbers', () => {
+    it('should not parse selected values types to numbers if all choices types are non numbers', () => {
         const handleSubmit = jest.fn();
         const { getByLabelText } = render(
             <Form
@@ -228,9 +228,9 @@ describe('<CheckboxGroupInput />', () => {
                         <CheckboxGroupInput
                             source="notifications"
                             choices={[
-                                { id: 12, name: 'Ray Hakt' },
-                                { id: 31, name: 'Ann Gullar' },
-                                { id: 42, name: 'Sean Phonee' },
+                                { id: '12', name: 'Ray Hakt' },
+                                { id: '31', name: 'Ann Gullar' },
+                                { id: '42', name: 'Sean Phonee' },
                             ]}
                         />
                         <button type="submit" aria-label="Save" />
