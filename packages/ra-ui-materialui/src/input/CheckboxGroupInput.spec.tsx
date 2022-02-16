@@ -217,6 +217,66 @@ describe('<CheckboxGroupInput />', () => {
         expect(queryByText('Can I help you?')).not.toBeNull();
     });
 
+    it('should not parse selected values types to numbers if all values types are non numbers', () => {
+        const handleSubmit = jest.fn();
+        const { getByLabelText } = render(
+            <Form
+                onSubmit={handleSubmit}
+                initialValues={{ notifications: ['31', '42'] }}
+                render={({ handleSubmit }) => (
+                    <form onSubmit={handleSubmit}>
+                        <CheckboxGroupInput
+                            source="notifications"
+                            choices={[
+                                { id: 12, name: 'Ray Hakt' },
+                                { id: 31, name: 'Ann Gullar' },
+                                { id: 42, name: 'Sean Phonee' },
+                            ]}
+                        />
+                        <button type="submit" aria-label="Save" />
+                    </form>
+                )}
+            />
+        );
+        const input = getByLabelText('Ray Hakt') as HTMLInputElement;
+        fireEvent.click(input);
+
+        fireEvent.click(getByLabelText('Save'));
+        expect(handleSubmit.mock.calls[0][0]).toEqual({
+            notifications: ['31', '42', '12'],
+        });
+    });
+
+    it('should parse selected values types to numbers if some are numbers', () => {
+        const handleSubmit = jest.fn();
+        const { getByLabelText } = render(
+            <Form
+                onSubmit={handleSubmit}
+                initialValues={{ notifications: [31, 42] }}
+                render={({ handleSubmit }) => (
+                    <form onSubmit={handleSubmit}>
+                        <CheckboxGroupInput
+                            source="notifications"
+                            choices={[
+                                { id: 12, name: 'Ray Hakt' },
+                                { id: 31, name: 'Ann Gullar' },
+                                { id: 42, name: 'Sean Phonee' },
+                            ]}
+                        />
+                        <button type="submit" aria-label="Save" />
+                    </form>
+                )}
+            />
+        );
+        const input = getByLabelText('Ray Hakt') as HTMLInputElement;
+        fireEvent.click(input);
+
+        fireEvent.click(getByLabelText('Save'));
+        expect(handleSubmit.mock.calls[0][0]).toEqual({
+            notifications: [31, 42, 12],
+        });
+    });
+
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
             const { container } = render(
