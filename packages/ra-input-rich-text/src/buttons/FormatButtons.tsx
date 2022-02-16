@@ -67,7 +67,12 @@ export const FormatButtons = (props: ToggleButtonGroupProps) => {
     }, []);
 
     return (
-        <ToggleButtonGroup {...props} onChange={handleChange} value={value}>
+        <ToggleButtonGroup
+            {...props}
+            disabled={!editor?.isEditable}
+            onChange={handleChange}
+            value={value}
+        >
             <ToggleButton
                 value="bold"
                 aria-label={boldLabel}

@@ -77,7 +77,7 @@ export const RichTextInput = (props: RichTextInputProps) => {
         label,
         readOnly = false,
         source,
-        toolbar = <RichTextInputToolbar />,
+        toolbar,
     } = props;
 
     const resource = useResourceContext(props);
@@ -91,13 +91,11 @@ export const RichTextInput = (props: RichTextInputProps) => {
 
     const editor = useEditor({
         ...editorOptions,
+        editable: !disabled && !readOnly,
         content: field.value,
         editorProps: {
             attributes: {
                 id,
-                ...(disabled || readOnly
-                    ? EditorAttributesNotEditable
-                    : EditorAttributes),
             },
         },
     });
@@ -108,12 +106,10 @@ export const RichTextInput = (props: RichTextInputProps) => {
         if (!editor) return;
 
         editor.setOptions({
+            editable: !disabled && !readOnly,
             editorProps: {
                 attributes: {
                     id,
-                    ...(disabled || readOnly
-                        ? EditorAttributesNotEditable
-                        : EditorAttributes),
                 },
             },
         });
@@ -147,7 +143,7 @@ export const RichTextInput = (props: RichTextInputProps) => {
             isRequired={isRequired}
             label={label}
             id={`${id}-label`}
-            color={fieldState.invalid ? 'error' : undefined}
+            color={fieldState?.invalid ? 'error' : undefined}
             source={source}
             resource={resource}
             fullWidth={fullWidth}
@@ -161,7 +157,7 @@ export const RichTextInput = (props: RichTextInputProps) => {
                 isTouched={isTouched}
                 isSubmitted={isSubmitted}
                 invalid={invalid}
-                toolbar={toolbar}
+                toolbar={toolbar || <RichTextInputToolbar />}
             />
         </Labeled>
     );
@@ -209,18 +205,6 @@ const RichTextInputContent = ({
     </Root>
 );
 
-const EditorAttributes = {
-    role: 'textbox',
-    'aria-multiline': 'true',
-};
-
-const EditorAttributesNotEditable = {
-    role: 'textbox',
-    'aria-multiline': 'true',
-    contenteditable: false,
-    'aria-readonly': 'true',
-};
-
 export const DefaultEditorOptions = {
     extensions: [
         StarterKit,
@@ -234,25 +218,39 @@ export const DefaultEditorOptions = {
 
 const PREFIX = 'RaRichTextInput';
 const classes = {
-    root: `${PREFIX}-root`,
     editorContent: `${PREFIX}-editorContent`,
 };
-const Root = styled('div')(({ theme }) => ({
-    [`&.${classes.root}`]: {
-        display: 'flex',
-        alignItems: 'center',
-        backgroundColor: theme.palette.primary.main,
-    },
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+
     [`& .${classes.editorContent}`]: {
-        '& > div': {
-            padding: theme.spacing(1),
-            borderStyle: 'solid',
-            borderWidth: '1px',
+        width: '100%',
+        '& .ProseMirror': {
+            backgroundColor: theme.palette.background.default,
             borderColor:
                 theme.palette.mode === 'light'
                     ? 'rgba(0, 0, 0, 0.23)'
                     : 'rgba(255, 255, 255, 0.23)',
             borderRadius: theme.shape.borderRadius,
+            borderStyle: 'solid',
+            borderWidth: '1px',
+            padding: theme.spacing(1),
+
+            '&[contenteditable="false"], &[contenteditable="false"]:hover, &[contenteditable="false"]:focus': {
+                backgroundColor: theme.palette.action.disabledBackground,
+            },
+
+            '&:hover': {
+                backgroundColor: theme.palette.action.hover,
+            },
+            '&:focus': {
+                backgroundColor: theme.palette.background.default,
+            },
         },
     },
 }));
@@ -260,8 +258,8 @@ const Root = styled('div')(({ theme }) => ({
 export type RichTextInputProps = CommonInputProps &
     Omit<LabeledProps, 'children'> & {
         disabled?: boolean;
-        editorOptions?: Partial<EditorOptions>;
         readOnly?: boolean;
+        editorOptions?: Partial<EditorOptions>;
         toolbar?: ReactNode;
     };
 

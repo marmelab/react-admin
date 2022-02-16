@@ -40,8 +40,9 @@ export const AlignmentButtons = (props: ToggleButtonGroupProps) => {
 
     return (
         <ToggleButtonGroup
-            exclusive
             {...props}
+            disabled={!editor?.isEditable}
+            exclusive
             onChange={handleChange}
             value={value}
         >

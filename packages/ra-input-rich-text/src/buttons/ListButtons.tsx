@@ -49,8 +49,9 @@ export const ListButtons = (props: ToggleButtonGroupProps) => {
 
     return (
         <ToggleButtonGroup
-            exclusive
             {...props}
+            disabled={!editor?.isEditable}
+            exclusive
             onChange={handleChange}
             value={value}
         >
