@@ -141,7 +141,6 @@ TabbedFormView.propTypes = {
     translate: PropTypes.func,
     validate: PropTypes.func,
     value: PropTypes.number,
-    version: PropTypes.number,
 };
 
 const DefaultTabs = <TabbedFormTabs />;
