@@ -62,8 +62,7 @@ const PostShow = () => {
                         <RichTextField
                             source="body"
                             stripTags={false}
-                            label=""
-                            addLabel={false}
+                            label={false}
                         />
                     </Tab>
                     <Tab label="post.form.miscellaneous">
@@ -91,7 +90,7 @@ const PostShow = () => {
                     </Tab>
                     <Tab label="post.form.comments">
                         <ReferenceManyField
-                            addLabel={false}
+                            label={false}
                             reference="comments"
                             target="post_id"
                             sort={{ field: 'created_at', order: 'DESC' }}

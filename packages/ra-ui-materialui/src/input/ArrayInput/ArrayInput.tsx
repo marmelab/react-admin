@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { cloneElement, Children, ReactElement, useEffect, useRef } from 'react';
+import clsx from 'clsx';
 import {
     isRequired,
     FieldTitle,
@@ -16,7 +17,7 @@ import { LinearProgress } from '../../layout';
 import { CommonInputProps } from '../CommonInputProps';
 import { InputHelperText } from '../InputHelperText';
 import { sanitizeInputRestProps } from '../sanitizeInputRestProps';
-import { Labeled } from '../Labeled';
+import { Labeled } from '../../Labeled';
 import { ArrayInputContext } from './ArrayInputContext';
 
 /**
@@ -150,13 +151,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
 
     if (isLoading) {
         return (
-            <Labeled
-                label={label}
-                source={source}
-                resource={resource}
-                className={className}
-                margin={margin}
-            >
+            <Labeled label={label} className={className}>
                 <LinearProgress />
             </Labeled>
         );
@@ -166,7 +161,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
         <FormControl
             fullWidth
             margin="normal"
-            className={className}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
             error={(isDirty || isSubmitted) && invalid}
             {...sanitizeInputRestProps(rest)}
         >

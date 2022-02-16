@@ -1554,6 +1554,91 @@ const MyMenuItem = forwardRef((props, ref) => {
 });
 ```
 
+## No More Props Injection In `<SimpleForm>` and `<TabbedForm>`
+
+The form components used to clone their children, inspect their props to handle labels and inject the `margin` and `variant` props.
+
+This is no longer the case and makes custom layout easier.
+
+### `<SimpleForm>` and `<TabbedForm>` No Longer Clone Their Children
+
+This makes custom layouts easier as you don't need to worry about passing props through your intermediate components anymore:
+
+```diff
+-const LineWrapper = ({ children, ...props }) => (
+-    <div style="display: flex">
+-        {Children.map(children, child => cloneElement(child, { ...props, ...child.props }))}
+-    </div>
+-)
+
+const PostCreate = () => (
+    <Create>
+        <SimpleForm>
+-            <LineWrapper>
++            <div style="display: flex">
+                <TextInput source="title" />
+                <TextInput source="title" margin="normal" variant="outlined" />
+-            </LineWrapper>
++            </div>
+        </SimpleForm>
+    </Create>
+)
+```
+
+### `<SimpleForm>` and `<TabbedForm>` No Longer Accept `margin` and `variant`
+
+Just like Material-UI, we don't provide a way to specify those props at the form level. Instead, you can either set those props on the inputs or leverage the Material-UI [component overrides through theme](https://mui.com/customization/theme-components/) if you need to change them globally:
+
+```diff
+const PostCreate = () => (
+    <Create>
+-        <SimpleForm margin="normal" variant="outlined">
++        <SimpleForm>
+-            <TextInput source="title" />
++            <TextInput source="title" margin="normal" variant="outlined" />
+        </SimpleForm>
+    </Create>
+)
+```
+
+You have several options when leveraging the [theme component overrides](https://mui.com/customization/theme-components/):
+
+- Provide your own default props for MUI components such as the `TextField`:
+```js
+const myTheme = {
+    components: {
+    // Name of the component
+    MuiTextField: {
+      defaultProps: {
+        margin: 'normal',
+        variant: 'outlined',
+      },
+    },
+  },
+}
+```
+
+- Provide your own default props for react-admin components such as the `TextInput`:
+```js
+const myTheme = {
+    components: {
+    // Name of the component
+    RaTextInput: {
+      defaultProps: {
+        margin: 'normal',
+        variant: 'outlined',
+      },
+    },
+  },
+}
+```
+
+## The `addLabel` prop Has Been Removed From All Inputs and Fields
+
+Inputs and fields used to support an `addLabel` prop that instructed components such as the `<SimpleForm>` to decorate the input or the field with a label. This is no longer the case as inputs are now responsible for their label display and you must wrap fields inside a `<Labeled>` to add a label for them.
+
+If you used the `addLabel` prop to hide inputs label by passing `false`, you can pass `false` to the `label` prop instead.
+
 ## `useListContext` No Longer Returns An `ids` Prop
 
 The `ListContext` used to return two props for the list data: `data` and `ids`. To render the list data, you had to iterate over the `ids`. 
@@ -1839,7 +1924,7 @@ const PostShow = () => (
 );
 ```
 
-As the `addLabel` prop is now ignored in fields, you can remove it from your custom fields:
+As the `addLabel` prop is now ignored in fields and inputs, you can remove it from your custom fields and inputs:
 
 ```diff
 const MyCustomField = () => (

@@ -1,25 +1,22 @@
 import * as React from 'react';
-import { Children, cloneElement, ReactElement, ReactNode } from 'react';
+import { ComponentType, ReactElement, ReactNode } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
+import { Stack } from '@mui/material';
 import { FormRenderProps, MutationMode, RaRecord } from 'ra-core';
-import { CardContentInner } from '../layout';
 import { Toolbar } from './Toolbar';
-import { FormInput } from './FormInput';
 
 export const SimpleFormView = ({
     children,
     className,
-    component: Component = CardContentInner,
+    component: Component = DefaultComponent,
     handleSubmit,
-    margin,
     mutationMode,
     record,
     resource,
     saving,
     submitOnEnter = true,
     toolbar = DefaultToolbar,
-    variant,
     ...rest
 }: SimpleFormViewProps): ReactElement => (
     <form
@@ -27,30 +24,8 @@ export const SimpleFormView = ({
         onSubmit={handleSubmit}
         {...sanitizeRestProps(rest)}
     >
-        <Component>
-            {Children.map(
-                children,
-                (input: ReactElement) =>
-                    input && (
-                        <FormInput
-                            input={input}
-                            record={record}
-                            resource={resource}
-                            variant={input.props.variant || variant}
-                            margin={input.props.margin || margin}
-                        />
-                    )
-            )}
-        </Component>
-        {toolbar &&
-            cloneElement(toolbar, {
-                className: 'toolbar',
-                mutationMode,
-                record,
-                resource,
-                saving,
-                submitOnEnter,
-            })}
+        <Component>{children}</Component>
+        {toolbar}
     </form>
 );
 
@@ -69,18 +44,25 @@ SimpleFormView.propTypes = {
     validate: PropTypes.func,
 };
 
+const DefaultComponent = ({ children, ...props }) => (
+    <Stack
+        alignItems="flex-start"
+        sx={{ paddingLeft: 1, paddingRight: 1 }}
+        {...props}
+    >
+        {children}
+    </Stack>
+);
 const DefaultToolbar = <Toolbar />;
 
 export interface SimpleFormViewProps extends FormRenderProps {
     children?: ReactNode;
     className?: string;
-    component?: React.ComponentType<any>;
-    margin?: 'none' | 'normal' | 'dense';
+    component?: ComponentType;
     mutationMode?: MutationMode;
     record?: Partial<RaRecord>;
     resource?: string;
     toolbar?: ReactElement | false;
-    variant?: 'standard' | 'outlined' | 'filled';
     submitOnEnter?: boolean;
 }
 

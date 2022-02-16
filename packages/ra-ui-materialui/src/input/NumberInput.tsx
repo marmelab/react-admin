@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useInput, FieldTitle } from 'ra-core';
 
@@ -20,6 +21,7 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  * The object passed as `options` props is passed to the material-ui <TextField> component
  */
 export const NumberInput = ({
+    className,
     defaultValue = '',
     format = convertNumberToString,
     helperText,
@@ -62,6 +64,7 @@ export const NumberInput = ({
         <TextField
             id={id}
             {...field}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
             type="number"
             size="small"
             variant={variant}

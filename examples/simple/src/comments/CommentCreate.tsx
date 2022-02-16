@@ -23,13 +23,9 @@ const CommentCreate = () => (
                 perPage={10000}
                 sort={defaultSort}
             />
-            <TextInput
-                source="author.name"
-                validate={minLength(10)}
-                fullWidth
-            />
+            <TextInput source="author.name" validate={minLength(10)} />
             <DateInput source="created_at" defaultValue={now} />
-            <TextInput source="body" fullWidth={true} multiline={true} />
+            <TextInput fullWidth source="body" multiline />
         </SimpleForm>
     </Create>
 );

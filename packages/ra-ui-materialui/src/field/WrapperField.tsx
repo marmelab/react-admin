@@ -29,10 +29,6 @@ export const WrapperField = ({ children }: WrapperFieldProps) => (
 
 WrapperField.displayName = 'WrapperField';
 
-WrapperField.defaultProps = {
-    addLabel: true,
-};
-
 WrapperField.propTypes = fieldPropTypes;
 
 export interface WrapperFieldProps

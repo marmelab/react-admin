@@ -7,12 +7,13 @@ import React, {
 } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
 import FormHelperText from '@mui/material/FormHelperText';
 import { useInput, useTranslate, shallowEqual } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
-import { Labeled } from './Labeled';
+import { Labeled } from '../Labeled';
 import { FileInputPreview } from './FileInputPreview';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
@@ -149,11 +150,10 @@ export const FileInput = (props: FileInputProps) => {
         <StyledLabeled
             id={id}
             label={label}
-            className={className}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
             source={source}
             resource={resource}
             isRequired={isRequired}
-            fieldState={fieldState}
             {...sanitizeInputRestProps(rest)}
         >
             <>

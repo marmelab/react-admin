@@ -123,14 +123,15 @@ const PostEdit = () => {
                         />
                     </SanitizedBox>
                     <TextInput
-                        multiline={true}
-                        fullWidth={true}
+                        multiline
+                        fullWidth
                         source="teaser"
                         validate={required()}
                         resettable
                     />
                     <CheckboxGroupInput
                         source="notifications"
+                        fullWidth
                         choices={[
                             { id: 12, name: 'Ray Hakt' },
                             { id: 31, name: 'Ann Gullar' },
@@ -242,7 +243,7 @@ const PostEdit = () => {
                     <ReferenceManyField
                         reference="comments"
                         target="post_id"
-                        addLabel={false}
+                        label={false}
                         fullWidth
                     >
                         <Datagrid>

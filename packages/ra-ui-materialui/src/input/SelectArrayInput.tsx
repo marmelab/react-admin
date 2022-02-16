@@ -2,6 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import {
     Select,
     MenuItem,
@@ -22,7 +23,7 @@ import { FormControlProps } from '@mui/material/FormControl';
 
 import { LinearProgress } from '../layout';
 import { CommonInputProps } from './CommonInputProps';
-import { Labeled } from './Labeled';
+import { Labeled } from '../Labeled';
 import {
     SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
@@ -213,9 +214,8 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                 label={label}
                 source={source}
                 resource={resource}
-                className={className}
+                className={clsx('ra-input', `ra-input-${source}`, className)}
                 isRequired={isRequired}
-                margin={margin}
             >
                 <LinearProgress />
             </Labeled>
@@ -226,7 +226,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         <>
             <StyledFormControl
                 margin={margin}
-                className={className}
+                className={clsx('ra-input', `ra-input-${source}`, className)}
                 error={(isTouched || isSubmitted) && invalid}
                 variant={variant}
                 {...sanitizeRestProps(rest)}
@@ -323,7 +323,6 @@ SelectArrayInput.defaultProps = {
 };
 
 const sanitizeRestProps = ({
-    addLabel,
     alwaysOn,
     choices,
     classNamInputWithOptionsPropse,

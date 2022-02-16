@@ -9,6 +9,7 @@ export const CheckboxGroupInputItem = props => {
         id,
         choice,
         className,
+        fullWidth,
         onChange,
         optionText,
         optionValue,

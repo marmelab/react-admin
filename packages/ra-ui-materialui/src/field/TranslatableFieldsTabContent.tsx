@@ -8,7 +8,7 @@ import {
     ReactNode,
 } from 'react';
 import { useTranslatableContext, RaRecord } from 'ra-core';
-import { Labeled } from '../input';
+import { Labeled } from '../Labeled';
 
 /**
  * Default container for a group of translatable fields inside a TranslatableFields components.
@@ -42,15 +42,14 @@ export const TranslatableFieldsTabContent = (
                     <div key={field.props.source}>
                         {field.props.addLabel ? (
                             <Labeled
-                                record={record}
                                 resource={resource}
                                 label={field.props.label}
                                 source={field.props.source}
-                                disabled={false}
                             >
                                 {cloneElement(field, {
                                     ...field.props,
                                     label: getLabel(field.props.source),
+                                    record,
                                     source: getSource(
                                         field.props.source,
                                         locale
@@ -63,6 +62,7 @@ export const TranslatableFieldsTabContent = (
                             cloneElement(field, {
                                 ...field.props,
                                 label: getLabel(field.props.source),
+                                record,
                                 source: getSource(field.props.source, locale),
                             })
                         )}

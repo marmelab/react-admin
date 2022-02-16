@@ -34,12 +34,12 @@ const PostReferenceInput = props => {
     }, [setShowPreviewDialog]);
 
     return (
-        <div>
+        <>
             <ReferenceInput {...props} defaultValue="">
                 <SelectInput
+                    fullWidth
                     create={<PostQuickCreate />}
                     optionText="title"
-                    fullWidth
                 />
             </ReferenceInput>
             {postId ? (
@@ -75,7 +75,7 @@ const PostReferenceInput = props => {
                     </Dialog>
                 </Fragment>
             ) : null}
-        </div>
+        </>
     );
 };
 

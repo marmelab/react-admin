@@ -41,8 +41,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         syncWithLocation = true,
         tabs = DefaultTabs,
         toolbar = DefaultToolbar,
-        variant,
-        margin,
         ...rest
     } = props;
     const location = useLocation();
@@ -60,7 +58,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         cloneElement(
             tabs,
             {
-                classes: TabbedFormClasses,
                 onChange: handleTabChange,
                 syncWithLocation,
                 url: formRootPathname,
@@ -103,12 +100,9 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                     return isValidElement<any>(tab)
                         ? React.cloneElement(tab, {
                               intent: 'content',
-                              classes: TabbedFormClasses,
                               resource,
                               record,
                               hidden,
-                              variant: tab.props.variant || variant,
-                              margin: tab.props.margin || margin,
                               value: syncWithLocation ? tabPath : index,
                           })
                         : null;
@@ -156,7 +150,6 @@ const DefaultToolbar = <Toolbar />;
 export interface TabbedFormViewProps extends FormRenderProps {
     children?: ReactNode;
     className?: string;
-    margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
     record?: Partial<RaRecord>;
     resource?: string;
@@ -164,7 +157,6 @@ export interface TabbedFormViewProps extends FormRenderProps {
     syncWithLocation?: boolean;
     tabs?: ReactElement;
     toolbar?: ReactElement;
-    variant?: 'standard' | 'outlined' | 'filled';
     submitOnEnter?: boolean;
 }
 

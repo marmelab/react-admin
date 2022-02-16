@@ -10,11 +10,8 @@ import {
 import {
     FormGroupContextProvider,
     RaRecord,
-    useRecordContext,
     useTranslatableContext,
 } from 'ra-core';
-import { FormInput } from '../form';
-import { useResourceContext } from 'ra-core';
 
 /**
  * Default container for a group of translatable inputs inside a TranslatableInputs component.
@@ -33,9 +30,6 @@ export const TranslatableInputsTabContent = (
     } = props;
     const { selectedLocale, getLabel, getSource } = useTranslatableContext();
 
-    const record = useRecordContext(props);
-    const resource = useResourceContext(props);
-
     return (
         <FormGroupContextProvider name={`${groupKey}${locale}`}>
             <Root
@@ -47,22 +41,16 @@ export const TranslatableInputsTabContent = (
                 {...other}
             >
                 {Children.map(children, child =>
-                    isValidElement(child) ? (
-                        <FormInput
-                            input={cloneElement(child, {
-                                ...child.props,
-                                label: getLabel(
-                                    child.props.source,
-                                    child.props.label
-                                ),
-                                source: getSource(child.props.source, locale),
-                            })}
-                            record={record}
-                            resource={resource}
-                            variant={child.props.variant || variant}
-                            margin={child.props.margin || margin}
-                        />
-                    ) : null
+                    isValidElement(child)
+                        ? cloneElement(child, {
+                              ...child.props,
+                              label: getLabel(
+                                  child.props.source,
+                                  child.props.label
+                              ),
+                              source: getSource(child.props.source, locale),
+                          })
+                        : null
                 )}
             </Root>
         </FormGroupContextProvider>

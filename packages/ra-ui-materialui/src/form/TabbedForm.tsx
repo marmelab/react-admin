@@ -53,7 +53,7 @@ import { useFormRootPath } from './useFormRootPath';
  *                 <TextInput multiline source="teaser" validate={required()} />
  *             </FormTab>
  *             <FormTab label="body">
- *                 <RichTextInput source="body" validate={required()} addLabel={false} />
+ *                 <RichTextInput source="body" validate={required()} label={false} />
  *             </FormTab>
  *             <FormTab label="Miscellaneous">
  *                 <TextInput label="Password (if protected post)" source="password" type="password" />
@@ -63,7 +63,7 @@ import { useFormRootPath } from './useFormRootPath';
  *                 <TextInput disabled label="Nb views" source="views" />
  *             </FormTab>
  *             <FormTab label="comments">
- *                 <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
+ *                 <ReferenceManyField reference="comments" target="post_id" label={false}>
  *                     <Datagrid>
  *                         <TextField source="body" />
  *                         <DateField source="created_at" />

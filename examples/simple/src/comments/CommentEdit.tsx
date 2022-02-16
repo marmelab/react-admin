@@ -135,7 +135,6 @@ const CommentEdit = props => {
                                 reference="posts"
                                 perPage={15}
                                 sort={{ field: 'title', order: 'ASC' }}
-                                fullWidth
                             >
                                 <AutocompleteInput
                                     create={<CreatePost />}
@@ -148,6 +147,7 @@ const CommentEdit = props => {
                                     }}
                                     optionText={<OptionRenderer />}
                                     inputText={inputText}
+                                    fullWidth
                                 />
                             </ReferenceInput>
 

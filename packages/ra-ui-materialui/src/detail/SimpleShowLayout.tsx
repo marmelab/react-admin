@@ -10,7 +10,7 @@ import {
     useRecordContext,
     OptionalRecordContextProvider,
 } from 'ra-core';
-import { FieldWithLabel } from './FieldWithLabel';
+import { Labeled } from '../Labeled';
 
 /**
  * Layout for a Show view showing fields in one column.
@@ -68,7 +68,7 @@ export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
                 >
                     {Children.map(children, field =>
                         field && isValidElement<any>(field) ? (
-                            <FieldWithLabel
+                            <Labeled
                                 key={field.props.source}
                                 className={clsx(
                                     'ra-field',
@@ -79,7 +79,7 @@ export const SimpleShowLayout = (props: SimpleShowLayoutProps) => {
                                 )}
                             >
                                 {field}
-                            </FieldWithLabel>
+                            </Labeled>
                         ) : null
                     )}
                 </Stack>

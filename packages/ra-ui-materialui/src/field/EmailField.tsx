@@ -39,10 +39,6 @@ export const EmailField: FC<EmailFieldProps> = memo(props => {
     );
 });
 
-EmailField.defaultProps = {
-    addLabel: true,
-};
-
 EmailField.propTypes = fieldPropTypes;
 EmailField.displayName = 'EmailField';
 

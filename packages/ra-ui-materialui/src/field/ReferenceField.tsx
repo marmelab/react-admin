@@ -83,7 +83,6 @@ export const ReferenceField: FC<ReferenceFieldProps> = props => {
 };
 
 ReferenceField.propTypes = {
-    addLabel: PropTypes.bool,
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
     cellClassName: PropTypes.string,
@@ -105,7 +104,6 @@ ReferenceField.propTypes = {
 };
 
 ReferenceField.defaultProps = {
-    addLabel: true,
     link: 'edit',
 };
 

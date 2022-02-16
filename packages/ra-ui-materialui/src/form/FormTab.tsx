@@ -2,9 +2,8 @@ import * as React from 'react';
 import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { FormGroupContextProvider, RaRecord } from 'ra-core';
-import { Box, BoxProps } from '@mui/material';
+import { Stack, StackProps } from '@mui/material';
 
-import { FormInput } from './FormInput';
 import { FormTabHeader } from './FormTabHeader';
 
 export const FormTab = (props: FormTabProps) => {
@@ -40,7 +39,9 @@ export const FormTab = (props: FormTabProps) => {
 
     const renderContent = () => (
         <FormGroupContextProvider name={value.toString()}>
-            <Box
+            <Stack
+                alignItems="flex-start"
+                sx={{ paddingLeft: 1, paddingRight: 1 }}
                 style={hidden ? hiddenStyle : null}
                 className={contentClassName}
                 id={`tabpanel-${value}`}
@@ -50,20 +51,8 @@ export const FormTab = (props: FormTabProps) => {
                 aria-hidden={hidden || undefined}
                 {...rest}
             >
-                {React.Children.map(
-                    children,
-                    (input: ReactElement) =>
-                        input && (
-                            <FormInput
-                                input={input}
-                                record={record}
-                                resource={resource}
-                                variant={input.props.variant || variant}
-                                margin={input.props.margin || margin}
-                            />
-                        )
-                )}
-            </Box>
+                {children}
+            </Stack>
         </FormGroupContextProvider>
     );
 
@@ -88,7 +77,7 @@ FormTab.propTypes = {
     variant: PropTypes.oneOf(['standard', 'outlined', 'filled']),
 };
 
-export interface FormTabProps extends BoxProps {
+export interface FormTabProps extends StackProps {
     className?: string;
     children?: ReactNode;
     contentClassName?: string;
