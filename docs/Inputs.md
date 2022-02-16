@@ -266,14 +266,14 @@ For instance, let's write a component to edit the latitude and longitude of the 
 import { useController } from 'react-hook-form';
 
 const LatLngInput = () => {
-    const input1 = useController({name: 'lat'});
-    const input2 = useController({name: 'lng'});
+    const input1 = useController({ name: 'lat' });
+    const input2 = useController({ name: 'lng' });
 
     return (
         <span>
-            <input {...input1.field} type="number" placeholder="latitude"/>
+            <input {...input1.field} type="number" placeholder="latitude" />
             &nbsp;
-            <input {...input2.field} type="number" placeholder="longitude"/>
+            <input {...input2.field} type="number" placeholder="longitude" />
         </span>
     );
 };
