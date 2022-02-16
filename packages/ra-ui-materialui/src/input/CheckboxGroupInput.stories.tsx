@@ -8,7 +8,7 @@ import { SimpleForm } from '../form';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
 import { Typography } from '@mui/material';
 import { testDataProvider, useRecordContext } from 'ra-core';
-import { ReferenceInput } from '.';
+import { ReferenceArrayInput } from './ReferenceArrayInput';
 
 export default { title: 'ra-ui-materialui/input/CheckboxGroupInput' };
 
@@ -39,6 +39,11 @@ export const Basic = () => (
 
 const dataProvider = testDataProvider({
     getList: () => Promise.resolve({ data: choices, total: choices.length }),
+    getMany: (resource, params) =>
+        Promise.resolve({
+            data: choices.filter(choice => params.ids.includes(choice.id)),
+            total: choices.length,
+        }),
 });
 
 export const InsideReferenceArrayInput = () => (
@@ -49,9 +54,9 @@ export const InsideReferenceArrayInput = () => (
             sx={{ width: 600 }}
         >
             <SimpleForm>
-                <ReferenceInput reference="options" source="options">
+                <ReferenceArrayInput reference="options" source="options">
                     <CheckboxGroupInput />
-                </ReferenceInput>
+                </ReferenceArrayInput>
             </SimpleForm>
         </Create>
     </AdminContext>

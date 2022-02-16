@@ -169,7 +169,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         [formOnChange, formOnBlur, value]
     );
 
-    if (isLoading) {
+    if (isLoading && allChoices?.length === 0) {
         return (
             <Labeled
                 id={id}
@@ -205,7 +205,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                 />
             </FormLabel>
             <FormGroup row={row}>
-                {allChoices.map(choice => (
+                {allChoices?.map(choice => (
                     <CheckboxGroupInputItem
                         key={get(choice, optionValue)}
                         choice={choice}
