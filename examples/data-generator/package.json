@@ -12,7 +12,7 @@
         "watch": "tsup --external react-hook-form src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
     },
     "dependencies": {
-        "date-fns": "~1.29.0",
+        "date-fns": "^2.19.0",
         "faker": "^4.1.0"
     },
     "devDependencies": {

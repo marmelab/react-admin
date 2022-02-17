@@ -10,7 +10,7 @@
         "@types/recharts": "^1.8.10",
         "clsx": "^1.1.1",
         "data-generator-retail": "^4.0.0-alpha.2",
-        "date-fns": "^1.29.0",
+        "date-fns": "^2.19.0",
         "fakerest": "^3.0.0",
         "fetch-mock": "~9.11.0",
         "graphql": "^15.6.0",
