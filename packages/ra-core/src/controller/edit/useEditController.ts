@@ -221,7 +221,7 @@ export interface EditControllerResult<RecordType extends RaRecord = any> {
     defaultTitle: string;
     isFetching: boolean;
     isLoading: boolean;
-    save: SaveHandler;
+    save: SaveHandler<RecordType>;
     saving: boolean;
     record?: RecordType;
     refetch: UseGetOneHookValue<RecordType>['refetch'];
