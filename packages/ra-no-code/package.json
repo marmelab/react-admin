@@ -49,7 +49,7 @@
         "prop-types": "^15.6.1",
         "ra-data-local-storage": "^4.0.0-alpha.2",
         "react-admin": "^4.0.0-alpha.2",
-        "react-dropzone": "^10.1.7",
+        "react-dropzone": "^12.0.4",
         "react-query": "^3.32.1"
     }
 }
