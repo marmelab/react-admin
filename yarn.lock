@@ -6328,13 +6328,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/query-string@npm:5.1.0":
-  version: 5.1.0
-  resolution: "@types/query-string@npm:5.1.0"
-  checksum: 8399e5cd6d6aecd3af01e6a6d33095e971a6770083266bcf4df4623b2bc64a4a94712260b063c8faf8ee0f0b355545168736eb47e33956cb2e9c54ae869c3e17
-  languageName: node
-  linkType: hard
-
 "@types/range-parser@npm:*":
   version: 1.2.4
   resolution: "@types/range-parser@npm:1.2.4"
@@ -12381,7 +12374,6 @@ __metadata:
     "@types/jest": ^26.0.19
     "@types/node": ^12.12.14
     "@types/prop-types": ^15.6.0
-    "@types/query-string": 5.1.0
     "@types/react": ^17.0.20
     "@types/react-dom": ^17.0.9
     "@types/recharts": ^1.8.10
@@ -12396,7 +12388,7 @@ __metadata:
     json-graphql-server: ~2.3.0
     prop-types: ^15.6.1
     proxy-polyfill: ^0.3.0
-    query-string: ^5.1.1
+    query-string: ^7.1.1
     ra-data-fakerest: ^4.0.0-alpha.2
     ra-data-graphql: ^4.0.0-alpha.2
     ra-data-graphql-simple: ^4.0.0-alpha.2
@@ -14254,14 +14246,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eventemitter3@npm:^3.0.0":
-  version: 3.1.2
-  resolution: "eventemitter3@npm:3.1.2"
-  checksum: c67262eccbf85848b7cc6d4abb6c6e34155e15686db2a01c57669fd0d44441a574a19d44d25948b442929e065774cbe5003d8e77eed47674fbf876ac77887793
-  languageName: node
-  linkType: hard
-
-"eventemitter3@npm:^4.0.0, eventemitter3@npm:^4.0.1, eventemitter3@npm:^4.0.4":
+"eventemitter3@npm:^4.0.0, eventemitter3@npm:^4.0.1, eventemitter3@npm:^4.0.4, eventemitter3@npm:^4.0.7":
   version: 4.0.7
   resolution: "eventemitter3@npm:4.0.7"
   checksum: 5f6d97cbcbac47be798e6355e3a7639a84ee1f7d9b199a07017f1d2f1e2fe236004d14fa5dfaeba661f94ea57805385e326236a6debbc7145c8877fbc0297c6b
@@ -24874,7 +24859,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"query-string@npm:^5.0.1, query-string@npm:^5.1.1":
+"query-string@npm:^5.0.1":
   version: 5.1.1
   resolution: "query-string@npm:5.1.1"
   dependencies:
@@ -24894,6 +24879,18 @@ __metadata:
     split-on-first: ^1.0.0
     strict-uri-encode: ^2.0.0
   checksum: 900e0fa788000e9dc5f929b6f4141742dcf281f02d3bab9714bc83bea65fab3de75169ea8d61f19cda996bc0dcec72e156efe3c5614c6bce65dcf234ac955b14
+  languageName: node
+  linkType: hard
+
+"query-string@npm:^7.1.1":
+  version: 7.1.1
+  resolution: "query-string@npm:7.1.1"
+  dependencies:
+    decode-uri-component: ^0.2.0
+    filter-obj: ^1.1.0
+    split-on-first: ^1.0.0
+    strict-uri-encode: ^2.0.0
+  checksum: 85c1ee90f25b936134153df71fa9c12f05922e328188270039f5d4344568c2e9ae5247b09bf118d0656d31dc0e24002e5e1f2a44fae1b96e3d6e64cd552e0518
   languageName: node
   linkType: hard
 
@@ -24955,12 +24952,11 @@ __metadata:
     "@types/jest": ^26.0.19
     "@types/node": ^17.0.8
     "@types/node-polyglot": ^0.4.31
-    "@types/query-string": 5.1.0
     "@types/react": ^17.0.20
     clsx: ^1.1.1
     cross-env: ^5.2.0
     date-fns: ^2.19.0
-    eventemitter3: ^3.0.0
+    eventemitter3: ^4.0.7
     expect: ^27.4.6
     history: ^5.1.0
     ignore-styles: ~5.0.1
@@ -24969,7 +24965,7 @@ __metadata:
     lodash: ~4.17.5
     npm-dts: ^1.3.10
     prop-types: ^15.6.1
-    query-string: ^5.1.1
+    query-string: ^7.1.1
     ra-i18n-polyglot: ^4.0.0-alpha.2
     react: ^17.0.0
     react-dom: ^17.0.0
@@ -25051,7 +25047,7 @@ __metadata:
   dependencies:
     cross-env: ^5.2.0
     npm-dts: ^1.3.10
-    query-string: ^5.1.1
+    query-string: ^7.1.1
     ra-core: ^4.0.0-alpha.2
     rimraf: ^2.6.3
     tsup: ^5.11.11
@@ -25079,7 +25075,7 @@ __metadata:
   dependencies:
     cross-env: ^5.2.0
     npm-dts: ^1.3.10
-    query-string: ^5.1.1
+    query-string: ^7.1.1
     ra-core: ^4.0.0-alpha.2
     rimraf: ^2.6.3
     tsup: ^5.11.11
@@ -25192,7 +25188,6 @@ __metadata:
     "@mui/icons-material": ^5.0.1
     "@mui/material": ^5.0.2
     "@testing-library/react": ^11.2.3
-    "@types/query-string": 5.1.0
     autosuggest-highlight: ^3.1.1
     clsx: ^1.1.1
     cross-env: ^5.2.0
@@ -25207,8 +25202,10 @@ __metadata:
     lodash: ~4.17.5
     npm-dts: ^1.3.10
     prop-types: ^15.7.0
-    query-string: ^5.1.1
+    query-string: ^7.1.1
     ra-core: ^4.0.0-alpha.2
+    ra-i18n-polyglot: ^4.0.0-alpha.2
+    ra-language-english: ^4.0.0-alpha.2
     react: ^17.0.0
     react-dom: ^17.0.0
     react-dropzone: ^12.0.4

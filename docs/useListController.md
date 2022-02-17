@@ -94,8 +94,8 @@ const {
     // fetched data
     data, // an array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }]
     total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
-    isFetching, // boolean that is true on mount, and false once the data was fetched
-    isLoading, // boolean that is false until the data is available
+    isFetching, // boolean that is true while the data is being fetched, and false once the data is fetched
+    isLoading, // boolean that is true until the data is available for the first time
     // pagination
     page, // the current page. Starts at 1
     perPage, // the number of results per page. Defaults to 25

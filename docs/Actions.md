@@ -191,10 +191,10 @@ The source of these two variables is [react-query](https://react-query.tanstack.
 
 Let's see how what these variables contain in a typical usage scenario:
 
-1. The user first loads a page. `isLoading` is true, and `isFetching` is also true because the data was never loaded
+1. The user first loads a page. `isLoading` is true because the data was never loaded, and `isFetching` is also true because data is being fetched.
 2. The dataProvider returns the data. Both `isLoading` and `isFetching` become false
 3. The user navigates away
-4. The user comes back to the first page, which triggers a new fetch. `isLoading` is false, because the stale data is available, and `isFetching` is true because the dataProvider is being fetched.
+4. The user comes back to the first page, which triggers a new fetch. `isLoading` is false, because the stale data is available, and `isFetching` is true because data is being fetched via the dataProvider.
 5. The dataProvider returns the data. Both `isLoading` and `isFetching` become false
 
 Components use the loading state to show a loading indicator when there is no data to show. In the example above, the loading indicator is necessary for step 2, but not in step 4, because you can display the stale data while fresh data is being loaded.
