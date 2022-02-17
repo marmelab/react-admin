@@ -56,7 +56,7 @@ const exporter = (records, fetchRelatedRecords) =>
             'body',
         ];
 
-        jsonExport(data, { headers }, (error, csv) => {
+        return jsonExport(data, { headers }, (error, csv) => {
             if (error) {
                 console.error(error);
             }

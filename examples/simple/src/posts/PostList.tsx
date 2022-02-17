@@ -51,7 +51,7 @@ const exporter = posts => {
             backlink => backlink.url
         ),
     }));
-    jsonExport(data, (err, csv) => downloadCSV(csv, 'posts'));
+    return jsonExport(data, (err, csv) => downloadCSV(csv, 'posts'));
 };
 
 const StyledDatagrid = styled(Datagrid)(({ theme }) => ({

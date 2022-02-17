@@ -59,7 +59,7 @@
         "date-fns": "^2.19.0",
         "eventemitter3": "^3.0.0",
         "inflection": "~1.12.0",
-        "jsonexport": "^2.4.1",
+        "jsonexport": "^3.2.0",
         "lodash": "~4.17.5",
         "prop-types": "^15.6.1",
         "query-string": "^5.1.1",

@@ -19779,12 +19779,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonexport@npm:^2.4.1":
-  version: 2.5.2
-  resolution: "jsonexport@npm:2.5.2"
+"jsonexport@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "jsonexport@npm:3.2.0"
   bin:
     jsonexport: bin/jsonexport.js
-  checksum: e2eb53eb90990e92c2a552cfa78281bf9f13a3b2472f5e96d1ee4ae40f410236a986cbac1498bdb7e314a126949b37a562829ccb8e9c4703415d4688ec00c0c5
+  checksum: eaca567412e72facb9bd765586bfcdb0525781eae49af35776c1d7b53a807a51f4bd00aab9c12647337772bbf8be9a0b66a23cada6a8a97365b5ac6296bb81cd
   languageName: node
   linkType: hard
 
@@ -24965,7 +24965,7 @@ __metadata:
     history: ^5.1.0
     ignore-styles: ~5.0.1
     inflection: ~1.12.0
-    jsonexport: ^2.4.1
+    jsonexport: ^3.2.0
     lodash: ~4.17.5
     npm-dts: ^1.3.10
     prop-types: ^15.6.1
@@ -25203,7 +25203,7 @@ __metadata:
     history: ^5.1.0
     ignore-styles: ~5.0.1
     inflection: ~1.12.0
-    jsonexport: ^2.4.1
+    jsonexport: ^3.2.0
     lodash: ~4.17.5
     npm-dts: ^1.3.10
     prop-types: ^15.7.0
@@ -27766,7 +27766,7 @@ __metadata:
     html-loader: ~1.3.0
     html-webpack-plugin: ~4.3.0
     ignore-not-found-export-plugin: ^1.0.1
-    jsonexport: ^2.4.1
+    jsonexport: ^3.2.0
     lodash: ~4.17.5
     prop-types: ^15.7.2
     proxy-polyfill: ^0.3.0
