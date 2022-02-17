@@ -11,6 +11,7 @@ import {
     useCreatePath,
 } from 'ra-core';
 
+import { DRAWER_WIDTH, CLOSED_DRAWER_WIDTH } from './Sidebar';
 import { useSidebarState } from './useSidebarState';
 import { DashboardMenuItem } from './DashboardMenuItem';
 import { MenuItemLink } from './MenuItemLink';
@@ -108,13 +109,10 @@ const Root = styled('div', {
     }),
 
     [`&.${MenuClasses.open}`]: {
-        width: lodashGet(theme, 'menu.width', MENU_WIDTH),
+        width: lodashGet(theme, 'sidebar.width', DRAWER_WIDTH),
     },
 
     [`&.${MenuClasses.closed}`]: {
-        width: lodashGet(theme, 'menu.closedWidth', CLOSED_MENU_WIDTH),
+        width: lodashGet(theme, 'sidebar.closedWidth', CLOSED_DRAWER_WIDTH),
     },
 }));
-
-export const MENU_WIDTH = 240;
-export const CLOSED_MENU_WIDTH = 50;
