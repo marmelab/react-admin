@@ -48,7 +48,7 @@ import jsonServerProvider from 'ra-data-json-server';
 import { PostList } from './posts';
 
 const App = () => (
-    <Admin dataProvider={jsonServerProvider('http://jsonplaceholder.typicode.com')}>
+    <Admin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
         <Resource name="posts" list={PostList} />
     </Admin>
 );
@@ -74,7 +74,7 @@ const httpClient = (url, options = {}) => {
     options.headers.set('X-Custom-Header', 'foobar');
     return fetchUtils.fetchJson(url, options);
 };
-const dataProvider = jsonServerProvider('http://jsonplaceholder.typicode.com', httpClient);
+const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com', httpClient);
 
 render(
     <Admin dataProvider={dataProvider} title="Example Admin">
