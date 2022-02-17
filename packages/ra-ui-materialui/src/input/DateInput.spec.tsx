@@ -2,7 +2,7 @@ import * as React from 'react';
 import expect from 'expect';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { required, testDataProvider } from 'ra-core';
-import format from 'date-fns/format';
+import { format } from 'date-fns';
 import { useFormState } from 'react-hook-form';
 
 import { AdminContext } from '../AdminContext';
@@ -165,7 +165,7 @@ describe('<DateInput />', () => {
     });
 
     it('should not make the form dirty on initialization', () => {
-        const publishedAt = new Date().toISOString();
+        const publishedAt = new Date();
         const FormState = () => {
             const { isDirty } = useFormState();
 
@@ -175,14 +175,14 @@ describe('<DateInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm
                     onSubmit={jest.fn()}
-                    record={{ id: 1, publishedAt }}
+                    record={{ id: 1, publishedAt: publishedAt.toISOString() }}
                 >
                     <DateInput {...defaultProps} />
                     <FormState />
                 </SimpleForm>
             </AdminContext>
         );
-        expect(screen.getByDisplayValue(format(publishedAt, 'YYYY-MM-DD')));
+        expect(screen.getByDisplayValue(format(publishedAt, 'yyy-MM-dd')));
         expect(screen.queryByText('Dirty: false')).not.toBeNull();
     });
 

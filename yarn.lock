@@ -12053,7 +12053,7 @@ __metadata:
   resolution: "data-generator-retail@workspace:examples/data-generator"
   dependencies:
     cross-env: ^5.2.0
-    date-fns: ~1.29.0
+    date-fns: ^2.19.0
     faker: ^4.1.0
     npm-dts: ^1.3.10
     ra-core: ^4.0.0-alpha.2
@@ -12075,7 +12075,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^1.27.2, date-fns@npm:^1.29.0":
+"date-fns@npm:^1.27.2":
   version: 1.30.1
   resolution: "date-fns@npm:1.30.1"
   checksum: bad6ad7c15180121e15d61ad62a4a214c108d66f35b35f5eeb6ade837a3c29aa4444b9528a93a5374b95ba11231c142276351bf52f4d168676f9a1e17ce3726a
@@ -12086,13 +12086,6 @@ __metadata:
   version: 2.28.0
   resolution: "date-fns@npm:2.28.0"
   checksum: ecdacd36326e7f5f8c4f1e78ae931a8997109f1c841f5163053b866585ca899521b0e7a114eeb48a9fe5135a550787bd4bbd8baa321cded0b4d823f847889a80
-  languageName: node
-  linkType: hard
-
-"date-fns@npm:~1.29.0":
-  version: 1.29.0
-  resolution: "date-fns@npm:1.29.0"
-  checksum: 28bf5586ab46f9d4e44585de0a29b7be2858ac0e7af24d84f5fd1ed4e4f83cc98bb47a6dc71970027c18984e1b82bafa30f216bea999427847ba5e6bfcdad422
   languageName: node
   linkType: hard
 
@@ -12394,7 +12387,7 @@ __metadata:
     "@types/recharts": ^1.8.10
     clsx: ^1.1.1
     data-generator-retail: ^4.0.0-alpha.2
-    date-fns: ^1.29.0
+    date-fns: ^2.19.0
     fakerest: ^3.0.0
     fetch-mock: ~9.11.0
     graphql: ^15.6.0
@@ -24966,7 +24959,7 @@ __metadata:
     "@types/react": ^17.0.20
     clsx: ^1.1.1
     cross-env: ^5.2.0
-    date-fns: ^1.29.0
+    date-fns: ^2.19.0
     eventemitter3: ^3.0.0
     expect: ^27.4.6
     history: ^5.1.0
@@ -25170,7 +25163,7 @@ __metadata:
     "@testing-library/user-event": ^13.1.5
     clsx: ^1.1.1
     cross-env: ^5.2.0
-    date-fns: ^1.29.0
+    date-fns: ^2.19.0
     inflection: ~1.12.0
     lodash: ~4.17.5
     npm-dts: ^1.3.10

@@ -2,7 +2,7 @@ import * as React from 'react';
 import expect from 'expect';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { required, testDataProvider } from 'ra-core';
-import format from 'date-fns/format';
+import { format } from 'date-fns';
 import { useFormState } from 'react-hook-form';
 
 import { AdminContext } from '../AdminContext';
@@ -31,7 +31,7 @@ describe('<DateTimeInput />', () => {
     });
 
     it('should not make the form dirty on initialization', () => {
-        const publishedAt = new Date().toISOString();
+        const publishedAt = new Date();
         const FormState = () => {
             const { isDirty } = useFormState();
 
@@ -41,7 +41,7 @@ describe('<DateTimeInput />', () => {
             <AdminContext dataProvider={testDataProvider()}>
                 <SimpleForm
                     onSubmit={jest.fn()}
-                    record={{ id: 1, publishedAt }}
+                    record={{ id: 1, publishedAt: publishedAt.toISOString() }}
                 >
                     <DateTimeInput {...defaultProps} />
                     <FormState />
@@ -49,7 +49,7 @@ describe('<DateTimeInput />', () => {
             </AdminContext>
         );
         expect(
-            screen.getByDisplayValue(format(publishedAt, 'YYYY-MM-DDTHH:mm'))
+            screen.getByDisplayValue(format(publishedAt, "yyyy-MM-dd'T'HH:mm"))
         );
         expect(screen.queryByText('Dirty: false')).not.toBeNull();
     });
@@ -76,7 +76,7 @@ describe('<DateTimeInput />', () => {
             </AdminContext>
         );
 
-        expect(screen.getByDisplayValue(format(date, 'YYYY-MM-DDTHH:mm')));
+        expect(screen.getByDisplayValue(format(date, "yyyy-MM-dd'T'HH:mm")));
     });
 
     it('should submit the form default value with its timezone', async () => {
@@ -90,7 +90,9 @@ describe('<DateTimeInput />', () => {
             </AdminContext>
         );
         expect(
-            screen.queryByDisplayValue(format(publishedAt, 'YYYY-MM-DDTHH:mm'))
+            screen.queryByDisplayValue(
+                format(publishedAt, "yyyy-MM-dd'T'HH:mm")
+            )
         ).not.toBeNull();
         fireEvent.click(screen.getByLabelText('ra.action.save'));
         await waitFor(() => {
@@ -114,7 +116,9 @@ describe('<DateTimeInput />', () => {
             </AdminContext>
         );
         expect(
-            screen.queryByDisplayValue(format(publishedAt, 'YYYY-MM-DDTHH:mm'))
+            screen.queryByDisplayValue(
+                format(publishedAt, "yyyy-MM-dd'T'HH:mm")
+            )
         ).not.toBeNull();
         fireEvent.click(screen.getByLabelText('ra.action.save'));
         await waitFor(() => {

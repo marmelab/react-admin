@@ -1,6 +1,5 @@
 import { random } from 'faker/locale/en';
-import isAfter from 'date-fns/is_after';
-import subDays from 'date-fns/sub_days';
+import { isAfter, subDays } from 'date-fns';
 
 import {
     randomDate,

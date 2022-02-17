@@ -56,7 +56,7 @@
     },
     "dependencies": {
         "clsx": "^1.1.1",
-        "date-fns": "^1.29.0",
+        "date-fns": "^2.19.0",
         "eventemitter3": "^3.0.0",
         "inflection": "~1.12.0",
         "jsonexport": "^2.4.1",
