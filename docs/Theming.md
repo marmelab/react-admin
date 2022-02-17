@@ -397,6 +397,7 @@ export default MyLayout;
 
 You can replace the default user menu by your own by setting the `userMenu` prop of the `<AppBar>` component. For instance, to add custom menu items, you can render the default [`<UserMenu>`](./Buttons.md#usermenu) and add children to it. Don't forget to include the `<Logout>` component if you want to keep the logout menu item. Besides, in order to properly close the menu once an item is added, call the `onClose` method retrieved from the UserContext through the `useUserMenu` hook. This is handled for you if you use `<MenuItemLink>`:
 
+{% raw %}
 ```jsx
 import * as React from 'react';
 import { AppBar, Logout, UserMenu, useUserMenu } from 'react-admin';
@@ -465,6 +466,7 @@ const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
 
 const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 ```
+{% endraw %}
 
 You can also remove the `<UserMenu>` from the `<AppBar>` by passing `false` to the `userMenu` prop:
 
