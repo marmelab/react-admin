@@ -448,7 +448,7 @@ const exporter = (records, fetchRelatedRecords) => {
                 ...record,
                 post_title: posts[record.post_id].title,
         }));
-        jsonExport(data, {
+        return jsonExport(data, {
             headers: ['id', 'post_id', 'post_title', 'body'],
         }, (err, csv) => {
             downloadCSV(csv, 'comments');

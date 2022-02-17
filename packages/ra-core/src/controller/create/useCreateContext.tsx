@@ -54,8 +54,8 @@ export const useCreateContext = <
 const extractCreateContextProps = ({
     record,
     defaultTitle,
-    loaded,
-    loading,
+    isFetching,
+    isLoading,
     redirect,
     resource,
     save,
@@ -63,8 +63,8 @@ const extractCreateContextProps = ({
 }: any) => ({
     record,
     defaultTitle,
-    loaded,
-    loading,
+    isFetching,
+    isLoading,
     redirect,
     resource,
     save,

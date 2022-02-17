@@ -16,6 +16,7 @@ import { InputPropTypes } from './InputPropTypes';
 export const BooleanInput = (props: BooleanInputProps) => {
     const {
         className,
+        defaultValue = false,
         format,
         label,
         fullWidth,
@@ -37,6 +38,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
         fieldState: { error, invalid, isTouched },
         formState: { isSubmitted },
     } = useInput({
+        defaultValue,
         format,
         parse,
         resource,
