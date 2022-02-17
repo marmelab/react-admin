@@ -96,13 +96,8 @@ export const DateInput = ({
 
 DateInput.propTypes = {
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-    options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
-};
-
-DateInput.defaultProps = {
-    options: {},
 };
 
 export type DateInputProps = CommonInputProps &
