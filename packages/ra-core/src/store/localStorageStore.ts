@@ -109,7 +109,7 @@ export const localStorageStore = (): Store => {
         },
         reset(): void {
             const storage = getStorage();
-            for (var i = 0; i < storage.length; i++) {
+            for (let i = 0; i < storage.length; i++) {
                 if (storage.key(i).substring(0, prefixLength) === RA_STORE) {
                     const key = storage.key(i).substring(prefixLength + 1);
                     storage.removeItem(storage.key(i));
@@ -165,7 +165,7 @@ class LocalStorageShim {
                 "Failed to execute 'key' on 'Storage': 1 argument required, but only 0 present."
             ); // this is a TypeError implemented on Chrome, Firefox throws Not enough arguments to Storage.key.
         }
-        var arr = Array.from(this.valuesMap.keys()) as string[];
+        const arr = Array.from(this.valuesMap.keys()) as string[];
         return arr[i];
     }
 

@@ -7,7 +7,7 @@ title: "The Show Component"
 
 The `<Show>` component handles the logic of the Show page:
 
-- it calls `useShowcontroller` to fetch the record from the data provider via `dataProvider.getOne()`,
+- it calls `useShowController` to fetch the record from the dataProvider via `dataProvider.getOne()`,
 - it computes the default page title
 - it creates a `ShowContext` and a `RecordContext`,
 - it renders the page layout with the correct title and actions

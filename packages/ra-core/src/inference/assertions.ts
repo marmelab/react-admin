@@ -32,7 +32,7 @@ export const isImageUrl = (value: any) => !value || ImageUrlRegexp.test(value);
 export const valuesAreImageUrl = (values: any[]) => values.every(isImageUrl);
 
 // This is a very simple regex to find emails
-// It it NOT meant to validate emails as the spec is way more complicated but is
+// It is NOT meant to validate emails as the spec is way more complicated but is
 // enough for our inference needs
 const EmailRegexp = /@{1}/;
 export const isEmail = (value: any) => !value || EmailRegexp.test(value);
