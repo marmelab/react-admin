@@ -25,7 +25,7 @@ const aggregateOrdersByDay = (orders: Order[]): { [key: string]: number } =>
     orders
         .filter((order: Order) => order.status !== 'cancelled')
         .reduce((acc, curr) => {
-            const day = format(curr.date, 'YYYY-MM-DD');
+            const day = format(new Date(curr.date), 'yyyy-MM-dd');
             if (!acc[day]) {
                 acc[day] = 0;
             }
@@ -37,7 +37,7 @@ const getRevenuePerDay = (orders: Order[]): TotalByDay[] => {
     const daysWithRevenue = aggregateOrdersByDay(orders);
     return lastMonthDays.map(date => ({
         date: date.getTime(),
-        total: daysWithRevenue[format(date, 'YYYY-MM-DD')] || 0,
+        total: daysWithRevenue[format(new Date(date), 'yyyy-MM-dd')] || 0,
     }));
 };
 

@@ -10,7 +10,6 @@ import {
     CardActions,
     CircularProgress,
 } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import LockIcon from '@mui/icons-material/Lock';
 import {
     Form,
@@ -22,7 +21,6 @@ import {
     useNotify,
 } from 'react-admin';
 
-import { lightTheme } from './themes';
 import Box from '@mui/material/Box';
 
 const Login = () => {
@@ -154,16 +152,7 @@ Login.propTypes = {
     previousRoute: PropTypes.string,
 };
 
-// We need to put the ThemeProvider decoration in another component
-
-// the right theme
-const LoginWithTheme = (props: any) => (
-    <ThemeProvider theme={createTheme(lightTheme)}>
-        <Login {...props} />
-    </ThemeProvider>
-);
-
-export default LoginWithTheme;
+export default Login;
 
 interface FormValues {
     username?: string;

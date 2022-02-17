@@ -251,16 +251,14 @@ export const PostList = () => {
 
 ## Using a Predefined Theme
 
-Material UI also supports [complete theming](https://material-ui.com/customization/themes) out of the box. Material UI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop (along with `createTheme()`).
+Material UI also supports [complete theming](https://material-ui.com/customization/themes) out of the box. Material UI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop.
 
 ```jsx
-import { createTheme } from '@mui/material/styles';
-
-const theme = createTheme({
+const theme = {
   palette: {
     type: 'dark', // Switching the dark mode on is a single property value change.
   },
-});
+};
 
 const App = () => (
     <Admin theme={theme} dataProvider={simpleRestProvider('http://path.to.my.api')}>
@@ -514,15 +512,14 @@ You can specify the `Sidebar` width by setting the `width` and `closedWidth` pro
 
 ```jsx
 import { defaultTheme } from "react-admin";
-import { createTheme } from '@mui/material/styles';
 
-const theme = createTheme({
+const theme = {
     ...defaultTheme,
     sidebar: {
         width: 300, // The default value is 240
         closedWidth: 70, // The default value is 55
     },
-});
+};
 
 const App = () => (
     <Admin theme={theme} dataProvider={simpleRestProvider('http://path.to.my.api')}>

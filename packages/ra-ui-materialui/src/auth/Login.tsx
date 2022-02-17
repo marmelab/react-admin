@@ -5,7 +5,7 @@ import { Card, Avatar } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import LockIcon from '@mui/icons-material/Lock';
 import { useNavigate } from 'react-router-dom';
-import { LoginComponentProps, useCheckAuth } from 'ra-core';
+import { useCheckAuth } from 'ra-core';
 
 import { LoginForm as DefaultLoginForm } from './LoginForm';
 
@@ -28,7 +28,7 @@ import { LoginForm as DefaultLoginForm } from './LoginForm';
  *     );
  */
 export const Login = (props: LoginProps) => {
-    const { title, children, backgroundImage, ...rest } = props;
+    const { children, backgroundImage, ...rest } = props;
     const containerRef = useRef<HTMLDivElement>();
     let backgroundImageLoaded = false;
     const checkAuth = useCheckAuth();
@@ -79,9 +79,7 @@ export const Login = (props: LoginProps) => {
     );
 };
 
-export interface LoginProps
-    extends Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'>,
-        LoginComponentProps {
+export interface LoginProps extends HtmlHTMLAttributes<HTMLDivElement> {
     backgroundImage?: string;
     children?: ReactNode;
     className?: string;
