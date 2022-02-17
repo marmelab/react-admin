@@ -14,7 +14,7 @@
         "@emotion/styled": "^11.6.0",
         "@mui/icons-material": "^5.0.1",
         "@mui/material": "^5.0.2",
-        "jsonexport": "^2.4.1",
+        "jsonexport": "^3.2.0",
         "lodash": "~4.17.5",
         "prop-types": "^15.7.2",
         "proxy-polyfill": "^0.3.0",
