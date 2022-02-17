@@ -1,5 +1,16 @@
 # Changelog
 
+## v3.19.10
+
+* Fix `<CheckboxGroupInput>` changes selected values type ([#7248](https://github.com/marmelab/react-admin/pull/7248)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<DateField>` shows wrong date on negative time zones ([#7242](https://github.com/marmelab/react-admin/pull/7242)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<DateInput>` example of `format` and `parse` with `Date` object as value ([#7233](https://github.com/marmelab/react-admin/pull/7233)) ([WiXSL](https://github.com/WiXSL))
+* Bump minor dependencies
+
+## v3.19.9
+
+(failed release, do not use)
+
 ## v3.19.8
 
 * Fix `<FilterButton>` throws bad error if no filters are present ([#7227](https://github.com/marmelab/react-admin/pull/7227)) ([WiXSL](https://github.com/WiXSL))
