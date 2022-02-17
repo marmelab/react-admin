@@ -58,7 +58,6 @@
     "dependencies": {
         "autosuggest-highlight": "^3.1.1",
         "clsx": "^1.1.1",
-        "downshift": "3.2.7",
         "inflection": "~1.12.0",
         "jsonexport": "^3.2.0",
         "lodash": "~4.17.5",
