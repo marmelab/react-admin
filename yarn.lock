@@ -8073,7 +8073,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"attr-accept@npm:^2.0.0":
+"attr-accept@npm:^2.2.2":
   version: 2.2.2
   resolution: "attr-accept@npm:2.2.2"
   checksum: f77c073ac9616a783f2df814a56f65f1c870193e8da6097139e30b3be84ecc19fb835b93e81315d1da4f19e80721f14e8c8075014205e00abd37b856fe030b80
@@ -14902,12 +14902,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"file-selector@npm:^0.1.12":
-  version: 0.1.19
-  resolution: "file-selector@npm:0.1.19"
+"file-selector@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "file-selector@npm:0.4.0"
   dependencies:
-    tslib: ^2.0.1
-  checksum: 6ed76fd91b77f05c0f3d089aa67d198e4c6096b5752796f1875cd9302664acaccfa35bf2fb6f4c6bcf5527775d9ef80f6d2dc6197d6a5eee91ef26c2160853c1
+    tslib: ^2.0.3
+  checksum: 2c55019ea5db84c0c27a5337028604d8a9fe9a53551eb20f4ad44541dfdfdda6bb576e950ac51d11fc3791247c9407734043a9c68a7fe473925631ffc03442e4
   languageName: node
   linkType: hard
 
@@ -24545,7 +24545,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.0.0, prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.1, prop-types@npm:^15.6.2, prop-types@npm:^15.7.0, prop-types@npm:^15.7.2":
+"prop-types@npm:^15.0.0, prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.1, prop-types@npm:^15.6.2, prop-types@npm:^15.7.0, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -25155,7 +25155,7 @@ __metadata:
     react: ^17.0.0
     react-admin: ^4.0.0-alpha.2
     react-dom: ^17.0.0
-    react-dropzone: ^10.1.7
+    react-dropzone: ^12.0.4
     react-query: ^3.32.1
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
@@ -25193,7 +25193,7 @@ __metadata:
     ra-language-english: ^4.0.0-alpha.2
     react: ^17.0.0
     react-dom: ^17.0.0
-    react-dropzone: ^10.1.7
+    react-dropzone: ^12.0.4
     react-error-boundary: ^3.1.4
     react-hook-form: ^7.25.0
     react-query: ^3.32.1
@@ -25576,16 +25576,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dropzone@npm:^10.1.7":
-  version: 10.2.2
-  resolution: "react-dropzone@npm:10.2.2"
+"react-dropzone@npm:^12.0.4":
+  version: 12.0.4
+  resolution: "react-dropzone@npm:12.0.4"
   dependencies:
-    attr-accept: ^2.0.0
-    file-selector: ^0.1.12
-    prop-types: ^15.7.2
+    attr-accept: ^2.2.2
+    file-selector: ^0.4.0
+    prop-types: ^15.8.1
   peerDependencies:
     react: ">= 16.8"
-  checksum: 64d94db7c0ba6d21a69ded4cb383df8228f0e99ba4377da975c20432595ed53cb1ece47a1412a0378e1da8048066dae21b688dccd22adb9c46a18419a57a362d
+  checksum: 896f99a343b2e078f85023df93b5a75a04fdd53e3adafee778fcc905db2e5eb9eb68b6d4031ebe438af495b4619c4d2d0a43ca454868d2328df36c3436b72b30
   languageName: node
   linkType: hard
 
