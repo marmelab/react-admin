@@ -68,7 +68,7 @@ export const useCreateController = <
 
     const save = useCallback(
         (
-            data: Partial<RaRecord>,
+            data: Partial<RecordType>,
             {
                 onSuccess: onSuccessFromSave,
                 onError: onErrorFromSave,
@@ -81,7 +81,7 @@ export const useCreateController = <
                     : transform
                     ? transform(data)
                     : data
-            ).then(data => {
+            ).then((data: Partial<RecordType>) => {
                 create(
                     resource,
                     { data },
@@ -182,7 +182,7 @@ export interface CreateControllerResult<
     defaultTitle: string;
     isFetching: boolean;
     isLoading: boolean;
-    save: SaveHandler;
+    save: SaveHandler<RecordType>;
     saving: boolean;
     record?: Partial<RecordType>;
     redirect: RedirectionSideEffect;
