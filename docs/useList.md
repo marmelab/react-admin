@@ -213,8 +213,8 @@ const {
     // fetched data
     data, // a paginated, sorted, and filtered array of records, e.g. [{ id: 123, title: 'hello world' }, { ... }]
     total, // the total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
-    isFetching, // boolean, same value as the one passed to `useList`
-    isLoading, // boolean, same value as the one passed to `useList`
+    isFetching, // boolean that is true while the data is being fetched, and false once the data is fetched
+    isLoading, // boolean that is true until the data is available for the first time
     // pagination
     page, // the current page. Starts at 1
     perPage, // the number of results per page. Defaults to 25
