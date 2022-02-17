@@ -10943,7 +10943,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"compute-scroll-into-view@npm:^1.0.17, compute-scroll-into-view@npm:^1.0.9":
+"compute-scroll-into-view@npm:^1.0.17":
   version: 1.0.17
   resolution: "compute-scroll-into-view@npm:1.0.17"
   checksum: 98ba88a3af2e4d9c39e1a329f9d1615eeed0e528350ce01b63fb43d1c611dfc31c0639f47844dc8e7bf4d429745bce88efbb035ee2116d51d33b33d55d794f0c
@@ -12880,20 +12880,6 @@ __metadata:
     lazy-cache: ^2.0.1
     moment: ^2.15.1
   checksum: 7b4c8cbe269f08032d8d749fcb5460aec6d55f5cdfd1c865a2c3b3cbf5782c02f473398ce8660894afb05e74e089ea36ff1cc62ca6bdaf3cfe11e5bc7b3ee9e3
-  languageName: node
-  linkType: hard
-
-"downshift@npm:3.2.7":
-  version: 3.2.7
-  resolution: "downshift@npm:3.2.7"
-  dependencies:
-    "@babel/runtime": ^7.1.2
-    compute-scroll-into-view: ^1.0.9
-    prop-types: ^15.6.0
-    react-is: ^16.5.2
-  peerDependencies:
-    react: ">=0.14.9"
-  checksum: f50b39026b20a9d1eebc60c6fb6fb22b54f0d6597d7c8650d1537c25c9801563ea9a9c6aebd4a2889521ad3bc6ecfaa919ee2f882de5170345c0ea2a2399f767
   languageName: node
   linkType: hard
 
@@ -25197,7 +25183,6 @@ __metadata:
     clsx: ^1.1.1
     cross-env: ^5.2.0
     css-mediaquery: ^0.1.2
-    downshift: 3.2.7
     expect: ^27.4.6
     file-api: ~0.10.4
     history: ^5.1.0
@@ -25670,7 +25655,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^16.10.2, react-is@npm:^16.13.1, react-is@npm:^16.5.2, react-is@npm:^16.7.0, react-is@npm:^16.8.6":
+"react-is@npm:^16.10.2, react-is@npm:^16.13.1, react-is@npm:^16.7.0, react-is@npm:^16.8.6":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: 33977da7a5f1a287936a0c85639fec6ca74f4f15ef1e59a6bc20338fc73dc69555381e211f7a3529b8150a1f71e4225525b41b60b52965bda53ce7d47377ada1
