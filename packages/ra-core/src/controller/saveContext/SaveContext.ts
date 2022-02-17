@@ -13,6 +13,6 @@ export type SaveHandler = (
         onError?: onError;
         transform?: TransformData;
     }
-) => void;
+) => void | Record<string, string>;
 
 export const SaveContext = createContext<SaveContextValue>(undefined);
