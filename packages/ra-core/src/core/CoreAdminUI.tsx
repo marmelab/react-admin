@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ComponentType, useEffect } from 'react';
+import { ComponentType, useEffect, isValidElement, createElement } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import { CoreAdminRoutes } from './CoreAdminRoutes';
@@ -63,7 +63,7 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
     return (
         <Routes>
             {LoginPage !== false && LoginPage !== true ? (
-                <Route path="/login" element={<LoginPage title={title} />} />
+                <Route path="/login" element={createOrGetElement(LoginPage)} />
             ) : null}
             <Route
                 path="/*"
@@ -84,5 +84,7 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
         </Routes>
     );
 };
+
+const createOrGetElement = el => (isValidElement(el) ? el : createElement(el));
 
 const Noop = () => null;

@@ -278,10 +278,7 @@ export type AdminChildren = RenderResourcesFunction | ReactNode;
 export type TitleComponent = string | ReactElement<any>;
 export type CatchAllComponent = ComponentType<{ title?: TitleComponent }>;
 
-export interface LoginComponentProps {
-    title?: TitleComponent;
-}
-export type LoginComponent = ComponentType<LoginComponentProps>;
+export type LoginComponent = ComponentType<{}> | ReactElement<any>;
 export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;
 
 export interface CoreLayoutProps {
