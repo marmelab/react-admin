@@ -3047,7 +3047,7 @@ const UserListFilter = [
 
 ### `<ReferenceInput>` and `<ReferenceArrayInput>` No Longer Accepts [Common Props](https://marmelab.com/react-admin/Inputs.html#common-input-props)
 
-Since they no longer inject props to their children. You have to pass this props to their child components.
+Since these components no longer inject props to their children, you have to pass these props to their children.
 
 ### `<ReferenceArrayInput>` No Longer Provides a `ListContext`
 
