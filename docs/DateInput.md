@@ -5,7 +5,7 @@ title: "The DateInput Component"
 
 # `<DateInput>`
 
-Ideal for editing dates, `<DateInput>` renders an HTML `<input type="date">` element, that most browsers display as a standard [Date Picker](https://material-ui.com/components/pickers/#date-pickers).
+Ideal for editing dates, `<DateInput>` renders an HTML `<input type="date">` element, that most browsers display as a standard [Date Picker](https://mui.com/components/pickers/#date-pickers).
 
 ![DateInput](./img/date-input.gif)
 
@@ -19,6 +19,6 @@ import { DateInput } from 'react-admin';
 
 `<DateInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
-**Tip**: For a material-ui styled `<DateInput>` component, check out [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs).
+**Tip**: For a MUI styled `<DateInput>` component, check out [vascofg/react-admin-date-inputs](https://github.com/vascofg/react-admin-date-inputs).
 
-![Material-ui style DateInput](https://github.com/vascofg/react-admin-date-inputs/raw/master/date-time-picker.gif)
+![MUI style DateInput](https://github.com/vascofg/react-admin-date-inputs/raw/master/date-time-picker.gif)

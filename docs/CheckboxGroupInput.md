@@ -30,7 +30,7 @@ import { CheckboxGroupInput } from 'react-admin';
 | `optionValue` | Optional | `string`                   | `id`    | Field name of record containing the value to use as input value                                                                        |
 | `row`         | Optional | `boolean`                  | `true`  | Display group of elements in a compact row.                                                                                            |
 
-Refer to [Material UI Checkbox documentation](https://material-ui.com/api/checkbox/) for more details.
+Refer to [MUI Checkbox documentation](https://mui.com/api/checkbox/) for more details.
 
 `<CheckboxGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
@@ -84,11 +84,11 @@ However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the 
 <CheckboxGroupInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
-Lastly, use the `options` attribute if you want to override any of Material UI's `<Checkbox>` attributes:
+Lastly, use the `options` attribute if you want to override any of MUI 's `<Checkbox>` attributes:
 
 {% raw %}
 ```jsx
-import { FavoriteBorder, Favorite } from '@material-ui/icons';
+import { FavoriteBorder, Favorite } from '@mui/icons-material';
 
 <CheckboxGroupInput source="category" options={{
     icon: <FavoriteBorder />,
@@ -99,11 +99,11 @@ import { FavoriteBorder, Favorite } from '@material-ui/icons';
 
 ## `sx`: CSS API
 
-The `<CheckboxGroupInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<CheckboxGroupInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI  components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name                       | Description                                                   |
 |---------------------------------|---------------------------------------------------------------|
 | `&.RaCheckboxGroupInput-root`   | Applied to the root element                                   |
-| `& .RaCheckboxGroupInput-label` | Applied to the underlying Material UI's `FormLabel` component |
+| `& .RaCheckboxGroupInput-label` | Applied to the underlying MUI 's `FormLabel` component |
 
-To override the style of all instances of `<CheckboxGroupInput>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaCheckboxGroupInput` key.
+To override the style of all instances of `<CheckboxGroupInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaCheckboxGroupInput` key.

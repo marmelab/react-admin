@@ -11,7 +11,7 @@ The `<Show>` component handles the logic of the Show page:
 - it computes the default page title
 - it creates a `ShowContext` and a `RecordContext`,
 - it renders the page layout with the correct title and actions
-- it renders its child component (a show layout component like `<SimpleShowLayout>`) in a Material-ui `<Card>`
+- it renders its child component (a show layout component like `<SimpleShowLayout>`) in a MUI `<Card>`
 
 ## Usage
 
@@ -254,7 +254,7 @@ const PostShow = () => (
 
 ## Root Component
 
-By default, the Show view renders the main content area inside a material-ui `<Card>`. The actual layout of the record fields depends on the Show Layout component you're using (`<SimpleShowLayout>`, `<TabbedShowLayout>`, or a custom layout component).
+By default, the Show view renders the main content area inside a MUI `<Card>`. The actual layout of the record fields depends on the Show Layout component you're using (`<SimpleShowLayout>`, `<TabbedShowLayout>`, or a custom layout component).
 
 You can override the main area container by passing a `component` prop:
 
@@ -279,7 +279,7 @@ const PostShow = props => (
 
 ## `sx`: CSS API
 
-The `<Show>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<Show>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most MUI  components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name        | Description                                                   |
 |------------------| ------------------------------------------------------------- |
@@ -306,7 +306,7 @@ const PostShow = () => (
 ```
 {% endraw %}
 
-To override the style of all instances of `<Show>` using the [material-ui style overrides](https://mui.com/customization/theme-components/), use the `RaShow` key.
+To override the style of all instances of `<Show>` using the [MUI style overrides](https://mui.com/customization/theme-components/), use the `RaShow` key.
 
 ## Displaying Fields Depending On User Permissions
 

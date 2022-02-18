@@ -55,7 +55,7 @@ Note that the image upload returns a [File](https://developer.mozilla.org/en/doc
 
 ## `sx`: CSS API
 
-The `<ImageInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<ImageInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI  components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name                       | Description                                         |
 |---------------------------------|-----------------------------------------------------|
@@ -64,4 +64,4 @@ The `<ImageInput>` component accepts the usual `className` prop. You can also ov
 | `& .RaImageInput-preview`       | Styles pass to the underlying `FileInput` component |
 | `& .RaImageInput-removeButton`  | Styles pass to the underlying `FileInput` component |
 
-To override the style of all instances of `<ImageInput>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaImageInput` key.
+To override the style of all instances of `<ImageInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaImageInput` key.

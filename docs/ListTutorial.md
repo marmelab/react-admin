@@ -324,7 +324,7 @@ const Pagination = () => {
 
 ## `<List>` Renders Title, Filters, And Pagination
 
-`<ListBase>` is a headless component: it renders only its children. But almost every List view needs a wrapping `<div>`, a title, filters, pagination, a material-UI `<Card>`, etc. That's why react-admin provides [the `<List>` component](./List.md), which includes the `<ListBase>` component and a "classic" layout to reduce the boilerplate even further:
+`<ListBase>` is a headless component: it renders only its children. But almost every List view needs a wrapping `<div>`, a title, filters, pagination, a MUI `<Card>`, etc. That's why react-admin provides [the `<List>` component](./List.md), which includes the `<ListBase>` component and a "classic" layout to reduce the boilerplate even further:
 
 ```jsx
 import { 
@@ -707,4 +707,4 @@ export const UserList = props => (
 You can find more List components for react-admin in third-party repositories.
 
 - [ra-customizable-datagrid](https://github.com/fizix-io/ra-customizable-datagrid): plugin that allows to hide / show columns dynamically.
-- [ra-datagrid](https://github.com/marmelab/ra-datagrid): Integration of [Material-ui's `<Datagrid>`](https://material-ui.com/components/data-grid/) into react-admin.
+- [ra-datagrid](https://github.com/marmelab/ra-datagrid): Integration of [MUI's `<Datagrid>`](https://mui.com/components/data-grid/) into react-admin.

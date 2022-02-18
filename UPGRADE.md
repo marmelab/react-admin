@@ -149,7 +149,7 @@ React-admin no longer uses Redux for **resource definitions**. Instead, it uses 
 import * as React from 'react';
 import { createElement } from 'react';
 -import { useSelector } from 'react-redux';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery } from '@mui/material';
 -import { DashboardMenuItem, Menu, MenuItemLink, getResources } from 'react-admin';
 +import { DashboardMenuItem, Menu, MenuItemLink, useResourceDefinitions } from 'react-admin';
 import DefaultIcon from '@mui/icons-material/ViewList';
@@ -192,7 +192,7 @@ React-admin no longer uses Redux to store the **sidebar state**. The introductio
 import * as React from 'react';
 import { createElement } from 'react';
 -import { useSelector } from 'react-redux';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery } from '@mui/material';
 -import { MenuItemLink, useResourceDefinitions } from 'react-admin';
 +import { MenuItemLink, useResourceDefinitions, useSidebarState } from 'react-admin';
 import LabelIcon from '@mui/icons-material/Label';
@@ -1221,7 +1221,7 @@ The most common use case is when you override the default `<Menu>` component:
 import * as React from 'react';
 import { createElement } from 'react';
 -import { useSelector } from 'react-redux';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery } from '@mui/material';
 -import { DashboardMenuItem, Menu, MenuItemLink, getResources } from 'react-admin';
 +import { DashboardMenuItem, Menu, MenuItemLink, useResourceDefinitions } from 'react-admin';
 import DefaultIcon from '@mui/icons-material/ViewList';
@@ -1354,7 +1354,7 @@ The `<List>` component renders a Pagination component when there are records to 
 This means you'll have to do a few changes if you use a custom Pagination component in a List:
 
 ```diff
-import { Button, Toolbar } from '@material-ui/core';
+import { Button, Toolbar } from '@mui/material';
 import ChevronLeft from '@mui/icons-material/ChevronLeft';
 import ChevronRight from '@mui/icons-material/ChevronRight';
 +import { useListContext } from 'react-admin';
@@ -1500,13 +1500,13 @@ import ListItemText from '@mui/material/ListItemText';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 -const ConfigurationMenu = (props) => {
-// It's important to pass the ref to allow MaterialUI to manage the keyboard navigation
+// It's important to pass the ref to allow MUI to manage the keyboard navigation
 +const ConfigurationMenu = forwardRef((props, ref) => {
 +   const { onClose } = useUserMenu();
     return (
 -       <MenuItemLink
 +       <MenuItem
-            // It's important to pass the props to allow MaterialUI to manage the keyboard navigation
+            // It's important to pass the props to allow MUI to manage the keyboard navigation
             {...props}
             component={Link}
             to="/configuration"
@@ -1587,7 +1587,7 @@ const PostCreate = () => (
 
 ### `<SimpleForm>` and `<TabbedForm>` No Longer Accept `margin` and `variant`
 
-Just like Material-UI, we don't provide a way to specify those props at the form level. Instead, you can either set those props on the inputs or leverage the Material-UI [component overrides through theme](https://mui.com/customization/theme-components/) if you need to change them globally:
+Just like MUI, we don't provide a way to specify those props at the form level. Instead, you can either set those props on the inputs or leverage the MUI [component overrides through theme](https://mui.com/customization/theme-components/) if you need to change them globally:
 
 ```diff
 const PostCreate = () => (
@@ -1648,7 +1648,7 @@ Starting with react-admin v4, `useListContext` only returns a `data` prop, and i
 ```diff
 import * as React from 'react';
 import { useListContext, List, TextField, DateField, ReferenceField, EditButton } from 'react-admin';
-import { Card, CardActions, CardContent, CardHeader, Avatar } from '@material-ui/core';
+import { Card, CardActions, CardContent, CardHeader, Avatar } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 
 const CommentGrid = () => {
@@ -2048,9 +2048,9 @@ test('MyComponent', () => {
 });
 ```
 
-## AutocompleteInput and AutocompleteArrayInput Now Use Material UI Autocomplete
+## AutocompleteInput and AutocompleteArrayInput Now Use MUI  Autocomplete
 
-We migrated both the `AutocompleteInput` and `AutocompleteArrayInput` components so that they leverage Material UI [`<Autocomplete>`](https://mui.com/components/autocomplete/). If you relied on [Downshift](https://www.downshift-js.com/) options, you'll have to update your component.
+We migrated both the `AutocompleteInput` and `AutocompleteArrayInput` components so that they leverage MUI  [`<Autocomplete>`](https://mui.com/components/autocomplete/). If you relied on [Downshift](https://www.downshift-js.com/) options, you'll have to update your component.
 
 Besides, some props supported by the previous implementation aren't anymore:
 - `allowDuplicates`: This is not supported by MUI Autocomplete.
@@ -2626,7 +2626,7 @@ Besides, `useInput` used to return `final-form` properties such as `input ` and 
 Note that the `error` returned by `fieldState` is a not just a simple string anymore but an object with a `message` property.
 
 ```diff
-import TextField from '@material-ui/core/TextField';
+import TextField from 'mui/material/TextField';
 import { useInput, required } from 'react-admin';
 
 const MyInput = ({ helperText, ...props }) => {
@@ -2826,7 +2826,7 @@ const PostCreateToolbar = props => {
 
 The `SelectInput`, `SelectArrayInput`, `AutocompleteInput` and `AutocompleteArrayInput` components used to accept an `allowEmpty` prop. When set to `true`, a choice was added for setting the input value to an empty value (empty string by default).
 
-However, the underlying MaterialUI components now require that the current input value has a matching choice. Those components now always accept an empty value (an empty string by default). You can safely remove this prop.
+However, the underlying MUI components now require that the current input value has a matching choice. Those components now always accept an empty value (an empty string by default). You can safely remove this prop.
 
 ```diff
 const choices = [{ id: 1, name: 'value' }, { id: 2, name: 'value 2' }]

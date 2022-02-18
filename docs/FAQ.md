@@ -139,7 +139,7 @@ For all those cases, you can use the [`<FormDataConsumer>`](https://marmelab.com
 
 ## UI in production build is empty or broke
 
-You have probably specified a version requirement for `@material-ui/core` that is incompatible with the one required by `react-admin`. As a consequence, npm bundled two copies of `material-ui` in your application, and `material-ui` doesn't work in that case.
+You have probably specified a version requirement for `@mui/material` that is incompatible with the one required by `react-admin`. As a consequence, npm bundled two copies of `MUI` in your application, and `MUI` doesn't work in that case.
 
 Please align your version requirement with the one of the `ra-ui-materialui` package.
 

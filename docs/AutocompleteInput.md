@@ -6,7 +6,7 @@ title: "The AutocompleteInput Component"
 # `<AutocompleteInput>`
 
 To let users choose a value in a list using a dropdown with autocompletion, use `<AutocompleteInput>`.
-It renders using Material UI [Autocomplete](https://mui.com/components/autocomplete/).
+It renders using MUI  [Autocomplete](https://mui.com/components/autocomplete/).
 
 ![AutocompleteInput](./img/autocomplete-input.gif)
 
@@ -116,7 +116,7 @@ In that case, set the `translateChoice` prop to `false`.
 When dealing with a large amount of `choices` you may need to limit the number of suggestions that are rendered in order to maintain usable performance. The `shouldRenderSuggestions` is an optional prop that allows you to set conditions on when to render suggestions. An easy way to improve performance would be to skip rendering until the user has entered 2 or 3 characters in the search box. This lowers the result set significantly, and might be all you need (depending on your data set).
 Ex. `<AutocompleteInput shouldRenderSuggestions={(val) => { return val.trim().length > 2 }} />` would not render any suggestions until the 3rd character has been entered. This prop is passed to the underlying `react-autosuggest` component and is documented [here](https://github.com/moroshko/react-autosuggest#should-render-suggestions-prop).
 
-`<AutocompleteInput>` renders a [material-ui `<Autocomplete>` component](https://mui.com/components/autocomplete/) and it accepts the `<Autocomplete>` props:
+`<AutocompleteInput>` renders a [MUI `<Autocomplete>` component](https://mui.com/components/autocomplete/) and it accepts the `<Autocomplete>` props:
 
 {% raw %}
 ```jsx
@@ -134,7 +134,7 @@ import { AutocompleteInput, ReferenceInput } from 'react-admin';
 </ReferenceInput>
 ```
 
-**Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](./ReferenceInput.md) doesn't cover your need), you'll have to [write your own Input component](./Inputs.md#writing-your-own-input-component) based on material-ui `<AutoComplete>` component.
+**Tip**: `<AutocompleteInput>` is a stateless component, so it only allows to *filter* the list of choices, not to *extend* it. If you need to populate the list of choices based on the result from a `fetch` call (and if [`<ReferenceInput>`](./ReferenceInput.md) doesn't cover your need), you'll have to [write your own Input component](./Inputs.md#writing-your-own-input-component) based on MUI `<AutoComplete>` component.
 
 ## Creating New Choices
 
@@ -172,7 +172,7 @@ const PostCreate = () => {
 ```
 {% endraw %}
 
-Use the `create` prop when you want a more polished or complex UI. For example a Material UI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
+Use the `create` prop when you want a more polished or complex UI. For example a MUI  `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
 
 {% raw %}
 ```js
@@ -194,7 +194,7 @@ import {
     DialogActions,
     DialogContent,
     TextField,
-} from '@material-ui/core';
+} from '@mui/material';
 
 const PostCreate = () => {
     return (
@@ -256,4 +256,4 @@ const CreateCategory = () => {
 
 ## `sx`: CSS API
 
-This component doesn't apply any custom styles on top of [material-ui `<Autocomplete>` component](https://mui.com/components/autocomplete/). Refer to their documentation to know its CSS API.
+This component doesn't apply any custom styles on top of [MUI `<Autocomplete>` component](https://mui.com/components/autocomplete/). Refer to their documentation to know its CSS API.

@@ -63,7 +63,7 @@ import { TranslatableFieldsTabContent } from './TranslatableFieldsTabContent';
  * @param props The component props
  * @param {string} props.defaultLocale The locale selected by default. Default to 'en'.
  * @param {string[]} props.locales An array of the possible locales in the form. For example [{ 'en', 'fr' }].
- * @param {ReactElement} props.selector The element responsible for selecting a locale. Defaults to Material UI tabs.
+ * @param {ReactElement} props.selector The element responsible for selecting a locale. Defaults to MUI tabs.
  */
 export const TranslatableFields = (
     props: TranslatableFieldsProps

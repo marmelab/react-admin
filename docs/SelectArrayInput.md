@@ -5,7 +5,7 @@ title: "The SelectArrayInput Component"
 
 # `<SelectArrayInput>`
 
-To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [Material ui's `<Select>`](https://material-ui.com/api/select).
+To let users choose several values in a list using a dropdown, use `<SelectArrayInput>`. It renders using [MUI's `<Select>`](https://mui.com/api/select).
 
 ![SelectArrayInput](./img/select-array-input.gif)
 
@@ -105,7 +105,7 @@ Lastly, use the `options` attribute if you want to override any of the `<Select>
 ```
 {% endraw %}
 
-Refer to [the Select documentation](https://material-ui.com/api/select) for more details.
+Refer to [the Select documentation](https://mui.com/api/select) for more details.
 
 The `SelectArrayInput` component **cannot** be used inside a `ReferenceInput` but can be used inside a `ReferenceArrayInput`.
 
@@ -177,7 +177,7 @@ const PostCreate = () => {
 ```
 {% endraw %}
 
-Use the `create` prop when you want a more polished or complex UI. For example a Material UI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
+Use the `create` prop when you want a more polished or complex UI. For example a MUI  `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
 
 {% raw %}
 ```jsx
@@ -199,7 +199,7 @@ import {
     DialogActions,
     DialogContent,
     TextField,
-} from '@material-ui/core';
+} from '@mui/material';
 
 const PostCreate = () => {
     return (
@@ -261,12 +261,12 @@ const CreateTag = () => {
 
 ## `sx`: CSS API
 
-The `<SelectArrayInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<SelectArrayInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI  components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name                     | Description                                                                        |
 |-------------------------------|------------------------------------------------------------------------------------|
 | `&.RaSelectArrayInput-root`   | Applied to the root element                                                        |
-| `& .RaSelectArrayInput-chip`  | Applied to each Material UI's `Chip` component used as selected item               |
-| `& .RaSelectArrayInput-chips` | Applied to the container of Material UI's `Chip` components used as selected items |
+| `& .RaSelectArrayInput-chip`  | Applied to each MUI 's `Chip` component used as selected item               |
+| `& .RaSelectArrayInput-chips` | Applied to the container of MUI 's `Chip` components used as selected items |
 
-To override the style of all instances of `<SelectArrayInput>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaSelectArrayInput` key.
+To override the style of all instances of `<SelectArrayInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaSelectArrayInput` key.

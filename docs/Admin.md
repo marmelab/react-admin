@@ -106,7 +106,7 @@ const App = () => (
 
 ## `dashboard`
 
-By default, the homepage of an admin app is the `list` of the first child `<Resource>`. But you can also specify a custom component instead. To fit in the general design, use Material UI's `<Card>` component, and react-admin's `<Title>` component to set the title in the AppBar:
+By default, the homepage of an admin app is the `list` of the first child `<Resource>`. But you can also specify a custom component instead. To fit in the general design, use MUI 's `<Card>` component, and react-admin's `<Title>` component to set the title in the AppBar:
 
 ```jsx
 // in src/Dashboard.js
@@ -167,7 +167,7 @@ When users type URLs that don't match any of the children `<Resource>` component
 
 ![Not Found](./img/not-found.png)
 
-You can customize this page to use the component of your choice by passing it as the `catchAll` prop. To fit in the general design, use Material UI's `<Card>` component, and react-admin's `<Title>` component:
+You can customize this page to use the component of your choice by passing it as the `catchAll` prop. To fit in the general design, use MUI 's `<Card>` component, and react-admin's `<Title>` component:
 
 ```jsx
 // in src/NotFound.js
@@ -215,7 +215,7 @@ If you want to add or remove menu items, for instance to link to non-resources p
 // in src/Menu.js
 import * as React from 'react';
 import { createElement } from 'react';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery } from '@mui/material';
 import { MenuItemLink, useResourceDefinitions, useSidebarState } from 'react-admin';
 import LabelIcon from '@mui/icons-material/Label';
 
@@ -250,7 +250,7 @@ const Menu = ({ onMenuClick }) => {
 export default Menu;
 ```
 
-**Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views. It supports a custom text and icon (which must be a material-ui `<SvgIcon>`).
+**Tip**: Note the `MenuItemLink` component. It must be used to avoid unwanted side effects in mobile views. It supports a custom text and icon (which must be a MUI `<SvgIcon>`).
 
 Then, pass it to the `<Admin>` component as the `menu` prop:
 
@@ -269,13 +269,13 @@ See the [Theming documentation](./Theming.md#using-a-custom-menu) for more detai
 
 ## `theme`
 
-Material UI supports [theming](https://material-ui.com/customization/themes). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom material ui theme by using the `theme` prop:
+MUI  supports [theming](https://mui.com/customization/themes). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom MUI theme by using the `theme` prop:
 
 ```jsx
 const theme = {
-  palette: {
-    type: 'dark', // Switching the dark mode on is a single property value change.
-  },
+    palette: {
+        type: 'dark', // Switching the dark mode on is a single property value change.
+    },
 };
 
 const App = () => (
@@ -287,7 +287,7 @@ const App = () => (
 
 ![Dark theme](./img/dark-theme.png)
 
-For more details on predefined themes and custom themes, refer to the [Material UI Customization documentation](https://material-ui.com/customization/themes/).
+For more details on predefined themes and custom themes, refer to the [MUI Customization documentation](https://mui.com/customization/themes/).
 
 ## `layout`
 
@@ -345,7 +345,7 @@ You can also disable it completely along with the `/login` route by passing `fal
 
 See The [Authentication documentation](./Authentication.md#customizing-the-login-component) for more details.
 
-**Tip**: Before considering writing your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [Material UI theme](#theme). See the [Authentication documentation](./Authentication.md#customizing-the-login-component) for more details.
+**Tip**: Before considering writing your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [MUI  theme](#theme). See the [Authentication documentation](./Authentication.md#customizing-the-login-component) for more details.
 
 ## `history`
 

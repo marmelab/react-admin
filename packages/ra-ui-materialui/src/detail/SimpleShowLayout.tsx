@@ -16,7 +16,7 @@ import { Labeled } from '../Labeled';
  * Layout for a Show view showing fields in one column.
  *
  * It pulls the record from the RecordContext. It renders the record fields in
- * a single-column layout (via material-ui's `<Stack>` component).
+ * a single-column layout (via MUI's `<Stack>` component).
  * `<SimpleShowLayout>` delegates the actual rendering of fields to its children.
  * It wraps each field inside a `<Labeled>` component to add a label.
  *

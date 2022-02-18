@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import CardContent from '@mui/material/CardContent';
 
 /**
- * Overrides material-ui CardContent to allow inner content
+ * Overrides MUI CardContent to allow inner content
  *
  * When using several CardContent inside the same Card, the top and bottom
  * padding double the spacing between each CardContent, leading to too much

@@ -119,13 +119,13 @@ const MyEdit = (props) => {
 
 ## `sx`: CSS API
 
-The `<FileInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<FileInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI  components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name                     | Description                                                                       |
 |-------------------------------|-----------------------------------------------------------------------------------|
 | `&.RaFileInput-root`          | Applied to the underlying `Labeled` component                                     |
 | `& .RaFileInput-dropZone`     | Applied to the main container of the component                                    |
 | `& .RaFileInput-preview`      | Applied to each children                                                          |
-| `& .RaFileInput-removeButton` | Applied to each of the Material UI's `IconButton` component used as remove button |
+| `& .RaFileInput-removeButton` | Applied to each of the MUI 's `IconButton` component used as remove button |
 
-To override the style of all instances of `<FileInput>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaFileInput` key.
+To override the style of all instances of `<FileInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaFileInput` key.

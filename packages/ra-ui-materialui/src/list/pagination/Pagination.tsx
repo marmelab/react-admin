@@ -44,7 +44,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
     }, [perPage, total]);
 
     /**
-     * Warning: material-ui's page is 0-based
+     * Warning: MUI's page is 0-based
      */
     const handlePageChange = useCallback(
         (event, page) => {
