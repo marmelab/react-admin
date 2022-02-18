@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Admin } from 'react-admin';
-import { Resource, required, useCreate } from 'ra-core';
+import { Resource, required, useCreate, useRecordContext } from 'ra-core';
 import { createMemoryHistory } from 'history';
 import {
     Dialog,
@@ -141,11 +141,15 @@ export const CustomTextFunction = () => (
     </Admin>
 );
 
-const CustomOption = ({ record, ...rest }) => (
-    <div {...rest}>
-        {record?.fullName}&nbsp;<i>({record?.language})</i>
-    </div>
-);
+const CustomOption = props => {
+    const record = useRecordContext();
+
+    return (
+        <div {...props}>
+            {record?.fullName}&nbsp;<i>({record?.language})</i>
+        </div>
+    );
+};
 
 const BookEditCustomOptions = () => {
     const choices = [
