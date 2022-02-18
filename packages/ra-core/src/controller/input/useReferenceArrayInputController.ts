@@ -5,6 +5,7 @@ import { FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useGetList, useGetManyAggregate } from '../../dataProvider';
 import { useReferenceParams } from './useReferenceParams';
 import { ChoicesContextValue } from '../../form';
+import { UseQueryOptions } from 'react-query';
 
 /**
  * Prepare data for the ReferenceArrayInput components
@@ -40,7 +41,7 @@ export const useReferenceArrayInputController = <
         page: initialPage = 1,
         perPage: initialPerPage = 25,
         sort: initialSort = { field: 'id', order: 'DESC' },
-        options = {},
+        queryOptions = {},
         reference,
         source,
     } = props;
@@ -101,7 +102,7 @@ export const useReferenceArrayInputController = <
             sort: { field: params.sort, order: params.order },
             filter: { ...params.filter, ...filter },
         },
-        { retry: false, enabled: isGetMatchingEnabled, ...options }
+        { retry: false, enabled: isGetMatchingEnabled, ...queryOptions }
     );
 
     // We merge the currently selected records with the matching ones, otherwise
@@ -180,7 +181,14 @@ export interface UseReferenceArrayInputParams<
 > {
     debounce?: number;
     filter?: FilterPayload;
-    options?: any;
+    queryOptions?: UseQueryOptions<{
+        data: RecordType[];
+        total?: number;
+        pageInfo?: {
+            hasNextPage?: boolean;
+            hasPreviousPage?: boolean;
+        };
+    }>;
     page?: number;
     perPage?: number;
     record?: RecordType;
