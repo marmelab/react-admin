@@ -22,7 +22,10 @@ export const DatagridClasses = {
     expandedPanel: `${PREFIX}-expandedPanel`,
 };
 
-export const DatagridRoot = styled('div', { name: PREFIX, overridesResolver: (props, styles) => styles.root, })(({ theme }) => ({
+export const DatagridRoot = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
     [`& .${DatagridClasses.table}`]: {
         tableLayout: 'auto',
     },
