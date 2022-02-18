@@ -232,45 +232,47 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
                             : defaultBulkActionButtons}
                     </BulkActionsToolbar>
                 ) : null}
-                <Table
-                    ref={ref}
-                    className={clsx(DatagridClasses.table, className)}
-                    size={size}
-                    {...sanitizeRestProps(rest)}
-                >
-                    {createOrCloneElement(
-                        header,
-                        {
-                            children,
-                            sort,
-                            data,
-                            hasExpand: !!expand,
-                            hasBulkActions,
-                            isRowSelectable,
-                            onSelect,
-                            resource,
-                            selectedIds,
-                            setSort,
-                        },
-                        children
-                    )}
-                    {createOrCloneElement(
-                        body,
-                        {
-                            expand,
-                            rowClick,
-                            data,
-                            hasBulkActions,
-                            hover,
-                            onToggleItem: handleToggleItem,
-                            resource,
-                            rowStyle,
-                            selectedIds,
-                            isRowSelectable,
-                        },
-                        children
-                    )}
-                </Table>
+                <div className={DatagridClasses.tableWrapper}>
+                    <Table
+                        ref={ref}
+                        className={clsx(DatagridClasses.table, className)}
+                        size={size}
+                        {...sanitizeRestProps(rest)}
+                    >
+                        {createOrCloneElement(
+                            header,
+                            {
+                                children,
+                                sort,
+                                data,
+                                hasExpand: !!expand,
+                                hasBulkActions,
+                                isRowSelectable,
+                                onSelect,
+                                resource,
+                                selectedIds,
+                                setSort,
+                            },
+                            children
+                        )}
+                        {createOrCloneElement(
+                            body,
+                            {
+                                expand,
+                                rowClick,
+                                data,
+                                hasBulkActions,
+                                hover,
+                                onToggleItem: handleToggleItem,
+                                resource,
+                                rowStyle,
+                                selectedIds,
+                                isRowSelectable,
+                            },
+                            children
+                        )}
+                    </Table>
+                </div>
             </DatagridRoot>
         </DatagridContextProvider>
     );

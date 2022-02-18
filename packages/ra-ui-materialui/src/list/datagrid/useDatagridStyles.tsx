@@ -4,6 +4,7 @@ const PREFIX = 'RaDatagrid';
 
 export const DatagridClasses = {
     table: `${PREFIX}-table`,
+    tableWrapper: `${PREFIX}-tableWrapper`,
     thead: `${PREFIX}-thead`,
     tbody: `${PREFIX}-tbody`,
     headerRow: `${PREFIX}-headerRow`,
@@ -21,10 +22,11 @@ export const DatagridClasses = {
     expandedPanel: `${PREFIX}-expandedPanel`,
 };
 
-export const DatagridRoot = styled('div', { name: PREFIX })(({ theme }) => ({
+export const DatagridRoot = styled('div', { name: PREFIX, overridesResolver: (props, styles) => styles.root, })(({ theme }) => ({
     [`& .${DatagridClasses.table}`]: {
         tableLayout: 'auto',
     },
+    [`& .${DatagridClasses.tableWrapper}`]: {},
     [`& .${DatagridClasses.thead}`]: {},
     [`& .${DatagridClasses.tbody}`]: {},
     [`& .${DatagridClasses.headerRow}`]: {},
