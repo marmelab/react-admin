@@ -6,7 +6,7 @@ export type DataProviderMatcher = (resource: string) => DataProvider;
 /**
  * Combine multiple data providers into one.
  *
- * @param dataProviderrMatcher A function that returns a data provider for a given resource.
+ * @param dataProviderMatcher A function that returns a data provider for a given resource.
  *
  * @example
  * const dataProvider = combineDataProviders(resource => {

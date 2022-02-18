@@ -30,9 +30,7 @@ export interface UseReferenceOneFieldControllerParams {
  * @prop {Object} props.record The current resource record
  * @prop {string} props.reference The linked resource name
  * @prop {string} props.target The target resource key
- * @prop {string} props.source The key current record identifieer ('id' by default)
- *
- * @param {UseReferenceOneFieldControllerParams}
+ * @prop {string} props.source The key current record identifier ('id' by default)
  *
  * @returns {UseReferenceResult} The request state. Destructure as { referenceRecord, isLoading, error }.
  */
