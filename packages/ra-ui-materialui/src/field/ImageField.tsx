@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
+import { Box, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
 import { useRecordContext } from 'ra-core';
 
@@ -58,14 +58,14 @@ export const ImageField = (props: ImageFieldProps) => {
     const titleValue = get(record, title) || title;
 
     return (
-        <div className={className} {...sanitizeFieldRestProps(rest)}>
+        <Box className={className} {...sanitizeFieldRestProps(rest)}>
             <img
                 title={titleValue}
                 alt={titleValue}
                 src={sourceValue}
                 className={ImageFieldClasses.image}
             />
-        </div>
+        </Box>
     );
 };
 
