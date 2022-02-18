@@ -53,8 +53,9 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         filter,
         page: initialPage = 1,
         perPage: initialPerPage = 25,
-        reference,
         sort: initialSort,
+        options = {},
+        reference,
         source,
     } = props;
 
@@ -64,6 +65,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         perPage: initialPerPage,
         sort: initialSort,
         debounce,
+        filter,
     });
 
     // selection logic
@@ -94,6 +96,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         },
         {
             enabled: isGetMatchingEnabled,
+            ...options,
         }
     );
 
@@ -168,6 +171,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
 export interface UseReferenceInputControllerParams {
     debounce?: number;
     filter?: FilterPayload;
+    options?: any;
     page?: number;
     perPage?: number;
     record?: RaRecord;

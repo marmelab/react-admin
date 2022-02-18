@@ -223,6 +223,7 @@ describe('useReferenceArrayInputController', () => {
                         <ReferenceArrayInputController
                             {...defaultProps}
                             sort={{ field: 'foo', order: 'ASC' }}
+                            page={2}
                             perPage={5}
                             filter={{ permanentFilter: 'foo' }}
                         >
@@ -234,7 +235,7 @@ describe('useReferenceArrayInputController', () => {
         );
         expect(dataProvider.getList).toHaveBeenCalledWith('tags', {
             pagination: {
-                page: 1,
+                page: 2,
                 perPage: 5,
             },
             sort: {

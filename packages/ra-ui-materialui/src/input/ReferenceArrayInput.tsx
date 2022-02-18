@@ -106,6 +106,7 @@ ReferenceArrayInput.propTypes = {
     className: PropTypes.string,
     filter: PropTypes.object,
     label: PropTypes.string,
+    page: PropTypes.number,
     perPage: PropTypes.number,
     reference: PropTypes.string.isRequired,
     resource: PropTypes.string,
@@ -118,6 +119,7 @@ ReferenceArrayInput.propTypes = {
 
 ReferenceArrayInput.defaultProps = {
     filter: {},
+    page: 1,
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
 };
@@ -126,6 +128,8 @@ export interface ReferenceArrayInputProps extends InputProps {
     children: ReactElement;
     className?: string;
     label?: string;
+    page?: number;
+    perPage?: number;
     reference: string;
     resource?: string;
     enableGetChoices?: (filters: any) => boolean;

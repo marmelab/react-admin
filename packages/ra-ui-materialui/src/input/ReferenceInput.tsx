@@ -109,6 +109,7 @@ ReferenceInput.propTypes = {
     filter: PropTypes.object,
     label: PropTypes.string,
     onChange: PropTypes.func,
+    page: PropTypes.number,
     perPage: PropTypes.number,
     record: PropTypes.object,
     reference: PropTypes.string.isRequired,
@@ -122,6 +123,7 @@ ReferenceInput.propTypes = {
 
 ReferenceInput.defaultProps = {
     filter: {},
+    page: 1,
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
 };
@@ -130,6 +132,7 @@ export interface ReferenceInputProps extends InputProps {
     children: ReactElement;
     className?: string;
     label?: string;
+    page?: number;
     perPage?: number;
     reference: string;
     // @deprecated

@@ -37,6 +37,7 @@ export const useReferenceArrayInputController = <
         debounce,
         enableGetChoices,
         filter,
+        page: initialPage = 1,
         perPage: initialPerPage = 25,
         sort: initialSort = { field: 'id', order: 'DESC' },
         options = {},
@@ -66,6 +67,7 @@ export const useReferenceArrayInputController = <
 
     const [params, paramsModifiers] = useReferenceParams({
         resource: reference,
+        page: initialPage,
         perPage: initialPerPage,
         sort: initialSort,
         debounce,

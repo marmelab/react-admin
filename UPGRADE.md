@@ -3045,6 +3045,10 @@ const UserListFilter = [
 ]
 ```
 
+### `<ReferenceInput>` and `<ReferenceArrayInput>` No Longer Accepts [Common Props](https://marmelab.com/react-admin/Inputs.html#common-input-props)
+
+Since they no longer inject props to their children. You have to pass this props to their child components.
+
 ### `<ReferenceArrayInput>` No Longer Provides a `ListContext`
 
 As the `ChoicesContext` now provide an API very similar to the `ListContext`, it no longer sets up a `ListContext`. If you used this to display a `<Datagrid>`, we will soon provide the `<DatagridInput>` for this purpose.
