@@ -256,7 +256,7 @@ const Root = styled('span', {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     [`& .${ReferenceFieldClasses.link}`]: {
-        '& > :first-child': {
+        '& > *': {
             color: theme.palette.primary.main,
         },
     },
