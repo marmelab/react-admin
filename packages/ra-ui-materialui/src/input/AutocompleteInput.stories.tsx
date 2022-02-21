@@ -403,20 +403,7 @@ const BookEditWithReferenceAndCreationSupport = () => (
     >
         <SimpleForm>
             <ReferenceInput reference="authors" source="author">
-                <AutocompleteInput
-                    create={<CreateAuthor />}
-                    options={{
-                        renderOption: (props, choice) => (
-                            <div {...props}>
-                                {choice.name}{' '}
-                                {choice.language ? (
-                                    <i>({choice.language})</i>
-                                ) : null}
-                            </div>
-                        ),
-                    }}
-                    fullWidth
-                />
+                <AutocompleteInput create={<CreateAuthor />} fullWidth />
             </ReferenceInput>
         </SimpleForm>
     </Edit>

@@ -319,8 +319,8 @@ const BookEditWithReference = () => (
         }}
     >
         <SimpleForm>
-            <ReferenceArrayInput reference="authors" source="author" fullWidth>
-                <AutocompleteArrayInput />
+            <ReferenceArrayInput reference="authors" source="author">
+                <AutocompleteArrayInput fullWidth />
             </ReferenceArrayInput>
         </SimpleForm>
     </Edit>
@@ -399,20 +399,8 @@ const BookEditWithReferenceAndCreationSupport = () => (
         }}
     >
         <SimpleForm>
-            <ReferenceArrayInput reference="authors" source="author" fullWidth>
-                <AutocompleteArrayInput
-                    create={<CreateAuthor />}
-                    options={{
-                        renderOption: (props, choice) => (
-                            <div {...props}>
-                                {choice.name}{' '}
-                                {choice.language ? (
-                                    <i>({choice.language})</i>
-                                ) : null}
-                            </div>
-                        ),
-                    }}
-                />
+            <ReferenceArrayInput reference="authors" source="author">
+                <AutocompleteArrayInput create={<CreateAuthor />} fullWidth />
             </ReferenceArrayInput>
         </SimpleForm>
     </Edit>
