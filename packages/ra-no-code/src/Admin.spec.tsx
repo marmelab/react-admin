@@ -8,24 +8,30 @@ import { ApplicationContext } from './ApplicationContext';
 
 describe('Admin', () => {
     it('should be functional', async () => {
-        const customers = fs.readFileSync(
+        const customersPromise = fs.promises.readFile(
             path.resolve(__dirname, '../assets/ra-customers.csv'),
             {
                 encoding: 'utf-8',
             }
         );
-        const orders1 = fs.readFileSync(
+        const orders1Promise = fs.promises.readFile(
             path.resolve(__dirname, '../assets/ra-orders-1.csv'),
             {
                 encoding: 'utf-8',
             }
         );
-        const orders2 = fs.readFileSync(
+        const orders2Promise = fs.promises.readFile(
             path.resolve(__dirname, '../assets/ra-orders-2.csv'),
             {
                 encoding: 'utf-8',
             }
         );
+
+        const [customers, orders1, orders2] = await Promise.all([
+            customersPromise,
+            orders1Promise,
+            orders2Promise,
+        ]);
 
         let file = new File([customers], 'customers.csv', {
             type: 'text/csv',
@@ -43,9 +49,7 @@ describe('Admin', () => {
 
         userEvents.upload(screen.getByLabelText('CSV File'), file);
 
-        await waitFor(() => {
-            screen.getByDisplayValue('customers');
-        });
+        await screen.findByDisplayValue('customers');
 
         fireEvent.click(screen.getByText('Import'));
 
@@ -83,9 +87,8 @@ describe('Admin', () => {
         });
         userEvents.upload(screen.getByLabelText('CSV File'), file);
 
-        await waitFor(() => {
-            screen.getByDisplayValue('orders');
-        });
+        await screen.findByDisplayValue('orders');
+
         fireEvent.click(screen.getByText('Import'));
 
         await waitFor(() => {
@@ -116,10 +119,9 @@ describe('Admin', () => {
         });
         userEvents.upload(screen.getByLabelText('CSV File'), file);
 
-        await waitFor(() => {
-            screen.getByDisplayValue('orders2');
-        });
-        fireEvent.change(screen.getByDisplayValue('orders2'), {
+        const order2El = await screen.findByDisplayValue('orders2');
+
+        fireEvent.change(order2El, {
             target: { value: 'orders' },
         });
         fireEvent.click(screen.getByText('Import'));
