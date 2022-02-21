@@ -1,5 +1,46 @@
 # Changelog
 
+## v3.19.10
+
+* Fix `<CheckboxGroupInput>` changes selected values type ([#7248](https://github.com/marmelab/react-admin/pull/7248)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<DateField>` shows wrong date on negative time zones ([#7242](https://github.com/marmelab/react-admin/pull/7242)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Fix `<DateInput>` example of `format` and `parse` with `Date` object as value ([#7233](https://github.com/marmelab/react-admin/pull/7233)) ([WiXSL](https://github.com/WiXSL))
+* Bump minor dependencies
+
+## v3.19.9
+
+(failed release, do not use)
+
+## v3.19.8
+
+* Fix `<FilterButton>` throws bad error if no filters are present ([#7227](https://github.com/marmelab/react-admin/pull/7227)) ([WiXSL](https://github.com/WiXSL))
+* Fix `page` remains the same when changing `perPage` in `<ReferenceXXX>` Fields ([#7213](https://github.com/marmelab/react-admin/pull/7213)) ([WiXSL](https://github.com/WiXSL))
+* Fix `useNotify` doesn't allow multi line notifications ([#7188](https://github.com/marmelab/react-admin/pull/7188)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<AutocompleteInput>` erases input while typing ([#7173](https://github.com/marmelab/react-admin/pull/7173)) ([WiXSL](https://github.com/WiXSL))
+* Fix `resolveBrowserLocale` tests ([#7194](https://github.com/marmelab/react-admin/pull/7194)) ([FernandoKGA](https://github.com/FernandoKGA))
+* Fix `<Toolbar alwaysEnableSaveButton>` doesn't accept `false` ([#7167](https://github.com/marmelab/react-admin/pull/7167)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<ReferenceArrayInput>` logs console warning in certain cases ([#7165](https://github.com/marmelab/react-admin/pull/7165)) ([WiXSL](https://github.com/WiXSL))
+* Fix DOM warnings when using `<SelectArrayInput>` as child of `<ReferenceArrayInput>` ([#7015](https://github.com/marmelab/react-admin/pull/7015)) ([ZachSelindh](https://github.com/ZachSelindh))
+* Fix failing admin test when running all tests together ([#7136](https://github.com/marmelab/react-admin/pull/7136)) ([thdk](https://github.com/thdk))
+* Fix GraphQL data provider swallows the Apollo Error ([#6956](https://github.com/marmelab/react-admin/pull/6956)) ([hlubek](https://github.com/hlubek))
+* [TypeScript] Fix `BooleanInputProps` isn't exported ([#7144](https://github.com/marmelab/react-admin/pull/7144)) ([alanpoulain](https://github.com/alanpoulain))
+* [Doc] Fix bad url in Inputs documentation ([#7230](https://github.com/marmelab/react-admin/pull/7230)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add SQLite data provider ([#7201](https://github.com/marmelab/react-admin/pull/7201)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add TreeQL / PHP-CRUD-API data provider ([#7141](https://github.com/marmelab/react-admin/pull/7141)) ([itsjavi](https://github.com/itsjavi))
+* [Doc] Fix `<XXXInput initialValue>` description when the value is `null` ([#7139](https://github.com/marmelab/react-admin/pull/7139)) ([WiXSL](https://github.com/WiXSL))
+
+## v3.19.7
+
+* Fix `<SimpleFormIterator>` assigns items indexes incorrectly ([#7123](https://github.com/marmelab/react-admin/pull/7123)) ([WiXSL](https://github.com/WiXSL))
+* Fix error messages can't be copied ([#7115](https://github.com/marmelab/react-admin/pull/7115)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<ArrayInput>` could make the form dirty on initialization ([#7112](https://github.com/marmelab/react-admin/pull/7112)) ([WiXSL](https://github.com/WiXSL))
+* Fix race condition accessing redux store after logout ([#7105](https://github.com/marmelab/react-admin/pull/7105)) ([WiXSL](https://github.com/WiXSL))
+* Fix dom warning when overriding `<AutocompleteInput>` styles ([#6486](https://github.com/marmelab/react-admin/pull/6486)) ([mohandes-jiri](https://github.com/mohandes-jiri))
+* [Doc] customizing and disabling item reordering for `<ArrayInput>` ([#7104](https://github.com/marmelab/react-admin/pull/7104)) ([vaizki](https://github.com/vaizki))
+* [Doc] Fix code snippet for choice creation in `<AutocompleteArrayInput>` and `<SelectArrayInput>` ([#7086](https://github.com/marmelab/react-admin/pull/7086)) ([kristelvdakker](https://github.com/kristelvdakker))
+* [Doc] Fix dead link in Data Providers documentation ([#7063](https://github.com/marmelab/react-admin/pull/7063)) ([Fabious](https://github.com/Fabious))
+* Bump dependencies for security warnings ([#7092](https://github.com/marmelab/react-admin/pull/7092)) ([#7128](https://github.com/marmelab/react-admin/pull/7128)) ([#7126](https://github.com/marmelab/react-admin/pull/7126)) ([#7090](https://github.com/marmelab/react-admin/pull/7090))
+
 ## v3.19.6
 
 * Fix loading indicator keeps spinning on permissions error when `logoutUser` is false ([#7044](https://github.com/marmelab/react-admin/pull/7044)) ([WiXSL](https://github.com/WiXSL))

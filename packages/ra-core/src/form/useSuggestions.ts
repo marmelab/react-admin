@@ -1,4 +1,4 @@
-import { useCallback, isValidElement } from 'react';
+import { useCallback, isValidElement, ReactElement } from 'react';
 import set from 'lodash/set';
 import { useChoices, OptionText, UseChoicesOptions } from './useChoices';
 import { useTranslate } from '../i18n';
@@ -128,7 +128,7 @@ const defaultMatchSuggestion = getChoiceText => (
         : suggestionText &&
               !!suggestionText.match(
                   // We must escape any RegExp reserved characters to avoid errors
-                  // For example, the filter might contains * which must be escaped as \*
+                  // For example, the filter might contain * which must be escaped as \*
                   new RegExp(exact ? `^${regex}$` : regex, 'i')
               );
 };
@@ -171,7 +171,7 @@ export const getSuggestionsFactory = ({
     selectedItem,
     suggestionLimit = 0,
 }: UseSuggestionsOptions & {
-    getChoiceText: (choice: any) => string;
+    getChoiceText: (choice: any) => string | ReactElement;
     getChoiceValue: (choice: any) => string;
 }) => filter => {
     let suggestions = [];

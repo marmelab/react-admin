@@ -63,7 +63,7 @@ export const useChoices = ({
 
             return translateChoice
                 ? translate(choiceName, { _: choiceName })
-                : choiceName;
+                : String(choiceName);
         },
         [optionText, translate, translateChoice]
     );

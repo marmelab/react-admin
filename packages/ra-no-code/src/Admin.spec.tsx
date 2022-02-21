@@ -8,8 +8,6 @@ import { ApplicationContext } from './ApplicationContext';
 
 describe('Admin', () => {
     it('should be functional', async () => {
-        jest.setTimeout(30000);
-
         const customers = fs.readFileSync(
             path.resolve(__dirname, '../assets/ra-customers.csv'),
             {
@@ -130,5 +128,5 @@ describe('Admin', () => {
             screen.getByText('Orders', { selector: '#react-admin-title *' });
             screen.getByText('1-10 of 12');
         });
-    });
+    }, 10000);
 });
