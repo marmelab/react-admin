@@ -237,14 +237,6 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
                 );
             }
 
-            if (
-                isValidElement(selectedItemText) &&
-                /* eslint-disable-next-line eqeqeq */
-                inputText != undefined
-            ) {
-                return inputText(selectedItem);
-            }
-
             const hasOption = choices.some(choice => {
                 const text = optionText(choice) as string;
 
