@@ -335,7 +335,14 @@ If you provided a React element for the optionText prop, you must also provide t
 
     useEffect(() => {
         if (!multiple) {
-            setFilterValue(getOptionLabel(selectedChoice));
+            const optionLabel = getOptionLabel(selectedChoice);
+            if (typeof optionLabel === 'string') {
+                setFilterValue(optionLabel);
+            } else {
+                throw new Error(
+                    'When optionText returns a React element, you must also provide the inputText prop'
+                );
+            }
         }
     }, [getOptionLabel, multiple, selectedChoice]);
 
