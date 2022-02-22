@@ -12,8 +12,7 @@ import {
     RenderResourcesFunction,
     ResourceProps,
 } from '../types';
-import { CustomRoutes, CustomRoutesProps } from './CustomRoutes';
-import { Resource } from './Resource';
+import { CustomRoutesProps } from './CustomRoutes';
 import { useRegisterResource } from './useRegisterResource';
 
 /**
@@ -226,7 +225,7 @@ const getRoutesAndResourceFromNodes = (children: ReactNode) => {
             resources.push(...customRoutesFromFragment.resources);
         }
 
-        if (element.type === CustomRoutes) {
+        if ((element.type as any).raName === 'CustomRoutes') {
             const customRoutesElement = element as ReactElement<
                 CustomRoutesProps
             >;
@@ -238,7 +237,7 @@ const getRoutesAndResourceFromNodes = (children: ReactNode) => {
             } else {
                 customRoutesWithLayout.push(customRoutesElement.props.children);
             }
-        } else if (element.type === Resource) {
+        } else if ((element.type as any).raName === 'Resource') {
             resources.push(element as ReactElement<ResourceProps>);
         }
     });
