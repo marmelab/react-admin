@@ -39,3 +39,5 @@ export const Resource = (props: ResourceProps) => {
         </ResourceContextProvider>
     );
 };
+
+Resource.raName = 'Resource';

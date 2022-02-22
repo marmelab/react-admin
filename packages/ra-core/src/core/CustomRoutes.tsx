@@ -11,6 +11,8 @@ export const CustomRoutes = (props: CustomRoutesProps) => {
     return null;
 };
 
+CustomRoutes.raName = 'CustomRoutes';
+
 export type CustomRoutesProps = {
     children: ReactNode;
     noLayout?: boolean;
