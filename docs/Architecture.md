@@ -99,7 +99,7 @@ React-admin has two sets of users:
 
 For each feature, we design the User Experience (UX) and the Developer Experience (DX) carefully. 
 
-For the visual part, react-admin builds upon material-ui, which is the implementation of the Material Design System. It's a great help to build usable, consistent user interfaces, but it's not enough. 
+For the visual part, react-admin builds upon MUI, which is the implementation of the Material Design System. It's a great help to build usable, consistent user interfaces, but it's not enough. 
 
 We spend a great deal of time refining the UI to make it as intuitive as possible. We pay attention to small alignment glitches, screen flashes, and color inconsistencies. We iterate with every customer feedback, to remove visual and animation problems that occur in real-life applications.
 
@@ -226,7 +226,7 @@ One technique used to avoid child inspection is multiple rendering. For instance
 React-admin is a *distribution* of several packages, each of which handles a specific feature. The packages are all located in the `packages/` directory. The most notable packages are:
     
 * `ra-core`: The core react-admin logic, without any UI.
-* `ra-ui-materialui`: The material-ui skin for react-admin.
+* `ra-ui-materialui`: The MUI skin for react-admin.
 * `ra-data-*`: Data providers for various data backends.
 * `ra-language-*`: Interface translations for various languages.
 * `react-admin`: the standard distribution of react-admin

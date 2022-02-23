@@ -9,7 +9,7 @@ import { ThemeOptions } from '@mui/material';
 import { useTheme } from './useTheme';
 
 /**
- * This sets the Material-UI theme based on the store.
+ * This sets the MUI theme based on the store.
  *
  * @param props
  * @param props.children The children of the component.

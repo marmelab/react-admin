@@ -11,7 +11,7 @@ Whether you need to adjust a CSS rule for a single component, or change the colo
 
 Every react-admin component provides a `className` property, which is always applied to the root element.
 
-Here is an example customizing an `EditButton` component inside a `Datagrid`, using its `className` property and the `makeStyles` hook from Material-UI:
+Here is an example customizing an `EditButton` component inside a `Datagrid`, using its `className` property and the `makeStyles` hook from MUI:
 
 {% raw %}
 ```jsx
@@ -197,9 +197,9 @@ If you want to read more about higher-order components, check out this SitePoint
 
 ## `useMediaQuery` Hook
 
-To provide an optimized experience on mobile, tablet, and desktop devices, you often need to display different components depending on the screen size. Material-ui provides a hook dedicated to help such responsive layouts: [useMediaQuery](https://material-ui.com/components/use-media-query/#usemediaquery).
+To provide an optimized experience on mobile, tablet, and desktop devices, you often need to display different components depending on the screen size. MUI provides a hook dedicated to help such responsive layouts: [useMediaQuery](https://mui.com/components/use-media-query/#usemediaquery).
 
-It expects a function receiving the material-ui theme as a parameter, and returning a media query. Use the theme breakpoints to check for common screen sizes. The hook returns a boolean indicating if the current screen matches the media query or not.
+It expects a function receiving the MUI theme as a parameter, and returning a media query. Use the theme breakpoints to check for common screen sizes. The hook returns a boolean indicating if the current screen matches the media query or not.
 
 ```jsx
 const isXSmall = useMediaQuery(theme => theme.breakpoints.down('xs'));
@@ -218,7 +218,7 @@ Here is an example for a responsive list of posts, displaying a `SimpleList` on 
 ```jsx
 // in src/posts.js
 import * as React from 'react';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery } from '@mui/material';
 import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
 export const PostList = () => {
@@ -251,7 +251,7 @@ export const PostList = () => {
 
 ## Using a Predefined Theme
 
-Material UI also supports [complete theming](https://material-ui.com/customization/themes) out of the box. Material UI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop.
+MUI also supports [complete theming](https://mui.com/customization/themes) out of the box. MUI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop.
 
 ```jsx
 const theme = {
@@ -271,7 +271,7 @@ const App = () => (
 
 ## Writing a Custom Theme
 
-If you need more fine-tuning, you'll need to write your own `theme` object, following [Material UI themes documentation](https://material-ui.com/customization/themes/).
+If you need more fine-tuning, you'll need to write your own `theme` object, following [MUI themes documentation](https://mui.com/customization/themes/).
 
 For instance, here is how to override the default react-admin theme:
 
@@ -318,7 +318,7 @@ A `theme` object can contain the following keys:
 * `typography`
 * `zIndex`
 
-**Tip**: Check [Material UI default theme documentation](https://material-ui.com/customization/default-theme/) to see the default values and meaning for these keys.
+**Tip**: Check [MUI default theme documentation](https://mui.com/customization/default-theme/) to see the default values and meaning for these keys.
 
 Once your theme is defined, pass it to the `<Admin>` component, in the `theme` prop.
 
@@ -405,13 +405,13 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import SettingsIcon from '@mui/icons-material/Settings';
 
-// It's important to pass the ref to allow MaterialUI to manage the keyboard navigation
+// It's important to pass the ref to allow MUI to manage the keyboard navigation
 const ConfigurationMenu = React.forwardRef((props, ref) => {
     return (
         <MenuItem
             ref={ref}
             component={Link}
-            // It's important to pass the props to allow MaterialUI to manage the keyboard navigation
+            // It's important to pass the props to allow MUI to manage the keyboard navigation
             {...props}
             to="/configuration"
         >
@@ -425,7 +425,7 @@ const ConfigurationMenu = React.forwardRef((props, ref) => {
     );
 });
 
-// It's important to pass the ref to allow MaterialUI to manage the keyboard navigation
+// It's important to pass the ref to allow MUI to manage the keyboard navigation
 const SwitchLanguage = forwardRef((props, ref) => {
     const [locale, setLocale] = useLocaleState();
     // We are not using MenuItemLink so we retrieve the onClose function from the UserContext
@@ -434,7 +434,7 @@ const SwitchLanguage = forwardRef((props, ref) => {
     return (
         <MenuItem
             ref={ref}
-            // It's important to pass the props to allow MaterialUI to manage the keyboard navigation
+            // It's important to pass the props to allow MUI to manage the keyboard navigation
             {...props}
             sx={{ color: 'text.secondary' }}
             onClick={event => {
@@ -510,7 +510,7 @@ const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
 
 ### Sidebar Customization
 
-You can specify the `Sidebar` width by setting the `width` and `closedWidth` property on your custom material-ui theme:
+You can specify the `Sidebar` width by setting the `width` and `closedWidth` property on your custom MUI theme:
 
 ```jsx
 import { defaultTheme } from "react-admin";
@@ -561,8 +561,7 @@ For more custom layouts, write a component from scratch. It must contain a `{chi
 import * as React from 'react';
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@mui/material/styles';
-import { ThemeProvider } from '@material-ui/styles';
+import { ThemeProvider, makeStyles } from '@mui/material/styles';
 import {
     AppBar,
     Menu,
@@ -758,7 +757,7 @@ const App = () => (
 
 ## Replacing The AppBar
 
-By default, React-admin uses [Material-ui's `<AppBar>` component](https://material-ui.com/api/app-bar/) together with a custom container that internally uses a [Slide](https://material-ui.com/api/slide) to hide the `AppBar` on scroll. Here is an example of how to change this container with any component:
+By default, React-admin uses [MUI's `<AppBar>` component](https://mui.com/api/app-bar/) together with a custom container that internally uses a [Slide](https://mui.com/api/slide) to hide the `AppBar` on scroll. Here is an example of how to change this container with any component:
 
 ```jsx
 // in src/MyAppBar.js
@@ -793,7 +792,7 @@ const MyAppBar = props => (
 export default MyAppBar;
 ```
 
-Take note that this uses *material-ui's `<AppBar>`* instead of *react-admin's `<AppBar>`*. To use this custom `AppBar` component, pass it as prop to a custom `Layout`, as explained in the previous section.
+Take note that this uses *MUI's `<AppBar>`* instead of *react-admin's `<AppBar>`*. To use this custom `AppBar` component, pass it as prop to a custom `Layout`, as explained in the previous section.
 
 To make it easier to customize, we export some components and hooks used by the `<AppBar>`:
 
@@ -812,7 +811,7 @@ You can add the `<ToggleThemeButton>` to a custom App Bar:
 ```jsx
 import * as React from 'react';
 import { Layout, AppBar } from 'react-admin';
-import { Box, Typography } from '@material-ui/core';
+import { Box, Typography } from '@mui/material';
 import { ToggleThemeButton } from '@react-admin/ra-preferences';
 
 const MyAppBar = props => (
@@ -886,7 +885,7 @@ const App = () => (
 // in src/Menu.js
 import * as React from 'react';
 import { createElement } from 'react';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery } from '@mui/material';
 import { DashboardMenuItem, Menu, MenuItemLink, useResourceDefinitions, useSidebarState } from 'react-admin';
 import DefaultIcon from '@mui/icons-material/ViewList';
 import LabelIcon from '@mui/icons-material/Label';
@@ -942,7 +941,7 @@ import Badge from '@mui/material/Badge';
 
 The `letfIcon` prop allows to set the menu left icon.
 
-Additional props are passed down to [the underling material-ui `<MenuItem>` component](https://material-ui.com/api/menu-item/#menuitem-api).
+Additional props are passed down to [the underling MUI `<MenuItem>` component](https://mui.com/api/menu-item/#menuitem-api).
 
 **Tip**: The `<MenuItemLink>` component makes use of the React Router [NavLink](https://reacttraining.com/react-router/web/api/NavLink) component, hence allowing to customize the active menu style. For instance, here is how to use a custom theme to show a left border for the active menu:
 

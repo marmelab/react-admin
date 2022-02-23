@@ -29,7 +29,7 @@ import {
  *
  * It pulls the record from the RecordContext. It renders a set of `<Tabs>`,
  * each of which contains a list of record fields in a single-column layout
- * (via material-ui's `<Stack>` component).
+ * (via MUI's `<Stack>` component).
  * `<TabbedShowLayout>` delegates the actual rendering of fields to its children,
  * which should be `<Tab>` components.
  * `<Tab>` wraps each field inside a <Labeled> component to add a label.

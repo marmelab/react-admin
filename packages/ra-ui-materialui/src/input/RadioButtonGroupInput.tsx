@@ -81,7 +81,7 @@ import { LinearProgress } from '../layout';
  * @example
  * <RadioButtonGroupInput source="gender" choices={choices} translateChoice={false}/>
  *
- * The object passed as `options` props is passed to the material-ui <RadioButtonGroup> component
+ * The object passed as `options` props is passed to the MUI <RadioButtonGroup> component
  */
 export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
     const {

@@ -13,7 +13,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { useTranslate } from 'ra-core';
 
 /**
- * An override of the default Material-UI TextField which is resettable
+ * An override of the default MUI TextField which is resettable
  */
 export const ResettableTextField = forwardRef(
     (props: ResettableTextFieldProps, ref) => {

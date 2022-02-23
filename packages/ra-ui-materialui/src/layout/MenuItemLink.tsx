@@ -25,7 +25,7 @@ import { useTranslate } from 'ra-core';
  * @prop {string|ReactNode} primaryText The menu content, displayed when the menu isn't minimized. |
  * @prop {ReactNode} leftIcon The menu icon
  *
- * Additional props are passed down to the underling material-ui <MenuItem> component
+ * Additional props are passed down to the underling MUI <MenuItem> component
  * @see https://material-ui.com/api/menu-item/#menuitem-api
  *
  * @example // You can create a custom menu component using the <DashboardMenuItem> and <MenuItemLink> components:

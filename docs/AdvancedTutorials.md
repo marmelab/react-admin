@@ -68,7 +68,7 @@ This article shows how you can customize many parts of the framework without rep
 
 ## Changing The Look And Feel Of React-Admin Without JSX
 
-This article shows how to customize react-admin look and feel using only the material-ui theme.
+This article shows how to customize react-admin look and feel using only the MUI theme.
 
 ![Screencast](https://marmelab.com/097bee867a1d1dc55dec5456732fe94a/screencast.gif)
 

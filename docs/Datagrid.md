@@ -56,7 +56,7 @@ Here are all the props accepted by the component:
 * [`size`](#size)
 * [`sx`](#sx-css-api)
 
-Additional props are passed down to [the material-ui `<Table>` element](https://material-ui.com/api/table/).
+Additional props are passed down to [the MUI `<Table>` element](https://mui.com/api/table/).
 
 ## `body`
 
@@ -310,7 +310,7 @@ const CustomResetViewsButton = () => {
 export default CustomResetViewsButton;
 ```
 
-**Tip**: `<Confirm>` leverages material-ui's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
+**Tip**: `<Confirm>` leverages MUI's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
 
 **Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass translation keys in these props. Note: `content` is only translatable when value is `string`, otherwise it renders the content as a `ReactNode`.
 
@@ -670,7 +670,7 @@ export const PostList = () => (
 );
 ```
 
-**Tip**: `size` is actually a prop of the material ui `<Table>` component. Just like all additional `<Datagrid>` props, it is passed down to the `<Table>` component. 
+**Tip**: `size` is actually a prop of the MUI `<Table>` component. Just like all additional `<Datagrid>` props, it is passed down to the `<Table>` component. 
 
 ## `sx`: CSS API
 
@@ -718,7 +718,7 @@ const PostList = () => (
 ```
 {% endraw %}
 
-**Tip**: `sx` is the standard for style customization in Material UI. Check [the sx documentation](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles) for more advanced usage.
+**Tip**: `sx` is the standard for style customization in MUI . Check [the sx documentation](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles) for more advanced usage.
 
 **Tip**: The `Datagrid` component `classes` can also be customized for all instances of the component with its global css name `"RaDatagrid"` as [describe here](https://marmelab.com/blog/2019/12/18/react-admin-3-1.html#theme-overrides)
 

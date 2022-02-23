@@ -67,7 +67,7 @@ const BookShow = () => (
                <TextField source="title" label={false} />
             </Labeled>
          </Stack>
-     </Car>
+     </Card>
   </Show>
 );
 ```

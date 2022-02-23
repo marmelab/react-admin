@@ -18,7 +18,7 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  * @example
  * <NumberInput source="nb_views" step={1} />
  *
- * The object passed as `options` props is passed to the material-ui <TextField> component
+ * The object passed as `options` props is passed to the MUI <TextField> component
  */
 export const NumberInput = ({
     className,

@@ -282,7 +282,7 @@ const UserList = () => (
 
 In addition to the root component, the `sx` prop also allows you to override the style of inner components. Refer to the documentation of each Field component to see the classes that you can override.
 
-And see [the Material-UI system documentation](https://mui.com/system/the-sx-prop/#main-content) for more information.
+And see [the MUI system documentation](https://mui.com/system/the-sx-prop/#main-content) for more information.
 
 ## `textAlign`
 
