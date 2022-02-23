@@ -109,7 +109,7 @@ Lastly, use the `options` attribute if you want to override any of MUI 's `<Sele
 ```
 {% endraw %}
 
-Refer to [MUI  Select documentation](https://mui.com/api/select) for more details.
+Refer to [MUI Select documentation](https://mui.com/api/select) for more details.
 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectInput>` with [`<ReferenceInput>`](./ReferenceInput.md), and leave the `choices` empty:
 
@@ -185,7 +185,7 @@ const PostCreate = () => {
 ```
 {% endraw %}
 
-Use the `create` prop when you want a more polished or complex UI. For example a MUI  `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
+Use the `create` prop when you want a more polished or complex UI. For example a MUI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
 
 {% raw %}
 ```jsx
@@ -269,7 +269,7 @@ const CreateCategory = () => {
 
 ## `sx`: CSS API
 
-The `<SelectInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI  components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<SelectInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name                | Description                                               |
 |--------------------------|-----------------------------------------------------------|

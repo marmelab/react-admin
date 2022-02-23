@@ -2048,9 +2048,9 @@ test('MyComponent', () => {
 });
 ```
 
-## AutocompleteInput and AutocompleteArrayInput Now Use MUI  Autocomplete
+## AutocompleteInput and AutocompleteArrayInput Now Use MUI Autocomplete
 
-We migrated both the `AutocompleteInput` and `AutocompleteArrayInput` components so that they leverage MUI  [`<Autocomplete>`](https://mui.com/components/autocomplete/). If you relied on [Downshift](https://www.downshift-js.com/) options, you'll have to update your component.
+We migrated both the `AutocompleteInput` and `AutocompleteArrayInput` components so that they leverage MUI [`<Autocomplete>`](https://mui.com/components/autocomplete/). If you relied on [Downshift](https://www.downshift-js.com/) options, you'll have to update your component.
 
 Besides, some props supported by the previous implementation aren't anymore:
 - `allowDuplicates`: This is not supported by MUI Autocomplete.

@@ -269,7 +269,7 @@ See the [Theming documentation](./Theming.md#using-a-custom-menu) for more detai
 
 ## `theme`
 
-MUI  supports [theming](https://mui.com/customization/themes). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom MUI theme by using the `theme` prop:
+MUI supports [theming](https://mui.com/customization/themes). This lets you customize the look and feel of an admin by overriding fonts, colors, and spacing. You can provide a custom MUI theme by using the `theme` prop:
 
 ```jsx
 const theme = {
@@ -345,7 +345,7 @@ You can also disable it completely along with the `/login` route by passing `fal
 
 See The [Authentication documentation](./Authentication.md#customizing-the-login-component) for more details.
 
-**Tip**: Before considering writing your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [MUI  theme](#theme). See the [Authentication documentation](./Authentication.md#customizing-the-login-component) for more details.
+**Tip**: Before considering writing your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [MUI theme](#theme). See the [Authentication documentation](./Authentication.md#customizing-the-login-component) for more details.
 
 ## `history`
 

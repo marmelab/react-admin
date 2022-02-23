@@ -35,6 +35,6 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 
 ![CustomBooleanInputCheckIcon](./img/custom-switch-icon.png)
 
-Refer to [MUI  Switch documentation](https://mui.com/api/switch) for more details.
+Refer to [MUI Switch documentation](https://mui.com/api/switch) for more details.
 
 `<BooleanInput>` also accepts the [common input props](./Inputs.md#common-input-props).

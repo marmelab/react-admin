@@ -62,7 +62,7 @@ render(
 );
 ```
 
-The `<Resource>` component is a configuration component that allows to define sub components for each of the admin view: `list`, `edit`, and `create`. These components use MUI  and custom components from react-admin:
+The `<Resource>` component is a configuration component that allows to define sub components for each of the admin view: `list`, `edit`, and `create`. These components use MUI and custom components from react-admin:
 
 ```jsx
 // in posts.js

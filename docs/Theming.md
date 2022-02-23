@@ -251,7 +251,7 @@ export const PostList = () => {
 
 ## Using a Predefined Theme
 
-MUI  also supports [complete theming](https://mui.com/customization/themes) out of the box. MUI  ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop.
+MUI also supports [complete theming](https://mui.com/customization/themes) out of the box. MUI ships two base themes: light and dark. React-admin uses the light one by default. To use the dark one, pass it to the `<Admin>` component, in the `theme` prop.
 
 ```jsx
 const theme = {
@@ -271,7 +271,7 @@ const App = () => (
 
 ## Writing a Custom Theme
 
-If you need more fine-tuning, you'll need to write your own `theme` object, following [MUI  themes documentation](https://mui.com/customization/themes/).
+If you need more fine-tuning, you'll need to write your own `theme` object, following [MUI themes documentation](https://mui.com/customization/themes/).
 
 For instance, here is how to override the default react-admin theme:
 
@@ -318,7 +318,7 @@ A `theme` object can contain the following keys:
 * `typography`
 * `zIndex`
 
-**Tip**: Check [MUI  default theme documentation](https://mui.com/customization/default-theme/) to see the default values and meaning for these keys.
+**Tip**: Check [MUI default theme documentation](https://mui.com/customization/default-theme/) to see the default values and meaning for these keys.
 
 Once your theme is defined, pass it to the `<Admin>` component, in the `theme` prop.
 

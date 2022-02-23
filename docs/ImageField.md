@@ -31,7 +31,7 @@ This field is also often used within the [`<ImageInput />`](./ImageInput.md) com
 
 ## `sx`: CSS API
 
-The `<ImageField>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI  components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<ImageField>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name               | Description                                                                    |
 |-------------------------|--------------------------------------------------------------------------------|

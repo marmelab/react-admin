@@ -6,7 +6,7 @@ title: "The AutocompleteArrayInput Component"
 # `<AutocompleteArrayInput>`
 
 To let users choose multiple values in a list using a dropdown with autocompletion, use `<AutocompleteArrayInput>`.
-It renders using MUI  [Autocomplete](https://mui.com/components/autocomplete/).
+It renders using MUI [Autocomplete](https://mui.com/components/autocomplete/).
 
 ![AutocompleteArrayInput](./img/autocomplete-array-input.gif)
 
@@ -186,7 +186,7 @@ const PostCreate = () => {
 ```
 {% endraw %}
 
-Use the `create` prop when you want a more polished or complex UI. For example a MUI  `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
+Use the `create` prop when you want a more polished or complex UI. For example a MUI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
 
 {% raw %}
 ```jsx
