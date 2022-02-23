@@ -61,12 +61,24 @@ export const DateField: FC<DateFieldProps> = memo(props => {
     }
 
     const date = value instanceof Date ? value : new Date(value);
+    let dateOptions = options;
+    if (
+        typeof value === 'string' &&
+        value.length <= 10 &&
+        !showTime &&
+        !options
+    ) {
+        // Input is a date string (e.g. '2022-02-15') without time and time zone.
+        // Force timezone to UTC to fix issue with people in negative time zones
+        // who may see a different date when calling toLocaleDateString().
+        dateOptions = { timeZone: 'UTC' };
+    }
     const dateString = showTime
         ? toLocaleStringSupportsLocales
             ? date.toLocaleString(locales, options)
             : date.toLocaleString()
         : toLocaleStringSupportsLocales
-        ? date.toLocaleDateString(locales, options)
+        ? date.toLocaleDateString(locales, dateOptions)
         : date.toLocaleDateString();
 
     return (

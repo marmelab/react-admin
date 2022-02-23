@@ -77,7 +77,7 @@ export const Toolbar = <
     // Use form pristine and validating to enable or disable the save button
     // if alwaysEnableSaveButton is undefined
     const disabled = !valueOrDefault(
-        alwaysEnableSaveButton,
+        alwaysEnableSaveButton !== false ? alwaysEnableSaveButton : undefined,
         !isValidating && !saving
     );
 

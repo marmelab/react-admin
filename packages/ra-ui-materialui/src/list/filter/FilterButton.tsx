@@ -28,6 +28,10 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
     const [open, setOpen] = useState(false);
     const anchorEl = useRef();
 
+    if (filters === undefined) {
+        throw new Error('FilterButton requires filters prop to be set');
+    }
+
     const hiddenFilters = filters.filter(
         (filterElement: JSX.Element) =>
             !filterElement.props.alwaysOn &&

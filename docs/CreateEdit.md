@@ -1528,7 +1528,7 @@ export const UserCreate = () => {
     const save = useCallback(
         async values => {
             try {
-                await create('users', { data: values });
+                await create('users', { data: values }, { returnPromise: true });
             } catch (error) {
                 if (error.body.errors) {
                     // The shape of the returned validation errors must match the shape of the form
