@@ -65,7 +65,9 @@ const useChoices = ({
                     ? optionText(choice)
                     : get(choice, optionText);
 
-            return translateChoice
+            return isValidElement(choiceName)
+                ? choiceName
+                : translateChoice
                 ? translate(choiceName, { _: choiceName })
                 : String(choiceName);
         },

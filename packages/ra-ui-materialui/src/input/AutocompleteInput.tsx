@@ -229,13 +229,19 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         const isFunction = typeof optionText === 'function';
 
         if (isFunction) {
+            const selectedItemText = optionText(selectedItem);
+
+            if (isValidElement(selectedItemText) && !inputText) {
+                throw new Error(
+                    'When optionText returns a React element, you must also provide the inputText prop'
+                );
+            }
+
             const hasOption = choices.some(choice => {
                 const text = optionText(choice) as string;
 
                 return get(choice, text) === filterValue;
             });
-
-            const selectedItemText = optionText(selectedItem);
 
             return hasOption || selectedItemText === filterValue;
         }
@@ -246,7 +252,14 @@ export const AutocompleteInput = (props: AutocompleteInputProps) => {
         });
 
         return selectedItemText === filterValue || hasOption;
-    }, [choices, optionText, filterValue, matchSuggestion, selectedItem]);
+    }, [
+        optionText,
+        selectedItem,
+        choices,
+        filterValue,
+        matchSuggestion,
+        inputText,
+    ]);
 
     const shouldAllowCreate = !doesQueryMatchSuggestion;
 

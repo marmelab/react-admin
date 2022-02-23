@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render, fireEvent, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { AutocompleteInput } from './AutocompleteInput';
@@ -532,6 +532,38 @@ describe('<AutocompleteInput />', () => {
             expect(queryByLabelText('bar')).not.toBeNull();
             expect(queryByLabelText('foo')).not.toBeNull();
         });
+    });
+
+    it('should throw an error if no inputText was provided when the optionText returns an element', () => {
+        const mock = jest.spyOn(console, 'error').mockImplementation(() => {});
+        const SuggestionItem = ({ record }: { record?: any }) => (
+            <div aria-label={record && record.name} />
+        );
+
+        const t = () => {
+            act(() => {
+                render(
+                    <Form
+                        onSubmit={jest.fn()}
+                        render={() => (
+                            <AutocompleteInput
+                                {...defaultProps}
+                                optionText={() => <SuggestionItem />}
+                                matchSuggestion={() => true}
+                                choices={[
+                                    { id: 1, name: 'bar' },
+                                    { id: 2, name: 'foo' },
+                                ]}
+                            />
+                        )}
+                    />
+                );
+            });
+        };
+        expect(t).toThrow(
+            'When optionText returns a React element, you must also provide the inputText prop'
+        );
+        mock.mockRestore();
     });
 
     it('should display helperText if specified', () => {
