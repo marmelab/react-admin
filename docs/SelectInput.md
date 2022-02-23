@@ -99,7 +99,7 @@ However, in some cases, you may not want the choice to be translated. In that ca
 
 Note that `translateChoice` is set to `false` when `<SelectInput>` is a child of `<ReferenceInput>`.
 
-Lastly, use the `options` attribute if you want to override any of MUI 's `<SelectField>` attributes:
+Lastly, use the `options` attribute if you want to override any of MUI's `<SelectField>` attributes:
 
 {% raw %}
 ```jsx

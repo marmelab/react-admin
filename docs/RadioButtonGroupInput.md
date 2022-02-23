@@ -83,7 +83,7 @@ However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the 
 <RadioButtonGroupInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
-Lastly, use the `options` attribute if you want to override any of MUI 's `<RadioButtonGroup>` attributes:
+Lastly, use the `options` attribute if you want to override any of MUI's `<RadioButtonGroup>` attributes:
 
 {% raw %}
 ```jsx
@@ -111,6 +111,6 @@ The `<RadioButtonGroupInput>` component accepts the usual `className` prop. You 
 
 | Rule name                          | Description                                                   |
 |------------------------------------|---------------------------------------------------------------|
-| `& .RaRadioButtonGroupInput-label` | Applied to the underlying MUI 's `FormLabel` component |
+| `& .RaRadioButtonGroupInput-label` | Applied to the underlying MUI's `FormLabel` component |
 
 To override the style of all instances of `<RadioButtonGroupInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaRadioButtonGroupInput` key.

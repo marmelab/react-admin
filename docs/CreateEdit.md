@@ -113,7 +113,7 @@ The `<Create>` and `<Edit>` components accepts the usual `className` prop, but y
 | `root`      | Alternative to using `className`. Applied to the root element                              |
 | `main`      | Applied to the main container                                                              |
 | `noActions` | Applied to the main container when `actions` prop is `false`                               |
-| `card`      | Applied to the child component inside the main container (MUI 's `Card` by default) |
+| `card`      | Applied to the child component inside the main container (MUI's `Card` by default) |
 
 To override the style of all instances of `<Create>` and `<Edit>` components using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaCreate` and `RaEdit` keys respectively.
 

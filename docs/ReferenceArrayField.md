@@ -53,7 +53,7 @@ The `<ReferenceArrayField>` component accepts the usual `className` prop. You ca
 
 | Rule name                           | Description                                                                              |
 |-------------------------------------|------------------------------------------------------------------------------------------|
-| `& .RaReferenceArrayField-progress` | Applied to the MUI 's `LinearProgress` component while `isLoading` prop is `true` |
+| `& .RaReferenceArrayField-progress` | Applied to the MUI's `LinearProgress` component while `isLoading` prop is `true` |
 
 To override the style of all instances of `<ReferenceArrayField>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaReferenceArrayField` key.
 

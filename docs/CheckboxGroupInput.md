@@ -84,7 +84,7 @@ However, in some cases (e.g. inside a `<ReferenceInput>`), you may not want the 
 <CheckboxGroupInput source="gender" choices={choices} translateChoice={false}/>
 ```
 
-Lastly, use the `options` attribute if you want to override any of MUI 's `<Checkbox>` attributes:
+Lastly, use the `options` attribute if you want to override any of MUI's `<Checkbox>` attributes:
 
 {% raw %}
 ```jsx
@@ -104,6 +104,6 @@ The `<CheckboxGroupInput>` component accepts the usual `className` prop. You can
 | Rule name                       | Description                                                   |
 |---------------------------------|---------------------------------------------------------------|
 | `&.RaCheckboxGroupInput-root`   | Applied to the root element                                   |
-| `& .RaCheckboxGroupInput-label` | Applied to the underlying MUI 's `FormLabel` component |
+| `& .RaCheckboxGroupInput-label` | Applied to the underlying MUI's `FormLabel` component |
 
 To override the style of all instances of `<CheckboxGroupInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaCheckboxGroupInput` key.

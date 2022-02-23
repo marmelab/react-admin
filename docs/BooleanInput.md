@@ -17,7 +17,7 @@ import { BooleanInput } from 'react-admin';
 
 This input does not handle `null` values. You would need the [`<NullableBooleanInput />`](./NullableBooleanInput.md) component if you have to handle non-set booleans.
 
-You can use the `options` prop to pass any option supported by the MUI 's `Switch` components. For example, here's how to set a custom checked icon:
+You can use the `options` prop to pass any option supported by the MUI's `Switch` components. For example, here's how to set a custom checked icon:
 
 {% raw %}
 ```jsx

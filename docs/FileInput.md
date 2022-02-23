@@ -126,6 +126,6 @@ The `<FileInput>` component accepts the usual `className` prop. You can also ove
 | `&.RaFileInput-root`          | Applied to the underlying `Labeled` component                                     |
 | `& .RaFileInput-dropZone`     | Applied to the main container of the component                                    |
 | `& .RaFileInput-preview`      | Applied to each children                                                          |
-| `& .RaFileInput-removeButton` | Applied to each of the MUI 's `IconButton` component used as remove button |
+| `& .RaFileInput-removeButton` | Applied to each of the MUI's `IconButton` component used as remove button |
 
 To override the style of all instances of `<FileInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaFileInput` key.

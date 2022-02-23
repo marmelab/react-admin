@@ -13,7 +13,7 @@ The `<ChipField>` component accepts the usual `className` prop. You can also ove
 
 | Rule name            | Description                                              |
 |----------------------|----------------------------------------------------------|
-| `&.RaChipField-chip` | Applied to the underlying MUI 's `Chip` component |
+| `&.RaChipField-chip` | Applied to the underlying MUI's `Chip` component |
 
 To override the style of all instances of `<ChipField>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaChipField` key.
 
