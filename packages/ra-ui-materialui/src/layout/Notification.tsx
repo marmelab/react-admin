@@ -91,7 +91,8 @@ export const Notification = (props: NotificationProps) => {
             onClose={handleRequestClose}
             ContentProps={{
                 className: clsx(NotificationClasses[messageInfo.type || type], {
-                    [NotificationClasses.multiLine]: multiLine,
+                    [NotificationClasses.multiLine]:
+                        messageInfo.multiLine || multiLine,
                 }),
             }}
             action={

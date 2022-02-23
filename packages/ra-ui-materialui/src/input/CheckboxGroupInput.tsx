@@ -152,13 +152,23 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
     const handleCheck = useCallback(
         (event, isChecked) => {
             let newValue;
-            try {
-                // try to convert string value to number, e.g. '123'
-                newValue = JSON.parse(event.target.value);
-            } catch (e) {
-                // impossible to convert value, e.g. 'abc'
+
+            if (
+                allChoices.every(
+                    item => typeof get(item, optionValue) === 'number'
+                )
+            ) {
+                try {
+                    // try to convert string value to number, e.g. '123'
+                    newValue = JSON.parse(event.target.value);
+                } catch (e) {
+                    // impossible to convert value, e.g. 'abc'
+                    newValue = event.target.value;
+                }
+            } else {
                 newValue = event.target.value;
             }
+
             if (isChecked) {
                 formOnChange([...(value || []), ...[newValue]]);
             } else {
@@ -166,7 +176,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
             }
             formOnBlur(); // Ensure field is flagged as touched
         },
-        [formOnChange, formOnBlur, value]
+        [allChoices, formOnChange, formOnBlur, optionValue, value]
     );
 
     if (isLoading && allChoices?.length === 0) {
