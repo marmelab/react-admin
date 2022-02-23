@@ -61,8 +61,10 @@ export const useChoices = ({
                     ? optionText(choice)
                     : get(choice, optionText);
 
-            return translateChoice
-                ? translate(choiceName, { _: choiceName })
+            return isValidElement(choiceName)
+                ? choiceName
+                : translateChoice
+                ? translate(String(choiceName), { _: choiceName })
                 : String(choiceName);
         },
         [optionText, translate, translateChoice]
