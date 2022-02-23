@@ -33,7 +33,7 @@ import { ReferenceInput, SelectInput } from 'react-admin';
 | `enableGetChoices` | Optional | `({q: string}) => boolean`                  | `() => true`                     | Function taking the `filterValues` and returning a boolean to enable the `getList` call.                          |
 
 
-**Note**: `<ReferenceInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) is the responsability of children to apply them.
+**Note**: `<ReferenceInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) ; it is the responsability of children to apply them.
 
 ## Usage
 
