@@ -145,11 +145,10 @@ const PostEdit = () => {
                         <ArrayInput source="authors">
                             <SimpleFormIterator>
                                 <ReferenceInput
-                                    label="User"
                                     source="user_id"
                                     reference="users"
                                 >
-                                    <AutocompleteInput />
+                                    <AutocompleteInput label="User" />
                                 </ReferenceInput>
                                 <FormDataConsumer>
                                     {({

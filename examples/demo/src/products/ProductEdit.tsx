@@ -121,12 +121,8 @@ const ProductEdit = () => (
                     }}
                     validate={requiredValidate}
                 />
-                <ReferenceInput
-                    source="category_id"
-                    reference="categories"
-                    validate={requiredValidate}
-                >
-                    <SelectInput source="name" />
+                <ReferenceInput source="category_id" reference="categories">
+                    <SelectInput source="name" validate={requiredValidate} />
                 </ReferenceInput>
                 <NumberInput
                     source="stock"

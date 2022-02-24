@@ -65,14 +65,11 @@ export const CompanyCreate = (props: CreateProps) => {
                     formClassName={clsx(classes.inline, 'first-child')}
                     helperText={false}
                 />
-                <ReferenceInput
-                    source="sales_id"
-                    reference="sales"
-                    label="Account manager"
-                    formClassName={classes.inline}
-                    helperText={false}
-                >
+                <ReferenceInput source="sales_id" reference="sales">
                     <SelectInput
+                        label="Account manager"
+                        formClassName={classes.inline}
+                        helperText={false}
                         optionText={(sales: any) =>
                             `${sales.first_name} ${sales.last_name}`
                         }
