@@ -110,6 +110,7 @@ nav ul#nav-mobile a {
 
 ul.sidenav code {
     font-size: 0.9em;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 }
 
 .table-of-contents {
