@@ -295,19 +295,14 @@ import {
     Edit,
     SimpleForm,
 } from 'react-admin';
-import { makeStyles } from '@mui/material/styles';
-
-const useStyles = makeStyles({
-    toolbar: {
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
-});
 
 const CustomToolbar = props => (
-    <Toolbar {...props} classes={useStyles()}>
+    <Toolbar 
+        {...props}
+        sx={{ display: 'flex', justifyContent: 'space-between' }}
+    >
         <SaveButton />
-        <DeleteButton undoable={false} />
+        <DeleteButton mutationMode="undoable" />
     </Toolbar>
 );
 
@@ -363,17 +358,12 @@ import {
     Edit,
     SimpleForm,
 } from 'react-admin';
-import { makeStyles } from '@mui/material/styles';
-
-const useStyles = makeStyles({
-    toolbar: {
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
-});
 
 const CustomToolbar = props => (
-    <Toolbar {...props} classes={useStyles()}>
+    <Toolbar
+        {...props}
+        sx={{ display: 'flex', justifyContent: 'space-between' }}
+    >
         <SaveButton />
         <DeleteButton mutationMode="pessimistic" />
     </Toolbar>
