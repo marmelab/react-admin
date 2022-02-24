@@ -83,7 +83,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
         ? composeSyncValidators(validate)
         : validate;
     const getValidationErrorMessage = useGetValidationErrorMessage();
-    const resource = useResourceContext();
+    const resource = useResourceContext(props);
 
     const fieldProps = useFieldArray({
         name: source,
