@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { useResourceContext, useTranslate } from 'ra-core';
 
 export const FilterFormInput = props => {
-    const { filterElement, handleHide, variant, margin, className } = props;
+    const { filterElement, handleHide, className } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
 
@@ -33,8 +33,6 @@ export const FilterFormInput = props => {
             {React.cloneElement(filterElement, {
                 resource,
                 record: emptyRecord,
-                variant,
-                margin,
                 size: 'small',
                 helperText: false,
                 // ignore defaultValue in Field because it was already set in Form (via mergedInitialValuesWithDefaultValues)
@@ -49,8 +47,6 @@ FilterFormInput.propTypes = {
     filterElement: PropTypes.node,
     handleHide: PropTypes.func,
     resource: PropTypes.string,
-    margin: PropTypes.string,
-    variant: PropTypes.string,
 };
 
 const PREFIX = 'RaFilterFormInput';
