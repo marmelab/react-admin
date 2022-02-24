@@ -8,6 +8,7 @@ import {
     RaRecord,
     useApplyInputDefaultValues,
     useGetValidationErrorMessage,
+    useResourceContext,
 } from 'ra-core';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { InputLabel, FormControl, FormHelperText } from '@mui/material';
@@ -71,7 +72,6 @@ export const ArrayInput = (props: ArrayInputProps) => {
         children,
         helperText,
         record,
-        resource,
         source,
         validate,
         variant,
@@ -83,6 +83,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
         ? composeSyncValidators(validate)
         : validate;
     const getValidationErrorMessage = useGetValidationErrorMessage();
+    const resource = useResourceContext();
 
     const fieldProps = useFieldArray({
         name: source,
