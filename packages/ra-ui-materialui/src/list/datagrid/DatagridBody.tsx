@@ -112,13 +112,13 @@ export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
     isRowSelectable?: (record: RaRecord) => boolean;
 }
 
-// trick material-ui Table into thinking this is one of the child type it supports
+// trick MUI Table into thinking this is one of the child type it supports
 // @ts-ignore
 DatagridBody.muiName = 'TableBody';
 
 export const PureDatagridBody = memo(DatagridBody);
 
-// trick material-ui Table into thinking this is one of the child type it supports
+// trick MUI Table into thinking this is one of the child type it supports
 // @ts-ignore
 PureDatagridBody.muiName = 'TableBody';
 // @ts-ignore

@@ -274,34 +274,28 @@ Yes, you can replace any of react-admin's components with your own! That means r
 
 ## Customizing Styles
 
-The `MyUrlField` component is a perfect opportunity to illustrate how to customize styles. React-admin relies on [material-ui](https://material-ui.com/), a set of React components modeled after Google's [Material Design UI Guidelines](https://material.io/). Material-ui uses [JSS](https://github.com/cssinjs/jss), a CSS-in-JS solution, for styling components. Let's take advantage of the capabilities of JSS to remove the underline from the link and add an icon:
+The `MyUrlField` component is a perfect opportunity to illustrate how to customize styles. React-admin relies on [MUI](https://mui.com/), a set of React components modeled after Google's [Material Design UI Guidelines](https://material.io/). MUI uses [MUI System](https://mui.com/system/basics/) by adding an `sx` prop as a superset of CSS for styling components; it can also use CSS-in-JS `styled()` API from underlying [emotion](https://github.com/emotion-js/emotion) library. Let's take advantage of the capabilities of MUI System to remove the underline from the link and add an icon:
 
 ```jsx
 // in src/MyUrlField.js
 import * as React from "react";
 import { useRecordContext } from 'react-admin';
-import { makeStyles } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import LaunchIcon from '@mui/icons-material/Launch';
 
-const useStyles = makeStyles({
-    link: {
-        textDecoration: 'none',
-    },
-    icon: {
-        width: '0.5em',
-        height: '0.5em',
-        paddingLeft: 2,
-    },
-});
+const Anchor = styled('a')({textDecoration: 'none'});
 
 const MyUrlField = ({ source }) => {
     const record = useRecordContext();
-    const classes = useStyles();
     return record ? (
-        <a href={record[source]} className={classes.link}>
+        <Anchor href={record[source]}>
             {record[source]}
-            <LaunchIcon className={classes.icon} />
-        </a>
+            <LaunchIcon sx={{
+                width: '0.5em',
+                height: '0.5em',
+                paddingLeft: 2,
+            }} />
+        </Anchor>
     ) : null;
 }
 
@@ -310,11 +304,11 @@ export default MyUrlField;
 
 [![Custom styles](./img/tutorial_custom_styles.png)](./img/tutorial_custom_styles.png)
 
-In JSS, you define styles as a JavaScript object, using the JS variants of the CSS property names (e.g. `textDecoration` instead of `text-decoration`). To pass these styles to the component, use `makeStyles` to build a React hook. The hook will create new class names for these styles, and return the new class names in the `classes` object. Then, use these names in a `className` prop, as you would with a regular CSS class.
+In CSS-in-JS, you define styles as a JavaScript object, using the JS variants of the CSS property names (e.g. `textDecoration` instead of `text-decoration`). To pass these styles to the component, use `styled()` to wrap the original component with styles; or you can pass it directly to the `sx` prop of a supporting element.
 
-**Tip**: There is much more to JSS than what this tutorial covers. Read the [material-ui documentation](https://material-ui.com/styles/basics) to learn more about theming, vendor prefixes, responsive utilities, etc.
+**Tip**: There is much more to MUI System than what this tutorial covers. Read the [MUI documentation](https://mui.com/system/basics/) to learn more about theming, vendor prefixes, responsive utilities, etc.
 
-**Tip**: Material-ui supports other CSS-in-JS solutions, including [Styled components](https://material-ui.com/styles/basics/#styled-components-api).
+**Tip**: MUI supports other CSS-in-JS solutions, including [Styled components](https://mui.com/system/styled/).
 
 ## Handling Relationships
 
@@ -687,7 +681,7 @@ By default, react-admin displays the list page of the first `Resource` element a
 ```jsx
 // in src/Dashboard.js
 import * as React from "react";
-import { Card, CardContent, CardHeader } from '@material-ui/core';
+import { Card, CardContent, CardHeader } from '@mui/material';
 
 export default () => (
     <Card>
@@ -799,7 +793,7 @@ export const PostList = () => (
 
 [![Mobile post list](./img/tutorial_mobile_post_list.gif)](./img/tutorial_mobile_post_list.gif)
 
-The `<SimpleList>` component uses [material-ui's `<List>` and `<ListItem>` components](https://material-ui.com/components/lists), and expects functions as `primaryText`, `secondaryText`, and `tertiaryText` props.
+The `<SimpleList>` component uses [MUI's `<List>` and `<ListItem>` components](https://mui.com/components/lists), and expects functions as `primaryText`, `secondaryText`, and `tertiaryText` props.
 
 **Note:** Since JSONRestServer doesn't provide `views` or `published_at` values for posts, we switched to a custom API for those screenshots in order to demonstrate how to use some of the `SimpleList` component props.
 
@@ -808,7 +802,7 @@ That works fine on mobile, but now the desktop user experience is worse. The bes
 ```jsx
 // in src/posts.js
 import * as React from "react";
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery } from '@mui/material';
 import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
 export const PostList = () => {
@@ -981,4 +975,4 @@ const App = () => (
 
 React-admin was built with customization in mind. You can replace any react-admin component with a component of your own, for instance to display a custom list layout, or a different edit form for a given resource.
 
-Now that you've completed the tutorial, continue reading the [react-admin documentation](https://marmelab.com/react-admin/Readme.html), and read the [Material UI components documentation](https://material-ui.com/).
+Now that you've completed the tutorial, continue reading the [react-admin documentation](https://marmelab.com/react-admin/Readme.html), and read the [MUI components documentation](https://mui.com/).

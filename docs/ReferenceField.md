@@ -44,13 +44,13 @@ With this configuration, `<ReferenceField>` wraps the user's name in a link to t
 
 ## `sx`: CSS API
 
-The `<ReferenceField>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<ReferenceField>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name                  | Description                   |
 |----------------------------|-------------------------------|
 | `& .RaReferenceField-link` | Applied to each child element |
 
-To override the style of all instances of `<ReferenceField>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaReferenceField` key.
+To override the style of all instances of `<ReferenceField>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaReferenceField` key.
 
 ## Usage
 

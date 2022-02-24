@@ -87,4 +87,4 @@ The `<SingleFieldList>` component accepts the usual `className` prop. You can al
 | `&.RaSingleFieldList-root`  | Applied to the root element |
 | `& .RaSingleFieldList-link` | Applied to each link        |
 
-**Tip**: You can override these classes for all `<SingleFieldList>` instances by overriding them in a material-ui theme, using the key "RaSingleFieldList".
+**Tip**: You can override these classes for all `<SingleFieldList>` instances by overriding them in a MUI theme, using the key "RaSingleFieldList".

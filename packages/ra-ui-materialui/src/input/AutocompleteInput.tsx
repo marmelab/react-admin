@@ -100,7 +100,7 @@ import { sanitizeInputRestProps } from './sanitizeInputRestProps';
  * @example
  * <AutocompleteInput source="gender" choices={choices} translateChoice={false}/>
  *
- * The object passed as `options` props is passed to the material-ui <TextField> component
+ * The object passed as `options` props is passed to the MUI <TextField> component
  *
  * @example
  * <AutocompleteInput source="author_id" options={{ color: 'secondary', InputLabelProps: { shrink: true } }} />
@@ -335,7 +335,14 @@ If you provided a React element for the optionText prop, you must also provide t
 
     useEffect(() => {
         if (!multiple) {
-            setFilterValue(getOptionLabel(selectedChoice));
+            const optionLabel = getOptionLabel(selectedChoice);
+            if (typeof optionLabel === 'string') {
+                setFilterValue(optionLabel);
+            } else {
+                throw new Error(
+                    'When optionText returns a React element, you must also provide the inputText prop'
+                );
+            }
         }
     }, [getOptionLabel, multiple, selectedChoice]);
 

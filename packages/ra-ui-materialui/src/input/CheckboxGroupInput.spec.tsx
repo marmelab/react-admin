@@ -5,6 +5,7 @@ import {
     testDataProvider,
     TestTranslationProvider,
     useRecordContext,
+    Form,
 } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
@@ -216,6 +217,74 @@ describe('<CheckboxGroupInput />', () => {
             </AdminContext>
         );
         expect(screen.queryByText('Can I help you?')).not.toBeNull();
+    });
+
+    it('should not parse selected values types to numbers if all choices types are non numbers', async () => {
+        const handleSubmit = jest.fn();
+        const { getByLabelText } = render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <Form
+                    onSubmit={handleSubmit}
+                    defaultValues={{ notifications: ['31', '42'] }}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <CheckboxGroupInput
+                                source="notifications"
+                                choices={[
+                                    { id: '12', name: 'Ray Hakt' },
+                                    { id: '31', name: 'Ann Gullar' },
+                                    { id: '42', name: 'Sean Phonee' },
+                                ]}
+                            />
+                            <button type="submit" aria-label="Save" />
+                        </form>
+                    )}
+                />
+            </AdminContext>
+        );
+        const input = getByLabelText('Ray Hakt') as HTMLInputElement;
+        fireEvent.click(input);
+        fireEvent.click(getByLabelText('Save'));
+
+        await waitFor(() => {
+            expect(handleSubmit).toHaveBeenCalledWith({
+                notifications: ['31', '42', '12'],
+            });
+        });
+    });
+
+    it('should parse selected values types to numbers if some choices are numbers', async () => {
+        const handleSubmit = jest.fn();
+        const { getByLabelText } = render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <Form
+                    onSubmit={handleSubmit}
+                    defaultValues={{ notifications: [31, 42] }}
+                    render={({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            <CheckboxGroupInput
+                                source="notifications"
+                                choices={[
+                                    { id: 12, name: 'Ray Hakt' },
+                                    { id: 31, name: 'Ann Gullar' },
+                                    { id: 42, name: 'Sean Phonee' },
+                                ]}
+                            />
+                            <button type="submit" aria-label="Save" />
+                        </form>
+                    )}
+                />
+            </AdminContext>
+        );
+        const input = getByLabelText('Ray Hakt') as HTMLInputElement;
+        fireEvent.click(input);
+        fireEvent.click(getByLabelText('Save'));
+
+        await waitFor(() => {
+            expect(handleSubmit).toHaveBeenCalledWith({
+                notifications: [31, 42, 12],
+            });
+        });
     });
 
     describe('error message', () => {

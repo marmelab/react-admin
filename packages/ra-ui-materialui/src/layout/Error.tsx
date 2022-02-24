@@ -53,7 +53,10 @@ export const Error = (
                 {process.env.NODE_ENV !== 'production' && (
                     <>
                         <Accordion className={ErrorClasses.panel}>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                className={ErrorClasses.panelSumary}
+                            >
                                 {translate(error.message, {
                                     _: error.message,
                                 })}
@@ -143,6 +146,7 @@ export const ErrorClasses = {
     title: `${PREFIX}-title`,
     icon: `${PREFIX}-icon`,
     panel: `${PREFIX}-panel`,
+    panelSumary: `${PREFIX}-panelSumary`,
     panelDetails: `${PREFIX}-panelDetails`,
     toolbar: `${PREFIX}-toolbar`,
     advice: `${PREFIX}-advice`,
@@ -176,6 +180,10 @@ const Root = styled('div', {
     [`& .${ErrorClasses.panel}`]: {
         marginTop: '1em',
         maxWidth: '60em',
+    },
+
+    [`& .${ErrorClasses.panelSumary}`]: {
+        userSelect: 'all',
     },
 
     [`& .${ErrorClasses.panelDetails}`]: {

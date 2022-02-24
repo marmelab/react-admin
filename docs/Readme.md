@@ -51,7 +51,7 @@ render(
 );
 ```
 
-The `<Resource>` component is a configuration component that allows defining sub components for each of the admin view: `list`, `edit`, and `create`. These components use Material UI and custom components from react-admin:
+The `<Resource>` component is a configuration component that allows defining sub components for each of the admin view: `list`, `edit`, and `create`. These components use MUI and custom components from react-admin:
 
 {% raw %}
 ```jsx
@@ -118,7 +118,7 @@ See the [Data Providers documentation](./DataProviders.md) for details.
 
 ## Architecture: Batteries Included But Removable
 
-React-admin is designed as a library of loosely coupled React components built on top of [material-ui](https://material-ui.com/), in addition to React hooks allowing to reuse the logic with a custom UI. 
+React-admin is designed as a library of loosely coupled React components built on top of [MUI](https://mui.com/), in addition to React hooks allowing to reuse the logic with a custom UI. 
 
 You may replace one part of react-admin with your own, e.g. to use a custom Datagrid, GraphQL instead of REST, or Bootstrap instead of Material Design.
 
@@ -141,7 +141,7 @@ The [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise) <img cl
   - `ra-form-layout`: New form layouts for complex data entry tasks (accordion, wizard, etc.)
   - `ra-relationships`: Visualize and edit complex relationships, including many-to-many relationships.
   - `ra-tree`: Edit and visualize tree structures. Reorganize by drag and drop. Adapts to any data structure on the backend (parent_id, children, nested sets, etc.).
-  - `ra-tour`: Guided tours for react-admin applications. Step-by-step instructions, Material-ui skin.
+  - `ra-tour`: Guided tours for react-admin applications. Step-by-step instructions, MUI skin.
   - `ra-markdown`: Read Markdown data, and edit it using a WYSIWYG editor in your admin
 - Get **Support** from experienced react and react-admin developers, who will help you find the right information and troubleshoot your bugs.
 - Get a **50% Discount on Professional Services** in case you need coaching, audit, or custom development by our experts.
