@@ -19,7 +19,7 @@ const testLocalStorage = () => {
         window.localStorage.setItem('test', 'test');
         window.localStorage.removeItem('test');
         return true;
-    } catch {
+    } catch (e) {
         return false;
     }
 };
@@ -133,7 +133,7 @@ export const localStorageStore = (): Store => {
 const tryParse = (value: string): any => {
     try {
         return JSON.parse(value);
-    } catch {
+    } catch (e) {
         return value;
     }
 };
