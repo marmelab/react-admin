@@ -3117,3 +3117,17 @@ const MyCustomAutocomplete = (props) => {
     )
 }
 ```
+
+## `<ArrayField>` Does Not Accept a `fieldKey` Prop Anymore
+
+The `ArrayField` component used to accept a `fieldKey` prop, allowing to specify a record property for use as a React key, enabling some performance improvements. Moving to react-query has made this workaround unnecessary and you can safely remove this prop:
+
+```diff
+-<ArrayField source="backlinks" fieldKey="uuid">
++<ArrayField source="backlinks">
+    <Datagrid>
+        <DateField source="date" />
+        <UrlField source="url" />
+    </Datagrid>
+</ArrayField>
+```
