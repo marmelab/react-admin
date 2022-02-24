@@ -156,7 +156,6 @@ export interface TabbedFormViewProps extends FormRenderProps {
     children?: ReactNode;
     className?: string;
     component?: React.ComponentType<any>;
-    margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
     record?: Partial<RaRecord>;
     resource?: string;
