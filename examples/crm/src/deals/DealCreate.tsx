@@ -17,10 +17,11 @@ import { stageChoices } from './stages';
 import { typeChoices } from './types';
 import { Deal } from '../types';
 
+const validateRequired = required();
+
 export const DealCreate = ({ open }: { open: boolean }) => {
     const redirect = useRedirect();
     const dataProvider = useDataProvider();
-    const validateRequired = required();
 
     const handleClose = () => {
         redirect('/deals');
