@@ -71,8 +71,6 @@ const Header = () => {
                                 sx={{
                                     '& .RaLoadingIndicator-loader': {
                                         marginTop: 2,
-                                        marginLeft: 2,
-                                        marginRight: 2,
                                     },
                                 }}
                             />
