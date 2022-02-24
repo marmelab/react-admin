@@ -276,6 +276,7 @@ Yes, you can replace any of react-admin's components with your own! That means r
 
 The `MyUrlField` component is a perfect opportunity to illustrate how to customize styles. React-admin relies on [MUI](https://mui.com/), a set of React components modeled after Google's [Material Design UI Guidelines](https://material.io/). MUI uses [MUI System](https://mui.com/system/basics/) by adding an `sx` prop as a superset of CSS for styling components; it can also use CSS-in-JS `styled()` API from underlying [emotion](https://github.com/emotion-js/emotion) library. Let's take advantage of the capabilities of MUI System to remove the underline from the link and add an icon:
 
+{% raw %}
 ```jsx
 // in src/MyUrlField.js
 import * as React from "react";
@@ -301,6 +302,7 @@ const MyUrlField = ({ source }) => {
 
 export default MyUrlField;
 ```
+{% endraw %}
 
 [![Custom styles](./img/tutorial_custom_styles.png)](./img/tutorial_custom_styles.png)
 

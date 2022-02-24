@@ -151,3 +151,67 @@
 <li {% if page.path contains 'FAQ.md' %} class="active" {% endif %}><a class="nav-link" href="./FAQ.html">FAQ</a></li>
 <li {% if page.path contains 'Reference.md' %} class="active" {% endif %}><a class="nav-link" href="./Reference.html">Reference</a></li>
 <li><a class="nav-link" href="https://github.com/marmelab/react-admin/releases" target="_blank">Changelog</a></li>
+
+<script>
+var allMenus = Array.from(document.querySelectorAll(`.sidenav a.nav-link`));
+var navLinks = allMenus.map(link => link.href);
+
+function replaceContent(text) {
+    var tmpElement = document.createElement('div');
+    tmpElement.innerHTML = text;
+    var content = document.querySelector('.DocSearch-content');
+    content.innerHTML = tmpElement.querySelector('.DocSearch-content').innerHTML;
+    window.scrollTo(0, 0);
+    buildPageToC();
+}
+
+function changeSelectedMenu() {
+    var activeMenu = document.querySelector(`.sidenav li.active`);
+    activeMenu && activeMenu.classList.remove('active');
+    allMenus.find(menuEl => menuEl.href === location.href)
+        .parentNode.classList.add('active');
+}
+
+// Replace full page reloads by a fill of the content area
+// so that the side navigation keeps its state
+function catchNavigation() {
+    // use a global event listener to also catch links inside the content area 
+    document.addEventListener('click', (event) => {
+        var link = event.target.closest('a');
+        if (!link) {
+            return; // click not on a link
+        }
+        var location = document.location.href.split('#')[0];
+        var href = link.href;
+        if (href.indexOf(`${location}#`) === 0) {
+            return; // click on an anchor in the current page
+        }
+        if (!navLinks.includes(href)) {
+            return; // not a navigation link
+        }
+        // now we're sure it's an internal navigation link
+        // transform it to an AJAX call
+        event.preventDefault();
+        // fetch the new content
+        fetch(href)
+            .then(res => res.text())
+            .then(replaceContent);
+        // change the URL
+        history.pushState(null, null, href);
+        changeSelectedMenu();
+    })
+    // make back button work again
+    window.addEventListener('popstate', (event) => {
+        if (document.location.href.indexOf('#') !== -1) {
+            // popstate triggered by a click on an anchor, not back button
+            return;
+        }
+        // fetch the new content
+        fetch(location.pathname)
+            .then(res => res.text())
+            .then(replaceContent);
+        changeSelectedMenu();
+    })
+}
+catchNavigation();
+</script>
