@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
+import { Children, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { sanitizeListRestProps, useListContext } from 'ra-core';
 
 import { FilterForm } from './FilterForm';
 import { FilterButton } from './FilterButton';
+import { FilterContext } from '../FilterContext';
 
 /**
  * Filter button/form combo
@@ -26,47 +26,20 @@ import { FilterButton } from './FilterButton';
  *
  */
 export const Filter = (props: FilterProps) => {
-    const {
-        resource,
-        showFilter,
-        hideFilter,
-        setFilters,
-        displayedFilters,
-        filterValues,
-    } = useListContext(props);
+    const { children } = props;
     const renderButton = () => {
-        const { context, children, variant, ...rest } = props;
-
-        return (
-            <FilterButton
-                className={FilterClasses.button}
-                resource={resource}
-                filters={React.Children.toArray(children)}
-                showFilter={showFilter}
-                displayedFilters={displayedFilters}
-                filterValues={filterValues}
-                {...sanitizeListRestProps(rest)}
-            />
-        );
+        return <FilterButton className={FilterClasses.button} />;
     };
 
     const renderForm = () => {
-        const { context, children, ...rest } = props;
-
-        return (
-            <FilterForm
-                className={FilterClasses.form}
-                resource={resource}
-                filters={React.Children.toArray(children)}
-                hideFilter={hideFilter}
-                displayedFilters={displayedFilters}
-                setFilters={setFilters}
-                {...sanitizeListRestProps(rest)}
-            />
-        );
+        return <FilterForm className={FilterClasses.form} />;
     };
 
-    return props.context === 'button' ? renderButton() : renderForm();
+    return (
+        <FilterContext.Provider value={Children.toArray(children)}>
+            {props.context === 'button' ? renderButton() : renderForm()}
+        </FilterContext.Provider>
+    );
 };
 
 Filter.propTypes = {
