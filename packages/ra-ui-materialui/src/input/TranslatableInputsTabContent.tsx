@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     Children,
     cloneElement,
@@ -8,14 +9,9 @@ import {
 } from 'react';
 import {
     FormGroupContextProvider,
-    Record,
-    useRecordContext,
+    RaRecord,
     useTranslatableContext,
 } from 'ra-core';
-import { makeStyles } from '@material-ui/core/styles';
-import { ClassesOverride } from '../types';
-import { FormInput } from '../form';
-import { useResourceContext } from 'ra-core';
 
 /**
  * Default container for a group of translatable inputs inside a TranslatableInputs component.
@@ -25,7 +21,6 @@ export const TranslatableInputsTabContent = (
     props: TranslatableInputsTabContentProps
 ): ReactElement => {
     const {
-        basePath,
         children,
         groupKey = '',
         locale,
@@ -34,47 +29,38 @@ export const TranslatableInputsTabContent = (
         ...other
     } = props;
     const { selectedLocale, getLabel, getSource } = useTranslatableContext();
-    const classes = useStyles(props);
-    const record = useRecordContext(props);
-    const resource = useResourceContext(props);
 
     return (
         <FormGroupContextProvider name={`${groupKey}${locale}`}>
-            <div
+            <Root
                 role="tabpanel"
                 hidden={selectedLocale !== locale}
                 id={`translatable-content-${groupKey}${locale}`}
                 aria-labelledby={`translatable-header-${groupKey}${locale}`}
-                className={classes.root}
+                className={TranslatableInputsTabContentClasses.root}
                 {...other}
             >
                 {Children.map(children, child =>
-                    isValidElement(child) ? (
-                        <FormInput
-                            basePath={basePath}
-                            input={cloneElement(child, {
-                                ...child.props,
-                                label: getLabel(child.props.source),
-                                source: getSource(child.props.source, locale),
-                            })}
-                            record={record}
-                            resource={resource}
-                            variant={child.props.variant || variant}
-                            margin={child.props.margin || margin}
-                        />
-                    ) : null
+                    isValidElement(child)
+                        ? cloneElement(child, {
+                              ...child.props,
+                              label: getLabel(
+                                  child.props.source,
+                                  child.props.label
+                              ),
+                              source: getSource(child.props.source, locale),
+                          })
+                        : null
                 )}
-            </div>
+            </Root>
         </FormGroupContextProvider>
     );
 };
 
 export type TranslatableInputsTabContentProps<
-    RecordType extends Record | Omit<Record, 'id'> = Record
+    RecordType extends RaRecord | Omit<RaRecord, 'id'> = any
 > = {
-    basePath?: string;
     children: ReactNode;
-    classes?: ClassesOverride<typeof useStyles>;
     groupKey?: string;
     locale: string;
     record?: RecordType;
@@ -83,17 +69,23 @@ export type TranslatableInputsTabContentProps<
     variant?: 'standard' | 'outlined' | 'filled';
 };
 
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            flexGrow: 1,
-            padding: theme.spacing(2),
-            borderRadius: 0,
-            borderBottomLeftRadius: theme.shape.borderRadius,
-            borderBottomRightRadius: theme.shape.borderRadius,
-            border: `1px solid ${theme.palette.divider}`,
-            borderTop: 0,
-        },
-    }),
-    { name: 'RaTranslatableInputsTabContent' }
-);
+const PREFIX = 'RaTranslatableInputsTabContent';
+
+export const TranslatableInputsTabContentClasses = {
+    root: `${PREFIX}-root`,
+};
+
+const Root = styled('div', { name: PREFIX })(({ theme }) => ({
+    [`&.${TranslatableInputsTabContentClasses.root}`]: {
+        flexGrow: 1,
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+        paddingTop: theme.spacing(1),
+        paddingBottom: theme.spacing(1),
+        borderRadius: 0,
+        borderBottomLeftRadius: theme.shape.borderRadius,
+        borderBottomRightRadius: theme.shape.borderRadius,
+        border: `1px solid ${theme.palette.divider}`,
+        borderTop: 0,
+    },
+}));

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { FC, ReactElement, ReactNode, HtmlHTMLAttributes } from 'react';
+import { ReactElement, ReactNode, HtmlHTMLAttributes } from 'react';
 import PropTypes from 'prop-types';
-import { FormWithRedirect, FormWithRedirectProps, MutationMode } from 'ra-core';
+import { Form, FormProps, MutationMode } from 'ra-core';
 import { SimpleFormView } from './SimpleFormView';
 
 /**
@@ -33,17 +33,11 @@ import { SimpleFormView } from './SimpleFormView';
  * @prop {boolean} submitOnEnter
  * @prop {string} redirect
  * @prop {ReactElement} toolbar The element displayed at the bottom of the form, containing the SaveButton
- * @prop {string} variant Apply variant to all inputs. Possible values are 'standard', 'outlined', and 'filled' (default)
- * @prop {string} margin Apply variant to all inputs. Possible values are 'none', 'normal', and 'dense' (default)
- * @prop {boolean} sanitizeEmptyValues Whether or not deleted record attributes should be recreated with a `null` value (default: true)
  *
  * @param {Props} props
  */
-const SimpleForm: FC<SimpleFormProps> = props => (
-    <FormWithRedirect
-        {...props}
-        render={formProps => <SimpleFormView {...formProps} />}
-    />
+export const SimpleForm = (props: SimpleFormProps) => (
+    <Form {...props} render={formProps => <SimpleFormView {...formProps} />} />
 );
 
 SimpleForm.propTypes = {
@@ -60,32 +54,22 @@ SimpleForm.propTypes = {
     save: PropTypes.func,
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
-    toolbar: PropTypes.element,
-    undoable: PropTypes.bool,
+    toolbar: PropTypes.oneOfType([PropTypes.element, PropTypes.oneOf([false])]),
     validate: PropTypes.func,
-    version: PropTypes.number,
-    sanitizeEmptyValues: PropTypes.bool,
 };
 
 export interface SimpleFormProps
-    extends Omit<FormWithRedirectProps, 'render'>,
+    extends Omit<FormProps, 'render'>,
         Omit<
             HtmlHTMLAttributes<HTMLFormElement>,
             'defaultValue' | 'onSubmit' | 'children'
         > {
-    basePath?: string;
     children: ReactNode;
     className?: string;
     component?: React.ComponentType<any>;
     initialValues?: any;
-    margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
     resource?: string;
     submitOnEnter?: boolean;
-    toolbar?: ReactElement;
-    /** @deprecated use mutationMode: undoable instead */
-    undoable?: boolean;
-    variant?: 'standard' | 'outlined' | 'filled';
+    toolbar?: ReactElement | false;
 }
-
-export default SimpleForm;

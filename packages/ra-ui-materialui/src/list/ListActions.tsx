@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cloneElement, useMemo, FC, ReactElement } from 'react';
+import { cloneElement, useMemo, useContext, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     sanitizeListRestProps,
@@ -10,54 +10,102 @@ import {
     useResourceContext,
     useResourceDefinition,
 } from 'ra-core';
-import { ToolbarProps } from '@material-ui/core';
+import { ToolbarProps } from '@mui/material';
 
 import TopToolbar from '../layout/TopToolbar';
 import { CreateButton, ExportButton } from '../button';
+import { FilterContext } from './FilterContext';
+import { FilterButton } from './filter';
 
-const ListActions: FC<ListActionsProps> = props => {
-    const { className, exporter, filters, ...rest } = props;
+/**
+ * Action Toolbar for the List view
+ *
+ * Internal component. If you want to add or remove actions for a List view,
+ * write your own ListActions Component. Then, in the <List> component,
+ * use it in the `actions` prop to pass a custom component.
+ *
+ * @example
+ *     import { cloneElement } from 'react';
+ *     import Button from '@mui/material/Button';
+ *     import { TopToolbar, List, CreateButton, ExportButton } from 'react-admin';
+ *
+ *     const PostListActions = ({ filters }) => (
+ *         <TopToolbar>
+ *             { cloneElement(filters, { context: 'button' }) }
+ *             <CreateButton/>
+ *             <ExportButton/>
+ *             // Add your custom actions here //
+ *             <Button onClick={customAction}>Custom Action</Button>
+ *         </TopToolbar>
+ *     );
+ *
+ *     export const PostList = (props) => (
+ *         <List actions={<PostListActions />} {...props}>
+ *             ...
+ *         </List>
+ *     );
+ */
+export const ListActions = (props: ListActionsProps) => {
     const {
-        currentSort,
+        className,
+        exporter,
+        filters: filtersProp,
+        hasCreate: _,
+        ...rest
+    } = props;
+    const {
+        sort,
         displayedFilters,
         filterValues,
-        basePath,
-        selectedIds,
         showFilter,
         total,
     } = useListContext(props);
-    const resource = useResourceContext(rest);
-    const { hasCreate } = useResourceDefinition(rest);
+    const resource = useResourceContext(props);
+    const { hasCreate } = useResourceDefinition(props);
+    const filters = useContext(FilterContext) || filtersProp;
     return useMemo(
         () => (
             <TopToolbar className={className} {...sanitizeListRestProps(rest)}>
-                {filters &&
-                    cloneElement(filters, {
-                        resource,
-                        showFilter,
-                        displayedFilters,
-                        filterValues,
-                        context: 'button',
-                    })}
-                {hasCreate && <CreateButton basePath={basePath} />}
+                {filtersProp
+                    ? cloneElement(filtersProp, {
+                          resource,
+                          showFilter,
+                          displayedFilters,
+                          filterValues,
+                          context: 'button',
+                      })
+                    : filters && <FilterButton />}
+                {hasCreate && <CreateButton />}
                 {exporter !== false && (
                     <ExportButton
                         disabled={total === 0}
                         resource={resource}
-                        sort={currentSort}
+                        sort={sort}
                         filterValues={filterValues}
                     />
                 )}
             </TopToolbar>
         ),
-        [resource, displayedFilters, filterValues, selectedIds, filters, total] // eslint-disable-line react-hooks/exhaustive-deps
+        /* eslint-disable react-hooks/exhaustive-deps */
+        [
+            resource,
+            displayedFilters,
+            filterValues,
+            filtersProp,
+            showFilter,
+            filters,
+            total,
+            className,
+            sort,
+            exporter,
+            hasCreate,
+        ]
     );
 };
 
 ListActions.propTypes = {
-    basePath: PropTypes.string,
     className: PropTypes.string,
-    currentSort: PropTypes.any,
+    sort: PropTypes.any,
     displayedFilters: PropTypes.object,
     exporter: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
     filters: PropTypes.element,
@@ -76,7 +124,7 @@ ListActions.defaultProps = {
 };
 
 export interface ListActionsProps extends ToolbarProps {
-    currentSort?: SortPayload;
+    sort?: SortPayload;
     className?: string;
     resource?: string;
     filters?: ReactElement<any>;
@@ -85,11 +133,8 @@ export interface ListActionsProps extends ToolbarProps {
     filterValues?: any;
     permanentFilter?: any;
     hasCreate?: boolean;
-    basePath?: string;
     selectedIds?: Identifier[];
     onUnselectItems?: () => void;
     showFilter?: (filterName: string, defaultValue: any) => void;
     total?: number;
 }
-
-export default ListActions;

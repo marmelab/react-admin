@@ -1,110 +1,83 @@
 import * as React from 'react';
-import { FC, ReactElement, ReactEventHandler, SyntheticEvent } from 'react';
+import { styled } from '@mui/material/styles';
+import { ReactElement, ReactEventHandler } from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import { fade } from '@material-ui/core/styles/colorManipulator';
-import ActionDelete from '@material-ui/icons/Delete';
-import classnames from 'classnames';
+import { alpha } from '@mui/material/styles';
+import ActionDelete from '@mui/icons-material/Delete';
+import clsx from 'clsx';
+import { UseMutationOptions } from 'react-query';
 import {
-    Record,
+    RaRecord,
     RedirectionSideEffect,
     useDeleteWithUndoController,
-    OnSuccess,
-    OnFailure,
+    DeleteParams,
+    useRecordContext,
     useResourceContext,
 } from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 
-const DeleteWithUndoButton: FC<DeleteWithUndoButtonProps> = props => {
+export const DeleteWithUndoButton = <RecordType extends RaRecord = any>(
+    props: DeleteWithUndoButtonProps<RecordType>
+) => {
     const {
         label = 'ra.action.delete',
-        classes: classesOverride,
         className,
         icon = defaultIcon,
         onClick,
-        record,
-        basePath,
         redirect = 'list',
-        onSuccess,
-        onFailure,
+        mutationOptions,
         ...rest
     } = props;
-    const classes = useStyles(props);
+
+    const record = useRecordContext(props);
     const resource = useResourceContext(props);
-    const { loading, handleDelete } = useDeleteWithUndoController({
+    const { isLoading, handleDelete } = useDeleteWithUndoController({
         record,
         resource,
-        basePath,
         redirect,
         onClick,
-        onSuccess,
-        onFailure,
+        mutationOptions,
     });
 
     return (
-        <Button
+        <StyledButton
             onClick={handleDelete}
-            disabled={loading}
+            disabled={isLoading}
             label={label}
-            className={classnames(
-                'ra-delete-button',
-                classes.deleteButton,
-                className
-            )}
+            className={clsx('ra-delete-button', className)}
             key="button"
             {...rest}
         >
             {icon}
-        </Button>
+        </StyledButton>
     );
 };
 
-const useStyles = makeStyles(
-    theme => ({
-        deleteButton: {
-            color: theme.palette.error.main,
-            '&:hover': {
-                backgroundColor: fade(theme.palette.error.main, 0.12),
-                // Reset on mouse devices
-                '@media (hover: none)': {
-                    backgroundColor: 'transparent',
-                },
-            },
-        },
-    }),
-    { name: 'RaDeleteWithUndoButton' }
-);
+const defaultIcon = <ActionDelete />;
 
-interface Props {
-    basePath?: string;
-    classes?: object;
+export interface DeleteWithUndoButtonProps<RecordType extends RaRecord = any>
+    extends Omit<ButtonProps, 'record'> {
     className?: string;
     icon?: ReactElement;
     label?: string;
     onClick?: ReactEventHandler<any>;
-    record?: Record;
+    record?: RecordType;
     redirect?: RedirectionSideEffect;
     resource?: string;
     // May be injected by Toolbar - sanitized in Button
-    handleSubmit?: (event?: SyntheticEvent<HTMLFormElement>) => Promise<Object>;
-    handleSubmitWithRedirect?: (redirect?: RedirectionSideEffect) => void;
     invalid?: boolean;
     pristine?: boolean;
     saving?: boolean;
     submitOnEnter?: boolean;
-    undoable?: boolean;
-    onSuccess?: OnSuccess;
-    onFailure?: OnFailure;
+    mutationOptions?: UseMutationOptions<
+        RecordType,
+        unknown,
+        DeleteParams<RecordType>
+    >;
 }
 
-const defaultIcon = <ActionDelete />;
-
-export type DeleteWithUndoButtonProps = Props & ButtonProps;
-
 DeleteWithUndoButton.propTypes = {
-    basePath: PropTypes.string,
-    classes: PropTypes.object,
     className: PropTypes.string,
     label: PropTypes.string,
     record: PropTypes.any,
@@ -117,4 +90,18 @@ DeleteWithUndoButton.propTypes = {
     icon: PropTypes.element,
 };
 
-export default DeleteWithUndoButton;
+const PREFIX = 'RaDeleteWithUndoButton';
+
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    color: theme.palette.error.main,
+    '&:hover': {
+        backgroundColor: alpha(theme.palette.error.main, 0.12),
+        // Reset on mouse devices
+        '@media (hover: none)': {
+            backgroundColor: 'transparent',
+        },
+    },
+}));

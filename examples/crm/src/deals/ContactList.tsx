@@ -1,44 +1,45 @@
 import * as React from 'react';
 import { useListContext } from 'react-admin';
-import { Link } from '@material-ui/core';
+import { Box, Link } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles({
-    ul: {
-        listStyle: 'none',
-        padding: 0,
-        margin: 0,
-        display: 'inline-block',
-    },
-    li: {
-        display: 'inline',
-        '&:after': {
-            content: '", "',
-        },
-        '&:last-child:after': {
-            content: '""',
-        },
-    },
-});
 
 export const ContactList = () => {
-    const { ids, data, loaded } = useListContext();
-    const classes = useStyles();
-    if (!loaded) return <div style={{ height: '2em' }} />;
+    const { data, isLoading } = useListContext();
+
+    if (isLoading) return <div style={{ height: '2em' }} />;
     return (
-        <ul className={classes.ul}>
-            {ids.map(id => (
-                <li key={id} className={classes.li}>
+        <Box
+            component="ul"
+            sx={{
+                listStyle: 'none',
+                padding: 0,
+                margin: 0,
+                display: 'inline-block',
+            }}
+        >
+            {data.map(contact => (
+                <Box
+                    component="li"
+                    key={contact.id}
+                    sx={{
+                        display: 'inline',
+                        '&:after': {
+                            content: '", "',
+                        },
+                        '&:last-child:after': {
+                            content: '""',
+                        },
+                    }}
+                >
                     <Link
                         component={RouterLink}
-                        to={`/contacts/${id}`}
+                        to={`/contacts/${contact.id}`}
                         variant="subtitle1"
                     >
-                        {data[id].first_name} {data[id].last_name}
+                        {contact.first_name} {contact.last_name}
                     </Link>
-                </li>
+                </Box>
             ))}
-        </ul>
+        </Box>
     );
 };

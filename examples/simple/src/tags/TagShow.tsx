@@ -7,8 +7,8 @@ import {
     BooleanField,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
-const TagShow = props => (
-    <Show {...props}>
+const TagShow = () => (
+    <Show>
         <SimpleShowLayout>
             <TextField source="id" />
             <TranslatableFields locales={['en', 'fr']}>

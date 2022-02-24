@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Card, CardContent, Typography, Box } from '@material-ui/core';
-import NoteIcon from '@material-ui/icons/Note';
-import { makeStyles } from '@material-ui/core/styles';
+import { Card, CardContent, Typography, Box } from '@mui/material';
+import NoteIcon from '@mui/icons-material/Note';
 import {
     useGetList,
     useGetIdentity,
@@ -13,74 +12,50 @@ import { formatDistance } from 'date-fns';
 
 import { Contact as ContactType } from '../types';
 
-const useStyles = makeStyles(theme => ({
-    note: {
-        marginBottom: theme.spacing(2),
-    },
-    noteText: {
-        backgroundColor: '#edf3f0',
-        padding: theme.spacing(1),
-        borderRadius: 10,
-    },
-    noteTextText: {
-        display: '-webkit-box',
-        '-webkit-line-clamp': 3,
-        '-webkit-box-orient': 'vertical',
-        overflow: 'hidden',
-    },
-}));
-
 export const LatestNotes = () => {
-    const classes = useStyles();
     const { identity } = useGetIdentity();
     const {
         data: contactNotesData,
-        ids: contactNotesIds,
-        loaded: contactNotesLoaded,
+        isLoading: contactNotesLoading,
     } = useGetList(
         'contactNotes',
-        { page: 1, perPage: 5 },
-        { field: 'date', order: 'DESC' },
-        { sales_id: identity?.id },
+        {
+            pagination: { page: 1, perPage: 5 },
+            sort: { field: 'date', order: 'DESC' },
+            filter: { sales_id: identity?.id },
+        },
         { enabled: Number.isInteger(identity?.id) }
     );
-    const {
-        data: dealNotesData,
-        ids: dealNotesIds,
-        loaded: dealNotesLoaded,
-    } = useGetList(
+    const { data: dealNotesData, isLoading: dealNotesLoading } = useGetList(
         'dealNotes',
-        { page: 1, perPage: 5 },
-        { field: 'date', order: 'DESC' },
-        { sales_id: identity?.id },
+        {
+            pagination: { page: 1, perPage: 5 },
+            sort: { field: 'date', order: 'DESC' },
+            filter: { sales_id: identity?.id },
+        },
         { enabled: Number.isInteger(identity?.id) }
     );
-    if (!contactNotesLoaded || !dealNotesLoaded) {
+    if (contactNotesLoading || dealNotesLoading) {
         return null;
     }
     // TypeScript guards
-    if (
-        !contactNotesIds ||
-        !contactNotesData ||
-        !dealNotesIds ||
-        !dealNotesData
-    ) {
+    if (!contactNotesData || !dealNotesData) {
         return null;
     }
 
     const allNotes = ([] as any[])
         .concat(
-            contactNotesIds.map(id => ({
-                ...contactNotesData[id],
+            contactNotesData.map(note => ({
+                ...note,
                 type: 'contactNote',
             })),
-            dealNotesIds.map(id => ({ ...dealNotesData[id], type: 'dealNote' }))
+            dealNotesData.map(note => ({ ...note, type: 'dealNote' }))
         )
         .sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf())
         .slice(0, 5);
 
     return (
-        <>
+        <div>
             <Box display="flex" alignItems="center" marginBottom="1em">
                 <Box ml={2} mr={2} display="flex">
                     <NoteIcon color="disabled" fontSize="large" />
@@ -92,12 +67,15 @@ export const LatestNotes = () => {
             <Card>
                 <CardContent>
                     {allNotes.map(note => (
-                        <div
+                        <Box
                             id={`${note.type}_${note.id}`}
                             key={`${note.type}_${note.id}`}
-                            className={classes.note}
+                            sx={{ marginBottom: 2 }}
                         >
-                            <Typography color="textSecondary" gutterBottom>
+                            <Typography
+                                color="textSecondary"
+                                sx={{ opacity: 0.5 }}
+                            >
                                 on{' '}
                                 {note.type === 'dealNote' ? (
                                     <Deal note={note} />
@@ -113,16 +91,23 @@ export const LatestNotes = () => {
                                     }
                                 )}
                             </Typography>
-                            <div className={classes.noteText}>
-                                <Typography className={classes.noteTextText}>
+                            <div>
+                                <Typography
+                                    sx={{
+                                        display: '-webkit-box',
+                                        WebkitLineClamp: 3,
+                                        WebkitBoxOrient: 'vertical',
+                                        overflow: 'hidden',
+                                    }}
+                                >
                                     {note.text}
                                 </Typography>
                             </div>
-                        </div>
+                        </Box>
                     ))}
                 </CardContent>
             </Card>
-        </>
+        </div>
     );
 };
 
@@ -133,7 +118,6 @@ const Deal = ({ note }: any) => (
             record={note}
             source="deal_id"
             reference="deals"
-            basePath="/deals"
             link="show"
         >
             <TextField source="name" variant="body1" />
@@ -148,7 +132,6 @@ const Contact = ({ note }: any) => (
             record={note}
             source="contact_id"
             reference="contacts"
-            basePath="/contacts"
             link="show"
         >
             <FunctionField<ContactType>

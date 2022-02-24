@@ -1,27 +1,33 @@
 import * as React from 'react';
-import { FC } from 'react';
-import Chip from '@material-ui/core/Chip';
-import { useTranslate, FieldProps } from 'react-admin';
+import { styled } from '@mui/material/styles';
+import Chip from '@mui/material/Chip';
+import { FieldProps, useTranslate, useRecordContext } from 'react-admin';
 import segments from '../segments/data';
 import { Customer } from '../types';
-import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles({
-    main: {
+const PREFIX = 'SegmentsField';
+
+const classes = {
+    main: `${PREFIX}-main`,
+    chip: `${PREFIX}-chip`,
+};
+
+const Root = styled('span')({
+    [`&.${classes.main}`]: {
         display: 'flex',
         flexWrap: 'wrap',
         marginTop: -8,
         marginBottom: -8,
     },
-    chip: { margin: 4 },
+    [`& .${classes.chip}`]: { margin: 4 },
 });
 
-const SegmentsField: FC<FieldProps<Customer>> = ({ record }) => {
+const SegmentsField = (props: FieldProps) => {
     const translate = useTranslate();
-    const classes = useStyles();
+    const record = useRecordContext<Customer>();
 
     return record ? (
-        <span className={classes.main}>
+        <Root className={classes.main}>
             {record.groups &&
                 record.groups.map(segmentId => {
                     const segment = segments.find(s => s.id === segmentId);
@@ -35,12 +41,11 @@ const SegmentsField: FC<FieldProps<Customer>> = ({ record }) => {
                         />
                     ) : null;
                 })}
-        </span>
+        </Root>
     ) : null;
 };
 
 SegmentsField.defaultProps = {
-    addLabel: true,
     source: 'groups',
 };
 

@@ -6,11 +6,11 @@ import {
     ReferenceInput,
     AutocompleteInput,
     BooleanInput,
-    FormWithRedirect,
+    Form,
     Toolbar,
     useEditContext,
 } from 'react-admin';
-import { Card, CardContent, Divider, Box } from '@material-ui/core';
+import { Card, CardContent, Divider, Box } from '@mui/material';
 
 import { Avatar } from './Avatar';
 import { ContactAside } from './ContactAside';
@@ -19,14 +19,14 @@ import { Contact } from '../types';
 const Spacer = () => <Box width={20} component="span" />;
 
 const ContactEditContent = () => {
-    const { record, loaded } = useEditContext<Contact>();
-    if (!loaded || !record) return null;
+    const { record, isLoading, save } = useEditContext<Contact>();
+    if (isLoading || !record) return null;
     return (
         <Box mt={2} display="flex">
             <Box flex="1">
-                <FormWithRedirect
+                <Form
                     record={record}
-                    redirect="show"
+                    onSubmit={save}
                     render={formProps => (
                         <Card>
                             <CardContent>
@@ -91,7 +91,7 @@ const ContactEditContent = () => {
 };
 
 export const ContactEdit = (props: EditProps) => (
-    <EditBase {...props}>
+    <EditBase {...props} redirect="show">
         <ContactEditContent />
     </EditBase>
 );

@@ -9,49 +9,44 @@ import {
     useState,
 } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import { Route, useRouteMatch, useLocation } from 'react-router-dom';
-import { Divider } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 import {
-    escapePath,
-    FormWithRedirectRenderProps,
+    Routes,
+    Route,
+    matchPath,
+    useResolvedPath,
+    useLocation,
+} from 'react-router-dom';
+import { Divider } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import {
+    FormRenderProps,
     MutationMode,
-    Record,
+    RaRecord,
+    useResourceContext,
 } from 'ra-core';
-import Toolbar from './Toolbar';
-import TabbedFormTabs, { getTabFullPath } from './TabbedFormTabs';
-import { ClassesOverride } from '../types';
+import { Toolbar } from './Toolbar';
+import { TabbedFormTabs, getTabbedFormTabFullPath } from './TabbedFormTabs';
 
 export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
     const {
-        basePath,
         children,
         className,
-        classes: classesOverride,
-        component: Component,
+        formRootPathname,
+        component: Component = DefaultInnerContainer,
         handleSubmit,
-        handleSubmitWithRedirect,
-        invalid,
         mutationMode,
-        pristine,
         record,
-        redirect: defaultRedirect,
-        resource,
         saving,
-        submitOnEnter,
+        submitOnEnter = true,
         syncWithLocation = true,
-        tabs,
-        toolbar,
-        undoable,
-        variant,
-        margin,
+        tabs = DefaultTabs,
+        toolbar = DefaultToolbar,
         ...rest
     } = props;
-    const classes = useTabbedFormViewStyles(props);
-    const match = useRouteMatch();
     const location = useLocation();
-    const url = match ? match.url : location.pathname;
+    const resolvedPath = useResolvedPath('');
+    const resource = useResourceContext(props);
     const [tabValue, setTabValue] = useState(0);
 
     const handleTabChange = (event: ChangeEvent<{}>, value: any): void => {
@@ -60,21 +55,30 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         }
     };
 
+    const renderTabHeaders = () =>
+        cloneElement(
+            tabs,
+            {
+                onChange: handleTabChange,
+                syncWithLocation,
+                url: formRootPathname,
+                value: tabValue,
+            },
+            children
+        );
+
     return (
-        <form
-            className={classnames('tabbed-form', className)}
+        <Root
+            className={clsx('tabbed-form', className)}
+            onSubmit={handleSubmit}
             {...sanitizeRestProps(rest)}
         >
-            {cloneElement(
-                tabs,
-                {
-                    classes,
-                    url,
-                    syncWithLocation,
-                    onChange: handleTabChange,
-                    value: tabValue,
-                },
-                children
+            {syncWithLocation ? (
+                <Routes>
+                    <Route path="/*" element={renderTabHeaders()} />
+                </Routes>
+            ) : (
+                renderTabHeaders()
             )}
             <Divider />
             <Component>
@@ -84,74 +88,45 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                 See https://github.com/marmelab/react-admin/issues/1866 */}
                 {Children.map(children, (tab: ReactElement, index) => {
                     if (!tab) {
-                        return;
+                        return null;
                     }
-                    const tabPath = getTabFullPath(tab, index, url);
-                    return (
-                        <Route exact path={escapePath(tabPath)}>
-                            {routeProps =>
-                                isValidElement<any>(tab)
-                                    ? React.cloneElement(tab, {
-                                          intent: 'content',
-                                          classes,
-                                          resource,
-                                          record,
-                                          basePath,
-                                          hidden: syncWithLocation
-                                              ? !routeProps.match
-                                              : tabValue !== index,
-                                          variant: tab.props.variant || variant,
-                                          margin: tab.props.margin || margin,
-                                          value: syncWithLocation
-                                              ? tabPath
-                                              : index,
-                                      })
-                                    : null
-                            }
-                        </Route>
-                    );
+                    const tabPath = getTabbedFormTabFullPath(tab, index);
+                    const hidden = syncWithLocation
+                        ? !matchPath(
+                              `${resolvedPath.pathname}/${tabPath}`,
+                              location.pathname
+                          )
+                        : tabValue !== index;
+
+                    return isValidElement<any>(tab)
+                        ? React.cloneElement(tab, {
+                              intent: 'content',
+                              resource,
+                              record,
+                              hidden,
+                              value: syncWithLocation ? tabPath : index,
+                          })
+                        : null;
                 })}
             </Component>
             {toolbar &&
-                React.cloneElement(toolbar, {
-                    basePath,
+                cloneElement(toolbar, {
                     className: 'toolbar',
-                    handleSubmitWithRedirect,
-                    handleSubmit,
-                    invalid,
                     mutationMode,
-                    pristine,
                     record,
-                    redirect: defaultRedirect,
                     resource,
                     saving,
                     submitOnEnter,
-                    undoable,
                 })}
-        </form>
+        </Root>
     );
 };
 
-export const useTabbedFormViewStyles = makeStyles(
-    theme => ({
-        errorTabButton: { color: theme.palette.error.main },
-        content: {
-            paddingTop: theme.spacing(1),
-            paddingLeft: theme.spacing(2),
-            paddingRight: theme.spacing(2),
-        },
-    }),
-    { name: 'RaTabbedForm' }
-);
-
 TabbedFormView.propTypes = {
-    basePath: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
-    classes: PropTypes.object,
     component: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
-    handleSubmit: PropTypes.func, // passed by react-final-form
     initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     invalid: PropTypes.bool,
     location: PropTypes.object,
@@ -160,82 +135,57 @@ TabbedFormView.propTypes = {
     pristine: PropTypes.bool,
     // @ts-ignore
     record: PropTypes.object,
-    redirect: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.bool,
-        PropTypes.func,
-    ]),
     resource: PropTypes.string,
-    save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
-    tabs: PropTypes.element.isRequired,
+    tabs: PropTypes.element,
     toolbar: PropTypes.element,
     translate: PropTypes.func,
-    undoable: PropTypes.bool,
     validate: PropTypes.func,
     value: PropTypes.number,
-    version: PropTypes.number,
 };
 
+const DefaultTabs = <TabbedFormTabs />;
+const DefaultToolbar = <Toolbar />;
 const DefaultInnerContainer = (props): JSX.Element => {
     const { children } = props;
-    const classes = useTabbedFormViewStyles(props);
-    return <div className={classes.content}>{children}</div>;
+    return <div className={TabbedFormClasses.content}>{children}</div>;
 };
 
-TabbedFormView.defaultProps = {
-    submitOnEnter: true,
-    tabs: <TabbedFormTabs />,
-    toolbar: <Toolbar />,
-    component: DefaultInnerContainer,
-};
-
-export interface TabbedFormViewProps extends FormWithRedirectRenderProps {
-    basePath?: string;
+export interface TabbedFormViewProps extends FormRenderProps {
     children?: ReactNode;
-    classes?: ClassesOverride<typeof useTabbedFormViewStyles>;
     className?: string;
     component?: React.ComponentType<any>;
     margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
-    record?: Record;
+    record?: Partial<RaRecord>;
     resource?: string;
+    formRootPathname?: string;
     syncWithLocation?: boolean;
     tabs?: ReactElement;
     toolbar?: ReactElement;
-    /** @deprecated use mutationMode: undoable instead */
-    undoable?: boolean;
-    variant?: 'standard' | 'outlined' | 'filled';
     submitOnEnter?: boolean;
-    __versions?: any; // react-final-form internal prop, missing in their type
 }
 
-const sanitizeRestProps = ({
-    active,
-    dirty,
-    dirtyFields,
-    dirtyFieldsSinceLastSubmit,
-    dirtySinceLastSubmit,
-    error,
-    errors,
-    form,
-    hasSubmitErrors,
-    hasValidationErrors,
-    initialValues,
-    modified = null,
-    modifiedSinceLastSubmit,
-    save = null,
-    submitError,
-    submitErrors,
-    submitFailed,
-    submitSucceeded,
-    submitting,
-    touched = null,
-    valid,
-    validating,
-    values,
-    visited = null,
-    __versions = null,
-    ...props
-}) => props;
+const sanitizeRestProps = ({ save = null, ...props }) => props;
+
+const PREFIX = 'RaTabbedForm';
+
+export const TabbedFormClasses = {
+    errorTabButton: `${PREFIX}-errorTabButton`,
+    content: `${PREFIX}-content`,
+};
+
+const Root = styled('form', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    [`& .MuiTab-root.${TabbedFormClasses.errorTabButton}`]: {
+        color: theme.palette.error.main,
+    },
+    [`& .${TabbedFormClasses.content}`]: {
+        paddingTop: theme.spacing(1),
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+    },
+}));

@@ -56,9 +56,17 @@ It's very common that your auth logic is so specific that you'll need to write y
 
 - **[AWS Amplify](https://docs.amplify.aws)**: [MrHertal/react-admin-amplify](https://github.com/MrHertal/react-admin-amplify)
 - **[AWS Cognito](https://docs.aws.amazon.com/cognito/latest/developerguide/setting-up-the-javascript-sdk.html)**: [thedistance/ra-cognito](https://github.com/thedistance/ra-cognito)
-- **[Firebase Auth (Google, Facebook, Github etc)](https://firebase.google.com/docs/auth/web/firebaseui)**: [benwinding/react-admin-firebase](https://github.com/benwinding/react-admin-firebase#auth-provider)
+- **[Firebase Auth (Google, Facebook, GitHub, etc.)](https://firebase.google.com/docs/auth/web/firebaseui)**: [benwinding/react-admin-firebase](https://github.com/benwinding/react-admin-firebase#auth-provider)
+- **[Supabase](https://supabase.io/)**: [marmelab/ra-supabase](https://github.com/marmelab/ra-supabase).
 
-If you have released a reusable `authProvider` for a standard auth backend, please open a PR to add it to this list!
+Beyond ready-to-use providers, you may find help in these third-party tutorials about integrating more authentication backends:
+
+* **[Auth0](https://auth0.com/docs/libraries/auth0-single-page-app-sdk)**: [spintech-software/react-admin-auth0-example](https://github.com/spintech-software/react-admin-auth0-example)
+* **[Azure Active Directory](https://github.com/AzureAD/microsoft-authentication-library-for-js/tree/dev/lib/msal-browser)**: [victorp13/react-admin-msal](https://github.com/victorp13/react-admin-msal)
+* **[Loopback](https://loopback.io/doc/en/lb4/Authentication-overview.html)**: [appsmith dev.to tutorial](https://dev.to/appsmith/building-an-admin-dashboard-with-react-admin-86i#adding-authentication-to-reactadmin)
+* **[OpenID Connect (OIDC)](https://openid.net/connect/)**: [marmelab/ra-example-oauth](https://github.com/marmelab/ra-example-oauth)
+
+If you have released a reusable `authProvider`, or a tutorial for another auth backend, please open a PR to add it to this list!
 
 ## Authentication
 
@@ -70,7 +78,7 @@ Once an admin has an `authProvider`, react-admin enables a new page on the `/log
 
 ![Default Login Form](./img/login-form.png)
 
-Upon submission, this form calls the `authProvider.login({ login, password })` method. React-admin expects this method to return a resolved Promise if the credentials are correct, and a rejected Promise if they're not. 
+Upon submission, this form calls the `authProvider.login({ username, password })` method. React-admin expects this method to return a resolved Promise if the credentials are correct, and a rejected Promise if they're not. 
 
 For instance, to query an authentication route via HTTPS and store the credentials (a token) in local storage, configure the `authProvider` as follows:
 
@@ -96,6 +104,14 @@ const authProvider = {
             .catch(() => {
                 throw new Error('Network error')
             });
+    },
+    checkAuth: () => {
+        // Required for the authentication to work
+        return Promise.resolve();
+    },
+    getPermissions: () => {
+        // Required for the authentication to work
+        return Promise.resolve();
     },
     // ...
 };
@@ -178,6 +194,25 @@ export default {
         if (status === 401 || status === 403) {
             localStorage.removeItem('auth');
             return Promise.reject({ redirectTo: '/credentials-required' });
+        }
+        // other error code (404, 500, etc): no need to log out
+        return Promise.resolve();
+    },
+    // ...
+};
+```
+
+It's possible to not log the user out, and to instead redirect them. You can do this by passing `error.logoutUser = false` to the `Promise.reject` along with an `error.redirectTo` url.
+
+
+```js
+// in src/authProvider.js
+export default {
+    login: ({ username, password }) => { /* ... */ },
+    checkError: (error) => {
+        const status = error.status;
+        if (status === 401 || status === 403) {
+            return Promise.reject({ redirectTo: '/unauthorized', logoutUser: false });
         }
         // other error code (404, 500, etc): no need to log out
         return Promise.resolve();
@@ -271,7 +306,7 @@ export default {
 
 ### Logout Configuration
 
-If you enable authentication, react-admin adds a logout button in the user menu in the top bar (or in the sliding menu on mobile). When the user clicks on the logout button, this calls the `authProvider.logout()` method, and removes potentially sensitive data from the Redux store. Then the user gets redirected to the login page. The two previous sections also illustrated that react-admin can call `authProvider.logout()` itself, when the API returns a 403 error or when the local credentials expire. 
+If you enable authentication, react-admin adds a logout button in the user menu in the top bar (or in the sliding menu on mobile). When the user clicks on the logout button, this calls the `authProvider.logout()` method, and removes potentially sensitive data sored in [the react-admin Store](./Store.md). Then the user gets redirected to the login page. The two previous sections also illustrated that react-admin can call `authProvider.logout()` itself, when the API returns a 403 error or when the local credentials expire. 
 
 It's the responsibility of the `authProvider.logout()` method to clean up the current authentication data. For instance, if the authentication was a token stored in local storage, here is the code to remove it:
 
@@ -344,7 +379,7 @@ React-admin uses the `fullName` and the `avatar` (an image source, or a data-uri
 import { useGetIdentity, useGetOne } from 'react-admin';
 
 const PostDetail = ({ id }) => {
-    const { data: post, loading: postLoading } = useGetOne('posts', id);
+    const { data: post, isLoading: postLoading } = useGetOne('posts', { id });
     const { identity, loading: identityLoading } = useGetIdentity();
     if (postLoading || identityLoading) return <>Loading...</>;
     if (!post.lockedBy || post.lockedBy === identity.id) {
@@ -361,9 +396,7 @@ const PostDetail = ({ id }) => {
 
 Some applications may require fine-grained permissions to enable or disable access to certain features depending on user permissions. Since there are many possible strategies (single role, multiple roles or rights, ACLs, etc.), react-admin delegates the permission logic to `authProvider.getPermissions()`.
 
-By default, a react-admin app doesn't require any special permission on list, create, edit, and show pages. However, react-admin calls the `authProvider.getPermissions()` method before navigating to these pages, and passes the result to the main page component (`<List>`, `<Edit>`, etc.). You can then tweak the content of these pages based on permissions.
-
-Additionally, in custom pages, you can call the `usePermissions()` hook to grab the user permissions.
+By default, a react-admin app only requires users to be logged in for the list, create, edit, and show pages. However, should you need to customize the views according to the users permissions, you can call the [`usePermissions()`](#usepermissions-hook) hook to grab them. This works for custom pages too.
 
 ### User Permissions
 
@@ -421,36 +454,38 @@ export default {
 ```
 {% endraw %}
 
-### Getting User Permissions In CRUD Pages
+### Getting User Permissions
 
-By default, react-admin calls `authProvider.getPermissions()` for each resource route, and passes the permissions to the `list`, `edit`, `create`, and `show` view components. So the `<List>`, `<Edit>`, `<Create>` and `<Show>` components all receive a `permissions` prop containing what `authProvider.getPermissions()` returned.
+If you need to check the permissions in any of the default react-admin views or in custom page, you can use the [`usePermissions()`](#usepermissions-hook) hook:
 
 Here is an example of a `Create` view with a conditional Input based on permissions:
 
 {% raw %}
 ```jsx
-export const UserCreate = ({ permissions, ...props }) =>
-    <Create {...props}>
-        <SimpleForm
-            defaultValue={{ role: 'user' }}
-        >
-            <TextInput source="name" validate={[required()]} />
-            {permissions === 'admin' &&
-                <TextInput source="role" validate={[required()]} />}
-        </SimpleForm>
-    </Create>;
+export const UserCreate = () => {
+    const { permissions } = usePermissions();
+    return (
+        <Create>
+            <SimpleForm
+                defaultValue={{ role: 'user' }}
+            >
+                <TextInput source="name" validate={[required()]} />
+                {permissions === 'admin' &&
+                    <TextInput source="role" validate={[required()]} />}
+            </SimpleForm>
+        </Create>
+    )
+}
 ```
 {% endraw %}
 
-### Getting User Permissions In Custom Pages
-
-In custom pages, react-admin doesn't call `authProvider.getPermissions()`. It's up to you to call it yourself, using [the `usePermissions()` hook](#usepermissions-hook):
+It works in custom pages too:
 
 ```jsx
 // in src/MyPage.js
 import * as React from "react";
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import { Card } from '@mui/material';
+import CardContent from '@mui/material/CardContent';
 import { usePermissions } from 'react-admin';
 
 const MyPage = () => {
@@ -465,6 +500,66 @@ const MyPage = () => {
     );
 }
 ```
+
+## Role-Based Access Control (RBAC)
+
+React-admin Enterprise Edition contains [the ra-rbac module](https://marmelab.com/ra-rbac)<img class="icon" src="./img/premium.svg" />, which adds fine-grained permissions to your admin.
+
+<video controls="controls" style="max-width: 100%">
+    <source src="./img/ra-rbac.mp4" type="video/mp4" />
+</video>
+
+You can define permissions for pages, fields, buttons, etc. in the `authProvider`. This means this RBAC system can use any data source you want (even an ActiveDirectory).
+
+For instance, the above demo uses the following set of permissions:
+
+```jsx
+const roles = {
+    accountant: [
+        { action: ['list', 'show'], resource: 'products' },
+        { action: 'read', resource: 'products.*' },
+        { type: 'deny', action: 'read', resource: 'products.description' },
+        { action: 'list', resource: 'categories' },
+        { action: 'read', resource: 'categories.*' },
+        { action: ['list', 'show'], resource: 'customers' },
+        { action: 'read', resource: 'customers.*' },
+        { action: '*', resource: 'invoices' },
+    ],
+    contentEditor: [
+        {
+            action: ['list', 'create', 'edit', 'delete', 'export'],
+            resource: 'products',
+        },
+        { action: 'read', resource: 'products.*' },
+        { type: 'deny', action: 'read', resource: 'products.stock' },
+        { type: 'deny', action: 'read', resource: 'products.sales' },
+        { action: 'write', resource: 'products.*' },
+        { type: 'deny', action: 'write', resource: 'products.stock' },
+        { type: 'deny', action: 'write', resource: 'products.sales' },
+        { action: 'list', resource: 'categories' },
+        { action: ['list', 'edit'], resource: 'customers' },
+        { action: ['list', 'edit'], resource: 'reviews' },
+    ],
+    stockManager: [
+        { action: ['list', 'edit', 'export'], resource: 'products' },
+        { action: 'read', resource: 'products.*' },
+        {
+            type: 'deny',
+            action: 'read',
+            resource: 'products.description',
+        },
+        { action: 'write', resource: 'products.stock' },
+        { action: 'write', resource: 'products.sales' },
+        { action: 'list', resource: 'categories' },
+    ],
+    administrator: [{ action: '*', resource: '*' }],
+};
+```
+
+Ra-rbac lets you add fine-grained permissions (almost) without touching your application code (you don't need to add `if` blocks everywhere).
+
+Check [the module documentation](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid) to learn more. 
+
 
 ## Building Your Own Auth Provider
 
@@ -520,7 +615,7 @@ When the auth backend returns an error, the Auth Provider should return a reject
 | Method           | Reject if                                 | Error format |
 | ---------------- | ----------------------------------------- | --------------- |
 | `login`          | Login credentials weren't accepted        | `string | { message?: string }` error message to display |
-| `checkError`     | Error is an auth error                    | `void | { redirectTo?: string, message?: boolean }` route to redirect to after logout, and whether to disable error notification |
+| `checkError`     | Error is an auth error                    | `void | { redirectTo?: string, message?: string | boolean  }` route to redirect to after logout, message to notify the user or `false` to disable notification |
 | `checkAuth`      | User is not authenticated                 | `void | { redirectTo?: string, message?: string }` route to redirect to after logout, message to notify the user |
 | `logout`         | Auth backend failed to log the user out   | `void` |
 | `getIdentity`    | Auth backend failed to return identity    | `Object` free format - returned as `error` when `useGetIdentity()` is called | 
@@ -538,16 +633,15 @@ For instance, here is how to build a custom Login page based on email rather tha
 // in src/MyLoginPage.js
 import * as React from 'react';
 import { useState } from 'react';
-import { useLogin, useNotify, Notification, defaultTheme } from 'react-admin';
-import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { useLogin, useNotify, Notification } from 'react-admin';
 
 const MyLoginPage = ({ theme }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const login = useLogin();
     const notify = useNotify();
-    const submit = e => {
+
+    const handleSubmit = e => {
         e.preventDefault();
         // will call authProvider.login({ email, password })
         login({ email, password }).catch(() =>
@@ -556,23 +650,20 @@ const MyLoginPage = ({ theme }) => {
     };
 
     return (
-        <ThemeProvider theme={createMuiTheme(defaultTheme)}>
-            <form onSubmit={submit}>
-                <input
-                    name="email"
-                    type="email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                />
-                <input
-                    name="password"
-                    type="password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                />
-            </form>
-            <Notification />
-        </ThemeProvider>
+        <form onSubmit={handleSubmit}>
+            <input
+                name="email"
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+            />
+            <input
+                name="password"
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+            />
+        </form>
     );
 };
 
@@ -597,7 +688,7 @@ const App = () => (
 
 ### `useAuthenticated()` Hook
 
-If you add [custom pages](./Actions.md), or if you [create an admin app from scratch](./CustomApp.md), you may need to secure access to pages manually. That's the purpose of the `useAuthenticated()` hook, which calls the `authProvider.checkAuth()` method on mount, and redirects to login if it returns a rejected Promise.
+If you add [custom pages](./Actions.md), you may need to secure access to pages manually. That's the purpose of the `useAuthenticated()` hook, which calls the `authProvider.checkAuth()` method on mount, and redirects to login if it returns a rejected Promise.
 
 ```jsx
 // in src/MyPage.js
@@ -615,11 +706,15 @@ const MyPage = () => {
 export default MyPage;
 ```
 
-If you call `useAuthenticated()` with a parameter, this parameter is passed to the `authProvider` call as second parameter. that allows you to add authentication logic depending on the context of the call:
+`useAuthenticated` accepts an options object as its only argument, with the following properties:
+- `enabled`: whether it should check for an authenticated user (`true` by default)
+- `params`: the parameters to pass to `checkAuth`
+
+If you call `useAuthenticated()` with a `params` option, those parameters are passed to the `authProvider.checkAuth` call. That allows you to add authentication logic depending on the context of the call:
 
 ```jsx
 const MyPage = () => {
-    useAuthenticated({ foo: 'bar' }); // calls authProvider.checkAuth({ foo: 'bar' })
+    useAuthenticated({ params: { foo: 'bar' } }); // calls authProvider.checkAuth({ foo: 'bar' })
     return (
         <div>
             ...
@@ -657,15 +752,15 @@ const MyPage = () => {
 
 ### `useLogout()` Hook
 
-Just like `useLogin()`, `useLogout()` returns a callback that you can use to call `authProvider.logout()``. Use it to build a custom Logout button, like the following: 
+Just like `useLogin()`, `useLogout()` returns a callback that you can use to call `authProvider.logout()`. Use it to build a custom Logout button and use it in a custom UserMenu, like the following: 
 
 ```jsx
-// in src/MyLogoutButton.js
+// in src/MyLayout.js
 import * as React from 'react';
 import { forwardRef } from 'react';
-import { useLogout } from 'react-admin';
-import MenuItem from '@material-ui/core/MenuItem';
-import ExitIcon from '@material-ui/icons/PowerSettingsNew';
+import { AppBar, Layout, UserMenu, useLogout } from 'react-admin';
+import { MenuItem } from '@mui/material';
+import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 
 const MyLogoutButton = forwardRef((props, ref) => {
     const logout = useLogout();
@@ -680,20 +775,34 @@ const MyLogoutButton = forwardRef((props, ref) => {
     );
 });
 
-export default MyLogoutButton;
+const MyUserMenu = () => (
+    <UserMenu>
+        <MyLogoutButton />
+    </UserMenu>
+);
+
+const MyAppBar = () => (
+    <AppBar userMenu={<UserMenu />} />
+);
+
+const MyLayout = () => (
+    <Layout appBar={MyAppBar} />
+);
+
+export default MyLayout;
 ```
 
-Then pass the Logout button to the `<Admin>` component, as follows:
+Then pass the layout to you admin:
 
 ```jsx
 // in src/App.js
 import * as React from "react";
 import { Admin } from 'react-admin';
 
-import MyLogoutButton from './MyLogoutButton';
+import MyLayout from './MyLayout';
 
 const App = () => (
-    <Admin logoutButton={MyLogoutButton} authProvider={authProvider}>
+    <Admin layout={MyLayout} authProvider={authProvider}>
     ...
     </Admin>
 );
@@ -709,7 +818,7 @@ Here is an example Edit component, which falls back to a Show component is the r
 import { useGetIdentity, useGetOne } from 'react-admin';
 
 const PostDetail = ({ id }) => {
-    const { data: post, loading: postLoading } = useGetOne('posts', id);
+    const { data: post, isLoading: postLoading } = useGetOne('posts', { id });
     const { identity, loading: identityLoading } = useGetIdentity();
     if (postLoading || identityLoading) return <>Loading...</>;
     if (!post.lockedBy || post.lockedBy === identity.id) {
@@ -724,13 +833,13 @@ const PostDetail = ({ id }) => {
 
 ### `usePermissions()` Hook
 
-You might want to check user permissions inside a [custom page](./Admin.md#customroutes). That's the purpose of the `usePermissions()` hook, which calls the `authProvider.getPermissions()` method on mount, and returns the result when available:
+You might want to check user permissions inside a [custom page](./Admin.md#adding-custom-pages). That's the purpose of the `usePermissions()` hook, which calls the `authProvider.getPermissions()` method on mount, and returns the result when available:
 
 ```jsx
 // in src/MyPage.js
 import * as React from "react";
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import { usePermissions } from 'react-admin';
 
 const MyPage = () => {
@@ -825,13 +934,13 @@ const App = () => (
 
 ## Recipes
 
-### Customizing The Login and Logout Components
+### Customizing The Login Component
 
 Using `authProvider` is enough to implement a full-featured authorization system if the authentication relies on a username and password.
 
 But what if you want to use an email instead of a username? What if you want to use a Single-Sign-On (SSO) with a third-party authentication service? What if you want to use two-factor authentication?
 
-For all these cases, it's up to you to implement your own `LoginPage` component, which will be displayed under the `/login` route instead of the default username/password form, and your own `LogoutButton` component, which will be displayed in the sidebar. Pass both these components to the `<Admin>` component:
+For all these cases, it's up to you to implement your own `LoginPage` component, which will be displayed under the `/login` route instead of the default username/password form. Pass this component to the `<Admin>` component:
 
 ```jsx
 // in src/App.js
@@ -839,31 +948,29 @@ import * as React from "react";
 import { Admin } from 'react-admin';
 
 import MyLoginPage from './MyLoginPage';
-import MyLogoutButton from './MyLogoutButton';
 
 const App = () => (
-    <Admin loginPage={MyLoginPage} logoutButton={MyLogoutButton} authProvider={authProvider}>
+    <Admin loginPage={MyLoginPage} authProvider={authProvider}>
     ...
     </Admin>
 );
 ```
 
-Use the `useLogin` and `useLogout` hooks in your custom `LoginPage` and `LogoutButton` components.
+Use the `useLogin` hook in your custom `LoginPage` component.
 
 ```jsx
 // in src/MyLoginPage.js
 import * as React from 'react';
 import { useState } from 'react';
-import { useLogin, useNotify, Notification, defaultTheme } from 'react-admin';
-import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { useLogin, useNotify, Notification } from 'react-admin';
 
 const MyLoginPage = ({ theme }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const login = useLogin();
     const notify = useNotify();
-    const submit = e => {
+
+    const handleSubmit = e => {
         e.preventDefault();
         login({ email, password }).catch(() =>
             notify('Invalid email or password')
@@ -871,34 +978,35 @@ const MyLoginPage = ({ theme }) => {
     };
 
     return (
-        <ThemeProvider theme={createMuiTheme(defaultTheme)}>
-            <form onSubmit={submit}>
-                <input
-                    name="email"
-                    type="email"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                />
-                <input
-                    name="password"
-                    type="password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                />
-            </form>
-            <Notification />
-        </ThemeProvider>
+        <form onSubmit={handleSubmit}>
+            <input
+                name="email"
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+            />
+            <input
+                name="password"
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+            />
+        </form>
     );
 };
 
 export default MyLoginPage;
+```
 
+### Customizing The Logout Component
+
+```jsx
 // in src/MyLogoutButton.js
 import * as React from 'react';
 import { forwardRef } from 'react';
 import { useLogout } from 'react-admin';
-import MenuItem from '@material-ui/core/MenuItem';
-import ExitIcon from '@material-ui/icons/PowerSettingsNew';
+import MenuItem from '@mui/material/MenuItem';
+import ExitIcon from '@mui/icons-material/PowerSettingsNew';
 
 const MyLogoutButton = forwardRef((props, ref) => {
     const logout = useLogout();
@@ -925,103 +1033,130 @@ export default MyLogoutButton;
 +   const handleClick = () => logout('/custom-login');
 ```
 
+To use it, you must provide a custom `UserMenu`:
+
+```jsx
+import MyLogoutButton from './MyLogoutButton';
+
+const MyUserMenu = () => <UserMenu><MyLogoutButton /></UserMenu>;
+
+const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
+
+const MyLayout = () => <Layout appBar={MyAppBar} />;
+
+const App = () => (
+    <Admin layout={MyLayout}>
+        // ...
+    </Admin>
+);
+```
+
 ### Restricting Access to Resources or Views
 
-Permissions can be useful to restrict access to resources or their views. To do so, you must use a function as the `<Admin>` only child. React-admin will call this function with the permissions returned by the `authProvider`.
+Permissions can be useful to restrict access to resources or their views. To do so, you must pass a function as a child of the `<Admin>`  component. React-admin will call this function with the permissions returned by the `authProvider`. Note that you can only provide one of such function child.
 
 ```jsx
 <Admin
     dataProvider={dataProvider}
     authProvider={authProvider}
 >
-    {permissions => [
-        // Restrict access to the edit and remove views to admin only
-        <Resource
-            name="customers"
-            list={VisitorList}
-            edit={permissions === 'admin' ? VisitorEdit : null}
-            icon={VisitorIcon}
-        />,
-        // Only include the categories resource for admin users
-        permissions === 'admin'
-            ? <Resource name="categories" list={CategoryList} edit={CategoryEdit} icon={CategoryIcon} />
-            : null,
-    ]}
+    {permissions => (
+        <>
+            {/* Restrict access to the edit view to admin only */}
+            <Resource
+                name="customers"
+                list={VisitorList}
+                edit={permissions === 'admin' ? VisitorEdit : null}
+                icon={VisitorIcon}
+            />
+            {/* Only include the categories resource for admin users */}
+            {permissions === 'admin'
+                ? <Resource name="categories" list={CategoryList} edit={CategoryEdit} icon={CategoryIcon} />
+                : null}
+        </>
+    )}
 </Admin>
 ```
 
-Note that the function returns an array of React elements. This is required to avoid having to wrap them in a container element which would prevent the `Admin` from working.
+Note that the function may return as many fragments as you need.
 
 **Tip**: Even if that's possible, be careful when completely excluding a resource (like with the `categories` resource in this example) as it will prevent you to reference this resource in the other resource views, too.
 
 ### Restricting Access to Fields and Inputs
 
-You might want to display some fields or inputs only to users with specific permissions. By default, react-admin calls the `authProvider` for permissions for each resource routes, and passes them to the `list`, `edit`, `create`, and `show` components.
+You might want to display some fields or inputs only to users with specific permissions. You can use the `usePermissions` hook for that.
 
 Here is an example of a `Create` view with a conditional Input based on permissions:
 
 {% raw %}
 ```jsx
-export const UserCreate = ({ permissions, ...props }) =>
-    <Create {...props}>
-        <SimpleForm
-            defaultValue={{ role: 'user' }}
-        >
-            <TextInput source="name" validate={[required()]} />
-            {permissions === 'admin' &&
-                <TextInput source="role" validate={[required()]} />}
-        </SimpleForm>
-    </Create>;
+export const UserCreate = () => {
+    const { permissions } = usePermissions();
+    return (
+        <Create>
+            <SimpleForm
+                defaultValue={{ role: 'user' }}
+            >
+                <TextInput source="name" validate={[required()]} />
+                {permissions === 'admin' &&
+                    <TextInput source="role" validate={[required()]} />}
+            </SimpleForm>
+        </Create>
+    );
+}
 ```
 {% endraw %}
 
-This also works inside an `Edition` view with a `TabbedForm`, and you can even hide a `FormTab` completely:
+This also works inside an `Edit` view with a `TabbedForm`, and you can even hide a `FormTab` completely:
 
 {% raw %}
 ```jsx
-export const UserEdit = ({ permissions, ...props }) =>
-    <Edit title={<UserTitle />} {...props}>
-        <TabbedForm defaultValue={{ role: 'user' }}>
-            <FormTab label="user.form.summary">
-                {permissions === 'admin' && <TextInput disabled source="id" />}
-                <TextInput source="name" validate={required()} />
-            </FormTab>
-            {permissions === 'admin' &&
-                <FormTab label="user.form.security">
-                    <TextInput source="role" validate={required()} />
-                </FormTab>}
-        </TabbedForm>
-    </Edit>;
+export const UserEdit = () => {
+    const { permissions } = usePermissions();
+    return (
+        <Edit title={<UserTitle />}>
+            <TabbedForm defaultValue={{ role: 'user' }}>
+                <FormTab label="user.form.summary">
+                    {permissions === 'admin' && <TextInput disabled source="id" />}
+                    <TextInput source="name" validate={required()} />
+                </FormTab>
+                {permissions === 'admin' &&
+                    <FormTab label="user.form.security">
+                        <TextInput source="role" validate={required()} />
+                    </FormTab>}
+            </TabbedForm>
+        </Edit>
+    );
+};
 ```
 {% endraw %}
 
-What about the `List` view, the `Datagrid`, `SimpleList` and `Filter` components? It works there, too. And in the next example, the `permissions` prop is passed down to a custom `filters` component.
+What about the `List` view, the `Datagrid`, `SimpleList`? It works there, too. And in the next example, the `permissions` prop is passed down to a custom `filters` selector.
 
 ```jsx
-const UserFilter = ({ permissions, ...props }) =>
-    <Filter {...props}>
-        <TextInput
-            label="user.list.search"
-            source="q"
-            alwaysOn
-        />
-        <TextInput source="name" />
-        {permissions === 'admin' && <TextInput source="role" />}
-    </Filter>;
+import * as React from 'react';
+import { List, Datagrid, ShowButton, TextField, TextInput }  from 'react-admin';
 
-export const UserList = ({ permissions, ...props }) =>
-    <List
-        {...props}
-        filters={props => <UserFilter permissions={permissions} {...props} />}
-    >
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="name" />
-            {permissions === 'admin' && <TextField source="role" />}
-            {permissions === 'admin' && <EditButton />}
-            <ShowButton />
-        </Datagrid>
-    </List>;
+const getUserFilters = (permissions) => ([
+    <TextInput label="user.list.search" source="q" alwaysOn />,
+    <TextInput source="name" />,
+    permissions === 'admin' ? <TextInput source="role" /> : null,
+].filter(filter => filter !== null));
+
+export const UserList = () => {
+    const { permissions } = usePermissions();
+    return (
+        <List filters={getUserFilters(permissions)}>
+            <Datagrid>
+                <TextField source="id" />
+                <TextField source="name" />
+                {permissions === 'admin' && <TextField source="role" />}
+                {permissions === 'admin' && <EditButton />}
+                <ShowButton />
+            </Datagrid>
+        </List>
+    );
+};
 ```
 
 ### Restricting Access to the Dashboard
@@ -1030,9 +1165,9 @@ React-admin injects the permissions into the component provided as a [`dashboard
 
 ```jsx
 // in src/Dashboard.js
-import * as React from "react";
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import * as React from 'react';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import { Title } from 'react-admin';
 
 export default ({ permissions }) => (
@@ -1056,7 +1191,7 @@ What if you want to check the permissions inside a [custom menu](./Admin.md#menu
 import * as React from "react";
 import { MenuItemLink, usePermissions } from 'react-admin';
 
-const Menu = ({ onMenuClick, logout }) => {
+const Menu = ({ onMenuClick }) => {
     const { permissions } = usePermissions();
     return (
         <div>
@@ -1065,8 +1200,35 @@ const Menu = ({ onMenuClick, logout }) => {
             {permissions === 'admin' &&
                 <MenuItemLink to="/custom-route" primaryText="Miscellaneous" onClick={onMenuClick} />
             }
-            {logout}
         </div>
     );
+}
+```
+
+### Allowing Anonymous Access to Custom Views
+
+You might have custom views that leverage react-admin components or hooks such as:
+
+- `Create`, `CreateBase` `CreateController` and `useCreateController`
+- `Edit`, `EditBase`, `EditController` and `useEditController`
+- `List`, `ListBase`, `ListController` and `useListController`
+- `Show`, `ShowBase`, `ShowController` and `useShowController`
+
+By default, they all redirect anonymous users to the login page. You can disable this behavior by passing the `disableAuthentication` boolean prop:
+
+```jsx
+const MostRecentComments = () => {
+    const { data, isLoading } = useListController({
+        disableAuthentication: true,
+        resource: 'comments',
+        sort: { field: 'created_at', order: 'desc' },
+        perPage: 10
+    });
+
+    if (isLoading) {
+        return null;
+    }
+
+    return <CommentsList comments={data} />
 }
 ```

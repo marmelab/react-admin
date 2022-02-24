@@ -1,29 +1,33 @@
 import React from 'react';
-import { useResourceContext } from 'ra-core';
 import {
     Show as RaShow,
-    ShowProps,
     SimpleShowLayout,
-    SimpleShowLayoutProps,
-} from 'ra-ui-materialui';
-import { useResourceConfiguration } from '../ResourceConfiguration';
+    useResourceContext,
+} from 'react-admin';
+import {
+    useResourceConfiguration,
+    useResourcesConfiguration,
+} from '../ResourceConfiguration';
 import { getFieldFromFieldDefinition } from './getFieldFromFieldDefinition';
 
-export const Show = (props: ShowProps) => (
-    <RaShow {...props}>
+export const Show = () => (
+    <RaShow>
         <ShowForm />
     </RaShow>
 );
 
-export const ShowForm = (props: Omit<SimpleShowLayoutProps, 'children'>) => {
-    const resource = useResourceContext(props);
+export const ShowForm = () => {
+    const resource = useResourceContext();
+    const [resources] = useResourcesConfiguration();
     const [resourceConfiguration] = useResourceConfiguration(resource);
 
     return (
-        <SimpleShowLayout {...props}>
+        <SimpleShowLayout>
             {resourceConfiguration.fields
                 .filter(definition => definition.views.includes('show'))
-                .map(definition => getFieldFromFieldDefinition(definition))}
+                .map(definition =>
+                    getFieldFromFieldDefinition(definition, resources)
+                )}
         </SimpleShowLayout>
     );
 };

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render } from '@testing-library/react';
-import InputHelperText from './InputHelperText';
+import { InputHelperText } from './InputHelperText';
 
 describe('InputHelperText', () => {
     it('does render empty string when the input has not been touched yet and has no helper text', () => {

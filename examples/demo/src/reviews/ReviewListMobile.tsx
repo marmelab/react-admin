@@ -1,52 +1,64 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
-import { makeStyles } from '@material-ui/core/styles';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
 import { Link } from 'react-router-dom';
 import {
-    linkToRecord,
+    useCreatePath,
     ReferenceField,
     FunctionField,
     TextField,
     useListContext,
-    Record,
 } from 'react-admin';
 
 import AvatarField from '../visitors/AvatarField';
 import { Review, Customer } from './../types';
 
-const useStyles = makeStyles({
-    root: {
+const PREFIX = 'ReviewListMobile';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    link: `${PREFIX}-link`,
+    inline: `${PREFIX}-inline`,
+};
+
+const StyledList = styled(List)({
+    [`&.${classes.root}`]: {
         width: '100vw',
     },
-    link: {
+    [`& .${classes.link}`]: {
         textDecoration: 'none',
         color: 'inherit',
     },
-    inline: {
+    [`& .${classes.inline}`]: {
         display: 'inline',
     },
 });
 
 const ReviewListMobile = () => {
-    const classes = useStyles();
-    const { basePath, data, ids, loaded, total } = useListContext<Review>();
-
-    return loaded || Number(total) > 0 ? (
-        <List className={classes.root}>
-            {(ids as Exclude<typeof ids, undefined>).map(id => {
-                const item = (data as Exclude<typeof data, undefined>)[id];
+    const { data, isLoading, total } = useListContext<Review>();
+    const createPath = useCreatePath();
+    if (isLoading || Number(total) === 0) {
+        return null;
+    }
+    return (
+        <StyledList className={classes.root}>
+            {data.map(item => {
                 if (!item) return null;
 
                 return (
                     <Link
-                        to={linkToRecord(basePath, id)}
+                        to={createPath({
+                            resource: 'reviews',
+                            type: 'edit',
+                            id: item.id,
+                        })}
                         className={classes.link}
-                        key={id}
+                        key={item.id}
                     >
                         <ListItem button>
                             <ListItemAvatar>
@@ -54,7 +66,6 @@ const ReviewListMobile = () => {
                                     record={item}
                                     source="customer_id"
                                     reference="customers"
-                                    basePath={basePath}
                                     link={false}
                                 >
                                     <AvatarField size="40" />
@@ -67,19 +78,12 @@ const ReviewListMobile = () => {
                                             record={item}
                                             source="customer_id"
                                             reference="customers"
-                                            basePath={basePath}
                                             link={false}
                                         >
                                             <FunctionField
-                                                render={(record?: Record) =>
+                                                render={(record?: Customer) =>
                                                     record
-                                                        ? `${
-                                                              (record as Customer)
-                                                                  .first_name
-                                                          } ${
-                                                              (record as Customer)
-                                                                  .last_name
-                                                          }`
+                                                        ? `${record.first_name} ${record.last_name}`
                                                         : ''
                                                 }
                                                 variant="subtitle1"
@@ -91,7 +95,6 @@ const ReviewListMobile = () => {
                                             record={item}
                                             source="product_id"
                                             reference="products"
-                                            basePath={basePath}
                                             link={false}
                                         >
                                             <TextField
@@ -109,12 +112,11 @@ const ReviewListMobile = () => {
                     </Link>
                 );
             })}
-        </List>
-    ) : null;
+        </StyledList>
+    );
 };
 
 ReviewListMobile.propTypes = {
-    basePath: PropTypes.string,
     data: PropTypes.any,
     hasBulkActions: PropTypes.bool.isRequired,
     ids: PropTypes.array,

@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { FC } from 'react';
+import { styled } from '@mui/material/styles';
 import {
     Create,
-    CreateProps,
     DateInput,
     SimpleForm,
     TextInput,
@@ -11,34 +10,48 @@ import {
     required,
     email,
 } from 'react-admin';
-import { AnyObject } from 'react-final-form';
-import { Typography, Box } from '@material-ui/core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import { Styles } from '@material-ui/styles/withStyles';
+import { Typography, Box } from '@mui/material';
 
-export const styles: Styles<Theme, any> = {
-    first_name: { display: 'inline-block' },
-    last_name: { display: 'inline-block', marginLeft: 32 },
-    email: { width: 544 },
-    address: { maxWidth: 544 },
-    zipcode: { display: 'inline-block' },
-    city: { display: 'inline-block', marginLeft: 32 },
-    comment: {
+const PREFIX = 'VisitorCreate';
+
+const classes = {
+    first_name: `${PREFIX}-first_name`,
+    last_name: `${PREFIX}-last_name`,
+    email: `${PREFIX}-email`,
+    address: `${PREFIX}-address`,
+    zipcode: `${PREFIX}-zipcode`,
+    city: `${PREFIX}-city`,
+    comment: `${PREFIX}-comment`,
+    password: `${PREFIX}-password`,
+    confirm_password: `${PREFIX}-confirm_password`,
+};
+
+const StyledSimpleForm = styled(SimpleForm)({
+    [`& .${classes.first_name}`]: { display: 'inline-block' },
+    [`& .${classes.last_name}`]: { display: 'inline-block', marginLeft: 32 },
+    [`& .${classes.email}`]: { width: 544 },
+    [`& .${classes.address}`]: { maxWidth: 544 },
+    [`& .${classes.zipcode}`]: { display: 'inline-block' },
+    [`& .${classes.city}`]: { display: 'inline-block', marginLeft: 32 },
+    [`& .${classes.comment}`]: {
         maxWidth: '20em',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
     },
-    password: { display: 'inline-block' },
-    confirm_password: { display: 'inline-block', marginLeft: 32 },
-};
+    [`& .${classes.password}`]: { display: 'inline-block' },
+    [`& .${classes.confirm_password}`]: {
+        display: 'inline-block',
+        marginLeft: 32,
+    },
+});
 
-const useStyles = makeStyles(styles);
+export {};
 
 export const validatePasswords = ({
     password,
     confirm_password,
-}: AnyObject) => {
+}: Record<string, string>) => {
     const errors = {} as any;
 
     if (password && confirm_password && password !== confirm_password) {
@@ -50,12 +63,26 @@ export const validatePasswords = ({
     return errors;
 };
 
-const VisitorCreate: FC<CreateProps> = props => {
-    const classes = useStyles(props);
+const VisitorCreate = () => {
+    const date = new Date();
 
     return (
-        <Create {...props}>
-            <SimpleForm validate={validatePasswords}>
+        <Create>
+            <StyledSimpleForm
+                // Here for the GQL provider
+                defaultValues={{
+                    birthday: date,
+                    first_seen: date,
+                    last_seen: date,
+                    has_ordered: false,
+                    latest_purchase: date,
+                    has_newsletter: false,
+                    groups: [],
+                    nb_commands: 0,
+                    total_spent: 0,
+                }}
+                validate={validatePasswords}
+            >
                 <SectionTitle label="resources.customers.fieldGroups.identity" />
                 <TextInput
                     autoFocus
@@ -71,7 +98,6 @@ const VisitorCreate: FC<CreateProps> = props => {
                 <TextInput
                     type="email"
                     source="email"
-                    validation={{ email: true }}
                     fullWidth
                     formClassName={classes.email}
                     validate={[required(), email()]}
@@ -106,7 +132,7 @@ const VisitorCreate: FC<CreateProps> = props => {
                     source="confirm_password"
                     formClassName={classes.confirm_password}
                 />
-            </SimpleForm>
+            </StyledSimpleForm>
         </Create>
     );
 };
@@ -118,7 +144,7 @@ const SectionTitle = ({ label }: { label: string }) => {
 
     return (
         <Typography variant="h6" gutterBottom>
-            {translate(label)}
+            {translate(label as string)}
         </Typography>
     );
 };

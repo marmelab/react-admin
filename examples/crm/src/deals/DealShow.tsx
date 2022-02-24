@@ -7,16 +7,8 @@ import {
     ReferenceArrayField,
     useRecordContext,
     useRedirect,
-    Identifier,
 } from 'react-admin';
-import {
-    Box,
-    Dialog,
-    DialogContent,
-    Typography,
-    Divider,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Box, Dialog, DialogContent, Typography, Divider } from '@mui/material';
 import { format } from 'date-fns';
 
 import { CompanyAvatar } from '../companies/CompanyAvatar';
@@ -24,19 +16,11 @@ import { NotesIterator } from '../notes';
 import { ContactList } from './ContactList';
 import { stageNames } from './stages';
 
-const useStyles = makeStyles({
-    dialog: {
-        position: 'absolute',
-        top: 50,
-    },
-});
-
-export const DealShow = ({ open, id }: { open: boolean; id: Identifier }) => {
+export const DealShow = ({ open, id }: { open: boolean; id?: string }) => {
     const redirect = useRedirect();
-    const classes = useStyles();
 
     const handleClose = () => {
-        redirect('/deals');
+        redirect('list', 'deals');
     };
 
     return (
@@ -45,12 +29,19 @@ export const DealShow = ({ open, id }: { open: boolean; id: Identifier }) => {
             onClose={handleClose}
             fullWidth
             maxWidth="md"
-            classes={{ paper: classes.dialog }}
+            sx={{
+                '.MuiDialog-paper': {
+                    position: 'absolute',
+                    top: 50,
+                },
+            }}
         >
             <DialogContent>
-                <ShowBase resource="deals" basePath="/deals" id={id}>
-                    <DealShowContent />
-                </ShowBase>
+                {!!id ? (
+                    <ShowBase id={id}>
+                        <DealShowContent />
+                    </ShowBase>
+                ) : null}
             </DialogContent>
         </Dialog>
     );
@@ -60,7 +51,7 @@ const DealShowContent = () => {
     const record = useRecordContext();
     if (!record) return null;
     return (
-        <>
+        <div>
             <Box display="flex">
                 <Box
                     width={100}
@@ -174,6 +165,6 @@ const DealShowContent = () => {
                     </Box>
                 </Box>
             </Box>
-        </>
+        </div>
     );
 };

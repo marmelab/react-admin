@@ -1,16 +1,22 @@
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-final-form';
+import { useCallback, useEffect, useState } from 'react';
+import get from 'lodash/get';
 import isEqual from 'lodash/isEqual';
-import { useFormContext } from './useFormContext';
-import { FieldState } from 'final-form';
+import { useFormState } from 'react-hook-form';
+import { useFormGroups } from './useFormGroups';
+
+type FieldState = {
+    name: string;
+    error?: any;
+    isDirty: boolean;
+    isTouched: boolean;
+    isValid: boolean;
+};
 
 type FormGroupState = {
-    dirty: boolean;
     errors: object;
-    invalid: boolean;
-    pristine: boolean;
-    touched: boolean;
-    valid: boolean;
+    isDirty: boolean;
+    isTouched: boolean;
+    isValid: boolean;
 };
 
 /**
@@ -19,7 +25,7 @@ type FormGroupState = {
  *
  * @example
  * import { Edit, SimpleForm, TextInput, FormGroupContextProvider, useFormGroup } from 'react-admin';
- * import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@material-ui/core';
+ * import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
  *
  * const PostEdit = (props) => (
  *     <Edit {...props}>
@@ -56,47 +62,58 @@ type FormGroupState = {
  * @returns {FormGroupState} The form group state
  */
 export const useFormGroup = (name: string): FormGroupState => {
-    const form = useForm();
-    const formContext = useFormContext();
+    const { dirtyFields, touchedFields, errors } = useFormState();
+    const formGroups = useFormGroups();
     const [state, setState] = useState<FormGroupState>({
-        dirty: false,
         errors: undefined,
-        invalid: false,
-        pristine: true,
-        touched: false,
-        valid: true,
+        isDirty: false,
+        isTouched: false,
+        isValid: true,
     });
 
-    useEffect(() => {
-        const unsubscribe = form.subscribe(
-            () => {
-                const fields = formContext.getGroupFields(name);
-                const fieldStates = fields
-                    .map(field => {
-                        return form.getFieldState(field);
-                    })
-                    .filter(fieldState => fieldState != undefined); // eslint-disable-line
-                const newState = getFormGroupState(fieldStates);
+    const updateGroupState = useCallback(() => {
+        const fields = formGroups.getGroupFields(name);
+        const fieldStates = fields
+            .map<FieldState>(field => {
+                return {
+                    name: field,
+                    error: get(errors, field, undefined),
+                    isDirty: get(dirtyFields, field, false),
+                    isValid: get(errors, field, undefined) == undefined, // eslint-disable-line
+                    isTouched: get(touchedFields, field, false),
+                };
+            })
+            .filter(fieldState => fieldState != undefined); // eslint-disable-line
 
-                setState(oldState => {
-                    if (!isEqual(oldState, newState)) {
-                        return newState;
-                    }
-
-                    return oldState;
-                });
-            },
-            {
-                errors: true,
-                invalid: true,
-                dirty: true,
-                pristine: true,
-                valid: true,
-                touched: true,
+        const newState = getFormGroupState(fieldStates);
+        setState(oldState => {
+            if (!isEqual(oldState, newState)) {
+                return newState;
             }
-        );
-        return unsubscribe;
-    }, [form, formContext, name]);
+
+            return oldState;
+        });
+    }, [dirtyFields, errors, touchedFields, formGroups, name]);
+
+    useEffect(
+        () => {
+            updateGroupState();
+        },
+        // eslint-disable-next-line
+        [
+            // eslint-disable-next-line
+            JSON.stringify({ dirtyFields, errors, touchedFields }),
+            updateGroupState,
+        ]
+    );
+
+    useEffect(() => {
+        // Whenever the group content changes (input are added or removed)
+        // we must update its state
+        return formGroups.subscribe(name, () => {
+            updateGroupState();
+        });
+    }, [formGroups, name, updateGroupState]);
 
     return state;
 };
@@ -104,11 +121,11 @@ export const useFormGroup = (name: string): FormGroupState => {
 /**
  * Get the state of a form group
  *
- * @param {FieldState[]} fieldStates A map of field states from final-form where the key is the field name.
+ * @param {FieldState[]} fieldStates A map of field states from react-hook-form where the key is the field name.
  * @returns {FormGroupState} The state of the group.
  */
 export const getFormGroupState = (
-    fieldStates: FieldState<any>[]
+    fieldStates: FieldState[]
 ): FormGroupState => {
     return fieldStates.reduce(
         (acc, fieldState) => {
@@ -119,23 +136,19 @@ export const getFormGroupState = (
             }
 
             const newState = {
-                dirty: acc.dirty || fieldState.dirty,
+                isDirty: acc.isDirty || fieldState.isDirty,
                 errors,
-                invalid: acc.invalid || fieldState.invalid,
-                pristine: acc.pristine && fieldState.pristine,
-                touched: acc.touched || fieldState.touched,
-                valid: acc.valid && fieldState.valid,
+                isTouched: acc.isTouched || fieldState.isTouched,
+                isValid: acc.isValid && fieldState.isValid,
             };
 
             return newState;
         },
         {
-            dirty: false,
+            isDirty: false,
             errors: undefined,
-            invalid: false,
-            pristine: true,
-            valid: true,
-            touched: false,
+            isValid: true,
+            isTouched: false,
         }
     );
 };

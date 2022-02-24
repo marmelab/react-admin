@@ -1,44 +1,36 @@
 import * as React from 'react';
-import { Avatar } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
+import { Avatar } from '@mui/material';
 import clsx from 'clsx';
+import { useRecordContext } from 'react-admin';
 
 import { Company } from '../types';
 
-const useStyles = makeStyles({
-    avatar: {
-        width: 60,
-        height: 60,
-        backgroundColor: 'aliceblue',
-    },
-    img: {
+const PREFIX = 'CompanyAvatar';
+
+const classes = {
+    img: `${PREFIX}-img`,
+};
+
+const StyledAvatar = styled(Avatar)({
+    [`& .${classes.img}`]: {
         objectFit: 'contain',
-    },
-    small: {
-        width: 20,
-        height: 20,
-    },
-    large: {
-        width: 40,
-        height: 40,
     },
 });
 
-export const CompanyAvatar = ({
-    record,
-    size = 'large',
-}: {
+export const CompanyAvatar = (props: {
     record?: Company;
     size?: 'small' | 'large';
 }) => {
-    const classes = useStyles();
+    const { size = 'large' } = props;
+    const record = useRecordContext<Company>(props);
     if (!record) return null;
     return (
-        <Avatar
+        <StyledAvatar
             src={process.env.PUBLIC_URL + record.logo}
             alt={record.name}
-            className={classes.avatar}
-            imgProps={{ className: clsx(classes.img, classes[size]) }}
+            sx={{ bgcolor: 'aliceblue' }}
+            imgProps={{ className: clsx(classes.img, size) }}
         />
     );
 };

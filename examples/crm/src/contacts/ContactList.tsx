@@ -2,7 +2,6 @@
 import * as React from 'react';
 import {
     List as RaList,
-    ListProps,
     SimpleListLoading,
     ReferenceField,
     TextField,
@@ -13,6 +12,9 @@ import {
     CreateButton,
     Pagination,
     useGetIdentity,
+    BulkActionsToolbar,
+    BulkDeleteButton,
+    RecordContextProvider,
 } from 'react-admin';
 import {
     List,
@@ -23,8 +25,7 @@ import {
     ListItemText,
     Checkbox,
     Typography,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+} from '@mui/material';
 import { Link } from 'react-router-dom';
 import { formatDistance } from 'date-fns';
 
@@ -35,103 +36,98 @@ import { ContactListFilter } from './ContactListFilter';
 import { Contact } from '../types';
 
 const ContactListContent = () => {
-    const { data, ids, loaded, onToggleItem, selectedIds } = useListContext<
+    const { data, isLoading, onToggleItem, selectedIds } = useListContext<
         Contact
     >();
-    const now = Date.now();
-    if (loaded === false) {
+    if (isLoading) {
         return <SimpleListLoading hasLeftAvatarOrIcon hasSecondaryText />;
     }
+    const now = Date.now();
 
     return (
-        <List>
-            {ids.map(id => {
-                const contact = data[id];
-                return (
-                    <ListItem
-                        button
-                        key={id}
-                        component={Link}
-                        to={`/contacts/${id}/show`}
-                    >
-                        <ListItemIcon>
-                            <Checkbox
-                                edge="start"
-                                checked={selectedIds.includes(id)}
-                                tabIndex={-1}
-                                disableRipple
-                                onClick={e => {
-                                    e.stopPropagation();
-                                    onToggleItem(id);
-                                }}
+        <>
+            <BulkActionsToolbar>
+                <BulkDeleteButton />
+            </BulkActionsToolbar>
+            <List>
+                {data.map(contact => (
+                    <RecordContextProvider value={contact}>
+                        <ListItem
+                            button
+                            key={contact.id}
+                            component={Link}
+                            to={`/contacts/${contact.id}/show`}
+                        >
+                            <ListItemIcon>
+                                <Checkbox
+                                    edge="start"
+                                    checked={selectedIds.includes(contact.id)}
+                                    tabIndex={-1}
+                                    disableRipple
+                                    onClick={e => {
+                                        e.stopPropagation();
+                                        onToggleItem(contact.id);
+                                    }}
+                                />
+                            </ListItemIcon>
+                            <ListItemAvatar>
+                                <Avatar />
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={`${contact.first_name} ${contact.last_name}`}
+                                secondary={
+                                    <>
+                                        {contact.title} at{' '}
+                                        <ReferenceField
+                                            source="company_id"
+                                            reference="companies"
+                                            link={false}
+                                        >
+                                            <TextField source="name" />
+                                        </ReferenceField>{' '}
+                                        {contact.nb_notes &&
+                                            `- ${contact.nb_notes} notes `}
+                                        <TagsList />
+                                    </>
+                                }
                             />
-                        </ListItemIcon>
-                        <ListItemAvatar>
-                            <Avatar record={contact} />
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={`${contact.first_name} ${contact.last_name}`}
-                            secondary={
-                                <>
-                                    {contact.title} at{' '}
-                                    <ReferenceField
-                                        record={contact}
-                                        source="company_id"
-                                        reference="companies"
-                                        basePath="/companies"
-                                        link={false}
-                                    >
-                                        <TextField source="name" />
-                                    </ReferenceField>{' '}
-                                    {contact.nb_notes &&
-                                        `- ${contact.nb_notes} notes `}
-                                    <TagsList record={contact} />
-                                </>
-                            }
-                        />
-                        <ListItemSecondaryAction>
-                            <Typography variant="body2" color="textSecondary">
-                                last activity{' '}
-                                {formatDistance(
-                                    new Date(contact.last_seen),
-                                    now
-                                )}{' '}
-                                ago <Status status={contact.status} />
-                            </Typography>
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                );
-            })}
-        </List>
+                            <ListItemSecondaryAction>
+                                <Typography
+                                    variant="body2"
+                                    color="textSecondary"
+                                >
+                                    last activity{' '}
+                                    {formatDistance(
+                                        new Date(contact.last_seen),
+                                        now
+                                    )}{' '}
+                                    ago <Status status={contact.status} />
+                                </Typography>
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                    </RecordContextProvider>
+                ))}
+            </List>
+        </>
     );
 };
 
-const useActionStyles = makeStyles(theme => ({
-    createButton: {
-        marginLeft: theme.spacing(2),
-    },
-}));
-const ContactListActions = () => {
-    const classes = useActionStyles();
-    return (
-        <TopToolbar>
-            <SortButton fields={['last_name', 'first_name', 'last_seen']} />
-            <ExportButton />
-            <CreateButton
-                basePath="/contacts"
-                variant="contained"
-                label="New Contact"
-                className={classes.createButton}
-            />
-        </TopToolbar>
-    );
-};
+const ContactListActions = () => (
+    <TopToolbar>
+        <SortButton fields={['last_name', 'first_name', 'last_seen']} />
+        <ExportButton />
+        <CreateButton
+            variant="contained"
+            label="New Contact"
+            sx={{ marginLeft: 2 }}
+        />
+    </TopToolbar>
+);
 
-export const ContactList = (props: ListProps) => {
+export const ContactList = () => {
     const { identity } = useGetIdentity();
     return identity ? (
         <RaList
-            {...props}
             actions={<ContactListActions />}
             aside={<ContactListFilter />}
             perPage={25}

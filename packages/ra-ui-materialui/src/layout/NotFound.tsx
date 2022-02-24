@@ -1,67 +1,27 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-import HotTub from '@material-ui/icons/HotTub';
-import History from '@material-ui/icons/History';
-import classnames from 'classnames';
+import Button from '@mui/material/Button';
+import HotTub from '@mui/icons-material/HotTub';
+import History from '@mui/icons-material/History';
 
 import { useAuthenticated, useTranslate } from 'ra-core';
-import Title from './Title';
+import { Title } from './Title';
 
-const useStyles = makeStyles(
-    theme => ({
-        container: {
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            [theme.breakpoints.up('md')]: {
-                height: '100%',
-            },
-            [theme.breakpoints.down('sm')]: {
-                height: '100vh',
-                marginTop: '-3em',
-            },
-        },
-        icon: {
-            width: '9em',
-            height: '9em',
-        },
-        message: {
-            textAlign: 'center',
-            fontFamily: 'Roboto, sans-serif',
-            opacity: 0.5,
-            margin: '0 1em',
-        },
-        toolbar: {
-            textAlign: 'center',
-            marginTop: '2em',
-        },
-    }),
-    { name: 'RaNotFound' }
-);
+export const NotFound = props => {
+    const { className, title, ...rest } = props;
 
-function goBack() {
-    window.history.go(-1);
-}
-
-const NotFound = props => {
-    const { className, classes: classesOverride, title, ...rest } = props;
-    const classes = useStyles(props);
     const translate = useTranslate();
     useAuthenticated();
     return (
-        <div
-            className={classnames(classes.container, className)}
-            {...sanitizeRestProps(rest)}
-        >
+        <Root className={className} {...sanitizeRestProps(rest)}>
             <Title defaultTitle={title} />
-            <div className={classes.message}>
-                <HotTub className={classes.icon} />
+            <div className={NotFoundClasses.message}>
+                <HotTub className={NotFoundClasses.icon} />
                 <h1>{translate('ra.page.not_found')}</h1>
                 <div>{translate('ra.message.not_found')}.</div>
             </div>
-            <div className={classes.toolbar}>
+            <div className={NotFoundClasses.toolbar}>
                 <Button
                     variant="contained"
                     startIcon={<History />}
@@ -70,7 +30,7 @@ const NotFound = props => {
                     {translate('ra.action.back')}
                 </Button>
             </div>
-        </div>
+        </Root>
     );
 };
 
@@ -84,9 +44,51 @@ const sanitizeRestProps = ({
 
 NotFound.propTypes = {
     className: PropTypes.string,
-    classes: PropTypes.object,
     title: PropTypes.string,
     location: PropTypes.object,
 };
 
-export default NotFound;
+const PREFIX = 'RaNotFound';
+
+export const NotFoundClasses = {
+    icon: `${PREFIX}-icon`,
+    message: `${PREFIX}-message`,
+    toolbar: `${PREFIX}-toolbar`,
+};
+
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    [theme.breakpoints.up('md')]: {
+        height: '100%',
+    },
+    [theme.breakpoints.down('md')]: {
+        height: '100vh',
+        marginTop: '-3em',
+    },
+
+    [`& .${NotFoundClasses.icon}`]: {
+        width: '9em',
+        height: '9em',
+    },
+
+    [`& .${NotFoundClasses.message}`]: {
+        textAlign: 'center',
+        fontFamily: 'Roboto, sans-serif',
+        opacity: 0.5,
+        margin: '0 1em',
+    },
+
+    [`& .${NotFoundClasses.toolbar}`]: {
+        textAlign: 'center',
+        marginTop: '2em',
+    },
+}));
+
+function goBack() {
+    window.history.go(-1);
+}

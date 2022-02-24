@@ -1,14 +1,12 @@
-import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useCallback, useEffect, useRef } from 'react';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
-import { clearState } from '../actions/clearActions';
-import { useHistory } from 'react-router-dom';
-import { LocationDescriptorObject } from 'history';
+import { useResetStore } from '../store';
+import { useLocation, useNavigate, Path } from 'react-router-dom';
 
 /**
  * Get a callback for calling the authProvider.logout() method,
- * redirect to the login page, and clear the Redux state.
+ * redirect to the login page, and clear the store.
  *
  * @see useAuthProvider
  *
@@ -26,21 +24,30 @@ import { LocationDescriptorObject } from 'history';
  */
 const useLogout = (): Logout => {
     const authProvider = useAuthProvider();
-    const dispatch = useDispatch();
+    const resetStore = useResetStore();
+    const navigate = useNavigate();
+    // useNavigate forces rerenders on every navigation, even if we don't use the result
+    // see https://github.com/remix-run/react-router/issues/7634
+    // so we use a ref to bail out of rerenders when we don't need to
+    const navigateRef = useRef(navigate);
+    const location = useLocation();
+    const locationRef = useRef(location);
 
-    /**
+    /*
      * We need the current location to pass in the router state
      * so that the login hook knows where to redirect to as next route after login.
      *
-     * But if we used useLocation to get it, the logout function
-     * would be rebuilt each time the user changes location. Consequently, that
-     * would force a rerender of all components using this hook upon navigation
-     * (CoreAdminRouter for example).
+     * But if we used the location from useLocation as a dependency of the logout
+     * function, it would be rebuilt each time the user changes location.
+     * Consequently, that would force a rerender of all components using this hook
+     * upon navigation (CoreAdminRouter for example).
      *
-     * To avoid that, we read the location directly from history which is mutable.
-     * See: https://reacttraining.com/react-router/web/api/history/history-is-mutable
+     * To avoid that, we store the location in a ref.
      */
-    const history = useHistory();
+    useEffect(() => {
+        locationRef.current = location;
+        navigateRef.current = navigate;
+    }, [location, navigate]);
 
     const logout = useCallback(
         (
@@ -49,50 +56,60 @@ const useLogout = (): Logout => {
             redirectToCurrentLocationAfterLogin = true
         ) =>
             authProvider.logout(params).then(redirectToFromProvider => {
-                dispatch(clearState());
                 if (redirectToFromProvider === false) {
+                    resetStore();
                     // do not redirect
                     return;
                 }
                 // redirectTo can contain a query string, e.g. '/login?foo=bar'
-                // we must split the redirectTo to pass a structured location to history.push()
+                // we must split the redirectTo to pass a structured location to navigate()
                 const redirectToParts = (
                     redirectToFromProvider || redirectTo
                 ).split('?');
-                const newLocation: LocationDescriptorObject = {
+                const newLocation: Partial<Path> = {
                     pathname: redirectToParts[0],
                 };
+                let newLocationOptions = {};
+
                 if (
                     redirectToCurrentLocationAfterLogin &&
-                    history.location &&
-                    history.location.pathname
+                    locationRef.current &&
+                    locationRef.current.pathname
                 ) {
-                    newLocation.state = {
-                        nextPathname: history.location.pathname,
-                        nextSearch: history.location.search,
+                    newLocationOptions = {
+                        state: {
+                            nextPathname: locationRef.current.pathname,
+                            nextSearch: locationRef.current.search,
+                        },
                     };
                 }
                 if (redirectToParts[1]) {
                     newLocation.search = redirectToParts[1];
                 }
-                history.push(newLocation);
+                navigateRef.current(newLocation, newLocationOptions);
+                resetStore();
+
                 return redirectToFromProvider;
             }),
-        [authProvider, history, dispatch]
+        [authProvider, resetStore]
     );
 
     const logoutWithoutProvider = useCallback(
         _ => {
-            history.push({
-                pathname: defaultAuthParams.loginUrl,
-                state: {
-                    nextPathname: history.location && history.location.pathname,
+            navigate(
+                {
+                    pathname: defaultAuthParams.loginUrl,
                 },
-            });
-            dispatch(clearState());
+                {
+                    state: {
+                        nextPathname: location && location.pathname,
+                    },
+                }
+            );
+            resetStore();
             return Promise.resolve();
         },
-        [dispatch, history]
+        [resetStore, location, navigate]
     );
 
     return authProvider ? logout : logoutWithoutProvider;

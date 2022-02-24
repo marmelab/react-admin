@@ -1,44 +1,46 @@
 import * as React from 'react';
-import { FC, ReactElement, useMemo } from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import ContentCreate from '@material-ui/icons/Create';
-import { ButtonProps as MuiButtonProps } from '@material-ui/core/Button';
+import ContentCreate from '@mui/icons-material/Create';
+import { ButtonProps as MuiButtonProps } from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import { linkToRecord, Record, useResourceContext } from 'ra-core';
+import {
+    RaRecord,
+    useResourceContext,
+    useRecordContext,
+    useCreatePath,
+} from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 
 /**
- * Opens the Edit view of a given record:
+ * Opens the Edit view for the current record.
+ *
+ * Reads the record and resource from the context.
  *
  * @example // basic usage
  * import { EditButton } from 'react-admin';
  *
- * const CommentEditButton = ({ record }) => (
- *     <EditButton basePath="/comments" label="Edit comment" record={record} />
+ * const CommentEditButton = () => (
+ *     <EditButton label="Edit comment" />
  * );
  */
-const EditButton: FC<EditButtonProps> = ({
-    basePath = '',
-    icon = defaultIcon,
-    label = 'ra.action.edit',
-    record,
-    scrollToTop = true,
-    ...rest
-}) => {
-    const resource = useResourceContext();
+export const EditButton = (props: EditButtonProps) => {
+    const {
+        icon = defaultIcon,
+        label = 'ra.action.edit',
+        scrollToTop = true,
+        ...rest
+    } = props;
+    const resource = useResourceContext(props);
+    const record = useRecordContext(props);
+    const createPath = useCreatePath();
+    if (!record) return null;
     return (
         <Button
             component={Link}
-            to={useMemo(
-                () => ({
-                    pathname: record
-                        ? linkToRecord(basePath || `/${resource}`, record.id)
-                        : '',
-                    state: { _scrollToTop: scrollToTop },
-                }),
-                [basePath, record, resource, scrollToTop]
-            )}
+            to={createPath({ type: 'edit', resource, id: record.id })}
+            state={scrollStates[String(scrollToTop)]}
             label={label}
             onClick={stopPropagation}
             {...(rest as any)}
@@ -48,27 +50,29 @@ const EditButton: FC<EditButtonProps> = ({
     );
 };
 
+// avoids using useMemo to get a constant value for the link state
+const scrollStates = {
+    true: { _scrollToTop: true },
+    false: {},
+};
+
 const defaultIcon = <ContentCreate />;
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
 interface Props {
-    basePath?: string;
     icon?: ReactElement;
     label?: string;
-    record?: Record;
+    record?: RaRecord;
     scrollToTop?: boolean;
 }
 
 export type EditButtonProps = Props & ButtonProps & MuiButtonProps;
 
 EditButton.propTypes = {
-    basePath: PropTypes.string,
     icon: PropTypes.element,
     label: PropTypes.string,
     record: PropTypes.any,
     scrollToTop: PropTypes.bool,
 };
-
-export default EditButton;

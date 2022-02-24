@@ -1,27 +1,12 @@
 import * as React from 'react';
 import { ReferenceField, useRedirect } from 'react-admin';
-import { Card, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Box, Card, Typography } from '@mui/material';
 import { Draggable } from 'react-beautiful-dnd';
 
 import { LogoField } from '../companies/LogoField';
 import { Deal } from '../types';
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        marginBottom: theme.spacing(1),
-    },
-    cardContent: {
-        padding: theme.spacing(1),
-        display: 'flex',
-    },
-    cardText: {
-        marginLeft: theme.spacing(1),
-    },
-}));
-
 export const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
-    const classes = useStyles();
     const redirect = useRedirect();
     if (!deal) return null;
 
@@ -31,8 +16,8 @@ export const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
     return (
         <Draggable draggableId={String(deal.id)} index={index}>
             {(provided, snapshot) => (
-                <div
-                    className={classes.root}
+                <Box
+                    sx={{ marginBottom: 1 }}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     ref={provided.innerRef}
@@ -47,17 +32,21 @@ export const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
                         }}
                         elevation={snapshot.isDragging ? 3 : 1}
                     >
-                        <div className={classes.cardContent}>
+                        <Box
+                            sx={{
+                                padding: 1,
+                                display: 'flex',
+                            }}
+                        >
                             <ReferenceField
                                 source="company_id"
                                 record={deal}
                                 reference="companies"
                                 resource="deals"
-                                basePath="/deals"
                             >
                                 <LogoField size="small" />
                             </ReferenceField>
-                            <div className={classes.cardText}>
+                            <Box sx={{ marginLeft: 1 }}>
                                 <Typography variant="body2" gutterBottom>
                                     {deal.name}
                                 </Typography>
@@ -74,10 +63,10 @@ export const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
                                     })}
                                     , {deal.type}
                                 </Typography>
-                            </div>
-                        </div>
+                            </Box>
+                        </Box>
                     </Card>
-                </div>
+                </Box>
             )}
         </Draggable>
     );

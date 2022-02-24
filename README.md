@@ -9,7 +9,7 @@ A frontend Framework for building data-driven applications running in the browse
 ## Features
 
 * Adapts to any backend (REST, GraphQL, SOAP, etc.)
-* Powered by [material-ui](https://material-ui.com/), [redux](https://redux.js.org/), [react-final-form](https://final-form.org/react), [react-router](https://reacttraining.com/react-router/) and a few more
+* Powered by [MUI](https://mui.com/), [react-hook-form](https://react-hook-form.com), [react-router](https://reacttraining.com/react-router/) and a few more
 * Super-fast UI thanks to optimistic rendering (renders before the server returns)
 * Undo updates and deletes for a few seconds
 * Relationships (many to one, one to many)
@@ -62,13 +62,13 @@ render(
 );
 ```
 
-The `<Resource>` component is a configuration component that allows to define sub components for each of the admin view: `list`, `edit`, and `create`. These components use Material UI and custom components from react-admin:
+The `<Resource>` component is a configuration component that allows to define sub components for each of the admin view: `list`, `edit`, and `create`. These components use MUI and custom components from react-admin:
 
 ```jsx
 // in posts.js
 import * as React from "react";
-import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, TextInput, DateInput } from 'react-admin';
-import BookIcon from '@material-ui/icons/Book';
+import { List, Datagrid, Edit, Create, SimpleForm, DateField, TextField, EditButton, TextInput, DateInput, useRecordContext } from 'react-admin';
+import BookIcon from '@mui/icons-material/Book';
 export const PostIcon = BookIcon;
 
 export const PostList = (props) => (
@@ -79,12 +79,13 @@ export const PostList = (props) => (
             <DateField source="published_at" />
             <TextField source="average_note" />
             <TextField source="views" />
-            <EditButton basePath="/posts" />
+            <EditButton />
         </Datagrid>
     </List>
 );
 
-const PostTitle = ({ record }) => {
+const PostTitle = () => {
+    const record = useRecordContext();
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
 
@@ -127,7 +128,7 @@ See the [Data Providers documentation](https://marmelab.com/react-admin/DataProv
 
 ## Batteries Included But Removable
 
-React-admin is designed as a library of loosely coupled React components built on top of [material-ui](https://material-ui.com/), in addition to custom react hooks exposing reusable controller logic. It is very easy to replace one part of react-admin with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or Bootstrap instead of Material Design.
+React-admin is designed as a library of loosely coupled React components built on top of [MUI](https://mui.com/), in addition to custom react hooks exposing reusable controller logic. It is very easy to replace one part of react-admin with your own, e.g. to use a custom datagrid, GraphQL instead of REST, or Bootstrap instead of Material Design.
 
 ## Examples
 
@@ -201,13 +202,13 @@ You can use Gitpod(An Online Open Source VS Code like IDE which is free for Open
 
 When developing, most of the time we use the **simple example** to do visual check. It's the same application that we use in CodeSandbox to reproduce errors (see https://codesandbox.io/s/github/marmelab/react-admin/tree/master/examples/simple). The source is located under `examples/simple/`. Call `make run` to launch that example on port 8080 (http://localhost:8080). This command includes a `watch` on the react-admin source, so any of the changes you make to the react-admin packages triggers a live update of the simple example in your browser. 
 
-However, the simple example is sometimes too limited. You can use the **demo example** (the source for https://marmelab.com/react-admin-demo/), which is more complete. The source is located under `examples/demo/`. Call `make run-demo` to launch the demo example with a REST dataProvider, or `make run-graphql-demo` to run it with a GraphQL dataProvider. Unfortunately, due to the fact that we use Create React App for this demo, these commands don't watch the changes made in the packages. You'll have to rebuild the react-admin packages after a change (using `make build`, or the more targeted `make build-ra-core`, `make build-ra-ui-materialui`, etc) to see the effect in the demo app.
+However, the simple example is sometimes too limited. You can use the **demo example** (the source for https://marmelab.com/react-admin-demo/), which is more complete. The source is located under `examples/demo/`. Call `make run-demo` to launch the demo example with a REST dataProvider, or `make run-graphql-demo` to run it with a GraphQL dataProvider. Unfortunately, due to the fact that we use Create React App for this demo, these commands don't watch the changes made in the packages. You'll have to rebuild the react-admin packages after a change (using `make build`, or the more targeted `make build-ra-core`, `make build-ra-ui-materialui`, etc.) to see the effect in the demo app.
 
 Both of these examples work without server - the API is simulated on the client-side. 
 
 ### Testing Your Changes In Your App
 
-Using `yarn link`, you can have your project use a local checkout of the react-admn package instead of npm. This allows you to test react-admin changes in your app: 
+Using `yarn link`, you can have your project use a local checkout of the react-admin package instead of npm. This allows you to test react-admin changes in your app: 
 
 ```sh
 # Register your local react-admin as a linkable package
@@ -246,9 +247,9 @@ Unit tests use `jest`, so you should be able to run a subset of tests, or run te
 yarn jest
 ```
 
-Besides, tests related to the modified files are ran automatically at commit using a git pre-commit hook. This means you won't be able to commit your changes if they break the tests. 
+Besides, tests related to the modified files are run automatically at commit using a git pre-commit hook. This means you won't be able to commit your changes if they break the tests. 
 
-When working on the end to end tests, you can leverage [cypress](https://www.cypress.io/) runner by starting the simple example yourself (`make run-simple` or `yarn run-simple`) and starting cypress in another terminal (`make test-e2e-local` or `yarn test-e2e-local`).
+When working on the end-to-end tests, you can leverage [cypress](https://www.cypress.io/) runner by starting the simple example yourself (`make run-simple` or `yarn run-simple`) and starting cypress in another terminal (`make test-e2e-local` or `yarn test-e2e-local`).
 
 ### Coding Standards
 
@@ -258,7 +259,7 @@ If you have coding standards problems, you can fix them automatically using `pre
 make prettier
 ```
 
-However, these commands are ran automatically at each commit so you shouldn't have to worry about them.
+However, these commands are run automatically at each commit so you shouldn't have to worry about them.
 
 ### Documentation
 

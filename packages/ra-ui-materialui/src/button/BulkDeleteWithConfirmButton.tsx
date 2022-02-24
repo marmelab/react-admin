@@ -1,88 +1,79 @@
 import * as React from 'react';
-import { FC, Fragment, useState, ReactElement } from 'react';
+import { Fragment, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import ActionDelete from '@material-ui/icons/Delete';
-import { fade } from '@material-ui/core/styles/colorManipulator';
+import ActionDelete from '@mui/icons-material/Delete';
 import inflection from 'inflection';
-import { makeStyles } from '@material-ui/core/styles';
+import { alpha, styled } from '@mui/material/styles';
 import {
-    useTranslate,
+    MutationMode,
     useDeleteMany,
-    useRefresh,
+    useListContext,
     useNotify,
-    useUnselectAll,
-    CRUD_DELETE_MANY,
+    useRefresh,
     useResourceContext,
+    useTranslate,
+    useUnselectAll,
+    useSafeSetState,
 } from 'ra-core';
 
-import Confirm from '../layout/Confirm';
-import Button, { ButtonProps } from './Button';
+import { Confirm } from '../layout';
+import { Button, ButtonProps } from './Button';
 import { BulkActionProps } from '../types';
 
-const useStyles = makeStyles(
-    theme => ({
-        deleteButton: {
-            color: theme.palette.error.main,
-            '&:hover': {
-                backgroundColor: fade(theme.palette.error.main, 0.12),
-                // Reset on mouse devices
-                '@media (hover: none)': {
-                    backgroundColor: 'transparent',
-                },
-            },
-        },
-    }),
-    { name: 'RaBulkDeleteWithConfirmButton' }
-);
-
-const defaultIcon = <ActionDelete />;
-
-const BulkDeleteWithConfirmButton: FC<BulkDeleteWithConfirmButtonProps> = props => {
+export const BulkDeleteWithConfirmButton = (
+    props: BulkDeleteWithConfirmButtonProps
+) => {
     const {
-        basePath,
-        classes: classesOverride,
         confirmTitle = 'ra.message.bulk_delete_title',
         confirmContent = 'ra.message.bulk_delete_content',
         icon = defaultIcon,
-        label,
+        label = 'ra.action.delete',
+        mutationMode = 'pessimistic',
         onClick,
-        selectedIds,
         ...rest
     } = props;
-    const [isOpen, setOpen] = useState(false);
-    const classes = useStyles(props);
+    const { selectedIds } = useListContext(props);
+    const [isOpen, setOpen] = useSafeSetState(false);
     const notify = useNotify();
-    const unselectAll = useUnselectAll();
+    const resource = useResourceContext(props);
+    const unselectAll = useUnselectAll(resource);
     const refresh = useRefresh();
     const translate = useTranslate();
-    const resource = useResourceContext(props);
-    const [deleteMany, { loading }] = useDeleteMany(resource, selectedIds, {
-        action: CRUD_DELETE_MANY,
-        onSuccess: () => {
-            refresh();
-            notify('ra.notification.deleted', 'info', {
-                smart_count: selectedIds.length,
-            });
-            unselectAll(resource);
-        },
-        onFailure: error => {
-            notify(
-                typeof error === 'string'
-                    ? error
-                    : error.message || 'ra.notification.http_error',
-                'warning',
-                {
-                    _:
-                        typeof error === 'string'
-                            ? error
-                            : error && error.message
-                            ? error.message
-                            : undefined,
-                }
-            );
-            setOpen(false);
-        },
-    });
+    const [deleteMany, { isLoading }] = useDeleteMany(
+        resource,
+        { ids: selectedIds },
+        {
+            onSuccess: () => {
+                refresh();
+                notify('ra.notification.deleted', {
+                    type: 'info',
+                    messageArgs: { smart_count: selectedIds.length },
+                });
+                unselectAll();
+                setOpen(false);
+            },
+            onError: (error: Error) => {
+                notify(
+                    typeof error === 'string'
+                        ? error
+                        : error.message || 'ra.notification.http_error',
+                    {
+                        type: 'warning',
+                        messageArgs: {
+                            _:
+                                typeof error === 'string'
+                                    ? error
+                                    : error && error.message
+                                    ? error.message
+                                    : undefined,
+                        },
+                    }
+                );
+                setOpen(false);
+            },
+            mutationMode,
+        }
+    );
 
     const handleClick = e => {
         setOpen(true);
@@ -103,17 +94,16 @@ const BulkDeleteWithConfirmButton: FC<BulkDeleteWithConfirmButtonProps> = props 
 
     return (
         <Fragment>
-            <Button
+            <StyledButton
                 onClick={handleClick}
                 label={label}
-                className={classes.deleteButton}
                 {...sanitizeRestProps(rest)}
             >
                 {icon}
-            </Button>
+            </StyledButton>
             <Confirm
                 isOpen={isOpen}
-                loading={loading}
+                loading={isLoading}
                 title={confirmTitle}
                 content={confirmContent}
                 translateOptions={{
@@ -140,14 +130,14 @@ const BulkDeleteWithConfirmButton: FC<BulkDeleteWithConfirmButtonProps> = props 
 };
 
 const sanitizeRestProps = ({
-    basePath,
     classes,
     filterValues,
     label,
+    selectedIds,
     ...rest
 }: Omit<
     BulkDeleteWithConfirmButtonProps,
-    'resource' | 'selectedIds' | 'icon'
+    'resource' | 'icon' | 'mutationMode'
 >) => rest;
 
 export interface BulkDeleteWithConfirmButtonProps
@@ -156,21 +146,33 @@ export interface BulkDeleteWithConfirmButtonProps
     confirmContent?: React.ReactNode;
     confirmTitle?: string;
     icon?: ReactElement;
+    mutationMode: MutationMode;
 }
 
+const PREFIX = 'RaBulkDeleteWithConfirmButton';
+
+const StyledButton = styled(Button, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    color: theme.palette.error.main,
+    '&:hover': {
+        backgroundColor: alpha(theme.palette.error.main, 0.12),
+        // Reset on mouse devices
+        '@media (hover: none)': {
+            backgroundColor: 'transparent',
+        },
+    },
+}));
+
+const defaultIcon = <ActionDelete />;
+
 BulkDeleteWithConfirmButton.propTypes = {
-    basePath: PropTypes.string,
-    classes: PropTypes.object,
     confirmTitle: PropTypes.string,
     confirmContent: PropTypes.string,
+    icon: PropTypes.element,
     label: PropTypes.string,
+    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
-    icon: PropTypes.element,
 };
-
-BulkDeleteWithConfirmButton.defaultProps = {
-    label: 'ra.action.delete',
-};
-
-export default BulkDeleteWithConfirmButton;

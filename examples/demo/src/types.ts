@@ -1,16 +1,12 @@
-import { ReduxState, Record, Identifier } from 'react-admin';
+import { RaRecord, Identifier } from 'react-admin';
 
 export type ThemeName = 'light' | 'dark';
 
-export interface AppState extends ReduxState {
-    theme: ThemeName;
-}
-
-export interface Category extends Record {
+export interface Category extends RaRecord {
     name: string;
 }
 
-export interface Product extends Record {
+export interface Product extends RaRecord {
     category_id: Identifier;
     description: string;
     height: number;
@@ -22,7 +18,7 @@ export interface Product extends Record {
     width: number;
 }
 
-export interface Customer extends Record {
+export interface Customer extends RaRecord {
     first_name: string;
     last_name: string;
     address: string;
@@ -43,7 +39,7 @@ export interface Customer extends Record {
 
 export type OrderStatus = 'ordered' | 'delivered' | 'cancelled';
 
-export interface Order extends Record {
+export interface Order extends RaRecord {
     status: OrderStatus;
     basket: BasketItem[];
     date: Date;
@@ -55,11 +51,11 @@ export interface BasketItem {
     quantity: number;
 }
 
-export interface Invoice extends Record {}
+export interface Invoice extends RaRecord {}
 
 export type ReviewStatus = 'accepted' | 'pending' | 'rejected';
 
-export interface Review extends Record {
+export interface Review extends RaRecord {
     date: Date;
     status: ReviewStatus;
     customer_id: Identifier;

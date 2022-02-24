@@ -12,7 +12,8 @@ npm install --save ra-language-english
 
 ## Usage
 
-```js
+```jsx
+import { Admin } from 'react-admin';
 import englishMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
@@ -22,7 +23,7 @@ const messages = {
 const i18nProvider = polyglotI18nProvider(locale => messages[locale]);
 
 <Admin locale="en" i18nProvider={i18nProvider}>
-  ...
+    ...
 </Admin>
 ```
 

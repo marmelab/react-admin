@@ -1,18 +1,18 @@
 import * as React from 'react';
+import { render } from '@testing-library/react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import ValidationError from './ValidationError';
-import { TranslationProvider } from '../i18n';
-
-import { renderWithRedux } from 'ra-test';
+import { I18nContextProvider } from '../i18n';
 
 const translate = jest.fn(key => key);
 
 const renderWithTranslations = content =>
-    renderWithRedux(
-        <TranslationProvider
-            i18nProvider={polyglotI18nProvider(() => ({
+    render(
+        <I18nContextProvider
+            value={polyglotI18nProvider(() => ({
                 ra: {
+                    // @ts-ignore
                     validation: {
                         required: 'Required',
                         minValue: 'Min Value %{value}',
@@ -27,7 +27,7 @@ const renderWithTranslations = content =>
             }))}
         >
             {content}
-        </TranslationProvider>
+        </I18nContextProvider>
     );
 
 describe('ValidationError', () => {

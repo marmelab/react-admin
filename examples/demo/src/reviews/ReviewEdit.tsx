@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC } from 'react';
+import { styled } from '@mui/material/styles';
 import {
     useEditController,
     EditContextProvider,
@@ -9,9 +9,8 @@ import {
     DateField,
     EditProps,
 } from 'react-admin';
-import { IconButton, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
+import { IconButton, Typography } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 import ProductReferenceField from '../products/ProductReferenceField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
@@ -19,60 +18,68 @@ import StarRatingField from './StarRatingField';
 import ReviewEditToolbar from './ReviewEditToolbar';
 import { Review } from '../types';
 
-const useStyles = makeStyles(theme => ({
-    root: {
+const PREFIX = 'ReviewEdit';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    title: `${PREFIX}-title`,
+    form: `${PREFIX}-form`,
+    inlineField: `${PREFIX}-inlineField`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+    [`&.${classes.root}`]: {
         paddingTop: 40,
     },
-    title: {
+
+    [`& .${classes.title}`]: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         margin: '1em',
     },
-    form: {
+
+    [`& .${classes.form}`]: {
         [theme.breakpoints.up('xs')]: {
             width: 400,
         },
-        [theme.breakpoints.down('xs')]: {
+        [theme.breakpoints.down('sm')]: {
             width: '100vw',
             marginTop: -30,
         },
     },
-    inlineField: {
+
+    [`& .${classes.inlineField}`]: {
         display: 'inline-block',
         width: '50%',
     },
 }));
 
-interface Props extends EditProps {
+interface Props extends EditProps<Review> {
     onCancel: () => void;
 }
 
-const ReviewEdit: FC<Props> = ({ onCancel, ...props }) => {
-    const classes = useStyles();
+const ReviewEdit = ({ onCancel, ...props }: Props) => {
     const controllerProps = useEditController<Review>(props);
     const translate = useTranslate();
     if (!controllerProps.record) {
         return null;
     }
     return (
-        <div className={classes.root}>
+        <Root className={classes.root}>
             <div className={classes.title}>
                 <Typography variant="h6">
                     {translate('resources.reviews.detail')}
                 </Typography>
-                <IconButton onClick={onCancel}>
+                <IconButton onClick={onCancel} size="large">
                     <CloseIcon />
                 </IconButton>
             </div>
             <EditContextProvider value={controllerProps}>
                 <SimpleForm
                     className={classes.form}
-                    basePath={controllerProps.basePath}
                     record={controllerProps.record}
-                    save={controllerProps.save}
-                    version={controllerProps.version}
-                    redirect="list"
+                    onSubmit={controllerProps.save}
                     resource="reviews"
                     toolbar={<ReviewEditToolbar />}
                 >
@@ -89,13 +96,13 @@ const ReviewEdit: FC<Props> = ({ onCancel, ...props }) => {
                     <StarRatingField formClassName={classes.inlineField} />
                     <TextInput
                         source="comment"
-                        rowsMax={15}
+                        maxRows={15}
                         multiline
                         fullWidth
                     />
                 </SimpleForm>
             </EditContextProvider>
-        </div>
+        </Root>
     );
 };
 

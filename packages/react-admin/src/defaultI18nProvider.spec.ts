@@ -1,5 +1,5 @@
 import expect from 'expect';
-import defaultI18nProvider from './defaultI18nProvider';
+import { defaultI18nProvider } from './defaultI18nProvider';
 
 describe('defaultI18nProvider', () => {
     it('should use the English translations', () => {

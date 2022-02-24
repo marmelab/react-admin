@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Link } from '@material-ui/core';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import { Box, Link } from '@mui/material';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import { useGetList } from 'react-admin';
 import { startOfMonth, format } from 'date-fns';
 import { ResponsiveBar } from '@nivo/bar';
@@ -17,20 +17,18 @@ const multiplier = {
 };
 
 export const DealsChart = () => {
-    const { data, ids, loaded } = useGetList<Deal>(
-        'deals',
-        { perPage: 100, page: 1 },
-        {
+    const { data, isLoading } = useGetList<Deal>('deals', {
+        pagination: { perPage: 100, page: 1 },
+        sort: {
             field: 'start_at',
             order: 'ASC',
-        }
-    );
+        },
+    });
     const [months, setMonths] = useState<any[]>([]);
 
     useEffect(() => {
-        const deals = ids.map(id => data[id]);
-
-        const dealsByMonth = deals.reduce((acc, deal) => {
+        if (!data) return;
+        const dealsByMonth = data.reduce((acc, deal) => {
             const month = startOfMonth(new Date(deal.start_at)).toISOString();
             if (!acc[month]) {
                 acc[month] = [];
@@ -67,9 +65,9 @@ export const DealsChart = () => {
         });
 
         setMonths(amountByMonth);
-    }, [ids, data]);
+    }, [data]);
 
-    if (!loaded) return null; // FIXME return skeleton instead
+    if (isLoading) return null; // FIXME return skeleton instead
 
     const range = months.reduce(
         (acc, month) => {

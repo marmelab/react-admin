@@ -1,5 +1,5 @@
-import RichTextInput from 'ra-input-rich-text';
 import * as React from 'react';
+import { RichTextInput } from 'ra-input-rich-text';
 import {
     TopToolbar,
     AutocompleteInput,
@@ -11,6 +11,7 @@ import {
     DateInput,
     Edit,
     CloneButton,
+    CreateButton,
     ShowButton,
     EditButton,
     FormTab,
@@ -30,6 +31,7 @@ import {
     FormDataConsumer,
     useCreateSuggestionContext,
     EditActionsProps,
+    usePermissions,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 import {
     Box,
@@ -39,8 +41,7 @@ import {
     DialogActions,
     DialogContent,
     TextField as MuiTextField,
-} from '@material-ui/core';
-
+} from '@mui/material';
 import PostTitle from './PostTitle';
 import TagReferenceInput from './TagReferenceInput';
 
@@ -79,33 +80,31 @@ const CreateCategory = ({
     );
 };
 
-const EditActions = ({ basePath, data, hasShow }: EditActionsProps) => (
+const EditActions = ({ hasShow }: EditActionsProps) => (
     <TopToolbar>
-        <CloneButton
-            className="button-clone"
-            basePath={basePath}
-            record={data}
-        />
-        {hasShow && <ShowButton basePath={basePath} record={data} />}
+        <CloneButton className="button-clone" />
+        {hasShow && <ShowButton />}
+        {/* FIXME: added because react-router HashHistory cannot block navigation induced by address bar changes */}
+        <CreateButton />
     </TopToolbar>
 );
 
 const SanitizedBox = ({
     fullWidth,
-    basePath,
     ...props
-}: BoxProps & { fullWidth?: boolean; basePath?: string }) => <Box {...props} />;
+}: BoxProps & { fullWidth?: boolean }) => <Box {...props} />;
 
 const categories = [
     { name: 'Tech', id: 'tech' },
     { name: 'Lifestyle', id: 'lifestyle' },
 ];
 
-const PostEdit = ({ permissions, ...props }) => {
+const PostEdit = () => {
+    const { permissions } = usePermissions();
     return (
-        <Edit title={<PostTitle />} actions={<EditActions />} {...props}>
+        <Edit title={<PostTitle />} actions={<EditActions />}>
             <TabbedForm
-                initialValues={{ average_note: 0 }}
+                defaultValues={{ average_note: 0 }}
                 warnWhenUnsavedChanges
             >
                 <FormTab label="post.form.summary">
@@ -124,14 +123,15 @@ const PostEdit = ({ permissions, ...props }) => {
                         />
                     </SanitizedBox>
                     <TextInput
-                        multiline={true}
-                        fullWidth={true}
+                        multiline
+                        fullWidth
                         source="teaser"
                         validate={required()}
                         resettable
                     />
                     <CheckboxGroupInput
                         source="notifications"
+                        fullWidth
                         choices={[
                             { id: 12, name: 'Ray Hakt' },
                             { id: 31, name: 'Ann Gullar' },
@@ -161,7 +161,6 @@ const PostEdit = ({ permissions, ...props }) => {
                                         scopedFormData &&
                                         scopedFormData.user_id ? (
                                             <SelectInput
-                                                label="Role"
                                                 source={getSource('role')}
                                                 choices={[
                                                     {
@@ -178,6 +177,7 @@ const PostEdit = ({ permissions, ...props }) => {
                                                     },
                                                 ]}
                                                 {...rest}
+                                                label="Role"
                                             />
                                         ) : null
                                     }
@@ -191,7 +191,7 @@ const PostEdit = ({ permissions, ...props }) => {
                         source="body"
                         label=""
                         validate={required()}
-                        addLabel={false}
+                        fullWidth
                     />
                 </FormTab>
                 <FormTab label="post.form.miscellaneous">
@@ -218,7 +218,6 @@ const PostEdit = ({ permissions, ...props }) => {
                                 onAddChoice={choice => categories.push(choice)}
                             />
                         }
-                        allowEmpty
                         resettable
                         source="category"
                         choices={categories}
@@ -229,12 +228,22 @@ const PostEdit = ({ permissions, ...props }) => {
                     />
                     <BooleanInput source="commentable" defaultValue />
                     <TextInput disabled source="views" />
+                    <ArrayInput source="pictures">
+                        <SimpleFormIterator>
+                            <TextInput source="url" defaultValue="" />
+                            <ArrayInput source="metas.authors">
+                                <SimpleFormIterator>
+                                    <TextInput source="name" defaultValue="" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleFormIterator>
+                    </ArrayInput>
                 </FormTab>
                 <FormTab label="post.form.comments">
                     <ReferenceManyField
                         reference="comments"
                         target="post_id"
-                        addLabel={false}
+                        label={false}
                         fullWidth
                     >
                         <Datagrid>

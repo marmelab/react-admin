@@ -1,29 +1,27 @@
 import * as React from 'react';
-import { FC } from 'react';
+import { styled } from '@mui/material/styles';
 import { useTranslate, SelectInput, InputProps } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
 
 import segments from '../segments/data';
 
-const useStyles = makeStyles({
-    input: { width: 150 },
+const StyledSelectInput = styled(SelectInput)({
+    '&': { width: 150 },
 });
 
 interface Props extends Omit<InputProps, 'source'> {
     source?: string;
 }
 
-const SegmentInput: FC<Props> = props => {
+const SegmentInput = (props: Props) => {
     const translate = useTranslate();
-    const classes = useStyles();
+
     return (
-        <SelectInput
+        <StyledSelectInput
             {...props}
             choices={segments.map(segment => ({
                 id: segment.id,
                 name: translate(segment.name),
             }))}
-            className={classes.input}
         />
     );
 };

@@ -10,8 +10,9 @@ import {
     getElementsFromRecords,
 } from 'ra-core';
 
+import { EditProps } from '../types';
 import { EditView } from './EditView';
-import editFieldTypes from './editFieldTypes';
+import { editFieldTypes } from './editFieldTypes';
 
 const EditViewGuesser = props => {
     const resource = useResourceContext(props);
@@ -51,7 +52,7 @@ ${inferredChild.getRepresentation()}
 
 EditViewGuesser.propTypes = EditView.propTypes;
 
-const EditGuesser = props => {
+export const EditGuesser = (props: EditProps) => {
     const controllerProps = useEditController(props);
     return (
         <EditContextProvider value={controllerProps}>
@@ -59,5 +60,3 @@ const EditGuesser = props => {
         </EditContextProvider>
     );
 };
-
-export default EditGuesser;

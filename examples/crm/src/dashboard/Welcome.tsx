@@ -5,36 +5,33 @@ import {
     CardContent,
     CardActions,
     Button,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import HomeIcon from '@material-ui/icons/Home';
-import CodeIcon from '@material-ui/icons/Code';
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        background: `#c5dedd`,
-        color: 'rgba(0, 0, 0, 0.87)',
-        padding: '1em',
-        marginBottom: '1em',
-        marginTop: '2em',
-    },
-    actions: {
-        padding: theme.spacing(2),
-        marginTop: -theme.spacing(2),
-        marginBottom: -theme.spacing(1),
-        flexDirection: 'column',
-        '& a': {
-            marginBottom: theme.spacing(1),
-            backgroundColor: 'white',
-            marginLeft: '0 !important',
-        },
-    },
-}));
+} from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
+import CodeIcon from '@mui/icons-material/Code';
 
 export const Welcome = () => {
-    const classes = useStyles();
     return (
-        <Card className={classes.root}>
+        <Card
+            sx={{
+                background: `#c5dedd`,
+                color: 'rgba(0, 0, 0, 0.87)',
+                padding: '1em',
+                marginBottom: '1em',
+                marginTop: '2em',
+                [`& .MuiCardActions-root`]: {
+                    p: 2,
+                    mt: -2,
+                    mb: -1,
+                    flexDirection: 'column',
+                    '& a': {
+                        mb: 1,
+                        color: 'rgba(0, 0, 0, 0.87)',
+                        backgroundColor: 'white',
+                        marginLeft: '0 !important',
+                    },
+                },
+            }}
+        >
             <CardContent>
                 <Typography variant="h5" gutterBottom>
                     CRM demo
@@ -50,7 +47,7 @@ export const Welcome = () => {
                     great way to learn react-admin!
                 </Typography>
             </CardContent>
-            <CardActions className={classes.actions}>
+            <CardActions>
                 <Button
                     variant="contained"
                     fullWidth
@@ -65,7 +62,7 @@ export const Welcome = () => {
                     href="https://github.com/marmelab/react-admin/tree/master/examples/crm"
                     startIcon={<CodeIcon />}
                 >
-                    Source for this demo
+                    Source of this demo
                 </Button>
             </CardActions>
         </Card>

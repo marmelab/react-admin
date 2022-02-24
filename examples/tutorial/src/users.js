@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery } from '@mui/material';
 import { SimpleList, List, Datagrid, EmailField, TextField } from 'react-admin';
 
 export const UserList = props => {
-    const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+    const isSmall = useMediaQuery(theme => theme.breakpoints.down('md'));
 
     return (
         <List title="All users" {...props}>

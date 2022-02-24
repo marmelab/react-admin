@@ -8,7 +8,7 @@ import {
     UPDATE_MANY,
     DELETE,
     DELETE_MANY,
-} from '../core';
+} from './dataFetchActions';
 
 /**
  * Get a fetch type for a data provider verb.
@@ -37,7 +37,6 @@ export default actionType => {
             return DELETE;
         case 'deleteMany':
             return DELETE_MANY;
-
         default:
             return actionType;
     }

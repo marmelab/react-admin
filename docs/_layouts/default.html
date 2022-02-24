@@ -70,8 +70,9 @@
                             >
                         </li>
                         <li>
-                            <a href="https://marmelab.com/react-admin-demo"
-                                >Demo</a
+                            <a
+                                href="https://marmelab.com/react-admin/Demos.html"
+                                >Demos</a
                             >
                         </li>
                         <li>
@@ -147,7 +148,7 @@
                     .replace(/^-+/, '') // Trim - from start of text
                     .replace(/-+$/, ''); // Trim - from end of text
             }
-            document.addEventListener('DOMContentLoaded', function () {
+            function buildPageToC() {
                 M.Sidenav.init(document.querySelectorAll('.sidenav'));
                 // Initialize version selector
                 M.Dropdown.init(document.querySelectorAll('.dropdown-trigger'));
@@ -164,6 +165,10 @@
                     collapseDepth: 2,
                     hasInnerContainers: true,
                 });
+            }
+            // build ToC on page load
+            document.addEventListener('DOMContentLoaded', function () {
+                buildPageToC();
             });
         </script>
         <script

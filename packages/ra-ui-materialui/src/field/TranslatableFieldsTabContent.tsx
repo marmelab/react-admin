@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     Children,
     cloneElement,
@@ -6,10 +7,8 @@ import {
     ReactElement,
     ReactNode,
 } from 'react';
-import { useTranslatableContext, Record } from 'ra-core';
-import { makeStyles } from '@material-ui/core/styles';
-import { ClassesOverride } from '../types';
-import { Labeled } from '../input';
+import { useTranslatableContext, RaRecord } from 'ra-core';
+import { Labeled } from '../Labeled';
 
 /**
  * Default container for a group of translatable fields inside a TranslatableFields components.
@@ -19,24 +18,23 @@ export const TranslatableFieldsTabContent = (
     props: TranslatableFieldsTabContentProps
 ): ReactElement => {
     const {
-        basePath,
         children,
         groupKey = '',
         locale,
         record,
         resource,
+        className,
         ...other
     } = props;
     const { selectedLocale, getLabel, getSource } = useTranslatableContext();
-    const classes = useStyles(props);
 
     return (
-        <div
+        <Root
             role="tabpanel"
             hidden={selectedLocale !== locale}
             id={`translatable-content-${groupKey}${locale}`}
             aria-labelledby={`translatable-header-${groupKey}${locale}`}
-            className={classes.root}
+            className={className}
             {...other}
         >
             {Children.map(children, field =>
@@ -44,16 +42,14 @@ export const TranslatableFieldsTabContent = (
                     <div key={field.props.source}>
                         {field.props.addLabel ? (
                             <Labeled
-                                record={record}
                                 resource={resource}
-                                basePath={basePath}
                                 label={field.props.label}
                                 source={field.props.source}
-                                disabled={false}
                             >
                                 {cloneElement(field, {
                                     ...field.props,
                                     label: getLabel(field.props.source),
+                                    record,
                                     source: getSource(
                                         field.props.source,
                                         locale
@@ -66,38 +62,38 @@ export const TranslatableFieldsTabContent = (
                             cloneElement(field, {
                                 ...field.props,
                                 label: getLabel(field.props.source),
+                                record,
                                 source: getSource(field.props.source, locale),
                             })
                         )}
                     </div>
                 ) : null
             )}
-        </div>
+        </Root>
     );
 };
 
 export type TranslatableFieldsTabContentProps = {
-    basePath: string;
     children: ReactNode;
-    classes?: ClassesOverride<typeof useStyles>;
+    className?: string;
     formGroupKeyPrefix?: string;
     groupKey: string;
     locale: string;
-    record: Record;
+    record: RaRecord;
     resource: string;
 };
 
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            flexGrow: 1,
-            padding: theme.spacing(2),
-            borderRadius: 0,
-            borderBottomLeftRadius: theme.shape.borderRadius,
-            borderBottomRightRadius: theme.shape.borderRadius,
-            border: `1px solid ${theme.palette.divider}`,
-            borderTop: 0,
-        },
-    }),
-    { name: 'RaTranslatableFieldsTabContent' }
-);
+const PREFIX = 'RaTranslatableFieldsTabContent';
+
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    flexGrow: 1,
+    padding: theme.spacing(2),
+    borderRadius: 0,
+    borderBottomLeftRadius: theme.shape.borderRadius,
+    borderBottomRightRadius: theme.shape.borderRadius,
+    border: `1px solid ${theme.palette.divider}`,
+    borderTop: 0,
+}));

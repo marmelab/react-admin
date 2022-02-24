@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { FC } from 'react';
-import { Card, CardHeader, CardContent } from '@material-ui/core';
+import { Card, CardHeader, CardContent } from '@mui/material';
 import {
     ResponsiveContainer,
     AreaChart,
@@ -26,7 +25,7 @@ const aggregateOrdersByDay = (orders: Order[]): { [key: string]: number } =>
     orders
         .filter((order: Order) => order.status !== 'cancelled')
         .reduce((acc, curr) => {
-            const day = format(curr.date, 'YYYY-MM-DD');
+            const day = format(new Date(curr.date), 'yyyy-MM-dd');
             if (!acc[day]) {
                 acc[day] = 0;
             }
@@ -38,11 +37,12 @@ const getRevenuePerDay = (orders: Order[]): TotalByDay[] => {
     const daysWithRevenue = aggregateOrdersByDay(orders);
     return lastMonthDays.map(date => ({
         date: date.getTime(),
-        total: daysWithRevenue[format(date, 'YYYY-MM-DD')] || 0,
+        total: daysWithRevenue[format(new Date(date), 'yyyy-MM-dd')] || 0,
     }));
 };
 
-const OrderChart: FC<{ orders?: Order[] }> = ({ orders }) => {
+const OrderChart = (props: { orders?: Order[] }) => {
+    const { orders } = props;
     const translate = useTranslate();
     if (!orders) return null;
 
@@ -88,11 +88,11 @@ const OrderChart: FC<{ orders?: Order[] }> = ({ orders }) => {
                             <CartesianGrid strokeDasharray="3 3" />
                             <Tooltip
                                 cursor={{ strokeDasharray: '3 3' }}
-                                formatter={value =>
+                                formatter={(value: any) =>
                                     new Intl.NumberFormat(undefined, {
                                         style: 'currency',
                                         currency: 'USD',
-                                    }).format(value as any)
+                                    }).format(value)
                                 }
                                 labelFormatter={(label: any) =>
                                     dateFormatter(label)

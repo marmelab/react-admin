@@ -3,7 +3,7 @@ import expect from 'expect';
 import { render } from '@testing-library/react';
 import { RecordContextProvider } from 'ra-core';
 
-import FileField from './FileField';
+import { FileField } from './FileField';
 
 const defaultProps = {
     classes: {},

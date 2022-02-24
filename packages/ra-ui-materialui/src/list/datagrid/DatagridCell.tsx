@@ -1,22 +1,18 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import TableCell, { TableCellProps } from '@material-ui/core/TableCell';
-import classnames from 'classnames';
-import { Record } from 'ra-core';
+import TableCell, { TableCellProps } from '@mui/material/TableCell';
+import clsx from 'clsx';
+import { RaRecord } from 'ra-core';
 
 const DatagridCell = React.forwardRef<HTMLTableCellElement, DatagridCellProps>(
-    ({ className, field, record, basePath, resource, ...rest }, ref) => (
+    ({ className, field, record, resource, ...rest }, ref) => (
         <TableCell
-            className={classnames(className, field.props.cellClassName)}
+            className={clsx(className, field.props.cellClassName)}
             align={field.props.textAlign}
             ref={ref}
             {...rest}
         >
-            {React.cloneElement(field, {
-                record,
-                basePath: field.props.basePath || basePath,
-                resource,
-            })}
+            {field}
         </TableCell>
     )
 );
@@ -26,15 +22,13 @@ DatagridCell.propTypes = {
     field: PropTypes.element,
     // @ts-ignore
     record: PropTypes.object, // eslint-disable-line react/forbid-prop-types
-    basePath: PropTypes.string,
     resource: PropTypes.string,
 };
 
 export interface DatagridCellProps extends TableCellProps {
-    basePath?: string;
     className?: string;
     field?: JSX.Element;
-    record?: Record;
+    record?: RaRecord;
     resource?: string;
 }
 

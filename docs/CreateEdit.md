@@ -37,11 +37,11 @@ export default App;
 
 // in src/posts.js
 import * as React from "react";
-import { Create, Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from 'react-admin';
+import { Create, Edit, SimpleForm, TextInput, DateInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton, required } from 'react-admin';
 import RichTextInput from 'ra-input-rich-text';
 
-export const PostCreate = (props) => (
-    <Create {...props}>
+export const PostCreate = () => (
+    <Create>
         <SimpleForm>
             <TextInput source="title" />
             <TextInput source="teaser" options={{ multiLine: true }} />
@@ -51,8 +51,8 @@ export const PostCreate = (props) => (
     </Create>
 );
 
-export const PostEdit = (props) => (
-    <Edit {...props}>
+export const PostEdit = () => (
+    <Edit>
         <SimpleForm>
             <TextInput disabled label="Id" source="id" />
             <TextInput source="title" validate={required()} />
@@ -78,8 +78,6 @@ That's enough to display the post edit form:
 
 **Tip**: You might find it cumbersome to repeat the same input components for both the `<Create>` and the `<Edit>` view. In practice, these two views almost never have exactly the same form inputs. For instance, in the previous snippet, the `<Edit>` view shows related comments to the current post, which makes no sense for a new post. Having two separate sets of input components for the two views is, therefore, a deliberate choice. However, if you have the same set of input components, export them as a custom Form component to avoid repetition.
 
-React-admin injects a few props to the `create` and `edit` views: the `resource` name, the `basePath` (the root URL), the `permissions`, and, in the case of the `edit` view, the record `id`. That's why you need to pass the `props` to the `<Create>` and `<Edit>` components.
-
 ## The `<Create>` and `<Edit>` components
 
 The `<Create>` and `<Edit>` components call the `dataProvider`, prepare the form submit handler, and render the page title and actions. They are not responsible for rendering the actual form - that's the job of their child component (usually `<SimpleForm>`). This form component uses its children ([`<Input>`](./Inputs.md) components) to render each form input.
@@ -100,25 +98,24 @@ You can customize the `<Create>` and `<Edit>` components using the following pro
 * [`component`](#component)
 * [`undoable`](#undoable) (`<Edit>` only) (deprecated)
 * [`mutationMode`](#mutationmode) (`<Edit>` only) 
-* [`onSuccess`](#onsuccess)
-* [`onFailure`](#onfailure)
+* [`mutationOptions`](#mutationoptions)
 * [`transform`](#transform)
-* [`successMessage`](#success-message) (deprecated - use `onSuccess` instead)
+* [`redirect`](#redirection-after-submission)
 
 `<Create>` also accepts a `record` prop, to initialize the form based on a value object.
 
 ### CSS API
 
-The `<Create>` and `<Edit>` components accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
+The `<Create>` and `<Edit>` components accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most MUI components, see their [documentation about it](https://mui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
 | Rule name   | Description                                                                                |
 | ----------- | ------------------------------------------------------------------------------------------ |
 | `root`      | Alternative to using `className`. Applied to the root element                              |
 | `main`      | Applied to the main container                                                              |
 | `noActions` | Applied to the main container when `actions` prop is `false`                               |
-| `card`      | Applied to the child component inside the main container (Material UI's `Card` by default) |
+| `card`      | Applied to the child component inside the main container (MUI's `Card` by default) |
 
-To override the style of all instances of `<Create>` and `<Edit>` components using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaCreate` and `RaEdit` keys respectively.
+To override the style of all instances of `<Create>` and `<Edit>` components using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaCreate` and `RaEdit` keys respectively.
 
 ### Page Title
 
@@ -127,21 +124,22 @@ By default, the title for the `Create` view is "Create [resource_name]", and the
 You can customize this title by specifying a custom `title` prop:
 
 ```jsx
-export const PostEdit = (props) => (
-    <Edit title="Post edition" {...props}>
+export const PostEdit = () => (
+    <Edit title="Post edition">
         ...
     </Edit>
 );
 ```
 
-More interestingly, you can pass an element as `title`. React-admin clones this element and, in the `<EditView>`, injects the current `record`. This allows to customize the title according to the current record:
+More interestingly, you can pass an element as `title`. You can access the current `record` by calling the `useRecordContext` hook. This allows to customize the title according to the current record:
 
 ```jsx
-const PostTitle = ({ record }) => {
+const PostTitle = () => {
+    const record = useRecordContext();
     return <span>Post {record ? `"${record.title}"` : ''}</span>;
 };
-export const PostEdit = (props) => (
-    <Edit title={<PostTitle />} {...props}>
+export const PostEdit = () => (
+    <Edit title={<PostTitle />}>
         ...
     </Edit>
 );
@@ -153,19 +151,19 @@ You can replace the list of default actions by your own element using the `actio
 
 ```jsx
 import * as React from "react";
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { TopToolbar, ShowButton } from 'react-admin';
 
-const PostEditActions = ({ basePath, data, resource }) => (
+const PostEditActions = () => (
     <TopToolbar>
-        <ShowButton basePath={basePath} record={data} />
+        <ShowButton />
         {/* Add your custom actions */}
         <Button color="primary" onClick={customAction}>Custom Action</Button>
     </TopToolbar>
 );
 
-export const PostEdit = (props) => (
-    <Edit actions={<PostEditActions />} {...props}>
+export const PostEdit = () => (
+    <Edit actions={<PostEditActions />}>
         ...
     </Edit>
 );
@@ -178,10 +176,10 @@ A common customization is to add a button to go back to the List. Use the `<List
 ```jsx
 import { TopToolbar, ListButton, ShowButton } from 'react-admin';
 
-const PostEditActions = ({ basePath, data }) => (
+const PostEditActions = () => (
     <TopToolbar>
-        <ListButton basePath={basePath} />
-        <ShowButton basePath={basePath} record={data} />
+        <ListButton />
+        <ShowButton />
     </TopToolbar>
 );
 ```
@@ -189,12 +187,12 @@ const PostEditActions = ({ basePath, data }) => (
 If you want this button to look like a Back button, you can pass a custom label and icon to the `ListButton`:
 
 ```jsx
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
 
-const PostEditActions = ({ basePath, data }) => (
+const PostEditActions = () => (
     <TopToolbar>
-        <ListButton basePath={basePath} label="Back" icon={<ChevronLeft />} />
-        <ShowButton basePath={basePath} record={data} />
+        <ListButton label="Back" icon={<ChevronLeft />} />
+        <ShowButton />
     </TopToolbar>
 );
 ```
@@ -216,28 +214,31 @@ const Aside = () => (
     </div>
 );
 
-const PostEdit = props => (
-    <Edit aside={<Aside />} {...props}>
+const PostEdit = () => (
+    <Edit aside={<Aside />}>
        // ...
     </Edit>
 );
 ```
 {% endraw %}
 
-The `aside` component receives the same props as the `Edit` or `Create` child component: `basePath`, `record`, `resource`, and `version`. That means you can display non-editable details of the current record in the aside component:
+The `aside` component renders in the same `RecordContext` as the `Edit` or `Create` child component. That means you can display non-editable details of the current record in the aside component:
 
 {% raw %}
 ```jsx
-const Aside = ({ record }) => (
-    <div style={{ width: 200, margin: '1em' }}>
-        <Typography variant="h6">Post details</Typography>
-        {record && (
-            <Typography variant="body2">
-                Creation date: {record.createdAt}
-            </Typography>
-        )}
-    </div>
-);
+const Aside = () => {
+    const record = useRecordContext();
+    return (
+        <div style={{ width: 200, margin: '1em' }}>
+            <Typography variant="h6">Post details</Typography>
+            {record && (
+                <Typography variant="body2">
+                    Creation date: {record.createdAt}
+                </Typography>
+            )}
+        </div>
+    );
+};
 ```
 {% endraw %}
 
@@ -245,21 +246,21 @@ const Aside = ({ record }) => (
 
 ### Component
 
-By default, the `Create` and `Edit` views render the main form inside a material-ui `<Card>` element. The actual layout of the form depends on the `Form` component you're using (`<SimpleForm>`, `<TabbedForm>`, or a custom form component).
+By default, the `Create` and `Edit` views render the main form inside a MUI `<Card>` element. The actual layout of the form depends on the `Form` component you're using (`<SimpleForm>`, `<TabbedForm>`, or a custom form component).
 
 Some form layouts also use `Card`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main page container by passing a `component` prop :
 
 ```jsx
 // use a div as root component
-const PostEdit = props => (
-    <Edit component="div" {...props}>
+const PostEdit = () => (
+    <Edit component="div">
         ...
     </Edit>
 );
 
 // use a custom component as root component 
-const PostEdit = props => (
-    <Edit component={MyComponent} {...props}>
+const PostEdit = () => (
+    <Edit component={MyComponent}>
         ...
     </Edit>
 );
@@ -276,8 +277,8 @@ By default, the Save and Delete actions are undoable, i.e. react-admin only send
 You can disable this behavior by setting `undoable={false}`. With that setting, clicking on the Delete button displays a confirmation dialog. Both the `Save` and `Delete` actions become blocking and delay the refresh of the screen until the data provider responds.
 
 ```jsx
-const PostEdit = props => (
-    <Edit undoable={false} {...props}>
+const PostEdit = () => (
+    <Edit undoable={false}>
         // ...
     </Edit>
 );
@@ -294,7 +295,7 @@ import {
     Edit,
     SimpleForm,
 } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 
 const useStyles = makeStyles({
     toolbar: {
@@ -310,8 +311,8 @@ const CustomToolbar = props => (
     </Toolbar>
 );
 
-const PostEdit = props => (
-    <Edit {...props}>
+const PostEdit = () => (
+    <Edit>
         <SimpleForm toolbar={<CustomToolbar />}>
             ...
         </SimpleForm>
@@ -332,8 +333,8 @@ By default, pages using `<Edit>` use the `undoable` mutation mode. This is part 
 You can change this default by setting the `mutationMode` prop - and this affects both the Save and Delete buttons. For instance, to remove the ability to undo the changes, use the `optimistic` mode:
 
 ```jsx
-const PostEdit = props => (
-    <Edit mutationMode="optimistic" {...props}>
+const PostEdit = () => (
+    <Edit mutationMode="optimistic">
         // ...
     </Edit>
 );
@@ -342,8 +343,8 @@ const PostEdit = props => (
 And to make both the Save and Delete actions blocking, and wait for the dataProvider response to continue, use the `pessimistic` mode:
 
 ```jsx
-const PostEdit = props => (
-    <Edit mutationMode="pessimistic" {...props}>
+const PostEdit = () => (
+    <Edit mutationMode="pessimistic">
         // ...
     </Edit>
 );
@@ -362,7 +363,7 @@ import {
     Edit,
     SimpleForm,
 } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 
 const useStyles = makeStyles({
     toolbar: {
@@ -378,8 +379,8 @@ const CustomToolbar = props => (
     </Toolbar>
 );
 
-const PostEdit = props => (
-    <Edit {...props}>
+const PostEdit = () => (
+    <Edit>
         <SimpleForm toolbar={<CustomToolbar />}>
             ...
         </SimpleForm>
@@ -387,27 +388,29 @@ const PostEdit = props => (
 );
 ```
 
-### `onSuccess`
+### `mutationOptions`
 
-By default, when the save action succeeds, react-admin shows a notification, and redirects to another page. You can override this behavior and pass custom side effects by providing a function as `onSuccess` prop:
+You can customize the options you pass to react-query's `useMutation` hook, e.g. to override success or error side effects, by setting the `mutationOptions` prop.
+
+Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to another page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 
 ```jsx
 import * as React from 'react';
 import { useNotify, useRefresh, useRedirect, Edit, SimpleForm } from 'react-admin';
 
-const PostEdit = props => {
+const PostEdit = () => {
     const notify = useNotify();
     const refresh = useRefresh();
     const redirect = useRedirect();
 
     const onSuccess = () => {
-        notify(`Changes saved`)
+        notify(`Changes saved`);
         redirect('/posts');
         refresh();
     };
 
     return (
-        <Edit onSuccess={onSuccess} {...props}>
+        <Edit mutationOptions={{ onSuccess }}>
             <SimpleForm>
                 ...
             </SimpleForm>
@@ -420,41 +423,44 @@ By default, the `<Edit>` view runs updates in `mutationMode="undoable"`, which m
 
 The default `onSuccess` function is:
 
-```jsx
+```js
 // for the <Create> component:
 () => {
-    notify('ra.notification.created', 'info', { smart_count: 1 });
-    redirect('edit', basePath, data.id, data);
+    notify('ra.notification.created', { messageArgs: { smart_count: 1 } });
+    redirect('edit', resource, data.id, data);
 }
 
 // for the <Edit> component: 
 () => {
-    notify('ra.notification.updated', 'info', { smart_count: 1 }, mutationMode === 'undoable');
-    redirect('list', basePath, data.id, data);
+    notify('ra.notification.created', {
+        messageArgs: { smart_count: 1 },
+        undoable: mutationMode === 'undoable'
+    });
+    redirect('list', resource, data.id, data);
 }
 ```
 
-To learn more about built-in side effect hooks like `useNotify`, `useRedirect` and `useRefresh`, check the [Querying the API documentation](./Actions.md#handling-side-effects-in-usedataprovider).
+To learn more about built-in side effect hooks like `useNotify`, `useRedirect` and `useRefresh`, check the [Querying the API documentation](./Actions.md#success-and-error-side-effects).
 
-**Tip**: When you use `mutationMode="pessimistic"`, the `onSuccess` function receives the response from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is the created/edited record (see [the dataProvider documentation for details](./DataProviders.md#response-format)). You can use that response in the success side effects: 
+**Tip**: When you use `mutationMode="pessimistic"`, the `onSuccess` function receives the response from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is the created/edited record (see [the dataProvider documentation for details](./DataProviderWriting.md#response-format)). You can use that response in the success side effects: 
 
 ```jsx
 import * as React from 'react';
 import { useNotify, useRefresh, useRedirect, Edit, SimpleForm } from 'react-admin';
 
-const PostEdit = props => {
+const PostEdit = () => {
     const notify = useNotify();
     const refresh = useRefresh();
     const redirect = useRedirect();
 
   const onSuccess = ({ data }) => {
-        notify(`Changes to post "${data.title}" saved`)
+        notify(`Changes to post "${data.title}" saved`);
         redirect('/posts');
         refresh();
     };
 
     return (
-        <Edit onSuccess={onSuccess} mutationMode="pessimistic" {...props}>
+        <Edit mutationOptions={{ onSuccess }} mutationMode="pessimistic">
             <SimpleForm>
                 ...
             </SimpleForm>
@@ -463,33 +469,27 @@ const PostEdit = props => {
 }
 ```
 
-**Tip**: When you set the `onSuccess` prop, the `successMessage` prop is ignored.
-
 **Tip**: If you want to have different success side effects based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save and redirect to the list", and another to "save and display an empty form"), you can set the `onSuccess` prop on the `<SaveButton>` component, too.
 
-### `onFailure`
-
-By default, when the save action fails at the dataProvider level, react-admin shows an error notification. On an Edit page with `mutationMode` set to `undoable` or `optimistic`, it refreshes the page, too.
-
-You can override this behavior and pass custom side effects by providing a function as `onFailure` prop:
+Similarly, you can override the failure side effects with an `onError` option. By default, when the save action fails at the dataProvider level, react-admin shows an error notification. On an Edit page with `mutationMode` set to `undoable` or `optimistic`, it refreshes the page, too.
 
 ```jsx
 import * as React from 'react';
 import { useNotify, useRefresh, useRedirect, Edit, SimpleForm } from 'react-admin';
 
-const PostEdit = props => {
+const PostEdit = () => {
     const notify = useNotify();
     const refresh = useRefresh();
     const redirect = useRedirect();
 
-    const onFailure = (error) => {
-        notify(`Could not edit post: ${error.message}`)
+    const onError = (error) => {
+        notify(`Could not edit post: ${error.message}`);
         redirect('/posts');
         refresh();
     };
 
     return (
-        <Edit onFailure={onFailure} {...props}>
+        <Edit mutationOptions={{ onError }}>
             <SimpleForm>
                 ...
             </SimpleForm>
@@ -498,26 +498,26 @@ const PostEdit = props => {
 }
 ```
 
-The `onFailure` function receives the error from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviders.md#error-format)).
+The `onError` function receives the error from the dataProvider call (`dataProvider.create()` or `dataProvider.update()`), which is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
 
-The default `onOnFailure` function is:
+The default `onError` function is:
 
 ```jsx
 // for the <Create> component:
 (error) => {
-    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', 'warning');
+    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', { type: 'warning' });
 }
 
 // for the <Edit> component: 
 (error) => {
-    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', 'warning');
+    notify(typeof error === 'string' ? error : error.message || 'ra.notification.http_error', { type: 'warning' });
     if (mutationMode === 'undoable' || mutationMode === 'pessimistic') {
         refresh();
     }
 }
 ```
 
-**Tip**: If you want to have different failure side effects based on the button clicked by the user, you can set the `onFailure` prop on the `<SaveButton>` component, too.
+**Tip**: If you want to have different failure side effects based on the button clicked by the user, you can set the `onError` prop on the `<SaveButton>` component, too.
 
 ### `transform`
 
@@ -541,25 +541,27 @@ The `transform` function can also return a `Promise`, which allows you to do all
 
 **Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on the `<SaveButton>` component, too. See [Altering the Form Values Before Submitting](#altering-the-form-values-before-submitting) for an example.
 
-### Success message
+**Tip**: The message will be translated.
 
-**Deprecated**: use the `onSuccess` prop instead. See [Changing The Success or Failure Notification Message](#changing-the-success-or-failure-notification-message) for the new syntax. 
-
-Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a `successMessage` prop:
+**Tip**: `<Edit>`'s transform prop function also get the `previousData` in its second argument:
 
 ```jsx
-const PostEdit = props => (
-    <Edit successMessage="messages.post_saved" {...props}>
-        // ...
-    </Edit>
-);
+export const UserEdit = (props) => {
+    const transform = (data, { previousData }) => ({
+        ...data,
+        avoidChangeField: previousData.avoidChangeField
+    });
+    return (
+        <Edit {...props} transform={transform}>
+            ...
+        </Edit>
+    );
+}
 ```
-
-**Tip**: The message will be translated.
 
 ## Prefilling a `<Create>` Record
 
-Users may need to create a copy of an existing record. For that use case, use the `<CloneButton>` component. It expects a `record` and a `basePath` (usually injected to children of `<Datagrid>`, `<SimpleForm>`, `<SimpleShowLayout>`, etc.), so it's as simple to use as a regular field or input.
+Users may need to create a copy of an existing record. For that use case, use the `<CloneButton>` component. It reads the `record` from the current `RecordContext`.
 
 For instance, to allow cloning all the posts from the list:
 
@@ -567,8 +569,8 @@ For instance, to allow cloning all the posts from the list:
 import * as React from "react";
 import { List, Datagrid, TextField, CloneButton } from 'react-admin';
 
-const PostList = props => (
-    <List {...props}>
+const PostList = () => (
+    <List>
         <Datagrid>
             <TextField source="title" />
             <CloneButton />
@@ -579,7 +581,7 @@ const PostList = props => (
 
 **Note**: `<CloneButton>` is designed to be used in a `<Datagrid>` and in an edit view `<Actions>` component, not inside the form `<Toolbar>`. The `Toolbar` is basically for submitting the form, not for going to another resource.
 
-Alternately, users need to prepopulate a record based on a *related* record. For instance, to create a comment related to an existing post. 
+Alternately, users need to pre-populate a record based on a *related* record. For instance, to create a comment related to an existing post. 
 
 By default, the `<Create>` view starts with an empty `record`. However, if the `location` object (injected by [react-router-dom](https://reacttraining.com/react-router/web/api/location)) contains a `record` in its `state`, the `<Create>` view uses that `record` instead of the empty object. That's how the `<CloneButton>` works under the hood.
 
@@ -587,9 +589,9 @@ That means that if you want to create a link to a creation form, presetting *som
 
 {% raw %}
 ```jsx
-import * as React from "react";
+import * as React from 'react';
 import { Datagrid } from 'react-admin';
-import Button from '@material-ui/core/Button';
+import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 const CreateRelatedCommentButton = ({ record }) => (
@@ -604,8 +606,8 @@ const CreateRelatedCommentButton = ({ record }) => (
     </Button>
 );
 
-export default PostList = props => (
-    <List {...props}>
+export default PostList = () => (
+    <List>
         <Datagrid>
             ...
             <CreateRelatedCommentButton />
@@ -615,14 +617,14 @@ export default PostList = props => (
 ```
 {% endraw %}
 
-**Tip**: To style the button with the main color from the material-ui theme, use the `Link` component from the `react-admin` package rather than the one from `react-router-dom`.
+**Tip**: To style the button with the main color from the MUI theme, use the `Link` component from the `react-admin` package rather than the one from `react-router-dom`.
 
 **Tip**: The `<Create>` component also watches the "source" parameter of `location.search` (the query string in the URL) in addition to `location.state` (a cross-page message hidden in the router memory). So the `CreateRelatedCommentButton` could also be written as:
 
 {% raw %}
 ```jsx
 import * as React from "react";
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 
 const CreateRelatedCommentButton = ({ record }) => (
@@ -687,27 +689,23 @@ import { useCreateController, CreateContextProvider, SimpleForm } from 'react-ad
 const MyCreate = props => {
     const createControllerProps = useCreateController(props);
     const {
-        basePath, // deduced from the location, useful for action buttons
         defaultTitle, // the translated title based on the resource, e.g. 'Create Post'
         record, // empty object, unless some values were passed in the location state to prefill the form
         redirect, // the default redirection route. Defaults to 'edit', unless the resource has no edit view, in which case it's 'list'
         resource, // the resource name, deduced from the location. e.g. 'posts'
         save, // the create callback, to be passed to the underlying form as submit handler
         saving, // boolean that becomes true when the dataProvider is called to create the record
-        version, // integer used by the refresh feature
     } = createControllerProps;
     return (
         <CreateContextProvider value={createControllerProps}>
             <div>
                 <h1>{defaultTitle}</h1>
                 {cloneElement(props.children, {
-                    basePath,
                     record,
                     redirect,
                     resource,
                     save,
                     saving,
-                    version,
                 })}
             </div>
         </CreateContextProvider>
@@ -737,29 +735,26 @@ import { useEditController, EditContextProvider, SimpleForm } from 'react-admin'
 const MyEdit = props => {
     const controllerProps = useEditController(props);
     const {
-        basePath, // deduced from the location, useful for action buttons
         defaultTitle, // the translated title based on the resource, e.g. 'Post #123'
-        loaded, // boolean that is false until the record is available
-        loading, // boolean that is true on mount, and false once the record was fetched
+        error,  // error returned by dataProvider when it failed to fetch the record. Useful if you want to adapt the view instead of just showing a notification using the `onError` side effect.
+        isFetching, // boolean that is true while the record is being fetched, and false once the record is fetched
+        isLoading, // boolean that is true until the record is available for the first time
         record, // record fetched via dataProvider.getOne() based on the id from the location
         redirect, // the default redirection route. Defaults to 'list'
         resource, // the resource name, deduced from the location. e.g. 'posts'
         save, // the update callback, to be passed to the underlying form as submit handler
         saving, // boolean that becomes true when the dataProvider is called to update the record
-        version, // integer used by the refresh feature
     } = controllerProps;
     return (
         <EditContextProvider value={controllerProps}>
             <div>
                 <h1>{defaultTitle}</h1>
                 {cloneElement(props.children, {
-                    basePath,
                     record,
                     redirect,
                     resource,
                     save,
                     saving,
-                    version,
                 })}
             </div>
         </EditContextProvider>
@@ -781,9 +776,9 @@ This custom Edit view has no action buttons or aside component - it's up to you 
 
 ## The `<SimpleForm>` component
 
-The `<SimpleForm>` component receives the `record` as prop from its parent component. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, to be called with the updated record as an argument when the user submits the form.
+The `<SimpleForm>` component reads the `record` from the `RecordContext`. It is responsible for rendering the actual form. It is also responsible for validating the form data. Finally, it receives a `handleSubmit` function as prop, which is passed to the `form` `onSubmit` prop.
 
-The `<SimpleForm>` renders its child components line by line (within `<div>` components). It accepts Input and Field components as children. It relies on [react-final-form](https://github.com/final-form/react-final-form) for form handling.
+The `<SimpleForm>` renders its child components line by line (within `<div>` components). It accepts Input and Field components as children. It relies on [react-hook-form](https://react-hook-form.com/) for form handling.
 
 ![post edition form](./img/post-edition.png)
 
@@ -792,19 +787,18 @@ to change this behaviour you can pass `false` for the `submitOnEnter` property, 
 
 Here are all the props you can set on the `<SimpleForm>` component:
 
-* [`initialValues`](#default-values)
+* [`defaultValue`](#default-values)
 * [`validate`](#validation)
 * [`submitOnEnter`](#submit-on-enter)
-* [`redirect`](#redirection-after-submission)
 * [`toolbar`](#toolbar)
 * [`variant`](#variant)
 * [`margin`](#margin)
+* [`component`](#simpleform-component)
 * [`warnWhenUnsavedChanges`](#warning-about-unsaved-changes)
-* [`sanitizeEmptyValues`](#setting-empty-values-to-null)
 
 ```jsx
-export const PostCreate = (props) => (
-    <Create {...props}>
+export const PostCreate = () => (
+    <Create>
         <SimpleForm>
             <TextInput source="title" />
             <RichTextInput source="body" />
@@ -821,30 +815,34 @@ export const PostCreate = (props) => (
 
 ### Label Decoration
 
-`<SimpleForm>` scans its children for the `addLabel` prop, and automatically wraps a child in a `<Labeled>` component when found. This displays a label on top of the child, based on the `label` prop. This is not necessary for `<Input>` components, as they already contain their label. Also, all the react-admin `<Field>` components have a default prop `addLabel: true`, which explains why react-admin shows a label on top of Fields when they are used as children of `<SimpleForm>`. 
+All react-admin inputs handle the display of their label by wrapping their content inside a `<Labeled>` component.
 
-For your own components that don't include a label by default, set the `addLabel` prop if you want to use them as `<SimpleForm>` children.
+You can wrap your own components inside the `<Labeled>` component too. You can either provide it the `label` prop directly or leverage the automatic label inference by providing it the `source` prop:
 
 ```jsx
-const IdentifierField = ({ record }) => (
-    <Typography>{record.id}</Typography>
+const IdentifierField = ({ label, record }) => (
+    <Labeled label={label}>
+        <Typography>{record.id}</Typography>
+    </Labeled>
 );
 
+// Here Labeled will try to translate the label with the translation key `resources.posts.fields.body`
+// and with an inferred default of `Body`
 const BodyField = ({ record }) => (
-    <Identifier label="body">
+    <Labeled source="body">
         <Typography>
             {record.body}
         </Typography>
-    </Identifier>
+    </Labeled>
 );
 
-const PostEdit = (props) => (
-    <Create {...props}>
+const PostEdit = () => (
+    <Create>
         <SimpleForm>
-            <IdentifierField addLabel label="Identifier" /> {/* SimpleForm will add a label */}
-            <TextField source="title" /> {/* SimpleForm will add a label, too (TextField has addLabel:true in defaultProps) */}
-            <BodyField /> {/* SimpleForm will NOT add a label */}
-            <NumberInput source="nb_views" /> {/* SimpleForm will NOT add a label */}
+            <IdentifierField label="Identifier" />
+            <TextField source="title" />
+            <BodyField />
+            <NumberInput source="nb_views" />
         </SimpleForm>
     </Create>
 );
@@ -853,7 +851,7 @@ const PostEdit = (props) => (
 
 ## The `<TabbedForm>` component
 
-Just like `<SimpleForm>`, `<TabbedForm>` receives the `record` prop, renders the actual form, and handles form validation on submit. However, the `<TabbedForm>` component renders inputs grouped by tab. The tabs are set by using `<FormTab>` components, which expect a `label` and an `icon` prop.
+Just like `<SimpleForm>`, `<TabbedForm>` reads the `record` from the `RecordContext`, renders the actual form, and handles form validation on submit. However, the `<TabbedForm>` component renders inputs grouped by tab. The tabs are set by using `<FormTab>` components, which expect a `label` and an `icon` prop.
 
 ![tabbed form](./img/tabbed-form.gif)
 
@@ -862,10 +860,9 @@ to change this behaviour you can pass `false` for the `submitOnEnter` property.
 
 Here are all the props accepted by the `<TabbedForm>` component:
 
-* [`initialValues`](#default-values)
+* [`defaultValue`](#default-values)
 * [`validate`](#validation)
 * [`submitOnEnter`](#submit-on-enter)
-* [`redirect`](#redirection-after-submission)
 * [`tabs`](#tabbedformtabs)
 * [`toolbar`](#toolbar)
 * [`variant`](#variant)
@@ -873,7 +870,6 @@ Here are all the props accepted by the `<TabbedForm>` component:
 * `save`: The function invoked when the form is submitted. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 * `saving`: A boolean indicating whether a save operation is ongoing. This is passed automatically by `react-admin` when the form component is used inside `Create` and `Edit` components.
 * [`warnWhenUnsavedChanges`](#warning-about-unsaved-changes)
-* [`sanitizeEmptyValues`](#setting-empty-values-to-null)
 * [`syncWithLocation`](#sync-with-location)
 
 {% raw %}
@@ -894,8 +890,8 @@ import {
     EditButton
 } from 'react-admin';
 
-export const PostEdit = (props) => (
-    <Edit {...props}>
+export const PostEdit = () => (
+    <Edit>
         <TabbedForm>
             <FormTab label="summary">
                 <TextInput disabled label="Id" source="id" />
@@ -903,7 +899,7 @@ export const PostEdit = (props) => (
                 <TextInput multiline source="teaser" validate={required()} />
             </FormTab>
             <FormTab label="body">
-                <RichTextInput source="body" validate={required()} addLabel={false} />
+                <RichTextInput source="body" validate={required()} label={false} />
             </FormTab>
             <FormTab label="Miscellaneous">
                 <TextInput label="Password (if protected post)" source="password" type="password" />
@@ -913,7 +909,7 @@ export const PostEdit = (props) => (
                 <TextInput disabled label="Nb views" source="views" />
             </FormTab>
             <FormTab label="comments">
-                <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
+                <ReferenceManyField reference="comments" target="post_id" label={false}>
                     <Datagrid>
                         <TextField source="body" />
                         <DateField source="created_at" />
@@ -938,8 +934,8 @@ You can also opt out the location synchronization by passing `false` to the `syn
 
 {% raw %}
 ```jsx
-export const PostEdit = (props) => (
-    <Edit {...props}>
+export const PostEdit = () => (
+    <Edit>
         <TabbedForm syncWithLocation={false}>
             <FormTab label="summary">
                 <TextInput disabled label="Id" source="id" />
@@ -947,7 +943,7 @@ export const PostEdit = (props) => (
                 <TextInput multiline source="teaser" validate={required()} />
             </FormTab>
             <FormTab label="body">
-                <RichTextInput source="body" validate={required()} addLabel={false} />
+                <RichTextInput source="body" validate={required()} label={false} />
             </FormTab>
             <FormTab label="Miscellaneous">
                 <TextInput label="Password (if protected post)" source="password" type="password" />
@@ -957,7 +953,7 @@ export const PostEdit = (props) => (
                 <TextInput disabled label="Nb views" source="views" />
             </FormTab>
             <FormTab label="comments">
-                <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
+                <ReferenceManyField reference="comments" target="post_id" label={false}>
                     <Datagrid>
                         <TextField source="body" />
                         <DateField source="created_at" />
@@ -974,31 +970,37 @@ export const PostEdit = (props) => (
 
 ### Label Decoration
 
-`<FormTab>` scans its children for the `addLabel` prop, and automatically wraps a child in a `<Labeled>` component when found. This displays a label on top of the child, based on the `label` prop. This is not necessary for `<Input>` components, as they already contain their label. Also, all the react-admin `<Field>` components have a default prop `addLabel: true`, which explains why react-admin shows a label on top of Fields when they are used as children of `<FormTab>`. 
+All react-admin inputs handle the display of their label by wrapping their content inside a `<Labeled>` component.
 
-For your own components that don't include a label by default, set the `addLabel` prop if you want to use them as `<FormTab>` children.
+You can wrap your own components inside the `<Labeled>` component too. You can either provide it the `label` prop directly or leverage the automatic label inference by providing it the `source` prop:
 
 ```jsx
-const IdentifierField = ({ record }) => (
-    <Typography>{record.id}</Typography>
+const IdentifierField = ({ label, record }) => (
+    <Labeled label={label}>
+        <Typography>{record.id}</Typography>
+    </Labeled>
 );
 
+// Here Labeled will try to translate the label with the translation key `resources.posts.fields.body`
+// and with an inferred default of `Body`
 const BodyField = ({ record }) => (
-    <Identifier label="body">
-        <Typography>
-            {record.body}
-        </Typography>
-    </Identifier>
+    <Labeled source="body">
+        <Identifier label="body">
+            <Typography>
+                {record.body}
+            </Typography>
+        </Identifier>
+    </Labeled>
 );
 
-const PostEdit = props => (
-    <Create {...props}>
+const PostEdit = () => (
+    <Create>
         <TabbedForm>
             <FormTab label="main">
-                <IdentifierField addLabel label="Identifier" /> {/* FormTab will add a label */}
-                <TextField source="title" /> {/* FormTab will add a label, too (TextField has addLabel:true) in defaultProps */}
-                <BodyField /> {/* FormTab will NOT add a label */}
-                <NumberInput source="nb_views" /> {/* FormTab will NOT add a label */}
+                <IdentifierField label="Identifier" />
+                <TextField source="title" />
+                <BodyField />
+                <NumberInput source="nb_views" />
             </FormTab>
         </TabbedForm>
     </Create>
@@ -1007,9 +1009,9 @@ const PostEdit = props => (
 
 ### TabbedFormTabs
 
-By default `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component, to renders tabs. You can pass a custom component as the `tabs` prop to override the default component. Besides, props from `<TabbedFormTabs>` are passed to material-ui's `<Tabs>` component inside `<TabbedFormTabs>`.
+By default `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component, to renders tabs. You can pass a custom component as the `tabs` prop to override the default component. Besides, props from `<TabbedFormTabs>` are passed to MUI's `<Tabs>` component inside `<TabbedFormTabs>`.
 
-The following example shows how to make use of scrollable `<Tabs>`. Pass the `scrollable` prop to `<TabbedFormTabs>` and pass that as the `tabs` prop to `<TabbedForm>`.
+The following example shows how to make use of scrollable `<Tabs>`. Pass `variant="scrollable"` and `scrollButtons="auto"` props to `<TabbedFormTabs>` and use it in the `tabs` prop from `<TabbedForm>`.
 
 ```jsx
 import * as React from "react";
@@ -1019,9 +1021,9 @@ import {
     TabbedFormTabs,
 } from 'react-admin';
 
-export const PostEdit = (props) => (
-    <Edit {...props}>
-        <TabbedForm tabs={<TabbedFormTabs scrollButtons="auto" />}>
+export const PostEdit = () => (
+    <Edit>
+        <TabbedForm tabs={<TabbedFormTabs variant="scrollable" scrollButtons="auto" />}>
             ...
         </TabbedForm>
     </Edit>
@@ -1049,8 +1051,8 @@ import {
 import { AccordionForm, AccordionFormPanel } from '@react-admin/ra-form-layout';
 
 // don't forget the component="div" prop on the main component to disable the main Card
-const CustomerEdit = props => (
-    <Edit {...props} component="div">
+const CustomerEdit = () => (
+    <Edit component="div">
         <AccordionForm autoClose>
             <AccordionFormPanel label="Identity">
                 <TextField source="id" />
@@ -1099,8 +1101,8 @@ import * as React from 'react';
 import { Create, TextInput, required } from 'react-admin';
 import { WizardForm, WizardFormStep } from '@react-admin/ra-form-layout';
 
-const PostCreate = props => (
-    <Create {...props}>
+const PostCreate = () => (
+    <Create>
         <WizardForm>
             <WizardFormStep label="First step">
                 <TextInput source="title" validate={required()} />
@@ -1129,9 +1131,9 @@ import * as React from 'react';
 import { List, Datagrid, SimpleForm, TextField, TextInput, DateInput, required } from 'react-admin';
 import { EditDialog, CreateDialog } from '@react-admin/ra-form-layout';
 
-const CustomerList = props => (
+const CustomerList = () => (
     <>
-        <List {...props}>
+        <List>
             <Datagrid>
                 ...
             </Datagrid>
@@ -1160,19 +1162,17 @@ Check [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/mo
 
 ## Default Values
 
-To define default values, you can add a `initialValues` prop to form components (`<SimpleForm>`, `<TabbedForm>`, etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
-
-**Note**: on RA v2 the `initialValues` used to be named `defaultValue`
+To define default values, you can add a `defaultValues` prop to form components (`<SimpleForm>`, `<TabbedForm>`, etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
 
 ### Global Default Value
 
-The value of the form `initialValues` prop is an object, or a function returning an object, specifying default values for the created record. For instance:
+The value of the form `defaultValue` prop is an object, or a function returning an object, specifying default values for the created record. For instance:
 
 ```jsx
 const postDefaultValue = () => ({ id: uuid(), created_at: new Date(), nb_views: 0 });
-export const PostCreate = (props) => (
-    <Create {...props}>
-        <SimpleForm initialValues={postDefaultValue}>
+export const PostCreate = () => (
+    <Create>
+        <SimpleForm defaultValue={postDefaultValue}>
             <TextInput source="title" />
             <RichTextInput source="body" />
             <NumberInput source="nb_views" />
@@ -1181,15 +1181,15 @@ export const PostCreate = (props) => (
 );
 ```
 
-**Tip**: You can include properties in the form `initialValues` that are not listed as input components, like the `created_at` property in the previous example.
+**Tip**: You can include properties in the form `defaultValue` that are not listed as input components, like the `created_at` property in the previous example.
 
 ### Per Input Default Value
 
 Alternatively, you can specify a `defaultValue` prop directly in `<Input>` components. React-admin will merge the input default values with the form default value (input > form):
 
 ```jsx
-export const PostCreate = (props) => (
-    <Create {...props}>
+export const PostCreate = () => (
+    <Create>
         <SimpleForm>
             <TextInput source="title" />
             <RichTextInput source="body" />
@@ -1199,11 +1199,11 @@ export const PostCreate = (props) => (
 );
 ```
 
-**Tip**: Per-input default values cannot be functions. For default values computed at render time, set the `initialValues` at the form level, as explained in the previous section. 
+**Tip**: Per-input default values cannot be functions. For default values computed at render time, set the `defaultValue` at the form level, as explained in the previous section. 
 
 ## Validation
 
-React-admin relies on [react-final-form](https://github.com/final-form/react-final-form) for the validation.
+React-admin relies on [react-hook-form](https://react-hook-form.com/) for the validation.
 
 To validate values submitted by a form, you can add a `validate` prop to the form component, to individual inputs, or even mix both approaches.
 
@@ -1230,8 +1230,8 @@ const validateUserCreation = (values) => {
     return errors
 };
 
-export const UserCreate = (props) => (
-    <Create {...props}>
+export const UserCreate = () => (
+    <Create>
         <SimpleForm validate={validateUserCreation}>
             <TextInput label="First Name" source="firstName" />
             <TextInput label="Age" source="age" />
@@ -1240,7 +1240,7 @@ export const UserCreate = (props) => (
 );
 ```
 
-**Tip**: The props you pass to `<SimpleForm>` and `<TabbedForm>` are passed to the [<Form>](https://final-form.org/docs/react-final-form/api/Form) of `react-final-form`.
+**Tip**: The props you pass to `<SimpleForm>` and `<TabbedForm>` are passed to the [useForm hook](https://react-hook-form.com/api/useform) of `react-hook-form`.
 
 **Tip**: The `validate` function can return a promise for asynchronous validation. See [the Server-Side Validation section](#server-side-validation) below.
 
@@ -1279,8 +1279,8 @@ const validateAge = [number(), minValue(18)];
 const validateZipCode = regex(/^\d{5}$/, 'Must be a valid Zip Code');
 const validateGender = choices(['m', 'f', 'nc'], 'Please choose one of the values');
 
-export const UserCreate = (props) => (
-    <Create {...props}>
+export const UserCreate = () => (
+    <Create>
         <SimpleForm>
             <TextInput label="First Name" source="firstName" validate={validateFirstName} />
             <TextInput label="Email" source="email" validate={validateEmail} />
@@ -1331,8 +1331,8 @@ const ageValidation = (value, allValues) => {
 const validateFirstName = [required(), maxLength(15)];
 const validateAge = [required(), number(), ageValidation];
 
-export const UserCreate = (props) => (
-    <Create {...props}>
+export const UserCreate = () => (
+    <Create>
         <SimpleForm>
             <TextInput label="First Name" source="firstName" validate={validateFirstName} />
             <TextInput label="Age" source="age" validate={validateAge}/>
@@ -1385,15 +1385,15 @@ export default {
 
 See the [Translation documentation](Translation.md#translation-messages) for details.
 
-**Tip**: Make sure to define validation functions or array of functions in a variable outside of your component, instead of defining them directly in JSX. This can result in a new function or array at every render, and trigger infinite rerender.
+**Tip**: Make sure to define validation functions or array of functions in a variable outside your component, instead of defining them directly in JSX. This can result in a new function or array at every render, and trigger infinite rerender.
 
 {% raw %}
 ```jsx
 const validateStock = [required(), number(), minValue(0)];
 
-export const ProductEdit = ({ ...props }) => (
-    <Edit {...props}>
-        <SimpleForm initialValues={{ stock: 0 }}>
+export const ProductEdit = () => (
+    <Edit>
+        <SimpleForm defaultValue={{ stock: 0 }}>
             ...
             {/* do this */}
             <NumberInput source="stock" validate={validateStock} />
@@ -1406,7 +1406,7 @@ export const ProductEdit = ({ ...props }) => (
 ```
 {% endraw %}
 
-**Tip**: The props of your Input components are passed to a `react-final-form` [Field](https://final-form.org/docs/react-final-form/api/Field) component.
+**Tip**: The props of your Input components are passed to a `react-hook-form` [useController](https://react-hook-form.com/api/usecontroller) hook.
 
 **Tip**: You can use *both* Form validation and input validation.
 
@@ -1443,8 +1443,8 @@ const validateUserCreation = async (values) => {
     return errors
 };
 
-export const UserCreate = (props) => (
-    <Create {...props}>
+export const UserCreate = () => (
+    <Create>
         <SimpleForm validate={validateUserCreation}>
             <TextInput label="First Name" source="firstName" />
             <TextInput label="Email" source="email" />
@@ -1470,13 +1470,13 @@ const validateEmailUnicity = async (value) => {
 
     }
 
-    return errors
+    return undefined;
 };
 
 const emailValidators = [required(), validateEmailUnicity];
 
-export const UserCreate = (props) => (
-    <Create {...props}>
+export const UserCreate = () => (
+    <Create>
         <SimpleForm validate={validateUserCreation}>
             ...
             <TextInput label="Email" source="email" validate={emailValidators} />
@@ -1486,7 +1486,32 @@ export const UserCreate = (props) => (
 );
 ```
 
-**Important**: Note that asynchronous validators are not supported on the `<ArrayInput>` component due to a limitation of [react-final-form-arrays](https://github.com/final-form/react-final-form-arrays).
+### Schema Validation
+
+`react-hook-form` supports schema validation with many libraries through its [`resolver` props](https://react-hook-form.com/api/useform#validationResolver). To use it, follow their [resolvers documentation](https://github.com/react-hook-form/resolvers). Here's an example using `yup`:
+
+```jsx
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { SimpleForm, TextInput, NumberInput } from 'react-admin';
+
+const schema = yup
+    .object()
+    .shape({
+        name: yup.string().required(),
+        age: yup.number().required(),
+    })
+    .required();
+
+const CustomerCreate = () => (
+    <Create>
+        <SimpleForm resolver={yupResolver(schema)}>
+            <TextInput source="name" />
+            <NumberInput source="age" />
+        </SimpleForm>
+    </Create>
+);
+```
 
 ## Submission Validation
 
@@ -1494,30 +1519,29 @@ The form can be validated by the server after its submission. In order to displa
 
 {% raw %}
 ```jsx
-import { useMutation } from 'react-admin';
+import * as React from 'react';
+import { useCallback } from 'react';
+import { Create, SimpleForm, TextInput, useCreate } from 'react-admin';
 
-export const UserCreate = (props) => {
-    const [mutate] = useMutation();
+export const UserCreate = () => {
+    const [create] = useCreate();
     const save = useCallback(
-        async (values) => {
+        async values => {
             try {
-                await mutate({
-                    type: 'create',
-                    resource: 'users',
-                    payload: { data: values },
-                }, { returnPromise: true });
+                await create('users', { data: values }, { returnPromise: true });
             } catch (error) {
                 if (error.body.errors) {
+                    // The shape of the returned validation errors must match the shape of the form
                     return error.body.errors;
                 }
             }
         },
-        [mutate],
+        [create]
     );
 
     return (
-        <Create undoable={false} {...props}>
-            <SimpleForm save={save}>
+        <Create>
+            <SimpleForm onSubmit={save}>
                 <TextInput label="First Name" source="firstName" />
                 <TextInput label="Age" source="age" />
             </SimpleForm>
@@ -1536,8 +1560,8 @@ export const UserCreate = (props) => {
 By default, pressing `ENTER` in any of the form fields submits the form - this is the expected behavior in most cases. However, some of your custom input components (e.g. Google Maps widget) may have special handlers for the `ENTER` key. In that case, to disable the automated form submission on enter, set the `submitOnEnter` prop of the form component to `false`:
 
 ```jsx
-export const PostEdit = (props) => (
-    <Edit {...props}>
+export const PostEdit = () => (
+    <Edit>
         <SimpleForm submitOnEnter={false}>
             ...
         </SimpleForm>
@@ -1552,12 +1576,12 @@ By default:
 - Submitting the form in the `<Create>` view redirects to the `<Edit>` view
 - Submitting the form in the `<Edit>` view redirects to the `<List>` view
 
-You can customize the redirection by setting the `redirect` prop of the form component. Possible values are "edit", "show", "list", and `false` to disable redirection. You may also specify a custom path such as `/my-custom-route`. For instance, to redirect to the `<Show>` view after edition:
+You can customize the redirection by setting the `redirect` prop on the `<Create>` or `<Edit>` components. Possible values are "edit", "show", "list", and `false` to disable redirection. You may also specify a custom path such as `/my-custom-route`. For instance, to redirect to the `<Show>` view after edition:
 
 ```jsx
-export const PostEdit = (props) => (
-    <Edit {...props}>
-        <SimpleForm redirect="show">
+export const PostEdit = () => (
+    <Edit redirect="show">
+        <SimpleForm>
             ...
         </SimpleForm>
     </Edit>
@@ -1568,11 +1592,11 @@ You can also pass a custom route (e.g. "/home") or a function as `redirect` prop
 
 ```jsx
 // redirect to the related Author show page
-const redirect = (basePath, id, data) => `/author/${data.author_id}/show`;
+const redirect = (resource, id, data) => `/author/${data.author_id}/show`;
 
-export const PostEdit = (props) => (
-    <Edit {...props}>
-        <SimpleForm redirect={redirect}>
+export const PostEdit = () => (
+    <Edit redirect={redirect}>
+        <SimpleForm>
             // ...
         </SimpleForm>
     </Edit>
@@ -1596,36 +1620,49 @@ The most common use case is to display two submit buttons in the `<Create>` view
 
 ![Form toolbar](./img/form-toolbar.png)
 
-For that use case, use the `<SaveButton>` component with a custom `redirect` prop:
+For that use case, use the `<SaveButton>` component with a custom `onSuccess` prop:
 
+{% raw %}
 ```jsx
 import * as React from "react";
-import { Create, SimpleForm, SaveButton, Toolbar } from 'react-admin';
+import { Create, SimpleForm, SaveButton, Toolbar, useRedirect } from 'react-admin';
 
-const PostCreateToolbar = props => (
-    <Toolbar {...props} >
-        <SaveButton
-            label="post.action.save_and_show"
-            redirect="show"
-            submitOnEnter={true}
-        />
-        <SaveButton
-            label="post.action.save_and_add"
-            redirect={false}
-            submitOnEnter={false}
-            variant="text"
-        />
-    </Toolbar>
-);
+const PostCreateToolbar = props => {
+    const redirect = useRedirect();
+    const notify = useNotify();
+    return (
+        <Toolbar {...props} >
+            <SaveButton
+                label="post.action.save_and_show"
+                submitOnEnter={true}
+            />
+            <SaveButton
+                label="post.action.save_and_add"
+                mutationOptions={{
+                    onSuccess: data => {
+                        notify('ra.notification.created', {
+                            type: 'info',
+                            messageArgs: { smart_count: 1 },
+                        });
+                        redirect(false);
+                    }}
+                }
+                submitOnEnter={false}
+                variant="text"
+            />
+        </Toolbar>
+    );
+};
 
-export const PostCreate = (props) => (
-    <Create {...props}>
-        <SimpleForm toolbar={<PostCreateToolbar />} redirect="show">
+export const PostCreate = () => (
+    <Create redirect="show">
+        <SimpleForm toolbar={<PostCreateToolbar />}>
             ...
         </SimpleForm>
     </Create>
 );
 ```
+{% endraw %}
 
 Another use case is to remove the `<DeleteButton>` from the toolbar in an edit view. In that case, create a custom toolbar containing only the `<SaveButton>` as a child:
 
@@ -1639,8 +1676,8 @@ const PostEditToolbar = props => (
     </Toolbar>
 );
 
-export const PostEdit = (props) => (
-    <Edit {...props}>
+export const PostEdit = () => (
+    <Edit>
         <SimpleForm toolbar={<PostEditToolbar />}>
             // ...
         </SimpleForm>
@@ -1654,8 +1691,8 @@ In the default `<Toolbar>`, the `<SaveButton>` is disabled when the form is `pri
 import * as React from 'react';
 import { Edit, SimpleForm, Toolbar } from 'react-admin';
 
-export const PostEdit = (props) => (
-    <Edit {...props}>
+export const PostEdit = () => (
+    <Edit>
         <SimpleForm toolbar={<Toolbar alwaysEnableSaveButton />}>
             ...
         </SimpleForm>
@@ -1663,7 +1700,7 @@ export const PostEdit = (props) => (
 );
 ```
 
-But if you want to customize the `<Toolbar>` (to remove the `<DeleteButton>` for example), you have to manage the _disabled_ behaviour of the `<SaveButton>` by yourself:
+But if you want to customize the `<Toolbar>` (to remove the `<DeleteButton>` for example), you have to manage the _disabled_ behavior of the `<SaveButton>` by yourself:
 
 ```jsx
 import * as React from "react";
@@ -1675,8 +1712,8 @@ const PostEditToolbar = props => (
     </Toolbar>
 );
 
-export const PostEdit = (props) => (
-    <Edit {...props}>
+export const PostEdit = () => (
+    <Edit>
         <SimpleForm toolbar={<PostEditToolbar />}>
             // ...
         </SimpleForm>
@@ -1687,18 +1724,15 @@ export const PostEdit = (props) => (
 Here are the props received by the `Toolbar` component when passed as the `toolbar` prop of the `SimpleForm` or `TabbedForm` components:
 
 * `alwaysEnableSaveButton`: Force enabling the `<SaveButton>`. If it's not defined, the `<SaveButton>` will be enabled using the `pristine` prop (disabled if pristine, enabled otherwise).
-* `handleSubmitWithRedirect`: The function to call in order to submit the form. It accepts a single parameter overriding the form's default redirect.
-* `handleSubmit` which is the same prop as in [react-final-form](https://final-form.org/docs/react-final-form/types/FormRenderProps#handlesubmit)
 * `invalid`: A boolean indicating whether the form is invalid
 * `pristine`: A boolean indicating whether the form is pristine (eg: no inputs have been changed yet)
-* `redirect`: The default form's redirect
 * `saving`: A boolean indicating whether a save operation is ongoing.
 * `submitOnEnter`: A boolean indicating whether the form should be submitted when pressing `enter`
 * `width`: A string apply to the mobile or desktop classes depending on its value. Pass `xs` to display the mobile version.
 
 ### CSS API
 
-The `<Toolbar>` accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
+The `<Toolbar>` accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most MUI components, see their [documentation about it](https://mui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
 | Rule name        | Description                                                                     |
 | ---------------- | ------------------------------------------------------------------------------- |
@@ -1708,26 +1742,21 @@ The `<Toolbar>` accepts the usual `className` prop but you can override many cla
 | `mobileToolbar`  | Applied to the underlying `MuiToolbar` component when `width` prop is `xs`      |
 | `spacer`         | Applied to the div below the underlying `MuiToolbar` used as spacer             |
 
-To override the style of all instances of `<Toolbar>` components using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaToolbar` key.
+To override the style of all instances of `<Toolbar>` components using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaToolbar` key.
 
-**Tip**: Use react-admin's `<Toolbar>` component instead of material-ui's `<Toolbar>` component. The former builds upon the latter and adds support for an alternative mobile layout (and is therefore responsive).
+**Tip**: Use react-admin's `<Toolbar>` component instead of MUI's `<Toolbar>` component. The former builds upon the latter and adds support for an alternative mobile layout (and is therefore responsive).
 
-**Tip**: Don't forget to also set the `redirect` prop of the Form component to handle submission by the `ENTER` key.
+**Tip**: To alter the form values before submitting, you should use the `transform` prop on the `SaveButton`. See [Altering the Form Values before Submitting](#altering-the-form-values-before-submitting) for more information and examples.
 
-**Tip**: To alter the form values before submitting, you should use the `handleSubmit` prop. See [Altering the Form Values before Submitting](#altering-the-form-values-before-submitting) for more information and examples.
-
-**Tip**: If you want to include a custom `Button` in a `<Toolbar>` that doesn't render a react-admin `<Button>`, the props injected by `<Toolbar>` to its children (`handleSubmit`, `handleSubmitWithRedirect`, `onSave`, `invalid`, `pristine`, `saving`, and `submitOnEnter`) will cause React warnings. You'll need to wrap your custom `Button` in another component and ignore the injected props, as follows:
+**Tip**: If you want to include a custom `Button` in a `<Toolbar>` that doesn't render a react-admin `<Button>`, the props injected by `<Toolbar>` to its children (`invalid`, `pristine`, `saving`, and `submitOnEnter`) will cause React warnings. You'll need to wrap your custom `Button` in another component and ignore the injected props, as follows:
 
 ```jsx
 import * as React from "react";
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 
 const CustomButton = props => <Button label="My Custom Button" {...props} />
 
 const ToolbarCustomButton = ({
-  handleSubmit,
-  handleSubmitWithRedirect,
-  onSave,
   invalid,
   pristine,
   saving,
@@ -1761,8 +1790,8 @@ You can also [wrap inputs inside containers](#custom-row-container), or [create 
 By default, react-admin input components use the Material Design "filled" variant. If you want to use the "standard" or "outlined" variants, you can either set the `variant` prop on each Input component individually, or set the `variant` prop directly on the Form component. In that case, the Form component will transmit the `variant` to each Input.
 
 ```jsx
-export const PostEdit = (props) => (
-    <Edit {...props}>
+export const PostEdit = () => (
+    <Edit>
         <SimpleForm variant="standard">
             ...
         </SimpleForm>
@@ -1777,8 +1806,8 @@ export const PostEdit = (props) => (
 +TextFieldInForm.defaultProps = TextField.defaultProps;
 
 ```jsx
-export const PostEdit = (props) => (
-    <Edit {...props}>
+export const PostEdit = () => (
+    <Edit>
         <SimpleForm variant="standard">
 -           <TextField source="title" />
 +           <TextFieldInForm source="title" />
@@ -1792,9 +1821,30 @@ export const PostEdit = (props) => (
 By default, react-admin input components use the Material Design "dense" margin. If you want to use the "normal" or "none" margins, you can either set the `margin` prop on each Input component individually, or set the `margin` prop directly on the Form component. In that case, the Form component will transmit the `margin` to each Input.
 
 ```jsx
-export const PostEdit = (props) => (
-    <Edit {...props}>
+export const PostEdit = () => (
+    <Edit>
         <SimpleForm margin="normal">
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
+### SimpleForm component
+
+By default, the `SimpleForm` view renders the main form's children inside a `CardContentInner`, an internal `react-admin` component which returns a MUI `<CardContent>` element.
+
+To customize that, you can override the main container by passing a `component` prop :
+
+```jsx
+const MyChildrenContainerComponent = props => (
+    <div>{props.children}</div>
+);
+
+// Use a custom component as root container of the form's children 
+const PostEdit = () => (
+    <Edit>
+        <SimpleForm component={MyChildrenContainerComponent}>
             ...
         </SimpleForm>
     </Edit>
@@ -1812,16 +1862,16 @@ import {
     SimpleForm,
     TextInput,
 } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/material/styles';
 
 const useStyles = makeStyles({
     inlineBlock: { display: 'inline-flex', marginRight: '1rem' },
 });
 
-export const UserEdit = props => {
+export const UserEdit = () => {
     const classes = useStyles();
     return (
-        <Edit {...props}>
+        <Edit>
             <SimpleForm>
                 <TextInput source="first_name" formClassName={classes.inlineBlock} />
                 <TextInput source="last_name" formClassName={classes.inlineBlock} />
@@ -1838,8 +1888,8 @@ export const UserEdit = props => {
 If you just need a form row to take the entire form width, use the `fullWidth` prop instead:
 
 ```jsx
-export const UserEdit = props => (
-    <Edit {...props}>
+export const UserEdit = () => (
+    <Edit>
         <SimpleForm>
             <TextInput source="first_name" fullWidth />
             <TextInput source="last_name" fullWidth />
@@ -1854,8 +1904,8 @@ export const UserEdit = props => (
 You may want to customize the styles of Input components by wrapping them inside a container with a custom style. Unfortunately, this doesn't work:
 
 ```jsx
-export const PostCreate = props => (
-    <Create {...props}>
+export const PostCreate = () => (
+    <Create>
         <SimpleForm>
             {/* this does not work */}
             <div className="special-input">
@@ -1880,8 +1930,8 @@ const MyTextInput = props => (
         <TextInput {...props} />
     </div>
 )
-export const PostCreate = (props) => (
-    <Create {...props}>
+export const PostCreate = () => (
+    <Create>
         <SimpleForm>
             {/* this works */}
             <MyTextInput source="title" />
@@ -1898,12 +1948,12 @@ The `<SimpleForm>` and `<TabbedForm>` layouts are quite simple. In order to bett
 
 ![custom form layout](./img/custom-form-layout.png)
  
-Here is an example of such custom form, taken from the Posters Galore demo. It uses [material-ui's `<Box>` component](https://material-ui.com/components/box/), and it's a good starting point for your custom form layouts.
+Here is an example of such custom form, taken from the Posters Galore demo. It uses [MUI's `<Box>` component](https://mui.com/components/box/), and it's a good starting point for your custom form layouts.
 
 ```jsx
 import * as React from "react";
 import {
-    FormWithRedirect,
+    Form,
     DateInput,
     SelectArrayInput,
     TextInput,
@@ -1911,7 +1961,7 @@ import {
     DeleteButton,
     NullableBooleanInput,
 } from 'react-admin';
-import { Typography, Box, Toolbar } from '@material-ui/core';
+import { Typography, Box, Toolbar } from '@mui/material';
 
 const segments = [
     { id: 'compulsive', name: 'Compulsive' },
@@ -1923,7 +1973,7 @@ const segments = [
 ];
 
 const VisitorForm = props => (
-    <FormWithRedirect
+    <Form
         {...props}
         render={formProps => (
             // here starts the custom form layout
@@ -1971,10 +2021,7 @@ const VisitorForm = props => (
                 </Box>
                 <Toolbar>
                     <Box display="flex" justifyContent="space-between" width="100%">
-                        <SaveButton
-                            saving={formProps.saving}
-                            handleSubmitWithRedirect={formProps.handleSubmitWithRedirect}
-                        />
+                        <SaveButton saving={formProps.saving} />
                         <DeleteButton record={formProps.record} />
                     </Box>
                 </Toolbar>
@@ -1984,55 +2031,45 @@ const VisitorForm = props => (
 );
 ```
 
-This custom form layout component uses the `FormWithRedirect` component, which wraps react-final-form's `Form` component to handle redirection logic. It also uses react-admin's `<SaveButton>` and a `<DeleteButton>`.
+This custom form layout component uses the `Form` component, which leverages react-hook-form's `useForm` hook. It also uses react-admin's `<SaveButton>` and a `<DeleteButton>`.
 
 **Tip**: When `Input` components have a `resource` prop, they use it to determine the input label. `<SimpleForm>` and `<TabbedForm>` inject this `resource` prop to `Input` components automatically. When you use a custom form layout, pass the `resource` prop manually - unless the `Input` has a `label` prop.
 
 To use this form layout, simply pass it as child to an `Edit` component:
 
 ```jsx
-const VisitorEdit = props => (
-    <Edit {...props}>
+const VisitorEdit = () => (
+    <Edit>
         <VisitorForm />
     </Edit>
 );
 ```
 
-**Tip**: `FormWithRedirect` contains some logic that you may not want. In fact, nothing forbids you from using a react-final-form [Form](https://final-form.org/docs/react-final-form/api/Form) component as root component for a custom form layout. You'll have to set initial values based the injected `record` prop manually, as follows:
+**Tip**: `Form` contains some logic that you may not want. In fact, nothing forbids you from using a react-hook-form [useForm](https://react-hook-form.com/api/useform) hook to create your own form. You'll have to set default values based the injected `record` prop manually, as follows:
 
 {% raw %}
 ```jsx
-import { sanitizeEmptyValues } from 'react-admin';
-import { Form } from 'react-final-form';
-import arrayMutators from 'final-form-arrays';
-import { CardContent, Typography, Box } from '@material-ui/core';
+import { useForm } from 'react-hook-form';
+import { CardContent, Typography, Box } from '@mui/material';
 
 // the parent component (Edit or Create) injects these props to their child
-const VisitorForm = ({ basePath, record, save, saving, version }) => {
+const VisitorForm = ({ record, save, saving, version }) => {
+    const form = useForm({
+        defaultValues: record,
+    });
+
     const submit = values => {
-        // React-final-form removes empty values from the form state.
-        // To allow users to *delete* values, this must be taken into account 
-        save(sanitizeEmptyValues(record, values));
+        save(values);
     };
+
     return (
-        <Form
-            initialValues={record}
-            onSubmit={submit}
-            mutators={{ ...arrayMutators }} // necessary for ArrayInput
-            subscription={defaultSubscription} // don't redraw entire form each time one field changes
+        <form
+            onSubmit={form.handleSubmit(submit)}
             key={version} // support for refresh button
-            keepDirtyOnReinitialize
-            render={formProps => (
+        >
                 {/* render your custom form here */}
-            )}
-        />
+        </form>
     );
-};
-const defaultSubscription = {
-    submitting: true,
-    pristine: true,
-    valid: true,
-    invalid: true,
 };
 ```
 {% endraw %}
@@ -2046,8 +2083,8 @@ React-admin keeps track of the form state, so it can detect when the user leaves
 Warning about unsaved changes is an opt-in feature: you must set the `warnWhenUnsavedChanges` prop in the form component to enable it:
 
 ```jsx
-export const TagEdit = props => (
-    <Edit {...props}>
+export const TagEdit = () => (
+    <Edit>
         <SimpleForm warnWhenUnsavedChanges>
             <TextField source="id" />
             <TextInput source="name" />
@@ -2057,21 +2094,24 @@ export const TagEdit = props => (
 );
 ```
 
-And that's all. `warnWhenUnsavedChanges` works for both `<SimpleForm>` and `<TabbedForm>`. In fact, this feature is provided by a custom hook called `useWarnWhenUnsavedChanges()`, which you can use in your own react-final-form forms.
+And that's all. `warnWhenUnsavedChanges` works for both `<SimpleForm>` and `<TabbedForm>`. In fact, this feature is provided by a custom hook called `useWarnWhenUnsavedChanges()`, which you can use in your own react-hook-form forms.
 
 ```jsx
-import { Form, Field } from 'react-final-form';
+import { useForm } from 'react-hook-form';
 import { useWarnWhenUnsavedChanges } from 'react-admin';
 
-const MyForm = () => (
-    <Form onSubmit={() => { /*...*/}} component={FormBody} />
-);
+const MyForm = ({ onSubmit }) => {
+    const form = useForm();
+    return (
+        <Form onSubmit={form.handleSubmit(onSubmit)} />
+    );
+}
 
-const FormBody = ({ handleSubmit }) => {
+const Form = ({ onSubmit }) => {
     // enable the warn when unsaved changes feature
     useWarnWhenUnsavedChanges(true);
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={onSubmit}>
             <label id="firstname-label">First Name</label>
             <Field name="firstName" aria-labelledby="firstname-label" component="input" />
             <button type="submit">Submit</button>
@@ -2081,23 +2121,6 @@ const FormBody = ({ handleSubmit }) => {
 ```
 
 **Tip**: You can customize the message displayed in the confirm dialog by setting the `ra.message.unsaved_changes` message in your i18nProvider.
-
-## Setting Empty Values To Null
-
-`<SimpleForm>` and `<TabbedForm>` recreate deleted or missing attributes based on its `initialValues` in order to send them to the data provider with a `null` value, as most APIs requires all attributes for a given record, even if they are nullable.
-
-It is possible to opt-out this default behavior by passing the `sanitizeEmptyValues` prop:
-
-```jsx
-export const PostEdit = (props) => (
-    <Edit {...props}>
-        <SimpleForm sanitizeEmptyValues={false}>
-            <TextInput source="title" />
-            <JsonInput source="body" />
-        </SimpleForm>
-    </Edit>
-);
-```
 
 ## Recipes
 
@@ -2111,33 +2134,49 @@ Here is an example inside a `Create` view with a `SimpleForm` and a custom `Tool
 
 {% raw %}
 ```jsx
-const UserCreateToolbar = ({ permissions, ...props }) =>
-    <Toolbar {...props}>
-        <SaveButton
-            label="user.action.save_and_show"
-            redirect="show"
-            submitOnEnter={true}
-        />
-        {permissions === 'admin' &&
+const UserCreateToolbar = ({ permissions, ...props }) => {
+    const notify = useNotify();
+    const redirect = useRedirect();
+    return (
+        <Toolbar {...props}>
             <SaveButton
-                label="user.action.save_and_add"
-                redirect={false}
-                submitOnEnter={false}
-                variant="text"
-            />}
-    </Toolbar>;
-
-export const UserCreate = ({ permissions, ...props }) =>
-    <Create {...props}>
-        <SimpleForm
-            toolbar={<UserCreateToolbar permissions={permissions} />}
-            initialValues={{ role: 'user' }}
-        >
-            <TextInput source="name" validate={[required()]} />
+                label="user.action.save_and_show"            
+                submitOnEnter={true}
+            />
             {permissions === 'admin' &&
-                <TextInput source="role" validate={[required()]} />}
-        </SimpleForm>
-    </Create>;
+                <SaveButton
+                    label="user.action.save_and_add"
+                    mutationOptions={{
+                        onSuccess: data => {
+                            notify('ra.notification.created', {
+                                type: 'info',
+                                messageArgs: { smart_count: 1 },
+                            });
+                            redirect(false);
+                        }
+                    }}
+                    submitOnEnter={false}
+                    variant="text"
+                />}
+        </Toolbar>
+    );
+};
+
+export const UserCreate = () => {
+    const { permissions } = useGetPermissions();
+    return (
+        <Create redirect="show">
+            <SimpleForm
+                toolbar={<UserCreateToolbar permissions={permissions} />}
+                defaultValue={{ role: 'user' }}
+            >
+                <TextInput source="name" validate={[required()]} />
+                {permissions === 'admin' &&
+                    <TextInput source="role" validate={[required()]} />}
+            </SimpleForm>
+        </Create>
+    );
+}
 ```
 {% endraw %}
 
@@ -2147,9 +2186,9 @@ This also works inside an `Edition` view with a `TabbedForm`, and you can hide a
 
 {% raw %}
 ```jsx
-export const UserEdit = ({ permissions, ...props }) =>
-    <Edit title={<UserTitle />} {...props}>
-        <TabbedForm initialValues={{ role: 'user' }}>
+export const UserEdit = ({ permissions }) =>
+    <Edit title={<UserTitle />}>
+        <TabbedForm defaultValue={{ role: 'user' }}>
             <FormTab label="user.form.summary">
                 {permissions === 'admin' && <TextInput disabled source="id" />}
                 <TextInput source="name" validate={required()} />
@@ -2165,20 +2204,20 @@ export const UserEdit = ({ permissions, ...props }) =>
 
 ### Changing The Success or Failure Notification Message
 
-Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a custom success side effect function as [the `<Edit onSuccess>` prop](#onsuccess):
+Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created" / "Element updated"). You can customize this message by passing a custom success side effect function as [the `<Edit onSuccess>` prop](#changing-the-success-or-failure-notification-message):
 
 ```jsx
 import { Edit, useNotify, useRedirect } from 'react-admin';
 
-const PostEdit = props => {
+const PostEdit = () => {
     const notify = useNotify();
     const redirect = useRedirect();
     const onSuccess = () => {
         notify('Post saved successfully'); // default message is 'ra.notification.updated'
-        redirect('list', props.basePath);
+        redirect('list', 'posts');
     }
     return (
-        <Edit {...props} onSuccess={onSuccess}>
+        <Edit mutationOptions={{ onSuccess }}>
             ...
         </Edit>
     );
@@ -2193,26 +2232,26 @@ You can do the same for error notifications, e.g. to display a different message
 import * as React from 'react';
 import { Edit, useNotify, useRedirect } from 'react-admin';
 
-const PostEdit = props => {
+const PostEdit = () => {
     const notify = useNotify();
     const redirect = useRedirect();
-    const onFailure = (error) => {
+    const onError = (error) => {
         if (error.code == 123) {
-            notify('Could not save changes: concurrent edition in progress', 'warning');
+            notify('Could not save changes: concurrent edition in progress', { type: 'warning' });
         } else {
-            notify('ra.notification.http_error', 'warning')
+            notify('ra.notification.http_error', { type: 'warning' });
         }
-        redirect('list', props.basePath);
+        redirect('list', 'posts');
     }
     return (
-        <Edit {...props} onFailure={onFailure}>
+        <Edit mutationOptions={{ onError }}>
             ...
         </Edit>
     );
 }
 ```
 
-If the form has several save buttons, you can also pass a custom `onSuccess` or `onFailure` function to the `<SaveButton>` components, to have a different message and/or redirection depending on the submit button clicked.
+If the form has several save buttons, you can also pass a custom `onSuccess` or `onError` function to the `<SaveButton>` components, to have a different message and/or redirection depending on the submit button clicked.
 
 **Tip**: The notify message will be translated.
 
@@ -2236,8 +2275,8 @@ const PostCreateToolbar = props => (
     </Toolbar>
 );
 
-const PostCreate = (props) => (
-    <Create {...props}>
+const PostCreate = () => (
+    <Create>
         <SimpleForm toolbar={<PostCreateToolbar />}>
             // ...
         </SimpleForm>
@@ -2269,52 +2308,31 @@ const dataProvider = {
 }
 ```
 
-### Using `onSave` To Alter the Form Submission Behavior
-
-**Deprecated**: use the `<SaveButton onSuccess>` prop instead.
-
-React-admin provides a way to override the data provider call executed upon submission, and its side effects, in the `<SaveButton>`. It's called `onSave`, and here is how you would use it:
+**Tip**: `<Edit>`'s transform prop function also get the `previousData` in its second argument:
 
 ```jsx
-import * as React from 'react';
-import { useCallback } from 'react';
-import {
-    SaveButton,
-    Toolbar,
-    useCreate,
-    useRedirect,
-    useNotify,
-} from 'react-admin';
+const PostEditToolbar = props => (
+    <Toolbar {...props}>
+        <SaveButton submitOnEnter={true} />
+        <SaveButton
+            label="post.action.save_and_notify"
+            transform={(data, { previousData }) => ({
+                ...data,
+                avoidChangeField: previousData.avoidChangeField
+            })}
+            submitOnEnter={false}
+        />
+    </Toolbar>
+);
 
-const SaveWithNoteButton = props => {
-    const [create] = useCreate('posts');
-    const redirectTo = useRedirect();
-    const notify = useNotify();
-    const { basePath } = props;
-    const handleSave = useCallback(
-        (values, redirect) => {
-            create(
-                {
-                    payload: { data: { ...values, average_note: 10 } },
-                },
-                {
-                    onSuccess: ({ data: newRecord }) => {
-                        notify('ra.notification.created', 'info', {
-                            smart_count: 1,
-                        });
-                        redirectTo(redirect, basePath, newRecord.id, newRecord);
-                    },
-                }
-            );
-        },
-        [create, notify, redirectTo, basePath]
-    );
-    // set onSave props instead of handleSubmitWithRedirect
-    return <SaveButton {...props} onSave={handleSave} />;
-};
+const PostEdit = () => (
+    <Edit>
+        <SimpleForm toolbar={<PostEditToolbar />}>
+            // ...
+        </SimpleForm>
+    </Edit>
+);
 ```
-
-The `onSave` value should be a function expecting 2 arguments: the form values to save, and the redirection to perform.
 
 ### Grouping Inputs
 
@@ -2324,7 +2342,7 @@ For this, you can use the `<FormGroupContextProvider>`, which accepts a group na
 
 ```jsx
 import { Edit, SimpleForm, TextInput, FormGroupContextProvider, useFormGroup } from 'react-admin';
-import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@material-ui/core';
+import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
 
 const PostEdit = (props) => (
     <Edit {...props}>

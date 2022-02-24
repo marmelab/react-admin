@@ -1,17 +1,15 @@
 import * as React from 'react';
 import {
+    CreateButton,
+    ExportButton,
+    FilterButton,
     List,
-    ListProps,
-    Filter,
     SearchInput,
     SelectInput,
     TopToolbar,
-    CreateButton,
-    ExportButton,
     useGetIdentity,
 } from 'react-admin';
-import { Route } from 'react-router';
-import { makeStyles } from '@material-ui/core/styles';
+import { matchPath, useLocation } from 'react-router';
 
 import { DealListContent } from './DealListContent';
 import { DealCreate } from './DealCreate';
@@ -19,15 +17,18 @@ import { DealShow } from './DealShow';
 import { OnlyMineInput } from './OnlyMineInput';
 import { typeChoices } from './types';
 
-export const DealList = (props: ListProps) => {
+export const DealList = () => {
     const { identity } = useGetIdentity();
+    const location = useLocation();
+    const matchCreate = matchPath('/deals/create', location.pathname);
+    const matchShow = matchPath('/deals/:id/show', location.pathname);
+
     return identity ? (
         <>
             <List
-                {...props}
                 perPage={100}
                 sort={{ field: 'index', order: 'ASC' }}
-                filters={<DealFilters />}
+                filters={dealFilters}
                 filterDefaultValues={{ sales_id: identity && identity?.id }}
                 actions={<DealActions />}
                 pagination={false}
@@ -35,44 +36,27 @@ export const DealList = (props: ListProps) => {
             >
                 <DealListContent />
             </List>
-            <Route path="/deals/create">
-                {({ match }) => <DealCreate open={!!match} />}
-            </Route>
-            <Route path="/deals/:id/show">
-                {({ match }) =>
-                    !!match ? (
-                        <DealShow open={!!match} id={match?.params?.id} />
-                    ) : null
-                }
-            </Route>
+            <DealCreate open={!!matchCreate} />
+            <DealShow open={!!matchShow} id={matchShow?.params.id} />
         </>
     ) : null;
 };
 
-const DealFilters = (props: any) => (
-    <Filter {...props}>
-        <SearchInput source="q" alwaysOn />
-        <OnlyMineInput alwaysOn />
-        <SelectInput source="type" choices={typeChoices} />
-    </Filter>
-);
+const dealFilters = [
+    <SearchInput source="q" alwaysOn />,
+    <OnlyMineInput alwaysOn />,
+    <SelectInput source="type" choices={typeChoices} />,
+];
 
-const useActionStyles = makeStyles(theme => ({
-    createButton: {
-        marginLeft: theme.spacing(2),
-    },
-}));
-const DealActions = (props: any) => {
-    const classes = useActionStyles();
+const DealActions = () => {
     return (
         <TopToolbar>
-            <DealFilters context="button" />
+            <FilterButton />
             <ExportButton />
             <CreateButton
-                basePath="/deals"
                 variant="contained"
                 label="New Deal"
-                className={classes.createButton}
+                sx={{ marginLeft: 2 }}
             />
         </TopToolbar>
     );

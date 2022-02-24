@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { FC, useState, useEffect } from 'react';
 import expect from 'expect';
-import { render, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 import AuthContext from './AuthContext';
 import useLogout from './useLogout';
-import useNotify from '../sideEffect/useNotify';
+import { useNotify } from '../notification/useNotify';
 import { AuthProvider } from '../types';
 
 let loggedIn = true;
@@ -23,8 +24,12 @@ const authProvider: AuthProvider = {
     checkAuth: () =>
         loggedIn ? Promise.resolve() : Promise.reject('bad method'),
     checkError: params => {
-        if (params instanceof Error && params.message === 'denied') {
-            return Promise.reject(new Error('logout'));
+        if (params instanceof Error) {
+            return Promise.reject(
+                new Error(
+                    params.message === 'denied' ? 'logout' : params.message
+                )
+            );
         }
         return Promise.resolve();
     },
@@ -47,7 +52,7 @@ const TestComponent = ({
 };
 
 jest.mock('./useLogout');
-jest.mock('../sideEffect/useNotify');
+jest.mock('../notification/useNotify');
 
 //@ts-expect-error
 useLogout.mockImplementation(() => {
@@ -58,6 +63,14 @@ const notify = jest.fn();
 //@ts-expect-error
 useNotify.mockImplementation(() => notify);
 
+const TestWrapper: FC = ({ children }) => (
+    <MemoryRouter>
+        <AuthContext.Provider value={authProvider}>
+            <Routes>{children}</Routes>
+        </AuthContext.Provider>
+    </MemoryRouter>
+);
+
 describe('useLogoutIfAccessDenied', () => {
     afterEach(() => {
         //@ts-expect-error
@@ -66,56 +79,56 @@ describe('useLogoutIfAccessDenied', () => {
         authProvider.login('');
     });
 
-    it('should not logout if passed no error', async () => {
-        const { queryByText } = render(
-            <AuthContext.Provider value={authProvider}>
-                <TestComponent />
-            </AuthContext.Provider>
-        );
-        await waitFor(() => {
-            expect(authProvider.logout).toHaveBeenCalledTimes(0);
-            expect(notify).toHaveBeenCalledTimes(0);
-            expect(queryByText('logged in')).not.toBeNull();
-        });
-    });
-
     it('should not log out if passed an error that does not make the authProvider throw', async () => {
-        const { queryByText } = render(
-            <AuthContext.Provider value={authProvider}>
-                <TestComponent error={new Error()} />
-            </AuthContext.Provider>
+        render(
+            <Route path="/" element={<TestComponent error={new Error()} />} />,
+            {
+                wrapper: TestWrapper,
+            }
         );
         await waitFor(() => {
             expect(authProvider.logout).toHaveBeenCalledTimes(0);
             expect(notify).toHaveBeenCalledTimes(0);
-            expect(queryByText('logged in')).not.toBeNull();
+            expect(screen.queryByText('logged in')).not.toBeNull();
         });
     });
 
     it('should logout if passed an error that makes the authProvider throw', async () => {
-        const { queryByText } = render(
-            <AuthContext.Provider value={authProvider}>
-                <TestComponent error={new Error('denied')} />
-            </AuthContext.Provider>
+        render(
+            <Route
+                path="/"
+                element={<TestComponent error={new Error('denied')} />}
+            />,
+            {
+                wrapper: TestWrapper,
+            }
         );
         await waitFor(() => {
             expect(authProvider.logout).toHaveBeenCalledTimes(1);
             expect(notify).toHaveBeenCalledTimes(1);
-            expect(queryByText('logged in')).toBeNull();
+            expect(screen.queryByText('logged in')).toBeNull();
         });
     });
 
     it('should not send multiple notifications if already logged out', async () => {
-        const { queryByText } = render(
-            <AuthContext.Provider value={authProvider}>
-                <TestComponent error={new Error('denied')} />
-                <TestComponent error={new Error('denied')} />
-            </AuthContext.Provider>
+        render(
+            <Route
+                path="/"
+                element={
+                    <>
+                        <TestComponent error={new Error('denied')} />
+                        <TestComponent error={new Error('denied')} />
+                    </>
+                }
+            />,
+            {
+                wrapper: TestWrapper,
+            }
         );
         await waitFor(() => {
             expect(authProvider.logout).toHaveBeenCalledTimes(1);
             expect(notify).toHaveBeenCalledTimes(1);
-            expect(queryByText('logged in')).toBeNull();
+            expect(screen.queryByText('logged in')).toBeNull();
         });
     });
 
@@ -129,52 +142,137 @@ describe('useLogoutIfAccessDenied', () => {
                     index++; // answers immediately first, then after 100ms the second time
                 }),
         };
-        const { queryByText } = render(
-            <AuthContext.Provider value={delayedAuthProvider}>
-                <TestComponent />
-                <TestComponent />
-            </AuthContext.Provider>
+        render(
+            <MemoryRouter>
+                <AuthContext.Provider value={delayedAuthProvider}>
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={
+                                <>
+                                    <TestComponent />
+                                    <TestComponent />
+                                </>
+                            }
+                        />
+                    </Routes>
+                </AuthContext.Provider>
+            </MemoryRouter>
         );
         await waitFor(() => {
             expect(authProvider.logout).toHaveBeenCalledTimes(2); /// two logouts, but only one notification
-            expect(notify).toHaveBeenCalledTimes(1);
-            expect(queryByText('logged in')).toBeNull();
         });
+        expect(notify).toHaveBeenCalledTimes(1);
+        expect(screen.queryByText('logged in')).toBeNull();
     });
 
     it('should logout without showing a notification if disableAuthentication is true', async () => {
-        const { queryByText } = render(
-            <AuthContext.Provider value={authProvider}>
-                <TestComponent
-                    error={new Error('denied')}
-                    disableNotification
-                />
-            </AuthContext.Provider>
+        render(
+            <Route
+                path="/"
+                element={
+                    <TestComponent
+                        error={new Error('denied')}
+                        disableNotification
+                    />
+                }
+            />,
+            {
+                wrapper: TestWrapper,
+            }
         );
         await waitFor(() => {
             expect(authProvider.logout).toHaveBeenCalledTimes(1);
             expect(notify).toHaveBeenCalledTimes(0);
-            expect(queryByText('logged in')).toBeNull();
+            expect(screen.queryByText('logged in')).toBeNull();
         });
     });
 
     it('should logout without showing a notification if authProvider returns error with message false', async () => {
-        const { queryByText } = render(
-            <AuthContext.Provider
-                value={{
-                    ...authProvider,
-                    checkError: () => {
-                        return Promise.reject({ message: false });
-                    },
-                }}
-            >
-                <TestComponent />
-            </AuthContext.Provider>
+        render(
+            <MemoryRouter>
+                <AuthContext.Provider
+                    value={{
+                        ...authProvider,
+                        checkError: () => {
+                            return Promise.reject({ message: false });
+                        },
+                    }}
+                >
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={
+                                <>
+                                    <TestComponent />
+                                </>
+                            }
+                        />
+                    </Routes>
+                </AuthContext.Provider>
+            </MemoryRouter>
         );
         await waitFor(() => {
             expect(authProvider.logout).toHaveBeenCalledTimes(1);
             expect(notify).toHaveBeenCalledTimes(0);
-            expect(queryByText('logged in')).toBeNull();
+            expect(screen.queryByText('logged in')).toBeNull();
         });
+    });
+
+    it('should notify if passed an error with a message that makes the authProvider throw', async () => {
+        render(
+            <Route
+                path="/"
+                element={<TestComponent error={new Error('Test message')} />}
+            />,
+            {
+                wrapper: TestWrapper,
+            }
+        );
+        await waitFor(() => {
+            expect(authProvider.logout).toHaveBeenCalledTimes(1);
+            expect(notify).toHaveBeenCalledTimes(1);
+            expect(notify.mock.calls[0][0]).toEqual('Test message');
+            expect(screen.queryByText('logged in')).toBeNull();
+        });
+    });
+
+    it('should not logout the user if logoutUser is set to false', async () => {
+        render(
+            <MemoryRouter>
+                <AuthContext.Provider
+                    value={{
+                        ...authProvider,
+                        checkError: () => {
+                            return Promise.reject({
+                                logoutUser: false,
+                                redirectTo: '/unauthorized',
+                            });
+                        },
+                    }}
+                >
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={
+                                <>
+                                    <TestComponent />
+                                </>
+                            }
+                        />
+                        <Route
+                            path="/unauthorized"
+                            element={<p>unauthorized</p>}
+                        />
+                    </Routes>
+                </AuthContext.Provider>
+            </MemoryRouter>
+        );
+        await waitFor(() => {
+            expect(authProvider.logout).toHaveBeenCalledTimes(0);
+        });
+        expect(notify).toHaveBeenCalledTimes(1);
+        expect(screen.queryByText('logged in')).toBeNull();
+        expect(screen.queryByText('unauthorized')).not.toBeNull();
     });
 });

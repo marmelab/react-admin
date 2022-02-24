@@ -1,4 +1,4 @@
-interface StringMap {
+export interface StringMap {
     [key: string]: StringMap | string | undefined;
 }
 
@@ -26,6 +26,8 @@ export interface TranslationMessages extends StringMap {
             remove: string;
             save: string;
             search: string;
+            select_all: string;
+            select_row: string;
             show: string;
             sort: string;
             undo: string;
@@ -34,6 +36,10 @@ export interface TranslationMessages extends StringMap {
             close: string;
             open_menu: string;
             close_menu: string;
+            update: string;
+            move_up: string;
+            move_down: string;
+            open: string;
         };
         boolean: {
             [key: string]: StringMap | string;
@@ -84,6 +90,8 @@ export interface TranslationMessages extends StringMap {
             are_you_sure: string;
             bulk_delete_content: string;
             bulk_delete_title: string;
+            bulk_update_content: string;
+            bulk_update_title: string;
             delete_content: string;
             delete_title: string;
             details: string;
@@ -103,9 +111,14 @@ export interface TranslationMessages extends StringMap {
             page_out_from_end: string;
             page_out_from_begin: string;
             page_range_info: string;
+            partial_page_range_info: string;
             page_rows_per_page: string;
+            current_page: string;
+            page: string;
+            first: string;
+            last: string;
             next: string;
-            prev: string;
+            previous: string;
             skip_nav: string;
         };
         sort: {
@@ -135,6 +148,7 @@ export interface TranslationMessages extends StringMap {
             i18n_error: string;
             canceled: string;
             logged_out: string;
+            not_authorized: string;
         };
         validation: {
             [key: string]: StringMap | string;

@@ -1,40 +1,41 @@
 import * as React from 'react';
-import { FC } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
-import ThumbDown from '@material-ui/icons/ThumbDown';
-import { useTranslate, useUpdate, useNotify, useRedirect } from 'react-admin';
+import Button from '@mui/material/Button';
+import ThumbDown from '@mui/icons-material/ThumbDown';
+import {
+    useTranslate,
+    useUpdate,
+    useNotify,
+    useRedirect,
+    useRecordContext,
+} from 'react-admin';
 import { Review } from '../types';
 
 /**
  * This custom button demonstrate using a custom action to update data
  */
-const RejectButton: FC<{ record: Review }> = ({ record }) => {
+const RejectButton = () => {
     const translate = useTranslate();
     const notify = useNotify();
     const redirectTo = useRedirect();
+    const record = useRecordContext<Review>();
 
-    const [reject, { loading }] = useUpdate(
+    const [reject, { isLoading }] = useUpdate(
         'reviews',
-        record.id,
-        { status: 'rejected' },
-        record,
+        { id: record.id, data: { status: 'rejected' }, previousData: record },
         {
-            undoable: true,
+            mutationMode: 'undoable',
             onSuccess: () => {
-                notify(
-                    'resources.reviews.notification.rejected_success',
-                    'info',
-                    {},
-                    true
-                );
+                notify('resources.reviews.notification.rejected_success', {
+                    type: 'info',
+                    undoable: true,
+                });
                 redirectTo('/reviews');
             },
-            onFailure: () => {
-                notify(
-                    'resources.reviews.notification.rejected_error',
-                    'warning'
-                );
+            onError: () => {
+                notify('resources.reviews.notification.rejected_error', {
+                    type: 'warning',
+                });
             },
         }
     );
@@ -44,8 +45,10 @@ const RejectButton: FC<{ record: Review }> = ({ record }) => {
             variant="outlined"
             color="primary"
             size="small"
-            onClick={reject}
-            disabled={loading}
+            onClick={() => {
+                reject();
+            }}
+            disabled={isLoading}
         >
             <ThumbDown
                 color="primary"

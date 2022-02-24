@@ -1,7 +1,4 @@
-const sanitizeFieldRestProps: (props: any) => any = ({
-    addLabel,
-    allowEmpty,
-    basePath,
+export const sanitizeFieldRestProps: (props: any) => any = ({
     cellClassName,
     className,
     emptyText,
@@ -23,5 +20,3 @@ const sanitizeFieldRestProps: (props: any) => any = ({
     translateChoice,
     ...props
 }) => props;
-
-export default sanitizeFieldRestProps;

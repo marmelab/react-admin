@@ -1,14 +1,29 @@
 import * as React from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 
-const ReferenceError = ({ label, error }) => (
-    <TextField error disabled label={label} value={error} margin="normal" />
+export const ReferenceError = ({
+    label,
+    error,
+}: {
+    label: string | ReactElement | false;
+    error: Error;
+}) => (
+    <TextField
+        error
+        disabled
+        label={label}
+        value={error?.message}
+        margin="normal"
+    />
 );
 
 ReferenceError.propTypes = {
-    error: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
+    error: PropTypes.object.isRequired,
+    label: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.element,
+        PropTypes.bool,
+    ]).isRequired,
 };
-
-export default ReferenceError;

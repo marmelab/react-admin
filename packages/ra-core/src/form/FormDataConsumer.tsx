@@ -1,35 +1,9 @@
 import * as React from 'react';
-import { ReactNode, FunctionComponent } from 'react';
-import { useFormState } from 'react-final-form';
-import { FormSubscription } from 'final-form';
+import { ReactNode } from 'react';
+import { useWatch } from 'react-hook-form';
 import get from 'lodash/get';
 
 import warning from '../util/warning';
-
-export interface FormDataConsumerRenderParams {
-    formData: any;
-    scopedFormData?: any;
-    getSource?: (source: string) => string;
-}
-
-export type FormDataConsumerRender = (
-    params: FormDataConsumerRenderParams
-) => ReactNode;
-
-interface ConnectedProps {
-    children: FormDataConsumerRender;
-    form?: string;
-    record?: any;
-    source?: string;
-    subscription?: FormSubscription;
-    [key: string]: any;
-}
-
-interface Props extends ConnectedProps {
-    formData: any;
-    index?: number;
-}
-
 /**
  * Get the current (edited) value of the record from the form and pass it
  * to a child function
@@ -68,20 +42,14 @@ interface Props extends ConnectedProps {
  *     </Edit>
  * );
  */
-const FormDataConsumer = ({ subscription, ...props }: ConnectedProps) => {
-    const formState = useFormState({ subscription });
+const FormDataConsumer = (props: ConnectedProps) => {
+    const formData = useWatch();
 
-    return <FormDataConsumerView formData={formState.values} {...props} />;
+    return <FormDataConsumerView formData={formData} {...props} />;
 };
 
-export const FormDataConsumerView: FunctionComponent<Props> = ({
-    children,
-    form,
-    formData,
-    source,
-    index,
-    ...rest
-}) => {
+export const FormDataConsumerView = (props: Props) => {
+    const { children, form, formData, source, index, ...rest } = props;
     let scopedFormData = formData;
     let getSource;
     let getSourceHasBeenCalled = false;
@@ -117,7 +85,7 @@ export const FormDataConsumerView: FunctionComponent<Props> = ({
                 scopedFormData.name ? (
                     <SelectInput
                         source={getSource('role')} // Will translate to "users[0].role"
-                        choices={['admin', 'user']}
+                        choices={[{id: 1, name: 'Admin'}, {id: 2, name: 'User'},
                         {...rest}
                     />
                 ) : null
@@ -131,3 +99,26 @@ export const FormDataConsumerView: FunctionComponent<Props> = ({
 };
 
 export default FormDataConsumer;
+
+export interface FormDataConsumerRenderParams {
+    formData: any;
+    scopedFormData?: any;
+    getSource?: (source: string) => string;
+}
+
+export type FormDataConsumerRender = (
+    params: FormDataConsumerRenderParams
+) => ReactNode;
+
+interface ConnectedProps {
+    children: FormDataConsumerRender;
+    form?: string;
+    record?: any;
+    source?: string;
+    [key: string]: any;
+}
+
+interface Props extends ConnectedProps {
+    formData: any;
+    index?: number;
+}

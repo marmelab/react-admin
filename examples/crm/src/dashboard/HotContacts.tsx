@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Card, Box, Link } from '@material-ui/core';
-import ContactsIcon from '@material-ui/icons/Contacts';
+import { Card, Box, Link } from '@mui/material';
+import ContactsIcon from '@mui/icons-material/Contacts';
 import { useGetList, SimpleList, useGetIdentity } from 'react-admin';
 import { formatDistance } from 'date-fns';
 
@@ -12,14 +12,15 @@ export const HotContacts = () => {
     const { identity } = useGetIdentity();
     const {
         data: contactData,
-        ids: contactIds,
         total: contactTotal,
-        loaded: contactsLoaded,
+        isLoading: contactsLoading,
     } = useGetList<Contact>(
         'contacts',
-        { page: 1, perPage: 10 },
-        { field: 'last_seen', order: 'DESC' },
-        { status: 'hot', sales_id: identity?.id },
+        {
+            pagination: { page: 1, perPage: 10 },
+            sort: { field: 'last_seen', order: 'DESC' },
+            filter: { status: 'hot', sales_id: identity?.id },
+        },
         { enabled: Number.isInteger(identity?.id) }
     );
     return (
@@ -40,15 +41,14 @@ export const HotContacts = () => {
             </Box>
             <Card>
                 <SimpleList<Contact>
-                    basePath="/contacts"
                     linkType="show"
-                    ids={contactIds}
                     data={contactData}
                     total={contactTotal}
-                    loaded={contactsLoaded}
+                    isLoading={contactsLoading}
                     primaryText={contact =>
                         `${contact.first_name} ${contact.last_name}`
                     }
+                    resource="contacts"
                     secondaryText={contact =>
                         formatDistance(
                             new Date(contact.last_seen),

@@ -7,8 +7,8 @@ import {
     TextField,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
-const CommentShow = props => (
-    <Show {...props}>
+const CommentShow = () => (
+    <Show>
         <SimpleShowLayout>
             <TextField source="id" />
             <ReferenceField source="post_id" reference="posts">

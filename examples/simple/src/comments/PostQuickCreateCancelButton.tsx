@@ -1,31 +1,23 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button } from '@material-ui/core';
-import IconCancel from '@material-ui/icons/Cancel';
-import { makeStyles } from '@material-ui/core/styles';
+import { Button } from '@mui/material';
+import IconCancel from '@mui/icons-material/Cancel';
 
 import { useTranslate } from 'react-admin';
-
-const useStyles = makeStyles({
-    button: {
-        margin: '10px 24px',
-        position: 'relative',
-    },
-    iconPaddingStyle: {
-        paddingRight: '0.5em',
-    },
-});
 
 const PostQuickCreateCancelButton = ({
     onClick,
     label = 'ra.action.cancel',
 }) => {
     const translate = useTranslate();
-    const classes = useStyles();
+
     return (
-        <Button className={classes.button} onClick={onClick}>
-            <IconCancel className={classes.iconPaddingStyle} />
+        <Button
+            sx={{ margin: '10px 24px', position: 'relative' }}
+            onClick={onClick}
+        >
+            <IconCancel sx={{ paddingRight: '0.5em' }} />
             {label && translate(label, { _: label })}
         </Button>
     );

@@ -22,6 +22,8 @@ const englishMessages: TranslationMessages = {
             remove: 'Remove',
             save: 'Save',
             search: 'Search',
+            select_all: 'Select all',
+            select_row: 'Select this row',
             show: 'Show',
             sort: 'Sort',
             undo: 'Undo',
@@ -30,6 +32,10 @@ const englishMessages: TranslationMessages = {
             close: 'Close',
             open_menu: 'Open menu',
             close_menu: 'Close menu',
+            update: 'Update',
+            move_up: 'Move up',
+            move_down: 'Move down',
+            open: 'Open',
         },
         boolean: {
             true: 'Yes',
@@ -79,6 +85,10 @@ const englishMessages: TranslationMessages = {
                 'Are you sure you want to delete this %{name}? |||| Are you sure you want to delete these %{smart_count} items?',
             bulk_delete_title:
                 'Delete %{name} |||| Delete %{smart_count} %{name}',
+            bulk_update_content:
+                'Are you sure you want to update this %{name}? |||| Are you sure you want to update these %{smart_count} items?',
+            bulk_update_title:
+                'Update %{name} |||| Update %{smart_count} %{name}',
             delete_content: 'Are you sure you want to delete this item?',
             delete_title: 'Delete %{name} #%{id}',
             details: 'Details',
@@ -101,9 +111,15 @@ const englishMessages: TranslationMessages = {
             page_out_from_end: 'Cannot go after last page',
             page_out_from_begin: 'Cannot go before page 1',
             page_range_info: '%{offsetBegin}-%{offsetEnd} of %{total}',
+            partial_page_range_info:
+                '%{offsetBegin}-%{offsetEnd} of more than %{offsetEnd}',
+            current_page: 'Page %{page}',
+            page: 'Go to page %{page}',
+            first: 'Go to first page',
+            last: 'Go to last page',
+            next: 'Go to next page',
+            previous: 'Go to previous page',
             page_rows_per_page: 'Rows per page:',
-            next: 'Next',
-            prev: 'Prev',
             skip_nav: 'Skip to content',
         },
         sort: {
@@ -133,6 +149,7 @@ const englishMessages: TranslationMessages = {
                 'Cannot load the translations for the specified language',
             canceled: 'Action cancelled',
             logged_out: 'Your session has ended, please reconnect.',
+            not_authorized: "You're not authorized to access this resource.",
         },
         validation: {
             required: 'Required',

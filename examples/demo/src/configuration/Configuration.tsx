@@ -1,63 +1,64 @@
 import * as React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import { useTranslate, useLocale, useSetLocale, Title } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
-import { changeTheme } from './actions';
-import { AppState } from '../types';
-
-const useStyles = makeStyles({
-    label: { width: '10em', display: 'inline-block' },
-    button: { margin: '1em' },
-});
+import Card from '@mui/material/Card';
+import Box from '@mui/material/Box';
+import CardContent from '@mui/material/CardContent';
+import Button from '@mui/material/Button';
+import { useTranslate, useLocaleState, useTheme, Title } from 'react-admin';
+import { darkTheme, lightTheme } from '../layout/themes';
 
 const Configuration = () => {
     const translate = useTranslate();
-    const locale = useLocale();
-    const setLocale = useSetLocale();
-    const classes = useStyles();
-    const theme = useSelector((state: AppState) => state.theme);
-    const dispatch = useDispatch();
+    const [locale, setLocale] = useLocaleState();
+    const [theme, setTheme] = useTheme();
+
     return (
         <Card>
             <Title title={translate('pos.configuration')} />
             <CardContent>
-                <div className={classes.label}>
+                <Box sx={{ width: '10em', display: 'inline-block' }}>
                     {translate('pos.theme.name')}
-                </div>
+                </Box>
                 <Button
                     variant="contained"
-                    className={classes.button}
-                    color={theme === 'light' ? 'primary' : 'default'}
-                    onClick={() => dispatch(changeTheme('light'))}
+                    sx={{ margin: '1em' }}
+                    color={
+                        theme?.palette?.mode === 'light'
+                            ? 'primary'
+                            : 'secondary'
+                    }
+                    onClick={() => setTheme(lightTheme)}
                 >
                     {translate('pos.theme.light')}
                 </Button>
                 <Button
                     variant="contained"
-                    className={classes.button}
-                    color={theme === 'dark' ? 'primary' : 'default'}
-                    onClick={() => dispatch(changeTheme('dark'))}
+                    sx={{ margin: '1em' }}
+                    color={
+                        theme?.palette?.mode === 'dark'
+                            ? 'primary'
+                            : 'secondary'
+                    }
+                    onClick={() => setTheme(darkTheme)}
                 >
                     {translate('pos.theme.dark')}
                 </Button>
             </CardContent>
             <CardContent>
-                <div className={classes.label}>{translate('pos.language')}</div>
+                <Box sx={{ width: '10em', display: 'inline-block' }}>
+                    {translate('pos.language')}
+                </Box>
                 <Button
                     variant="contained"
-                    className={classes.button}
-                    color={locale === 'en' ? 'primary' : 'default'}
+                    sx={{ margin: '1em' }}
+                    color={locale === 'en' ? 'primary' : 'secondary'}
                     onClick={() => setLocale('en')}
                 >
                     en
                 </Button>
                 <Button
                     variant="contained"
-                    className={classes.button}
-                    color={locale === 'fr' ? 'primary' : 'default'}
+                    sx={{ margin: '1em' }}
+                    color={locale === 'fr' ? 'primary' : 'secondary'}
                     onClick={() => setLocale('fr')}
                 >
                     fr

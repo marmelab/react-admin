@@ -1,21 +1,20 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import { ReactElement, ReactNode } from 'react';
 import {
     TranslatableContextProvider,
     useTranslatable,
     UseTranslatableOptions,
-    Record,
+    RaRecord,
     useRecordContext,
 } from 'ra-core';
 import { TranslatableFieldsTabs } from './TranslatableFieldsTabs';
 import { TranslatableFieldsTabContent } from './TranslatableFieldsTabContent';
-import { makeStyles } from '@material-ui/core/styles';
-import { ClassesOverride } from '../types';
 
 /**
  * Provides a way to show multiple languages for any field passed as children.
  * It expects the translatable values to have the following structure:
- * { 
+ * {
  *     name: {
  *         en: 'The english value',
  *         fr: 'The french value',
@@ -61,10 +60,10 @@ import { ClassesOverride } from '../types';
  *     );
  * }
  *
- * * @param props The component props
- * * @param {string} props.defaultLocale The locale selected by default. Default to 'en'.
- * * @param {string[]} props.locales An array of the possible locales in the form. For example [{ 'en', 'fr' }].
- * * @param {ReactElement} props.selector The element responsible for selecting a locale. Defaults to Material UI tabs.
+ * @param props The component props
+ * @param {string} props.defaultLocale The locale selected by default. Default to 'en'.
+ * @param {string[]} props.locales An array of the possible locales in the form. For example [{ 'en', 'fr' }].
+ * @param {ReactElement} props.selector The element responsible for selecting a locale. Defaults to MUI tabs.
  */
 export const TranslatableFields = (
     props: TranslatableFieldsProps
@@ -76,20 +75,18 @@ export const TranslatableFields = (
         selector = <TranslatableFieldsTabs groupKey={groupKey} />,
         children,
         resource,
-        basePath,
+        className,
     } = props;
     const record = useRecordContext(props);
     const context = useTranslatable({ defaultLocale, locales });
-    const classes = useStyles(props);
 
     return (
-        <div className={classes.root}>
+        <Root className={className}>
             <TranslatableContextProvider value={context}>
                 {selector}
                 {locales.map(locale => (
                     <TranslatableFieldsTabContent
                         key={locale}
-                        basePath={basePath}
                         locale={locale}
                         record={record}
                         resource={resource}
@@ -99,27 +96,26 @@ export const TranslatableFields = (
                     </TranslatableFieldsTabContent>
                 ))}
             </TranslatableContextProvider>
-        </div>
+        </Root>
     );
 };
 
 export interface TranslatableFieldsProps extends UseTranslatableOptions {
-    basePath?: string;
     children: ReactNode;
-    classes?: ClassesOverride<typeof useStyles>;
-    record?: Record;
+    className?: string;
+    record?: RaRecord;
     resource?: string;
     selector?: ReactElement;
     groupKey?: string;
 }
 
-const useStyles = makeStyles(
-    theme => ({
-        root: {
-            flexGrow: 1,
-            marginTop: theme.spacing(1),
-            marginBottom: theme.spacing(0.5),
-        },
-    }),
-    { name: 'RaTranslatableFields' }
-);
+const PREFIX = 'RaTranslatableFields';
+
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    flexGrow: 1,
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(0.5),
+}));

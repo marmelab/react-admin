@@ -1,38 +1,11 @@
 import * as React from 'react';
-import { Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Box, Typography } from '@mui/material';
 import { Droppable } from 'react-beautiful-dnd';
-import { Identifier, RecordMap } from 'react-admin';
+import { Identifier } from 'react-admin';
 
 import { DealCard } from './DealCard';
 import { stageNames } from './stages';
-import { Deal } from '../types';
-
-const useStyles = makeStyles({
-    root: {
-        flex: 1,
-        paddingTop: 8,
-        paddingBottom: 16,
-        backgroundColor: '#eaeaee',
-        '&:first-child': {
-            paddingLeft: 5,
-            borderTopLeftRadius: 5,
-        },
-        '&:last-child': {
-            paddingRight: 5,
-            borderTopRightRadius: 5,
-        },
-    },
-    droppable: {
-        display: 'flex',
-        flexDirection: 'column',
-        borderRadius: 5,
-        padding: 5,
-        '&.isDraggingOver': {
-            backgroundColor: '#dadadf',
-        },
-    },
-});
+import { RecordMap } from './DealListContent';
 
 export const DealColumn = ({
     stage,
@@ -41,32 +14,54 @@ export const DealColumn = ({
 }: {
     stage: string;
     dealIds: Identifier[];
-    data: RecordMap<Deal>;
+    data: RecordMap;
 }) => {
-    const classes = useStyles();
     return (
-        <div className={classes.root}>
+        <Box
+            sx={{
+                flex: 1,
+                paddingTop: '8px',
+                paddingBottom: '16px',
+                bgcolor: '#eaeaee',
+                '&:first-child': {
+                    paddingLeft: '5px',
+                    borderTopLeftRadius: 5,
+                },
+                '&:last-child': {
+                    paddingRight: '5px',
+                    borderTopRightRadius: 5,
+                },
+            }}
+        >
             <Typography align="center" variant="subtitle1">
                 {/* @ts-ignore */}
                 {stageNames[stage]}
             </Typography>
             <Droppable droppableId={stage}>
                 {(droppableProvided, snapshot) => (
-                    <div
+                    <Box
                         ref={droppableProvided.innerRef}
                         {...droppableProvided.droppableProps}
                         className={
-                            classes.droppable +
-                            (snapshot.isDraggingOver ? ' isDraggingOver' : '')
+                            snapshot.isDraggingOver ? ' isDraggingOver' : ''
                         }
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            borderRadius: 5,
+                            padding: '5px',
+                            '&.isDraggingOver': {
+                                bgcolor: '#dadadf',
+                            },
+                        }}
                     >
                         {dealIds.map((id, index) => (
                             <DealCard key={id} index={index} deal={data[id]} />
                         ))}
                         {droppableProvided.placeholder}
-                    </div>
+                    </Box>
                 )}
             </Droppable>
-        </div>
+        </Box>
     );
 };

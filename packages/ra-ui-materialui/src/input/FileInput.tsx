@@ -1,84 +1,49 @@
 import React, {
-    FunctionComponent,
     Children,
     cloneElement,
     isValidElement,
     ReactElement,
+    ReactNode,
 } from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { shallowEqual } from 'react-redux';
+import clsx from 'clsx';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
-import { makeStyles } from '@material-ui/core/styles';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import classnames from 'classnames';
-import { useInput, useTranslate, InputProps } from 'ra-core';
+import FormHelperText from '@mui/material/FormHelperText';
+import { useInput, useTranslate, shallowEqual } from 'ra-core';
 
-import Labeled from './Labeled';
-import FileInputPreview from './FileInputPreview';
-import sanitizeInputRestProps from './sanitizeInputRestProps';
-import InputHelperText from './InputHelperText';
+import { CommonInputProps } from './CommonInputProps';
+import { Labeled } from '../Labeled';
+import { FileInputPreview } from './FileInputPreview';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
+import { InputHelperText } from './InputHelperText';
+import { SxProps } from '@mui/system';
 
-const useStyles = makeStyles(
-    theme => ({
-        dropZone: {
-            background: theme.palette.background.default,
-            cursor: 'pointer',
-            padding: theme.spacing(1),
-            textAlign: 'center',
-            color: theme.palette.getContrastText(
-                theme.palette.background.default
-            ),
-        },
-        preview: {},
-        removeButton: {},
-        root: { width: '100%' },
-    }),
-    { name: 'RaFileInput' }
-);
-
-export interface FileInputProps {
-    accept?: string;
-    labelMultiple?: string;
-    labelSingle?: string;
-    maxSize?: number;
-    minSize?: number;
-    multiple?: boolean;
-}
-
-export interface FileInputOptions extends DropzoneOptions {
-    inputProps?: any;
-    onRemove?: Function;
-}
-
-const FileInput: FunctionComponent<
-    FileInputProps & InputProps<FileInputOptions>
-> = props => {
+export const FileInput = (props: FileInputProps) => {
     const {
         accept,
         children,
         className,
-        classes: classesOverride,
         format,
         helperText,
+        inputProps: inputPropsOptions,
         label,
         labelMultiple = 'ra.input.file.upload_several',
         labelSingle = 'ra.input.file.upload_single',
         maxSize,
         minSize,
         multiple = false,
-        options: {
-            inputProps: inputPropsOptions,
-            ...options
-        } = {} as FileInputOptions,
+        onDrop: onDropProp,
+        onRemove: onRemoveProp,
         parse,
         placeholder,
         resource,
         source,
         validate,
+        validateFileRemoval,
         ...rest
     } = props;
     const translate = useTranslate();
-    const classes = useStyles(props);
 
     // turn a browser dropped file structure into expected structure
     const transformFile = file => {
@@ -117,18 +82,18 @@ const FileInput: FunctionComponent<
 
     const {
         id,
-        input: { onChange, value, ...inputProps },
-        meta,
+        field: { onChange, value },
+        fieldState,
+        formState: { isSubmitted },
         isRequired,
     } = useInput({
         format: format || transformFiles,
         parse: parse || transformFiles,
         source,
-        type: 'file',
         validate,
         ...rest,
     });
-    const { touched, error, submitError } = meta;
+    const { isTouched, error } = fieldState;
     const files = value ? (Array.isArray(value) ? value : [value]) : [];
 
     const onDrop = (newFiles, rejectedFiles, event) => {
@@ -140,12 +105,19 @@ const FileInput: FunctionComponent<
             onChange(updatedFiles[0]);
         }
 
-        if (options.onDrop) {
-            options.onDrop(newFiles, rejectedFiles, event);
+        if (onDropProp) {
+            onDropProp(newFiles, rejectedFiles, event);
         }
     };
 
-    const onRemove = file => () => {
+    const onRemove = file => async () => {
+        if (validateFileRemoval) {
+            try {
+                await validateFileRemoval(file);
+            } catch (e) {
+                return;
+            }
+        }
         if (multiple) {
             const filteredFiles = files.filter(
                 stateFile => !shallowEqual(stateFile, file)
@@ -155,8 +127,8 @@ const FileInput: FunctionComponent<
             onChange(null);
         }
 
-        if (options.onRemove) {
-            options.onRemove(file);
+        if (onRemoveProp) {
+            onRemoveProp(file);
         }
     };
 
@@ -166,35 +138,34 @@ const FileInput: FunctionComponent<
             : undefined;
 
     const { getRootProps, getInputProps } = useDropzone({
-        ...options,
         accept,
         maxSize,
         minSize,
         multiple,
         onDrop,
+        ...rest,
     });
 
     return (
-        <Labeled
+        <StyledLabeled
             id={id}
             label={label}
-            className={classnames(classes.root, className)}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
             source={source}
             resource={resource}
             isRequired={isRequired}
-            meta={meta}
             {...sanitizeInputRestProps(rest)}
         >
             <>
                 <div
-                    data-testid="dropzone"
-                    className={classes.dropZone}
-                    {...getRootProps()}
+                    {...getRootProps({
+                        className: FileInputClasses.dropZone,
+                        'data-testid': 'dropzone',
+                    })}
                 >
                     <input
                         id={id}
                         {...getInputProps({
-                            ...inputProps,
                             ...inputPropsOptions,
                         })}
                     />
@@ -208,8 +179,8 @@ const FileInput: FunctionComponent<
                 </div>
                 <FormHelperText>
                     <InputHelperText
-                        touched={touched}
-                        error={error || submitError}
+                        touched={isTouched || isSubmitted}
+                        error={error?.message}
                         helperText={helperText}
                     />
                 </FormHelperText>
@@ -220,25 +191,27 @@ const FileInput: FunctionComponent<
                                 key={index}
                                 file={file}
                                 onRemove={onRemove(file)}
-                                className={classes.removeButton}
+                                className={FileInputClasses.removeButton}
                             >
-                                {cloneElement(childrenElement, {
+                                {cloneElement(childrenElement as ReactElement, {
                                     record: file,
-                                    className: classes.preview,
+                                    className: FileInputClasses.preview,
                                 })}
                             </FileInputPreview>
                         ))}
                     </div>
                 )}
             </>
-        </Labeled>
+        </StyledLabeled>
     );
 };
 
 FileInput.propTypes = {
-    accept: PropTypes.string,
+    accept: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.string),
+    ]),
     children: PropTypes.element,
-    classes: PropTypes.object,
     className: PropTypes.string,
     id: PropTypes.string,
     isRequired: PropTypes.bool,
@@ -248,10 +221,46 @@ FileInput.propTypes = {
     maxSize: PropTypes.number,
     minSize: PropTypes.number,
     multiple: PropTypes.bool,
+    validateFileRemoval: PropTypes.func,
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
     placeholder: PropTypes.node,
 };
 
-export default FileInput;
+const PREFIX = 'RaFileInput';
+
+export const FileInputClasses = {
+    dropZone: `${PREFIX}-dropZone`,
+    preview: `${PREFIX}-preview`,
+    removeButton: `${PREFIX}-removeButton`,
+};
+
+const StyledLabeled = styled(Labeled, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    width: '100%',
+    [`& .${FileInputClasses.dropZone}`]: {
+        background: theme.palette.background.default,
+        cursor: 'pointer',
+        padding: theme.spacing(1),
+        textAlign: 'center',
+        color: theme.palette.getContrastText(theme.palette.background.default),
+    },
+    [`& .${FileInputClasses.preview}`]: {},
+    [`& .${FileInputClasses.removeButton}`]: {},
+}));
+
+export type FileInputProps = DropzoneOptions &
+    CommonInputProps & {
+        className?: string;
+        children?: ReactNode;
+        labelMultiple?: string;
+        labelSingle?: string;
+        onRemove?: Function;
+        placeholder?: ReactNode;
+        inputProps?: any;
+        validateFileRemoval?(file): boolean | Promise<boolean>;
+        sx?: SxProps;
+    };

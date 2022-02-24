@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FC } from 'react';
 import {
     Avatar,
     Box,
@@ -8,9 +7,8 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemText,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import CommentIcon from '@material-ui/icons/Comment';
+} from '@mui/material';
+import CommentIcon from '@mui/icons-material/Comment';
 import { Link } from 'react-router-dom';
 import { useTranslate } from 'react-admin';
 
@@ -24,8 +22,7 @@ interface Props {
     nb?: number;
 }
 
-const PendingReviews: FC<Props> = ({ reviews = [], customers = {}, nb }) => {
-    const classes = useStyles();
+const PendingReviews = ({ reviews = [], customers = {}, nb }: Props) => {
     const translate = useTranslate();
     return (
         <CardWithIcon
@@ -49,7 +46,7 @@ const PendingReviews: FC<Props> = ({ reviews = [], customers = {}, nb }) => {
                                     src={`${
                                         customers[record.customer_id].avatar
                                     }?size=32x32`}
-                                    className={classes.avatar}
+                                    sx={{ bgcolor: 'background.paper' }}
                                 />
                             ) : (
                                 <Avatar />
@@ -59,45 +56,32 @@ const PendingReviews: FC<Props> = ({ reviews = [], customers = {}, nb }) => {
                         <ListItemText
                             primary={<StarRatingField record={record} />}
                             secondary={record.comment}
-                            className={classes.listItemText}
-                            style={{ paddingRight: 0 }}
+                            sx={{
+                                overflowY: 'hidden',
+                                height: '4em',
+                                display: '-webkit-box',
+                                WebkitLineClamp: 2,
+                                WebkitBoxOrient: 'vertical',
+                                paddingRight: 0,
+                            }}
                         />
                     </ListItem>
                 ))}
             </List>
-            <Box flexGrow="1">&nbsp;</Box>
+            <Box flexGrow={1}>&nbsp;</Box>
             <Button
-                className={classes.link}
+                sx={{ borderRadius: 0 }}
                 component={Link}
                 to="/reviews"
                 size="small"
                 color="primary"
             >
-                <Box p={1} className={classes.linkContent}>
+                <Box p={1} sx={{ color: 'primary.main' }}>
                     {translate('pos.dashboard.all_reviews')}
                 </Box>
             </Button>
         </CardWithIcon>
     );
 };
-
-const useStyles = makeStyles(theme => ({
-    avatar: {
-        background: theme.palette.background.paper,
-    },
-    listItemText: {
-        overflowY: 'hidden',
-        height: '4em',
-        display: '-webkit-box',
-        WebkitLineClamp: 2,
-        WebkitBoxOrient: 'vertical',
-    },
-    link: {
-        borderRadius: 0,
-    },
-    linkContent: {
-        color: theme.palette.primary.main,
-    },
-}));
 
 export default PendingReviews;

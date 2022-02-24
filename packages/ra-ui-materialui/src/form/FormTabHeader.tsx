@@ -2,26 +2,27 @@ import * as React from 'react';
 import { isValidElement, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
-import MuiTab from '@material-ui/core/Tab';
-import classnames from 'classnames';
+import { Tab as MuiTab } from '@mui/material';
+import clsx from 'clsx';
 import { useTranslate, useFormGroup } from 'ra-core';
-import { useTabbedFormViewStyles } from './TabbedFormView';
-import { ClassesOverride } from '../types';
-import { useFormState } from 'react-final-form';
+import { useFormState } from 'react-hook-form';
+
+import { TabbedFormClasses } from './TabbedFormView';
 
 export const FormTabHeader = ({
-    classes,
     label,
     value,
     icon,
     className,
+    onChange,
     syncWithLocation,
     ...rest
 }: FormTabHeaderProps): ReactElement => {
     const translate = useTranslate();
     const location = useLocation();
-    const { submitFailed } = useFormState(UseFormStateOptions);
+    const { isSubmitted } = useFormState();
     const formGroup = useFormGroup(value.toString());
+
     const propsForLink = {
         component: Link,
         to: { ...location, pathname: value },
@@ -34,33 +35,29 @@ export const FormTabHeader = ({
             }
             value={value}
             icon={icon}
-            className={classnames('form-tab', className, {
-                [classes.errorTabButton]:
-                    formGroup.invalid && (formGroup.touched || submitFailed),
+            className={clsx('form-tab', className, {
+                [TabbedFormClasses.errorTabButton]:
+                    !formGroup.isValid && (formGroup.isTouched || isSubmitted),
+                error:
+                    !formGroup.isValid && (formGroup.isTouched || isSubmitted),
             })}
             {...(syncWithLocation ? propsForLink : {})} // to avoid TypeScript screams, see https://github.com/mui-org/material-ui/issues/9106#issuecomment-451270521
             id={`tabheader-${value}`}
             aria-controls={`tabpanel-${value}`}
+            onChange={onChange}
             {...rest}
         />
     );
 };
 
-const UseFormStateOptions = {
-    subscription: {
-        submitFailed: true,
-    },
-};
-
 interface FormTabHeaderProps {
-    basePath?: string;
     className?: string;
-    classes?: ClassesOverride<typeof useTabbedFormViewStyles>;
     hidden?: boolean;
     icon?: ReactElement;
     intent?: 'header' | 'content';
     label: string | ReactElement;
     margin?: 'none' | 'normal' | 'dense';
+    onChange?: (event: any) => void;
     path?: string;
     resource?: string;
     syncWithLocation?: boolean;
@@ -69,7 +66,6 @@ interface FormTabHeaderProps {
 }
 
 FormTabHeader.propTypes = {
-    basePath: PropTypes.string,
     className: PropTypes.string,
     contentClassName: PropTypes.string,
     children: PropTypes.node,

@@ -1,26 +1,19 @@
-import { render } from '@testing-library/react';
 import * as React from 'react';
+import { render } from '@testing-library/react';
 import expect from 'expect';
-import { TestContext } from 'ra-test';
-import { ThemeProvider } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core/styles';
-import Button from './Button';
+import { MutationMode } from 'ra-core';
 
-const theme = createMuiTheme();
+import { Button } from './Button';
+import { AdminContext } from '../AdminContext';
 
 const invalidButtonDomProps = {
-    basePath: '',
-    handleSubmit: jest.fn(),
-    handleSubmitWithRedirect: jest.fn(),
     invalid: false,
-    onSave: jest.fn(),
     pristine: false,
     record: { id: 123, foo: 'bar' },
-    redirect: 'list',
     resource: 'posts',
     saving: false,
     submitOnEnter: true,
-    undoable: false,
+    mutationMode: 'pessimistic' as MutationMode,
 };
 
 describe('<Button />', () => {
@@ -28,11 +21,9 @@ describe('<Button />', () => {
         const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
         const { getByLabelText } = render(
-            <TestContext>
-                <ThemeProvider theme={theme}>
-                    <Button label="button" {...invalidButtonDomProps} />
-                </ThemeProvider>
-            </TestContext>
+            <AdminContext>
+                <Button label="button" {...invalidButtonDomProps} />
+            </AdminContext>
         );
 
         expect(spy).not.toHaveBeenCalled();

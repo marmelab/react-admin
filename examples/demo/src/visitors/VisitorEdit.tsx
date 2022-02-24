@@ -1,20 +1,18 @@
 import * as React from 'react';
-import { FC } from 'react';
 import {
     DateInput,
     Edit,
-    EditProps,
     NullableBooleanInput,
     TextInput,
     PasswordInput,
     Toolbar,
     useTranslate,
-    FormWithRedirect,
+    Form,
     required,
     email,
-    FieldProps,
+    useRecordContext,
 } from 'react-admin';
-import { Box, Card, CardContent, Typography } from '@material-ui/core';
+import { Box, Card, CardContent, Typography } from '@mui/material';
 
 import Aside from './Aside';
 import FullNameField from './FullNameField';
@@ -22,32 +20,29 @@ import SegmentsInput from './SegmentsInput';
 import { validatePasswords } from './VisitorCreate';
 import { Customer } from '../types';
 
-const VisitorEdit: FC<EditProps> = props => {
+const VisitorEdit = () => {
     return (
-        <Edit
-            title={<VisitorTitle />}
-            aside={<Aside />}
-            component="div"
-            {...props}
-        >
+        <Edit title={<VisitorTitle />} aside={<Aside />} component="div">
             <VisitorForm />
         </Edit>
     );
 };
 
-const VisitorTitle: FC<FieldProps<Customer>> = ({ record }) =>
-    record ? <FullNameField record={record} size="32" /> : null;
+const VisitorTitle = () => {
+    const record = useRecordContext<Customer>();
+    return record ? <FullNameField record={record} size="32" /> : null;
+};
 
 const VisitorForm = (props: any) => {
     const translate = useTranslate();
 
     return (
-        <FormWithRedirect
+        <Form
             {...props}
             validate={validatePasswords}
-            render={(formProps: any) => (
+            render={({ handleSubmit, ...formProps }: any) => (
                 <Card>
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <CardContent>
                             <Box display={{ md: 'block', lg: 'flex' }}>
                                 <Box flex={2} mr={{ md: 0, lg: '1em' }}>
@@ -206,10 +201,7 @@ const VisitorForm = (props: any) => {
                         </CardContent>
                         <Toolbar
                             record={formProps.record}
-                            basePath={formProps.basePath}
-                            undoable={true}
-                            invalid={formProps.invalid}
-                            handleSubmit={formProps.handleSubmit}
+                            mutationMode="undoable"
                             saving={formProps.saving}
                             resource="customers"
                         />

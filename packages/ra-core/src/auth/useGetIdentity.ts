@@ -26,7 +26,7 @@ const defaultIdentity = {
  * import { useGetIdentity, useGetOne } from 'react-admin';
  *
  * const PostDetail = ({ id }) => {
- *     const { data: post, loading: postLoading } = useGetOne('posts', id);
+ *     const { data: post, isLoading: postLoading } = useGetOne('posts', { id });
  *     const { identity, loading: identityLoading } = useGetIdentity();
  *     if (postLoading || identityLoading) return <>Loading...</>;
  *     if (!post.lockedBy || post.lockedBy === identity.id) {
@@ -64,8 +64,6 @@ const useGetIdentity = () => {
             };
             callAuthProvider();
         } else {
-            // fallback for pre-3.9 authProviders, which had no getIdentity method
-            // FIXME to be removed for the next major
             setState({
                 loading: false,
                 loaded: true,

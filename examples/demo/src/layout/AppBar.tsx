@@ -1,56 +1,60 @@
 import * as React from 'react';
-import { forwardRef } from 'react';
-import { AppBar, UserMenu, MenuItemLink, useTranslate } from 'react-admin';
-import Typography from '@material-ui/core/Typography';
-import SettingsIcon from '@material-ui/icons/Settings';
-import { makeStyles } from '@material-ui/core/styles';
+import { AppBar, Logout, UserMenu, useTranslate } from 'react-admin';
+import { Link } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 import Logo from './Logo';
 
-const useStyles = makeStyles({
-    title: {
-        flex: 1,
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-    },
-    spacer: {
-        flex: 1,
-    },
-});
-
-const ConfigurationMenu = forwardRef<any, any>((props, ref) => {
+const ConfigurationMenu = React.forwardRef((props, ref) => {
     const translate = useTranslate();
     return (
-        <MenuItemLink
+        <MenuItem
+            component={Link}
+            // @ts-ignore
             ref={ref}
+            {...props}
             to="/configuration"
-            primaryText={translate('pos.configuration')}
-            leftIcon={<SettingsIcon />}
-            onClick={props.onClick}
-            sidebarIsOpen
-        />
+        >
+            <ListItemIcon>
+                <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText>{translate('pos.configuration')}</ListItemText>
+        </MenuItem>
     );
 });
-
-const CustomUserMenu = (props: any) => (
-    <UserMenu {...props}>
+const CustomUserMenu = () => (
+    <UserMenu>
         <ConfigurationMenu />
+        <Logout />
     </UserMenu>
 );
 
 const CustomAppBar = (props: any) => {
-    const classes = useStyles();
     return (
-        <AppBar {...props} elevation={1} userMenu={<CustomUserMenu />}>
+        <AppBar
+            {...props}
+            color="secondary"
+            elevation={1}
+            userMenu={<CustomUserMenu />}
+        >
             <Typography
                 variant="h6"
                 color="inherit"
-                className={classes.title}
+                sx={{
+                    flex: 1,
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                }}
                 id="react-admin-title"
             />
             <Logo />
-            <span className={classes.spacer} />
+            <Box component="span" sx={{ flex: 1 }} />
         </AppBar>
     );
 };

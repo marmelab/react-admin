@@ -1,11 +1,11 @@
-import expect from 'expect';
-import { fireEvent } from '@testing-library/react';
 import * as React from 'react';
-import { renderWithRedux } from 'ra-test';
+import expect from 'expect';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { minLength } from 'ra-core';
 
-import FilterForm, { mergeInitialValuesWithDefaultValues } from './FilterForm';
-import TextInput from '../../input/TextInput';
-import { SelectInput } from '../../input/SelectInput';
+import { FilterForm, mergeInitialValuesWithDefaultValues } from './FilterForm';
+import { TextInput } from '../../input';
+import { AdminContext } from '../../AdminContext';
 
 describe('<FilterForm />', () => {
     const defaultProps = {
@@ -14,10 +14,10 @@ describe('<FilterForm />', () => {
         setFilters: () => {},
         hideFilter: () => {},
         displayedFilters: {},
-        filterValues: {},
     };
 
     it('should display correctly passed filters', () => {
+        const setFilters = jest.fn();
         const filters = [
             <TextInput source="title" label="Title" />,
             <TextInput source="customer.name" label="Name" />,
@@ -27,106 +27,76 @@ describe('<FilterForm />', () => {
             'customer.name': true,
         };
 
-        const { queryAllByLabelText } = renderWithRedux(
-            <FilterForm
-                {...defaultProps}
-                filters={filters}
-                displayedFilters={displayedFilters}
-            />
+        render(
+            <AdminContext>
+                <FilterForm
+                    {...defaultProps}
+                    setFilters={setFilters}
+                    filters={filters}
+                    displayedFilters={displayedFilters}
+                />
+            </AdminContext>
         );
-        expect(queryAllByLabelText('Title')).toHaveLength(1);
-        expect(queryAllByLabelText('Name')).toHaveLength(1);
+        expect(screen.queryAllByLabelText('Title')).toHaveLength(1);
+        expect(screen.queryAllByLabelText('Name')).toHaveLength(1);
     });
 
-    describe('allowEmpty', () => {
-        it('should keep allowEmpty true if undefined', () => {
-            const filters = [
-                <SelectInput
-                    label="SelectWithUndefinedAllowEmpty"
-                    choices={[
-                        { title: 'yes', id: 1 },
-                        { title: 'no', id: 0 },
-                    ]}
-                    source="test"
-                    optionText="title"
-                />,
-            ];
-            const displayedFilters = {
-                test: true,
-            };
+    it('should change the filter when the user updates an input', async () => {
+        const filters = [<TextInput source="title" label="Title" />];
+        const displayedFilters = {
+            title: true,
+        };
+        const setFilters = jest.fn();
 
-            const { queryAllByRole, queryByLabelText } = renderWithRedux(
+        render(
+            <AdminContext>
                 <FilterForm
                     {...defaultProps}
                     filters={filters}
                     displayedFilters={displayedFilters}
+                    setFilters={setFilters}
                 />
-            );
-
-            const select = queryByLabelText('SelectWithUndefinedAllowEmpty');
-            fireEvent.mouseDown(select);
-            const options = queryAllByRole('option');
-            expect(options.length).toEqual(3);
+            </AdminContext>
+        );
+        fireEvent.change(screen.queryByLabelText('Title'), {
+            target: { value: 'foo' },
         });
-
-        it('should keep allowEmpty false', () => {
-            const filters = [
-                <SelectInput
-                    label="SelectWithFalseAllowEmpty"
-                    allowEmpty={false}
-                    choices={[
-                        { title: 'yes', id: 1 },
-                        { title: 'no', id: 0 },
-                    ]}
-                    source="test"
-                    optionText="title"
-                />,
-            ];
-            const displayedFilters = {
-                test: true,
-            };
-
-            const { queryAllByRole, queryByLabelText } = renderWithRedux(
-                <FilterForm
-                    {...defaultProps}
-                    filters={filters}
-                    displayedFilters={displayedFilters}
-                />
+        await waitFor(() => {
+            expect(setFilters).toHaveBeenCalledWith(
+                { title: 'foo' },
+                { title: true }
             );
-            const select = queryByLabelText('SelectWithFalseAllowEmpty');
-            fireEvent.mouseDown(select);
-            const options = queryAllByRole('option');
-            expect(options.length).toEqual(2);
         });
+    });
 
-        it('should keep allowEmpty true', () => {
-            const filters = [
-                <SelectInput
-                    label="SelectWithTrueAllowEmpty"
-                    allowEmpty={true}
-                    choices={[
-                        { title: 'yes', id: 1 },
-                        { title: 'no', id: 0 },
-                    ]}
-                    source="test"
-                    optionText="title"
-                />,
-            ];
-            const displayedFilters = {
-                test: true,
-            };
+    it('should not change the filter when the user updates an input with an invalid value', async () => {
+        const filters = [
+            <TextInput
+                source="title"
+                label="Title"
+                validate={[minLength(5)]}
+            />,
+        ];
+        const displayedFilters = {
+            title: true,
+        };
+        const setFilters = jest.fn();
 
-            const { queryAllByRole, queryByLabelText } = renderWithRedux(
+        render(
+            <AdminContext>
                 <FilterForm
                     {...defaultProps}
                     filters={filters}
                     displayedFilters={displayedFilters}
+                    setFilters={setFilters}
                 />
-            );
-            const select = queryByLabelText('SelectWithTrueAllowEmpty');
-            fireEvent.mouseDown(select);
-            const options = queryAllByRole('option');
-            expect(options.length).toEqual(3);
+            </AdminContext>
+        );
+        fireEvent.change(screen.queryByLabelText('Title'), {
+            target: { value: 'foo' },
+        });
+        await waitFor(() => {
+            expect(setFilters).not.toHaveBeenCalled();
         });
     });
 
@@ -162,7 +132,7 @@ describe('<FilterForm />', () => {
             ];
 
             expect(
-                mergeInitialValuesWithDefaultValues({ initialValues, filters })
+                mergeInitialValuesWithDefaultValues(initialValues, filters)
             ).toEqual({
                 title: 'initial title',
                 url: 'default url',

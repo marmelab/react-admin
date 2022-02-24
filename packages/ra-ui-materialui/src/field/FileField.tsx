@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { FC } from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import classnames from 'classnames';
+import Typography from '@mui/material/Typography';
 import { useRecordContext } from 'ra-core';
 
-import sanitizeFieldRestProps from './sanitizeFieldRestProps';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
+import { SxProps } from '@mui/system';
 
 /**
  * Render a link to a file based on a path contained in a record field
@@ -23,10 +22,9 @@ import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
  *     <a href="doc.pdf" title="Presentation">Presentation</a>
  * </div>
  */
-const FileField: FC<FileFieldProps> = props => {
+export const FileField = (props: FileFieldProps) => {
     const {
         className,
-        classes: classesOverride,
         emptyText,
         source,
         title,
@@ -39,7 +37,6 @@ const FileField: FC<FileFieldProps> = props => {
     } = props;
     const record = useRecordContext(props);
     const sourceValue = get(record, source);
-    const classes = useStyles(props);
 
     if (!sourceValue) {
         return emptyText ? (
@@ -52,19 +49,13 @@ const FileField: FC<FileFieldProps> = props => {
                 {emptyText}
             </Typography>
         ) : (
-            <div
-                className={classnames(classes.root, className)}
-                {...sanitizeFieldRestProps(rest)}
-            />
+            <Root className={className} {...sanitizeFieldRestProps(rest)} />
         );
     }
 
     if (Array.isArray(sourceValue)) {
         return (
-            <ul
-                className={classnames(classes.root, className)}
-                {...sanitizeFieldRestProps(rest)}
-            >
+            <StyledList className={className} {...sanitizeFieldRestProps(rest)}>
                 {sourceValue.map((file, index) => {
                     const fileTitleValue = get(file, title) || title;
                     const srcValue = get(file, src) || title;
@@ -84,17 +75,14 @@ const FileField: FC<FileFieldProps> = props => {
                         </li>
                     );
                 })}
-            </ul>
+            </StyledList>
         );
     }
 
     const titleValue = get(record, title) || title;
 
     return (
-        <div
-            className={classnames(classes.root, className)}
-            {...sanitizeFieldRestProps(rest)}
-        >
+        <Root className={className} {...sanitizeFieldRestProps(rest)}>
             <a
                 href={sourceValue}
                 title={titleValue}
@@ -105,20 +93,9 @@ const FileField: FC<FileFieldProps> = props => {
             >
                 {titleValue}
             </a>
-        </div>
+        </Root>
     );
 };
-
-FileField.defaultProps = {
-    addLabel: true,
-};
-
-const useStyles = makeStyles(
-    {
-        root: { display: 'inline-block' },
-    },
-    { name: 'RaFileField' }
-);
 
 export interface FileFieldProps extends PublicFieldProps, InjectedFieldProps {
     src?: string;
@@ -127,7 +104,7 @@ export interface FileFieldProps extends PublicFieldProps, InjectedFieldProps {
     download?: boolean | string;
     ping?: string;
     rel?: string;
-    classes?: object;
+    sx?: SxProps;
 }
 
 FileField.propTypes = {
@@ -140,4 +117,15 @@ FileField.propTypes = {
     rel: PropTypes.string,
 };
 
-export default FileField;
+const PREFIX = 'RaFileField';
+
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
+    display: 'inline-block',
+});
+
+const StyledList = styled('ul')({
+    display: 'inline-block',
+});

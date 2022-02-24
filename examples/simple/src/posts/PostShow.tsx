@@ -20,28 +20,25 @@ import {
     TextField,
     UrlField,
     useShowController,
-    useLocale,
-    Record,
+    useLocaleState,
+    useRecordContext,
 } from 'react-admin';
-import { Link } from 'react-router-dom';
-import { Button } from '@material-ui/core';
 import PostTitle from './PostTitle';
 
-const CreateRelatedComment = ({ record }: { record?: Record }) => (
-    <Button
-        component={Link}
-        to={{
-            pathname: '/comments/create',
-            state: { record: { post_id: record?.id } },
-        }}
-    >
-        Add comment
-    </Button>
-);
+const CreateRelatedComment = () => {
+    const record = useRecordContext();
+    return (
+        <CloneButton
+            resource="comments"
+            label="Add comment"
+            record={{ post_id: record.id }}
+        />
+    );
+};
 
-const PostShow = props => {
-    const controllerProps = useShowController(props);
-    const locale = useLocale();
+const PostShow = () => {
+    const controllerProps = useShowController();
+    const [locale] = useLocaleState();
     return (
         <ShowContextProvider value={controllerProps}>
             <ShowView title={<PostTitle />}>
@@ -65,8 +62,7 @@ const PostShow = props => {
                         <RichTextField
                             source="body"
                             stripTags={false}
-                            label=""
-                            addLabel={false}
+                            label={false}
                         />
                     </Tab>
                     <Tab label="post.form.miscellaneous">
@@ -94,7 +90,7 @@ const PostShow = props => {
                     </Tab>
                     <Tab label="post.form.comments">
                         <ReferenceManyField
-                            addLabel={false}
+                            label={false}
                             reference="comments"
                             target="post_id"
                             sort={{ field: 'created_at', order: 'DESC' }}

@@ -1,40 +1,41 @@
 import * as React from 'react';
-import { FC } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
-import ThumbUp from '@material-ui/icons/ThumbUp';
-import { useTranslate, useUpdate, useNotify, useRedirect } from 'react-admin';
+import Button from '@mui/material/Button';
+import ThumbUp from '@mui/icons-material/ThumbUp';
+import {
+    useTranslate,
+    useUpdate,
+    useNotify,
+    useRedirect,
+    useRecordContext,
+} from 'react-admin';
 import { Review } from './../types';
 
 /**
  * This custom button demonstrate using useUpdate to update data
  */
-const AcceptButton: FC<{ record: Review }> = ({ record }) => {
+const AcceptButton = () => {
     const translate = useTranslate();
     const notify = useNotify();
     const redirectTo = useRedirect();
+    const record = useRecordContext<Review>();
 
-    const [approve, { loading }] = useUpdate(
+    const [approve, { isLoading }] = useUpdate(
         'reviews',
-        record.id,
-        { status: 'accepted' },
-        record,
+        { id: record.id, data: { status: 'accepted' }, previousData: record },
         {
-            undoable: true,
+            mutationMode: 'undoable',
             onSuccess: () => {
-                notify(
-                    'resources.reviews.notification.approved_success',
-                    'info',
-                    {},
-                    true
-                );
+                notify('resources.reviews.notification.approved_success', {
+                    type: 'info',
+                    undoable: true,
+                });
                 redirectTo('/reviews');
             },
-            onFailure: () => {
-                notify(
-                    'resources.reviews.notification.approved_error',
-                    'warning'
-                );
+            onError: () => {
+                notify('resources.reviews.notification.approved_error', {
+                    type: 'warning',
+                });
             },
         }
     );
@@ -43,8 +44,8 @@ const AcceptButton: FC<{ record: Review }> = ({ record }) => {
             variant="outlined"
             color="primary"
             size="small"
-            onClick={approve}
-            disabled={loading}
+            onClick={() => approve()}
+            disabled={isLoading}
         >
             <ThumbUp
                 color="primary"

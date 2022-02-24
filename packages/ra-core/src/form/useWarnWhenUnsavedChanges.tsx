@@ -1,84 +1,55 @@
-import { useEffect, useRef } from 'react';
-import { useForm } from 'react-final-form';
-import { useHistory } from 'react-router-dom';
-import get from 'lodash/get';
-
+import { useContext, useEffect, useRef } from 'react';
+import { useFormState } from 'react-hook-form';
+import { UNSAFE_NavigationContext, useLocation } from 'react-router-dom';
+import { History, Transition } from 'history';
 import { useTranslate } from '../i18n';
 
 /**
  * Display a confirmation dialog if the form has unsaved changes.
  * - If the user confirms, the navigation continues and the changes are lost.
- * - If the user cancels, the navigation is reverted and the changes are kept.
- *
- * We can't use history.block() here because forms have routes, too (for
- * instance TabbedForm), and the confirm dialog would show up when navigating
- * inside the form. So instead of relying on route change detection, we rely
- * on unmount detection. The resulting UI isn't perfect, because when they
- * click the cancel button, users briefly see the page they asked before
- * seeing the form page again. But that's the best we can do.
- *
- * @see history.block()
+ * - If the user cancels, the navigation is cancelled and the changes are kept.
  */
-const useWarnWhenUnsavedChanges = (enable: boolean) => {
-    const form = useForm();
-    const history = useHistory();
+export const useWarnWhenUnsavedChanges = (
+    enable: boolean,
+    formRootPathname?: string
+) => {
+    // react-router v6 does not yet provide a way to block navigation
+    // This is planned for a future release
+    // See https://github.com/remix-run/react-router/issues/8139
+    const navigator = useContext(UNSAFE_NavigationContext).navigator as History;
+    const location = useLocation();
     const translate = useTranslate();
-
-    // Keep track of the current location inside the form (e.g. active tab)
-    const formLocation = useRef(history.location);
-    useEffect(() => {
-        formLocation.current = history.location;
-    }, [history.location]);
+    const { isSubmitSuccessful, isSubmitting, dirtyFields } = useFormState();
+    const isDirty = Object.keys(dirtyFields).length > 0;
+    const initialLocation = useRef(formRootPathname || location.pathname);
 
     useEffect(() => {
-        if (!enable) {
-            window.sessionStorage.removeItem('unsavedChanges');
-            return;
-        }
+        if (!enable || !isDirty) return;
 
-        // on mount: apply unsaved changes
-        const unsavedChanges = JSON.parse(
-            window.sessionStorage.getItem('unsavedChanges')
-        );
-
-        if (unsavedChanges) {
-            Object.keys(unsavedChanges).forEach(key =>
-                form.change(key, unsavedChanges[key])
+        let unblock = navigator.block((tx: Transition) => {
+            const newLocationIsInsideForm = tx.location.pathname.startsWith(
+                initialLocation.current
             );
-            window.sessionStorage.removeItem('unsavedChanges');
-        }
 
-        // on unmount : check and save unsaved changes, then cancel navigation
-        return () => {
-            const formState = form.getState();
             if (
-                formState.dirty &&
-                (!formState.submitSucceeded ||
-                    (formState.submitSucceeded &&
-                        formState.dirtySinceLastSubmit))
+                !isSubmitting &&
+                (newLocationIsInsideForm ||
+                    isSubmitSuccessful ||
+                    window.confirm(translate('ra.message.unsaved_changes')))
             ) {
-                if (!window.confirm(translate('ra.message.unsaved_changes'))) {
-                    const dirtyFields = formState.submitSucceeded
-                        ? formState.dirtySinceLastSubmit
-                        : formState.dirtyFields;
-                    const dirtyFieldValues = Object.keys(dirtyFields).reduce(
-                        (acc, key) => {
-                            acc[key] = get(formState.values, key);
-                            return acc;
-                        },
-                        {}
-                    );
-                    window.sessionStorage.setItem(
-                        'unsavedChanges',
-                        JSON.stringify(dirtyFieldValues)
-                    );
-                    history.push(formLocation.current);
-                }
-            } else {
-                window.sessionStorage.removeItem('unsavedChanges');
+                unblock();
+                tx.retry();
             }
-        };
-    }, [translate]); // eslint-disable-line react-hooks/exhaustive-deps
-};
+        });
 
-export default useWarnWhenUnsavedChanges;
+        return unblock;
+    }, [
+        enable,
+        location,
+        navigator,
+        isDirty,
+        isSubmitting,
+        isSubmitSuccessful,
+        translate,
+    ]);
+};

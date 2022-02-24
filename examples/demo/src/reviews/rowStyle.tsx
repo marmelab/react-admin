@@ -1,7 +1,7 @@
-import green from '@material-ui/core/colors/green';
-import orange from '@material-ui/core/colors/orange';
-import red from '@material-ui/core/colors/red';
-import { useTheme } from '@material-ui/core/styles';
+import green from '@mui/material/colors/green';
+import orange from '@mui/material/colors/orange';
+import red from '@mui/material/colors/red';
+import { useTheme } from '@mui/material/styles';
 import { Identifier } from 'react-admin';
 
 import { Review } from './../types';

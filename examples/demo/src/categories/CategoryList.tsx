@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { FC } from 'react';
-import { EditButton, List, ListProps, useListContext } from 'react-admin';
+import { EditButton, List, useListContext } from 'react-admin';
 import inflection from 'inflection';
 import {
     Grid,
@@ -9,68 +8,54 @@ import {
     CardContent,
     CardActions,
     Typography,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+} from '@mui/material';
 
 import LinkToRelatedProducts from './LinkToRelatedProducts';
 import { Category } from '../types';
 
-const useStyles = makeStyles({
-    root: {
-        marginTop: '1em',
-    },
-    media: {
-        height: 140,
-    },
-    title: {
-        paddingBottom: '0.5em',
-    },
-    actionSpacer: {
-        display: 'flex',
-        justifyContent: 'space-around',
-    },
-});
-
-const CategoryGrid: FC = props => {
-    const classes = useStyles(props);
-    const { data, ids } = useListContext<Category>();
-    return ids ? (
-        <Grid container spacing={2} className={classes.root}>
-            {ids.map(id => (
-                <Grid key={id} xs={12} sm={6} md={4} lg={3} xl={2} item>
+const CategoryGrid = () => {
+    const { data, isLoading } = useListContext<Category>();
+    if (isLoading) {
+        return null;
+    }
+    return (
+        <Grid container spacing={2} sx={{ marginTop: '1em' }}>
+            {data.map(record => (
+                <Grid key={record.id} xs={12} sm={6} md={4} lg={3} xl={2} item>
                     <Card>
                         <CardMedia
-                            image={`https://marmelab.com/posters/${data[id].name}-1.jpeg`}
-                            className={classes.media}
+                            image={`https://marmelab.com/posters/${record.name}-1.jpeg`}
+                            sx={{ height: 140 }}
                         />
-                        <CardContent className={classes.title}>
+                        <CardContent sx={{ paddingBottom: '0.5em' }}>
                             <Typography
                                 variant="h5"
                                 component="h2"
                                 align="center"
                             >
-                                {inflection.humanize(data[id].name)}
+                                {inflection.humanize(record.name)}
                             </Typography>
                         </CardContent>
                         <CardActions
-                            classes={{ spacing: classes.actionSpacer }}
+                            sx={{
+                                '.MuiCardActions-spacing': {
+                                    display: 'flex',
+                                    justifyContent: 'space-around',
+                                },
+                            }}
                         >
-                            <LinkToRelatedProducts record={data[id]} />
-                            <EditButton
-                                basePath="/categories"
-                                record={data[id]}
-                            />
+                            <LinkToRelatedProducts />
+                            <EditButton record={record} />
                         </CardActions>
                     </Card>
                 </Grid>
             ))}
         </Grid>
-    ) : null;
+    );
 };
 
-const CategoryList: FC<ListProps> = props => (
+const CategoryList = () => (
     <List
-        {...props}
         sort={{ field: 'name', order: 'ASC' }}
         perPage={20}
         pagination={false}

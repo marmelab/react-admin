@@ -1,8 +1,10 @@
-import { ThemeOptions } from '@material-ui/core';
-import { Overrides } from '@material-ui/core/styles/overrides';
+import { ThemeOptions } from '@mui/material';
 
-export default {
+export const defaultTheme = {
     palette: {
+        background: {
+            default: '#fafafb',
+        },
         secondary: {
             light: '#6ec6ff',
             main: '#2196f3',
@@ -17,56 +19,68 @@ export default {
     },
     sidebar: {
         width: 240,
-        closedWidth: 55,
+        closedWidth: 50,
     },
-    overrides: {
+    components: {
+        MuiButtonBase: {
+            defaultProps: {
+                // disable ripple for perf reasons
+                disableRipple: true,
+            },
+            styleOverrides: {
+                root: {
+                    '&:hover:active::after': {
+                        // recreate a static ripple color
+                        // use the currentColor to make it work both for outlined and contained buttons
+                        // but to dim the background without dimming the text,
+                        // put another element on top with a limited opacity
+                        content: '""',
+                        display: 'block',
+                        width: '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        backgroundColor: 'currentColor',
+                        opacity: 0.3,
+                        borderRadius: 'inherit',
+                    },
+                    '&:focus::after': {
+                        // This ensures we provide visual cues to users using the keyboard
+                        // recreate a static ripple color
+                        // use the currentColor to make it work both for outlined and contained buttons
+                        // but to dim the background without dimming the text,
+                        // put another element on top with a limited opacity
+                        content: '""',
+                        display: 'block',
+                        width: '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        backgroundColor: 'currentColor',
+                        opacity: 0.3,
+                        borderRadius: 'inherit',
+                    },
+                },
+            },
+        },
         MuiFilledInput: {
-            root: {
-                backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                '&$disabled': {
+            styleOverrides: {
+                root: {
                     backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                    '&$disabled': {
+                        backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                    },
                 },
             },
-        },
-        MuiButtonBase: {
-            root: {
-                '&:hover:active::after': {
-                    // recreate a static ripple color
-                    // use the currentColor to make it work both for outlined and contained buttons
-                    // but to dim the background without dimming the text,
-                    // put another element on top with a limited opacity
-                    content: '""',
-                    display: 'block',
-                    width: '100%',
-                    height: '100%',
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    backgroundColor: 'currentColor',
-                    opacity: 0.3,
-                    borderRadius: 'inherit',
-                },
-            },
-        },
-    },
-    props: {
-        MuiButtonBase: {
-            // disable ripple for perf reasons
-            disableRipple: true,
         },
     },
 };
-
-// Temporary solution until we specify our components in it like MUI does
-// See https://github.com/mui-org/material-ui/blob/master/packages/material-ui/src/styles/overrides.d.ts#L103
-export interface RaThemeOverrides extends Overrides {
-    [key: string]: any;
-}
 
 export interface RaThemeOptions extends ThemeOptions {
     sidebar?: {
         width?: number;
         closedWidth?: number;
     };
-    overrides?: RaThemeOverrides;
 }

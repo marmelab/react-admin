@@ -11,21 +11,13 @@ import {
     useRedirect,
     useDataProvider,
 } from 'react-admin';
-import { Dialog } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Dialog } from '@mui/material';
 
 import { stageChoices } from './stages';
 import { typeChoices } from './types';
 import { Deal } from '../types';
 
-const useStyles = makeStyles({
-    root: {
-        width: 500,
-    },
-});
-
 export const DealCreate = ({ open }: { open: boolean }) => {
-    const classes = useStyles();
     const redirect = useRedirect();
     const dataProvider = useDataProvider();
 
@@ -33,7 +25,7 @@ export const DealCreate = ({ open }: { open: boolean }) => {
         redirect('/deals');
     };
 
-    const onSuccess = ({ data: deal }: { data: Deal }) => {
+    const onSuccess = (deal: Deal) => {
         redirect('/deals');
         // increase the index of all deals in the same stage as the new deal
         dataProvider
@@ -59,13 +51,12 @@ export const DealCreate = ({ open }: { open: boolean }) => {
 
     return (
         <Dialog open={open} onClose={handleClose}>
-            <Create
+            <Create<Deal>
                 resource="deals"
-                basePath="/deals"
-                className={classes.root}
-                onSuccess={onSuccess}
+                mutationOptions={{ onSuccess }}
+                sx={{ width: 500 }}
             >
-                <SimpleForm initialValues={{ index: 0 }}>
+                <SimpleForm defaultValues={{ index: 0 }}>
                     <TextInput
                         source="name"
                         label="Deal name"

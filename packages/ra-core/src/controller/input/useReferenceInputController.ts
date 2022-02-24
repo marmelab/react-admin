@@ -1,27 +1,13 @@
-import { useCallback } from 'react';
-
-import useGetList from '../../dataProvider/useGetList';
-import { getStatusForInput as getDataStatus } from './referenceDataStatus';
-import useTranslate from '../../i18n/useTranslate';
-import {
-    PaginationPayload,
-    Record,
-    RecordMap,
-    Identifier,
-    SortPayload,
-} from '../../types';
-import { ListControllerProps } from '../useListController';
-import useReference from '../useReference';
-import usePaginationState from '../usePaginationState';
-import { useSortState } from '..';
-import useFilterState from '../useFilterState';
-import useSelectionState from '../useSelectionState';
-import { useResourceContext } from '../../core';
-import { Refetch } from '../../dataProvider';
+import { useCallback, useMemo } from 'react';
+import { useWatch } from 'react-hook-form';
+import { useGetList } from '../../dataProvider';
+import { FilterPayload, RaRecord, SortPayload } from '../../types';
+import { useReference } from '../useReference';
+import { ChoicesContextValue } from '../../form';
+import { useReferenceParams } from './useReferenceParams';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
-const defaultFilter = {};
 
 /**
  * A hook for choosing a reference record. Useful for foreign keys.
@@ -40,10 +26,8 @@ const defaultFilter = {};
  *      source: 'post_id',
  * });
  *
- * The hook also allow to filter results. It returns a `setFilter`
- * function. It uses the value to create a filter
- * for the query - by default { q: [searchText] }. You can customize the mapping
- * searchText => searchQuery by setting a custom `filterToQuery` function option
+ * The hook also allow to filter results. It returns a `setFilters`
+ * function. It uses the value to create a filter for the query.
  * You can also add a permanentFilter to further filter the result:
  *
  * @example
@@ -58,214 +42,140 @@ const defaultFilter = {};
  *      permanentFilter: {
  *          author: 'john'
  *      },
- *      filterToQuery: searchText => ({ title: searchText })
  * });
  */
-export const useReferenceInputController = (
-    props: Option
-): ReferenceInputValue => {
+export const useReferenceInputController = <RecordType extends RaRecord = any>(
+    props: UseReferenceInputControllerParams
+): ChoicesContextValue<RecordType> => {
     const {
-        basePath,
-        input,
+        debounce,
+        enableGetChoices,
+        filter,
         page: initialPage = 1,
         perPage: initialPerPage = 25,
-        filter = defaultFilter,
         reference,
-        filterToQuery,
-        sort: sortOverride,
+        sort: initialSort,
+        source,
     } = props;
-    const resource = useResourceContext(props);
-    const translate = useTranslate();
 
-    // pagination logic
-    const {
-        pagination,
-        setPagination,
-        page,
-        setPage,
-        perPage,
-        setPerPage,
-    } = usePaginationState({ page: initialPage, perPage: initialPerPage });
-
-    // sort logic
-    const { sort, setSort: setSortObject } = useSortState(sortOverride);
-    const setSort = useCallback(
-        (field: string, order: string = 'ASC') => {
-            setSortObject({ field, order });
-            setPage(1);
-        },
-        [setPage, setSortObject]
-    );
-
-    // filter logic
-    const { filter: filterValues, setFilter } = useFilterState({
-        permanentFilter: filter,
-        filterToQuery,
+    const [params, paramsModifiers] = useReferenceParams({
+        resource: reference,
+        page: initialPage,
+        perPage: initialPerPage,
+        sort: initialSort,
+        debounce,
     });
-    const displayedFilters = [];
-    // plus showFilter and hideFilter defined outside of the hook because
-    // they never change
 
     // selection logic
-    const {
-        selectedIds,
-        onSelect,
-        onToggleItem,
-        onUnselectItems,
-    } = useSelectionState();
+    const currentValue = useWatch({ name: source });
+
+    const isGetMatchingEnabled = enableGetChoices
+        ? enableGetChoices(params.filterValues)
+        : true;
 
     // fetch possible values
     const {
-        ids: possibleValuesIds,
-        data: possibleValuesData,
-        total: possibleValuesTotal,
-        loaded: possibleValuesLoaded,
-        loading: possibleValuesLoading,
+        data: possibleValuesData = [],
+        total,
+        pageInfo,
+        isFetching: possibleValuesFetching,
+        isLoading: possibleValuesLoading,
         error: possibleValuesError,
         refetch: refetchGetList,
-    } = useGetList(reference, pagination, sort, filterValues);
+    } = useGetList<RecordType>(
+        reference,
+        {
+            pagination: {
+                page: params.page,
+                perPage: params.perPage,
+            },
+            sort: { field: params.sort, order: params.order },
+            filter: { ...params.filter, ...filter },
+        },
+        {
+            enabled: isGetMatchingEnabled,
+        }
+    );
 
     // fetch current value
     const {
         referenceRecord,
         refetch: refetchReference,
         error: referenceError,
-        loading: referenceLoading,
-        loaded: referenceLoaded,
-    } = useReference({
-        id: input.value,
+        isLoading: referenceLoading,
+        isFetching: referenceFetching,
+    } = useReference<RecordType>({
+        id: currentValue,
         reference,
     });
-
     // add current value to possible sources
-    let finalIds: Identifier[],
-        finalData: RecordMap<Record>,
-        finalTotal: number;
-    if (!referenceRecord || possibleValuesIds.includes(input.value)) {
-        finalIds = possibleValuesIds;
+    let finalData: RecordType[], finalTotal: number;
+    if (
+        !referenceRecord ||
+        possibleValuesData.find(record => record.id === currentValue)
+    ) {
         finalData = possibleValuesData;
-        finalTotal = possibleValuesTotal;
+        finalTotal = total;
     } else {
-        finalIds = [input.value, ...possibleValuesIds];
-        finalData = { [input.value]: referenceRecord, ...possibleValuesData };
-        finalTotal = possibleValuesTotal + 1;
+        finalData = [referenceRecord, ...possibleValuesData];
+        finalTotal = total == null ? undefined : total + 1;
     }
-
-    // overall status
-    const dataStatus = getDataStatus({
-        input,
-        matchingReferences: Object.keys(finalData).map(id => finalData[id]),
-        referenceRecord,
-        translate,
-    });
 
     const refetch = useCallback(() => {
         refetchGetList();
         refetchReference();
     }, [refetchGetList, refetchReference]);
 
+    const currentSort = useMemo(
+        () => ({
+            field: params.sort,
+            order: params.order,
+        }),
+        [params.sort, params.order]
+    );
     return {
-        // should match the ListContext shape
-        possibleValues: {
-            basePath,
-            data: finalData,
-            ids: finalIds,
-            total: finalTotal,
-            error: possibleValuesError,
-            loaded: possibleValuesLoaded,
-            loading: possibleValuesLoading,
-            hasCreate: false,
-            page,
-            setPage,
-            perPage,
-            setPerPage,
-            currentSort: sort,
-            setSort,
-            filterValues,
-            displayedFilters,
-            setFilters: setFilter,
-            showFilter,
-            hideFilter,
-            selectedIds,
-            onSelect,
-            onToggleItem,
-            onUnselectItems,
-            refetch,
-            resource,
-        },
-        referenceRecord: {
-            data: referenceRecord,
-            loaded: referenceLoaded,
-            loading: referenceLoading,
-            error: referenceError,
-            refetch: refetchReference,
-        },
-        dataStatus: {
-            error: dataStatus.error,
-            loading: dataStatus.waiting,
-            warning: dataStatus.warning,
-        },
-        choices: finalIds.map(id => finalData[id]),
-        // kept for backwards compatibility
-        // @deprecated to be removed in 4.0
-        error: dataStatus.error,
-        loading: possibleValuesLoading || referenceLoading,
-        loaded: possibleValuesLoaded && referenceLoaded,
-        filter: filterValues,
+        sort: currentSort,
+        allChoices: finalData,
+        availableChoices: possibleValuesData,
+        selectedChoices: [referenceRecord],
+        displayedFilters: params.displayedFilters,
+        error: referenceError || possibleValuesError,
+        filter: params.filter,
+        filterValues: params.filterValues,
+        hideFilter: paramsModifiers.hideFilter,
+        isFetching: referenceFetching || possibleValuesFetching,
+        isLoading: referenceLoading || possibleValuesLoading,
+        page: params.page,
+        perPage: params.perPage,
         refetch,
-        setFilter,
-        pagination,
-        setPagination,
-        sort,
-        setSort: setSortObject,
-        warning: dataStatus.warning,
+        resource: reference,
+        setFilters: paramsModifiers.setFilters,
+        setPage: paramsModifiers.setPage,
+        setPerPage: paramsModifiers.setPerPage,
+        setSort: paramsModifiers.setSort,
+        showFilter: paramsModifiers.showFilter,
+        source,
+        total: finalTotal,
+        hasNextPage: pageInfo
+            ? pageInfo.hasNextPage
+            : total != null
+            ? params.page * params.perPage < total
+            : undefined,
+        hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : params.page > 1,
     };
 };
 
-const hideFilter = () => {};
-const showFilter = () => {};
-
-export interface ReferenceInputValue {
-    possibleValues: ListControllerProps;
-    referenceRecord: {
-        data?: Record;
-        loaded: boolean;
-        loading: boolean;
-        error?: any;
-        refetch: Refetch;
-    };
-    dataStatus: {
-        error?: any;
-        loading: boolean;
-        warning?: string;
-    };
-    choices: Record[];
-    error?: string;
-    loaded: boolean;
-    loading: boolean;
-    pagination: PaginationPayload;
-    setFilter: (filter: string) => void;
-    filter: any;
-    setPagination: (pagination: PaginationPayload) => void;
-    setSort: (sort: SortPayload) => void;
-    sort: SortPayload;
-    warning?: string;
-    refetch: Refetch;
-}
-
-interface Option {
-    allowEmpty?: boolean;
-    basePath?: string;
-    filter?: any;
-    filterToQuery?: (filter: string) => any;
-    input?: any;
+export interface UseReferenceInputControllerParams {
+    debounce?: number;
+    filter?: FilterPayload;
     page?: number;
     perPage?: number;
-    record?: Record;
+    record?: RaRecord;
     reference: string;
     // @deprecated ignored
     referenceSource?: typeof defaultReferenceSource;
     resource?: string;
     sort?: SortPayload;
     source: string;
+    enableGetChoices?: (filters: any) => boolean;
 }

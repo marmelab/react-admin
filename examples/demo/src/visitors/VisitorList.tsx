@@ -1,19 +1,16 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     BooleanField,
     Datagrid,
     DateField,
     DateInput,
-    Filter,
-    FilterProps,
     List,
-    ListProps,
     NullableBooleanInput,
     NumberField,
     SearchInput,
 } from 'react-admin';
-import { useMediaQuery, Theme } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { useMediaQuery, Theme } from '@mui/material';
 
 import SegmentsField from './SegmentsField';
 import SegmentInput from './SegmentInput';
@@ -21,38 +18,41 @@ import CustomerLinkField from './CustomerLinkField';
 import ColoredNumberField from './ColoredNumberField';
 import MobileGrid from './MobileGrid';
 import VisitorListAside from './VisitorListAside';
-import { ReactElement } from 'react';
 
-const VisitorFilter = (props: Omit<FilterProps, 'children'>) => (
-    <Filter {...props}>
-        <SearchInput source="q" alwaysOn />
-        <DateInput source="last_seen_gte" />
-        <NullableBooleanInput source="has_ordered" />
-        <NullableBooleanInput source="has_newsletter" defaultValue />
-        <SegmentInput />
-    </Filter>
-);
+const PREFIX = 'VisitorList';
 
-const useStyles = makeStyles(theme => ({
-    nb_commands: { color: 'purple' },
-    hiddenOnSmallScreens: {
+const classes = {
+    nb_commands: `${PREFIX}-nb_commands`,
+    hiddenOnSmallScreens: `${PREFIX}-hiddenOnSmallScreens`,
+};
+
+const StyledList = styled(List)(({ theme }) => ({
+    [`& .${classes.nb_commands}`]: { color: 'purple' },
+
+    [`& .${classes.hiddenOnSmallScreens}`]: {
         display: 'table-cell',
-        [theme.breakpoints.down('md')]: {
+        [theme.breakpoints.down('lg')]: {
             display: 'none',
         },
     },
 }));
 
-const VisitorList = (props: ListProps): ReactElement => {
-    const classes = useStyles();
+const visitorFilters = [
+    <SearchInput source="q" alwaysOn />,
+    <DateInput source="last_seen_gte" />,
+    <NullableBooleanInput source="has_ordered" />,
+    <NullableBooleanInput source="has_newsletter" defaultValue />,
+    <SegmentInput />,
+];
+
+const VisitorList = () => {
     const isXsmall = useMediaQuery<Theme>(theme =>
-        theme.breakpoints.down('xs')
+        theme.breakpoints.down('sm')
     );
-    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     return (
-        <List
-            {...props}
-            filters={isSmall ? <VisitorFilter /> : undefined}
+        <StyledList
+            filters={isSmall ? visitorFilters : undefined}
             sort={{ field: 'last_seen', order: 'DESC' }}
             perPage={25}
             aside={<VisitorListAside />}
@@ -80,7 +80,7 @@ const VisitorList = (props: ListProps): ReactElement => {
                     />
                 </Datagrid>
             )}
-        </List>
+        </StyledList>
     );
 };
 

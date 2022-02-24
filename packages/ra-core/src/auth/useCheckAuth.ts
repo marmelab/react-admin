@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import useLogout from './useLogout';
-import useNotify from '../sideEffect/useNotify';
+import { useNotify } from '../notification';
 
 /**
  * Get a callback for calling the authProvider.checkAuth() method.
@@ -40,7 +40,7 @@ import useNotify from '../sideEffect/useNotify';
  *     return authenticated ? <Bar /> : <BarNotAuthenticated />;
  * } // tip: use useAuthState() hook instead
  */
-const useCheckAuth = (): CheckAuth => {
+export const useCheckAuth = (): CheckAuth => {
     const authProvider = useAuthProvider();
     const notify = useNotify();
     const logout = useLogout();
@@ -66,7 +66,7 @@ const useCheckAuth = (): CheckAuth => {
                     !shouldSkipNotify &&
                         notify(
                             getErrorMessage(error, 'ra.auth.auth_check_error'),
-                            'warning'
+                            { type: 'warning' }
                         );
                 }
                 throw error;
@@ -90,7 +90,7 @@ const checkAuthWithoutAuthProvider = () => Promise.resolve();
  *
  * @return {Promise} Resolved to the authProvider response if the user passes the check, or rejected with an error otherwise
  */
-type CheckAuth = (
+export type CheckAuth = (
     params?: any,
     logoutOnFailure?: boolean,
     redirectTo?: string,
@@ -104,5 +104,3 @@ const getErrorMessage = (error, defaultMessage) =>
         : typeof error === 'undefined' || !error.message
         ? defaultMessage
         : error.message;
-
-export default useCheckAuth;

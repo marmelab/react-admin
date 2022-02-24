@@ -1,35 +1,30 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import {
     FormControl,
     FormHelperText,
     FormLabel,
     RadioGroup,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { RadioGroupProps } from '@material-ui/core/RadioGroup';
-import { FormControlProps } from '@material-ui/core/FormControl';
+} from '@mui/material';
+import { RadioGroupProps } from '@mui/material/RadioGroup';
+import { FormControlProps } from '@mui/material/FormControl';
 import get from 'lodash/get';
-import { useInput, FieldTitle, ChoicesInputProps, warning } from 'ra-core';
+import {
+    useInput,
+    FieldTitle,
+    ChoicesProps,
+    warning,
+    useChoicesContext,
+} from 'ra-core';
 
-import sanitizeInputRestProps from './sanitizeInputRestProps';
-import InputHelperText from './InputHelperText';
-import RadioButtonGroupInputItem from './RadioButtonGroupInputItem';
-import Labeled from './Labeled';
+import { CommonInputProps } from './CommonInputProps';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
+import { InputHelperText } from './InputHelperText';
+import { RadioButtonGroupInputItem } from './RadioButtonGroupInputItem';
+import { Labeled } from '../Labeled';
 import { LinearProgress } from '../layout';
-
-const useStyles = makeStyles(
-    theme => ({
-        label: {
-            transform: 'translate(0, 5px) scale(0.75)',
-            transformOrigin: `top ${
-                theme.direction === 'ltr' ? 'left' : 'right'
-            }`,
-        },
-    }),
-    { name: 'RaRadioButtonGroupInput' }
-);
 
 /**
  * An Input component for a radio button group, using an array of objects for the options
@@ -64,15 +59,15 @@ const useStyles = makeStyles(
  * const optionRenderer = choice => `${choice.first_name} ${choice.last_name}`;
  * <CheckboxGroupInput source="recipients" choices={choices} optionText={optionRenderer} />
  *
- * `optionText` also accepts a React Element, that will be cloned and receive
- * the related choice as the `record` prop. You can use Field components there.
+ * `optionText` also accepts a React Element, that can access
+ * the related choice through the `useRecordContext` hook. You can use Field components there.
  * @example
  * const choices = [
  *    { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
  *    { id: 456, first_name: 'Jane', last_name: 'Austen' },
  * ];
  * const FullNameField = ({ record }) => <span>{record.first_name} {record.last_name}</span>;
- * <RadioButtonGroupInput source="gender" choices={choices} optionText={<FullNameField />}/>
+ * <RadioButtonGroupInput source="recipients" choices={choices} optionText={<FullNameField />}/>
  *
  * The choices are translated by default, so you can use translation identifiers as choices:
  * @example
@@ -86,33 +81,38 @@ const useStyles = makeStyles(
  * @example
  * <RadioButtonGroupInput source="gender" choices={choices} translateChoice={false}/>
  *
- * The object passed as `options` props is passed to the material-ui <RadioButtonGroup> component
+ * The object passed as `options` props is passed to the MUI <RadioButtonGroup> component
  */
-const RadioButtonGroupInput: FunctionComponent<RadioButtonGroupInputProps> = props => {
+export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
     const {
-        choices = [],
-        classes: classesOverride,
+        choices: choicesProp,
+        className,
         format,
         helperText,
+        isFetching: isFetchingProp,
+        isLoading: isLoadingProp,
         label,
-        loaded,
-        loading,
         margin = 'dense',
         onBlur,
         onChange,
-        onFocus,
-        options,
         optionText,
         optionValue,
         parse,
-        resource,
+        resource: resourceProp,
         row,
-        source,
+        source: sourceProp,
         translateChoice,
         validate,
         ...rest
     } = props;
-    const classes = useStyles(props);
+
+    const { allChoices, isLoading, resource, source } = useChoicesContext({
+        choices: choicesProp,
+        isFetching: isFetchingProp,
+        isLoading: isLoadingProp,
+        resource: resourceProp,
+        source: sourceProp,
+    });
 
     warning(
         source === undefined,
@@ -120,15 +120,14 @@ const RadioButtonGroupInput: FunctionComponent<RadioButtonGroupInputProps> = pro
     );
 
     warning(
-        choices === undefined,
+        allChoices === undefined,
         `If you're not wrapping the RadioButtonGroupInput inside a ReferenceInput, you must provide the choices prop`
     );
 
-    const { id, isRequired, meta, input } = useInput({
+    const { id, isRequired, fieldState, field, formState } = useInput({
         format,
         onBlur,
         onChange,
-        onFocus,
         parse,
         resource,
         source,
@@ -136,32 +135,35 @@ const RadioButtonGroupInput: FunctionComponent<RadioButtonGroupInputProps> = pro
         ...rest,
     });
 
-    const { error, submitError, touched } = meta;
+    const { error, invalid, isTouched } = fieldState;
+    const { isSubmitted } = formState;
 
-    if (loading) {
+    if (isLoading) {
         return (
             <Labeled
-                id={id}
+                htmlFor={id}
                 label={label}
                 source={source}
                 resource={resource}
-                className={rest.className}
+                className={clsx('ra-input', `ra-input-${source}`, className)}
                 isRequired={isRequired}
-                meta={meta}
-                input={input}
             >
                 <LinearProgress />
             </Labeled>
         );
     }
     return (
-        <FormControl
+        <StyledFormControl
             component="fieldset"
+            className={clsx('ra-input', `ra-input-${source}`, className)}
             margin={margin}
-            error={touched && !!(error || submitError)}
+            error={(isTouched || isSubmitted) && invalid}
             {...sanitizeRestProps(rest)}
         >
-            <FormLabel component="legend" className={classes.label}>
+            <FormLabel
+                component="legend"
+                className={RadioButtonGroupInputClasses.label}
+            >
                 <FieldTitle
                     label={label}
                     source={source}
@@ -170,10 +172,14 @@ const RadioButtonGroupInput: FunctionComponent<RadioButtonGroupInputProps> = pro
                 />
             </FormLabel>
 
-            <RadioGroup id={id} row={row} {...options}>
-                {choices.map(choice => (
+            <RadioGroup
+                id={id}
+                row={row}
+                {...field}
+                {...sanitizeRestProps(rest)}
+            >
+                {allChoices.map(choice => (
                     <RadioButtonGroupInputItem
-                        {...input}
                         key={get(choice, optionValue)}
                         choice={choice}
                         optionText={optionText}
@@ -185,18 +191,18 @@ const RadioButtonGroupInput: FunctionComponent<RadioButtonGroupInputProps> = pro
             </RadioGroup>
             <FormHelperText>
                 <InputHelperText
-                    touched={touched}
-                    error={error || submitError}
+                    touched={isTouched || isSubmitted}
+                    error={error?.message}
                     helperText={helperText}
                 />
             </FormHelperText>
-        </FormControl>
+        </StyledFormControl>
     );
 };
 
 RadioButtonGroupInput.propTypes = {
     choices: PropTypes.arrayOf(PropTypes.any),
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     options: PropTypes.object,
     optionText: PropTypes.oneOfType([
         PropTypes.string,
@@ -218,7 +224,6 @@ RadioButtonGroupInput.defaultProps = {
 };
 
 const sanitizeRestProps = ({
-    addLabel,
     afterSubmit,
     allowNull,
     beforeSubmit,
@@ -252,7 +257,23 @@ const sanitizeRestProps = ({
     ...rest
 }: any) => sanitizeInputRestProps(rest);
 
-export type RadioButtonGroupInputProps = ChoicesInputProps<RadioGroupProps> &
-    FormControlProps;
+export type RadioButtonGroupInputProps = CommonInputProps &
+    ChoicesProps &
+    FormControlProps &
+    RadioGroupProps;
 
-export default RadioButtonGroupInput;
+const PREFIX = 'RaRadioButtonGroupInput';
+
+export const RadioButtonGroupInputClasses = {
+    label: `${PREFIX}-label`,
+};
+
+const StyledFormControl = styled(FormControl, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    [`& .${RadioButtonGroupInputClasses.label}`]: {
+        transform: 'translate(0, 5px) scale(0.75)',
+        transformOrigin: `top ${theme.direction === 'ltr' ? 'left' : 'right'}`,
+    },
+}));

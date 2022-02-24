@@ -1,17 +1,12 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
 import PropTypes from 'prop-types';
-import TextField, { TextFieldProps } from '@material-ui/core/TextField';
-import { useInput, FieldTitle, InputProps } from 'ra-core';
+import clsx from 'clsx';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
+import { useInput, FieldTitle } from 'ra-core';
 
-import InputHelperText from './InputHelperText';
-import sanitizeInputRestProps from './sanitizeInputRestProps';
-
-const convertStringToNumber = value => {
-    const float = parseFloat(value);
-
-    return isNaN(float) ? null : float;
-};
+import { CommonInputProps } from './CommonInputProps';
+import { InputHelperText } from './InputHelperText';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 
 /**
  * An Input component for a number
@@ -23,17 +18,17 @@ const convertStringToNumber = value => {
  * @example
  * <NumberInput source="nb_views" step={1} />
  *
- * The object passed as `options` props is passed to the material-ui <TextField> component
+ * The object passed as `options` props is passed to the MUI <TextField> component
  */
-const NumberInput: FunctionComponent<NumberInputProps> = ({
-    format,
+export const NumberInput = ({
+    className,
+    defaultValue = '',
+    format = convertNumberToString,
     helperText,
     label,
     margin = 'dense',
     onBlur,
-    onFocus,
     onChange,
-    options,
     parse = convertStringToNumber,
     resource,
     source,
@@ -44,21 +39,21 @@ const NumberInput: FunctionComponent<NumberInputProps> = ({
     variant = 'filled',
     inputProps: overrideInputProps,
     ...rest
-}) => {
+}: NumberInputProps) => {
     const {
+        field,
+        fieldState: { error, invalid, isTouched },
+        formState: { isSubmitted },
         id,
-        input,
         isRequired,
-        meta: { error, submitError, touched },
     } = useInput({
+        defaultValue,
         format,
         onBlur,
         onChange,
-        onFocus,
         parse,
         resource,
         source,
-        type: 'number',
         validate,
         ...rest,
     });
@@ -68,13 +63,16 @@ const NumberInput: FunctionComponent<NumberInputProps> = ({
     return (
         <TextField
             id={id}
-            {...input}
+            {...field}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
+            type="number"
+            size="small"
             variant={variant}
-            error={!!(touched && (error || submitError))}
+            error={(isTouched || isSubmitted) && invalid}
             helperText={
                 <InputHelperText
-                    touched={touched}
-                    error={error || submitError}
+                    touched={isTouched || isSubmitted}
+                    error={error?.message}
                     helperText={helperText}
                 />
             }
@@ -88,14 +86,13 @@ const NumberInput: FunctionComponent<NumberInputProps> = ({
             }
             margin={margin}
             inputProps={inputProps}
-            {...options}
             {...sanitizeInputRestProps(rest)}
         />
     );
 };
 
 NumberInput.propTypes = {
-    label: PropTypes.string,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     options: PropTypes.object,
     resource: PropTypes.string,
     source: PropTypes.string,
@@ -109,19 +106,22 @@ NumberInput.defaultProps = {
 };
 
 export interface NumberInputProps
-    extends InputProps<TextFieldProps>,
+    extends CommonInputProps,
         Omit<
             TextFieldProps,
-            | 'label'
-            | 'helperText'
-            | 'onChange'
-            | 'onBlur'
-            | 'onFocus'
-            | 'defaultValue'
+            'label' | 'helperText' | 'defaultValue' | 'onChange' | 'onBlur'
         > {
     step?: string | number;
     min?: string | number;
     max?: string | number;
 }
 
-export default NumberInput;
+const convertStringToNumber = value => {
+    const float = parseFloat(value);
+
+    return isNaN(float) ? null : float;
+};
+
+const convertNumberToString = value => {
+    return value === null ? '' : value.toString();
+};

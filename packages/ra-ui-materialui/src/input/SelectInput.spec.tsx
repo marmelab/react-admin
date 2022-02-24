@@ -1,10 +1,15 @@
 import * as React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
-import { Form } from 'react-final-form';
-import { TestTranslationProvider } from 'ra-core';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+    required,
+    testDataProvider,
+    TestTranslationProvider,
+    useRecordContext,
+} from 'ra-core';
 
+import { AdminContext } from '../AdminContext';
+import { SimpleForm } from '../form';
 import { SelectInput } from './SelectInput';
-import { required } from 'ra-core';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 describe('<SelectInput />', () => {
@@ -17,42 +22,53 @@ describe('<SelectInput />', () => {
         ],
     };
 
-    it('should use the input parameter value as the initial input value', () => {
+    it('should use the input parameter value as the initial input value', async () => {
         const { container } = render(
-            <Form
-                initialValues={{ language: 'ang' }}
-                onSubmit={jest.fn()}
-                render={() => <SelectInput {...defaultProps} />}
-            />
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ language: 'ang' }}
+                    onSubmit={jest.fn()}
+                >
+                    <SelectInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
         const input = container.querySelector('input');
         expect(input.value).toEqual('ang');
     });
 
     it('should render choices as mui MenuItem components', async () => {
-        const { getByRole, getByText, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => <SelectInput {...defaultProps} />}
-            />
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
-        const select = getByRole('button');
-        fireEvent.mouseDown(select);
-        const options = queryAllByRole('option');
-        expect(options.length).toEqual(2);
+        fireEvent.mouseDown(
+            screen.getByLabelText('resources.posts.fields.language')
+        );
+        expect(screen.queryAllByRole('option').length).toEqual(3);
 
-        const option1 = getByText('Angular');
-        expect(option1.getAttribute('data-value')).toEqual('ang');
+        expect(
+            screen
+                .getByTitle('ra.action.clear_input_value')
+                .getAttribute('data-value')
+        ).toEqual('');
 
-        const option2 = getByText('React');
-        expect(option2.getAttribute('data-value')).toEqual('rea');
+        expect(screen.getByText('Angular').getAttribute('data-value')).toEqual(
+            'ang'
+        );
+
+        expect(screen.getByText('React').getAttribute('data-value')).toEqual(
+            'rea'
+        );
     });
 
     it('should render disable choices marked so', () => {
-        const { getByRole, getByText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
                     <SelectInput
                         {...defaultProps}
                         choices={[
@@ -60,126 +76,67 @@ describe('<SelectInput />', () => {
                             { id: 'rea', name: 'React', disabled: true },
                         ]}
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
-        const select = getByRole('button');
-        fireEvent.mouseDown(select);
-        const option1 = getByText('Angular');
-        expect(option1.getAttribute('aria-disabled')).toEqual('false');
+        fireEvent.mouseDown(
+            screen.getByLabelText('resources.posts.fields.language')
+        );
 
-        const option2 = getByText('React');
-        expect(option2.getAttribute('aria-disabled')).toEqual('true');
+        expect(
+            screen.getByText('Angular').getAttribute('aria-disabled')
+        ).toBeNull();
+        expect(screen.getByText('React').getAttribute('aria-disabled')).toEqual(
+            'true'
+        );
     });
 
-    it('should add an empty menu when allowEmpty is true', () => {
-        const { getByRole, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => <SelectInput {...defaultProps} allowEmpty />}
-            />
-        );
-        const select = getByRole('button');
-        fireEvent.mouseDown(select);
-
-        const options = queryAllByRole('option');
-        expect(options.length).toEqual(3);
-        expect(options[0].getAttribute('data-value')).toEqual('');
-    });
-
-    it('should add an empty menu with custom value when allowEmpty is true', () => {
-        const emptyValue = 'test';
-
-        const { getByRole, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        {...defaultProps}
-                        allowEmpty
-                        emptyValue={emptyValue}
-                    />
-                )}
-            />
-        );
-        const select = getByRole('button');
-        fireEvent.mouseDown(select);
-
-        const options = queryAllByRole('option');
-        expect(options.length).toEqual(3);
-        expect(options[0].getAttribute('data-value')).toEqual(emptyValue);
-    });
-
-    it('should add an empty menu with proper text when emptyText is a string', () => {
+    it('should allow to override the empty menu option text by passing a string', () => {
         const emptyText = 'Default';
 
-        const { getByRole, getByText, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        allowEmpty
-                        emptyText={emptyText}
-                        {...defaultProps}
-                    />
-                )}
-            />
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput emptyText={emptyText} {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
-        const emptyOption = getByRole('button');
-        fireEvent.mouseDown(emptyOption);
+        fireEvent.mouseDown(
+            screen.getByLabelText('resources.posts.fields.language')
+        );
 
-        const options = queryAllByRole('option');
-        expect(options.length).toEqual(3);
+        expect(screen.queryAllByRole('option').length).toEqual(3);
 
-        expect(getByText('Default')).not.toBeNull();
+        expect(screen.getByText('Default')).not.toBeNull();
     });
 
-    it('should add an empty menu with proper text when emptyText is a React element', () => {
+    it('should allow to override the empty menu option text by passing a React element', () => {
         const emptyText = (
             <div>
                 <em>Empty choice</em>
             </div>
         );
 
-        const { getByRole, getByText, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        allowEmpty
-                        emptyText={emptyText}
-                        {...defaultProps}
-                    />
-                )}
-            />
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput emptyText={emptyText} {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
-        const emptyOption = getByRole('button');
-        fireEvent.mouseDown(emptyOption);
-
-        const options = queryAllByRole('option');
-        expect(options.length).toEqual(3);
-
-        expect(getByText('Empty choice')).not.toBeNull();
-    });
-
-    it('should not add a falsy (null or false) element when allowEmpty is false', () => {
-        const { getByRole, queryAllByRole } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => <SelectInput {...defaultProps} />}
-            />
+        fireEvent.mouseDown(
+            screen.getByLabelText('resources.posts.fields.language')
         );
-        const select = getByRole('button');
-        fireEvent.mouseDown(select);
-        const options = queryAllByRole('option');
-        expect(options.length).toEqual(2);
+
+        expect(screen.queryAllByRole('option').length).toEqual(3);
+
+        expect(screen.getByText('Empty choice')).not.toBeNull();
     });
 
     it('should use optionValue as value identifier', () => {
-        const { getByRole, getByText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
                     <SelectInput
                         {...defaultProps}
                         optionValue="foobar"
@@ -188,21 +145,22 @@ describe('<SelectInput />', () => {
                             { foobar: 'rea', name: 'React' },
                         ]}
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
-        const select = getByRole('button');
-        fireEvent.mouseDown(select);
+        fireEvent.mouseDown(
+            screen.getByLabelText('resources.posts.fields.language')
+        );
 
-        const option = getByText('Angular');
-        expect(option.getAttribute('data-value')).toEqual('ang');
+        expect(screen.getByText('Angular').getAttribute('data-value')).toEqual(
+            'ang'
+        );
     });
 
     it('should use optionValue including "." as value identifier', () => {
-        const { getByRole, getByText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
                     <SelectInput
                         {...defaultProps}
                         optionValue="foobar.id"
@@ -211,21 +169,22 @@ describe('<SelectInput />', () => {
                             { foobar: { id: 'rea' }, name: 'React' },
                         ]}
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
-        const select = getByRole('button');
-        fireEvent.mouseDown(select);
+        fireEvent.mouseDown(
+            screen.getByLabelText('resources.posts.fields.language')
+        );
 
-        const option = getByText('Angular');
-        expect(option.getAttribute('data-value')).toEqual('ang');
+        expect(screen.getByText('Angular').getAttribute('data-value')).toEqual(
+            'ang'
+        );
     });
 
     it('should use optionText with a string value as text identifier', () => {
-        const { getByRole, getByText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
                     <SelectInput
                         {...defaultProps}
                         optionText="foobar"
@@ -234,21 +193,22 @@ describe('<SelectInput />', () => {
                             { id: 'rea', foobar: 'React' },
                         ]}
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
-        const select = getByRole('button');
-        fireEvent.mouseDown(select);
+        fireEvent.mouseDown(
+            screen.getByLabelText('resources.posts.fields.language')
+        );
 
-        const option = getByText('Angular');
-        expect(option.getAttribute('data-value')).toEqual('ang');
+        expect(screen.getByText('Angular').getAttribute('data-value')).toEqual(
+            'ang'
+        );
     });
 
     it('should use optionText with a string value including "." as text identifier', () => {
-        const { getByRole, getByText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
                     <SelectInput
                         {...defaultProps}
                         optionText="foobar.name"
@@ -257,21 +217,22 @@ describe('<SelectInput />', () => {
                             { id: 'rea', foobar: { name: 'React' } },
                         ]}
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
-        const select = getByRole('button');
-        fireEvent.mouseDown(select);
+        fireEvent.mouseDown(
+            screen.getByLabelText('resources.posts.fields.language')
+        );
 
-        const option = getByText('Angular');
-        expect(option.getAttribute('data-value')).toEqual('ang');
+        expect(screen.getByText('Angular').getAttribute('data-value')).toEqual(
+            'ang'
+        );
     });
 
     it('should use optionText with a function value as text identifier', () => {
-        const { getByRole, getByText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
                     <SelectInput
                         {...defaultProps}
                         optionText={choice => choice.foobar}
@@ -280,25 +241,26 @@ describe('<SelectInput />', () => {
                             { id: 'rea', foobar: 'React' },
                         ]}
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
-        const select = getByRole('button');
-        fireEvent.mouseDown(select);
+        fireEvent.mouseDown(
+            screen.getByLabelText('resources.posts.fields.language')
+        );
 
-        const option = getByText('Angular');
-        expect(option.getAttribute('data-value')).toEqual('ang');
+        expect(screen.getByText('Angular').getAttribute('data-value')).toEqual(
+            'ang'
+        );
     });
 
     it('should use optionText with an element value as text identifier', () => {
-        const Foobar = ({ record }: { record?: any }) => (
-            <span data-value={record.id} aria-label={record.foobar} />
-        );
-
-        const { getByRole, getByLabelText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
+        const Foobar = () => {
+            const record = useRecordContext();
+            return <span data-value={record.id} aria-label={record.foobar} />;
+        };
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
                     <SelectInput
                         {...defaultProps}
                         optionText={<Foobar />}
@@ -307,211 +269,198 @@ describe('<SelectInput />', () => {
                             { id: 'rea', foobar: 'React' },
                         ]}
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
-        const select = getByRole('button');
-        fireEvent.mouseDown(select);
+        fireEvent.mouseDown(
+            screen.getByLabelText('resources.posts.fields.language')
+        );
 
-        const option = getByLabelText('Angular');
-        expect(option.getAttribute('data-value')).toEqual('ang');
+        expect(
+            screen.getByLabelText('Angular').getAttribute('data-value')
+        ).toEqual('ang');
     });
 
     it('should translate the choices by default', () => {
-        const { getByRole, getByText, queryAllByRole } = render(
-            <TestTranslationProvider translate={x => `**${x}**`}>
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => <SelectInput {...defaultProps} />}
-                />
-            </TestTranslationProvider>
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <TestTranslationProvider translate={x => `**${x}**`}>
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <SelectInput {...defaultProps} />
+                    </SimpleForm>
+                </TestTranslationProvider>
+            </AdminContext>
         );
-        const select = getByRole('button');
-        fireEvent.mouseDown(select);
-        const options = queryAllByRole('option');
-        expect(options.length).toEqual(2);
+        fireEvent.mouseDown(
+            screen.getByLabelText('**resources.posts.fields.language**')
+        );
 
-        const option1 = getByText('**Angular**');
-        expect(option1.getAttribute('data-value')).toEqual('ang');
-
-        const option2 = getByText('**React**');
-        expect(option2.getAttribute('data-value')).toEqual('rea');
+        expect(screen.queryAllByRole('option').length).toEqual(3);
+        expect(
+            screen.getByText('**Angular**').getAttribute('data-value')
+        ).toEqual('ang');
+        expect(
+            screen.getByText('**React**').getAttribute('data-value')
+        ).toEqual('rea');
     });
 
     it('should not translate the choices if translateChoice is false', () => {
-        const { getByRole, getByText, queryAllByRole } = render(
-            <TestTranslationProvider translate={x => `**${x}**`}>
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <TestTranslationProvider translate={x => `**${x}**`}>
+                    <SimpleForm onSubmit={jest.fn()}>
                         <SelectInput
                             {...defaultProps}
                             translateChoice={false}
                         />
-                    )}
-                />
-            </TestTranslationProvider>
+                    </SimpleForm>
+                </TestTranslationProvider>
+            </AdminContext>
         );
-        const select = getByRole('button');
-        fireEvent.mouseDown(select);
-        const options = queryAllByRole('option');
-        expect(options.length).toEqual(2);
+        fireEvent.mouseDown(
+            screen.getByLabelText('**resources.posts.fields.language**')
+        );
 
-        const option1 = getByText('Angular');
-        expect(option1.getAttribute('data-value')).toEqual('ang');
-
-        const option2 = getByText('React');
-        expect(option2.getAttribute('data-value')).toEqual('rea');
+        expect(screen.queryAllByRole('option').length).toEqual(3);
+        expect(screen.getByText('Angular').getAttribute('data-value')).toEqual(
+            'ang'
+        );
+        expect(screen.getByText('React').getAttribute('data-value')).toEqual(
+            'rea'
+        );
     });
 
     it('should display helperText if prop is present', () => {
-        const { getByText } = render(
-            <Form
-                onSubmit={jest.fn()}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm
+                    defaultValues={{ language: 'ang' }}
+                    onSubmit={jest.fn()}
+                >
                     <SelectInput
                         {...defaultProps}
                         helperText="Can I help you?"
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
-        const helperText = getByText('Can I help you?');
+        const helperText = screen.getByText('Can I help you?');
         expect(helperText).not.toBeNull();
     });
 
     describe('error message', () => {
         it('should not be displayed if field is pristine', () => {
-            const { queryAllByText } = render(
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => (
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ language: 'ang' }}
+                        onSubmit={jest.fn()}
+                    >
                         <SelectInput {...defaultProps} validate={required()} />
-                    )}
-                />
+                    </SimpleForm>
+                </AdminContext>
             );
-            const error = queryAllByText('ra.validation.required');
+            const error = screen.queryAllByText('ra.validation.required');
             expect(error.length).toEqual(0);
         });
 
         it('should not be displayed if field has been touched but is valid', () => {
-            const { getByLabelText, queryAllByText } = render(
-                <Form
-                    validateOnBlur
-                    initialValues={{ language: 'ang' }}
-                    onSubmit={jest.fn()}
-                    render={() => (
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm
+                        defaultValues={{ language: 'ang' }}
+                        mode="onBlur"
+                        onSubmit={jest.fn()}
+                    >
                         <SelectInput {...defaultProps} validate={required()} />
-                    )}
-                />
+                    </SimpleForm>
+                </AdminContext>
             );
-            const input = getByLabelText('resources.posts.fields.language *');
+            const input = screen.getByLabelText(
+                'resources.posts.fields.language *'
+            );
             input.focus();
             input.blur();
 
-            const error = queryAllByText('ra.validation.required');
+            const error = screen.queryAllByText('ra.validation.required');
             expect(error.length).toEqual(0);
         });
 
-        it('should be displayed if field has been touched and is invalid', () => {
-            const { getByLabelText, getByRole, getByText } = render(
-                <Form
-                    validateOnBlur
-                    onSubmit={jest.fn()}
-                    render={() => (
+        it('should be displayed if field has been touched and is invalid', async () => {
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <SimpleForm mode="onChange" onSubmit={jest.fn()}>
                         <SelectInput
                             {...defaultProps}
-                            allowEmpty
                             emptyText="Empty"
                             validate={required()}
                         />
-                    )}
-                />
+                    </SimpleForm>
+                </AdminContext>
             );
-            const input = getByLabelText('resources.posts.fields.language *');
-            input.focus();
-            const select = getByRole('button');
+
+            const select = screen.getByLabelText(
+                'resources.posts.fields.language *'
+            );
             fireEvent.mouseDown(select);
 
-            const optionAngular = getByText('Angular');
+            const optionAngular = screen.getByText('Angular');
             fireEvent.click(optionAngular);
-            input.blur();
-            select.blur();
 
-            input.focus();
-            const optionEmpty = getByText('Empty');
+            const optionEmpty = screen.getByText('Empty');
             fireEvent.click(optionEmpty);
-            input.blur();
-            select.blur();
 
-            const error = getByText('ra.validation.required');
-            expect(error).not.toBeNull();
+            await waitFor(() => {
+                expect(screen.queryByText('ra.validation.required'));
+            });
         });
     });
 
-    it('should not render a LinearProgress if loading is true and a second has not passed yet', () => {
-        const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        {...{
-                            ...defaultProps,
-                            loaded: true,
-                            loading: true,
-                        }}
-                    />
-                )}
-            />
+    it('should not render a LinearProgress if isLoading is true and a second has not passed yet', () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput {...defaultProps} isLoading />
+                </SimpleForm>
+            </AdminContext>
         );
 
-        expect(queryByRole('progressbar')).toBeNull();
+        expect(screen.queryByRole('progressbar')).toBeNull();
     });
 
-    it('should render a LinearProgress if loading is true and a second has passed', async () => {
-        const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
-                render={() => (
-                    <SelectInput
-                        {...{
-                            ...defaultProps,
-                            loaded: true,
-                            loading: true,
-                        }}
-                    />
-                )}
-            />
+    it('should render a LinearProgress if isLoading is true and a second has passed', async () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput {...defaultProps} isLoading />
+                </SimpleForm>
+            </AdminContext>
         );
 
         await new Promise(resolve => setTimeout(resolve, 1001));
 
-        expect(queryByRole('progressbar')).not.toBeNull();
+        expect(screen.queryByRole('progressbar')).not.toBeNull();
     });
 
-    it('should not render a LinearProgress if loading is false', () => {
-        const { queryByRole } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
-                render={() => <SelectInput {...defaultProps} />}
-            />
+    it('should not render a LinearProgress if isLoading is false', () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput {...defaultProps} />
+                </SimpleForm>
+            </AdminContext>
         );
 
-        expect(queryByRole('progressbar')).toBeNull();
+        expect(screen.queryByRole('progressbar')).toBeNull();
     });
 
     it('should support creation of a new choice through the onCreate event', async () => {
         const choices = [...defaultProps.choices];
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 
-        const { getByLabelText, getByRole, getByText, queryByText } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
                     <SelectInput
                         {...defaultProps}
                         choices={choices}
@@ -520,68 +469,86 @@ describe('<SelectInput />', () => {
                             return newChoice;
                         }}
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
 
-        const input = getByLabelText(
-            'resources.posts.fields.language'
-        ) as HTMLInputElement;
-        input.focus();
-        const select = getByRole('button');
-        fireEvent.mouseDown(select);
+        const input = screen.getByLabelText('resources.posts.fields.language');
+        fireEvent.mouseDown(input);
 
-        fireEvent.click(getByText('ra.action.create'));
-        await new Promise(resolve => setImmediate(resolve));
-        input.blur();
-
-        expect(
-            // The selector ensure we don't get the options from the menu but the select value
-            queryByText(newChoice.name, { selector: '[role=button]' })
-        ).not.toBeNull();
+        fireEvent.click(screen.getByText('ra.action.create'));
+        await waitFor(() => {
+            expect(screen.queryByText(newChoice.name)).not.toBeNull();
+        });
     });
 
     it('should support creation of a new choice through the onCreate event with a promise', async () => {
         const choices = [...defaultProps.choices];
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 
-        const { getByLabelText, getByRole, getByText, queryByText } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
                     <SelectInput
                         {...defaultProps}
                         choices={choices}
+                        defaultValue="ang"
                         onCreate={() => {
                             return new Promise(resolve => {
                                 setTimeout(() => {
                                     choices.push(newChoice);
                                     resolve(newChoice);
-                                }, 200);
+                                }, 50);
                             });
                         }}
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
 
-        const input = getByLabelText(
-            'resources.posts.fields.language'
-        ) as HTMLInputElement;
-        input.focus();
-        const select = getByRole('button');
-        fireEvent.mouseDown(select);
+        const input = screen.getByLabelText('resources.posts.fields.language');
+        fireEvent.mouseDown(input);
 
-        fireEvent.click(getByText('ra.action.create'));
-        await new Promise(resolve => setImmediate(resolve));
-        input.blur();
+        fireEvent.click(screen.getByText('ra.action.create'));
 
         await waitFor(() => {
-            expect(
-                // The selector ensure we don't get the options from the menu but the select value
-                queryByText(newChoice.name, { selector: '[role=button]' })
-            ).not.toBeNull();
+            expect(screen.queryByText(newChoice.name)).not.toBeNull();
+        });
+    });
+
+    it('should support creation of a new choice with nested optionText', async () => {
+        const choices = [
+            { id: 'programming', name: { en: 'Programming' } },
+            { id: 'lifestyle', name: { en: 'Lifestyle' } },
+            { id: 'photography', name: { en: 'Photography' } },
+        ];
+        const newChoice = {
+            id: 'js_fatigue',
+            name: { en: 'New Kid On The Block' },
+        };
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectInput
+                        {...defaultProps}
+                        choices={choices}
+                        onCreate={() => {
+                            choices.push(newChoice);
+                            return newChoice;
+                        }}
+                        optionText="name.en"
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        const input = screen.getByLabelText('resources.posts.fields.language');
+        fireEvent.mouseDown(input);
+
+        fireEvent.click(screen.getByText('ra.action.create'));
+        await waitFor(() => {
+            expect(screen.queryByText(newChoice.name.en)).not.toBeNull();
         });
     });
 
@@ -599,34 +566,26 @@ describe('<SelectInput />', () => {
             return <button onClick={handleClick}>Get the kid</button>;
         };
 
-        const { getByLabelText, getByRole, getByText, queryByText } = render(
-            <Form
-                validateOnBlur
-                onSubmit={jest.fn()}
-                render={() => (
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
                     <SelectInput
                         {...defaultProps}
                         choices={choices}
                         create={<Create />}
                     />
-                )}
-            />
+                </SimpleForm>
+            </AdminContext>
         );
 
-        const input = getByLabelText(
-            'resources.posts.fields.language'
-        ) as HTMLInputElement;
-        input.focus();
-        const select = getByRole('button');
-        fireEvent.mouseDown(select);
+        const input = screen.getByLabelText('resources.posts.fields.language');
+        fireEvent.mouseDown(input);
 
-        fireEvent.click(getByText('ra.action.create'));
-        fireEvent.click(getByText('Get the kid'));
-        input.blur();
+        fireEvent.click(screen.getByText('ra.action.create'));
+        fireEvent.click(screen.getByText('Get the kid'));
 
-        expect(
-            // The selector ensure we don't get the options from the menu but the select value
-            queryByText(newChoice.name, { selector: '[role=button]' })
-        ).not.toBeNull();
+        await waitFor(() => {
+            expect(screen.queryByText(newChoice.name)).not.toBeNull();
+        });
     });
 });

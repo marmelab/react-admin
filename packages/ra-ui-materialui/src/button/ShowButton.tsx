@@ -1,11 +1,16 @@
 import * as React from 'react';
-import { FC, memo, useMemo, ReactElement } from 'react';
+import { memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import ImageEye from '@material-ui/icons/RemoveRedEye';
+import ImageEye from '@mui/icons-material/RemoveRedEye';
 import { Link } from 'react-router-dom';
-import { linkToRecord, Record, useResourceContext } from 'ra-core';
+import {
+    RaRecord,
+    useResourceContext,
+    useRecordContext,
+    useCreatePath,
+} from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 
 /**
  * Opens the Show view of a given record
@@ -14,33 +19,25 @@ import Button, { ButtonProps } from './Button';
  * import { ShowButton } from 'react-admin';
  *
  * const CommentShowButton = ({ record }) => (
- *     <ShowButton basePath="/comments" label="Show comment" record={record} />
+ *     <ShowButton label="Show comment" record={record} />
  * );
  */
-const ShowButton: FC<ShowButtonProps> = ({
-    basePath = '',
-    icon = defaultIcon,
-    label = 'ra.action.show',
-    record,
-    scrollToTop = true,
-    ...rest
-}) => {
-    const resource = useResourceContext();
+const ShowButton = (props: ShowButtonProps) => {
+    const {
+        icon = defaultIcon,
+        label = 'ra.action.show',
+        scrollToTop = true,
+        ...rest
+    } = props;
+    const resource = useResourceContext(props);
+    const record = useRecordContext(props);
+    const createPath = useCreatePath();
+    if (!record) return null;
     return (
         <Button
             component={Link}
-            to={useMemo(
-                () => ({
-                    pathname: record
-                        ? `${linkToRecord(
-                              basePath || `/${resource}`,
-                              record.id
-                          )}/show`
-                        : '',
-                    state: { _scrollToTop: scrollToTop },
-                }),
-                [basePath, record, resource, scrollToTop]
-            )}
+            to={createPath({ type: 'show', resource, id: record.id })}
+            state={scrollStates[String(scrollToTop)]}
             label={label}
             onClick={stopPropagation}
             {...(rest as any)}
@@ -50,23 +47,27 @@ const ShowButton: FC<ShowButtonProps> = ({
     );
 };
 
+// avoids using useMemo to get a constant value for the link state
+const scrollStates = {
+    true: { _scrollToTop: true },
+    false: {},
+};
+
 const defaultIcon = <ImageEye />;
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
 interface Props {
-    basePath?: string;
     icon?: ReactElement;
     label?: string;
-    record?: Record;
+    record?: RaRecord;
     scrollToTop?: boolean;
 }
 
 export type ShowButtonProps = Props & ButtonProps;
 
 ShowButton.propTypes = {
-    basePath: PropTypes.string,
     icon: PropTypes.element,
     label: PropTypes.string,
     record: PropTypes.any,
@@ -76,11 +77,11 @@ ShowButton.propTypes = {
 const PureShowButton = memo(
     ShowButton,
     (props: ShowButtonProps, nextProps: ShowButtonProps) =>
+        props.resource === nextProps.resource &&
         (props.record && nextProps.record
             ? props.record.id === nextProps.record.id
             : props.record == nextProps.record) && // eslint-disable-line eqeqeq
-        props.basePath === nextProps.basePath &&
-        props.to === nextProps.to &&
+        props.label === nextProps.label &&
         props.disabled === nextProps.disabled
 );
 

@@ -1,115 +1,104 @@
 import * as React from 'react';
-import { FunctionComponent, ComponentType, useContext, useState } from 'react';
-import { Provider, ReactReduxContext } from 'react-redux';
+import { useMemo } from 'react';
+import { QueryClientProvider, QueryClient } from 'react-query';
 import { History } from 'history';
-import { createHashHistory } from 'history';
-import { ConnectedRouter } from 'connected-react-router';
 
+import { AdminRouter } from '../routing';
 import { AuthContext, convertLegacyAuthProvider } from '../auth';
 import {
     DataProviderContext,
     convertLegacyDataProvider,
+    defaultDataProvider,
 } from '../dataProvider';
-import createAdminStore from './createAdminStore';
-import TranslationProvider from '../i18n/TranslationProvider';
+import { StoreContextProvider, Store, memoryStore } from '../store';
+import { I18nContextProvider } from '../i18n';
+import { ResourceDefinitionContextProvider } from './ResourceDefinitionContext';
+import { NotificationContextProvider } from '../notification';
 import {
     AuthProvider,
     LegacyAuthProvider,
     I18nProvider,
     DataProvider,
     AdminChildren,
-    CustomRoutes,
     DashboardComponent,
     LegacyDataProvider,
-    InitialState,
 } from '../types';
 
-export type ChildrenFunction = () => ComponentType[];
-
-export interface AdminContextProps {
+export interface CoreAdminContextProps {
     authProvider?: AuthProvider | LegacyAuthProvider;
+    basename?: string;
     children?: AdminChildren;
-    customSagas?: any[];
-    customReducers?: object;
-    customRoutes?: CustomRoutes;
     dashboard?: DashboardComponent;
-    dataProvider: DataProvider | LegacyDataProvider;
+    dataProvider?: DataProvider | LegacyDataProvider;
+    store?: Store;
+    queryClient?: QueryClient;
+    /**
+     * @deprecated Wrap your Admin inside a Router to change the routing strategy
+     */
     history?: History;
     i18nProvider?: I18nProvider;
-    initialState?: InitialState;
     theme?: object;
 }
 
-const CoreAdminContext: FunctionComponent<AdminContextProps> = ({
-    authProvider,
-    dataProvider,
-    i18nProvider,
-    children,
-    history,
-    customReducers,
-    customSagas,
-    initialState,
-}) => {
-    const reduxIsAlreadyInitialized = !!useContext(ReactReduxContext);
+export const CoreAdminContext = (props: CoreAdminContextProps) => {
+    const {
+        authProvider,
+        basename,
+        dataProvider,
+        i18nProvider,
+        store,
+        children,
+        history,
+        queryClient,
+    } = props;
 
     if (!dataProvider) {
         throw new Error(`Missing dataProvider prop.
 React-admin requires a valid dataProvider function to work.`);
     }
 
-    const finalAuthProvider =
-        authProvider instanceof Function
-            ? convertLegacyAuthProvider(authProvider)
-            : authProvider;
+    const finalQueryClient = useMemo(() => queryClient || new QueryClient(), [
+        queryClient,
+    ]);
 
-    const finalDataProvider =
-        dataProvider instanceof Function
-            ? convertLegacyDataProvider(dataProvider)
-            : dataProvider;
-
-    const finalHistory = history || createHashHistory();
-
-    const renderCore = () => {
-        return (
-            <AuthContext.Provider value={finalAuthProvider}>
-                <DataProviderContext.Provider value={finalDataProvider}>
-                    <TranslationProvider i18nProvider={i18nProvider}>
-                        {typeof window !== 'undefined' ? (
-                            <ConnectedRouter history={finalHistory}>
-                                {children}
-                            </ConnectedRouter>
-                        ) : (
-                            children
-                        )}
-                    </TranslationProvider>
-                </DataProviderContext.Provider>
-            </AuthContext.Provider>
-        );
-    };
-
-    const [store] = useState(() =>
-        !reduxIsAlreadyInitialized
-            ? createAdminStore({
-                  authProvider: finalAuthProvider,
-                  customReducers,
-                  customSagas,
-                  dataProvider: finalDataProvider,
-                  initialState,
-                  history: finalHistory,
-              })
-            : undefined
+    const finalAuthProvider = useMemo(
+        () =>
+            authProvider instanceof Function
+                ? convertLegacyAuthProvider(authProvider)
+                : authProvider,
+        [authProvider]
     );
 
-    if (reduxIsAlreadyInitialized) {
-        if (!history) {
-            throw new Error(`Missing history prop.
-When integrating react-admin inside an existing redux Provider, you must provide the same 'history' prop to the <Admin> as the one used to bootstrap your routerMiddleware.
-React-admin uses this history for its own ConnectedRouter.`);
-        }
-        return renderCore();
-    } else {
-        return <Provider store={store}>{renderCore()}</Provider>;
-    }
+    const finalDataProvider = useMemo(
+        () =>
+            dataProvider instanceof Function
+                ? convertLegacyDataProvider(dataProvider)
+                : dataProvider,
+        [dataProvider]
+    );
+
+    return (
+        <AuthContext.Provider value={finalAuthProvider}>
+            <DataProviderContext.Provider value={finalDataProvider}>
+                <StoreContextProvider value={store}>
+                    <QueryClientProvider client={finalQueryClient}>
+                        <AdminRouter history={history} basename={basename}>
+                            <I18nContextProvider value={i18nProvider}>
+                                <NotificationContextProvider>
+                                    <ResourceDefinitionContextProvider>
+                                        {children}
+                                    </ResourceDefinitionContextProvider>
+                                </NotificationContextProvider>
+                            </I18nContextProvider>
+                        </AdminRouter>
+                    </QueryClientProvider>
+                </StoreContextProvider>
+            </DataProviderContext.Provider>
+        </AuthContext.Provider>
+    );
 };
 
-export default CoreAdminContext;
+CoreAdminContext.defaultProps = {
+    dataProvider: defaultDataProvider,
+    store: memoryStore(),
+};

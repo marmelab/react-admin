@@ -6,12 +6,12 @@ import {
     ReferenceInput,
     AutocompleteInput,
     BooleanInput,
-    FormWithRedirect,
+    Form,
     Toolbar,
     required,
     useCreateContext,
 } from 'react-admin';
-import { Card, CardContent, Divider, Box, Avatar } from '@material-ui/core';
+import { Card, CardContent, Divider, Box, Avatar } from '@mui/material';
 
 import { Contact } from '../types';
 
@@ -20,6 +20,7 @@ const Spacer = () => <Box width={20} component="span" />;
 export const ContactCreate = (props: CreateProps) => (
     <CreateBase
         {...props}
+        redirect="show"
         transform={(data: Contact) => ({
             ...data,
             last_seen: new Date(),
@@ -35,10 +36,9 @@ const ContactCreateContent = () => {
     return (
         <Box mt={2} display="flex">
             <Box flex="1">
-                <FormWithRedirect
-                    redirect="show"
+                <Form
                     record={record as any}
-                    save={save}
+                    onSubmit={save}
                     render={formProps => (
                         <Card>
                             <CardContent>

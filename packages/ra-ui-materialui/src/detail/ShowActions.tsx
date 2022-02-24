@@ -1,18 +1,9 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { Record, useResourceDefinition, useShowContext } from 'ra-core';
+import { RaRecord, useResourceDefinition, useRecordContext } from 'ra-core';
 
 import { EditButton } from '../button';
 import TopToolbar from '../layout/TopToolbar';
-
-const sanitizeRestProps = ({
-    basePath,
-    className,
-    hasEdit,
-    hasList,
-    resource,
-    ...rest
-}: any) => rest;
 
 /**
  * Action Toolbar for the Show view
@@ -22,12 +13,12 @@ const sanitizeRestProps = ({
  * use it in the `actions` prop to pass a custom component.
  *
  * @example
- *     import Button from '@material-ui/core/Button';
+ *     import Button from '@mui/material/Button';
  *     import { TopToolbar, EditButton, Show } from 'react-admin';
  *
- *     const PostShowActions = ({ basePath, record, resource }) => (
+ *     const PostShowActions = ({ record, resource }) => (
  *         <TopToolbar>
- *             <EditButton basePath={basePath} record={record} />
+ *             <EditButton record={record} />
  *             // Add your custom actions here //
  *             <Button color="primary" onClick={customAction}>Custom Action</Button>
  *         </TopToolbar>
@@ -39,34 +30,25 @@ const sanitizeRestProps = ({
  *         </Show>
  *     );
  */
-export const ShowActions = ({ className, ...rest }: ShowActionsProps) => {
-    const { basePath, record } = useShowContext(rest);
-    const { hasEdit } = useResourceDefinition(rest);
+export const ShowActions = (props: ShowActionsProps) => {
+    const record = useRecordContext(props);
+    const { hasEdit } = useResourceDefinition();
+    if (!hasEdit) {
+        return null;
+    }
     return (
-        <TopToolbar className={className} {...sanitizeRestProps(rest)}>
-            {hasEdit && <EditButton basePath={basePath} record={record} />}
+        <TopToolbar className={props.className}>
+            <EditButton record={record} />
         </TopToolbar>
     );
 };
 
 export interface ShowActionsProps {
-    basePath?: string;
     className?: string;
-    data?: Record;
-    hasCreate?: boolean;
-    hasEdit?: boolean;
-    hasShow?: boolean;
-    hasList?: boolean;
-    resource?: string;
+    record?: RaRecord;
 }
 
 ShowActions.propTypes = {
-    basePath: PropTypes.string,
     className: PropTypes.string,
-    data: PropTypes.object,
-    hasCreate: PropTypes.bool,
-    hasEdit: PropTypes.bool,
-    hasShow: PropTypes.bool,
-    hasList: PropTypes.bool,
-    resource: PropTypes.string,
+    record: PropTypes.any,
 };

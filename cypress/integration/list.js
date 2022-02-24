@@ -7,6 +7,7 @@ describe('List Page', () => {
     const LoginPage = loginPageFactory('/#/login');
 
     beforeEach(() => {
+        window.localStorage.clear();
         ListPagePosts.navigate();
     });
 
@@ -86,9 +87,13 @@ describe('List Page', () => {
             // not kept for posts after navigation.
             // See https://github.com/marmelab/react-admin/pull/2019
             cy.get('[href="#/users"]').click();
+            // Wait until the filter is actually applied (async because of hook-form)
+            cy.url().should('contain', 'role');
             cy.contains('1-2 of 2');
 
             cy.get('[href="#/posts"]').click();
+
+            cy.url().should('contain', '/posts');
 
             cy.get(ListPagePosts.elements.filter('q')).should(el =>
                 expect(el).to.have.value('quis culpa impedit')
@@ -107,8 +112,16 @@ describe('List Page', () => {
                 'Omnis voluptate enim similique est possimus'
             );
             cy.contains('1-1 of 1');
+            // As we debounce filters, this ensures the filter has been applied
+            cy.url().should(
+                'contain',
+                'Omnis%20voluptate%20enim%20similique%20est%20possimus'
+            );
             cy.get('[href="#/users"]').click();
+            // Wait until the filter is actually applied (async because of hook-form)
+            cy.url().should('contain', 'role');
             cy.get('[href="#/posts"]').click();
+            cy.url().should('contain', '/posts');
             cy.get(ListPagePosts.elements.filter('title')).should(el =>
                 expect(el).to.have.value(
                     'Omnis voluptate enim similique est possimus'
@@ -120,6 +133,8 @@ describe('List Page', () => {
             ListPagePosts.logout();
             LoginPage.login('admin', 'password');
             ListPageUsers.navigate();
+            // Wait until the filter is actually applied (async because of hook-form)
+            cy.url().should('contain', 'role');
             cy.contains('1-2 of 2');
             cy.get('button[title="Remove this filter"]').click();
             cy.contains('1-3 of 3');
@@ -254,6 +269,7 @@ describe('List Page', () => {
                 .should(el => expect(el).to.have.attr('aria-label', 'Close'));
 
             cy.get('#13-expand').should(el => expect(el).to.exist);
+            cy.wait(500); // Ensure animations are done
 
             cy.get('[aria-label="Expand"]')
                 .eq(0) // We still target the first button labeled Expand because the previous one should now have a Close label

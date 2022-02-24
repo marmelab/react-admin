@@ -1,5 +1,4 @@
-import isValid from 'date-fns/is_valid';
-import parseDate from 'date-fns/parse';
+import { isMatch, isValid, parseISO } from 'date-fns';
 
 export const isNumeric = (value: any) =>
     !isNaN(parseFloat(value)) && isFinite(value);
@@ -33,7 +32,7 @@ export const isImageUrl = (value: any) => !value || ImageUrlRegexp.test(value);
 export const valuesAreImageUrl = (values: any[]) => values.every(isImageUrl);
 
 // This is a very simple regex to find emails
-// It it NOT meant to validate emails as the spec is way more complicated but is
+// It is NOT meant to validate emails as the spec is way more complicated but is
 // enough for our inference needs
 const EmailRegexp = /@{1}/;
 export const isEmail = (value: any) => !value || EmailRegexp.test(value);
@@ -46,7 +45,12 @@ export const isDate = (value: any) => !value || value instanceof Date;
 export const valuesAreDate = (values: any[]) => values.every(isDate);
 
 export const isDateString = (value: any) =>
-    !value || (typeof value === 'string' && isValid(parseDate(value)));
+    !value ||
+    (typeof value === 'string' &&
+        (isMatch(value, 'MM/dd/yyyy') ||
+            isMatch(value, 'MM/dd/yy') ||
+            isValid(parseISO(value))));
+
 export const valuesAreDateString = (values: any[]) =>
     values.every(isDateString);
 

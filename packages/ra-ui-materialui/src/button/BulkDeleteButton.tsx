@@ -1,12 +1,14 @@
 import * as React from 'react';
-import { FC } from 'react';
 import PropTypes from 'prop-types';
-import BulkDeleteWithConfirmButton, {
+import {
+    BulkDeleteWithConfirmButton,
     BulkDeleteWithConfirmButtonProps,
 } from './BulkDeleteWithConfirmButton';
-import BulkDeleteWithUndoButton, {
+import {
+    BulkDeleteWithUndoButton,
     BulkDeleteWithUndoButtonProps,
 } from './BulkDeleteWithUndoButton';
+import { MutationMode } from 'ra-core';
 
 /**
  * Deletes the selected rows.
@@ -18,10 +20,10 @@ import BulkDeleteWithUndoButton, {
  * import { Fragment } from 'react';
  * import { BulkDeleteButton, BulkExportButton } from 'react-admin';
  *
- * const PostBulkActionButtons = ({ basePath }) => (
+ * const PostBulkActionButtons = () => (
  *     <Fragment>
  *         <BulkExportButton />
- *         <BulkDeleteButton basePath={basePath} />
+ *         <BulkDeleteButton />
  *     </Fragment>
  * );
  *
@@ -31,31 +33,27 @@ import BulkDeleteWithUndoButton, {
  *     </List>
  * );
  */
-const BulkDeleteButton: FC<BulkDeleteButtonProps> = ({ undoable, ...props }) =>
-    undoable ? (
+export const BulkDeleteButton = ({
+    mutationMode = 'undoable',
+    ...props
+}: BulkDeleteButtonProps) =>
+    mutationMode === 'undoable' ? (
         <BulkDeleteWithUndoButton {...props} />
     ) : (
-        <BulkDeleteWithConfirmButton {...props} />
+        <BulkDeleteWithConfirmButton mutationMode={mutationMode} {...props} />
     );
 
 interface Props {
-    undoable?: boolean;
+    mutationMode?: MutationMode;
 }
 
 export type BulkDeleteButtonProps = Props &
     (BulkDeleteWithUndoButtonProps | BulkDeleteWithConfirmButtonProps);
 
 BulkDeleteButton.propTypes = {
-    basePath: PropTypes.string,
     label: PropTypes.string,
     resource: PropTypes.string,
     selectedIds: PropTypes.arrayOf(PropTypes.any),
-    undoable: PropTypes.bool,
+    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     icon: PropTypes.element,
 };
-
-BulkDeleteButton.defaultProps = {
-    undoable: true,
-};
-
-export default BulkDeleteButton;

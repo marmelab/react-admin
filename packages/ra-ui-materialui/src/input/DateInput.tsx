@@ -1,11 +1,107 @@
 import * as React from 'react';
-import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import TextField, { TextFieldProps } from '@material-ui/core/TextField';
-import { useInput, FieldTitle, InputProps } from 'ra-core';
+import clsx from 'clsx';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
+import { useInput, FieldTitle } from 'ra-core';
 
-import sanitizeInputRestProps from './sanitizeInputRestProps';
-import InputHelperText from './InputHelperText';
+import { CommonInputProps } from './CommonInputProps';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
+import { InputHelperText } from './InputHelperText';
+
+/**
+ * Form input to edit a Date string value in the "YYYY-MM-DD" format (e.g. '2021-06-23').
+ *
+ * Renders a date picker (the exact UI depends on the browser).
+ *
+ * @example
+ * import { Edit, SimpleForm, DateInput } from 'react-admin';
+ *
+ * const PostEdit = (props) => (
+ *     <Edit {...props}>
+ *         <SimpleForm>
+ *             <DateInput source="published_at" />
+ *         </SimpleForm>
+ *     </Edit>
+ * );
+ *
+ * @example
+ * // If the initial value is a Date object, DateInput converts it to a string
+ * // but you must pass a custom parse method to convert the form value
+ * // (which is always a date string) back to a Date object.
+ * <DateInput source="published_at" parse={val => new Date(val)} />
+ */
+export const DateInput = ({
+    className,
+    defaultValue,
+    format = getStringFromDate,
+    label,
+    name,
+    source,
+    resource,
+    helperText,
+    margin = 'dense',
+    onBlur,
+    onChange,
+    parse,
+    validate,
+    variant = 'filled',
+    ...rest
+}: DateInputProps) => {
+    const { field, fieldState, formState, id, isRequired } = useInput({
+        defaultValue,
+        name,
+        format,
+        parse,
+        onBlur,
+        onChange,
+        resource,
+        source,
+        validate,
+        ...rest,
+    });
+
+    const { error, invalid, isTouched } = fieldState;
+    const { isSubmitted } = formState;
+
+    return (
+        <TextField
+            id={id}
+            {...field}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
+            type="date"
+            size="small"
+            variant={variant}
+            margin={margin}
+            error={(isTouched || isSubmitted) && invalid}
+            helperText={
+                <InputHelperText
+                    touched={isTouched || isSubmitted}
+                    error={error?.message}
+                    helperText={helperText}
+                />
+            }
+            label={
+                <FieldTitle
+                    label={label}
+                    source={source}
+                    resource={resource}
+                    isRequired={isRequired}
+                />
+            }
+            InputLabelProps={defaultInputLabelProps}
+            {...sanitizeInputRestProps(rest)}
+        />
+    );
+};
+
+DateInput.propTypes = {
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    resource: PropTypes.string,
+    source: PropTypes.string,
+};
+
+export type DateInputProps = CommonInputProps &
+    Omit<TextFieldProps, 'helperText' | 'label'>;
 
 /**
  * Convert Date object to String
@@ -43,102 +139,3 @@ const getStringFromDate = (value: string | Date) => {
 
     return convertDateToString(new Date(value));
 };
-
-const DateInput = ({
-    defaultValue,
-    format = getStringFromDate,
-    initialValue,
-    label,
-    options,
-    source,
-    resource,
-    helperText,
-    margin = 'dense',
-    onBlur,
-    onChange,
-    onFocus,
-    parse,
-    validate,
-    variant = 'filled',
-    ...rest
-}: DateInputProps) => {
-    const sanitizedDefaultValue = defaultValue
-        ? format(new Date(defaultValue))
-        : undefined;
-    const sanitizedInitialValue = initialValue
-        ? format(new Date(initialValue))
-        : undefined;
-
-    const { id, input, isRequired, meta } = useInput({
-        defaultValue: sanitizedDefaultValue,
-        format,
-        formatOnBlur: true,
-        initialValue: sanitizedInitialValue,
-        onBlur,
-        onChange,
-        onFocus,
-        parse,
-        resource,
-        source,
-        validate,
-        ...rest,
-    });
-
-    const { error, submitError, touched } = meta;
-
-    // Workaround for https://github.com/final-form/react-final-form/issues/431
-    useEffect(() => {
-        // Checking for meta.initial allows the format function to work
-        // on inputs inside an ArrayInput
-        if (defaultValue || initialValue || meta.initial) {
-            input.onBlur();
-        }
-    }, [input.onBlur, meta.initial]); // eslint-disable-line
-
-    return (
-        <TextField
-            id={id}
-            {...input}
-            // Workaround https://github.com/final-form/react-final-form/issues/529
-            value={input.value || ''}
-            variant={variant}
-            margin={margin}
-            type="date"
-            error={!!(touched && (error || submitError))}
-            helperText={
-                <InputHelperText
-                    touched={touched}
-                    error={error || submitError}
-                    helperText={helperText}
-                />
-            }
-            label={
-                <FieldTitle
-                    label={label}
-                    source={source}
-                    resource={resource}
-                    isRequired={isRequired}
-                />
-            }
-            InputLabelProps={defaultInputLabelProps}
-            {...options}
-            {...sanitizeInputRestProps(rest)}
-        />
-    );
-};
-
-DateInput.propTypes = {
-    label: PropTypes.string,
-    options: PropTypes.object,
-    resource: PropTypes.string,
-    source: PropTypes.string,
-};
-
-DateInput.defaultProps = {
-    options: {},
-};
-
-export type DateInputProps = InputProps<TextFieldProps> &
-    Omit<TextFieldProps, 'helperText' | 'label'>;
-
-export default DateInput;

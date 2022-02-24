@@ -76,7 +76,7 @@ export default App;
 
 That's enough for react-admin to render an empty app and confirm that the setup is done: 
 
-![Empty Admin](./img/tutorial_empty.png)
+[![Empty Admin](./img/tutorial_empty.png)](./img/tutorial_empty.png)
 
 The `App` component renders an `<Admin>` component, which is the root component of a react-admin application. This component expects a `dataProvider` prop - a function capable of fetching data from an API. Since there is no standard for data exchanges between computers, you will probably have to write a custom provider to connect react-admin to your own APIs - but we'll dive into Data Providers later. For now, let's take advantage of the `ra-data-json-server` data provider, which speaks the same REST dialect as JSONPlaceholder.
 
@@ -112,7 +112,7 @@ The `list={ListGuesser}` prop means that react-admin should use the `<ListGuesse
 
 The app can now display a list of users:
 
-![Users List](./img/tutorial_users_list.png)
+[![Users List](./img/tutorial_users_list.png)](./img/tutorial_users_list.png)
 
 If you look at the network tab in the browser developer tools, you'll notice that the application fetched the `https://jsonplaceholder.typicode.com/users` URL, then used the results to build the Datagrid. That's basically how react-admin works.
 
@@ -122,7 +122,7 @@ The list is already functional: you can reorder it by clicking on column headers
 
 The `<ListGuesser>` component is not meant to be used in production - it's just a way to quickly bootstrap an admin. That means you'll have to replace the `ListGuesser` component in the `users` resource by a custom React component. Fortunately, `ListGuesser` dumps the code of the list it has guessed to the console:
 
-![Guessed Users List](./img/tutorial_guessed_list.png)
+[![Guessed Users List](./img/tutorial_guessed_list.png)](./img/tutorial_guessed_list.png)
 
 Let's copy this code, and create a new `UserList` component, in a new file named `users.js`:
 
@@ -131,8 +131,8 @@ Let's copy this code, and create a new `UserList` component, in a new file named
 import * as React from "react";
 import { List, Datagrid, TextField, EmailField } from 'react-admin';
 
-export const UserList = props => (
-    <List {...props}>
+export const UserList = () => (
+    <List>
         <Datagrid rowClick="edit">
             <TextField source="id" />
             <TextField source="name" />
@@ -163,7 +163,7 @@ const App = () => (
 );
 ```
 
-![Users List](./img/tutorial_users_list.png)
+[![Users List](./img/tutorial_users_list.png)](./img/tutorial_users_list.png)
 
 There is no visible change in the browser - except now, the app uses a component that you can customize. 
 
@@ -176,8 +176,8 @@ The `ListGuesser` created one column for every field in the response. That's a b
 import * as React from "react";
 import { List, Datagrid, TextField, EmailField } from 'react-admin';
 
-export const UserList = props => (
-    <List {...props}>
+export const UserList = () => (
+    <List>
         <Datagrid rowClick="edit">
             <TextField source="id" />
             <TextField source="name" />
@@ -192,7 +192,7 @@ export const UserList = props => (
 );
 ```
 
-![Users List](./img/tutorial_users_list_selected_columns.png)
+[![Users List](./img/tutorial_users_list_selected_columns.png)](./img/tutorial_users_list_selected_columns.png)
 
 What you've just done reflects the early stages of development with react-admin: let the guesser do the job, select only the fields you want, and start customizing types.
 
@@ -208,8 +208,8 @@ import * as React from "react";
 -import { List, Datagrid, TextField, EmailField } from 'react-admin';
 +import { List, Datagrid, TextField, EmailField, UrlField } from 'react-admin';
 
-export const UserList = props => (
-    <List {...props}>
+export const UserList = () => (
+    <List>
         <Datagrid rowClick="edit">
             <TextField source="id" />
             <TextField source="name" />
@@ -223,7 +223,7 @@ export const UserList = props => (
 );
 ```
 
-![Url Field](./img/tutorial_url_field.png)
+[![Url Field](./img/tutorial_url_field.png)](./img/tutorial_url_field.png)
 
 In react-admin, fields are simple React components. At runtime, they grab the `record` fetched from the API (e.g. `{ "id": 2, "name": "Ervin Howell", "website": "anastasia.net", ... }`) with a custom hook, and use the `source` field (e.g. `website`) to get the value they should display (e.g. "anastasia.net").
 
@@ -255,8 +255,8 @@ import * as React from "react";
 +import { List, Datagrid, TextField, EmailField } from 'react-admin';
 +import MyUrlField from './MyUrlField';
 
-export const UserList = props => (
-    <List {...props}>
+export const UserList = () => (
+    <List>
         <Datagrid rowClick="edit">
             <TextField source="id" />
             <TextField source="name" />
@@ -274,47 +274,43 @@ Yes, you can replace any of react-admin's components with your own! That means r
 
 ## Customizing Styles
 
-The `MyUrlField` component is a perfect opportunity to illustrate how to customize styles. React-admin relies on [material-ui](https://material-ui.com/), a set of React components modeled after Google's [Material Design UI Guidelines](https://material.io/). Material-ui uses [JSS](https://github.com/cssinjs/jss), a CSS-in-JS solution, for styling components. Let's take advantage of the capabilities of JSS to remove the underline from the link and add an icon:
+The `MyUrlField` component is a perfect opportunity to illustrate how to customize styles. React-admin relies on [MUI](https://mui.com/), a set of React components modeled after Google's [Material Design UI Guidelines](https://material.io/). MUI uses [MUI System](https://mui.com/system/basics/) by adding an `sx` prop as a superset of CSS for styling components; it can also use CSS-in-JS `styled()` API from underlying [emotion](https://github.com/emotion-js/emotion) library. Let's take advantage of the capabilities of MUI System to remove the underline from the link and add an icon:
 
+{% raw %}
 ```jsx
 // in src/MyUrlField.js
 import * as React from "react";
 import { useRecordContext } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
-import LaunchIcon from '@material-ui/icons/Launch';
+import { styled } from '@mui/material/styles';
+import LaunchIcon from '@mui/icons-material/Launch';
 
-const useStyles = makeStyles({
-    link: {
-        textDecoration: 'none',
-    },
-    icon: {
-        width: '0.5em',
-        height: '0.5em',
-        paddingLeft: 2,
-    },
-});
+const Anchor = styled('a')({textDecoration: 'none'});
 
 const MyUrlField = ({ source }) => {
     const record = useRecordContext();
-    const classes = useStyles();
     return record ? (
-        <a href={record[source]} className={classes.link}>
+        <Anchor href={record[source]}>
             {record[source]}
-            <LaunchIcon className={classes.icon} />
-        </a>
+            <LaunchIcon sx={{
+                width: '0.5em',
+                height: '0.5em',
+                paddingLeft: 2,
+            }} />
+        </Anchor>
     ) : null;
 }
 
 export default MyUrlField;
 ```
+{% endraw %}
 
-![Custom styles](./img/tutorial_custom_styles.png)
+[![Custom styles](./img/tutorial_custom_styles.png)](./img/tutorial_custom_styles.png)
 
-In JSS, you define styles as a JavaScript object, using the JS variants of the CSS property names (e.g. `textDecoration` instead of `text-decoration`). To pass these styles to the component, use `makeStyles` to build a React hook. The hook will create new class names for these styles, and return the new class names in the `classes` object. Then, use these names in a `className` prop, as you would with a regular CSS class.
+In CSS-in-JS, you define styles as a JavaScript object, using the JS variants of the CSS property names (e.g. `textDecoration` instead of `text-decoration`). To pass these styles to the component, use `styled()` to wrap the original component with styles; or you can pass it directly to the `sx` prop of a supporting element.
 
-**Tip**: There is much more to JSS than what this tutorial covers. Read the [material-ui documentation](https://material-ui.com/styles/basics) to learn more about theming, vendor prefixes, responsive utilities, etc.
+**Tip**: There is much more to MUI System than what this tutorial covers. Read the [MUI documentation](https://mui.com/system/basics/) to learn more about theming, vendor prefixes, responsive utilities, etc.
 
-**Tip**: Material-ui supports other CSS-in-JS solutions, including [Styled components](https://material-ui.com/styles/basics/#styled-components-api).
+**Tip**: MUI supports other CSS-in-JS solutions, including [Styled components](https://mui.com/system/styled/).
 
 ## Handling Relationships
 
@@ -349,7 +345,7 @@ const App = () => (
 export default App;
 ```
 
-![Guessed Post List](./img/tutorial_guessed_post_list.png)
+[![Guessed Post List](./img/tutorial_guessed_post_list.png)](./img/tutorial_guessed_post_list.png)
 
 The `ListGuesser` suggests using a `<ReferenceField>` for the `userId` field. Let's play with this new field by creating the `PostList` component based on the code dumped by the guesser:
 
@@ -358,8 +354,8 @@ The `ListGuesser` suggests using a `<ReferenceField>` for the `userId` field. Le
 import * as React from "react";
 import { List, Datagrid, TextField, ReferenceField } from 'react-admin';
 
-export const PostList = props => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid rowClick="edit">
             <ReferenceField source="userId" reference="users">
                 <TextField source="id" />
@@ -392,8 +388,8 @@ When displaying the posts list, the app displays the `id` of the post author as 
 
 ```diff
 // in src/posts.js
-export const PostList = props => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <Datagrid rowClick="edit">
             <ReferenceField source="userId" reference="users">
 -               <TextField source="id" />
@@ -409,7 +405,7 @@ export const PostList = props => (
 
 The post list now displays the user names on each line.
 
-![Post List With User Names](./img/tutorial_list_user_name.png)
+[![Post List With User Names](./img/tutorial_list_user_name.png)](./img/tutorial_list_user_name.png)
 
 **Tip**: The `<ReferenceField>` component alone doesn't display anything. It just fetches the reference data, and passes it as a `record` to its child component (a `<TextField>` in our case). Just like the `<List>` component, all `<Reference>` components are only responsible for fetching and preparing data, and delegate rendering to their children.
 
@@ -423,8 +419,8 @@ import * as React from "react";
 -import { List, Datagrid, TextField, ReferenceField } from 'react-admin';
 +import { List, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
-export const PostList = props => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
 -       <Datagrid rowClick="edit">
 +       <Datagrid>
 +           <TextField source="id" />
@@ -440,7 +436,7 @@ export const PostList = props => (
 );
 ```
 
-![Post List With Less Columns](./img/tutorial_post_list_less_columns.png)
+[![Post List With Less Columns](./img/tutorial_post_list_less_columns.png)](./img/tutorial_post_list_less_columns.png)
 
 ## Adding Creation and Editing Capabilities
 
@@ -462,7 +458,7 @@ const App = () => (
 );
 ```
 
-![Post Edit Guesser](./img/tutorial_edit_guesser.gif)
+[![Post Edit Guesser](./img/tutorial_edit_guesser.gif)](./img/tutorial_edit_guesser.gif)
 
 Users can display the edit page just by clicking on the Edit button. The form rendered is already functional; it issues `PUT` requests to the REST API upon submission.
 
@@ -488,8 +484,8 @@ export const PostList = props => (
   { /* ... */ }
 );
 
-export const PostEdit = props => (
-    <Edit {...props}>
+export const PostEdit = () => (
+    <Edit>
         <SimpleForm>
             <ReferenceInput source="userId" reference="users">
                 <SelectInput optionText="id" />
@@ -506,8 +502,8 @@ You can now adjust the `PostEdit` component to disable the edition of the primar
 
 ```diff
 // in src/posts.js
-export const PostEdit = props => (
-    <Edit {...props}>
+export const PostEdit = () => (
+    <Edit>
         <SimpleForm>
 +           <TextInput disabled source="id" />
             <ReferenceInput source="userId" reference="users">
@@ -588,7 +584,7 @@ const App = () => (
 );
 ```
 
-![Post Creation](./img/tutorial_post_create.gif)
+[![Post Creation](./img/tutorial_post_create.gif)](./img/tutorial_post_create.gif)
 
 React-admin automatically adds a "create" button on top of the posts list to give access to the `<PostCreate>` component. And the creation form works ; it issues a `POST` request to the REST API upon submission.
 
@@ -602,7 +598,7 @@ That's because react-admin uses *optimistic rendering*. When a user edits a reco
 
 But there is an additional benefit: it also allows the "Undo" feature. Undo is already functional in the admin at that point. Try editing a record, then hit the "Undo" link in the black confirmation box before it slides out. You'll see that the app does not send the `UPDATE` query to the API, and displays the non-modified data.
 
-![Undo Post Editing](./img/tutorial_post_edit_undo.gif)
+[![Undo Post Editing](./img/tutorial_post_edit_undo.gif)](./img/tutorial_post_edit_undo.gif)
 
 Even though updates appear immediately due to Optimistic Rendering, React-admin only sends them to the server after a short delay (about 5 seconds). During this delay, the user can undo the action, and react-admin will never send the update. 
 
@@ -614,41 +610,40 @@ The post editing page has a slight problem: it uses the post id as main title (t
 
 ```diff
 // in src/posts.js
-+const PostTitle = ({ record }) => {
++const PostTitle = () => {
++    const record = useRecordContext();
 +    return <span>Post {record ? `"${record.title}"` : ''}</span>;
 +};
 
-export const PostEdit = props => (
--   <Edit {...props}>
-+   <Edit title={<PostTitle />} {...props}>
+export const PostEdit = () => (
+-   <Edit>
++   <Edit title={<PostTitle />}>
         // ...
     </Edit>
 );
 ```
 
-![Post Edit Title](./img/tutorial_post_title.png)
+[![Post Edit Title](./img/tutorial_post_title.png)](./img/tutorial_post_title.png)
 
 ## Adding Search And Filters To The List
 
 Let's get back to the post list for a minute. It offers sorting and pagination, but one feature is missing: the ability to search content.
 
-React-admin can use Input components to create a multi-criteria search engine in the list view. First, create a `<Filter>` component just like you would write a `<SimpleForm>` component, using input components as children. Then, add it to the list using the `filters` prop:
+React-admin can use Input components to create a multi-criteria search engine in the list view. Pass an array of such Input components to the List `filters` prop to enable filtering:
 
 ```jsx
 // in src/posts.js
-import { Filter, ReferenceInput, SelectInput, TextInput, List } from 'react-admin';
+import { ReferenceInput, SelectInput, TextInput, List } from 'react-admin';
 
-const PostFilter = (props) => (
-    <Filter {...props}>
-        <TextInput label="Search" source="q" alwaysOn />
-        <ReferenceInput label="User" source="userId" reference="users" allowEmpty>
-            <SelectInput optionText="name" />
-        </ReferenceInput>
-    </Filter>
-);
+const postFilters = [
+    <TextInput source="q" label="Search" alwaysOn />,
+    <ReferenceInput source="userId" label="User" reference="users">
+        <SelectInput optionText="name" />
+    </ReferenceInput>,
+];
 
-export const PostList = (props) => (
-    <List filters={<PostFilter />} {...props}>
+export const PostList = () => (
+    <List filters={postFilters}>
         // ...
     </List>
 );
@@ -656,7 +651,7 @@ export const PostList = (props) => (
 
 The first filter, 'q', takes advantage of a full-text functionality offered by JSONPlaceholder. It is `alwaysOn`, so it always appears on the screen. Users can add the second filter, `userId`, thanks to the "add filter" button, located on the top of the list. As it's a `<ReferenceInput>`, it's already populated with possible users. 
 
-![posts search engine](./img/filters.gif)
+[![posts search engine](./img/filters.gif)](./img/filters.gif)
 
 Filters are "search-as-you-type", meaning that when the user enters new values in the filter form, the list refreshes (via an API request) immediately.
 
@@ -668,8 +663,8 @@ The sidebar menu shows the same icon for both posts and users. Customizing the m
 
 ```jsx
 // in src/App.js
-import PostIcon from '@material-ui/icons/Book';
-import UserIcon from '@material-ui/icons/Group';
+import PostIcon from '@mui/icons-material/Book';
+import UserIcon from '@mui/icons-material/Group';
 
 const App = () => (
     <Admin dataProvider={dataProvider}>
@@ -679,7 +674,7 @@ const App = () => (
 );
 ```
 
-![custom menu icons](./img/custom-menu.gif)
+[![custom menu icons](./img/custom-menu.gif)](./img/custom-menu.gif)
 
 ## Using a Custom Home Page
 
@@ -688,7 +683,7 @@ By default, react-admin displays the list page of the first `Resource` element a
 ```jsx
 // in src/Dashboard.js
 import * as React from "react";
-import { Card, CardContent, CardHeader } from '@material-ui/core';
+import { Card, CardContent, CardHeader } from '@mui/material';
 
 export default () => (
     <Card>
@@ -709,13 +704,13 @@ const App = () => (
 );
 ```
 
-![Custom home page](./img/dashboard.png)
+[![Custom home page](./img/dashboard.png)](./img/dashboard.png)
 
 ## Adding a Login Page
 
 Most admin apps require authentication. React-admin can check user credentials before displaying a page, and redirect to a login form when the REST API returns a 403 error code.
 
-*What* those credentials are, and *how* to get them, are questions that you, as a developer, must answer. React-admin makes no assumption about your authentication strategy (basic auth, OAuth, custom route, etc), but gives you the ability to plug your logic at the right place - using the `authProvider` object.
+*What* those credentials are, and *how* to get them, are questions that you, as a developer, must answer. React-admin makes no assumption about your authentication strategy (basic auth, OAuth, custom route, etc.), but gives you the ability to plug your logic at the right place - using the `authProvider` object.
 
 For this tutorial, since there is no public authentication API, we can use a fake authentication provider that accepts every login request, and stores the `username` in `localStorage`. Each page change will require that `localStorage` contains a `username` item.
 
@@ -772,7 +767,7 @@ const App = () => (
 
 Once the app reloads, it's now behind a login form that accepts everyone:
 
-![Login form](./img/login.gif)
+[![Login form](./img/login.gif)](./img/login.gif)
 
 ## Supporting Mobile Devices
 
@@ -787,8 +782,8 @@ First, you should know that you don't have to use the `<Datagrid>` component as 
 import * as React from "react";
 import { List, SimpleList } from 'react-admin';
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         <SimpleList
             primaryText={record => record.title}
             secondaryText={record => `${record.views} views`}
@@ -798,9 +793,9 @@ export const PostList = (props) => (
 );
 ```
 
-![Mobile post list](./img/tutorial_mobile_post_list.gif)
+[![Mobile post list](./img/tutorial_mobile_post_list.gif)](./img/tutorial_mobile_post_list.gif)
 
-The `<SimpleList>` component uses [material-ui's `<List>` and `<ListItem>` components](https://material-ui.com/components/lists), and expects functions as `primaryText`, `secondaryText`, and `tertiaryText` props.
+The `<SimpleList>` component uses [MUI's `<List>` and `<ListItem>` components](https://mui.com/components/lists), and expects functions as `primaryText`, `secondaryText`, and `tertiaryText` props.
 
 **Note:** Since JSONRestServer doesn't provide `views` or `published_at` values for posts, we switched to a custom API for those screenshots in order to demonstrate how to use some of the `SimpleList` component props.
 
@@ -809,13 +804,13 @@ That works fine on mobile, but now the desktop user experience is worse. The bes
 ```jsx
 // in src/posts.js
 import * as React from "react";
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery } from '@mui/material';
 import { List, SimpleList, Datagrid, TextField, ReferenceField, EditButton } from 'react-admin';
 
-export const PostList = (props) => {
+export const PostList = () => {
     const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
     return (
-        <List {...props}>
+        <List>
             {isSmall ? (
                 <SimpleList
                     primaryText={record => record.title}
@@ -840,7 +835,7 @@ export const PostList = (props) => {
 
 This works exactly the way you expect. The lesson here is that react-admin takes care of responsive web design for the layout, but it's your job to use `useMediaQuery()` in pages.
 
-![Responsive List](./img/responsive-list.gif)
+[![Responsive List](./img/responsive-list.gif)](./img/responsive-list.gif)
 
 ## Connecting To A Real API
 
@@ -982,4 +977,4 @@ const App = () => (
 
 React-admin was built with customization in mind. You can replace any react-admin component with a component of your own, for instance to display a custom list layout, or a different edit form for a given resource.
 
-Now that you've completed the tutorial, continue reading the [react-admin documentation](https://marmelab.com/react-admin/Readme.html), and read the [Material UI components documentation](https://material-ui.com/).
+Now that you've completed the tutorial, continue reading the [react-admin documentation](https://marmelab.com/react-admin/Readme.html), and read the [MUI components documentation](https://mui.com/).

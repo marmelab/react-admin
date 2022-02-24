@@ -1,12 +1,18 @@
 import * as React from 'react';
 import expect from 'expect';
-import { fireEvent, waitFor, act } from '@testing-library/react';
+import {
+    render,
+    fireEvent,
+    waitFor,
+    act,
+    screen,
+} from '@testing-library/react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
-import useTranslate from './useTranslate';
-import useSetLocale from './useSetLocale';
-import { TranslationContext, TranslationProvider } from './';
-import { renderWithRedux } from 'ra-test';
+import { StoreContextProvider, memoryStore } from '../store';
+import { useTranslate } from './useTranslate';
+import { useSetLocale } from './useSetLocale';
+import { I18nContextProvider } from './I18nContextProvider';
 
 describe('useSetLocale', () => {
     const Component = () => {
@@ -21,50 +27,51 @@ describe('useSetLocale', () => {
     };
 
     it('should not fail when used outside of a translation provider', () => {
-        const { queryAllByText } = renderWithRedux(<Component />);
-        expect(queryAllByText('hello')).toHaveLength(1);
+        render(<Component />);
+        expect(screen.queryAllByText('hello')).toHaveLength(1);
     });
 
-    it('should use the setLocale function set in the translation context', async () => {
-        const setLocale = jest.fn();
-        const { getByText } = renderWithRedux(
-            <TranslationContext.Provider
-                value={{
-                    i18nProvider: {
+    it('should use the dataProvider.changeLocale function', async () => {
+        const changeLocale = jest.fn().mockResolvedValue();
+        render(
+            <StoreContextProvider value={memoryStore()}>
+                <I18nContextProvider
+                    value={{
                         translate: () => '',
-                        changeLocale: () => Promise.resolve(),
-                    },
-                    locale: 'de',
-                    setLocale,
-                }}
-            >
-                <Component />
-            </TranslationContext.Provider>
+                        changeLocale,
+                        getLocale: () => 'de',
+                    }}
+                >
+                    <Component />
+                </I18nContextProvider>
+            </StoreContextProvider>
         );
-        fireEvent.click(getByText('Français'));
+        fireEvent.click(screen.getByText('Français'));
         await waitFor(() => {
-            expect(setLocale).toHaveBeenCalledTimes(1);
+            expect(changeLocale).toHaveBeenCalledTimes(1);
         });
     });
 
-    it('should use the i18n provider when using TranslationProvider', async () => {
+    it('should render the I18NcontextProvider children with the new locale', async () => {
         const i18nProvider = polyglotI18nProvider(locale => {
             if (locale === 'en') return { hello: 'hello' };
             if (locale === 'fr') return { hello: 'bonjour' };
         });
-        const { getByText, queryAllByText } = renderWithRedux(
-            <TranslationProvider locale="en" i18nProvider={i18nProvider}>
-                <Component />
-            </TranslationProvider>
+        render(
+            <StoreContextProvider value={memoryStore()}>
+                <I18nContextProvider value={i18nProvider}>
+                    <Component />
+                </I18nContextProvider>
+            </StoreContextProvider>
         );
-        expect(queryAllByText('hello')).toHaveLength(1);
-        expect(queryAllByText('bonjour')).toHaveLength(0);
+        expect(screen.queryAllByText('hello')).toHaveLength(1);
+        expect(screen.queryAllByText('bonjour')).toHaveLength(0);
         act(() => {
-            fireEvent.click(getByText('Français'));
+            fireEvent.click(screen.getByText('Français'));
         });
         await waitFor(() => {
-            expect(queryAllByText('hello')).toHaveLength(0);
-            expect(queryAllByText('bonjour')).toHaveLength(1);
+            expect(screen.queryAllByText('hello')).toHaveLength(0);
+            expect(screen.queryAllByText('bonjour')).toHaveLength(1);
         });
     });
 });

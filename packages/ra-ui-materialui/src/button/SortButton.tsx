@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, ReactElement, memo } from 'react';
+import { ReactElement, memo } from 'react';
 import {
     Button,
     Menu,
@@ -8,14 +8,14 @@ import {
     IconButton,
     useMediaQuery,
     Theme,
-} from '@material-ui/core';
-import SortIcon from '@material-ui/icons/Sort';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import { shallowEqual } from 'react-redux';
+} from '@mui/material';
+import SortIcon from '@mui/icons-material/Sort';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {
     useListSortContext,
     useTranslate,
     getFieldLabelTranslationArgs,
+    shallowEqual,
 } from 'ra-core';
 
 /**
@@ -35,23 +35,20 @@ import {
  * import * as React from 'react';
  * import { TopToolbar, SortButton, CreateButton, ExportButton } from 'react-admin';
  *
- * const ListActions: FC = props => (
+ * const ListActions = () => (
  *     <TopToolbar>
  *         <SortButton fields={['reference', 'sales', 'stock']} />
- *         <CreateButton basePath={props.basePath} />
+ *         <CreateButton />
  *         <ExportButton />
  *     </TopToolbar>
  * );
  */
-const SortButton: FC<SortButtonProps> = ({
-    fields,
-    label = 'ra.sort.sort_by',
-    icon = defaultIcon,
-}) => {
-    const { resource, currentSort, setSort } = useListSortContext();
+const SortButton = (props: SortButtonProps) => {
+    const { fields, label = 'ra.sort.sort_by', icon = defaultIcon } = props;
+    const { resource, sort, setSort } = useListSortContext();
     const translate = useTranslate();
     const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('xs')
+        theme.breakpoints.down('sm')
     );
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -66,12 +63,10 @@ const SortButton: FC<SortButtonProps> = ({
         event: React.MouseEvent<HTMLLIElement, MouseEvent>
     ) => {
         const field = event.currentTarget.dataset.sort;
-        setSort(
+        setSort({
             field,
-            field === currentSort.field
-                ? inverseOrder(currentSort.order)
-                : 'ASC'
-        );
+            order: field === sort.field ? inverseOrder(sort.order) : 'ASC',
+        });
         setAnchorEl(null);
     };
 
@@ -79,10 +74,10 @@ const SortButton: FC<SortButtonProps> = ({
         field: translate(
             ...getFieldLabelTranslationArgs({
                 resource,
-                source: currentSort.field,
+                source: sort.field,
             })
         ),
-        order: translate(`ra.sort.${currentSort.order}`),
+        order: translate(`ra.sort.${sort.order}`),
         _: label,
     });
 
@@ -94,6 +89,7 @@ const SortButton: FC<SortButtonProps> = ({
                         aria-label={buttonLabel}
                         color="primary"
                         onClick={handleClick}
+                        size="large"
                     >
                         {icon}
                     </IconButton>
@@ -132,8 +128,8 @@ const SortButton: FC<SortButtonProps> = ({
                         )}{' '}
                         {translate(
                             `ra.sort.${
-                                currentSort.field === field
-                                    ? inverseOrder(currentSort.order)
+                                sort.field === field
+                                    ? inverseOrder(sort.order)
                                     : 'ASC'
                             }`
                         )}

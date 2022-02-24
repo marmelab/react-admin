@@ -1,80 +1,84 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Paper, Typography, Link as MuiLink } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import ContactsIcon from '@material-ui/icons/AccountCircle';
-import DealIcon from '@material-ui/icons/MonetizationOn';
-import { linkToRecord, SelectField } from 'react-admin';
+import { Paper, Typography, Link as MuiLink, Box } from '@mui/material';
+import ContactsIcon from '@mui/icons-material/AccountCircle';
+import DealIcon from '@mui/icons-material/MonetizationOn';
+import { useCreatePath, SelectField, useRecordContext } from 'react-admin';
 import { Link } from 'react-router-dom';
 
 import { sectors } from './sectors';
 import { CompanyAvatar } from './CompanyAvatar';
 import { Company } from '../types';
 
-const useStyles = makeStyles(theme => ({
-    paper: {
-        height: 200,
-        width: 193.5,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        padding: '1em',
-    },
-    identity: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    name: {
-        textAlign: 'center',
-        marginTop: theme.spacing(1),
-    },
-    stats: {
-        display: 'flex',
-        justifyContent: 'space-around',
-        width: '100%',
-    },
-    singleStat: {
-        display: 'flex',
-        alignItems: 'center',
-    },
-    statIcon: {
-        marginRight: theme.spacing(1),
-    },
-}));
-
-export const CompanyCard = ({ record }: { record: Company }) => {
-    const classes = useStyles();
+export const CompanyCard = (props: { record?: Company }) => {
     const [elevation, setElevation] = useState(1);
+    const createPath = useCreatePath();
+    const record = useRecordContext<Company>(props);
+    if (!record) return null;
+
     return (
         <MuiLink
             component={Link}
-            to={linkToRecord('/companies', record.id, 'show')}
+            to={createPath({
+                resource: 'companies',
+                id: record.id,
+                type: 'show',
+            })}
             underline="none"
             onMouseEnter={() => setElevation(3)}
             onMouseLeave={() => setElevation(1)}
         >
-            <Paper className={classes.paper} elevation={elevation}>
-                <div className={classes.identity}>
-                    <CompanyAvatar record={record} />
-                    <div className={classes.name}>
+            <Paper
+                sx={{
+                    height: 200,
+                    width: 184,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    padding: '1em',
+                }}
+                elevation={elevation}
+            >
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <CompanyAvatar />
+                    <Box
+                        sx={{
+                            textAlign: 'center',
+                            marginTop: 1,
+                        }}
+                    >
                         <Typography variant="subtitle2">
                             {record.name}
                         </Typography>
                         <SelectField
-                            // @ts-ignore
                             color="textSecondary"
                             source="sector"
                             choices={sectors}
-                            record={record}
                         />
-                    </div>
-                </div>
-                <div className={classes.stats}>
-                    <div className={classes.singleStat}>
+                    </Box>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-around',
+                        width: '100%',
+                    }}
+                >
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}
+                    >
                         <ContactsIcon
                             color="disabled"
-                            className={classes.statIcon}
+                            sx={{ marginRight: 1 }}
                         />
                         <div>
                             <Typography
@@ -89,12 +93,14 @@ export const CompanyCard = ({ record }: { record: Company }) => {
                                     : 'contact'}
                             </Typography>
                         </div>
-                    </div>
-                    <div className={classes.singleStat}>
-                        <DealIcon
-                            color="disabled"
-                            className={classes.statIcon}
-                        />
+                    </Box>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <DealIcon color="disabled" sx={{ marginRight: 1 }} />
                         <div>
                             <Typography
                                 variant="subtitle2"
@@ -106,8 +112,8 @@ export const CompanyCard = ({ record }: { record: Company }) => {
                                 {record.nb_deals > 1 ? 'deals' : 'deal'}
                             </Typography>
                         </div>
-                    </div>
-                </div>
+                    </Box>
+                </Box>
             </Paper>
         </MuiLink>
     );

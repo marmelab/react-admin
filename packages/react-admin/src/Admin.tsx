@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { FunctionComponent } from 'react';
-import { AdminProps } from 'ra-core';
+import { ComponentType } from 'react';
+import { CoreAdminProps, localStorageStore } from 'ra-core';
+import { AdminUI, AdminContext } from 'ra-ui-materialui';
+import { ThemeOptions } from '@mui/material';
 
-import AdminContext from './AdminContext';
-import AdminUI from './AdminUI';
+import { defaultI18nProvider } from './defaultI18nProvider';
 
 /**
  * Main admin component, entry point to the application.
  *
- * Initializes the various contexts (auth, data, i18n, redux, router)
+ * Initializes the various contexts (auth, data, i18n, router)
  * and defines the main routes.
  *
  * Expects a list of resources as children, or a function returning a list of
@@ -84,68 +85,54 @@ import { useEffect, useState } from 'react';
  *     );
  * };
  */
-const Admin: FunctionComponent<AdminProps> = ({
-    appLayout,
-    authProvider,
-    catchAll,
-    children,
-    customReducers,
-    customRoutes = [],
-    customSagas,
-    dashboard,
-    dataProvider,
-    disableTelemetry,
-    history,
-    i18nProvider,
-    initialState,
-    layout,
-    loading,
-    locale,
-    loginPage,
-    logoutButton,
-    menu, // deprecated, use a custom layout instead
-    ready,
-    theme,
-    title = 'React Admin',
-}) => {
-    if (appLayout && process.env.NODE_ENV !== 'production') {
-        console.warn(
-            'You are using deprecated prop "appLayout", it was replaced by "layout", see https://github.com/marmelab/react-admin/issues/2918'
-        );
-    }
+export const Admin = (props: AdminProps) => {
+    const {
+        authProvider,
+        basename,
+        catchAll,
+        children,
+        dashboard,
+        dataProvider,
+        disableTelemetry,
+        history,
+        i18nProvider,
+        layout,
+        loading,
+        loginPage,
+        menu, // deprecated, use a custom layout instead
+        notification,
+        store,
+        ready,
+        theme,
+        title = 'React Admin',
+    } = props;
+
     if (loginPage === true && process.env.NODE_ENV !== 'production') {
         console.warn(
             'You passed true to the loginPage prop. You must either pass false to disable it or a component class to customize it'
-        );
-    }
-    if (locale && process.env.NODE_ENV !== 'production') {
-        console.warn(
-            'You are using deprecated prop "locale". You must now pass the initial locale to your i18nProvider'
         );
     }
 
     return (
         <AdminContext
             authProvider={authProvider}
+            basename={basename}
             dataProvider={dataProvider}
             i18nProvider={i18nProvider}
+            store={store}
             history={history}
-            customReducers={customReducers}
-            customSagas={customSagas}
-            initialState={initialState}
+            theme={theme}
         >
             <AdminUI
-                layout={appLayout || layout}
-                customRoutes={customRoutes}
+                layout={layout}
                 dashboard={dashboard}
                 disableTelemetry={disableTelemetry}
                 menu={menu}
                 catchAll={catchAll}
-                theme={theme}
                 title={title}
                 loading={loading}
                 loginPage={loginPage}
-                logout={authProvider ? logoutButton : undefined}
+                notification={notification}
                 ready={ready}
             >
                 {children}
@@ -154,4 +141,14 @@ const Admin: FunctionComponent<AdminProps> = ({
     );
 };
 
+Admin.defaultProps = {
+    i18nProvider: defaultI18nProvider,
+    store: localStorageStore(),
+};
+
 export default Admin;
+
+export interface AdminProps extends CoreAdminProps {
+    theme?: ThemeOptions;
+    notification?: ComponentType;
+}

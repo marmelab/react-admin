@@ -7,25 +7,29 @@ import {
     useGetIdentity,
     useGetList,
 } from 'react-admin';
-import { Box, Chip } from '@material-ui/core';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import TrendingUpIcon from '@material-ui/icons/TrendingUp';
-import LocalOfferIcon from '@material-ui/icons/LocalOffer';
-import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
+import { Box, Chip } from '@mui/material';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import { endOfYesterday, startOfWeek, startOfMonth, subMonths } from 'date-fns';
 
 import { Status } from '../misc/Status';
 
 export const ContactListFilter = () => {
     const { identity } = useGetIdentity();
-    const { data, ids } = useGetList(
-        'tags',
-        { page: 1, perPage: 10 },
-        { field: 'name', order: 'ASC' }
-    );
+    const { data } = useGetList('tags', {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: 'name', order: 'ASC' },
+    });
     return (
-        <Box width="15em" order="-1" marginRight="1em">
-            <FilterLiveSearch />
+        <Box width="15em" order={-1} mr={2} mt={5}>
+            <FilterLiveSearch
+                sx={{
+                    display: 'block',
+                    '& .MuiFilledInput-root': { width: '100%' },
+                }}
+            />
             <FilterList label="Last seen" icon={<AccessTimeIcon />}>
                 <FilterListItem
                     label="Today"
@@ -109,23 +113,22 @@ export const ContactListFilter = () => {
                 />
             </FilterList>
             <FilterList label="Tags" icon={<LocalOfferIcon />}>
-                {ids &&
-                    data &&
-                    ids.map(id => (
+                {data &&
+                    data.map(record => (
                         <FilterListItem
-                            key={id}
+                            key={record.id}
                             label={
                                 <Chip
-                                    label={data[id]?.name}
+                                    label={record?.name}
                                     size="small"
                                     style={{
-                                        backgroundColor: data[id]?.color,
+                                        backgroundColor: record?.color,
                                         border: 0,
                                         cursor: 'pointer',
                                     }}
                                 />
                             }
-                            value={{ tags: [id] }}
+                            value={{ tags: [record.id] }}
                         />
                     ))}
             </FilterList>

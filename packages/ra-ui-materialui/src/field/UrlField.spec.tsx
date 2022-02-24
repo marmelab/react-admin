@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render } from '@testing-library/react';
-import UrlField from './UrlField';
+import { UrlField } from './UrlField';
 
 const url = 'https://en.wikipedia.org/wiki/HAL_9000';
 

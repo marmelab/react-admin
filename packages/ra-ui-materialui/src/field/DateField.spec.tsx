@@ -3,7 +3,7 @@ import expect from 'expect';
 import { render } from '@testing-library/react';
 import { RecordContextProvider } from 'ra-core';
 
-import DateField from './DateField';
+import { DateField } from './DateField';
 
 describe('<DateField />', () => {
     it('should return null when the record is not set', () => {
@@ -22,6 +22,19 @@ describe('<DateField />', () => {
         const { queryByText } = render(
             <DateField
                 record={{ id: 123, foo: new Date('2017-04-23') }}
+                source="foo"
+                locales="en-US"
+            />
+        );
+
+        const date = new Date('2017-04-23').toLocaleDateString('en-US');
+        expect(queryByText(date)).not.toBeNull();
+    });
+
+    it('should render a date string', () => {
+        const { queryByText } = render(
+            <DateField
+                record={{ id: 123, foo: '2017-04-23' }}
                 source="foo"
                 locales="en-US"
             />

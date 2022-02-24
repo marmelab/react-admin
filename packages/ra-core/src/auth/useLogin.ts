@@ -1,9 +1,8 @@
 import { useCallback } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
 
+import { useNotificationContext } from '../notification';
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
-import { resetNotification } from '../actions/notificationActions';
 
 /**
  * Get a callback for calling the authProvider.login() method
@@ -32,32 +31,32 @@ const useLogin = (): Login => {
     const authProvider = useAuthProvider();
     const location = useLocation();
     const locationState = location.state as any;
-    const history = useHistory();
-    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { resetNotifications } = useNotificationContext();
     const nextPathName = locationState && locationState.nextPathname;
     const nextSearch = locationState && locationState.nextSearch;
 
     const login = useCallback(
         (params: any = {}, pathName) =>
             authProvider.login(params).then(ret => {
-                dispatch(resetNotification());
+                resetNotifications();
                 const redirectUrl = pathName
                     ? pathName
                     : nextPathName + nextSearch ||
                       defaultAuthParams.afterLoginUrl;
-                history.push(redirectUrl);
+                navigate(redirectUrl);
                 return ret;
             }),
-        [authProvider, history, nextPathName, nextSearch, dispatch]
+        [authProvider, navigate, nextPathName, nextSearch, resetNotifications]
     );
 
     const loginWithoutProvider = useCallback(
         (_, __) => {
-            dispatch(resetNotification());
-            history.push(defaultAuthParams.afterLoginUrl);
+            resetNotifications();
+            navigate(defaultAuthParams.afterLoginUrl);
             return Promise.resolve();
         },
-        [history, dispatch]
+        [navigate, resetNotifications]
     );
 
     return authProvider ? login : loginWithoutProvider;

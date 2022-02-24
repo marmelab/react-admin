@@ -1,45 +1,45 @@
 import * as React from 'react';
-import { FC, ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { FormGroupContextProvider, Record } from 'ra-core';
+import { FormGroupContextProvider, RaRecord } from 'ra-core';
+import { Stack, StackProps } from '@mui/material';
 
-import FormInput from './FormInput';
 import { FormTabHeader } from './FormTabHeader';
 
-const hiddenStyle = { display: 'none' };
+export const FormTab = (props: FormTabProps) => {
+    const {
+        className,
+        contentClassName,
+        children,
+        hidden,
+        icon,
+        intent,
+        label,
+        onChange,
+        path,
+        record,
+        resource,
+        syncWithLocation,
+        value,
+        ...rest
+    } = props;
 
-export const FormTab: FC<FormTabProps> = ({
-    basePath,
-    className,
-    classes,
-    contentClassName,
-    children,
-    hidden,
-    icon,
-    intent,
-    label,
-    margin,
-    path,
-    record,
-    resource,
-    variant,
-    value,
-    ...rest
-}) => {
     const renderHeader = () => (
         <FormTabHeader
             label={label}
             value={value}
             icon={icon}
             className={className}
-            classes={classes}
-            {...rest}
+            syncWithLocation={syncWithLocation}
+            onChange={onChange}
         />
     );
 
     const renderContent = () => (
         <FormGroupContextProvider name={value.toString()}>
-            <span
+            <Stack
+                alignItems="flex-start"
+                sx={{ paddingLeft: 1, paddingRight: 1 }}
                 style={hidden ? hiddenStyle : null}
                 className={contentClassName}
                 id={`tabpanel-${value}`}
@@ -47,22 +47,10 @@ export const FormTab: FC<FormTabProps> = ({
                 // Set undefined instead of false because WAI-ARIA Authoring Practices 1.1
                 // notes that aria-hidden="false" currently behaves inconsistently across browsers.
                 aria-hidden={hidden || undefined}
+                {...rest}
             >
-                {React.Children.map(
-                    children,
-                    (input: ReactElement) =>
-                        input && (
-                            <FormInput
-                                basePath={basePath}
-                                input={input}
-                                record={record}
-                                resource={resource}
-                                variant={input.props.variant || variant}
-                                margin={input.props.margin || margin}
-                            />
-                        )
-                )}
-            </span>
+                {children}
+            </Stack>
         </FormGroupContextProvider>
     );
 
@@ -70,7 +58,6 @@ export const FormTab: FC<FormTabProps> = ({
 };
 
 FormTab.propTypes = {
-    basePath: PropTypes.string,
     className: PropTypes.string,
     contentClassName: PropTypes.string,
     children: PropTypes.node,
@@ -79,32 +66,28 @@ FormTab.propTypes = {
     icon: PropTypes.element,
     label: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
         .isRequired,
-    margin: PropTypes.oneOf(['none', 'dense', 'normal']),
     path: PropTypes.string,
     // @ts-ignore
     record: PropTypes.object,
     resource: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    variant: PropTypes.oneOf(['standard', 'outlined', 'filled']),
 };
 
-export interface FormTabProps {
-    basePath?: string;
+export interface FormTabProps extends StackProps {
     className?: string;
-    classes?: object;
     children?: ReactNode;
     contentClassName?: string;
     hidden?: boolean;
     icon?: ReactElement;
     intent?: 'header' | 'content';
     label: string | ReactElement;
-    margin?: 'none' | 'normal' | 'dense';
     path?: string;
-    record?: Record;
+    record?: RaRecord;
     resource?: string;
     syncWithLocation?: boolean;
     value?: string | number;
-    variant?: 'standard' | 'outlined' | 'filled';
 }
 
 FormTab.displayName = 'FormTab';
+
+const hiddenStyle = { display: 'none' };

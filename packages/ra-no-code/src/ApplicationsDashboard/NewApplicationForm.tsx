@@ -8,7 +8,7 @@ import {
     Snackbar,
     TextField,
     Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Application } from './types';
 
 export const NewApplicationForm = ({

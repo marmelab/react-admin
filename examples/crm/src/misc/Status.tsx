@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box } from '@material-ui/core';
+import { Box } from '@mui/material';
 
 const getColorFromStatus = (status: string) =>
     status === 'cold'
@@ -14,10 +14,11 @@ const getColorFromStatus = (status: string) =>
 
 export const Status = ({ status }: { status: string }) => (
     <Box
+        marginLeft={0.5}
         width={10}
         height={10}
         display="inline-block"
-        borderRadius={5}
+        borderRadius="5px"
         bgcolor={getColorFromStatus(status)}
         component="span"
     />

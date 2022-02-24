@@ -3,8 +3,7 @@ import { render } from '@testing-library/react';
 import * as React from 'react';
 
 import { FieldTitle } from './FieldTitle';
-import TestTranslationProvider from '../i18n/TestTranslationProvider';
-import { renderWithRedux } from 'ra-test';
+import { TestTranslationProvider } from '../i18n';
 
 describe('FieldTitle', () => {
     it('should return empty span by default', () => {
@@ -19,7 +18,7 @@ describe('FieldTitle', () => {
     });
 
     it('should use the label as translate key when translation is available', () => {
-        const { container } = renderWithRedux(
+        const { container } = render(
             <TestTranslationProvider messages={{ foo: 'bar' }}>
                 <FieldTitle label="foo" />
             </TestTranslationProvider>
@@ -28,7 +27,7 @@ describe('FieldTitle', () => {
     });
 
     it('should use the humanized source when given', () => {
-        const { container } = renderWithRedux(
+        const { container } = render(
             <TestTranslationProvider translate={(key, options) => options._}>
                 <FieldTitle resource="posts" source="title" />
             </TestTranslationProvider>
@@ -37,7 +36,7 @@ describe('FieldTitle', () => {
     });
 
     it('should use the humanized source when given with underscores', () => {
-        const { container } = renderWithRedux(
+        const { container } = render(
             <TestTranslationProvider translate={(key, options) => options._}>
                 <FieldTitle resource="posts" source="title_with_underscore" />
             </TestTranslationProvider>
@@ -48,7 +47,7 @@ describe('FieldTitle', () => {
     });
 
     it('should use the humanized source when given with camelCase', () => {
-        const { container } = renderWithRedux(
+        const { container } = render(
             <TestTranslationProvider translate={(key, options) => options._}>
                 <FieldTitle resource="posts" source="titleWithCamelCase" />
             </TestTranslationProvider>
@@ -59,7 +58,7 @@ describe('FieldTitle', () => {
     });
 
     it('should use the source and resource as translate key when translation is available', () => {
-        const { container } = renderWithRedux(
+        const { container } = render(
             <TestTranslationProvider
                 messages={{
                     'resources.posts.fields.title': 'titre',
@@ -78,8 +77,13 @@ describe('FieldTitle', () => {
         expect(container.firstChild.textContent).toEqual('foo');
     });
 
-    it('should add a trailing asterisk if the field is required', () => {
-        const { container } = render(<FieldTitle label="foo" isRequired />);
-        expect(container.firstChild.textContent).toEqual('foo *');
+    it('should return null if label is false', () => {
+        const { container } = render(<FieldTitle label={false} />);
+        expect(container.firstChild).toBeNull();
+    });
+
+    it('should return null if label is empty string', () => {
+        const { container } = render(<FieldTitle label="" />);
+        expect(container.firstChild).toBeNull();
     });
 });

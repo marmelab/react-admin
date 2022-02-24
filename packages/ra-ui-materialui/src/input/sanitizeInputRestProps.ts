@@ -1,9 +1,7 @@
-const sanitizeInputRestProps = ({
+export const sanitizeInputRestProps = ({
     afterSubmit,
-    allowEmpty,
     allowNull,
     alwaysOn,
-    basePath,
     beforeSubmit,
     component,
     data,
@@ -29,19 +27,20 @@ const sanitizeInputRestProps = ({
     parse,
     record,
     ref,
+    refetch,
     render,
     resource,
+    setFilter,
+    setPagination,
+    setSort,
     source,
     submitError,
     subscription,
     textAlign,
     translate,
     translateChoice,
-    type,
     validate,
     validateFields,
     value,
     ...rest
 }: any) => rest;
-
-export default sanitizeInputRestProps;

@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { FC } from 'react';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useTranslate } from 'react-admin';
 
 import CardWithIcon from './CardWithIcon';
@@ -9,7 +8,8 @@ interface Props {
     value?: number;
 }
 
-const NbNewOrders: FC<Props> = ({ value }) => {
+const NbNewOrders = (props: Props) => {
+    const { value } = props;
     const translate = useTranslate();
     return (
         <CardWithIcon

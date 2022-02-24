@@ -3,7 +3,7 @@ import expect from 'expect';
 import { render, cleanup } from '@testing-library/react';
 
 import { ListContextProvider } from 'ra-core';
-import FilterListItem from './FilterListItem';
+import { FilterListItem } from './FilterListItem';
 
 describe('<FilterListItem/>', () => {
     afterEach(cleanup);

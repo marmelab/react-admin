@@ -9,9 +9,9 @@ import {
     TranslatableInputs,
 } from 'react-admin';
 
-const TagCreate = props => (
-    <Create {...props}>
-        <SimpleForm redirect="list">
+const TagCreate = () => (
+    <Create redirect="list">
+        <SimpleForm>
             <TextField source="id" />
             <TranslatableInputs locales={['en', 'fr']}>
                 <TextInput source="name" validate={[required()]} />

@@ -3,7 +3,7 @@ import expect from 'expect';
 import { render } from '@testing-library/react';
 import { RecordContextProvider } from 'ra-core';
 
-import NumberField from './NumberField';
+import { NumberField } from './NumberField';
 
 describe('<NumberField />', () => {
     it('should return null when the record is not set', () => {

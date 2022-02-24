@@ -1,82 +1,127 @@
 import * as React from 'react';
-import { useCallback } from 'react';
+import { forwardRef, useCallback } from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
+import clsx from 'clsx';
 import {
     InputAdornment,
     IconButton,
     TextField as MuiTextField,
     TextFieldProps,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import ClearIcon from '@material-ui/icons/Clear';
-import { InputProps, useTranslate } from 'ra-core';
-import { ClassesOverride } from '../types';
+} from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
+import { useTranslate } from 'ra-core';
 
 /**
- * An override of the default Material-UI TextField which is resettable
+ * An override of the default MUI TextField which is resettable
  */
-function ResettableTextField(props: ResettableTextFieldProps) {
-    const {
-        classes: classesOverride,
-        clearAlwaysVisible,
-        InputProps,
-        value,
-        resettable,
-        disabled,
-        variant = 'filled',
-        margin = 'dense',
-        ...rest
-    } = props;
-    const classes = useStyles(props);
-    const translate = useTranslate();
+export const ResettableTextField = forwardRef(
+    (props: ResettableTextFieldProps, ref) => {
+        const {
+            clearAlwaysVisible,
+            InputProps,
+            value,
+            resettable,
+            disabled,
+            variant = 'filled',
+            margin = 'dense',
+            className,
+            ...rest
+        } = props;
 
-    const { onChange, onFocus, onBlur } = props;
-    const handleClickClearButton = useCallback(
-        event => {
-            event.preventDefault();
-            onChange('');
-        },
-        [onChange]
-    );
+        const translate = useTranslate();
 
-    const handleFocus = useCallback(
-        event => {
-            onFocus && onFocus(event);
-        },
-        [onFocus]
-    );
-
-    const handleBlur = useCallback(
-        event => {
-            onBlur && onBlur(event);
-        },
-        [onBlur]
-    );
-
-    const {
-        clearButton,
-        clearIcon,
-        inputAdornedEnd,
-        selectAdornment,
-        visibleClearIcon,
-        ...restClasses
-    } = classes;
-
-    const { endAdornment, ...InputPropsWithoutEndAdornment } = InputProps || {};
-
-    if (clearAlwaysVisible && endAdornment) {
-        throw new Error(
-            'ResettableTextField cannot display both an endAdornment and a clear button always visible'
+        const { onChange, onFocus, onBlur } = props;
+        const handleClickClearButton = useCallback(
+            event => {
+                event.preventDefault();
+                onChange('');
+            },
+            [onChange]
         );
-    }
 
-    const getEndAdornment = () => {
-        if (!resettable) {
-            return endAdornment;
-        } else if (!value) {
-            if (clearAlwaysVisible) {
-                // show clear button, inactive
+        const handleFocus = useCallback(
+            event => {
+                onFocus && onFocus(event);
+            },
+            [onFocus]
+        );
+
+        const handleBlur = useCallback(
+            event => {
+                onBlur && onBlur(event);
+            },
+            [onBlur]
+        );
+
+        const {
+            clearButton,
+            clearIcon,
+            inputAdornedEnd,
+            selectAdornment,
+            visibleClearIcon,
+        } = ResettableTextFieldClasses;
+
+        const { endAdornment, ...InputPropsWithoutEndAdornment } =
+            InputProps || {};
+
+        if (clearAlwaysVisible && endAdornment) {
+            throw new Error(
+                'ResettableTextField cannot display both an endAdornment and a clear button always visible'
+            );
+        }
+
+        const getEndAdornment = () => {
+            if (!resettable) {
+                return endAdornment;
+            } else if (!value) {
+                if (clearAlwaysVisible) {
+                    // show clear button, inactive
+                    return (
+                        <InputAdornment
+                            position="end"
+                            classes={{
+                                root: props.select ? selectAdornment : null,
+                            }}
+                        >
+                            <IconButton
+                                className={clearButton}
+                                aria-label={translate(
+                                    'ra.action.clear_input_value'
+                                )}
+                                title={translate('ra.action.clear_input_value')}
+                                disableRipple
+                                disabled={true}
+                                size="large"
+                            >
+                                <ClearIcon
+                                    className={clsx(
+                                        clearIcon,
+                                        visibleClearIcon
+                                    )}
+                                />
+                            </IconButton>
+                        </InputAdornment>
+                    );
+                } else {
+                    if (endAdornment) {
+                        return endAdornment;
+                    } else {
+                        // show spacer
+                        return (
+                            <InputAdornment
+                                position="end"
+                                classes={{
+                                    root: props.select ? selectAdornment : null,
+                                }}
+                            >
+                                <span className={clearButton}>&nbsp;</span>
+                            </InputAdornment>
+                        );
+                    }
+                }
+            } else {
+                // show clear
                 return (
                     <InputAdornment
                         position="end"
@@ -91,116 +136,55 @@ function ResettableTextField(props: ResettableTextFieldProps) {
                             )}
                             title={translate('ra.action.clear_input_value')}
                             disableRipple
-                            disabled={true}
+                            onClick={handleClickClearButton}
+                            onMouseDown={handleMouseDownClearButton}
+                            disabled={disabled}
+                            size="large"
                         >
                             <ClearIcon
-                                className={classNames(
-                                    clearIcon,
-                                    visibleClearIcon
-                                )}
+                                className={clsx(clearIcon, {
+                                    [visibleClearIcon]:
+                                        clearAlwaysVisible || value,
+                                })}
                             />
                         </IconButton>
                     </InputAdornment>
                 );
-            } else {
-                if (endAdornment) {
-                    return endAdornment;
-                } else {
-                    // show spacer
-                    return (
-                        <InputAdornment
-                            position="end"
-                            classes={{
-                                root: props.select ? selectAdornment : null,
-                            }}
-                        >
-                            <span className={clearButton}>&nbsp;</span>
-                        </InputAdornment>
-                    );
-                }
             }
-        } else {
-            // show clear
-            return (
-                <InputAdornment
-                    position="end"
-                    classes={{
-                        root: props.select ? selectAdornment : null,
-                    }}
-                >
-                    <IconButton
-                        className={clearButton}
-                        aria-label={translate('ra.action.clear_input_value')}
-                        title={translate('ra.action.clear_input_value')}
-                        disableRipple
-                        onClick={handleClickClearButton}
-                        onMouseDown={handleMouseDownClearButton}
-                        disabled={disabled}
-                    >
-                        <ClearIcon
-                            className={classNames(clearIcon, {
-                                [visibleClearIcon]: clearAlwaysVisible || value,
-                            })}
-                        />
-                    </IconButton>
-                </InputAdornment>
-            );
-        }
-    };
+        };
 
-    return (
-        <MuiTextField
-            classes={restClasses}
-            value={value}
-            InputProps={{
-                classes:
-                    props.select && variant === 'filled'
-                        ? { adornedEnd: inputAdornedEnd }
-                        : {},
-                endAdornment: getEndAdornment(),
-                ...InputPropsWithoutEndAdornment,
-            }}
-            disabled={disabled}
-            variant={variant}
-            margin={margin}
-            {...rest}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-        />
-    );
-}
-
-const useStyles = makeStyles(
-    {
-        clearIcon: {
-            height: 16,
-            width: 0,
-        },
-        visibleClearIcon: {
-            width: 16,
-        },
-        clearButton: {
-            height: 24,
-            width: 24,
-            padding: 0,
-        },
-        selectAdornment: {
-            position: 'absolute',
-            right: 24,
-        },
-        inputAdornedEnd: {
-            paddingRight: 0,
-        },
-    },
-    { name: 'RaResettableTextField' }
+        return (
+            <StyledTextField
+                value={value}
+                InputProps={{
+                    classes:
+                        props.select && variant === 'filled'
+                            ? { adornedEnd: inputAdornedEnd }
+                            : {},
+                    endAdornment: getEndAdornment(),
+                    ...InputPropsWithoutEndAdornment,
+                }}
+                disabled={disabled}
+                variant={variant}
+                margin={margin}
+                className={className}
+                size="small"
+                {...rest}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                inputRef={ref}
+            />
+        );
+    }
 );
+
+ResettableTextField.displayName = 'ResettableTextField';
 
 const handleMouseDownClearButton = event => {
     event.preventDefault();
 };
 
 ResettableTextField.propTypes = {
-    classes: PropTypes.object,
     clearAlwaysVisible: PropTypes.bool,
     disabled: PropTypes.bool,
     InputProps: PropTypes.object,
@@ -208,15 +192,52 @@ ResettableTextField.propTypes = {
     onChange: PropTypes.func.isRequired,
     onFocus: PropTypes.func,
     resettable: PropTypes.bool,
-    value: PropTypes.any.isRequired,
+    value: PropTypes.any,
 };
 
 interface Props {
-    classes?: ClassesOverride<typeof useStyles>;
     clearAlwaysVisible?: boolean;
     resettable?: boolean;
 }
 
-export type ResettableTextFieldProps = InputProps<Props & TextFieldProps>;
+export type ResettableTextFieldProps = Props &
+    Omit<TextFieldProps, 'onChange'> & {
+        onChange?: (eventOrValue: any) => void;
+    };
 
-export default ResettableTextField;
+const PREFIX = 'RaResettableTextField';
+
+export const ResettableTextFieldClasses = {
+    clearIcon: `${PREFIX}-clearIcon`,
+    visibleClearIcon: `${PREFIX}-visibleClearIcon`,
+    clearButton: `${PREFIX}-clearButton`,
+    selectAdornment: `${PREFIX}-selectAdornment`,
+    inputAdornedEnd: `${PREFIX}-inputAdornedEnd`,
+};
+
+export const ResettableTextFieldStyles = {
+    [`& .${ResettableTextFieldClasses.clearIcon}`]: {
+        height: 16,
+        width: 0,
+    },
+    [`& .${ResettableTextFieldClasses.visibleClearIcon}`]: {
+        width: 16,
+    },
+    [`& .${ResettableTextFieldClasses.clearButton}`]: {
+        height: 24,
+        width: 24,
+        padding: 0,
+    },
+    [`& .${ResettableTextFieldClasses.selectAdornment}`]: {
+        position: 'absolute',
+        right: 24,
+    },
+    [`& .${ResettableTextFieldClasses.inputAdornedEnd}`]: {
+        paddingRight: 0,
+    },
+};
+
+const StyledTextField = styled(MuiTextField, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(ResettableTextFieldStyles);

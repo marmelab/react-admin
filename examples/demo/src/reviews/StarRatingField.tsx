@@ -1,21 +1,28 @@
 import * as React from 'react';
-import { FC } from 'react';
-import Icon from '@material-ui/icons/Stars';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
+import Icon from '@mui/icons-material/Stars';
 
-import { FieldProps } from 'react-admin';
+import { FieldProps, Labeled, useRecordContext } from 'react-admin';
 
-const useStyles = makeStyles({
-    root: {
+const PREFIX = 'StarRatingField';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    large: `${PREFIX}-large`,
+    small: `${PREFIX}-small`,
+};
+
+const Root = styled('span')({
+    [`&.${classes.root}`]: {
         opacity: 0.87,
         whiteSpace: 'nowrap',
         display: 'flex',
     },
-    large: {
+    [`& .${classes.large}`]: {
         width: 20,
         height: 20,
     },
-    small: {
+    [`& .${classes.small}`]: {
         width: 15,
         height: 15,
     },
@@ -25,31 +32,30 @@ interface OwnProps {
     size?: 'large' | 'small';
 }
 
-const StarRatingField: FC<FieldProps & OwnProps> = ({
-    record,
-    size = 'large',
-}) => {
-    const classes = useStyles();
+const StarRatingField = ({ size = 'large' }: FieldProps & OwnProps) => {
+    const record = useRecordContext();
+
     return record ? (
-        <span className={classes.root}>
-            {Array(record.rating)
-                .fill(true)
-                .map((_, i) => (
-                    <Icon
-                        key={i}
-                        className={
-                            size === 'large' ? classes.large : classes.small
-                        }
-                    />
-                ))}
-        </span>
+        <Labeled source="rating">
+            <Root className={classes.root}>
+                {Array(record.rating)
+                    .fill(true)
+                    .map((_, i) => (
+                        <Icon
+                            key={i}
+                            className={
+                                size === 'large' ? classes.large : classes.small
+                            }
+                        />
+                    ))}
+            </Root>
+        </Labeled>
     ) : null;
 };
 
 StarRatingField.defaultProps = {
     label: 'resources.reviews.fields.rating',
     source: 'rating',
-    addLabel: true,
 };
 
 export default StarRatingField;

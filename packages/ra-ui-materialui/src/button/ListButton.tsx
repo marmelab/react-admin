@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { FC, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import ActionList from '@material-ui/icons/List';
+import ActionList from '@mui/icons-material/List';
 import { Link } from 'react-router-dom';
-import { useResourceContext } from 'ra-core';
+import { useResourceContext, useCreatePath } from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 
 /**
  * Opens the List view of a given resource
@@ -14,16 +14,16 @@ import Button, { ButtonProps } from './Button';
  * import { ListButton } from 'react-admin';
  *
  * const CommentListButton = () => (
- *     <ListButton basePath="/comments" label="Comments" />
+ *     <ListButton label="Comments" />
  * );
  *
  * @example // linking back to the list from the Edit view
  * import { TopToolbar, ListButton, ShowButton, Edit } from 'react-admin';
  *
- * const PostEditActions = ({ basePath, record, resource }) => (
+ * const PostEditActions = () => (
  *     <TopToolbar>
- *         <ListButton basePath={basePath} />
- *         <ShowButton basePath={basePath} record={record} />
+ *         <ListButton />
+ *         <ShowButton />
  *     </TopToolbar>
  * );
  *
@@ -33,17 +33,20 @@ import Button, { ButtonProps } from './Button';
  *     </Edit>
  * );
  */
-const ListButton: FC<ListButtonProps> = ({
-    basePath = '',
-    icon = defaultIcon,
-    label = 'ra.action.list',
-    ...rest
-}) => {
-    const resource = useResourceContext();
+export const ListButton = (props: ListButtonProps) => {
+    const {
+        icon = defaultIcon,
+        label = 'ra.action.list',
+        scrollToTop = true,
+        ...rest
+    } = props;
+    const resource = useResourceContext(props);
+    const createPath = useCreatePath();
     return (
         <Button
             component={Link}
-            to={basePath || `/${resource}`}
+            to={createPath({ type: 'list', resource })}
+            state={scrollStates[String(scrollToTop)]}
             label={label}
             {...(rest as any)}
         >
@@ -52,20 +55,23 @@ const ListButton: FC<ListButtonProps> = ({
     );
 };
 
+// avoids using useMemo to get a constant value for the link state
+const scrollStates = {
+    true: { _scrollToTop: true },
+    false: {},
+};
+
 const defaultIcon = <ActionList />;
 
 interface Props {
-    basePath?: string;
     icon?: ReactElement;
     label?: string;
+    scrollToTop?: boolean;
 }
 
 export type ListButtonProps = Props & ButtonProps;
 
 ListButton.propTypes = {
-    basePath: PropTypes.string,
     icon: PropTypes.element,
     label: PropTypes.string,
 };
-
-export default ListButton;

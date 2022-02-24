@@ -1,9 +1,10 @@
 {
     "name": "ra-data-graphql",
-    "version": "3.11.4",
+    "version": "4.0.0-beta.1.0",
     "description": "A GraphQL data provider for react-admin",
-    "main": "lib/index.js",
-    "module": "esm/index.js",
+    "main": "dist/index",
+    "module": "dist/esm/index.js",
+    "types": "dist/index.d.ts",
     "sideEffects": false,
     "repository": {
         "type": "git",
@@ -26,25 +27,23 @@
     ],
     "license": "MIT",
     "scripts": {
-        "build": "yarn run build-cjs && yarn run build-esm",
-        "build-cjs": "rimraf ./lib && tsc",
-        "build-esm": "rimraf ./esm && tsc --outDir esm --module es2015",
-        "watch": "tsc --outDir esm --module es2015 --watch"
+        "build": "tsup src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output",
+        "watch": "tsup src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
     },
     "dependencies": {
-        "apollo-client": "^2.6.3",
-        "apollo-client-preset": "^1.0.8",
-        "graphql-tag": "^2.10.1",
+        "@apollo/client": "^3.3.19",
         "lodash": "~4.17.5",
         "pluralize": "~7.0.0"
     },
     "peerDependencies": {
-        "graphql": "^14.1.1",
-        "ra-core": "^3.9.0"
+        "graphql": "^15.6.0",
+        "ra-core": "^4.0.0-beta.1.0"
     },
     "devDependencies": {
         "cross-env": "^5.2.0",
-        "graphql": "^14.1.1",
-        "rimraf": "^2.6.3"
+        "graphql": "^15.6.0",
+        "npm-dts": "^1.3.10",
+        "rimraf": "^2.6.3",
+        "tsup": "^5.11.11"
     }
 }

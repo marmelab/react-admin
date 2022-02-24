@@ -1,18 +1,20 @@
 import * as React from 'react';
-import Datagrid from './datagrid/Datagrid';
-import SingleFieldList from './SingleFieldList';
-import ArrayField from '../field/ArrayField';
-import BooleanField from '../field/BooleanField';
-import ChipField from '../field/ChipField';
-import DateField from '../field/DateField';
-import EmailField from '../field/EmailField';
-import NumberField from '../field/NumberField';
-import ReferenceField from '../field/ReferenceField';
-import ReferenceArrayField from '../field/ReferenceArrayField';
-import TextField from '../field/TextField';
-import UrlField from '../field/UrlField';
+import { Datagrid } from './datagrid';
+import { SingleFieldList } from './SingleFieldList';
+import {
+    ArrayField,
+    BooleanField,
+    ChipField,
+    DateField,
+    EmailField,
+    NumberField,
+    ReferenceField,
+    ReferenceArrayField,
+    TextField,
+    UrlField,
+} from '../field';
 
-export default {
+export const listFieldTypes = {
     table: {
         component: props => <Datagrid rowClick="edit" {...props} />, // eslint-disable-line react/display-name
         representation: (_, children) => `        <Datagrid rowClick="edit">

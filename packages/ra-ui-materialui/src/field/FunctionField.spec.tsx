@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import FunctionField from './FunctionField';
+import { FunctionField } from './FunctionField';
 import { RecordContextProvider } from 'ra-core';
 
 describe('<FunctionField />', () => {

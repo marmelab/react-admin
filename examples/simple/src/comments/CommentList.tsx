@@ -1,20 +1,16 @@
 import * as React from 'react';
-import ChevronLeft from '@material-ui/icons/ChevronLeft';
-import ChevronRight from '@material-ui/icons/ChevronRight';
-import PersonIcon from '@material-ui/icons/Person';
+import PersonIcon from '@mui/icons-material/Person';
 import {
     Avatar,
-    Button,
     Card,
     CardActions,
     CardContent,
     CardHeader,
     Grid,
-    Toolbar,
     Typography,
     useMediaQuery,
-} from '@material-ui/core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+    Theme,
+} from '@mui/material';
 import jsonExport from 'jsonexport/dist';
 import {
     ListBase,
@@ -22,8 +18,7 @@ import {
     ListActions,
     DateField,
     EditButton,
-    Filter,
-    PaginationLimit,
+    Pagination,
     ReferenceField,
     ReferenceInput,
     SearchInput,
@@ -37,14 +32,12 @@ import {
     useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
-const CommentFilter = props => (
-    <Filter {...props}>
-        <SearchInput source="q" alwaysOn />
-        <ReferenceInput source="post_id" reference="posts">
-            <SelectInput optionText="title" />
-        </ReferenceInput>
-    </Filter>
-);
+const commentFilters = [
+    <SearchInput source="q" alwaysOn />,
+    <ReferenceInput source="post_id" reference="posts">
+        <SelectInput optionText="title" />
+    </ReferenceInput>,
+];
 
 const exporter = (records, fetchRelatedRecords) =>
     fetchRelatedRecords(records, 'post_id', 'posts').then(posts => {
@@ -63,7 +56,7 @@ const exporter = (records, fetchRelatedRecords) =>
             'body',
         ];
 
-        jsonExport(data, { headers }, (error, csv) => {
+        return jsonExport(data, { headers }, (error, csv) => {
             if (error) {
                 console.error(error);
             }
@@ -71,83 +64,33 @@ const exporter = (records, fetchRelatedRecords) =>
         });
     });
 
-const CommentPagination = () => {
-    const { loading, ids, page, perPage, total, setPage } = useListContext();
-    const translate = useTranslate();
-    const nbPages = Math.ceil(total / perPage) || 1;
-    if (!loading && (total === 0 || (ids && !ids.length))) {
-        return <PaginationLimit />;
-    }
-
-    return (
-        nbPages > 1 && (
-            <Toolbar>
-                {page > 1 && (
-                    <Button
-                        color="primary"
-                        key="prev"
-                        onClick={() => setPage(page - 1)}
-                    >
-                        <ChevronLeft />
-                        &nbsp;
-                        {translate('ra.navigation.prev')}
-                    </Button>
-                )}
-                {page !== nbPages && (
-                    <Button
-                        color="primary"
-                        key="next"
-                        onClick={() => setPage(page + 1)}
-                    >
-                        {translate('ra.navigation.next')}&nbsp;
-                        <ChevronRight />
-                    </Button>
-                )}
-            </Toolbar>
-        )
-    );
-};
-
-const useListStyles = makeStyles(theme => ({
-    card: {
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    cardContent: theme.typography.body1,
-    cardLink: {
-        ...theme.typography.body1,
-        flexGrow: 1,
-    },
-    cardLinkLink: {
-        display: 'inline',
-    },
-    cardActions: {
-        justifyContent: 'flex-end',
-    },
-}));
-
 const CommentGrid = () => {
-    const { ids, data } = useListContext();
+    const { data } = useListContext();
     const translate = useTranslate();
-    const classes = useListStyles();
 
+    if (!data) return null;
     return (
         <Grid spacing={2} container>
-            {ids.map(id => (
-                <Grid item key={id} sm={12} md={6} lg={4}>
-                    <Card className={classes.card}>
+            {data.map(record => (
+                <Grid item key={record.id} sm={12} md={6} lg={4}>
+                    <Card
+                        sx={{
+                            height: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                        }}
+                    >
                         <CardHeader
                             className="comment"
                             title={
                                 <TextField
-                                    record={data[id]}
+                                    record={record}
                                     source="author.name"
                                 />
                             }
                             subheader={
                                 <DateField
-                                    record={data[id]}
+                                    record={record}
                                     source="created_at"
                                 />
                             }
@@ -157,27 +100,34 @@ const CommentGrid = () => {
                                 </Avatar>
                             }
                         />
-                        <CardContent className={classes.cardContent}>
-                            <TextField record={data[id]} source="body" />
+                        <CardContent>
+                            <TextField
+                                record={record}
+                                source="body"
+                                sx={{
+                                    overflow: 'hidden',
+                                    textOverflow: 'ellipsis',
+                                    display: '-webkit-box',
+                                    WebkitLineClamp: 2,
+                                    WebkitBoxOrient: 'vertical',
+                                }}
+                            />
                         </CardContent>
-                        <CardContent className={classes.cardLink}>
+                        <CardContent sx={{ flexGrow: 1 }}>
                             <Typography component="span" variant="body2">
                                 {translate('comment.list.about')}&nbsp;
                             </Typography>
                             <ReferenceField
-                                record={data[id]}
+                                record={record}
                                 source="post_id"
                                 reference="posts"
                             >
-                                <TextField
-                                    source="title"
-                                    className={classes.cardLinkLink}
-                                />
+                                <TextField source="title" />
                             </ReferenceField>
                         </CardContent>
-                        <CardActions className={classes.cardActions}>
-                            <EditButton record={data[id]} />
-                            <ShowButton record={data[id]} />
+                        <CardActions sx={{ justifyContent: 'flex-end' }}>
+                            <EditButton record={record} />
+                            <ShowButton record={record} />
                         </CardActions>
                     </Card>
                 </Grid>
@@ -191,7 +141,7 @@ CommentGrid.defaultProps = {
     ids: [],
 };
 
-const CommentMobileList = props => (
+const CommentMobileList = () => (
     <SimpleList
         primaryText={record => record.author.name}
         secondaryText={record => record.body}
@@ -202,24 +152,21 @@ const CommentMobileList = props => (
     />
 );
 
-const CommentList = props => (
-    <ListBase perPage={6} exporter={exporter} {...props}>
+const CommentList = () => (
+    <ListBase perPage={6} exporter={exporter}>
         <ListView />
     </ListBase>
 );
 
 const ListView = () => {
-    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     const { defaultTitle } = useListContext();
     return (
         <>
             <Title defaultTitle={defaultTitle} />
-            <ListToolbar
-                filters={<CommentFilter />}
-                actions={<ListActions />}
-            />
+            <ListToolbar filters={commentFilters} actions={<ListActions />} />
             {isSmall ? <CommentMobileList /> : <CommentGrid />}
-            <CommentPagination />
+            <Pagination rowsPerPageOptions={[6, 9, 12]} />
         </>
     );
 };

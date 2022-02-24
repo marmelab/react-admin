@@ -101,7 +101,7 @@ export const combine2Validators = (
     };
 };
 
-// Compose multiple validators into a single one for use with final-form
+// Compose multiple validators into a single one for use with react-hook-form
 export const composeValidators = (...validators) => {
     const allValidators = (Array.isArray(validators[0])
         ? validators[0]
@@ -110,7 +110,7 @@ export const composeValidators = (...validators) => {
     return allValidators.reduce(combine2Validators, () => null);
 };
 
-// Compose multiple validators into a single one for use with final-form
+// Compose multiple validators into a single one for use with react-hook-form
 export const composeSyncValidators = (...validators) => (
     value,
     values,
@@ -314,3 +314,16 @@ export const choices = memoize(
             ? getMessage(message, { list }, value, values)
             : undefined
 );
+
+/**
+ * Given a validator, returns a boolean indicating whether the field is required or not.
+ */
+export const isRequired = validate => {
+    if (validate && validate.isRequired) {
+        return true;
+    }
+    if (Array.isArray(validate)) {
+        return !!validate.find(it => it.isRequired);
+    }
+    return false;
+};

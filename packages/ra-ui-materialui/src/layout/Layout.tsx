@@ -1,256 +1,140 @@
 import React, {
-    Component,
-    createElement,
-    useEffect,
-    useRef,
     useState,
     ErrorInfo,
-    ReactElement,
+    ReactNode,
     ComponentType,
     HtmlHTMLAttributes,
 } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import classnames from 'classnames';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import {
-    createMuiTheme,
-    withStyles,
-    createStyles,
-} from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
-import { ThemeOptions } from '@material-ui/core';
-import { ComponentPropType, CoreLayoutProps } from 'ra-core';
-import compose from 'lodash/flowRight';
+import { ErrorBoundary } from 'react-error-boundary';
+import clsx from 'clsx';
+import { styled } from '@mui/material/styles';
+import { CoreLayoutProps } from 'ra-core';
 
-import DefaultAppBar, { AppBarProps } from './AppBar';
-import DefaultSidebar from './Sidebar';
-import DefaultMenu, { MenuProps } from './Menu';
-import DefaultNotification from './Notification';
-import DefaultError from './Error';
-import defaultTheme from '../defaultTheme';
-import SkipNavigationButton from '../button/SkipNavigationButton';
+import { AppBar as DefaultAppBar, AppBarProps } from './AppBar';
+import { Sidebar as DefaultSidebar } from './Sidebar';
+import { Menu as DefaultMenu, MenuProps } from './Menu';
+import { Error, ErrorProps } from './Error';
+import { SkipNavigationButton } from '../button';
+import { useSidebarState } from './useSidebarState';
 
-const styles = theme =>
-    createStyles({
-        root: {
-            display: 'flex',
-            flexDirection: 'column',
-            zIndex: 1,
-            minHeight: '100vh',
-            backgroundColor: theme.palette.background.default,
-            position: 'relative',
-            minWidth: 'fit-content',
-            width: '100%',
-            color: theme.palette.getContrastText(
-                theme.palette.background.default
-            ),
-        },
-        appFrame: {
-            display: 'flex',
-            flexDirection: 'column',
-            flexGrow: 1,
-            [theme.breakpoints.up('xs')]: {
-                marginTop: theme.spacing(6),
-            },
-            [theme.breakpoints.down('xs')]: {
-                marginTop: theme.spacing(7),
-            },
-        },
-        contentWithSidebar: {
-            display: 'flex',
-            flexGrow: 1,
-        },
-        content: {
-            display: 'flex',
-            flexDirection: 'column',
-            flexGrow: 1,
-            flexBasis: 0,
-            padding: theme.spacing(3),
-            paddingTop: theme.spacing(1),
-            paddingLeft: 0,
-            [theme.breakpoints.up('xs')]: {
-                paddingLeft: 5,
-            },
-            [theme.breakpoints.down('sm')]: {
-                padding: 0,
-            },
-        },
-    });
+export const Layout = (props: LayoutProps) => {
+    const {
+        appBar: AppBar = DefaultAppBar,
+        children,
+        className,
+        dashboard,
+        error: errorComponent,
+        menu: Menu = DefaultMenu,
+        sidebar: Sidebar = DefaultSidebar,
+        title,
+        ...rest
+    } = props;
 
-class LayoutWithoutTheme extends Component<
-    LayoutWithoutThemeProps,
-    LayoutState
-> {
-    state = { hasError: false, errorMessage: null, errorInfo: null };
+    const [open] = useSidebarState();
+    const [errorInfo, setErrorInfo] = useState<ErrorInfo>(null);
 
-    constructor(props) {
-        super(props);
-        /**
-         * Reset the error state upon navigation
-         *
-         * @see https://stackoverflow.com/questions/48121750/browser-navigation-broken-by-use-of-react-error-boundaries
-         */
-        props.history.listen(() => {
-            if (this.state.hasError) {
-                this.setState({ hasError: false });
-            }
-        });
-    }
+    const handleError = (error: Error, info: ErrorInfo) => {
+        setErrorInfo(info);
+    };
 
-    componentDidCatch(errorMessage, errorInfo) {
-        this.setState({ hasError: true, errorMessage, errorInfo });
-    }
-
-    render() {
-        const {
-            appBar,
-            children,
-            classes,
-            className,
-            error,
-            dashboard,
-            logout,
-            menu,
-            notification,
-            open,
-            sidebar,
-            title,
-            // sanitize react-router props
-            match,
-            location,
-            history,
-            staticContext,
-            ...props
-        } = this.props;
-        const { hasError, errorMessage, errorInfo } = this.state;
-        return (
-            <>
-                <div
-                    className={classnames('layout', classes.root, className)}
-                    {...props}
-                >
-                    <SkipNavigationButton />
-                    <div className={classes.appFrame}>
-                        {createElement(appBar, { title, open, logout })}
-                        <main className={classes.contentWithSidebar}>
-                            {createElement(sidebar, {
-                                children: createElement(menu, {
-                                    logout,
-                                    hasDashboard: !!dashboard,
-                                }),
-                            })}
-                            <div id="main-content" className={classes.content}>
-                                {hasError
-                                    ? createElement(error, {
-                                          error: errorMessage,
-                                          errorInfo,
-                                          title,
-                                      })
-                                    : children}
-                            </div>
-                        </main>
+    return (
+        <StyledLayout className={clsx('layout', className)} {...rest}>
+            <SkipNavigationButton />
+            <div className={LayoutClasses.appFrame}>
+                <AppBar open={open} title={title} />
+                <main className={LayoutClasses.contentWithSidebar}>
+                    <Sidebar>
+                        <Menu hasDashboard={!!dashboard} />
+                    </Sidebar>
+                    <div id="main-content" className={LayoutClasses.content}>
+                        <ErrorBoundary
+                            onError={handleError}
+                            fallbackRender={({ error, resetErrorBoundary }) => (
+                                <Error
+                                    error={error}
+                                    errorComponent={errorComponent}
+                                    errorInfo={errorInfo}
+                                    resetErrorBoundary={resetErrorBoundary}
+                                    title={title}
+                                />
+                            )}
+                        >
+                            {children}
+                        </ErrorBoundary>
                     </div>
-                </div>
-                {createElement(notification)}
-            </>
-        );
-    }
-
-    static propTypes = {
-        appBar: ComponentPropType,
-        children: PropTypes.oneOfType([PropTypes.func, PropTypes.node]),
-        classes: PropTypes.object,
-        className: PropTypes.string,
-        dashboard: ComponentPropType,
-        error: ComponentPropType,
-        history: PropTypes.object.isRequired,
-        logout: PropTypes.element,
-        menu: ComponentPropType,
-        notification: ComponentPropType,
-        open: PropTypes.bool,
-        sidebar: ComponentPropType,
-        title: PropTypes.node.isRequired,
-    };
-
-    static defaultProps = {
-        appBar: DefaultAppBar,
-        error: DefaultError,
-        menu: DefaultMenu,
-        notification: DefaultNotification,
-        sidebar: DefaultSidebar,
-    };
-}
+                </main>
+            </div>
+        </StyledLayout>
+    );
+};
 
 export interface LayoutProps
     extends CoreLayoutProps,
         Omit<HtmlHTMLAttributes<HTMLDivElement>, 'title'> {
     appBar?: ComponentType<AppBarProps>;
-    classes?: any;
     className?: string;
-    error?: ComponentType<{
-        error?: string;
-        errorInfo?: React.ErrorInfo;
-        title?: string | ReactElement<any>;
-    }>;
+    error?: ComponentType<ErrorProps>;
     menu?: ComponentType<MenuProps>;
-    notification?: ComponentType;
-    sidebar?: ComponentType<{ children: JSX.Element }>;
-    theme?: ThemeOptions;
+    sidebar?: ComponentType<{ children: ReactNode }>;
 }
 
 export interface LayoutState {
     hasError: boolean;
-    errorMessage: string;
-    errorInfo: ErrorInfo;
+    error?: Error;
+    errorInfo?: ErrorInfo;
 }
 
-interface LayoutWithoutThemeProps
-    extends RouteComponentProps,
-        Omit<LayoutProps, 'theme'> {
-    open?: boolean;
-}
-
-const mapStateToProps = state => ({
-    open: state.admin.ui.sidebarOpen,
-});
-
-const EnhancedLayout = compose(
-    connect(
-        mapStateToProps,
-        {} // Avoid connect passing dispatch in props
-    ),
-    withRouter,
-    withStyles(styles, { name: 'RaLayout' })
-)(LayoutWithoutTheme);
-
-const Layout = ({
-    theme: themeOverride,
-    ...props
-}: LayoutProps): JSX.Element => {
-    const themeProp = useRef(themeOverride);
-    const [theme, setTheme] = useState(createMuiTheme(themeOverride));
-
-    useEffect(() => {
-        if (themeProp.current !== themeOverride) {
-            themeProp.current = themeOverride;
-            setTheme(createMuiTheme(themeOverride));
-        }
-    }, [themeOverride, themeProp, theme, setTheme]);
-
-    return (
-        <ThemeProvider theme={theme}>
-            <EnhancedLayout {...props} />
-        </ThemeProvider>
-    );
+const PREFIX = 'RaLayout';
+export const LayoutClasses = {
+    appFrame: `${PREFIX}-appFrame`,
+    contentWithSidebar: `${PREFIX}-contentWithSidebar`,
+    content: `${PREFIX}-content`,
 };
 
-Layout.propTypes = {
-    theme: PropTypes.object,
-};
+const StyledLayout = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    zIndex: 1,
+    minHeight: '100vh',
+    backgroundColor: theme.palette.background.default,
+    position: 'relative',
+    minWidth: 'fit-content',
+    width: '100%',
+    color: theme.palette.getContrastText(theme.palette.background.default),
 
-Layout.defaultProps = {
-    theme: defaultTheme,
-};
-
-export default Layout;
+    [`& .${LayoutClasses.appFrame}`]: {
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 1,
+        [theme.breakpoints.up('xs')]: {
+            marginTop: theme.spacing(6),
+        },
+        [theme.breakpoints.down('sm')]: {
+            marginTop: theme.spacing(7),
+        },
+    },
+    [`& .${LayoutClasses.contentWithSidebar}`]: {
+        display: 'flex',
+        flexGrow: 1,
+    },
+    [`& .${LayoutClasses.content}`]: {
+        backgroundColor: theme.palette.background.default,
+        zIndex: 2,
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 1,
+        flexBasis: 0,
+        padding: theme.spacing(3),
+        paddingTop: theme.spacing(1),
+        paddingLeft: 0,
+        [theme.breakpoints.up('xs')]: {
+            paddingLeft: 5,
+        },
+        [theme.breakpoints.down('md')]: {
+            padding: 0,
+        },
+    },
+}));

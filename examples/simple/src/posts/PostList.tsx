@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Children, Fragment, cloneElement, memo } from 'react';
-import BookIcon from '@material-ui/icons/Book';
-import { Chip, useMediaQuery } from '@material-ui/core';
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Fragment, memo } from 'react';
+import BookIcon from '@mui/icons-material/Book';
+import { Box, Chip, useMediaQuery } from '@mui/material';
+import { Theme, styled } from '@mui/material/styles';
 import lodashGet from 'lodash/get';
 import jsonExport from 'jsonexport/dist';
 import {
@@ -14,7 +14,6 @@ import {
     DateField,
     downloadCSV,
     EditButton,
-    Filter,
     List,
     NumberField,
     ReferenceArrayField,
@@ -30,31 +29,20 @@ import {
 import ResetViewsButton from './ResetViewsButton';
 export const PostIcon = BookIcon;
 
-const useQuickFilterStyles = makeStyles(theme => ({
-    chip: {
-        marginBottom: theme.spacing(1),
-    },
-}));
 const QuickFilter = ({ label, source, defaultValue }) => {
     const translate = useTranslate();
-    const classes = useQuickFilterStyles();
-    return <Chip className={classes.chip} label={translate(label)} />;
+    return <Chip sx={{ marginBottom: 1 }} label={translate(label)} />;
 };
 
-const PostFilter = props => (
-    <Filter {...props}>
-        <SearchInput source="q" alwaysOn />
-        <TextInput
-            source="title"
-            defaultValue="Qui tempore rerum et voluptates"
-        />
-        <QuickFilter
-            label="resources.posts.fields.commentable"
-            source="commentable"
-            defaultValue
-        />
-    </Filter>
-);
+const postFilter = [
+    <SearchInput source="q" alwaysOn />,
+    <TextInput source="title" defaultValue="Qui tempore rerum et voluptates" />,
+    <QuickFilter
+        label="resources.posts.fields.commentable"
+        source="commentable"
+        defaultValue
+    />,
+];
 
 const exporter = posts => {
     const data = posts.map(post => ({
@@ -63,22 +51,25 @@ const exporter = posts => {
             backlink => backlink.url
         ),
     }));
-    jsonExport(data, (err, csv) => downloadCSV(csv, 'posts'));
+    return jsonExport(data, (err, csv) => downloadCSV(csv, 'posts'));
 };
 
-const useStyles = makeStyles(theme => ({
-    title: {
+const StyledDatagrid = styled(Datagrid)(({ theme }) => ({
+    '& .title': {
         maxWidth: '20em',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
     },
-    hiddenOnSmallScreens: {
-        [theme.breakpoints.down('md')]: {
+    '& .hiddenOnSmallScreens': {
+        [theme.breakpoints.down('lg')]: {
             display: 'none',
         },
     },
-    publishedAt: { fontStyle: 'italic' },
+    '& .column-tags': {
+        minWidth: '9em',
+    },
+    '& .publishedAt': { fontStyle: 'italic' },
 }));
 
 const PostListBulkActions = memo(({ children, ...props }) => (
@@ -89,25 +80,11 @@ const PostListBulkActions = memo(({ children, ...props }) => (
     </Fragment>
 ));
 
-const usePostListActionToolbarStyles = makeStyles({
-    toolbar: {
-        alignItems: 'center',
-        display: 'flex',
-        marginTop: -1,
-        marginBottom: -1,
-    },
-});
+const PostListActionToolbar = ({ children, ...props }) => (
+    <Box sx={{ alignItems: 'center', display: 'flex' }}>{children}</Box>
+);
 
-const PostListActionToolbar = ({ children, ...props }) => {
-    const classes = usePostListActionToolbarStyles();
-    return (
-        <div className={classes.toolbar}>
-            {Children.map(children, button => cloneElement(button, props))}
-        </div>
-    );
-};
-
-const rowClick = (id, basePath, record) => {
+const rowClick = (id, resource, record) => {
     if (record.commentable) {
         return 'edit';
     }
@@ -119,14 +96,11 @@ const PostPanel = ({ id, record, resource }) => (
     <div dangerouslySetInnerHTML={{ __html: record.body }} />
 );
 
-const PostList = props => {
-    const classes = useStyles();
-    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
+const PostList = () => {
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     return (
         <List
-            {...props}
-            bulkActionButtons={<PostListBulkActions />}
-            filters={<PostFilter />}
+            filters={postFilter}
             sort={{ field: 'published_at', order: 'DESC' }}
             exporter={exporter}
         >
@@ -139,13 +113,18 @@ const PostList = props => {
                     }
                 />
             ) : (
-                <Datagrid rowClick={rowClick} expand={PostPanel} optimized>
+                <StyledDatagrid
+                    bulkActionButtons={<PostListBulkActions />}
+                    rowClick={rowClick}
+                    expand={PostPanel}
+                    optimized
+                >
                     <TextField source="id" />
-                    <TextField source="title" cellClassName={classes.title} />
+                    <TextField source="title" cellClassName="title" />
                     <DateField
                         source="published_at"
                         sortByOrder="DESC"
-                        cellClassName={classes.publishedAt}
+                        cellClassName="publishedAt"
                     />
 
                     <BooleanField
@@ -160,8 +139,8 @@ const PostList = props => {
                         source="tags"
                         sortBy="tags.name"
                         sort={tagSort}
-                        cellClassName={classes.hiddenOnSmallScreens}
-                        headerClassName={classes.hiddenOnSmallScreens}
+                        cellClassName="hiddenOnSmallScreens"
+                        headerClassName="hiddenOnSmallScreens"
                     >
                         <SingleFieldList>
                             <ChipField source="name.en" size="small" />
@@ -171,7 +150,7 @@ const PostList = props => {
                         <EditButton />
                         <ShowButton />
                     </PostListActionToolbar>
-                </Datagrid>
+                </StyledDatagrid>
             )}
         </List>
     );

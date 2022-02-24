@@ -6,6 +6,7 @@ import {
     useUpdate,
     useGetList,
     Identifier,
+    useRecordContext,
 } from 'react-admin';
 import {
     Chip,
@@ -18,36 +19,37 @@ import {
     TextField,
     MenuItem,
     Menu,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import ControlPointIcon from '@material-ui/icons/ControlPoint';
-import EditIcon from '@material-ui/icons/Edit';
+} from '@mui/material';
+import ControlPointIcon from '@mui/icons-material/ControlPoint';
+import EditIcon from '@mui/icons-material/Edit';
 
 import { colors } from '../tags/colors';
-import { Contact } from '../types';
+import { Contact, Tag } from '../types';
 
-export const TagsListEdit = ({ record }: { record: Contact }) => {
+export const TagsListEdit = () => {
+    const record = useRecordContext<Contact>();
     const [open, setOpen] = useState(false);
     const [newTagName, setNewTagName] = useState('');
     const [newTagColor, setNewTagColor] = useState(colors[0]);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [version, setVersion] = useState(0); // used to force the refresh of useGetList without refreshing the whole page
     const [disabled, setDisabled] = useState(false);
 
-    const { data: allTags, ids } = useGetList(
-        'tags',
-        { page: 1, perPage: 10 },
-        { field: 'name', order: 'ASC' },
-        {},
-        { version } as any // FIXME UseDataProviderOptions don't allow [key: string]: any
-    );
-    const { data: tags, loaded } = useGetMany('tags', record.tags, {
-        enabled: record.tags && record.tags.length > 0,
+    const { data: allTags, refetch, isLoading: isLoadingAllTags } = useGetList<
+        Tag
+    >('tags', {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: 'name', order: 'ASC' },
     });
-    const [update] = useUpdate();
-    const [create] = useCreate();
+    const { data: tags, isLoading: isLoadingRecordTags } = useGetMany<Tag>(
+        'tags',
+        { ids: record.tags },
+        { enabled: record && record.tags && record.tags.length > 0 }
+    );
+    const [update] = useUpdate<Contact>();
+    const [create] = useCreate<Tag>();
 
-    const unselectedTagIds = ids && ids.filter(id => !record.tags.includes(id));
+    const unselectedTags =
+        allTags && allTags.filter(tag => !record.tags.includes(tag.id));
 
     const handleOpen = (event: React.MouseEvent<HTMLDivElement>) => {
         setAnchorEl(event.currentTarget);
@@ -61,12 +63,20 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
         const tags: Identifier[] = record.tags.filter(
             (tagId: Identifier) => tagId !== id
         );
-        update('contacts', record.id, { tags }, record);
+        update('contacts', {
+            id: record.id,
+            data: { tags },
+            previousData: record,
+        });
     };
 
     const handleAddTag = (id: Identifier) => {
         const tags: Identifier[] = [...record.tags, id];
-        update('contacts', record.id, { tags }, record);
+        update('contacts', {
+            id: record.id,
+            data: { tags },
+            previousData: record,
+        });
         setAnchorEl(null);
     };
 
@@ -87,21 +97,23 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
         setDisabled(true);
         create(
             'tags',
-            { name: newTagName, color: newTagColor },
+            { data: { name: newTagName, color: newTagColor } },
             {
-                onSuccess: ({ data }) => {
+                onSuccess: tag => {
                     update(
                         'contacts',
-                        record.id,
-                        { tags: [...record.tags, data.id] },
-                        record,
+                        {
+                            id: record.id,
+                            data: { tags: [...record.tags, tag.id] },
+                            previousData: record,
+                        },
                         {
                             onSuccess: () => {
                                 setNewTagName('');
                                 setNewTagColor(colors[0]);
                                 setOpen(false);
 
-                                setVersion(v => v + 1);
+                                refetch();
                             },
                         }
                     );
@@ -110,10 +122,10 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
         );
     };
 
-    if (!loaded || !tags) return null;
+    if (isLoadingRecordTags || isLoadingAllTags) return null;
     return (
         <>
-            {tags.map(tag => (
+            {tags?.map(tag => (
                 <Box mt={1} mb={1} key={tag.id}>
                     <Chip
                         size="small"
@@ -139,17 +151,17 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
                 onClose={handleClose}
                 anchorEl={anchorEl}
             >
-                {unselectedTagIds?.map(id => (
-                    <MenuItem key={id} onClick={() => handleAddTag(id)}>
+                {unselectedTags?.map(tag => (
+                    <MenuItem key={tag.id} onClick={() => handleAddTag(tag.id)}>
                         <Chip
                             size="small"
                             variant="outlined"
-                            label={allTags && allTags[id].name}
+                            label={tag.name}
                             style={{
-                                backgroundColor: allTags && allTags[id].color,
+                                backgroundColor: tag.color,
                                 border: 0,
                             }}
-                            onClick={() => handleAddTag(id)}
+                            onClick={() => handleAddTag(tag.id)}
                         />
                     </MenuItem>
                 ))}
@@ -212,27 +224,19 @@ export const TagsListEdit = ({ record }: { record: Contact }) => {
     );
 };
 
-const useStyles = makeStyles({
-    root: {
-        width: 30,
-        height: 30,
-        borderRadius: 15,
-        display: 'inline-block',
-        margin: 8,
-    },
-});
-
-const RoundButton = ({ color, handleClick, selected }: any) => {
-    const classes = useStyles();
-    return (
-        <button
-            type="button"
-            className={classes.root}
-            style={{
-                backgroundColor: color,
-                border: selected ? '2px solid grey' : 'none',
-            }}
-            onClick={handleClick}
-        />
-    );
-};
+const RoundButton = ({ color, handleClick, selected }: any) => (
+    <Box
+        component="button"
+        type="button"
+        sx={{
+            bgcolor: color,
+            width: 30,
+            height: 30,
+            borderRadius: 15,
+            border: selected ? '2px solid grey' : 'none',
+            display: 'inline-block',
+            margin: 8,
+        }}
+        onClick={handleClick}
+    />
+);

@@ -1,47 +1,33 @@
 import * as React from 'react';
-import { FC, memo } from 'react';
-import { SvgIconComponent } from '@material-ui/icons';
+import { styled } from '@mui/material/styles';
+import { memo, FunctionComponent } from 'react';
+import { SvgIconComponent } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
-import classnames from 'classnames';
-import DoneIcon from '@material-ui/icons/Done';
-import ClearIcon from '@material-ui/icons/Clear';
-import { Tooltip, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { TypographyProps } from '@material-ui/core/Typography';
+import DoneIcon from '@mui/icons-material/Done';
+import ClearIcon from '@mui/icons-material/Clear';
+import { Tooltip, Typography, TypographyProps } from '@mui/material';
 import { useTranslate, useRecordContext } from 'ra-core';
 
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
-import sanitizeFieldRestProps from './sanitizeFieldRestProps';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 
-const useStyles = makeStyles(
-    {
-        root: {
-            display: 'flex',
-        },
-    },
-    {
-        name: 'RaBooleanField',
-    }
-);
-
-export const BooleanField: FC<BooleanFieldProps> = memo<BooleanFieldProps>(
+export const BooleanField: FunctionComponent<BooleanFieldProps> = memo(
     props => {
         const {
             className,
-            classes: classesOverride,
             emptyText,
             source,
             valueLabelTrue,
             valueLabelFalse,
-            TrueIcon,
-            FalseIcon,
-            looseValue,
+            TrueIcon = DoneIcon,
+            FalseIcon = ClearIcon,
+            looseValue = false,
             ...rest
         } = props;
         const record = useRecordContext(props);
         const translate = useTranslate();
-        const classes = useStyles(props);
+
         const value = get(record, source);
         const isTruthyValue = value === true || (looseValue && value);
         let ariaLabel = value ? valueLabelTrue : valueLabelFalse;
@@ -52,10 +38,10 @@ export const BooleanField: FC<BooleanFieldProps> = memo<BooleanFieldProps>(
 
         if (looseValue || value === false || value === true) {
             return (
-                <Typography
+                <StyledTypography
                     component="span"
                     variant="body2"
-                    className={classnames(classes.root, className)}
+                    className={className}
                     {...sanitizeFieldRestProps(rest)}
                 >
                     <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
@@ -72,7 +58,7 @@ export const BooleanField: FC<BooleanFieldProps> = memo<BooleanFieldProps>(
                             </span>
                         )}
                     </Tooltip>
-                </Typography>
+                </StyledTypography>
             );
         }
 
@@ -89,13 +75,6 @@ export const BooleanField: FC<BooleanFieldProps> = memo<BooleanFieldProps>(
     }
 );
 
-BooleanField.defaultProps = {
-    addLabel: true,
-    TrueIcon: DoneIcon,
-    FalseIcon: ClearIcon,
-    looseValue: false,
-};
-
 BooleanField.propTypes = {
     // @ts-ignore
     ...Typography.propTypes,
@@ -107,10 +86,12 @@ BooleanField.propTypes = {
     looseValue: PropTypes.bool,
 };
 
+BooleanField.displayName = 'BooleanField';
+
 export interface BooleanFieldProps
     extends PublicFieldProps,
         InjectedFieldProps,
-        TypographyProps {
+        Omit<TypographyProps, 'textAlign'> {
     valueLabelTrue?: string;
     valueLabelFalse?: string;
     TrueIcon?: SvgIconComponent;
@@ -118,4 +99,11 @@ export interface BooleanFieldProps
     looseValue?: boolean;
 }
 
-export default BooleanField;
+const PREFIX = 'RaBooleanField';
+
+const StyledTypography = styled(Typography, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
+    display: 'flex',
+});

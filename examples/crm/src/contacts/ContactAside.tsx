@@ -10,7 +10,7 @@ import {
     ReferenceField,
     FunctionField,
 } from 'react-admin';
-import { Box, Typography, Divider, List, ListItem } from '@material-ui/core';
+import { Box, Typography, Divider, List, ListItem } from '@mui/material';
 import { TagsListEdit } from './TagsListEdit';
 
 import { Sale } from '../types';
@@ -19,17 +19,9 @@ export const ContactAside = ({ record, link = 'edit' }: any) => (
     <Box ml={4} width={250} minWidth={250}>
         <Box textAlign="center" mb={2}>
             {link === 'edit' ? (
-                <EditButton
-                    basePath="/contacts"
-                    record={record}
-                    label="Edit Contact"
-                />
+                <EditButton record={record} label="Edit Contact" />
             ) : (
-                <ShowButton
-                    basePath="/contacts"
-                    record={record}
-                    label="Show Contact"
-                />
+                <ShowButton record={record} label="Show Contact" />
             )}
         </Box>
 
@@ -103,7 +95,7 @@ export const ContactAside = ({ record, link = 'edit' }: any) => (
         <Box mb={3}>
             <Typography variant="subtitle2">Tags</Typography>
             <Divider />
-            <TagsListEdit record={record} />
+            <TagsListEdit />
         </Box>
 
         <ReferenceManyField
@@ -117,36 +109,25 @@ export const ContactAside = ({ record, link = 'edit' }: any) => (
 );
 
 const TasksIterator = () => {
-    const { data, ids, loading } = useListContext();
-    if (loading || ids.length === 0) return null;
+    const { data, isLoading } = useListContext();
+    if (isLoading || data.length === 0) return null;
     return (
         <Box>
             <Typography variant="subtitle2">Tasks</Typography>
             <Divider />
 
             <List>
-                {ids.map(id => {
-                    const task = data[id];
-                    return (
-                        <ListItem key={id} disableGutters>
-                            <Box>
-                                <Typography variant="body2">
-                                    {task.text}
-                                </Typography>
-                                <Typography
-                                    variant="body2"
-                                    color="textSecondary"
-                                >
-                                    due{' '}
-                                    <DateField
-                                        source="due_date"
-                                        record={task}
-                                    />
-                                </Typography>
-                            </Box>
-                        </ListItem>
-                    );
-                })}
+                {data.map(task => (
+                    <ListItem key={task.id} disableGutters>
+                        <Box>
+                            <Typography variant="body2">{task.text}</Typography>
+                            <Typography variant="body2" color="textSecondary">
+                                due{' '}
+                                <DateField source="due_date" record={task} />
+                            </Typography>
+                        </Box>
+                    </ListItem>
+                ))}
             </List>
         </Box>
     );

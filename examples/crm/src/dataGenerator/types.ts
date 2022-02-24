@@ -1,13 +1,13 @@
-import { Record } from 'react-admin';
-import { Company, Contact, ContactNote, Deal } from '../types';
+import { RaRecord } from 'react-admin';
+import { Company, Contact, ContactNote, Deal, Tag } from '../types';
 
 export interface Db {
     companies: Company[];
     contacts: Contact[];
     contactNotes: ContactNote[];
     deals: Deal[];
-    dealNotes: Record[];
-    sales: Record[];
-    tags: Record[];
-    tasks: Record[];
+    dealNotes: RaRecord[];
+    sales: RaRecord[];
+    tags: Tag[];
+    tasks: RaRecord[];
 }

@@ -1,29 +1,21 @@
 import * as React from 'react';
-import { FC } from 'react';
-import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
+import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import { useTranslate, FieldProps } from 'react-admin';
+import { useTranslate, useRecordContext } from 'react-admin';
 import { stringify } from 'query-string';
 
 import products from '../products';
 import { Category } from '../types';
 
-const useStyles = makeStyles({
-    icon: { paddingRight: '0.5em' },
-    link: {
-        display: 'inline-flex',
-        alignItems: 'center',
-    },
-});
-
-const LinkToRelatedProducts: FC<FieldProps<Category>> = ({ record }) => {
+const LinkToRelatedProducts = () => {
+    const record = useRecordContext<Category>();
     const translate = useTranslate();
-    const classes = useStyles();
+
     return record ? (
         <Button
             size="small"
             color="primary"
+            // @ts-ignore
             component={Link}
             to={{
                 pathname: '/products',
@@ -31,9 +23,9 @@ const LinkToRelatedProducts: FC<FieldProps<Category>> = ({ record }) => {
                     filter: JSON.stringify({ category_id: record.id }),
                 }),
             }}
-            className={classes.link}
+            sx={{ display: 'inline-flex', alignItems: 'center' }}
         >
-            <products.icon className={classes.icon} />
+            <products.icon sx={{ paddingRight: '0.5em' }} />
             {translate('resources.categories.fields.products')}
         </Button>
     ) : null;

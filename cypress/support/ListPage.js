@@ -10,9 +10,9 @@ export default url => ({
         filterMenuItem: source => `.new-filter-item[data-key="${source}"]`,
         hideFilterButton: source =>
             `.filter-field[data-source="${source}"] .hide-filter`,
-        nextPage: '.next-page',
-        pageNumber: n => `.page-number[data-page='${n - 1}']`,
-        previousPage: '.previous-page',
+        nextPage: "button[aria-label='Go to next page']",
+        previousPage: "button[aria-label='Go to previous page']",
+        pageNumber: n => `button[aria-label='Go to page ${n}']`,
         recordRows: '.datagrid-body tr',
         viewsColumn: '.datagrid-body tr td:nth-child(7)',
         datagridHeaders: 'th',
@@ -29,7 +29,7 @@ export default url => ({
         selectAll: '.select-all',
         selectedItem: '.select-item input:checked',
         selectItem: '.select-item input',
-        userMenu: 'button[title="Profile"]',
+        userMenu: 'button[aria-label="Profile"]',
         title: '#react-admin-title',
         headroomUnfixed: '.headroom--unfixed',
         headroomUnpinned: '.headroom--unpinned',
@@ -53,15 +53,15 @@ export default url => ({
     },
 
     nextPage() {
-        cy.get(this.elements.nextPage).click({ force: true });
+        cy.get(this.elements.nextPage).click();
     },
 
     previousPage() {
-        cy.get(this.elements.previousPage).click({ force: true });
+        cy.get(this.elements.previousPage).click();
     },
 
     goToPage(n) {
-        return cy.get(this.elements.pageNumber(n)).click({ force: true });
+        return cy.get(this.elements.pageNumber(n)).click();
     },
 
     addCommentableFilter() {
@@ -125,6 +125,6 @@ export default url => ({
     },
 
     toggleColumnSort(name) {
-        cy.get(this.elements.sortBy(name)).click();
+        cy.get(this.elements.sortBy(name)).click().blur();
     },
 });

@@ -1,10 +1,10 @@
-import Datagrid, { DatagridProps } from './Datagrid';
 import DatagridBody, {
     DatagridBodyProps,
     PureDatagridBody,
 } from './DatagridBody';
 import DatagridCell, { DatagridCellProps } from './DatagridCell';
 import DatagridHeaderCell, {
+    DatagridHeaderCellClasses,
     DatagridHeaderCellProps,
 } from './DatagridHeaderCell';
 import DatagridLoading, { DatagridLoadingProps } from './DatagridLoading';
@@ -14,23 +14,24 @@ import DatagridRow, {
     RowClickFunction,
 } from './DatagridRow';
 import ExpandRowButton, { ExpandRowButtonProps } from './ExpandRowButton';
-import useDatagridStyles from './useDatagridStyles';
+
+export * from './Datagrid';
+export * from './DatagridHeader';
+export * from './useDatagridStyles';
 
 export {
-    Datagrid,
     DatagridLoading,
     DatagridBody,
     DatagridRow,
     DatagridHeaderCell,
+    DatagridHeaderCellClasses,
     DatagridCell,
     ExpandRowButton,
     PureDatagridBody,
     PureDatagridRow,
-    useDatagridStyles,
 };
 
 export type {
-    DatagridProps,
     DatagridBodyProps,
     DatagridCellProps,
     DatagridHeaderCellProps,

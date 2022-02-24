@@ -1,39 +1,36 @@
 import * as React from 'react';
+import { styled } from '@mui/material/styles';
 import {
     useState,
     useCallback,
     useRef,
     ReactNode,
     HtmlHTMLAttributes,
+    useContext,
 } from 'react';
 import PropTypes from 'prop-types';
-import Menu from '@material-ui/core/Menu';
-import { makeStyles } from '@material-ui/core/styles';
-import ContentFilter from '@material-ui/icons/FilterList';
-import classnames from 'classnames';
+import Menu from '@mui/material/Menu';
+import ContentFilter from '@mui/icons-material/FilterList';
 import lodashGet from 'lodash/get';
 import { useListContext, useResourceContext } from 'ra-core';
 
 import { FilterButtonMenuItem } from './FilterButtonMenuItem';
-import Button from '../../button/Button';
-import { ClassesOverride } from '../../types';
+import { Button } from '../../button';
+import { FilterContext } from '../FilterContext';
 
-const useStyles = makeStyles(
-    {
-        root: { display: 'inline-block' },
-    },
-    { name: 'RaFilterButton' }
-);
-
-const FilterButton = (props: FilterButtonProps): JSX.Element => {
-    const { filters, classes: classesOverride, className, ...rest } = props;
+export const FilterButton = (props: FilterButtonProps): JSX.Element => {
+    const { filters: filtersProp, className, ...rest } = props;
+    const filters = useContext(FilterContext) || filtersProp;
     const resource = useResourceContext(props);
     const { displayedFilters = {}, filterValues, showFilter } = useListContext(
         props
     );
     const [open, setOpen] = useState(false);
     const anchorEl = useRef();
-    const classes = useStyles(props);
+
+    if (filters === undefined) {
+        throw new Error('FilterButton requires filters prop to be set');
+    }
 
     const hiddenFilters = filters.filter(
         (filterElement: JSX.Element) =>
@@ -59,7 +56,7 @@ const FilterButton = (props: FilterButtonProps): JSX.Element => {
 
     const handleShow = useCallback(
         ({ source, defaultValue }) => {
-            showFilter(source, defaultValue);
+            showFilter(source, defaultValue === '' ? undefined : defaultValue);
             setOpen(false);
         },
         [showFilter, setOpen]
@@ -67,13 +64,11 @@ const FilterButton = (props: FilterButtonProps): JSX.Element => {
 
     if (hiddenFilters.length === 0) return null;
     return (
-        <div
-            className={classnames(classes.root, className)}
-            {...sanitizeRestProps(rest)}
-        >
+        <Root className={className} {...sanitizeRestProps(rest)}>
             <Button
                 className="add-filter"
                 label="ra.action.add_filter"
+                aria-haspopup="true"
                 onClick={handleClickButton}
             >
                 <ContentFilter />
@@ -83,44 +78,50 @@ const FilterButton = (props: FilterButtonProps): JSX.Element => {
                 anchorEl={anchorEl.current}
                 onClose={handleRequestClose}
             >
-                {hiddenFilters.map((filterElement: JSX.Element) => (
+                {hiddenFilters.map((filterElement: JSX.Element, index) => (
                     <FilterButtonMenuItem
                         key={filterElement.props.source}
                         filter={filterElement}
                         resource={resource}
                         onShow={handleShow}
+                        autoFocus={index === 0}
                     />
                 ))}
             </Menu>
-        </div>
+        </Root>
     );
 };
 
 const sanitizeRestProps = ({
-    displayedFilters,
-    filterValues,
-    showFilter,
+    displayedFilters = null,
+    filterValues = null,
+    showFilter = null,
     ...rest
 }) => rest;
 
 FilterButton.propTypes = {
     resource: PropTypes.string,
-    filters: PropTypes.arrayOf(PropTypes.node).isRequired,
+    filters: PropTypes.arrayOf(PropTypes.node),
     displayedFilters: PropTypes.object,
-    filterValues: PropTypes.object.isRequired,
-    showFilter: PropTypes.func.isRequired,
-    classes: PropTypes.object,
+    filterValues: PropTypes.object,
+    showFilter: PropTypes.func,
     className: PropTypes.string,
 };
 
 export interface FilterButtonProps extends HtmlHTMLAttributes<HTMLDivElement> {
-    classes?: ClassesOverride<typeof useStyles>;
     className?: string;
     resource?: string;
-    filterValues: any;
-    showFilter: (filterName: string, defaultValue: any) => void;
-    displayedFilters: any;
-    filters: ReactNode[];
+    filterValues?: any;
+    showFilter?: (filterName: string, defaultValue: any) => void;
+    displayedFilters?: any;
+    filters?: ReactNode[];
 }
 
-export default FilterButton;
+const PREFIX = 'RaFilterButton';
+
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    display: 'inline-block',
+}));

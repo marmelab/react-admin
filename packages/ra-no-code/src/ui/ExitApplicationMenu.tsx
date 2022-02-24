@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { forwardRef } from 'react';
 import { MenuItemLink, MenuItemLinkProps } from 'react-admin';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useApplication } from '../ApplicationContext';
 
 export const ExitApplicationMenu = forwardRef<HTMLLIElement>(

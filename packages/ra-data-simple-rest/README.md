@@ -26,6 +26,20 @@ This Data Provider fits REST APIs using simple GET parameters for filters and so
 | `delete`           | `DELETE http://my.api.url/posts/123`                                                    |
 | `deleteMany`       | Multiple calls to `DELETE http://my.api.url/posts/123`                                  |
 
+The API response when called by `getList` should look like this:
+
+```json
+[
+  { "id": 0, "author_id": 0, "title": "Anna Karenina" },
+  { "id": 1, "author_id": 0, "title": "War and Peace" },
+  { "id": 2, "author_id": 1, "title": "Pride and Prejudice" },
+  { "id": 2, "author_id": 1, "title": "Pride and Prejudice" },
+  { "id": 3, "author_id": 1, "title": "Sense and Sensibility" }
+]
+```
+
+An `id` field is required. You can also set [custom identifier or primary key for your resources](https://marmelab.com/react-admin/FAQ.html#can-i-have-custom-identifiersprimary-keys-for-my-resources)
+
 **Note**: The simple REST data provider expects the API to include a `Content-Range` header in the response to `getList` calls. The value must be the total number of resources in the collection. This allows react-admin to know how many pages of resources there are in total, and build the pagination controls.
 
 ```txt

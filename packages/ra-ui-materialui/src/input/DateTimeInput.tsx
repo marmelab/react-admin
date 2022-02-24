@@ -1,11 +1,95 @@
 import * as React from 'react';
-import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import TextField, { TextFieldProps } from '@material-ui/core/TextField';
-import { useInput, FieldTitle, InputProps } from 'ra-core';
+import clsx from 'clsx';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
+import { useInput, FieldTitle } from 'ra-core';
 
-import sanitizeInputRestProps from './sanitizeInputRestProps';
-import InputHelperText from './InputHelperText';
+import { CommonInputProps } from './CommonInputProps';
+import { sanitizeInputRestProps } from './sanitizeInputRestProps';
+import { InputHelperText } from './InputHelperText';
+
+/**
+ * Converts a datetime string without timezone to a date object
+ * with timezone, using the browser timezone.
+ *
+ * @param {string} value Date string, formatted as yyyy-MM-ddThh:mm
+ * @return {Date}
+ */
+const parseDateTime = (value: string) => new Date(value);
+
+/**
+ * Input component for entering a date and a time with timezone, using the browser locale
+ */
+export const DateTimeInput = ({
+    className,
+    defaultValue,
+    format = formatDateTime,
+    label,
+    helperText,
+    margin = 'dense',
+    onBlur,
+    onChange,
+    source,
+    resource,
+    parse = parseDateTime,
+    validate,
+    variant = 'filled',
+    ...rest
+}: DateTimeInputProps) => {
+    const { field, fieldState, formState, id, isRequired } = useInput({
+        defaultValue,
+        format,
+        parse,
+        onBlur,
+        onChange,
+        resource,
+        source,
+        validate,
+        ...rest,
+    });
+
+    const { error, invalid, isTouched } = fieldState;
+    const { isSubmitted } = formState;
+
+    return (
+        <TextField
+            id={id}
+            {...field}
+            className={clsx('ra-input', `ra-input-${source}`, className)}
+            type="datetime-local"
+            size="small"
+            variant={variant}
+            margin={margin}
+            error={(isTouched || isSubmitted) && invalid}
+            helperText={
+                <InputHelperText
+                    touched={isTouched || isSubmitted}
+                    error={error?.message}
+                    helperText={helperText}
+                />
+            }
+            label={
+                <FieldTitle
+                    label={label}
+                    source={source}
+                    resource={resource}
+                    isRequired={isRequired}
+                />
+            }
+            InputLabelProps={defaultInputLabelProps}
+            {...sanitizeInputRestProps(rest)}
+        />
+    );
+};
+
+DateTimeInput.propTypes = {
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    resource: PropTypes.string,
+    source: PropTypes.string,
+};
+
+export type DateTimeInputProps = CommonInputProps &
+    Omit<TextFieldProps, 'helperText' | 'label'>;
 
 const leftPad = (nb = 2) => value => ('0'.repeat(nb) + value).slice(-nb);
 const leftPad4 = leftPad(4);
@@ -30,7 +114,7 @@ const dateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
 const defaultInputLabelProps = { shrink: true };
 
 /**
- * Converts a date from the Redux store, with timezone, to a date string
+ * Converts a date from the dataProvider, with timezone, to a date string
  * without timezone for use in an <input type="datetime-local" />.
  *
  * @param {Date | String} value date string or object
@@ -52,113 +136,3 @@ const formatDateTime = (value: string | Date) => {
 
     return convertDateToString(new Date(value));
 };
-
-/**
- * Converts a datetime string without timezone to a date object
- * with timezone, using the browser timezone.
- *
- * @param {string} value Date string, formatted as yyyy-MM-ddThh:mm
- * @return {Date}
- */
-const parseDateTime = (value: string) => new Date(value);
-
-/**
- * Input component for entering a date and a time with timezone, using the browser locale
- */
-const DateTimeInput = ({
-    defaultValue,
-    format = formatDateTime,
-    initialValue,
-    label,
-    helperText,
-    margin = 'dense',
-    onBlur,
-    onChange,
-    onFocus,
-    options,
-    source,
-    resource,
-    parse = parseDateTime,
-    validate,
-    variant = 'filled',
-    ...rest
-}: DateTimeInputProps) => {
-    const sanitizedDefaultValue = defaultValue
-        ? format(new Date(defaultValue))
-        : undefined;
-    const sanitizedInitialValue = initialValue
-        ? format(new Date(initialValue))
-        : undefined;
-
-    const { id, input, isRequired, meta } = useInput({
-        defaultValue: sanitizedDefaultValue,
-        format,
-        initialValue: sanitizedInitialValue,
-        onBlur,
-        onChange,
-        onFocus,
-        parse,
-        resource,
-        source,
-        type: 'datetime-local',
-        validate,
-        ...rest,
-    });
-
-    const { error, submitError, touched } = meta;
-
-    // Workaround for https://github.com/final-form/react-final-form/issues/431
-    useEffect(() => {
-        // Checking for meta.initial allows the format function to work
-        // on inputs inside an ArrayInput
-        if (defaultValue || initialValue || meta.initial) {
-            input.onBlur();
-        }
-    }, [input.onBlur, meta.initial]); // eslint-disable-line
-
-    return (
-        <TextField
-            id={id}
-            {...input}
-            // Workaround https://github.com/final-form/react-final-form/issues/529
-            value={input.value || ''}
-            variant={variant}
-            margin={margin}
-            error={!!(touched && (error || submitError))}
-            helperText={
-                <InputHelperText
-                    touched={touched}
-                    error={error || submitError}
-                    helperText={helperText}
-                />
-            }
-            label={
-                <FieldTitle
-                    label={label}
-                    source={source}
-                    resource={resource}
-                    isRequired={isRequired}
-                />
-            }
-            InputLabelProps={defaultInputLabelProps}
-            {...options}
-            {...sanitizeInputRestProps(rest)}
-        />
-    );
-};
-
-DateTimeInput.propTypes = {
-    label: PropTypes.string,
-    options: PropTypes.object,
-    resource: PropTypes.string,
-    source: PropTypes.string,
-};
-
-DateTimeInput.defaultProps = {
-    options: {},
-};
-
-export type DateTimeInputProps = InputProps<TextFieldProps> &
-    Omit<TextFieldProps, 'helperText' | 'label'>;
-
-export default DateTimeInput;

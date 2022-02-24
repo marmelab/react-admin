@@ -1,23 +1,13 @@
-import React, {
-    Children,
-    cloneElement,
-    FunctionComponent,
-    ReactElement,
-} from 'react';
+import React, { Children, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
-    useInput,
+    ChoicesContextProvider,
     useReferenceInputController,
     InputProps,
-    warning as warningLog,
-    ListContextProvider,
-    ReferenceInputValue,
-    UseInputValue,
     ResourceContextProvider,
 } from 'ra-core';
 
-import sanitizeInputRestProps from './sanitizeInputRestProps';
-import ReferenceError from './ReferenceError';
+import { ReferenceError } from './ReferenceError';
 
 /**
  * An Input component for choosing a reference record. Useful for foreign keys.
@@ -85,54 +75,38 @@ import ReferenceError from './ReferenceError';
  *     <SelectInput optionText="title" />
  * </ReferenceInput>
  *
- * The enclosed component may filter results. ReferenceInput passes a `setFilter`
- * function as prop to its child component. It uses the value to create a filter
- * for the query - by default { q: [searchText] }. You can customize the mapping
- * searchText => searchQuery by setting a custom `filterToQuery` function prop:
- *
- * @example
- * <ReferenceInput
- *      source="post_id"
- *      reference="posts"
- *      filterToQuery={searchText => ({ title: searchText })}>
- *     <AutocompleteInput optionText="title" />
- * </ReferenceInput>
+ * The enclosed component may filter results. ReferenceInput create a ChoicesContext which provides
+ * a `setFilters` function. You can call this function to filter the results.
  */
-const ReferenceInput: FunctionComponent<ReferenceInputProps> = ({
-    format,
-    onBlur,
-    onChange,
-    onFocus,
-    parse,
-    validate,
-    ...props
-}) => {
-    const inputProps = useInput({
-        format,
-        onBlur,
-        onChange,
-        onFocus,
-        parse,
-        validate,
-        ...props,
-    });
+export const ReferenceInput = (props: ReferenceInputProps) => {
+    const { children, label, reference } = props;
+
+    const controllerProps = useReferenceInputController(props);
+
+    if (Children.count(children) !== 1) {
+        throw new Error('<ReferenceInput> only accepts a single child');
+    }
+
+    // This is not a form error but an unrecoverable error from the
+    // useReferenceInputController hook
+    if (controllerProps.error) {
+        return <ReferenceError label={label} error={controllerProps.error} />;
+    }
+
     return (
-        <ReferenceInputView
-            {...inputProps}
-            {...props}
-            {...useReferenceInputController({ ...props, ...inputProps })}
-        />
+        <ResourceContextProvider value={reference}>
+            <ChoicesContextProvider value={controllerProps}>
+                {children}
+            </ChoicesContextProvider>
+        </ResourceContextProvider>
     );
 };
 
 ReferenceInput.propTypes = {
-    allowEmpty: PropTypes.bool,
-    basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
     classes: PropTypes.object,
     filter: PropTypes.object,
-    filterToQuery: PropTypes.func.isRequired,
     label: PropTypes.string,
     onChange: PropTypes.func,
     perPage: PropTypes.number,
@@ -148,124 +122,19 @@ ReferenceInput.propTypes = {
 
 ReferenceInput.defaultProps = {
     filter: {},
-    filterToQuery: searchText => (searchText ? { q: searchText } : {}),
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
 };
 
 export interface ReferenceInputProps extends InputProps {
-    allowEmpty?: boolean;
-    basePath?: string;
     children: ReactElement;
-    classes?: any;
     className?: string;
-    filterToQuery?: (filter: string) => any;
     label?: string;
     perPage?: number;
     reference: string;
     // @deprecated
     referenceSource?: (resource: string, source: string) => string;
     resource?: string;
+    enableGetChoices?: (filters: any) => boolean;
     [key: string]: any;
 }
-
-const sanitizeRestProps = ({
-    dataStatus = null,
-    filter = null,
-    filterToQuery = null,
-    onChange = null,
-    perPage = null,
-    reference = null,
-    referenceRecord = null,
-    referenceSource = null,
-    sort = null,
-    validation = null,
-    ...rest
-}) => sanitizeInputRestProps(rest);
-
-export interface ReferenceInputViewProps
-    extends ReferenceInputValue,
-        ReferenceInputProps,
-        Omit<UseInputValue, 'id'> {}
-
-export const ReferenceInputView: FunctionComponent<ReferenceInputViewProps> = ({
-    allowEmpty,
-    basePath,
-    children,
-    choices,
-    classes,
-    className,
-    error,
-    helperText,
-    id,
-    input,
-    isRequired,
-    label,
-    meta,
-    possibleValues,
-    resource,
-    reference,
-    setFilter,
-    setPagination,
-    setSort,
-    source,
-    warning,
-    ...rest
-}) => {
-    if (Children.count(children) !== 1) {
-        throw new Error('<ReferenceInput> only accepts a single child');
-    }
-
-    // This is not a final-form error but an unrecoverable error from the
-    // useReferenceInputController hook
-    if (error) {
-        return <ReferenceError label={label} error={error} />;
-    }
-
-    // When the useReferenceInputController returns a warning, it means it
-    // had an issue trying to load the referenced record
-    // We display it by overriding the final-form meta
-    const finalMeta = warning
-        ? {
-              ...meta,
-              error: warning,
-          }
-        : meta;
-
-    // helperText should never be set on ReferenceInput, only in child component
-    // But in a Filter component, the child helperText have to be forced to false
-    warningLog(
-        helperText !== undefined && helperText !== false,
-        "<ReferenceInput> doesn't accept a helperText prop. Set the helperText prop on the child component instead"
-    );
-
-    const disabledHelperText = helperText === false ? { helperText } : {};
-
-    return (
-        <ResourceContextProvider value={reference}>
-            <ListContextProvider value={possibleValues}>
-                {cloneElement(children, {
-                    allowEmpty,
-                    classes,
-                    className,
-                    input,
-                    isRequired,
-                    label,
-                    resource,
-                    meta: finalMeta,
-                    source,
-                    choices,
-                    basePath,
-                    setFilter,
-                    setPagination,
-                    setSort,
-                    translateChoice: false,
-                    ...disabledHelperText,
-                    ...sanitizeRestProps(rest),
-                })}
-            </ListContextProvider>
-        </ResourceContextProvider>
-    );
-};
-
-export default ReferenceInput;

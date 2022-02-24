@@ -7,11 +7,10 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemText,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import CustomerIcon from '@material-ui/icons/PersonAdd';
+} from '@mui/material';
+import CustomerIcon from '@mui/icons-material/PersonAdd';
 import { Link } from 'react-router-dom';
-import { useTranslate, useQueryWithStore } from 'react-admin';
+import { useTranslate, useGetList } from 'react-admin';
 import { subDays } from 'date-fns';
 
 import CardWithIcon from './CardWithIcon';
@@ -19,7 +18,6 @@ import { Customer } from '../types';
 
 const NewCustomers = () => {
     const translate = useTranslate();
-    const classes = useStyles();
 
     const aMonthAgo = subDays(new Date(), 30);
     aMonthAgo.setDate(aMonthAgo.getDate() - 30);
@@ -28,20 +26,16 @@ const NewCustomers = () => {
     aMonthAgo.setSeconds(0);
     aMonthAgo.setMilliseconds(0);
 
-    const { loaded, data: visitors } = useQueryWithStore({
-        type: 'getList',
-        resource: 'customers',
-        payload: {
-            filter: {
-                has_ordered: true,
-                first_seen_gte: aMonthAgo.toISOString(),
-            },
-            sort: { field: 'first_seen', order: 'DESC' },
-            pagination: { page: 1, perPage: 100 },
+    const { isLoading, data: visitors } = useGetList<Customer>('customers', {
+        filter: {
+            has_ordered: true,
+            first_seen_gte: aMonthAgo.toISOString(),
         },
+        sort: { field: 'first_seen', order: 'DESC' },
+        pagination: { page: 1, perPage: 100 },
     });
 
-    if (!loaded) return null;
+    if (isLoading) return null;
 
     const nb = visitors ? visitors.reduce((nb: number) => ++nb, 0) : 0;
     return (
@@ -70,29 +64,20 @@ const NewCustomers = () => {
                       ))
                     : null}
             </List>
-            <Box flexGrow="1">&nbsp;</Box>
+            <Box flexGrow={1}>&nbsp;</Box>
             <Button
-                className={classes.link}
+                sx={{ borderRadius: 0 }}
                 component={Link}
                 to="/customers"
                 size="small"
                 color="primary"
             >
-                <Box p={1} className={classes.linkContent}>
+                <Box p={1} sx={{ color: 'primary.main' }}>
                     {translate('pos.dashboard.all_customers')}
                 </Box>
             </Button>
         </CardWithIcon>
     );
 };
-
-const useStyles = makeStyles(theme => ({
-    link: {
-        borderRadius: 0,
-    },
-    linkContent: {
-        color: theme.palette.primary.main,
-    },
-}));
 
 export default NewCustomers;

@@ -1,5 +1,3 @@
-import Login from './Login';
-import LoginForm from './LoginForm';
-import Logout from './Logout';
-
-export { Login, LoginForm, Logout };
+export * from './Login';
+export * from './LoginForm';
+export * from './Logout';

@@ -1,14 +1,8 @@
 import * as React from 'react';
-import {
-    createElement,
-    FunctionComponent,
-    ComponentType,
-    useMemo,
-    useEffect,
-} from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { ComponentType, useEffect, isValidElement, createElement } from 'react';
+import { Routes, Route } from 'react-router-dom';
 
-import CoreAdminRouter from './CoreAdminRouter';
+import { CoreAdminRoutes } from './CoreAdminRoutes';
 import { Ready } from '../util';
 import {
     TitleComponent,
@@ -17,54 +11,40 @@ import {
     CoreLayoutProps,
     AdminChildren,
     CatchAllComponent,
-    CustomRoutes,
     DashboardComponent,
     LoadingComponent,
 } from '../types';
 
 export type ChildrenFunction = () => ComponentType[];
 
-const DefaultLayout: FunctionComponent<CoreLayoutProps> = ({ children }) => (
-    <>{children}</>
-);
+const DefaultLayout = ({ children }: CoreLayoutProps) => <>{children}</>;
 
-export interface AdminUIProps {
+export interface CoreAdminUIProps {
     catchAll?: CatchAllComponent;
     children?: AdminChildren;
-    customRoutes?: CustomRoutes;
     dashboard?: DashboardComponent;
     disableTelemetry?: boolean;
     layout?: LayoutComponent;
     loading?: LoadingComponent;
     loginPage?: LoginComponent | boolean;
-    logout?: ComponentType;
     menu?: ComponentType;
     ready?: ComponentType;
-    theme?: object;
     title?: TitleComponent;
 }
 
-// for BC
-export type CoreAdminUIProps = AdminUIProps;
-
-const CoreAdminUI: FunctionComponent<AdminUIProps> = ({
-    catchAll = Noop,
-    children,
-    customRoutes = [],
-    dashboard,
-    disableTelemetry = false,
-    layout = DefaultLayout,
-    loading = Noop,
-    loginPage = false,
-    logout,
-    menu, // deprecated, use a custom layout instead
-    ready = Ready,
-    theme,
-    title = 'React Admin',
-}) => {
-    const logoutElement = useMemo(() => logout && createElement(logout), [
-        logout,
-    ]);
+export const CoreAdminUI = (props: CoreAdminUIProps) => {
+    const {
+        catchAll = Noop,
+        children,
+        dashboard,
+        disableTelemetry = false,
+        layout = DefaultLayout,
+        loading = Noop,
+        loginPage: LoginPage = false,
+        menu, // deprecated, use a custom layout instead
+        ready = Ready,
+        title = 'React Admin',
+    } = props;
 
     useEffect(() => {
         if (
@@ -81,44 +61,30 @@ const CoreAdminUI: FunctionComponent<AdminUIProps> = ({
     }, [disableTelemetry]);
 
     return (
-        <Switch>
-            {loginPage !== false && loginPage !== true ? (
-                <Route
-                    exact
-                    path="/login"
-                    render={props =>
-                        createElement(loginPage, {
-                            ...props,
-                            title,
-                            theme,
-                        })
-                    }
-                />
+        <Routes>
+            {LoginPage !== false && LoginPage !== true ? (
+                <Route path="/login" element={createOrGetElement(LoginPage)} />
             ) : null}
             <Route
-                path="/"
-                render={props => (
-                    <CoreAdminRouter
+                path="/*"
+                element={
+                    <CoreAdminRoutes
                         catchAll={catchAll}
-                        customRoutes={customRoutes}
                         dashboard={dashboard}
                         layout={layout}
                         loading={loading}
-                        logout={logoutElement}
                         menu={menu}
                         ready={ready}
-                        theme={theme}
                         title={title}
-                        {...props}
                     >
                         {children}
-                    </CoreAdminRouter>
-                )}
+                    </CoreAdminRoutes>
+                }
             />
-        </Switch>
+        </Routes>
     );
 };
 
-const Noop = () => null;
+const createOrGetElement = el => (isValidElement(el) ? el : createElement(el));
 
-export default CoreAdminUI;
+const Noop = () => null;

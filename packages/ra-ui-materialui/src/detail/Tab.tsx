@@ -2,14 +2,15 @@ import * as React from 'react';
 import { isValidElement, ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { Link, useLocation } from 'react-router-dom';
-import MuiTab, { TabProps as MuiTabProps } from '@material-ui/core/Tab';
-import { useTranslate, Record } from 'ra-core';
-import classnames from 'classnames';
+import { Tab as MuiTab, TabProps as MuiTabProps, Stack } from '@mui/material';
+import { ResponsiveStyleValue } from '@mui/system';
+import { useTranslate, RaRecord } from 'ra-core';
+import clsx from 'clsx';
 
-import Labeled from '../input/Labeled';
+import { Labeled } from '../Labeled';
 
 /**
- * Tab element for the SimpleShowLayout.
+ * Tab element for the TabbedShowLayout.
  *
  * The `<Tab>` component accepts the following props:
  *
@@ -20,8 +21,8 @@ import Labeled from '../input/Labeled';
  * @example
  *     // in src/posts.js
  *     import * as React from "react";
- *     import FavoriteIcon from '@material-ui/icons/Favorite';
- *     import PersonPinIcon from '@material-ui/icons/PersonPin';
+ *     import FavoriteIcon from '@mui/icons-material/Favorite';
+ *     import PersonPinIcon from '@mui/icons-material/PersonPin';
  *     import { Show, TabbedShowLayout, Tab, TextField } from 'react-admin';
  *
  *     export const PostShow = (props) => (
@@ -52,15 +53,15 @@ import Labeled from '../input/Labeled';
  *     export default App;
  */
 export const Tab = ({
-    basePath,
     children,
     contentClassName,
     context,
     className,
+    divider,
     icon,
     label,
     record,
-    resource,
+    spacing = 1,
     syncWithLocation = true,
     value,
     ...rest
@@ -74,51 +75,38 @@ export const Tab = ({
 
     const renderHeader = () => (
         <MuiTab
-            key={label}
-            label={translate(label, { _: label })}
+            key={`tab-header-${value}`}
+            label={
+                typeof label === 'string'
+                    ? translate(label, { _: label })
+                    : label
+            }
             value={value}
             icon={icon}
-            className={classnames('show-tab', className)}
+            className={clsx('show-tab', className)}
             {...(syncWithLocation ? propsForLink : {})} // to avoid TypeScript screams, see https://github.com/mui-org/material-ui/issues/9106#issuecomment-451270521
             {...rest}
         />
     );
 
     const renderContent = () => (
-        <span className={contentClassName}>
+        <Stack className={contentClassName} spacing={spacing} divider={divider}>
             {React.Children.map(children, field =>
                 field && isValidElement<any>(field) ? (
-                    <div
+                    <Labeled
                         key={field.props.source}
-                        className={classnames(
+                        className={clsx(
                             'ra-field',
-                            `ra-field-${field.props.source}`,
+                            field.props.source &&
+                                `ra-field-${field.props.source}`,
                             field.props.className
                         )}
                     >
-                        {field.props.addLabel ? (
-                            <Labeled
-                                label={field.props.label}
-                                source={field.props.source}
-                                basePath={basePath}
-                                record={record}
-                                resource={resource}
-                            >
-                                {field}
-                            </Labeled>
-                        ) : typeof field.type === 'string' ? (
-                            field
-                        ) : (
-                            React.cloneElement(field, {
-                                basePath,
-                                record,
-                                resource,
-                            })
-                        )}
-                    </div>
+                        {field}
+                    </Labeled>
                 ) : null
             )}
-        </span>
+        </Stack>
     );
 
     return context === 'header' ? renderHeader() : renderContent();
@@ -130,22 +118,24 @@ Tab.propTypes = {
     children: PropTypes.node,
     context: PropTypes.oneOf(['header', 'content']),
     icon: PropTypes.element,
-    label: PropTypes.string.isRequired,
+    label: PropTypes.oneOfType([PropTypes.string, PropTypes.element])
+        .isRequired,
     path: PropTypes.string,
+    spacing: PropTypes.any,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
-export interface TabProps extends MuiTabProps {
-    basePath?: string;
+export interface TabProps extends Omit<MuiTabProps, 'children'> {
     children: ReactNode;
     contentClassName?: string;
     context?: 'header' | 'content';
     className?: string;
+    divider?: ReactNode;
     icon?: ReactElement;
-    label: string;
+    label: string | ReactElement;
     path?: string;
-    record?: Record;
-    resource?: string;
+    record?: RaRecord;
+    spacing?: ResponsiveStyleValue<number | string>;
     syncWithLocation?: boolean;
     value?: string | number;
 }

@@ -1,45 +1,39 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import {
-    useUpdateMany,
-    useNotify,
-    useUnselectAll,
-    Button,
-    CRUD_UPDATE_MANY,
-} from 'react-admin';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { useUpdateMany, useNotify, useUnselectAll, Button } from 'react-admin';
 
 const ResetViewsButton = ({ resource, selectedIds }) => {
     const notify = useNotify();
-    const unselectAll = useUnselectAll();
-    const [updateMany, { loading }] = useUpdateMany(
+    const unselectAll = useUnselectAll(resource);
+    const [updateMany, { isLoading }] = useUpdateMany(
         resource,
-        selectedIds,
-        { views: 0 },
+        { ids: selectedIds, data: { views: 0 } },
         {
-            action: CRUD_UPDATE_MANY,
             onSuccess: () => {
-                notify('ra.notification.updated', 'info', {
-                    smart_count: selectedIds.length,
+                notify('ra.notification.updated', {
+                    type: 'info',
+                    messageArgs: { smart_count: selectedIds.length },
+                    undoable: true,
                 });
-                unselectAll(resource);
+                unselectAll();
             },
-            onFailure: error =>
+            onError: (error: Error | string) =>
                 notify(
                     typeof error === 'string'
                         ? error
                         : error.message || 'ra.notification.http_error',
-                    'warning'
+                    { type: 'warning' }
                 ),
-            mutationMode: 'optimistic',
+            mutationMode: 'undoable',
         }
     );
 
     return (
         <Button
             label="simple.action.resetViews"
-            disabled={loading}
-            onClick={updateMany}
+            disabled={isLoading}
+            onClick={() => updateMany()}
         >
             <VisibilityOff />
         </Button>
@@ -47,7 +41,6 @@ const ResetViewsButton = ({ resource, selectedIds }) => {
 };
 
 ResetViewsButton.propTypes = {
-    basePath: PropTypes.string,
     label: PropTypes.string,
     resource: PropTypes.string.isRequired,
     selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,

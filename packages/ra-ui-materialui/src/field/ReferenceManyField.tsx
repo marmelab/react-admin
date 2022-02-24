@@ -1,19 +1,16 @@
-import React, { FC, cloneElement, Children, ReactElement } from 'react';
+import React, { FC, ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import {
     FilterPayload,
     SortPayload,
     useReferenceManyFieldController,
     ListContextProvider,
-    ListControllerProps,
+    ListControllerResult,
     ResourceContextProvider,
     useRecordContext,
-    ReduxState,
 } from 'ra-core';
-import { useSelector } from 'react-redux';
 
 import { PublicFieldProps, fieldPropTypes, InjectedFieldProps } from './types';
-import sanitizeFieldRestProps from './sanitizeFieldRestProps';
 
 /**
  * Render related records to the current one.
@@ -63,7 +60,6 @@ import sanitizeFieldRestProps from './sanitizeFieldRestProps';
  */
 export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
     const {
-        basePath,
         children,
         filter,
         page = 1,
@@ -82,18 +78,7 @@ export const ReferenceManyField: FC<ReferenceManyFieldProps> = props => {
         );
     }
 
-    const isReferenceDeclared = useSelector<ReduxState, boolean>(
-        state => typeof state.admin.resources[props.reference] !== 'undefined'
-    );
-
-    if (!isReferenceDeclared) {
-        throw new Error(
-            `You must declare a <Resource name="${props.reference}"> in order to use a <ReferenceManyField reference="${props.reference}">`
-        );
-    }
-
     const controllerProps = useReferenceManyFieldController({
-        basePath,
         filter,
         page,
         perPage,
@@ -128,12 +113,10 @@ export interface ReferenceManyFieldProps
 }
 
 ReferenceManyField.propTypes = {
-    addLabel: PropTypes.bool,
-    basePath: PropTypes.string,
     children: PropTypes.element.isRequired,
     className: PropTypes.string,
     filter: PropTypes.object,
-    label: PropTypes.string,
+    label: fieldPropTypes.label,
     perPage: PropTypes.number,
     record: PropTypes.any,
     reference: PropTypes.string.isRequired,
@@ -153,21 +136,15 @@ ReferenceManyField.defaultProps = {
     perPage: 25,
     sort: { field: 'id', order: 'DESC' },
     source: 'id',
-    addLabel: true,
 };
 
 export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => {
-    const { basePath, children, pagination, reference, ...rest } = props;
+    const { children, pagination } = props;
+
     return (
         <>
-            {cloneElement(Children.only(children), {
-                ...sanitizeFieldRestProps(rest),
-                basePath,
-                resource: reference,
-            })}
-            {pagination &&
-                props.total !== undefined &&
-                cloneElement(pagination)}
+            {children}
+            {pagination && props.total !== undefined ? pagination : null}
         </>
     );
 };
@@ -175,26 +152,22 @@ export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => 
 export interface ReferenceManyFieldViewProps
     extends Omit<
             ReferenceManyFieldProps,
-            'basePath' | 'resource' | 'page' | 'perPage'
+            'resource' | 'page' | 'perPage' | 'sort'
         >,
-        ListControllerProps {
+        ListControllerResult {
     children: ReactElement;
 }
 
 ReferenceManyFieldView.propTypes = {
-    basePath: PropTypes.string.isRequired,
     children: PropTypes.element,
     className: PropTypes.string,
-    currentSort: PropTypes.exact({
+    sort: PropTypes.exact({
         field: PropTypes.string,
         order: PropTypes.string,
     }),
     data: PropTypes.any,
-    ids: PropTypes.array,
-    loaded: PropTypes.bool,
+    isLoading: PropTypes.bool,
     pagination: PropTypes.element,
     reference: PropTypes.string,
     setSort: PropTypes.func,
 };
-
-export default ReferenceManyField;

@@ -1,32 +1,19 @@
 import * as React from 'react';
-import { FC, memo } from 'react';
+import { styled } from '@mui/material/styles';
+import { memo, FC } from 'react';
 import get from 'lodash/get';
-import Chip, { ChipProps } from '@material-ui/core/Chip';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import classnames from 'classnames';
+import Chip, { ChipProps } from '@mui/material/Chip';
+import Typography from '@mui/material/Typography';
+import clsx from 'clsx';
 import { useRecordContext } from 'ra-core';
 
-import sanitizeFieldRestProps from './sanitizeFieldRestProps';
+import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { PublicFieldProps, InjectedFieldProps, fieldPropTypes } from './types';
 
-const useStyles = makeStyles(
-    {
-        chip: { margin: 4, cursor: 'inherit' },
-    },
-    { name: 'RaChipField' }
-);
-
-export const ChipField: FC<ChipFieldProps> = memo<ChipFieldProps>(props => {
-    const {
-        className,
-        classes: classesOverride,
-        source,
-        emptyText,
-        ...rest
-    } = props;
+export const ChipField: FC<ChipFieldProps> = memo(props => {
+    const { className, source, emptyText, ...rest } = props;
     const record = useRecordContext(props);
-    const classes = useStyles(props);
+
     const value = get(record, source);
 
     if (value == null && emptyText) {
@@ -43,26 +30,36 @@ export const ChipField: FC<ChipFieldProps> = memo<ChipFieldProps>(props => {
     }
 
     return (
-        <Chip
-            className={classnames(classes.chip, className)}
+        <StyledChip
+            className={clsx(ChipFieldClasses.chip, className)}
             label={value}
             {...sanitizeFieldRestProps(rest)}
         />
     );
 });
 
-ChipField.defaultProps = {
-    addLabel: true,
-};
-
 ChipField.propTypes = {
+    // @ts-ignore
     ...ChipField.propTypes,
     ...fieldPropTypes,
 };
+
+ChipField.displayName = 'ChipField';
 
 export interface ChipFieldProps
     extends PublicFieldProps,
         InjectedFieldProps,
         Omit<ChipProps, 'label'> {}
 
-export default ChipField;
+const PREFIX = 'RaChipField';
+
+const ChipFieldClasses = {
+    chip: `${PREFIX}-chip`,
+};
+
+const StyledChip = styled(Chip, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
+    [`&.${ChipFieldClasses.chip}`]: { margin: 4, cursor: 'inherit' },
+});

@@ -1,33 +1,21 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { useForm } from 'react-final-form';
 import {
     AutocompleteArrayInput,
     ReferenceArrayInput,
     useCreate,
     useCreateSuggestionContext,
+    useLocaleState,
 } from 'react-admin';
 import {
+    Box,
     Button,
     Dialog,
     DialogContent,
     DialogActions,
     TextField as MuiTextField,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles({
-    button: {
-        margin: '0 24px',
-        position: 'relative',
-    },
-    input: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        width: '50%',
-    },
-});
+} from '@mui/material';
+import { useFormContext } from 'react-hook-form';
 
 const TagReferenceInput = ({
     ...props
@@ -36,52 +24,53 @@ const TagReferenceInput = ({
     source: string;
     label?: string;
 }) => {
-    const classes = useStyles();
-    const { change } = useForm();
-    const [filter, setFilter] = useState(true);
+    const { setValue } = useFormContext();
+    const [published, setPublished] = useState(true);
+    const [locale] = useLocaleState();
 
-    const handleAddFilter = () => {
-        setFilter(!filter);
-        change('tags', []);
+    const handleChangePublishedFilter = () => {
+        setPublished(prev => !prev);
+        setValue('tags', []);
     };
 
     return (
-        <div className={classes.input}>
-            <ReferenceArrayInput {...props} filter={{ published: filter }}>
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                width: '50%',
+            }}
+        >
+            <ReferenceArrayInput {...props} perPage={5} filter={{ published }}>
                 <AutocompleteArrayInput
                     create={<CreateTag />}
-                    optionText="name.en"
+                    optionText={`name.${locale}`}
                 />
             </ReferenceArrayInput>
             <Button
                 name="change-filter"
-                className={classes.button}
-                onClick={handleAddFilter}
+                onClick={handleChangePublishedFilter}
+                sx={{ margin: '0 24px', position: 'relative' }}
             >
-                Filter {filter ? 'Unpublished' : 'Published'} Tags
+                Filter {published ? 'Unpublished' : 'Published'} Tags
             </Button>
-        </div>
+        </Box>
     );
 };
 
 const CreateTag = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();
     const [value, setValue] = React.useState(filter || '');
-    const [create] = useCreate('tags');
+    const [create] = useCreate();
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         create(
+            'tags',
+            { data: { name: { en: value } } },
+
             {
-                payload: {
-                    data: {
-                        name: {
-                            en: value,
-                        },
-                    },
-                },
-            },
-            {
-                onSuccess: ({ data }) => {
+                onSuccess: data => {
                     setValue('');
                     const choice = data;
                     onCreate(choice);

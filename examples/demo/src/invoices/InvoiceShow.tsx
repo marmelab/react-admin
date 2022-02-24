@@ -1,22 +1,31 @@
 import * as React from 'react';
-import { FC } from 'react';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import {
-    useShowController,
-    ReferenceField,
-    TextField,
-    FieldProps,
-} from 'react-admin';
+import { styled } from '@mui/material/styles';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import { ReferenceField, TextField, useRecordContext } from 'react-admin';
 
 import Basket from '../orders/Basket';
 import { Customer, Invoice } from '../types';
 
-const CustomerField: FC<FieldProps<Customer>> = ({ record }) =>
-    record ? (
+const PREFIX = 'InvoiceShow';
+
+const classes = {
+    root: `${PREFIX}-root`,
+    spacer: `${PREFIX}-spacer`,
+    invoices: `${PREFIX}-invoices`,
+};
+
+const StyledCard = styled(Card)({
+    [`&.${classes.root}`]: { width: 600, margin: 'auto' },
+    [`& .${classes.spacer}`]: { height: 20 },
+    [`& .${classes.invoices}`]: { margin: '10px 0' },
+});
+
+const CustomerField = () => {
+    const record = useRecordContext<Customer>();
+    return record ? (
         <Typography>
             {record.first_name} {record.last_name}
             <br />
@@ -25,14 +34,13 @@ const CustomerField: FC<FieldProps<Customer>> = ({ record }) =>
             {record.city}, {record.zipcode}
         </Typography>
     ) : null;
-
-const InvoiceShow = (props: any) => {
-    const { record } = useShowController<Invoice>(props);
-    const classes = useStyles();
+};
+const InvoiceShow = () => {
+    const record = useRecordContext<Invoice>();
 
     if (!record) return null;
     return (
-        <Card className={classes.root}>
+        <StyledCard className={classes.root}>
             <CardContent>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
@@ -52,7 +60,6 @@ const InvoiceShow = (props: any) => {
                             resource="invoices"
                             reference="customers"
                             source="customer_id"
-                            basePath="/invoices"
                             record={record}
                             link={false}
                         >
@@ -79,7 +86,6 @@ const InvoiceShow = (props: any) => {
                             resource="invoices"
                             reference="commands"
                             source="command_id"
-                            basePath="/invoices"
                             record={record}
                             link={false}
                         >
@@ -97,7 +103,6 @@ const InvoiceShow = (props: any) => {
                         resource="invoices"
                         reference="commands"
                         source="command_id"
-                        basePath="/invoices"
                         record={record}
                         link={false}
                     >
@@ -105,14 +110,8 @@ const InvoiceShow = (props: any) => {
                     </ReferenceField>
                 </div>
             </CardContent>
-        </Card>
+        </StyledCard>
     );
 };
 
 export default InvoiceShow;
-
-const useStyles = makeStyles({
-    root: { width: 600, margin: 'auto' },
-    spacer: { height: 20 },
-    invoices: { margin: '10px 0' },
-});

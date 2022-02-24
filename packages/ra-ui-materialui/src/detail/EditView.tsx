@@ -1,18 +1,18 @@
 import * as React from 'react';
-import { Children, cloneElement, ReactElement } from 'react';
+import { ReactElement } from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import { makeStyles } from '@material-ui/core/styles';
-import classnames from 'classnames';
+import { Card, CardContent } from '@mui/material';
+import clsx from 'clsx';
 import {
     EditControllerProps,
     ComponentPropType,
     useEditContext,
+    useResourceDefinition,
 } from 'ra-core';
 
 import { EditActions as DefaultActions } from './EditActions';
-import TitleForRecord from '../layout/TitleForRecord';
+import { Title } from '../layout';
 import { EditProps } from '../types';
 
 export const EditView = (props: EditViewProps) => {
@@ -20,29 +20,15 @@ export const EditView = (props: EditViewProps) => {
         actions,
         aside,
         children,
-        classes: classesOverride,
         className,
-        component: Content,
+        component: Content = Card,
         title,
-        undoable,
         mutationMode,
         ...rest
     } = props;
 
-    const classes = useStyles(props);
-
-    const {
-        basePath,
-        defaultTitle,
-        hasList,
-        hasShow,
-        record,
-        redirect,
-        resource,
-        save,
-        saving,
-        version,
-    } = useEditContext(props);
+    const { hasShow } = useResourceDefinition();
+    const { defaultTitle, record } = useEditContext(props);
 
     const finalActions =
         typeof actions === 'undefined' && hasShow ? (
@@ -54,67 +40,23 @@ export const EditView = (props: EditViewProps) => {
         return null;
     }
     return (
-        <div
-            className={classnames('edit-page', classes.root, className)}
+        <Root
+            className={clsx('edit-page', className)}
             {...sanitizeRestProps(rest)}
         >
-            <TitleForRecord
-                title={title}
-                record={record}
-                defaultTitle={defaultTitle}
-            />
-            {finalActions &&
-                cloneElement(finalActions, {
-                    basePath,
-                    data: record,
-                    hasShow,
-                    hasList,
-                    resource,
-                    //  Ensure we don't override any user provided props
-                    ...finalActions.props,
-                })}
+            <Title title={title} defaultTitle={defaultTitle} />
+            {finalActions}
             <div
-                className={classnames(classes.main, {
-                    [classes.noActions]: !finalActions,
+                className={clsx(EditClasses.main, {
+                    [EditClasses.noActions]: !finalActions,
                 })}
             >
-                <Content className={classes.card}>
-                    {record ? (
-                        cloneElement(Children.only(children), {
-                            basePath,
-                            record,
-                            redirect:
-                                typeof children.props.redirect === 'undefined'
-                                    ? redirect
-                                    : children.props.redirect,
-                            resource,
-                            save:
-                                typeof children.props.save === 'undefined'
-                                    ? save
-                                    : children.props.save,
-                            saving,
-                            undoable,
-                            mutationMode,
-                            version,
-                        })
-                    ) : (
-                        <CardContent>&nbsp;</CardContent>
-                    )}
+                <Content className={EditClasses.card}>
+                    {record ? children : <CardContent>&nbsp;</CardContent>}
                 </Content>
-                {aside &&
-                    React.cloneElement(aside, {
-                        basePath,
-                        record,
-                        resource,
-                        version,
-                        save:
-                            typeof children.props.save === 'undefined'
-                                ? save
-                                : children.props.save,
-                        saving,
-                    })}
+                {aside}
             </div>
-        </div>
+        </Root>
     );
 };
 
@@ -127,52 +69,26 @@ interface EditViewProps
 EditView.propTypes = {
     actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     aside: PropTypes.element,
-    basePath: PropTypes.string,
     children: PropTypes.element,
-    classes: PropTypes.object,
     className: PropTypes.string,
     component: ComponentPropType,
     defaultTitle: PropTypes.any,
     hasList: PropTypes.bool,
     hasShow: PropTypes.bool,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
+    mutationOptions: PropTypes.object,
     record: PropTypes.object,
-    redirect: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    redirect: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.bool,
+        PropTypes.func,
+    ]),
     resource: PropTypes.string,
     save: PropTypes.func,
     title: PropTypes.node,
-    version: PropTypes.number,
-    onSuccess: PropTypes.func,
-    onFailure: PropTypes.func,
-    setOnSuccess: PropTypes.func,
-    setOnFailure: PropTypes.func,
-    setTransform: PropTypes.func,
-    undoable: PropTypes.bool,
 };
-
-EditView.defaultProps = {
-    classes: {},
-    component: Card,
-};
-
-const useStyles = makeStyles(
-    {
-        root: {},
-        main: {
-            display: 'flex',
-        },
-        noActions: {
-            marginTop: '1em',
-        },
-        card: {
-            flex: '1 1 auto',
-        },
-    },
-    { name: 'RaEdit' }
-);
 
 const sanitizeRestProps = ({
-    basePath = null,
     defaultTitle = null,
     hasCreate = null,
     hasEdit = null,
@@ -180,24 +96,41 @@ const sanitizeRestProps = ({
     hasShow = null,
     history = null,
     id = null,
-    loaded = null,
-    loading = null,
+    isFetching = null,
+    isLoading = null,
     location = null,
     match = null,
-    onFailure = null,
-    onFailureRef = null,
-    onSuccess = null,
-    onSuccessRef = null,
     options = null,
+    queryOptions = null,
+    mutationOptions = null,
     permissions = null,
     refetch = null,
+    resource = null,
     save = null,
     saving = null,
-    setOnFailure = null,
-    setOnSuccess = null,
-    setTransform = null,
-    successMessage = null,
     transform = null,
-    transformRef = null,
     ...rest
 }) => rest;
+
+const PREFIX = 'RaEdit';
+
+export const EditClasses = {
+    main: `${PREFIX}-main`,
+    noActions: `${PREFIX}-noActions`,
+    card: `${PREFIX}-card`,
+};
+
+const Root = styled('div', {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
+    [`& .${EditClasses.main}`]: {
+        display: 'flex',
+    },
+    [`& .${EditClasses.noActions}`]: {
+        marginTop: '1em',
+    },
+    [`& .${EditClasses.card}`]: {
+        flex: '1 1 auto',
+    },
+});

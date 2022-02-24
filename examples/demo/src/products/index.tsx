@@ -1,4 +1,4 @@
-import ProductIcon from '@material-ui/icons/Collections';
+import ProductIcon from '@mui/icons-material/Collections';
 import ProductList from './ProductList';
 import ProductEdit from './ProductEdit';
 import ProductCreate from './ProductCreate';

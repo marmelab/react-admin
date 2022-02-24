@@ -1,32 +1,29 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Tabs, Tab, Toolbar, AppBar, Box, Typography } from '@material-ui/core';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Tabs, Tab, Toolbar, AppBar, Box, Typography } from '@mui/material';
+import { Link, matchPath, useLocation } from 'react-router-dom';
 import { UserMenu, Logout, LoadingIndicator } from 'react-admin';
 
-const useStyles = makeStyles({
-    root: {
-        flexGrow: 1,
-    },
-    logo: {
-        width: 50,
-        height: 43.54,
-    },
-});
-
 const Header = () => {
-    const classes = useStyles();
-    const match = useRouteMatch(['/contacts', '/companies', '/deals']);
-    const currentPath = match?.path ?? '/';
+    const location = useLocation();
+
+    let currentPath = '/';
+    if (!!matchPath('/contacts/*', location.pathname)) {
+        currentPath = '/contacts';
+    } else if (!!matchPath('/companies/*', location.pathname)) {
+        currentPath = '/companies';
+    } else if (!!matchPath('/deals/*', location.pathname)) {
+        currentPath = '/deals';
+    }
 
     return (
-        <nav className={classes.root}>
+        <Box component="nav" sx={{ flexGrow: 1 }}>
             <AppBar position="static" color="primary">
                 <Toolbar variant="dense">
                     <Box flex={1} display="flex" justifyContent="space-between">
                         <Box display="flex" alignItems="center">
-                            <img
-                                className={classes.logo}
+                            <Box
+                                component="img"
+                                sx={{ marginRight: '1em', height: 30 }}
                                 src={
                                     'https://upload.wikimedia.org/wikipedia/commons/a/a7/React-icon.svg'
                                 }
@@ -40,6 +37,8 @@ const Header = () => {
                             <Tabs
                                 value={currentPath}
                                 aria-label="Navigation Tabs"
+                                indicatorColor="secondary"
+                                textColor="inherit"
                             >
                                 <Tab
                                     label={'Dashboard'}
@@ -68,13 +67,21 @@ const Header = () => {
                             </Tabs>
                         </Box>
                         <Box display="flex">
-                            <LoadingIndicator />
-                            <UserMenu logout={<Logout button />} />
+                            <LoadingIndicator
+                                sx={{
+                                    '& .RaLoadingIndicator-loader': {
+                                        marginTop: 2,
+                                    },
+                                }}
+                            />
+                            <UserMenu>
+                                <Logout />
+                            </UserMenu>
                         </Box>
                     </Box>
                 </Toolbar>
             </AppBar>
-        </nav>
+        </Box>
     );
 };
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC } from 'react';
+import { styled } from '@mui/material/styles';
 import {
     Identifier,
     Datagrid,
@@ -7,26 +7,34 @@ import {
     TextField,
     DatagridProps,
 } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
 
 import ProductReferenceField from '../products/ProductReferenceField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from './StarRatingField';
 import rowStyle from './rowStyle';
 
-const useListStyles = makeStyles({
-    headerRow: {
+const PREFIX = 'ReviewListDesktop';
+
+const classes = {
+    headerRow: `${PREFIX}-headerRow`,
+    headerCell: `${PREFIX}-headerCell`,
+    rowCell: `${PREFIX}-rowCell`,
+    comment: `${PREFIX}-comment`,
+};
+
+const StyledDatagrid = styled(Datagrid)({
+    [`& .${classes.headerRow}`]: {
         borderLeftColor: 'transparent',
         borderLeftWidth: 5,
         borderLeftStyle: 'solid',
     },
-    headerCell: {
+    [`& .${classes.headerCell}`]: {
         padding: '6px 8px 6px 8px',
     },
-    rowCell: {
+    [`& .${classes.rowCell}`]: {
         padding: '6px 8px 6px 8px',
     },
-    comment: {
+    [`& .${classes.comment}`]: {
         maxWidth: '18em',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
@@ -38,21 +46,15 @@ export interface ReviewListDesktopProps extends DatagridProps {
     selectedRow?: Identifier;
 }
 
-const ReviewListDesktop: FC<ReviewListDesktopProps> = ({
+const ReviewListDesktop = ({
     selectedRow,
     ...props
-}) => {
-    const classes = useListStyles();
+}: ReviewListDesktopProps) => {
     return (
-        <Datagrid
+        <StyledDatagrid
             rowClick="edit"
             // @ts-ignore
             rowStyle={rowStyle(selectedRow)}
-            classes={{
-                headerRow: classes.headerRow,
-                headerCell: classes.headerCell,
-                rowCell: classes.rowCell,
-            }}
             optimized
             {...props}
         >
@@ -62,7 +64,7 @@ const ReviewListDesktop: FC<ReviewListDesktopProps> = ({
             <StarRatingField size="small" />
             <TextField source="comment" cellClassName={classes.comment} />
             <TextField source="status" />
-        </Datagrid>
+        </StyledDatagrid>
     );
 };
 

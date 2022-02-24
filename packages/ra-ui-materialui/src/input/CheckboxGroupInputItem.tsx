@@ -1,23 +1,15 @@
 import * as React from 'react';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import { makeStyles } from '@material-ui/core/styles';
+import { styled } from '@mui/material/styles';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import { useChoices } from 'ra-core';
 
-const useStyles = makeStyles(
-    {
-        checkbox: {
-            height: 32,
-        },
-    },
-    { name: 'RaCheckboxGroupInputItem' }
-);
-
-const CheckboxGroupInputItem = props => {
+export const CheckboxGroupInputItem = props => {
     const {
-        classes: classesOverride,
         id,
         choice,
+        className,
+        fullWidth,
         onChange,
         optionText,
         optionValue,
@@ -26,7 +18,7 @@ const CheckboxGroupInputItem = props => {
         value,
         ...rest
     } = props;
-    const classes = useStyles(props);
+
     const { getChoiceText, getChoiceValue } = useChoices({
         optionText,
         optionValue,
@@ -36,15 +28,16 @@ const CheckboxGroupInputItem = props => {
     const choiceName = getChoiceText(choice);
 
     return (
-        <FormControlLabel
+        <StyledFormControlLabel
             htmlFor={`${id}_${getChoiceValue(choice)}`}
             key={getChoiceValue(choice)}
             onChange={onChange}
+            className={className}
             control={
                 <Checkbox
                     id={`${id}_${getChoiceValue(choice)}`}
                     color="primary"
-                    className={classes.checkbox}
+                    className={CheckboxGroupInputItemClasses.checkbox}
                     checked={
                         value
                             ? value.find(v => v == getChoiceValue(choice)) !== // eslint-disable-line eqeqeq
@@ -61,4 +54,17 @@ const CheckboxGroupInputItem = props => {
     );
 };
 
-export default CheckboxGroupInputItem;
+const PREFIX = 'RaCheckboxGroupInputItem';
+
+export const CheckboxGroupInputItemClasses = {
+    checkbox: `${PREFIX}-checkbox`,
+};
+
+const StyledFormControlLabel = styled(FormControlLabel, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})({
+    [`& .${CheckboxGroupInputItemClasses.checkbox}`]: {
+        height: 32,
+    },
+});

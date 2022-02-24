@@ -1,23 +1,29 @@
 import * as React from 'react';
-import { FC, memo, ReactElement } from 'react';
+import { memo, ReactElement } from 'react';
 import PropTypes from 'prop-types';
-import Queue from '@material-ui/icons/Queue';
+import Queue from '@mui/icons-material/Queue';
 import { Link } from 'react-router-dom';
 import { stringify } from 'query-string';
-import { Record, useResourceContext } from 'ra-core';
+import {
+    RaRecord,
+    useResourceContext,
+    useRecordContext,
+    useCreatePath,
+} from 'ra-core';
 
-import Button, { ButtonProps } from './Button';
+import { Button, ButtonProps } from './Button';
 
-export const CloneButton: FC<CloneButtonProps> = ({
-    basePath = '',
-    label = 'ra.action.clone',
-    scrollToTop = true,
-    record,
-    icon = defaultIcon,
-    ...rest
-}) => {
-    const resource = useResourceContext();
-    const pathname = basePath ? `${basePath}/create` : `/${resource}/create`;
+export const CloneButton = (props: CloneButtonProps) => {
+    const {
+        label = 'ra.action.clone',
+        scrollToTop = true,
+        icon = defaultIcon,
+        ...rest
+    } = props;
+    const resource = useResourceContext(props);
+    const record = useRecordContext(props);
+    const createPath = useCreatePath();
+    const pathname = createPath({ resource, type: 'create' });
     return (
         <Button
             component={Link}
@@ -34,7 +40,7 @@ export const CloneButton: FC<CloneButtonProps> = ({
             }
             label={label}
             onClick={stopPropagation}
-            {...rest}
+            {...sanitizeRestProps(rest)}
         >
             {icon}
         </Button>
@@ -46,19 +52,23 @@ const defaultIcon = <Queue />;
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
 
-const omitId = ({ id, ...rest }: Record) => rest;
+const omitId = ({ id, ...rest }: Partial<RaRecord>) => rest;
+
+const sanitizeRestProps = ({
+    resource,
+    record,
+    ...rest
+}: Omit<CloneButtonProps, 'label' | 'scrollToTop' | 'icon'>) => rest;
 
 interface Props {
-    basePath?: string;
-    record?: Record;
+    record?: Partial<RaRecord>;
     icon?: ReactElement;
     scrollToTop?: boolean;
 }
 
-export type CloneButtonProps = Props & ButtonProps;
+export type CloneButtonProps = Props & Omit<ButtonProps, 'record'>;
 
 CloneButton.propTypes = {
-    basePath: PropTypes.string,
     icon: PropTypes.element,
     label: PropTypes.string,
     record: PropTypes.any,

@@ -6,6 +6,6 @@
         "declaration": true,
         "declarationMap": true
     },
-    "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js"],
+    "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js", "**/*.stories.tsx"],
     "include": ["src"]
 }

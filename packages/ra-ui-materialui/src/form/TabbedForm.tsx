@@ -2,25 +2,24 @@ import * as React from 'react';
 import {
     Children,
     isValidElement,
-    FC,
     ReactElement,
     ReactNode,
     HtmlHTMLAttributes,
 } from 'react';
 import PropTypes from 'prop-types';
 import {
-    FormWithRedirect,
-    FormWithRedirectProps,
+    Form,
+    FormProps,
     MutationMode,
-    Record,
+    RaRecord,
     RedirectionSideEffect,
     OnSuccess,
-    OnFailure,
+    onError,
 } from 'ra-core';
 import get from 'lodash/get';
 
-import { ClassesOverride } from '../types';
-import { TabbedFormView, useTabbedFormViewStyles } from './TabbedFormView';
+import { TabbedFormView } from './TabbedFormView';
+import { useFormRootPath } from './useFormRootPath';
 
 /**
  * Form layout where inputs are divided by tab, one input per line.
@@ -54,7 +53,7 @@ import { TabbedFormView, useTabbedFormViewStyles } from './TabbedFormView';
  *                 <TextInput multiline source="teaser" validate={required()} />
  *             </FormTab>
  *             <FormTab label="body">
- *                 <RichTextInput source="body" validate={required()} addLabel={false} />
+ *                 <RichTextInput source="body" validate={required()} label={false} />
  *             </FormTab>
  *             <FormTab label="Miscellaneous">
  *                 <TextInput label="Password (if protected post)" source="password" type="password" />
@@ -64,7 +63,7 @@ import { TabbedFormView, useTabbedFormViewStyles } from './TabbedFormView';
  *                 <TextInput disabled label="Nb views" source="views" />
  *             </FormTab>
  *             <FormTab label="comments">
- *                 <ReferenceManyField reference="comments" target="post_id" addLabel={false}>
+ *                 <ReferenceManyField reference="comments" target="post_id" label={false}>
  *                     <Datagrid>
  *                         <TextField source="body" />
  *                         <DateField source="created_at" />
@@ -85,20 +84,30 @@ import { TabbedFormView, useTabbedFormViewStyles } from './TabbedFormView';
  * @prop {ReactElement} toolbar The element displayed at the bottom of the form, containing the SaveButton
  * @prop {string} variant Apply variant to all inputs. Possible values are 'standard', 'outlined', and 'filled' (default)
  * @prop {string} margin Apply variant to all inputs. Possible values are 'none', 'normal', and 'dense' (default)
- * @prop {boolean} sanitizeEmptyValues Whether or not deleted record attributes should be recreated with a `null` value (default: true)
  *
  * @param {Props} props
  */
-export const TabbedForm: FC<TabbedFormProps> = props => (
-    <FormWithRedirect
-        {...props}
-        render={formProps => <TabbedFormView {...formProps} />}
-    />
-);
+export const TabbedForm = (props: TabbedFormProps) => {
+    const formRootPathname = useFormRootPath();
+
+    return (
+        <Form
+            formRootPathname={formRootPathname}
+            {...props}
+            render={formProps => (
+                <TabbedFormView
+                    formRootPathname={formRootPathname}
+                    {...formProps}
+                />
+            )}
+        />
+    );
+};
 
 TabbedForm.propTypes = {
     children: PropTypes.node,
     initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    formRootPathname: PropTypes.string,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     // @ts-ignore
     record: PropTypes.object,
@@ -110,43 +119,37 @@ TabbedForm.propTypes = {
     save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     saving: PropTypes.bool,
     submitOnEnter: PropTypes.bool,
-    undoable: PropTypes.bool,
     validate: PropTypes.func,
-    sanitizeEmptyValues: PropTypes.bool,
 };
 
 export interface TabbedFormProps
-    extends Omit<FormWithRedirectProps, 'render'>,
+    extends Omit<FormProps, 'render'>,
         Omit<
             HtmlHTMLAttributes<HTMLFormElement>,
             'defaultValue' | 'onSubmit' | 'children'
         > {
-    basePath?: string;
     children: ReactNode;
     className?: string;
-    classes?: ClassesOverride<typeof useTabbedFormViewStyles>;
-    component?: React.ComponentType<any>;
     initialValues?: any;
+    component?: React.ComponentType<any>;
+    formRootPathname?: string;
     margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
-    record?: Record;
+    record?: RaRecord;
     redirect?: RedirectionSideEffect;
     resource?: string;
-    sanitizeEmptyValues?: boolean;
     save?: (
-        data: Partial<Record>,
+        data: Partial<RaRecord>,
         redirectTo: RedirectionSideEffect,
         options?: {
             onSuccess?: OnSuccess;
-            onFailure?: OnFailure;
+            onError?: onError;
         }
     ) => void;
     submitOnEnter?: boolean;
     syncWithLocation?: boolean;
     tabs?: ReactElement;
     toolbar?: ReactElement;
-    /** @deprecated use mutationMode: undoable instead */
-    undoable?: boolean;
     variant?: 'standard' | 'outlined' | 'filled';
     warnWhenUnsavedChanges?: boolean;
 }

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC } from 'react';
+import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import {
     NumberField,
@@ -7,11 +7,10 @@ import {
     DateField,
     useTranslate,
     useGetList,
-    Record,
-    RecordMap,
-    Identifier,
+    RaRecord,
     ReferenceField,
-    useLocale,
+    useLocaleState,
+    useRecordContext,
 } from 'react-admin';
 import {
     Typography,
@@ -23,74 +22,61 @@ import {
     Step,
     StepLabel,
     StepContent,
-} from '@material-ui/core';
+} from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import { makeStyles } from '@material-ui/core/styles';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 import order from '../orders';
 import review from '../reviews';
 import StarRatingField from '../reviews/StarRatingField';
 import { Order as OrderRecord, Review as ReviewRecord } from '../types';
 
-const useAsideStyles = makeStyles(theme => ({
-    root: {
+const PREFIX = 'Aside';
+
+const classes = {
+    root: `${PREFIX}-root`,
+};
+
+const AsideRoot = styled('div')(({ theme }) => ({
+    [`&.${classes.root}`]: {
         width: 400,
-        [theme.breakpoints.down('md')]: {
+        [theme.breakpoints.down('lg')]: {
             display: 'none',
         },
     },
 }));
 
-interface AsideProps {
-    record?: Record;
-    basePath?: string;
-}
+const Aside = () => {
+    const record = useRecordContext();
 
-const Aside: FC<AsideProps> = ({ record, basePath }) => {
-    const classes = useAsideStyles();
     return (
-        <div className={classes.root}>
-            {record && <EventList record={record} basePath={basePath} />}
-        </div>
+        <AsideRoot className={classes.root}>
+            {record && <EventList record={record} />}
+        </AsideRoot>
     );
 };
-
 Aside.propTypes = {
     record: PropTypes.any,
-    basePath: PropTypes.string,
 };
 
 interface EventListProps {
-    record?: Record;
-    basePath?: string;
+    record?: RaRecord;
 }
 
-const useEventStyles = makeStyles({
-    stepper: {
-        background: 'none',
-        border: 'none',
-        marginLeft: '0.3em',
-    },
-});
-
-const EventList: FC<EventListProps> = ({ record, basePath }) => {
+const EventList = ({ record }: EventListProps) => {
     const translate = useTranslate();
-    const classes = useEventStyles();
-    const locale = useLocale();
-    const { data: orders, ids: orderIds } = useGetList<OrderRecord>(
-        'commands',
-        { page: 1, perPage: 100 },
-        { field: 'date', order: 'DESC' },
-        { customer_id: record && record.id }
-    );
-    const { data: reviews, ids: reviewIds } = useGetList<ReviewRecord>(
-        'reviews',
-        { page: 1, perPage: 100 },
-        { field: 'date', order: 'DESC' },
-        { customer_id: record && record.id }
-    );
-    const events = mixOrdersAndReviews(orders, orderIds, reviews, reviewIds);
+    const [locale] = useLocaleState();
+    const { data: orders } = useGetList<OrderRecord>('commands', {
+        pagination: { page: 1, perPage: 100 },
+        sort: { field: 'date', order: 'DESC' },
+        filter: { customer_id: record && record.id },
+    });
+    const { data: reviews } = useGetList<ReviewRecord>('reviews', {
+        pagination: { page: 1, perPage: 100 },
+        sort: { field: 'date', order: 'DESC' },
+        filter: { customer_id: record && record.id },
+    });
+    const events = mixOrdersAndReviews(orders, reviews);
 
     return (
         <>
@@ -123,7 +109,7 @@ const EventList: FC<EventListProps> = ({ record, basePath }) => {
                                         />
                                     </Box>
                                 </Box>
-                                {orderIds && orderIds.length > 0 && (
+                                {orders && (
                                     <Box display="flex">
                                         <Box mr="1em">
                                             <order.icon
@@ -137,7 +123,7 @@ const EventList: FC<EventListProps> = ({ record, basePath }) => {
                                                     'resources.commands.amount',
                                                     {
                                                         smart_count:
-                                                            orderIds.length,
+                                                            orders.length,
                                                     }
                                                 )}
                                             </Typography>
@@ -165,7 +151,7 @@ const EventList: FC<EventListProps> = ({ record, basePath }) => {
                                         />
                                     </Box>
                                 </Box>
-                                {reviewIds && reviewIds.length > 0 && (
+                                {reviews && (
                                     <Box display="flex">
                                         <Box mr="1em">
                                             <review.icon
@@ -179,7 +165,7 @@ const EventList: FC<EventListProps> = ({ record, basePath }) => {
                                                     'resources.reviews.amount',
                                                     {
                                                         smart_count:
-                                                            reviewIds.length,
+                                                            reviews.length,
                                                     }
                                                 )}
                                             </Typography>
@@ -191,7 +177,12 @@ const EventList: FC<EventListProps> = ({ record, basePath }) => {
                     </CardContent>
                 </Card>
             </Box>
-            <Stepper orientation="vertical" classes={{ root: classes.stepper }}>
+            <Stepper
+                orientation="vertical"
+                sx={{
+                    ml: 3.5,
+                }}
+            >
                 {events.map(event => (
                     <Step
                         key={`${event.type}-${event.data.id}`}
@@ -228,13 +219,11 @@ const EventList: FC<EventListProps> = ({ record, basePath }) => {
                                 <Order
                                     record={event.data as OrderRecord}
                                     key={`event_${event.data.id}`}
-                                    basePath={basePath}
                                 />
                             ) : (
                                 <Review
                                     record={event.data as ReviewRecord}
                                     key={`review_${event.data.id}`}
-                                    basePath={basePath}
                                 />
                             )}
                         </StepContent>
@@ -252,27 +241,23 @@ interface AsideEvent {
 }
 
 const mixOrdersAndReviews = (
-    orders?: RecordMap<OrderRecord>,
-    orderIds?: Identifier[],
-    reviews?: RecordMap<ReviewRecord>,
-    reviewIds?: Identifier[]
+    orders?: OrderRecord[],
+    reviews?: ReviewRecord[]
 ): AsideEvent[] => {
-    const eventsFromOrders =
-        orderIds && orders
-            ? orderIds.map<AsideEvent>(id => ({
-                  type: 'order',
-                  date: orders[id].date,
-                  data: orders[id],
-              }))
-            : [];
-    const eventsFromReviews =
-        reviewIds && reviews
-            ? reviewIds.map<AsideEvent>(id => ({
-                  type: 'review',
-                  date: reviews[id].date,
-                  data: reviews[id],
-              }))
-            : [];
+    const eventsFromOrders = orders
+        ? orders.map<AsideEvent>(order => ({
+              type: 'order',
+              date: order.date,
+              data: order,
+          }))
+        : [];
+    const eventsFromReviews = reviews
+        ? reviews.map<AsideEvent>(review => ({
+              type: 'review',
+              date: review.date,
+              data: review,
+          }))
+        : [];
     const events = eventsFromOrders.concat(eventsFromReviews);
     events.sort(
         (e1, e2) => new Date(e2.date).getTime() - new Date(e1.date).getTime()
@@ -282,10 +267,9 @@ const mixOrdersAndReviews = (
 
 interface OrderProps {
     record?: OrderRecord;
-    basePath?: string;
 }
 
-const Order: FC<OrderProps> = ({ record, basePath }) => {
+const Order = ({ record }: OrderProps) => {
     const translate = useTranslate();
     return record ? (
         <>
@@ -310,14 +294,9 @@ const Order: FC<OrderProps> = ({ record, basePath }) => {
                         currency: 'USD',
                     }}
                     record={record}
-                    basePath={basePath}
                 />
                 &nbsp;-&nbsp;
-                <TextField
-                    source="status"
-                    record={record}
-                    basePath={basePath}
-                />
+                <TextField source="status" record={record} />
             </Typography>
         </>
     ) : null;
@@ -325,23 +304,21 @@ const Order: FC<OrderProps> = ({ record, basePath }) => {
 
 interface ReviewProps {
     record?: ReviewRecord;
-    basePath?: string;
 }
 
-const useReviewStyles = makeStyles({
-    clamp: {
+const ReviewRoot = styled('div')({
+    '& .clamp': {
         display: '-webkit-box',
-        '-webkit-line-clamp': 3,
-        '-webkit-box-orient': 'vertical',
+        WebkitLineClamp: 3,
+        WebkitBoxOrient: 'vertical',
         overflow: 'hidden',
     },
 });
 
-const Review: FC<ReviewProps> = ({ record, basePath }) => {
-    const classes = useReviewStyles();
+const Review = ({ record }: ReviewProps) => {
     const translate = useTranslate();
     return record ? (
-        <>
+        <ReviewRoot>
             <Typography variant="body2" gutterBottom>
                 <Link to={`/reviews/${record.id}`} component={RouterLink}>
                     {translate('resources.reviews.relative_to_poster')} "
@@ -350,7 +327,6 @@ const Review: FC<ReviewProps> = ({ record, basePath }) => {
                         reference="products"
                         resource="reviews"
                         record={record}
-                        basePath={basePath}
                         link={false}
                     >
                         <TextField source="reference" component="span" />
@@ -361,14 +337,10 @@ const Review: FC<ReviewProps> = ({ record, basePath }) => {
             <Typography variant="body2" color="textSecondary" gutterBottom>
                 <StarRatingField record={record} />
             </Typography>
-            <Typography
-                variant="body2"
-                color="textSecondary"
-                className={classes.clamp}
-            >
+            <Typography variant="body2" color="textSecondary" className="clamp">
                 {record.comment}
             </Typography>
-        </>
+        </ReviewRoot>
     ) : null;
 };
 

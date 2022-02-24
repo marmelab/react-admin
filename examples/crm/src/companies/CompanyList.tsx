@@ -1,23 +1,20 @@
 import * as React from 'react';
 import {
     List,
-    ListProps,
     TopToolbar,
     ExportButton,
     CreateButton,
     Pagination,
     useGetIdentity,
 } from 'react-admin';
-import { makeStyles } from '@material-ui/core/styles';
 
-import { GridList } from './GridList';
+import { ImageList } from './GridList';
 import { CompanyListFilter } from './CompanyListFilter';
 
-export const CompanyList = (props: ListProps) => {
+export const CompanyList = () => {
     const { identity } = useGetIdentity();
     return identity ? (
         <List
-            {...props}
             actions={<CompanyListActions />}
             aside={<CompanyListFilter />}
             filterDefaultValues={{ sales_id: identity?.id }}
@@ -26,26 +23,19 @@ export const CompanyList = (props: ListProps) => {
             sort={{ field: 'name', order: 'ASC' }}
             component="div"
         >
-            <GridList />
+            <ImageList />
         </List>
     ) : null;
 };
 
-const useActionStyles = makeStyles(theme => ({
-    createButton: {
-        marginLeft: theme.spacing(2),
-    },
-}));
-const CompanyListActions = (props: any) => {
-    const classes = useActionStyles();
+const CompanyListActions = () => {
     return (
         <TopToolbar>
             <ExportButton />
             <CreateButton
-                basePath="/companies"
                 variant="contained"
                 label="New Company"
-                className={classes.createButton}
+                sx={{ marginLeft: 2 }}
             />
         </TopToolbar>
     );

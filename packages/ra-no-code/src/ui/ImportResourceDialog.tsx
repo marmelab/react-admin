@@ -7,20 +7,20 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    RootRef,
     TextField,
-} from '@material-ui/core';
+} from '@mui/material';
 import { useDropzone } from 'react-dropzone';
+import { useQueryClient } from 'react-query';
 
-import { useNotify, useRefresh } from 'ra-core';
-import { useHistory } from 'react-router-dom';
+import { useNotify } from 'react-admin';
+import { useNavigate } from 'react-router-dom';
 import { useImportResourceFromCsv } from './useImportResourceFromCsv';
 
 export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
     const [file, setFile] = useState<File>();
     const [resource, setResource] = useState<string>('');
-    const history = useHistory();
-    const refresh = useRefresh();
+    const navigate = useNavigate();
+    const queryClient = useQueryClient();
     const notify = useNotify();
 
     const handleClose = () => {
@@ -48,12 +48,12 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
             importResource(resource, file)
                 .then(({ resource, resourceAlreadyExists }) => {
                     handleClose();
-                    history.push(`/${resource}`);
+                    navigate(`/${resource}`);
 
                     if (resourceAlreadyExists) {
                         // If we imported more records for an existing resource,
                         // we must refresh the list
-                        refresh();
+                        queryClient.refetchQueries([resource, 'getList']);
                     }
                 })
                 .catch(() => {
@@ -87,7 +87,7 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
                     </DialogContent>
                 ) : (
                     <>
-                        <RootRef rootRef={ref}>
+                        <>
                             <DialogContent {...rootProps}>
                                 <input
                                     aria-label="CSV File"
@@ -102,7 +102,7 @@ export const ImportResourceDialog = (props: ImportResourceDialogProps) => {
                                     a local file.
                                 </DialogContentText>
                             </DialogContent>
-                        </RootRef>
+                        </>
                         {!!file && (
                             <DialogContent>
                                 <TextField

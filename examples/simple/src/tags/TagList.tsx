@@ -15,12 +15,12 @@ import {
     ListItemSecondaryAction,
     Collapse,
     Card,
-} from '@material-ui/core';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
+} from '@mui/material';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 
-const TagList = props => (
-    <ListBase perPage={1000} {...props}>
+const TagList = () => (
+    <ListBase perPage={1000}>
         <ListActions />
         <Box maxWidth="20em" marginTop="1em">
             <Card>
@@ -31,7 +31,7 @@ const TagList = props => (
 );
 
 const Tree = () => {
-    const { ids, data, defaultTitle } = useListContext();
+    const { data, defaultTitle } = useListContext();
     const [openChildren, setOpenChildren] = useState([]);
     const toggleNode = node =>
         setOpenChildren(state => {
@@ -44,10 +44,11 @@ const Tree = () => {
                 return [...state, node.id];
             }
         });
-    const nodes = ids.map(id => data[id]);
-    const roots = nodes.filter(node => typeof node.parent_id === 'undefined');
+    const roots = data
+        ? data.filter(node => typeof node.parent_id === 'undefined')
+        : [];
     const getChildNodes = root =>
-        nodes.filter(node => node.parent_id === root.id);
+        data.filter(node => node.parent_id === root.id);
     return (
         <List>
             <Title defaultTitle={defaultTitle} />
@@ -65,21 +66,13 @@ const Tree = () => {
     );
 };
 
-const SubTree = ({
-    level,
-    root,
-    getChildNodes,
-    openChildren,
-    toggleNode,
-    defaultTitle,
-}) => {
+const SubTree = ({ level, root, getChildNodes, openChildren, toggleNode }) => {
     const childNodes = getChildNodes(root);
     const hasChildren = childNodes.length > 0;
     const open = openChildren.includes(root.id);
     return (
         <Fragment>
             <ListItem
-                button={hasChildren}
                 onClick={() => hasChildren && toggleNode(root)}
                 style={{ paddingLeft: level * 16 }}
             >
@@ -89,7 +82,7 @@ const SubTree = ({
                 <ListItemText primary={root.name.en} />
 
                 <ListItemSecondaryAction>
-                    <EditButton record={root} basePath="/tags" />
+                    <EditButton record={root} />
                 </ListItemSecondaryAction>
             </ListItem>
             <Collapse in={open} timeout="auto" unmountOnExit>
