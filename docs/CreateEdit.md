@@ -302,7 +302,7 @@ const CustomToolbar = props => (
         sx={{ display: 'flex', justifyContent: 'space-between' }}
     >
         <SaveButton />
-        <DeleteButton mutationMode="undoable" />
+        <DeleteButton undoable={false} />
     </Toolbar>
 );
 
