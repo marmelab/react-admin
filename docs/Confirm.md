@@ -8,7 +8,7 @@ title: "The Confirm Component"
 `<Confirm>` leverages MUI's [`<Dialog>` component](https://mui.com/components/dialogs) to implement a confirmation popup.
 
 
-![Edit button](./img/confirm-delete.png)
+![Confirm dialog](./img/confirm-dialog.png)
 
 ```jsx
 import { useState } from 'react';
