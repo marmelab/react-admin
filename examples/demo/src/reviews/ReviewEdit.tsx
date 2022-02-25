@@ -8,8 +8,9 @@ import {
     SimpleForm,
     DateField,
     EditProps,
+    Labeled,
 } from 'react-admin';
-import { IconButton, Typography } from '@mui/material';
+import { Stack, IconButton, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import ProductReferenceField from '../products/ProductReferenceField';
@@ -83,17 +84,38 @@ const ReviewEdit = ({ onCancel, ...props }: Props) => {
                     resource="reviews"
                     toolbar={<ReviewEditToolbar />}
                 >
-                    <CustomerReferenceField
-                        formClassName={classes.inlineField}
-                    />
-                    <ProductReferenceField
-                        formClassName={classes.inlineField}
-                    />
-                    <DateField
-                        source="date"
-                        formClassName={classes.inlineField}
-                    />
-                    <StarRatingField formClassName={classes.inlineField} />
+                    <Stack
+                        direction="row"
+                        spacing={2}
+                        mb={2}
+                        justifyContent="space-between"
+                    >
+                        <Stack spacing={2}>
+                            <Labeled>
+                                <CustomerReferenceField
+                                    formClassName={classes.inlineField}
+                                />
+                            </Labeled>
+                            <Labeled>
+                                <ProductReferenceField
+                                    formClassName={classes.inlineField}
+                                />
+                            </Labeled>
+                        </Stack>
+                        <Stack spacing={2}>
+                            <Labeled>
+                                <DateField
+                                    source="date"
+                                    formClassName={classes.inlineField}
+                                />
+                            </Labeled>
+                            <Labeled>
+                                <StarRatingField
+                                    formClassName={classes.inlineField}
+                                />
+                            </Labeled>
+                        </Stack>
+                    </Stack>
                     <TextInput
                         source="comment"
                         maxRows={15}
