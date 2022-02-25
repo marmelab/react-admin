@@ -2339,7 +2339,7 @@ import { Edit, SimpleForm, TextInput, FormGroupContextProvider, useFormGroup, mi
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreIcon';
 
-const PostEdit = props => (
+const PostEdit = () => (
     <Edit {...props}>
         <SimpleForm>
             <TextInput source="title" />
