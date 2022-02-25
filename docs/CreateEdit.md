@@ -286,6 +286,7 @@ const PostEdit = () => (
 
 **Tip**: If you want a confirmation dialog for the Delete button but don't mind undoable Edits, then pass a [custom toolbar](#toolbar) to the form, as follows:
 
+{% raw %}
 ```jsx
 import * as React from "react";
 import {
@@ -314,6 +315,7 @@ const PostEdit = () => (
     </Edit>
 );
 ```
+{% endraw %}
 
 ### `mutationMode`
 
@@ -349,6 +351,7 @@ const PostEdit = () => (
 
 **Tip**: If you want a confirmation dialog for the Delete button but don't mind undoable Edits, then pass a [custom toolbar](#toolbar) to the form, as follows:
 
+{% raw %}
 ```jsx
 import * as React from "react";
 import {
@@ -377,6 +380,7 @@ const PostEdit = () => (
     </Edit>
 );
 ```
+{% endraw %}
 
 ### `mutationOptions`
 
