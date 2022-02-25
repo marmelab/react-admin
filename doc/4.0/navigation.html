@@ -163,6 +163,7 @@ function replaceContent(text) {
     content.innerHTML = tmpElement.querySelector('.DocSearch-content').innerHTML;
     window.scrollTo(0, 0);
     buildPageToC();
+    Prism.highlightAll();
 }
 
 function changeSelectedMenu() {
