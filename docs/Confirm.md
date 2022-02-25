@@ -56,11 +56,11 @@ const CustomUpdatePostsButton = () => {
 | `isOpen`           | Optional | `boolean`                        | `false`               | `true` to show the dialog, `false` to hide it                      |
 | `loading`          | Optional | `boolean`                        | `false`               | Boolean to be applied to the `disabled` prop of the action buttons |
 | `content`          | Required | `ReactNode`                      | -                     | Body of the dialog                                                 |
-| `cancel`           | Optional | `string`                         | 'ra.action.cancel'    | Label of the close button                                          |
+| `cancel`           | Optional | `string`                         | 'ra.action.cancel'    | Label of the cancel button                                          |
 | `confirm`          | Optional | `string`                         | 'ra.action.confirm'   | Label of the confirm button                                        |
 | `confirmColor`     | Optional | `string`                         | 'primary'             | Color of the confirm button                                        |
 | `ConfirmIcon`      | Optional | `ReactElement`                   | `<CheckCircle/>`      | Icon elemnt of the confirm button                                  |
-| `CancelIcon`       | Optional | `ReactElement`                   | `<ErrorOutlineIcon/>` | Icon elemnt of the close button                                    |
+| `CancelIcon`       | Optional | `ReactElement`                   | `<ErrorOutlineIcon/>` | Icon elemnt of the cancel button                                    |
 | `onClose`          | Required | `MouseEventHandler`              | -                     | onClick event handler of the cancel button                         |
 | `onConfirm`        | Required | `MouseEventHandler`              | -                     | onClick event handler of the confirm button                        |
 | `title`            | Required | `string`                         | -                     | Title of the dialog                                                |
