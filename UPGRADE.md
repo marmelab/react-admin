@@ -2578,6 +2578,23 @@ const MyCustomForm = () => {
 }
 ```
 
+### `useFormGroup` Hook Returned State Has Changed
+
+The `useFormGroup` hook used to returned the form group state props (`dirty`, `invalid`, `pristine`, `touched`, `valid` and `errors`). They don't exist in `react-hook-form` so now it will return `isDirty`, `isValid`, `isTouched` and `errors`:
+
+```diff
+const AccordionSectionTitle = ({ children, name }) => {
+    const formGroupState = useFormGroup(name);
+
+    return (
+-      <Typography color={formGroupState.invalid && formGroupState.dirty ? 'error' : 'inherit'}>
++      <Typography color={!formGroupState.isValid && formGroupState.isDirty ? 'error' : 'inherit'}>
+          {children}
+      </Typography>
+    );
+}
+```
+
 ### `<Toolbar>` Props Have Changed
 
 The `<Toolbar>` component used to receive the form state props (`dirty`, `invalid`, `pristine` and `valid`). They don't exist in `react-hook-form` and you can get the form state with its `useFormState` hook:
@@ -2593,7 +2610,7 @@ const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
     return (
         <Toolbar>
             <SaveButton
--                invalid={invalid}
+-               invalid={invalid}
                 saving={saving}
                 submitOnEnter={true}
             />

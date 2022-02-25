@@ -24,8 +24,9 @@ type FormGroupState = {
  * or whether its inputs have been updated (dirty/pristine)
  *
  * @example
- * import { Edit, SimpleForm, TextInput, FormGroupContextProvider, useFormGroup } from 'react-admin';
+ * import { Edit, SimpleForm, TextInput, FormGroupContextProvider, useFormGroup, minLength } from 'react-admin';
  * import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
+ * import ExpandMoreIcon from '@mui/icons-material/ExpandMoreIcon';
  *
  * const PostEdit = (props) => (
  *     <Edit {...props}>
@@ -52,7 +53,7 @@ type FormGroupState = {
  * const AccordionSectionTitle = ({ children, name }) => {
  *     const formGroupState = useFormGroup(name);
  *     return (
- *         <Typography color={formGroupState.invalid && formGroupState.dirty ? 'error' : 'inherit'}>
+ *         <Typography color={!formGroupState.isValid && formGroupState.isDirty ? 'error' : 'inherit'}>
  *             {children}
  *         </Typography>
  *     );
