@@ -55,14 +55,15 @@ const CustomUpdatePostsButton = () => {
 | `className`        | Optional | `string`                       | -                     | Class name to customize the look and feel of the dialog itself |
 | `isOpen`           | Optional | `boolean`                      | `false`               |                                                                |
 | `loading`          | Optional | `boolean`                      | `false`               |                                                                |
-| `content`          | Optional | `ReactNode`                    | -                     |                                                                |
+| `content`          | Required | `ReactNode`                    | -                     |                                                                |
 | `cancel`           | Optional | `string`                       | 'ra.action.cancel'    |                                                                |
 | `confirm`          | Optional | `string`                       | 'ra.action.confirm'   |                                                                |
 | `confirmColor`     | Optional | `string`                       | 'primary'             |                                                                |
 | `ConfirmIcon`      | Optional | `boolean`                      | `<CheckCircle/>`      |                                                                |
 | `CancelIcon`       | Optional | `boolean`                      | `<ErrorOutlineIcon/>` |                                                                |
-| `onClose`          | Optional | `boolean`                      | ``                    |                                                                |
-| `onConfirm`        | Optional | `boolean`                      | `true`                |                                                                |
+| `onClose`          | Required | `boolean`                      | ``                    |                                                                |
+| `onConfirm`        | Required | `boolean`                      | `true`                |                                                                |
+| `title`            | Required | `string`                       | -                     |                                                                |
 | `translateOptions` | Optional | `{id?: string, name?: string}` | {}                    |                                                                |
 
 Text props such as `title`, `content`, `cancel`, `confirm` and `translateOptions` are translatable. You can pass translation keys in these props. Note: `content` is only translatable when value is `string`, otherwise it renders the content as a `ReactNode`.
