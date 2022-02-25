@@ -53,19 +53,31 @@ const CustomUpdatePostsButton = () => {
 
 `<EditButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
 
-| Prop               | Required | Type           | Default               | Description                                      |
-|--------------------|----------|----------------|-----------------------|--------------------------------------------------|
-| `className`        | Optional | `string`       | -                     | Resource to link to, e.g. 'posts'                |
-| `isOpen`           | Optional | `boolean`      | `false`               | Record to link to, e.g. `{ id: 12, foo: 'bar' }` |
-| `loading`          | Optional | `boolean`      | `false`               | Label or translation message to use              |
-| `content`          | Optional | `ReactElement` | -                     | Icon element, e.g. `<CommentIcon />`             |
-| `cancel`           | Optional | `string`       | 'ra.action.cancel'    | Scroll to top after link                         |
-| `confirm`          | Optional | `string`       | 'ra.action.confirm'   | Scroll to top after link                         |
-| `confirmColor`     | Optional | `string`       | `primary`             | Scroll to top after link                         |
-| `ConfirmIcon`      | Optional | `boolean`      | `<CheckCircle/>`      | Scroll to top after link                         |
-| `CancelIcon`       | Optional | `boolean`      | `<ErrorOutlineIcon/>` | Scroll to top after link                         |
-| `onClose`          | Optional | `boolean`      | ``                    | Scroll to top after link                         |
-| `onConfirm`        | Optional | `boolean`      | `true`                | Scroll to top after link                         |
-| `translateOptions` | Optional | `boolean`      | {}                    | Scroll to top after link                         |
+| Prop               | Required | Type                           | Default               | Description                                                    |
+|--------------------|----------|--------------------------------|-----------------------|----------------------------------------------------------------|
+| `className`        | Optional | `string`                       | -                     | Class name to customize the look and feel of the dialog itself |
+| `isOpen`           | Optional | `boolean`                      | `false`               |                                                                |
+| `loading`          | Optional | `boolean`                      | `false`               |                                                                |
+| `content`          | Optional | `ReactNode`                    | -                     |                                                                |
+| `cancel`           | Optional | `string`                       | 'ra.action.cancel'    |                                                                |
+| `confirm`          | Optional | `string`                       | 'ra.action.confirm'   |                                                                |
+| `confirmColor`     | Optional | `string`                       | 'primary'             |                                                                |
+| `ConfirmIcon`      | Optional | `boolean`                      | `<CheckCircle/>`      |                                                                |
+| `CancelIcon`       | Optional | `boolean`                      | `<ErrorOutlineIcon/>` |                                                                |
+| `onClose`          | Optional | `boolean`                      | ``                    |                                                                |
+| `onConfirm`        | Optional | `boolean`                      | `true`                |                                                                |
+| `translateOptions` | Optional | `{id?: string, name?: string}` | {}                    |                                                                |
 
-Text props such as `title`, `content`, `cancel` and `confirm` are translatable. You can pass translation keys in these props. Note: `content` is only translatable when value is `string`, otherwise it renders the content as a `ReactNode`.
+Text props such as `title`, `content`, `cancel`, `confirm` and `translateOptions` are translatable. You can pass translation keys in these props. Note: `content` is only translatable when value is `string`, otherwise it renders the content as a `ReactNode`.
+
+## `sx`: CSS API
+
+The `<Confirm>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+
+| Rule name                       | Description                 |
+|---------------------------------|-----------------------------|
+| `& .RaConfirm-confirmPrimary`   | Applied to the root element |
+| `& .RaConfirm-confirmWarning`   | Applied to the root element |
+| `& .RaConfirm-iconPaddingStyle` | Applied to the root element |
+
+To override the style of all instances of `<Confirm>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaConfirm` key.
