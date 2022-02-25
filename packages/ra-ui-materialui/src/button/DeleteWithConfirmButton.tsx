@@ -32,6 +32,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
         mutationMode = 'pessimistic',
         onClick,
         redirect = 'list',
+        translateOptions = {},
         mutationOptions,
         ...rest
     } = props;
@@ -82,6 +83,7 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
                         ),
                     }),
                     id: record.id,
+                    ...translateOptions,
                 }}
                 onConfirm={handleDelete}
                 onClose={handleDialogClose}
@@ -109,6 +111,7 @@ export interface DeleteWithConfirmButtonProps<RecordType extends RaRecord = any>
     pristine?: boolean;
     saving?: boolean;
     submitOnEnter?: boolean;
+    translateOptions?: object;
     mutationOptions?: UseMutationOptions<
         RecordType,
         unknown,
@@ -130,6 +133,7 @@ DeleteWithConfirmButton.propTypes = {
     ]),
     resource: PropTypes.string,
     icon: PropTypes.element,
+    translateOptions: PropTypes.object,
 };
 
 const PREFIX = 'RaDeleteWithConfirmButton';

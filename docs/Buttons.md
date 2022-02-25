@@ -295,6 +295,36 @@ const ListActions = () => (
 ## Record Buttons
 
 ### `<DeleteButton>`
+
+### `<DeleteWithConfirmButton>`
+
+Delete the current record after a confirm dialog has been accepted. To be used inside a `<Toolbar/>` component.
+
+You can customize the notification message confirming the deletion by providing a `translateOptions` prop. It accepts an object with a `name` and `id` properties:
+
+```jsx
+import * as React from 'react';
+import { DeleteWithConfirmButton, Toolbar } from 'react-admin';
+
+const translateOptions = {
+    id: 'custom identifier',
+    name: 'Custom Name'
+}
+
+const EditToolbar = props => (
+    <Toolbar {...props}>
+        <DeleteWithConfirmButton translateOptions={translateOptions} />
+    </Toolbar>
+);
+```
+The table below describes the props needed to customize the notification message confirming the deletion.
+
+| Prop         | Required | Type            | Default            | Description                         |
+| ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
+| `name`       | Optional | `string`        | 'resource.name'    | label or translation message to use |
+| `id`         | Optional | `string`        | 'record.id'        | id to use in deletion message       |
+
+
 ### `<CloneButton>`
 ### `<SaveButton>`
 
