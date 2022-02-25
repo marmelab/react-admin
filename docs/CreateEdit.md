@@ -2340,7 +2340,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/
 import ExpandMoreIcon from '@mui/icons-material/ExpandMoreIcon';
 
 const PostEdit = () => (
-    <Edit {...props}>
+    <Edit>
         <SimpleForm>
             <TextInput source="title" />
             <FormGroupContextProvider name="options">
