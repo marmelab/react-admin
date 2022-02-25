@@ -17,6 +17,8 @@ import { stageChoices } from './stages';
 import { typeChoices } from './types';
 import { Deal } from '../types';
 
+const validateRequired = required();
+
 export const DealCreate = ({ open }: { open: boolean }) => {
     const redirect = useRedirect();
     const dataProvider = useDataProvider();
@@ -61,7 +63,7 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                         source="name"
                         label="Deal name"
                         fullWidth
-                        validate={[required()]}
+                        validate={validateRequired}
                     />
                     <TextInput
                         source="description"
@@ -69,19 +71,18 @@ export const DealCreate = ({ open }: { open: boolean }) => {
                         rows={3}
                         fullWidth
                     />
-                    <ReferenceInput
-                        source="company_id"
-                        reference="companies"
-                        fullWidth
-                        validate={[required()]}
-                    >
-                        <AutocompleteInput optionText="name" />
+                    <ReferenceInput source="company_id" reference="companies">
+                        <AutocompleteInput
+                            optionText="name"
+                            fullWidth
+                            validate={validateRequired}
+                        />
                     </ReferenceInput>
                     <SelectInput
                         source="stage"
                         choices={stageChoices}
                         fullWidth
-                        validate={[required()]}
+                        validate={validateRequired}
                         defaultValue="opportunity"
                     />
                     <SelectInput

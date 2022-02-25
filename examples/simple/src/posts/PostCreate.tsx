@@ -155,12 +155,8 @@ const PostCreate = () => {
                 {permissions === 'admin' && (
                     <ArrayInput source="authors">
                         <SimpleFormIterator>
-                            <ReferenceInput
-                                label="User"
-                                source="user_id"
-                                reference="users"
-                            >
-                                <AutocompleteInput />
+                            <ReferenceInput source="user_id" reference="users">
+                                <AutocompleteInput label="User" />
                             </ReferenceInput>
                             <FormDataConsumer>
                                 {({
@@ -171,7 +167,6 @@ const PostCreate = () => {
                                 }) =>
                                     scopedFormData && scopedFormData.user_id ? (
                                         <SelectInput
-                                            label="Role"
                                             source={getSource('role')}
                                             choices={[
                                                 {
@@ -188,6 +183,7 @@ const PostCreate = () => {
                                                 },
                                             ]}
                                             {...rest}
+                                            label="Role"
                                         />
                                     ) : null
                                 }
