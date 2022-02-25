@@ -127,6 +127,8 @@ export type ButtonProps = Props & MuiButtonProps;
 
 export const sanitizeButtonRestProps = ({
     // The next props are injected by Toolbar
+    invalid,
+    pristine,
     record,
     redirect,
     resource,
