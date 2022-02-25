@@ -308,7 +308,7 @@ import { DeleteWithConfirmButton, Toolbar } from 'react-admin';
 
 const translateOptions = {
     id: 'custom identifier',
-    name: 'Custom Name'
+    name: 'Custom Message'
 }
 
 const EditToolbar = props => (
