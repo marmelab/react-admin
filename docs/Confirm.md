@@ -7,7 +7,6 @@ title: "The Confirm Component"
 
 `<Confirm>` leverages MUI's [`<Dialog>` component](https://mui.com/components/dialogs) to implement a confirmation popup.
 
-
 ![Confirm dialog](./img/confirm-dialog.png)
 
 ```jsx
@@ -50,8 +49,6 @@ const CustomUpdatePostsButton = () => {
     );
 };
 ```
-
-`<EditButton>` is based on react-admin's base `<Button>`, so it's responsive, accessible, and the label is translatable.
 
 | Prop               | Required | Type                           | Default               | Description                                                    |
 |--------------------|----------|--------------------------------|-----------------------|----------------------------------------------------------------|
