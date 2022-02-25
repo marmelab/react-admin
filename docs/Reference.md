@@ -30,7 +30,7 @@ title: "Reference"
 * [`<ChipField>`](./ChipField.md)
 * [`<CloneButton>`](./CreateEdit.md#prefilling-a-create-record)
 * [`<CompleteCalendar>`](https://marmelab.com/ra-enterprise/modules/ra-calendar#completecalendar)<img class="icon" src="./img/premium.svg" />
-* `<Confirm>`
+* [`<Confirm>`](./Confirm.md)
 * [`<Create>`](./CreateEdit.md#the-create-and-edit-components)
 * `<CreateActions>`
 * [`<CreateButton>`](./Buttons.md#createbutton)
