@@ -311,7 +311,7 @@ Delete the current record after a confirm dialog has been accepted. To be used i
 
 ```jsx
 import * as React from 'react';
-import { DeleteWithConfirmButton, Toolbar, Edit, SaveButton } from 'react-admin';
+import { DeleteWithConfirmButton, Toolbar, Edit, SaveButton,useRecordContext } from 'react-admin';
 
 const EditToolbar = props => {
     const record = useRecordContext();
