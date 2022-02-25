@@ -284,7 +284,7 @@ import { useRecordContext } from 'react-admin';
 import { styled } from '@mui/material/styles';
 import LaunchIcon from '@mui/icons-material/Launch';
 
-const Anchor = styled('a')({textDecoration: 'none'});
+const Anchor = styled('a')({ textDecoration: 'none' });
 
 const MyUrlField = ({ source }) => {
     const record = useRecordContext();
