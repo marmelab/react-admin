@@ -249,7 +249,6 @@ export const PostList = () => (
 | `label`      | Optional | `string`        | 'ra.action.delete' | label or translation message to use |
 | `icon`       | Optional | `ReactElement`  | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />` |
 | `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
-| `undoable`   | Optional | `boolean`       | `true`             | Allow users to cancel the deletion  |
 
 ### `<FilterButton>`
 
@@ -286,11 +285,11 @@ const ListActions = () => (
 );
 ```
 
-| Prop         | Required | Type            | Default            | Description                         |
-| ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
-| `fields`     | Required | `string[]`      | -                  | List of fields to offer sort on     |
-| `icon`       | Optional | `ReactElement`  | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />` |
-| `label`      | Optional | `string`        | 'ra.action.delete' | label or translation message to use |
+| Prop     | Required | Type           | Default               | Description                         |
+|----------|----------|----------------|-----------------------|-------------------------------------|
+| `fields` | Required | `string[]`     | -                     | List of fields to offer sort on     |
+| `icon`   | Optional | `ReactElement` | `<ArrowDropDownIcon>` | iconElement, e.g. `<CommentIcon />` |
+| `label`  | Optional | `string`       | 'ra.action.delete'    | label or translation message to use |
 
 ## Record Buttons
 
@@ -300,30 +299,40 @@ const ListActions = () => (
 
 Delete the current record after a confirm dialog has been accepted. To be used inside a `<Toolbar/>` component.
 
-You can customize the notification message confirming the deletion by providing a `translateOptions` prop. It accepts an object with a `name` and `id` properties:
+| Prop                                                       | Required | Type                           | Default                     | Description                                                            |
+|------------------------------------------------------------|----------|--------------------------------|-----------------------------|------------------------------------------------------------------------|
+| `className`                                                | Optional | `string`                       | -                           | Class name to customize the look and feel of the button element itself |
+| `label`                                                    | Optional | `string`                       | 'ra.action.delete'          | label or translation message to use                                    |
+| `icon`                                                     | Optional | `ReactElement`                 | `<DeleteIcon>`              | iconElement, e.g. `<CommentIcon />`                                    |
+| `confirmTitle`                                             | Optional | `string`                       | 'ra.message.delete_title'   | Title of the confirm dialog                                            |
+| `confirmContent`                                           | Optional | `ReactNode`                    | 'ra.message.delete_content' | Message of the confirm dialog                                          |
+| [`redirect`](./CreateEdit.md#redirection-after-submission) | Optional | 'string | false | Function`    | 'list'                      | Custom redirection after success side effect                           |
+| `translateOptions`                                         | Optional | `{ id: string, name: string }` | {}                          | Custom id and name to be used in the confirm dialog's title            |
 
 ```jsx
 import * as React from 'react';
-import { DeleteWithConfirmButton, Toolbar } from 'react-admin';
+import { DeleteWithConfirmButton, Toolbar, Edit, SaveButton } from 'react-admin';
 
-const translateOptions = {
-    id: 'custom identifier',
-    name: 'custom name'
-}
+const EditToolbar = props => {
+    const record = useRecordContext();
 
-const EditToolbar = props => (
     <Toolbar {...props}>
-        <DeleteWithConfirmButton translateOptions={translateOptions} />
+        <SaveButton/>
+        <DeleteWithConfirmButton
+            confirmContent="You will not be able to recover this record. Are you sure?"
+            translateOptions={{ name: record.name }}
+        />
     </Toolbar>
+};
+
+const MyEdit = () => (
+    <Edit>
+        <SimpleForm toolbar={<EditToolbar />}>
+            ...
+        </SimpleForm>        
+    </Edit>    
 );
 ```
-The table below describes the props needed to customize the notification message confirming the deletion.
-
-| Prop         | Required | Type            | Default            | Description                         |
-| ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
-| `name`       | Optional | `string`        | 'resource.name'    | label or translation message to use |
-| `id`         | Optional | `string`        | 'record.id'        | id to use in deletion message       |
-
 
 ### `<CloneButton>`
 ### `<SaveButton>`
@@ -338,7 +347,7 @@ Base component for most react-admin buttons. Responsive (displays only the icon 
 | ------------ | -------- | ------------------------------ | ------- | ---------------------------------------- |
 | `alignIcon`  | Optional | `'left' | 'right`              | `'left'` | Icon position relative to the label     |
 | `children`   | Optional | `ReactElement`                 | -        | icon to use                             |
-| `className`  | Optional | `string`                       | -        | path to link to, e.g. '/posts'          |
+| `className`  | Optional | `string`                       | -        | Class name to customize the look and feel of the button element itself          |
 | `color`      | Optional | `'default' | 'inherit'| 'primary' | 'secondary'` | `'primary'` | Label and icon color |
 | `disabled`   | Optional | `boolean`                      | `false`   | If `true`, the button will be disabled |
 | `size`       | Optional | `'large' | 'medium' | 'small'` | `'small'` | Button size                            |
