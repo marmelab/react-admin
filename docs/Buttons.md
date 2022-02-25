@@ -289,7 +289,7 @@ const ListActions = () => (
 |----------|----------|----------------|-----------------------|-------------------------------------|
 | `fields` | Required | `string[]`     | -                     | List of fields to offer sort on     |
 | `icon`   | Optional | `ReactElement` | `<ArrowDropDownIcon>` | iconElement, e.g. `<CommentIcon />` |
-| `label`  | Optional | `string`       | 'ra.action.delete'    | label or translation message to use |
+| `label`  | Optional | `string`       | 'ra.sort.sort_by'     | label or translation message to use |
 
 ## Record Buttons
 
