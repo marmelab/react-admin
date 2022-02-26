@@ -178,6 +178,7 @@ You can find translation packages for the following languages:
 - Finnish (`fi`): [aikain/ra-language-finnish](https://github.com/aikain/ra-language-finnish)
 - French (`fr`): [marmelab/ra-language-french](https://github.com/marmelab/react-admin/tree/master/packages/ra-language-french)
 - German (`de`): [greenbananaCH/ra-language-german](https://github.com/greenbananaCH/ra-language-german) (tree translation: [straurob/ra-tree-language-german](https://github.com/straurob/ra-tree-language-german))
+- Greek (`el`): [panterz/ra-language-greek](https://github.com/panterz/ra-language-greek)
 - Hebrew (`he`): [ak-il/ra-language-hebrew](https://github.com/ak-il/ra-language-hebrew)
 - Hindi (`hi`): [harshit-budhraja/ra-language-hindi](https://github.com/harshit-budhraja/ra-language-hindi)
 - Hungarian (`hu`): [phelion/ra-language-hungarian](https://github.com/phelion/ra-language-hungarian)
@@ -204,7 +205,6 @@ In addition, the previous version of react-admin, called admin-on-rest, was tran
 
 - Chinese (Traditional) (`cht`): [leesei/aor-language-chinese-traditional](https://github.com/leesei/aor-language-chinese-traditional)
 - Croatian (`hr`): [ariskemper/aor-language-croatian](https://github.com/ariskemper/aor-language-croatian)
-- Greek (`el`): [zifnab87/aor-language-greek](https://github.com/zifnab87/aor-language-greek)
 - Slovenian (`sl`): [ariskemper/aor-language-slovenian](https://github.com/ariskemper/aor-language-slovenian)
 - Thai (`th`): [liverbool/aor-language-thai](https://github.com/liverbool/aor-language-thai)
 
