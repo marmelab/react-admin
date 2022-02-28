@@ -15,6 +15,7 @@ export default {
             fields: {
                 average_note: 'Note moyenne',
                 body: 'Contenu',
+                category: 'Catégorie',
                 comments: 'Commentaires',
                 commentable: 'Commentable',
                 commentable_short: 'Com.',
@@ -43,10 +44,10 @@ export default {
             },
         },
         users: {
-            name: 'User |||| Users',
+            name: 'Utilisateur |||| Utilisateurs',
             fields: {
-                name: 'Name',
-                role: 'Role',
+                name: 'Nom',
+                role: 'Rôle',
             },
         },
     },

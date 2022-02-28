@@ -15,6 +15,7 @@ export const messages = {
             fields: {
                 average_note: 'Average note',
                 body: 'Body',
+                category: 'Category',
                 comments: 'Comments',
                 commentable: 'Commentable',
                 commentable_short: 'Com.',
