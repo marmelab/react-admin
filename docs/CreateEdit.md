@@ -2330,16 +2330,17 @@ const PostEdit = () => (
 
 ### Grouping Inputs
 
-Sometimes, you may want to group inputs in order to make a form more approachable. You may use a [`<TabbedForm>`](#the-tabbedform-component), an [`<AccordionForm>`](#the-accordionform-component) or you may want to roll your own layout. In this case, you might need to know the state of a group of inputs: whether it's valid or if the user has changed them (dirty/pristine state).
+Sometimes, you may want to group inputs in order to make a form more approachable. You may use a [`<TabbedForm>`](#the-tabbedform-component), an [`<AccordionForm>`](#the-accordionform-component) or you may want to roll your own layout. In this case, you might need to know the state of a group of inputs: whether it's valid or if the user has changed them (dirty/touched state).
 
 For this, you can use the `<FormGroupContextProvider>`, which accepts a group name. All inputs rendered inside this context will register to it (thanks to the `useInput` hook). You may then call the `useFormGroup` hook to retrieve the status of the group. For example:
 
 ```jsx
-import { Edit, SimpleForm, TextInput, FormGroupContextProvider, useFormGroup } from 'react-admin';
+import { Edit, SimpleForm, TextInput, FormGroupContextProvider, useFormGroup, minLength } from 'react-admin';
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreIcon';
 
-const PostEdit = (props) => (
-    <Edit {...props}>
+const PostEdit = () => (
+    <Edit>
         <SimpleForm>
             <TextInput source="title" />
             <FormGroupContextProvider name="options">
@@ -2349,9 +2350,14 @@ const PostEdit = (props) => (
                         aria-controls="options-content"
                         id="options-header"
                     >
-                        <AccordionSectionTitle name="options">Options</AccordionSectionTitle>
+                        <AccordionSectionTitle name="options">
+                            Options
+                        </AccordionSectionTitle>
                     </AccordionSummary>
-                    <AccordionDetails id="options-content" aria-labelledby="options-header">
+                    <AccordionDetails
+                        id="options-content"
+                        aria-labelledby="options-header"
+                    >
                         <TextInput source="teaser" validate={minLength(20)} />
                     </AccordionDetails>
                 </Accordion>
@@ -2364,9 +2370,15 @@ const AccordionSectionTitle = ({ children, name }) => {
     const formGroupState = useFormGroup(name);
 
     return (
-        <Typography color={formGroupState.invalid && formGroupState.dirty ? 'error' : 'inherit'}>
+        <Typography
+          color={
+              !formGroupState.isValid && formGroupState.isDirty
+                ? 'error'
+                : 'inherit'
+          }
+        >
             {children}
         </Typography>
     );
-}
+};
 ```
