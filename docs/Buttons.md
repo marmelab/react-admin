@@ -249,7 +249,6 @@ export const PostList = () => (
 | `label`      | Optional | `string`        | 'ra.action.delete' | label or translation message to use |
 | `icon`       | Optional | `ReactElement`  | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />` |
 | `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
-| `undoable`   | Optional | `boolean`       | `true`             | Allow users to cancel the deletion  |
 
 ### `<FilterButton>`
 
@@ -286,15 +285,55 @@ const ListActions = () => (
 );
 ```
 
-| Prop         | Required | Type            | Default            | Description                         |
-| ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
-| `fields`     | Required | `string[]`      | -                  | List of fields to offer sort on     |
-| `icon`       | Optional | `ReactElement`  | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />` |
-| `label`      | Optional | `string`        | 'ra.action.delete' | label or translation message to use |
+| Prop     | Required | Type           | Default               | Description                         |
+|----------|----------|----------------|-----------------------|-------------------------------------|
+| `fields` | Required | `string[]`     | -                     | List of fields to offer sort on     |
+| `icon`   | Optional | `ReactElement` | `<ArrowDropDownIcon>` | iconElement, e.g. `<CommentIcon />` |
+| `label`  | Optional | `string`       | 'ra.sort.sort_by'     | label or translation message to use |
 
 ## Record Buttons
 
 ### `<DeleteButton>`
+
+### `<DeleteWithConfirmButton>`
+
+Delete the current record after a confirm dialog has been accepted. To be used inside a `<Toolbar/>` component.
+
+| Prop                                                       | Required | Type                             | Default                     | Description                                                             |
+|------------------------------------------------------------|----------|----------------------------------|-----------------------------|-------------------------------------------------------------------------|
+| `className`                                                | Optional | `string`                         | -                           | Class name to customize the look and feel of the button element itself  |
+| `label`                                                    | Optional | `string`                         | 'ra.action.delete'          | label or translation message to use                                     |
+| `icon`                                                     | Optional | `ReactElement`                   | `<DeleteIcon>`              | iconElement, e.g. `<CommentIcon />`                                     |
+| `confirmTitle`                                             | Optional | `string`                         | 'ra.message.delete_title'   | Title of the confirm dialog                                             |
+| `confirmContent`                                           | Optional | `ReactNode`                      | 'ra.message.delete_content' | Message or React component to be used as the body of the confirm dialog |
+| [`redirect`](./CreateEdit.md#redirection-after-submission) | Optional | `string | false | Function`      | 'list'                      | Custom redirection after success side effect                            |
+| `translateOptions`                                         | Optional | `{ id?: string, name?: string }` | {}                          | Custom id and name to be used in the confirm dialog's title             |
+
+```jsx
+import * as React from 'react';
+import { DeleteWithConfirmButton, Toolbar, Edit, SaveButton,useRecordContext } from 'react-admin';
+
+const EditToolbar = props => {
+    const record = useRecordContext();
+
+    <Toolbar {...props}>
+        <SaveButton/>
+        <DeleteWithConfirmButton
+            confirmContent="You will not be able to recover this record. Are you sure?"
+            translateOptions={{ name: record.name }}
+        />
+    </Toolbar>
+};
+
+const MyEdit = () => (
+    <Edit>
+        <SimpleForm toolbar={<EditToolbar />}>
+            ...
+        </SimpleForm>        
+    </Edit>    
+);
+```
+
 ### `<CloneButton>`
 ### `<SaveButton>`
 
@@ -308,7 +347,7 @@ Base component for most react-admin buttons. Responsive (displays only the icon 
 | ------------ | -------- | ------------------------------ | ------- | ---------------------------------------- |
 | `alignIcon`  | Optional | `'left' | 'right`              | `'left'` | Icon position relative to the label     |
 | `children`   | Optional | `ReactElement`                 | -        | icon to use                             |
-| `className`  | Optional | `string`                       | -        | path to link to, e.g. '/posts'          |
+| `className`  | Optional | `string`                       | -        | Class name to customize the look and feel of the button element itself          |
 | `color`      | Optional | `'default' | 'inherit'| 'primary' | 'secondary'` | `'primary'` | Label and icon color |
 | `disabled`   | Optional | `boolean`                      | `false`   | If `true`, the button will be disabled |
 | `size`       | Optional | `'large' | 'medium' | 'small'` | `'small'` | Button size                            |

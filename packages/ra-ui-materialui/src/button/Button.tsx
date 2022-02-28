@@ -116,10 +116,8 @@ interface Props {
     redirect?: RedirectionSideEffect;
     variant?: string;
     // May be injected by Toolbar
-    invalid?: boolean;
     saving?: boolean;
     submitOnEnter?: boolean;
-    pristine?: boolean;
     record?: RaRecord;
     resource?: string;
     mutationMode?: MutationMode;
