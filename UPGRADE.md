@@ -1263,8 +1263,8 @@ Page components (`<List>`, `<Show>`, etc.) used to expect to receive props (rout
 ```diff
 -const PostShow = (props) => (
 +const PostShow = () => (
--   <Show>
-+   <Show {...props}>
+-   <Show {...props}>
++   <Show>
         <SimpleShowLayout>
             <TextField source="title" />
         </SimpleShowLayout>
@@ -1281,8 +1281,8 @@ If you need to access the permissions previously passed as props, you need to ca
 +const PostShow = () => {
 +   const permissions = usePermissions();
     return (
--       <Show>
-+       <Show {...props}>
+-       <Show {...props}>
++       <Show>
             <SimpleShowLayout>
                 <TextField source="title" />
                 {permissions === 'admin' &&
