@@ -1576,8 +1576,7 @@ const PostCreate = () => (
         <SimpleForm>
 -            <LineWrapper>
 +            <div style="display: flex">
-                <TextInput source="title" />
-                <TextInput source="title" margin="normal" variant="outlined" />
+                 <TextInput source="title" />
 -            </LineWrapper>
 +            </div>
         </SimpleForm>
