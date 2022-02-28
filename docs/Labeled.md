@@ -9,7 +9,7 @@ title: "Labeled"
 
 ## Usage
 
-`<Labeled>` is mostly an internal component - you don't need it if you're using `<SimpleShowLayout>` or `<TabbedshowLayout>`. But, in a custom layout or in a form, if you want to display a label on top of a field value, just wrap the Field component with `<Labeled>`. 
+`<Labeled>` is mostly an internal component - you don't need it if you're using `<SimpleShowLayout>` or `<TabbedShowLayout>`. But, in a custom layout or in a form, if you want to display a label on top of a field value, just wrap the Field component with `<Labeled>`. 
 
 ```jsx
 import { Show, Labeled, TextField } from 'react-admin';
@@ -77,3 +77,15 @@ const BookShow = () => (
 * [`Labeled`]
 
 [`Labeled`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/Labeled.tsx
+
+## `sx`: CSS API
+
+The `<Labeled>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+
+| Rule name                 | Description                                             |
+|---------------------------|---------------------------------------------------------|
+| `&.RaLabeled-fullWidth`   | Applied to the root component                           |
+| `& .RaLabeled-label`      | Applied to the underlying MUI's `Typography` component  |
+
+
+To override the style of all instances of `<Labeled>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaLabeled` key.
