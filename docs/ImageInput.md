@@ -59,7 +59,6 @@ The `<ImageInput>` component accepts the usual `className` prop. You can also ov
 
 | Rule name                       | Description                                         |
 |---------------------------------|-----------------------------------------------------|
-| `&.RaImageInput-root`           | Styles pass to the underlying `FileInput` component |
 | `& .RaImageInput-dropZone`      | Styles pass to the underlying `FileInput` component |
 | `& .RaImageInput-preview`       | Styles pass to the underlying `FileInput` component |
 | `& .RaImageInput-removeButton`  | Styles pass to the underlying `FileInput` component |

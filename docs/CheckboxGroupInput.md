@@ -101,9 +101,8 @@ import { FavoriteBorder, Favorite } from '@mui/icons-material';
 
 The `<CheckboxGroupInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
-| Rule name                       | Description                                                   |
-|---------------------------------|---------------------------------------------------------------|
-| `&.RaCheckboxGroupInput-root`   | Applied to the root element                                   |
-| `& .RaCheckboxGroupInput-label` | Applied to the underlying MUI's `FormLabel` component |
+| Rule name                       | Description                                              |
+|---------------------------------|----------------------------------------------------------|
+| `& .RaCheckboxGroupInput-label` | Applied to the underlying MUI's `FormLabel` component    |
 
 To override the style of all instances of `<CheckboxGroupInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaCheckboxGroupInput` key.

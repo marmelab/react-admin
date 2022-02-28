@@ -678,7 +678,6 @@ The `<List>` component accepts the usual `className` prop but you can override m
 
 | Rule name             | Description                                                   |
 |-----------------------|---------------------------------------------------------------|
-| `&.RaList-root`       | Alternative to using `className`. Applied to the root element |
 | `& .RaList-actions`   | Applied to the actions container                              |
 | `& .RaList-main`      | Applied to the main container                                 |
 | `& .RaList-content`   | Applied to the child component inside the main container      |

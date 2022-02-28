@@ -258,10 +258,6 @@ This button is an internal component used by react-admin in [the Filter button/f
 
 #### `sx`: CSS API
 
-| Rule name                 | Description                                                   |
-|---------------------------|---------------------------------------------------------------|
-| `&.RaFilterButton-root`   | Alternative to using `className`. Applied to the root element |
-
 To override the style of all instances of `<FilterButton>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaFilterButton` key.
 
 ### `<SortButton>`
@@ -449,7 +445,6 @@ See [The theming documentation](./Theming.md#menuitemlink) for more details.
 
 | Rule name                   | Description                                                         |
 |-----------------------------|---------------------------------------------------------------------|
-| `&.RaMenuItemLink-root`     | Alternative to using `className`. Applied to the root element       |
 | `& .RaMenuItemLink-active`  | Applied to the underlying `MuiMenuItem`'s `activeClassName` prop    |
 | `& .RaMenuItemLink-icon`    | Applied to the `ListItemIcon` component when `leftIcon` prop is set |
 
@@ -467,7 +462,6 @@ To override the style of all instances of `<MenuItemLink>` using the [MUI style 
 
 | Rule name                  | Description                                                                                                                              |
 |----------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| `& .RaUserMenu-user`       | Alternative to using `className`. Applied to the root element                                                                            |
 | `& .RaUserMenu-userButton` | Applied to the underlying `MuiButton` component when `useGetIdentity().loaded` is `true` and `useGetIdentity().identity.fullName` is set |
 | `& .RaUserMenu-avatar`     | Applied to the underlying `MuiAvatar` component when `useGetIdentity().avatar` is `true`                                                 |
 
