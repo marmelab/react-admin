@@ -310,7 +310,7 @@ const CustomResetViewsButton = () => {
 export default CustomResetViewsButton;
 ```
 
-**Tip**: `<Confirm>` leverages MUI's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
+**Tip**: [`<Confirm>`](./Confirm.md) leverages MUI's `<Dialog>` component to implement a confirmation popup. Feel free to use it in your admins!
 
 **Tip**: `<Confirm>` text props such as `title` and `content` are translatable. You can pass translation keys in these props. Note: `content` is only translatable when value is `string`, otherwise it renders the content as a `ReactNode`.
 

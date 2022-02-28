@@ -136,6 +136,7 @@
 
 <ul><div>Other UI components</div>
   <li {% if page.path contains 'Buttons.md' %} class="active" {% endif %}><a class="nav-link" href="./Buttons.html">Buttons</a></li>
+  <li {% if page.path contains 'Confirm.md' %} class="active" {% endif %}><a class="nav-link" href="./Confirm.html">Confirm</a></li>
 </ul>
 
 <ul><div>Recipes</div>
@@ -176,7 +177,7 @@ function changeSelectedMenu() {
 // Replace full page reloads by a fill of the content area
 // so that the side navigation keeps its state
 function catchNavigation() {
-    // use a global event listener to also catch links inside the content area 
+    // use a global event listener to also catch links inside the content area
     document.addEventListener('click', (event) => {
         var link = event.target.closest('a');
         if (!link) {
