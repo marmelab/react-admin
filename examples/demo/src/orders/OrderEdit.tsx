@@ -83,11 +83,11 @@ const CustomerAddress = () => {
 
 const Spacer = () => <Box m={1}>&nbsp;</Box>;
 
-const OrderForm = (props: any) => {
+const OrderForm = () => {
     const translate = useTranslate();
+
     return (
         <Form
-            {...props}
             render={({ handleSubmit, ...formProps }: any) => (
                 <form onSubmit={handleSubmit}>
                     <Box maxWidth="50em">
@@ -109,9 +109,6 @@ const OrderForm = (props: any) => {
                                                     <DateField
                                                         source="date"
                                                         resource="commands"
-                                                        record={
-                                                            formProps.record
-                                                        }
                                                     />
                                                 </Labeled>
                                             </Grid>
@@ -123,9 +120,6 @@ const OrderForm = (props: any) => {
                                                     <TextField
                                                         source="reference"
                                                         resource="commands"
-                                                        record={
-                                                            formProps.record
-                                                        }
                                                     />
                                                 </Labeled>
                                             </Grid>
@@ -177,7 +171,6 @@ const OrderForm = (props: any) => {
                                             source="customer_id"
                                             resource="commands"
                                             reference="customers"
-                                            record={formProps.record}
                                             link={false}
                                         >
                                             <CustomerDetails />
@@ -193,7 +186,6 @@ const OrderForm = (props: any) => {
                                             source="customer_id"
                                             resource="commands"
                                             reference="customers"
-                                            record={formProps.record}
                                             link={false}
                                         >
                                             <CustomerAddress />
@@ -208,7 +200,7 @@ const OrderForm = (props: any) => {
                                     )}
                                 </Typography>
                                 <Box>
-                                    <Basket record={formProps.record} />
+                                    <Basket />
                                 </Box>
                                 <Spacer />
 
@@ -218,11 +210,10 @@ const OrderForm = (props: any) => {
                                     )}
                                 </Typography>
                                 <Box>
-                                    <Totals record={formProps.record} />
+                                    <Totals />
                                 </Box>
                             </CardContent>
                             <Toolbar
-                                record={formProps.record}
                                 mutationMode="undoable"
                                 saving={formProps.saving}
                                 resource="commands"

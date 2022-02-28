@@ -7,7 +7,13 @@ import {
     TableHead,
     TableRow,
 } from '@mui/material';
-import { Link, FieldProps, useTranslate, useGetMany } from 'react-admin';
+import {
+    Link,
+    FieldProps,
+    useTranslate,
+    useGetMany,
+    useRecordContext,
+} from 'react-admin';
 
 import { Order, Product } from '../types';
 
@@ -25,8 +31,8 @@ const StyledTable = styled(Table, {
 });
 
 const Basket = (props: FieldProps<Order>) => {
-    const { record, className } = props;
-
+    const { className } = props;
+    const record = useRecordContext(props);
     const translate = useTranslate();
 
     const productIds = record ? record.basket.map(item => item.product_id) : [];

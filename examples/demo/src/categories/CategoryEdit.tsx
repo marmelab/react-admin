@@ -3,21 +3,22 @@ import {
     Datagrid,
     Edit,
     EditButton,
-    FieldProps,
     NumberField,
     ReferenceManyField,
     SimpleForm,
     TextInput,
     useTranslate,
+    useRecordContext,
 } from 'react-admin';
 
 import ThumbnailField from '../products/ThumbnailField';
 import ProductRefField from '../products/ProductRefField';
 import { Category } from '../types';
 
-const CategoryTitle = (props: FieldProps<Category>) => {
-    const { record } = props;
+const CategoryTitle = () => {
+    const record = useRecordContext<Category>();
     const translate = useTranslate();
+
     return record ? (
         <span>
             {translate('resources.categories.name', { smart_count: 1 })} &quot;

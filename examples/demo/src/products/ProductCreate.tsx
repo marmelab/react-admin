@@ -37,9 +37,9 @@ const StyledCreate = styled(Create)({
     },
 });
 
-const ProductCreate = (props: CreateProps) => {
+const ProductCreate = () => {
     return (
-        <StyledCreate {...props}>
+        <StyledCreate>
             <TabbedForm defaultValues={{ sales: 0 }}>
                 <FormTab label="resources.products.tabs.image">
                     <TextInput
