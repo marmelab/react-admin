@@ -59,7 +59,7 @@ const CustomUpdatePostsButton = () => {
 | `cancel`           | Optional | `string`                         | 'ra.action.cancel'    | Label of the cancel button                                          |
 | `confirm`          | Optional | `string`                         | 'ra.action.confirm'   | Label of the confirm button                                        |
 | `confirmColor`     | Optional | `string`                         | 'primary'             | Color of the confirm button                                        |
-| `ConfirmIcon`      | Optional | `ReactElement`                   | `<CheckCircle/>`      | Icon elemnt of the confirm button                                  |
+| `ConfirmIcon`      | Optional | `ReactElement`                   | `<CheckCircle/>`      | Icon element of the confirm button                                  |
 | `CancelIcon`       | Optional | `ReactElement`                   | `<ErrorOutlineIcon/>` | Icon elemnt of the cancel button                                    |
 | `onClose`          | Required | `MouseEventHandler`              | -                     | onClick event handler of the cancel button                         |
 | `onConfirm`        | Required | `MouseEventHandler`              | -                     | onClick event handler of the confirm button                        |
