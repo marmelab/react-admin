@@ -618,9 +618,9 @@ const PostList = () => {
     };
 
     return (
-        <Show queryOptions={{ onError }}>
+        <List queryOptions={{ onError }}>
             ...
-        </Show>
+        </List>
     );
 }
 ```

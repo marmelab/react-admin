@@ -3062,6 +3062,35 @@ const UserListFilter = [
 ]
 ```
 
+### `<ReferenceInput>` and `<ReferenceArrayInput>` No Longer Accepts [Common Props](https://marmelab.com/react-admin/Inputs.html#common-input-props)
+
+Since these components no longer inject props to their children, you have to pass these props directly to them.
+
+```diff
+const UserInput = [
+    <ReferenceInput
+        source="email"
+        reference="users"
+-       label="User"
+-       validate={[required()]}
+-       fullWidth
+-       className="myCustomCLass"
+-       formClassName=="myCustomFormClass"
+-       helperText="Custom helper text"
+    >
+-        <AutocompleteInput />
++        <AutocompleteInput 
++            label="User" 
++            validate={[required()]}
++            fullWidth
++            className="myCustomClass"
++            formClassName=="myCustomFormClass"
++            helperText="Custom helper text"
++        />
+    </ReferenceInput>
+]
+```
+
 ### `<ReferenceArrayInput>` No Longer Provides a `ListContext`
 
 As the `ChoicesContext` now provide an API very similar to the `ListContext`, it no longer sets up a `ListContext`. If you used this to display a `<Datagrid>`, we will soon provide the `<DatagridInput>` for this purpose.

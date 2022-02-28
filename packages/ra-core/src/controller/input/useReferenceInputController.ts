@@ -5,6 +5,7 @@ import { FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useReference } from '../useReference';
 import { ChoicesContextValue } from '../../form';
 import { useReferenceParams } from './useReferenceParams';
+import { UseQueryOptions } from 'react-query';
 
 const defaultReferenceSource = (resource: string, source: string) =>
     `${resource}@${source}`;
@@ -53,8 +54,9 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         filter,
         page: initialPage = 1,
         perPage: initialPerPage = 25,
-        reference,
         sort: initialSort,
+        queryOptions = {},
+        reference,
         source,
     } = props;
 
@@ -64,6 +66,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         perPage: initialPerPage,
         sort: initialSort,
         debounce,
+        filter,
     });
 
     // selection logic
@@ -94,6 +97,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         },
         {
             enabled: isGetMatchingEnabled,
+            ...queryOptions,
         }
     );
 
@@ -165,9 +169,19 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
     };
 };
 
-export interface UseReferenceInputControllerParams {
+export interface UseReferenceInputControllerParams<
+    RecordType extends RaRecord = any
+> {
     debounce?: number;
     filter?: FilterPayload;
+    queryOptions?: UseQueryOptions<{
+        data: RecordType[];
+        total?: number;
+        pageInfo?: {
+            hasNextPage?: boolean;
+            hasPreviousPage?: boolean;
+        };
+    }>;
     page?: number;
     perPage?: number;
     record?: RaRecord;

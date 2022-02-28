@@ -23,20 +23,21 @@ import { ReferenceInput, SelectInput } from 'react-admin';
 
 ## Properties
 
-| Prop               | Required | Type                                        | Default                               | Description                                                                                                           |
-|--------------------|----------|---------------------------------------------|---------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
-| `filter`           | Optional | `Object`                                    | `{}`                                  | Permanent filters to use for getting the suggestion list                                                              |
-| `perPage`          | Optional | `number`                                    | 25                                    | Number of suggestions to show                                                                                         |
-| `reference`        | Required | `string`                                    | ''                                    | Name of the reference resource, e.g. 'posts'.                                                                         |
-| `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`      | How to order the list of suggestions                                                                                  |
-| `enableGetChoices` | Optional | `({q: string}) => boolean`                  | `() => true`                          | Function taking the `filterValues` and returning a boolean to enable the `getList` call.                              |
+| Prop               | Required | Type                                        | Default                          | Description                                                                                                       |
+|--------------------|----------|---------------------------------------------|----------------------------------|-------------------------------------------------------------------------------------------------------------------|
+| `filter`           | Optional | `Object`                                    | `{}`                             | Permanent filters to use for getting the suggestion list                                                          |
+| `page`             | Optional | `number`                                    | 1                                | The current page number                                                                                           |
+| `perPage`          | Optional | `number`                                    | 25                               | Number of suggestions to show                                                                                     |
+| `reference`        | Required | `string`                                    | ''                               | Name of the reference resource, e.g. 'posts'.                                                                     |
+| `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }` | How to order the list of suggestions                                                                              |
+| `enableGetChoices` | Optional | `({q: string}) => boolean`                  | `() => true`                     | Function taking the `filterValues` and returning a boolean to enable the `getList` call.                          |
 
 
-`<ReferenceInput>` also accepts the [common input props](./Inputs.md#common-input-props).
+**Note**: `<ReferenceInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) ; it is the responsability of children to apply them.
 
 ## Usage
 
-You can tweak how this component fetches the possible values using the `perPage`, `sort`, and `filter` props.
+You can tweak how this component fetches the possible values using the `page`, `perPage`, `sort`, and `filter` props.
 
 {% raw %}
 ```jsx
