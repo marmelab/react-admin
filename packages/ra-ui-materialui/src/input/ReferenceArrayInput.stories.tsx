@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { CoreAdminContext, Form, testDataProvider } from 'ra-core';
-import { ThemeProvider, createTheme } from '@mui/material';
+import { Form, testDataProvider } from 'ra-core';
+import { AdminContext } from '../AdminContext';
 
 import { DatagridInput } from '../input';
 import { TextField } from '../field';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
 
 export default { title: 'ra-ui-materialui/input/ReferenceArrayInput' };
 
@@ -25,24 +27,24 @@ const dataProvider = testDataProvider({
     },
 });
 
+const i18nProvider = polyglotI18nProvider(() => englishMessages);
+
 export const WithDatagridChild = () => (
-    <ThemeProvider theme={createTheme()}>
-        <CoreAdminContext dataProvider={dataProvider}>
-            <Form
-                onSubmit={() => {}}
-                defaultValues={{ tag_ids: [5] }}
-                render={() => (
-                    <ReferenceArrayInput
-                        reference="tags"
-                        resource="posts"
-                        source="tag_ids"
-                    >
-                        <DatagridInput rowClick="toggleSelection">
-                            <TextField source="name" />
-                        </DatagridInput>
-                    </ReferenceArrayInput>
-                )}
-            />
-        </CoreAdminContext>
-    </ThemeProvider>
+    <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+        <Form
+            onSubmit={() => {}}
+            defaultValues={{ tag_ids: [5] }}
+            render={() => (
+                <ReferenceArrayInput
+                    reference="tags"
+                    resource="posts"
+                    source="tag_ids"
+                >
+                    <DatagridInput rowClick="toggleSelection" sx={{ mt: 6 }}>
+                        <TextField source="name" />
+                    </DatagridInput>
+                </ReferenceArrayInput>
+            )}
+        />
+    </AdminContext>
 );

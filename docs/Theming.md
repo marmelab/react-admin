@@ -510,10 +510,10 @@ const MyAppBar = props => <AppBar {...props} userMenu={<MyUserMenu />} />;
 
 ### Sidebar Customization
 
-You can specify the `Sidebar` width by setting the `width` and `closedWidth` property on your custom MUI theme:
+You can specify the `Sidebar` width by setting the `width` and `closedWidth` properties on your custom MUI theme:
 
 ```jsx
-import { defaultTheme } from "react-admin";
+import { defaultTheme } from 'react-admin';
 
 const theme = {
     ...defaultTheme,
