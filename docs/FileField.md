@@ -35,11 +35,7 @@ This field is also often used within a [`<FileInput />`](./FileInput.md) compone
 
 ## `sx`: CSS API
 
-The `<FileField>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
-
-| Rule name            | Description                 |
-|----------------------|-----------------------------|
-| `&.RaFileField-root` | Applied to the root element |
+The `<FileField>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)).
 
 To override the style of all instances of `<FileField>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaFileField` key.
 

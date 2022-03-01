@@ -265,7 +265,6 @@ The `<SelectArrayInput>` component accepts the usual `className` prop. You can a
 
 | Rule name                     | Description                                                                        |
 |-------------------------------|------------------------------------------------------------------------------------|
-| `&.RaSelectArrayInput-root`   | Applied to the root element                                                        |
 | `& .RaSelectArrayInput-chip`  | Applied to each MUI's `Chip` component used as selected item               |
 | `& .RaSelectArrayInput-chips` | Applied to the container of MUI's `Chip` components used as selected items |
 

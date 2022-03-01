@@ -82,9 +82,8 @@ The `<SingleFieldList>` items link to the edition page by default. You can set t
 
 The `<SingleFieldList>` component accepts the usual `className` prop. You can also override the styles of the inner components thanks to the `sx` property. This property accepts the following subclasses:
 
-| Rule name                   | Description                 |
-|-----------------------------|-----------------------------|
-| `&.RaSingleFieldList-root`  | Applied to the root element |
-| `& .RaSingleFieldList-link` | Applied to each link        |
+| Rule name                   | Description             |
+|-----------------------------|-------------------------|
+| `& .RaSingleFieldList-link` | Applied to each link    |
 
 **Tip**: You can override these classes for all `<SingleFieldList>` instances by overriding them in a MUI theme, using the key "RaSingleFieldList".

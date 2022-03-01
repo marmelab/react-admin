@@ -283,7 +283,6 @@ The `<Show>` component accepts the usual `className` prop but you can override m
 
 | Rule name        | Description                                                   |
 |------------------| ------------------------------------------------------------- |
-| `&.RaShow-root`  | Alternative to using `className`. Applied to the root element |
 | `& .RaShow-main` | Applied to the main container                                 |
 | `& .RaShow-card` | Applied to the `<Card>` element                               |
 
