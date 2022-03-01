@@ -1606,14 +1606,14 @@ You have several options when leveraging the [theme component overrides](https:/
 ```js
 const myTheme = {
     components: {
-    // Name of the component
-    MuiTextField: {
-      defaultProps: {
-        margin: 'normal',
-        variant: 'outlined',
-      },
+        // Name of the component
+        MuiTextField: {
+            defaultProps: {
+                margin: 'normal',
+                variant: 'outlined',
+            },
+        },
     },
-  },
 }
 ```
 
@@ -1621,14 +1621,14 @@ const myTheme = {
 ```js
 const myTheme = {
     components: {
-    // Name of the component
-    RaTextInput: {
-      defaultProps: {
-        margin: 'normal',
-        variant: 'outlined',
-      },
+        // Name of the component
+        RaTextInput: {
+            defaultProps: {
+                margin: 'normal',
+                variant: 'outlined',
+            },
+        },
     },
-  },
 }
 ```
 

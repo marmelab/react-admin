@@ -255,9 +255,9 @@ MUI also supports [complete theming](https://mui.com/customization/themes) out o
 
 ```jsx
 const theme = {
-  palette: {
-    type: 'dark', // Switching the dark mode on is a single property value change.
-  },
+    palette: {
+        mode: 'dark', // Switching the dark mode on is a single property value change.
+    },
 };
 
 const App = () => (
