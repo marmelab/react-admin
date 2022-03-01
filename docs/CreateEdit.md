@@ -108,12 +108,11 @@ You can customize the `<Create>` and `<Edit>` components using the following pro
 
 The `<Create>` and `<Edit>` components accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most MUI components, see their [documentation about it](https://mui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
-| Rule name   | Description                                                                                |
-| ----------- | ------------------------------------------------------------------------------------------ |
-| `root`      | Alternative to using `className`. Applied to the root element                              |
-| `main`      | Applied to the main container                                                              |
-| `noActions` | Applied to the main container when `actions` prop is `false`                               |
-| `card`      | Applied to the child component inside the main container (MUI's `Card` by default) |
+| Rule name               | Description                                                                          |
+|-------------------------|--------------------------------------------------------------------------------------|
+| `& .RaCreate-main`      | Applied to the main container                                                        |
+| `& .RaCreate-noActions` | Applied to the main container when `actions` prop is `false`                         |
+| `& .RaCreate-card`      | Applied to the child component inside the main container (MUI's `Card` by default)   |
 
 To override the style of all instances of `<Create>` and `<Edit>` components using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaCreate` and `RaEdit` keys respectively.
 
@@ -1722,19 +1721,16 @@ Here are the props received by the `Toolbar` component when passed as the `toolb
 * `pristine`: A boolean indicating whether the form is pristine (eg: no inputs have been changed yet)
 * `saving`: A boolean indicating whether a save operation is ongoing.
 * `submitOnEnter`: A boolean indicating whether the form should be submitted when pressing `enter`
-* `width`: A string apply to the mobile or desktop classes depending on its value. Pass `xs` to display the mobile version.
 
 ### CSS API
 
 The `<Toolbar>` accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most MUI components, see their [documentation about it](https://mui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
-| Rule name        | Description                                                                     |
-| ---------------- | ------------------------------------------------------------------------------- |
-| `toolbar`        | Applied to the underlying `MuiToolbar` component                                |
-| `defaultToolbar` | Applied to the container of the `<Toolbar>` buttons when no children are passed |
-| `desktopToolbar` | Applied to the underlying `MuiToolbar` component when `width` prop is not `xs`  |
-| `mobileToolbar`  | Applied to the underlying `MuiToolbar` component when `width` prop is `xs`      |
-| `spacer`         | Applied to the div below the underlying `MuiToolbar` used as spacer             |
+| Rule name                      | Description                                                                            |
+|--------------------------------|----------------------------------------------------------------------------------------|
+| `& .RaToolbar-defaultToolbar`  | Applied to the internal wrapper of the `<Toolbar>` buttons when no children are passed |
+| `&.RaToolbar-desktopToolbar`   | Applied to the underlying `MuiToolbar` component for medium and large screens          |
+| `&.RaToolbar-mobileToolbar`    | Applied to the underlying `MuiToolbar` component for small screens                     |
 
 To override the style of all instances of `<Toolbar>` components using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaToolbar` key.
 
@@ -1742,7 +1738,7 @@ To override the style of all instances of `<Toolbar>` components using the [MUI 
 
 **Tip**: To alter the form values before submitting, you should use the `transform` prop on the `SaveButton`. See [Altering the Form Values before Submitting](#altering-the-form-values-before-submitting) for more information and examples.
 
-**Tip**: If you want to include a custom `Button` in a `<Toolbar>` that doesn't render a react-admin `<Button>`, the props injected by `<Toolbar>` to its children (`invalid`, `pristine`, `saving`, and `submitOnEnter`) will cause React warnings. You'll need to wrap your custom `Button` in another component and ignore the injected props, as follows:
+**Tip**: If you want to include a custom `Button` in a `<Toolbar>` that doesn't render a react-admin `<Button>`, the props injected by `<Toolbar>` to its children (`mutationMode` and `submitOnEnter`) will cause React warnings. You'll need to wrap your custom `Button` in another component and ignore the injected props, as follows:
 
 ```jsx
 import * as React from "react";
@@ -1751,11 +1747,9 @@ import Button from '@mui/material/Button';
 const CustomButton = props => <Button label="My Custom Button" {...props} />
 
 const ToolbarCustomButton = ({
-  invalid,
-  pristine,
-  saving,
-  submitOnEnter,
-  ...rest
+    mutationMode,
+    submitOnEnter,
+    ...rest
 }) => <CustomButton {...rest} />;
 
 const PostEditToolbar = props => (

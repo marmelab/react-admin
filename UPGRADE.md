@@ -2600,7 +2600,7 @@ The `<Toolbar>` component used to receive the form state props (`dirty`, `invali
 
 ```diff
 import Toolbar from '@mui/material/Toolbar';
-import { SaveButton } from 'react-admin';
+import { SaveButton, ToolbarProps } from 'react-admin';
 +import { useFormState } from 'react-hook-form';
 
 const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
@@ -2617,6 +2617,19 @@ const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
                 submitOnEnter={true}
             />
         </Toolbar>
+    );
+};
+```
+
+The `<Toolbar>` component used to receive the `width` prop also, that allowed to display the mobile or desktop version depending on its value. This is handle internally in version 4 and you can safely remove this prop.
+
+```diff
+import { Toolbar } from 'react-admin';
+
+const MyToolbar = () => {
+    return (
+-       <Toolbar width="xs"/>
++       <Toolbar />
     );
 };
 ```
