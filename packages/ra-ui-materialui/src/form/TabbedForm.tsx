@@ -77,7 +77,7 @@ import { useFormRootPath } from './useFormRootPath';
  *
  * @typedef {Object} Props the props you can use (other props are injected by Create or Edit)
  * @prop {ReactElement[]} FormTab elements
- * @prop {Object} initialValues
+ * @prop {Object} defaultValues
  * @prop {Function} validate
  * @prop {boolean} submitOnEnter
  * @prop {string} redirect
@@ -106,7 +106,7 @@ export const TabbedForm = (props: TabbedFormProps) => {
 
 TabbedForm.propTypes = {
     children: PropTypes.node,
-    initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    defaultValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     formRootPathname: PropTypes.string,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     // @ts-ignore
@@ -130,7 +130,7 @@ export interface TabbedFormProps
         > {
     children: ReactNode;
     className?: string;
-    initialValues?: any;
+    defaultValues?: any;
     formRootPathname?: string;
     margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;

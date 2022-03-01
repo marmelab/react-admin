@@ -36,7 +36,7 @@ import { FormContent } from './FormContent';
  * );
  *
  * @typedef {Object} Props the props you can use (other props are injected by Create or Edit)
- * @prop {Object} initialValues
+ * @prop {Object} defaultValues
  * @prop {Function} validate
  * @prop {Function} save
  *

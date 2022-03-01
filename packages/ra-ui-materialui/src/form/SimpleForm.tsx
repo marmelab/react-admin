@@ -28,7 +28,7 @@ import { SimpleFormView } from './SimpleFormView';
  *
  * @typedef {Object} Props the props you can use (other props are injected by Create or Edit)
  * @prop {ReactElement[]} children Input elements
- * @prop {Object} initialValues
+ * @prop {Object} defaultValues
  * @prop {Function} validate
  * @prop {boolean} submitOnEnter
  * @prop {string} redirect
@@ -42,7 +42,7 @@ export const SimpleForm = (props: SimpleFormProps) => (
 
 SimpleForm.propTypes = {
     children: PropTypes.node,
-    initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    defaultValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     // @ts-ignore
     record: PropTypes.object,
@@ -67,7 +67,7 @@ export interface SimpleFormProps
     children: ReactNode;
     className?: string;
     component?: React.ComponentType<any>;
-    initialValues?: any;
+    defaultValues?: any;
     mutationMode?: MutationMode;
     resource?: string;
     submitOnEnter?: boolean;
