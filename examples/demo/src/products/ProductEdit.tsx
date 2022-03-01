@@ -150,7 +150,6 @@ const ProductEdit = () => (
                 <ReferenceManyField
                     reference="reviews"
                     target="product_id"
-                    label={false}
                     pagination={<Pagination />}
                     fullWidth
                 >
