@@ -9,27 +9,28 @@ Whether you need to adjust a CSS rule for a single component, or change the colo
 
 ## Overriding A Component Style
 
-Every react-admin component provides a `className` property, which is always applied to the root element.
+Every react-admin component inherits an `sx` property from MUI, which is always applied to the root element.
 
-Here is an example customizing an `EditButton` component inside a `Datagrid`, using its `className` property and the `makeStyles` hook from MUI:
+Here is an example customizing an `EditButton` component inside a `Datagrid`, using the `sx` property from MUI:
 
 {% raw %}
 ```jsx
 import * as React from 'react';
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
-import { makeStyles } from '@mui/material/styles';
 
-const useStyles = makeStyles({
-    button: {
-        fontWeight: 'bold',
-        // This is JSS syntax to target a deeper element using css selector, here the svg icon for this button
-        '& svg': { color: 'orange' }
-    },
-});
-
-const MyEditButton = props => {
-    const classes = useStyles();
-    return <EditButton className={classes.button} {...props} />;
+const MyEditButton = (props) => {
+    return (
+        <EditButton
+            sx={{
+                button: {
+                    fontWeight: "bold",
+                    // This is CSS-in-JS syntax to target a deeper element using css selector, here the svg icon for this button
+                    "& svg": { color: "orange" },
+                },
+            }}
+            {...props}
+        />
+    );
 };
 
 export const ProductList = () => (
@@ -44,9 +45,9 @@ export const ProductList = () => (
 ```
 {% endraw %}
 
-For some components, you may want to override not only the root component style, but also the style of components inside the root. In this case, the `className` property isn't enough. You can take advantage of the `classes` property to customize the classes that the component uses internally.
+For some components, you may want to override not only the root component style, but also the style of components inside the root. In this case, you can take advantage of the `sx` property to customize the CSS API that the component uses internally.
 
-Here is an example using the `classes` property of the `<Datagrid>` component:
+Here is an example using the `sx` property of the `<Datagrid>` component:
 
 {% raw %}
 ```jsx
@@ -62,36 +63,33 @@ import {
     ShowButton,
 } from 'react-admin';
 import Icon from '@mui/icons-material/Person';
-import { makeStyles } from '@mui/material/styles';
 
 export const VisitorIcon = Icon;
 
-// The `Datagrid` component uses makeStyles, and supports overriding styles through the `classes` property 
-const useStyles = makeStyles({
-    table: {
-        backgroundColor: 'Lavender',
-    },
-    headerCell: {
-        backgroundColor: 'MistyRose',
-    },
-});
+// The `Datagrid` component uses MUI System, and supports overriding styles through the `sx` property 
 
-export const PostList = () => {
-    const classes = useStyles();
-    return (
-        <List>
-            <Datagrid classes={classes}>
-                <TextField source="id" />
-                <TextField source="title" />
-                <DateField source="published_at" sortByOrder="DESC"/>
-                <BooleanField source="commentable" sortable={false} />
-                <NumberField source="views" sortByOrder="DESC" />
-                <EditButton />
-                <ShowButton />
-            </Datagrid>
-        </List>
-    )
-};
+export const PostList = () => (
+    <List>
+        <Datagrid
+            sx={{
+                "& .RaDatagrid-table": {
+                    backgroundColor: "Lavender",
+                },
+                "& .RaDatagrid-headerCell": {
+                    backgroundColor: "MistyRose",
+                },
+            }}
+        >
+            <TextField source="id" />
+            <TextField source="title" />
+            <DateField source="published_at" sortByOrder="DESC" />
+            <BooleanField source="commentable" sortable={false} />
+            <NumberField source="views" sortByOrder="DESC" />
+            <EditButton />
+            <ShowButton />
+        </Datagrid>
+    </List>
+);
 ```
 {% endraw %}
 
