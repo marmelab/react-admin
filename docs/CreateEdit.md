@@ -1781,30 +1781,13 @@ You can also [wrap inputs inside containers](#custom-row-container), or [create 
 
 ### Variant
 
-By default, react-admin input components use the Material Design "filled" variant. If you want to use the "standard" or "outlined" variants, you can either set the `variant` prop on each Input component individually, or set the `variant` prop directly on the Form component. In that case, the Form component will transmit the `variant` to each Input.
+By default, react-admin input components use the Material Design "filled" variant. If you want to use the "standard" or "outlined" variants, you can set the `variant` prop on each Input component individually.
 
 ```jsx
 export const PostEdit = () => (
     <Edit>
-        <SimpleForm variant="standard">
-            ...
-        </SimpleForm>
-    </Edit>
-);
-```
-
-**Tip**: If your form contains not only Inputs but also Fields, the injection of the `variant` property to the form children will cause a React warning. You'll need to wrap every Field component in another component to ignore the injected `variant` prop, as follows:
-
-```diff
-+const TextFieldInForm = ({ variant, ...props }) => <TextField {...props} />;
-+TextFieldInForm.defaultProps = TextField.defaultProps;
-
-```jsx
-export const PostEdit = () => (
-    <Edit>
-        <SimpleForm variant="standard">
--           <TextField source="title" />
-+           <TextFieldInForm source="title" />
+        <SimpleForm>
+            <TextInput source="name" variant="standard">
         </SimpleForm>
     </Edit>
 );
@@ -1812,13 +1795,13 @@ export const PostEdit = () => (
 
 ### Margin
 
-By default, react-admin input components use the Material Design "dense" margin. If you want to use the "normal" or "none" margins, you can either set the `margin` prop on each Input component individually, or set the `margin` prop directly on the Form component. In that case, the Form component will transmit the `margin` to each Input.
+By default, react-admin input components use the Material Design "dense" margin. If you want to use the "normal" or "none" margins, you can set the `margin` prop on each Input component individually.
 
 ```jsx
 export const PostEdit = () => (
     <Edit>
-        <SimpleForm margin="normal">
-            ...
+        <SimpleForm >
+            <TextInput source="name" margin="normal">
         </SimpleForm>
     </Edit>
 );
