@@ -2601,15 +2601,18 @@ The `<Toolbar>` component used to receive the form state props (`dirty`, `invali
 ```diff
 import Toolbar from '@mui/material/Toolbar';
 import { SaveButton } from 'react-admin';
++import { useFormState } from 'react-hook-form';
 
 const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
 -    const { invalid, resource, saving } = props;
 +    const { resource, saving } = props;
++    const { isValid } = useFormState();
 
     return (
         <Toolbar>
             <SaveButton
 -               invalid={invalid}
++               invalid={!isValid}
                 saving={saving}
                 submitOnEnter={true}
             />
@@ -2803,7 +2806,6 @@ const MyForm = () => (
 ## `useRedirect()` No Longer Clears Forms When Called With `false`
 
 To implement a form that would reset after submittion and allow adding more data, react-admin used to encourage you to call `useRedirect()` with `false` to clear the form. This no longer works: `useRedirect()` manages redirections, not forms. You'll have to clear the form manually in your side effect:
-
 
 ```diff
 -import { useNotify, useRedirect } from 'react-admin';
