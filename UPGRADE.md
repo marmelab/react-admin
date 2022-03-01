@@ -2213,14 +2213,12 @@ const MyForm = () => {
     return (
         <Create>
             <FormWithRedirect
--                render={({ handleSubmit, ...formProps }) => (
+-                render={formProps) => (
 +                render={({ handleSubmit, ...formProps }) => (
--                    <>
 +                    <form onSubmit={handleSubmit}>
-                        <TextInput source="name" />
+                         <TextInput source="name" />
 -                        <MySaveButton handleSubmit={handleSubmit}>
-+                       <MySaveButton />
--                    </>
++                        <MySaveButton />
 +                    </form>
                 )}
             />
@@ -2244,12 +2242,10 @@ const MyForm = () => {
             <FormWithRedirect
 -                render={({ handleSubmitWithRedirect, ...formProps }) => (
 +                render={({ handleSubmit, ...formProps }) => (
--                    <>
 +                    <form onSubmit={handleSubmit}>
-                        <TextInput source="name" />
+                         <TextInput source="name" />
 -                        <MySaveButton handleSubmitWithRedirect={handleSubmitWithRedirect}>
-+                       <MySaveButton />
--                    </>
++                        <MySaveButton />
 +                    </form>
                 )}
             />

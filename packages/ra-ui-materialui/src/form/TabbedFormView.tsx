@@ -125,7 +125,7 @@ TabbedFormView.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
-    initialValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+    defaultValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     invalid: PropTypes.bool,
     location: PropTypes.object,
     match: PropTypes.object,
