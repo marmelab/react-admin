@@ -90,7 +90,6 @@ const PostShow = () => {
                     </Tab>
                     <Tab label="post.form.comments">
                         <ReferenceManyField
-                            label={false}
                             reference="comments"
                             target="post_id"
                             sort={{ field: 'created_at', order: 'DESC' }}

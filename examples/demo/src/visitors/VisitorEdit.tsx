@@ -10,7 +10,6 @@ import {
     Form,
     required,
     email,
-    useRecordContext,
 } from 'react-admin';
 import { Box, Card, CardContent, Typography } from '@mui/material';
 
@@ -18,7 +17,6 @@ import Aside from './Aside';
 import FullNameField from './FullNameField';
 import SegmentsInput from './SegmentsInput';
 import { validatePasswords } from './VisitorCreate';
-import { Customer } from '../types';
 
 const VisitorEdit = () => {
     return (
@@ -28,10 +26,7 @@ const VisitorEdit = () => {
     );
 };
 
-const VisitorTitle = () => {
-    const record = useRecordContext<Customer>();
-    return record ? <FullNameField record={record} size="32" /> : null;
-};
+const VisitorTitle = () => <FullNameField size="32" />;
 
 const VisitorForm = (props: any) => {
     const translate = useTranslate();

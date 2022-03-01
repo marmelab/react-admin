@@ -41,8 +41,8 @@ const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
         <StyledMuiToolbar className={classes.root}>
             {record.status === 'pending' ? (
                 <Fragment>
-                    <AcceptButton record={record} />
-                    <RejectButton record={record} />
+                    <AcceptButton />
+                    <RejectButton />
                 </Fragment>
             ) : (
                 <Fragment>

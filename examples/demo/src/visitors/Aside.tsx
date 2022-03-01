@@ -29,7 +29,11 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import order from '../orders';
 import review from '../reviews';
 import StarRatingField from '../reviews/StarRatingField';
-import { Order as OrderRecord, Review as ReviewRecord } from '../types';
+import {
+    Order as OrderRecord,
+    Review as ReviewRecord,
+    Customer,
+} from '../types';
 
 const PREFIX = 'Aside';
 
@@ -47,7 +51,7 @@ const AsideRoot = styled('div')(({ theme }) => ({
 }));
 
 const Aside = () => {
-    const record = useRecordContext();
+    const record = useRecordContext<Customer>();
 
     return (
         <AsideRoot className={classes.root}>

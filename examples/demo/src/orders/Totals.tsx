@@ -2,7 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import clsx from 'clsx';
 import { Table, TableBody, TableCell, TableRow } from '@mui/material';
-import { FieldProps, useTranslate } from 'react-admin';
+import { useRecordContext, useTranslate } from 'react-admin';
 
 import { Order } from '../types';
 
@@ -20,9 +20,8 @@ const StyledTable = styled(Table)({
     [`& .${classes.boldCell}`]: { fontWeight: 'bold' },
 });
 
-const Totals = (props: FieldProps<Order>) => {
-    const { record } = props;
-
+const Totals = () => {
+    const record = useRecordContext<Order>();
     const translate = useTranslate();
 
     return (

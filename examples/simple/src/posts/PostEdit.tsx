@@ -242,7 +242,6 @@ const PostEdit = () => {
                     <ReferenceManyField
                         reference="comments"
                         target="post_id"
-                        label={false}
                         fullWidth
                     >
                         <Datagrid>

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import { FieldProps } from 'react-admin';
+import { useRecordContext } from 'react-admin';
 import { Product } from '../types';
 
 const PREFIX = 'Poster';
@@ -28,8 +28,8 @@ const StyledCard = styled(Card)({
     },
 });
 
-const Poster = (props: FieldProps<Product>) => {
-    const { record } = props;
+const Poster = () => {
+    const record = useRecordContext<Product>();
 
     if (!record) return null;
 
