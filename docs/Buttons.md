@@ -305,6 +305,7 @@ Delete the current record after a confirm dialog has been accepted. To be used i
 | [`redirect`](./CreateEdit.md#redirection-after-submission) | Optional | `string | false | Function`      | 'list'                      | Custom redirection after success side effect                            |
 | `translateOptions`                                         | Optional | `{ id?: string, name?: string }` | {}                          | Custom id and name to be used in the confirm dialog's title             |
 
+{% raw %}
 ```jsx
 import * as React from 'react';
 import { DeleteWithConfirmButton, Toolbar, Edit, SaveButton,useRecordContext } from 'react-admin';
@@ -329,6 +330,7 @@ const MyEdit = () => (
     </Edit>    
 );
 ```
+{% endraw %}
 
 ### `<CloneButton>`
 ### `<SaveButton>`
