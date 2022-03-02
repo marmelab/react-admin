@@ -9,7 +9,7 @@ Whether you need to adjust a CSS rule for a single component, or change the colo
 
 ## Overriding A Component Style
 
-Every react-admin component inherits an `sx` property from MUI, which is always applied to the root element.
+Every react-admin component exposes an `sx` property from MUI besides providing a `className` property, which is always applied to the root element.
 
 Here is an example customizing an `EditButton` component inside a `Datagrid`, using the `sx` property from MUI:
 
@@ -105,7 +105,7 @@ Sometimes you want the format to depend on the value. The following example show
 import * as React from 'react';
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 
-const ColoredNumberFieldClasses = {
+const ColoredNumberFieldStyles = {
     small: { color: 'black' },
     big: { color: 'red' },
 };
@@ -114,9 +114,9 @@ const ColoredNumberField = (props) => (
     <NumberField
         sx={{
             ...(props.record[props.source] < 100 &&
-                ColoredNumberFieldClasses.small),
+                ColoredNumberFieldStyles.small),
             ...(props.record[props.source] >= 100 &&
-                ColoredNumberFieldClasses.big),
+                ColoredNumberFieldStyles.big),
         }}
         {...props}
     />
@@ -145,7 +145,7 @@ Furthermore, you may extract this highlighting strategy into a Higher Order Comp
 import * as React from 'react';
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 
-const ColoredNumberFieldClasses = {
+const ColoredNumberFieldStyles = {
     small: { color: 'black' },
     big: { color: 'red' },
 };
@@ -155,9 +155,9 @@ const colored = (WrappedComponent) => (props) =>
         <WrappedComponent
             sx={{
                 ...(props.record[props.source] < 100 &&
-                    ColoredNumberFieldClasses.small),
+                    ColoredNumberFieldStyles.small),
                 ...(props.record[props.source] >= 100 &&
-                    ColoredNumberFieldClasses.big),
+                    ColoredNumberFieldStyles.big),
             }}
             {...props}
         />
