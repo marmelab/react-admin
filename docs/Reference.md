@@ -71,7 +71,7 @@ title: "Reference"
 * [`<ImageInput>`](./ImageInput.md)
 * [`<ImageInputPreview>`](./ImageInput.md#imageinput)
 * [`<Labeled>`](./Labeled.md)
-* [`<LanguageSwitcher>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#languageswitcher-store-the-locale-in-preferences)<img class="icon" src="./img/premium.svg" />
+* [`<LanguageSwitcher>`](./LanguageSwitcher.md)
 * [`<Layout>`](./Theming.md#using-a-custom-layout)
 * [`<Loading>`](./Theming.md#loading)
 * [`<LinearProgress>`](./Theming.md#linearprogress)
