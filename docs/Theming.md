@@ -523,20 +523,17 @@ For more advanced sidebar theming, pass your own `Sidebar` component to a custom
 
 ```jsx
 import { Sidebar, Layout } from 'react-admin';
-import { makeStyles } from '@mui/material/styles';
 
-const useSidebarStyles = makeStyles({
-    drawerPaper: {
-        backgroundColor: 'red',
-    },
-});
-
-const MySidebar = props => {
-    const classes = useSidebarStyles();
-    return (
-        <Sidebar classes={classes} {...props} />
-    );
-};
+const MySidebar = (props) => (
+    <Sidebar
+        sx={{
+            "& .RaSidebar-drawerPaper": {
+                backgroundColor: "red",
+            },
+        }}
+        {...props}
+    />
+);
 
 const MyLayout = props => <Layout {...props} sidebar={MySidebar} />
 ```
