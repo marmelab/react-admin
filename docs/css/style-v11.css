@@ -113,6 +113,12 @@ ul.sidenav code {
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 }
 
+.sidenav img.premium {
+    width: 23px;
+    height: 23px;
+    vertical-align: middle;
+}
+
 .table-of-contents {
     overflow-y: auto;
     height: calc(100% - 75px);
