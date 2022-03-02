@@ -148,7 +148,6 @@ Furthermore, you may extract this highlighting strategy into a Higher Order Comp
 ```jsx
 import * as React from 'react';
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
-import clsx from 'clsx';
 
 const ColoredNumberFieldClasses = {
     small: { color: 'black' },
@@ -158,10 +157,12 @@ const ColoredNumberFieldClasses = {
 const colored = WrappedComponent => props => {
     return (
         <WrappedComponent
-            className={clsx({
-                [ColoredNumberFieldClasses.small]: props.record[props.source] < 500,
-                [ColoredNumberFieldClasses.big]: props.record[props.source] >= 500,
-            })}
+            sx={{
+                ...(props.record[props.source] < 100 &&
+                    ColoredNumberFieldClasses.small),
+                ...(props.record[props.source] >= 100 &&
+                    ColoredNumberFieldClasses.big),
+            }}
             {...props}
         />
     )
