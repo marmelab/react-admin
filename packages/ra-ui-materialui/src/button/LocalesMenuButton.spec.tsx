@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { Basic } from './LanguageSwitcher.stories';
+import { Basic } from './LocalesMenuButton.stories';
 
 describe('LanguageSwitcher', () => {
     test('should allow to change language', async () => {

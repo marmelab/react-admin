@@ -279,7 +279,7 @@ const LocaleSwitcher = () => {
 export default LocaleSwitcher;
 ```
 
-As this is a very common need, react-admin provides the [`<LanguageSwitcher>`](./LanguageSwitcher.md) component.
+As this is a very common need, react-admin provides the [`<LocalesMenuButton>`](./LocalesMenuButton.md) component.
 
 ## Lazy-Loading Locales
 

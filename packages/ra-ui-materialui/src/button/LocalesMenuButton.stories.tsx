@@ -4,11 +4,11 @@ import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
 
 import { AdminContext } from '../AdminContext';
-import { LanguageSwitcher } from './LanguageSwitcher';
+import { LocalesMenuButton } from './LocalesMenuButton';
 import { useTranslate } from 'ra-core';
 import { Typography } from '@mui/material';
 
-export default { title: 'ra-ui-materialui/button/LanguageSwitcher' };
+export default { title: 'ra-ui-materialui/button/LocalesMenuButton' };
 
 const i18nProvider = polyglotI18nProvider(
     locale => (locale === 'fr' ? frenchMessages : englishMessages),
@@ -23,7 +23,7 @@ const Component = () => {
 
 export const Basic = () => (
     <AdminContext i18nProvider={i18nProvider}>
-        <LanguageSwitcher
+        <LocalesMenuButton
             languages={[
                 { locale: 'en', name: 'English' },
                 { locale: 'fr', name: 'Français' },

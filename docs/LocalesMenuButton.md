@@ -1,11 +1,11 @@
 ---
 layout: default
-title: "LanguageSwitcher"
+title: "LocalesMenuButton"
 ---
 
-# `<LanguageSwitcher>`
+# `<LocalesMenuButton>`
 
-The `<LanguageSwitcher>` component displays a menu allowing users to select the language. It leverages the [store](./Store.md) so that their selection is persisted.
+The `<LocalesMenuButton>` component displays a menu allowing users to select the language. It leverages the [store](./Store.md) so that their selection is persisted.
 
 ## Usage
 
@@ -17,7 +17,7 @@ import frenchMessages from 'ra-language-french';
 import {
     Admin,
     Resource,
-    LanguageSwitcher,
+    LocalesMenuButton,
     List,
     SimpleList,
     Layout,
@@ -30,7 +30,7 @@ const MyAppBar = (props) => (
         <Box flex="1">
             <Typography variant="h6" id="react-admin-title"></Typography>
         </Box>
-        <LanguageSwitcher
+        <LocalesMenuButton
             languages={[
                 { locale: 'en', name: 'English' },
                 { locale: 'fr', name: 'Français' },
@@ -61,16 +61,16 @@ const App = () => (
 
 ## API
 
-* [`LanguageSwitcher`]
+* [`LocalesMenuButton`]
 
-[`LanguageSwitcher`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/button/LanguageSwitcher.tsx
+[`LocalesMenuButton`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/button/LocalesMenuButton.tsx
 
 ## `sx`: CSS API
 
-The `<LanguageSwitcher>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<LocalesMenuButton>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name                 | Description                                             |
 |---------------------------|---------------------------------------------------------|
-| `& .RaLanguageSwitcher-selectedLanguage`      | Applied to the `Typography` component that shows the current language |
+| `& .RaLocalesMenuButton-selectedLanguage`      | Applied to the `Typography` component that shows the current language |
 
-To override the style of all instances of `<LanguageSwitcher>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaLanguageSwitcher` key.
+To override the style of all instances of `<LocalesMenuButton>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaLocalesMenuButton` key.

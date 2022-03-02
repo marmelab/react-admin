@@ -25,7 +25,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
  *         </AppBar>
  *     );
  */
-export const LanguageSwitcher = ({ languages }: LanguageSwitcherProps) => {
+export const LocalesMenuButton = ({ languages }: LocalesMenuButtonProps) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [locale, setLocale] = useLocaleState();
 
@@ -57,7 +57,7 @@ export const LanguageSwitcher = ({ languages }: LanguageSwitcherProps) => {
                 onClick={handleLanguageClick}
             >
                 <LanguageIcon />
-                <div className={LanguageSwitcherClasses.selectedLanguage}>
+                <div className={LocalesMenuButtonClasses.selectedLanguage}>
                     {getNameForLocale(locale)}
                 </div>
                 <ExpandMoreIcon fontSize="small" />
@@ -82,9 +82,9 @@ export const LanguageSwitcher = ({ languages }: LanguageSwitcherProps) => {
     );
 };
 
-const PREFIX = 'RaLanguageSwitcher';
+const PREFIX = 'RaLocalesMenuButton';
 
-export const LanguageSwitcherClasses = {
+export const LocalesMenuButtonClasses = {
     selectedLanguage: `${PREFIX}-selectedLanguage`,
 };
 
@@ -92,11 +92,11 @@ const Root = styled(Box, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    [`& .${LanguageSwitcherClasses.selectedLanguage}`]: {
+    [`& .${LocalesMenuButtonClasses.selectedLanguage}`]: {
         marginLeft: theme.spacing(1),
     },
 }));
 
-export interface LanguageSwitcherProps {
+export interface LocalesMenuButtonProps {
     languages: { locale: string; name: string }[];
 }

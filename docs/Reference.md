@@ -71,7 +71,7 @@ title: "Reference"
 * [`<ImageInput>`](./ImageInput.md)
 * [`<ImageInputPreview>`](./ImageInput.md#imageinput)
 * [`<Labeled>`](./Labeled.md)
-* [`<LanguageSwitcher>`](./LanguageSwitcher.md)
+* [`<LocalesMenuButton>`](./LocalesMenuButton.md)
 * [`<Layout>`](./Theming.md#using-a-custom-layout)
 * [`<Loading>`](./Theming.md#loading)
 * [`<LinearProgress>`](./Theming.md#linearprogress)
