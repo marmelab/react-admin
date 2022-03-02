@@ -248,183 +248,29 @@ const authProvider = {
 
 **Tip**: If you have to rely on the server for roles and permissions, check out [the Performance section](#performance) below.
 
-## `useCanAccess`
+## Hooks
 
-This hook calls the `authProvider.getPermissions()` and `authProvider.getRoles()` to get the role definitions, then checks whether the requested action and resource are allowed for the current user. 
+Ra-rbac provides hooks to enable or disable features based on roles and permissions.
 
-`useCanAccess` takes an object `{ action, resource, record }` as argument. It returns an object describing the state of the RBAC request. As calls to the `authProvider` are asynchronous, the hook returns a `loading` state in addition to the `canAccess` key.
+- [`usePermissions()`](./usePermissions.md) returns the current permissions.
+- [`useCanAccess()`](./useCanAccess.md) returns a boolean indicating whether the user has access to the given resource.
 
-```jsx
-import { useCanAccess } from '@react-admin/ra-rbac';
-import { DeleteButton } from 'react-admin';
+## Components
 
-const DeleteUserButton = ({ record }) => {
-    const { loading, canAccess } = useCanAccess({ action: 'delete', resource: 'users', record });
-    if (loading || !canAccess) return null;
-    return <DeleteButton record={record} resource="users" />;
-};
-```
+Ra-rbac provides replacements for react-admin components, that include role-based access control.
 
-When checking if a user can access a resource, ra-rbac grabs the permissions corresponding to his roles. If at least one of these permissions allows him to access the resource, the user is granted access. Otherwise, the user is denied.
-
-```jsx
-const authProvider= {
-    // ...
-    getPermissions: () => Promise.resolve({
-        permissions: [
-            { action: ["read", "create", "edit", "export"], resource: "companies" },
-            { action: ["read", "create", "edit"], resource: "people" },
-            { action: ["read", "create", "edit", "export"], resource: "deals" },
-            { action: ["read", "create"], resource: "comments" },
-            { action: ["read", "create", "edit", "delete"], resource: "tasks" },
-            { action: ["read", "write"], resource: "sales", record: { "id": "123" } },
-        ],
-    }),
-};
-
-const { canAccess: canReadCompanies } = useCanAccess({ action: "read", resource: "companies" }); // canReadCompanies is true
-const { canAccess: canCreatePeople } = useCanAccess({ action: "create", resource: "people" }); // canCreatePeople is true
-const { canAccess: canExportPeople } = useCanAccess({ action: "export", resource: "people" }); // canExportPeople is false
-const { canAccess: canEditDeals } = useCanAccess({ action: "edit", resource: "deals" }); // canEditDeals is true
-const { canAccess: canDeleteComments } = useCanAccess({ action: "delete", resource: "tasks" }); // canDeleteComments is true
-const { canAccess: canReadSales } = useCanAccess({ action: "read", resource: "sales" }); // canReadSales is false
-const { canAccess: canReadSelfSales } = useCanAccess({ action: "read", resource: "sales" }, { id: "123" }); // canReadSelfSales is true
-```
-
-**tip**: The *order* of permissions as returned by the `authProvider` isn't significant. As soon as at least one permission grants access to an action on a resource, the user will be able to perform it.
-
-## `usePermissions`
-
-This replacement for [react-admin's `usePermissions`](https://marmelab.com/react-admin/Authentication.html#usepermissions-hook) returns an array of permissions, resulting in the merge of the user permissions and the permissions from the user roles.
-
-```jsx
-import { usePermissions } from "@react-admin/ra-rbac";
-
-const authProvider = {
-    // ...
-    getPermissions: () => Promise.resolve({
-        permissions: [
-            { action: ["read", "write"], resource: "users", record: { "id": "123" } },
-        ],
-        roles: ["reader"],
-    }),
-    getRoles: () => Promise.resolve({
-        admin: [
-            { action: "*", resource: "*" }
-        ],
-        reader: [
-            { action: "read", resource: "*" }
-        ]
-    })
-};
-
-const { loading, permissions } = usePermissions();
-// {
-//      loading: false,
-//      permissions: [
-//          { action: "read", resource: "*" },
-//          { action: ["read", "write"], resource: "users", record: { "id": "123" } },
-//      ],
-// };
-```
-
-`usePermissions` is asynchronous and returns an empty permissions array on mount. Only after calls to `authProvider` is `usePermissions` able to return the permissions array.
-
-`usePermissions` is used internally by most ra-rbac components, but you will probably not need to use it directly.
-
-## `canAccess`
-
-This helper function can check if the current permissions allow the user to execute an action on a resource (and optionally a record). It requires the `permissions` array, so it must be used in conjunction with `usePermissions`.
-
-`canAccess` expects an object `{ permissions, resource, action, record }` as parameter, and returns a boolean.
-
-```jsx
-canAccess({
-    permissions: [
-        { action: 'read', resource: 'user' },
-        { action: ['read', 'edit', 'create', 'delete'], resource: 'posts' },
-    ],
-    action: "edit",
-    resource: "posts"
-}); // true
-```
-
-`canAccess` is very useful to hide restricted elements in the admin, e.g. to hide columns in a datagrid:
-
-```jsx
-import { List, Datagrid, TextField } from 'react-admin';
-import { canAccess } from '@react-admin/ra-rbac';
-
-const authProvider = {
-    checkAuth: () => Promise.resolve(),
-    login: () => Promise.resolve(),
-    logout: () => Promise.resolve(),
-    checkError: () => Promise.resolve(),
-    getPermissions: () => Promise.resolve({
-        permissions: [
-            { action: 'list', resource: 'products' },
-            { action: 'read', resource: 'products.price' },
-        ],
-    }),
-};
-
-const ProductList = (props) => {
-    const { loading, permissions } = usePermissions();
-    if (loading) return null;
-    return (
-        <List {...props}>
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="reference" />
-                <TextField source="width" />
-                <TextField source="height" />
-                {canAccess({
-                    permissions,
-                    action: 'read',
-                    resource: 'products.price',
-                }) && <TextField source="price" />}
-                {/* this column will not render */}
-                {canAccess({
-                    permissions,
-                    action: 'read',
-                    resource: 'products.stock',
-                }) && <TextField source="stock" />}
-            </Datagrid>
-        </List>
-    );
-};
-```
-
-**Tip**: Ra-rbac actually proposes a `<Datagrid>` component that hides columns depending on permissions. Check out [the `<Datagrid>` component](#datagrid) below.  
-
-## `<WithPermissions>`
-
-This component relies on the `authProvider` to render its child only if the user has the right permissions. It accepts the following props:
-
-- `action` (string, required): the action to check, e.g. 'read', 'list', 'export', 'delete', etc.
-- `resource` (string required): the resource to check, e.g. 'users', 'comments', 'posts', etc.
-- `record` (object, optional): the record to check. If passed, the child only renders if the user has permissions for that record, e.g. `{ id: 123, firstName: "John", lastName: "Doe" }`
-
-Additional props are passed down to the child element. 
-
-```jsx
-import { WithPermissions } from '@react-admin/ra-rbac';
-import { DeleteButton, EditButton, ShowButton } from 'react-admin';
-
-const RecordToolbar = ({ resource }) => (
-    <Toolbar>
-        <WithPermissions action="edit" resource={resource}>
-            <EditButton />
-        </WithPermissions>
-        <WithPermissions action="show" resource={resource}>
-            <ShowButton />
-        </WithPermissions>
-        <WithPermissions action="delete" resource={resource}>
-            <DeleteButton />
-        </WithPermissions>
-    </Toolbar>
-);
-```
+- [`<Datagrid>`](#datagrid)
+- [`<Edit>`](#edit)
+- [`<FormTab>`](#formtab)
+- [`<List>`](#list)
+- [`<ListActions>`](#listactions)
+- [`<Menu>`](#menu)
+- [`<Resource>`](#resource)
+- [`<Show>`](#show)
+- [`<SimpleForm>`](#simpleform)
+- [`<SimpleShowLayout>`](#simpleshowlayout)
+- [`<Tab>`](#tab)
+- [`<TabbedForm>`](#tabbedform)
 
 ## `<Resource>`
 
