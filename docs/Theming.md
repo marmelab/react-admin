@@ -18,18 +18,16 @@ Here is an example customizing an `EditButton` component inside a `Datagrid`, us
 import * as React from 'react';
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
 
-const MyEditButton = (props) => {
-    return (
-        <EditButton
-            sx={{
-                fontWeight: "bold",
-                // This is CSS-in-JS syntax to target a deeper element using css selector, here the svg icon for this button
-                "& svg": { color: "orange" },
-            }}
-            {...props}
-        />
-    );
-};
+const MyEditButton = (props) => (
+    <EditButton
+        sx={{
+            fontWeight: "bold",
+            // This is CSS-in-JS syntax to target a deeper element using css selector, here the svg icon for this button
+            "& svg": { color: "orange" },
+        }}
+        {...props}
+    />
+);
 
 export const ProductList = () => (
     <List>
@@ -112,19 +110,17 @@ const ColoredNumberFieldClasses = {
     big: { color: 'red' },
 };
 
-const ColoredNumberField = (props) => {
-    return (
-        <NumberField
-            sx={{
-                ...(props.record[props.source] < 100 &&
-                    ColoredNumberFieldClasses.small),
-                ...(props.record[props.source] >= 100 &&
-                    ColoredNumberFieldClasses.big),
-            }}
-            {...props}
-        />
-    );
-};
+const ColoredNumberField = (props) => (
+    <NumberField
+        sx={{
+            ...(props.record[props.source] < 100 &&
+                ColoredNumberFieldClasses.small),
+            ...(props.record[props.source] >= 100 &&
+                ColoredNumberFieldClasses.big),
+        }}
+        {...props}
+    />
+);
 
 // Ensure the original component defaultProps are still applied as they may be used by its parents (such as the `Show` component):
 ColoredNumberField.defaultProps = NumberField.defaultProps;
@@ -154,8 +150,8 @@ const ColoredNumberFieldClasses = {
     big: { color: 'red' },
 };
 
-const colored = WrappedComponent => props => {
-    return (
+const colored = (WrappedComponent) => (props) =>
+    (
         <WrappedComponent
             sx={{
                 ...(props.record[props.source] < 100 &&
@@ -165,8 +161,7 @@ const colored = WrappedComponent => props => {
             }}
             {...props}
         />
-    )
-};
+    );
 
 
 const ColoredNumberField = colored(NumberField);
@@ -479,17 +474,15 @@ You can also customize the default icon by setting the `icon` prop to the `<User
 import { AppBar, UserMenu } from 'react-admin';
 import Avatar from '@mui/material/Avatar';
 
-const MyCustomIcon = () => {
-    return (
-        <Avatar
-            sx={{
-                height: 30,
-                width: 30,
-            }}
-            src="https://marmelab.com/images/avatars/adrien.jpg"
-        />
-    )
-};
+const MyCustomIcon = () => (
+    <Avatar
+        sx={{
+            height: 30,
+            width: 30,
+        }}
+        src="https://marmelab.com/images/avatars/adrien.jpg"
+    />
+);
 
 const MyUserMenu = props => (<UserMenu {...props} icon={<MyCustomIcon />} />);
 
