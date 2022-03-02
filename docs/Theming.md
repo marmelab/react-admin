@@ -547,7 +547,7 @@ For more custom layouts, write a component from scratch. It must contain a `{chi
 import * as React from 'react';
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { ThemeProvider, makeStyles } from '@mui/material/styles';
+import { styled } from '@mui/material';
 import {
     AppBar,
     Menu,
@@ -556,32 +556,33 @@ import {
     useSidebarState,
 } from 'react-admin';
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex',
-        flexDirection: 'column',
-        zIndex: 1,
-        minHeight: '100vh',
-        backgroundColor: theme.palette.background.default,
-        position: 'relative',
-    },
-    appFrame: {
-        display: 'flex',
-        flexDirection: 'column',
-        overflowX: 'auto',
-    },
-    contentWithSidebar: {
-        display: 'flex',
-        flexGrow: 1,
-    },
-    content: {
-        display: 'flex',
-        flexDirection: 'column',
-        flexGrow: 2,
-        padding: theme.spacing(3),
-        marginTop: '4em',
-        paddingLeft: 5,
-    },
+const Root = styled("div")(({ theme }) => ({
+    display: "flex",
+    flexDirection: "column",
+    zIndex: 1,
+    minHeight: "100vh",
+    backgroundColor: theme.palette.background.default,
+    position: "relative",
+}));
+
+const AppFrame = styled("div")(({ theme }) => ({
+    display: "flex",
+    flexDirection: "column",
+    overflowX: "auto",
+}));
+
+const ContentWithSidebar = styled("main")(({ theme }) => ({
+    display: "flex",
+    flexGrow: 1,
+}));
+
+const Content = styled("div")(({ theme }) => ({
+    display: "flex",
+    flexDirection: "column",
+    flexGrow: 2,
+    padding: theme.spacing(3),
+    marginTop: "4em",
+    paddingLeft: 5,
 }));
 
 const MyLayout = ({
@@ -589,23 +590,22 @@ const MyLayout = ({
     dashboard,
     title,
 }) => {
-    const classes = useStyles();
     const [open] = useSidebarState();
 
     return (
-        <div className={classes.root}>
-            <div className={classes.appFrame}>
+        <Root>
+            <AppFrame>
                 <AppBar title={title} open={open} />
-                <main className={classes.contentWithSidebar}>
+                <ContentWithSidebar>
                     <Sidebar>
                         <Menu hasDashboard={!!dashboard} />
                     </Sidebar>
-                    <div className={classes.content}>
+                    <Content>
                         {children}
-                    </div>
-                </main>
-            </div>
-        </div>
+                    </Content>
+                </ContentWithSidebar>
+            </AppFrame>
+        </Root>
     );
 };
 
