@@ -287,10 +287,12 @@ const myTheme = merge({}, defaultTheme, {
         // Use the system font instead of the default Roboto font.
         fontFamily: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Arial', 'sans-serif'].join(','),
     },
-    overrides: {
+    components: {
         MuiButton: { // override the styles of all instances of this component
-            root: { // Name of the rule
-                color: 'white', // Some CSS
+            styleOverrides: {
+                root: { // Name of the rule
+                    color: 'white', // Some CSS
+                },
             },
         },
     },
@@ -302,7 +304,7 @@ A `theme` object can contain the following keys:
 * `breakpoints`
 * `direction`
 * `mixins`
-* `overrides`
+* `components`
 * `palette`
 * `props`
 * `shadows`
@@ -475,21 +477,15 @@ You can also customize the default icon by setting the `icon` prop to the `<User
 {% raw %}
 ``` jsx
 import { AppBar, UserMenu } from 'react-admin';
-import { makeStyles } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 
-const useStyles = makeStyles({
-    avatar: {
-        height: 30,
-        width: 30,
-    },
-});
-
 const MyCustomIcon = () => {
-    const classes = useStyles();
     return (
         <Avatar
-            className={classes.avatar}
+            sx={{
+                height: 30,
+                width: 30,
+            }}
             src="https://marmelab.com/images/avatars/adrien.jpg"
         />
     )
