@@ -106,20 +106,21 @@ Sometimes you want the format to depend on the value. The following example show
 ```jsx
 import * as React from 'react';
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
-import clsx from 'clsx';
 
 const ColoredNumberFieldClasses = {
     small: { color: 'black' },
     big: { color: 'red' },
 };
 
-const ColoredNumberField = props => {
+const ColoredNumberField = (props) => {
     return (
         <NumberField
-            className={clsx({
-                [ColoredNumberFieldClasses.small]: props.record[props.source] < 100,
-                [ColoredNumberFieldClasses.big]: props.record[props.source] >= 100,
-            })}
+            sx={{
+                ...(props.record[props.source] < 100 &&
+                    ColoredNumberFieldClasses.small),
+                ...(props.record[props.source] >= 100 &&
+                    ColoredNumberFieldClasses.big),
+            }}
             {...props}
         />
     );
