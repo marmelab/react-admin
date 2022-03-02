@@ -2,7 +2,7 @@ import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Basic } from './LocalesMenuButton.stories';
 
-describe('LanguageSwitcher', () => {
+describe('LocalesMenuButton', () => {
     test('should allow to change language', async () => {
         render(<Basic />);
 

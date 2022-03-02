@@ -16,7 +16,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
  *             <Box flex="1">
  *                 <Typography variant="h6" id="react-admin-title"></Typography>
  *             </Box>
- *             <LanguageSwitcher
+ *             <LocalesMenuButton
  *                 languages={[
  *                     { locale: 'en', name: 'English' },
  *                     { locale: 'fr', name: 'Français' },
