@@ -122,7 +122,7 @@ const App = () => (
 
 ## Handling Authentication
 
-In react-admin, the `dataProvider` is responsible for fetching data, and [the `authProvider`](./Authentication.md) is responsible for managing authentication. In order to authenticating API requests, you must use info from the `authProvider` in the queries made by the `dataProvider`. You can use `localStorage` for this purpose.
+In react-admin, the `dataProvider` is responsible for fetching data, and [the `authProvider`](./Authentication.md) is responsible for managing authentication. In order to authenticate API requests, you must use info from the `authProvider` in the queries made by the `dataProvider`. You can use `localStorage` for this purpose.
 
 For instance, here is how to use a token returned during the login process to authenticate all requests to the API via a Bearer token, using the Simple REST data provider:
 
@@ -142,7 +142,7 @@ const authProvider = {
                 }
                 return response.json();
             })
-            .then({ token }) => {
+            .then(({ token }) => {
                 // store the token in local storage
                 localStorage.setItem('token', token);
             })
@@ -161,7 +161,7 @@ const fetchJson = (url, options = {}) => {
     options.user = {
         authenticated: true,
         // use the token from local storage
-        token: localStorage.getItem('token');
+        token: localStorage.getItem('token')
     };
     return fetchUtils.fetchJson(url, options);
 };

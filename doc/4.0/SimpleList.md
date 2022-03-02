@@ -7,7 +7,7 @@ title: "The SimpleList Component"
 
 <a href="./img/simple-list.gif"><img src="./img/simple-list.gif" style="height:300px" alt="The `<SimpleList>` component"></a>
 
-For mobile devices, a `<Datagrid>` is often unusable - there is simply not enough space to display several columns. The convention in that case is to use a simple list, with only one column per row. The `<SimpleList>` component serves that purpose, leveraging [material-ui's `<List>` and `<ListItem>` components](https://mui.com/components/lists/). 
+For mobile devices, a `<Datagrid>` is often unusable - there is simply not enough space to display several columns. The convention in that case is to use a simple list, with only one column per row. The `<SimpleList>` component serves that purpose, leveraging [MUI's `<List>` and `<ListItem>` components](https://mui.com/components/lists/). 
 
 `<SimpleList>` is an **iterator** component: it gets an array of ids and a data store from the `ListContext`, and iterates over the ids to display each record.
 
@@ -139,7 +139,7 @@ See [`primaryText`](#primarytext)
 
 ## Using `<SimpleList>` On Small Screens
 
-To use `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use material-ui's `useMediaQuery` hook:
+To use `<SimpleList>` on small screens and a `<Datagrid>` on larger screens, use MUI's `useMediaQuery` hook:
 
 ```jsx
 import { useMediaQuery } from '@mui/material';

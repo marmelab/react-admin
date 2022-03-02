@@ -195,7 +195,7 @@ You can also pass React elements as children, to build a custom iterator. Check 
 
 ## `component`
 
-By default, the List view renders the main content area inside a material-ui `<Card>` element. The actual layout of the list depends on the child component you're using (`<Datagrid>`, `<SimpleList>`, or a custom layout component).
+By default, the List view renders the main content area inside a MUI `<Card>` element. The actual layout of the list depends on the child component you're using (`<Datagrid>`, `<SimpleList>`, or a custom layout component).
 
 Some List layouts display each record in a `<Card>`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main area container by passing a `component` prop:
 
@@ -618,9 +618,9 @@ const PostList = () => {
     };
 
     return (
-        <Show queryOptions={{ onError }}>
+        <List queryOptions={{ onError }}>
             ...
-        </Show>
+        </List>
     );
 }
 ```
@@ -674,11 +674,10 @@ The title can be either a string or an element of your own.
 
 ## `sx`: CSS API
 
-The `<List>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<List>` component accepts the usual `className` prop but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name             | Description                                                   |
 |-----------------------|---------------------------------------------------------------|
-| `&.RaList-root`       | Alternative to using `className`. Applied to the root element |
 | `& .RaList-actions`   | Applied to the actions container                              |
 | `& .RaList-main`      | Applied to the main container                                 |
 | `& .RaList-content`   | Applied to the child component inside the main container      |

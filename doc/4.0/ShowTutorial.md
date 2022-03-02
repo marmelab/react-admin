@@ -320,7 +320,7 @@ const BookShow = () => (
 
 In many cases, neither the `<SimpleShowLayout>` nor the `<TabbedShowLayout>` components are enough to display the fields you want. In these cases, pass your layout components directly as children of the `<Show>` component. As `<Show>` takes care of fetching the record and putting it in a `<RecordContextProvider>`, you can use Field components directly. 
 
-For instance, to display several fields in a single line, you can use material-ui's `<Grid>` component:
+For instance, to display several fields in a single line, you can use MUI's `<Grid>` component:
 
 {% raw %}
 ```jsx

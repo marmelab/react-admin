@@ -40,7 +40,7 @@ React-admin uses the user locale as the default locale in this field. You can ov
 </TranslatableFields>
 ```
 
-By default, `<TranslatableFields>` will allow users to select the displayed locale using Material-ui tabs with the locale code as their labels.
+By default, `<TranslatableFields>` will allow users to select the displayed locale using MUI tabs with the locale code as their labels.
 
 You may override the tabs labels using translation keys following this format: `ra.locales.[locale_code]`. For instance, `ra.locales.en` or `ra.locales.fr`.
 

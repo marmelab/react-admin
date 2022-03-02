@@ -53,13 +53,13 @@ This custom Show view has no action buttons - it's up to you to add them in pure
 
 ## Parameters
 
-`useShowcontroller` expects one parameters argument. It's an object with the following attributes: 
+`useShowController` expects one parameter argument. It's an object with the following attributes: 
 
 * [`queryOption`](#client-query-options): options to pass to the react-query client
 
 ## Client Query Options
 
-`useShowcontroller` accepts a `queryOptions` prop to pass options to the react-query client. 
+`useShowController` accepts a `queryOptions` prop to pass options to the react-query client. 
 
 This can be useful e.g. to override the default error side effect. By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and refreshes the page.
 

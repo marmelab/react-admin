@@ -106,7 +106,7 @@ import {
 	ClearButtons,
 } from 'ra-input-rich-text';
 import HorizontalRule from '@tiptap/extension-horizontal-rule';
-import Remove from '@material-ui/icons/Remove';
+import Remove from '@mui/icons-material/Remove';
 
 const MyRichTextInput = ({ size, ...props }) => (
 	<RichTextInput

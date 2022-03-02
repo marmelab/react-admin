@@ -101,7 +101,7 @@ It also supports [all the other `<Button>` props](#button).
 |-----------------------------|--------------------------------------------------------------------|
 | `&.RaCreateButton-floating` | Applied to the underlying `MuiFab` component used in small screens |
 
-To override the style of all instances of `<CreateButton>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaCreateButton` key.
+To override the style of all instances of `<CreateButton>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaCreateButton` key.
 
 ### `<ListButton>`
 
@@ -249,7 +249,6 @@ export const PostList = () => (
 | `label`      | Optional | `string`        | 'ra.action.delete' | label or translation message to use |
 | `icon`       | Optional | `ReactElement`  | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />` |
 | `exporter`   | Optional | `Function`      | -                  | Override the List exporter function |
-| `undoable`   | Optional | `boolean`       | `true`             | Allow users to cancel the deletion  |
 
 ### `<FilterButton>`
 
@@ -259,11 +258,7 @@ This button is an internal component used by react-admin in [the Filter button/f
 
 #### `sx`: CSS API
 
-| Rule name                 | Description                                                   |
-|---------------------------|---------------------------------------------------------------|
-| `&.RaFilterButton-root`   | Alternative to using `className`. Applied to the root element |
-
-To override the style of all instances of `<FilterButton>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaFilterButton` key.
+To override the style of all instances of `<FilterButton>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaFilterButton` key.
 
 ### `<SortButton>`
 
@@ -286,15 +281,57 @@ const ListActions = () => (
 );
 ```
 
-| Prop         | Required | Type            | Default            | Description                         |
-| ------------ | -------- | --------------- | ------------------ | ----------------------------------- |
-| `fields`     | Required | `string[]`      | -                  | List of fields to offer sort on     |
-| `icon`       | Optional | `ReactElement`  | `<DeleteIcon>`     | iconElement, e.g. `<CommentIcon />` |
-| `label`      | Optional | `string`        | 'ra.action.delete' | label or translation message to use |
+| Prop     | Required | Type           | Default               | Description                         |
+|----------|----------|----------------|-----------------------|-------------------------------------|
+| `fields` | Required | `string[]`     | -                     | List of fields to offer sort on     |
+| `icon`   | Optional | `ReactElement` | `<ArrowDropDownIcon>` | iconElement, e.g. `<CommentIcon />` |
+| `label`  | Optional | `string`       | 'ra.sort.sort_by'     | label or translation message to use |
 
 ## Record Buttons
 
 ### `<DeleteButton>`
+
+### `<DeleteWithConfirmButton>`
+
+Delete the current record after a confirm dialog has been accepted. To be used inside a `<Toolbar/>` component.
+
+| Prop                                                       | Required | Type                             | Default                     | Description                                                             |
+|------------------------------------------------------------|----------|----------------------------------|-----------------------------|-------------------------------------------------------------------------|
+| `className`                                                | Optional | `string`                         | -                           | Class name to customize the look and feel of the button element itself  |
+| `label`                                                    | Optional | `string`                         | 'ra.action.delete'          | label or translation message to use                                     |
+| `icon`                                                     | Optional | `ReactElement`                   | `<DeleteIcon>`              | iconElement, e.g. `<CommentIcon />`                                     |
+| `confirmTitle`                                             | Optional | `string`                         | 'ra.message.delete_title'   | Title of the confirm dialog                                             |
+| `confirmContent`                                           | Optional | `ReactNode`                      | 'ra.message.delete_content' | Message or React component to be used as the body of the confirm dialog |
+| [`redirect`](./CreateEdit.md#redirection-after-submission) | Optional | `string | false | Function`      | 'list'                      | Custom redirection after success side effect                            |
+| `translateOptions`                                         | Optional | `{ id?: string, name?: string }` | {}                          | Custom id and name to be used in the confirm dialog's title             |
+
+{% raw %}
+```jsx
+import * as React from 'react';
+import { DeleteWithConfirmButton, Toolbar, Edit, SaveButton,useRecordContext } from 'react-admin';
+
+const EditToolbar = props => {
+    const record = useRecordContext();
+
+    <Toolbar {...props}>
+        <SaveButton/>
+        <DeleteWithConfirmButton
+            confirmContent="You will not be able to recover this record. Are you sure?"
+            translateOptions={{ name: record.name }}
+        />
+    </Toolbar>
+};
+
+const MyEdit = () => (
+    <Edit>
+        <SimpleForm toolbar={<EditToolbar />}>
+            ...
+        </SimpleForm>        
+    </Edit>    
+);
+```
+{% endraw %}
+
 ### `<CloneButton>`
 ### `<SaveButton>`
 
@@ -308,12 +345,12 @@ Base component for most react-admin buttons. Responsive (displays only the icon 
 | ------------ | -------- | ------------------------------ | ------- | ---------------------------------------- |
 | `alignIcon`  | Optional | `'left' | 'right`              | `'left'` | Icon position relative to the label     |
 | `children`   | Optional | `ReactElement`                 | -        | icon to use                             |
-| `className`  | Optional | `string`                       | -        | path to link to, e.g. '/posts'          |
+| `className`  | Optional | `string`                       | -        | Class name to customize the look and feel of the button element itself          |
 | `color`      | Optional | `'default' | 'inherit'| 'primary' | 'secondary'` | `'primary'` | Label and icon color |
 | `disabled`   | Optional | `boolean`                      | `false`   | If `true`, the button will be disabled |
 | `size`       | Optional | `'large' | 'medium' | 'small'` | `'small'` | Button size                            |
 
-Other props are passed down to [the underlying material-ui `<Button>`](https://material-ui.com/api/button/).
+Other props are passed down to [the underlying MUI `<Button>`](https://mui.com/api/button/).
 
 #### `sx`: CSS API
 
@@ -326,7 +363,7 @@ Other props are passed down to [the underlying material-ui `<Button>`](https://m
 | `& .RaButton-mediumIcon`     | Applied to the Button's `children` when `size` prop is `medium` and `alignIcon` prop is 'right' |
 | `& .RaButton-largeIcon`      | Applied to the Button's `children` when `size` prop is `large` and `alignIcon` prop is 'right'  |
 
-To override the style of all instances of `<Button>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaButton` key.
+To override the style of all instances of `<Button>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaButton` key.
 
 ### `<RefreshButton>`
 ### `<SkipNavigationButton>`
@@ -337,7 +374,7 @@ To override the style of all instances of `<Button>` using the [material-ui styl
 |-----------------------------------------------|-------------------------------------------------|
 | `&.RaSkipNavigationButton-skipToContentButton` | Applied to the underlying `MuiButton` component |
 
-To override the style of all instances of `<SkipNavigationButton>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaSkipNavigationButton` key.
+To override the style of all instances of `<SkipNavigationButton>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaSkipNavigationButton` key.
 
 ### `<MenuItemLink>`
 
@@ -351,7 +388,7 @@ The `<MenuItemLink>` component displays a menu item with a label and an icon - o
 | `primaryText` | Required | `ReactNode`          | -       | The menu content, displayed when the menu isn't minimized. |
 | `leftIcon`    | Optional | `ReactNode`          | -       | The menu icon |
 
-Additional props are passed down to [the underling material-ui `<MenuItem>` component](https://material-ui.com/api/menu-item/#menuitem-api).
+Additional props are passed down to [the underling MUI `<MenuItem>` component](https://mui.com/api/menu-item/#menuitem-api).
 
 You can create a custom menu component using the `<DashboardMenuItem>` and `<MenuItemLink>` components:
 
@@ -410,11 +447,10 @@ See [The theming documentation](./Theming.md#menuitemlink) for more details.
 
 | Rule name                   | Description                                                         |
 |-----------------------------|---------------------------------------------------------------------|
-| `&.RaMenuItemLink-root`     | Alternative to using `className`. Applied to the root element       |
 | `& .RaMenuItemLink-active`  | Applied to the underlying `MuiMenuItem`'s `activeClassName` prop    |
 | `& .RaMenuItemLink-icon`    | Applied to the `ListItemIcon` component when `leftIcon` prop is set |
 
-To override the style of all instances of `<MenuItemLink>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaMenuItemLink` key.
+To override the style of all instances of `<MenuItemLink>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaMenuItemLink` key.
 
 ### `<UserMenu>`
 
@@ -428,8 +464,7 @@ To override the style of all instances of `<MenuItemLink>` using the [material-u
 
 | Rule name                  | Description                                                                                                                              |
 |----------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
-| `& .RaUserMenu-user`       | Alternative to using `className`. Applied to the root element                                                                            |
 | `& .RaUserMenu-userButton` | Applied to the underlying `MuiButton` component when `useGetIdentity().loaded` is `true` and `useGetIdentity().identity.fullName` is set |
 | `& .RaUserMenu-avatar`     | Applied to the underlying `MuiAvatar` component when `useGetIdentity().avatar` is `true`                                                 |
 
-To override the style of all instances of `<UserMenu>` using the [material-ui style overrides](https://mui.com/customization/globals/#css), use the `RaUserMenu` key.
+To override the style of all instances of `<UserMenu>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaUserMenu` key.

@@ -5,7 +5,7 @@ title: "The SelectInput Component"
 
 # `<SelectInput>`
 
-To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [Material ui's `<Select>`](https://material-ui.com/api/select).
+To let users choose a value in a list using a dropdown, use `<SelectInput>`. It renders using [MUI's `<Select>`](https://mui.com/api/select).
 
 ![SelectInput](./img/select-input.gif)
 
@@ -99,7 +99,7 @@ However, in some cases, you may not want the choice to be translated. In that ca
 
 Note that `translateChoice` is set to `false` when `<SelectInput>` is a child of `<ReferenceInput>`.
 
-Lastly, use the `options` attribute if you want to override any of Material UI's `<SelectField>` attributes:
+Lastly, use the `options` attribute if you want to override any of MUI's `<SelectField>` attributes:
 
 {% raw %}
 ```jsx
@@ -109,7 +109,7 @@ Lastly, use the `options` attribute if you want to override any of Material UI's
 ```
 {% endraw %}
 
-Refer to [Material UI Select documentation](https://material-ui.com/api/select) for more details.
+Refer to [MUI Select documentation](https://mui.com/api/select) for more details.
 
 **Tip**: If you want to populate the `choices` attribute with a list of related records, you should decorate `<SelectInput>` with [`<ReferenceInput>`](./ReferenceInput.md), and leave the `choices` empty:
 
@@ -185,7 +185,7 @@ const PostCreate = () => {
 ```
 {% endraw %}
 
-Use the `create` prop when you want a more polished or complex UI. For example a Material UI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
+Use the `create` prop when you want a more polished or complex UI. For example a MUI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
 
 {% raw %}
 ```jsx
@@ -207,7 +207,7 @@ import {
     DialogActions,
     DialogContent,
     TextField,
-} from '@material-ui/core';
+} from '@mui/material';
 
 const PostCreate = () => {
     return (
@@ -269,10 +269,10 @@ const CreateCategory = () => {
 
 ## `sx`: CSS API
 
-The `<SelectInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most Material UI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
+The `<SelectInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)). This property accepts the following subclasses:
 
 | Rule name                | Description                                               |
 |--------------------------|-----------------------------------------------------------|
 | `& .RaSelectInput-input` | Applied to the underlying `ResettableTextField` component |
 
-To override the style of all instances of `<SelectInput>` using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaSelectInput` key.
+To override the style of all instances of `<SelectInput>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaSelectInput` key.

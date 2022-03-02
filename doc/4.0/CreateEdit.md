@@ -106,16 +106,15 @@ You can customize the `<Create>` and `<Edit>` components using the following pro
 
 ### CSS API
 
-The `<Create>` and `<Edit>` components accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
+The `<Create>` and `<Edit>` components accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most MUI components, see their [documentation about it](https://mui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
-| Rule name   | Description                                                                                |
-| ----------- | ------------------------------------------------------------------------------------------ |
-| `root`      | Alternative to using `className`. Applied to the root element                              |
-| `main`      | Applied to the main container                                                              |
-| `noActions` | Applied to the main container when `actions` prop is `false`                               |
-| `card`      | Applied to the child component inside the main container (Material UI's `Card` by default) |
+| Rule name               | Description                                                                          |
+|-------------------------|--------------------------------------------------------------------------------------|
+| `& .RaCreate-main`      | Applied to the main container                                                        |
+| `& .RaCreate-noActions` | Applied to the main container when `actions` prop is `false`                         |
+| `& .RaCreate-card`      | Applied to the child component inside the main container (MUI's `Card` by default)   |
 
-To override the style of all instances of `<Create>` and `<Edit>` components using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaCreate` and `RaEdit` keys respectively.
+To override the style of all instances of `<Create>` and `<Edit>` components using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaCreate` and `RaEdit` keys respectively.
 
 ### Page Title
 
@@ -246,7 +245,7 @@ const Aside = () => {
 
 ### Component
 
-By default, the `Create` and `Edit` views render the main form inside a material-ui `<Card>` element. The actual layout of the form depends on the `Form` component you're using (`<SimpleForm>`, `<TabbedForm>`, or a custom form component).
+By default, the `Create` and `Edit` views render the main form inside a MUI `<Card>` element. The actual layout of the form depends on the `Form` component you're using (`<SimpleForm>`, `<TabbedForm>`, or a custom form component).
 
 Some form layouts also use `Card`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main page container by passing a `component` prop :
 
@@ -286,6 +285,7 @@ const PostEdit = () => (
 
 **Tip**: If you want a confirmation dialog for the Delete button but don't mind undoable Edits, then pass a [custom toolbar](#toolbar) to the form, as follows:
 
+{% raw %}
 ```jsx
 import * as React from "react";
 import {
@@ -295,17 +295,12 @@ import {
     Edit,
     SimpleForm,
 } from 'react-admin';
-import { makeStyles } from '@mui/material/styles';
-
-const useStyles = makeStyles({
-    toolbar: {
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
-});
 
 const CustomToolbar = props => (
-    <Toolbar {...props} classes={useStyles()}>
+    <Toolbar 
+        {...props}
+        sx={{ display: 'flex', justifyContent: 'space-between' }}
+    >
         <SaveButton />
         <DeleteButton undoable={false} />
     </Toolbar>
@@ -319,6 +314,7 @@ const PostEdit = () => (
     </Edit>
 );
 ```
+{% endraw %}
 
 ### `mutationMode`
 
@@ -354,6 +350,7 @@ const PostEdit = () => (
 
 **Tip**: If you want a confirmation dialog for the Delete button but don't mind undoable Edits, then pass a [custom toolbar](#toolbar) to the form, as follows:
 
+{% raw %}
 ```jsx
 import * as React from "react";
 import {
@@ -363,17 +360,12 @@ import {
     Edit,
     SimpleForm,
 } from 'react-admin';
-import { makeStyles } from '@mui/material/styles';
-
-const useStyles = makeStyles({
-    toolbar: {
-        display: 'flex',
-        justifyContent: 'space-between',
-    },
-});
 
 const CustomToolbar = props => (
-    <Toolbar {...props} classes={useStyles()}>
+    <Toolbar
+        {...props}
+        sx={{ display: 'flex', justifyContent: 'space-between' }}
+    >
         <SaveButton />
         <DeleteButton mutationMode="pessimistic" />
     </Toolbar>
@@ -387,6 +379,7 @@ const PostEdit = () => (
     </Edit>
 );
 ```
+{% endraw %}
 
 ### `mutationOptions`
 
@@ -617,7 +610,7 @@ export default PostList = () => (
 ```
 {% endraw %}
 
-**Tip**: To style the button with the main color from the material-ui theme, use the `Link` component from the `react-admin` package rather than the one from `react-router-dom`.
+**Tip**: To style the button with the main color from the MUI theme, use the `Link` component from the `react-admin` package rather than the one from `react-router-dom`.
 
 **Tip**: The `<Create>` component also watches the "source" parameter of `location.search` (the query string in the URL) in addition to `location.state` (a cross-page message hidden in the router memory). So the `CreateRelatedCommentButton` could also be written as:
 
@@ -1009,7 +1002,7 @@ const PostEdit = () => (
 
 ### TabbedFormTabs
 
-By default `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component, to renders tabs. You can pass a custom component as the `tabs` prop to override the default component. Besides, props from `<TabbedFormTabs>` are passed to material-ui's `<Tabs>` component inside `<TabbedFormTabs>`.
+By default `<TabbedForm>` uses `<TabbedFormTabs>`, an internal react-admin component, to renders tabs. You can pass a custom component as the `tabs` prop to override the default component. Besides, props from `<TabbedFormTabs>` are passed to MUI's `<Tabs>` component inside `<TabbedFormTabs>`.
 
 The following example shows how to make use of scrollable `<Tabs>`. Pass `variant="scrollable"` and `scrollButtons="auto"` props to `<TabbedFormTabs>` and use it in the `tabs` prop from `<TabbedForm>`.
 
@@ -1528,7 +1521,7 @@ export const UserCreate = () => {
     const save = useCallback(
         async values => {
             try {
-                await create('users', { data: values });
+                await create('users', { data: values }, { returnPromise: true });
             } catch (error) {
                 if (error.body.errors) {
                     // The shape of the returned validation errors must match the shape of the form
@@ -1728,27 +1721,24 @@ Here are the props received by the `Toolbar` component when passed as the `toolb
 * `pristine`: A boolean indicating whether the form is pristine (eg: no inputs have been changed yet)
 * `saving`: A boolean indicating whether a save operation is ongoing.
 * `submitOnEnter`: A boolean indicating whether the form should be submitted when pressing `enter`
-* `width`: A string apply to the mobile or desktop classes depending on its value. Pass `xs` to display the mobile version.
 
 ### CSS API
 
-The `<Toolbar>` accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most Material UI components, see their [documentation about it](https://material-ui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
+The `<Toolbar>` accepts the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `classes` property (as most MUI components, see their [documentation about it](https://mui.com/customization/components/#overriding-styles-with-classes)). This property accepts the following keys:
 
-| Rule name        | Description                                                                     |
-| ---------------- | ------------------------------------------------------------------------------- |
-| `toolbar`        | Applied to the underlying `MuiToolbar` component                                |
-| `defaultToolbar` | Applied to the container of the `<Toolbar>` buttons when no children are passed |
-| `desktopToolbar` | Applied to the underlying `MuiToolbar` component when `width` prop is not `xs`  |
-| `mobileToolbar`  | Applied to the underlying `MuiToolbar` component when `width` prop is `xs`      |
-| `spacer`         | Applied to the div below the underlying `MuiToolbar` used as spacer             |
+| Rule name                      | Description                                                                            |
+|--------------------------------|----------------------------------------------------------------------------------------|
+| `& .RaToolbar-defaultToolbar`  | Applied to the internal wrapper of the `<Toolbar>` buttons when no children are passed |
+| `&.RaToolbar-desktopToolbar`   | Applied to the underlying `MuiToolbar` component for medium and large screens          |
+| `&.RaToolbar-mobileToolbar`    | Applied to the underlying `MuiToolbar` component for small screens                     |
 
-To override the style of all instances of `<Toolbar>` components using the [material-ui style overrides](https://material-ui.com/customization/globals/#css), use the `RaToolbar` key.
+To override the style of all instances of `<Toolbar>` components using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaToolbar` key.
 
-**Tip**: Use react-admin's `<Toolbar>` component instead of material-ui's `<Toolbar>` component. The former builds upon the latter and adds support for an alternative mobile layout (and is therefore responsive).
+**Tip**: Use react-admin's `<Toolbar>` component instead of MUI's `<Toolbar>` component. The former builds upon the latter and adds support for an alternative mobile layout (and is therefore responsive).
 
 **Tip**: To alter the form values before submitting, you should use the `transform` prop on the `SaveButton`. See [Altering the Form Values before Submitting](#altering-the-form-values-before-submitting) for more information and examples.
 
-**Tip**: If you want to include a custom `Button` in a `<Toolbar>` that doesn't render a react-admin `<Button>`, the props injected by `<Toolbar>` to its children (`invalid`, `pristine`, `saving`, and `submitOnEnter`) will cause React warnings. You'll need to wrap your custom `Button` in another component and ignore the injected props, as follows:
+**Tip**: If you want to include a custom `Button` in a `<Toolbar>` that doesn't render a react-admin `<Button>`, the props injected by `<Toolbar>` to its children (`mutationMode` and `submitOnEnter`) will cause React warnings. You'll need to wrap your custom `Button` in another component and ignore the injected props, as follows:
 
 ```jsx
 import * as React from "react";
@@ -1757,11 +1747,9 @@ import Button from '@mui/material/Button';
 const CustomButton = props => <Button label="My Custom Button" {...props} />
 
 const ToolbarCustomButton = ({
-  invalid,
-  pristine,
-  saving,
-  submitOnEnter,
-  ...rest
+    mutationMode,
+    submitOnEnter,
+    ...rest
 }) => <CustomButton {...rest} />;
 
 const PostEditToolbar = props => (
@@ -1787,30 +1775,13 @@ You can also [wrap inputs inside containers](#custom-row-container), or [create 
 
 ### Variant
 
-By default, react-admin input components use the Material Design "filled" variant. If you want to use the "standard" or "outlined" variants, you can either set the `variant` prop on each Input component individually, or set the `variant` prop directly on the Form component. In that case, the Form component will transmit the `variant` to each Input.
+By default, react-admin input components use the Material Design "filled" variant. If you want to use the "standard" or "outlined" variants, you can set the `variant` prop on each Input component individually.
 
 ```jsx
 export const PostEdit = () => (
     <Edit>
-        <SimpleForm variant="standard">
-            ...
-        </SimpleForm>
-    </Edit>
-);
-```
-
-**Tip**: If your form contains not only Inputs but also Fields, the injection of the `variant` property to the form children will cause a React warning. You'll need to wrap every Field component in another component to ignore the injected `variant` prop, as follows:
-
-```diff
-+const TextFieldInForm = ({ variant, ...props }) => <TextField {...props} />;
-+TextFieldInForm.defaultProps = TextField.defaultProps;
-
-```jsx
-export const PostEdit = () => (
-    <Edit>
-        <SimpleForm variant="standard">
--           <TextField source="title" />
-+           <TextFieldInForm source="title" />
+        <SimpleForm>
+            <TextInput source="name" variant="standard">
         </SimpleForm>
     </Edit>
 );
@@ -1818,13 +1789,13 @@ export const PostEdit = () => (
 
 ### Margin
 
-By default, react-admin input components use the Material Design "dense" margin. If you want to use the "normal" or "none" margins, you can either set the `margin` prop on each Input component individually, or set the `margin` prop directly on the Form component. In that case, the Form component will transmit the `margin` to each Input.
+By default, react-admin input components use the Material Design "dense" margin. If you want to use the "normal" or "none" margins, you can set the `margin` prop on each Input component individually.
 
 ```jsx
 export const PostEdit = () => (
     <Edit>
-        <SimpleForm margin="normal">
-            ...
+        <SimpleForm >
+            <TextInput source="name" margin="normal">
         </SimpleForm>
     </Edit>
 );
@@ -1832,7 +1803,7 @@ export const PostEdit = () => (
 
 ### SimpleForm component
 
-By default, the `SimpleForm` view renders the main form's children inside a `CardContentInner`, an internal `react-admin` component which returns a material-ui `<CardContent>` element.
+By default, the `SimpleForm` view renders the main form's children inside a `CardContentInner`, an internal `react-admin` component which returns a MUI `<CardContent>` element.
 
 To customize that, you can override the main container by passing a `component` prop :
 
@@ -1948,7 +1919,7 @@ The `<SimpleForm>` and `<TabbedForm>` layouts are quite simple. In order to bett
 
 ![custom form layout](./img/custom-form-layout.png)
  
-Here is an example of such custom form, taken from the Posters Galore demo. It uses [material-ui's `<Box>` component](https://material-ui.com/components/box/), and it's a good starting point for your custom form layouts.
+Here is an example of such custom form, taken from the Posters Galore demo. It uses [MUI's `<Box>` component](https://mui.com/components/box/), and it's a good starting point for your custom form layouts.
 
 ```jsx
 import * as React from "react";
@@ -1961,7 +1932,7 @@ import {
     DeleteButton,
     NullableBooleanInput,
 } from 'react-admin';
-import { Typography, Box, Toolbar } from '@material-ui/core';
+import { Typography, Box, Toolbar } from '@mui/material';
 
 const segments = [
     { id: 'compulsive', name: 'Compulsive' },
@@ -2050,7 +2021,7 @@ const VisitorEdit = () => (
 {% raw %}
 ```jsx
 import { useForm } from 'react-hook-form';
-import { CardContent, Typography, Box } from '@material-ui/core';
+import { CardContent, Typography, Box } from '@mui/material';
 
 // the parent component (Edit or Create) injects these props to their child
 const VisitorForm = ({ record, save, saving, version }) => {
@@ -2336,16 +2307,17 @@ const PostEdit = () => (
 
 ### Grouping Inputs
 
-Sometimes, you may want to group inputs in order to make a form more approachable. You may use a [`<TabbedForm>`](#the-tabbedform-component), an [`<AccordionForm>`](#the-accordionform-component) or you may want to roll your own layout. In this case, you might need to know the state of a group of inputs: whether it's valid or if the user has changed them (dirty/pristine state).
+Sometimes, you may want to group inputs in order to make a form more approachable. You may use a [`<TabbedForm>`](#the-tabbedform-component), an [`<AccordionForm>`](#the-accordionform-component) or you may want to roll your own layout. In this case, you might need to know the state of a group of inputs: whether it's valid or if the user has changed them (dirty/touched state).
 
 For this, you can use the `<FormGroupContextProvider>`, which accepts a group name. All inputs rendered inside this context will register to it (thanks to the `useInput` hook). You may then call the `useFormGroup` hook to retrieve the status of the group. For example:
 
 ```jsx
-import { Edit, SimpleForm, TextInput, FormGroupContextProvider, useFormGroup } from 'react-admin';
-import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@material-ui/core';
+import { Edit, SimpleForm, TextInput, FormGroupContextProvider, useFormGroup, minLength } from 'react-admin';
+import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreIcon';
 
-const PostEdit = (props) => (
-    <Edit {...props}>
+const PostEdit = () => (
+    <Edit>
         <SimpleForm>
             <TextInput source="title" />
             <FormGroupContextProvider name="options">
@@ -2355,9 +2327,14 @@ const PostEdit = (props) => (
                         aria-controls="options-content"
                         id="options-header"
                     >
-                        <AccordionSectionTitle name="options">Options</AccordionSectionTitle>
+                        <AccordionSectionTitle name="options">
+                            Options
+                        </AccordionSectionTitle>
                     </AccordionSummary>
-                    <AccordionDetails id="options-content" aria-labelledby="options-header">
+                    <AccordionDetails
+                        id="options-content"
+                        aria-labelledby="options-header"
+                    >
                         <TextInput source="teaser" validate={minLength(20)} />
                     </AccordionDetails>
                 </Accordion>
@@ -2370,9 +2347,15 @@ const AccordionSectionTitle = ({ children, name }) => {
     const formGroupState = useFormGroup(name);
 
     return (
-        <Typography color={formGroupState.invalid && formGroupState.dirty ? 'error' : 'inherit'}>
+        <Typography
+          color={
+              !formGroupState.isValid && formGroupState.isDirty
+                ? 'error'
+                : 'inherit'
+          }
+        >
             {children}
         </Typography>
     );
-}
+};
 ```

@@ -5,7 +5,7 @@ title: "Caching"
 
 # Caching
 
-Not hitting the server is the best way to improve a web app performance - and its ecological footprint, too (network and datacenter usage account for about 40% of the CO2 emissions in IT). React-admin comes with a built-in cache-first approach called *optimistic rendering*, and it supports caching both at the HTTP level and the application level. 
+Not hitting the server is the best way to improve a web app performance, and its an ecological footprint too (network and datacenter usage account for about 40% of the CO2 emissions in IT). React-admin comes with a built-in cache-first approach called *optimistic rendering*, and it supports caching both at the HTTP level and the application level. 
 
 ## Optimistic Rendering
 

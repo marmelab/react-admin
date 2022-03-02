@@ -53,7 +53,7 @@ React-admin uses [react-hook-form](https://react-hook-form.com/) to control form
 | `format`       | Optional | `Function` | -       | Callback taking the value from the form state and the name of the field, and returns the input value. See the [Transforming Input Value](./Inputs.md#transforming-input-value-tofrom-record) section.           |
 | `parse`        | Optional | `Function` | -       | Callback taking the input value and name of the field, and returns the value you want stored in the form state. See the [Transforming Input Value](./Inputs.md#transforming-input-value-tofrom-record) section. |
 
-Additional props are passed down to the underlying component (usually a material-ui component). For instance, when setting the `className` prop on a `TextInput` component, the underlying material-ui `<TextField>` receives it, and renders with custom styles. You can also set the underlying component `variant` and `margin` that way.
+Additional props are passed down to the underlying component (usually a MUI component). For instance, when setting the `className` prop on a `TextInput` component, the underlying MUI `<TextField>` receives it, and renders with custom styles. You can also set the underlying component `variant` and `margin` that way.
 
 **Tip**: If you edit a record with a complex structure, you can use a path as the `source` parameter. For instance, if the API returns the following 'book' record:
 
@@ -354,13 +354,13 @@ Now the component will render with a label:
 </span>
 ```
 
-### Using Material-ui Field Components
+### Using MUI Field Components
 
-Instead of HTML `input` elements, you can use a material-ui component like `TextField`. To bind material-ui components to the form values, use the `useController()` hook:
+Instead of HTML `input` elements, you can use a MUI component like `TextField`. To bind MUI components to the form values, use the `useController()` hook:
 
 ```jsx
 // in LatLongInput.js
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 import { useController } from 'react-hook-form';
 
 const BoundedTextField = ({ name, label }) => {
@@ -387,11 +387,11 @@ const LatLngInput = () => (
 );
 ```
 
-**Tip**: Material-ui's `<TextField>` component already includes a label, so you don't need to use `<Labeled>` in this case.
+**Tip**: MUI's `<TextField>` component already includes a label, so you don't need to use `<Labeled>` in this case.
 
 `useController()` returns three values: `field`, `fieldState`, and `formState`. To learn more about these props, please refer to the [useController](https://react-hook-form.com/api/usecontroller) hook documentation.
 
-Instead of HTML `input` elements or material-ui components, you can use react-admin input components, like `<NumberInput>` for instance. React-admin components already use `useController()`, and already include a label, so you don't need either `useController()` or `<Labeled>` when using them:
+Instead of HTML `input` elements or MUI components, you can use react-admin input components, like `<NumberInput>` for instance. React-admin components already use `useController()`, and already include a label, so you don't need either `useController()` or `<Labeled>` when using them:
 
 ```jsx
 // in LatLongInput.js
@@ -461,7 +461,7 @@ const LatLngInput = props => {
 };
 ```
 
-Here is another example, this time using a material-ui `Select` component:
+Here is another example, this time using a MUI `Select` component:
 
 ```jsx
 // in SexInput.js
