@@ -40,8 +40,8 @@ const authProvider = {
 };
 
 const ProductList = (props) => {
-    const { loading, permissions } = usePermissions();
-    if (loading) return null;
+    const { isLoading, permissions } = usePermissions();
+    if (isLoading) return null;
     return (
         <List {...props}>
             <Datagrid>

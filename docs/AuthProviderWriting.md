@@ -349,7 +349,7 @@ import { useGetIdentity, useGetOne } from 'react-admin';
 
 const PostDetail = ({ id }) => {
     const { data: post, isLoading: postLoading } = useGetOne('posts', { id });
-    const { identity, loading: identityLoading } = useGetIdentity();
+    const { identity, isLoading: identityLoading } = useGetIdentity();
     if (postLoading || identityLoading) return <>Loading...</>;
     if (!post.lockedBy || post.lockedBy === identity.id) {
         // post isn't locked, or is locked by me

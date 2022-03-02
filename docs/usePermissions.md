@@ -17,8 +17,8 @@ import CardContent from '@mui/material/CardContent';
 import { usePermissions } from 'react-admin';
 
 const MyPage = () => {
-    const { loading, permissions } = usePermissions();
-    return loading
+    const { isLoading, permissions } = usePermissions();
+    return isLoading
         ? (<div>Waiting for permissions...</div>)
         : (
             <Card>
@@ -44,19 +44,20 @@ export default [
 
 ## Loading State
 
-The `usePermissions` hook is optimistic: it doesn't block rendering during the `authProvider` call. In the above example, the `MyPage` component renders even before getting the response from the `authProvider`. To avoid a blink in the interface while the `authProvider` is answering, use the `loaded` return value of `usePermissions()`:
+The `usePermissions` hook is optimistic: it doesn't block rendering during the `authProvider` call. In the above example, the `MyPage` component renders even before getting the response from the `authProvider`. To avoid a blink in the interface while the `authProvider` is answering, use the `isLoading` return value of `usePermissions()`:
 
 ```jsx
 const MyPage = () => {
-    const { loaded, permissions } = usePermissions();
-    return loaded ? (
+    const { isLoading, permissions } = usePermissions();
+    if (isLoading) return null;
+    return (
         <Card>
             <CardContent>Lorem ipsum sic dolor amet...</CardContent>
             {permissions === 'admin' &&
                 <CardContent>Sensitive data</CardContent>
             }
         </Card>
-    ) : null;
+    );
 }
 ```
 
@@ -85,9 +86,9 @@ const authProvider = {
     })
 };
 
-const { loading, permissions } = usePermissions();
+const { isLoading, permissions } = usePermissions();
 // {
-//      loading: false,
+//      isLoading: false,
 //      permissions: [
 //          { action: "read", resource: "*" },
 //          { action: ["read", "write"], resource: "users", record: { "id": "123" } },

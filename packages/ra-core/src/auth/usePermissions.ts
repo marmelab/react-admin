@@ -4,8 +4,7 @@ import useGetPermissions from './useGetPermissions';
 import { useSafeSetState } from '../util/hooks';
 
 interface State<Permissions, Error> {
-    loading: boolean;
-    loaded: boolean;
+    isLoading: boolean;
     permissions?: Permissions;
     error?: Error;
 }
@@ -20,22 +19,22 @@ const emptyParams = {};
  *
  * The return value updates according to the request state:
  *
- * - start: { loading: true, loaded: false }
- * - success: { permissions: [any], loading: false, loaded: true }
- * - error: { error: [error from provider], loading: false, loaded: true }
+ * - start: { isLoading: true }
+ * - success: { permissions: [any], isLoading: false }
+ * - error: { error: [error from provider], isLoading: false }
  *
  * Useful to enable features based on user permissions
  *
  * @param {Object} params Any params you want to pass to the authProvider
  *
- * @returns The current auth check state. Destructure as { permissions, error, loading, loaded }.
+ * @returns The current auth check state. Destructure as { permissions, error, isLoading }.
  *
  * @example
  *     import { usePermissions } from 'react-admin';
  *
  *     const PostDetail = props => {
- *         const { loaded, permissions } = usePermissions();
- *         if (loaded && permissions == 'editor') {
+ *         const { isLoading, permissions } = usePermissions();
+ *         if (!isLoading && permissions == 'editor') {
  *             return <PostEdit {...props} />
  *         } else {
  *             return <PostShow {...props} />
@@ -46,19 +45,17 @@ const usePermissions = <Permissions = any, Error = any>(
     params = emptyParams
 ): State<Permissions, Error> => {
     const [state, setState] = useSafeSetState<State<Permissions, Error>>({
-        loading: true,
-        loaded: false,
+        isLoading: true,
     });
     const getPermissions = useGetPermissions();
     useEffect(() => {
         getPermissions(params)
             .then(permissions => {
-                setState({ loading: false, loaded: true, permissions });
+                setState({ isLoading: false, permissions });
             })
             .catch(error => {
                 setState({
-                    loading: false,
-                    loaded: true,
+                    isLoading: false,
                     error,
                 });
             });

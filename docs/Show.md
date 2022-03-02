@@ -320,7 +320,7 @@ import Button from '@mui/material/Button';
 import { Show, SimpleShowLayout, RichTextField, NumberField, usePermissions, EditButton, DeleteButton } from 'react-admin';
 
 const PostShowActions = () => {
-    const permissions = usePermissions(); 
+    const { permissions } = usePermissions(); 
     return (
         <TopToolbar>
             <EditButton />
@@ -330,7 +330,7 @@ const PostShowActions = () => {
 }
 
 export const PostShow = () => {
-    const permissions = usePermissions();
+    const { permissions } = usePermissions();
     return (
         <Show actions={<PostShowActions />}>
             <SimpleShowLayout>
@@ -353,7 +353,7 @@ This also works inside a `TabbedShowLayout`, and you can hide a `Tab` completely
 import { Show, TabbedShowLayout, Tab, TextField } from 'react-admin';
 
 export const UserShow = () => {
-    const permissions = usePermissions();
+    const { permissions } = usePermissions();
     return (
         <Show>
             <TabbedShowLayout>

@@ -898,6 +898,8 @@ Note how the `permissions` prop is passed down to the custom `filters` component
 
 It's up to your `authProvider` to return whatever you need to check roles and permissions inside your component. Check [the authProvider documentation](./Authentication.md) for more information.
 
+**Tip**: The [ra-rbac module](./AuthRBAC.md#datagrid) provides a wrapper for the `<Datagrid>` with built-in permission check for columns. 
+
 ## Standalone Usage
 
 You can use the `<Datagrid>` component to display data that you've fetched yourself. You'll need to pass all the props required for its features:

@@ -12,8 +12,7 @@ const UsePermissions = ({ children, authParams }: any) => {
 
 const stateInpector = state => (
     <div>
-        <span>{state.loading && 'LOADING'}</span>
-        <span>{state.loaded && 'LOADED'}</span>
+        <span>{state.isLoading && 'LOADING'}</span>
         {state.permissions && <span>PERMISSIONS: {state.permissions}</span>}
         <span>{state.error && 'ERROR'}</span>
     </div>
@@ -27,7 +26,6 @@ describe('usePermissions', () => {
             </CoreAdminContext>
         );
         expect(screen.queryByText('LOADING')).not.toBeNull();
-        expect(screen.queryByText('LOADED')).toBeNull();
         expect(screen.queryByText('AUTHENTICATED')).toBeNull();
     });
 
@@ -39,7 +37,6 @@ describe('usePermissions', () => {
         );
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
-            expect(screen.queryByText('LOADED')).not.toBeNull();
         });
     });
 
@@ -58,7 +55,6 @@ describe('usePermissions', () => {
         );
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
-            expect(screen.queryByText('LOADED')).not.toBeNull();
             expect(screen.queryByText('PERMISSIONS: admin')).not.toBeNull();
         });
     });
@@ -78,7 +74,6 @@ describe('usePermissions', () => {
         );
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
-            expect(screen.queryByText('LOADED')).not.toBeNull();
             expect(screen.queryByText('ERROR')).not.toBeNull();
         });
     });

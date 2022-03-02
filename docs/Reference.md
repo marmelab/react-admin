@@ -147,7 +147,7 @@ title: "Reference"
 * [`useAppLocationMatcher`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useapplocationmatcher-apply-a-matching-on-the-current-app-location)<img class="icon" src="./img/premium.svg" />
 * [`useAuthenticated`](./Authentication.md#useauthenticated-hook)
 * `useAuthProvider`
-* [`useAuthState`](./Authentication.md#useauthstate-hook)
+* [`useAuthState`](./useAuthState.md)
 * `useCheckAuth`
 * `useChoices`
 * [`useChoicesContext`](./useChoicesContext.md)
@@ -159,7 +159,7 @@ title: "Reference"
 * [`useEditController`](./CreateEdit.md#useeditcontroller)
 * `useExpanded`
 * `useFilterState`
-* [`useGetIdentity`](./Authentication.md#usegetidentity-hook)
+* [`useGetIdentity`](./useGetIdentity.md)
 * [`useGetList`](./useGetList.md)
 * [`useGetMany`](./useGetMany.md)
 * [`useGetManyReference`](./useGetManyReference.md)
@@ -181,7 +181,7 @@ title: "Reference"
 * [`useMediaQuery`](./Theming.md#usemediaquery-hook)
 * [`useNotify`](./useNotify.md)
 * `usePaginationState`
-* [`usePermissions`](./Authentication.md#usepermissions-hook)
+* [`usePermissions`](.usePermissions.md)
 * [`usePreferences`](https://marmelab.com/ra-enterprise/modules/ra-preferences#usepreferences-reading-and-writing-user-preferences)<img class="icon" src="./img/premium.svg" />
 * [`useRecordContext`](./useRecordContext.md)
 * `useRecordSelection`

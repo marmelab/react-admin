@@ -5,7 +5,7 @@ title: "useGetIdentity"
 
 # `useGetIdentity`
 
-You may want to use the current user name, avatar, or id in your code. for that purpose, call the `useGetIdentity()` hook, which calls `authProvider.getIdentity()` on mount.
+You may want to use the current user name, avatar, or id in your code. for that purpose, call the `useGetIdentity()` hook, which calls `authProvider.getIdentity()` on mount. It returns an object containing the loading state, the error state, and the identity.
 
 Here is an example Edit component, which falls back to a Show component is the record is locked for edition by another user:
 
@@ -14,7 +14,7 @@ import { useGetIdentity, useGetOne } from 'react-admin';
 
 const PostDetail = ({ id }) => {
     const { data: post, isLoading: postLoading } = useGetOne('posts', { id });
-    const { identity, loading: identityLoading } = useGetIdentity();
+    const { identity, isLoading: identityLoading } = useGetIdentity();
     if (postLoading || identityLoading) return <>Loading...</>;
     if (!post.lockedBy || post.lockedBy === identity.id) {
         // post isn't locked, or is locked by me
