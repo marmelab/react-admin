@@ -63,8 +63,8 @@ const authProvider = {
             id: 'user',
             fullName: 'John Doe',
         }),
-    getPermissions: () => Promise.reject('Unknown method'),
-    getRoles: () => Promise.reject('Unknown method'),
+    getPermissions: () => Promise.reject('Not implemented'),
+    getRoles: () => Promise.reject('Not implemented'),
 };
 
 export default authProvider;

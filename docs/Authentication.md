@@ -42,7 +42,7 @@ const authProvider = {
     logout: () => Promise.resolve(),
     // get the user's profile
     getIdentity: () => Promise.resolve(),
-    // get the user permissions
+    // get the user permissions (optional)
     getPermissions: () => Promise.resolve(),
     // get the user roles (optional - only for Role-Based Access Control)
     getRoles: () => Promise.resolve(),
