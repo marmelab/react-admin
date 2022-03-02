@@ -246,4 +246,4 @@ const Menu = ({ onMenuClick }) => {
 
 ## Role-Based Access Control
 
-If you need a more complex permissions with roles and groups, principle of least privilege, record-level permissions, explicit deny and more, check the next section for the [Role-Based Access Control](./RBAC.md).
+If you need a more complex permissions with roles and groups, principle of least privilege, record-level permissions, explicit deny and more, check the next section for the [Role-Based Access Control](./AuthRBAC.md).
