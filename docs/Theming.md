@@ -22,11 +22,9 @@ const MyEditButton = (props) => {
     return (
         <EditButton
             sx={{
-                button: {
-                    fontWeight: "bold",
-                    // This is CSS-in-JS syntax to target a deeper element using css selector, here the svg icon for this button
-                    "& svg": { color: "orange" },
-                },
+                fontWeight: "bold",
+                // This is CSS-in-JS syntax to target a deeper element using css selector, here the svg icon for this button
+                "& svg": { color: "orange" },
             }}
             {...props}
         />
@@ -67,12 +65,11 @@ import Icon from '@mui/icons-material/Person';
 export const VisitorIcon = Icon;
 
 // The `Datagrid` component uses MUI System, and supports overriding styles through the `sx` property 
-
 export const PostList = () => (
     <List>
         <Datagrid
             sx={{
-                "& .RaDatagrid-table": {
+                "&.RaDatagrid-table": { // No space between & and .
                     backgroundColor: "Lavender",
                 },
                 "& .RaDatagrid-headerCell": {
