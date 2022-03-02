@@ -3,7 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Basic } from './LocalesMenuButton.stories';
 
 describe('LocalesMenuButton', () => {
-    test('should allow to change language', async () => {
+    it('should allow to change language', async () => {
         render(<Basic />);
 
         expect(screen.queryByText('Dashboard')).not.toBeNull();
