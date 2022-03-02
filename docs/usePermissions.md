@@ -62,7 +62,7 @@ const MyPage = () => {
 
 ## RBAC
 
-When using [the ra-rbac module](https://marmelab.com/ra-rbac)<img class="icon" src="./img/premium.svg" />, `usePermissions` returns an array of permissions, resulting in the merge of the user permissions and the permissions from the user roles.
+[The ra-rbac module](https://marmelab.com/ra-rbac)<img class="icon" src="./img/premium.svg" /> provides an alternative implementation of the `usePermissions` hook. It returns an array of permissions, resulting in the merge of the user permissions and the permissions from the user roles.
 
 ```jsx
 import { usePermissions } from "@react-admin/ra-rbac";
@@ -93,7 +93,7 @@ const { loading, permissions } = usePermissions();
 //          { action: ["read", "write"], resource: "users", record: { "id": "123" } },
 //      ],
 // };
-````
+```
 
 `usePermissions` is used internally by most `ra-rbac` components, but you will probably not need to use it directly.
 
