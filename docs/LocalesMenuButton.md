@@ -71,6 +71,6 @@ The `<LocalesMenuButton>` component accepts the usual `className` prop. You can 
 
 | Rule name                 | Description                                             |
 |---------------------------|---------------------------------------------------------|
-| `& .RaLocalesMenuButton-selectedLanguage`      | Applied to the `Typography` component that shows the current language |
+| `& .RaLocalesMenuButton-selectedLanguage`      | Applied to the current language element |
 
 To override the style of all instances of `<LocalesMenuButton>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaLocalesMenuButton` key.
