@@ -821,6 +821,35 @@ const App = () => {
 }
 ```
 
+## Auth Provider
+
+Some of the hooks allowing to call the `authProvider` methods are asynchronous: they return their result only when the `authProvider` promise resolves, and `loading: true` until then.
+
+In react-admin v4, this `loading` field is now renamed to `isLoading`. The `loaded`  field has been removed.
+
+```diff
+import { useAuthState, Loading } from 'react-admin';
+
+const MyPage = () => {
+-   const { loading, authenticated } = useAuthState();
++   const { isLoading, authenticated } = useAuthState();
+-   if (loading) {
++   if (isLoading) {
+        return <Loading />;
+    }
+    if (authenticated) {
+        return <AuthenticatedContent />;
+    } 
+    return <AnonymousContent />;
+};
+```
+
+To upgrade, check every instance of your code of the following hooks:
+
+- `useAuthState`
+- `useGetIdentity`
+- `usePermissions`
+
 ## Admin Child Function Result Has Changed
 
 In order to define the resources and their views according to users permissions, we used to support a function as a child of `<Admin>`. Just like the `customRoutes`, this function had to return an array of elements.
