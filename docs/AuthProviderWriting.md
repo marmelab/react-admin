@@ -16,7 +16,8 @@ const authProvider = {
     logout: () => Promise.resolve(/* ... */),
     getIdentity: () => Promise.resolve(/* ... */),
     // authorization
-    getPermissions: params => Promise.resolve(/* ... */),
+    getPermissions: () => Promise.resolve(/* ... */),
+    getRoles: () => Promise.resolve(/* ... */),
 };
 ```
 
@@ -63,6 +64,7 @@ const authProvider = {
             fullName: 'John Doe',
         }),
     getPermissions: () => Promise.reject('Unknown method'),
+    getRoles: () => Promise.reject('Unknown method'),
 };
 
 export default authProvider;
@@ -361,6 +363,17 @@ const PostDetail = ({ id }) => {
 }
 ```
 
+### `getPermissions`
+
+This method should return the user permissions. It can be any format you want - a simple string (e.g. `'editor'`), an array of strings (e.g. `['editor', 'admin']`), or a complex object (e.g. `{ posts: 'editor', comments: 'moderator', users: 'admin' }`).
+
+React-admin doesn't use permissions by default, but it provides [the `usePermissions` hook](./usePermissions.md) to retrieve the permissions of the current user. This lets you add the permissions logic that fits your need in your components. 
+
+[The Role-Based Access Control (RBAC) module](./AuthRBAC.md) allows fined-grained permissions in react-admin apps, and specifies a custom return format for `authProvider.getPermissions()`. Check [the RBAC documentation](./AuthRBAC.md#authprovider-methods) for more information.
+
+### `getRoles`
+
+This method is only called if you use [role-based access control](./AuthRBAC.md). Check [the RBAC documentation](./AuthRBAC.md#authprovider-methods) for more information.
 
 ## Request Format
 
@@ -374,6 +387,7 @@ React-admin calls the `authProvider` methods with the following params:
 | `logout`         | Log a user out                                  |                    |
 | `getIdentity`    | Get the current user identity                   |                    | 
 | `getPermissions` | Get the current user credentials                | `Object` whatever params passed to `usePermissions()` - empty for react-admin default routes |
+| `getRoles`       | Get the current user roles                      |                    |
 
 ## Response Format
 
@@ -387,6 +401,7 @@ React-admin calls the `authProvider` methods with the following params:
 | `logout`         | Auth backend acknowledged logout  | `string | false | void` route to redirect to after logout, defaults to `/login` |
 | `getIdentity`    | Auth backend returned identity    | `{ id: string | number, fullName?: string, avatar?: string }`  | 
 | `getPermissions` | Auth backend returned permissions | `Object | Array` free format - the response will be returned when `usePermissions()` is called |
+| `getRoles`       | Auth backend returned roles       | `Object` - will be used when `usePermissions()` is called |
 
 ## Error Format
 
@@ -400,4 +415,5 @@ When the auth backend returns an error, the Auth Provider should return a reject
 | `logout`         | Auth backend failed to log the user out   | `void` |
 | `getIdentity`    | Auth backend failed to return identity    | `Object` free format - returned as `error` when `useGetIdentity()` is called | 
 | `getPermissions` | Auth backend failed to return permissions | `Object` free format - returned as `error` when `usePermissions()` is called |
+| `getRoles`       | Auth backend failed to return roles       | `Object` free format - returned as `error` when `usePermissions()` is called |
 
