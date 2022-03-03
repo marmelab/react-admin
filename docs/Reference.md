@@ -143,6 +143,7 @@ title: "Reference"
 * [`<UrlField>`](./UrlField.md)
 * [`<UserMenu>`](./Theming.md#usermenu-customization)
 * [`<WithPermissions>`](./WithPermissions.md)<img class="icon" src="./img/premium.svg" />
+* [`<WithRecord>`](./WithRecord.md)
 * [`<WizardForm>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#wizardform)<img class="icon" src="./img/premium.svg" />
 * [`useAppLocationState`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useapplocationstate-retrieve-and-define-app-location)<img class="icon" src="./img/premium.svg" />
 * [`useAppLocationMatcher`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useapplocationmatcher-apply-a-matching-on-the-current-app-location)<img class="icon" src="./img/premium.svg" />
@@ -214,7 +215,5 @@ title: "Reference"
 * [`useUnselect`](./useUnselect.md)
 * [`useUnselectAll`](./useUnselectAll.md)
 * [`useWarnWhenUnsavedChanges`](./CreateEdit.md#warning-about-unsaved-changes)
-* [`<WithPermissions>`](./Authentication.md#usepermissions-hook)
-* [`WithRecord`](./WithRecord.md)
 
 </div>
