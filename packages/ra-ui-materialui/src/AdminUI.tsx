@@ -7,7 +7,7 @@ import {
     NotFound,
     Notification,
 } from './layout';
-import { Login, Logout } from './auth';
+import { Login } from './auth';
 
 export const AdminUI = ({ notification, ...props }: AdminUIProps) => (
     <>
@@ -25,6 +25,5 @@ AdminUI.defaultProps = {
     catchAll: NotFound,
     loading: LoadingPage,
     loginPage: Login,
-    logoutButton: Logout,
     notification: Notification,
 };
