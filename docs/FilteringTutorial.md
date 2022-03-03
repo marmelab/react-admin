@@ -136,17 +136,11 @@ Here is how to implement a generic `<QuickFilter>` component:
 
 ```jsx
 import { SearchInput } from 'react-admin';
-import { makeStyles, Chip } from '@mui/material';
+import { Chip } from '@mui/material';
 
-const useQuickFilterStyles = makeStyles(theme => ({
-    chip: {
-        marginBottom: theme.spacing(1),
-    },
-}));
 const QuickFilter = ({ label }) => {
     const translate = useTranslate();
-    const classes = useQuickFilterStyles();
-    return <Chip className={classes.chip} label={translate(label)} />;
+    return <Chip sx={{ marginBottom: 1 }} label={translate(label)} />;
 };
 
 const postFilters = [

@@ -9,28 +9,25 @@ Whether you need to adjust a CSS rule for a single component, or change the colo
 
 ## Overriding A Component Style
 
-Every react-admin component provides a `className` property, which is always applied to the root element.
+Every react-admin component exposes an `sx` property from MUI besides providing a `className` property, which is always applied to the root element.
 
-Here is an example customizing an `EditButton` component inside a `Datagrid`, using its `className` property and the `makeStyles` hook from MUI:
+Here is an example customizing an `EditButton` component inside a `Datagrid`, using the `sx` property from MUI:
 
 {% raw %}
 ```jsx
 import * as React from 'react';
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
-import { makeStyles } from '@mui/material/styles';
 
-const useStyles = makeStyles({
-    button: {
-        fontWeight: 'bold',
-        // This is JSS syntax to target a deeper element using css selector, here the svg icon for this button
-        '& svg': { color: 'orange' }
-    },
-});
-
-const MyEditButton = props => {
-    const classes = useStyles();
-    return <EditButton className={classes.button} {...props} />;
-};
+const MyEditButton = (props) => (
+    <EditButton
+        sx={{
+            fontWeight: "bold",
+            // This is CSS-in-JS syntax to target a deeper element using css selector, here the svg icon for this button
+            "& svg": { color: "orange" },
+        }}
+        {...props}
+    />
+);
 
 export const ProductList = () => (
     <List>
@@ -44,9 +41,9 @@ export const ProductList = () => (
 ```
 {% endraw %}
 
-For some components, you may want to override not only the root component style, but also the style of components inside the root. In this case, the `className` property isn't enough. You can take advantage of the `classes` property to customize the classes that the component uses internally.
+For some components, you may want to override not only the root component style, but also the style of components inside the root. In this case, you can take advantage of the `sx` property to customize the CSS API that the component uses internally.
 
-Here is an example using the `classes` property of the `<Datagrid>` component:
+Here is an example using the `sx` property of the `<Datagrid>` component:
 
 {% raw %}
 ```jsx
@@ -62,36 +59,32 @@ import {
     ShowButton,
 } from 'react-admin';
 import Icon from '@mui/icons-material/Person';
-import { makeStyles } from '@mui/material/styles';
 
 export const VisitorIcon = Icon;
 
-// The `Datagrid` component uses makeStyles, and supports overriding styles through the `classes` property 
-const useStyles = makeStyles({
-    table: {
-        backgroundColor: 'Lavender',
-    },
-    headerCell: {
-        backgroundColor: 'MistyRose',
-    },
-});
-
-export const PostList = () => {
-    const classes = useStyles();
-    return (
-        <List>
-            <Datagrid classes={classes}>
-                <TextField source="id" />
-                <TextField source="title" />
-                <DateField source="published_at" sortByOrder="DESC"/>
-                <BooleanField source="commentable" sortable={false} />
-                <NumberField source="views" sortByOrder="DESC" />
-                <EditButton />
-                <ShowButton />
-            </Datagrid>
-        </List>
-    )
-};
+// The `Datagrid` component uses MUI System, and supports overriding styles through the `sx` property 
+export const PostList = () => (
+    <List>
+        <Datagrid
+            sx={{
+                "&.RaDatagrid-table": { // No space between & and .
+                    backgroundColor: "Lavender",
+                },
+                "& .RaDatagrid-headerCell": {
+                    backgroundColor: "MistyRose",
+                },
+            }}
+        >
+            <TextField source="id" />
+            <TextField source="title" />
+            <DateField source="published_at" sortByOrder="DESC" />
+            <BooleanField source="commentable" sortable={false} />
+            <NumberField source="views" sortByOrder="DESC" />
+            <EditButton />
+            <ShowButton />
+        </Datagrid>
+    </List>
+);
 ```
 {% endraw %}
 
@@ -111,26 +104,23 @@ Sometimes you want the format to depend on the value. The following example show
 ```jsx
 import * as React from 'react';
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
-import { makeStyles } from '@mui/material/styles';
-import clsx from 'clsx';
 
-const useStyles = makeStyles({
+const ColoredNumberFieldStyles = {
     small: { color: 'black' },
     big: { color: 'red' },
-});
-
-const ColoredNumberField = props => {
-    const classes = useStyles();
-    return (
-        <NumberField
-            className={clsx({
-                [classes.small]: props.record[props.source] < 100,
-                [classes.big]: props.record[props.source] >= 100,
-            })}
-            {...props}
-        />
-    );
 };
+
+const ColoredNumberField = (props) => (
+    <NumberField
+        sx={{
+            ...(props.record[props.source] < 100 &&
+                ColoredNumberFieldStyles.small),
+            ...(props.record[props.source] >= 100 &&
+                ColoredNumberFieldStyles.big),
+        }}
+        {...props}
+    />
+);
 
 // Ensure the original component defaultProps are still applied as they may be used by its parents (such as the `Show` component):
 ColoredNumberField.defaultProps = NumberField.defaultProps;
@@ -154,26 +144,24 @@ Furthermore, you may extract this highlighting strategy into a Higher Order Comp
 ```jsx
 import * as React from 'react';
 import { NumberField, List, Datagrid, TextField, EditButton } from 'react-admin';
-import { makeStyles } from '@mui/material/styles';
-import clsx from 'clsx';
 
-const useStyles = makeStyles({
+const ColoredNumberFieldStyles = {
     small: { color: 'black' },
     big: { color: 'red' },
-});
+};
 
-const colored = WrappedComponent => props => {
-    const classes = useStyles();
-    return (
+const colored = (WrappedComponent) => (props) =>
+    (
         <WrappedComponent
-            className={clsx({
-                [classes.small]: props.record[props.source] < 500,
-                [classes.big]: props.record[props.source] >= 500,
-            })}
+            sx={{
+                ...(props.record[props.source] < 100 &&
+                    ColoredNumberFieldStyles.small),
+                ...(props.record[props.source] >= 100 &&
+                    ColoredNumberFieldStyles.big),
+            }}
             {...props}
         />
-    )
-};
+    );
 
 
 const ColoredNumberField = colored(NumberField);
@@ -294,10 +282,12 @@ const myTheme = merge({}, defaultTheme, {
         // Use the system font instead of the default Roboto font.
         fontFamily: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Arial', 'sans-serif'].join(','),
     },
-    overrides: {
+    components: {
         MuiButton: { // override the styles of all instances of this component
-            root: { // Name of the rule
-                color: 'white', // Some CSS
+            styleOverrides: {
+                root: { // Name of the rule
+                    color: 'white', // Some CSS
+                },
             },
         },
     },
@@ -309,7 +299,7 @@ A `theme` object can contain the following keys:
 * `breakpoints`
 * `direction`
 * `mixins`
-* `overrides`
+* `components`
 * `palette`
 * `props`
 * `shadows`
@@ -482,25 +472,17 @@ You can also customize the default icon by setting the `icon` prop to the `<User
 {% raw %}
 ``` jsx
 import { AppBar, UserMenu } from 'react-admin';
-import { makeStyles } from '@mui/material/styles';
 import Avatar from '@mui/material/Avatar';
 
-const useStyles = makeStyles({
-    avatar: {
-        height: 30,
-        width: 30,
-    },
-});
-
-const MyCustomIcon = () => {
-    const classes = useStyles();
-    return (
-        <Avatar
-            className={classes.avatar}
-            src="https://marmelab.com/images/avatars/adrien.jpg"
-        />
-    )
-};
+const MyCustomIcon = () => (
+    <Avatar
+        sx={{
+            height: 30,
+            width: 30,
+        }}
+        src="https://marmelab.com/images/avatars/adrien.jpg"
+    />
+);
 
 const MyUserMenu = props => (<UserMenu {...props} icon={<MyCustomIcon />} />);
 
@@ -534,20 +516,17 @@ For more advanced sidebar theming, pass your own `Sidebar` component to a custom
 
 ```jsx
 import { Sidebar, Layout } from 'react-admin';
-import { makeStyles } from '@mui/material/styles';
 
-const useSidebarStyles = makeStyles({
-    drawerPaper: {
-        backgroundColor: 'red',
-    },
-});
-
-const MySidebar = props => {
-    const classes = useSidebarStyles();
-    return (
-        <Sidebar classes={classes} {...props} />
-    );
-};
+const MySidebar = (props) => (
+    <Sidebar
+        sx={{
+            "& .RaSidebar-drawerPaper": {
+                backgroundColor: "red",
+            },
+        }}
+        {...props}
+    />
+);
 
 const MyLayout = props => <Layout {...props} sidebar={MySidebar} />
 ```
@@ -561,7 +540,7 @@ For more custom layouts, write a component from scratch. It must contain a `{chi
 import * as React from 'react';
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { ThemeProvider, makeStyles } from '@mui/material/styles';
+import { styled } from '@mui/material';
 import {
     AppBar,
     Menu,
@@ -570,32 +549,33 @@ import {
     useSidebarState,
 } from 'react-admin';
 
-const useStyles = makeStyles(theme => ({
-    root: {
-        display: 'flex',
-        flexDirection: 'column',
-        zIndex: 1,
-        minHeight: '100vh',
-        backgroundColor: theme.palette.background.default,
-        position: 'relative',
-    },
-    appFrame: {
-        display: 'flex',
-        flexDirection: 'column',
-        overflowX: 'auto',
-    },
-    contentWithSidebar: {
-        display: 'flex',
-        flexGrow: 1,
-    },
-    content: {
-        display: 'flex',
-        flexDirection: 'column',
-        flexGrow: 2,
-        padding: theme.spacing(3),
-        marginTop: '4em',
-        paddingLeft: 5,
-    },
+const Root = styled("div")(({ theme }) => ({
+    display: "flex",
+    flexDirection: "column",
+    zIndex: 1,
+    minHeight: "100vh",
+    backgroundColor: theme.palette.background.default,
+    position: "relative",
+}));
+
+const AppFrame = styled("div")(({ theme }) => ({
+    display: "flex",
+    flexDirection: "column",
+    overflowX: "auto",
+}));
+
+const ContentWithSidebar = styled("main")(({ theme }) => ({
+    display: "flex",
+    flexGrow: 1,
+}));
+
+const Content = styled("div")(({ theme }) => ({
+    display: "flex",
+    flexDirection: "column",
+    flexGrow: 2,
+    padding: theme.spacing(3),
+    marginTop: "4em",
+    paddingLeft: 5,
 }));
 
 const MyLayout = ({
@@ -603,23 +583,22 @@ const MyLayout = ({
     dashboard,
     title,
 }) => {
-    const classes = useStyles();
     const [open] = useSidebarState();
 
     return (
-        <div className={classes.root}>
-            <div className={classes.appFrame}>
+        <Root>
+            <AppFrame>
                 <AppBar title={title} open={open} />
-                <main className={classes.contentWithSidebar}>
+                <ContentWithSidebar>
                     <Sidebar>
                         <Menu hasDashboard={!!dashboard} />
                     </Sidebar>
-                    <div className={classes.content}>
+                    <Content>
                         {children}
-                    </div>
-                </main>
-            </div>
-        </div>
+                    </Content>
+                </ContentWithSidebar>
+            </AppFrame>
+        </Root>
     );
 };
 
@@ -690,37 +669,31 @@ Here is an example customization for `<AppBar>` to include a company logo in the
 import * as React from 'react';
 import { AppBar } from 'react-admin';
 import Typography from '@mui/material/Typography';
-import { makeStyles } from '@mui/material/styles';
 
 import Logo from './Logo';
 
-const useStyles = makeStyles({
-    title: {
-        flex: 1,
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-    },
-    spacer: {
-        flex: 1,
-    },
-});
-
-const MyAppBar = props => {
-    const classes = useStyles();
-    return (
-        <AppBar {...props}>
-            <Typography
-                variant="h6"
-                color="inherit"
-                className={classes.title}
-                id="react-admin-title"
-            />
-            <Logo />
-            <span className={classes.spacer} />
-        </AppBar>
-    );
-};
+const MyAppBar = (props) => (
+    <AppBar
+        sx={{
+            "& .RaAppBar-title": {
+                flex: 1,
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+            },
+        }}
+        {...props}
+    >
+        <Typography
+            variant="h6"
+            color="inherit"
+            className={classes.title}
+            id="react-admin-title"
+        />
+        <Logo />
+        <span className={classes.spacer} />
+    </AppBar>
+);
 
 export default MyAppBar;
 ```
