@@ -67,7 +67,7 @@ export default {
 
 ## Getting User Permissions
 
-If you need to check the permissions in any of the default react-admin views or in custom page, you can use the [`usePermissions()`](#usepermissions-hook) hook:
+If you need to check the permissions in any of the default react-admin views or in custom page, you can use the [`usePermissions()`](./usePermissions.md) hook:
 
 Here is an example of a `Create` view with a conditional Input based on permissions:
 
