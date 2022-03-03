@@ -43,6 +43,7 @@ const orderFilters = [
     <SearchInput source="q" alwaysOn />,
     <ReferenceInput source="customer_id" reference="customers">
         <AutocompleteInput
+            label="Hey all!"
             optionText={(choice?: Customer) =>
                 choice?.id // the empty choice is { id: '' }
                     ? `${choice.first_name} ${choice.last_name}`

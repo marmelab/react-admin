@@ -12,6 +12,15 @@ import {
 } from 'react-admin';
 import { InputAdornment } from '@mui/material';
 import { RichTextInput } from 'ra-input-rich-text';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { object, string } from 'yup';
+
+const schema = object({
+    image: string().required('Please add image'),
+    images: object({
+        thumbnail: string().required('Please add thumbnail'),
+    }),
+});
 
 const PREFIX = 'ProductCreate';
 
@@ -39,19 +48,13 @@ const StyledCreate = styled(Create)({
 const ProductCreate = () => {
     return (
         <StyledCreate>
-            <TabbedForm defaultValues={{ sales: 0 }}>
+            <TabbedForm
+                defaultValues={{ sales: 0 }}
+                resolver={yupResolver(schema)}
+            >
                 <FormTab label="resources.products.tabs.image">
-                    <TextInput
-                        autoFocus
-                        source="image"
-                        fullWidth
-                        validate={required()}
-                    />
-                    <TextInput
-                        source="thumbnail"
-                        fullWidth
-                        validate={required()}
-                    />
+                    <TextInput autoFocus source="image" fullWidth />
+                    <TextInput source="images.thumbnail" fullWidth />
                 </FormTab>
                 <FormTab label="resources.products.tabs.details" path="details">
                     <TextInput source="reference" validate={required()} />

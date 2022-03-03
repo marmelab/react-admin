@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "@apollo/client": "^3.3.19",
+        "@hookform/resolvers": "2.8.8",
         "@mui/icons-material": "^5.0.1",
         "@mui/material": "^5.0.2",
         "@types/inflection": "^1.5.28",
@@ -35,7 +36,8 @@
         "react-router": "^6.1.0",
         "react-router-dom": "^6.1.0",
         "react-scripts": "^5.0.0",
-        "recharts": "^2.1.5"
+        "recharts": "^2.1.5",
+        "yup": "0.32.11"
     },
     "scripts": {
         "analyze": "source-map-explorer 'build/static/js/*.js'",

@@ -12,6 +12,7 @@
     "dependencies": {
         "@emotion/react": "^11.7.1",
         "@emotion/styled": "^11.6.0",
+        "@hookform/resolvers": "2.8.8",
         "@mui/icons-material": "^5.0.1",
         "@mui/material": "^5.0.2",
         "jsonexport": "^3.2.0",
@@ -29,7 +30,8 @@
         "react-hook-form": "^7.25.0",
         "react-query": "^3.32.1",
         "react-router": "^6.1.0",
-        "react-router-dom": "^6.1.0"
+        "react-router-dom": "^6.1.0",
+        "yup": "^0.32.11"
     },
     "devDependencies": {
         "@babel/preset-react": "^7.12.10",
