@@ -487,7 +487,7 @@ React-admin v4 uses react-query rather than Redux for data fetching. The base re
 
 If your application code uses these hooks, you have 2 ways to upgrade.
 
-If you're using `useQuery` or `useMutation` to call a regular dataProvider method (like `useGetOne`), then you can use the specialized dataProvider hooks instead:
+If you're using `useQuery` to call a regular dataProvider method (like `dataProvider.getOne`), then you can use the specialized dataProvider hooks instead:
 
 ```diff
 import * as React from "react";
@@ -511,7 +511,28 @@ const UserProfile = ({ record }) => {
 };
 ```
 
-If you're calling a custom dataProvider method, then you can use react-query's `useQuery` or `useMutation` instead:
+If you're using `useMutation` to call a regular dataProvider method (like `dataProvider.update`), then you can use the specialized dataProvider hooks instead:
+
+```diff
+-import { useMutation } from 'react-admin';
++import { useUpdate } from 'react-admin';
+
+const BanUserButton = ({ userId }) => {
+-   const [update, { loading, error }] = useMutation({
+-       type: 'update',
+-       resource: 'users',
+-       payload: { id: userId, data: { isBanned: true } }
+-   });
++   const [update, { isLoading, error }] = useUpdate(
++       'users',
++       { id: userId, data: { isBanned: true } }
++   );
+-   return <Button label="Ban" onClick={() => mutate()} disabled={loading} />;
++   return <Button label="Ban" onClick={() => mutate()} disabled={isLoading} />;
+};
+```
+
+If you're calling a custom dataProvider method, or if you're calling an PI route directly, then you can use react-query's `useQuery` or `useMutation` instead:
 
 ```diff
 -import { useMutation } from 'react-admin';
@@ -524,7 +545,6 @@ const BanUserButton = ({ userId }) => {
 -   });
 +   const dataProvider = useDataProvider();
 +   const { mutate, isLoading } = useMutation(
-+       ['banUser', userId],
 +       () => dataProvider.banUser(userId)
 +   );
 -   return <Button label="Ban" onClick={() => mutate()} disabled={loading} />;
