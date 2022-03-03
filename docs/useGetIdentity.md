@@ -7,7 +7,7 @@ title: "useGetIdentity"
 
 You may want to use the current user name, avatar, or id in your code. for that purpose, call the `useGetIdentity()` hook, which calls `authProvider.getIdentity()` on mount. It returns an object containing the loading state, the error state, and the identity.
 
-Here is an example Edit component, which falls back to a Show component is the record is locked for edition by another user:
+Here is an example Edit component, which falls back to a Show component if the record is locked for edition by another user:
 
 ```jsx
 import { useGetIdentity, useGetOne } from 'react-admin';

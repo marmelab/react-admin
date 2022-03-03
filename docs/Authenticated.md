@@ -9,6 +9,7 @@ The `<Authenticated>` component calls [the `useAuthenticated()` hook](./useAuthe
 
 ```jsx
 import { Admin, CustomRoutes, Authenticated } from 'react-admin';
+import { Route } from 'react-router';
 
 const App = () => (
     <Admin authProvider={authProvider}>

@@ -15,7 +15,7 @@ Additional props are passed down to the child element.
 
 ```jsx
 import { WithPermissions } from '@react-admin/ra-rbac';
-import { DeleteButton, EditButton, ShowButton } from 'react-admin';
+import { Toolbar, DeleteButton, EditButton, ShowButton } from 'react-admin';
 
 const RecordToolbar = ({ resource }) => (
     <Toolbar>

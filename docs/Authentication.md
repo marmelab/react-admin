@@ -55,7 +55,7 @@ Find an existing Auth Provider in the [List of Available Auth Providers](./AuthP
 
 The `authProvider` handles the authentication logic, but it's the `dataProvider`'s responsibility to use the credentials when communicating with the API. 
 
-As explained in the [Data providers documentation](DataProviders.md#adding-custom-headers), `simpleRestProvider` and `jsonServerProvider` take an `httpClient` as second parameter. That's the place where you can change request headers, cookies, etc.
+As explained in the [Data providers documentation](./DataProviders.md#adding-custom-headers), `simpleRestProvider` and `jsonServerProvider` take an `httpClient` as second parameter. That's the place where you can change request headers, cookies, etc.
 
 For instance, if the `authProvider` stores an authorization token in localStorage, here is how you can tweak the `dataProvider` to pass this token as an `Authorization` header:
 
@@ -137,7 +137,7 @@ const App = () => (
 );
 ```
 
-Alternatively, you can use [the `<Authenticated>` component](./Authenticated), e.g. if you can't modify the page component, or if you want to add authentication in the `<Route element>` prop:
+Alternatively, you can use [the `<Authenticated>` component](./Authenticated.md), e.g. if you can't modify the page component, or if you want to add authentication in the `<Route element>` prop:
 
 ```jsx
 import { Admin, CustomRoutes, Authenticated } from 'react-admin';

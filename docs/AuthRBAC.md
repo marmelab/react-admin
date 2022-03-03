@@ -365,7 +365,7 @@ const authProvider= {
     }),
 };
 
-const CustomLayout = (props: LayoutProps) => <Layout {...props} menu={Menu} />;
+const CustomLayout = props => <Layout {...props} menu={Menu} />;
 
 const App = () => (
     <Admin dataProvider={dataProvider} authProvider={authProvider} layout={CustomLayout}>
@@ -517,7 +517,7 @@ const authProvider= {
     }),
 };
 
-const ProductList = (props: DatagridProps) => (
+const ProductList = props => (
     <List {...props}>
         {/* ra-rbac Datagrid */}
         <Datagrid>
@@ -580,7 +580,7 @@ const authProvider = {
     }),
 };
 
-export const PostEdit = (props: EditProps) => (
+export const PostEdit = props => (
     <Edit {...props}>
         ...
     </Edit>
@@ -607,7 +607,7 @@ const authProvider = {
     }),
 };
 
-export const PostShow = (props: ShowProps) => (
+export const PostShow = props => (
     <Show {...props}>
         ...
     </Show>
@@ -645,7 +645,7 @@ const authProvider= {
     }),
 };
 
-const ProductShow = (props: ShowProps) => (
+const ProductShow = props => (
     <Show {...props}>
         <SimpleShowLayout> {/* <-- RBAC SimpleShowLayout */}
             <TextField source="reference" />

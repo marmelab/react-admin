@@ -46,6 +46,6 @@ const { canAccess: canReadSales } = useCanAccess({ action: "read", resource: "sa
 const { canAccess: canReadSelfSales } = useCanAccess({ action: "read", resource: "sales" }, { id: "123" }); // canReadSelfSales is true
 ```
 
-**tip**: The *order* of permissions as returned by the `authProvider` isn't significant. As soon as at least one permission grants access to an action on a resource, the user will be able to perform it.
+**Tip**: The *order* of permissions as returned by the `authProvider` isn't significant. As soon as at least one permission grants access to an action on a resource, the user will be able to perform it.
 
 **Tip**: `useCanAccess` is asynchronous, because it calls `usePermissions` internally. If you have to use `useCanAccess` several times in a component, the rendered result will "blink" as the multiple calls to `authProvider.getPermissions()` resolve. To avoid that behavior, you can use the `usePermissions` hook once, then call [the `canAccess` helper](./canAccess.md). 

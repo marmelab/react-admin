@@ -823,9 +823,9 @@ const App = () => {
 
 ## Auth Provider
 
-Some of the hooks allowing to call the `authProvider` methods are asynchronous: they return their result only when the `authProvider` promise resolves, and set the  `loading` property to `true` until then.
+Some of the hooks allowing to call the `authProvider` methods are asynchronous: they return their result only when the `authProvider` promise resolves, and set the `loading` property to `true` until then.
 
-In react-admin v4, this `loading` field is now renamed to `isLoading`. The `loaded`  field has been removed.
+In react-admin v4, this `loading` field is now renamed to `isLoading`. The `loaded` field has been removed.
 
 ```diff
 import { useAuthState, Loading } from 'react-admin';
