@@ -29,7 +29,7 @@ const emptyParams = {};
  *
  * @param {Object} params Any params you want to pass to the authProvider
  *
- * @returns The current auth check state. Destructure as { authenticated, error, loading, loaded }.
+ * @returns The current auth check state. Destructure as { authenticated, error, isLoading }.
  *
  * @example
  * import { useAuthState, Loading } from 'react-admin';
