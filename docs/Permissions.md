@@ -115,7 +115,7 @@ const MyPage = () => {
 
 ## Restricting Access to Resources or Views
 
-Permissions can be useful to restrict access to resources or their views. To do so, you must pass a function as a child of the `<Admin>`  component. React-admin will call this function with the permissions returned by the `authProvider`. Note that you can only provide one of such function child.
+Permissions can be useful to restrict access to resources or their views. To do so, you must pass a function as a child of the `<Admin>` component. React-admin will call this function with the permissions returned by the `authProvider`. Note that you can only provide one of such function child.
 
 ```jsx
 <Admin
