@@ -59,7 +59,7 @@ import { Logout } from '../auth/Logout';
 export const UserMenu = (props: UserMenuProps) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const translate = useTranslate();
-    const { loaded, identity } = useGetIdentity();
+    const { isLoading, identity } = useGetIdentity();
     const authProvider = useAuthProvider();
 
     const {
@@ -77,7 +77,7 @@ export const UserMenu = (props: UserMenuProps) => {
 
     return (
         <Root className={className}>
-            {loaded && identity?.fullName ? (
+            {!isLoading && identity?.fullName ? (
                 <Button
                     aria-label={label && translate(label, { _: label })}
                     className={UserMenuClasses.userButton}

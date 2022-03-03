@@ -12,8 +12,7 @@ const UseAuth = ({ children, authParams }: any) => {
 
 const stateInpector = state => (
     <div>
-        <span>{state.loading && 'LOADING'}</span>
-        <span>{state.loaded && 'LOADED'}</span>
+        <span>{state.isLoading && 'LOADING'}</span>
         <span>{state.authenticated && 'AUTHENTICATED'}</span>
     </div>
 );
@@ -26,7 +25,6 @@ describe('useAuthState', () => {
             </CoreAdminContext>
         );
         expect(screen.queryByText('LOADING')).not.toBeNull();
-        expect(screen.queryByText('LOADED')).toBeNull();
         expect(screen.queryByText('AUTHENTICATED')).not.toBeNull();
     });
 
@@ -38,7 +36,6 @@ describe('useAuthState', () => {
         );
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
-            expect(screen.queryByText('LOADED')).not.toBeNull();
             expect(screen.queryByText('AUTHENTICATED')).not.toBeNull();
         });
     });
@@ -60,7 +57,6 @@ describe('useAuthState', () => {
         );
         await waitFor(() => {
             expect(screen.queryByText('LOADING')).toBeNull();
-            expect(screen.queryByText('LOADED')).not.toBeNull();
             expect(screen.queryByText('AUTHENTICATED')).toBeNull();
         });
     });

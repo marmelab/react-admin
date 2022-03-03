@@ -15,7 +15,7 @@ title: "Reference"
 * [`<ArrayField>`](./ArrayField.md)
 * [`<ArrayInput>`](./ArrayInput.md)
 * [`<Aside>`](./CreateEdit.md#aside-component)
-* [`<Authenticated>`](./Authentication.md#useauthenticated-hook)
+* [`<Authenticated>`](./Authenticated.md)
 * [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md)
 * [`<AutocompleteInput>`](./AutocompleteInput.md)
 * [`<Breadcrumb>`](https://marmelab.com/ra-enterprise/modules/ra-navigation#breadcrumb-adding-a-breadcrumb-path-to-every-page)<img class="icon" src="./img/premium.svg" />
@@ -142,12 +142,15 @@ title: "Reference"
 * `<TopToolbar>`
 * [`<UrlField>`](./UrlField.md)
 * [`<UserMenu>`](./Theming.md#usermenu-customization)
+* [`<WithPermissions>`](./WithPermissions.md)<img class="icon" src="./img/premium.svg" />
+* [`<WithRecord>`](./WithRecord.md)
 * [`<WizardForm>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#wizardform)<img class="icon" src="./img/premium.svg" />
 * [`useAppLocationState`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useapplocationstate-retrieve-and-define-app-location)<img class="icon" src="./img/premium.svg" />
 * [`useAppLocationMatcher`](https://marmelab.com/ra-enterprise/modules/ra-navigation#useapplocationmatcher-apply-a-matching-on-the-current-app-location)<img class="icon" src="./img/premium.svg" />
-* [`useAuthenticated`](./Authentication.md#useauthenticated-hook)
-* `useAuthProvider`
-* [`useAuthState`](./Authentication.md#useauthstate-hook)
+* [`useAuthenticated`](./useAuthenticated.md)
+* [`useAuthProvider`](./useAuthProvider.md)
+* [`useAuthState`](./useAuthState.md)
+* [`useCanAccess`](./useCanAccess.md)<img class="icon" src="./img/premium.svg" />
 * `useCheckAuth`
 * `useChoices`
 * [`useChoicesContext`](./useChoicesContext.md)
@@ -159,7 +162,7 @@ title: "Reference"
 * [`useEditController`](./CreateEdit.md#useeditcontroller)
 * `useExpanded`
 * `useFilterState`
-* [`useGetIdentity`](./Authentication.md#usegetidentity-hook)
+* [`useGetIdentity`](./useGetIdentity.md)
 * [`useGetList`](./useGetList.md)
 * [`useGetMany`](./useGetMany.md)
 * [`useGetManyReference`](./useGetManyReference.md)
@@ -175,13 +178,13 @@ title: "Reference"
 * `useLoading`
 * [`useLocaleState`](./Translation.md#uselocalestate-reading-and-setting-the-locale-at-runtime)
 * [`useLock`](https://marmelab.com/ra-enterprise/modules/ra-realtime#locks-on-content)<img class="icon" src="./img/premium.svg" />
-* [`useLogin`](./Authentication.md#uselogin-hook)
-* [`useLogout`](./Authentication.md#uselogout-hook)
+* [`useLogin`](./useLogin.md)
+* [`useLogout`](./useLogout.md)
 * `useLogoutIfAccessDenied`
 * [`useMediaQuery`](./Theming.md#usemediaquery-hook)
 * [`useNotify`](./useNotify.md)
 * `usePaginationState`
-* [`usePermissions`](./Authentication.md#usepermissions-hook)
+* [`usePermissions`](./usePermissions.md)
 * [`usePreferences`](https://marmelab.com/ra-enterprise/modules/ra-preferences#usepreferences-reading-and-writing-user-preferences)<img class="icon" src="./img/premium.svg" />
 * [`useRecordContext`](./useRecordContext.md)
 * `useRecordSelection`
@@ -212,7 +215,5 @@ title: "Reference"
 * [`useUnselect`](./useUnselect.md)
 * [`useUnselectAll`](./useUnselectAll.md)
 * [`useWarnWhenUnsavedChanges`](./CreateEdit.md#warning-about-unsaved-changes)
-* [`<WithPermissions>`](./Authentication.md#usepermissions-hook)
-* [`WithRecord`](./WithRecord.md)
 
 </div>
