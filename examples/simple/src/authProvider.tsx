@@ -35,7 +35,7 @@ export default {
             return Promise.resolve();
         }
         localStorage.setItem('not_authenticated', 'true');
-        return Promise.reject();
+        return new Promise((resolve, reject) => setTimeout(reject, 1000));
     },
     logout: () => {
         localStorage.setItem('not_authenticated', 'true');

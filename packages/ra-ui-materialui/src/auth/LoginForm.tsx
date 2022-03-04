@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
-import { Button, CardActions, CircularProgress } from '@mui/material';
+import { Button, CardContent, CircularProgress } from '@mui/material';
 import {
     Form,
     required,
@@ -54,47 +54,42 @@ export const LoginForm = (props: LoginFormProps) => {
             mode="onChange"
             render={({ handleSubmit }) => (
                 <Root onSubmit={handleSubmit} noValidate className={className}>
-                    <div className={LoginFormClasses.form}>
-                        <div className={LoginFormClasses.input}>
-                            <TextInput
-                                autoFocus
-                                source="username"
-                                label={translate('ra.auth.username')}
-                                disabled={loading}
-                                validate={required()}
-                                fullWidth
-                            />
-                        </div>
-                        <div className={LoginFormClasses.input}>
-                            <TextInput
-                                source="password"
-                                label={translate('ra.auth.password')}
-                                type="password"
-                                disabled={loading}
-                                autoComplete="current-password"
-                                validate={required()}
-                                fullWidth
-                            />
-                        </div>
-                    </div>
-                    <CardActions>
+                    <CardContent className={LoginFormClasses.content}>
+                        <TextInput
+                            autoFocus
+                            source="username"
+                            label={translate('ra.auth.username')}
+                            validate={required()}
+                            fullWidth
+                        />
+                        <TextInput
+                            source="password"
+                            label={translate('ra.auth.password')}
+                            type="password"
+                            autoComplete="current-password"
+                            validate={required()}
+                            fullWidth
+                        />
+
                         <Button
                             variant="contained"
                             type="submit"
                             color="primary"
                             disabled={loading}
+                            fullWidth
                             className={LoginFormClasses.button}
                         >
-                            {loading && (
+                            {loading ? (
                                 <CircularProgress
                                     className={LoginFormClasses.icon}
-                                    size={18}
-                                    thickness={2}
+                                    size={19}
+                                    thickness={3}
                                 />
+                            ) : (
+                                translate('ra.auth.sign_in')
                             )}
-                            {translate('ra.auth.sign_in')}
                         </Button>
-                    </CardActions>
+                    </CardContent>
                 </Root>
             )}
         />
@@ -104,8 +99,7 @@ export const LoginForm = (props: LoginFormProps) => {
 const PREFIX = 'RaLoginForm';
 
 export const LoginFormClasses = {
-    form: `${PREFIX}-form`,
-    input: `${PREFIX}-input`,
+    content: `${PREFIX}-content`,
     button: `${PREFIX}-button`,
     icon: `${PREFIX}-icon`,
 };
@@ -114,20 +108,14 @@ const Root = styled('form', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    [`& .${LoginFormClasses.form}`]: {
-        padding: '0 1em 1em 1em',
+    [`& .${LoginFormClasses.content}`]: {
+        width: 300,
     },
-
-    [`& .${LoginFormClasses.input}`]: {
-        marginTop: '1em',
-    },
-
     [`& .${LoginFormClasses.button}`]: {
-        width: '100%',
+        marginTop: theme.spacing(2),
     },
-
     [`& .${LoginFormClasses.icon}`]: {
-        marginRight: theme.spacing(1),
+        margin: theme.spacing(0.3),
     },
 }));
 
