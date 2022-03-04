@@ -134,6 +134,7 @@ Users usually dislike using their keyboard to filter a list (especially on mobil
 
 Here is how to implement a generic `<QuickFilter>` component:
 
+{% raw %}
 ```jsx
 import { SearchInput } from 'react-admin';
 import { Chip } from '@mui/material';
@@ -150,6 +151,7 @@ const postFilters = [
     <QuickFilter source="tags" label="Tagged Code" defaultValue={[3]} />,
 ];
 ```
+{% endraw %}
 
 **Tip**: It's currently not possible to use two quick filters for the same source. 
 
