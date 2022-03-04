@@ -19,10 +19,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { CSSTransitionProps } from 'react-transition-group/CSSTransition';
 
 import { useArrayInput } from './useArrayInput';
-import {
-    SimpleFormIteratorClasses,
-    SimpleFormIteratorPrefix,
-} from './useSimpleFormIteratorStyles';
+import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
 import { SimpleFormIteratorContext } from './SimpleFormIteratorContext';
 import {
     DisableRemoveFunction,
@@ -97,7 +94,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     );
     return fields ? (
         <SimpleFormIteratorContext.Provider value={context}>
-            <Root className={clsx(SimpleFormIteratorClasses.root, className)}>
+            <Root className={className}>
                 <TransitionGroup component={null}>
                     {fields.map((member, index) => (
                         <CSSTransition
@@ -197,14 +194,12 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
 }
 
 const Root = styled('ul')(({ theme }) => ({
-    [`${SimpleFormIteratorPrefix}.${SimpleFormIteratorClasses.root}`]: {
-        padding: 0,
-        marginBottom: 0,
-        '& > li:last-child': {
-            borderBottom: 'none',
-        },
+    padding: 0,
+    marginBottom: 0,
+    '& > li:last-child': {
+        borderBottom: 'none',
     },
-    [`${SimpleFormIteratorPrefix} .${SimpleFormIteratorClasses.line}`]: {
+    [`& .${SimpleFormIteratorClasses.line}`]: {
         display: 'flex',
         listStyleType: 'none',
         borderBottom: `solid 1px ${theme.palette.divider}`,
@@ -228,23 +223,26 @@ const Root = styled('ul')(({ theme }) => ({
             transition: 'all 500ms ease-in',
         },
     },
-    [`${SimpleFormIteratorPrefix} .${SimpleFormIteratorClasses.index}`]: {
+    [`& .${SimpleFormIteratorClasses.index}`]: {
         [theme.breakpoints.down('md')]: { display: 'none' },
         marginRight: theme.spacing(1),
     },
-    [`${SimpleFormIteratorPrefix} .${SimpleFormIteratorClasses.indexContainer}`]: {
+    [`& .${SimpleFormIteratorClasses.indexContainer}`]: {
         display: 'flex',
         paddingTop: '1em',
         marginRight: theme.spacing(1),
         alignItems: 'center',
     },
-    [`${SimpleFormIteratorPrefix} .${SimpleFormIteratorClasses.form}`]: {
+    [`& .${SimpleFormIteratorClasses.form}`]: {
+        alignItems: 'flex-start',
+        display: 'flex',
+        flexDirection: 'column',
         flex: 2,
     },
-    [`${SimpleFormIteratorPrefix} .${SimpleFormIteratorClasses.action}`]: {
+    [`& .${SimpleFormIteratorClasses.action}`]: {
         paddingTop: '0.5em',
     },
-    [`${SimpleFormIteratorPrefix} .${SimpleFormIteratorClasses.leftIcon}`]: {
+    [`& .${SimpleFormIteratorClasses.leftIcon}`]: {
         marginRight: theme.spacing(1),
     },
 }));
