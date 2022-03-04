@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 
 import { useSidebarState } from './useSidebarState';
-import { useTranslate } from 'ra-core';
+import { useTranslate, useBasename } from 'ra-core';
 
 /**
  * Displays a menu item with a label and an icon - or only the icon with a tooltip when the sidebar is minimized.
@@ -78,6 +78,7 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
 
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     const translate = useTranslate();
+    const basename = useBasename();
 
     const [open, setOpen] = useSidebarState();
     const handleMenuTap = useCallback(
@@ -90,9 +91,9 @@ export const MenuItemLink = forwardRef((props: MenuItemLinkProps, ref) => {
         [setOpen, isSmall, onClick]
     );
 
-    const match = useMatch(
-        typeof props.to === 'string' ? props.to : props.to.pathname
-    );
+    const to =
+        (typeof props.to === 'string' ? props.to : props.to.pathname) || '';
+    const match = useMatch({ path: to, end: to === `${basename}/` });
 
     const renderMenuItem = () => {
         return (
