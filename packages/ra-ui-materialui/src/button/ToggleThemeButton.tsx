@@ -30,7 +30,7 @@ export const ToggleThemeButton = (props: ToggleThemeButtonProps) => {
     const handleTogglePaletteType = (): void => {
         setTheme(theme?.palette.mode === 'dark' ? lightTheme : darkTheme);
     };
-    const toggleThemeTitle = translate('ra-preferences.action.toggle_theme', {
+    const toggleThemeTitle = translate('ra.action.toggle_theme', {
         _: 'Toggle Theme',
     });
 
