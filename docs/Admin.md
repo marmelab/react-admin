@@ -203,7 +203,7 @@ const App = () => (
 );
 ```
 
-**Tip**: If your custom `catchAll` component contains react-router `<Route>` components, this allows you to register new routes displayed within the react-admin layout easily. Note that these routes will match *after* all the react-admin resource routes have been tested. To add custom routes *before* the react-admin ones, and therefore override the default resource routes, see the [`custom pages`](#adding-custom-pages) section instead.
+**Tip**: If your custom `catchAll` component contains react-router `<Route>` components, this allows you to register new routes displayed within the react-admin layout easily. Note that these routes will match *after* all the react-admin resource routes have been tested. To add custom routes *before* the react-admin ones, and therefore override the default resource routes, see the [`custom pages`](./CustomRoutes.md) section instead.
 
 ## `menu`
 

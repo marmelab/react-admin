@@ -5,7 +5,7 @@ title: "usePermissions"
 
 # `usePermissions`
 
-You might want to check user permissions inside a [custom page](./Admin.md#adding-custom-pages). That's the purpose of the `usePermissions()` hook, which calls the `authProvider.getPermissions()` method on mount, and returns the result when available.
+You might want to check user permissions inside a [custom page](./CustomRoutes.md). That's the purpose of the `usePermissions()` hook, which calls the `authProvider.getPermissions()` method on mount, and returns the result when available.
 
 ## Usage
 
