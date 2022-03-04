@@ -20,7 +20,7 @@ you're free to use any graphql **server**.
 
 In a nutshell, `ra-data-graphql` runs an *introspection query* on your GraphQL API and passes it to your adapter, along with the *type of query* that is being made (`CREATE`, `UPDATE`, `GET_ONE`, `GET_LIST` etc..) and the *name of the resource* that is being queried.
 
-It is then the job of ***your*** GraphQL adaptor to craft the GraphQL query that will match your backend conventions, and to provide a function that will parse the response of that query in a way that react-admin can understand.
+It is then the job of ***your*** GraphQL adapter to craft the GraphQL query that will match your backend conventions, and to provide a function that will parse the response of that query in a way that react-admin can understand.
 
 Once the query and the function are passed back to `ra-data-graphql`, the actual HTTP request is sent (using [ApolloClient](https://github.com/apollographql/apollo-client)) to your GraphQL API. The response from your backend is then parsed with the provided function and that parsed response is given to `ra-core`, the core of `react-admin`.
 
