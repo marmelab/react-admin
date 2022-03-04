@@ -13,6 +13,7 @@ import ActionCheck from '@mui/icons-material/CheckCircle';
 import AlertError from '@mui/icons-material/ErrorOutline';
 import clsx from 'clsx';
 import { useTranslate } from 'ra-core';
+import { SxProps } from '@mui/system';
 
 /**
  * Confirmation dialog
@@ -46,6 +47,7 @@ export const Confirm = (props: ConfirmProps) => {
         onClose,
         onConfirm,
         translateOptions = {},
+        sx,
     } = props;
 
     const translate = useTranslate();
@@ -69,6 +71,7 @@ export const Confirm = (props: ConfirmProps) => {
             onClose={onClose}
             onClick={handleClick}
             aria-labelledby="alert-dialog-title"
+            sx={sx}
         >
             <DialogTitle id="alert-dialog-title">
                 {translate(title, { _: title, ...translateOptions })}
@@ -123,6 +126,7 @@ export interface ConfirmProps {
     onConfirm: MouseEventHandler;
     title: string;
     translateOptions?: object;
+    sx: SxProps;
 }
 
 Confirm.propTypes = {
@@ -138,6 +142,7 @@ Confirm.propTypes = {
     onClose: PropTypes.func.isRequired,
     onConfirm: PropTypes.func.isRequired,
     title: PropTypes.string.isRequired,
+    sx: PropTypes.any,
 };
 
 const PREFIX = 'RaConfirm';
