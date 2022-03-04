@@ -775,31 +775,35 @@ To make it easier to customize, we export some components and hooks used by the 
 
 ## Adding Dark Mode Support
 
-The `<ToggleThemeButton>` component is part of `ra-preferences`, an [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> module. It lets users switch from light to dark mode, and persists that choice in local storage so that users only have to do it once.
+The `<ToggleThemeButton>` component lets users switch from light to dark mode, and persists that choice by leveraging the [store](./Store.md).
 
-![Dark Mode support](https://marmelab.com/ra-enterprise/modules/assets/ra-preferences-overview.gif)
+![Dark Mode support](./img/ToggleThemeButton.gif)
 
 You can add the `<ToggleThemeButton>` to a custom App Bar:
 
 ```jsx
 import * as React from 'react';
-import { Layout, AppBar } from 'react-admin';
-import { Box, Typography } from '@mui/material';
-import { ToggleThemeButton } from '@react-admin/ra-preferences';
+import { defaultTheme, Layout, AppBar, ToggleThemeButton } from 'react-admin';
+import { createTheme, Box, Typography } from '@mui/material';
+
+const darkTheme = createTheme({
+    palette: { mode: 'dark' },
+});
 
 const MyAppBar = props => (
     <AppBar {...props}>
         <Box flex="1">
             <Typography variant="h6" id="react-admin-title"></Typography>
         </Box>
-        <ToggleThemeButton />
+        <ToggleThemeButton
+            lightTheme={defaultTheme}
+            darkTheme={darkTheme}
+        />
     </AppBar>
 );
 
 const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
 ```
-
-Check [the `ra-preferences` documentation](https://marmelab.com/ra-enterprise/modules/ra-preferences#togglethemebutton-store-the-theme-in-the-preferences) for more details.
 
 ## Using a Custom Menu
 

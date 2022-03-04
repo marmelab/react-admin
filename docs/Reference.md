@@ -133,7 +133,7 @@ title: "Reference"
 * [`<TextField>`](./TextField.md)
 * [`<TextInput>`](./TextInput.md)
 * `<Title>`
-* [`<ToggleThemeButton>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#togglethemebutton-store-the-theme-in-the-preferences)<img class="icon" src="./img/premium.svg" />
+* [`<ToggleThemeButton>`](./ToggleThemeButton.md)
 * [`<TourProvider>`](https://marmelab.com/ra-enterprise/modules/ra-tour)<img class="icon" src="./img/premium.svg" />
 * [`<TranslatableFields>`](./TranslatableFields.md)
 * [`<Tree>`](https://marmelab.com/ra-enterprise/modules/ra-tree#tree-component)<img class="icon" src="./img/premium.svg" />
