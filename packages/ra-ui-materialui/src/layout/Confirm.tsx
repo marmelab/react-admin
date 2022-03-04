@@ -126,7 +126,7 @@ export interface ConfirmProps {
     onConfirm: MouseEventHandler;
     title: string;
     translateOptions?: object;
-    sx: SxProps;
+    sx?: SxProps;
 }
 
 Confirm.propTypes = {
