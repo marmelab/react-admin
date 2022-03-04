@@ -63,7 +63,7 @@ const authProvider = {
             id: 'user',
             fullName: 'John Doe',
         }),
-    getPermissions: () => Promise.reject('Not implemented'),
+    getPermissions: () => Promise.resolve(''),
     getRoles: () => Promise.reject('Not implemented'),
 };
 
