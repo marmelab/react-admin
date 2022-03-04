@@ -18,7 +18,7 @@ you're free to use any graphql **server**.
 
 ## How does it work?
 
-In a nutshell, `ra-data-graphql` runs an *introspection query* on your GraphQL API and passes it to your adaptor, along with the *type of query* that is being made (`CREATE`, `UPDATE`, `GET_ONE`, `GET_LIST` etc..) and the *name of the resource* that is being queried.
+In a nutshell, `ra-data-graphql` runs an *introspection query* on your GraphQL API and passes it to your adapter, along with the *type of query* that is being made (`CREATE`, `UPDATE`, `GET_ONE`, `GET_LIST` etc..) and the *name of the resource* that is being queried.
 
 It is then the job of ***your*** GraphQL adaptor to craft the GraphQL query that will match your backend conventions, and to provide a function that will parse the response of that query in a way that react-admin can understand.
 
