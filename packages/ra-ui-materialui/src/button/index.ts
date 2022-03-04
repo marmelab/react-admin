@@ -20,6 +20,7 @@ export * from './DeleteWithUndoButton';
 export * from './EditButton';
 export * from './ExportButton';
 export * from './IconButtonWithTooltip';
+export * from './LocalesMenuButton';
 export * from './ListButton';
 export * from './RefreshButton';
 export * from './RefreshIconButton';

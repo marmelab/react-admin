@@ -279,6 +279,8 @@ const LocaleSwitcher = () => {
 export default LocaleSwitcher;
 ```
 
+As this is a very common need, react-admin provides the [`<LocalesMenuButton>`](./LocalesMenuButton.md) component.
+
 ## Lazy-Loading Locales
 
 Bundling all the possible locales in the `i18nProvider` is a great recipe to increase your bundle size, and slow down the initial application load. Fortunately, the `i18nProvider` returns a *promise* for locale change calls to load secondary locales on demand. And the `polyglotI18nProvider` accepts when its argument function returns a Promise, too. For example:
