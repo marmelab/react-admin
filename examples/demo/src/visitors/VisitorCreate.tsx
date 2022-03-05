@@ -6,7 +6,6 @@ import {
     TextInput,
     useTranslate,
     PasswordInput,
-    required,
     email,
 } from 'react-admin';
 import { Box, Typography } from '@mui/material';

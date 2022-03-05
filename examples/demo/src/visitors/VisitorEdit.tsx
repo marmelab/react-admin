@@ -7,8 +7,6 @@ import {
     PasswordInput,
     SimpleForm,
     useTranslate,
-    required,
-    email,
 } from 'react-admin';
 import { Box, Typography } from '@mui/material';
 
