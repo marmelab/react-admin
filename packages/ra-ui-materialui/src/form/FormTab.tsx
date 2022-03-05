@@ -39,7 +39,6 @@ export const FormTab = (props: FormTabProps) => {
         <FormGroupContextProvider name={value.toString()}>
             <Stack
                 alignItems="flex-start"
-                sx={{ paddingLeft: 1, paddingRight: 1 }}
                 style={hidden ? hiddenStyle : null}
                 className={contentClassName}
                 id={`tabpanel-${value}`}

@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import { CardContent, Stack, SxProps } from '@mui/material';
 import { FormRenderProps, MutationMode, RaRecord } from 'ra-core';
+
 import { Toolbar } from './Toolbar';
 
 export const SimpleFormView = ({
@@ -47,11 +48,7 @@ SimpleFormView.propTypes = {
 
 const DefaultComponent = ({ children, sx, ...props }) => (
     <CardContent sx={sx}>
-        <Stack
-            alignItems="flex-start"
-            sx={{ paddingLeft: 1, paddingRight: 1 }}
-            {...props}
-        >
+        <Stack alignItems="flex-start" {...props}>
             {children}
         </Stack>
     </CardContent>
