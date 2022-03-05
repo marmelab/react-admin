@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ComponentType, ReactElement, ReactNode } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { Stack } from '@mui/material';
+import { CardContent, Stack } from '@mui/material';
 import { FormRenderProps, MutationMode, RaRecord } from 'ra-core';
 import { Toolbar } from './Toolbar';
 
@@ -45,13 +45,15 @@ SimpleFormView.propTypes = {
 };
 
 const DefaultComponent = ({ children, ...props }) => (
-    <Stack
-        alignItems="flex-start"
-        sx={{ paddingLeft: 1, paddingRight: 1 }}
-        {...props}
-    >
-        {children}
-    </Stack>
+    <CardContent>
+        <Stack
+            alignItems="flex-start"
+            sx={{ paddingLeft: 1, paddingRight: 1 }}
+            {...props}
+        >
+            {children}
+        </Stack>
+    </CardContent>
 );
 const DefaultToolbar = <Toolbar />;
 
