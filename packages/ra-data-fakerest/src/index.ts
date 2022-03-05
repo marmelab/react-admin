@@ -33,7 +33,18 @@ function log(type, resource, params, response) {
  *   ],
  * })
  */
-export default (data, loggingEnabled = false): DataProvider => {
+export default <
+    T extends {
+        // Don't use Record, it pushes the Literals to the end
+        [P in keyof T & string];
+    },
+    // Workaround, to keep Literals in the hint
+    // See: https://github.com/microsoft/TypeScript/issues/29729
+    ResourceName extends string = (keyof T & string) | (string & {})
+>(
+    data: T,
+    loggingEnabled = false
+): DataProvider<ResourceName> => {
     const restServer = new FakeRest.Server();
     restServer.init(data);
     if (typeof window !== 'undefined') {
@@ -116,7 +127,7 @@ export default (data, loggingEnabled = false): DataProvider => {
      * @param {Object} params The data request params, depending on the type
      * @returns {Promise} The response
      */
-    const handle = (type, resource, params): Promise<any> => {
+    const handle = (type, resource: ResourceName, params): Promise<any> => {
         const collection = restServer.getCollection(resource);
         if (!collection && type !== 'create') {
             const error = new UndefinedResourceError(
