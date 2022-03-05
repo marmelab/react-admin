@@ -37,6 +37,7 @@ const frenchMessages: TranslationMessages = {
             move_up: 'Déplacer vers le haut',
             move_down: 'Déplacer vers le bas',
             open: 'Ouvrir',
+            toggle_theme: 'Thème clair/sombre',
         },
         boolean: {
             true: 'Oui',
