@@ -1603,7 +1603,7 @@ const MyMenuItem = forwardRef((props, ref) => {
 });
 ```
 
-## No More Props Injection In `<SimpleForm>` and `<TabbedForm>`
+## No More Props Injection In `<SimpleForm>`, `<TabbedForm>` and `<FilterForm>`
 
 The form components used to clone their children, inspect their props to handle labels and inject the `margin` and `variant` props.
 

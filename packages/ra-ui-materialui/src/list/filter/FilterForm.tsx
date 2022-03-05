@@ -27,15 +27,20 @@ import { FilterFormInput } from './FilterFormInput';
 import { FilterContext } from '../FilterContext';
 
 export const FilterForm = (props: FilterFormProps) => {
-    const { filters: filtersProps, ...rest } = props;
+    const { defaultValues, filters: filtersProps, ...rest } = props;
 
     const { setFilters, displayedFilters, filterValues } = useListContext(
         props
     );
     const filters = useContext(FilterContext) || filtersProps;
 
+    const mergedInitialValuesWithDefaultValues = mergeInitialValuesWithDefaultValues(
+        defaultValues || filterValues,
+        filters
+    );
+
     const form = useForm({
-        defaultValues: filterValues,
+        defaultValues: mergedInitialValuesWithDefaultValues,
     });
 
     // Reapply filterValues when the URL changes or a user removes a filter
@@ -78,7 +83,7 @@ export type FilterFormProps = FilterFormBaseProps & {
 };
 
 export const FilterFormBase = (props: FilterFormBaseProps) => {
-    const { className, margin, filters, variant, ...rest } = props;
+    const { className, filters, ...rest } = props;
     const resource = useResourceContext(props);
     const form = useFormContext();
     const { displayedFilters = {}, hideFilter } = useListContext(props);
@@ -120,8 +125,6 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
                     filterElement={filterElement}
                     handleHide={handleHide}
                     resource={resource}
-                    variant={filterElement.props.variant || variant}
-                    margin={filterElement.props.margin || margin}
                 />
             ))}
             <div className={FilterFormClasses.clearFix} />
@@ -161,8 +164,6 @@ export type FilterFormBaseProps = Omit<
         className?: string;
         resource?: string;
         filters?: ReactNode[];
-        margin?: 'none' | 'normal' | 'dense';
-        variant?: 'standard' | 'outlined' | 'filled';
     };
 
 export const mergeInitialValuesWithDefaultValues = (
