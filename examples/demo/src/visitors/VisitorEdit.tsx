@@ -15,13 +15,13 @@ import { Box, Typography } from '@mui/material';
 import Aside from './Aside';
 import FullNameField from './FullNameField';
 import SegmentsInput from './SegmentsInput';
-import { validatePasswords } from './VisitorCreate';
+import { validateForm } from './VisitorCreate';
 
 const VisitorEdit = () => {
     const translate = useTranslate();
     return (
         <Edit title={<VisitorTitle />} aside={<Aside />}>
-            <SimpleForm validate={validatePasswords}>
+            <SimpleForm validate={validateForm}>
                 <Box display={{ md: 'block', lg: 'flex' }}>
                     <Box flex={2} mr={{ md: 0, lg: '1em' }}>
                         <Typography variant="h6" gutterBottom>
@@ -33,14 +33,14 @@ const VisitorEdit = () => {
                             <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
                                 <TextInput
                                     source="first_name"
-                                    validate={requiredValidate}
+                                    isRequired
                                     fullWidth
                                 />
                             </Box>
                             <Box flex={1} ml={{ xs: 0, sm: '0.5em' }}>
                                 <TextInput
                                     source="last_name"
-                                    validate={requiredValidate}
+                                    isRequired
                                     fullWidth
                                 />
                             </Box>
@@ -48,7 +48,7 @@ const VisitorEdit = () => {
                         <TextInput
                             type="email"
                             source="email"
-                            validate={[email(), required()]}
+                            isRequired
                             fullWidth
                         />
                         <Box display={{ xs: 'block', sm: 'flex' }}>
@@ -113,7 +113,6 @@ const VisitorEdit = () => {
                             <Box flex={1} ml={{ xs: 0, sm: '0.5em' }}>
                                 <PasswordInput
                                     source="confirm_password"
-                                    resource="customers"
                                     fullWidth
                                 />
                             </Box>
@@ -132,7 +131,6 @@ const VisitorEdit = () => {
                         <NullableBooleanInput
                             fullWidth
                             source="has_newsletter"
-                            resource="customers"
                         />
                     </Box>
                 </Box>
@@ -142,7 +140,5 @@ const VisitorEdit = () => {
 };
 
 const VisitorTitle = () => <FullNameField size="32" />;
-
-const requiredValidate = [required()];
 
 export default VisitorEdit;

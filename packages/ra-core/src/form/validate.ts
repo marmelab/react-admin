@@ -265,7 +265,7 @@ export const number = memoize(
  * <TextInput name="zip" validate={zipValidators} />
  */
 export const regex = lodashMemoize(
-    (pattern, message = 'ra.validation.regex') => (value, values) =>
+    (pattern, message = 'ra.validation.regex') => (value, values?) =>
         !isEmpty(value) && typeof value === 'string' && !pattern.test(value)
             ? getMessage(message, { pattern }, value, values)
             : undefined,

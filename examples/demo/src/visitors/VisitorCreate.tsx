@@ -11,18 +11,28 @@ import {
 } from 'react-admin';
 import { Box, Typography } from '@mui/material';
 
-export const validatePasswords = ({
-    password,
-    confirm_password,
-}: Record<string, string>) => {
+export const validateForm = (
+    values: Record<string, any>
+): Record<string, any> => {
     const errors = {} as any;
-
-    if (password && confirm_password && password !== confirm_password) {
-        errors.confirm_password = [
-            'resources.customers.errors.password_mismatch',
-        ];
+    if (!values.first_name) {
+        errors.first_name = 'ra.validation.required';
     }
-
+    if (!values.last_name) {
+        errors.last_name = 'ra.validation.required';
+    }
+    if (!values.email) {
+        errors.email = 'ra.validation.required';
+    } else {
+        const error = email()(values.email);
+        if (error) {
+            errors.email = error;
+        }
+    }
+    if (values.password && values.password !== values.confirm_password) {
+        errors.confirm_password =
+            'resources.customers.errors.password_mismatch';
+    }
     return errors;
 };
 
@@ -42,31 +52,18 @@ const VisitorCreate = () => (
                 nb_commands: 0,
                 total_spent: 0,
             }}
-            validate={validatePasswords}
+            validate={validateForm}
         >
             <SectionTitle label="resources.customers.fieldGroups.identity" />
             <Box display={{ xs: 'block', sm: 'flex', width: '100%' }}>
                 <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
-                    <TextInput
-                        source="first_name"
-                        validate={requiredValidate}
-                        fullWidth
-                    />
+                    <TextInput source="first_name" isRequired fullWidth />
                 </Box>
                 <Box flex={1} ml={{ xs: 0, sm: '0.5em' }}>
-                    <TextInput
-                        source="last_name"
-                        validate={requiredValidate}
-                        fullWidth
-                    />
+                    <TextInput source="last_name" isRequired fullWidth />
                 </Box>
             </Box>
-            <TextInput
-                type="email"
-                source="email"
-                fullWidth
-                validate={[required(), email()]}
-            />
+            <TextInput type="email" source="email" isRequired fullWidth />
             <DateInput source="birthday" />
             <Separator />
             <SectionTitle label="resources.customers.fieldGroups.address" />
@@ -104,8 +101,6 @@ const VisitorCreate = () => (
         </SimpleForm>
     </Create>
 );
-
-const requiredValidate = [required()];
 
 const SectionTitle = ({ label }: { label: string }) => {
     const translate = useTranslate();
