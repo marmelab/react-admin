@@ -138,7 +138,12 @@ const PostEdit = () => {
                             { id: 42, name: 'Sean Phonee' },
                         ]}
                     />
-                    <ImageInput multiple source="pictures" accept="image/*">
+                    <ImageInput
+                        multiple
+                        source="pictures"
+                        accept="image/*"
+                        helperText=""
+                    >
                         <ImageField source="src" title="title" />
                     </ImageInput>
                     {permissions === 'admin' && (
@@ -205,10 +210,7 @@ const PostEdit = () => {
                             <TextInput source="url" validate={required()} />
                         </SimpleFormIterator>
                     </ArrayInput>
-                    <DateInput
-                        source="published_at"
-                        options={{ locale: 'pt' }}
-                    />
+                    <DateInput source="published_at" />
                     <SelectInput
                         create={
                             <CreateCategory
