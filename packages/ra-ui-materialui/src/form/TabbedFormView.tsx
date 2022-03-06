@@ -108,15 +108,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                         : null;
                 })}
             </div>
-            {toolbar &&
-                cloneElement(toolbar, {
-                    className: 'toolbar',
-                    mutationMode,
-                    record,
-                    resource,
-                    saving,
-                    submitOnEnter,
-                })}
+            {toolbar}
         </Root>
     );
 };

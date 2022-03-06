@@ -1860,13 +1860,20 @@ const {
 
 Or in a component:
 ```diff
-export const PostEdit = (props) => (
--    <Edit {...props} undoable>
-+    <Edit {...props} mutationMode="undoable">
-        <SimpleForm>
-            <TextInput source="title" />
-        </SimpleForm>
-    </Edit>
+import { BulkDeleteButton, BulkExportButton, List } from 'react-admin';
+
+const PostBulkActionButtons = () => (
+    <Fragment>
+        <BulkExportButton />
+-       <BulkDeleteButton undoable />
++       <BulkDeleteButton mutationMode="undoable" />
+    </Fragment>
+);
+
+export const PostList = (props) => (
+    <List {...props} bulkActionButtons={<PostBulkActionButtons />}>
+        ...
+    </List>
 );
 ```
 
@@ -2664,6 +2671,24 @@ const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
         </Toolbar>
     );
 };
+```
+
+Since the `<Toolbar>` component is not cloned anymore by react-admin layouts, properties like `mutationMode` and `submitOnEnter` are not passed down from parent components. So, if you rely on this behaviour, you should create your own custom toolbar instead
+
+```diff
+import { Toolbar, SimpleForm, Edit, TextInput } from 'react-admin';
+
++const MyToolbar = props => <Toolbar {...props} mutationMode="pessimistic" submitOnEnter={false} />;
+
+export const PostEdit = (props) => (
+-    <Edit {...props} mutationMode="pessimistic">
++    <Edit {...props}>
+-       <SimpleForm>
++       <SimpleForm toolbar={<MyToolbar/>}>
+            <TextInput source="title" />
+        </SimpleForm>
+    </Edit>
+);
 ```
 
 The `<Toolbar>` component used to receive the `width` prop also, that allowed to display the mobile or desktop version depending on its value. This is handle internally in version 4 and you can safely remove this prop.
