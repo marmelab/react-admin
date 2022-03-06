@@ -40,7 +40,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         record,
         saving,
         submitOnEnter = true,
-        sx,
         syncWithLocation = true,
         tabs = DefaultTabs,
         toolbar = DefaultToolbar,
@@ -70,7 +69,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         );
 
     return (
-        <form
+        <Root
             className={clsx('tabbed-form', className)}
             onSubmit={handleSubmit}
             {...sanitizeRestProps(rest)}
@@ -83,7 +82,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                 renderTabHeaders()
             )}
             <Divider />
-            <Component sx={sx}>
+            <Component>
                 {/* All tabs are rendered (not only the one in focus), to allow validation
                 on tabs not in focus. The tabs receive a `hidden` property, which they'll
                 use to hide the tab using CSS if it's not the one in focus.
@@ -120,7 +119,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                     saving,
                     submitOnEnter,
                 })}
-        </form>
+        </Root>
     );
 };
 
@@ -147,7 +146,9 @@ TabbedFormView.propTypes = {
 };
 
 const DefaultTabs = <TabbedFormTabs />;
-const DefaultComponent = ({ children, sx }) => <Root sx={sx}>{children}</Root>;
+const DefaultComponent = ({ children }) => (
+    <CardContent>{children}</CardContent>
+);
 const DefaultToolbar = <Toolbar />;
 
 export interface TabbedFormViewProps extends FormRenderProps {
@@ -173,7 +174,7 @@ export const TabbedFormClasses = {
     errorTabButton: `${PREFIX}-errorTabButton`,
 };
 
-const Root = styled(CardContent, {
+const Root = styled('form', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
