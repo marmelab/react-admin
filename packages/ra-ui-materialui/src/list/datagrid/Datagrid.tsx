@@ -130,6 +130,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         rowClick,
         rowStyle,
         size = 'small',
+        sx,
         ...rest
     } = props;
 
@@ -224,7 +225,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
      */
     return (
         <DatagridContextProvider value={contextValue}>
-            <DatagridRoot>
+            <DatagridRoot sx={sx}>
                 {bulkActionButtons !== false ? (
                     <BulkActionsToolbar selectedIds={selectedIds}>
                         {isValidElement(bulkActionButtons)

@@ -251,6 +251,12 @@ const Root = styled('div', {
             '&:focus': {
                 backgroundColor: theme.palette.background.default,
             },
+            '& p': {
+                margin: '0 0 1em 0',
+                '&:last-child': {
+                    marginBottom: 0,
+                },
+            },
         },
     },
 }));
