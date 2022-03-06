@@ -1,20 +1,38 @@
 import * as React from 'react';
-import { Identifier, Datagrid, DateField, TextField } from 'react-admin';
+import {
+    Identifier,
+    Datagrid,
+    DateField,
+    TextField,
+    BulkDeleteButton,
+} from 'react-admin';
 
 import ProductReferenceField from '../products/ProductReferenceField';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from './StarRatingField';
 import rowStyle from './rowStyle';
 
+import BulkAcceptButton from './BulkAcceptButton';
+import BulkRejectButton from './BulkRejectButton';
+
 export interface ReviewListDesktopProps {
     selectedRow?: Identifier;
 }
+
+const ReviewsBulkActionButtons = () => (
+    <>
+        <BulkAcceptButton />
+        <BulkRejectButton />
+        <BulkDeleteButton />
+    </>
+);
 
 const ReviewListDesktop = ({ selectedRow }: ReviewListDesktopProps) => (
     <Datagrid
         rowClick="edit"
         rowStyle={rowStyle(selectedRow)}
         optimized
+        bulkActionButtons={<ReviewsBulkActionButtons />}
         sx={{
             '& .RaDatagrid-thead': {
                 borderLeftColor: 'transparent',

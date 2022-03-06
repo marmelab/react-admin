@@ -1,23 +1,13 @@
 import * as React from 'react';
-import { Fragment, useCallback } from 'react';
-import { BulkDeleteButton, List, BulkActionProps } from 'react-admin';
+import { useCallback } from 'react';
+import { List } from 'react-admin';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import { Box, Drawer, useMediaQuery, Theme } from '@mui/material';
 
-import BulkAcceptButton from './BulkAcceptButton';
-import BulkRejectButton from './BulkRejectButton';
 import ReviewListMobile from './ReviewListMobile';
 import ReviewListDesktop from './ReviewListDesktop';
 import reviewFilters from './reviewFilters';
 import ReviewEdit from './ReviewEdit';
-
-const ReviewsBulkActionButtons = (props: BulkActionProps) => (
-    <Fragment>
-        <BulkAcceptButton {...props} />
-        <BulkRejectButton {...props} />
-        <BulkDeleteButton {...props} />
-    </Fragment>
-);
 
 const ReviewList = () => {
     const isXSmall = useMediaQuery<Theme>(theme =>
@@ -43,7 +33,6 @@ const ReviewList = () => {
                         }),
                     marginRight: !!match ? '400px' : 0,
                 }}
-                bulkActionButtons={<ReviewsBulkActionButtons />}
                 filters={reviewFilters}
                 perPage={25}
                 sort={{ field: 'date', order: 'DESC' }}

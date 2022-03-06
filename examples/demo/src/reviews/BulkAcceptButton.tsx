@@ -7,14 +7,14 @@ import {
     useUpdateMany,
     useNotify,
     useUnselectAll,
-    BulkActionProps,
     Identifier,
+    useListContext,
 } from 'react-admin';
 
 const noSelection: Identifier[] = [];
 
-const BulkAcceptButton = (props: BulkActionProps) => {
-    const { selectedIds = noSelection } = props;
+const BulkAcceptButton = () => {
+    const { selectedIds = noSelection } = useListContext();
     const notify = useNotify();
     const unselectAll = useUnselectAll('reviews');
 
@@ -47,10 +47,6 @@ const BulkAcceptButton = (props: BulkActionProps) => {
             <ThumbUp />
         </Button>
     );
-};
-
-BulkAcceptButton.propTypes = {
-    selectedIds: PropTypes.arrayOf(PropTypes.any).isRequired,
 };
 
 export default BulkAcceptButton;
