@@ -12,6 +12,8 @@ import {
     TextField,
     TextInput,
     useRecordContext,
+    useGetManyReference,
+    useTranslate,
 } from 'react-admin';
 import { RichTextInput } from 'ra-input-rich-text';
 
@@ -51,7 +53,7 @@ const ProductEdit = () => (
             >
                 <RichTextInput source="description" label="" validate={req} />
             </FormTab>
-            <FormTab label="resources.products.tabs.reviews" path="reviews">
+            <ReviewsFormTab path="reviews">
                 <ReferenceManyField
                     reference="reviews"
                     target="product_id"
@@ -76,11 +78,33 @@ const ProductEdit = () => (
                         <EditButton />
                     </Datagrid>
                 </ReferenceManyField>
-            </FormTab>
+            </ReviewsFormTab>
         </TabbedForm>
     </Edit>
 );
 
 const req = [required()];
+
+const ReviewsFormTab = (props: any) => {
+    const record = useRecordContext();
+    const { isLoading, total } = useGetManyReference(
+        'reviews',
+        {
+            target: 'product_id',
+            id: record.id,
+            pagination: { page: 1, perPage: 25 },
+            sort: { field: 'id', order: 'DESC' },
+        },
+        {
+            enabled: !!record,
+        }
+    );
+    const translate = useTranslate();
+    let label = translate('resources.products.tabs.reviews');
+    if (!isLoading) {
+        label += ` (${total})`;
+    }
+    return <FormTab label={label} {...props} />;
+};
 
 export default ProductEdit;
