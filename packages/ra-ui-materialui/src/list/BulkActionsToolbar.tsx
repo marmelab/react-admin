@@ -143,6 +143,7 @@ const Root = styled('div', {
     [`& .${BulkActionsToolbarClasses.topToolbar}`]: {
         paddingBottom: 0,
         minHeight: 'auto',
+        gap: theme.spacing(1),
     },
 
     [`& .${BulkActionsToolbarClasses.buttons}`]: {},

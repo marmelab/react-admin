@@ -19,6 +19,7 @@ const FullNameField = (props: Props) => {
             display="flex"
             flexWrap="nowrap"
             alignItems="center"
+            component="div"
         >
             <AvatarField
                 record={record}

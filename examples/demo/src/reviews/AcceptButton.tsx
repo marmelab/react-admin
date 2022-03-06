@@ -45,12 +45,9 @@ const AcceptButton = () => {
             color="primary"
             size="small"
             onClick={() => approve()}
+            startIcon={<ThumbUp sx={{ color: 'green' }} />}
             disabled={isLoading}
         >
-            <ThumbUp
-                color="primary"
-                style={{ paddingRight: '0.5em', color: 'green' }}
-            />
             {translate('resources.reviews.action.accept')}
         </Button>
     ) : (
