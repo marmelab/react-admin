@@ -5,18 +5,14 @@ import {
     Edit,
     EditButton,
     FormTab,
-    NumberInput,
     Pagination,
-    ReferenceInput,
     ReferenceManyField,
     required,
-    SelectInput,
     TabbedForm,
     TextField,
     TextInput,
     useRecordContext,
 } from 'react-admin';
-import { InputAdornment, Grid } from '@mui/material';
 import { RichTextInput } from 'ra-input-rich-text';
 
 import { ProductEditDetails } from './ProductEditDetails';
