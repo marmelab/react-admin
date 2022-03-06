@@ -129,15 +129,19 @@ const EventList = () => {
                         completed
                     >
                         <StepLabel
-                            StepIconComponent={
-                                event.type === 'order'
-                                    ? order.icon
-                                    : review.icon
+                            icon={
+                                event.type === 'order' ? (
+                                    <order.icon
+                                        color="disabled"
+                                        sx={{ pl: 0.5, fontSize: '1.25rem' }}
+                                    />
+                                ) : (
+                                    <review.icon
+                                        color="disabled"
+                                        sx={{ pl: 0.5, fontSize: '1.25rem' }}
+                                    />
+                                )
                             }
-                            StepIconProps={{
-                                color: 'disabled',
-                                sx: { pl: 0.5, fontSize: '1.25rem' },
-                            }}
                         >
                             {new Date(event.date).toLocaleString(locale, {
                                 weekday: 'long',
