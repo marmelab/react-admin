@@ -71,7 +71,7 @@ export const useGetList = <RecordType extends RaRecord = any>(
         [resource, 'getList', { pagination, sort, filter, meta }],
         () =>
             dataProvider
-                .getList<RecordType>(resource, {
+                .getList<string, RecordType>(resource, {
                     pagination,
                     sort,
                     filter,

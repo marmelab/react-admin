@@ -85,7 +85,7 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
         ],
         () =>
             dataProvider
-                .getManyReference<RecordType>(resource, {
+                .getManyReference<string, RecordType>(resource, {
                     target,
                     id,
                     pagination,

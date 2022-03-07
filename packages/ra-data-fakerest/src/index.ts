@@ -1,5 +1,5 @@
 import FakeRest from 'fakerest';
-import { DataProvider } from 'ra-core';
+import { DataProvider, DataProviderDefinition, RaRecord } from 'ra-core';
 
 /* eslint-disable no-console */
 function log(type, resource, params, response) {
@@ -13,6 +13,17 @@ function log(type, resource, params, response) {
         console.log('FakeRest response', response);
     }
 }
+
+type ExtractArray<T> = T extends Array<infer U> ? U : never;
+type FakeData<T = { [k: string]: RaRecord[] }> = {
+    [P in keyof T & string]: RaRecord[];
+};
+type ExtractDataProviderDefinition<
+    T extends {
+        // Don't use Record, it pushes the Literals to the end
+        [P in keyof T & string]: RaRecord[];
+    }
+> = {};
 
 /**
  * Respond to react-admin data queries using a local JavaScript object
@@ -34,17 +45,14 @@ function log(type, resource, params, response) {
  * })
  */
 export default <
-    T extends {
-        // Don't use Record, it pushes the Literals to the end
-        [P in keyof T & string];
-    },
-    // Workaround, to keep Literals in the hint
-    // See: https://github.com/microsoft/TypeScript/issues/29729
-    ResourceName extends string = (keyof T & string) | (string & {})
+    T extends FakeData<T>,
+    ResourceDefintion extends DataProviderDefinition = {
+        [P in keyof T]: ExtractArray<T[P]>;
+    }
 >(
     data: T,
     loggingEnabled = false
-): DataProvider<ResourceName> => {
+): DataProvider<ResourceDefintion> => {
     const restServer = new FakeRest.Server();
     restServer.init(data);
     if (typeof window !== 'undefined') {
@@ -127,7 +135,7 @@ export default <
      * @param {Object} params The data request params, depending on the type
      * @returns {Promise} The response
      */
-    const handle = (type, resource: ResourceName, params): Promise<any> => {
+    const handle = (type, resource, params): Promise<any> => {
         const collection = restServer.getCollection(resource);
         if (!collection && type !== 'create') {
             const error = new UndefinedResourceError(

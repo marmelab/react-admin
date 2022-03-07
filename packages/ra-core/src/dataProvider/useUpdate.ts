@@ -151,7 +151,7 @@ export const useUpdate = <RecordType extends RaRecord = any>(
             previousData: callTimePreviousData = paramsRef.current.previousData,
         } = {}) =>
             dataProvider
-                .update<RecordType>(callTimeResource, {
+                .update<string, RecordType>(callTimeResource, {
                     id: callTimeId,
                     data: callTimeData,
                     previousData: callTimePreviousData,

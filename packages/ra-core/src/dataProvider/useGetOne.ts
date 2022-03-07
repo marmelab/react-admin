@@ -53,7 +53,7 @@ export const useGetOne = <RecordType extends RaRecord = any>(
         [resource, 'getOne', { id: String(id), meta }],
         () =>
             dataProvider
-                .getOne<RecordType>(resource, { id, meta })
+                .getOne<string, RecordType>(resource, { id, meta })
                 .then(({ data }) => data),
         options
     );

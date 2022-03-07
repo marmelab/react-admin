@@ -151,7 +151,7 @@ export const useDelete = <RecordType extends RaRecord = any>(
             meta: callTimeMeta = paramsRef.current.meta,
         } = {}) =>
             dataProvider
-                .delete<RecordType>(callTimeResource, {
+                .delete<string, RecordType>(callTimeResource, {
                     id: callTimeId,
                     previousData: callTimePreviousData,
                     meta: callTimeMeta,

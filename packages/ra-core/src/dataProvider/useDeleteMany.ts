@@ -163,7 +163,7 @@ export const useDeleteMany = <RecordType extends RaRecord = any>(
             meta: callTimeMeta = paramsRef.current.meta,
         } = {}) =>
             dataProvider
-                .deleteMany<RecordType>(callTimeResource, {
+                .deleteMany(callTimeResource, {
                     ids: callTimeIds,
                     meta: callTimeMeta,
                 })

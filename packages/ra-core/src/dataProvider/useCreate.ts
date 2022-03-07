@@ -86,7 +86,7 @@ export const useCreate = <RecordType extends RaRecord = any>(
             meta: callTimeMeta = paramsRef.current.meta,
         } = {}) =>
             dataProvider
-                .create<RecordType>(callTimeResource, {
+                .create<string, RecordType>(callTimeResource, {
                     data: callTimeData,
                     meta: callTimeMeta,
                 })

@@ -9,10 +9,10 @@ import { AuthActionType } from './auth/types';
 
 export type Identifier = string | number;
 
-export interface RaRecord {
+export type RaRecord = {
     id: Identifier;
     [key: string]: any;
-}
+};
 
 export interface SortPayload {
     field: string;
@@ -42,12 +42,12 @@ export type I18nProvider = {
     [key: string]: any;
 };
 
-export interface UserIdentity {
+export type UserIdentity = {
     id: Identifier;
     fullName?: string;
     avatar?: string;
     [key: string]: any;
-}
+};
 
 /**
  * authProvider types
@@ -72,54 +72,105 @@ export type LegacyAuthProvider = (
  * dataProvider types
  */
 
-export type DataProvider<ResourceType extends string = string> = {
-    getList: <RecordType extends RaRecord = any>(
+// Hack: persists literal keys, while allowing normal strings.
+type LooseStringKeyOf<T> = (keyof T & string) | (string & {});
+export interface RegisterDataProvider {
+    [K: string]: RaRecord;
+}
+export type DataProviderDefinition =
+    | Partial<RegisterDataProvider>
+    | {
+          [K: string]: RaRecord;
+      };
+
+export interface BaseDataProvider<
+    ResourceDefinition extends DataProviderDefinition
+> {
+    getList: <
+        ResourceType extends LooseStringKeyOf<ResourceDefinition>,
+        RecordType extends RaRecord = ResourceDefinition[ResourceType]
+    >(
         resource: ResourceType,
         params: GetListParams
     ) => Promise<GetListResult<RecordType>>;
 
-    getOne: <RecordType extends RaRecord = any>(
+    getOne: <
+        ResourceType extends LooseStringKeyOf<ResourceDefinition>,
+        RecordType extends RaRecord = ResourceDefinition[ResourceType]
+    >(
         resource: ResourceType,
         params: GetOneParams
     ) => Promise<GetOneResult<RecordType>>;
 
-    getMany: <RecordType extends RaRecord = any>(
+    getMany: <
+        ResourceType extends LooseStringKeyOf<ResourceDefinition>,
+        RecordType extends RaRecord = ResourceDefinition[ResourceType]
+    >(
         resource: ResourceType,
         params: GetManyParams
     ) => Promise<GetManyResult<RecordType>>;
 
-    getManyReference: <RecordType extends RaRecord = any>(
+    getManyReference: <
+        ResourceType extends LooseStringKeyOf<ResourceDefinition>,
+        RecordType extends RaRecord = ResourceDefinition[ResourceType]
+    >(
         resource: ResourceType,
         params: GetManyReferenceParams
     ) => Promise<GetManyReferenceResult<RecordType>>;
 
-    update: <RecordType extends RaRecord = any>(
+    update: <
+        ResourceType extends LooseStringKeyOf<ResourceDefinition>,
+        RecordType extends RaRecord = ResourceDefinition[ResourceType]
+    >(
         resource: ResourceType,
         params: UpdateParams
     ) => Promise<UpdateResult<RecordType>>;
 
-    updateMany: <RecordType extends RaRecord = any>(
+    updateMany: <
+        ResourceType extends LooseStringKeyOf<ResourceDefinition>,
+        RecordType extends RaRecord = ResourceDefinition[ResourceType]
+    >(
         resource: ResourceType,
         params: UpdateManyParams
     ) => Promise<UpdateManyResult<RecordType>>;
 
-    create: <RecordType extends RaRecord = any>(
+    create: <
+        ResourceType extends LooseStringKeyOf<ResourceDefinition>,
+        RecordType extends RaRecord = ResourceDefinition[ResourceType]
+    >(
         resource: ResourceType,
         params: CreateParams
     ) => Promise<CreateResult<RecordType>>;
 
-    delete: <RecordType extends RaRecord = any>(
+    delete: <
+        ResourceType extends LooseStringKeyOf<ResourceDefinition>,
+        RecordType extends RaRecord = ResourceDefinition[ResourceType]
+    >(
         resource: ResourceType,
         params: DeleteParams<RecordType>
     ) => Promise<DeleteResult<RecordType>>;
 
-    deleteMany: <RecordType extends RaRecord = any>(
+    deleteMany: <
+        ResourceType extends LooseStringKeyOf<ResourceDefinition>,
+        RecordType extends RaRecord = ResourceDefinition[ResourceType]
+    >(
         resource: ResourceType,
         params: DeleteManyParams<RecordType>
     ) => Promise<DeleteManyResult<RecordType>>;
 
     [key: string]: any;
-};
+}
+
+// Backwards compatibility, acts a translation layer, so `DataProvider<string>` is still valid.
+export type DataProvider<
+    MaybeResourceDefinition extends
+        | string
+        | DataProviderDefinition = DataProviderDefinition
+> = BaseDataProvider<
+    MaybeResourceDefinition extends string
+        ? DataProviderDefinition[MaybeResourceDefinition]
+        : MaybeResourceDefinition
+>;
 
 export interface GetListParams {
     pagination: PaginationPayload;
