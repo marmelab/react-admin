@@ -304,7 +304,7 @@ Ra-rbac's `<Resource>` relies on the following actions:
 
 ```jsx
 import { List, Datagrid, TextField } from 'react-admin';
-import { canAccess } from '@react-admin/ra-rbac';
+import { usePermissions, canAccess } from '@react-admin/ra-rbac';
 
 const authProvider = {
     checkAuth: () => Promise.resolve(),
@@ -318,27 +318,30 @@ const authProvider = {
     }),
 };
 
-const ProductList = ({ permissions, ...props }) => (
-    <List {...props}>
-        <Datagrid>
-            <TextField source="id" />
-            <TextField source="reference" />
-            <TextField source="width" />
-            <TextField source="height" />
-            {canAccess({
-                permissions,
-                action: 'read_price',
-                resource: 'products',
-            }) && <TextField source="price" />}
-            {/* this column will not render */}
-            {canAccess({
-                permissions,
-                action: 'read_stock',
-                resource: 'products',
-            }) && <TextField source="stock" />}
-        </Datagrid>
-    </List>
-);
+const ProductList = () => {
+    const { permissions } = usePermissions();
+        return (
+        <List>
+            <Datagrid>
+                <TextField source="id" />
+                <TextField source="reference" />
+                <TextField source="width" />
+                <TextField source="height" />
+                {canAccess({
+                    permissions,
+                    action: 'read_price',
+                    resource: 'products',
+                }) && <TextField source="price" />}
+                {/* this column will not render */}
+                {canAccess({
+                    permissions,
+                    action: 'read_stock',
+                    resource: 'products',
+                }) && <TextField source="stock" />}
+            </Datagrid>
+        </List>
+    );
+}
 ```
 
 ## `<Menu>`
@@ -467,8 +470,8 @@ const authProvider = {
       }),
 };
 
-export const PostList = (props) => (
-    <List {...props}>
+export const PostList = () => (
+    <List>
         ...
     </List>
 );
@@ -517,8 +520,8 @@ const authProvider= {
     }),
 };
 
-const ProductList = props => (
-    <List {...props}>
+const ProductList = () => (
+    <List>
         {/* ra-rbac Datagrid */}
         <Datagrid>
             <ImageField source="thumbnail" />
@@ -530,9 +533,7 @@ const ProductList = props => (
             <NumberField source="height" />
             <NumberField source="price" />
             <TextField source="description" />
-            {
-               // these two columns are not visible to the user
-            }
+            {/* these two columns are not visible to the user */}
             <NumberField source="stock" />
             <NumberField source="sales" />
         </Datagrid>
@@ -551,8 +552,8 @@ Users must have the 'export' permission on the resource to see the ExportButton.
 import { List } from 'react-admin';
 import { ListActions } from '@react-admin/ra-rbac';
 
-export const PostList = (props) => (
-    <List actions={<ListActions />} {...props}>
+export const PostList = () => (
+    <List actions={<ListActions />}>
         ...
     </List>
 );
@@ -580,8 +581,8 @@ const authProvider = {
     }),
 };
 
-export const PostEdit = props => (
-    <Edit {...props}>
+export const PostEdit = () => (
+    <Edit>
         ...
     </Edit>
 );
@@ -607,8 +608,8 @@ const authProvider = {
     }),
 };
 
-export const PostShow = props => (
-    <Show {...props}>
+export const PostShow = () => (
+    <Show>
         ...
     </Show>
 );
@@ -645,8 +646,8 @@ const authProvider= {
     }),
 };
 
-const ProductShow = props => (
-    <Show {...props}>
+const ProductShow = () => (
+    <Show>
         <SimpleShowLayout> {/* <-- RBAC SimpleShowLayout */}
             <TextField source="reference" />
             <TextField source="width" />
@@ -693,8 +694,8 @@ const authProvider = {
     }),
 };
 
-const ProductShow = props => (
-   <Show {...props}>
+const ProductShow = () => (
+   <Show>
        <TabbedShowLayout>
            <Tab label="Description" name="description">
                <TextField source="reference" />
@@ -751,8 +752,8 @@ const authProvider= {
     }),
 };
 
-const ProductEdit = props => (
-    <Edit {...props}>
+const ProductEdit = () => (
+    <Edit>
         <SimpleForm>
             <TextInput source="reference" />
             <TextInput source="width" />
@@ -800,8 +801,8 @@ const authProvider = {
     }),
 };
 
-const ProductEdit = props => (
-    <Edit {...props}>
+const ProductEdit = () => (
+    <Edit>
         <TabbedForm>
             <FormTab label="Description" name="description">
                 <TextInput source="reference" />
@@ -855,8 +856,8 @@ const authProvider = {
     }),
 };
 
-const ProductEdit = props => (
-    <Edit {...props}>
+const ProductEdit = () => (
+    <Edit>
         <TabbedForm>
             <FormTab label="Description" name="description">
                 <TextInput source="reference" />

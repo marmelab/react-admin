@@ -83,7 +83,7 @@ nav ul#nav-mobile a {
 }
 
 .sidenav ul {
-    padding: 0.5em 1em;
+    padding: 0.5em 0 0.5em 1em;
 }
 .sidenav ul div {
     text-transform: uppercase;
