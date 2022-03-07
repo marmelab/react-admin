@@ -5,7 +5,7 @@ title: "The Resource Component"
 
 # The `<Resource>` component
 
-`<Resource>` components are fundamental building blocks in react-admin apps. They form the skeleton of the application, and of its internal data store. 
+`<Resource>` components define the CRUD routes of a react-admin application. 
 
 In react-admin terms, a *resource* is a string that refers to an entity type (like 'products', 'subscribers', or 'tags'). *Records* are objects with an `id` field, and two records of the same *resource* have the same field structure (e.g. all posts records have a title, a publication date, etc.). 
 
@@ -38,8 +38,6 @@ const App = () => (
         <Resource name="users" list={UserList} />
         {/* no show page for the comments resource */}
         <Resource name="comments" list={CommentList} create={CommentCreate} edit={CommentEdit} icon={CommentIcon} />
-        {/* no standalone page for tags, but the resource is required to display tags in posts */}
-        <Resource name="tags" />
     </Admin>
 );
 ```
@@ -65,7 +63,7 @@ The routing will map the component as follows:
 
 **Tip**: If you want to use a special API endpoint (e.g. 'https://jsonplaceholder.typicode.com/my-custom-posts-endpoint') without altering the URL in the react-admin application (so still use `/posts`), write the mapping from the resource `name` (`posts`) to the API endpoint (`my-custom-posts-endpoint`) in your own [`dataProvider`](./Admin.md#dataprovider).
 
-## CRUD Props
+## `list`, `create`, `edit`, `show`
 
 `<Resource>` allows you to define a component for each CRUD operation, using the following prop names:
 
@@ -109,7 +107,7 @@ const App = () => (
 );
 ```
 
-## options
+## `options`
 
 `options.label` allows to customize the display name of a given resource in the menu.
 
@@ -123,7 +121,7 @@ const App = () => (
 
 `<Resource>` also creates a `ResourceContext`, that gives access to the current resource name to all descendants of the main page components (`list`, `create`, `edit`, `show`). 
 
-to read the current resource name, use the `useResourceContext()` hook.
+To read the current resource name, use the `useResourceContext()` hook.
 
 For instance, the following component displays the name of the current resource:
 
@@ -132,7 +130,7 @@ import * as React from 'react';
 import { Datagrid, DateField, TextField, List, useResourceContext } from 'react-admin';
 
 const ResourceName = () => {
-    const { resource } = useResourceContext();
+    const resource = useResourceContext();
     return <>{resource}</>;
 }
 
@@ -149,7 +147,7 @@ const PostList = () => (
 )
 ```
 
-**Tip**: You can *change* the current resource context, e.g. to use a component designed for a related resource inside another entity. Use the `<ResourceContextProvider>` component for that:
+**Tip**: You can *change* the current resource context, e.g. to use a component for a related resource. Use the `<ResourceContextProvider>` component for that:
 
 ```jsx
 const MyComponent = () => (

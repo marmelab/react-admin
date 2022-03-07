@@ -6,7 +6,7 @@
 <ul><div>App Configuration</div>
   <li {% if page.path contains 'Admin.md' %} class="active" {% endif %}><a class="nav-link" href="./Admin.html"><code>&lt;Admin&gt;</code></a></li>
   <li {% if page.path contains 'Resource.md' %} class="active" {% endif %}><a class="nav-link" href="./Resource.html"><code>&lt;Resource&gt;</code></a></li>
-  <li {% if page.path contains 'Authentication.md' %} class="active" {% endif %}><a class="nav-link" href="./Authentication.html">Auth Providers</a></li>
+  <li {% if page.path contains 'CustomRoutes.md' %} class="active" {% endif %}><a class="nav-link" href="./CustomRoutes.html"><code>&lt;CustomRoutes&gt;</code></a></li>
   <li {% if page.path contains 'Translation.md' %} class="active" {% endif %}><a class="nav-link" href="./Translation.html">Translation & i18n</a></li>
 </ul>
 
@@ -28,18 +28,37 @@
   <li {% if page.path contains 'useDeleteMany.md' %} class="active" {% endif %}><a class="nav-link" href="./useDeleteMany.html"><code>useDeleteMany</code></a></li>
 </ul>
 
+<ul><div>Auth Provider and Security</div>
+  <li {% if page.path contains 'Authentication.md' %} class="active" {% endif %}><a class="nav-link" href="./Authentication.html">Introduction</a></li>
+  <li {% if page.path contains 'AuthProviderList.md' %} class="active" {% endif %}><a class="nav-link" href="./AuthProviderList.html">Supported backends</a></li>
+  <li {% if page.path contains 'AuthProviderWriting.md' %} class="active" {% endif %}><a class="nav-link" href="./AuthProviderWriting.html">Writing An Auth Provider</a></li>
+  <li {% if page.path contains 'Permissions.md' %} class="active" {% endif %}><a class="nav-link" href="./Permissions.html">Permissions</a></li>
+  <li {% if page.path contains 'AuthRBAC.md' %} class="active" {% endif %}><a class="nav-link" href="./AuthRBAC.html">RBAC<img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path contains 'Authenticated.md' %} class="active" {% endif %}><a class="nav-link" href="./Authenticated.html"><code>&lt;Authenticated&gt;</code></a></li>
+  <li {% if page.path contains 'WithPermissions.md' %} class="active" {% endif %}><a class="nav-link" href="./WithPermissions.html"><code>&lt;WithPermissions&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path contains 'useAuthProvider.md' %} class="active" {% endif %}><a class="nav-link" href="./useAuthProvider.html"><code>useAuthProvider</code></a></li>
+  <li {% if page.path contains 'useAuthenticated.md' %} class="active" {% endif %}><a class="nav-link" href="./useAuthenticated.html"><code>useAuthenticated</code></a></li>
+  <li {% if page.path contains 'useAuthState.md' %} class="active" {% endif %}><a class="nav-link" href="./useAuthState.html"><code>useAuthState</code></a></li>
+  <li {% if page.path contains 'useGetIdentity.md' %} class="active" {% endif %}><a class="nav-link" href="./useGetIdentity.html"><code>useGetIdentity</code></a></li>
+  <li {% if page.path contains 'useLogin.md' %} class="active" {% endif %}><a class="nav-link" href="./useLogin.html"><code>useLogin</code></a></li>
+  <li {% if page.path contains 'useLogout.md' %} class="active" {% endif %}><a class="nav-link" href="./useLogout.html"><code>useLogout</code></a></li>
+  <li {% if page.path contains 'usePermissions.md' %} class="active" {% endif %}><a class="nav-link" href="./usePermissions.html"><code>usePermissions</code></a></li>
+  <li {% if page.path contains 'useCanAccess.md' %} class="active" {% endif %}><a class="nav-link" href="./useCanAccess.html"><code>useCanAccess</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path contains 'canAccess.md' %} class="active" {% endif %}><a class="nav-link" href="./canAccess.html"><code>canAccess</code><img class="premium" src="./img/premium.svg" /></a></li>
+</ul>
+
 <ul><div>List Page</div>
   <li {% if page.path contains 'ListTutorial.md' %} class="active" {% endif %}><a class="nav-link" href="./ListTutorial.html">Introduction</a></li>
   <li {% if page.path contains 'FilteringTutorial.md' %} class="active" {% endif %}><a class="nav-link" href="./FilteringTutorial.html">Filtering The List</a></li>
   <li {% if page.path contains 'List.md' %} class="active" {% endif %}><a class="nav-link" href="./List.html"><code>&lt;List&gt;</code></a></li>
   <li {% if page.path contains 'ListBase.md' %} class="active" {% endif %}><a class="nav-link" href="./ListBase.html"><code>&lt;ListBase&gt;</code></a></li>
   <li {% if page.path contains 'ListGuesser.md' %} class="active" {% endif %}><a class="nav-link" href="./ListGuesser.html"><code>&lt;ListGuesser&gt;</code></a></li>
-  <li {% if page.path contains 'TreeWithDetails.md' %} class="active" {% endif %}><a class="nav-link" href="./TreeWithDetails.html"><code>&lt;TreeWithDetails&gt;</code></a></li>
+  <li {% if page.path contains 'TreeWithDetails.md' %} class="active" {% endif %}><a class="nav-link" href="./TreeWithDetails.html"><code>&lt;TreeWithDetails&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
   <li {% if page.path contains 'Datagrid.md' %} class="active" {% endif %}><a class="nav-link" href="./Datagrid.html"><code>&lt;Datagrid&gt;</code></a></li>
   <li {% if page.path contains 'SimpleList.md' %} class="active" {% endif %}><a class="nav-link" href="./SimpleList.html"><code>&lt;SimpleList&gt;</code></a></li>
   <li {% if page.path contains 'SingleFieldList.md' %} class="active" {% endif %}><a class="nav-link" href="./SingleFieldList.html"><code>&lt;SingleFieldList&gt;</code></a></li>
-  <li {% if page.path contains 'EditableDatagrid.md' %} class="active" {% endif %}><a class="nav-link" href="./EditableDatagrid.html"><code>&lt;EditableDatagrid&gt;</code></a></li>
-  <li {% if page.path contains 'Calendar.md' %} class="active" {% endif %}><a class="nav-link" href="./Calendar.html"><code>&lt;Calendar&gt;</code></a></li>
+  <li {% if page.path contains 'EditableDatagrid.md' %} class="active" {% endif %}><a class="nav-link" href="./EditableDatagrid.html"><code>&lt;EditableDatagrid&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
+  <li {% if page.path contains 'Calendar.md' %} class="active" {% endif %}><a class="nav-link" href="./Calendar.html"><code>&lt;Calendar&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
   <li {% if page.path contains 'FilterButton.md' %} class="active" {% endif %}><a class="nav-link" href="./FilterButton.html"><code>&lt;FilterButton&gt;</code></a></li>
   <li {% if page.path contains 'FilterList.md' %} class="active" {% endif %}><a class="nav-link" href="./FilterList.html"><code>&lt;FilterList&gt;</code></a></li>
   <li {% if page.path contains 'FilterLiveSearch.md' %} class="active" {% endif %}><a class="nav-link" href="./FilterLiveSearch.html"><code>&lt;FilterLiveSearch&gt;</code></a></li>
@@ -87,7 +106,7 @@
   <li {% if page.path contains 'FileField.md' %} class="active" {% endif %}><a class="nav-link" href="./FileField.html"><code>&lt;FileField&gt;</code></a></li>
   <li {% if page.path contains 'FunctionField.md' %} class="active" {% endif %}><a class="nav-link" href="./FunctionField.html"><code>&lt;FunctionField&gt;</code></a></li>
   <li {% if page.path contains 'ImageField.md' %} class="active" {% endif %}><a class="nav-link" href="./ImageField.html"><code>&lt;ImageField&gt;</code></a></li>
-  <li {% if page.path contains 'MarkdownField.md' %} class="active" {% endif %}><a class="nav-link" href="./MarkdownField.html"><code>&lt;MarkdownField&gt;</code></a></li>
+  <li {% if page.path contains 'MarkdownField.md' %} class="active" {% endif %}><a class="nav-link" href="./MarkdownField.html"><code>&lt;MarkdownField&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
   <li {% if page.path contains 'NumberField.md' %} class="active" {% endif %}><a class="nav-link" href="./NumberField.html"><code>&lt;NumberField&gt;</code></a></li>
   <li {% if page.path contains 'RichTextField.md' %} class="active" {% endif %}><a class="nav-link" href="./RichTextField.html"><code>&lt;RichTextField&gt;</code></a></li>
   <li {% if page.path contains 'SelectField.md' %} class="active" {% endif %}><a class="nav-link" href="./SelectField.html"><code>&lt;SelectField&gt;</code></a></li>
@@ -96,7 +115,7 @@
   <li {% if page.path contains 'ReferenceField.md' %} class="active" {% endif %}><a class="nav-link" href="./ReferenceField.html"><code>&lt;ReferenceField&gt;</code></a></li>
   <li {% if page.path contains 'ReferenceArrayField.md' %} class="active" {% endif %}><a class="nav-link" href="./ReferenceArrayField.html"><code>&lt;ReferenceArrayField&gt;</code></a></li>
   <li {% if page.path contains 'ReferenceManyField.md' %} class="active" {% endif %}><a class="nav-link" href="./ReferenceManyField.html"><code>&lt;ReferenceManyField&gt;</code></a></li>
-  <li {% if page.path contains 'ReferenceManyToManyField.md' %} class="active" {% endif %}><a class="nav-link" href="./ReferenceManyToManyField.html"><code>&lt;ReferenceManyToManyField&gt;</code></a></li>
+  <li {% if page.path contains 'ReferenceManyToManyField.md' %} class="active" {% endif %}><a class="nav-link" href="./ReferenceManyToManyField.html"><code>&lt;ReferenceManyToManyField&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
   <li {% if page.path contains 'UrlField.md' %} class="active" {% endif %}><a class="nav-link" href="./UrlField.html"><code>&lt;UrlField&gt;</code></a></li>
   <li {% if page.path contains 'WrapperField.md' %} class="active" {% endif %}><a class="nav-link" href="./WrapperField.html"><code>&lt;WrapperField&gt;</code></a></li>
 </ul>
@@ -113,7 +132,7 @@
   <li {% if page.path contains 'DateTimeInput.md' %} class="active" {% endif %}><a class="nav-link" href="./DateTimeInput.html"><code>&lt;DateTimeInput&gt;</code></a></li>
   <li {% if page.path contains 'FileInput.md' %} class="active" {% endif %}><a class="nav-link" href="./FileInput.html"><code>&lt;FileInput&gt;</code></a></li>
   <li {% if page.path contains 'ImageInput.md' %} class="active" {% endif %}><a class="nav-link" href="./ImageInput.html"><code>&lt;ImageInput&gt;</code></a></li>
-  <li {% if page.path contains 'MarkdownInput.md' %} class="active" {% endif %}><a class="nav-link" href="./MarkdownInput.html"><code>&lt;MarkdownInput&gt;</code></a></li>
+  <li {% if page.path contains 'MarkdownInput.md' %} class="active" {% endif %}><a class="nav-link" href="./MarkdownInput.html"><code>&lt;MarkdownInput&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
   <li {% if page.path contains 'NullableBooleanInput.md' %} class="active" {% endif %}><a class="nav-link" href="./NullableBooleanInput.html"><code>&lt;NullableBooleanInput&gt;</code></a></li>
   <li {% if page.path contains 'NumberInput.md' %} class="active" {% endif %}><a class="nav-link" href="./NumberInput.html"><code>&lt;NumberInput&gt;</code></a></li>
   <li {% if page.path contains 'RadioButtonGroupInput.md' %} class="active" {% endif %}><a class="nav-link" href="./RadioButtonGroupInput.html"><code>&lt;RadioButtonGroupInput&gt;</code></a></li>
@@ -125,7 +144,7 @@
   <li {% if page.path contains 'PasswordInput.md' %} class="active" {% endif %}><a class="nav-link" href="./PasswordInput.html"><code>&lt;PasswordInput&gt;</code></a></li>
   <li {% if page.path contains 'ReferenceArrayInput.md' %} class="active" {% endif %}><a class="nav-link" href="./ReferenceArrayInput.html"><code>&lt;ReferenceArrayInput&gt;</code></a></li>
   <li {% if page.path contains 'ReferenceInput.md' %} class="active" {% endif %}><a class="nav-link" href="./ReferenceInput.html"><code>&lt;ReferenceInput&gt;</code></a></li>
-  <li {% if page.path contains 'ReferenceManyToManyInput.md' %} class="active" {% endif %}><a class="nav-link" href="./ReferenceManyToManyInput.html"><code>&lt;ReferenceManyToManyInput&gt;</code></a></li>
+  <li {% if page.path contains 'ReferenceManyToManyInput.md' %} class="active" {% endif %}><a class="nav-link" href="./ReferenceManyToManyInput.html"><code>&lt;ReferenceManyToManyInput&gt;</code><img class="premium" src="./img/premium.svg" /></a></li>
 </ul>
 
 <ul><div>The Store</div>

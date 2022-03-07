@@ -134,19 +134,14 @@ Users usually dislike using their keyboard to filter a list (especially on mobil
 
 Here is how to implement a generic `<QuickFilter>` component:
 
+{% raw %}
 ```jsx
 import { SearchInput } from 'react-admin';
-import { makeStyles, Chip } from '@mui/material';
+import { Chip } from '@mui/material';
 
-const useQuickFilterStyles = makeStyles(theme => ({
-    chip: {
-        marginBottom: theme.spacing(1),
-    },
-}));
 const QuickFilter = ({ label }) => {
     const translate = useTranslate();
-    const classes = useQuickFilterStyles();
-    return <Chip className={classes.chip} label={translate(label)} />;
+    return <Chip sx={{ marginBottom: 1 }} label={translate(label)} />;
 };
 
 const postFilters = [
@@ -156,6 +151,7 @@ const postFilters = [
     <QuickFilter source="tags" label="Tagged Code" defaultValue={[3]} />,
 ];
 ```
+{% endraw %}
 
 **Tip**: It's currently not possible to use two quick filters for the same source. 
 
