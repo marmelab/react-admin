@@ -16,18 +16,6 @@ import ThumbnailField from '../products/ThumbnailField';
 import ProductRefField from '../products/ProductRefField';
 import { Category } from '../types';
 
-const CategoryTitle = () => {
-    const record = useRecordContext<Category>();
-    const translate = useTranslate();
-
-    return record ? (
-        <span>
-            {translate('resources.categories.name', { smart_count: 1 })} &quot;
-            {record.name}&quot;
-        </span>
-    ) : null;
-};
-
 const CategoryEdit = () => (
     <Edit title={<CategoryTitle />}>
         <SimpleForm>
@@ -69,5 +57,17 @@ const CategoryEdit = () => (
         </SimpleForm>
     </Edit>
 );
+
+const CategoryTitle = () => {
+    const record = useRecordContext<Category>();
+    const translate = useTranslate();
+
+    return record ? (
+        <span>
+            {translate('resources.categories.name', { smart_count: 1 })} &quot;
+            {record.name}&quot;
+        </span>
+    ) : null;
+};
 
 export default CategoryEdit;

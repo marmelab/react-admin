@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import { useTranslate, useLocaleState, useTheme, Title } from 'react-admin';
+
 import { darkTheme, lightTheme } from '../layout/themes';
 
 const Configuration = () => {
