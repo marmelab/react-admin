@@ -214,12 +214,11 @@ You can place these `<FilterList>` anywhere inside a `<List>`. The most common c
 
 ```jsx
 import * as React from 'react';
-import { Card as MuiCard, CardContent, withStyles } from '@mui/material';
+import { Card as MuiCard, CardContent, styled } from '@mui/material';
 
 import { LastVisitedFilter, HasOrderedFilter, HasNewsletterFilter, SegmentFilter } from './filters';
 
-const Card = withStyles(theme => ({
-    root: {
+const Card = styled(MuiCard)(({ theme }) => ({
         [theme.breakpoints.up('sm')]: {
             order: -1, // display on the left rather than on the right of the list
             width: '15em',
@@ -228,8 +227,7 @@ const Card = withStyles(theme => ({
         [theme.breakpoints.down('sm')]: {
             display: 'none',
         },
-    },
-}))(MuiCard);
+}));
 
 const FilterSidebar = () => (
     <Card>

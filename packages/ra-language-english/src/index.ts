@@ -163,6 +163,18 @@ const englishMessages: TranslationMessages = {
             oneOf: 'Must be one of: %{options}',
             regex: 'Must match a specific format (regexp): %{pattern}',
         },
+        saved_queries: {
+            label: 'Saved queries',
+            query_name: 'Query name',
+            new_label: 'Save current query...',
+            new_dialog_title: 'Save current query as',
+            remove_label: 'Remove saved query',
+            remove_label_with_name: 'Remove query "%{name}"',
+            remove_dialog_title: 'Remove saved query?',
+            remove_message:
+                'Are you sure you want to remove that item from your list of saved queries?',
+            help: 'Filter the list and save this query for later',
+        },
     },
 };
 
