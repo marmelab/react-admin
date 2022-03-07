@@ -388,14 +388,14 @@ Content-Type: application/json
 
 Here is an example implementation, that you can use as a base for your own Data Providers:
 
-```js
-import { fetchUtils } from 'react-admin';
+```ts
+import { fetchUtils, DataProvider } from 'react-admin';
 import { stringify } from 'query-string';
 
 const apiUrl = 'https://my.api.com/';
 const httpClient = fetchUtils.fetchJson;
 
-export default {
+const MyDataProvider: DataProvider = {
     getList: (resource, params) => {
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
@@ -452,7 +452,7 @@ export default {
 
     updateMany: (resource, params) => {
         const query = {
-            filter: JSON.stringify({ id: params.ids}),
+            filter: JSON.stringify({ id: params.ids }),
         };
         return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
             method: 'PUT',
@@ -465,7 +465,7 @@ export default {
             method: 'POST',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({
-            data: { ...params.data, id: json.id },
+            data: { ...params.data, id: json.id as number },
         })),
 
     delete: (resource, params) =>
@@ -475,13 +475,14 @@ export default {
 
     deleteMany: (resource, params) => {
         const query = {
-            filter: JSON.stringify({ id: params.ids}),
+            filter: JSON.stringify({ id: params.ids }),
         };
         return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
             method: 'DELETE',
-            body: JSON.stringify(params.data),
+            body: JSON.stringify(params.ids),
         }).then(({ json }) => ({ data: json }));
     },
 };
+export default MyDataProvider;
 ```
 
