@@ -66,7 +66,7 @@ import Register from './register';
 const App = () => (
     <Admin dataProvider={simpleRestProvider('http://path.to.my.api')}>
         <CustomRoutes noLayout>
-            <RouteWithoutLayout path="/register" element={<Register />} />
+            <Route path="/register" element={<Register />} />
         </CustomRoutes>
         <CustomRoutes noLayout>
             <Route path="/foo" element={<Foo />} />
@@ -79,5 +79,5 @@ export default App;
 
 When a user browses to `/register`, the `<Register>` component will appear outside the defined Layout, leaving you the freedom to design the screen the way you want.
 
-**Tip**: Custom routes can be [a `<Redirect>` route](https://reacttraining.com/react-router/web/api/Redirect), too.
+**Tip**: Custom routes can be [a `<Navigate>` route](https://reactrouter.com/docs/en/v6/api#navigate), too.
 
