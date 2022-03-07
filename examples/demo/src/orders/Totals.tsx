@@ -1,53 +1,38 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import clsx from 'clsx';
 import { Table, TableBody, TableCell, TableRow } from '@mui/material';
 import { useRecordContext, useTranslate } from 'react-admin';
 
 import { Order } from '../types';
-
-const PREFIX = 'Totals';
-
-const classes = {
-    container: `${PREFIX}-container`,
-    rightAlignedCell: `${PREFIX}-rightAlignedCell`,
-    boldCell: `${PREFIX}-boldCell`,
-};
-
-const StyledTable = styled(Table)({
-    [`&.${classes.container}`]: { minWidth: '35em' },
-    [`& .${classes.rightAlignedCell}`]: { textAlign: 'right' },
-    [`& .${classes.boldCell}`]: { fontWeight: 'bold' },
-});
+import { TableCellRight } from './TableCellRight';
 
 const Totals = () => {
     const record = useRecordContext<Order>();
     const translate = useTranslate();
 
     return (
-        <StyledTable className={classes.container}>
+        <Table sx={{ minWidth: '35em' }}>
             <TableBody>
                 <TableRow>
                     <TableCell>
                         {translate('resources.commands.fields.basket.sum')}
                     </TableCell>
-                    <TableCell className={classes.rightAlignedCell}>
+                    <TableCellRight>
                         {record?.total_ex_taxes.toLocaleString(undefined, {
                             style: 'currency',
                             currency: 'USD',
                         })}
-                    </TableCell>
+                    </TableCellRight>
                 </TableRow>
                 <TableRow>
                     <TableCell>
                         {translate('resources.commands.fields.basket.delivery')}
                     </TableCell>
-                    <TableCell className={classes.rightAlignedCell}>
+                    <TableCellRight>
                         {record?.delivery_fees.toLocaleString(undefined, {
                             style: 'currency',
                             currency: 'USD',
                         })}
-                    </TableCell>
+                    </TableCellRight>
                 </TableRow>
                 <TableRow>
                     <TableCell>
@@ -57,31 +42,26 @@ const Totals = () => {
                         })}
                         )
                     </TableCell>
-                    <TableCell className={classes.rightAlignedCell}>
+                    <TableCellRight>
                         {record?.taxes.toLocaleString(undefined, {
                             style: 'currency',
                             currency: 'USD',
                         })}
-                    </TableCell>
+                    </TableCellRight>
                 </TableRow>
                 <TableRow>
-                    <TableCell className={classes.boldCell}>
+                    <TableCell sx={{ fontWeight: 'bold' }}>
                         {translate('resources.commands.fields.basket.total')}
                     </TableCell>
-                    <TableCell
-                        className={clsx(
-                            classes.boldCell,
-                            classes.rightAlignedCell
-                        )}
-                    >
+                    <TableCellRight sx={{ fontWeight: 'bold' }}>
                         {record?.total.toLocaleString(undefined, {
                             style: 'currency',
                             currency: 'USD',
                         })}
-                    </TableCell>
+                    </TableCellRight>
                 </TableRow>
             </TableBody>
-        </StyledTable>
+        </Table>
     );
 };
 

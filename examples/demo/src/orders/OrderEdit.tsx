@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
     BooleanInput,
     DateField,
@@ -20,15 +19,11 @@ import { Order, Customer } from '../types';
 import Basket from './Basket';
 import Totals from './Totals';
 
-const PREFIX = 'OrderEdit';
-
-const classes = {
-    root: `${PREFIX}-root`,
-};
-
-const StyledEdit = styled(Edit)({
-    [`&.${classes.root}`]: { alignItems: 'flex-start' },
-});
+const OrderEdit = () => (
+    <Edit title={<OrderTitle />} component="div">
+        <OrderForm />
+    </Edit>
+);
 
 const OrderTitle = () => {
     const translate = useTranslate();
@@ -45,7 +40,7 @@ const OrderTitle = () => {
 const CustomerDetails = () => {
     const record = useRecordContext<Customer>();
     return (
-        <Box display="flex" flexDirection="column">
+        <div>
             <Typography
                 component={RouterLink}
                 color="primary"
@@ -62,14 +57,14 @@ const CustomerDetails = () => {
             >
                 {record?.email}
             </Typography>
-        </Box>
+        </div>
     );
 };
 
 const CustomerAddress = () => {
     const record = useRecordContext<Customer>();
     return (
-        <Box>
+        <div>
             <Typography>
                 {record?.first_name} {record?.last_name}
             </Typography>
@@ -77,7 +72,7 @@ const CustomerAddress = () => {
             <Typography>
                 {record?.city}, {record?.stateAbbr} {record?.zipcode}
             </Typography>
-        </Box>
+        </div>
     );
 };
 
@@ -102,32 +97,19 @@ const OrderForm = () => {
                                         </Typography>
                                         <Grid container>
                                             <Grid item xs={12} sm={12} md={6}>
-                                                <Labeled
-                                                    source="date"
-                                                    resource="commands"
-                                                >
-                                                    <DateField
-                                                        source="date"
-                                                        resource="commands"
-                                                    />
+                                                <Labeled source="date">
+                                                    <DateField source="date" />
                                                 </Labeled>
                                             </Grid>
                                             <Grid item xs={12} sm={12} md={6}>
-                                                <Labeled
-                                                    source="reference"
-                                                    resource="commands"
-                                                >
-                                                    <TextField
-                                                        source="reference"
-                                                        resource="commands"
-                                                    />
+                                                <Labeled source="reference">
+                                                    <TextField source="reference" />
                                                 </Labeled>
                                             </Grid>
                                         </Grid>
                                         <Grid container>
                                             <Grid item xs={12} sm={12} md={6}>
                                                 <SelectInput
-                                                    resource="commands"
                                                     source="status"
                                                     choices={[
                                                         {
@@ -154,7 +136,6 @@ const OrderForm = () => {
                                                 <Box mt={2}>
                                                     <BooleanInput
                                                         row={true}
-                                                        resource="commands"
                                                         source="returned"
                                                     />
                                                 </Box>
@@ -169,7 +150,6 @@ const OrderForm = () => {
                                         </Typography>
                                         <ReferenceField
                                             source="customer_id"
-                                            resource="commands"
                                             reference="customers"
                                             link={false}
                                         >
@@ -184,7 +164,6 @@ const OrderForm = () => {
                                         </Typography>
                                         <ReferenceField
                                             source="customer_id"
-                                            resource="commands"
                                             reference="customers"
                                             link={false}
                                         >
@@ -199,9 +178,9 @@ const OrderForm = () => {
                                         'resources.commands.section.items'
                                     )}
                                 </Typography>
-                                <Box>
+                                <div>
                                     <Basket />
-                                </Box>
+                                </div>
                                 <Spacer />
 
                                 <Typography variant="h6" gutterBottom>
@@ -209,14 +188,13 @@ const OrderForm = () => {
                                         'resources.commands.section.total'
                                     )}
                                 </Typography>
-                                <Box>
+                                <div>
                                     <Totals />
-                                </Box>
+                                </div>
                             </CardContent>
                             <Toolbar
                                 mutationMode="undoable"
                                 saving={formProps.saving}
-                                resource="commands"
                             />
                         </Card>
                     </Box>
@@ -225,10 +203,5 @@ const OrderForm = () => {
         />
     );
 };
-const OrderEdit = () => (
-    <StyledEdit title={<OrderTitle />} component="div">
-        <OrderForm />
-    </StyledEdit>
-);
 
 export default OrderEdit;
