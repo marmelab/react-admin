@@ -1,31 +1,10 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import { Typography } from '@mui/material';
 import { memo } from 'react';
 
 import { FieldProps, useRecordContext } from 'react-admin';
 import AvatarField from './AvatarField';
 import { Customer } from '../types';
-
-const PREFIX = 'FullNameField';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    avatar: `${PREFIX}-avatar`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`&.${classes.root}`]: {
-        display: 'flex',
-        flexWrap: 'nowrap',
-        alignItems: 'center',
-    },
-
-    [`& .${classes.avatar}`]: {
-        marginRight: theme.spacing(1),
-        marginTop: theme.spacing(-0.5),
-        marginBottom: theme.spacing(-0.5),
-    },
-}));
 
 interface Props extends FieldProps<Customer> {
     size?: string;
@@ -35,14 +14,24 @@ const FullNameField = (props: Props) => {
     const { size } = props;
     const record = useRecordContext<Customer>();
     return record ? (
-        <Root className={classes.root}>
+        <Typography
+            variant="body2"
+            display="flex"
+            flexWrap="nowrap"
+            alignItems="center"
+            component="div"
+        >
             <AvatarField
-                className={classes.avatar}
                 record={record}
                 size={size}
+                sx={{
+                    mr: 1,
+                    mt: -0.5,
+                    mb: -0.5,
+                }}
             />
             {record.first_name} {record.last_name}
-        </Root>
+        </Typography>
     ) : null;
 };
 

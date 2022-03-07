@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
     Identifier,
     Datagrid,
     DateField,
     TextField,
-    DatagridProps,
+    BulkDeleteButton,
 } from 'react-admin';
 
 import ProductReferenceField from '../products/ProductReferenceField';
@@ -13,59 +12,48 @@ import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from './StarRatingField';
 import rowStyle from './rowStyle';
 
-const PREFIX = 'ReviewListDesktop';
+import BulkAcceptButton from './BulkAcceptButton';
+import BulkRejectButton from './BulkRejectButton';
 
-const classes = {
-    headerRow: `${PREFIX}-headerRow`,
-    headerCell: `${PREFIX}-headerCell`,
-    rowCell: `${PREFIX}-rowCell`,
-    comment: `${PREFIX}-comment`,
-};
-
-const StyledDatagrid = styled(Datagrid)({
-    [`& .${classes.headerRow}`]: {
-        borderLeftColor: 'transparent',
-        borderLeftWidth: 5,
-        borderLeftStyle: 'solid',
-    },
-    [`& .${classes.headerCell}`]: {
-        padding: '6px 8px 6px 8px',
-    },
-    [`& .${classes.rowCell}`]: {
-        padding: '6px 8px 6px 8px',
-    },
-    [`& .${classes.comment}`]: {
-        maxWidth: '18em',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-    },
-});
-
-export interface ReviewListDesktopProps extends DatagridProps {
+export interface ReviewListDesktopProps {
     selectedRow?: Identifier;
 }
 
-const ReviewListDesktop = ({
-    selectedRow,
-    ...props
-}: ReviewListDesktopProps) => {
-    return (
-        <StyledDatagrid
-            rowClick="edit"
-            // @ts-ignore
-            rowStyle={rowStyle(selectedRow)}
-            optimized
-            {...props}
-        >
-            <DateField source="date" />
-            <CustomerReferenceField link={false} />
-            <ProductReferenceField link={false} />
-            <StarRatingField size="small" />
-            <TextField source="comment" cellClassName={classes.comment} />
-            <TextField source="status" />
-        </StyledDatagrid>
-    );
-};
+const ReviewsBulkActionButtons = () => (
+    <>
+        <BulkAcceptButton />
+        <BulkRejectButton />
+        <BulkDeleteButton />
+    </>
+);
+
+const ReviewListDesktop = ({ selectedRow }: ReviewListDesktopProps) => (
+    <Datagrid
+        rowClick="edit"
+        rowStyle={rowStyle(selectedRow)}
+        optimized
+        bulkActionButtons={<ReviewsBulkActionButtons />}
+        sx={{
+            '& .RaDatagrid-thead': {
+                borderLeftColor: 'transparent',
+                borderLeftWidth: 5,
+                borderLeftStyle: 'solid',
+            },
+            '& .column-comment': {
+                maxWidth: '18em',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+            },
+        }}
+    >
+        <DateField source="date" />
+        <CustomerReferenceField link={false} />
+        <ProductReferenceField link={false} />
+        <StarRatingField size="small" />
+        <TextField source="comment" />
+        <TextField source="status" />
+    </Datagrid>
+);
 
 export default ReviewListDesktop;

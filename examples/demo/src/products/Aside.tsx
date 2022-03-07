@@ -22,10 +22,7 @@ const Aside = () => {
     return (
         <Card
             sx={{
-                display: {
-                    xs: 'none',
-                    md: 'block',
-                },
+                display: { xs: 'none', md: 'block' },
                 order: -1,
                 width: '15em',
                 mr: 2,

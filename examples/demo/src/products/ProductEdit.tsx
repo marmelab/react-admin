@@ -5,20 +5,19 @@ import {
     Edit,
     EditButton,
     FormTab,
-    NumberInput,
     Pagination,
-    ReferenceInput,
     ReferenceManyField,
     required,
-    SelectInput,
     TabbedForm,
     TextField,
     TextInput,
     useRecordContext,
+    useGetManyReference,
+    useTranslate,
 } from 'react-admin';
-import { InputAdornment, styled } from '@mui/material';
 import { RichTextInput } from 'ra-input-rich-text';
 
+import { ProductEditDetails } from './ProductEditDetails';
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
 import StarRatingField from '../reviews/StarRatingField';
 import Poster from './Poster';
@@ -26,150 +25,86 @@ import { Product } from '../types';
 
 const ProductTitle = () => {
     const record = useRecordContext<Product>();
-    return record ? <span>Poster #{record.reference}</span> : null;
+    return record ? <span>Poster "{record.reference}"</span> : null;
 };
-
-const PREFIX = 'ProductEdit';
-
-const classes = {
-    price: `${PREFIX}-price`,
-    width: `${PREFIX}-width`,
-    height: `${PREFIX}-height`,
-    stock: `${PREFIX}-stock`,
-    widthFormGroup: `${PREFIX}-widthFormGroup`,
-    heightFormGroup: `${PREFIX}-heightFormGroup`,
-    comment: `${PREFIX}-comment`,
-    tab: `${PREFIX}-tab`,
-};
-
-const StyledEdit = styled(Edit)({
-    [`& .RaFormInput-input.${classes.price}`]: { width: '7em' },
-    [`& .RaFormInput-input.${classes.width}`]: { width: '7em' },
-    [`& .RaFormInput-input.${classes.height}`]: { width: '7em' },
-    [`& .RaFormInput-input.${classes.stock}`]: { width: '7em' },
-    [`& .${classes.widthFormGroup}`]: { display: 'inline-block' },
-    [`& .${classes.heightFormGroup}`]: {
-        display: 'inline-block',
-        marginLeft: 32,
-    },
-    [`& .${classes.comment}`]: {
-        maxWidth: '20em',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-    },
-    [`& .${classes.tab}`]: {
-        maxWidth: '40em',
-        display: 'block',
-    },
-});
 
 const ProductEdit = () => (
-    <StyledEdit title={<ProductTitle />}>
+    <Edit title={<ProductTitle />}>
         <TabbedForm>
             <FormTab
                 label="resources.products.tabs.image"
-                contentClassName={classes.tab}
+                sx={{ maxWidth: '40em' }}
             >
                 <Poster />
-                <TextInput
-                    source="image"
-                    fullWidth
-                    validate={requiredValidate}
-                />
-                <TextInput
-                    source="thumbnail"
-                    fullWidth
-                    validate={requiredValidate}
-                />
+                <TextInput source="image" fullWidth validate={req} />
+                <TextInput source="thumbnail" fullWidth validate={req} />
             </FormTab>
             <FormTab
                 label="resources.products.tabs.details"
                 path="details"
-                contentClassName={classes.tab}
+                sx={{ maxWidth: '40em' }}
             >
-                <TextInput source="reference" validate={requiredValidate} />
-                <NumberInput
-                    source="price"
-                    className={classes.price}
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">€</InputAdornment>
-                        ),
-                    }}
-                    validate={requiredValidate}
-                />
-                <NumberInput
-                    source="width"
-                    className={classes.width}
-                    formClassName={classes.widthFormGroup}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="start">cm</InputAdornment>
-                        ),
-                    }}
-                    validate={requiredValidate}
-                />
-                <NumberInput
-                    source="height"
-                    className={classes.height}
-                    formClassName={classes.heightFormGroup}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="start">cm</InputAdornment>
-                        ),
-                    }}
-                    validate={requiredValidate}
-                />
-                <ReferenceInput source="category_id" reference="categories">
-                    <SelectInput source="name" validate={requiredValidate} />
-                </ReferenceInput>
-                <NumberInput
-                    source="stock"
-                    className={classes.stock}
-                    validate={requiredValidate}
-                />
-                <NumberInput
-                    source="sales"
-                    className={classes.stock}
-                    validate={requiredValidate}
-                />
+                <ProductEditDetails />
             </FormTab>
             <FormTab
                 label="resources.products.tabs.description"
                 path="description"
-                contentClassName={classes.tab}
+                sx={{ maxWidth: '40em' }}
             >
-                <RichTextInput
-                    source="description"
-                    label=""
-                    validate={requiredValidate}
-                />
+                <RichTextInput source="description" label="" validate={req} />
             </FormTab>
-            <FormTab label="resources.products.tabs.reviews" path="reviews">
+            <ReviewsFormTab path="reviews">
                 <ReferenceManyField
                     reference="reviews"
                     target="product_id"
                     pagination={<Pagination />}
-                    fullWidth
                 >
-                    <Datagrid>
+                    <Datagrid
+                        sx={{
+                            width: '100%',
+                            '& .column-comment': {
+                                maxWidth: '20em',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                whiteSpace: 'nowrap',
+                            },
+                        }}
+                    >
                         <DateField source="date" />
                         <CustomerReferenceField />
                         <StarRatingField />
-                        <TextField
-                            source="comment"
-                            cellClassName={classes.comment}
-                        />
+                        <TextField source="comment" />
                         <TextField source="status" />
                         <EditButton />
                     </Datagrid>
                 </ReferenceManyField>
-            </FormTab>
+            </ReviewsFormTab>
         </TabbedForm>
-    </StyledEdit>
+    </Edit>
 );
 
-const requiredValidate = [required()];
+const req = [required()];
+
+const ReviewsFormTab = (props: any) => {
+    const record = useRecordContext();
+    const { isLoading, total } = useGetManyReference(
+        'reviews',
+        {
+            target: 'product_id',
+            id: record.id,
+            pagination: { page: 1, perPage: 25 },
+            sort: { field: 'id', order: 'DESC' },
+        },
+        {
+            enabled: !!record,
+        }
+    );
+    const translate = useTranslate();
+    let label = translate('resources.products.tabs.reviews');
+    if (!isLoading) {
+        label += ` (${total})`;
+    }
+    return <FormTab label={label} {...props} />;
+};
 
 export default ProductEdit;

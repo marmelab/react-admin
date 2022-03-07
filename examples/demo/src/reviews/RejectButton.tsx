@@ -45,15 +45,10 @@ const RejectButton = () => {
             variant="outlined"
             color="primary"
             size="small"
-            onClick={() => {
-                reject();
-            }}
+            onClick={() => reject()}
+            startIcon={<ThumbDown sx={{ color: 'red' }} />}
             disabled={isLoading}
         >
-            <ThumbDown
-                color="primary"
-                style={{ paddingRight: '0.5em', color: 'red' }}
-            />
             {translate('resources.reviews.action.reject')}
         </Button>
     ) : (

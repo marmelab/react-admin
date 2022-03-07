@@ -16,28 +16,41 @@ import {
     SortButton,
     Title,
     TopToolbar,
-    useListContext,
     useTranslate,
+    useGetResourceLabel,
 } from 'react-admin';
 
 import ImageList from './GridList';
 import Aside from './Aside';
 
-const PREFIX = 'ProductList';
-
-const classes = {
-    root: `${PREFIX}-root`,
+const ProductList = () => {
+    const getResourceLabel = useGetResourceLabel();
+    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
+    return (
+        <ListBase perPage={24} sort={{ field: 'reference', order: 'ASC' }}>
+            <Title defaultTitle={getResourceLabel('products', 2)} />
+            <FilterContext.Provider value={productFilters}>
+                <ListActions isSmall={isSmall} />
+                {isSmall && (
+                    <Box m={1}>
+                        <FilterForm />
+                    </Box>
+                )}
+            </FilterContext.Provider>
+            <Box display="flex">
+                <Aside />
+                <Box width={isSmall ? 'auto' : 'calc(100% - 16em)'}>
+                    <ImageList />
+                    <Pagination rowsPerPageOptions={[12, 24, 48, 72]} />
+                </Box>
+            </Box>
+        </ListBase>
+    );
 };
 
 const QuickFilter = ({ label }: InputProps) => {
     const translate = useTranslate();
-    return (
-        <Chip
-            sx={{ marginBottom: 1 }}
-            className={classes.root}
-            label={translate(label as string)}
-        />
-    );
+    return <Chip sx={{ mb: 1 }} label={translate(label as string)} />;
 };
 
 export const productFilters = [
@@ -61,7 +74,7 @@ export const productFilters = [
 ];
 
 const ListActions = ({ isSmall }: any) => (
-    <TopToolbar>
+    <TopToolbar sx={{ minHeight: { sm: 56 } }}>
         {isSmall && <FilterButton />}
         <SortButton fields={['reference', 'sales', 'stock']} />
         <CreateButton />
@@ -69,36 +82,4 @@ const ListActions = ({ isSmall }: any) => (
     </TopToolbar>
 );
 
-const ProductList = () => {
-    const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
-    return (
-        <ListBase perPage={24} sort={{ field: 'reference', order: 'ASC' }}>
-            <ProductListView isSmall={isSmall} />
-        </ListBase>
-    );
-};
-
-const ProductListView = ({ isSmall }: { isSmall: boolean }) => {
-    const { defaultTitle } = useListContext();
-    return (
-        <>
-            <Title defaultTitle={defaultTitle} />
-            <FilterContext.Provider value={productFilters}>
-                <ListActions isSmall={isSmall} />
-                {isSmall && (
-                    <Box m={1}>
-                        <FilterForm />
-                    </Box>
-                )}
-            </FilterContext.Provider>
-            <Box display="flex">
-                <Aside />
-                <Box width={isSmall ? 'auto' : 'calc(100% - 16em)'}>
-                    <ImageList />
-                    <Pagination rowsPerPageOptions={[12, 24, 48, 72]} />
-                </Box>
-            </Box>
-        </>
-    );
-};
 export default ProductList;

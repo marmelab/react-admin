@@ -1,32 +1,8 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
+import { Box } from '@mui/material';
 import Icon from '@mui/icons-material/Stars';
 
 import { FieldProps, useRecordContext } from 'react-admin';
-
-const PREFIX = 'StarRatingField';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    large: `${PREFIX}-large`,
-    small: `${PREFIX}-small`,
-};
-
-const Root = styled('span')({
-    [`&.${classes.root}`]: {
-        opacity: 0.87,
-        whiteSpace: 'nowrap',
-        display: 'flex',
-    },
-    [`& .${classes.large}`]: {
-        width: 20,
-        height: 20,
-    },
-    [`& .${classes.small}`]: {
-        width: 15,
-        height: 15,
-    },
-});
 
 interface OwnProps {
     size?: 'large' | 'small';
@@ -34,21 +10,30 @@ interface OwnProps {
 
 const StarRatingField = ({ size = 'large' }: FieldProps & OwnProps) => {
     const record = useRecordContext();
+    if (!record) return null;
 
-    return record ? (
-        <Root className={classes.root}>
+    return (
+        <Box
+            component="span"
+            display="flex"
+            sx={{
+                opacity: 0.87,
+                whiteSpace: 'nowrap',
+            }}
+        >
             {Array(record.rating)
                 .fill(true)
                 .map((_, i) => (
                     <Icon
                         key={i}
-                        className={
-                            size === 'large' ? classes.large : classes.small
-                        }
+                        sx={{
+                            width: size === 'large' ? 20 : 15,
+                            height: size === 'large' ? 20 : 15,
+                        }}
                     />
                 ))}
-        </Root>
-    ) : null;
+        </Box>
+    );
 };
 
 StarRatingField.defaultProps = {

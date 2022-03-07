@@ -107,8 +107,10 @@ export const NullableBooleanInputClasses = {
 const StyledTextField = styled(TextField, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-})(({ theme }) => ({
-    [`&.${NullableBooleanInputClasses.input}`]: { width: theme.spacing(16) },
+})(({ theme, fullWidth }) => ({
+    [`&.${NullableBooleanInputClasses.input}`]: {
+        width: fullWidth ? '100%' : theme.spacing(16),
+    },
 }));
 
 const getBooleanFromString = (value: string): boolean | null => {

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
     BooleanField,
     Datagrid,
@@ -19,30 +18,12 @@ import ColoredNumberField from './ColoredNumberField';
 import MobileGrid from './MobileGrid';
 import VisitorListAside from './VisitorListAside';
 
-const PREFIX = 'VisitorList';
-
-const classes = {
-    nb_commands: `${PREFIX}-nb_commands`,
-    hiddenOnSmallScreens: `${PREFIX}-hiddenOnSmallScreens`,
-};
-
-const StyledList = styled(List)(({ theme }) => ({
-    [`& .${classes.nb_commands}`]: { color: 'purple' },
-
-    [`& .${classes.hiddenOnSmallScreens}`]: {
-        display: 'table-cell',
-        [theme.breakpoints.down('lg')]: {
-            display: 'none',
-        },
-    },
-}));
-
 const visitorFilters = [
     <SearchInput source="q" alwaysOn />,
     <DateInput source="last_seen_gte" />,
     <NullableBooleanInput source="has_ordered" />,
     <NullableBooleanInput source="has_newsletter" defaultValue />,
-    <SegmentInput />,
+    <SegmentInput source="groups" />,
 ];
 
 const VisitorList = () => {
@@ -51,7 +32,7 @@ const VisitorList = () => {
     );
     const isSmall = useMediaQuery<Theme>(theme => theme.breakpoints.down('md'));
     return (
-        <StyledList
+        <List
             filters={isSmall ? visitorFilters : undefined}
             sort={{ field: 'last_seen', order: 'DESC' }}
             perPage={25}
@@ -60,13 +41,22 @@ const VisitorList = () => {
             {isXsmall ? (
                 <MobileGrid />
             ) : (
-                <Datagrid optimized rowClick="edit">
+                <Datagrid
+                    optimized
+                    rowClick="edit"
+                    sx={{
+                        '& .column-groups': {
+                            md: { display: 'none' },
+                            lg: { display: 'table-cell' },
+                        },
+                    }}
+                >
                     <CustomerLinkField />
                     <DateField source="last_seen" />
                     <NumberField
                         source="nb_commands"
                         label="resources.customers.fields.commands"
-                        className={classes.nb_commands}
+                        sx={{ color: 'purple' }}
                     />
                     <ColoredNumberField
                         source="total_spent"
@@ -74,13 +64,10 @@ const VisitorList = () => {
                     />
                     <DateField source="latest_purchase" showTime />
                     <BooleanField source="has_newsletter" label="News." />
-                    <SegmentsField
-                        cellClassName={classes.hiddenOnSmallScreens}
-                        headerClassName={classes.hiddenOnSmallScreens}
-                    />
+                    <SegmentsField source="groups" />
                 </Datagrid>
             )}
-        </StyledList>
+        </List>
     );
 };
 

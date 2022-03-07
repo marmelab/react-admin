@@ -160,6 +160,7 @@ export const useReferenceManyFieldController = (
             filter: filterValues,
         },
         {
+            keepPreviousData: true,
             onError: error =>
                 notify(
                     typeof error === 'string'

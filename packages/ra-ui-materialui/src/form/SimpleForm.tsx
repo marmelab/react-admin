@@ -2,6 +2,8 @@ import * as React from 'react';
 import { ReactElement, ReactNode, HtmlHTMLAttributes } from 'react';
 import PropTypes from 'prop-types';
 import { Form, FormProps, MutationMode } from 'ra-core';
+import { SxProps } from '@mui/material';
+
 import { SimpleFormView } from './SimpleFormView';
 
 /**
@@ -72,4 +74,5 @@ export interface SimpleFormProps
     resource?: string;
     submitOnEnter?: boolean;
     toolbar?: ReactElement | false;
+    sx?: SxProps;
 }

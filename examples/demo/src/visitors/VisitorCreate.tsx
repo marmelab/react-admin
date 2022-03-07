@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
     Create,
     DateInput,
@@ -7,137 +6,100 @@ import {
     TextInput,
     useTranslate,
     PasswordInput,
-    required,
     email,
 } from 'react-admin';
-import { Typography, Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
-const PREFIX = 'VisitorCreate';
-
-const classes = {
-    first_name: `${PREFIX}-first_name`,
-    last_name: `${PREFIX}-last_name`,
-    email: `${PREFIX}-email`,
-    address: `${PREFIX}-address`,
-    zipcode: `${PREFIX}-zipcode`,
-    city: `${PREFIX}-city`,
-    comment: `${PREFIX}-comment`,
-    password: `${PREFIX}-password`,
-    confirm_password: `${PREFIX}-confirm_password`,
-};
-
-const StyledSimpleForm = styled(SimpleForm)({
-    [`& .${classes.first_name}`]: { display: 'inline-block' },
-    [`& .${classes.last_name}`]: { display: 'inline-block', marginLeft: 32 },
-    [`& .${classes.email}`]: { width: 544 },
-    [`& .${classes.address}`]: { maxWidth: 544 },
-    [`& .${classes.zipcode}`]: { display: 'inline-block' },
-    [`& .${classes.city}`]: { display: 'inline-block', marginLeft: 32 },
-    [`& .${classes.comment}`]: {
-        maxWidth: '20em',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-    },
-    [`& .${classes.password}`]: { display: 'inline-block' },
-    [`& .${classes.confirm_password}`]: {
-        display: 'inline-block',
-        marginLeft: 32,
-    },
-});
-
-export {};
-
-export const validatePasswords = ({
-    password,
-    confirm_password,
-}: Record<string, string>) => {
+export const validateForm = (
+    values: Record<string, any>
+): Record<string, any> => {
     const errors = {} as any;
-
-    if (password && confirm_password && password !== confirm_password) {
-        errors.confirm_password = [
-            'resources.customers.errors.password_mismatch',
-        ];
+    if (!values.first_name) {
+        errors.first_name = 'ra.validation.required';
     }
-
+    if (!values.last_name) {
+        errors.last_name = 'ra.validation.required';
+    }
+    if (!values.email) {
+        errors.email = 'ra.validation.required';
+    } else {
+        const error = email()(values.email);
+        if (error) {
+            errors.email = error;
+        }
+    }
+    if (values.password && values.password !== values.confirm_password) {
+        errors.confirm_password =
+            'resources.customers.errors.password_mismatch';
+    }
     return errors;
 };
 
-const VisitorCreate = () => {
-    const date = new Date();
-
-    return (
-        <Create>
-            <StyledSimpleForm
-                // Here for the GQL provider
-                defaultValues={{
-                    birthday: date,
-                    first_seen: date,
-                    last_seen: date,
-                    has_ordered: false,
-                    latest_purchase: date,
-                    has_newsletter: false,
-                    groups: [],
-                    nb_commands: 0,
-                    total_spent: 0,
-                }}
-                validate={validatePasswords}
-            >
-                <SectionTitle label="resources.customers.fieldGroups.identity" />
-                <TextInput
-                    autoFocus
-                    source="first_name"
-                    formClassName={classes.first_name}
-                    validate={requiredValidate}
-                />
-                <TextInput
-                    source="last_name"
-                    formClassName={classes.last_name}
-                    validate={requiredValidate}
-                />
-                <TextInput
-                    type="email"
-                    source="email"
-                    fullWidth
-                    formClassName={classes.email}
-                    validate={[required(), email()]}
-                />
-                <DateInput source="birthday" />
-                <Separator />
-                <SectionTitle label="resources.customers.fieldGroups.address" />
-                <TextInput
-                    source="address"
-                    formClassName={classes.address}
-                    multiline
-                    fullWidth
-                    helperText={false}
-                />
-                <TextInput
-                    source="zipcode"
-                    formClassName={classes.zipcode}
-                    helperText={false}
-                />
-                <TextInput
-                    source="city"
-                    formClassName={classes.city}
-                    helperText={false}
-                />
-                <Separator />
-                <SectionTitle label="resources.customers.fieldGroups.password" />
-                <PasswordInput
-                    source="password"
-                    formClassName={classes.password}
-                />
-                <PasswordInput
-                    source="confirm_password"
-                    formClassName={classes.confirm_password}
-                />
-            </StyledSimpleForm>
-        </Create>
-    );
-};
-
-const requiredValidate = [required()];
+const VisitorCreate = () => (
+    <Create>
+        <SimpleForm
+            sx={{ maxWidth: 500 }}
+            // Here for the GQL provider
+            defaultValues={{
+                birthday: new Date(),
+                first_seen: new Date(),
+                last_seen: new Date(),
+                has_ordered: false,
+                latest_purchase: new Date(),
+                has_newsletter: false,
+                groups: [],
+                nb_commands: 0,
+                total_spent: 0,
+            }}
+            validate={validateForm}
+        >
+            <SectionTitle label="resources.customers.fieldGroups.identity" />
+            <Box display={{ xs: 'block', sm: 'flex', width: '100%' }}>
+                <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
+                    <TextInput source="first_name" isRequired fullWidth />
+                </Box>
+                <Box flex={1} ml={{ xs: 0, sm: '0.5em' }}>
+                    <TextInput source="last_name" isRequired fullWidth />
+                </Box>
+            </Box>
+            <TextInput type="email" source="email" isRequired fullWidth />
+            <DateInput source="birthday" />
+            <Separator />
+            <SectionTitle label="resources.customers.fieldGroups.address" />
+            <TextInput
+                source="address"
+                multiline
+                fullWidth
+                helperText={false}
+            />
+            <Box display={{ xs: 'block', sm: 'flex' }}>
+                <Box flex={2} mr={{ xs: 0, sm: '0.5em' }}>
+                    <TextInput source="city" fullWidth helperText={false} />
+                </Box>
+                <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
+                    <TextInput
+                        source="stateAbbr"
+                        fullWidth
+                        helperText={false}
+                    />
+                </Box>
+                <Box flex={2}>
+                    <TextInput source="zipcode" fullWidth helperText={false} />
+                </Box>
+            </Box>
+            <Separator />
+            <SectionTitle label="resources.customers.fieldGroups.password" />
+            <Box display={{ xs: 'block', sm: 'flex' }}>
+                <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
+                    <PasswordInput source="password" fullWidth />
+                </Box>
+                <Box flex={1} ml={{ xs: 0, sm: '0.5em' }}>
+                    <PasswordInput source="confirm_password" fullWidth />
+                </Box>
+            </Box>
+        </SimpleForm>
+    </Create>
+);
 
 const SectionTitle = ({ label }: { label: string }) => {
     const translate = useTranslate();

@@ -2,8 +2,9 @@ import * as React from 'react';
 import { ComponentType, ReactElement, ReactNode } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { Stack } from '@mui/material';
+import { CardContent, Stack, SxProps } from '@mui/material';
 import { FormRenderProps, MutationMode, RaRecord } from 'ra-core';
+
 import { Toolbar } from './Toolbar';
 
 export const SimpleFormView = ({
@@ -15,6 +16,7 @@ export const SimpleFormView = ({
     record,
     resource,
     saving,
+    sx,
     submitOnEnter = true,
     toolbar = DefaultToolbar,
     ...rest
@@ -24,7 +26,7 @@ export const SimpleFormView = ({
         onSubmit={handleSubmit}
         {...sanitizeRestProps(rest)}
     >
-        <Component>{children}</Component>
+        <Component sx={sx}>{children}</Component>
         {toolbar}
     </form>
 );
@@ -44,26 +46,25 @@ SimpleFormView.propTypes = {
     validate: PropTypes.func,
 };
 
-const DefaultComponent = ({ children, ...props }) => (
-    <Stack
-        alignItems="flex-start"
-        sx={{ paddingLeft: 1, paddingRight: 1 }}
-        {...props}
-    >
-        {children}
-    </Stack>
+const DefaultComponent = ({ children, sx, ...props }) => (
+    <CardContent sx={sx}>
+        <Stack alignItems="flex-start" {...props}>
+            {children}
+        </Stack>
+    </CardContent>
 );
 const DefaultToolbar = <Toolbar />;
 
 export interface SimpleFormViewProps extends FormRenderProps {
     children?: ReactNode;
     className?: string;
-    component?: ComponentType;
+    component?: ComponentType<any>;
     mutationMode?: MutationMode;
     record?: Partial<RaRecord>;
     resource?: string;
     toolbar?: ReactElement | false;
     submitOnEnter?: boolean;
+    sx?: SxProps;
 }
 
 const sanitizeRestProps = ({ save = null, ...props }) => props;
