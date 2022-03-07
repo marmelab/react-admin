@@ -52,7 +52,7 @@ const Foo = () => (
 export default Foo;
 ```
 
-**Tip**: It's up to you to create a [custom menu](#menu) entry, or custom buttons, that lead to your custom pages.
+**Tip**: It's up to you to create a [custom menu](./Theming.md#using-a-custom-menu) entry, or custom buttons, that lead to your custom pages.
 
 If you want a custom route to render without the layout (without the menu and the appBar), e.g. for registration screens, then provide the `noLayout` prop on the `<CustomRoutes>` element:
 
