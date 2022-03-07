@@ -11,9 +11,10 @@ This hook, part of [the ra-rbac module](https://marmelab.com/ra-rbac)<img class=
 
 ```jsx
 import { useCanAccess } from '@react-admin/ra-rbac';
-import { DeleteButton } from 'react-admin';
+import { useRecordContext, DeleteButton } from 'react-admin';
 
-const DeleteUserButton = ({ record }) => {
+const DeleteUserButton = () => {
+    const record = useRecordContext();
     const { loading, canAccess } = useCanAccess({ action: 'delete', resource: 'users', record });
     if (loading || !canAccess) return null;
     return <DeleteButton record={record} resource="users" />;

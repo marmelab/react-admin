@@ -39,11 +39,11 @@ const authProvider = {
     }),
 };
 
-const ProductList = (props) => {
+const ProductList = () => {
     const { isLoading, permissions } = usePermissions();
     if (isLoading) return null;
     return (
-        <List {...props}>
+        <List>
             <Datagrid>
                 <TextField source="id" />
                 <TextField source="reference" />
