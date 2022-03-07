@@ -66,16 +66,16 @@ import * as React from "react";
 import { Admin, Resource, CustomRoutes } from 'react-admin';
 import posts from './posts';
 import comments from './comments';
-import Foo from './foo';
-import Bar from './bar';
+import Settings from './Settings';
+import Profile from './Profile';
 
 const App = () => (
     <Admin dataProvider={simpleRestProvider('http://path.to.my.api')}>
         <Resource name="posts" {...posts} />
         <Resource name="comments" {...comments} />
         <CustomRoutes>
-            <Route path="/foo" element={<Foo />} />
-            <Route path="/bar" element={<Bar />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/profile" element={<Profile />} />
         </CustomRoutes>
     </Admin>
 );
