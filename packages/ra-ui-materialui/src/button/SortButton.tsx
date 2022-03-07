@@ -103,6 +103,7 @@ const SortButton = (props: SortButtonProps) => {
                     startIcon={icon}
                     endIcon={<ArrowDropDownIcon />}
                     size="small"
+                    sx={{ '& .MuiButton-endIcon': { ml: 0 } }}
                 >
                     {buttonLabel}
                 </Button>

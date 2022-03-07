@@ -263,6 +263,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                                         key={getChoiceValue(item)}
                                         label={renderMenuItemOption(item)}
                                         className={SelectArrayInputClasses.chip}
+                                        size="small"
                                     />
                                 ))}
                         </div>
@@ -382,6 +383,7 @@ const StyledFormControl = styled(FormControl, {
     },
 
     [`& .${SelectArrayInputClasses.chip}`]: {
-        margin: theme.spacing(1 / 4),
+        marginTop: theme.spacing(0.5),
+        marginRight: theme.spacing(0.5),
     },
 }));

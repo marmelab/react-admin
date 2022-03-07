@@ -56,6 +56,33 @@ const Dashboard = () => {
 }
 ```
 
+## Adding Custom Pages
+
+In addition to CRUD pages for resources, you can create as many routes as you want for your custom pages. Use [the `<CustomRoutes>` component](./CustomRoutes.md) to do so.
+
+```jsx
+// in src/App.js
+import * as React from "react";
+import { Admin, Resource, CustomRoutes } from 'react-admin';
+import posts from './posts';
+import comments from './comments';
+import Settings from './Settings';
+import Profile from './Profile';
+
+const App = () => (
+    <Admin dataProvider={simpleRestProvider('http://path.to.my.api')}>
+        <Resource name="posts" {...posts} />
+        <Resource name="comments" {...comments} />
+        <CustomRoutes>
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/profile" element={<Profile />} />
+        </CustomRoutes>
+    </Admin>
+);
+
+export default App;
+```
+
 ## Using A Custom Router 
 
 By default, react-admin creates a [HashRouter](https://reactrouter.com/docs/en/v6/api#hashrouter). The hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers. 

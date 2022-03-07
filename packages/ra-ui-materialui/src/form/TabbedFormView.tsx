@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
     ChangeEvent,
     Children,
+    ComponentType,
     cloneElement,
     isValidElement,
     ReactElement,
@@ -17,7 +18,7 @@ import {
     useResolvedPath,
     useLocation,
 } from 'react-router-dom';
-import { Divider } from '@mui/material';
+import { CardContent, Divider, SxProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import {
     FormRenderProps,
@@ -32,6 +33,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
     const {
         children,
         className,
+        component: Component = DefaultComponent,
         formRootPathname,
         handleSubmit,
         mutationMode,
@@ -80,7 +82,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                 renderTabHeaders()
             )}
             <Divider />
-            <div className={TabbedFormClasses.content}>
+            <Component>
                 {/* All tabs are rendered (not only the one in focus), to allow validation
                 on tabs not in focus. The tabs receive a `hidden` property, which they'll
                 use to hide the tab using CSS if it's not the one in focus.
@@ -107,7 +109,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                           })
                         : null;
                 })}
-            </div>
+            </Component>
             {toolbar}
         </Root>
     );
@@ -136,11 +138,15 @@ TabbedFormView.propTypes = {
 };
 
 const DefaultTabs = <TabbedFormTabs />;
+const DefaultComponent = ({ children }) => (
+    <CardContent>{children}</CardContent>
+);
 const DefaultToolbar = <Toolbar />;
 
 export interface TabbedFormViewProps extends FormRenderProps {
     children?: ReactNode;
     className?: string;
+    component?: ComponentType<any>;
     mutationMode?: MutationMode;
     record?: Partial<RaRecord>;
     resource?: string;
@@ -149,6 +155,7 @@ export interface TabbedFormViewProps extends FormRenderProps {
     tabs?: ReactElement;
     toolbar?: ReactElement;
     submitOnEnter?: boolean;
+    sx?: SxProps;
 }
 
 const sanitizeRestProps = ({ save = null, ...props }) => props;
@@ -157,7 +164,6 @@ const PREFIX = 'RaTabbedForm';
 
 export const TabbedFormClasses = {
     errorTabButton: `${PREFIX}-errorTabButton`,
-    content: `${PREFIX}-content`,
 };
 
 const Root = styled('form', {
@@ -166,10 +172,5 @@ const Root = styled('form', {
 })(({ theme }) => ({
     [`& .MuiTab-root.${TabbedFormClasses.errorTabButton}`]: {
         color: theme.palette.error.main,
-    },
-    [`& .${TabbedFormClasses.content}`]: {
-        paddingTop: theme.spacing(1),
-        paddingLeft: theme.spacing(2),
-        paddingRight: theme.spacing(2),
     },
 }));

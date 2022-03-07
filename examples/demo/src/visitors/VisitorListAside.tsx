@@ -23,9 +23,9 @@ const Aside = () => (
                 md: 'block',
             },
             order: -1,
-            width: '15em',
+            flex: '0 0 15em',
             mr: 2,
-            mt: 7,
+            mt: 8,
             alignSelf: 'flex-start',
         }}
     >

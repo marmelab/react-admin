@@ -172,9 +172,7 @@ const StyledToolbar = styled(MuiToolbar, {
             ? theme.palette.grey[100]
             : theme.palette.grey[900],
 
-    [`&.${ToolbarClasses.desktopToolbar}`]: {
-        marginTop: theme.spacing(2),
-    },
+    [`&.${ToolbarClasses.desktopToolbar}`]: {},
 
     [`&.${ToolbarClasses.mobileToolbar}`]: {
         position: 'fixed',

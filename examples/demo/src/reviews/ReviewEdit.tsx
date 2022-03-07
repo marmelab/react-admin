@@ -1,8 +1,6 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
-    useEditController,
-    EditContextProvider,
+    EditBase,
     useTranslate,
     TextInput,
     SimpleForm,
@@ -10,7 +8,7 @@ import {
     EditProps,
     Labeled,
 } from 'react-admin';
-import { Stack, IconButton, Typography } from '@mui/material';
+import { Box, Grid, Stack, IconButton, Typography } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import ProductReferenceField from '../products/ProductReferenceField';
@@ -19,103 +17,49 @@ import StarRatingField from './StarRatingField';
 import ReviewEditToolbar from './ReviewEditToolbar';
 import { Review } from '../types';
 
-const PREFIX = 'ReviewEdit';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    title: `${PREFIX}-title`,
-    form: `${PREFIX}-form`,
-    inlineField: `${PREFIX}-inlineField`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`&.${classes.root}`]: {
-        paddingTop: 40,
-    },
-
-    [`& .${classes.title}`]: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        margin: '1em',
-    },
-
-    [`& .${classes.form}`]: {
-        [theme.breakpoints.up('xs')]: {
-            width: 400,
-        },
-        [theme.breakpoints.down('sm')]: {
-            width: '100vw',
-            marginTop: -30,
-        },
-    },
-
-    [`& .${classes.inlineField}`]: {
-        display: 'inline-block',
-        width: '50%',
-    },
-}));
-
 interface Props extends EditProps<Review> {
     onCancel: () => void;
 }
 
 const ReviewEdit = ({ onCancel, ...props }: Props) => {
-    const controllerProps = useEditController<Review>(props);
     const translate = useTranslate();
-    if (!controllerProps.record) {
-        return null;
-    }
     return (
-        <Root className={classes.root}>
-            <div className={classes.title}>
-                <Typography variant="h6">
-                    {translate('resources.reviews.detail')}
-                </Typography>
-                <IconButton onClick={onCancel} size="large">
-                    <CloseIcon />
-                </IconButton>
-            </div>
-            <EditContextProvider value={controllerProps}>
+        <EditBase {...props}>
+            <Box pt={5} width={{ xs: '100vW', sm: 400 }} mt={{ xs: 2, sm: 1 }}>
+                <Stack direction="row" p={2}>
+                    <Typography variant="h6" flex="1">
+                        {translate('resources.reviews.detail')}
+                    </Typography>
+                    <IconButton onClick={onCancel} size="small">
+                        <CloseIcon />
+                    </IconButton>
+                </Stack>
                 <SimpleForm
-                    className={classes.form}
-                    record={controllerProps.record}
-                    onSubmit={controllerProps.save}
-                    resource="reviews"
+                    sx={{ pt: 0, pb: 0 }}
                     toolbar={<ReviewEditToolbar />}
                 >
-                    <Stack
-                        direction="row"
-                        spacing={2}
-                        mb={2}
-                        justifyContent="space-between"
-                    >
-                        <Stack spacing={2}>
+                    <Grid container rowSpacing={1} mb={1}>
+                        <Grid item xs={6}>
                             <Labeled>
-                                <CustomerReferenceField
-                                    formClassName={classes.inlineField}
-                                />
+                                <CustomerReferenceField />
                             </Labeled>
+                        </Grid>
+                        <Grid item xs={6}>
                             <Labeled>
-                                <ProductReferenceField
-                                    formClassName={classes.inlineField}
-                                />
+                                <ProductReferenceField />
                             </Labeled>
-                        </Stack>
-                        <Stack spacing={2}>
+                        </Grid>
+                        <Grid item xs={6}>
                             <Labeled>
-                                <DateField
-                                    source="date"
-                                    formClassName={classes.inlineField}
-                                />
+                                <DateField source="date" />
                             </Labeled>
+                        </Grid>
+                        <Grid item xs={6}>
                             <Labeled>
-                                <StarRatingField
-                                    formClassName={classes.inlineField}
-                                />
+                                <StarRatingField />
                             </Labeled>
-                        </Stack>
-                    </Stack>
+                        </Grid>
+                    </Grid>
                     <TextInput
                         source="comment"
                         maxRows={15}
@@ -123,8 +67,8 @@ const ReviewEdit = ({ onCancel, ...props }: Props) => {
                         fullWidth
                     />
                 </SimpleForm>
-            </EditContextProvider>
-        </Root>
+            </Box>
+        </EditBase>
     );
 };
 

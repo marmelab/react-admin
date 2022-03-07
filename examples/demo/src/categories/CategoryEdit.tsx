@@ -32,15 +32,21 @@ const CategoryEdit = () => (
     <Edit title={<CategoryTitle />}>
         <SimpleForm>
             <TextInput source="name" />
-            <Labeled label="resources.categories.fields.products">
+            <Labeled label="resources.categories.fields.products" fullWidth>
                 <ReferenceManyField
                     reference="products"
                     target="category_id"
                     perPage={20}
-                    fullWidth
                 >
-                    <Datagrid>
-                        <ThumbnailField />
+                    <Datagrid
+                        sx={{
+                            '& .column-thumbnail': {
+                                width: 25,
+                                padding: 0,
+                            },
+                        }}
+                    >
+                        <ThumbnailField source="thumbnail" label="" />
                         <ProductRefField source="reference" />
                         <NumberField
                             source="price"
