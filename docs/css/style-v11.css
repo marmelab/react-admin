@@ -94,7 +94,7 @@ nav ul#nav-mobile a {
 .sidenav li > a {
     height: 1.6em;
     line-height: 1.6em;
-    padding: 0 1em;
+    padding: 0 0 0 1em;
     font-size: 1em;
     font-weight: normal;
 }

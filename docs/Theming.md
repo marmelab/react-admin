@@ -514,6 +514,7 @@ const App = () => (
 
 For more advanced sidebar theming, pass your own `Sidebar` component to a custom `Layout`:
 
+{% raw %}
 ```jsx
 import { Sidebar, Layout } from 'react-admin';
 
@@ -530,11 +531,13 @@ const MySidebar = (props) => (
 
 const MyLayout = props => <Layout {...props} sidebar={MySidebar} />
 ```
+{% endraw %}
 
 ### Layout From Scratch
 
 For more custom layouts, write a component from scratch. It must contain a `{children}` placeholder, where react-admin will render the resources. Use the [default layout](https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/layout/Layout.tsx) as a starting point. Here is a simplified version (with no responsive support):
 
+{% raw %}
 ```jsx
 // in src/MyLayout.js
 import * as React from 'react';
@@ -613,6 +616,7 @@ MyLayout.propTypes = {
 
 export default MyLayout;
 ```
+{% endraw %}
 
 ## Adding a Breadcrumb
 
@@ -664,6 +668,7 @@ By default, the react-admin `<AppBar>` component displays the page title. You ca
 
 Here is an example customization for `<AppBar>` to include a company logo in the center of the page header:
 
+{% raw %}
 ```jsx
 // in src/MyAppBar.js
 import * as React from 'react';
@@ -697,6 +702,7 @@ const MyAppBar = (props) => (
 
 export default MyAppBar;
 ```
+{% endraw %}
 
 To use this custom `MyAppBar` component, pass it as prop to a custom `Layout`, as shown below:
 
