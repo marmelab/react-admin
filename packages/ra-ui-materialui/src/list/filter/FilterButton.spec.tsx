@@ -1,8 +1,9 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, fireEvent } from '@testing-library/react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
+import { AdminContext } from '../../AdminContext';
 import { FilterButton } from './FilterButton';
 import { TextInput } from '../../input';
 
@@ -23,25 +24,18 @@ describe('<FilterButton />', () => {
         filterValues: {},
     };
 
-    describe('filter button', () => {
-        it('should not be rendered, if all filters are already being displayed', () => {
-            const { queryByText } = render(<FilterButton {...defaultProps} />);
-            expect(queryByText('ra.action.add_filter')).toBeNull();
-        });
-    });
-
     describe('filter selection menu', () => {
         it('should display only hidden filters', () => {
             const hiddenFilter = (
                 <TextInput source="Returned" label="Returned" />
             );
             const { getByLabelText, queryByText } = render(
-                <ThemeProvider theme={theme}>
+                <AdminContext theme={theme}>
                     <FilterButton
                         {...defaultProps}
                         filters={defaultProps.filters.concat(hiddenFilter)}
                     />
-                </ThemeProvider>
+                </AdminContext>
             );
 
             fireEvent.click(getByLabelText('ra.action.add_filter'));
@@ -55,12 +49,12 @@ describe('<FilterButton />', () => {
                 <TextInput source="Returned" label="Returned" disabled={true} />
             );
             const { getByRole, getByLabelText } = render(
-                <ThemeProvider theme={theme}>
+                <AdminContext theme={theme}>
                     <FilterButton
                         {...defaultProps}
                         filters={defaultProps.filters.concat(hiddenFilter)}
                     />
-                </ThemeProvider>
+                </AdminContext>
             );
 
             fireEvent.click(getByLabelText('ra.action.add_filter'));
