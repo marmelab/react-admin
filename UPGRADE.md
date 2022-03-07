@@ -1860,20 +1860,13 @@ const {
 
 Or in a component:
 ```diff
-import { BulkDeleteButton, BulkExportButton, List } from 'react-admin';
-
-const PostBulkActionButtons = () => (
-    <Fragment>
-        <BulkExportButton />
--       <BulkDeleteButton undoable />
-+       <BulkDeleteButton mutationMode="undoable" />
-    </Fragment>
-);
-
-export const PostList = (props) => (
-    <List {...props} bulkActionButtons={<PostBulkActionButtons />}>
-        ...
-    </List>
+export const PostEdit = (props) => (
+-    <Edit {...props} undoable>
++    <Edit {...props} mutationMode="undoable">
+        <SimpleForm>
+            <TextInput source="title" />
+        </SimpleForm>
+    </Edit>
 );
 ```
 
@@ -2681,8 +2674,7 @@ import { Toolbar, SimpleForm, Edit, TextInput } from 'react-admin';
 +const MyToolbar = props => <Toolbar {...props} mutationMode="pessimistic" submitOnEnter={false} />;
 
 export const PostEdit = (props) => (
--    <Edit {...props} mutationMode="pessimistic">
-+    <Edit {...props}>
+    <Edit {...props} mutationMode="pessimistic">
 -       <SimpleForm>
 +       <SimpleForm toolbar={<MyToolbar/>}>
             <TextInput source="title" />
