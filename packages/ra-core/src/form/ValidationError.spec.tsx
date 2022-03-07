@@ -1,33 +1,31 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
-import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import ValidationError from './ValidationError';
-import { I18nContextProvider } from '../i18n';
+import { TestTranslationProvider } from '../i18n';
 
 const translate = jest.fn(key => key);
 
 const renderWithTranslations = content =>
     render(
-        <I18nContextProvider
-            value={polyglotI18nProvider(() => ({
+        <TestTranslationProvider
+            messages={{
                 ra: {
-                    // @ts-ignore
                     validation: {
                         required: 'Required',
-                        minValue: 'Min Value %{value}',
-                        oneOf: 'Must be one of %{list}',
+                        minValue: ({ value }) => `Min Value ${value}`,
+                        oneOf: ({ list }) => `Must be one of ${list}`,
                     },
                 },
                 myapp: {
                     validation: {
-                        match: 'Must match %{match}',
+                        match: ({ match }) => `Must match ${match}`,
                     },
                 },
-            }))}
+            }}
         >
             {content}
-        </I18nContextProvider>
+        </TestTranslationProvider>
     );
 
 describe('ValidationError', () => {
