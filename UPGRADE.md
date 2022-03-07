@@ -841,27 +841,6 @@ const App = () => {
 }
 ```
 
-### Changed Signature of DataProvider
-
-`DataProvider` is now implemented as a `type alias` wrapping an interface.
-
-To provide more functionality and better inference, the Generic signature of the methods have changed.
-
-#### Methods
-
-The previous signature of `.getList<Model>(...)` is no longer supported.
-
-The recommended upgrade path is to move defining your Models at the DataProvider level:
-
-```diff
--const dataProvider: DataProvider = {...};
--const results = dataProvider.getList<Model>('someResource');
-+const dataProvider: DataProvider<{someResource: Model}> = {...};
-+const results = dataProvider.getList('someResource');
-```
-
-For more complete examples, see `ra-data-fakerest` and `ra-data-localstorage`
-
 ## Auth Provider
 
 Some of the hooks allowing to call the `authProvider` methods are asynchronous: they return their result only when the `authProvider` promise resolves, and set the `loading` property to `true` until then.

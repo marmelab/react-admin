@@ -53,12 +53,11 @@ export const useGetOne = <RecordType extends RaRecord = any>(
         [resource, 'getOne', { id: String(id), meta }],
         () =>
             dataProvider
-                .getOne<string, RecordType>(resource, { id, meta })
+                .getOne<RecordType>(resource, { id, meta })
                 .then(({ data }) => data),
         options
     );
 };
 
-export type UseGetOneHookValue<
-    RecordType extends RaRecord = any
-> = UseQueryResult<RecordType>;
+export type UseGetOneHookValue<RecordType extends RaRecord = any> =
+    UseQueryResult<RecordType>;

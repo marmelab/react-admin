@@ -63,7 +63,7 @@ export const useGetMany = <RecordType extends RaRecord = any>(
         [resource, 'getMany', { ids: ids.map(id => String(id)), meta }],
         () =>
             dataProvider
-                .getMany<string, RecordType>(resource, { ids, meta })
+                .getMany<RecordType>(resource, { ids, meta })
                 .then(({ data }) => data),
         {
             placeholderData: () => {
@@ -96,6 +96,5 @@ export const useGetMany = <RecordType extends RaRecord = any>(
     );
 };
 
-export type UseGetManyHookValue<
-    RecordType extends RaRecord = any
-> = UseQueryResult<RecordType[], Error>;
+export type UseGetManyHookValue<RecordType extends RaRecord = any> =
+    UseQueryResult<RecordType[], Error>;

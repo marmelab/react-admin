@@ -85,7 +85,7 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
         ],
         () =>
             dataProvider
-                .getManyReference<string, RecordType>(resource, {
+                .getManyReference<RecordType>(resource, {
                     target,
                     id,
                     pagination,
@@ -112,14 +112,16 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
         }
     );
 
-    return (result.data
-        ? {
-              ...result,
-              data: result.data?.data,
-              total: result.data?.total,
-              pageInfo: result.data?.pageInfo,
-          }
-        : result) as UseQueryResult<RecordType[], Error> & {
+    return (
+        result.data
+            ? {
+                  ...result,
+                  data: result.data?.data,
+                  total: result.data?.total,
+                  pageInfo: result.data?.pageInfo,
+              }
+            : result
+    ) as UseQueryResult<RecordType[], Error> & {
         total?: number;
         pageInfo?: {
             hasNextPage?: boolean;
@@ -128,12 +130,11 @@ export const useGetManyReference = <RecordType extends RaRecord = any>(
     };
 };
 
-export type UseGetManyReferenceHookValue<
-    RecordType extends RaRecord = any
-> = UseQueryResult<RecordType[], Error> & {
-    total?: number;
-    pageInfo?: {
-        hasNextPage?: boolean;
-        hasPreviousPage?: boolean;
+export type UseGetManyReferenceHookValue<RecordType extends RaRecord = any> =
+    UseQueryResult<RecordType[], Error> & {
+        total?: number;
+        pageInfo?: {
+            hasNextPage?: boolean;
+            hasPreviousPage?: boolean;
+        };
     };
-};

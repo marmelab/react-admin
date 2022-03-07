@@ -151,7 +151,7 @@ export const useDelete = <RecordType extends RaRecord = any>(
             meta: callTimeMeta = paramsRef.current.meta,
         } = {}) =>
             dataProvider
-                .delete<string, RecordType>(callTimeResource, {
+                .delete<RecordType>(callTimeResource, {
                     id: callTimeId,
                     previousData: callTimePreviousData,
                     meta: callTimeMeta,
@@ -387,13 +387,12 @@ export interface UseDeleteMutateParams<RecordType extends RaRecord = any> {
     meta?: any;
 }
 
-export type UseDeleteOptions<
-    RecordType extends RaRecord = any
-> = UseMutationOptions<
-    RecordType,
-    unknown,
-    Partial<UseDeleteMutateParams<RecordType>>
-> & { mutationMode?: MutationMode };
+export type UseDeleteOptions<RecordType extends RaRecord = any> =
+    UseMutationOptions<
+        RecordType,
+        unknown,
+        Partial<UseDeleteMutateParams<RecordType>>
+    > & { mutationMode?: MutationMode };
 
 export type UseDeleteResult<RecordType extends RaRecord = any> = [
     (

@@ -71,7 +71,7 @@ export const useGetList = <RecordType extends RaRecord = any>(
         [resource, 'getList', { pagination, sort, filter, meta }],
         () =>
             dataProvider
-                .getList<string, RecordType>(resource, {
+                .getList<RecordType>(resource, {
                     pagination,
                     sort,
                     filter,
@@ -96,14 +96,16 @@ export const useGetList = <RecordType extends RaRecord = any>(
         }
     );
 
-    return (result.data
-        ? {
-              ...result,
-              data: result.data?.data,
-              total: result.data?.total,
-              pageInfo: result.data?.pageInfo,
-          }
-        : result) as UseQueryResult<RecordType[], Error> & {
+    return (
+        result.data
+            ? {
+                  ...result,
+                  data: result.data?.data,
+                  total: result.data?.total,
+                  pageInfo: result.data?.pageInfo,
+              }
+            : result
+    ) as UseQueryResult<RecordType[], Error> & {
         total?: number;
         pageInfo?: {
             hasNextPage?: boolean;
@@ -112,12 +114,11 @@ export const useGetList = <RecordType extends RaRecord = any>(
     };
 };
 
-export type UseGetListHookValue<
-    RecordType extends RaRecord = any
-> = UseQueryResult<RecordType[], Error> & {
-    total?: number;
-    pageInfo?: {
-        hasNextPage?: boolean;
-        hasPreviousPage?: boolean;
+export type UseGetListHookValue<RecordType extends RaRecord = any> =
+    UseQueryResult<RecordType[], Error> & {
+        total?: number;
+        pageInfo?: {
+            hasNextPage?: boolean;
+            hasPreviousPage?: boolean;
+        };
     };
-};

@@ -151,7 +151,7 @@ export const useUpdate = <RecordType extends RaRecord = any>(
             previousData: callTimePreviousData = paramsRef.current.previousData,
         } = {}) =>
             dataProvider
-                .update<string, RecordType>(callTimeResource, {
+                .update<RecordType>(callTimeResource, {
                     id: callTimeId,
                     data: callTimeData,
                     previousData: callTimePreviousData,
@@ -265,13 +265,8 @@ export const useUpdate = <RecordType extends RaRecord = any>(
             unknown
         > & { mutationMode?: MutationMode; returnPromise?: boolean } = {}
     ) => {
-        const {
-            mutationMode,
-            returnPromise,
-            onSuccess,
-            onSettled,
-            onError,
-        } = updateOptions;
+        const { mutationMode, returnPromise, onSuccess, onSettled, onError } =
+            updateOptions;
 
         // store the hook time params *at the moment of the call*
         // because they may change afterwards, which would break the undoable mode
@@ -421,13 +416,12 @@ export interface UseUpdateMutateParams<RecordType extends RaRecord = any> {
     meta?: any;
 }
 
-export type UseUpdateOptions<
-    RecordType extends RaRecord = any
-> = UseMutationOptions<
-    RecordType,
-    unknown,
-    Partial<UseUpdateMutateParams<RecordType>>
-> & { mutationMode?: MutationMode };
+export type UseUpdateOptions<RecordType extends RaRecord = any> =
+    UseMutationOptions<
+        RecordType,
+        unknown,
+        Partial<UseUpdateMutateParams<RecordType>>
+    > & { mutationMode?: MutationMode };
 
 export type UseUpdateResult<
     RecordType extends RaRecord = any,

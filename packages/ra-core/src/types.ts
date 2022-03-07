@@ -9,10 +9,10 @@ import { AuthActionType } from './auth/types';
 
 export type Identifier = string | number;
 
-export type RaRecord = {
+export interface RaRecord {
     id: Identifier;
     [key: string]: any;
-};
+}
 
 export interface SortPayload {
     field: string;
@@ -42,12 +42,12 @@ export type I18nProvider = {
     [key: string]: any;
 };
 
-export type UserIdentity = {
+export interface UserIdentity {
     id: Identifier;
     fullName?: string;
     avatar?: string;
     [key: string]: any;
-};
+}
 
 /**
  * authProvider types
@@ -72,104 +72,209 @@ export type LegacyAuthProvider = (
  * dataProvider types
  */
 
-// Hack: persists literal keys, while allowing normal strings.
-type LooseStringKeyOf<T> = (keyof T & string) | (string & {});
-export interface RegisterDataProvider {
-    [K: string]: RaRecord;
-}
-export type DataProviderDefinition =
-    | Partial<RegisterDataProvider>
-    | {
-          [K: string]: RaRecord;
-      };
+// https://stackoverflow.com/questions/51465182/how-to-remove-index-signature-using-mapped-types/68261113#68261113
+type RemoveIndex<T> = {
+    [P in keyof T as string extends P
+        ? never
+        : number extends P
+        ? never
+        : P]: T[P];
+};
 
-export interface BaseDataProvider<
-    ResourceDefinition extends DataProviderDefinition
-> {
-    getList: <
-        ResourceType extends LooseStringKeyOf<ResourceDefinition>,
-        RecordType extends RaRecord = ResourceDefinition[ResourceType]
+// curious hack to work around Literals not showing up in hints.
+// Basically, this is a string.
+// https://github.com/Microsoft/TypeScript/issues/29729
+type AnyString = string & Record<never, never>;
+
+type PickByValue<T, V> = {
+    [K in keyof T]: T[K] extends V ? T[K] : never;
+};
+
+export type ExtractDataProviderDefinition<T> = T extends BaseDataProvider<
+    infer Definition
+>
+    ? Definition
+    : never;
+
+export type DataProviderDefinition<
+    ResourceType extends string = string,
+    RecordType extends RaRecord = RaRecord
+> = Record<ResourceType, RecordType>;
+export interface RegisteredDataProviderDefinition
+    extends DataProviderDefinition {}
+export interface RegisteredDataProviderDefinition
+    extends DataProviderDefinition<'hi', RaRecord & { name: string }> {}
+
+export type ResourceTypes<
+    Definition extends DataProviderDefinition,
+    RecordTypes extends RaRecord = RaRecord
+> =
+    | (keyof RemoveIndex<PickByValue<Definition, RecordTypes>> & string)
+    | AnyString;
+
+export type RecordTypes<
+    Definition extends DataProviderDefinition,
+    _ResourceTypes extends ResourceTypes<Definition> = ResourceTypes<Definition>
+> = Definition[_ResourceTypes];
+
+export type RegisteredResourceTypes =
+    ResourceTypes<RegisteredDataProviderDefinition>;
+
+export type RegisteredRecordTypes<
+    _ResourceTypes extends RegisteredResourceTypes = RegisteredResourceTypes
+> = RecordTypes<RegisteredDataProviderDefinition, _ResourceTypes>;
+
+export interface BaseDataProvider<Definition extends DataProviderDefinition> {
+    getList<
+        ResourceType extends ResourceTypes<Definition>,
+        RecordType extends RaRecord = Definition[ResourceType]
     >(
         resource: ResourceType,
         params: GetListParams
-    ) => Promise<GetListResult<RecordType>>;
+    ): Promise<GetListResult<RecordType>>;
+    getList<
+        RecordType extends RecordTypes<Definition>,
+        ResourceType extends string = ResourceTypes<Definition, RecordType>
+    >(
+        resource: ResourceType,
+        params: GetListParams
+    ): Promise<GetListResult<RecordType>>;
 
-    getOne: <
-        ResourceType extends LooseStringKeyOf<ResourceDefinition>,
-        RecordType extends RaRecord = ResourceDefinition[ResourceType]
+    getOne<
+        ResourceType extends ResourceTypes<Definition>,
+        RecordType extends RaRecord = Definition[ResourceType]
     >(
         resource: ResourceType,
         params: GetOneParams
-    ) => Promise<GetOneResult<RecordType>>;
+    ): Promise<GetOneResult<RecordType>>;
+    getOne<
+        RecordType extends RecordTypes<Definition>,
+        ResourceType extends string = ResourceTypes<Definition, RecordType>
+    >(
+        resource: ResourceType,
+        params: GetOneParams
+    ): Promise<GetOneResult<RecordType>>;
 
-    getMany: <
-        ResourceType extends LooseStringKeyOf<ResourceDefinition>,
-        RecordType extends RaRecord = ResourceDefinition[ResourceType]
+    getMany<
+        ResourceType extends ResourceTypes<Definition>,
+        RecordType extends RaRecord = Definition[ResourceType]
     >(
         resource: ResourceType,
         params: GetManyParams
-    ) => Promise<GetManyResult<RecordType>>;
+    ): Promise<GetManyResult<RecordType>>;
+    getMany<
+        RecordType extends RecordTypes<Definition>,
+        ResourceType extends string = ResourceTypes<Definition, RecordType>
+    >(
+        resource: ResourceType,
+        params: GetManyParams
+    ): Promise<GetManyResult<RecordType>>;
 
-    getManyReference: <
-        ResourceType extends LooseStringKeyOf<ResourceDefinition>,
-        RecordType extends RaRecord = ResourceDefinition[ResourceType]
+    getManyReference<
+        ResourceType extends ResourceTypes<Definition>,
+        RecordType extends RaRecord = Definition[ResourceType]
     >(
         resource: ResourceType,
         params: GetManyReferenceParams
-    ) => Promise<GetManyReferenceResult<RecordType>>;
+    ): Promise<GetManyReferenceResult<RecordType>>;
+    getManyReference<
+        RecordType extends RecordTypes<Definition>,
+        ResourceType extends string = ResourceTypes<Definition, RecordType>
+    >(
+        resource: ResourceType,
+        params: GetManyReferenceParams
+    ): Promise<GetManyReferenceResult<RecordType>>;
 
-    update: <
-        ResourceType extends LooseStringKeyOf<ResourceDefinition>,
-        RecordType extends RaRecord = ResourceDefinition[ResourceType]
+    update<
+        ResourceType extends ResourceTypes<Definition>,
+        RecordType extends RaRecord = Definition[ResourceType]
     >(
         resource: ResourceType,
         params: UpdateParams
-    ) => Promise<UpdateResult<RecordType>>;
+    ): Promise<UpdateResult<RecordType>>;
+    update<
+        RecordType extends RecordTypes<Definition>,
+        ResourceType extends string = ResourceTypes<Definition, RecordType>
+    >(
+        resource: ResourceType,
+        params: UpdateParams
+    ): Promise<UpdateResult<RecordType>>;
 
-    updateMany: <
-        ResourceType extends LooseStringKeyOf<ResourceDefinition>,
-        RecordType extends RaRecord = ResourceDefinition[ResourceType]
+    updateMany<
+        ResourceType extends ResourceTypes<Definition>,
+        RecordType extends RaRecord = Definition[ResourceType]
     >(
         resource: ResourceType,
         params: UpdateManyParams
-    ) => Promise<UpdateManyResult<RecordType>>;
+    ): Promise<UpdateManyResult<RecordType>>;
+    updateMany<
+        RecordType extends RecordTypes<Definition>,
+        ResourceType extends string = ResourceTypes<Definition, RecordType>
+    >(
+        resource: ResourceType,
+        params: UpdateManyParams
+    ): Promise<UpdateManyResult<RecordType>>;
 
-    create: <
-        ResourceType extends LooseStringKeyOf<ResourceDefinition>,
-        RecordType extends RaRecord = ResourceDefinition[ResourceType]
+    create<
+        ResourceType extends ResourceTypes<Definition>,
+        RecordType extends RaRecord = Definition[ResourceType]
     >(
         resource: ResourceType,
         params: CreateParams
-    ) => Promise<CreateResult<RecordType>>;
+    ): Promise<CreateResult<RecordType>>;
+    create<
+        RecordType extends RecordTypes<Definition>,
+        ResourceType extends string = ResourceTypes<Definition, RecordType>
+    >(
+        resource: ResourceType,
+        params: CreateParams
+    ): Promise<CreateResult<RecordType>>;
 
-    delete: <
-        ResourceType extends LooseStringKeyOf<ResourceDefinition>,
-        RecordType extends RaRecord = ResourceDefinition[ResourceType]
+    delete<
+        ResourceType extends ResourceTypes<Definition>,
+        RecordType extends RaRecord = Definition[ResourceType]
     >(
         resource: ResourceType,
         params: DeleteParams<RecordType>
-    ) => Promise<DeleteResult<RecordType>>;
+    ): Promise<DeleteResult<RecordType>>;
+    delete<
+        RecordType extends RecordTypes<Definition>,
+        ResourceType extends string = ResourceTypes<Definition, RecordType>
+    >(
+        resource: ResourceType,
+        params: DeleteParams<RecordType>
+    ): Promise<DeleteResult<RecordType>>;
 
-    deleteMany: <
-        ResourceType extends LooseStringKeyOf<ResourceDefinition>,
-        RecordType extends RaRecord = ResourceDefinition[ResourceType]
+    deleteMany<
+        ResourceType extends ResourceTypes<Definition>,
+        RecordType extends RaRecord = Definition[ResourceType]
     >(
         resource: ResourceType,
         params: DeleteManyParams<RecordType>
-    ) => Promise<DeleteManyResult<RecordType>>;
+    ): Promise<DeleteManyResult<RecordType>>;
+    deleteMany<
+        RecordType extends RecordTypes<Definition>,
+        ResourceType extends string = ResourceTypes<Definition, RecordType>
+    >(
+        resource: ResourceType,
+        params: DeleteManyParams<RecordType>
+    ): Promise<DeleteManyResult<RecordType>>;
 
     [key: string]: any;
 }
 
 // Backwards compatibility, acts a translation layer, so `DataProvider<string>` is still valid.
 export type DataProvider<
-    MaybeResourceDefinition extends
+    MaybeDefinition extends
         | string
         | DataProviderDefinition = DataProviderDefinition
 > = BaseDataProvider<
-    MaybeResourceDefinition extends string
-        ? DataProviderDefinition[MaybeResourceDefinition]
-        : MaybeResourceDefinition
+    MaybeDefinition extends string ? DataProviderDefinition : MaybeDefinition
+>;
+
+export type RegisteredDataProvider = DataProvider<
+    // There isn't such thing as a 'global' DataProvider, so use it to define hints.
+    Partial<RegisteredDataProviderDefinition> | DataProviderDefinition
 >;
 
 export interface GetListParams {
