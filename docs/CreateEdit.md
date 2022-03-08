@@ -1993,7 +1993,7 @@ const VisitorForm = props => (
                 <Toolbar>
                     <Box display="flex" justifyContent="space-between" width="100%">
                         <SaveButton saving={formProps.saving} />
-                        <DeleteButton record={formProps.record} />
+                        <DeleteButton record={props.record} />
                     </Box>
                 </Toolbar>
             </form>
