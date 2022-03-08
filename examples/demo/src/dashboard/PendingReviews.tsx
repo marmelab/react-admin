@@ -10,29 +10,46 @@ import {
 } from '@mui/material';
 import CommentIcon from '@mui/icons-material/Comment';
 import { Link } from 'react-router-dom';
-import { useTranslate } from 'react-admin';
+
+import {
+    ReferenceField,
+    FunctionField,
+    useGetList,
+    useTranslate,
+    useIsDataLoaded,
+} from 'react-admin';
 
 import CardWithIcon from './CardWithIcon';
 import StarRatingField from '../reviews/StarRatingField';
 import { Customer, Review } from '../types';
 
-interface Props {
-    reviews?: Review[];
-    customers?: { [key: string]: Customer };
-    nb?: number;
-}
-
-const PendingReviews = ({ reviews = [], customers = {}, nb }: Props) => {
+const PendingReviews = () => {
     const translate = useTranslate();
+    const { data: reviews, total, isLoading } = useGetList<Review>('reviews', {
+        filter: { status: 'pending' },
+        sort: { field: 'date', order: 'DESC' },
+        pagination: { page: 1, perPage: 100 },
+    });
+
+    // Poor man's Suspense: hide the content until all the data is loaded,
+    // including the reference customers.
+    // As ReferenceField aggregates the calls to reference customers,
+    // if the first customer is loaded, then all the customers are loaded.
+    const isCustomerDataLoaded = useIsDataLoaded(
+        ['customers', 'getMany', { ids: [String(reviews?.[0].customer_id)] }],
+        { enabled: !isLoading && reviews && reviews.length > 0 }
+    );
+    const display = isLoading || !isCustomerDataLoaded ? 'none' : 'block';
+
     return (
         <CardWithIcon
             to="/reviews"
             icon={CommentIcon}
             title={translate('pos.dashboard.pending_reviews')}
-            subtitle={nb}
+            subtitle={total}
         >
-            <List>
-                {reviews.map((record: Review) => (
+            <List sx={{ display }}>
+                {reviews?.map((record: Review) => (
                     <ListItem
                         key={record.id}
                         button
@@ -41,16 +58,23 @@ const PendingReviews = ({ reviews = [], customers = {}, nb }: Props) => {
                         alignItems="flex-start"
                     >
                         <ListItemAvatar>
-                            {customers[record.customer_id] ? (
-                                <Avatar
-                                    src={`${
-                                        customers[record.customer_id].avatar
-                                    }?size=32x32`}
-                                    sx={{ bgcolor: 'background.paper' }}
+                            <ReferenceField
+                                record={record}
+                                source="customer_id"
+                                reference="customers"
+                                link={false}
+                            >
+                                <FunctionField
+                                    render={(customer: Customer) => (
+                                        <Avatar
+                                            src={`${customer.avatar}?size=32x32`}
+                                            sx={{
+                                                bgcolor: 'background.paper',
+                                            }}
+                                        />
+                                    )}
                                 />
-                            ) : (
-                                <Avatar />
-                            )}
+                            </ReferenceField>
                         </ListItemAvatar>
 
                         <ListItemText

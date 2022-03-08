@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback, CSSProperties } from 'react';
-import { useDataProvider } from 'react-admin';
+import React, { useMemo, CSSProperties } from 'react';
+import { useGetList } from 'react-admin';
 import { useMediaQuery, Theme } from '@mui/material';
-import { subDays } from 'date-fns';
+import { subDays, startOfDay } from 'date-fns';
 
 import Welcome from './Welcome';
 import MonthlyRevenue from './MonthlyRevenue';
@@ -11,7 +11,7 @@ import PendingReviews from './PendingReviews';
 import NewCustomers from './NewCustomers';
 import OrderChart from './OrderChart';
 
-import { Customer, Order, Review } from '../types';
+import { Order } from '../types';
 
 interface OrderStats {
     revenue: number;
@@ -19,17 +19,9 @@ interface OrderStats {
     pendingOrders: Order[];
 }
 
-interface CustomerData {
-    [key: string]: Customer;
-}
-
 interface State {
     nbNewOrders?: number;
-    nbPendingReviews?: number;
     pendingOrders?: Order[];
-    pendingOrdersCustomers?: CustomerData;
-    pendingReviews?: Review[];
-    pendingReviewsCustomers?: CustomerData;
     recentOrders?: Order[];
     revenue?: string;
 }
@@ -46,26 +38,23 @@ const Spacer = () => <span style={{ width: '1em' }} />;
 const VerticalSpacer = () => <span style={{ height: '1em' }} />;
 
 const Dashboard = () => {
-    const [state, setState] = useState<State>({});
-    const dataProvider = useDataProvider();
     const isXSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('sm')
     );
     const isSmall = useMediaQuery((theme: Theme) =>
         theme.breakpoints.down('lg')
     );
+    const aMonthAgo = useMemo(() => subDays(startOfDay(new Date()), 30), []);
 
-    const fetchOrders = useCallback(async () => {
-        const aMonthAgo = subDays(new Date(), 30);
-        const { data: recentOrders } = await dataProvider.getList<Order>(
-            'commands',
-            {
-                filter: { date_gte: aMonthAgo.toISOString() },
-                sort: { field: 'date', order: 'DESC' },
-                pagination: { page: 1, perPage: 50 },
-            }
-        );
-        const aggregations = recentOrders
+    const { data: orders } = useGetList<Order>('commands', {
+        filter: { date_gte: aMonthAgo.toISOString() },
+        sort: { field: 'date', order: 'DESC' },
+        pagination: { page: 1, perPage: 50 },
+    });
+
+    const aggregation = useMemo<State>(() => {
+        if (!orders) return {};
+        const aggregations = orders
             .filter(order => order.status !== 'cancelled')
             .reduce(
                 (stats: OrderStats, order) => {
@@ -84,9 +73,8 @@ const Dashboard = () => {
                     pendingOrders: [],
                 }
             );
-        setState(state => ({
-            ...state,
-            recentOrders,
+        return {
+            recentOrders: orders,
             revenue: aggregations.revenue.toLocaleString(undefined, {
                 style: 'currency',
                 currency: 'USD',
@@ -95,72 +83,10 @@ const Dashboard = () => {
             }),
             nbNewOrders: aggregations.nbNewOrders,
             pendingOrders: aggregations.pendingOrders,
-        }));
-        const { data: customers } = await dataProvider.getMany<Customer>(
-            'customers',
-            {
-                ids: aggregations.pendingOrders.map(
-                    (order: Order) => order.customer_id
-                ),
-            }
-        );
-        setState(state => ({
-            ...state,
-            pendingOrdersCustomers: customers.reduce(
-                (prev: CustomerData, customer) => {
-                    prev[customer.id] = customer; // eslint-disable-line no-param-reassign
-                    return prev;
-                },
-                {}
-            ),
-        }));
-    }, [dataProvider]);
+        };
+    }, [orders]);
 
-    const fetchReviews = useCallback(async () => {
-        const { data: reviews } = await dataProvider.getList<Review>(
-            'reviews',
-            {
-                filter: { status: 'pending' },
-                sort: { field: 'date', order: 'DESC' },
-                pagination: { page: 1, perPage: 100 },
-            }
-        );
-        const nbPendingReviews = reviews.reduce((nb: number) => ++nb, 0);
-        const pendingReviews = reviews.slice(0, Math.min(10, reviews.length));
-        setState(state => ({ ...state, pendingReviews, nbPendingReviews }));
-        const { data: customers } = await dataProvider.getMany<Customer>(
-            'customers',
-            {
-                ids: pendingReviews.map(review => review.customer_id),
-            }
-        );
-        setState(state => ({
-            ...state,
-            pendingReviewsCustomers: customers.reduce(
-                (prev: CustomerData, customer) => {
-                    prev[customer.id] = customer; // eslint-disable-line no-param-reassign
-                    return prev;
-                },
-                {}
-            ),
-        }));
-    }, [dataProvider]);
-
-    useEffect(() => {
-        fetchOrders();
-        fetchReviews();
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-    const {
-        nbNewOrders,
-        nbPendingReviews,
-        pendingOrders,
-        pendingOrdersCustomers,
-        pendingReviews,
-        pendingReviewsCustomers,
-        revenue,
-        recentOrders,
-    } = state;
+    const { nbNewOrders, pendingOrders, revenue, recentOrders } = aggregation;
     return isXSmall ? (
         <div>
             <div style={styles.flexColumn as CSSProperties}>
@@ -169,10 +95,7 @@ const Dashboard = () => {
                 <VerticalSpacer />
                 <NbNewOrders value={nbNewOrders} />
                 <VerticalSpacer />
-                <PendingOrders
-                    orders={pendingOrders}
-                    customers={pendingOrdersCustomers}
-                />
+                <PendingOrders orders={pendingOrders} />
             </div>
         </div>
     ) : isSmall ? (
@@ -189,10 +112,7 @@ const Dashboard = () => {
                 <OrderChart orders={recentOrders} />
             </div>
             <div style={styles.singleCol}>
-                <PendingOrders
-                    orders={pendingOrders}
-                    customers={pendingOrdersCustomers}
-                />
+                <PendingOrders orders={pendingOrders} />
             </div>
         </div>
     ) : (
@@ -209,19 +129,12 @@ const Dashboard = () => {
                         <OrderChart orders={recentOrders} />
                     </div>
                     <div style={styles.singleCol}>
-                        <PendingOrders
-                            orders={pendingOrders}
-                            customers={pendingOrdersCustomers}
-                        />
+                        <PendingOrders orders={pendingOrders} />
                     </div>
                 </div>
                 <div style={styles.rightCol}>
                     <div style={styles.flex}>
-                        <PendingReviews
-                            nb={nbPendingReviews}
-                            reviews={pendingReviews}
-                            customers={pendingReviewsCustomers}
-                        />
+                        <PendingReviews />
                         <Spacer />
                         <NewCustomers />
                     </div>
