@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { RaRecord } from '../../types';
 import { RecordContextProvider } from '../record/RecordContext';
 import { ShowContext } from './ShowContext';
@@ -30,7 +30,7 @@ export const ShowContextProvider = ({
     children,
     value,
 }: {
-    children: ReactElement;
+    children: ReactNode;
     value: ShowControllerResult;
 }) => (
     <ShowContext.Provider value={value}>
