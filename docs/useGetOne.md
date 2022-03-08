@@ -25,3 +25,10 @@ const UserProfile = ({ record }) => {
     return <div>User {data.username}</div>;
 };
 ```
+
+**Tip**: If you use `useGetOne` several times on a page for the same resource, prefer [`useGetMany`](./useGetMany.md) instead, as it de-duplicates and aggregates queries for a single record into one batch query for many records.
+
+```diff
+-useGetOne('posts', { id });
++useGetMany('posts', { id: [id] });
+```
