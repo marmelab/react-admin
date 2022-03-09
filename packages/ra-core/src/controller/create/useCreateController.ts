@@ -35,10 +35,8 @@ import {
  *     return <CreateView {...controllerProps} {...props} />;
  * }
  */
-export const useCreateController = <
-    RecordType extends Omit<RaRecord, 'id'> = RaRecord
->(
-    props: CreateControllerProps = {}
+export const useCreateController = <RecordType extends RaRecord = RaRecord>(
+    props: CreateControllerProps<RecordType> = {}
 ): CreateControllerResult<RecordType> => {
     const {
         disableAuthentication,
@@ -60,28 +58,28 @@ export const useCreateController = <
     const recordToUse = record ?? getRecordFromLocation(location) ?? undefined;
     const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
 
-    const [create, { isLoading: saving }] = useCreate(
+    const [create, { isLoading: saving }] = useCreate<RecordType>(
         resource,
         undefined,
         otherMutationOptions
     );
 
     const save = useCallback(
-        (
+        async (
             data: Partial<RecordType>,
             {
                 onSuccess: onSuccessFromSave,
                 onError: onErrorFromSave,
                 transform: transformFromSave,
             } = {}
-        ) => {
-            return Promise.resolve(
+        ) =>
+            Promise.resolve(
                 transformFromSave
                     ? transformFromSave(data)
                     : transform
                     ? transform(data)
                     : data
-            ).then((data: Partial<RecordType>) => {
+            ).then(async (data: Partial<RecordType>) =>
                 create(
                     resource,
                     { data },
@@ -126,9 +124,8 @@ export const useCreateController = <
                                   );
                               },
                     }
-                );
-            });
-        },
+                )
+            ),
         [
             create,
             finalRedirectTo,
@@ -158,9 +155,7 @@ export const useCreateController = <
     };
 };
 
-export interface CreateControllerProps<
-    RecordType extends Omit<RaRecord, 'id'> = RaRecord
-> {
+export interface CreateControllerProps<RecordType extends RaRecord = RaRecord> {
     disableAuthentication?: boolean;
     record?: Partial<RecordType>;
     redirect?: RedirectionSideEffect;
@@ -174,7 +169,7 @@ export interface CreateControllerProps<
 }
 
 export interface CreateControllerResult<
-    RecordType extends Omit<RaRecord, 'id'> = RaRecord
+    RecordType extends RaRecord = RaRecord
 > {
     // Necessary for actions (EditActions) which expect a data prop containing the record
     // @deprecated - to be removed in 4.0d
