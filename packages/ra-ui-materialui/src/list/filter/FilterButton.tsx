@@ -22,9 +22,11 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
     const { filters: filtersProp, className, ...rest } = props;
     const filters = useContext(FilterContext) || filtersProp;
     const resource = useResourceContext(props);
-    const { displayedFilters = {}, filterValues, showFilter } = useListContext(
-        props
-    );
+    const {
+        displayedFilters = {},
+        filterValues,
+        showFilter,
+    } = useListContext(props);
     const [open, setOpen] = useState(false);
     const anchorEl = useRef();
 

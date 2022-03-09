@@ -74,8 +74,8 @@ import useLogoutIfAccessDenied from '../auth/useLogoutIfAccessDenied';
 export const useDataProvider = <
     TDataProvider extends DataProvider = DataProvider
 >(): TDataProvider => {
-    const dataProvider = ((useContext(DataProviderContext) ||
-        defaultDataProvider) as unknown) as TDataProvider;
+    const dataProvider = (useContext(DataProviderContext) ||
+        defaultDataProvider) as unknown as TDataProvider;
 
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
 

@@ -65,14 +65,13 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     );
 
     // add field and call the onClick event of the button passed as addButton prop
-    const handleAddButtonClick = (
-        originalOnClickHandler: MouseEventHandler
-    ) => (event: MouseEvent) => {
-        addField();
-        if (originalOnClickHandler) {
-            originalOnClickHandler(event);
-        }
-    };
+    const handleAddButtonClick =
+        (originalOnClickHandler: MouseEventHandler) => (event: MouseEvent) => {
+            addField();
+            if (originalOnClickHandler) {
+                originalOnClickHandler(event);
+            }
+        };
 
     const handleReorder = useCallback(
         (origin: number, destination: number) => {

@@ -22,8 +22,7 @@ const customFrenchMessages: TranslationMessages = {
             all_customers: 'Voir tous les clients',
             pending_orders: 'Commandes à traiter',
             order: {
-                items:
-                    'par %{customer_name}, un poster |||| par %{customer_name}, %{nb_items} posters',
+                items: 'par %{customer_name}, un poster |||| par %{customer_name}, %{nb_items} posters',
             },
             welcome: {
                 title: 'Bienvenue sur la démo e-commerce de react-admin',

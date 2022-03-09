@@ -87,13 +87,8 @@ const useGetTotals = (filterValues: any) => {
 
 const TabbedDatagrid = () => {
     const listContext = useListContext();
-    const {
-        data,
-        filterValues,
-        setFilters,
-        displayedFilters,
-        isLoading,
-    } = listContext;
+    const { data, filterValues, setFilters, displayedFilters, isLoading } =
+        listContext;
     const isXSmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('sm')
     );

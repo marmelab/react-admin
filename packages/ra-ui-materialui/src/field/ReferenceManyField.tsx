@@ -138,7 +138,9 @@ ReferenceManyField.defaultProps = {
     source: 'id',
 };
 
-export const ReferenceManyFieldView: FC<ReferenceManyFieldViewProps> = props => {
+export const ReferenceManyFieldView: FC<
+    ReferenceManyFieldViewProps
+> = props => {
     const { children, pagination } = props;
 
     return (

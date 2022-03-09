@@ -6,9 +6,8 @@ import { createContext } from 'react';
  * @see {SimpleFormIterator}
  * @see {ArrayInput}
  */
-export const SimpleFormIteratorContext = createContext<
-    SimpleFormIteratorContextValue
->(undefined);
+export const SimpleFormIteratorContext =
+    createContext<SimpleFormIteratorContextValue>(undefined);
 
 export type SimpleFormIteratorContextValue = {
     total: number;

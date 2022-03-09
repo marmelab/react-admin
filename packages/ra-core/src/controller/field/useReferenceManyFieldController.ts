@@ -142,44 +142,37 @@ export const useReferenceManyFieldController = (
         }
     });
 
-    const {
-        data,
-        total,
-        pageInfo,
-        error,
-        isFetching,
-        isLoading,
-        refetch,
-    } = useGetManyReference(
-        reference,
-        {
-            target,
-            id: get(record, source),
-            pagination: { page, perPage },
-            sort,
-            filter: filterValues,
-        },
-        {
-            keepPreviousData: true,
-            onError: error =>
-                notify(
-                    typeof error === 'string'
-                        ? error
-                        : error.message || 'ra.notification.http_error',
-                    {
-                        type: 'warning',
-                        messageArgs: {
-                            _:
-                                typeof error === 'string'
-                                    ? error
-                                    : error && error.message
-                                    ? error.message
-                                    : undefined,
-                        },
-                    }
-                ),
-        }
-    );
+    const { data, total, pageInfo, error, isFetching, isLoading, refetch } =
+        useGetManyReference(
+            reference,
+            {
+                target,
+                id: get(record, source),
+                pagination: { page, perPage },
+                sort,
+                filter: filterValues,
+            },
+            {
+                keepPreviousData: true,
+                onError: error =>
+                    notify(
+                        typeof error === 'string'
+                            ? error
+                            : error.message || 'ra.notification.http_error',
+                        {
+                            type: 'warning',
+                            messageArgs: {
+                                _:
+                                    typeof error === 'string'
+                                        ? error
+                                        : error && error.message
+                                        ? error.message
+                                        : undefined,
+                            },
+                        }
+                    ),
+            }
+        );
 
     return {
         sort,

@@ -387,13 +387,12 @@ export interface UseDeleteMutateParams<RecordType extends RaRecord = any> {
     meta?: any;
 }
 
-export type UseDeleteOptions<
-    RecordType extends RaRecord = any
-> = UseMutationOptions<
-    RecordType,
-    unknown,
-    Partial<UseDeleteMutateParams<RecordType>>
-> & { mutationMode?: MutationMode };
+export type UseDeleteOptions<RecordType extends RaRecord = any> =
+    UseMutationOptions<
+        RecordType,
+        unknown,
+        Partial<UseDeleteMutateParams<RecordType>>
+    > & { mutationMode?: MutationMode };
 
 export type UseDeleteResult<RecordType extends RaRecord = any> = [
     (

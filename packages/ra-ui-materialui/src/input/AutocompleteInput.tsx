@@ -169,19 +169,14 @@ export const AutocompleteInput = <
         ...rest
     } = props;
 
-    const {
-        allChoices,
-        isLoading,
-        resource,
-        source,
-        setFilters,
-    } = useChoicesContext({
-        choices: choicesProp,
-        isFetching: isFetchingProp,
-        isLoading: isLoadingProp,
-        resource: resourceProp,
-        source: sourceProp,
-    });
+    const { allChoices, isLoading, resource, source, setFilters } =
+        useChoicesContext({
+            choices: choicesProp,
+            isFetching: isFetchingProp,
+            isLoading: isLoadingProp,
+            resource: resourceProp,
+            source: sourceProp,
+        });
 
     const translate = useTranslate();
     const {

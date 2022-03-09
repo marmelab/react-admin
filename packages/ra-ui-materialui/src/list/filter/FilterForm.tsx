@@ -29,15 +29,15 @@ import { FilterContext } from '../FilterContext';
 export const FilterForm = (props: FilterFormProps) => {
     const { defaultValues, filters: filtersProps, ...rest } = props;
 
-    const { setFilters, displayedFilters, filterValues } = useListContext(
-        props
-    );
+    const { setFilters, displayedFilters, filterValues } =
+        useListContext(props);
     const filters = useContext(FilterContext) || filtersProps;
 
-    const mergedInitialValuesWithDefaultValues = mergeInitialValuesWithDefaultValues(
-        defaultValues || filterValues,
-        filters
-    );
+    const mergedInitialValuesWithDefaultValues =
+        mergeInitialValuesWithDefaultValues(
+            defaultValues || filterValues,
+            filters
+        );
 
     const form = useForm({
         defaultValues: mergedInitialValuesWithDefaultValues,

@@ -34,9 +34,11 @@ export const TagsListEdit = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [disabled, setDisabled] = useState(false);
 
-    const { data: allTags, refetch, isLoading: isLoadingAllTags } = useGetList<
-        Tag
-    >('tags', {
+    const {
+        data: allTags,
+        refetch,
+        isLoading: isLoadingAllTags,
+    } = useGetList<Tag>('tags', {
         pagination: { page: 1, perPage: 10 },
         sort: { field: 'name', order: 'ASC' },
     });

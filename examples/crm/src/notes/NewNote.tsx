@@ -45,7 +45,7 @@ export const NewNote = ({
             data.status = status;
         }
         update(reference, {
-            id: ((record && record.id) as unknown) as Identifier,
+            id: (record && record.id) as unknown as Identifier,
             data: {
                 last_seen: date,
                 status,
@@ -115,9 +115,7 @@ export const NewNote = ({
                                     size="small"
                                     value={date}
                                     onChange={(
-                                        event: React.ChangeEvent<
-                                            HTMLInputElement
-                                        >
+                                        event: React.ChangeEvent<HTMLInputElement>
                                     ) => {
                                         setDate(event.target.value);
                                     }}

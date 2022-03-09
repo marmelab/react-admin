@@ -22,29 +22,28 @@ import { FieldValues } from 'react-hook-form';
  *     </Form>
  * );
  */
-export const getSimpleValidationResolver = (validate: ValidateForm) => async (
-    data: FieldValues
-) => {
-    const errors = await validate(data);
+export const getSimpleValidationResolver =
+    (validate: ValidateForm) => async (data: FieldValues) => {
+        const errors = await validate(data);
 
-    if (!errors || Object.getOwnPropertyNames(errors).length === 0) {
-        return { values: data, errors: {} };
-    }
+        if (!errors || Object.getOwnPropertyNames(errors).length === 0) {
+            return { values: data, errors: {} };
+        }
 
-    return {
-        values: {},
-        errors: Object.keys(errors).reduce(
-            (acc, field) => ({
-                ...acc,
-                [field]: {
-                    type: 'manual',
-                    message: errors[field],
-                },
-            }),
-            {} as FieldValues
-        ),
+        return {
+            values: {},
+            errors: Object.keys(errors).reduce(
+                (acc, field) => ({
+                    ...acc,
+                    [field]: {
+                        type: 'manual',
+                        message: errors[field],
+                    },
+                }),
+                {} as FieldValues
+            ),
+        };
     };
-};
 
 export type ValidateForm = (
     data: FieldValues

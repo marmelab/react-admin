@@ -85,7 +85,8 @@ export const getInputFromFieldDefinition = (
                 </>
             );
         case 'reference':
-            const referenceDefinition = definition as ReferenceFieldConfiguration;
+            const referenceDefinition =
+                definition as ReferenceFieldConfiguration;
             const reference = resources[definition.props.reference];
 
             if (reference) {

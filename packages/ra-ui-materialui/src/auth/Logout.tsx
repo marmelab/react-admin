@@ -19,37 +19,36 @@ import { useTranslate, useLogout } from 'ra-core';
  *
  * Used for the Logout Menu item in the sidebar
  */
-export const Logout: FunctionComponent<
-    LogoutProps & MenuItemProps<'li'>
-> = React.forwardRef(function Logout(props, ref) {
-    const { className, redirectTo, icon, ...rest } = props;
+export const Logout: FunctionComponent<LogoutProps & MenuItemProps<'li'>> =
+    React.forwardRef(function Logout(props, ref) {
+        const { className, redirectTo, icon, ...rest } = props;
 
-    const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('sm')
-    );
-    const translate = useTranslate();
-    const logout = useLogout();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const handleClick = useCallback(() => logout(null, redirectTo, false), [
-        redirectTo,
-        logout,
-    ]);
-    return (
-        <StyledMenuItem
-            className={clsx('logout', className)}
-            onClick={handleClick}
-            ref={ref}
-            // @ts-ignore
-            component={isXSmall ? 'span' : 'li'}
-            {...rest}
-        >
-            <ListItemIcon className={LogoutClasses.icon}>
-                {icon ? icon : <ExitIcon />}
-            </ListItemIcon>
-            <ListItemText>{translate('ra.auth.logout')}</ListItemText>
-        </StyledMenuItem>
-    );
-});
+        const isXSmall = useMediaQuery((theme: Theme) =>
+            theme.breakpoints.down('sm')
+        );
+        const translate = useTranslate();
+        const logout = useLogout();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        const handleClick = useCallback(
+            () => logout(null, redirectTo, false),
+            [redirectTo, logout]
+        );
+        return (
+            <StyledMenuItem
+                className={clsx('logout', className)}
+                onClick={handleClick}
+                ref={ref}
+                // @ts-ignore
+                component={isXSmall ? 'span' : 'li'}
+                {...rest}
+            >
+                <ListItemIcon className={LogoutClasses.icon}>
+                    {icon ? icon : <ExitIcon />}
+                </ListItemIcon>
+                <ListItemText>{translate('ra.auth.logout')}</ListItemText>
+            </StyledMenuItem>
+        );
+    });
 
 Logout.propTypes = {
     className: PropTypes.string,

@@ -134,7 +134,9 @@ export interface ReferenceArrayFieldViewProps
     extends Omit<ReferenceArrayFieldProps, 'resource' | 'page' | 'perPage'>,
         ListControllerProps {}
 
-export const ReferenceArrayFieldView: FC<ReferenceArrayFieldViewProps> = props => {
+export const ReferenceArrayFieldView: FC<
+    ReferenceArrayFieldViewProps
+> = props => {
     const { children, pagination, className, sx } = props;
     const { isLoading, total } = useListContext(props);
 

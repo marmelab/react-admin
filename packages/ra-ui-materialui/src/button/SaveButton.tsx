@@ -137,10 +137,8 @@ interface Props<RecordType extends RaRecord = any> {
     mutationMode?: MutationMode;
 }
 
-export type SaveButtonProps<RecordType extends RaRecord = any> = Props<
-    RecordType
-> &
-    ButtonProps;
+export type SaveButtonProps<RecordType extends RaRecord = any> =
+    Props<RecordType> & ButtonProps;
 
 SaveButton.propTypes = {
     className: PropTypes.string,

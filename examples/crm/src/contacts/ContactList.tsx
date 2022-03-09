@@ -36,9 +36,8 @@ import { ContactListFilter } from './ContactListFilter';
 import { Contact } from '../types';
 
 const ContactListContent = () => {
-    const { data, isLoading, onToggleItem, selectedIds } = useListContext<
-        Contact
-    >();
+    const { data, isLoading, onToggleItem, selectedIds } =
+        useListContext<Contact>();
     if (isLoading) {
         return <SimpleListLoading hasLeftAvatarOrIcon hasSecondaryText />;
     }

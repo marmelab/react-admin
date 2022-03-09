@@ -192,21 +192,19 @@ export const DealListContent = () => {
 
             // update backend
             // Fetch all the deals in both stages (because the list may be filtered, but we need to update even non-filtered deals)
-            const [
-                { data: sourceDeals },
-                { data: destinationDeals },
-            ] = await Promise.all([
-                dataProvider.getList('deals', {
-                    sort: { field: 'index', order: 'ASC' },
-                    pagination: { page: 1, perPage: 100 },
-                    filter: { stage: source.droppableId },
-                }),
-                dataProvider.getList('deals', {
-                    sort: { field: 'index', order: 'ASC' },
-                    pagination: { page: 1, perPage: 100 },
-                    filter: { stage: destination.droppableId },
-                }),
-            ]);
+            const [{ data: sourceDeals }, { data: destinationDeals }] =
+                await Promise.all([
+                    dataProvider.getList('deals', {
+                        sort: { field: 'index', order: 'ASC' },
+                        pagination: { page: 1, perPage: 100 },
+                        filter: { stage: source.droppableId },
+                    }),
+                    dataProvider.getList('deals', {
+                        sort: { field: 'index', order: 'ASC' },
+                        pagination: { page: 1, perPage: 100 },
+                        filter: { stage: destination.droppableId },
+                    }),
+                ]);
 
             await Promise.all([
                 // decrease index on the deals after the source index in the source columns

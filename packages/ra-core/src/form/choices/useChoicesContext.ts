@@ -6,9 +6,9 @@ import { ChoicesContext, ChoicesContextValue } from './ChoicesContext';
 export const useChoicesContext = <ChoicesType extends RaRecord = RaRecord>(
     options: Partial<ChoicesContextValue> & { choices?: ChoicesType[] } = {}
 ): ChoicesContextValue => {
-    const context = useContext(ChoicesContext) as ChoicesContextValue<
-        ChoicesType
-    >;
+    const context = useContext(
+        ChoicesContext
+    ) as ChoicesContextValue<ChoicesType>;
     const { data, ...list } = useList<ChoicesType>({ data: options.choices });
     const result = useMemo(
         () => ({

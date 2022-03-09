@@ -70,13 +70,15 @@ export const useChoices = ({
         [optionText, translate, translateChoice]
     );
 
-    const getChoiceValue = useCallback(choice => get(choice, optionValue), [
-        optionValue,
-    ]);
+    const getChoiceValue = useCallback(
+        choice => get(choice, optionValue),
+        [optionValue]
+    );
 
-    const getDisableValue = useCallback(choice => get(choice, disableValue), [
-        disableValue,
-    ]);
+    const getDisableValue = useCallback(
+        choice => get(choice, disableValue),
+        [disableValue]
+    );
 
     return {
         getChoiceText,

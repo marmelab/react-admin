@@ -60,14 +60,8 @@ const isEmptyChildren = children => Children.count(children) === 0;
  *     );
  */
 const WithPermissions = (props: WithPermissionsProps) => {
-    const {
-        authParams,
-        children,
-        render,
-        component,
-        staticContext,
-        ...rest
-    } = props;
+    const { authParams, children, render, component, staticContext, ...rest } =
+        props;
     warning(
         (render && children && !isEmptyChildren(children)) ||
             (render && component) ||

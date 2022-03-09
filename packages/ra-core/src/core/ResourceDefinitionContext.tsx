@@ -13,9 +13,8 @@ export type ResourceDefinitionContextValue = [
     (config: ResourceDefinition) => void
 ];
 
-export const ResourceDefinitionContext = createContext<
-    ResourceDefinitionContextValue
->([{}, () => {}]);
+export const ResourceDefinitionContext =
+    createContext<ResourceDefinitionContextValue>([{}, () => {}]);
 
 /**
  * Context to store the current resource Definition.
@@ -41,9 +40,8 @@ export const ResourceDefinitionContextProvider = ({
     definitions: defaultDefinitions = {},
     children,
 }) => {
-    const [definitions, setState] = useState<ResourceDefinitions>(
-        defaultDefinitions
-    );
+    const [definitions, setState] =
+        useState<ResourceDefinitions>(defaultDefinitions);
 
     const setDefinition = (config: ResourceDefinition) => {
         setState(prev =>

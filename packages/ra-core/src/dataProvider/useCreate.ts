@@ -144,13 +144,12 @@ export interface UseCreateMutateParams<RecordType extends RaRecord = any> {
     meta?: any;
 }
 
-export type UseCreateOptions<
-    RecordType extends RaRecord = any
-> = UseMutationOptions<
-    RecordType,
-    unknown,
-    Partial<UseCreateMutateParams<RecordType>>
->;
+export type UseCreateOptions<RecordType extends RaRecord = any> =
+    UseMutationOptions<
+        RecordType,
+        unknown,
+        Partial<UseCreateMutateParams<RecordType>>
+    >;
 
 export type UseCreateResult<
     RecordType extends RaRecord = any,

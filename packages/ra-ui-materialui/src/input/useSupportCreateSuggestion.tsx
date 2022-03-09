@@ -129,16 +129,16 @@ export interface SupportCreateSuggestionOptions {
 }
 
 export interface UseSupportCreateValue {
-    getCreateItem: (
-        filterValue?: string
-    ) => { id: Identifier; [key: string]: any };
+    getCreateItem: (filterValue?: string) => {
+        id: Identifier;
+        [key: string]: any;
+    };
     handleChange: (eventOrValue: ChangeEvent | any) => Promise<void>;
     createElement: ReactElement | null;
 }
 
-const CreateSuggestionContext = createContext<CreateSuggestionContextValue>(
-    undefined
-);
+const CreateSuggestionContext =
+    createContext<CreateSuggestionContextValue>(undefined);
 
 interface CreateSuggestionContextValue {
     filter?: string;

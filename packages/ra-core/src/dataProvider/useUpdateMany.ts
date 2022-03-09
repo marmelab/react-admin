@@ -76,9 +76,8 @@ export const useUpdateMany = <RecordType extends RaRecord = any>(
     const { ids, data, meta } = params;
     const { mutationMode = 'pessimistic', ...reactMutationOptions } = options;
     const mode = useRef<MutationMode>(mutationMode);
-    const paramsRef = useRef<Partial<UpdateManyParams<Partial<RecordType>>>>(
-        params
-    );
+    const paramsRef =
+        useRef<Partial<UpdateManyParams<Partial<RecordType>>>>(params);
     const snapshot = useRef<Snapshot>([]);
 
     const updateCache = async ({
@@ -404,13 +403,12 @@ export interface UseUpdateManyMutateParams<RecordType extends RaRecord = any> {
     meta?: any;
 }
 
-export type UseUpdateManyOptions<
-    RecordType extends RaRecord = any
-> = UseMutationOptions<
-    Array<RecordType['id']>,
-    unknown,
-    Partial<UseUpdateManyMutateParams<RecordType>>
-> & { mutationMode?: MutationMode };
+export type UseUpdateManyOptions<RecordType extends RaRecord = any> =
+    UseMutationOptions<
+        Array<RecordType['id']>,
+        unknown,
+        Partial<UseUpdateManyMutateParams<RecordType>>
+    > & { mutationMode?: MutationMode };
 
 export type UseUpdateManyResult<RecordType extends RaRecord = any> = [
     (

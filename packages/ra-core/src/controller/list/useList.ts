@@ -64,9 +64,8 @@ export const useList = <RecordType extends RaRecord = any>(
     } = props;
     const resource = useResourceContext(props);
 
-    const [fetchingState, setFetchingState] = useSafeSetState<boolean>(
-        isFetching
-    );
+    const [fetchingState, setFetchingState] =
+        useSafeSetState<boolean>(isFetching);
     const [loadingState, setLoadingState] = useSafeSetState<boolean>(isLoading);
 
     const [finalItems, setFinalItems] = useSafeSetState<{
@@ -263,9 +262,8 @@ export interface UseListOptions<RecordType extends RaRecord = any> {
     resource?: string;
 }
 
-export type UseListValue<
-    RecordType extends RaRecord = any
-> = ListControllerResult<RecordType>;
+export type UseListValue<RecordType extends RaRecord = any> =
+    ListControllerResult<RecordType>;
 
 const defaultFilter = {};
 const defaultSort = { field: null, order: null };

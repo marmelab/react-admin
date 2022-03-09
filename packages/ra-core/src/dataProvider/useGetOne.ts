@@ -59,6 +59,5 @@ export const useGetOne = <RecordType extends RaRecord = any>(
     );
 };
 
-export type UseGetOneHookValue<
-    RecordType extends RaRecord = any
-> = UseQueryResult<RecordType>;
+export type UseGetOneHookValue<RecordType extends RaRecord = any> =
+    UseQueryResult<RecordType>;

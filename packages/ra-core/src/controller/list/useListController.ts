@@ -71,37 +71,30 @@ export const useListController = <RecordType extends RaRecord = any>(
 
     const [selectedIds, selectionModifiers] = useRecordSelection(resource);
 
-    const {
-        data,
-        pageInfo,
-        total,
-        error,
-        isLoading,
-        isFetching,
-        refetch,
-    } = useGetList<RecordType>(
-        resource,
-        {
-            pagination: {
-                page: query.page,
-                perPage: query.perPage,
+    const { data, pageInfo, total, error, isLoading, isFetching, refetch } =
+        useGetList<RecordType>(
+            resource,
+            {
+                pagination: {
+                    page: query.page,
+                    perPage: query.perPage,
+                },
+                sort: { field: query.sort, order: query.order },
+                filter: { ...query.filter, ...filter },
             },
-            sort: { field: query.sort, order: query.order },
-            filter: { ...query.filter, ...filter },
-        },
-        {
-            keepPreviousData: true,
-            retry: false,
-            onError: error =>
-                notify(error?.message || 'ra.notification.http_error', {
-                    type: 'warning',
-                    messageArgs: {
-                        _: error?.message,
-                    },
-                }),
-            ...queryOptions,
-        }
-    );
+            {
+                keepPreviousData: true,
+                retry: false,
+                onError: error =>
+                    notify(error?.message || 'ra.notification.http_error', {
+                        type: 'warning',
+                        messageArgs: {
+                            _: error?.message,
+                        },
+                    }),
+                ...queryOptions,
+            }
+        );
 
     // change page if there is no data
     useEffect(() => {

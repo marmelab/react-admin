@@ -43,11 +43,8 @@ export const resolveBrowserLocale = (
 ): string => {
     // from http://blog.ksol.fr/user-locale-detection-browser-javascript/
     // Rely on the window.navigator object to determine user locale
-    const {
-        language,
-        browserLanguage,
-        userLanguage,
-    } = window.navigator as AllNavigatorLanguage;
+    const { language, browserLanguage, userLanguage } =
+        window.navigator as AllNavigatorLanguage;
 
     const locale =
         language ||

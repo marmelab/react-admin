@@ -51,15 +51,14 @@ export const SimpleFormIteratorItem = React.forwardRef(
         };
 
         // remove field and call the onClick event of the button passed as removeButton prop
-        const handleRemoveButtonClick = (
-            originalOnClickHandler: MouseEventHandler,
-            index: number
-        ) => (event: MouseEvent) => {
-            remove(index);
-            if (originalOnClickHandler) {
-                originalOnClickHandler(event);
-            }
-        };
+        const handleRemoveButtonClick =
+            (originalOnClickHandler: MouseEventHandler, index: number) =>
+            (event: MouseEvent) => {
+                remove(index);
+                if (originalOnClickHandler) {
+                    originalOnClickHandler(event);
+                }
+            };
 
         const context = useMemo<SimpleFormIteratorItemContextValue>(
             () => ({

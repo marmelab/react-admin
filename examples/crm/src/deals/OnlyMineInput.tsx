@@ -3,11 +3,8 @@ import { useListFilterContext, useGetIdentity } from 'react-admin';
 import { Box, Switch, FormControlLabel } from '@mui/material';
 
 export const OnlyMineInput = ({ alwaysOn }: { alwaysOn: boolean }) => {
-    const {
-        filterValues,
-        displayedFilters,
-        setFilters,
-    } = useListFilterContext();
+    const { filterValues, displayedFilters, setFilters } =
+        useListFilterContext();
     const { identity } = useGetIdentity();
 
     const handleChange = () => {

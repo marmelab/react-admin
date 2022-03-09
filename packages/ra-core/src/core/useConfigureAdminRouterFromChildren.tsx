@@ -47,10 +47,8 @@ export const useConfigureAdminRouterFromChildren = (
     // initialize the status at the next stop
     const routesAndResources = getRoutesAndResourceFromNodes(children);
 
-    const [
-        customRoutesWithoutLayout,
-        setCustomRoutesWithoutLayout,
-    ] = useSafeSetState(routesAndResources.customRoutesWithoutLayout);
+    const [customRoutesWithoutLayout, setCustomRoutesWithoutLayout] =
+        useSafeSetState(routesAndResources.customRoutesWithoutLayout);
     const [customRoutesWithLayout, setCustomRoutesWithLayout] = useSafeSetState(
         routesAndResources.customRoutesWithLayout
     );
@@ -226,9 +224,8 @@ const getRoutesAndResourceFromNodes = (children: ReactNode) => {
         }
 
         if ((element.type as any).raName === 'CustomRoutes') {
-            const customRoutesElement = element as ReactElement<
-                CustomRoutesProps
-            >;
+            const customRoutesElement =
+                element as ReactElement<CustomRoutesProps>;
 
             if (customRoutesElement.props.noLayout) {
                 customRoutesWithoutLayout.push(

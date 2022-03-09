@@ -45,9 +45,8 @@ export const useReference = <RecordType extends RaRecord = any>({
     reference,
     id,
 }: UseReferenceProps): UseReferenceResult<RecordType> => {
-    const { data, error, isLoading, isFetching, refetch } = useGetManyAggregate<
-        RecordType
-    >(reference, { ids: [id] });
+    const { data, error, isLoading, isFetching, refetch } =
+        useGetManyAggregate<RecordType>(reference, { ids: [id] });
     return {
         referenceRecord: error ? undefined : data ? data[0] : undefined,
         refetch,

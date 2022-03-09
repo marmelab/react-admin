@@ -147,9 +147,10 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
 
     const hasBulkActions = !!bulkActionButtons !== false;
 
-    const contextValue = useMemo(() => ({ isRowExpandable }), [
-        isRowExpandable,
-    ]);
+    const contextValue = useMemo(
+        () => ({ isRowExpandable }),
+        [isRowExpandable]
+    );
 
     const lastSelected = useRef(null);
 

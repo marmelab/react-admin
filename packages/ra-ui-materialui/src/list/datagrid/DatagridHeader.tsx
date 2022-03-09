@@ -30,9 +30,8 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
     } = props;
     const resource = useResourceContext(props);
     const translate = useTranslate();
-    const { sort, data, onSelect, selectedIds, setSort } = useListContext(
-        props
-    );
+    const { sort, data, onSelect, selectedIds, setSort } =
+        useListContext(props);
 
     const updateSortCallback = useCallback(
         event => {

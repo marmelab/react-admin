@@ -3,26 +3,28 @@ import { IntrospectionResult, IntrospectedResource } from 'ra-data-graphql';
 import { IntrospectionField } from 'graphql';
 import { ApolloQueryResult } from '@apollo/client';
 
-export default (introspectionResults: IntrospectionResult) => (
-    raFetchMethod: string,
-    resource: IntrospectedResource,
-    queryType: IntrospectionField
-) => (response: ApolloQueryResult<any>) => {
-    const data = response.data;
+export default (introspectionResults: IntrospectionResult) =>
+    (
+        raFetchMethod: string,
+        resource: IntrospectedResource,
+        queryType: IntrospectionField
+    ) =>
+    (response: ApolloQueryResult<any>) => {
+        const data = response.data;
 
-    if (
-        raFetchMethod === GET_LIST ||
-        raFetchMethod === GET_MANY ||
-        raFetchMethod === GET_MANY_REFERENCE
-    ) {
-        return {
-            data: response.data.items.map(sanitizeResource),
-            total: response.data.total.count,
-        };
-    }
+        if (
+            raFetchMethod === GET_LIST ||
+            raFetchMethod === GET_MANY ||
+            raFetchMethod === GET_MANY_REFERENCE
+        ) {
+            return {
+                data: response.data.items.map(sanitizeResource),
+                total: response.data.total.count,
+            };
+        }
 
-    return { data: sanitizeResource(data.data) };
-};
+        return { data: sanitizeResource(data.data) };
+    };
 
 const sanitizeResource = (data: any) => {
     const result = Object.keys(data).reduce((acc, key) => {

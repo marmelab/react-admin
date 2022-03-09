@@ -7,8 +7,7 @@ import { UseFieldArrayReturn } from 'react-hook-form';
  * @see {ArrayInput}
  * @see {@link https://react-hook-form.com/api/usefieldarray}
  */
-export const ArrayInputContext = createContext<ArrayInputContextValue>(
-    undefined
-);
+export const ArrayInputContext =
+    createContext<ArrayInputContextValue>(undefined);
 
 export type ArrayInputContextValue = UseFieldArrayReturn;

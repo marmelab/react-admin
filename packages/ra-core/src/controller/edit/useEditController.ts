@@ -65,9 +65,13 @@ export const useEditController = <RecordType extends RaRecord = any>(
     const id = propsId || decodeURIComponent(routeId);
     const { onSuccess, onError, ...otherMutationOptions } = mutationOptions;
 
-    const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
-        RecordType
-    >(
+    const {
+        data: record,
+        error,
+        isLoading,
+        isFetching,
+        refetch,
+    } = useGetOne<RecordType>(
         resource,
         { id },
         {

@@ -53,13 +53,8 @@ export const ListActions = (props: ListActionsProps) => {
         hasCreate: _,
         ...rest
     } = props;
-    const {
-        sort,
-        displayedFilters,
-        filterValues,
-        showFilter,
-        total,
-    } = useListContext(props);
+    const { sort, displayedFilters, filterValues, showFilter, total } =
+        useListContext(props);
     const resource = useResourceContext(props);
     const { hasCreate } = useResourceDefinition(props);
     const filters = useContext(FilterContext) || filtersProp;

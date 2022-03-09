@@ -33,12 +33,10 @@ export const useResourceConfiguration = (
 
     const context = useMemo<
         [ResourceConfiguration, ResourceDefinitionStateActions]
-    >(() => [resources[name], { update, remove }], [
-        name,
-        remove,
-        resources,
-        update,
-    ]);
+    >(
+        () => [resources[name], { update, remove }],
+        [name, remove, resources, update]
+    );
 
     return context;
 };

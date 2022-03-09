@@ -21,7 +21,7 @@ describe('useShowController', () => {
             .mockImplementationOnce(() =>
                 Promise.resolve({ data: { id: 12, title: 'hello' } })
             );
-        const dataProvider = ({ getOne } as unknown) as DataProvider;
+        const dataProvider = { getOne } as unknown as DataProvider;
         render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <ShowController {...defaultProps}>
@@ -41,7 +41,7 @@ describe('useShowController', () => {
             .mockImplementationOnce(() =>
                 Promise.resolve({ data: { id: 'test?', title: 'hello' } })
             );
-        const dataProvider = ({ getOne } as unknown) as DataProvider;
+        const dataProvider = { getOne } as unknown as DataProvider;
         render(
             <CoreAdminContext
                 dataProvider={dataProvider}
@@ -74,7 +74,7 @@ describe('useShowController', () => {
             .fn()
             .mockImplementationOnce(() => Promise.reject(new Error()));
         const onError = jest.fn();
-        const dataProvider = ({ getOne } as unknown) as DataProvider;
+        const dataProvider = { getOne } as unknown as DataProvider;
         render(
             <CoreAdminContext
                 dataProvider={dataProvider}

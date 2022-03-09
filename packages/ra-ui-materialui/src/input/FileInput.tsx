@@ -51,9 +51,8 @@ export const FileInput = (props: FileInputProps) => {
             return file;
         }
 
-        const { source, title } = (Children.only(children) as ReactElement<
-            any
-        >).props;
+        const { source, title } = (Children.only(children) as ReactElement<any>)
+            .props;
 
         const preview = URL.createObjectURL(file);
         const transformedFile = {

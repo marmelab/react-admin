@@ -34,18 +34,13 @@ export const ReferenceOneField = (props: ReferenceOneFieldProps) => {
     const record = useRecordContext(props);
     const createPath = useCreatePath();
 
-    const {
-        isLoading,
-        isFetching,
-        referenceRecord,
-        error,
-        refetch,
-    } = useReferenceOneFieldController({
-        record,
-        reference,
-        source,
-        target,
-    });
+    const { isLoading, isFetching, referenceRecord, error, refetch } =
+        useReferenceOneFieldController({
+            record,
+            reference,
+            source,
+            target,
+        });
 
     const resourceLinkPath =
         link === false

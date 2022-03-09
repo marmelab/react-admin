@@ -56,9 +56,13 @@ export const useShowController = <RecordType extends RaRecord = any>(
     const { id: routeId } = useParams<'id'>();
     const id = propsId || decodeURIComponent(routeId);
 
-    const { data: record, error, isLoading, isFetching, refetch } = useGetOne<
-        RecordType
-    >(
+    const {
+        data: record,
+        error,
+        isLoading,
+        isFetching,
+        refetch,
+    } = useGetOne<RecordType>(
         resource,
         { id },
         {

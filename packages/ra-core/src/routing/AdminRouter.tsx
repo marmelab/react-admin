@@ -17,9 +17,10 @@ export const AdminRouter = ({
 }: AdminRouterProps) => {
     const isInRouter = useInRouterContext();
     const Router = isInRouter ? DummyRouter : HistoryRouter;
-    const finalHistory = useMemo(() => history || createHashHistory(), [
-        history,
-    ]);
+    const finalHistory = useMemo(
+        () => history || createHashHistory(),
+        [history]
+    );
     return (
         <BasenameContextProvider basename={isInRouter ? basename : ''}>
             <Router basename={basename} history={finalHistory}>

@@ -1,8 +1,7 @@
 import { createContext } from 'react';
 
-export const TranslatableContext = createContext<TranslatableContextValue>(
-    undefined
-);
+export const TranslatableContext =
+    createContext<TranslatableContextValue>(undefined);
 
 export interface TranslatableContextValue {
     getLabel: GetTranslatableLabel;

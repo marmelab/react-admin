@@ -36,13 +36,8 @@ export const ListView = <RecordType extends RaRecord = any>(
         empty = defaultEmpty,
         ...rest
     } = props;
-    const {
-        defaultTitle,
-        data,
-        total,
-        isLoading,
-        filterValues,
-    } = useListContext<RecordType>(props);
+    const { defaultTitle, data, total, isLoading, filterValues } =
+        useListContext<RecordType>(props);
 
     if (!children || (!data && isLoading && emptyWhileLoading)) {
         return null;

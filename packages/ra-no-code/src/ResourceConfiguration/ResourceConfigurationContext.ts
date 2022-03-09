@@ -1,16 +1,15 @@
 import { createContext } from 'react';
 import { InferredElementDescription } from 'react-admin';
 
-export const ResourceConfigurationContext = createContext<
-    ResourceConfigurationContextValue
->([
-    {},
-    {
-        addResource: () => {},
-        updateResource: () => {},
-        removeResource: () => {},
-    },
-]);
+export const ResourceConfigurationContext =
+    createContext<ResourceConfigurationContextValue>([
+        {},
+        {
+            addResource: () => {},
+            updateResource: () => {},
+            removeResource: () => {},
+        },
+    ]);
 
 export type ResourceConfigurationContextValue = [
     ResourceConfigurationMap,

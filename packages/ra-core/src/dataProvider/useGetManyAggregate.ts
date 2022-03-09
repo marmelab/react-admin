@@ -220,14 +220,8 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
             // There is only one call (no aggregation), or one of the calls has the same ids as the sum of all calls.
             // Either way, we can't trigger a new fetchQuery with the same signature, as it's already pending.
             // Therefore, we reply with the dataProvider
-            const {
-                dataProvider,
-                resource,
-                ids,
-                meta,
-                resolve,
-                reject,
-            } = callsForResource[0];
+            const { dataProvider, resource, ids, meta, resolve, reject } =
+                callsForResource[0];
             dataProvider
                 .getMany<any>(resource, { ids, meta })
                 .then(({ data }) => data)

@@ -241,9 +241,10 @@ const Root = styled('div', {
             borderWidth: '1px',
             padding: theme.spacing(1),
 
-            '&[contenteditable="false"], &[contenteditable="false"]:hover, &[contenteditable="false"]:focus': {
-                backgroundColor: theme.palette.action.disabledBackground,
-            },
+            '&[contenteditable="false"], &[contenteditable="false"]:hover, &[contenteditable="false"]:focus':
+                {
+                    backgroundColor: theme.palette.action.disabledBackground,
+                },
 
             '&:hover': {
                 backgroundColor: theme.palette.action.hover,

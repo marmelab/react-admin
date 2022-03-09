@@ -37,9 +37,7 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             </ArrayInput>
         ),
         representation: (props: InputProps, children: InferredElement[]) =>
-            `<ArrayInput source="${
-                props.source
-            }"><SimpleFormIterator>${children
+            `<ArrayInput source="${props.source}"><SimpleFormIterator>${children
                 .map(child => child.getRepresentation())
                 .join('\n')}</SimpleFormIterator></ArrayInput>`,
     },
