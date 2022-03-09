@@ -227,7 +227,7 @@ export default {
 
 [![Saved Queries in FilterList](./img/SavedQueriesList.gif)](./img/SavedQueriesList.gif)
 
-Saved Queries lets users save a combination of filters and sort parameters into a new, personal filter. Saved queries persist between sessions, so users can find their custom queries even after closing and reopening the admin. Saved queries are available both for the Filter Button/Form combo and for the `<FilterList>` Sidebar.
+Saved Queries let users save a combination of filters and sort parameters into a new, personal filter. Saved queries persist between sessions, so users can find their custom queries even after closing and reopening the admin. Saved queries are available both for the Filter Button/Form combo and for the `<FilterList>` Sidebar.
 
 `<SavedQueriesList>` is a complement to `<FilterList>` sections for the filter sidebar
 
