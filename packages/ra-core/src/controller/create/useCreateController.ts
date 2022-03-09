@@ -65,7 +65,7 @@ export const useCreateController = <RecordType extends RaRecord = RaRecord>(
     );
 
     const save = useCallback(
-        async (
+        (
             data: Partial<RecordType>,
             {
                 onSuccess: onSuccessFromSave,
@@ -79,7 +79,7 @@ export const useCreateController = <RecordType extends RaRecord = RaRecord>(
                     : transform
                     ? transform(data)
                     : data
-            ).then(async (data: Partial<RecordType>) =>
+            ).then((data: Partial<RecordType>) =>
                 create(
                     resource,
                     { data },
