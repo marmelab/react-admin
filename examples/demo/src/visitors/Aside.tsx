@@ -37,7 +37,7 @@ import {
 const Aside = () => {
     const record = useRecordContext<Customer>();
     return (
-        <Box width={400} display={{ md: 'none', lg: 'block' }}>
+        <Box width={400} display={{ xs: 'none', lg: 'block' }}>
             {record && <EventList />}
         </Box>
     );
