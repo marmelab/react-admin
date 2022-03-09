@@ -55,7 +55,7 @@ React-admin components don't access the store directly ; instead, they use purpo
 
 Using specialized hooks avoids depending on a store key.
 
-## Foward Compatibility
+## Forward Compatibility
 
 If you store complex objects in the Store, and you change the structure of these objects in the application code, the new code relying on the new object structure may fail when running with an old stored object.
 
@@ -89,7 +89,7 @@ To avoid this type of error, the code using the Store should always make sure th
 ```jsx
 let preferences = useStore('preferences');
 if (!preferences.ui || !preferences.ui.fontSize || !preferences.ui.mode) {
-    preferences= { ui: { fontSize: 'large', mode: 'dark' } };
+    preferences = { ui: { fontSize: 'large', mode: 'dark' } };
 }
 // this will never fail
 const { fontSize, mode } = preferences.ui;
@@ -124,7 +124,7 @@ const App = () => (
 );
 ```
 
-Increase the version number eachj time you push code that isn't compatible with the stored values. 
+Increase the version number each time you push code that isn't compatible with the stored values. 
 
 ## Transient Store
 
