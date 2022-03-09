@@ -39,7 +39,7 @@ let localStorageAvailable = testLocalStorage();
  *   </Admin>
  * );
  */
-export const localStorageStore = (): Store => {
+export const localStorageStore = (version: string = '1'): Store => {
     const subscriptions: { [key: string]: Subscription } = {};
     const publish = (key: string, value: any) => {
         Object.keys(subscriptions).forEach(id => {
@@ -77,6 +77,13 @@ export const localStorageStore = (): Store => {
     return {
         setup: () => {
             if (localStorageAvailable) {
+                const storedVersion = getStorage().getItem(
+                    `${RA_STORE}.version`
+                );
+                if (storedVersion && storedVersion !== version) {
+                    getStorage().clear();
+                }
+                getStorage().setItem(`${RA_STORE}.version`, version);
                 window.addEventListener('storage', onLocalStorageChange);
             }
         },
