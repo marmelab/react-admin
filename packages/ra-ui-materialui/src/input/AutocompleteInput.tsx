@@ -18,6 +18,7 @@ import {
     TextField,
     TextFieldProps,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import {
     ChoicesProps,
     FieldTitle,
@@ -421,7 +422,7 @@ If you provided a React element for the optionText prop, you must also provide t
 
     return (
         <>
-            <Autocomplete
+            <StyledAutocomplete
                 blurOnSelect
                 className={clsx('ra-input', `ra-input-${source}`, className)}
                 clearText={translate(clearText, { _: clearText })}
@@ -456,6 +457,7 @@ If you provided a React element for the optionText prop, you must also provide t
                         }
                         margin={margin}
                         variant={variant}
+                        className={AutocompleteInputClasses.textField}
                         {...TextFieldProps}
                         {...params}
                         size={size}
@@ -516,6 +518,21 @@ If you provided a React element for the optionText prop, you must also provide t
         </>
     );
 };
+
+const PREFIX = 'RaAutocompleteInput';
+
+export const AutocompleteInputClasses = {
+    textField: `${PREFIX}-textField`,
+};
+
+const StyledAutocomplete = styled(Autocomplete, {
+    name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    [`& .${AutocompleteInputClasses.textField}`]: {
+        minWidth: theme.spacing(20),
+    },
+}));
 
 // @ts-ignore
 export interface AutocompleteInputProps<

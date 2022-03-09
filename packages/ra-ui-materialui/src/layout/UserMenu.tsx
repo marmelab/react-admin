@@ -10,6 +10,8 @@ import {
     Button,
     Avatar,
     PopoverOrigin,
+    useMediaQuery,
+    Theme,
 } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { UserMenuContextProvider } from './UserMenuContextProvider';
@@ -61,6 +63,9 @@ export const UserMenu = (props: UserMenuProps) => {
     const translate = useTranslate();
     const { isLoading, identity } = useGetIdentity();
     const authProvider = useAuthProvider();
+    const isLargeEnough = useMediaQuery<Theme>(theme =>
+        theme.breakpoints.up('sm')
+    );
 
     const {
         children = !!authProvider ? <Logout /> : null,
@@ -77,7 +82,7 @@ export const UserMenu = (props: UserMenuProps) => {
 
     return (
         <Root className={className}>
-            {!isLoading && identity?.fullName ? (
+            {isLargeEnough && !isLoading && identity?.fullName ? (
                 <Button
                     aria-label={label && translate(label, { _: label })}
                     className={UserMenuClasses.userButton}
@@ -107,7 +112,15 @@ export const UserMenu = (props: UserMenuProps) => {
                         onClick={handleMenu}
                         size="large"
                     >
-                        {icon}
+                        {!isLoading && identity?.avatar ? (
+                            <Avatar
+                                className={UserMenuClasses.avatar}
+                                src={identity.avatar}
+                                alt={identity.fullName}
+                            />
+                        ) : (
+                            icon
+                        )}
                     </IconButton>
                 </Tooltip>
             )}

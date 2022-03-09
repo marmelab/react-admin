@@ -13,7 +13,6 @@ import {
 import LockIcon from '@mui/icons-material/Lock';
 import {
     Form,
-    Notification,
     required,
     TextInput,
     useTranslate,
@@ -139,7 +138,6 @@ const Login = () => {
                                 </Button>
                             </CardActions>
                         </Card>
-                        <Notification />
                     </Box>
                 </form>
             )}

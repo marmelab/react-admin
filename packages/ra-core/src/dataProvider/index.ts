@@ -9,6 +9,7 @@ export * from './dataFetchActions';
 export * from './defaultDataProvider';
 export * from './testDataProvider';
 export * from './useDataProvider';
+export * from './useIsDataLoaded';
 export * from './useLoading';
 export * from './useRefresh';
 export * from './useGetOne';

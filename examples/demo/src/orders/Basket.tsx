@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
     Table,
     TableBody,
@@ -7,32 +6,13 @@ import {
     TableHead,
     TableRow,
 } from '@mui/material';
-import {
-    Link,
-    FieldProps,
-    useTranslate,
-    useGetMany,
-    useRecordContext,
-} from 'react-admin';
+import { Link, useTranslate, useGetMany, useRecordContext } from 'react-admin';
 
 import { Order, Product } from '../types';
+import { TableCellRight } from './TableCellRight';
 
-const PREFIX = 'Basket';
-
-const classes = {
-    rightAlignedCell: `${PREFIX}-rightAlignedCell`,
-};
-
-const StyledTable = styled(Table, {
-    name: PREFIX,
-    overridesResolver: (props, styles) => styles.root,
-})({
-    [`& .${classes.rightAlignedCell}`]: { textAlign: 'right' },
-});
-
-const Basket = (props: FieldProps<Order>) => {
-    const { className } = props;
-    const record = useRecordContext(props);
+const Basket = () => {
+    const record = useRecordContext<Order>();
     const translate = useTranslate();
 
     const productIds = record ? record.basket.map(item => item.product_id) : [];
@@ -52,7 +32,7 @@ const Basket = (props: FieldProps<Order>) => {
     if (isLoading || !record || !products) return null;
 
     return (
-        <StyledTable className={className}>
+        <Table>
             <TableHead>
                 <TableRow>
                     <TableCell>
@@ -60,17 +40,17 @@ const Basket = (props: FieldProps<Order>) => {
                             'resources.commands.fields.basket.reference'
                         )}
                     </TableCell>
-                    <TableCell className={classes.rightAlignedCell}>
+                    <TableCellRight>
                         {translate(
                             'resources.commands.fields.basket.unit_price'
                         )}
-                    </TableCell>
-                    <TableCell className={classes.rightAlignedCell}>
+                    </TableCellRight>
+                    <TableCellRight>
                         {translate('resources.commands.fields.basket.quantity')}
-                    </TableCell>
-                    <TableCell className={classes.rightAlignedCell}>
+                    </TableCellRight>
+                    <TableCellRight>
                         {translate('resources.commands.fields.basket.total')}
-                    </TableCell>
+                    </TableCellRight>
                 </TableRow>
             </TableHead>
             <TableBody>
@@ -81,7 +61,7 @@ const Basket = (props: FieldProps<Order>) => {
                                 {productsById[item.product_id].reference}
                             </Link>
                         </TableCell>
-                        <TableCell className={classes.rightAlignedCell}>
+                        <TableCellRight>
                             {productsById[item.product_id].price.toLocaleString(
                                 undefined,
                                 {
@@ -89,11 +69,9 @@ const Basket = (props: FieldProps<Order>) => {
                                     currency: 'USD',
                                 }
                             )}
-                        </TableCell>
-                        <TableCell className={classes.rightAlignedCell}>
-                            {item.quantity}
-                        </TableCell>
-                        <TableCell className={classes.rightAlignedCell}>
+                        </TableCellRight>
+                        <TableCellRight>{item.quantity}</TableCellRight>
+                        <TableCellRight>
                             {(
                                 productsById[item.product_id].price *
                                 item.quantity
@@ -101,11 +79,11 @@ const Basket = (props: FieldProps<Order>) => {
                                 style: 'currency',
                                 currency: 'USD',
                             })}
-                        </TableCell>
+                        </TableCellRight>
                     </TableRow>
                 ))}
             </TableBody>
-        </StyledTable>
+        </Table>
     );
 };
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Typography } from '@mui/material';
+import { SxProps, Typography } from '@mui/material';
 import { memo } from 'react';
 
 import { FieldProps, useRecordContext } from 'react-admin';
@@ -8,6 +8,7 @@ import { Customer } from '../types';
 
 interface Props extends FieldProps<Customer> {
     size?: string;
+    sx?: SxProps;
 }
 
 const FullNameField = (props: Props) => {
@@ -20,6 +21,7 @@ const FullNameField = (props: Props) => {
             flexWrap="nowrap"
             alignItems="center"
             component="div"
+            sx={props.sx}
         >
             <AvatarField
                 record={record}

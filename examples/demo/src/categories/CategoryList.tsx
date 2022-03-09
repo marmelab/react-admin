@@ -13,6 +13,18 @@ import {
 import LinkToRelatedProducts from './LinkToRelatedProducts';
 import { Category } from '../types';
 
+const CategoryList = () => (
+    <List
+        sort={{ field: 'name', order: 'ASC' }}
+        perPage={20}
+        pagination={false}
+        component="div"
+        actions={false}
+    >
+        <CategoryGrid />
+    </List>
+);
+
 const CategoryGrid = () => {
     const { data, isLoading } = useListContext<Category>();
     if (isLoading) {
@@ -53,17 +65,5 @@ const CategoryGrid = () => {
         </Grid>
     );
 };
-
-const CategoryList = () => (
-    <List
-        sort={{ field: 'name', order: 'ASC' }}
-        perPage={20}
-        pagination={false}
-        component="div"
-        actions={false}
-    >
-        <CategoryGrid />
-    </List>
-);
 
 export default CategoryList;

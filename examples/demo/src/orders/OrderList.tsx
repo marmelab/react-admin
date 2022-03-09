@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import {
     AutocompleteInput,
     BooleanField,
     Datagrid,
-    DatagridProps,
     DateField,
     DateInput,
     RaRecord,
@@ -29,15 +27,16 @@ import AddressField from '../visitors/AddressField';
 import MobileGrid from './MobileGrid';
 import { Customer } from '../types';
 
-const PREFIX = 'OrderList';
-
-const classes = {
-    total: `${PREFIX}-total`,
-};
-
-const StyledDatagrid = styled(Datagrid)({
-    [`& .${classes.total}`]: { fontWeight: 'bold' },
-});
+const OrderList = () => (
+    <List
+        filterDefaultValues={{ status: 'ordered' }}
+        sort={{ field: 'date', order: 'DESC' }}
+        perPage={25}
+        filters={orderFilters}
+    >
+        <TabbedDatagrid />
+    </List>
+);
 
 const orderFilters = [
     <SearchInput source="q" alwaysOn />,
@@ -61,8 +60,6 @@ const tabs = [
     { id: 'delivered', name: 'delivered' },
     { id: 'cancelled', name: 'cancelled' },
 ];
-
-interface TabbedDatagridProps extends DatagridProps {}
 
 const useGetTotals = (filterValues: any) => {
     const { total: totalOrdered } = useGetList('commands', {
@@ -88,14 +85,14 @@ const useGetTotals = (filterValues: any) => {
     };
 };
 
-const TabbedDatagrid = (props: TabbedDatagridProps) => {
+const TabbedDatagrid = () => {
     const listContext = useListContext();
     const {
         data,
         filterValues,
         setFilters,
         displayedFilters,
-        isFetching,
+        isLoading,
     } = listContext;
     const isXSmall = useMediaQuery<Theme>(theme =>
         theme.breakpoints.down('sm')
@@ -106,7 +103,7 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
     const totals = useGetTotals(filterValues) as any;
 
     useEffect(() => {
-        if (isFetching) {
+        if (isLoading) {
             return;
         }
         switch (filterValues.status) {
@@ -120,14 +117,15 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                 setCancelled(data);
                 break;
         }
-    }, [data, isFetching, filterValues.status]);
+    }, [data, isLoading, filterValues.status]);
 
     const handleChange = useCallback(
         (event: React.ChangeEvent<{}>, value: any) => {
             setFilters &&
                 setFilters(
                     { ...filterValues, status: value },
-                    displayedFilters
+                    displayedFilters,
+                    false // no debounce, we want the filter to fire immediately
                 );
         },
         [displayedFilters, filterValues, setFilters]
@@ -166,19 +164,15 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                 <ListContextProvider
                     value={{ ...listContext, data: selectedData }}
                 >
-                    <MobileGrid {...props} data={selectedData} />
+                    <MobileGrid data={selectedData} />
                 </ListContextProvider>
             ) : (
-                <div>
+                <>
                     {filterValues.status === 'ordered' && (
                         <ListContextProvider
                             value={{ ...listContext, ids: ordered }}
                         >
-                            <StyledDatagrid
-                                {...props}
-                                optimized
-                                rowClick="edit"
-                            >
+                            <Datagrid optimized rowClick="edit">
                                 <DateField source="date" showTime />
                                 <TextField source="reference" />
                                 <CustomerReferenceField />
@@ -197,16 +191,16 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                                         style: 'currency',
                                         currency: 'USD',
                                     }}
-                                    className={classes.total}
+                                    sx={{ fontWeight: 'bold' }}
                                 />
-                            </StyledDatagrid>
+                            </Datagrid>
                         </ListContextProvider>
                     )}
                     {filterValues.status === 'delivered' && (
                         <ListContextProvider
                             value={{ ...listContext, ids: delivered }}
                         >
-                            <StyledDatagrid {...props} rowClick="edit">
+                            <Datagrid rowClick="edit">
                                 <DateField source="date" showTime />
                                 <TextField source="reference" />
                                 <CustomerReferenceField />
@@ -225,17 +219,20 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                                         style: 'currency',
                                         currency: 'USD',
                                     }}
-                                    className={classes.total}
+                                    sx={{ fontWeight: 'bold' }}
                                 />
-                                <BooleanField source="returned" />
-                            </StyledDatagrid>
+                                <BooleanField
+                                    source="returned"
+                                    sx={{ mt: -0.5, mb: -0.5 }}
+                                />
+                            </Datagrid>
                         </ListContextProvider>
                     )}
                     {filterValues.status === 'cancelled' && (
                         <ListContextProvider
                             value={{ ...listContext, ids: cancelled }}
                         >
-                            <StyledDatagrid {...props} rowClick="edit">
+                            <Datagrid rowClick="edit">
                                 <DateField source="date" showTime />
                                 <TextField source="reference" />
                                 <CustomerReferenceField />
@@ -254,27 +251,19 @@ const TabbedDatagrid = (props: TabbedDatagridProps) => {
                                         style: 'currency',
                                         currency: 'USD',
                                     }}
-                                    className={classes.total}
+                                    sx={{ fontWeight: 'bold' }}
                                 />
-                                <BooleanField source="returned" />
-                            </StyledDatagrid>
+                                <BooleanField
+                                    source="returned"
+                                    sx={{ mt: -0.5, mb: -0.5 }}
+                                />
+                            </Datagrid>
                         </ListContextProvider>
                     )}
-                </div>
+                </>
             )}
         </Fragment>
     );
 };
-
-const OrderList = () => (
-    <List
-        filterDefaultValues={{ status: 'ordered' }}
-        sort={{ field: 'date', order: 'DESC' }}
-        perPage={25}
-        filters={orderFilters}
-    >
-        <TabbedDatagrid />
-    </List>
-);
 
 export default OrderList;

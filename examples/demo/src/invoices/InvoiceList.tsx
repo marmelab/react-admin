@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import {
     List,
     Datagrid,
@@ -14,21 +13,6 @@ import FullNameField from '../visitors/FullNameField';
 import AddressField from '../visitors/AddressField';
 import InvoiceShow from './InvoiceShow';
 
-const PREFIX = 'InvoiceList';
-
-const classes = {
-    hiddenOnSmallScreens: `${PREFIX}-hiddenOnSmallScreens`,
-};
-
-const StyledList = styled(List)(({ theme }) => ({
-    [`& .${classes.hiddenOnSmallScreens}`]: {
-        display: 'table-cell',
-        [theme.breakpoints.down('lg')]: {
-            display: 'none',
-        },
-    },
-}));
-
 const listFilters = [
     <DateInput source="date_gte" alwaysOn />,
     <DateInput source="date_lte" alwaysOn />,
@@ -36,12 +20,29 @@ const listFilters = [
 
 const InvoiceList = () => {
     return (
-        <StyledList
+        <List
             filters={listFilters}
             perPage={25}
             sort={{ field: 'date', order: 'desc' }}
         >
-            <Datagrid rowClick="expand" expand={<InvoiceShow />}>
+            <Datagrid
+                rowClick="expand"
+                expand={<InvoiceShow />}
+                sx={{
+                    '& .column-customer_id': {
+                        display: { xs: 'none', md: 'table-cell' },
+                    },
+                    '& .column-total_ex_taxes': {
+                        display: { xs: 'none', md: 'table-cell' },
+                    },
+                    '& .column-delivery_fees': {
+                        display: { xs: 'none', md: 'table-cell' },
+                    },
+                    '& .column-taxes': {
+                        display: { xs: 'none', md: 'table-cell' },
+                    },
+                }}
+            >
                 <TextField source="id" />
                 <DateField source="date" />
                 <ReferenceField source="customer_id" reference="customers">
@@ -52,8 +53,6 @@ const InvoiceList = () => {
                     reference="customers"
                     link={false}
                     label="resources.invoices.fields.address"
-                    cellClassName={classes.hiddenOnSmallScreens}
-                    headerClassName={classes.hiddenOnSmallScreens}
                 >
                     <AddressField />
                 </ReferenceField>
@@ -65,7 +64,7 @@ const InvoiceList = () => {
                 <NumberField source="taxes" />
                 <NumberField source="total" />
             </Datagrid>
-        </StyledList>
+        </List>
     );
 };
 

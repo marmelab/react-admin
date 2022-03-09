@@ -1,7 +1,6 @@
 // in src/comments.js
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import { Card, CardHeader, CardContent } from '@mui/material';
+import { Box, Card, CardHeader, CardContent, Typography } from '@mui/material';
 import {
     DateField,
     EditButton,
@@ -9,113 +8,81 @@ import {
     TextField,
     BooleanField,
     useTranslate,
+    useListContext,
     RaRecord,
+    RecordContextProvider,
 } from 'react-admin';
 
 import CustomerReferenceField from '../visitors/CustomerReferenceField';
-
-const PREFIX = 'MobileGrid';
-
-const classes = {
-    card: `${PREFIX}-card`,
-    cardTitleContent: `${PREFIX}-cardTitleContent`,
-    cardContent: `${PREFIX}-cardContent`,
-    cardContentRow: `${PREFIX}-cardContentRow`,
-};
-
-const Root = styled('div')(({ theme }) => ({
-    [`& .${classes.card}`]: {
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        margin: '0.5rem 0',
-    },
-
-    [`& .${classes.cardTitleContent}`]: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-    },
-
-    [`& .${classes.cardContent}`]: theme.typography.body1,
-
-    [`& .${classes.cardContentRow}`]: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        margin: '0.5rem 0',
-    },
-}));
+import { Order } from '../types';
 
 interface MobileGridProps {
     data?: RaRecord[];
 }
 
 const MobileGrid = (props: MobileGridProps) => {
-    const { data } = props;
+    const { data, isLoading } = useListContext<Order>();
     const translate = useTranslate();
-
-    if (!data) {
+    if (isLoading || data.length === 0) {
         return null;
     }
-
     return (
-        <Root style={{ margin: '1em' }}>
+        <Box margin="0.5em">
             {data.map(record => (
-                <Card key={record.id} className={classes.card}>
-                    <CardHeader
-                        title={
-                            <div className={classes.cardTitleContent}>
-                                <span>
-                                    {translate('resources.commands.name', 1)}
-                                    :&nbsp;
+                <RecordContextProvider key={record.id} value={record}>
+                    <Card sx={{ margin: '0.5rem 0' }}>
+                        <CardHeader
+                            title={
+                                <>
+                                    {translate('resources.commands.name', 1)} #
                                     <TextField
-                                        record={record}
                                         source="reference"
+                                        variant="body1"
                                     />
-                                </span>
-                                <EditButton
-                                    resource="commands"
-                                    record={record}
-                                />
-                            </div>
-                        }
-                    />
-                    <CardContent className={classes.cardContent}>
-                        <span className={classes.cardContentRow}>
-                            {translate('resources.customers.name', 1)}:&nbsp;
-                            <CustomerReferenceField record={record} />
-                        </span>
-                        <span className={classes.cardContentRow}>
-                            {translate('resources.reviews.fields.date')}:&nbsp;
-                            <DateField record={record} source="date" showTime />
-                        </span>
-                        <span className={classes.cardContentRow}>
-                            {translate(
-                                'resources.commands.fields.basket.total'
-                            )}
-                            :&nbsp;
-                            <NumberField
-                                record={record}
-                                source="total"
-                                options={{ style: 'currency', currency: 'USD' }}
+                                </>
+                            }
+                            titleTypographyProps={{ variant: 'body1' }}
+                            action={<EditButton />}
+                        />
+                        <CardContent sx={{ pt: 0 }}>
+                            <CustomerReferenceField
+                                sx={{ display: 'block', mb: 1 }}
                             />
-                        </span>
-                        <span className={classes.cardContentRow}>
-                            {translate('resources.commands.fields.status')}
-                            :&nbsp;
-                            <TextField source="status" record={record} />
-                        </span>
-                        <span className={classes.cardContentRow}>
-                            {translate('resources.commands.fields.returned')}
-                            :&nbsp;
-                            <BooleanField record={record} source="returned" />
-                        </span>
-                    </CardContent>
-                </Card>
+                            <Typography variant="body2" gutterBottom>
+                                {translate('resources.reviews.fields.date')}
+                                :&nbsp;
+                                <DateField source="date" showTime />
+                            </Typography>
+                            <Typography variant="body2" gutterBottom>
+                                {translate(
+                                    'resources.commands.fields.basket.total'
+                                )}
+                                :&nbsp;
+                                <NumberField
+                                    source="total"
+                                    options={{
+                                        style: 'currency',
+                                        currency: 'USD',
+                                    }}
+                                />
+                            </Typography>
+                            <Typography variant="body2" gutterBottom>
+                                {translate('resources.commands.fields.status')}
+                                :&nbsp;
+                                <TextField source="status" />
+                            </Typography>
+                            <Typography variant="body2">
+                                {translate(
+                                    'resources.commands.fields.returned'
+                                )}
+                                :&nbsp;
+                                <BooleanField source="returned" />
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                </RecordContextProvider>
             ))}
-        </Root>
+        </Box>
     );
 };
 
