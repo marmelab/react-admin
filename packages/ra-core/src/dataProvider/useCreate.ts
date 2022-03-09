@@ -92,17 +92,23 @@ export const useCreate = <RecordType extends RaRecord = any>(
                 })
                 .then(({ data }) => data),
         {
+            ...options,
             onSuccess: (
                 data: RecordType,
-                variables: Partial<UseCreateMutateParams<RecordType>> = {}
+                variables: Partial<UseCreateMutateParams<RecordType>> = {},
+                context: unknown
             ) => {
                 const { resource: callTimeResource = resource } = variables;
                 queryClient.setQueryData(
                     [callTimeResource, 'getOne', { id: String(data.id) }],
                     data
                 );
+
+                if (options.onSuccess) {
+                    options.onSuccess(data, variables, context);
+                }
+                // call-time success callback is executed by react-query
             },
-            ...options,
         }
     );
 
@@ -159,7 +165,7 @@ export type UseCreateResult<
             Partial<UseCreateMutateParams<RecordType>>,
             unknown
         > & { returnPromise?: TReturnPromise }
-    ) => TReturnPromise extends true ? Promise<RecordType> : void,
+    ) => Promise<TReturnPromise extends true ? RecordType : void>,
     UseMutationResult<
         RecordType,
         unknown,
