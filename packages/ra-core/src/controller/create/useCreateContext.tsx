@@ -22,9 +22,7 @@ import { CreateControllerResult } from './useCreateController';
  * @see useCreateController for how it is filled
  *
  */
-export const useCreateContext = <
-    RecordType extends Omit<RaRecord, 'id'> = Omit<RaRecord, 'id'>
->(
+export const useCreateContext = <RecordType extends RaRecord = RaRecord>(
     props?: Partial<CreateControllerResult<RecordType>>
 ): Partial<CreateControllerResult<RecordType>> => {
     const context = useContext<CreateControllerResult<RecordType>>(
