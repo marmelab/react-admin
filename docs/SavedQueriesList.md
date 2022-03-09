@@ -7,7 +7,7 @@ title: "The SavedQueriesList Component"
 
 ![Filter Sidebar With SavedQueriesList](./img/SavedQueriesList.gif)
 
-`<SavedQueriesList>` is a complement to `<FilterList>` sections for the filter sidebar
+`<SavedQueriesList>` renders a list of filters saved by the end user (and kept in [the Store](./Store.md)). It is a complement to `<FilterList>` sections for the filter sidebar
 
 ## Usage
 
