@@ -18,12 +18,9 @@ type ExtractArray<T> = T extends Array<infer U> ? U : never;
 type FakeData<T = { [k: string]: RaRecord[] }> = {
     [P in keyof T & string]: RaRecord[];
 };
-type ExtractDataProviderDefinition<
-    T extends {
-        // Don't use Record, it pushes the Literals to the end
-        [P in keyof T & string]: RaRecord[];
-    }
-> = {};
+type ExtractDataProviderDefinition<T extends FakeData<T>> = {
+    [P in keyof T]: ExtractArray<T[P]>;
+};
 
 /**
  * Respond to react-admin data queries using a local JavaScript object
@@ -46,9 +43,7 @@ type ExtractDataProviderDefinition<
  */
 export default <
     T extends FakeData<T>,
-    ResourceDefintion extends DataProviderDefinition = {
-        [P in keyof T]: ExtractArray<T[P]>;
-    }
+    ResourceDefintion extends DataProviderDefinition = ExtractDataProviderDefinition<T>
 >(
     data: T,
     loggingEnabled = false
