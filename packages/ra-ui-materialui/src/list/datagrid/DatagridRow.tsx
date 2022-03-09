@@ -21,6 +21,7 @@ import {
     useResourceContext,
     useTranslate,
     useCreatePath,
+    useRecordContext,
 } from 'ra-core';
 import { useNavigate } from 'react-router-dom';
 
@@ -45,7 +46,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
         hover,
         id,
         onToggleItem,
-        record,
+        record: recordOverride,
         rowClick,
         selected,
         style,
@@ -55,6 +56,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
 
     const context = useDatagridContext();
     const translate = useTranslate();
+    const record = useRecordContext(props);
     const expandable =
         (!context ||
             !context.isRowExpandable ||
