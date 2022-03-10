@@ -34,8 +34,8 @@
         "@mui/material": "^5.0.2",
         "ra-core": "^4.0.0-beta.1.0",
         "ra-ui-materialui": "^4.0.0-beta.1.0",
-        "react": "^16.9.0 || ^17.0.0",
-        "react-dom": "^16.9.0 || ^17.0.0"
+        "react": "*",
+        "react-dom": "*"
     },
     "devDependencies": {
         "@mui/icons-material": "^5.0.1",

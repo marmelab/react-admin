@@ -24965,8 +24965,8 @@ __metadata:
     typescript: ^4.4.0
   peerDependencies:
     history: ^5.1.0
-    react: ^16.9.0 || ^17.0.0
-    react-dom: ^16.9.0 || ^17.0.0
+    react: "*"
+    react-dom: "*"
     react-hook-form: ^7.27.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
@@ -25109,8 +25109,8 @@ __metadata:
     "@mui/material": ^5.0.2
     ra-core: ^4.0.0-beta.1.0
     ra-ui-materialui: ^4.0.0-beta.1.0
-    react: ^16.9.0 || ^17.0.0
-    react-dom: ^16.9.0 || ^17.0.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -25161,8 +25161,8 @@ __metadata:
     rimraf: ^2.6.3
     tsup: ^5.11.11
   peerDependencies:
-    react: ^16.9.0 || ^17.0.0
-    react-dom: ^16.9.0 || ^17.0.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -25206,8 +25206,8 @@ __metadata:
     "@mui/icons-material": ^5.0.1
     "@mui/material": ^5.0.2
     ra-core: ^4.0.0-beta.1.0
-    react: ^16.9.0 || ^17.0.0
-    react-dom: ^16.9.0 || ^17.0.0
+    react: "*"
+    react-dom: "*"
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
   languageName: unknown
@@ -25413,8 +25413,8 @@ __metadata:
     rimraf: ^2.6.3
     tsup: ^5.11.11
   peerDependencies:
-    react: ^16.9.0 || ^17.0.0
-    react-dom: ^16.9.0 || ^17.0.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
