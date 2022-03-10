@@ -2962,19 +2962,20 @@ You can use the `<Datagrid>` component with [custom queries](./Actions.md#useque
 {% raw %}
 ```jsx
 import keyBy from 'lodash/keyBy';
-import { Fragment } from 'react';
+import { useState } from 'react';
 import {
     useQuery,
     Datagrid,
     TextField,
     Pagination,
     Loading,
+    ListContextProvider,
 } from 'react-admin';
 
 const CustomList = () => {
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(25);
-    const [sort, setSort] = useState({ field: 'id', order: 'ASC' })
+    const [sort, setSort] = useState({ field: 'id', order: 'ASC' });
     const { data, total, loading, error } = useQuery({
         type: 'getList',
         resource: 'posts',
@@ -2982,34 +2983,38 @@ const CustomList = () => {
             pagination: { page, perPage },
             sort,
             filter: {},
-        }
+        },
     });
 
     if (loading) {
-        return <Loading />
+        return <Loading />;
     }
     if (error) {
-        return <p>ERROR: {error}</p>
+        return <p>ERROR: {error}</p>;
     }
     return (
-        <Fragment>
-            <Datagrid 
-                data={keyBy(data, 'id')}
-                ids={data.map(({ id }) => id)}
-                currentSort={sort}
-                setSort={(field, order) => setSort({ field, order })}
-            >
+        <ListContextProvider
+            value={{
+                data: keyBy(data, 'id'),
+                ids: data.map(({ id }) => id),
+                total,
+                page,
+                perPage,
+                setPage,
+                setPerPage,
+                currentSort: sort,
+                setSort: (field, order) => setSort({ field, order }),
+                basePath: '/posts',
+                resource: 'posts',
+                selectedIds: [],
+            }}
+        >
+            <Datagrid>
                 <TextField source="id" />
                 <TextField source="title" />
             </Datagrid>
-            <Pagination
-                page={page}
-                setPage={setPage}
-                perPage={perPage}
-                setPerPage={setPerPage}
-                total={total}
-            />
-        </Fragment>
+            <Pagination />
+        </ListContextProvider>
     );
 }
 ```
