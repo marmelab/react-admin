@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { Typography, List, Stack, styled, Tooltip } from '@mui/material';
+import { styled, Tooltip } from '@mui/material';
 import BookmarkIcon from '@mui/icons-material/BookmarkBorder';
 import HelpIcon from '@mui/icons-material/HelpOutline';
 import { useListContext, useTranslate } from 'ra-core';
@@ -9,7 +9,8 @@ import isEqual from 'lodash/isEqual';
 import { useSavedQueries } from './useSavedQueries';
 import { RemoveSavedQueryIconButton } from './RemoveSavedQueryIconButton';
 import { AddSavedQueryIconButton } from './AddSavedQueryIconButton';
-import SavedQueryFilterListItem from './SavedQueryFilterListItem';
+import { SavedQueryFilterListItem } from './SavedQueryFilterListItem';
+import { FilterList } from './FilterList';
 
 /**
  * FilterList-like component allowing to save and restore a query (filters, sort, perPage).
@@ -78,38 +79,30 @@ export const SavedQueriesList = ({
 
     // note: we don't use react-admin's FilterList because it doesn't accept a default translation
     return (
-        <Root>
-            <div className={SavedQueriesListClasses.titleContainer}>
-                <div className={SavedQueriesListClasses.titleIcon}>{icon}</div>
-                <Typography variant="overline">
-                    {translate('ra.saved_queries.label')}
-                </Typography>
-            </div>
-            <List dense disablePadding>
-                {hasSavedCurrentFilterValue ? (
-                    <RemoveSavedQueryIconButton
-                        className={SavedQueriesListClasses.floatingIcon}
-                    />
-                ) : hasFilterValues ? (
-                    <AddSavedQueryIconButton
-                        className={SavedQueriesListClasses.floatingIcon}
-                    />
-                ) : (
-                    <Tooltip
-                        title={translate('ra.saved_queries.help')}
-                        className={SavedQueriesListClasses.floatingTooltip}
-                    >
-                        <HelpIcon />
-                    </Tooltip>
-                )}
-                {savedQueries.map((savedQuery, index) => (
-                    <SavedQueryFilterListItem
-                        label={savedQuery.label}
-                        value={savedQuery.value}
-                        key={index}
-                    />
-                ))}
-            </List>
+        <Root label="ra.saved_queries.label" icon={icon}>
+            {hasSavedCurrentFilterValue ? (
+                <RemoveSavedQueryIconButton
+                    className={SavedQueriesListClasses.floatingIcon}
+                />
+            ) : hasFilterValues ? (
+                <AddSavedQueryIconButton
+                    className={SavedQueriesListClasses.floatingIcon}
+                />
+            ) : (
+                <Tooltip
+                    title={translate('ra.saved_queries.help')}
+                    className={SavedQueriesListClasses.floatingTooltip}
+                >
+                    <HelpIcon />
+                </Tooltip>
+            )}
+            {savedQueries.map((savedQuery, index) => (
+                <SavedQueryFilterListItem
+                    label={savedQuery.label}
+                    value={savedQuery.value}
+                    key={index}
+                />
+            ))}
         </Root>
     );
 };
@@ -123,8 +116,9 @@ export const SavedQueriesListClasses = {
     titleIcon: `${PREFIX}-titleIcon`,
 };
 
-const Root = styled(Stack, {
+const Root = styled(FilterList, {
     name: PREFIX,
+    overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     [`& .${SavedQueriesListClasses.floatingIcon}`]: {
         position: 'absolute',
@@ -136,14 +130,6 @@ const Root = styled(Stack, {
         top: '-1.2em',
         right: 3,
         color: theme.palette.action.disabled,
-    },
-    [`& .${SavedQueriesListClasses.titleContainer}`]: {
-        alignItems: 'center',
-        display: 'flex',
-        marginTop: theme.spacing(2),
-    },
-    [`& .${SavedQueriesListClasses.titleIcon}`]: {
-        marginRight: theme.spacing(1),
     },
 }));
 

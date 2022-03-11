@@ -11,4 +11,5 @@ export * from './AddSavedQueryIconButton';
 export * from './RemoveSavedQueryDialog';
 export * from './RemoveSavedQueryIconButton';
 export * from './SavedQueriesList';
+export * from './SavedQueryFilterListItem';
 export * from './useSavedQueries';
