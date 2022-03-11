@@ -1,46 +1,15 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+import { Box, Card, CardContent, Grid, Typography } from '@mui/material';
 import { ReferenceField, TextField, useRecordContext } from 'react-admin';
 
 import Basket from '../orders/Basket';
 import { Customer, Invoice } from '../types';
 
-const PREFIX = 'InvoiceShow';
-
-const classes = {
-    root: `${PREFIX}-root`,
-    spacer: `${PREFIX}-spacer`,
-    invoices: `${PREFIX}-invoices`,
-};
-
-const StyledCard = styled(Card)({
-    [`&.${classes.root}`]: { width: 600, margin: 'auto' },
-    [`& .${classes.spacer}`]: { height: 20 },
-    [`& .${classes.invoices}`]: { margin: '10px 0' },
-});
-
-const CustomerField = () => {
-    const record = useRecordContext<Customer>();
-    return record ? (
-        <Typography>
-            {record.first_name} {record.last_name}
-            <br />
-            {record.address}
-            <br />
-            {record.city}, {record.zipcode}
-        </Typography>
-    ) : null;
-};
 const InvoiceShow = () => {
     const record = useRecordContext<Invoice>();
-
     if (!record) return null;
     return (
-        <StyledCard className={classes.root}>
+        <Card sx={{ width: 600, margin: 'auto' }}>
             <CardContent>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
@@ -57,17 +26,15 @@ const InvoiceShow = () => {
                 <Grid container spacing={2}>
                     <Grid item xs={12} container alignContent="flex-end">
                         <ReferenceField
-                            resource="invoices"
                             reference="customers"
                             source="customer_id"
-                            record={record}
                             link={false}
                         >
                             <CustomerField />
                         </ReferenceField>
                     </Grid>
                 </Grid>
-                <div className={classes.spacer}>&nbsp;</div>
+                <Box height={20}>&nbsp;</Box>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <Typography variant="h6" gutterBottom align="center">
@@ -83,10 +50,8 @@ const InvoiceShow = () => {
                             Order
                         </Typography>
                         <ReferenceField
-                            resource="invoices"
                             reference="commands"
                             source="command_id"
-                            record={record}
                             link={false}
                         >
                             <TextField
@@ -98,20 +63,31 @@ const InvoiceShow = () => {
                         </ReferenceField>
                     </Grid>
                 </Grid>
-                <div className={classes.invoices}>
+                <Box margin="10px 0">
                     <ReferenceField
-                        resource="invoices"
                         reference="commands"
                         source="command_id"
-                        record={record}
                         link={false}
                     >
                         <Basket />
                     </ReferenceField>
-                </div>
+                </Box>
             </CardContent>
-        </StyledCard>
+        </Card>
     );
+};
+
+const CustomerField = () => {
+    const record = useRecordContext<Customer>();
+    return record ? (
+        <Typography>
+            {record.first_name} {record.last_name}
+            <br />
+            {record.address}
+            <br />
+            {record.city}, {record.zipcode}
+        </Typography>
+    ) : null;
 };
 
 export default InvoiceShow;

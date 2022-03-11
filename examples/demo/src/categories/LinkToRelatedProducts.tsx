@@ -10,12 +10,11 @@ import { Category } from '../types';
 const LinkToRelatedProducts = () => {
     const record = useRecordContext<Category>();
     const translate = useTranslate();
-
-    return record ? (
+    if (!record) return null;
+    return (
         <Button
             size="small"
             color="primary"
-            // @ts-ignore
             component={Link}
             to={{
                 pathname: '/products',
@@ -28,7 +27,7 @@ const LinkToRelatedProducts = () => {
             <products.icon sx={{ paddingRight: '0.5em' }} />
             {translate('resources.categories.fields.products')}
         </Button>
-    ) : null;
+    );
 };
 
 export default LinkToRelatedProducts;

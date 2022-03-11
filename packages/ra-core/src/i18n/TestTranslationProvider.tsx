@@ -11,10 +11,14 @@ export const TestTranslationProvider = ({
     <I18nContextProvider
         value={{
             translate: messages
-                ? (key: string, options?: any) =>
-                      lodashGet(messages, key)
-                          ? lodashGet(messages, key)
-                          : options._
+                ? (key: string, options?: any) => {
+                      const message = lodashGet(messages, key);
+                      return message
+                          ? typeof message === 'function'
+                              ? message(options)
+                              : message
+                          : options._;
+                  }
                 : translate,
             changeLocale: () => Promise.resolve(),
             getLocale: () => 'en',

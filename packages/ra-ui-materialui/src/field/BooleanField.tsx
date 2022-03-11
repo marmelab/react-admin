@@ -46,16 +46,9 @@ export const BooleanField: FunctionComponent<BooleanFieldProps> = memo(
                 >
                     <Tooltip title={translate(ariaLabel, { _: ariaLabel })}>
                         {isTruthyValue ? (
-                            <span>
-                                <TrueIcon data-testid="true" fontSize="small" />
-                            </span>
+                            <TrueIcon data-testid="true" fontSize="small" />
                         ) : (
-                            <span>
-                                <FalseIcon
-                                    data-testid="false"
-                                    fontSize="small"
-                                />
-                            </span>
+                            <FalseIcon data-testid="false" fontSize="small" />
                         )}
                     </Tooltip>
                 </StyledTypography>
@@ -105,5 +98,7 @@ const StyledTypography = styled(Typography, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })({
-    display: 'flex',
+    display: 'inline-flex',
+    verticalAlign: 'middle',
+    lineHeight: 0,
 });

@@ -35,8 +35,6 @@ const NewCustomers = () => {
         pagination: { page: 1, perPage: 100 },
     });
 
-    if (isLoading) return null;
-
     const nb = visitors ? visitors.reduce((nb: number) => ++nb, 0) : 0;
     return (
         <CardWithIcon
@@ -45,7 +43,7 @@ const NewCustomers = () => {
             title={translate('pos.dashboard.new_customers')}
             subtitle={nb}
         >
-            <List>
+            <List sx={{ display: isLoading ? 'none' : 'block' }}>
                 {visitors
                     ? visitors.map((record: Customer) => (
                           <ListItem

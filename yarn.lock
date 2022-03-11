@@ -24952,23 +24952,21 @@ __metadata:
     npm-dts: ^1.3.10
     prop-types: ^15.6.1
     query-string: ^7.1.1
-    ra-i18n-polyglot: ^4.0.0-beta.2
     react: ^17.0.0
     react-dom: ^17.0.0
-    react-hook-form: ^7.25.0
+    react-hook-form: ^7.27.0
     react-is: ^17.0.2
     react-query: ^3.32.1
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
     react-test-renderer: ^16.9.0 || ^17.0.0
-    reselect: ~3.0.0
     tsup: ^5.11.11
     typescript: ^4.4.0
   peerDependencies:
     history: ^5.1.0
-    react: ^16.9.0 || ^17.0.0
-    react-dom: ^16.9.0 || ^17.0.0
-    react-hook-form: ^7.25.0
+    react: "*"
+    react-dom: "*"
+    react-hook-form: ^7.27.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
   languageName: unknown
@@ -25103,15 +25101,15 @@ __metadata:
     ra-ui-materialui: ^4.0.0-beta.2
     react: ^17.0.0
     react-dom: ^17.0.0
-    react-hook-form: ^7.25.0
+    react-hook-form: ^7.27.0
     tsup: ^5.11.11
   peerDependencies:
     "@mui/icons-material": ^5.0.1
     "@mui/material": ^5.0.2
     ra-core: ^4.0.0-beta.1.0
     ra-ui-materialui: ^4.0.0-beta.1.0
-    react: ^16.9.0 || ^17.0.0
-    react-dom: ^16.9.0 || ^17.0.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -25162,8 +25160,8 @@ __metadata:
     rimraf: ^2.6.3
     tsup: ^5.11.11
   peerDependencies:
-    react: ^16.9.0 || ^17.0.0
-    react-dom: ^16.9.0 || ^17.0.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -25195,7 +25193,7 @@ __metadata:
     react-dom: ^17.0.0
     react-dropzone: ^12.0.4
     react-error-boundary: ^3.1.4
-    react-hook-form: ^7.25.0
+    react-hook-form: ^7.27.0
     react-query: ^3.32.1
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
@@ -25207,8 +25205,8 @@ __metadata:
     "@mui/icons-material": ^5.0.1
     "@mui/material": ^5.0.2
     ra-core: ^4.0.0-beta.1.0
-    react: ^16.9.0 || ^17.0.0
-    react-dom: ^16.9.0 || ^17.0.0
+    react: "*"
+    react-dom: "*"
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
   languageName: unknown
@@ -25408,14 +25406,14 @@ __metadata:
     ra-i18n-polyglot: ^4.0.0-beta.2
     ra-language-english: ^4.0.0-beta.2
     ra-ui-materialui: ^4.0.0-beta.2
-    react-hook-form: ^7.25.0
+    react-hook-form: ^7.27.0
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
     rimraf: ^2.6.3
     tsup: ^5.11.11
   peerDependencies:
-    react: ^16.9.0 || ^17.0.0
-    react-dom: ^16.9.0 || ^17.0.0
+    react: "*"
+    react-dom: "*"
   languageName: unknown
   linkType: soft
 
@@ -25630,12 +25628,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.25.0":
-  version: 7.25.0
-  resolution: "react-hook-form@npm:7.25.0"
+"react-hook-form@npm:^7.27.0":
+  version: 7.27.1
+  resolution: "react-hook-form@npm:7.27.1"
   peerDependencies:
     react: ^16.8.0 || ^17
-  checksum: f24f9cd10c8f9127a21d81ded58e29a9b19815021b8ac41c4b7aa7c5fa88d4844b8fde5857c9a0a5df5a955afc8d8668abe320b8fe54398ae012224c1b7d7a7c
+  checksum: 0a125d61080202acfba3be84dc7156fe79812a2f640658fb96b20b688555abc1d6bd5b5ff64933d3e1050bfe191271654bfcbdc32126c30a702acf003e600b0c
   languageName: node
   linkType: hard
 
@@ -26774,13 +26772,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"reselect@npm:~3.0.0":
-  version: 3.0.1
-  resolution: "reselect@npm:3.0.1"
-  checksum: b4bced93369e33832befc245253e2ce2f64ac007bbdf013a260c7b29e23dff8cf82e0415b0d05b85279bc8fc8af4a5f92bd261d3e0e9cbe4e5c1869f8b0ec5a6
-  languageName: node
-  linkType: hard
-
 "resize-observer-polyfill@npm:^1.5.1":
   version: 1.5.1
   resolution: "resize-observer-polyfill@npm:1.5.1"
@@ -27761,7 +27752,7 @@ __metadata:
     react-admin: ^4.0.0-beta.2
     react-app-polyfill: ^1.0.4
     react-dom: ^17.0.0
-    react-hook-form: ^7.25.0
+    react-hook-form: ^7.27.0
     react-query: ^3.32.1
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
