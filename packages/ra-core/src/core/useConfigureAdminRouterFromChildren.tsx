@@ -13,7 +13,6 @@ import {
     ResourceProps,
 } from '../types';
 import { CustomRoutesProps } from './CustomRoutes';
-import { useRegisterResource } from './useRegisterResource';
 
 /**
  * This hook inspects the CoreAdminRouter children and returns them separated in three groups:
@@ -40,7 +39,6 @@ export const useConfigureAdminRouterFromChildren = (
     const getPermissions = useGetPermissions();
     const doLogout = useLogout();
     const { authenticated } = useAuthState();
-    const registerResource = useRegisterResource();
     // Gather custom routes and resources that were declared as direct children of CoreAdminRouter
     // e.g. Not returned from the child function (if any)
     // We need to know right away wether some resources were declared to correctly
@@ -143,21 +141,6 @@ export const useConfigureAdminRouterFromChildren = (
         setResources,
         setStatus,
     ]);
-
-    // Whenever the resources change, we must ensure they're all registered
-    useEffect(() => {
-        resources.forEach(resource => {
-            registerResource({
-                name: resource.props.name,
-                options: resource.props.options,
-                hasList: !!resource.props.list,
-                hasCreate: !!resource.props.create,
-                hasEdit: !!resource.props.edit,
-                hasShow: !!resource.props.show,
-                icon: resource.props.icon,
-            });
-        });
-    }, [registerResource, resources]);
 
     return {
         customRoutesWithLayout,

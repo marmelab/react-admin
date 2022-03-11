@@ -1,12 +1,34 @@
 import * as React from 'react';
-import { isValidElement } from 'react';
+import { isValidElement, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 import { ResourceProps } from '../types';
 import { ResourceContextProvider } from './ResourceContextProvider';
+import { useRegisterResource } from './useRegisterResource';
 
 export const Resource = (props: ResourceProps) => {
-    const { create: Create, edit: Edit, list: List, name, show: Show } = props;
+    const registerResource = useRegisterResource();
+    const {
+        create: Create,
+        edit: Edit,
+        icon,
+        list: List,
+        name,
+        options,
+        show: Show,
+    } = props;
+
+    useEffect(() => {
+        registerResource({
+            name: name,
+            options: options,
+            hasList: !!List,
+            hasCreate: !!Create,
+            hasEdit: !!Edit,
+            hasShow: !!Show,
+            icon: icon,
+        });
+    }, [registerResource, name, options, List, Create, Edit, Show, icon]);
 
     return (
         <ResourceContextProvider value={name}>
