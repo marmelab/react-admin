@@ -77,7 +77,6 @@ export const SavedQueriesList = ({
     );
     const hasFilterValues = !isEqual(filterValues, {});
 
-    // note: we don't use react-admin's FilterList because it doesn't accept a default translation
     return (
         <Root label="ra.saved_queries.label" icon={icon}>
             {hasSavedCurrentFilterValue ? (
