@@ -2666,15 +2666,19 @@ const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
 };
 ```
 
-Since the `<Toolbar>` component is not cloned anymore by react-admin layouts, properties like `mutationMode` and `submitOnEnter` are not passed down from parent components. So, if you rely on this behaviour, you should create your own custom toolbar instead
+Since the `<Toolbar>` component is not cloned anymore by react-admin layouts, `submitOnEnter` property is not passed down to the `SaveButton` from parent components. So, if you rely on this behaviour, you should pass this prop yourself.
 
 ```diff
-import { Toolbar, SimpleForm, Edit, TextInput } from 'react-admin';
+import { Toolbar, SimpleForm, Edit, TextInput, SaveButton } from 'react-admin';
 
-+const MyToolbar = props => <Toolbar {...props} mutationMode="pessimistic" submitOnEnter={false} />;
++const MyToolbar = props => (
+    <Toolbar {...props}> 
+        <SaveButton submitOnEnter={false} />
+    </Toolbar>
+);
 
-export const PostEdit = (props) => (
-    <Edit {...props} mutationMode="pessimistic">
+export const PostEdit = () => (
+    <Edit>
 -       <SimpleForm>
 +       <SimpleForm toolbar={<MyToolbar/>}>
             <TextInput source="title" />
