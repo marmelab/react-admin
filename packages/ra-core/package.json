@@ -62,7 +62,6 @@
         "prop-types": "^15.6.1",
         "query-string": "^7.1.1",
         "react-is": "^17.0.2",
-        "react-query": "^3.32.1",
-        "reselect": "~3.0.0"
+        "react-query": "^3.32.1"
     }
 }
