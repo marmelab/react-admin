@@ -107,13 +107,13 @@ React-admin produces a user interface that is voluntarily bland by default becau
 
 ![Sort Button](./img/sort-button.gif)
 
-As for the developer experience, react-admin is constantly evolving to find the sweet spot between an intiutive API, power user features, not too much magic, and just enough documentation. The core team are the first testers of react-admin, and pay attention to the productivity, debuggability, discoverability, performance, and robustness of all the hooks and compnents.
+As for the developer experience, react-admin is constantly evolving to find the sweet spot between an intuitive API, power user features, not too much magic, and just enough documentation. The core team are the first testers of react-admin, and pay attention to the productivity, debuggability, discoverability, performance, and robustness of all the hooks and components.
 
 ## Built On The Shoulders Of Giants
 
 Many excellent open-source libraries already address partial requirements of B2B apps: data fetching, forms, UI components, testing, etc.
 
-Rather than reinventing the wheel, react-admin uses the the best tools in each category (in terms of features, developer experience, active maintenance, documentatino, user base), and provides a glue around these libraries.
+Rather than reinventing the wheel, react-admin uses the the best tools in each category (in terms of features, developer experience, active maintenance, documentation, user base), and provides a glue around these libraries.
 
 In react-admin v4, these libraries are called react-query, react-router, react-hook-form, MUI, testing-library, date-fns, and lodash.
 
@@ -172,12 +172,12 @@ const MyRefreshButton = () => {
 
 Before adding a new hook or a new prop to an existing component, we always check if there isn't a simple way to implement the feature in pure React. If it's the case, then we don't add the new prop. We prefer to keep the react-admin API, code, test, and documentation simple. This choice is crucial to keep the the learning curve acceptable, and maintenance burden low.
 
-For instance, the `<SimpleShowLayout>` component displays Field elements in a column. How can you put two fields in a ingle column? We could add a specific syntax allowing to specify the number of elements per column and per line. This would complicate the usage and documentation for simple use cases. Besides, it's doable in pure React, without any change in the react-admin core, e.g. by leveraging MUI's `<Stack>` component:
+For instance, the `<SimpleShowLayout>` component displays Field elements in a column. How can you put two fields in a single column? We could add a specific syntax allowing to specify the number of elements per column and per line. This would complicate the usage and documentation for simple use cases. Besides, it's doable in pure React, without any change in the react-admin core, e.g. by leveraging MUI's `<Stack>` component:
 
 ```jsx
 import * as React from 'react';
 import { Show, SimpleShowLayout, TextField } from 'react-admin';
-import { Stack } from '@mui/core';
+import { Stack } from '@mui/material';
 
 const PostShow = () => (
     <Show>
@@ -192,7 +192,7 @@ const PostShow = () => (
 );
 ```
 
-We consider this snippet simple enough for a React developer, so we decide not to add support for multiple elements per line in the core.
+We consider this snippet simple enough for a React developer, so we decided not to add support for multiple elements per line in the core.
 
 If you don't find a particular feature in the react-admin documentation, it can mean it's doable quickly in pure React.
 
