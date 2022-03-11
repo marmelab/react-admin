@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { Children, isValidElement, ReactElement, ReactNode } from 'react';
+import { Children, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import {
     Toolbar as MuiToolbar,
@@ -14,6 +14,7 @@ import {
     MutationMode,
     SaveContextValue,
     useRecordContext,
+    useSaveContext,
 } from 'ra-core';
 import { useFormState } from 'react-hook-form';
 
@@ -65,12 +66,13 @@ export const Toolbar = <
         children,
         className,
         resource,
-        saving,
-        submitOnEnter = true,
-        mutationMode,
+        saving: saveingProp,
+        submitOnEnter: submitOnEnterProp,
+        mutationMode: mutationModeProp,
         ...rest
     } = props;
     const record = useRecordContext(props);
+    const { saving, mutationMode } = useSaveContext();
     const isXs = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
     const { isValidating } = useFormState();
     // Use form pristine and validating to enable or disable the save button
@@ -94,10 +96,7 @@ export const Toolbar = <
         >
             {Children.count(children) === 0 ? (
                 <div className={ToolbarClasses.defaultToolbar}>
-                    <SaveButton
-                        disabled={disabled}
-                        submitOnEnter={submitOnEnter}
-                    />
+                    <SaveButton disabled={disabled} submitOnEnter={true} />
                     {record && typeof record.id !== 'undefined' && (
                         <DeleteButton
                             // @ts-ignore
@@ -108,28 +107,7 @@ export const Toolbar = <
                     )}
                 </div>
             ) : (
-                Children.map(children, (button: ReactElement) =>
-                    button && isValidElement<any>(button)
-                        ? React.cloneElement(button, {
-                              record: valueOrDefault(
-                                  button.props.record,
-                                  record
-                              ),
-                              resource: valueOrDefault(
-                                  button.props.resource,
-                                  resource
-                              ),
-                              submitOnEnter: valueOrDefault(
-                                  button.props.submitOnEnter,
-                                  submitOnEnter
-                              ),
-                              mutationMode: valueOrDefault(
-                                  button.props.mutationMode,
-                                  mutationMode
-                              ),
-                          })
-                        : null
-                )
+                children
             )}
         </StyledToolbar>
     );

@@ -188,6 +188,7 @@ export const useEditController = <RecordType extends RaRecord = any>(
         error,
         isFetching,
         isLoading,
+        mutationMode,
         record,
         redirect: DefaultRedirect,
         refetch,
@@ -221,6 +222,7 @@ export interface EditControllerResult<RecordType extends RaRecord = any> {
     defaultTitle: string;
     isFetching: boolean;
     isLoading: boolean;
+    mutationMode?: MutationMode;
     save: SaveHandler<RecordType>;
     saving: boolean;
     record?: RecordType;

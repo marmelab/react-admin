@@ -1,9 +1,17 @@
 import { createContext } from 'react';
-import { RaRecord, onError, OnSuccess, TransformData } from '../../types';
+import {
+    RaRecord,
+    onError,
+    OnSuccess,
+    TransformData,
+    MutationMode,
+} from '../../types';
 
 export interface SaveContextValue<RecordType extends RaRecord = any> {
     save?: SaveHandler<RecordType>;
     saving?: boolean;
+    submitOnEnter?: boolean;
+    mutationMode?: MutationMode;
 }
 
 export type SaveHandler<RecordType> = (
