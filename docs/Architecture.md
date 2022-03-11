@@ -113,7 +113,7 @@ As for the developer experience, react-admin is constantly evolving to find the 
 
 Many excellent open-source libraries already address partial requirements of B2B apps: data fetching, forms, UI components, testing, etc.
 
-Rather than reinventing the wheel, react-admin uses the the best tools in each category (in terms of features, developer experience, active maintenance, documentation, user base), and provides a glue around these libraries.
+Rather than reinventing the wheel, react-admin uses the best tools in each category (in terms of features, developer experience, active maintenance, documentation, user base), and provides a glue around these libraries.
 
 In react-admin v4, these libraries are called react-query, react-router, react-hook-form, MUI, testing-library, date-fns, and lodash.
 
@@ -170,7 +170,7 @@ const MyRefreshButton = () => {
 
 ## Minimal API Surface
 
-Before adding a new hook or a new prop to an existing component, we always check if there isn't a simple way to implement the feature in pure React. If it's the case, then we don't add the new prop. We prefer to keep the react-admin API, code, test, and documentation simple. This choice is crucial to keep the the learning curve acceptable, and maintenance burden low.
+Before adding a new hook or a new prop to an existing component, we always check if there isn't a simple way to implement the feature in pure React. If it's the case, then we don't add the new prop. We prefer to keep the react-admin API, code, test, and documentation simple. This choice is crucial to keep the learning curve acceptable, and maintenance burden low.
 
 For instance, the `<SimpleShowLayout>` component displays Field elements in a column. How can you put two fields in a single column? We could add a specific syntax allowing to specify the number of elements per column and per line. This would complicate the usage and documentation for simple use cases. Besides, it's doable in pure React, without any change in the react-admin core, e.g. by leveraging MUI's `<Stack>` component:
 
