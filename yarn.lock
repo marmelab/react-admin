@@ -24960,7 +24960,6 @@ __metadata:
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
     react-test-renderer: ^16.9.0 || ^17.0.0
-    reselect: ~3.0.0
     tsup: ^5.11.11
     typescript: ^4.4.0
   peerDependencies:
@@ -26770,13 +26769,6 @@ __metadata:
   version: 1.0.0
   resolution: "requires-port@npm:1.0.0"
   checksum: b2bfdd09db16c082c4326e573a82c0771daaf7b53b9ce8ad60ea46aa6e30aaf475fe9b164800b89f93b748d2c234d8abff945d2551ba47bf5698e04cd7713267
-  languageName: node
-  linkType: hard
-
-"reselect@npm:~3.0.0":
-  version: 3.0.1
-  resolution: "reselect@npm:3.0.1"
-  checksum: b4bced93369e33832befc245253e2ce2f64ac007bbdf013a260c7b29e23dff8cf82e0415b0d05b85279bc8fc8af4a5f92bd261d3e0e9cbe4e5c1869f8b0ec5a6
   languageName: node
   linkType: hard
 
