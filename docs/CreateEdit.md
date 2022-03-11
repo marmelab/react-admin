@@ -1550,12 +1550,18 @@ export const UserCreate = () => {
 
 ## Submit On Enter
 
-By default, pressing `ENTER` in any of the form fields submits the form - this is the expected behavior in most cases. However, some of your custom input components (e.g. Google Maps widget) may have special handlers for the `ENTER` key. In that case, to disable the automated form submission on enter, set the `submitOnEnter` prop of the form component to `false`:
+By default, pressing `ENTER` in any of the form fields submits the form - this is the expected behavior in most cases. However, some of your custom input components (e.g. Google Maps widget) may have special handlers for the `ENTER` key. In that case, to disable the automated form submission on enter, set the `submitOnEnter` prop of the `SaveButton` component to `false`:
 
 ```jsx
+const MyToolbar = props => (
+    <Toolbar {...props}>
+        <SaveButton submitOnEnter={false} />
+    </Toolbar>
+);
+
 export const PostEdit = () => (
     <Edit>
-        <SimpleForm submitOnEnter={false}>
+        <SimpleForm toolbar={<MyToolbar/>}>
             ...
         </SimpleForm>
     </Edit>
