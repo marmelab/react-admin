@@ -44,7 +44,7 @@ const SongList = props => (
 );
 ```
 
-`<SavedQueriesList>` accept a single props:
+`<SavedQueriesList>` accept a single prop:
 
 * [`icon`](#icon)
 

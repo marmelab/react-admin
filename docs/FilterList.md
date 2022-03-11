@@ -214,30 +214,31 @@ You can place these `<FilterList>` anywhere inside a `<List>`. The most common c
 
 ```jsx
 import * as React from 'react';
-import { Card as MuiCard, CardContent, styled } from '@mui/material';
+import { Box, Card, CardContent, styled } from '@mui/material';
 
 import { LastVisitedFilter, HasOrderedFilter, HasNewsletterFilter, SegmentFilter } from './filters';
 
-const Card = styled(MuiCard)(({ theme }) => ({
-        [theme.breakpoints.up('sm')]: {
+const FilterSidebar = () => (
+    <Box
+        sx={{
+            display: {
+                xs: 'none',
+                sm: 'block'
+            },
             order: -1, // display on the left rather than on the right of the list
             width: '15em',
-            marginRight: '1em',
-        },
-        [theme.breakpoints.down('sm')]: {
-            display: 'none',
-        },
-}));
-
-const FilterSidebar = () => (
-    <Card>
-        <CardContent>
-            <LastVisitedFilter />
-            <HasOrderedFilter />
-            <HasNewsletterFilter />
-            <SegmentFilter />
-        </CardContent>
-    </Card>
+                marginRight: '1em',
+        }}
+    >
+        <Card>
+            <CardContent>
+                <LastVisitedFilter />
+                <HasOrderedFilter />
+                <HasNewsletterFilter />
+                <SegmentFilter />
+            </CardContent>
+        </Card>
+    </Box>
 );
 
 const CustomerList = props => (
