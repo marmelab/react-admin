@@ -66,7 +66,7 @@ export const Toolbar = <
         children,
         className,
         resource,
-        saving: saveingProp,
+        saving: savingProp,
         submitOnEnter: submitOnEnterProp,
         mutationMode: mutationModeProp,
         ...rest
