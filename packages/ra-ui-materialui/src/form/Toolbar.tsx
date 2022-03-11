@@ -72,14 +72,14 @@ export const Toolbar = <
         ...rest
     } = props;
     const record = useRecordContext(props);
-    const { saving, mutationMode } = useSaveContext();
+    const saveContext = useSaveContext();
     const isXs = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
     const { isValidating } = useFormState();
     // Use form pristine and validating to enable or disable the save button
     // if alwaysEnableSaveButton is undefined
     const disabled = !valueOrDefault(
         alwaysEnableSaveButton !== false ? alwaysEnableSaveButton : undefined,
-        !isValidating && !saving
+        !isValidating && !saveContext?.saving
     );
 
     return (
@@ -102,7 +102,7 @@ export const Toolbar = <
                             // @ts-ignore
                             record={record}
                             resource={resource}
-                            mutationMode={mutationMode}
+                            mutationMode={saveContext?.mutationMode}
                         />
                     )}
                 </div>
