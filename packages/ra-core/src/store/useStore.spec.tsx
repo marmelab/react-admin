@@ -2,7 +2,7 @@ import * as React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 
-import { useStore } from './useStore';
+import { useStore, ValidateStoreValue } from './useStore';
 import { StoreContextProvider } from './StoreContextProvider';
 import { memoryStore } from './memoryStore';
 
@@ -12,8 +12,16 @@ describe('useStore', () => {
         expect(result.current[0]).toBeUndefined();
     });
 
-    const StoreReader = ({ name }) => {
-        const [value] = useStore(name);
+    const StoreReader = ({
+        name,
+        defaultValue,
+        validate,
+    }: {
+        name: string;
+        defaultValue?: any;
+        validate?: ValidateStoreValue;
+    }) => {
+        const [value] = useStore(name, defaultValue, validate);
         return <>{value}</>;
     };
 
@@ -109,5 +117,79 @@ describe('useStore', () => {
         });
         expect(innerValue).toBe('hello');
         expect(result.current[0]).toBe('world');
+    });
+
+    it('should reset to the default value when the validate function returns false for the initial store value', () => {
+        jest.spyOn(console, 'warn').mockImplementation(() => {});
+        const validate = jest.fn();
+        render(
+            <StoreContextProvider
+                value={
+                    {
+                        getItem: () => 'hello',
+                        setup: () => {},
+                        teardown: () => {},
+                        subscribe: () => () => {},
+                    } as any
+                }
+            >
+                <StoreReader
+                    name="foo.bar"
+                    defaultValue="world"
+                    validate={validate}
+                />
+            </StoreContextProvider>
+        );
+        screen.getByText('world');
+        expect(validate).toHaveBeenCalledWith('hello');
+    });
+
+    const StoreSetter = ({
+        name,
+        defaultValue,
+        newValue,
+        validate,
+    }: {
+        name: string;
+        defaultValue?: any;
+        newValue?: any;
+        validate?: ValidateStoreValue;
+    }) => {
+        const [value, setValue] = useStore(name, defaultValue, validate);
+
+        React.useEffect(() => {
+            setValue(newValue);
+        });
+        return <>{value}</>;
+    };
+
+    it('should reset to the default value when the validate function returns false when setting the new value', () => {
+        jest.spyOn(console, 'warn').mockImplementation(() => {});
+        const validate = jest.fn();
+        let value = 'world';
+        render(
+            <StoreContextProvider
+                value={
+                    {
+                        getItem: () => value,
+                        setItem: newValue => {
+                            value = newValue;
+                        },
+                        setup: () => {},
+                        teardown: () => {},
+                        subscribe: () => () => {},
+                    } as any
+                }
+            >
+                <StoreSetter
+                    name="foo.bar"
+                    defaultValue="world"
+                    newValue="hello"
+                    validate={validate}
+                />
+            </StoreContextProvider>
+        );
+        screen.getByText('world');
+        expect(validate).toHaveBeenCalledWith('hello');
     });
 });

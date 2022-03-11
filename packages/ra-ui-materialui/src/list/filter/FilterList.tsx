@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { Box, Typography, List, styled, SxProps } from '@mui/material';
+import { Box, BoxProps, List, Typography } from '@mui/material';
 import { useTranslate } from 'ra-core';
 
 /**
@@ -41,10 +41,10 @@ import { useTranslate } from 'ra-core';
  * );
  */
 export const FilterList = (props: FilterListProps) => {
-    const { label, icon, children, className, sx } = props;
+    const { label, icon, children, ...rest } = props;
     const translate = useTranslate();
     return (
-        <Root className={className} sx={sx}>
+        <Box {...rest}>
             <Box mt={2} display="flex" alignItems="center">
                 <Box mr={1}>{icon}</Box>
                 <Typography variant="overline">{translate(label)}</Typography>
@@ -52,19 +52,11 @@ export const FilterList = (props: FilterListProps) => {
             <List dense disablePadding>
                 {children}
             </List>
-        </Root>
+        </Box>
     );
 };
 
-const Root = styled('div', {
-    name: 'RaFilterList',
-    overridesResolver: (props, styles) => styles.root,
-})(() => ({}));
-
-export interface FilterListProps {
+export interface FilterListProps extends BoxProps {
     label: string;
     icon: ReactNode;
-    children: ReactNode;
-    className?: string;
-    sx?: SxProps;
 }

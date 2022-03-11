@@ -12,11 +12,6 @@ import {
 
 import { useSavedQueries } from './useSavedQueries';
 
-export interface AddSavedQueryDialogProps {
-    open: boolean;
-    onClose: () => void;
-}
-
 export const AddSavedQueryDialog = ({
     open,
     onClose,
@@ -99,3 +94,8 @@ export const AddSavedQueryDialog = ({
         </Dialog>
     );
 };
+
+export interface AddSavedQueryDialogProps {
+    open: boolean;
+    onClose: () => void;
+}
