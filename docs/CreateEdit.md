@@ -1556,6 +1556,7 @@ By default, pressing `ENTER` in any of the form fields submits the form - this i
 const MyToolbar = props => (
     <Toolbar {...props}>
         <SaveButton submitOnEnter={false} />
+        <DeleteButton />
     </Toolbar>
 );
 

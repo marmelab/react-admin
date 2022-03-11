@@ -98,12 +98,7 @@ export const Toolbar = <
                 <div className={ToolbarClasses.defaultToolbar}>
                     <SaveButton disabled={disabled} submitOnEnter={true} />
                     {record && typeof record.id !== 'undefined' && (
-                        <DeleteButton
-                            // @ts-ignore
-                            record={record}
-                            resource={resource}
-                            mutationMode={saveContext?.mutationMode}
-                        />
+                        <DeleteButton resource={resource} />
                     )}
                 </div>
             ) : (

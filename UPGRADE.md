@@ -2669,11 +2669,12 @@ const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
 Since the `<Toolbar>` component is not cloned anymore by react-admin layouts, `submitOnEnter` property is not passed down to the `SaveButton` from parent components. So, if you rely on this behaviour, you should pass this prop yourself.
 
 ```diff
-import { Toolbar, SimpleForm, Edit, TextInput, SaveButton } from 'react-admin';
+import { Toolbar, SimpleForm, Edit, TextInput, SaveButton, DeleteButton } from 'react-admin';
 
 +const MyToolbar = props => (
     <Toolbar {...props}> 
         <SaveButton submitOnEnter={false} />
+        <DeleteButton />
     </Toolbar>
 );
 
