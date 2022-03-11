@@ -10,7 +10,6 @@ import {
 export interface SaveContextValue<RecordType extends RaRecord = any> {
     save?: SaveHandler<RecordType>;
     saving?: boolean;
-    submitOnEnter?: boolean;
     mutationMode?: MutationMode;
 }
 
