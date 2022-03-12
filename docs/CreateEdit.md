@@ -780,7 +780,7 @@ to change this behaviour you can pass `false` for the `submitOnEnter` property, 
 
 Here are all the props you can set on the `<SimpleForm>` component:
 
-* [`defaultValue`](#default-values)
+* [`defaultValues`](#default-values)
 * [`validate`](#validation)
 * [`submitOnEnter`](#submit-on-enter)
 * [`toolbar`](#toolbar)
@@ -853,7 +853,7 @@ to change this behaviour you can pass `false` for the `submitOnEnter` property.
 
 Here are all the props accepted by the `<TabbedForm>` component:
 
-* [`defaultValue`](#default-values)
+* [`defaultValues`](#default-values)
 * [`validate`](#validation)
 * [`submitOnEnter`](#submit-on-enter)
 * [`tabs`](#tabbedformtabs)
@@ -1159,13 +1159,13 @@ To define default values, you can add a `defaultValues` prop to form components 
 
 ### Global Default Value
 
-The value of the form `defaultValue` prop is an object, or a function returning an object, specifying default values for the created record. For instance:
+The value of the form `defaultValues` prop is an object, or a function returning an object, specifying default values for the created record. For instance:
 
 ```jsx
 const postDefaultValue = () => ({ id: uuid(), created_at: new Date(), nb_views: 0 });
 export const PostCreate = () => (
     <Create>
-        <SimpleForm defaultValue={postDefaultValue}>
+        <SimpleForm defaultValues={postDefaultValue}>
             <TextInput source="title" />
             <RichTextInput source="body" />
             <NumberInput source="nb_views" />
@@ -1174,11 +1174,11 @@ export const PostCreate = () => (
 );
 ```
 
-**Tip**: You can include properties in the form `defaultValue` that are not listed as input components, like the `created_at` property in the previous example.
+**Tip**: You can include properties in the form `defaultValues` that are not listed as input components, like the `created_at` property in the previous example.
 
 ### Per Input Default Value
 
-Alternatively, you can specify a `defaultValue` prop directly in `<Input>` components. React-admin will merge the input default values with the form default value (input > form):
+Alternatively, you can specify a `defaultValue` prop directly in `<Input>` components. React-admin will merge the default value of all inputs with the form's default values (input > form):
 
 ```jsx
 export const PostCreate = () => (
@@ -1192,7 +1192,7 @@ export const PostCreate = () => (
 );
 ```
 
-**Tip**: Per-input default values cannot be functions. For default values computed at render time, set the `defaultValue` at the form level, as explained in the previous section. 
+**Tip**: Per-input default values cannot be functions. For default values computed at render time, set the `defaultValues` at the form level, as explained in the previous section. 
 
 ## Validation
 
@@ -1386,7 +1386,7 @@ const validateStock = [required(), number(), minValue(0)];
 
 export const ProductEdit = () => (
     <Edit>
-        <SimpleForm defaultValue={{ stock: 0 }}>
+        <SimpleForm defaultValues={{ stock: 0 }}>
             ...
             {/* do this */}
             <NumberInput source="stock" validate={validateStock} />
@@ -2139,7 +2139,7 @@ export const UserCreate = () => {
         <Create redirect="show">
             <SimpleForm
                 toolbar={<UserCreateToolbar permissions={permissions} />}
-                defaultValue={{ role: 'user' }}
+                defaultValues={{ role: 'user' }}
             >
                 <TextInput source="name" validate={[required()]} />
                 {permissions === 'admin' &&
@@ -2159,7 +2159,7 @@ This also works inside an `Edition` view with a `TabbedForm`, and you can hide a
 ```jsx
 export const UserEdit = ({ permissions }) =>
     <Edit title={<UserTitle />}>
-        <TabbedForm defaultValue={{ role: 'user' }}>
+        <TabbedForm defaultValues={{ role: 'user' }}>
             <FormTab label="user.form.summary">
                 {permissions === 'admin' && <TextInput disabled source="id" />}
                 <TextInput source="name" validate={required()} />
