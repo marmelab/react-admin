@@ -874,6 +874,7 @@ describe('<AutocompleteInput />', () => {
                                         },
                                     ]}
                                     source="id"
+                                    {...rest}
                                 />
                             );
                         }}
