@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { useEventCallback } from '../util';
 import { useStoreContext } from './useStoreContext';
@@ -51,17 +51,28 @@ export const useStore = <T = any>(
     validate?: ValidateStoreValue<T>
 ): UseStoreResult<T> => {
     const { getItem, setItem, subscribe } = useStoreContext();
-    if (
-        typeof validate === 'function' &&
-        typeof defaultValue !== 'undefined' &&
-        !validate(defaultValue)
-    ) {
-        console.warn(`Invalid default value for store key ${key}`);
-    }
-    const [value, setValue] = useState(() => getItem(key, defaultValue));
 
+    // Validate the default value once
     useEffect(() => {
-        if (typeof validate === 'function' && !validate(value)) {
+        if (
+            typeof validate === 'function' &&
+            typeof defaultValue !== 'undefined' &&
+            !validate(defaultValue)
+        ) {
+            throw new Error(`Invalid default value for store key ${key}`);
+        }
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    const [value, setValue] = useState(() => getItem(key, defaultValue));
+    const setValueCalled = useRef(false);
+
+    // Validate the value stored in the store
+    useEffect(() => {
+        if (
+            // Only if it wasn't changed by the setter yet
+            !setValueCalled.current &&
+            typeof validate === 'function' &&
+            !validate(value)
+        ) {
             console.warn(`Invalid value for store key ${key}`);
             setValue(defaultValue);
         }
@@ -87,6 +98,7 @@ export const useStore = <T = any>(
             valueParam: T | StoreValueSetterFunction<T>,
             runtimeDefaultValue: T
         ) => {
+            setValueCalled.current = true;
             const newValue =
                 typeof valueParam === 'function'
                     ? (valueParam as StoreValueSetterFunction<T>)(value)
@@ -100,6 +112,9 @@ export const useStore = <T = any>(
                         console.warn(
                             `Invalid default value for store key ${key}`
                         );
+                        setValue(defaultValue);
+                    } else {
+                        setValue(runtimeDefaultValue);
                     }
                 }
             }

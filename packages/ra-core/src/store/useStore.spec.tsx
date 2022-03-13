@@ -121,7 +121,10 @@ describe('useStore', () => {
 
     it('should reset to the default value when the validate function returns false for the initial store value', () => {
         jest.spyOn(console, 'warn').mockImplementation(() => {});
-        const validate = jest.fn();
+        const validate = jest
+            .fn()
+            .mockReturnValueOnce(true)
+            .mockReturnValue(false);
         render(
             <StoreContextProvider
                 value={
@@ -165,7 +168,11 @@ describe('useStore', () => {
 
     it('should reset to the default value when the validate function returns false when setting the new value', () => {
         jest.spyOn(console, 'warn').mockImplementation(() => {});
-        const validate = jest.fn();
+        const validate = jest
+            .fn()
+            .mockReturnValueOnce(true)
+            .mockReturnValueOnce(true)
+            .mockReturnValue(false);
         let value = 'world';
         render(
             <StoreContextProvider
