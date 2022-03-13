@@ -37,12 +37,7 @@ export const EditContextProvider = ({
     value: EditControllerResult;
 }) => (
     <EditContext.Provider value={value}>
-        <SaveContextProvider
-            value={{
-                ...usePickSaveContext(value),
-                mutationMode: value.mutationMode,
-            }}
-        >
+        <SaveContextProvider value={usePickSaveContext(value)}>
             <RecordContextProvider<Partial<RaRecord>>
                 value={value && value.record}
             >
