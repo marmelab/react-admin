@@ -13,8 +13,6 @@ import {
     MutationMode,
     RaRecord,
     RedirectionSideEffect,
-    OnSuccess,
-    onError,
 } from 'ra-core';
 import get from 'lodash/get';
 
@@ -79,11 +77,8 @@ import { useFormRootPath } from './useFormRootPath';
  * @prop {ReactElement[]} FormTab elements
  * @prop {Object} defaultValues
  * @prop {Function} validate
- * @prop {boolean} submitOnEnter
  * @prop {string} redirect
  * @prop {ReactElement} toolbar The element displayed at the bottom of the form, containing the SaveButton
- * @prop {string} variant Apply variant to all inputs. Possible values are 'standard', 'outlined', and 'filled' (default)
- * @prop {string} margin Apply variant to all inputs. Possible values are 'none', 'normal', and 'dense' (default)
  *
  * @param {Props} props
  */
@@ -116,9 +111,7 @@ TabbedForm.propTypes = {
         PropTypes.bool,
         PropTypes.func,
     ]),
-    save: PropTypes.func, // the handler defined in the parent, which triggers the REST submission
     saving: PropTypes.bool,
-    submitOnEnter: PropTypes.bool,
     validate: PropTypes.func,
 };
 
@@ -137,15 +130,6 @@ export interface TabbedFormProps
     record?: RaRecord;
     redirect?: RedirectionSideEffect;
     resource?: string;
-    save?: (
-        data: Partial<RaRecord>,
-        redirectTo: RedirectionSideEffect,
-        options?: {
-            onSuccess?: OnSuccess;
-            onError?: onError;
-        }
-    ) => void;
-    submitOnEnter?: boolean;
     syncWithLocation?: boolean;
     tabs?: ReactElement;
     toolbar?: ReactElement;

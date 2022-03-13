@@ -11,7 +11,6 @@ import {
 import clsx from 'clsx';
 import {
     RaRecord,
-    MutationMode,
     SaveContextValue,
     useRecordContext,
     useSaveContext,
@@ -66,9 +65,6 @@ export const Toolbar = <
         children,
         className,
         resource,
-        saving: savingProp,
-        submitOnEnter: submitOnEnterProp,
-        mutationMode: mutationModeProp,
         ...rest
     } = props;
     const record = useRecordContext(props);
@@ -114,8 +110,6 @@ export interface ToolbarProps<RecordType extends Partial<RaRecord> = any>
     children?: ReactNode;
     alwaysEnableSaveButton?: boolean;
     className?: string;
-    mutationMode?: MutationMode;
-    submitOnEnter?: boolean;
     record?: RecordType;
     resource?: string;
 }
@@ -125,7 +119,6 @@ Toolbar.propTypes = {
     className: PropTypes.string,
     record: PropTypes.any,
     resource: PropTypes.string,
-    submitOnEnter: PropTypes.bool,
 };
 
 const PREFIX = 'RaToolbar';

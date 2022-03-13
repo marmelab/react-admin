@@ -15,9 +15,7 @@ export const SimpleFormView = ({
     mutationMode,
     record,
     resource,
-    saving,
     sx,
-    submitOnEnter = true,
     toolbar = DefaultToolbar,
     ...rest
 }: SimpleFormViewProps): ReactElement => (
@@ -34,14 +32,10 @@ export const SimpleFormView = ({
 SimpleFormView.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
-    invalid: PropTypes.bool,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-    pristine: PropTypes.bool,
     // @ts-ignore
     record: PropTypes.object,
     resource: PropTypes.string,
-    saving: PropTypes.bool,
-    submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.oneOfType([PropTypes.element, PropTypes.oneOf([false])]),
     validate: PropTypes.func,
 };
@@ -63,7 +57,6 @@ export interface SimpleFormViewProps extends FormRenderProps {
     record?: Partial<RaRecord>;
     resource?: string;
     toolbar?: ReactElement | false;
-    submitOnEnter?: boolean;
     sx?: SxProps;
 }
 

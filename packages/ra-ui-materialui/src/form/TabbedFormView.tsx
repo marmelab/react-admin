@@ -38,8 +38,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         handleSubmit,
         mutationMode,
         record,
-        saving,
-        submitOnEnter = true,
         syncWithLocation = true,
         tabs = DefaultTabs,
         toolbar = DefaultToolbar,
@@ -120,16 +118,12 @@ TabbedFormView.propTypes = {
     className: PropTypes.string,
     defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
     defaultValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
-    invalid: PropTypes.bool,
     location: PropTypes.object,
     match: PropTypes.object,
     mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
-    pristine: PropTypes.bool,
     // @ts-ignore
     record: PropTypes.object,
     resource: PropTypes.string,
-    saving: PropTypes.bool,
-    submitOnEnter: PropTypes.bool,
     tabs: PropTypes.element,
     toolbar: PropTypes.element,
     translate: PropTypes.func,
@@ -154,7 +148,6 @@ export interface TabbedFormViewProps extends FormRenderProps {
     syncWithLocation?: boolean;
     tabs?: ReactElement;
     toolbar?: ReactElement;
-    submitOnEnter?: boolean;
     sx?: SxProps;
 }
 
