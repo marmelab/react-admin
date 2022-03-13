@@ -1550,7 +1550,7 @@ export const UserCreate = () => {
 
 ## Submit On Enter
 
-By default, pressing `ENTER` in any of the form fields submits the form - this is the expected behavior in most cases. However, some of your custom input components (e.g. Google Maps widget) may have special handlers for the `ENTER` key. In that case, to disable the automated form submission on enter, set the `submitOnEnter` prop of the `SaveButton` component to `false`:
+By default, pressing `ENTER` in any of the form inputs submits the form - this is the expected behavior in most cases. To disable the automated form submission on enter, set the `submitOnEnter` prop of the `SaveButton` component to `false`.
 
 ```jsx
 const MyToolbar = props => (
@@ -1564,6 +1564,25 @@ export const PostEdit = () => (
     <Edit>
         <SimpleForm toolbar={<MyToolbar/>}>
             ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
+However, some of your custom input components (e.g. Google Maps widget) may have special handlers for the `ENTER` key. In that case, you should stop the event  on those inputs. This would allow other inputs to still submit the form on Enter:
+
+```jsx
+export const PostEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput
+                source="name"
+                onKeyUp={event => {
+                    if (event.key === 'Enter') {
+                        event.stopPropagation();
+                    }
+                }}
+            /> 
         </SimpleForm>
     </Edit>
 );
