@@ -10,7 +10,7 @@ import {
     TextField,
 } from '@mui/material';
 
-import { useSavedQueries } from './useSavedQueries';
+import { extractValidSavedQueries, useSavedQueries } from './useSavedQueries';
 
 export const AddSavedQueryDialog = ({
     open,
@@ -41,17 +41,17 @@ export const AddSavedQueryDialog = ({
     };
 
     const addQuery = (): void => {
-        setSavedQueries(
-            savedQueries.concat({
-                label: queryName,
-                value: {
-                    filter: filterValues,
-                    sort,
-                    perPage,
-                    displayedFilters,
-                },
-            })
-        );
+        const newSavedQuery = {
+            label: queryName,
+            value: {
+                filter: filterValues,
+                sort,
+                perPage,
+                displayedFilters,
+            },
+        };
+        const newSavedQueries = extractValidSavedQueries(savedQueries);
+        setSavedQueries(newSavedQueries.concat(newSavedQuery));
         setQueryName('');
         onClose();
     };

@@ -19,7 +19,7 @@ import { useNavigate } from 'react-router';
 import { FilterButtonMenuItem } from './FilterButtonMenuItem';
 import { Button } from '../../button';
 import { FilterContext } from '../FilterContext';
-import { useSavedQueries } from './useSavedQueries';
+import { extractValidSavedQueries, useSavedQueries } from './useSavedQueries';
 import { AddSavedQueryDialog } from './AddSavedQueryDialog';
 import { RemoveSavedQueryDialog } from './RemoveSavedQueryDialog';
 
@@ -38,13 +38,14 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
         sort,
     } = useListContext(props);
     const hasFilterValues = !isEqual(filterValues, {});
-    const hasSavedCurrentQuery = savedQueries.some(savedQuery =>
-        isEqual(savedQuery.value, {
-            filter: filterValues,
-            sort,
-            perPage,
-            displayedFilters,
-        })
+    const hasSavedCurrentQuery = extractValidSavedQueries(savedQueries).some(
+        savedQuery =>
+            isEqual(savedQuery.value, {
+                filter: filterValues,
+                sort,
+                perPage,
+                displayedFilters,
+            })
     );
     const [open, setOpen] = useState(false);
     const anchorEl = useRef();

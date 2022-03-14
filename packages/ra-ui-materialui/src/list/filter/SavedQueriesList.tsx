@@ -6,7 +6,7 @@ import HelpIcon from '@mui/icons-material/HelpOutline';
 import { useListContext, useTranslate } from 'ra-core';
 import isEqual from 'lodash/isEqual';
 
-import { useSavedQueries } from './useSavedQueries';
+import { extractValidSavedQueries, useSavedQueries } from './useSavedQueries';
 import { RemoveSavedQueryIconButton } from './RemoveSavedQueryIconButton';
 import { AddSavedQueryIconButton } from './AddSavedQueryIconButton';
 import { SavedQueryFilterListItem } from './SavedQueryFilterListItem';
@@ -67,7 +67,9 @@ export const SavedQueriesList = ({
 
     const [savedQueries] = useSavedQueries(resource);
 
-    const hasSavedCurrentFilterValue = savedQueries.some(savedQuery =>
+    const hasSavedCurrentFilterValue = extractValidSavedQueries(
+        savedQueries
+    ).some(savedQuery =>
         isEqual(savedQuery.value, {
             filter: filterValues,
             sort,

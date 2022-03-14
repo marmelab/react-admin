@@ -11,7 +11,7 @@ import {
     DialogTitle,
 } from '@mui/material';
 
-import { useSavedQueries } from './useSavedQueries';
+import { useSavedQueries, extractValidSavedQueries } from './useSavedQueries';
 
 export interface RemoveSavedQueryDialogProps {
     open: boolean;
@@ -34,17 +34,20 @@ export const RemoveSavedQueryDialog = ({
     const [savedQueries, setSavedQueries] = useSavedQueries(resource);
 
     const removeQuery = (): void => {
+        let savedQueryToRemove = {
+            filter: filterValues,
+            sort,
+            perPage,
+            displayedFilters,
+        };
+
+        const newSavedQueries = extractValidSavedQueries(savedQueries);
         const index = savedQueries.findIndex(savedFilter =>
-            isEqual(savedFilter.value, {
-                filter: filterValues,
-                sort,
-                perPage,
-                displayedFilters,
-            })
+            isEqual(savedFilter.value, savedQueryToRemove)
         );
         setSavedQueries([
-            ...savedQueries.slice(0, index),
-            ...savedQueries.slice(index + 1),
+            ...newSavedQueries.slice(0, index),
+            ...newSavedQueries.slice(index + 1),
         ]);
         onClose();
     };

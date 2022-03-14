@@ -15,6 +15,14 @@ export interface SavedQuery {
     };
 }
 
+export const extractValidSavedQueries = (savedQueries: SavedQuery[]) => {
+    if (Array.isArray(savedQueries)) {
+        return savedQueries.filter(query => isValidSavedQuery(query));
+    }
+
+    return [];
+};
+
 export const areValidSavedQueries = (savedQueries: SavedQuery[]) => {
     if (
         Array.isArray(savedQueries) &&
