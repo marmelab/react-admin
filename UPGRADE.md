@@ -2680,7 +2680,7 @@ import { Toolbar, SimpleForm, Edit, TextInput, SaveButton, DeleteButton } from '
 
 export const PostEdit = () => (
     <Edit>
--       <SimpleForm>
+-       <SimpleForm submitOnEnter>
 +       <SimpleForm toolbar={<MyToolbar/>}>
             <TextInput source="title" />
         </SimpleForm>
