@@ -2672,11 +2672,11 @@ Since the `<Toolbar>` component is not cloned anymore by react-admin layouts, `s
 import { Toolbar, SimpleForm, Edit, TextInput, SaveButton, DeleteButton } from 'react-admin';
 
 +const MyToolbar = props => (
-    <Toolbar {...props}> 
-        <SaveButton submitOnEnter={false} />
-        <DeleteButton />
-    </Toolbar>
-);
++   <Toolbar {...props}> 
++       <SaveButton submitOnEnter={false} />
++       <DeleteButton />
++   </Toolbar>
++);
 
 export const PostEdit = () => (
     <Edit>
