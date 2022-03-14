@@ -1569,7 +1569,7 @@ export const PostEdit = () => (
 );
 ```
 
-However, some of your custom input components (e.g. Google Maps widget) may have special handlers for the `ENTER` key. In that case, you should stop the event  on those inputs. This would allow other inputs to still submit the form on Enter:
+However, some of your custom input components (e.g. Google Maps widget) may have special handlers for the `ENTER` key. In that case, you should prevent the default handling of the event on those inputs. This would allow other inputs to still submit the form on Enter:
 
 ```jsx
 export const PostEdit = () => (
