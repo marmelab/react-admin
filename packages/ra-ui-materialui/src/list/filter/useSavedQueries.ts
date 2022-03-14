@@ -2,11 +2,7 @@ import { SortPayload, useStore } from 'ra-core';
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const useSavedQueries = (resource: string) => {
-    return useStore<SavedQuery[]>(
-        `${resource}.savedQueries`,
-        [],
-        areValidSavedQueries
-    );
+    return useStore<SavedQuery[]>(`${resource}.savedQueries`, []);
 };
 
 export interface SavedQuery {

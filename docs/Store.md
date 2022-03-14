@@ -84,12 +84,13 @@ const preferences = useStore('preferences');
 const { fontSize, mode } = preferences.ui;
 ```
 
-To avoid this type of error, the code using the Store should always make sure that the object from the Store has the expected structure, and use a default value if not. To put it otherwise, always assume that the data from the store may have the wrong shape - it's the only way to ensure forward compatibility. For this purpose, the `useStore` hook accepts a third argument, a function that validates the value from the store and the value passed to the setter function. This function must return a boolean indicating whether the value is valid. If it isn't, `useStore` will fallback to the default value.
+To avoid this type of error, the code using the Store should always make sure that the object from the Store has the expected structure, and use a default value if not. To put it otherwise, always assume that the data from the store may have the wrong shape - it's the only way to ensure forward compatibility.
 
 ```jsx
-const defaultValue = { ui: { fontSize: 'large', mode: 'dark' } }
-const validatePreferences = value => !!preferences.ui && !!preferences.ui.fontSize && !!preferences.ui.mode;
-const preferences = useStore('preferences', defaultValue, validatePreferences);
+let preferences = useStore('preferences');
+if (!preferences.ui || !preferences.ui.fontSize || !preferences.ui.mode) {
+    preferences = { ui: { fontSize: 'large', mode: 'dark' } };
+}
 // this will never fail
 const { fontSize, mode } = preferences.ui;
 ```

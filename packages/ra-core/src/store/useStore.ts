@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useEventCallback } from '../util';
 import { useStoreContext } from './useStoreContext';
@@ -10,8 +10,7 @@ import { useStoreContext } from './useStoreContext';
  * Each time a store value is changed, all components using this value will be re-rendered.
  *
  * @param {string} key Name of the store key. Separate with dots to namespace, e.g. 'posts.list.columns'.
- * @param {any} defaultValue Optional. Default value
- * @param {Function} validate Optional. A function that will be called to validate for the default value, the initial value from the store if any and when the value is updated using the setter. If it returns false for the default value, a warning will be shown in development mode. For the value and the setter, the value will be ignored and replaced by the default value when this validate function returns false.
+ * @param {any} defaultValue Default value
  *
  * @return {Object} A value and a setter for the value, in an array - just like for useState()
  *
@@ -47,85 +46,25 @@ import { useStoreContext } from './useStoreContext';
  */
 export const useStore = <T = any>(
     key: string,
-    defaultValue?: T,
-    validate?: ValidateStoreValue<T>
-): UseStoreResult<T> => {
+    defaultValue?: T
+): useStoreResult<T> => {
     const { getItem, setItem, subscribe } = useStoreContext();
-
-    // Validate the default value once
-    useEffect(() => {
-        if (
-            typeof validate === 'function' &&
-            typeof defaultValue !== 'undefined' &&
-            !validate(defaultValue)
-        ) {
-            throw new Error(`Invalid default value for store key ${key}`);
-        }
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
     const [value, setValue] = useState(() => getItem(key, defaultValue));
-    const setValueCalled = useRef(false);
-
-    // Validate the value stored in the store
-    useEffect(() => {
-        if (
-            // Only if it wasn't changed by the setter yet
-            !setValueCalled.current &&
-            typeof validate === 'function' &&
-            !validate(value)
-        ) {
-            if (process.env.NODE_ENV === 'development') {
-                console.warn(`Invalid value for store key ${key}`);
-            }
-            setValue(defaultValue);
-        }
-    }, [defaultValue, key, value, validate]);
 
     // subscribe to changes on this key, and change the state when they happen
     useEffect(() => {
         const unsubscribe = subscribe(key, newValue => {
-            if (typeof validate === 'function' && !validate(newValue)) {
-                if (process.env.NODE_ENV === 'development') {
-                    console.warn(`Invalid value for store key ${key}`);
-                }
-                setValue(defaultValue);
-            } else {
-                setValue(
-                    typeof newValue === 'undefined' ? defaultValue : newValue
-                );
-            }
+            setValue(typeof newValue === 'undefined' ? defaultValue : newValue);
         });
         return () => unsubscribe();
-    }, [key, subscribe, defaultValue, validate]);
+    }, [key, subscribe, defaultValue]);
 
     const set = useEventCallback(
-        (
-            valueParam: T | StoreValueSetterFunction<T>,
-            runtimeDefaultValue: T
-        ) => {
-            setValueCalled.current = true;
+        (valueParam: T, runtimeDefaultValue: T) => {
             const newValue =
                 typeof valueParam === 'function'
-                    ? (valueParam as StoreValueSetterFunction<T>)(value)
+                    ? valueParam(value)
                     : valueParam;
-
-            if (typeof validate === 'function') {
-                if (!validate(newValue)) {
-                    if (process.env.NODE_ENV === 'development') {
-                        console.warn(`Invalid value for store key ${key}`);
-                    }
-
-                    if (!validate(runtimeDefaultValue)) {
-                        if (process.env.NODE_ENV === 'development') {
-                            console.warn(
-                                `Invalid default value for store key ${key}`
-                            );
-                        }
-                        setValue(defaultValue);
-                    } else {
-                        setValue(runtimeDefaultValue);
-                    }
-                }
-            }
             // we only set the value in the Store;
             // the value in the local state will be updated
             // by the useEffect during the next render
@@ -143,12 +82,7 @@ export const useStore = <T = any>(
     return [value, set];
 };
 
-export type UseStoreResult<T = any> = [T, StoreValueSetter<T>];
-
-export type StoreValueSetter<T> = (
-    value: T | StoreValueSetterFunction<T>,
-    defaultValue?: T
-) => void;
-export type StoreValueSetterFunction<T = any> = (value: T) => T;
-
-export type ValidateStoreValue<T = any> = (value: T) => boolean;
+export type useStoreResult<T = any> = [
+    T,
+    (value: T | ((value: T) => void), defaultValue?: T) => void
+];

@@ -12,7 +12,7 @@ This hook allows to read and write from the [Store](./Store.md). Stored values a
 ```jsx
 import { useStore } from 'react-admin';
 
-const [value, setValue] = useStore(key, defaultValue, validate);
+const [value, setValue] = useStore(key, defaultValue);
 ```
 
 The `key` should be a string, and is used for local storage. 
@@ -65,19 +65,4 @@ const ChangeDensity = () => {
         </Button>
     );
 };
-```
-
-The validate function can be used to ensure forward compatibility. It must returns a boolean indicating wether the value is valid or not. It will be called in the following cases:
-
-- to validate the initial default value and will throw an error if it is invalid.
-- to validate the value initially returned by the store and the hook will revert the value to the default value if invalid.
-- to validate the value returned by the store subscription mechanism and the hook will revert the value to the default value if invalid.
-- to validate a new value from the setter function and the hook will revert the value to either the default value from the setter call or the default value if invalid.
-
-```jsx
-const defaultValue = { ui: { fontSize: 'large', mode: 'dark' } }
-const validatePreferences = value => !!preferences.ui && !!preferences.ui.fontSize && !!preferences.ui.mode;
-const preferences = useStore('preferences', defaultValue, validatePreferences);
-// this will never fail
-const { fontSize, mode } = preferences.ui;
 ```
