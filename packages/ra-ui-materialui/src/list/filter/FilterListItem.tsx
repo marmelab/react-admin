@@ -5,6 +5,7 @@ import {
     IconButton,
     ListItem,
     ListItemButton,
+    ListItemProps,
     ListItemText,
     ListItemSecondaryAction,
 } from '@mui/material';
@@ -139,72 +140,65 @@ const arePropsEqual = (prevProps, nextProps) =>
  *     </Card>
  * );
  */
-export const FilterListItem = memo(
-    (props: {
-        label: string | ReactElement;
-        value: any;
-        className?: string;
-    }) => {
-        const { label, value, className } = props;
-        const { filterValues, setFilters } = useListFilterContext();
-        const translate = useTranslate();
+export const FilterListItem = memo((props: FilterListItemProps) => {
+    const { label, value, ...rest } = props;
+    const { filterValues, setFilters } = useListFilterContext();
+    const translate = useTranslate();
 
-        const isSelected = matches(
-            pickBy(value, val => typeof val !== 'undefined')
-        )(filterValues);
+    const isSelected = matches(
+        pickBy(value, val => typeof val !== 'undefined')
+    )(filterValues);
 
-        const addFilter = () => {
-            setFilters({ ...filterValues, ...value }, null, false);
-        };
+    const addFilter = () => {
+        setFilters({ ...filterValues, ...value }, null, false);
+    };
 
-        const removeFilter = () => {
-            const keysToRemove = Object.keys(value);
-            const filters = Object.keys(filterValues).reduce(
-                (acc, key) =>
-                    keysToRemove.includes(key)
-                        ? acc
-                        : { ...acc, [key]: filterValues[key] },
-                {}
-            );
-
-            setFilters(filters, null, false);
-        };
-
-        const toggleFilter = () => (isSelected ? removeFilter() : addFilter());
-
-        return (
-            <StyledListItem
-                onClick={toggleFilter}
-                selected={isSelected}
-                className={className}
-                disablePadding
-            >
-                <ListItemButton
-                    disableGutters
-                    className={FilterListItemClasses.listItemButton}
-                >
-                    <ListItemText
-                        primary={
-                            isValidElement(label)
-                                ? label
-                                : translate(label, { _: label })
-                        }
-                        className={FilterListItemClasses.listItemText}
-                        data-selected={isSelected ? 'true' : 'false'}
-                    />
-                    {isSelected && (
-                        <ListItemSecondaryAction>
-                            <IconButton size="small" onClick={toggleFilter}>
-                                <CancelIcon />
-                            </IconButton>
-                        </ListItemSecondaryAction>
-                    )}
-                </ListItemButton>
-            </StyledListItem>
+    const removeFilter = () => {
+        const keysToRemove = Object.keys(value);
+        const filters = Object.keys(filterValues).reduce(
+            (acc, key) =>
+                keysToRemove.includes(key)
+                    ? acc
+                    : { ...acc, [key]: filterValues[key] },
+            {}
         );
-    },
-    arePropsEqual
-);
+
+        setFilters(filters, null, false);
+    };
+
+    const toggleFilter = () => (isSelected ? removeFilter() : addFilter());
+
+    return (
+        <StyledListItem
+            onClick={toggleFilter}
+            selected={isSelected}
+            disablePadding
+            {...rest}
+        >
+            <ListItemButton
+                disableGutters
+                className={FilterListItemClasses.listItemButton}
+            >
+                <ListItemText
+                    primary={
+                        isValidElement(label)
+                            ? label
+                            : translate(label, { _: label })
+                    }
+                    className={FilterListItemClasses.listItemText}
+                    data-selected={isSelected ? 'true' : 'false'}
+                />
+                {isSelected && (
+                    <ListItemSecondaryAction>
+                        <IconButton size="small" onClick={toggleFilter}>
+                            <CancelIcon />
+                        </IconButton>
+                    </ListItemSecondaryAction>
+                )}
+            </ListItemButton>
+        </StyledListItem>
+    );
+}, arePropsEqual);
 
 const PREFIX = 'RaFilterListItem';
 
@@ -225,3 +219,8 @@ const StyledListItem = styled(ListItem, {
         margin: 0,
     },
 }));
+
+export interface FilterListItemProps extends Omit<ListItemProps, 'value'> {
+    label: string | ReactElement;
+    value: any;
+}

@@ -12,8 +12,14 @@ describe('useStore', () => {
         expect(result.current[0]).toBeUndefined();
     });
 
-    const StoreReader = ({ name }) => {
-        const [value] = useStore(name);
+    const StoreReader = ({
+        name,
+        defaultValue,
+    }: {
+        name: string;
+        defaultValue?: any;
+    }) => {
+        const [value] = useStore(name, defaultValue);
         return <>{value}</>;
     };
 
