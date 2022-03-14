@@ -73,7 +73,9 @@ export const useStore = <T = any>(
             typeof validate === 'function' &&
             !validate(value)
         ) {
-            console.warn(`Invalid value for store key ${key}`);
+            if (process.env.NODE_ENV === 'development') {
+                console.warn(`Invalid value for store key ${key}`);
+            }
             setValue(defaultValue);
         }
     }, [defaultValue, key, value, validate]);
@@ -82,7 +84,9 @@ export const useStore = <T = any>(
     useEffect(() => {
         const unsubscribe = subscribe(key, newValue => {
             if (typeof validate === 'function' && !validate(newValue)) {
-                console.warn(`Invalid value for store key ${key}`);
+                if (process.env.NODE_ENV === 'development') {
+                    console.warn(`Invalid value for store key ${key}`);
+                }
                 setValue(defaultValue);
             } else {
                 setValue(
@@ -106,12 +110,16 @@ export const useStore = <T = any>(
 
             if (typeof validate === 'function') {
                 if (!validate(newValue)) {
-                    console.warn(`Invalid value for store key ${key}`);
+                    if (process.env.NODE_ENV === 'development') {
+                        console.warn(`Invalid value for store key ${key}`);
+                    }
 
                     if (!validate(runtimeDefaultValue)) {
-                        console.warn(
-                            `Invalid default value for store key ${key}`
-                        );
+                        if (process.env.NODE_ENV === 'development') {
+                            console.warn(
+                                `Invalid default value for store key ${key}`
+                            );
+                        }
                         setValue(defaultValue);
                     } else {
                         setValue(runtimeDefaultValue);
