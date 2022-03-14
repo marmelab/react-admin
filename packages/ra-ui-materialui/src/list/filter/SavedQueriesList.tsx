@@ -66,10 +66,8 @@ export const SavedQueriesList = ({
     } = useListContext();
 
     const [savedQueries] = useSavedQueries(resource);
-
-    const hasSavedCurrentFilterValue = extractValidSavedQueries(
-        savedQueries
-    ).some(savedQuery =>
+    const validSavedQueries = extractValidSavedQueries(savedQueries);
+    const hasSavedCurrentFilterValue = validSavedQueries.some(savedQuery =>
         isEqual(savedQuery.value, {
             filter: filterValues,
             sort,
@@ -97,7 +95,7 @@ export const SavedQueriesList = ({
                     <HelpIcon />
                 </Tooltip>
             )}
-            {savedQueries.map((savedQuery, index) => (
+            {validSavedQueries.map((savedQuery, index) => (
                 <SavedQueryFilterListItem
                     label={savedQuery.label}
                     value={savedQuery.value}

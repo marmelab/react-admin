@@ -38,14 +38,14 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
         sort,
     } = useListContext(props);
     const hasFilterValues = !isEqual(filterValues, {});
-    const hasSavedCurrentQuery = extractValidSavedQueries(savedQueries).some(
-        savedQuery =>
-            isEqual(savedQuery.value, {
-                filter: filterValues,
-                sort,
-                perPage,
-                displayedFilters,
-            })
+    const validSavedQueries = extractValidSavedQueries(savedQueries);
+    const hasSavedCurrentQuery = validSavedQueries.some(savedQuery =>
+        isEqual(savedQuery.value, {
+            filter: filterValues,
+            sort,
+            perPage,
+            displayedFilters,
+        })
     );
     const [open, setOpen] = useState(false);
     const anchorEl = useRef();
@@ -133,7 +133,7 @@ export const FilterButton = (props: FilterButtonProps): JSX.Element => {
                         autoFocus={index === 0}
                     />
                 ))}
-                {savedQueries.map((savedQuery, index) =>
+                {validSavedQueries.map((savedQuery, index) =>
                     isEqual(savedQuery.value, {
                         filter: filterValues,
                         sort,

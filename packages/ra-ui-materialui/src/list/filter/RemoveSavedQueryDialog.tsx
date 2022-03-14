@@ -42,7 +42,7 @@ export const RemoveSavedQueryDialog = ({
         };
 
         const newSavedQueries = extractValidSavedQueries(savedQueries);
-        const index = savedQueries.findIndex(savedFilter =>
+        const index = newSavedQueries.findIndex(savedFilter =>
             isEqual(savedFilter.value, savedQueryToRemove)
         );
         setSavedQueries([
