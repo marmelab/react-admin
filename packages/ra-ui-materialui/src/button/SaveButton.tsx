@@ -73,7 +73,7 @@ export const SaveButton = <RecordType extends RaRecord = any>(
             ((mutationOptions &&
                 (mutationOptions.onSuccess || mutationOptions.onError)) ||
                 transform),
-        'SaveButton of type "submit" recived mutationOptions. You need to pass type="button" to the SaveButton component or set mutationOptions in your main view'
+        'Cannot use <SaveButton mutationOptions> props on a button of type "submit". To override the default mutation options on a particular save button, set the <SaveButton type="button"> prop, or set mutationOptions in the main view component (<Create> or <Edit>).'
     );
 
     const handleClick: MouseEventHandler<HTMLButtonElement> = useCallback(
