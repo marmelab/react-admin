@@ -2659,21 +2659,29 @@ const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
 -               invalid={invalid}
 +               invalid={!isValid}
                 saving={saving}
-                submitOnEnter={true}
             />
         </Toolbar>
     );
 };
 ```
 
-Since the `<Toolbar>` component is not cloned anymore by react-admin layouts, `submitOnEnter` property is not passed down to the `SaveButton` from parent components. So, if you rely on this behaviour, you should pass this prop yourself.
+### `submitOnEnter` Prop Has Been Removed
 
+The following components no longer accept this prop:
+
+- `<SimpleForm>`
+- `<TabbedForm>`
+- `<Toolbar>`
+- `<SaveButton>`
+
+To determine wheter `<SimpleForm>` and `<TabbedForm>` will submit if `Enter` key is pressed, you have to relay on the `<SaveButton>`'s `type` prop. Setting it to "button" will prevent submittion on `Enter`.
+ 
 ```diff
 import { Toolbar, SimpleForm, Edit, TextInput, SaveButton, DeleteButton } from 'react-admin';
 
 +const MyToolbar = props => (
 +   <Toolbar {...props}> 
-+       <SaveButton submitOnEnter={false} />
++       <SaveButton type="button" />
 +       <DeleteButton />
 +   </Toolbar>
 +);
@@ -2899,10 +2907,10 @@ const PostCreateToolbar = props => {
 
     return (
         <Toolbar {...props}>
-            <SaveButton label="Save" submitOnEnter />
+-           <SaveButton label="Save" />
             <SaveButton
                 label="Save and add"
-                submitOnEnter={false}
+                type="button"
                 mutationOptions={{
                     onSuccess: () => {
 -                       redirect(false);

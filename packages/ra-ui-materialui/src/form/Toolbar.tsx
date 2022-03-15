@@ -51,7 +51,7 @@ import { SaveButton, DeleteButton } from '../button';
  * );
  *
  * @typedef {Object} Props the props you can use (other props are injected by the <SimpleForm>)
- * @prop {boolean} alwaysEnableSaveButton Force enabling the <SaveButton>. If it's not defined, the <SaveButton> will be enabled using the `pristine` and `validating` props (disabled if pristine or validating, enabled otherwise).
+ * @prop {boolean} alwaysEnableSaveButton Force enabling the <SaveButton>. If it's not defined, the `<SaveButton>` will be enabled using `react-hook-form`'s `isValidating` state prop and form context's `saving` prop (disabled if isValidating or saving, enabled otherwise).
  * @prop {ReactElement[]} children Customize the buttons you want to display in the <Toolbar>.
  *
  */
@@ -71,7 +71,7 @@ export const Toolbar = <
     const saveContext = useSaveContext();
     const isXs = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
     const { isValidating } = useFormState();
-    // Use form pristine and validating to enable or disable the save button
+    // Use form isValidating and form context saving to enable or disable the save button
     // if alwaysEnableSaveButton is undefined
     const disabled = !valueOrDefault(
         alwaysEnableSaveButton !== false ? alwaysEnableSaveButton : undefined,
