@@ -56,3 +56,13 @@ export const CustomLayout = () => (
         </SimpleForm>
     </Wrapper>
 );
+
+export const StackProps = () => (
+    <Wrapper>
+        <SimpleForm spacing={3} alignItems="center">
+            <TextInput source="title" fullWidth />
+            <TextInput source="author" />
+            <NumberInput source="year" />
+        </SimpleForm>
+    </Wrapper>
+);

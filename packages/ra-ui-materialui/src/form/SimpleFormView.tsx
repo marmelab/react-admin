@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ComponentType, ReactElement, ReactNode } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
-import { CardContent, Stack, SxProps } from '@mui/material';
+import { CardContent, Stack, SxProps, StackProps } from '@mui/material';
 import { FormRenderProps, MutationMode, RaRecord } from 'ra-core';
 
 import { Toolbar } from './Toolbar';
@@ -19,12 +19,10 @@ export const SimpleFormView = ({
     toolbar = DefaultToolbar,
     ...rest
 }: SimpleFormViewProps): ReactElement => (
-    <form
-        className={clsx('simple-form', className)}
-        onSubmit={handleSubmit}
-        {...sanitizeRestProps(rest)}
-    >
-        <Component sx={sx}>{children}</Component>
+    <form className={clsx('simple-form', className)} onSubmit={handleSubmit}>
+        <Component sx={sx} {...sanitizeRestProps(rest)}>
+            {children}
+        </Component>
         {toolbar}
     </form>
 );
@@ -49,7 +47,7 @@ const DefaultComponent = ({ children, sx, ...props }) => (
 );
 const DefaultToolbar = <Toolbar />;
 
-export interface SimpleFormViewProps extends FormRenderProps {
+export interface SimpleFormViewProps extends FormRenderProps, StackProps {
     children?: ReactNode;
     className?: string;
     component?: ComponentType<any>;

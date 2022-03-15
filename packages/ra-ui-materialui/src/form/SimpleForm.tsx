@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ReactElement, ReactNode, HtmlHTMLAttributes } from 'react';
 import PropTypes from 'prop-types';
 import { Form, FormProps, MutationMode } from 'ra-core';
-import { SxProps } from '@mui/material';
+import { SxProps, StackProps } from '@mui/material';
 
 import { SimpleFormView } from './SimpleFormView';
 
@@ -58,10 +58,7 @@ SimpleForm.propTypes = {
 
 export interface SimpleFormProps
     extends Omit<FormProps, 'render'>,
-        Omit<
-            HtmlHTMLAttributes<HTMLFormElement>,
-            'defaultValue' | 'onSubmit' | 'children'
-        > {
+        Omit<StackProps, 'onSubmit'> {
     children: ReactNode;
     className?: string;
     component?: React.ComponentType<any>;
