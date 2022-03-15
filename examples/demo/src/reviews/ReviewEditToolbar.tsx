@@ -50,7 +50,7 @@ const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
                                 redirect('list', 'reviews');
                             },
                         }}
-                        submitOnEnter={true}
+                        type="button"
                     />
                     <DeleteButton record={record} resource={resource} />
                 </Fragment>

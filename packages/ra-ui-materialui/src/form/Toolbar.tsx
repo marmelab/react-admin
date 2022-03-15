@@ -92,7 +92,7 @@ export const Toolbar = <
         >
             {Children.count(children) === 0 ? (
                 <div className={ToolbarClasses.defaultToolbar}>
-                    <SaveButton disabled={disabled} submitOnEnter={true} />
+                    <SaveButton disabled={disabled} />
                     {record && typeof record.id !== 'undefined' && (
                         <DeleteButton resource={resource} />
                     )}

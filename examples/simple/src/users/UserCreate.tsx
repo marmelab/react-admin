@@ -22,10 +22,7 @@ const UserEditToolbar = ({ permissions, ...props }) => {
 
     return (
         <Toolbar {...props}>
-            <SaveButton
-                label="user.action.save_and_show"
-                submitOnEnter={true}
-            />
+            <SaveButton label="user.action.save_and_show" />
             {permissions === 'admin' && (
                 <SaveButton
                     label="user.action.save_and_add"
@@ -40,7 +37,7 @@ const UserEditToolbar = ({ permissions, ...props }) => {
                             reset();
                         },
                     }}
-                    submitOnEnter={false}
+                    type="button"
                     variant="text"
                 />
             )}

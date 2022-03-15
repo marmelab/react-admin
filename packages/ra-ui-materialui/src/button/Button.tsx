@@ -117,7 +117,6 @@ interface Props {
     variant?: string;
     // May be injected by Toolbar
     saving?: boolean;
-    submitOnEnter?: boolean;
     record?: RaRecord;
     resource?: string;
     mutationMode?: MutationMode;
@@ -133,7 +132,6 @@ export const sanitizeButtonRestProps = ({
     redirect,
     resource,
     saving,
-    submitOnEnter,
     mutationMode,
     hasCreate,
     ...rest

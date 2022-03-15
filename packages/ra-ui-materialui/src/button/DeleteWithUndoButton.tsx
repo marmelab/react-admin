@@ -67,7 +67,6 @@ export interface DeleteWithUndoButtonProps<RecordType extends RaRecord = any>
     resource?: string;
     // May be injected by Toolbar - sanitized in Button
     saving?: boolean;
-    submitOnEnter?: boolean;
     mutationOptions?: UseMutationOptions<
         RecordType,
         unknown,

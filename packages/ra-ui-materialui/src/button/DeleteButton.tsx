@@ -91,7 +91,6 @@ export interface DeleteButtonProps<RecordType extends RaRecord = any>
     resource?: string;
     // May be injected by Toolbar
     saving?: boolean;
-    submitOnEnter?: boolean;
     mutationOptions?: UseMutationOptions<
         RecordType,
         unknown,

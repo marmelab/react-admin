@@ -108,7 +108,6 @@ export interface DeleteWithConfirmButtonProps<RecordType extends RaRecord = any>
     resource?: string;
     // May be injected by Toolbar - sanitized in Button
     saving?: boolean;
-    submitOnEnter?: boolean;
     translateOptions?: object;
     mutationOptions?: UseMutationOptions<
         RecordType,

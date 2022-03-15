@@ -15,6 +15,7 @@ import {
     useNotify,
     useSaveContext,
     useTranslate,
+    warning,
 } from 'ra-core';
 
 import { sanitizeButtonRestProps } from './Button';
@@ -49,6 +50,7 @@ export const SaveButton = <RecordType extends RaRecord = any>(
     props: SaveButtonProps<RecordType>
 ) => {
     const {
+        color = 'primary',
         icon = defaultIcon,
         invalid,
         label = 'ra.action.save',
@@ -56,7 +58,7 @@ export const SaveButton = <RecordType extends RaRecord = any>(
         mutationOptions,
         saving,
         disabled = saving,
-        submitOnEnter,
+        type = 'submit',
         transform,
         variant = 'contained',
         ...rest
@@ -65,8 +67,14 @@ export const SaveButton = <RecordType extends RaRecord = any>(
     const notify = useNotify();
     const form = useFormContext();
     const saveContext = useSaveContext();
-    const hasSideEffects = !!mutationOptions || !!transform;
-    const type = !submitOnEnter || hasSideEffects ? 'button' : 'submit';
+
+    warning(
+        type === 'submit' &&
+            ((mutationOptions &&
+                (mutationOptions.onSuccess || mutationOptions.onError)) ||
+                transform),
+        'SaveButton of type "submit" recived mutationOptions. You need to pass type="button" to the SaveButton component or set mutationOptions in your main view'
+    );
 
     const handleClick: MouseEventHandler<HTMLButtonElement> = useCallback(
         async event => {
@@ -101,7 +109,7 @@ export const SaveButton = <RecordType extends RaRecord = any>(
         <StyledButton
             variant={variant}
             type={type}
-            color="primary"
+            color={color}
             aria-label={displayedLabel}
             disabled={disabled}
             onClick={handleClick}
@@ -129,7 +137,6 @@ interface Props<RecordType extends RaRecord = any> {
     >;
     transform?: TransformData;
     saving?: boolean;
-    submitOnEnter?: boolean;
     variant?: string;
     // May be injected by Toolbar - sanitized in Button
     record?: RaRecord;
@@ -147,7 +154,6 @@ SaveButton.propTypes = {
     invalid: PropTypes.bool,
     label: PropTypes.string,
     saving: PropTypes.bool,
-    submitOnEnter: PropTypes.bool,
     variant: PropTypes.oneOf(['text', 'outlined', 'contained']),
     icon: PropTypes.element,
 };
