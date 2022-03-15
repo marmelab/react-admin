@@ -2674,7 +2674,9 @@ The following components no longer accept this prop:
 - `<Toolbar>`
 - `<SaveButton>`
 
-To determine wheter `<SimpleForm>` and `<TabbedForm>` will submit if `Enter` key is pressed, you have to relay on the `<SaveButton>`'s `type` prop. Setting it to "button" will prevent submittion on `Enter`.
+By default, `<SimpleForm>` and `<TabbedForm>` submit when the user presses `Enter`. To disable this behavior, you must now turn the `<SaveButton>` (which renders as a `<input type="submit" />` by default) into an `<input type="button">` element, by setting the `type` prop to "button".
+
+If you didn't have a custom form toolbar, you'll have to create one to set the `<SaveButton type="button" />` and prevent submission on enter. 
  
 ```diff
 import { Toolbar, SimpleForm, Edit, TextInput, SaveButton, DeleteButton } from 'react-admin';
