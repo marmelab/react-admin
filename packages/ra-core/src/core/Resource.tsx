@@ -41,3 +41,21 @@ export const Resource = (props: ResourceProps) => {
 };
 
 Resource.raName = 'Resource';
+
+Resource.registerResource = ({
+    create,
+    edit,
+    icon,
+    list,
+    name,
+    options,
+    show,
+}: ResourceProps) => ({
+    name,
+    options,
+    hasList: !!list,
+    hasCreate: !!create,
+    hasEdit: !!edit,
+    hasShow: !!show,
+    icon,
+});

@@ -10,6 +10,7 @@ import { useSafeSetState } from '../util';
 import {
     AdminChildren,
     RenderResourcesFunction,
+    ResourceDefinition,
     ResourceProps,
 } from '../types';
 import { CustomRoutesProps } from './CustomRoutes';
@@ -147,15 +148,19 @@ export const useConfigureAdminRouterFromChildren = (
     // Whenever the resources change, we must ensure they're all registered
     useEffect(() => {
         resources.forEach(resource => {
-            registerResource({
-                name: resource.props.name,
-                options: resource.props.options,
-                hasList: !!resource.props.list,
-                hasCreate: !!resource.props.create,
-                hasEdit: !!resource.props.edit,
-                hasShow: !!resource.props.show,
-                icon: resource.props.icon,
-            });
+            if (
+                typeof ((resource.type as unknown) as ResourceWithRegisterFunction)
+                    .registerResource === 'function'
+            ) {
+                const definition = ((resource.type as unknown) as ResourceWithRegisterFunction).registerResource(
+                    resource.props
+                );
+                registerResource(definition);
+            } else {
+                throw new Error(
+                    'When using a custom Resource element, it must have a static registerResource method accepting its props and returning a ResourceDefinition'
+                );
+            }
         });
     }, [registerResource, resources]);
 
@@ -165,6 +170,10 @@ export const useConfigureAdminRouterFromChildren = (
         status,
         resources,
     };
+};
+
+type ResourceWithRegisterFunction = {
+    registerResource: (props: ResourceProps) => ResourceDefinition;
 };
 
 /**
