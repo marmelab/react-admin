@@ -775,14 +775,12 @@ The `<SimpleForm>` renders its child components line by line (within `<div>` com
 
 ![post edition form](./img/post-edition.png)
 
-By default, the `<SimpleForm>` submits the form when the user presses `ENTER`. If you want
-to change this behaviour you can pass `false` for the `submitOnEnter` property, and the user will only be able to submit by pressing the save button. This can be useful e.g. if you have an input widget using `ENTER` for a special function.
+By default, the `<SimpleForm>` submits the form when the user presses `ENTER`, if you want to prevent [submit on enter](#submit-on-enter) you have to change the `type` of the `<SaveButton>` to `button`.
 
 Here are all the props you can set on the `<SimpleForm>` component:
 
 * [`defaultValues`](#default-values)
 * [`validate`](#validation)
-* [`submitOnEnter`](#submit-on-enter)
 * [`toolbar`](#toolbar)
 * [`variant`](#variant)
 * [`margin`](#margin)
@@ -848,14 +846,12 @@ Just like `<SimpleForm>`, `<TabbedForm>` reads the `record` from the `RecordCont
 
 ![tabbed form](./img/tabbed-form.gif)
 
-By default, the `<TabbedForm>` submits the form when the user presses `ENTER`, if you want
-to change this behaviour you can pass `false` for the `submitOnEnter` property.
+By default, the `<TabbedForm>` submits the form when the user presses `ENTER`, if you want to prevent [submit on enter](#submit-on-enter) you have to change the `type` of the `<SaveButton>` to `button`.
 
 Here are all the props accepted by the `<TabbedForm>` component:
 
 * [`defaultValues`](#default-values)
 * [`validate`](#validation)
-* [`submitOnEnter`](#submit-on-enter)
 * [`tabs`](#tabbedformtabs)
 * [`toolbar`](#toolbar)
 * [`variant`](#variant)
@@ -1550,13 +1546,39 @@ export const UserCreate = () => {
 
 ## Submit On Enter
 
-By default, pressing `ENTER` in any of the form fields submits the form - this is the expected behavior in most cases. However, some of your custom input components (e.g. Google Maps widget) may have special handlers for the `ENTER` key. In that case, to disable the automated form submission on enter, set the `submitOnEnter` prop of the form component to `false`:
+By default, pressing `ENTER` in any of the form inputs submits the form - this is the expected behavior in most cases. To disable the automated form submission on enter, set the `type` prop of the `SaveButton` component to `button`.
+
+```jsx
+const MyToolbar = props => (
+    <Toolbar {...props}>
+        <SaveButton type="button" />
+        <DeleteButton />
+    </Toolbar>
+);
+
+export const PostEdit = () => (
+    <Edit>
+        <SimpleForm toolbar={<MyToolbar/>}>
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
+However, some of your custom input components (e.g. Google Maps widget) may have special handlers for the `ENTER` key. In that case, you should prevent the default handling of the event on those inputs. This would allow other inputs to still submit the form on Enter:
 
 ```jsx
 export const PostEdit = () => (
     <Edit>
-        <SimpleForm submitOnEnter={false}>
-            ...
+        <SimpleForm>
+            <TextInput
+                source="name"
+                onKeyUp={event => {
+                    if (event.key === 'Enter') {
+                        event.stopPropagation();
+                    }
+                }}
+            /> 
         </SimpleForm>
     </Edit>
 );
@@ -1627,7 +1649,6 @@ const PostCreateToolbar = props => {
         <Toolbar {...props} >
             <SaveButton
                 label="post.action.save_and_show"
-                submitOnEnter={true}
             />
             <SaveButton
                 label="post.action.save_and_add"
@@ -1640,7 +1661,7 @@ const PostCreateToolbar = props => {
                         redirect(false);
                     }}
                 }
-                submitOnEnter={false}
+                type="button"
                 variant="text"
             />
         </Toolbar>
@@ -1698,29 +1719,30 @@ But if you want to customize the `<Toolbar>` (to remove the `<DeleteButton>` for
 ```jsx
 import * as React from "react";
 import { Edit, SimpleForm, SaveButton, Toolbar } from 'react-admin';
+import { useFormState } from 'react-hook-form';
 
-const PostEditToolbar = props => (
-    <Toolbar {...props} >
-        <SaveButton disabled={props.pristine} />
-    </Toolbar>
-);
+const PostEditToolbar = props => {
+    const { isDirty } = useFormState();
+
+    return (
+      <Toolbar {...props} >
+          <SaveButton disabled={!isDirty}/>
+      </Toolbar>
+    );
+};
 
 export const PostEdit = () => (
-    <Edit>
-        <SimpleForm toolbar={<PostEditToolbar />}>
-            // ...
-        </SimpleForm>
-    </Edit>
+  <Edit>
+      <SimpleForm toolbar={<PostEditToolbar/>}>
+          // ...
+      </SimpleForm>
+  </Edit>
 );
 ```
 
 Here are the props received by the `Toolbar` component when passed as the `toolbar` prop of the `SimpleForm` or `TabbedForm` components:
 
-* `alwaysEnableSaveButton`: Force enabling the `<SaveButton>`. If it's not defined, the `<SaveButton>` will be enabled using the `pristine` prop (disabled if pristine, enabled otherwise).
-* `invalid`: A boolean indicating whether the form is invalid
-* `pristine`: A boolean indicating whether the form is pristine (eg: no inputs have been changed yet)
-* `saving`: A boolean indicating whether a save operation is ongoing.
-* `submitOnEnter`: A boolean indicating whether the form should be submitted when pressing `enter`
+* `alwaysEnableSaveButton`: Force enabling the `<SaveButton>`. If it's not defined, the `<SaveButton>` will be enabled using `react-hook-form`'s `isValidating` state prop and form context's `saving` prop (disabled if isValidating or saving, enabled otherwise).
 
 ### CSS API
 
@@ -1737,27 +1759,6 @@ To override the style of all instances of `<Toolbar>` components using the [MUI 
 **Tip**: Use react-admin's `<Toolbar>` component instead of MUI's `<Toolbar>` component. The former builds upon the latter and adds support for an alternative mobile layout (and is therefore responsive).
 
 **Tip**: To alter the form values before submitting, you should use the `transform` prop on the `SaveButton`. See [Altering the Form Values before Submitting](#altering-the-form-values-before-submitting) for more information and examples.
-
-**Tip**: If you want to include a custom `Button` in a `<Toolbar>` that doesn't render a react-admin `<Button>`, the props injected by `<Toolbar>` to its children (`mutationMode` and `submitOnEnter`) will cause React warnings. You'll need to wrap your custom `Button` in another component and ignore the injected props, as follows:
-
-```jsx
-import * as React from "react";
-import Button from '@mui/material/Button';
-
-const CustomButton = props => <Button label="My Custom Button" {...props} />
-
-const ToolbarCustomButton = ({
-    mutationMode,
-    submitOnEnter,
-    ...rest
-}) => <CustomButton {...rest} />;
-
-const PostEditToolbar = props => (
-    <Toolbar {...props} >
-        <ToolbarCustomButton />
-    </Toolbar>
-);
-```
 
 ## Customizing The Form Layout
 
@@ -2112,7 +2113,6 @@ const UserCreateToolbar = ({ permissions, ...props }) => {
         <Toolbar {...props}>
             <SaveButton
                 label="user.action.save_and_show"            
-                submitOnEnter={true}
             />
             {permissions === 'admin' &&
                 <SaveButton
@@ -2126,7 +2126,8 @@ const UserCreateToolbar = ({ permissions, ...props }) => {
                             redirect(false);
                         }
                     }}
-                    submitOnEnter={false}
+                  
+                    type="button"
                     variant="text"
                 />}
         </Toolbar>
@@ -2237,11 +2238,11 @@ So the save button with 'save and notify' will *transform* the record before rea
 ```jsx
 const PostCreateToolbar = props => (
     <Toolbar {...props}>
-        <SaveButton submitOnEnter={true} />
+        <SaveButton />
         <SaveButton
             label="post.action.save_and_notify"
             transform={data => ({ ...data, notify: true })}
-            submitOnEnter={false}
+            type="button"
         />
     </Toolbar>
 );
@@ -2284,14 +2285,14 @@ const dataProvider = {
 ```jsx
 const PostEditToolbar = props => (
     <Toolbar {...props}>
-        <SaveButton submitOnEnter={true} />
+        <SaveButton />
         <SaveButton
             label="post.action.save_and_notify"
             transform={(data, { previousData }) => ({
                 ...data,
                 avoidChangeField: previousData.avoidChangeField
             })}
-            submitOnEnter={false}
+            type="button"
         />
     </Toolbar>
 );

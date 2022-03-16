@@ -34,14 +34,10 @@ const PostCreateToolbar = props => {
 
     return (
         <Toolbar {...props}>
-            <SaveButton
-                label="post.action.save_and_edit"
-                submitOnEnter
-                variant="text"
-            />
+            <SaveButton label="post.action.save_and_edit" variant="text" />
             <SaveButton
                 label="post.action.save_and_show"
-                submitOnEnter={false}
+                type="button"
                 variant="text"
                 mutationOptions={{
                     onSuccess: data => {
@@ -55,7 +51,7 @@ const PostCreateToolbar = props => {
             />
             <SaveButton
                 label="post.action.save_and_add"
-                submitOnEnter={false}
+                type="button"
                 variant="text"
                 mutationOptions={{
                     onSuccess: () => {
@@ -70,7 +66,7 @@ const PostCreateToolbar = props => {
             />
             <SaveButton
                 label="post.action.save_with_average_note"
-                submitOnEnter={false}
+                type="button"
                 variant="text"
                 mutationOptions={{
                     onSuccess: data => {

@@ -149,7 +149,7 @@ export const ResourceConfigurationPage = () => {
                                     )}
                                 </div>
                                 <CardActions className={classes.actions}>
-                                    <SaveButton submitOnEnter />
+                                    <SaveButton />
                                 </CardActions>
                             </form>
                         </StyledCard>

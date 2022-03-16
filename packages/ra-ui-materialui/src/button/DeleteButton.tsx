@@ -8,6 +8,7 @@ import {
     MutationMode,
     DeleteParams,
     useRecordContext,
+    useSaveContext,
 } from 'ra-core';
 
 import { ButtonProps } from './Button';
@@ -51,19 +52,26 @@ import { DeleteWithConfirmButton } from './DeleteWithConfirmButton';
 export const DeleteButton = <RecordType extends RaRecord = any>(
     props: DeleteButtonProps<RecordType>
 ) => {
-    const { mutationMode = 'undoable', ...rest } = props;
-    const record = useRecordContext();
+    const { mutationMode, ...rest } = props;
+    const record = useRecordContext(props);
+    const saveContext = useSaveContext(props);
     if (!record || record.id == null) {
         return null;
     }
 
-    return mutationMode === 'undoable' ? (
+    const finalMutationMode = mutationMode
+        ? mutationMode
+        : saveContext?.mutationMode
+        ? saveContext.mutationMode
+        : 'undoable';
+
+    return finalMutationMode === 'undoable' ? (
         // @ts-ignore I looked for the error for one hour without finding it
         <DeleteWithUndoButton<RecordType> record={record} {...rest} />
     ) : (
         <DeleteWithConfirmButton<RecordType>
             // @ts-ignore I looked for the error for one hour without finding it
-            mutationMode={mutationMode}
+            mutationMode={finalMutationMode}
             record={record}
             {...rest}
         />
@@ -83,7 +91,6 @@ export interface DeleteButtonProps<RecordType extends RaRecord = any>
     resource?: string;
     // May be injected by Toolbar
     saving?: boolean;
-    submitOnEnter?: boolean;
     mutationOptions?: UseMutationOptions<
         RecordType,
         unknown,

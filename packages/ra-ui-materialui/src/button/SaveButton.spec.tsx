@@ -19,7 +19,6 @@ const invalidButtonDomProps = {
     disabled: true,
     record: { id: 123, foo: 'bar' },
     resource: 'posts',
-    submitOnEnter: true,
     mutationMode: 'pessimistic' as MutationMode,
 };
 
@@ -58,10 +57,10 @@ describe('<SaveButton />', () => {
         );
     });
 
-    it('should render as submit type when submitOnEnter is true', async () => {
+    it('should render as submit type by default', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <Form render={() => <SaveButton submitOnEnter />} />
+                <Form render={() => <SaveButton />} />
             </AdminContext>
         );
         await waitFor(() =>
@@ -71,10 +70,10 @@ describe('<SaveButton />', () => {
         );
     });
 
-    it('should render as button type when submitOnEnter is false', async () => {
+    it('should render as button type when type prop is "button"', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <Form render={() => <SaveButton submitOnEnter={false} />} />
+                <Form render={() => <SaveButton type="button" />} />
             </AdminContext>
         );
 
@@ -93,7 +92,7 @@ describe('<SaveButton />', () => {
                     onSubmit={onSubmit}
                     render={({ handleSubmit }) => (
                         <form onSubmit={handleSubmit}>
-                            <SaveButton submitOnEnter />
+                            <SaveButton />
                         </form>
                     )}
                 />
@@ -116,7 +115,7 @@ describe('<SaveButton />', () => {
                     onSubmit={onSubmit}
                     render={({ handleSubmit }) => (
                         <form onSubmit={handleSubmit}>
-                            <SaveButton saving submitOnEnter />
+                            <SaveButton saving />
                         </form>
                     )}
                 />
@@ -132,15 +131,18 @@ describe('<SaveButton />', () => {
     it('should allow to override the onSuccess side effects', async () => {
         const dataProvider = testDataProvider({
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
-            update: (_, { data }) => Promise.resolve({ data }),
+            update: (_, { data }) =>
+                // @ts-ignore
+                Promise.resolve({ data }),
         });
         const onSuccess = jest.fn();
         const EditToolbar = props => (
             <Toolbar {...props}>
-                <SaveButton mutationOptions={{ onSuccess }} />
+                <SaveButton mutationOptions={{ onSuccess }} type="button" />
             </Toolbar>
         );
         render(
@@ -180,6 +182,7 @@ describe('<SaveButton />', () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         const dataProvider = testDataProvider({
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
@@ -188,7 +191,7 @@ describe('<SaveButton />', () => {
         const onError = jest.fn();
         const EditToolbar = props => (
             <Toolbar {...props}>
-                <SaveButton mutationOptions={{ onError }} />
+                <SaveButton mutationOptions={{ onError }} type="button" />
             </Toolbar>
         );
         render(
@@ -229,6 +232,7 @@ describe('<SaveButton />', () => {
             .mockImplementationOnce((_, { data }) => Promise.resolve({ data }));
         const dataProvider = testDataProvider({
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
@@ -240,7 +244,7 @@ describe('<SaveButton />', () => {
         }));
         const EditToolbar = props => (
             <Toolbar {...props}>
-                <SaveButton transform={transform} />
+                <SaveButton transform={transform} type="button" />
             </Toolbar>
         );
         render(
@@ -298,6 +302,7 @@ describe('<SaveButton />', () => {
     it('should disable <SaveButton/> if an input is being validated asynchronously', async () => {
         const dataProvider = testDataProvider({
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
@@ -347,7 +352,7 @@ describe('<SaveButton />', () => {
         });
     });
 
-    it('Displays a notification on save when invalid and is not a submit', async () => {
+    it('Displays a notification on save when invalid and is not of type submit', async () => {
         const Notification = () => {
             const { notifications } = useNotificationContext();
             return notifications.length > 0 ? (
@@ -367,6 +372,7 @@ describe('<SaveButton />', () => {
                                     validate={required()}
                                 />
                                 <SaveButton
+                                    type="button"
                                     mutationOptions={{
                                         onSuccess: jest.fn(),
                                     }}

@@ -18,7 +18,6 @@ const invalidButtonDomProps = {
     redirect: 'list',
     resource: 'posts',
     saving: false,
-    submitOnEnter: true,
     mutationMode: 'undoable' as MutationMode,
 };
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { Children, isValidElement, ReactElement, ReactNode } from 'react';
+import { Children, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import {
     Toolbar as MuiToolbar,
@@ -11,9 +11,9 @@ import {
 import clsx from 'clsx';
 import {
     RaRecord,
-    MutationMode,
     SaveContextValue,
     useRecordContext,
+    useSaveContext,
 } from 'ra-core';
 import { useFormState } from 'react-hook-form';
 
@@ -51,7 +51,7 @@ import { SaveButton, DeleteButton } from '../button';
  * );
  *
  * @typedef {Object} Props the props you can use (other props are injected by the <SimpleForm>)
- * @prop {boolean} alwaysEnableSaveButton Force enabling the <SaveButton>. If it's not defined, the <SaveButton> will be enabled using the `pristine` and `validating` props (disabled if pristine or validating, enabled otherwise).
+ * @prop {boolean} alwaysEnableSaveButton Force enabling the <SaveButton>. If it's not defined, the `<SaveButton>` will be enabled using `react-hook-form`'s `isValidating` state prop and form context's `saving` prop (disabled if isValidating or saving, enabled otherwise).
  * @prop {ReactElement[]} children Customize the buttons you want to display in the <Toolbar>.
  *
  */
@@ -65,19 +65,17 @@ export const Toolbar = <
         children,
         className,
         resource,
-        saving,
-        submitOnEnter = true,
-        mutationMode,
         ...rest
     } = props;
     const record = useRecordContext(props);
+    const saveContext = useSaveContext();
     const isXs = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
     const { isValidating } = useFormState();
-    // Use form pristine and validating to enable or disable the save button
+    // Use form isValidating and form context saving to enable or disable the save button
     // if alwaysEnableSaveButton is undefined
     const disabled = !valueOrDefault(
         alwaysEnableSaveButton !== false ? alwaysEnableSaveButton : undefined,
-        !isValidating && !saving
+        !isValidating && !saveContext?.saving
     );
 
     return (
@@ -94,42 +92,13 @@ export const Toolbar = <
         >
             {Children.count(children) === 0 ? (
                 <div className={ToolbarClasses.defaultToolbar}>
-                    <SaveButton
-                        disabled={disabled}
-                        submitOnEnter={submitOnEnter}
-                    />
+                    <SaveButton disabled={disabled} />
                     {record && typeof record.id !== 'undefined' && (
-                        <DeleteButton
-                            // @ts-ignore
-                            record={record}
-                            resource={resource}
-                            mutationMode={mutationMode}
-                        />
+                        <DeleteButton resource={resource} />
                     )}
                 </div>
             ) : (
-                Children.map(children, (button: ReactElement) =>
-                    button && isValidElement<any>(button)
-                        ? React.cloneElement(button, {
-                              record: valueOrDefault(
-                                  button.props.record,
-                                  record
-                              ),
-                              resource: valueOrDefault(
-                                  button.props.resource,
-                                  resource
-                              ),
-                              submitOnEnter: valueOrDefault(
-                                  button.props.submitOnEnter,
-                                  submitOnEnter
-                              ),
-                              mutationMode: valueOrDefault(
-                                  button.props.mutationMode,
-                                  mutationMode
-                              ),
-                          })
-                        : null
-                )
+                children
             )}
         </StyledToolbar>
     );
@@ -141,8 +110,6 @@ export interface ToolbarProps<RecordType extends Partial<RaRecord> = any>
     children?: ReactNode;
     alwaysEnableSaveButton?: boolean;
     className?: string;
-    mutationMode?: MutationMode;
-    submitOnEnter?: boolean;
     record?: RecordType;
     resource?: string;
 }
@@ -152,7 +119,6 @@ Toolbar.propTypes = {
     className: PropTypes.string,
     record: PropTypes.any,
     resource: PropTypes.string,
-    submitOnEnter: PropTypes.bool,
 };
 
 const PREFIX = 'RaToolbar';

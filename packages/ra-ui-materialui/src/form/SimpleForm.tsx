@@ -32,7 +32,6 @@ import { SimpleFormView } from './SimpleFormView';
  * @prop {ReactElement[]} children Input elements
  * @prop {Object} defaultValues
  * @prop {Function} validate
- * @prop {boolean} submitOnEnter
  * @prop {string} redirect
  * @prop {ReactElement} toolbar The element displayed at the bottom of the form, containing the SaveButton
  *
@@ -53,9 +52,6 @@ SimpleForm.propTypes = {
         PropTypes.bool,
         PropTypes.func,
     ]),
-    save: PropTypes.func,
-    saving: PropTypes.bool,
-    submitOnEnter: PropTypes.bool,
     toolbar: PropTypes.oneOfType([PropTypes.element, PropTypes.oneOf([false])]),
     validate: PropTypes.func,
 };
@@ -72,7 +68,6 @@ export interface SimpleFormProps
     defaultValues?: any;
     mutationMode?: MutationMode;
     resource?: string;
-    submitOnEnter?: boolean;
     toolbar?: ReactElement | false;
     sx?: SxProps;
 }

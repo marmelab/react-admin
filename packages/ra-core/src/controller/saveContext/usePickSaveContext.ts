@@ -3,7 +3,7 @@ import pick from 'lodash/pick';
 import { SaveContextValue } from './SaveContext';
 
 /**
- * This hook extracts the `save` and `saving` properties from either the `CreateContext` or `EditContext`. This ensures the `SaveContext` doesn't rerender when those two contexts have other properties changes.
+ * This hook extracts the `save`, `saving` and mutationMode properties from either the `CreateContext` or `EditContext`. This ensures the `SaveContext` doesn't rerender when those two contexts have other properties changes.
  */
 export const usePickSaveContext = <
     ContextType extends SaveContextValue = SaveContextValue
@@ -11,9 +11,9 @@ export const usePickSaveContext = <
     context: ContextType
 ): SaveContextValue => {
     const value = useMemo(
-        () => pick(context, ['save', 'saving']),
+        () => pick(context, ['save', 'saving', 'mutationMode']),
         /* eslint-disable react-hooks/exhaustive-deps */
-        [context.save, context.saving]
+        [context.save, context.saving, context.mutationMode]
         /* eslint-enable react-hooks/exhaustive-deps */
     );
 

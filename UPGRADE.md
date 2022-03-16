@@ -2659,11 +2659,43 @@ const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
 -               invalid={invalid}
 +               invalid={!isValid}
                 saving={saving}
-                submitOnEnter={true}
             />
         </Toolbar>
     );
 };
+```
+
+### `submitOnEnter` Prop Has Been Removed
+
+The following components no longer accept this prop:
+
+- `<SimpleForm>`
+- `<TabbedForm>`
+- `<Toolbar>`
+- `<SaveButton>`
+
+By default, `<SimpleForm>` and `<TabbedForm>` submit when the user presses `Enter`. To disable this behavior, you must now turn the `<SaveButton>` (which renders as a `<input type="submit" />` by default) into an `<input type="button">` element, by setting the `type` prop to "button".
+
+If you didn't have a custom form toolbar, you'll have to create one to set the `<SaveButton type="button" />` and prevent submission on enter. 
+ 
+```diff
+import { Toolbar, SimpleForm, Edit, TextInput, SaveButton, DeleteButton } from 'react-admin';
+
++const MyToolbar = props => (
++   <Toolbar {...props}> 
++       <SaveButton type="button" />
++       <DeleteButton />
++   </Toolbar>
++);
+
+export const PostEdit = () => (
+    <Edit>
+-       <SimpleForm submitOnEnter>
++       <SimpleForm toolbar={<MyToolbar/>}>
+            <TextInput source="title" />
+        </SimpleForm>
+    </Edit>
+);
 ```
 
 The `<Toolbar>` component used to receive the `width` prop also, that allowed to display the mobile or desktop version depending on its value. This is handle internally in version 4 and you can safely remove this prop.
@@ -2877,10 +2909,10 @@ const PostCreateToolbar = props => {
 
     return (
         <Toolbar {...props}>
-            <SaveButton label="Save" submitOnEnter />
+-           <SaveButton label="Save" />
             <SaveButton
                 label="Save and add"
-                submitOnEnter={false}
+                type="button"
                 mutationOptions={{
                     onSuccess: () => {
 -                       redirect(false);

@@ -38,7 +38,12 @@ export const CreateContextProvider = ({
     value: CreateControllerResult;
 }) => (
     <CreateContext.Provider value={value}>
-        <SaveContextProvider value={usePickSaveContext(value)}>
+        <SaveContextProvider
+            value={{
+                ...usePickSaveContext(value),
+                mutationMode: 'pessimistic',
+            }}
+        >
             <RecordContextProvider<Partial<RaRecord>>
                 value={value && value.record}
             >

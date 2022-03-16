@@ -12,7 +12,6 @@ const invalidButtonDomProps = {
     record: { id: 123, foo: 'bar' },
     resource: 'posts',
     saving: false,
-    submitOnEnter: true,
     mutationMode: 'pessimistic' as MutationMode,
 };
 

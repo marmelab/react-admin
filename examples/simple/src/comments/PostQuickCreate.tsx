@@ -78,7 +78,7 @@ const PostQuickCreate = props => {
                 </SimpleForm>
             </DialogContent>
             <DialogActions>
-                <SaveButton form="post-quick-create" submitOnEnter />
+                <SaveButton form="post-quick-create" />
                 <CancelButton onClick={onCancel} />
             </DialogActions>
         </Dialog>
