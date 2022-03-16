@@ -1,6 +1,6 @@
 {
     "name": "ra-language-english",
-    "version": "4.0.0-beta.2",
+    "version": "4.0.0-beta.3",
     "description": "English messages for react-admin, the frontend framework for building admin applications on top of REST/GraphQL services",
     "repository": {
         "type": "git",
@@ -19,7 +19,7 @@
         "watch": "tsup src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
     },
     "dependencies": {
-        "ra-core": "^4.0.0-beta.2"
+        "ra-core": "^4.0.0-beta.3"
     },
     "devDependencies": {
         "npm-dts": "^1.3.10",
