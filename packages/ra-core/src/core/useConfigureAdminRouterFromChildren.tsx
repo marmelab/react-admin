@@ -10,9 +10,11 @@ import { useSafeSetState } from '../util';
 import {
     AdminChildren,
     RenderResourcesFunction,
+    ResourceDefinition,
     ResourceProps,
 } from '../types';
 import { CustomRoutesProps } from './CustomRoutes';
+import { useRegisterResource } from './useRegisterResource';
 
 /**
  * This hook inspects the CoreAdminRouter children and returns them separated in three groups:
@@ -39,6 +41,7 @@ export const useConfigureAdminRouterFromChildren = (
     const getPermissions = useGetPermissions();
     const doLogout = useLogout();
     const { authenticated } = useAuthState();
+    const registerResource = useRegisterResource();
     // Gather custom routes and resources that were declared as direct children of CoreAdminRouter
     // e.g. Not returned from the child function (if any)
     // We need to know right away wether some resources were declared to correctly
@@ -142,12 +145,35 @@ export const useConfigureAdminRouterFromChildren = (
         setStatus,
     ]);
 
+    // Whenever the resources change, we must ensure they're all registered
+    useEffect(() => {
+        resources.forEach(resource => {
+            if (
+                typeof ((resource.type as unknown) as ResourceWithRegisterFunction)
+                    .registerResource === 'function'
+            ) {
+                const definition = ((resource.type as unknown) as ResourceWithRegisterFunction).registerResource(
+                    resource.props
+                );
+                registerResource(definition);
+            } else {
+                throw new Error(
+                    'When using a custom Resource element, it must have a static registerResource method accepting its props and returning a ResourceDefinition'
+                );
+            }
+        });
+    }, [registerResource, resources]);
+
     return {
         customRoutesWithLayout,
         customRoutesWithoutLayout,
         status,
         resources,
     };
+};
+
+type ResourceWithRegisterFunction = {
+    registerResource: (props: ResourceProps) => ResourceDefinition;
 };
 
 /**

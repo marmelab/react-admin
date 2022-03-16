@@ -1,5 +1,5 @@
-import React from 'react';
-import { createContext, useState } from 'react';
+import * as React from 'react';
+import { createContext, useCallback, useState } from 'react';
 import isEqual from 'lodash/isEqual';
 
 import { ResourceDefinition } from '../types';
@@ -45,7 +45,7 @@ export const ResourceDefinitionContextProvider = ({
         defaultDefinitions
     );
 
-    const setDefinition = (config: ResourceDefinition) => {
+    const setDefinition = useCallback((config: ResourceDefinition) => {
         setState(prev =>
             isEqual(prev[config.name], config)
                 ? prev
@@ -54,7 +54,7 @@ export const ResourceDefinitionContextProvider = ({
                       [config.name]: config,
                   }
         );
-    };
+    }, []);
 
     return (
         <ResourceDefinitionContext.Provider
