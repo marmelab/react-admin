@@ -57,5 +57,5 @@ Resource.registerResource = ({
     hasCreate: !!create,
     hasEdit: !!edit,
     hasShow: !!show,
-    icon: icon,
+    icon,
 });
