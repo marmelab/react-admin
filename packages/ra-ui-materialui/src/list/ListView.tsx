@@ -39,6 +39,7 @@ export const ListView = <RecordType extends RaRecord = any>(
     const {
         defaultTitle,
         data,
+        exporter,
         total,
         isLoading,
         filterValues,
@@ -54,6 +55,7 @@ export const ListView = <RecordType extends RaRecord = any>(
                 <ListToolbar
                     filters={filters}
                     actions={actions}
+                    exporter={exporter}
                     hasCreate={hasCreate}
                 />
             )}
