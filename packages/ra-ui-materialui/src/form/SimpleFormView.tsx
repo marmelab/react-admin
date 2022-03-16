@@ -20,8 +20,10 @@ export const SimpleFormView = ({
     ...rest
 }: SimpleFormViewProps): ReactElement => (
     <form className={clsx('simple-form', className)} onSubmit={handleSubmit}>
-        <Component sx={sx} {...sanitizeRestProps(rest)}>
-            {children}
+        <Component sx={sx}>
+            <Stack alignItems="flex-start" {...sanitizeRestProps(rest)}>
+                {children}
+            </Stack>
         </Component>
         {toolbar}
     </form>
@@ -38,12 +40,8 @@ SimpleFormView.propTypes = {
     validate: PropTypes.func,
 };
 
-const DefaultComponent = ({ children, sx, ...props }) => (
-    <CardContent sx={sx}>
-        <Stack alignItems="flex-start" {...props}>
-            {children}
-        </Stack>
-    </CardContent>
+const DefaultComponent = ({ children, sx }) => (
+    <CardContent sx={sx}>{children}</CardContent>
 );
 const DefaultToolbar = <Toolbar />;
 
