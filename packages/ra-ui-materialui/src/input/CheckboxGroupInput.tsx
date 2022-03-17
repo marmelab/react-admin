@@ -7,7 +7,7 @@ import get from 'lodash/get';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl, { FormControlProps } from '@mui/material/FormControl';
 import FormGroup from '@mui/material/FormGroup';
-import FormHelperText from '@mui/material/FormHelperText';
+import { FormHelperText, FormHelperTextProps } from '@mui/material';
 import { CheckboxProps } from '@mui/material/Checkbox';
 import {
     FieldTitle,
@@ -96,6 +96,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
         className,
         classes: classesOverride,
         format,
+        formHelperTextProps,
         helperText,
         label,
         isLoading: isLoadingProp,
@@ -229,7 +230,7 @@ export const CheckboxGroupInput: FunctionComponent<CheckboxGroupInputProps> = pr
                     />
                 ))}
             </FormGroup>
-            <FormHelperText>
+            <FormHelperText {...formHelperTextProps}>
                 <InputHelperText
                     touched={isTouched || isSubmitted}
                     error={error?.message}
@@ -272,6 +273,7 @@ export type CheckboxGroupInputProps = Omit<CommonInputProps, 'source'> &
         row?: boolean;
         // Optional as this input can be used inside a ReferenceInput
         source?: string;
+        formHelperTextProps?: FormHelperTextProps;
     };
 
 const PREFIX = 'RaCheckboxGroupInput';

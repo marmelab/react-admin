@@ -6,7 +6,7 @@ import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
 import Link from '@tiptap/extension-link';
 import TextAlign from '@tiptap/extension-text-align';
-import { FormHelperText } from '@mui/material';
+import { FormHelperText, FormHelperTextProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useInput, useResourceContext } from 'ra-core';
 import {
@@ -172,6 +172,7 @@ const RichTextInputContent = ({
     editor,
     error,
     fullWidth,
+    formHelperTextProps,
     helperText,
     id,
     isTouched,
@@ -195,6 +196,7 @@ const RichTextInputContent = ({
                     : ''
             }
             error={(isTouched || isSubmitted) && invalid}
+            {...formHelperTextProps}
         >
             <InputHelperText
                 touched={isTouched || isSubmitted}
@@ -280,4 +282,5 @@ export type RichTextInputContentProps = {
     isSubmitted: boolean;
     invalid: boolean;
     toolbar?: ReactNode;
+    formHelperTextProps?: FormHelperTextProps;
 };

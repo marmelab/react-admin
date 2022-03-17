@@ -7,7 +7,9 @@ import {
     Select,
     MenuItem,
     InputLabel,
+    InputLabelProps,
     FormHelperText,
+    FormHelperTextProps,
     FormControl,
     Chip,
 } from '@mui/material';
@@ -90,10 +92,12 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
         createValue,
         disableValue,
         format,
+        formHelperTextProps,
         helperText,
-        label,
+        inputLabelProps,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
+        label,
         margin = 'dense',
         onBlur,
         onChange,
@@ -235,6 +239,7 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                     ref={inputLabel}
                     id={`${label}-outlined-label`}
                     error={(isTouched || isSubmitted) && invalid}
+                    {...inputLabelProps}
                 >
                     <FieldTitle
                         label={label}
@@ -276,7 +281,10 @@ export const SelectArrayInput = (props: SelectArrayInputProps) => {
                 >
                     {finalChoices.map(renderMenuItem)}
                 </Select>
-                <FormHelperText error={isTouched && !!error}>
+                <FormHelperText
+                    error={isTouched && !!error}
+                    {...formHelperTextProps}
+                >
                     <InputHelperText
                         touched={isTouched || isSubmitted}
                         error={error?.message}
@@ -295,6 +303,8 @@ export type SelectArrayInputProps = ChoicesProps &
     Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> & {
         disableValue?: string;
         source?: string;
+        inputLabelProps?: InputLabelProps;
+        formHelperTextProps?: FormHelperTextProps;
     };
 
 SelectArrayInput.propTypes = {

@@ -23,12 +23,13 @@ import { CheckboxGroupInput } from 'react-admin';
 
 ## Properties
 
-| Prop          | Required | Type                       | Default | Description                                                                                                                            |
-| ------------- | -------- | -------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------  |
-| `choices`     | Required | `Object[]`                 | -       | List of choices                                                                                                                        |
-| `optionText`  | Optional | `string` &#124; `Function` | `name`  | Field name of record to display in the suggestion item or function which accepts the correct record as argument (`record => {string}`) |
-| `optionValue` | Optional | `string`                   | `id`    | Field name of record containing the value to use as input value                                                                        |
-| `row`         | Optional | `boolean`                  | `true`  | Display group of elements in a compact row.                                                                                            |
+| Prop                  | Required | Type                       | Default  | Description                                                                                                                            |
+|-----------------------| -------- |----------------------------|----------|----------------------------------------------------------------------------------------------------------------------------------------|
+| `choices`             | Required | `Object[]`                 | -        | List of choices                                                                                                                        |
+| `optionText`          | Optional | `string` &#124; `Function` | `name`   | Field name of record to display in the suggestion item or function which accepts the correct record as argument (`record => {string}`) |
+| `optionValue`         | Optional | `string`                   | `id`     | Field name of record containing the value to use as input value                                                                        |
+|  `row`                | Optional | `boolean`                  | `true`   | Display group of elements in a compact row.                                                                                            |
+| `formHelperTextProps` | Optional | `Object`                   | -        | Props applied to the internal MUI's FormHelperText element.                                                                            |
 
 Refer to [MUI Checkbox documentation](https://mui.com/api/checkbox/) for more details.
 

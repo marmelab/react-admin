@@ -11,7 +11,13 @@ import {
     useResourceContext,
 } from 'ra-core';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
-import { InputLabel, FormControl, FormHelperText } from '@mui/material';
+import {
+    InputLabel,
+    InputLabelProps,
+    FormControl,
+    FormHelperText,
+    FormHelperTextProps,
+} from '@mui/material';
 import isEqual from 'lodash/isEqual';
 
 import { LinearProgress } from '../../layout';
@@ -66,11 +72,13 @@ export const ArrayInput = (props: ArrayInputProps) => {
     const {
         className,
         defaultValue,
-        label,
+        formHelperTextProps,
+        inputLabelProps,
         isFetching,
         isLoading,
         children,
         helperText,
+        label,
         record,
         source,
         validate,
@@ -170,6 +178,7 @@ export const ArrayInput = (props: ArrayInputProps) => {
                 htmlFor={source}
                 shrink
                 error={(isDirty || isSubmitted) && invalid}
+                {...inputLabelProps}
             >
                 <FieldTitle
                     label={label}
@@ -190,7 +199,10 @@ export const ArrayInput = (props: ArrayInputProps) => {
                 })}
             </ArrayInputContext.Provider>
             {!!((isDirty || isSubmitted) && invalid) || helperText ? (
-                <FormHelperText error={(isDirty || isSubmitted) && invalid}>
+                <FormHelperText
+                    error={(isDirty || isSubmitted) && invalid}
+                    {...formHelperTextProps}
+                >
                     <InputHelperText
                         touched={isDirty || isSubmitted}
                         error={error?.message}
@@ -221,4 +233,6 @@ export type ArrayInputProps = CommonInputProps & {
     isFetching?: boolean;
     isLoading?: boolean;
     record?: Partial<RaRecord>;
+    inputLabelProps?: InputLabelProps;
+    formHelperTextProps?: FormHelperTextProps;
 };

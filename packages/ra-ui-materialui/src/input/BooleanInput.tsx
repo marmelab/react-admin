@@ -2,11 +2,16 @@ import * as React from 'react';
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormHelperText from '@mui/material/FormHelperText';
-import FormGroup, { FormGroupProps } from '@mui/material/FormGroup';
-import Switch, { SwitchProps } from '@mui/material/Switch';
 import { FieldTitle, useInput } from 'ra-core';
+import {
+    Switch,
+    SwitchProps,
+    FormGroup,
+    FormGroupProps,
+    FormControlLabel,
+    FormHelperText,
+    FormHelperTextProps,
+} from '@mui/material';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
@@ -18,6 +23,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
         className,
         defaultValue = false,
         format,
+        formHelperTextProps,
         label,
         fullWidth,
         helperText,
@@ -86,7 +92,10 @@ export const BooleanInput = (props: BooleanInputProps) => {
                     />
                 }
             />
-            <FormHelperText error={(isTouched || isSubmitted) && invalid}>
+            <FormHelperText
+                error={(isTouched || isSubmitted) && invalid}
+                {...formHelperTextProps}
+            >
                 <InputHelperText
                     touched={isTouched}
                     error={error?.message}
@@ -110,4 +119,6 @@ BooleanInput.defaultProps = {
 
 export type BooleanInputProps = CommonInputProps &
     SwitchProps &
-    Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'>;
+    Omit<FormGroupProps, 'defaultValue' | 'onChange' | 'onBlur' | 'onFocus'> & {
+        formHelperTextProps?: FormHelperTextProps;
+    };

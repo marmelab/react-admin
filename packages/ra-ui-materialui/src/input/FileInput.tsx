@@ -9,7 +9,7 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
-import FormHelperText from '@mui/material/FormHelperText';
+import { FormHelperText, FormHelperTextProps } from '@mui/material';
 import { useInput, useTranslate, shallowEqual } from 'ra-core';
 
 import { CommonInputProps } from './CommonInputProps';
@@ -25,6 +25,7 @@ export const FileInput = (props: FileInputProps) => {
         children,
         className,
         format,
+        formHelperTextProps,
         helperText,
         inputProps: inputPropsOptions,
         label,
@@ -177,7 +178,7 @@ export const FileInput = (props: FileInputProps) => {
                         <p>{translate(labelSingle)}</p>
                     )}
                 </div>
-                <FormHelperText>
+                <FormHelperText {...formHelperTextProps}>
                     <InputHelperText
                         touched={isTouched || isSubmitted}
                         error={error?.message}
@@ -262,5 +263,6 @@ export type FileInputProps = DropzoneOptions &
         placeholder?: ReactNode;
         inputProps?: any;
         validateFileRemoval?(file): boolean | Promise<boolean>;
+        formHelperTextProps?: FormHelperTextProps;
         sx?: SxProps;
     };

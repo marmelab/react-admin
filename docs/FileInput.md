@@ -23,6 +23,7 @@ title: "The FileInput Component"
 | `placeholder`         | Optional | `ReactNode`                      | -                               | Invite displayed in the drop zone, overrides `labelSingle` and `labelMultiple`                                                                                                               |
 | `validateFileRemoval` | Optional | `(file) => void | Promise<void>` | -                               | Allows to cancel the removal of files                                                                                                                                                        |
 | `options`             | Optional | `Object`                         | `{}`                            | Additional options passed to react-dropzone's `useDropzone()` hook. See [the react-dropzone source](https://github.com/react-dropzone/react-dropzone/blob/master/src/index.js)  for details. |
+| `formHelperTextProps` | Optional | `Object`                       | -                               | Props applied to the internal MUI's FormHelperText element.                                                                                                                                  |
 
 `<FileInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 

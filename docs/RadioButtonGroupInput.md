@@ -23,14 +23,15 @@ import { RadioButtonGroupInput } from 'react-admin';
 
 ## Properties
 
-| Prop              | Required | Type                       | Default | Description                                                                                                                            |
-| ----------------- | -------- | -------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `choices`         | Required | `Object[]`                 | -       | List of items to show as options                                                                                                       |
-| `options`         | Optional | `Object`                   | -       | Props to pass to the underlying `<RadioButtonGroup>` element                                                                           |
-| `optionText`      | Optional | `string` &#124; `Function` | `name`  | Field name of record to display in the suggestion item or function which accepts the current record as argument (`record => {string}`) |
-| `optionValue`     | Optional | `string`                   | `id`    | Field name of record containing the value to use as input value                                                                        |
-| `row`             | Optional | `boolean`                  | `true`  | Display options in a compact row.                                                                                                      |
-| `translateChoice` | Optional | `boolean`                  | `true`  | Whether the choices should be translated                                                                                               |
+| Prop                  | Required | Type                       | Default | Description                                                                                                                            |
+|-----------------------| -------- |----------------------------|---------| -------------------------------------------------------------------------------------------------------------------------------------- |
+| `choices`             | Required | `Object[]`                 | -       | List of items to show as options                                                                                                       |
+| `options`             | Optional | `Object`                   | -       | Props to pass to the underlying `<RadioButtonGroup>` element                                                                           |
+| `optionText`          | Optional | `string` &#124; `Function` | `name`  | Field name of record to display in the suggestion item or function which accepts the current record as argument (`record => {string}`) |
+| `optionValue`         | Optional | `string`                   | `id`    | Field name of record containing the value to use as input value                                                                        |
+| `row`                 | Optional | `boolean`                  | `true`  | Display options in a compact row.                                                                                                      |
+| `translateChoice`     | Optional | `boolean`                  | `true`  | Whether the choices should be translated                                                                                               |
+| `formHelperTextProps` | Optional | `Object`                   | -       | Props applied to the internal MUI's FormHelperText element.                                                                            |
 
 `<RadioButtonGroupInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 

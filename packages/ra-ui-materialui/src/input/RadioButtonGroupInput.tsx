@@ -5,11 +5,12 @@ import clsx from 'clsx';
 import {
     FormControl,
     FormHelperText,
+    FormHelperTextProps,
     FormLabel,
     RadioGroup,
+    RadioGroupProps,
+    FormControlProps,
 } from '@mui/material';
-import { RadioGroupProps } from '@mui/material/RadioGroup';
-import { FormControlProps } from '@mui/material/FormControl';
 import get from 'lodash/get';
 import {
     useInput,
@@ -88,6 +89,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
         choices: choicesProp,
         className,
         format,
+        formHelperTextProps,
         helperText,
         isFetching: isFetchingProp,
         isLoading: isLoadingProp,
@@ -189,7 +191,7 @@ export const RadioButtonGroupInput = (props: RadioButtonGroupInputProps) => {
                     />
                 ))}
             </RadioGroup>
-            <FormHelperText>
+            <FormHelperText {...formHelperTextProps}>
                 <InputHelperText
                     touched={isTouched || isSubmitted}
                     error={error?.message}
@@ -260,7 +262,9 @@ const sanitizeRestProps = ({
 export type RadioButtonGroupInputProps = CommonInputProps &
     ChoicesProps &
     FormControlProps &
-    RadioGroupProps;
+    RadioGroupProps & {
+        formHelperTextProps?: FormHelperTextProps;
+    };
 
 const PREFIX = 'RaRadioButtonGroupInput';
 

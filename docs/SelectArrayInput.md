@@ -11,18 +11,20 @@ To let users choose several values in a list using a dropdown, use `<SelectArray
 
 ## Properties
 
-| Prop              | Required | Type                       | Default            | Description                                                                                                                            |
-|-------------------|----------|----------------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| `choices`         | Required | `Object[]`                 | -                  | List of items to show as options                                                                                                       |
-| `create`          | Optional | `Element`                  | `-`                | A React Element to render when users want to create a new choice                                                                       |
-| `createLabel`     | Optional | `string`                   | `ra.action.create` | The label for the menu item allowing users to create a new choice. Used when the filter is empty                                       |
-| `emptyText`       | Optional | `string`                   | ''                 | The text to display for the empty option                                                                                               |
-| `onCreate`        | Optional | `Function`                 | `-`                | A function called with the current filter value when users choose to create a new choice.                                              |
-| `options`         | Optional | `Object`                   | -                  | Props to pass to the underlying `<SelectInput>` element                                                                                |
-| `optionText`      | Optional | `string` &#124; `Function` | `name`             | Field name of record to display in the suggestion item or function which accepts the current record as argument (`record => {string}`) |
-| `optionValue`     | Optional | `string`                   | `id`               | Field name of record containing the value to use as input value                                                                        |
-| `resettable`      | Optional | `boolean`                  | `false`            | If `true`, display a button to reset the changes in this input value                                                                   |
-| `translateChoice` | Optional | `boolean`                  | `true`             | Whether the choices should be translated                                                                                               |
+| Prop                  | Required | Type                         | Default            | Description                                                                                                                            |
+|-----------------------|----------|------------------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| `choices`             | Required | `Object[]`                   | -                  | List of items to show as options                                                                                                       |
+| `create`              | Optional | `Element`                    | `-`                | A React Element to render when users want to create a new choice                                                                       |
+| `createLabel`         | Optional | `string`                     | `ra.action.create` | The label for the menu item allowing users to create a new choice. Used when the filter is empty                                       |
+| `emptyText`           | Optional | `string`                     | ''                 | The text to display for the empty option                                                                                               |
+| `onCreate`            | Optional | `Function`                   | `-`                | A function called with the current filter value when users choose to create a new choice.                                              |
+| `options`             | Optional | `Object`                     | -                  | Props to pass to the underlying `<SelectInput>` element                                                                                |
+| `optionText`          | Optional | `string` &#124; `Function`   | `name`             | Field name of record to display in the suggestion item or function which accepts the current record as argument (`record => {string}`) |
+| `optionValue`         | Optional | `string`                     | `id`               | Field name of record containing the value to use as input value                                                                        |
+| `resettable`          | Optional | `boolean`                    | `false`            | If `true`, display a button to reset the changes in this input value                                                                   |
+| `translateChoice`     | Optional | `boolean`                    | `true`             | Whether the choices should be translated                                                                                               |
+| `formHelperTextProps` | Optional | `Object`                     | -                  | Props applied to the internal MUI's FormHelperText element.                                                                            |
+| `inputLabelProps`     | Optional | `Object`                     | -                  | Props applied to the internal MUI's InputLabel element.                                                                                |
 
 `<SelectArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
 
