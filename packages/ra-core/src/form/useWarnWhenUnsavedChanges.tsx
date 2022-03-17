@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef } from 'react';
-import { useFormState } from 'react-hook-form';
+import { useFormState, Control } from 'react-hook-form';
 import { UNSAFE_NavigationContext, useLocation } from 'react-router-dom';
 import { History, Transition } from 'history';
 import { useTranslate } from '../i18n';
@@ -11,7 +11,8 @@ import { useTranslate } from '../i18n';
  */
 export const useWarnWhenUnsavedChanges = (
     enable: boolean,
-    formRootPathname?: string
+    formRootPathname?: string,
+    control?: Control
 ) => {
     // react-router v6 does not yet provide a way to block navigation
     // This is planned for a future release
@@ -19,7 +20,9 @@ export const useWarnWhenUnsavedChanges = (
     const navigator = useContext(UNSAFE_NavigationContext).navigator as History;
     const location = useLocation();
     const translate = useTranslate();
-    const { isSubmitSuccessful, isSubmitting, dirtyFields } = useFormState();
+    const { isSubmitSuccessful, isSubmitting, dirtyFields } = useFormState(
+        control ? { control } : undefined
+    );
     const isDirty = Object.keys(dirtyFields).length > 0;
     const initialLocation = useRef(formRootPathname || location.pathname);
 

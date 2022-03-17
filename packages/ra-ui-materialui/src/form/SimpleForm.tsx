@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { ReactElement, ReactNode, HtmlHTMLAttributes } from 'react';
+import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import { Form, FormProps, MutationMode } from 'ra-core';
-import { SxProps, StackProps } from '@mui/material';
-
-import { SimpleFormView } from './SimpleFormView';
+import { Stack, CardContent, SxProps, StackProps } from '@mui/material';
+import { Toolbar } from './Toolbar';
 
 /**
  * Form with a one column layout, one input per line.
@@ -37,9 +36,25 @@ import { SimpleFormView } from './SimpleFormView';
  *
  * @param {Props} props
  */
-export const SimpleForm = (props: SimpleFormProps) => (
-    <Form {...props} render={formProps => <SimpleFormView {...formProps} />} />
-);
+export const SimpleForm = (props: SimpleFormProps) => {
+    const {
+        children,
+        className,
+        component: Component = DefaultComponent,
+        sx,
+        toolbar = DefaultToolbar,
+    } = props;
+    return (
+        <Form {...props}>
+            <Component className={className} sx={sx}>
+                <Stack alignItems="flex-start" {...sanitizeRestProps(props)}>
+                    {children}
+                </Stack>
+            </Component>
+            {toolbar}
+        </Form>
+    );
+};
 
 SimpleForm.propTypes = {
     children: PropTypes.node,
@@ -68,3 +83,25 @@ export interface SimpleFormProps
     toolbar?: ReactElement | false;
     sx?: SxProps;
 }
+
+const DefaultComponent = ({ children, sx, className }) => (
+    <CardContent sx={sx} className={className}>
+        {children}
+    </CardContent>
+);
+const DefaultToolbar = <Toolbar />;
+
+const sanitizeRestProps = ({
+    children,
+    className,
+    component,
+    defaultValues,
+    mutationMode,
+    record,
+    resource,
+    reValidateMode,
+    sx,
+    toolbar,
+    validate,
+    ...props
+}: SimpleFormProps) => props;

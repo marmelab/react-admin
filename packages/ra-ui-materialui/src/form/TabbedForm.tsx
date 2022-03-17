@@ -86,16 +86,9 @@ export const TabbedForm = (props: TabbedFormProps) => {
     const formRootPathname = useFormRootPath();
 
     return (
-        <Form
-            formRootPathname={formRootPathname}
-            {...props}
-            render={formProps => (
-                <TabbedFormView
-                    formRootPathname={formRootPathname}
-                    {...formProps}
-                />
-            )}
-        />
+        <Form formRootPathname={formRootPathname} {...props}>
+            <TabbedFormView formRootPathname={formRootPathname} />
+        </Form>
     );
 };
 

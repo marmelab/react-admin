@@ -20,12 +20,7 @@ import {
 } from 'react-router-dom';
 import { CardContent, Divider, SxProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import {
-    FormRenderProps,
-    MutationMode,
-    RaRecord,
-    useResourceContext,
-} from 'ra-core';
+import { useResourceContext } from 'ra-core';
 import { Toolbar } from './Toolbar';
 import { TabbedFormTabs, getTabbedFormTabFullPath } from './TabbedFormTabs';
 
@@ -35,13 +30,9 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         className,
         component: Component = DefaultComponent,
         formRootPathname,
-        handleSubmit,
-        mutationMode,
-        record,
         syncWithLocation = true,
         tabs = DefaultTabs,
         toolbar = DefaultToolbar,
-        ...rest
     } = props;
     const location = useLocation();
     const resolvedPath = useResolvedPath('');
@@ -67,11 +58,7 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
         );
 
     return (
-        <Root
-            className={clsx('tabbed-form', className)}
-            onSubmit={handleSubmit}
-            {...sanitizeRestProps(rest)}
-        >
+        <Root className={clsx('tabbed-form', className)}>
             {syncWithLocation ? (
                 <Routes>
                     <Route path="/*" element={renderTabHeaders()} />
@@ -101,7 +88,6 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
                         ? React.cloneElement(tab, {
                               intent: 'content',
                               resource,
-                              record,
                               hidden,
                               value: syncWithLocation ? tabPath : index,
                           })
@@ -116,13 +102,9 @@ export const TabbedFormView = (props: TabbedFormViewProps): ReactElement => {
 TabbedFormView.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
-    defaultValue: PropTypes.oneOfType([PropTypes.object, PropTypes.func]), // @deprecated
-    defaultValues: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     location: PropTypes.object,
     match: PropTypes.object,
-    mutationMode: PropTypes.oneOf(['pessimistic', 'optimistic', 'undoable']),
     // @ts-ignore
-    record: PropTypes.object,
     resource: PropTypes.string,
     tabs: PropTypes.element,
     toolbar: PropTypes.element,
@@ -137,12 +119,10 @@ const DefaultComponent = ({ children }) => (
 );
 const DefaultToolbar = <Toolbar />;
 
-export interface TabbedFormViewProps extends FormRenderProps {
+export interface TabbedFormViewProps {
     children?: ReactNode;
     className?: string;
     component?: ComponentType<any>;
-    mutationMode?: MutationMode;
-    record?: Partial<RaRecord>;
     resource?: string;
     formRootPathname?: string;
     syncWithLocation?: boolean;
@@ -151,15 +131,13 @@ export interface TabbedFormViewProps extends FormRenderProps {
     sx?: SxProps;
 }
 
-const sanitizeRestProps = ({ save = null, ...props }) => props;
-
 const PREFIX = 'RaTabbedForm';
 
 export const TabbedFormClasses = {
     errorTabButton: `${PREFIX}-errorTabButton`,
 };
 
-const Root = styled('form', {
+const Root = styled('div', {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({

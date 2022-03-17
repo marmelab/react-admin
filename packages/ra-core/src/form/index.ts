@@ -23,6 +23,7 @@ export * from './useFormGroupContext';
 export * from './useGetValidationErrorMessage';
 export * from './useInitializeFormWithRecord';
 export * from './useIsFormInvalid';
+export * from './useAugmentedForm';
 export * from './useInput';
 export * from './useSuggestions';
 export * from './useWarnWhenUnsavedChanges';
