@@ -28,9 +28,10 @@ describe('<SaveButton />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <Form
-                    render={() => <SaveButton {...invalidButtonDomProps} />}
-                />
+                <Form>
+                    {' '}
+                    <SaveButton {...invalidButtonDomProps} />
+                </Form>
             </AdminContext>
         );
 
@@ -47,7 +48,9 @@ describe('<SaveButton />', () => {
     it('should render a disabled button', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <Form render={() => <SaveButton disabled={true} />} />
+                <Form>
+                    <SaveButton disabled={true} />
+                </Form>
             </AdminContext>
         );
         await waitFor(() =>
@@ -60,7 +63,9 @@ describe('<SaveButton />', () => {
     it('should render as submit type by default', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <Form render={() => <SaveButton />} />
+                <Form>
+                    <SaveButton />
+                </Form>
             </AdminContext>
         );
         await waitFor(() =>
@@ -73,7 +78,9 @@ describe('<SaveButton />', () => {
     it('should render as button type when type prop is "button"', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <Form render={() => <SaveButton type="button" />} />
+                <Form>
+                    <SaveButton type="button" />
+                </Form>
             </AdminContext>
         );
 
@@ -88,14 +95,9 @@ describe('<SaveButton />', () => {
         const onSubmit = jest.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <Form
-                    onSubmit={onSubmit}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <SaveButton />
-                        </form>
-                    )}
-                />
+                <Form onSubmit={onSubmit}>
+                    <SaveButton />
+                </Form>
             </AdminContext>
         );
 
@@ -111,14 +113,9 @@ describe('<SaveButton />', () => {
 
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <Form
-                    onSubmit={onSubmit}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <SaveButton saving />
-                        </form>
-                    )}
-                />
+                <Form onSubmit={onSubmit}>
+                    <SaveButton saving />
+                </Form>
             </AdminContext>
         );
 
@@ -363,23 +360,15 @@ describe('<SaveButton />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <>
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={({ handleSubmit }) => (
-                            <form onSubmit={handleSubmit}>
-                                <TextInput
-                                    source="name"
-                                    validate={required()}
-                                />
-                                <SaveButton
-                                    type="button"
-                                    mutationOptions={{
-                                        onSuccess: jest.fn(),
-                                    }}
-                                />
-                            </form>
-                        )}
-                    />
+                    <Form onSubmit={jest.fn()}>
+                        <TextInput source="name" validate={required()} />
+                        <SaveButton
+                            type="button"
+                            mutationOptions={{
+                                onSuccess: jest.fn(),
+                            }}
+                        />
+                    </Form>
                     <Notification />
                 </>
             </AdminContext>

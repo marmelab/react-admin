@@ -226,20 +226,17 @@ describe('<CheckboxGroupInput />', () => {
                 <Form
                     onSubmit={handleSubmit}
                     defaultValues={{ notifications: ['31', '42'] }}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <CheckboxGroupInput
-                                source="notifications"
-                                choices={[
-                                    { id: '12', name: 'Ray Hakt' },
-                                    { id: '31', name: 'Ann Gullar' },
-                                    { id: '42', name: 'Sean Phonee' },
-                                ]}
-                            />
-                            <button type="submit" aria-label="Save" />
-                        </form>
-                    )}
-                />
+                >
+                    <CheckboxGroupInput
+                        source="notifications"
+                        choices={[
+                            { id: '12', name: 'Ray Hakt' },
+                            { id: '31', name: 'Ann Gullar' },
+                            { id: '42', name: 'Sean Phonee' },
+                        ]}
+                    />
+                    <button type="submit" aria-label="Save" />
+                </Form>
             </AdminContext>
         );
         const input = getByLabelText('Ray Hakt') as HTMLInputElement;
@@ -260,20 +257,17 @@ describe('<CheckboxGroupInput />', () => {
                 <Form
                     onSubmit={handleSubmit}
                     defaultValues={{ notifications: [31, 42] }}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <CheckboxGroupInput
-                                source="notifications"
-                                choices={[
-                                    { id: 12, name: 'Ray Hakt' },
-                                    { id: 31, name: 'Ann Gullar' },
-                                    { id: 42, name: 'Sean Phonee' },
-                                ]}
-                            />
-                            <button type="submit" aria-label="Save" />
-                        </form>
-                    )}
-                />
+                >
+                    <CheckboxGroupInput
+                        source="notifications"
+                        choices={[
+                            { id: 12, name: 'Ray Hakt' },
+                            { id: 31, name: 'Ann Gullar' },
+                            { id: 42, name: 'Sean Phonee' },
+                        ]}
+                    />
+                    <button type="submit" aria-label="Save" />
+                </Form>
             </AdminContext>
         );
         const input = getByLabelText('Ray Hakt') as HTMLInputElement;

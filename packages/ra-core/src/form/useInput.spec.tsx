@@ -22,22 +22,19 @@ describe('useInput', () => {
         let inputProps;
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <Input
-                            defaultValue="A title"
-                            source="title"
-                            resource="posts"
-                            validate={required()}
-                        >
-                            {props => {
-                                inputProps = props;
-                                return <div />;
-                            }}
-                        </Input>
-                    )}
-                />
+                <Form onSubmit={jest.fn()}>
+                    <Input
+                        defaultValue="A title"
+                        source="title"
+                        resource="posts"
+                        validate={required()}
+                    >
+                        {props => {
+                            inputProps = props;
+                            return <div />;
+                        }}
+                    </Input>
+                </Form>
             </CoreAdminContext>
         );
 
@@ -53,17 +50,14 @@ describe('useInput', () => {
         let inputProps;
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <Input id="my-title" source="title" resource="posts">
-                            {props => {
-                                inputProps = props;
-                                return <div />;
-                            }}
-                        </Input>
-                    )}
-                />
+                <Form onSubmit={jest.fn()}>
+                    <Input id="my-title" source="title" resource="posts">
+                        {props => {
+                            inputProps = props;
+                            return <div />;
+                        }}
+                    </Input>
+                </Form>
             </CoreAdminContext>
         );
 
@@ -79,28 +73,25 @@ describe('useInput', () => {
 
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <Input
-                            source="title"
-                            resource="posts"
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                        >
-                            {({ id, field }) => {
-                                return (
-                                    <input
-                                        type="text"
-                                        id={id}
-                                        aria-label="Title"
-                                        {...field}
-                                    />
-                                );
-                            }}
-                        </Input>
-                    )}
-                />
+                <Form onSubmit={jest.fn()}>
+                    <Input
+                        source="title"
+                        resource="posts"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                    >
+                        {({ id, field }) => {
+                            return (
+                                <input
+                                    type="text"
+                                    id={id}
+                                    aria-label="Title"
+                                    {...field}
+                                />
+                            );
+                        }}
+                    </Input>
+                </Form>
             </CoreAdminContext>
         );
         const input = screen.getByLabelText('Title');
@@ -118,29 +109,20 @@ describe('useInput', () => {
         const onSubmit = jest.fn();
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    onSubmit={onSubmit}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <Input
-                                source="title"
-                                resource="posts"
-                                defaultValue="foo"
-                            >
-                                {({ id, field }) => {
-                                    return (
-                                        <input
-                                            type="text"
-                                            id={id}
-                                            aria-label="Title"
-                                            {...field}
-                                        />
-                                    );
-                                }}
-                            </Input>
-                        </form>
-                    )}
-                />
+                <Form onSubmit={onSubmit}>
+                    <Input source="title" resource="posts" defaultValue="foo">
+                        {({ id, field }) => {
+                            return (
+                                <input
+                                    type="text"
+                                    id={id}
+                                    aria-label="Title"
+                                    {...field}
+                                />
+                            );
+                        }}
+                    </Input>
+                </Form>
             </CoreAdminContext>
         );
         expect(screen.queryByDisplayValue('foo')).not.toBeNull();
@@ -149,30 +131,20 @@ describe('useInput', () => {
     it('does not apply the defaultValue when input has a value of 0', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    onSubmit={jest.fn()}
-                    record={{ id: 1, views: 0 }}
-                    render={() => {
-                        return (
-                            <Input
-                                source="views"
-                                resource="posts"
-                                defaultValue={99}
-                            >
-                                {({ id, field }) => {
-                                    return (
-                                        <input
-                                            type="number"
-                                            id={id}
-                                            aria-label="Views"
-                                            {...field}
-                                        />
-                                    );
-                                }}
-                            </Input>
-                        );
-                    }}
-                />
+                <Form onSubmit={jest.fn()} record={{ id: 1, views: 0 }}>
+                    <Input source="views" resource="posts" defaultValue={99}>
+                        {({ id, field }) => {
+                            return (
+                                <input
+                                    type="number"
+                                    id={id}
+                                    aria-label="Views"
+                                    {...field}
+                                />
+                            );
+                        }}
+                    </Input>
+                </Form>
             </CoreAdminContext>
         );
         expect(screen.queryByDisplayValue('99')).toBeNull();
@@ -181,30 +153,20 @@ describe('useInput', () => {
     it('does not apply the defaultValue when input has a value of 0', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    onSubmit={jest.fn()}
-                    record={{ id: 1, views: 0 }}
-                    render={() => {
-                        return (
-                            <Input
-                                source="views"
-                                resource="posts"
-                                defaultValue={99}
-                            >
-                                {({ id, field }) => {
-                                    return (
-                                        <input
-                                            type="number"
-                                            id={id}
-                                            aria-label="Views"
-                                            {...field}
-                                        />
-                                    );
-                                }}
-                            </Input>
-                        );
-                    }}
-                />
+                <Form onSubmit={jest.fn()} record={{ id: 1, views: 0 }}>
+                    <Input source="views" resource="posts" defaultValue={99}>
+                        {({ id, field }) => {
+                            return (
+                                <input
+                                    type="number"
+                                    id={id}
+                                    aria-label="Views"
+                                    {...field}
+                                />
+                            );
+                        }}
+                    </Input>
+                </Form>
             </CoreAdminContext>
         );
         expect(screen.queryByDisplayValue('99')).toBeNull();
@@ -238,11 +200,9 @@ describe('useInput', () => {
     it('does not change the value if the field is of type checkbox and has no value', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    onSubmit={jest.fn()}
-                    record={{ id: 1 }}
-                    render={() => <BooleanInput source="is_published" />}
-                />
+                <Form onSubmit={jest.fn()} record={{ id: 1 }}>
+                    <BooleanInput source="is_published" />
+                </Form>
             </CoreAdminContext>
         );
         expect(screen.queryByText('undefined')).not.toBeNull();
@@ -251,16 +211,9 @@ describe('useInput', () => {
     it('applies the defaultValue true when the field is of type checkbox and has no value', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    onSubmit={jest.fn()}
-                    record={{ id: 1 }}
-                    render={() => (
-                        <BooleanInput
-                            source="is_published"
-                            defaultValue={true}
-                        />
-                    )}
-                />
+                <Form onSubmit={jest.fn()} record={{ id: 1 }}>
+                    <BooleanInput source="is_published" defaultValue={true} />
+                </Form>
             </CoreAdminContext>
         );
         expect(screen.queryByText('true')).not.toBeNull();
@@ -269,16 +222,9 @@ describe('useInput', () => {
     it('applies the defaultValue false when the field is of type checkbox and has no value', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    onSubmit={jest.fn()}
-                    record={{ id: 1 }}
-                    render={() => (
-                        <BooleanInput
-                            source="is_published"
-                            defaultValue={false}
-                        />
-                    )}
-                />
+                <Form onSubmit={jest.fn()} record={{ id: 1 }}>
+                    <BooleanInput source="is_published" defaultValue={false} />
+                </Form>
             </CoreAdminContext>
         );
         expect(screen.queryByText('false')).not.toBeNull();
@@ -290,13 +236,9 @@ describe('useInput', () => {
                 <Form
                     record={{ id: 1, is_published: false }}
                     onSubmit={jest.fn()}
-                    render={() => (
-                        <BooleanInput
-                            source="is_published"
-                            defaultValue={true}
-                        />
-                    )}
-                />
+                >
+                    <BooleanInput source="is_published" defaultValue={true} />
+                </Form>
             </CoreAdminContext>
         );
         expect(screen.queryByText('false')).not.toBeNull();
@@ -308,13 +250,9 @@ describe('useInput', () => {
                 <Form
                     record={{ id: 1, is_published: true }}
                     onSubmit={jest.fn()}
-                    render={() => (
-                        <BooleanInput
-                            source="is_published"
-                            defaultValue={false}
-                        />
-                    )}
-                />
+                >
+                    <BooleanInput source="is_published" defaultValue={false} />
+                </Form>
             </CoreAdminContext>
         );
         expect(screen.queryByText('true')).not.toBeNull();
@@ -323,19 +261,16 @@ describe('useInput', () => {
     test('should apply the provided format function before passing the value to the real input', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <Input
-                            format={value => `${value} formatted`}
-                            source="test"
-                            children={({ id, field }) => {
-                                return <input type="text" id={id} {...field} />;
-                            }}
-                            defaultValue="test"
-                        />
-                    )}
-                />
+                <Form onSubmit={jest.fn()}>
+                    <Input
+                        format={value => `${value} formatted`}
+                        source="test"
+                        children={({ id, field }) => {
+                            return <input type="text" id={id} {...field} />;
+                        }}
+                        defaultValue="test"
+                    />
+                </Form>
             </CoreAdminContext>
         );
         expect(screen.getByDisplayValue('test formatted')).not.toBeNull();
@@ -344,23 +279,20 @@ describe('useInput', () => {
     test('should apply the provided parse function before applying the value from the real input', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <Input
-                            defaultValue=""
-                            parse={value => (value + 1).toString()}
-                            source="test"
-                            children={({ id, field }) => {
-                                useEffect(() => {
-                                    field.onChange(999);
-                                }, [field]);
+                <Form onSubmit={jest.fn()}>
+                    <Input
+                        defaultValue=""
+                        parse={value => (value + 1).toString()}
+                        source="test"
+                        children={({ id, field }) => {
+                            useEffect(() => {
+                                field.onChange(999);
+                            }, [field]);
 
-                                return <input type="text" id={id} {...field} />;
-                            }}
-                        />
-                    )}
-                />
+                            return <input type="text" id={id} {...field} />;
+                        }}
+                    />
+                </Form>
             </CoreAdminContext>
         );
         expect(screen.getByDisplayValue('1000')).not.toBeNull();
