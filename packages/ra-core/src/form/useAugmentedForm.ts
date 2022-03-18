@@ -75,7 +75,7 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
     }, [form.reset, JSON.stringify(record, defaultValues)]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // notify on invalid form
-    const isInvalid = useIsFormInvalid();
+    const isInvalid = useIsFormInvalid(form.control);
     const notify = useNotify();
     useEffect(() => {
         if (isInvalid) {

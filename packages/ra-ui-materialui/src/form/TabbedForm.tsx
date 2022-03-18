@@ -84,10 +84,13 @@ import { useFormRootPath } from './useFormRootPath';
  */
 export const TabbedForm = (props: TabbedFormProps) => {
     const formRootPathname = useFormRootPath();
+    const { children, ...rest } = props;
 
     return (
-        <Form formRootPathname={formRootPathname} {...props}>
-            <TabbedFormView formRootPathname={formRootPathname} />
+        <Form formRootPathname={formRootPathname} {...rest}>
+            <TabbedFormView formRootPathname={formRootPathname}>
+                {children}
+            </TabbedFormView>
         </Form>
     );
 };
