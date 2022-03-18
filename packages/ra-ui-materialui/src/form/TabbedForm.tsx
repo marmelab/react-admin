@@ -84,13 +84,10 @@ import { useFormRootPath } from './useFormRootPath';
  */
 export const TabbedForm = (props: TabbedFormProps) => {
     const formRootPathname = useFormRootPath();
-    const { children, ...rest } = props;
 
     return (
-        <Form formRootPathname={formRootPathname} {...rest}>
-            <TabbedFormView formRootPathname={formRootPathname}>
-                {children}
-            </TabbedFormView>
+        <Form formRootPathname={formRootPathname} {...props}>
+            <TabbedFormView formRootPathname={formRootPathname} {...props} />
         </Form>
     );
 };
@@ -121,7 +118,6 @@ export interface TabbedFormProps
     className?: string;
     defaultValues?: any;
     formRootPathname?: string;
-    margin?: 'none' | 'normal' | 'dense';
     mutationMode?: MutationMode;
     record?: RaRecord;
     redirect?: RedirectionSideEffect;
@@ -129,7 +125,6 @@ export interface TabbedFormProps
     syncWithLocation?: boolean;
     tabs?: ReactElement;
     toolbar?: ReactElement;
-    variant?: 'standard' | 'outlined' | 'filled';
     warnWhenUnsavedChanges?: boolean;
 }
 

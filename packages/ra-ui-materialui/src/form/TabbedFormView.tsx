@@ -108,7 +108,6 @@ TabbedFormView.propTypes = {
     resource: PropTypes.string,
     tabs: PropTypes.element,
     toolbar: PropTypes.element,
-    translate: PropTypes.func,
     validate: PropTypes.func,
     value: PropTypes.number,
 };
