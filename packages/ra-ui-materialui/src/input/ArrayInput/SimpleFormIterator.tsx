@@ -99,7 +99,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                     {fields.map((member, index) => (
                         <CSSTransition
                             nodeRef={nodeRef}
-                            key={member.id}
+                            key={index}
                             timeout={500}
                             classNames="fade"
                             {...TransitionProps}
