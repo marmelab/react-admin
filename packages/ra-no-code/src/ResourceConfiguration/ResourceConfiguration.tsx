@@ -60,101 +60,88 @@ export const ResourceConfigurationPage = () => {
     return (
         <RecordContextProvider value={resourceConfiguration}>
             <SaveContextProvider value={saveContext}>
-                <Form
-                    onSubmit={save}
-                    defaultValues={resourceConfiguration}
-                    render={({ handleSubmit }) => (
-                        <StyledCard>
-                            <CardHeader
-                                avatar={
-                                    <Avatar>
-                                        {
-                                            // TODO: Add an icon selector
-                                            (
-                                                resourceConfiguration.label ||
-                                                resourceConfiguration.name
-                                            ).substr(0, 1)
-                                        }
-                                    </Avatar>
-                                }
-                                action={
-                                    // TODO: Add a menu with resource related actions (delete, etc.)
-                                    <IconButton
-                                        aria-label="settings"
-                                        size="large"
-                                    >
-                                        <MoreVertIcon />
-                                    </IconButton>
-                                }
-                                title={`Configuration of ${
-                                    resourceConfiguration.label ||
-                                    resourceConfiguration.name
-                                }`}
-                            />
-                            <form onSubmit={handleSubmit}>
-                                <CardContent>
-                                    <TextInput
-                                        source="label"
-                                        defaultValue={
+                <Form onSubmit={save} defaultValues={resourceConfiguration}>
+                    <StyledCard>
+                        <CardHeader
+                            avatar={
+                                <Avatar>
+                                    {
+                                        // TODO: Add an icon selector
+                                        (
                                             resourceConfiguration.label ||
                                             resourceConfiguration.name
-                                        }
+                                        ).substr(0, 1)
+                                    }
+                                </Avatar>
+                            }
+                            action={
+                                // TODO: Add a menu with resource related actions (delete, etc.)
+                                <IconButton aria-label="settings" size="large">
+                                    <MoreVertIcon />
+                                </IconButton>
+                            }
+                            title={`Configuration of ${
+                                resourceConfiguration.label ||
+                                resourceConfiguration.name
+                            }`}
+                        />
+                        <CardContent>
+                            <TextInput
+                                source="label"
+                                defaultValue={
+                                    resourceConfiguration.label ||
+                                    resourceConfiguration.name
+                                }
+                            />
+                        </CardContent>
+                        <Divider />
+                        <div className={classes.fields}>
+                            <Tabs
+                                orientation="vertical"
+                                value={activeField.props.source}
+                                onChange={handleTabChange}
+                                className={classes.fieldList}
+                            >
+                                {resourceConfiguration.fields.map(field => (
+                                    <FieldConfigurationTab
+                                        key={`${field.props.source}_tab`}
+                                        field={field}
+                                        value={field.props.source}
+                                        resource={resource}
                                     />
-                                </CardContent>
-                                <Divider />
-                                <div className={classes.fields}>
-                                    <Tabs
-                                        orientation="vertical"
-                                        value={activeField.props.source}
-                                        onChange={handleTabChange}
-                                        className={classes.fieldList}
+                                ))}
+                            </Tabs>
+                            {resourceConfiguration.fields.map(
+                                (field, index) => (
+                                    <div
+                                        key={`${field.props.source}_panel`}
+                                        role="tabpanel"
+                                        hidden={
+                                            activeField.props.source !==
+                                            field.props.source
+                                        }
+                                        id={`nav-tabpanel-${field.props.source}`}
+                                        aria-labelledby={`nav-tab-${field.props.source}`}
                                     >
-                                        {resourceConfiguration.fields.map(
-                                            field => (
-                                                <FieldConfigurationTab
-                                                    key={`${field.props.source}_tab`}
-                                                    field={field}
-                                                    value={field.props.source}
-                                                    resource={resource}
-                                                />
-                                            )
-                                        )}
-                                    </Tabs>
-                                    {resourceConfiguration.fields.map(
-                                        (field, index) => (
-                                            <div
-                                                key={`${field.props.source}_panel`}
-                                                role="tabpanel"
-                                                hidden={
-                                                    activeField.props.source !==
-                                                    field.props.source
-                                                }
-                                                id={`nav-tabpanel-${field.props.source}`}
-                                                aria-labelledby={`nav-tab-${field.props.source}`}
-                                            >
-                                                {activeField.props.source ===
-                                                field.props.source ? (
-                                                    <FieldConfigurationFormSection
-                                                        key={field.props.source}
-                                                        field={field}
-                                                        sourcePrefix={`fields[${index}]`}
-                                                        className={
-                                                            classes.fieldPanel
-                                                        }
-                                                        resource={resource}
-                                                    />
-                                                ) : null}
-                                            </div>
-                                        )
-                                    )}
-                                </div>
-                                <CardActions className={classes.actions}>
-                                    <SaveButton />
-                                </CardActions>
-                            </form>
-                        </StyledCard>
-                    )}
-                />
+                                        {activeField.props.source ===
+                                        field.props.source ? (
+                                            <FieldConfigurationFormSection
+                                                key={field.props.source}
+                                                field={field}
+                                                sourcePrefix={`fields[${index}]`}
+                                                className={classes.fieldPanel}
+                                                resource={resource}
+                                            />
+                                        ) : null}
+                                    </div>
+                                )
+                            )}
+                        </div>
+                        <CardActions className={classes.actions}>
+                            <SaveButton />
+                        </CardActions>
+                    </StyledCard>
+                </Form>
             </SaveContextProvider>
         </RecordContextProvider>
     );

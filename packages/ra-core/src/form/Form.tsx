@@ -36,7 +36,7 @@ import { useAugmentedForm } from './useAugmentedForm';
  * @link https://react-hook-form.com/api/useformcontext
  */
 export const Form = (props: FormProps) => {
-    const { children } = props;
+    const { children, noValidate = false } = props;
     const record = useRecordContext(props);
     const { form, formHandleSubmit } = useAugmentedForm(props);
 
@@ -44,7 +44,9 @@ export const Form = (props: FormProps) => {
         <OptionalRecordContextProvider value={record}>
             <FormProvider {...form}>
                 <FormGroupsProvider>
-                    <form onSubmit={formHandleSubmit}>{children}</form>
+                    <form onSubmit={formHandleSubmit} noValidate={noValidate}>
+                        {children}
+                    </form>
                 </FormGroupsProvider>
             </FormProvider>
         </OptionalRecordContextProvider>
@@ -54,6 +56,7 @@ export const Form = (props: FormProps) => {
 export type FormProps = FormOwnProps &
     Omit<UseFormProps, 'onSubmit'> & {
         validate?: ValidateForm;
+        noValidate?: boolean;
     };
 
 export type FormRenderProps = {
