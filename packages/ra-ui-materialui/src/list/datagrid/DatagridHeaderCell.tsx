@@ -106,14 +106,15 @@ export const DatagridHeaderCellClasses = {
     icon: `${PREFIX}-icon`,
 };
 
+// Remove the sort icons when not active
 const StyledTableCell = styled(TableCell, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    [`& .MuiSvgIcon-root`]: {
+    [`& .MuiTableSortLabel-icon`]: {
         display: 'none',
     },
-    [`& .Mui-active .MuiSvgIcon-root`]: {
+    [`& .Mui-active .MuiTableSortLabel-icon`]: {
         display: 'inline',
     },
 }));
