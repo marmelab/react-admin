@@ -267,7 +267,7 @@ const PostEdit = () => (
 
 The default value for the `component` prop is `Card`.
 
-### Undoable
+### ~~`undoable`~~
 
 **Note**: This prop is deprecated, use `mutationMode="undoable"` instead.
 

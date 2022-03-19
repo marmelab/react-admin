@@ -205,7 +205,7 @@ const App = () => (
 
 **Tip**: If your custom `catchAll` component contains react-router `<Route>` components, this allows you to register new routes displayed within the react-admin layout easily. Note that these routes will match *after* all the react-admin resource routes have been tested. To add custom routes *before* the react-admin ones, and therefore override the default resource routes, see the [`custom pages`](./CustomRoutes.md) section instead.
 
-## `menu`
+## ~~`menu`~~
 
 **Tip**: This prop is deprecated. To override the menu component, use a [custom layout](#layout) instead.
 
@@ -349,7 +349,7 @@ See The [Authentication documentation](./Authentication.md#customizing-the-login
 
 **Tip**: Before considering writing your own login page component, please take a look at how to change the default [background image](./Theming.md#using-a-custom-login-page) or the [MUI theme](#theme). See the [Authentication documentation](./Authentication.md#customizing-the-login-component) for more details.
 
-## `history`
+## ~~`history`~~
 
 **Note**: This prop is deprecated. Check [the Routing chapter](./Routing.md) to see how to use a different router.
 
@@ -507,4 +507,66 @@ function AsyncResources() {
 }
 ```
 
+### Dynamically create, update, and delete `<Resource>`
 
+Some of the API backends, espcially those fully customizable CRMs, allow users to dynamically create, update, and delete resources on the fly. 
+
+With react-admin, user can also configure each resource's view and schema just through a GUI.
+
+The following example fetches resource schemas and stores it locally, and later user can use the context `<ResourceConfigurationContext>` to change definition of server APIs. 
+
+``` jsx
+import * as React from "react";
+import { useEffect } from "react";
+import { AdminContext, AdminUI, Resource, useDataProvider } from "react-admin";
+import {
+    ResourceConfigurationProvider,
+    useResourcesConfiguration,
+} from "ra-no-code";
+
+function App() {
+    return (
+        <ResourceConfigurationProvider dataProvider={myDataProvider}>
+            <AdminContext dataProvider={myDataProvider}>
+                <AsyncResources />
+            </AdminContext>
+        </ResourceConfigurationProvider>
+    );
+}
+
+function AsyncResources() {
+    const [resources, { addResource, updateResource, removeResource }] =
+        useResourcesConfiguration();
+    const dataProvider = useDataProvider();
+
+    useEffect(() => {
+        // Note that the `getResources` is not provided by react-admin. You have to implement your own custom verb.
+        // Each returned resource need to match the type of `ResourceConfiguration`
+        dataProvider
+            .getResources()
+            .then((resources) => resources.forEach((r) => addResource(r)));
+    }, []);
+
+    return (
+        <AdminUI>
+            {Object.keys(resources).map((resource) => (
+                <Resource
+                    name={resources[resource].name}
+                    key={resources[resource].name}
+                    list={schemaToListView(resources[resource])}
+                />
+            ))}
+            <Resource
+                key="schemas"
+                name="schemas"
+                list={SchemaList}
+                create={SchemaCreate}
+                edit={SchemaEdit}
+                show={SchemaShow}
+            />
+        </AdminUI>
+    );
+}
+```
+
+In your schema resource view, you can easily change your schemas in a low-code or no-code fashion and call `addresource`, `updateResource`, or `removeResource` to make it live.
