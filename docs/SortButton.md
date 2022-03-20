@@ -41,6 +41,6 @@ You can customize the icon rendered on the left of the button by passing an `ico
 ```jsx
 <SortButton 
     fields={['reference', 'sales', 'stock']}
-    icon={<SoertIconv />}
+    icon={<SortIcon />}
 />
 ```

@@ -230,7 +230,7 @@ const BookList = () => {
     }
     const filters = [<TextInput label="Search" source="q" size="small" alwaysOn />];
     return (
-        <ListContextProvider value={context}>
+        <ListContextProvider value={listContext}>
             <div>
                 <Title title="Book list" />
                 <FilterForm filters={filters} />
