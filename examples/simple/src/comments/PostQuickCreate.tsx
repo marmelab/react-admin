@@ -8,7 +8,7 @@ import {
 import { useCallback } from 'react';
 import {
     SaveButton,
-    SimpleForm,
+    Form,
     TextInput,
     required,
     useCreate,
@@ -54,15 +54,14 @@ const PostQuickCreate = props => {
             onClose={onCancel}
             aria-label={translate('simple.create-post')}
         >
-            <DialogTitle>{translate('simple.create-post')}</DialogTitle>
-            <DialogContent>
-                <SimpleForm
-                    id="post-quick-create"
-                    onSubmit={handleSave}
-                    saving={submitting}
-                    toolbar={null}
-                    {...props}
-                >
+            <Form
+                id="post-quick-create"
+                onSubmit={handleSave}
+                saving={submitting}
+                {...props}
+            >
+                <DialogTitle>{translate('simple.create-post')}</DialogTitle>
+                <DialogContent>
                     <TextInput
                         defaultValue=""
                         source="title"
@@ -75,12 +74,12 @@ const PostQuickCreate = props => {
                         fullWidth={true}
                         multiline={true}
                     />
-                </SimpleForm>
-            </DialogContent>
-            <DialogActions>
-                <SaveButton form="post-quick-create" />
-                <CancelButton onClick={onCancel} />
-            </DialogActions>
+                </DialogContent>
+                <DialogActions>
+                    <SaveButton form="post-quick-create" />
+                    <CancelButton onClick={onCancel} />
+                </DialogActions>
+            </Form>
         </Dialog>
     );
 };
