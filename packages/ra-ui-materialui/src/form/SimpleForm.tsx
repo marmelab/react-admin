@@ -97,6 +97,7 @@ const sanitizeRestProps = ({
     component,
     defaultValues,
     mutationMode,
+    onSubmit,
     record,
     resource,
     reValidateMode,
