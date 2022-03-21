@@ -15,7 +15,7 @@ import RejectButton from './RejectButton';
 import { Review } from '../types';
 
 const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
-    const { resource, saving } = props;
+    const { resource } = props;
     const redirect = useRedirect();
     const notify = useNotify();
 
@@ -39,7 +39,6 @@ const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
             ) : (
                 <Fragment>
                     <SaveButton
-                        saving={saving}
                         mutationOptions={{
                             onSuccess: () => {
                                 notify('ra.notification.updated', {

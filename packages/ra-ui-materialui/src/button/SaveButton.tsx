@@ -57,7 +57,7 @@ export const SaveButton = <RecordType extends RaRecord = any>(
         onClick,
         mutationOptions,
         saving,
-        disabled = saving,
+        disabled,
         type = 'submit',
         transform,
         variant = 'contained',
@@ -105,18 +105,22 @@ export const SaveButton = <RecordType extends RaRecord = any>(
     );
 
     const displayedLabel = label && translate(label, { _: label });
+    const finalSaving =
+        typeof saving !== 'undefined' ? saving : saveContext?.saving;
+    const finalDisabled =
+        typeof disabled !== 'undefined' ? disabled : finalSaving;
     return (
         <StyledButton
             variant={variant}
             type={type}
             color={color}
             aria-label={displayedLabel}
-            disabled={disabled}
+            disabled={finalDisabled}
             onClick={handleClick}
             // TODO: find a way to display the loading state (LoadingButton from mui Lab?)
             {...sanitizeButtonRestProps(rest)}
         >
-            {saving ? <CircularProgress size={18} thickness={2} /> : icon}
+            {finalSaving ? <CircularProgress size={18} thickness={2} /> : icon}
             {displayedLabel}
         </StyledButton>
     );

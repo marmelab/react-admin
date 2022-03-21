@@ -38,12 +38,11 @@ describe('useReferenceArrayInputController', () => {
                     <Form
                         defaultValues={{ tag_ids: [1, 2] }}
                         onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController {...defaultProps}>
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
+                    >
+                        <ReferenceArrayInputController {...defaultProps}>
+                            {children}
+                        </ReferenceArrayInputController>
+                    </Form>
                 </CoreAdminContext>
             );
             expect(screen.queryByText('true')).not.toBeNull();
@@ -62,12 +61,11 @@ describe('useReferenceArrayInputController', () => {
                     <Form
                         onSubmit={jest.fn()}
                         defaultValues={{ tag_ids: [1, 2] }}
-                        render={() => (
-                            <ReferenceArrayInputController {...defaultProps}>
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
+                    >
+                        <ReferenceArrayInputController {...defaultProps}>
+                            {children}
+                        </ReferenceArrayInputController>
+                    </Form>
                 </CoreAdminContext>
             );
             await waitFor(() => {
@@ -93,14 +91,11 @@ describe('useReferenceArrayInputController', () => {
                         getMany: () => Promise.resolve({ data: [] }),
                     })}
                 >
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController {...defaultProps}>
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
+                    <Form onSubmit={jest.fn()}>
+                        <ReferenceArrayInputController {...defaultProps}>
+                            {children}
+                        </ReferenceArrayInputController>
+                    </Form>
                 </CoreAdminContext>
             );
 
@@ -121,17 +116,14 @@ describe('useReferenceArrayInputController', () => {
                         getMany: () => Promise.resolve({ data: [] }),
                     })}
                 >
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                field={{ value: [1] }}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
+                    <Form onSubmit={jest.fn()}>
+                        <ReferenceArrayInputController
+                            {...defaultProps}
+                            field={{ value: [1] }}
+                        >
+                            {children}
+                        </ReferenceArrayInputController>
+                    </Form>
                 </CoreAdminContext>
             );
             await waitFor(() => {
@@ -154,17 +146,14 @@ describe('useReferenceArrayInputController', () => {
                             }),
                     })}
                 >
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                field={{ value: [1, 2] }}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
+                    <Form onSubmit={jest.fn()}>
+                        <ReferenceArrayInputController
+                            {...defaultProps}
+                            field={{ value: [1, 2] }}
+                        >
+                            {children}
+                        </ReferenceArrayInputController>
+                    </Form>
                 </CoreAdminContext>
             );
             await waitFor(
@@ -184,14 +173,11 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <ReferenceArrayInputController {...defaultProps}>
-                            {children}
-                        </ReferenceArrayInputController>
-                    )}
-                />
+                <Form onSubmit={jest.fn()}>
+                    <ReferenceArrayInputController {...defaultProps}>
+                        {children}
+                    </ReferenceArrayInputController>
+                </Form>
             </CoreAdminContext>
         );
         expect(dataProvider.getList).toHaveBeenCalledWith('tags', {
@@ -217,20 +203,17 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <ReferenceArrayInputController
-                            {...defaultProps}
-                            sort={{ field: 'foo', order: 'ASC' }}
-                            page={2}
-                            perPage={5}
-                            filter={{ permanentFilter: 'foo' }}
-                        >
-                            {children}
-                        </ReferenceArrayInputController>
-                    )}
-                />
+                <Form onSubmit={jest.fn()}>
+                    <ReferenceArrayInputController
+                        {...defaultProps}
+                        sort={{ field: 'foo', order: 'ASC' }}
+                        page={2}
+                        perPage={5}
+                        filter={{ permanentFilter: 'foo' }}
+                    >
+                        {children}
+                    </ReferenceArrayInputController>
+                </Form>
             </CoreAdminContext>
         );
         expect(dataProvider.getList).toHaveBeenCalledWith('tags', {
@@ -261,14 +244,11 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <ReferenceArrayInputController {...defaultProps}>
-                            {children}
-                        </ReferenceArrayInputController>
-                    )}
-                />
+                <Form onSubmit={jest.fn()}>
+                    <ReferenceArrayInputController {...defaultProps}>
+                        {children}
+                    </ReferenceArrayInputController>
+                </Form>
             </CoreAdminContext>
         );
 
@@ -300,15 +280,11 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
-                    onSubmit={jest.fn()}
-                    defaultValues={{ tag_ids: [5, 6] }}
-                    render={() => (
-                        <ReferenceArrayInputController {...defaultProps}>
-                            {children}
-                        </ReferenceArrayInputController>
-                    )}
-                />
+                <Form onSubmit={jest.fn()} defaultValues={{ tag_ids: [5, 6] }}>
+                    <ReferenceArrayInputController {...defaultProps}>
+                        {children}
+                    </ReferenceArrayInputController>
+                </Form>
             </CoreAdminContext>
         );
         await waitFor(() => {
@@ -337,15 +313,11 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
-                    onSubmit={jest.fn()}
-                    defaultValues={{ tag_ids: [5] }}
-                    render={() => (
-                        <ReferenceArrayInputController {...defaultProps}>
-                            {children}
-                        </ReferenceArrayInputController>
-                    )}
-                />
+                <Form onSubmit={jest.fn()} defaultValues={{ tag_ids: [5] }}>
+                    <ReferenceArrayInputController {...defaultProps}>
+                        {children}
+                    </ReferenceArrayInputController>
+                </Form>
             </CoreAdminContext>
         );
 
@@ -375,32 +347,24 @@ describe('useReferenceArrayInputController', () => {
         });
         const { rerender } = render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
-                    onSubmit={onSubmit}
-                    record={record}
-                    render={() => (
-                        <ReferenceArrayInputController {...defaultProps}>
-                            {children}
-                        </ReferenceArrayInputController>
-                    )}
-                />
+                <Form onSubmit={onSubmit} record={record}>
+                    <ReferenceArrayInputController {...defaultProps}>
+                        {children}
+                    </ReferenceArrayInputController>
+                </Form>
             </CoreAdminContext>
         );
 
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
-                    onSubmit={onSubmit}
-                    record={record}
-                    render={() => (
-                        <ReferenceArrayInputController
-                            {...defaultProps}
-                            filter={{ permanentFilter: 'bar' }}
-                        >
-                            {children}
-                        </ReferenceArrayInputController>
-                    )}
-                />
+                <Form onSubmit={onSubmit} record={record}>
+                    <ReferenceArrayInputController
+                        {...defaultProps}
+                        filter={{ permanentFilter: 'bar' }}
+                    >
+                        {children}
+                    </ReferenceArrayInputController>
+                </Form>
             </CoreAdminContext>
         );
 
@@ -413,19 +377,15 @@ describe('useReferenceArrayInputController', () => {
 
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
-                    record={record}
-                    onSubmit={onSubmit}
-                    render={() => (
-                        <ReferenceArrayInputController
-                            {...defaultProps}
-                            filter={{ permanentFilter: 'bar' }}
-                            sort={{ field: 'foo', order: 'ASC' }}
-                        >
-                            {children}
-                        </ReferenceArrayInputController>
-                    )}
-                />
+                <Form record={record} onSubmit={onSubmit}>
+                    <ReferenceArrayInputController
+                        {...defaultProps}
+                        filter={{ permanentFilter: 'bar' }}
+                        sort={{ field: 'foo', order: 'ASC' }}
+                    >
+                        {children}
+                    </ReferenceArrayInputController>
+                </Form>
             </CoreAdminContext>
         );
 
@@ -438,20 +398,16 @@ describe('useReferenceArrayInputController', () => {
 
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
-                    record={record}
-                    onSubmit={onSubmit}
-                    render={() => (
-                        <ReferenceArrayInputController
-                            {...defaultProps}
-                            filter={{ permanentFilter: 'bar' }}
-                            sort={{ field: 'foo', order: 'ASC' }}
-                            perPage={42}
-                        >
-                            {children}
-                        </ReferenceArrayInputController>
-                    )}
-                />
+                <Form record={record} onSubmit={onSubmit}>
+                    <ReferenceArrayInputController
+                        {...defaultProps}
+                        filter={{ permanentFilter: 'bar' }}
+                        sort={{ field: 'foo', order: 'ASC' }}
+                        perPage={42}
+                    >
+                        {children}
+                    </ReferenceArrayInputController>
+                </Form>
             </CoreAdminContext>
         );
 
@@ -474,15 +430,11 @@ describe('useReferenceArrayInputController', () => {
         });
         const { rerender } = render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
-                    record={{ tag_ids: [5] }}
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <ReferenceArrayInputController {...defaultProps}>
-                            {children}
-                        </ReferenceArrayInputController>
-                    )}
-                />
+                <Form record={{ tag_ids: [5] }} onSubmit={jest.fn()}>
+                    <ReferenceArrayInputController {...defaultProps}>
+                        {children}
+                    </ReferenceArrayInputController>
+                </Form>
             </CoreAdminContext>
         );
         await waitFor(() => {
@@ -492,15 +444,11 @@ describe('useReferenceArrayInputController', () => {
         });
         rerender(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
-                    record={{ tag_ids: [5, 6] }}
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <ReferenceArrayInputController {...defaultProps}>
-                            {children}
-                        </ReferenceArrayInputController>
-                    )}
-                />
+                <Form record={{ tag_ids: [5, 6] }} onSubmit={jest.fn()}>
+                    <ReferenceArrayInputController {...defaultProps}>
+                        {children}
+                    </ReferenceArrayInputController>
+                </Form>
             </CoreAdminContext>
         );
         await waitFor(() => {
@@ -546,17 +494,14 @@ describe('useReferenceArrayInputController', () => {
         });
         render(
             <CoreAdminContext dataProvider={dataProvider}>
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <ReferenceArrayInputController
-                            {...defaultProps}
-                            field={{ value: [5, 6] }}
-                        >
-                            {children}
-                        </ReferenceArrayInputController>
-                    )}
-                />
+                <Form onSubmit={jest.fn()}>
+                    <ReferenceArrayInputController
+                        {...defaultProps}
+                        field={{ value: [5, 6] }}
+                    >
+                        {children}
+                    </ReferenceArrayInputController>
+                </Form>
             </CoreAdminContext>
         );
 
@@ -613,17 +558,14 @@ describe('useReferenceArrayInputController', () => {
         const children = jest.fn(() => null);
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    onSubmit={jest.fn()}
-                    render={() => (
-                        <ReferenceArrayInputController
-                            {...defaultProps}
-                            field={{ value: [1, 2] }}
-                        >
-                            {children}
-                        </ReferenceArrayInputController>
-                    )}
-                />
+                <Form onSubmit={jest.fn()}>
+                    <ReferenceArrayInputController
+                        {...defaultProps}
+                        field={{ value: [1, 2] }}
+                    >
+                        {children}
+                    </ReferenceArrayInputController>
+                </Form>
             </CoreAdminContext>
         );
         expect(children).toHaveBeenCalledWith(
@@ -644,17 +586,14 @@ describe('useReferenceArrayInputController', () => {
             });
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                enableGetChoices={enableGetChoices}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
+                    <Form onSubmit={jest.fn()}>
+                        <ReferenceArrayInputController
+                            {...defaultProps}
+                            enableGetChoices={enableGetChoices}
+                        >
+                            {children}
+                        </ReferenceArrayInputController>
+                    </Form>
                 </CoreAdminContext>
             );
 
@@ -698,18 +637,14 @@ describe('useReferenceArrayInputController', () => {
             });
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
-                    <Form
-                        onSubmit={jest.fn()}
-                        record={{ tag_ids: [5, 6] }}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                enableGetChoices={() => false}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
+                    <Form onSubmit={jest.fn()} record={{ tag_ids: [5, 6] }}>
+                        <ReferenceArrayInputController
+                            {...defaultProps}
+                            enableGetChoices={() => false}
+                        >
+                            {children}
+                        </ReferenceArrayInputController>
+                    </Form>
                 </CoreAdminContext>
             );
             await waitFor(() => {
@@ -727,17 +662,14 @@ describe('useReferenceArrayInputController', () => {
             });
             render(
                 <CoreAdminContext dataProvider={testDataProvider()}>
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={() => (
-                            <ReferenceArrayInputController
-                                {...defaultProps}
-                                enableGetChoices={enableGetChoices}
-                            >
-                                {children}
-                            </ReferenceArrayInputController>
-                        )}
-                    />
+                    <Form onSubmit={jest.fn()}>
+                        <ReferenceArrayInputController
+                            {...defaultProps}
+                            enableGetChoices={enableGetChoices}
+                        >
+                            {children}
+                        </ReferenceArrayInputController>
+                    </Form>
                 </CoreAdminContext>
             );
 

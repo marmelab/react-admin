@@ -1,6 +1,6 @@
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import get from 'lodash/get';
-import { useDeepCompareEffect } from '../util/hooks';
 import { useRecordContext } from '../controller';
 import { InputProps } from './useInput';
 
@@ -12,16 +12,30 @@ export const useApplyInputDefaultValues = (props: Partial<InputProps>) => {
     const { defaultValue, source } = props;
     const record = useRecordContext(props);
     const { getValues, resetField } = useFormContext();
+    const recordValue = get(record, source);
+    const formValue = get(getValues(), source);
 
-    useDeepCompareEffect(() => {
-        if (
-            (!record || get(record, source) == null) &&
-            get(getValues(), source) == null &&
-            defaultValue != null
-        ) {
-            resetField(source, {
-                defaultValue: get(record, source, defaultValue),
-            });
+    useEffect(() => {
+        if (defaultValue == null) return;
+        if (formValue == null && recordValue == null) {
+            // special case for ArrayInput: since we use get(record, source),
+            // if source is like foo.23.bar, this effect will run.
+            // but we only want to set the default value for the subfield bar
+            // if the record actually has a value for foo.23
+            const pathContainsIndex = source
+                .split('.')
+                .some(pathPart => numericRegex.test(pathPart));
+            if (pathContainsIndex) {
+                const parentPath = source.split('.').slice(0, -1).join('.');
+                const parentValue = get(getValues(), parentPath);
+                if (parentValue == null) {
+                    // the parent is undefined, so we don't want to set the default value
+                    return;
+                }
+            }
+            resetField(source, { defaultValue });
         }
-    }, [record, JSON.stringify(defaultValue)]);
+    });
 };
+
+const numericRegex = /^\d+$/;

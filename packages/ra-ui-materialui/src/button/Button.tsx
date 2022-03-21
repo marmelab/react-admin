@@ -116,7 +116,6 @@ interface Props {
     redirect?: RedirectionSideEffect;
     variant?: string;
     // May be injected by Toolbar
-    saving?: boolean;
     record?: RaRecord;
     resource?: string;
     mutationMode?: MutationMode;
@@ -131,7 +130,6 @@ export const sanitizeButtonRestProps = ({
     record,
     redirect,
     resource,
-    saving,
     mutationMode,
     hasCreate,
     ...rest

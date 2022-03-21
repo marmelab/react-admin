@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { FormGroupContextProvider, RaRecord } from 'ra-core';
+import { FormGroupContextProvider } from 'ra-core';
 import { Stack, StackProps } from '@mui/material';
 
 import { FormTabHeader } from './FormTabHeader';
@@ -17,7 +17,6 @@ export const FormTab = (props: FormTabProps) => {
         label,
         onChange,
         path,
-        record,
         resource,
         syncWithLocation,
         value,
@@ -67,7 +66,6 @@ FormTab.propTypes = {
         .isRequired,
     path: PropTypes.string,
     // @ts-ignore
-    record: PropTypes.object,
     resource: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
@@ -81,7 +79,6 @@ export interface FormTabProps extends StackProps {
     intent?: 'header' | 'content';
     label: string | ReactElement;
     path?: string;
-    record?: RaRecord;
     resource?: string;
     syncWithLocation?: boolean;
     value?: string | number;

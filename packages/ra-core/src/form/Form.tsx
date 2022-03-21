@@ -1,41 +1,31 @@
 import * as React from 'react';
-import { BaseSyntheticEvent, useCallback, useMemo } from 'react';
-import {
-    FormProvider,
-    FieldValues,
-    useForm,
-    UseFormProps,
-} from 'react-hook-form';
+import { ReactNode } from 'react';
+import { FormProvider, FieldValues, UseFormProps } from 'react-hook-form';
 
+import { FormGroupsProvider } from './FormGroupsProvider';
 import { RaRecord } from '../types';
-import { useSaveContext } from '../controller';
 import { useRecordContext, OptionalRecordContextProvider } from '../controller';
-import getFormInitialValues from './getFormInitialValues';
-import {
-    getSimpleValidationResolver,
-    ValidateForm,
-} from './getSimpleValidationResolver';
-import { setSubmissionErrors } from './setSubmissionErrors';
-import { FormContent } from './FormContent';
+import { ValidateForm } from './getSimpleValidationResolver';
+import { useAugmentedForm } from './useAugmentedForm';
 
 /**
- * Creates a form context
+ * Creates a form element, initialized with the current record, calling the saveContext on submit
  *
- * Wrapper around react-hook-form's useForm and FormContextProvider.
+ * Wrapper around react-hook-form's useForm, FormContextProvider, and <form>.
  * Also sets up a FormGroupContext, and handles submission validation.
- *
- * Requires a render function.
  *
  * @example
  *
- * const SimpleForm = props => (
- *    <Form
- *        {...props}
- *        render={formProps => <SimpleFormView {...formProps} />}
- *    />
+ * const MyForm = ({ record, defaultValues, validate }) => (
+ *    <Form record={record} defaultValues={defaultValues} validate={validate}>
+ *        <Stack>
+ *            <TextInput source="title" />
+ *            <SaveButton />
+ *        </Stack>
+ *    </Form>
  * );
  *
- * @typedef {Object} Props the props you can use (other props are injected by Create or Edit)
+ * @typedef {Object} Props the props you can use
  * @prop {Object} defaultValues
  * @prop {Function} validate
  * @prop {Function} save
@@ -46,77 +36,23 @@ import { FormContent } from './FormContent';
  * @link https://react-hook-form.com/api/useformcontext
  */
 export const Form = (props: FormProps) => {
-    const {
-        context,
-        criteriaMode = 'firstError',
-        defaultValues,
-        delayError,
-        formRootPathname,
-        mode,
-        render,
-        resolver,
-        reValidateMode = 'onChange',
-        onSubmit,
-        shouldFocusError,
-        shouldUnregister,
-        shouldUseNativeValidation,
-        warnWhenUnsavedChanges,
-        validate,
-        ...rest
-    } = props;
+    const { children, id, className, noValidate = false } = props;
     const record = useRecordContext(props);
-    const saveContext = useSaveContext();
-
-    const defaultValuesIncludingRecord = useMemo(
-        () => getFormInitialValues(defaultValues, record),
-        [JSON.stringify({ defaultValues, record })] // eslint-disable-line
-    );
-
-    const form = useForm({
-        context,
-        criteriaMode,
-        defaultValues: defaultValuesIncludingRecord,
-        delayError,
-        mode,
-        reValidateMode,
-        resolver:
-            resolver ?? validate
-                ? getSimpleValidationResolver(validate)
-                : undefined,
-        shouldFocusError,
-        shouldUnregister,
-        shouldUseNativeValidation,
-    });
-
-    const handleSubmit = useCallback(
-        async values => {
-            let errors;
-
-            if (onSubmit) {
-                errors = await onSubmit(values);
-            }
-            if (onSubmit == null && saveContext?.save) {
-                errors = await saveContext.save(values);
-            }
-            if (errors != null) {
-                setSubmissionErrors(errors, form.setError);
-            }
-        },
-        [form, onSubmit, saveContext]
-    );
+    const { form, formHandleSubmit } = useAugmentedForm(props);
 
     return (
         <OptionalRecordContextProvider value={record}>
             <FormProvider {...form}>
-                <FormContent
-                    {...rest}
-                    defaultValues={defaultValues}
-                    handleSubmit={form.handleSubmit(handleSubmit)}
-                    record={record}
-                    render={render}
-                    warnWhenUnsavedChanges={warnWhenUnsavedChanges}
-                    formRootPathname={formRootPathname}
-                />
+                <FormGroupsProvider>
+                    <form
+                        onSubmit={formHandleSubmit}
+                        noValidate={noValidate}
+                        id={id}
+                        className={className}
+                    >
+                        {children}
+                    </form>
+                </FormGroupsProvider>
             </FormProvider>
         </OptionalRecordContextProvider>
     );
@@ -125,23 +61,16 @@ export const Form = (props: FormProps) => {
 export type FormProps = FormOwnProps &
     Omit<UseFormProps, 'onSubmit'> & {
         validate?: ValidateForm;
+        noValidate?: boolean;
     };
 
-export type FormRenderProps = {
-    handleSubmit: (e?: BaseSyntheticEvent) => void;
-    saving?: boolean;
-};
-
-export type FormRender = (
-    props: FormRenderProps
-) => React.ReactElement<any, any>;
-
 export interface FormOwnProps {
+    children: ReactNode;
+    className?: string;
     defaultValues?: any;
     formRootPathname?: string;
+    id?: string;
     record?: Partial<RaRecord>;
-    render: FormRender;
     onSubmit?: (data: FieldValues) => any | Promise<any>;
-    saving?: boolean;
     warnWhenUnsavedChanges?: boolean;
 }

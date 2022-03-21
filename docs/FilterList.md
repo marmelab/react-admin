@@ -212,6 +212,7 @@ const HasOrderedFilter = () => (
 
 You can place these `<FilterList>` anywhere inside a `<List>`. The most common case is to put them in a sidebar that is on the left-hand side of the `Datagrid`. You can use the `aside` property for that:
 
+{% raw %}
 ```jsx
 import * as React from 'react';
 import { Box, Card, CardContent, styled } from '@mui/material';
@@ -247,5 +248,6 @@ const CustomerList = props => (
     </List>
 )
 ```
+{% endraw %}
 
 **Tip**: The `<FilterList>` Sidebar is not a good UI for small screens. You can choose to hide it on small screens (as in the previous example). A good tradeoff is to use `<FilterList>` on large screens, and the Filter Button/Form combo on Mobile.

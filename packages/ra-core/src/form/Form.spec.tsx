@@ -32,15 +32,12 @@ describe('Form', () => {
     };
 
     it('Does not make the form dirty when reinitialized from a record', () => {
-        const renderProp = jest.fn(() => (
-            <>
-                <Input source="name" defaultValue="Bar" />
-                <IsDirty />
-            </>
-        ));
         const { rerender } = render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form onSubmit={jest.fn()} saving={false} render={renderProp} />
+                <Form onSubmit={jest.fn()}>
+                    <Input source="name" defaultValue="Bar" />
+                    <IsDirty />
+                </Form>
             </CoreAdminContext>
         );
 
@@ -49,12 +46,10 @@ describe('Form', () => {
 
         rerender(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    onSubmit={jest.fn()}
-                    saving={false}
-                    render={renderProp}
-                    record={{ id: 1, name: 'Foo' }}
-                />
+                <Form onSubmit={jest.fn()} record={{ id: 1, name: 'Foo' }}>
+                    <Input source="name" defaultValue="Bar" />
+                    <IsDirty />
+                </Form>
             </CoreAdminContext>
         );
 
@@ -63,20 +58,12 @@ describe('Form', () => {
     });
 
     it('Does not make the form dirty when initialized from a record with a missing field and this field has an defaultValue', () => {
-        const renderProp = jest.fn(() => (
-            <>
-                <Input source="name" defaultValue="Bar" />
-                <IsDirty />
-            </>
-        ));
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    onSubmit={jest.fn()}
-                    saving={false}
-                    render={renderProp}
-                    record={{ id: 1 }}
-                />
+                <Form onSubmit={jest.fn()} record={{ id: 1 }}>
+                    <Input source="name" defaultValue="Bar" />
+                    <IsDirty />
+                </Form>
             </CoreAdminContext>
         );
 
@@ -85,20 +72,12 @@ describe('Form', () => {
     });
 
     it('Does not make the form dirty when reinitialized from a different record', () => {
-        const renderProp = jest.fn(() => (
-            <>
-                <Input source="name" defaultValue="Bar" />
-                <IsDirty />
-            </>
-        ));
         const { rerender } = render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    onSubmit={jest.fn()}
-                    saving={false}
-                    record={{ id: 1, name: 'Foo' }}
-                    render={renderProp}
-                />
+                <Form onSubmit={jest.fn()} record={{ id: 1, name: 'Foo' }}>
+                    <Input source="name" defaultValue="Bar" />
+                    <IsDirty />
+                </Form>
             </CoreAdminContext>
         );
 
@@ -109,14 +88,15 @@ describe('Form', () => {
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <Form
                     onSubmit={jest.fn()}
-                    saving={false}
                     record={{
                         id: 1,
                         name: 'Foo',
                         anotherServerAddedProp: 'Bar',
                     }}
-                    render={renderProp}
-                />
+                >
+                    <Input source="name" defaultValue="Bar" />
+                    <IsDirty />
+                </Form>
             </CoreAdminContext>
         );
 
@@ -135,15 +115,10 @@ describe('Form', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <>
-                    <Form
-                        onSubmit={jest.fn()}
-                        render={({ handleSubmit }) => (
-                            <form onSubmit={handleSubmit}>
-                                <Input source="name" validate={required()} />
-                                <button type="submit">Submit</button>
-                            </form>
-                        )}
-                    />
+                    <Form onSubmit={jest.fn()}>
+                        <Input source="name" validate={required()} />
+                        <button type="submit">Submit</button>
+                    </Form>
                     <Notification />
                 </>
             </CoreAdminContext>
@@ -172,15 +147,10 @@ describe('Form', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <>
-                    <Form
-                        onSubmit={onSubmit}
-                        render={({ handleSubmit }) => (
-                            <form onSubmit={handleSubmit}>
-                                <Input source="name" />
-                                <button type="submit">Submit</button>
-                            </form>
-                        )}
-                    />
+                    <Form onSubmit={onSubmit}>
+                        <Input source="name" />
+                        <button type="submit">Submit</button>
+                    </Form>
                     <Notification />
                 </>
             </CoreAdminContext>
@@ -196,20 +166,14 @@ describe('Form', () => {
         const onSubmit = jest.fn();
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    defaultValues={{ foo: 23 }}
-                    onSubmit={onSubmit}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <Input
-                                source="foo"
-                                parse={() => null}
-                                format={() => '23'}
-                            />
-                            <button type="submit">Submit</button>
-                        </form>
-                    )}
-                />
+                <Form defaultValues={{ foo: 23 }} onSubmit={onSubmit}>
+                    <Input
+                        source="foo"
+                        parse={() => null}
+                        format={() => '23'}
+                    />
+                    <button type="submit">Submit</button>
+                </Form>
             </CoreAdminContext>
         );
 
@@ -227,20 +191,14 @@ describe('Form', () => {
         const onSubmit = jest.fn();
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    defaultValues={{ foo: { bar: 23 } }}
-                    onSubmit={onSubmit}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <Input
-                                source="foo.bar"
-                                parse={() => null}
-                                format={() => '23'}
-                            />
-                            <button type="submit">Submit</button>
-                        </form>
-                    )}
-                />
+                <Form defaultValues={{ foo: { bar: 23 } }} onSubmit={onSubmit}>
+                    <Input
+                        source="foo.bar"
+                        parse={() => null}
+                        format={() => '23'}
+                    />
+                    <button type="submit">Submit</button>
+                </Form>
             </CoreAdminContext>
         );
 
@@ -259,20 +217,10 @@ describe('Form', () => {
         const onSubmit = jest.fn();
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    defaultValues={{ foo: null }}
-                    onSubmit={onSubmit}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <Input
-                                source="foo"
-                                parse={() => str}
-                                format={() => str}
-                            />
-                            <button type="submit">Submit</button>
-                        </form>
-                    )}
-                />
+                <Form defaultValues={{ foo: null }} onSubmit={onSubmit}>
+                    <Input source="foo" parse={() => str} format={() => str} />
+                    <button type="submit">Submit</button>
+                </Form>
             </CoreAdminContext>
         );
 
@@ -291,20 +239,14 @@ describe('Form', () => {
         const onSubmit = jest.fn();
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    defaultValues={{ foo: null }}
-                    onSubmit={onSubmit}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <Input
-                                source="foo"
-                                parse={() => date}
-                                format={() => 'date'}
-                            />
-                            <button type="submit">Submit</button>
-                        </form>
-                    )}
-                />
+                <Form defaultValues={{ foo: null }} onSubmit={onSubmit}>
+                    <Input
+                        source="foo"
+                        parse={() => date}
+                        format={() => 'date'}
+                    />
+                    <button type="submit">Submit</button>
+                </Form>
             </CoreAdminContext>
         );
 
@@ -324,20 +266,14 @@ describe('Form', () => {
         const onSubmit = jest.fn();
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    defaultValues={{ foo: null }}
-                    onSubmit={onSubmit}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <Input
-                                source="foo"
-                                parse={() => arr}
-                                format={() => 'arr'}
-                            />
-                            <button type="submit">Submit</button>
-                        </form>
-                    )}
-                />
+                <Form defaultValues={{ foo: null }} onSubmit={onSubmit}>
+                    <Input
+                        source="foo"
+                        parse={() => arr}
+                        format={() => 'arr'}
+                    />
+                    <button type="submit">Submit</button>
+                </Form>
             </CoreAdminContext>
         );
 
@@ -357,20 +293,14 @@ describe('Form', () => {
         const onSubmit = jest.fn();
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    defaultValues={{ foo: null }}
-                    onSubmit={onSubmit}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <Input
-                                source="foo"
-                                parse={() => obj}
-                                format={() => 'obj'}
-                            />
-                            <button type="submit">Submit</button>
-                        </form>
-                    )}
-                />
+                <Form defaultValues={{ foo: null }} onSubmit={onSubmit}>
+                    <Input
+                        source="foo"
+                        parse={() => obj}
+                        format={() => 'obj'}
+                    />
+                    <button type="submit">Submit</button>
+                </Form>
             </CoreAdminContext>
         );
 
@@ -392,17 +322,14 @@ describe('Form', () => {
                 <Form
                     defaultValues={{ foo: { bar: null } }}
                     onSubmit={onSubmit}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <Input
-                                source="foo"
-                                parse={() => obj}
-                                format={() => 'obj'}
-                            />
-                            <button type="submit">Submit</button>
-                        </form>
-                    )}
-                />
+                >
+                    <Input
+                        source="foo"
+                        parse={() => obj}
+                        format={() => 'obj'}
+                    />
+                    <button type="submit">Submit</button>
+                </Form>
             </CoreAdminContext>
         );
 
@@ -424,17 +351,14 @@ describe('Form', () => {
                 <Form
                     defaultValues={{ foo: [{ foo: 1 }, {}] }}
                     onSubmit={onSubmit}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <Input
-                                source="foo"
-                                parse={() => obj}
-                                format={() => 'obj'}
-                            />
-                            <button type="submit">Submit</button>
-                        </form>
-                    )}
-                />
+                >
+                    <Input
+                        source="foo"
+                        parse={() => obj}
+                        format={() => 'obj'}
+                    />
+                    <button type="submit">Submit</button>
+                </Form>
             </CoreAdminContext>
         );
 
@@ -456,17 +380,14 @@ describe('Form', () => {
                 <Form
                     defaultValues={{ foo: [{ foo: 1 }, { foo: 4 }] }}
                     onSubmit={onSubmit}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <Input
-                                source="foo"
-                                parse={() => obj}
-                                format={() => 'obj'}
-                            />
-                            <button type="submit">Submit</button>
-                        </form>
-                    )}
-                />
+                >
+                    <Input
+                        source="foo"
+                        parse={() => obj}
+                        format={() => 'obj'}
+                    />
+                    <button type="submit">Submit</button>
+                </Form>
             </CoreAdminContext>
         );
 
@@ -490,17 +411,14 @@ describe('Form', () => {
                         foo: [{ foo: 1, foo2: 2 }, { foo: 3 }, { foo: 4 }],
                     }}
                     onSubmit={onSubmit}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <Input
-                                source="foo"
-                                parse={() => obj}
-                                format={() => 'obj'}
-                            />
-                            <button type="submit">Submit</button>
-                        </form>
-                    )}
-                />
+                >
+                    <Input
+                        source="foo"
+                        parse={() => obj}
+                        format={() => 'obj'}
+                    />
+                    <button type="submit">Submit</button>
+                </Form>
             </CoreAdminContext>
         );
 
@@ -520,20 +438,14 @@ describe('Form', () => {
         const onSubmit = jest.fn();
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    defaultValues={initialValues}
-                    onSubmit={onSubmit}
-                    render={({ handleSubmit }) => (
-                        <form onSubmit={handleSubmit}>
-                            <Input
-                                source="foo"
-                                parse={() => values.foo}
-                                format={() => 'obj'}
-                            />
-                            <button type="submit">Submit</button>
-                        </form>
-                    )}
-                />
+                <Form defaultValues={initialValues} onSubmit={onSubmit}>
+                    <Input
+                        source="foo"
+                        parse={() => values.foo}
+                        format={() => 'obj'}
+                    />
+                    <button type="submit">Submit</button>
+                </Form>
             </CoreAdminContext>
         );
 

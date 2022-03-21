@@ -8,13 +8,12 @@ import {
 import { useCallback } from 'react';
 import {
     SaveButton,
-    SimpleForm,
+    Form,
     TextInput,
     required,
     useCreate,
     useCreateSuggestionContext,
     useNotify,
-    useLoading,
     useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
@@ -23,7 +22,6 @@ import CancelButton from './PostQuickCreateCancelButton';
 const PostQuickCreate = props => {
     const [create] = useCreate();
     const notify = useNotify();
-    const submitting = useLoading();
 
     const { onCancel, onCreate } = useCreateSuggestionContext();
     const handleSave = useCallback(
@@ -54,15 +52,9 @@ const PostQuickCreate = props => {
             onClose={onCancel}
             aria-label={translate('simple.create-post')}
         >
-            <DialogTitle>{translate('simple.create-post')}</DialogTitle>
-            <DialogContent>
-                <SimpleForm
-                    id="post-quick-create"
-                    onSubmit={handleSave}
-                    saving={submitting}
-                    toolbar={null}
-                    {...props}
-                >
+            <Form onSubmit={handleSave} {...props}>
+                <DialogTitle>{translate('simple.create-post')}</DialogTitle>
+                <DialogContent>
                     <TextInput
                         defaultValue=""
                         source="title"
@@ -75,12 +67,12 @@ const PostQuickCreate = props => {
                         fullWidth={true}
                         multiline={true}
                     />
-                </SimpleForm>
-            </DialogContent>
-            <DialogActions>
-                <SaveButton form="post-quick-create" />
-                <CancelButton onClick={onCancel} />
-            </DialogActions>
+                </DialogContent>
+                <DialogActions>
+                    <SaveButton />
+                    <CancelButton onClick={onCancel} />
+                </DialogActions>
+            </Form>
         </Dialog>
     );
 };

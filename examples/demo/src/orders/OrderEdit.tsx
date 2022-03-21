@@ -80,127 +80,115 @@ const Spacer = () => <Box m={1}>&nbsp;</Box>;
 
 const OrderForm = () => {
     const translate = useTranslate();
-
     return (
-        <Form
-            render={({ handleSubmit, ...formProps }: any) => (
-                <form onSubmit={handleSubmit}>
-                    <Box maxWidth="50em">
-                        <Card>
-                            <CardContent>
-                                <Grid container spacing={1}>
-                                    <Grid item xs={12} sm={12} md={8}>
-                                        <Typography variant="h6" gutterBottom>
-                                            {translate(
-                                                'resources.commands.section.order'
-                                            )}
-                                        </Typography>
-                                        <Grid container>
-                                            <Grid item xs={12} sm={12} md={6}>
-                                                <Labeled source="date">
-                                                    <DateField source="date" />
-                                                </Labeled>
-                                            </Grid>
-                                            <Grid item xs={12} sm={12} md={6}>
-                                                <Labeled source="reference">
-                                                    <TextField source="reference" />
-                                                </Labeled>
-                                            </Grid>
-                                        </Grid>
-                                        <Grid container>
-                                            <Grid item xs={12} sm={12} md={6}>
-                                                <SelectInput
-                                                    source="status"
-                                                    choices={[
-                                                        {
-                                                            id: 'delivered',
-                                                            name: 'delivered',
-                                                        },
-                                                        {
-                                                            id: 'ordered',
-                                                            name: 'ordered',
-                                                        },
-                                                        {
-                                                            id: 'cancelled',
-                                                            name: 'cancelled',
-                                                        },
-                                                        {
-                                                            id: 'unknown',
-                                                            name: 'unknown',
-                                                            disabled: true,
-                                                        },
-                                                    ]}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={12} md={6}>
-                                                <Box mt={2}>
-                                                    <BooleanInput
-                                                        row={true}
-                                                        source="returned"
-                                                    />
-                                                </Box>
-                                            </Grid>
-                                        </Grid>
+        <Form>
+            <Box maxWidth="50em">
+                <Card>
+                    <CardContent>
+                        <Grid container spacing={1}>
+                            <Grid item xs={12} sm={12} md={8}>
+                                <Typography variant="h6" gutterBottom>
+                                    {translate(
+                                        'resources.commands.section.order'
+                                    )}
+                                </Typography>
+                                <Grid container>
+                                    <Grid item xs={12} sm={12} md={6}>
+                                        <Labeled source="date">
+                                            <DateField source="date" />
+                                        </Labeled>
                                     </Grid>
-                                    <Grid item xs={12} sm={12} md={4}>
-                                        <Typography variant="h6" gutterBottom>
-                                            {translate(
-                                                'resources.commands.section.customer'
-                                            )}
-                                        </Typography>
-                                        <ReferenceField
-                                            source="customer_id"
-                                            reference="customers"
-                                            link={false}
-                                        >
-                                            <CustomerDetails />
-                                        </ReferenceField>
-                                        <Spacer />
-
-                                        <Typography variant="h6" gutterBottom>
-                                            {translate(
-                                                'resources.commands.section.shipping_address'
-                                            )}
-                                        </Typography>
-                                        <ReferenceField
-                                            source="customer_id"
-                                            reference="customers"
-                                            link={false}
-                                        >
-                                            <CustomerAddress />
-                                        </ReferenceField>
+                                    <Grid item xs={12} sm={12} md={6}>
+                                        <Labeled source="reference">
+                                            <TextField source="reference" />
+                                        </Labeled>
                                     </Grid>
                                 </Grid>
+                                <Grid container>
+                                    <Grid item xs={12} sm={12} md={6}>
+                                        <SelectInput
+                                            source="status"
+                                            choices={[
+                                                {
+                                                    id: 'delivered',
+                                                    name: 'delivered',
+                                                },
+                                                {
+                                                    id: 'ordered',
+                                                    name: 'ordered',
+                                                },
+                                                {
+                                                    id: 'cancelled',
+                                                    name: 'cancelled',
+                                                },
+                                                {
+                                                    id: 'unknown',
+                                                    name: 'unknown',
+                                                    disabled: true,
+                                                },
+                                            ]}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={12} md={6}>
+                                        <Box mt={2}>
+                                            <BooleanInput
+                                                row={true}
+                                                source="returned"
+                                            />
+                                        </Box>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={4}>
+                                <Typography variant="h6" gutterBottom>
+                                    {translate(
+                                        'resources.commands.section.customer'
+                                    )}
+                                </Typography>
+                                <ReferenceField
+                                    source="customer_id"
+                                    reference="customers"
+                                    link={false}
+                                >
+                                    <CustomerDetails />
+                                </ReferenceField>
                                 <Spacer />
 
                                 <Typography variant="h6" gutterBottom>
                                     {translate(
-                                        'resources.commands.section.items'
+                                        'resources.commands.section.shipping_address'
                                     )}
                                 </Typography>
-                                <div>
-                                    <Basket />
-                                </div>
-                                <Spacer />
+                                <ReferenceField
+                                    source="customer_id"
+                                    reference="customers"
+                                    link={false}
+                                >
+                                    <CustomerAddress />
+                                </ReferenceField>
+                            </Grid>
+                        </Grid>
+                        <Spacer />
 
-                                <Typography variant="h6" gutterBottom>
-                                    {translate(
-                                        'resources.commands.section.total'
-                                    )}
-                                </Typography>
-                                <div>
-                                    <Totals />
-                                </div>
-                            </CardContent>
-                            <Toolbar
-                                mutationMode="undoable"
-                                saving={formProps.saving}
-                            />
-                        </Card>
-                    </Box>
-                </form>
-            )}
-        />
+                        <Typography variant="h6" gutterBottom>
+                            {translate('resources.commands.section.items')}
+                        </Typography>
+                        <div>
+                            <Basket />
+                        </div>
+                        <Spacer />
+
+                        <Typography variant="h6" gutterBottom>
+                            {translate('resources.commands.section.total')}
+                        </Typography>
+                        <div>
+                            <Totals />
+                        </div>
+                    </CardContent>
+                    <Toolbar mutationMode="undoable" />
+                </Card>
+            </Box>
+        </Form>
     );
 };
 

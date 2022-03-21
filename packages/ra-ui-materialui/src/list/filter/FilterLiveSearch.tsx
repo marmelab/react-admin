@@ -50,30 +50,26 @@ export const FilterLiveSearch = memo(
         const onSubmit = () => undefined;
 
         return (
-            <Form
-                defaultValues={initialValues}
-                onSubmit={onSubmit}
-                render={() => (
-                    <TextInput
-                        resettable
-                        helperText={false}
-                        source={source}
-                        placeholder={translate('ra.action.search')}
-                        InputProps={{
-                            endAdornment: (
-                                <InputAdornment position="end">
-                                    <SearchIcon color="disabled" />
-                                </InputAdornment>
-                            ),
-                        }}
-                        onChange={handleChange}
-                        size="small"
-                        label={false}
-                        hiddenLabel
-                        {...rest}
-                    />
-                )}
-            />
+            <Form defaultValues={initialValues} onSubmit={onSubmit}>
+                <TextInput
+                    resettable
+                    helperText={false}
+                    source={source}
+                    placeholder={translate('ra.action.search')}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <SearchIcon color="disabled" />
+                            </InputAdornment>
+                        ),
+                    }}
+                    onChange={handleChange}
+                    size="small"
+                    label={false}
+                    hiddenLabel
+                    {...rest}
+                />
+            </Form>
         );
     }
 );

@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { useFormState } from 'react-hook-form';
+import { useFormState, Control } from 'react-hook-form';
 
 /**
  * This hook returns a boolean indicating whether the form is invalid.
@@ -9,9 +9,11 @@ import { useFormState } from 'react-hook-form';
  * as the form state may not have been updated yet when onSubmit validation mode is enabled
  * or when the form hasn't been touched at all.
  */
-export const useIsFormInvalid = () => {
+export const useIsFormInvalid = (control?: Control) => {
     const [isInvalid, setIsInvalid] = useState(false);
-    const { isValid, submitCount, errors } = useFormState();
+    const { isValid, submitCount, errors } = useFormState(
+        control ? { control } : undefined
+    );
     const submitCountRef = useRef(submitCount);
 
     useEffect(() => {

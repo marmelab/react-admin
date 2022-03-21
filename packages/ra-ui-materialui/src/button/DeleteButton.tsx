@@ -90,7 +90,6 @@ export interface DeleteButtonProps<RecordType extends RaRecord = any>
     redirect?: RedirectionSideEffect;
     resource?: string;
     // May be injected by Toolbar
-    saving?: boolean;
     mutationOptions?: UseMutationOptions<
         RecordType,
         unknown,
