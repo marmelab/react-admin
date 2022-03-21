@@ -667,6 +667,8 @@ Filters are "search-as-you-type", meaning that when the user enters new values i
 
 **Tip**: Note that the `label` property can be used on any field to customize the field label.
 
+**Tip**: Be careful to declare the `postFilters` outside the `PostList` component, and not inside it. If you fail to do so, the filters will be recreated each time the component renders, leading to an infinite loop.
+
 ## Customizing the Menu Icons
 
 The sidebar menu shows the same icon for both posts and users. Customizing the menu icon is just a matter of passing an `icon` attribute to each `<Resource>`:

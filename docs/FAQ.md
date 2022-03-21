@@ -10,6 +10,7 @@ title: "FAQ"
 - [How can I customize forms depending on its inputs values?](#how-can-i-customize-forms-depending-on-its-inputs-values)
 - [UI in production build is empty or broke](#ui-in-production-build-is-empty-or-broke)
 - [My Resource is defined but not displayed on the Menu](#my-resource-is-defined-but-not-displayed-on-the-menu)
+- [My List component won't render after I add filters to it](#my-list-component-wont-render-after-i-add-filters-to-it)
 
 ## Can I have custom identifiers/primary keys for my resources?
 
@@ -169,3 +170,22 @@ In order to have a specific resource without `list` prop listed on the menu, you
     </div>
 );
 ```
+
+## My List component won't render after I add filters to it
+
+Make sure you have declared your filters _outside_ your List component, like so:
+
+```jsx
+const postFilters = [
+    <TextInput label="Search" source="q" alwaysOn />,
+    <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
+];
+
+export const PostList = () => (
+    <List filters={postFilters}>
+        ...
+    </List>
+);
+```
+
+If the filters are declared inside the `PostList` component, they will be recreated each time the component renders, leading to an infinite loop, since `PostList` will re-render because the `filters` prop has changed, and so on.
