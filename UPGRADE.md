@@ -527,8 +527,8 @@ const BanUserButton = ({ userId }) => {
 +       'users',
 +       { id: userId, data: { isBanned: true } }
 +   );
--   return <Button label="Ban" onClick={() => mutate()} disabled={loading} />;
-+   return <Button label="Ban" onClick={() => mutate()} disabled={isLoading} />;
+-   return <Button label="Ban" onClick={() => update()} disabled={loading} />;
++   return <Button label="Ban" onClick={() => update()} disabled={isLoading} />;
 };
 ```
 
