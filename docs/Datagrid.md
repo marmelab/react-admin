@@ -689,7 +689,7 @@ The `<Datagrid>` component accepts the usual `className` prop. You can also over
 | `& .RaDatagrid-rowOdd`         | Applied to each odd row                                       |
 | `& .RaDatagrid-rowCell`        | Applied to each row cell                                      |
 | `& .RaDatagrid-expandHeader`   | Applied to each expandable header cell                        |
-| `& .RaDatagrid-clickableRow`   | Applied to each row if `rowClick` prop evaluated to be truthy |
+| `& .RaDatagrid-clickableRow`   | Applied to each row if the `rowClick` prop is or returns truthy |
 | `& .RaDatagrid-expandIconCell` | Applied to each expandable cell                               |
 | `& .RaDatagrid-expandIcon`     | Applied to each expand icon                                   |
 | `& .RaDatagrid-expanded`       | Applied to each expanded icon                                 |
