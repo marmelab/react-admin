@@ -509,16 +509,16 @@ function AsyncResources() {
 
 ### Dynamically create, update, and delete `<Resource>`
 
-Some of the API backends, espcially those fully customizable CRMs, allow users to dynamically create, update, and delete resources on the fly. 
+Some of the API backends, especially those fully customizable CRMs, allow users to dynamically create, update, and delete resources on the fly. 
 
-With react-admin, user can also configure each resource's view and schema just through a GUI.
+With `ra-no-code`, user can also configure each resource's view and schema just through a GUI. These configurations can be used by backend to define new APIs
 
-The following example fetches resource schemas and stores it locally, and later user can use the context `<ResourceConfigurationContext>` to change definition of server APIs. 
+The following example fetches resource schemas and stores it locally, and later user can use the context `<ResourceConfigurationContext>` to change definition of server APIs. User will have more freedom to add additional custom fields to existing data, change field names, and remove resources that they will not use.
 
 ``` jsx
 import * as React from "react";
 import { useEffect } from "react";
-import { AdminContext, AdminUI, Resource, useDataProvider } from "react-admin";
+import { AdminContext, AdminUI, Resource, ListGuesser, useDataProvider } from "react-admin";
 import {
     ResourceConfigurationProvider,
     useResourcesConfiguration,
@@ -540,7 +540,8 @@ function AsyncResources() {
     const dataProvider = useDataProvider();
 
     useEffect(() => {
-        // Note that the `getResources` is not provided by react-admin. You have to implement your own custom verb.
+        // Note that the `getResources` is not provided by react-admin.
+        // You also have to implement your own custom verbs for `addResource`, `updateResource`, and `removeResource`
         // Each returned resource need to match the type of `ResourceConfiguration`
         dataProvider
             .getResources()
@@ -553,17 +554,9 @@ function AsyncResources() {
                 <Resource
                     name={resources[resource].name}
                     key={resources[resource].name}
-                    list={schemaToListView(resources[resource])}
+                    list={ListGuesser}
                 />
             ))}
-            <Resource
-                key="schemas"
-                name="schemas"
-                list={SchemaList}
-                create={SchemaCreate}
-                edit={SchemaEdit}
-                show={SchemaShow}
-            />
         </AdminUI>
     );
 }
