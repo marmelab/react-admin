@@ -1,6 +1,6 @@
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import get from 'lodash/get';
-import { useDeepCompareEffect } from '../util/hooks';
 import { useRecordContext } from '../controller';
 import { InputProps } from './useInput';
 
@@ -12,16 +12,13 @@ export const useApplyInputDefaultValues = (props: Partial<InputProps>) => {
     const { defaultValue, source } = props;
     const record = useRecordContext(props);
     const { getValues, resetField } = useFormContext();
+    const recordValue = get(record, source);
+    const formValue = get(getValues(), source);
 
-    useDeepCompareEffect(() => {
-        if (
-            (!record || get(record, source) == null) &&
-            get(getValues(), source) == null &&
-            defaultValue != null
-        ) {
-            resetField(source, {
-                defaultValue: get(record, source, defaultValue),
-            });
+    useEffect(() => {
+        if (defaultValue == null) return;
+        if (formValue == null && recordValue == null) {
+            resetField(source, { defaultValue });
         }
-    }, [record, JSON.stringify(defaultValue)]);
+    });
 };
