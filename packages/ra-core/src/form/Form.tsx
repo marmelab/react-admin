@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BaseSyntheticEvent, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { FormProvider, FieldValues, UseFormProps } from 'react-hook-form';
 
 import { FormGroupsProvider } from './FormGroupsProvider';

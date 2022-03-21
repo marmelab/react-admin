@@ -14,7 +14,6 @@ import {
     useCreate,
     useCreateSuggestionContext,
     useNotify,
-    useLoading,
     useTranslate,
 } from 'react-admin'; // eslint-disable-line import/no-unresolved
 
@@ -23,7 +22,6 @@ import CancelButton from './PostQuickCreateCancelButton';
 const PostQuickCreate = props => {
     const [create] = useCreate();
     const notify = useNotify();
-    const submitting = useLoading();
 
     const { onCancel, onCreate } = useCreateSuggestionContext();
     const handleSave = useCallback(

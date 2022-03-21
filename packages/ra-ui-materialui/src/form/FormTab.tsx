@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactElement, ReactNode } from 'react';
 import PropTypes from 'prop-types';
-import { FormGroupContextProvider, RaRecord } from 'ra-core';
+import { FormGroupContextProvider } from 'ra-core';
 import { Stack, StackProps } from '@mui/material';
 
 import { FormTabHeader } from './FormTabHeader';

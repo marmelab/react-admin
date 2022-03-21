@@ -49,7 +49,12 @@ export const LoginForm = (props: LoginFormProps) => {
     };
 
     return (
-        <StyledForm onSubmit={submit} mode="onChange" noValidate>
+        <StyledForm
+            onSubmit={submit}
+            mode="onChange"
+            noValidate
+            className={className}
+        >
             <CardContent className={LoginFormClasses.content}>
                 <TextInput
                     autoFocus

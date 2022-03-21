@@ -72,12 +72,6 @@ describe('Form', () => {
     });
 
     it('Does not make the form dirty when reinitialized from a different record', () => {
-        const renderProp = jest.fn(() => (
-            <>
-                <Input source="name" defaultValue="Bar" />
-                <IsDirty />
-            </>
-        ));
         const { rerender } = render(
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <Form onSubmit={jest.fn()} record={{ id: 1, name: 'Foo' }}>
