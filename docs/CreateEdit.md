@@ -1945,61 +1945,55 @@ const segments = [
 ];
 
 const VisitorForm = props => (
-    <Form
-        {...props}
-        render={formProps => (
-            // here starts the custom form layout
-            <form>
-                <Box p="1em">
+    <Form {...props}>
+        <Box p="1em">
+            <Box display="flex">
+                <Box flex={2} mr="1em">
+
+                    <Typography variant="h6" gutterBottom>Identity</Typography>
+
                     <Box display="flex">
-                        <Box flex={2} mr="1em">
-
-                            <Typography variant="h6" gutterBottom>Identity</Typography>
-
-                            <Box display="flex">
-                                <Box flex={1} mr="0.5em">
-                                    <TextInput source="first_name" resource="customers" fullWidth />
-                                </Box>
-                                <Box flex={1} ml="0.5em">
-                                    <TextInput source="last_name" resource="customers" fullWidth />
-                                </Box>
-                            </Box>
-                            <TextInput source="email" resource="customers" type="email" fullWidth />
-                            <DateInput source="birthday" resource="customers" />
-                            <Box mt="1em" />
-
-                            <Typography variant="h6" gutterBottom>Address</Typography>
-
-                            <TextInput resource="customers" source="address" multiline fullWidth />
-                            <Box display="flex">
-                                <Box flex={1} mr="0.5em">
-                                    <TextInput source="zipcode" resource="customers" fullWidth />
-                                </Box>
-                                <Box flex={2} ml="0.5em">
-                                    <TextInput source="city" resource="customers" fullWidth />
-                                </Box>
-                            </Box>
+                        <Box flex={1} mr="0.5em">
+                            <TextInput source="first_name" resource="customers" fullWidth />
                         </Box>
-
-                        <Box flex={1} ml="1em">
-                            
-                            <Typography variant="h6" gutterBottom>Stats</Typography>
-
-                            <SelectArrayInput source="groups" resource="customers" choices={segments} fullWidth />
-                            <NullableBooleanInput source="has_newsletter" resource="customers" />
+                        <Box flex={1} ml="0.5em">
+                            <TextInput source="last_name" resource="customers" fullWidth />
                         </Box>
+                    </Box>
+                    <TextInput source="email" resource="customers" type="email" fullWidth />
+                    <DateInput source="birthday" resource="customers" />
+                    <Box mt="1em" />
 
+                    <Typography variant="h6" gutterBottom>Address</Typography>
+
+                    <TextInput resource="customers" source="address" multiline fullWidth />
+                    <Box display="flex">
+                        <Box flex={1} mr="0.5em">
+                            <TextInput source="zipcode" resource="customers" fullWidth />
+                        </Box>
+                        <Box flex={2} ml="0.5em">
+                            <TextInput source="city" resource="customers" fullWidth />
+                        </Box>
                     </Box>
                 </Box>
-                <Toolbar>
-                    <Box display="flex" justifyContent="space-between" width="100%">
-                        <SaveButton saving={formProps.saving} />
-                        <DeleteButton record={props.record} />
-                    </Box>
-                </Toolbar>
-            </form>
-        )}
-    />
+
+                <Box flex={1} ml="1em">
+                    
+                    <Typography variant="h6" gutterBottom>Stats</Typography>
+
+                    <SelectArrayInput source="groups" resource="customers" choices={segments} fullWidth />
+                    <NullableBooleanInput source="has_newsletter" resource="customers" />
+                </Box>
+
+            </Box>
+        </Box>
+        <Toolbar>
+            <Box display="flex" justifyContent="space-between" width="100%">
+                <SaveButton saving={formProps.saving} />
+                <DeleteButton record={props.record} />
+            </Box>
+        </Toolbar>
+    </Form>
 );
 ```
 
