@@ -48,7 +48,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     } = props;
     const { append, fields, move, remove } = useArrayInput(props);
     const nodeRef = useRef();
-    // const { error, submitFailed } = meta;
 
     const removeField = useCallback(
         (index: number) => {

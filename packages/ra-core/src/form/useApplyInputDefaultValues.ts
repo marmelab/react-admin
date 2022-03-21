@@ -18,7 +18,24 @@ export const useApplyInputDefaultValues = (props: Partial<InputProps>) => {
     useEffect(() => {
         if (defaultValue == null) return;
         if (formValue == null && recordValue == null) {
+            // special case for ArrayInput: since we use get(record, source),
+            // if source is like foo.23.bar, this effect will run.
+            // but we only want to set the default value for the subfield bar
+            // if the record actually has a value for foo.23
+            const pathContainsIndex = source
+                .split('.')
+                .some(pathPart => numericRegex.test(pathPart));
+            if (pathContainsIndex) {
+                const parentPath = source.split('.').slice(0, -1).join('.');
+                const parentValue = get(getValues(), parentPath);
+                if (parentValue == null) {
+                    // the parent is undefined, so we don't want to set the default value
+                    return;
+                }
+            }
             resetField(source, { defaultValue });
         }
     });
 };
+
+const numericRegex = /^\d+$/;
