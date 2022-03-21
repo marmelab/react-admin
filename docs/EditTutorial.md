@@ -185,6 +185,7 @@ export const BookEdit = () => {
 
 Instead of passing the `record` and `onSubmit` callback to the `<SimpleForm>` element, react-admin prefers putting them in an [`<EditContext>`](./EditContext.md) context. This allows any descendant element to "pull" the data and callback from the context.
 
+{% raw %}
 ```jsx
 import * as React from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -229,6 +230,7 @@ export const BookEdit = () => {
   );
 };
 ```
+{% endraw %}
 
 Thanks to `<EditContextProvider>`, the `<SimpleForm>` component no longer needs explicit props. This may look a bit more verbose, but standardizing the `EditContext` value gives react-admin components a simplified API. And it enables further simplifications, explained below. 
 
