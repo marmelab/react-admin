@@ -106,7 +106,7 @@ export const SaveButton = <RecordType extends RaRecord = any>(
 
     const displayedLabel = label && translate(label, { _: label });
     const finalSaving =
-        typeof saving !== 'undefined' ? saving : saveContext.saving;
+        typeof saving !== 'undefined' ? saving : saveContext?.saving;
     const finalDisabled =
         typeof disabled !== 'undefined' ? disabled : finalSaving;
     return (
