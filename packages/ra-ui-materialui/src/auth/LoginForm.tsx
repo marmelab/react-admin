@@ -49,7 +49,7 @@ export const LoginForm = (props: LoginFormProps) => {
     };
 
     return (
-        <Form onSubmit={submit} mode="onChange" noValidate>
+        <StyledForm onSubmit={submit} mode="onChange" noValidate>
             <CardContent className={LoginFormClasses.content}>
                 <TextInput
                     autoFocus
@@ -86,7 +86,7 @@ export const LoginForm = (props: LoginFormProps) => {
                     )}
                 </Button>
             </CardContent>
-        </Form>
+        </StyledForm>
     );
 };
 
@@ -98,7 +98,7 @@ export const LoginFormClasses = {
     icon: `${PREFIX}-icon`,
 };
 
-const Root = styled('form', {
+const StyledForm = styled(Form, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
