@@ -34,7 +34,7 @@ describe('Form', () => {
     it('Does not make the form dirty when reinitialized from a record', () => {
         const { rerender } = render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form onSubmit={jest.fn()} saving={false}>
+                <Form onSubmit={jest.fn()}>
                     <Input source="name" defaultValue="Bar" />
                     <IsDirty />
                 </Form>
@@ -46,11 +46,7 @@ describe('Form', () => {
 
         rerender(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    onSubmit={jest.fn()}
-                    saving={false}
-                    record={{ id: 1, name: 'Foo' }}
-                >
+                <Form onSubmit={jest.fn()} record={{ id: 1, name: 'Foo' }}>
                     <Input source="name" defaultValue="Bar" />
                     <IsDirty />
                 </Form>
@@ -64,7 +60,7 @@ describe('Form', () => {
     it('Does not make the form dirty when initialized from a record with a missing field and this field has an defaultValue', () => {
         render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form onSubmit={jest.fn()} saving={false} record={{ id: 1 }}>
+                <Form onSubmit={jest.fn()} record={{ id: 1 }}>
                     <Input source="name" defaultValue="Bar" />
                     <IsDirty />
                 </Form>
@@ -84,11 +80,7 @@ describe('Form', () => {
         ));
         const { rerender } = render(
             <CoreAdminContext dataProvider={testDataProvider()}>
-                <Form
-                    onSubmit={jest.fn()}
-                    saving={false}
-                    record={{ id: 1, name: 'Foo' }}
-                >
+                <Form onSubmit={jest.fn()} record={{ id: 1, name: 'Foo' }}>
                     <Input source="name" defaultValue="Bar" />
                     <IsDirty />
                 </Form>
@@ -102,7 +94,6 @@ describe('Form', () => {
             <CoreAdminContext dataProvider={testDataProvider()}>
                 <Form
                     onSubmit={jest.fn()}
-                    saving={false}
                     record={{
                         id: 1,
                         name: 'Foo',

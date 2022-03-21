@@ -63,15 +63,6 @@ export type FormProps = FormOwnProps &
         noValidate?: boolean;
     };
 
-export type FormRenderProps = {
-    handleSubmit: (e?: BaseSyntheticEvent) => void;
-    saving?: boolean;
-};
-
-export type FormRender = (
-    props: FormRenderProps
-) => React.ReactElement<any, any>;
-
 export interface FormOwnProps {
     children: ReactNode;
     defaultValues?: any;
@@ -79,6 +70,5 @@ export interface FormOwnProps {
     id?: string;
     record?: Partial<RaRecord>;
     onSubmit?: (data: FieldValues) => any | Promise<any>;
-    saving?: boolean;
     warnWhenUnsavedChanges?: boolean;
 }

@@ -107,7 +107,6 @@ export interface DeleteWithConfirmButtonProps<RecordType extends RaRecord = any>
     redirect?: RedirectionSideEffect;
     resource?: string;
     // May be injected by Toolbar - sanitized in Button
-    saving?: boolean;
     translateOptions?: object;
     mutationOptions?: UseMutationOptions<
         RecordType,

@@ -114,7 +114,7 @@ describe('<SaveButton />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <Form onSubmit={onSubmit}>
-                    <SaveButton saving />
+                    <SaveButton />
                 </Form>
             </AdminContext>
         );

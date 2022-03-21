@@ -17,7 +17,6 @@ const invalidButtonDomProps = {
     record: { id: 123, foo: 'bar' },
     redirect: 'list',
     resource: 'posts',
-    saving: false,
     mutationMode: 'undoable' as MutationMode,
 };
 

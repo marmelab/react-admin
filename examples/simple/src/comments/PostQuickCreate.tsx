@@ -54,7 +54,7 @@ const PostQuickCreate = props => {
             onClose={onCancel}
             aria-label={translate('simple.create-post')}
         >
-            <Form onSubmit={handleSave} saving={submitting} {...props}>
+            <Form onSubmit={handleSave} {...props}>
                 <DialogTitle>{translate('simple.create-post')}</DialogTitle>
                 <DialogContent>
                     <TextInput

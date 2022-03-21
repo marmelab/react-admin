@@ -136,6 +136,5 @@ export interface UseFormOwnProps {
     formRootPathname?: string;
     record?: Partial<RaRecord>;
     onSubmit?: (data: FieldValues) => any | Promise<any>;
-    saving?: boolean;
     warnWhenUnsavedChanges?: boolean;
 }
