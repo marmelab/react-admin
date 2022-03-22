@@ -46,17 +46,12 @@ import { FilterButton } from './filter';
  *     );
  */
 export const ListActions = (props: ListActionsProps) => {
-    const {
-        className,
-        exporter,
-        filters: filtersProp,
-        hasCreate: _,
-        ...rest
-    } = props;
+    const { className, filters: filtersProp, hasCreate: _, ...rest } = props;
     const {
         sort,
         displayedFilters,
         filterValues,
+        exporter,
         showFilter,
         total,
     } = useListContext(props);

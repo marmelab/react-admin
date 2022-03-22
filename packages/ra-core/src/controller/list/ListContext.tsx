@@ -57,6 +57,7 @@ export const ListContext = createContext<ListControllerResult>({
     data: null,
     defaultTitle: null,
     displayedFilters: null,
+    exporter: null,
     filterValues: null,
     hasNextPage: null,
     hasPreviousPage: null,
