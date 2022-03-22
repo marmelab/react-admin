@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
@@ -9,6 +9,7 @@ import AuthContext from './AuthContext';
 import useLogout from './useLogout';
 import { useNotify } from '../notification/useNotify';
 import { AuthProvider } from '../types';
+import { useSafeSetState } from '../util';
 
 let loggedIn = true;
 
@@ -43,11 +44,11 @@ const TestComponent = ({
     error?: any;
     disableNotification?: boolean;
 }) => {
-    const [loggedOut, setLoggedOut] = useState(false);
+    const [loggedOut, setLoggedOut] = useSafeSetState(false);
     const logoutIfAccessDenied = useLogoutIfAccessDenied();
     useEffect(() => {
         logoutIfAccessDenied(error, disableNotification).then(setLoggedOut);
-    }, [error, disableNotification, logoutIfAccessDenied]);
+    }, [error, disableNotification, logoutIfAccessDenied, setLoggedOut]);
     return <div>{loggedOut ? '' : 'logged in'}</div>;
 };
 
@@ -63,7 +64,7 @@ const notify = jest.fn();
 //@ts-expect-error
 useNotify.mockImplementation(() => notify);
 
-const TestWrapper: FC = ({ children }) => (
+const TestWrapper = ({ children }) => (
     <MemoryRouter>
         <AuthContext.Provider value={authProvider}>
             <Routes>{children}</Routes>
