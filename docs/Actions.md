@@ -216,7 +216,7 @@ As a consequence, you should always use `isLoading` to determine if you need to 
 
 Admin interfaces often have to query the API beyond CRUD requests. For instance, a user profile page may need to get the User object based on a user id. Or, users may want to "Approve" a comment by pressing a button, and this action should update the `is_approved` property and save the updated record in one click.
 
-Your dataProvider may contain custom methods, e.g. for calling RPC endpoints on your API. `useQuery` and `use%Mutation` are especially useful for calling these methods.
+Your dataProvider may contain custom methods, e.g. for calling RPC endpoints on your API. `useQuery` and `useMutation` are especially useful for calling these methods.
 
 For instance, if your `dataProvider` exposes a `banUser()` method:
 

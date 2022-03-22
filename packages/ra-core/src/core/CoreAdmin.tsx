@@ -24,9 +24,9 @@ import { CoreAdminUI, CoreAdminUIProps } from './CoreAdminUI';
  * } from 'ra-core';
  *
  * const App = () => (
- *     <Core dataProvider={myDataProvider}>
+ *     <CoreAdmin dataProvider={myDataProvider}>
  *         <Resource name="posts" list={ListGuesser} />
- *     </Core>
+ *     </CoreAdmin>
  * );
  *
  * // dynamic list of resources based on permissions
