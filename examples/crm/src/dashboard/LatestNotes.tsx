@@ -72,10 +72,7 @@ export const LatestNotes = () => {
                             key={`${note.type}_${note.id}`}
                             sx={{ marginBottom: 2 }}
                         >
-                            <Typography
-                                color="textSecondary"
-                                sx={{ opacity: 0.5 }}
-                            >
+                            <Typography variant="body2" color="textSecondary">
                                 on{' '}
                                 {note.type === 'dealNote' ? (
                                     <Deal note={note} />
@@ -120,7 +117,7 @@ const Deal = ({ note }: any) => (
             reference="deals"
             link="show"
         >
-            <TextField source="name" variant="body1" />
+            <TextField source="name" variant="body2" />
         </ReferenceField>
     </>
 );
@@ -135,7 +132,7 @@ const Contact = ({ note }: any) => (
             link="show"
         >
             <FunctionField<ContactType>
-                variant="body1"
+                variant="body2"
                 render={contact =>
                     contact ? `${contact.first_name} ${contact.last_name}` : ''
                 }
