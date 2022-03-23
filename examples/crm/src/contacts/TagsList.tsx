@@ -8,9 +8,7 @@ import {
 
 const ColoredChipField = (props: any) => {
     const record = useRecordContext();
-    if (!record) {
-        return null;
-    }
+    if (!record) return null;
     return (
         <ChipField
             record={record}
