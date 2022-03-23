@@ -6,25 +6,26 @@ import {
     ReferenceField,
     EditButton,
     ShowButton,
+    useRecordContext,
 } from 'react-admin';
 import { Box, Typography, Divider, Link } from '@mui/material';
 
 import { Company, Sale } from '../types';
 
-export const CompanyAside = ({
-    record,
-    link = 'edit',
-}: {
-    record?: Company;
+interface CompanyAsideProps {
     link?: string;
-}) =>
-    record ? (
+}
+
+export const CompanyAside = ({ link = 'edit' }: CompanyAsideProps) => {
+    const record = useRecordContext<Company>();
+    if (!record) return null;
+    return (
         <Box ml={4} width={250} minWidth={250}>
             <Box textAlign="center" mb={2}>
                 {link === 'edit' ? (
-                    <EditButton record={record} label="Edit Company" />
+                    <EditButton label="Edit Company" />
                 ) : (
-                    <ShowButton record={record} label="Show Company" />
+                    <ShowButton label="Show Company" />
                 )}
             </Box>
 
@@ -32,13 +33,15 @@ export const CompanyAside = ({
             <Divider />
 
             <Box mt={2}>
-                Website: <Link href={record.website}>{record.website}</Link>
-                <br />
-                LinkedIn: <Link href={record.linkedIn}>LinkedIn</Link>
+                <Typography variant="body2">
+                    Website: <Link href={record.website}>{record.website}</Link>
+                    <br />
+                    LinkedIn: <Link href={record.linkedIn}>LinkedIn</Link>
+                </Typography>
             </Box>
 
             <Box mt={1}>
-                <TextField source="phone_number" record={record} />{' '}
+                <TextField source="phone_number" />{' '}
                 <Typography
                     variant="body2"
                     color="textSecondary"
@@ -79,11 +82,7 @@ export const CompanyAside = ({
                 >
                     Followed by
                 </Typography>{' '}
-                <ReferenceField
-                    resource="companies"
-                    source="sales_id"
-                    reference="sales"
-                >
+                <ReferenceField source="sales_id" reference="sales">
                     <FunctionField<Sale>
                         source="last_name"
                         render={record =>
@@ -95,4 +94,5 @@ export const CompanyAside = ({
                 </ReferenceField>
             </Box>
         </Box>
-    ) : null;
+    );
+};
