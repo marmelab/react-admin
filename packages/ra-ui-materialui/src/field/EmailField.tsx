@@ -2,7 +2,7 @@ import * as React from 'react';
 import { AnchorHTMLAttributes, memo, FC } from 'react';
 import get from 'lodash/get';
 import Typography from '@mui/material/Typography';
-import { Link } from '@mui/material';
+import { Link, LinkProps } from '@mui/material';
 import { useRecordContext } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
@@ -45,7 +45,7 @@ EmailField.displayName = 'EmailField';
 export interface EmailFieldProps
     extends PublicFieldProps,
         InjectedFieldProps,
-        AnchorHTMLAttributes<HTMLAnchorElement> {}
+        Omit<LinkProps, 'textAlign'> {}
 
 // useful to prevent click bubbling in a datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
