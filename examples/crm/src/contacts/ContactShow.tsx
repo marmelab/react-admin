@@ -29,7 +29,7 @@ const ContactShowContent = () => {
                 <Card>
                     <CardContent>
                         <Box display="flex">
-                            <Avatar record={record} />
+                            <Avatar />
                             <Box ml={2} flex="1">
                                 <Typography variant="h5">
                                     {record.first_name} {record.last_name}
@@ -65,7 +65,7 @@ const ContactShowContent = () => {
                     </CardContent>
                 </Card>
             </Box>
-            <ContactAside record={record} />
+            <ContactAside />
         </Box>
     );
 };

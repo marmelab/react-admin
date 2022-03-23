@@ -36,9 +36,12 @@ import { ContactListFilter } from './ContactListFilter';
 import { Contact } from '../types';
 
 const ContactListContent = () => {
-    const { data, isLoading, onToggleItem, selectedIds } = useListContext<
-        Contact
-    >();
+    const {
+        data: contacts,
+        isLoading,
+        onToggleItem,
+        selectedIds,
+    } = useListContext<Contact>();
     if (isLoading) {
         return <SimpleListLoading hasLeftAvatarOrIcon hasSecondaryText />;
     }
@@ -50,7 +53,7 @@ const ContactListContent = () => {
                 <BulkDeleteButton />
             </BulkActionsToolbar>
             <List>
-                {data.map(contact => (
+                {contacts.map(contact => (
                     <RecordContextProvider value={contact}>
                         <ListItem
                             button

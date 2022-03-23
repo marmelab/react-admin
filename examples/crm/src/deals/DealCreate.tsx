@@ -56,7 +56,7 @@ export const DealCreate = ({ open }: { open: boolean }) => {
             <Create<Deal>
                 resource="deals"
                 mutationOptions={{ onSuccess }}
-                sx={{ width: 500 }}
+                sx={{ width: 500, '& .RaCreate-main': { mt: 0 } }}
             >
                 <SimpleForm defaultValues={{ index: 0 }}>
                     <TextInput

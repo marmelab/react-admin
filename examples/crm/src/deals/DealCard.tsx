@@ -13,6 +13,7 @@ export const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
     const handleClick = () => {
         redirect(`/deals/${deal.id}/show`);
     };
+
     return (
         <Draggable draggableId={String(deal.id)} index={index}>
             {(provided, snapshot) => (
@@ -32,17 +33,11 @@ export const DealCard = ({ deal, index }: { deal: Deal; index: number }) => {
                         }}
                         elevation={snapshot.isDragging ? 3 : 1}
                     >
-                        <Box
-                            sx={{
-                                padding: 1,
-                                display: 'flex',
-                            }}
-                        >
+                        <Box padding={1} display="flex">
                             <ReferenceField
                                 source="company_id"
                                 record={deal}
                                 reference="companies"
-                                resource="deals"
                             >
                                 <LogoField size="small" />
                             </ReferenceField>

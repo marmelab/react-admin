@@ -29,7 +29,9 @@ export const DealsChart = () => {
     useEffect(() => {
         if (!data) return;
         const dealsByMonth = data.reduce((acc, deal) => {
-            const month = startOfMonth(new Date(deal.start_at)).toISOString();
+            const month = startOfMonth(
+                deal.start_at ? new Date(deal.start_at) : new Date()
+            ).toISOString();
             if (!acc[month]) {
                 acc[month] = [];
             }

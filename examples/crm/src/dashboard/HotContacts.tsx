@@ -49,7 +49,7 @@ export const HotContacts = () => {
                         `${contact.first_name} ${contact.last_name}`
                     }
                     resource="contacts"
-                    secondaryText={contact =>
+                    secondaryText={(contact: Contact) =>
                         formatDistance(
                             new Date(contact.last_seen),
                             new Date(),

@@ -23,7 +23,7 @@ export const ContactListFilter = () => {
         sort: { field: 'name', order: 'ASC' },
     });
     return (
-        <Box width="15em" order={-1} mr={2} mt={5}>
+        <Box width="13em" minWidth="13em" order={-1} mr={2} mt={7}>
             <FilterLiveSearch
                 sx={{
                     display: 'block',
@@ -77,9 +77,7 @@ export const ContactListFilter = () => {
                             Cold <Status status="cold" />
                         </>
                     }
-                    value={{
-                        status: 'cold',
-                    }}
+                    value={{ status: 'cold' }}
                 />
                 <FilterListItem
                     label={
@@ -87,9 +85,7 @@ export const ContactListFilter = () => {
                             Warm <Status status="warm" />
                         </>
                     }
-                    value={{
-                        status: 'warm',
-                    }}
+                    value={{ status: 'warm' }}
                 />
                 <FilterListItem
                     label={
@@ -97,9 +93,7 @@ export const ContactListFilter = () => {
                             Hot <Status status="hot" />
                         </>
                     }
-                    value={{
-                        status: 'hot',
-                    }}
+                    value={{ status: 'hot' }}
                 />
                 <FilterListItem
                     label={
@@ -107,9 +101,7 @@ export const ContactListFilter = () => {
                             In contract <Status status="in-contract" />
                         </>
                     }
-                    value={{
-                        status: 'in-contract',
-                    }}
+                    value={{ status: 'in-contract' }}
                 />
             </FilterList>
             <FilterList label="Tags" icon={<LocalOfferIcon />}>
@@ -138,9 +130,7 @@ export const ContactListFilter = () => {
             >
                 <FilterListItem
                     label="Me"
-                    value={{
-                        sales_id: identity && identity.id,
-                    }}
+                    value={{ sales_id: identity && identity.id }}
                 />
             </FilterList>
         </Box>

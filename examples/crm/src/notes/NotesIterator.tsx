@@ -17,7 +17,7 @@ export const NotesIterator = ({
     return (
         <>
             <NewNote showStatus={showStatus} reference={reference} />
-            <Box sx={{ marginTop: '0.5em' }}>
+            <Box mt="0.5em">
                 {data.map((note, index) => (
                     <Note
                         note={note}

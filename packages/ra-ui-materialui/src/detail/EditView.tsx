@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { Card, CardContent } from '@mui/material';
@@ -63,7 +63,7 @@ export const EditView = (props: EditViewProps) => {
 interface EditViewProps
     extends EditProps,
         Omit<EditControllerProps, 'resource'> {
-    children: ReactElement;
+    children: ReactNode;
 }
 
 EditView.propTypes = {

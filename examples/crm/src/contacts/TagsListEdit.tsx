@@ -34,12 +34,13 @@ export const TagsListEdit = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [disabled, setDisabled] = useState(false);
 
-    const { data: allTags, refetch, isLoading: isLoadingAllTags } = useGetList<
-        Tag
-    >('tags', {
-        pagination: { page: 1, perPage: 10 },
-        sort: { field: 'name', order: 'ASC' },
-    });
+    const { data: allTags, isLoading: isLoadingAllTags } = useGetList<Tag>(
+        'tags',
+        {
+            pagination: { page: 1, perPage: 10 },
+            sort: { field: 'name', order: 'ASC' },
+        }
+    );
     const { data: tags, isLoading: isLoadingRecordTags } = useGetMany<Tag>(
         'tags',
         { ids: record.tags },
@@ -112,8 +113,6 @@ export const TagsListEdit = () => {
                                 setNewTagName('');
                                 setNewTagColor(colors[0]);
                                 setOpen(false);
-
-                                refetch();
                             },
                         }
                     );
@@ -192,6 +191,7 @@ export const TagsListEdit = () => {
                             fullWidth
                             value={newTagName}
                             onChange={handleNewTagNameChange}
+                            sx={{ mt: 1 }}
                         />
                         <Box display="flex" flexWrap="wrap" width={230} mt={2}>
                             {colors.map(color => (
@@ -235,7 +235,7 @@ const RoundButton = ({ color, handleClick, selected }: any) => (
             borderRadius: 15,
             border: selected ? '2px solid grey' : 'none',
             display: 'inline-block',
-            margin: 8,
+            margin: 1,
         }}
         onClick={handleClick}
     />

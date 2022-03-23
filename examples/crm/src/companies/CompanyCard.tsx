@@ -31,7 +31,7 @@ export const CompanyCard = (props: { record?: Company }) => {
             <Paper
                 sx={{
                     height: 200,
-                    width: 184,
+                    width: 195,
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
@@ -39,20 +39,9 @@ export const CompanyCard = (props: { record?: Company }) => {
                 }}
                 elevation={elevation}
             >
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
+                <Box display="flex" flexDirection="column" alignItems="center">
                     <CompanyAvatar />
-                    <Box
-                        sx={{
-                            textAlign: 'center',
-                            marginTop: 1,
-                        }}
-                    >
+                    <Box textAlign="center" marginTop={1}>
                         <Typography variant="subtitle2">
                             {record.name}
                         </Typography>
@@ -63,28 +52,11 @@ export const CompanyCard = (props: { record?: Company }) => {
                         />
                     </Box>
                 </Box>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'space-around',
-                        width: '100%',
-                    }}
-                >
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <ContactsIcon
-                            color="disabled"
-                            sx={{ marginRight: 1 }}
-                        />
+                <Box display="flex" justifyContent="space-around" width="100%">
+                    <Box display="flex" alignItems="center">
+                        <ContactsIcon color="disabled" sx={{ mr: 1 }} />
                         <div>
-                            <Typography
-                                variant="subtitle2"
-                                style={{ marginBottom: -8 }}
-                            >
+                            <Typography variant="subtitle2" sx={{ mb: -1 }}>
                                 {record.nb_contacts}
                             </Typography>
                             <Typography variant="caption" color="textSecondary">
@@ -94,18 +66,10 @@ export const CompanyCard = (props: { record?: Company }) => {
                             </Typography>
                         </div>
                     </Box>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <DealIcon color="disabled" sx={{ marginRight: 1 }} />
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <DealIcon color="disabled" sx={{ mr: 1 }} />
                         <div>
-                            <Typography
-                                variant="subtitle2"
-                                style={{ marginBottom: -8 }}
-                            >
+                            <Typography variant="subtitle2" sx={{ mb: -1 }}>
                                 {record.nb_deals}
                             </Typography>
                             <Typography variant="caption" color="textSecondary">

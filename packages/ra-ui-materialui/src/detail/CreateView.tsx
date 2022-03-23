@@ -48,7 +48,7 @@ interface CreateViewProps<RecordType extends RaRecord = any>
 }
 
 CreateView.propTypes = {
-    actions: PropTypes.element,
+    actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     aside: PropTypes.element,
     children: PropTypes.element,
     className: PropTypes.string,

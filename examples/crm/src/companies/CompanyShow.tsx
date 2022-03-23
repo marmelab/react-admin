@@ -46,9 +46,9 @@ export const CompanyShow = () => (
 
 const CompanyShowContent = () => {
     const { record, isLoading } = useShowContext<Company>();
-    const [value, setValue] = useState(0);
-    const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
-        setValue(newValue);
+    const [tabValue, setTabValue] = useState(0);
+    const handleTabChange = (event: ChangeEvent<{}>, newValue: number) => {
+        setTabValue(newValue);
     };
     if (isLoading || !record) return null;
     return (
@@ -72,10 +72,10 @@ const CompanyShowContent = () => {
                             </Box>
                         </Box>
                         <Tabs
-                            value={value}
+                            value={tabValue}
                             indicatorColor="primary"
                             textColor="primary"
-                            onChange={handleChange}
+                            onChange={handleTabChange}
                         >
                             {record.nb_contacts && (
                                 <Tab
@@ -97,7 +97,7 @@ const CompanyShowContent = () => {
                             )}
                         </Tabs>
                         <Divider />
-                        <TabPanel value={value} index={0}>
+                        <TabPanel value={tabValue} index={0}>
                             <ReferenceManyField
                                 reference="contacts"
                                 target="company_id"
@@ -106,7 +106,7 @@ const CompanyShowContent = () => {
                                 <ContactsIterator />
                             </ReferenceManyField>
                         </TabPanel>
-                        <TabPanel value={value} index={1}>
+                        <TabPanel value={tabValue} index={1}>
                             <ReferenceManyField
                                 reference="deals"
                                 target="company_id"
@@ -118,7 +118,7 @@ const CompanyShowContent = () => {
                     </CardContent>
                 </Card>
             </Box>
-            <CompanyAside record={record} />
+            <CompanyAside />
         </Box>
     );
 };
@@ -146,15 +146,14 @@ const TabPanel = (props: TabPanelProps) => {
 };
 
 const ContactsIterator = () => {
-    const { data, isLoading } = useListContext<Contact>();
-    const record = useRecordContext();
+    const { data: contacts, isLoading } = useListContext<Contact>();
     if (isLoading) return null;
 
     const now = Date.now();
     return (
         <Box>
             <List>
-                {data.map(contact => (
+                {contacts.map(contact => (
                     <RecordContextProvider key={contact.id} value={contact}>
                         <ListItem
                             button
@@ -162,7 +161,7 @@ const ContactsIterator = () => {
                             to={`/contacts/${contact.id}/show`}
                         >
                             <ListItemAvatar>
-                                <Avatar record={contact} />
+                                <Avatar />
                             </ListItemAvatar>
                             <ListItemText
                                 primary={`${contact.first_name} ${contact.last_name}`}
@@ -191,35 +190,38 @@ const ContactsIterator = () => {
                 ))}
             </List>
             <Box textAlign="center" mt={1}>
-                <CreateRelatedContactButton record={record} />
+                <CreateRelatedContactButton />
             </Box>
         </Box>
     );
 };
 
-const CreateRelatedContactButton = ({ record }: any) => (
-    <Button
-        component={RouterLink}
-        to="/contacts/create"
-        state={{ record: { company_id: record.id } }}
-        color="primary"
-        variant="contained"
-        size="small"
-        startIcon={<PersonAddIcon />}
-    >
-        Add contact
-    </Button>
-);
+const CreateRelatedContactButton = () => {
+    const company = useRecordContext<Company>();
+    return (
+        <Button
+            component={RouterLink}
+            to="/contacts/create"
+            state={{ record: { company_id: company.id } }}
+            color="primary"
+            variant="contained"
+            size="small"
+            startIcon={<PersonAddIcon />}
+        >
+            Add contact
+        </Button>
+    );
+};
 
 const DealsIterator = () => {
-    const { data, isLoading } = useListContext<Deal>();
+    const { data: deals, isLoading } = useListContext<Deal>();
     if (isLoading) return null;
 
     const now = Date.now();
     return (
         <Box>
             <List>
-                {data.map(deal => (
+                {deals.map(deal => (
                     <ListItem
                         button
                         key={deal.id}

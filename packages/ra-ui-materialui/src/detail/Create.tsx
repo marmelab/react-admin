@@ -76,7 +76,7 @@ export const Create = <RecordType extends RaRecord = any>(
 };
 
 Create.propTypes = {
-    actions: PropTypes.element,
+    actions: PropTypes.oneOfType([PropTypes.element, PropTypes.bool]),
     aside: PropTypes.element,
     children: PropTypes.element,
     classes: PropTypes.object,

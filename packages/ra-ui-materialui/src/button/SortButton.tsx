@@ -9,6 +9,7 @@ import {
     useMediaQuery,
     Theme,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import SortIcon from '@mui/icons-material/Sort';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import {
@@ -95,7 +96,7 @@ const SortButton = (props: SortButtonProps) => {
                     </IconButton>
                 </Tooltip>
             ) : (
-                <Button
+                <StyledButton
                     aria-controls="simple-menu"
                     aria-haspopup="true"
                     color="primary"
@@ -103,10 +104,9 @@ const SortButton = (props: SortButtonProps) => {
                     startIcon={icon}
                     endIcon={<ArrowDropDownIcon />}
                     size="small"
-                    sx={{ '& .MuiButton-endIcon': { ml: 0 } }}
                 >
                     {buttonLabel}
-                </Button>
+                </StyledButton>
             )}
             <Menu
                 id="simple-menu"
@@ -153,5 +153,16 @@ export interface SortButtonProps {
     label?: string;
     icon?: ReactElement;
 }
+
+const StyledButton = styled(Button, {
+    name: 'RaSortButton',
+    overridesResolver: (props, styles) => styles.root,
+})({
+    '&.MuiButton-sizeSmall': {
+        // fix for icon misalignment on small buttons, see https://github.com/mui/material-ui/pull/30240
+        lineHeight: 1.5,
+    },
+    '& .MuiButton-endIcon': { ml: 0 },
+});
 
 export default memo(SortButton, arePropsEqual);
