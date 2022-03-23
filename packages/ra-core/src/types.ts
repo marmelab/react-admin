@@ -464,6 +464,11 @@ export type ResourceMatch = Match<{
     id?: string;
 }>;
 
+export interface ResourceOptions {
+    label?: string;
+    [key: string]: any;
+}
+
 export interface ResourceProps {
     intent?: 'route' | 'registration';
     match?: ResourceMatch;
@@ -473,7 +478,7 @@ export interface ResourceProps {
     edit?: ComponentType<ResourceComponentPropsWithId>;
     show?: ComponentType<ResourceComponentPropsWithId>;
     icon?: ComponentType<any>;
-    options?: object;
+    options?: ResourceOptions;
 }
 
 export interface AdminProps {
