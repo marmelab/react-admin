@@ -377,6 +377,7 @@ const StyledFormControl = styled(FormControl, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
+    minWidth: theme.spacing(20),
     [`& .${SelectArrayInputClasses.chips}`]: {
         display: 'flex',
         flexWrap: 'wrap',
