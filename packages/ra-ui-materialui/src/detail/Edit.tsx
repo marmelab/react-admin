@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import {
     EditContextProvider,
@@ -57,8 +57,8 @@ import { EditView } from './EditView';
  * export default App;
  */
 export const Edit = <RecordType extends RaRecord = any>(
-    props: EditProps<RecordType> & { children: ReactElement }
-): ReactElement => {
+    props: EditProps<RecordType> & { children: ReactNode }
+) => {
     useCheckMinimumRequiredProps('Edit', ['children'], props);
     const controllerProps = useEditController<RecordType>(props);
     const body = (
