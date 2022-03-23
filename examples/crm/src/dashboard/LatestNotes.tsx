@@ -133,7 +133,7 @@ const Contact = ({ note }: any) => (
         >
             <FunctionField<ContactType>
                 variant="body2"
-                render={(contact: ContactType) =>
+                render={(contact?: ContactType) =>
                     contact ? `${contact.first_name} ${contact.last_name}` : ''
                 }
             />
