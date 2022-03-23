@@ -7,7 +7,7 @@ export const ReferenceError = ({
     label,
     error,
 }: {
-    label: string | ReactElement | false;
+    label?: string | ReactElement | false;
     error: Error;
 }) => (
     <TextField
@@ -25,5 +25,5 @@ ReferenceError.propTypes = {
         PropTypes.string,
         PropTypes.element,
         PropTypes.bool,
-    ]).isRequired,
+    ]),
 };

@@ -14,7 +14,10 @@ describe('<ReferenceInput />', () => {
         source: 'post_id',
     };
 
-    it('should display an error if error is defined', async () => {
+    it.only('should display an error if error is defined', async () => {
+        jest.spyOn(console, 'error')
+            .mockImplementationOnce(() => {})
+            .mockImplementationOnce(() => {});
         const MyComponent = () => <span id="mycomponent" />;
         render(
             <AdminContext
