@@ -18,6 +18,7 @@
                 document.head.appendChild(scriptElement);
             }
         </script>
+        <%= htmlWebpackPlugin.tags.headTags %>
     </head>
     <body>
         <div id="root"></div>
@@ -36,6 +37,6 @@
                 s.parentNode.insertBefore(wf, s);
             })();
         </script>
-        <script src="/index.bundle.js"></script>
+        <%= htmlWebpackPlugin.tags.bodyTags %>
     </body>
 </html>

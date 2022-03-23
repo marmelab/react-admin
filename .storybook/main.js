@@ -3,6 +3,9 @@ const path = require('path');
 
 const packages = fs.readdirSync(path.resolve(__dirname, '../packages'));
 module.exports = {
+    core: {
+        builder: 'webpack5',
+    },
     stories: [`../packages/${process.env.ONLY || '**'}/**/*.stories.@(tsx)`],
     addons: [
         '@storybook/addon-storysource',
