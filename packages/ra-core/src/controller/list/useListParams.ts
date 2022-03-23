@@ -2,7 +2,7 @@ import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
 import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce';
 import pickBy from 'lodash/pickBy';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useMatch } from 'react-router-dom';
 
 import { useStore } from '../../store';
 import queryReducer, {
@@ -85,6 +85,7 @@ export const useListParams = ({
 }: ListParamsOptions): [Parameters, Modifiers] => {
     const location = useLocation();
     const navigate = useNavigate();
+    const match = useMatch(`/${resource}`);
     const [localParams, setLocalParams] = useState(defaultParams);
     const storeKey = `${resource}.listParams`;
     const [params, setParams] = useStore(storeKey, defaultParams);
@@ -134,8 +135,9 @@ export const useListParams = ({
             setTimeout(() => {
                 if (disableSyncWithLocation) {
                     setLocalParams(tempParams.current);
-                } else {
+                } else if (!!match) {
                     // the useEffect above will apply the changes to the params in the store
+                    // if the location maches the current resource
                     navigate(
                         {
                             search: `?${stringify({
