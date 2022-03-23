@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Avatar as MuiAvatar } from '@mui/material';
+import { useRecordContext } from 'react-admin';
 
 import { Contact } from '../types';
-import { useRecordContext } from 'react-admin';
 
 export const Avatar = (props: { record?: Contact }) => {
     const record = useRecordContext<Contact>(props);

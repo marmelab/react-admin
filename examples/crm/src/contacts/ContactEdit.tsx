@@ -81,7 +81,7 @@ const ContactEditContent = () => {
                     </Card>
                 </Form>
             </Box>
-            <ContactAside record={record} link="show" />
+            <ContactAside link="show" />
         </Box>
     );
 };

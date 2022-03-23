@@ -65,7 +65,7 @@ const ContactShowContent = () => {
                     </CardContent>
                 </Card>
             </Box>
-            <ContactAside record={record} />
+            <ContactAside />
         </Box>
     );
 };
