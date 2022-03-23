@@ -45,11 +45,11 @@ export const HotContacts = () => {
                     data={contactData}
                     total={contactTotal}
                     isLoading={contactsLoading}
-                    primaryText={contact =>
+                    primaryText={(contact: Contact) =>
                         `${contact.first_name} ${contact.last_name}`
                     }
                     resource="contacts"
-                    secondaryText={contact =>
+                    secondaryText={(contact: Contact) =>
                         formatDistance(
                             new Date(contact.last_seen),
                             new Date(),
@@ -58,7 +58,9 @@ export const HotContacts = () => {
                             }
                         )
                     }
-                    leftAvatar={contact => <Avatar record={contact} />}
+                    leftAvatar={(contact: Contact) => (
+                        <Avatar record={contact} />
+                    )}
                 />
             </Card>
         </>
