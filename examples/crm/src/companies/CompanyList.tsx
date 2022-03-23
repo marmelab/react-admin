@@ -13,7 +13,8 @@ import { CompanyListFilter } from './CompanyListFilter';
 
 export const CompanyList = () => {
     const { identity } = useGetIdentity();
-    return identity ? (
+    if (!identity) return null;
+    return (
         <List
             actions={<CompanyListActions />}
             aside={<CompanyListFilter />}
@@ -25,7 +26,7 @@ export const CompanyList = () => {
         >
             <ImageList />
         </List>
-    ) : null;
+    );
 };
 
 const CompanyListActions = () => {

@@ -23,7 +23,7 @@ export const ContactListFilter = () => {
         sort: { field: 'name', order: 'ASC' },
     });
     return (
-        <Box width="15em" order={-1} mr={2} mt={5}>
+        <Box width="13em" minWidth="13em" order={-1} mr={2} mt={7}>
             <FilterLiveSearch
                 sx={{
                     display: 'block',
