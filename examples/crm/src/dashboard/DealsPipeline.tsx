@@ -63,8 +63,8 @@ export const DealsPipeline = () => {
                     data={getOrderedDeals(data)}
                     total={total}
                     isLoading={isLoading}
-                    primaryText={(deal: Deal) => deal.name}
-                    secondaryText={(deal: Deal) =>
+                    primaryText={deal => deal.name}
+                    secondaryText={deal =>
                         `${deal.amount.toLocaleString('en-US', {
                             notation: 'compact',
                             style: 'currency',
@@ -74,7 +74,7 @@ export const DealsPipeline = () => {
                             // @ts-ignore
                         })} , ${stageNames[deal.stage]}`
                     }
-                    leftAvatar={(deal: Deal) => (
+                    leftAvatar={deal => (
                         <ReferenceField
                             source="company_id"
                             record={deal}

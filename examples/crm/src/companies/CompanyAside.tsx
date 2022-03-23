@@ -85,7 +85,7 @@ export const CompanyAside = ({ link = 'edit' }: CompanyAsideProps) => {
                 <ReferenceField source="sales_id" reference="sales">
                     <FunctionField<Sale>
                         source="last_name"
-                        render={(record?: Sale) =>
+                        render={record =>
                             record
                                 ? `${record.first_name} ${record.last_name}`
                                 : ''

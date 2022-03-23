@@ -45,7 +45,7 @@ export const HotContacts = () => {
                     data={contactData}
                     total={contactTotal}
                     isLoading={contactsLoading}
-                    primaryText={(contact: Contact) =>
+                    primaryText={contact =>
                         `${contact.first_name} ${contact.last_name}`
                     }
                     resource="contacts"
@@ -58,9 +58,7 @@ export const HotContacts = () => {
                             }
                         )
                     }
-                    leftAvatar={(contact: Contact) => (
-                        <Avatar record={contact} />
-                    )}
+                    leftAvatar={contact => <Avatar record={contact} />}
                 />
             </Card>
         </>
