@@ -33,7 +33,7 @@ export const ContactList = () => {
                 >
                     <Link
                         component={RouterLink}
-                        to={`/contacts/${contact.id}`}
+                        to={`/contacts/${contact.id}/show`}
                         variant="subtitle1"
                     >
                         {contact.first_name} {contact.last_name}

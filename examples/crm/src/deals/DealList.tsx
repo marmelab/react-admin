@@ -22,8 +22,8 @@ export const DealList = () => {
     const location = useLocation();
     const matchCreate = matchPath('/deals/create', location.pathname);
     const matchShow = matchPath('/deals/:id/show', location.pathname);
-
-    return identity ? (
+    if (!identity) return null;
+    return (
         <>
             <List
                 perPage={100}
@@ -39,7 +39,7 @@ export const DealList = () => {
             <DealCreate open={!!matchCreate} />
             <DealShow open={!!matchShow} id={matchShow?.params.id} />
         </>
-    ) : null;
+    );
 };
 
 const dealFilters = [
