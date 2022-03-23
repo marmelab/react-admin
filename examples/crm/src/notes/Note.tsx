@@ -94,16 +94,11 @@ export const Note = ({
 
     return (
         <Box
-            sx={{ marginBottom: 2 }}
+            mb={2}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
         >
-            <Box
-                sx={{
-                    marginBottom: 1,
-                    color: 'text.secondary',
-                }}
-            >
+            <Box mb={1} color="text.secondary">
                 <ReferenceField
                     record={note}
                     resource="contactNotes"
@@ -144,15 +139,9 @@ export const Note = ({
                         }}
                         autoFocus
                     />
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'flex-end',
-                            marginTop: 1,
-                        }}
-                    >
+                    <Box display="flex" justifyContent="flex-end" mt={1}>
                         <Button
-                            sx={{ marginRight: 1 }}
+                            sx={{ mr: 1 }}
                             onClick={handleCancelEdit}
                             color="primary"
                         >
@@ -179,18 +168,16 @@ export const Note = ({
                         marginBottom: 1,
                     }}
                 >
-                    <Box sx={{ flex: 1 }}>
+                    <Box flex={1}>
                         {note.text
                             .split('\n')
                             .map((paragraph: string, index: number) => (
                                 <Box
                                     component="p"
-                                    sx={{
-                                        fontFamily: 'fontFamily',
-                                        fontSize: 'body1.fontSize',
-                                        lineHeight: 1.3,
-                                        marginBottom: 2.4,
-                                    }}
+                                    fontFamily="fontFamily"
+                                    fontSize="body1.fontSize"
+                                    lineHeight={1.3}
+                                    marginBottom={2.4}
                                     key={index}
                                 >
                                     {paragraph}

@@ -44,15 +44,6 @@ export const NewNote = ({
         if (showStatus) {
             data.status = status;
         }
-        update(reference, {
-            id: ((record && record.id) as unknown) as Identifier,
-            data: {
-                last_seen: date,
-                status,
-                nb_notes: record.nb_notes + 1,
-            },
-            previousData: record,
-        });
         create(
             resource,
             { data },
@@ -61,18 +52,22 @@ export const NewNote = ({
                     setText('');
                     notify('Note added successfully');
                     refetch();
+                    update(reference, {
+                        id: ((record && record.id) as unknown) as Identifier,
+                        data: {
+                            last_seen: date,
+                            status,
+                            nb_notes: record.nb_notes + 1,
+                        },
+                        previousData: record,
+                    });
                 },
             }
         );
         return false;
     };
     return (
-        <Box
-            sx={{
-                marginTop: 4,
-                marginBottom: 1,
-            }}
-        >
+        <Box mt={4} mb={1}>
             <form onSubmit={handleSubmit}>
                 <TextInput
                     label="Add a note"
@@ -86,13 +81,7 @@ export const NewNote = ({
                     }
                     rows={3}
                 />
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        marginTop: 1,
-                    }}
-                >
+                <Box display="flex" justifyContent="space-between" mt={1}>
                     <span>
                         {text ? (
                             <>
