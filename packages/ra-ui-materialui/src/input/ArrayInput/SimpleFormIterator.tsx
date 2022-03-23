@@ -44,13 +44,33 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         disableRemove,
         disableReordering,
         TransitionProps,
+        defaultValue,
         getItemLabel = DefaultLabelFn,
     } = props;
     const { append, fields, move, remove } = useArrayInput(props);
     const nodeRef = useRef();
 
+    // We need a unique id for each field for a proper enter/exit animation
+    // so we keep an internal map between the field position and an auto-increment id
+    const nextId = useRef(
+        fields && fields.length
+            ? fields.length
+            : defaultValue
+            ? defaultValue.length
+            : 0
+    );
+
+    // We check whether we have a defaultValue (which must be an array) before checking
+    // the fields prop which will always be empty for a new record.
+    // Without it, our ids wouldn't match the default value and we would get key warnings
+    // on the CssTransition element inside our render method
+    const ids = useRef(
+        nextId.current > 0 ? Array.from(Array(nextId.current).keys()) : []
+    );
+
     const removeField = useCallback(
         (index: number) => {
+            ids.current.splice(index, 1);
             remove(index);
         },
         [remove]
@@ -58,6 +78,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
 
     const addField = useCallback(
         (item: any = undefined) => {
+            ids.current.push(nextId.current++);
             append(item);
         },
         [append]
@@ -75,6 +96,9 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
 
     const handleReorder = useCallback(
         (origin: number, destination: number) => {
+            const item = ids.current[origin];
+            ids.current[origin] = ids.current[destination];
+            ids.current[destination] = item;
             move(origin, destination);
         },
         [move]
@@ -98,7 +122,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                     {fields.map((member, index) => (
                         <CSSTransition
                             nodeRef={nodeRef}
-                            key={member.id}
+                            key={ids.current[index]}
                             timeout={500}
                             classNames="fade"
                             {...TransitionProps}
