@@ -39,12 +39,17 @@ export const ListView = <RecordType extends RaRecord = any>(
     const {
         defaultTitle,
         data,
+        error,
         total,
         isLoading,
         filterValues,
     } = useListContext<RecordType>(props);
 
     if (!children || (!data && isLoading && emptyWhileLoading)) {
+        return null;
+    }
+
+    if (error) {
         return null;
     }
 
