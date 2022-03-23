@@ -970,7 +970,7 @@ const PostList = () => (
 
 ## Datagrid `hasBulkActions` Prop Has Been Removed 
 
-As a consequence of moving `bulkActionButtons` prop from `List` to `Datagrid`, `hasBulkActions` prop is now handle internaly by the `Datagrid` compnent, but it is still being pass down to its header and body components.
+As a consequence of moving `bulkActionButtons` prop from `List` to `Datagrid`, `hasBulkActions` prop is now handled internaly by the `Datagrid` component, but it is still being passed down to its header and body components.
 Just set `Datagrid`'s `bulkActionButtons` to `false` to have the same behavior.
 
 ```diff
