@@ -118,7 +118,7 @@ const CompanyShowContent = () => {
                     </CardContent>
                 </Card>
             </Box>
-            <CompanyAside record={record} />
+            <CompanyAside />
         </Box>
     );
 };
