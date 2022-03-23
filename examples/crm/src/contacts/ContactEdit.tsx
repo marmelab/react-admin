@@ -1,79 +1,33 @@
 import * as React from 'react';
-import {
-    EditBase,
-    EditProps,
-    TextInput,
-    ReferenceInput,
-    AutocompleteInput,
-    BooleanInput,
-    Form,
-    Toolbar,
-    useEditContext,
-} from 'react-admin';
-import { Card, CardContent, Divider, Box } from '@mui/material';
+import { EditBase, Form, Toolbar, useEditContext } from 'react-admin';
+import { Card, CardContent, Box } from '@mui/material';
 
 import { Avatar } from './Avatar';
+import { ContactInputs } from './ContactInputs';
 import { ContactAside } from './ContactAside';
 import { Contact } from '../types';
 
-const Spacer = () => <Box width={20} component="span" />;
+export const ContactEdit = () => (
+    <EditBase redirect="show">
+        <ContactEditContent />
+    </EditBase>
+);
 
 const ContactEditContent = () => {
-    const { record, isLoading, save } = useEditContext<Contact>();
+    const { isLoading, record } = useEditContext<Contact>();
     if (isLoading || !record) return null;
     return (
         <Box mt={2} display="flex">
             <Box flex="1">
-                <Form record={record} onSubmit={save}>
+                <Form>
                     <Card>
                         <CardContent>
                             <Box>
                                 <Box display="flex">
                                     <Box mr={2}>
-                                        <Avatar record={record} />
+                                        <Avatar />
                                     </Box>
-                                    <Box flex="1" mt={-1}>
-                                        <Box display="flex">
-                                            <TextInput source="first_name" />
-                                            <Spacer />
-                                            <TextInput source="last_name" />
-                                        </Box>
-                                        <Box display="flex">
-                                            <TextInput source="title" />
-                                            <Spacer />
-                                            <ReferenceInput
-                                                source="company_id"
-                                                reference="companies"
-                                            >
-                                                <AutocompleteInput optionText="name" />
-                                            </ReferenceInput>
-                                        </Box>
-                                        <Divider />
-                                        <Box mt={2} width={430}>
-                                            <TextInput
-                                                source="email"
-                                                fullWidth
-                                            />
-                                        </Box>
-                                        <Box display="flex">
-                                            <TextInput source="phone_number1" />
-                                            <Spacer />
-                                            <TextInput source="phone_number2" />
-                                        </Box>
-                                        <Divider />
-                                        <Box mt={2} width={430}>
-                                            <TextInput
-                                                source="background"
-                                                multiline
-                                                fullWidth
-                                            />
-                                            <TextInput
-                                                source="avatar"
-                                                fullWidth
-                                            />
-                                            <BooleanInput source="has_newsletter" />
-                                        </Box>
-                                    </Box>
+                                    <ContactInputs />
                                 </Box>
                             </Box>
                         </CardContent>
@@ -85,9 +39,3 @@ const ContactEditContent = () => {
         </Box>
     );
 };
-
-export const ContactEdit = (props: EditProps) => (
-    <EditBase {...props} redirect="show">
-        <ContactEditContent />
-    </EditBase>
-);
