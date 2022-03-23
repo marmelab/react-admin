@@ -968,6 +968,24 @@ const PostList = () => (
 );
 ```
 
+## Datagrid `hasBulkActions` Prop Has Been Removed 
+
+As a consequence of moving `bulkActionButtons` prop from `List` to `Datagrid`, `hasBulkActions` prop is now handled internaly by the `Datagrid` component, but it is still being passed down to its header and body components.
+Just set `Datagrid`'s `bulkActionButtons` to `false` to have the same behavior.
+
+```diff
+import { List, Datagrid } from 'react-admin'; 
+
+const PostList = () => (
+    <List>
+-        <Datagrid hasBulkActions={false}>
++        <Datagrid bulkActionButtons={false}>        
+            ...
+        </Datagrid>
+    </List>
+);
+```
+
 ## Mutation Callbacks Can No Longer Be Used As Event Handlers
 
 In 3.0, you could use a mutation callback in an event handler, e.g. a click handler on a button. This is no longer possible, so you'll have to call the callback manually inside a handler function:
@@ -1761,7 +1779,6 @@ const BookListIterator = () => {
 ```
 
 The same happens for `<Datagrid>`: when used in standalone, it used to accept a `currentSort` prop, but now it only accepts a `sort` prop.
-
 
 ```diff
 -<Datagrid data={data} currentSort={{ field: 'id', order: 'DESC' }}>

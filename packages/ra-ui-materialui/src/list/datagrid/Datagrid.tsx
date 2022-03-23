@@ -327,7 +327,6 @@ export interface DatagridProps<RecordType extends RaRecord = any>
               record: RecordType;
               resource: string;
           }>;
-    hasBulkActions?: boolean;
     header?: ReactElement | ComponentType;
     hover?: boolean;
     empty?: ReactElement;
