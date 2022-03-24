@@ -5,11 +5,50 @@ title: "The Create Component"
 
 # `<Create>`
 
-The `<Create>` component prepares the form submit handler, renders the page title and actions. It is not responsible for rendering the actual form - that's the job of its child component (usually a form component, like [`<SimpleForm>`](./SimpleForm.md)). This form component uses its children ([`<Input>`](./Inputs.md) components) to render each form input.
+The `<Create>` component is the main component for creation pages. It prepares a form submit handler, and renders the page title and actions. It is not responsible for rendering the actual form - that's the job of its child component (usually a form component, like [`<SimpleForm>`](./SimpleForm.md)). This form component uses its children ([`<Input>`](./Inputs.md) components) to render each form input.
 
 ![post creation form](./img/create-view.png)
 
 The `<Create>` component creates a `RecordContext` with an empty object `{}` by default. It also creates a `CreateContext`containing a `save` callback, which calls `dataProvider.create()`.
+
+## Usage
+
+Wrap the `<Create>` component around the form you want to create, then pass it as `create` prop of a given `<Resource>`. `<Create>` requires no prop by default - it deduces the resource from the current URL.
+
+For instance, the following component will render a creation form with 4 inputs when users browse to `/posts/create`:
+
+```jsx
+// in src/posts.js
+import * as React from "react";
+import { Create, SimpleForm, TextInput, DateInput, required } from 'react-admin';
+import RichTextInput from 'ra-input-rich-text';
+
+export const PostCreate = () => (
+    <Create>
+        <SimpleForm>
+            <TextInput source="title" validate={[required()]} fullWidth />
+            <TextInput source="teaser" multiLine={true} label="Short description" />
+            <RichTextInput source="body" />
+            <DateInput label="Publication date" source="published_at" defaultValue={new Date()} />
+        </SimpleForm>
+    </Create>
+);
+
+// in src/App.js
+import * as React from "react";
+import { Admin, Resource } from 'react-admin';
+import jsonServerProvider from 'ra-data-json-server';
+
+import { PostCreate } from './posts';
+
+const App = () => (
+    <Admin dataProvider={jsonServerProvider('https://jsonplaceholder.typicode.com')}>
+        <Resource name="posts" create={PostCreate} />
+    </Admin>
+);
+
+export default App;
+```
 
 You can customize the `<Create>` component using the following props:
 
@@ -17,11 +56,14 @@ You can customize the `<Create>` component using the following props:
 * [`aside`](#aside-component): component to render aside to the main content
 * `children`: the components that render the form
 * `className`: passed to the root component
-* [`component`](#component): overrides the root component
+* [`component`](#component): override the root component
+* [`disableAuthentication`](#disable-authentication): disable the authentication check
 * [`mutationOptions`](#mutationoptions): options for the `dataProvider.create()` call
 * [`record`](#record): initialize the form with a record
+* [`redirect`](#redirect): change the redirect location after successful creation
+* [`resource`](#resource): override the name of the resource to create
 * [`sx`](#sx-css-api): Override the styles
-* [`title`](#page-title): override the page title
+* [`title`](#title): override the page title
 * [`transform`](#transform): transform the form data before calling `dataProvider.create()`
 
 ## `actions`
@@ -96,12 +138,25 @@ const PostCreate = () => (
 
 The default value for the `component` prop is `Card`.
 
+## `disableAuthentication`
+
+By default, the `<Create>` component will automatically redirect the user to the login page if the user is not authenticated. If you want to disable this behavior and allow anonymous access to a creation page, set the `disableAuthentication` prop to `true`.
+
+```jsx
+const PostCreate = () => (
+    <Create disableAuthentication>
+        ...
+    </Create>
+);
+```
+
 ## `mutationOptions`
 
 You can customize the options you pass to react-query's `useMutation` hook, e.g. to override success or error side effects, by setting the `mutationOptions` prop.
 
 Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to another page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 
+{% raw %}
 ```jsx
 import * as React from 'react';
 import { useNotify, useRedirect, Create, SimpleForm } from 'react-admin';
@@ -110,9 +165,9 @@ const PostCreate = () => {
     const notify = useNotify();
     const redirect = useRedirect();
 
-    const onSuccess = () => {
+    const onSuccess = (data) => {
         notify(`Changes saved`);
-        redirect('/posts');
+        redirect(`/posts/${data.id}`);
     };
 
     return (
@@ -124,6 +179,7 @@ const PostCreate = () => {
     );
 }
 ```
+{% endraw %}
 
 The default `onSuccess` function is:
 
@@ -134,10 +190,13 @@ The default `onSuccess` function is:
 }
 ```
 
+**Tip**: If you just want to customize the redirect behavior, you can use [the `redirect` prop](#redirect) instead.
+
 **Tip**: If you want to have different success side effects based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save and redirect to the list", and another to "save and display an empty form"), you can set the `mutationOptions` prop on the `<SaveButton>` component, too.
 
 Similarly, you can override the failure side effects with an `onError` option. By default, when the save action fails at the dataProvider level, react-admin shows an error notification.
 
+{% raw %}
 ```jsx
 import * as React from 'react';
 import { useNotify, Create, SimpleForm } from 'react-admin';
@@ -158,6 +217,7 @@ const PostCreate = () => {
     );
 }
 ```
+{% endraw %}
 
 The `onError` function receives the error from the `dataProvider.create()` call. It is a JavaScript Error object (see [the dataProvider documentation for details](./DataProviderWriting.md#error-format)).
 
@@ -174,6 +234,74 @@ The default `onError` function is:
 ## `record`
 
 The `record` prop allows to initialize the form with non-empty values. It is exposed for consistency with the `<Edit>` component, but if you need default values, you should use the `defautValues` prop on the Form element instead.
+
+## `redirect`
+
+By default, submitting the form in the `<Create>` view redirects to the `<Edit>` view.
+
+You can customize the redirection by setting the `redirect` prop to one of the following values:
+
+- `'edit'`: redirect to the Edit view (the default)
+- `'list'`: redirect to the List view
+- `'show'`: redirect to the Show view
+- `false`: do not redirect
+
+```jsx
+const PostCreate = () => (
+    <Create redirect="list">
+        ...
+    </Create>
+);
+```
+
+Note that the `redirect` prop is ignored if you set [the `mutationOptions` prop](#mutationoptions). See that prop for how to set a different redirection path in that case. 
+
+If you want to allow the user to enter several records one after the other, setting `redirect` to `false` won't make it, as the form isn't emptied by default. You'll have to empty the form using the `mutationOptions`, and this option disables the `redirect` prop. Check [the Save And Add Another section](#save-and-add-another) for more details.
+
+## Redirection After Submission
+
+By default, submitting the form in the `<Create>` view redirects to the `<Edit>` view.
+
+You can customize the redirection by overriding the `onSuccess` callback in the `mutationOptions`, and leveraging [the `useRedirect` hook](./useRedirect.md). For instance, to redirect to the `<Show>` view after edition:
+
+{% raw %}
+```jsx
+import * as React from 'react';
+import { useNotify, useRedirect, Create, SimpleForm } from 'react-admin';
+
+const PostEdit = () => {
+    const notify = useNotify();
+    const redirect = useRedirect();
+
+    const onSuccess = (data) => {
+        notify(`Changes saved`);
+        redirect('show', 'posts', data.id);
+    };
+
+    return (
+        <Create mutationOptions={{ onSuccess }}>
+            <SimpleForm>
+                ...
+            </SimpleForm>
+        </Create>
+    );
+}
+```
+{% endraw %}
+
+## `resource`
+
+Components based on `<Create>` are often used as `<Resource create>` props, and therefore rendered when the URL matches `/[resource]/create`. The `<Create>` component generates a call to `dataProvider.create()` using the ressource name from the URL by default.
+
+You can decide to use a `<Create>` component in another path, or embedded in a page using another ressource name (e.g. in a Dialog). In that canse, you can explicitely set the `ressource` name:
+
+```jsx
+const PostCreate = () => (
+    <Create resource="posts">
+        ...
+    </Create>
+);
+```
 
 ## `sx`: CSS API
 
@@ -224,37 +352,6 @@ export const UserCreate = (props) => {
 The `transform` function can also return a `Promise`, which allows you to do all sorts of asynchronous calls (e.g. to the `dataProvider`) during the transformation.
 
 **Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on the `<SaveButton>` component, too. See [Altering the Form Values Before Submitting](./EditTutorial.md#altering-the-form-values-before-submitting) for an example.
-
-## Redirection After Submission
-
-By default, submitting the form in the `<Create>` view redirects to the `<Edit>` view.
-
-You can customize the redirection by overriding the `onSuccess` callback in the `mutationOptions`, and leveraging [the `useRedirect` hook](./useRedirect.md). For instance, to redirect to the `<Show>` view after edition:
-
-{% raw %}
-```jsx
-import * as React from 'react';
-import { useNotify, useRedirect, Create, SimpleForm } from 'react-admin';
-
-const PostEdit = () => {
-    const notify = useNotify();
-    const redirect = useRedirect();
-
-    const onSuccess = (data) => {
-        notify(`Changes saved`);
-        redirect('show', 'posts', data.id);
-    };
-
-    return (
-        <Create mutationOptions={{ onSuccess }}>
-            <SimpleForm>
-                ...
-            </SimpleForm>
-        </Create>
-    );
-}
-```
-{% endraw %}
 
 ## Changing The Notification Message
 
@@ -350,3 +447,40 @@ const CreateRelatedCommentButton = ({ record }) => (
 {% endraw %}
 
 Should you use the location `state` or the location `search`? The latter modifies the URL, so it's only necessary if you want to build cross-application links (e.g. from one admin to the other). In general, using the location `state` is a safe bet.
+
+And if you want to prefill the form with constant values, use the `defaultValues` prop on the Form tag.  
+
+## Save And Add Another
+
+Whe users need to create several records in a row, a good UX is to stay on the Create form after a successfull submission, and to empty that form to allow a new entry. 
+
+Setting the `<Create redirect={false}>` prop only solves part of the problem: the form still needs to be emptied. That's why the right implementation for this use case is to use the `mutationOptions` prop:
+
+```jsx
+import * as React from 'react';
+import { useNotify, useRedirect, Create, SimpleForm } from 'react-admin';
+
+const PostCreate = () => {
+    const { reset } = useFormContext();
+    const notify = useNotify();
+
+    const  onSuccess: () => {
+        reset();
+        window.scrollTo(0, 0);
+        notify('ra.notification.created', {
+            type: 'info',
+            messageArgs: { smart_count: 1 },
+        });
+    };
+
+    return (
+        <Create mutationOptions={{ onSuccess }}>
+            <SimpleForm>
+                ...
+            </SimpleForm>
+        </Create>
+    );
+}
+```
+
+You can also leave the choice to the user, by supplying two submit buttons: one with a redirect, and one with a form reset. The same technique applies: use the `mutationOptions` prop on the `<SaveButton>` component.
