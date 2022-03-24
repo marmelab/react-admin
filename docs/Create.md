@@ -458,7 +458,7 @@ Setting the `<Create redirect={false}>` prop only solves part of the problem: th
 
 ```jsx
 import * as React from 'react';
-import { useNotify, useRedirect, Create, SimpleForm } from 'react-admin';
+import { useNotify, Create, SimpleForm } from 'react-admin';
 
 const PostCreate = () => {
     const { reset } = useFormContext();
