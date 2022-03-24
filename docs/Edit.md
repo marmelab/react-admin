@@ -390,6 +390,7 @@ The default `onError` function is:
 
 For instance, you can force a refetch on reconnect:
 
+{% raw %}
 ```jsx
 const PostEdit = () => (
     <Edit queryOptions={{ refetchOnReconnect: true }}>
@@ -397,6 +398,7 @@ const PostEdit = () => (
     </Edit>
 );
 ```
+{% endraw %}
 
 Refer to the [useQuery documentation](https://react-query.tanstack.com/reference/useQuery) in the react-query website for a list of the possible options.
 

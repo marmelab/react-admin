@@ -5,9 +5,9 @@ title: "The EditBase Component"
 
 # `<EditBase>`
 
-The `<EditBase>` component is a headless version of `<Edit>`: it fetches a record based on the URL, prepares a form submit handler, and renders its children. 
+The `<EditBase>` component is a headless version of [`<Edit>`](./Edit.md): it fetches a record based on the URL, prepares a form submit handler, and renders its children. 
 
-If does that by calling `useEditController`, and by putting the result in an `EditContext`.
+If does that by calling [`useEditController`](./useEditController.md), and by putting the result in an `EditContext`.
 
 ## Usage
 
