@@ -14,6 +14,7 @@ import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { RaRecord } from 'ra-core';
 import { UseFieldArrayReturn } from 'react-hook-form';
+import { AnimatePresence, Reorder } from 'framer-motion';
 
 import { useArrayInput } from './useArrayInput';
 import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
@@ -75,6 +76,23 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         [move]
     );
 
+    const handleNewOrder = useCallback(
+        (newOrder: RaRecord[]) => {
+            let hasMoved = false;
+            newOrder.forEach((toField, to) => {
+                if (hasMoved) {
+                    return;
+                }
+                const from = fields.findIndex(field => field.id === toField.id);
+                if (from !== to) {
+                    move(from, to);
+                    hasMoved = true;
+                }
+            });
+        },
+        [move, fields]
+    );
+
     const records = get(record, source);
 
     const context = useMemo(
@@ -88,28 +106,36 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     );
     return fields ? (
         <SimpleFormIteratorContext.Provider value={context}>
-            <Root className={className}>
-                {fields.map((member, index) => (
-                    <SimpleFormIteratorItem
-                        key={member.id}
-                        disabled={disabled}
-                        disableRemove={disableRemove}
-                        disableReordering={disableReordering}
-                        fields={fields}
-                        getItemLabel={getItemLabel}
-                        index={index}
-                        member={`${source}.${index}`}
-                        onRemoveField={removeField}
-                        onReorder={handleReorder}
-                        record={(records && records[index]) || {}}
-                        removeButton={removeButton}
-                        reOrderButtons={reOrderButtons}
-                        resource={resource}
-                        source={source}
-                    >
-                        {children}
-                    </SimpleFormIteratorItem>
-                ))}
+            <Root
+                className={className}
+                as={Reorder.Group}
+                values={fields}
+                onReorder={handleNewOrder}
+            >
+                <AnimatePresence initial={false}>
+                    {fields.map((field, index) => (
+                        <SimpleFormIteratorItem
+                            key={field.id}
+                            disabled={disabled}
+                            disableRemove={disableRemove}
+                            disableReordering={disableReordering}
+                            fields={fields}
+                            field={field}
+                            getItemLabel={getItemLabel}
+                            index={index}
+                            member={`${source}.${index}`}
+                            onRemoveField={removeField}
+                            onReorder={handleReorder}
+                            record={(records && records[index]) || {}}
+                            removeButton={removeButton}
+                            reOrderButtons={reOrderButtons}
+                            resource={resource}
+                            source={source}
+                        >
+                            {children}
+                        </SimpleFormIteratorItem>
+                    ))}
+                </AnimatePresence>
                 {!disabled && !disableAdd && (
                     <li className={SimpleFormIteratorClasses.line}>
                         <span className={SimpleFormIteratorClasses.action}>
@@ -176,7 +202,9 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     source?: string;
 }
 
-const Root = styled('ul')(({ theme }) => ({
+const Root = styled('ul')<
+    Omit<React.ComponentProps<typeof Reorder.Group>, 'as'>
+>(({ theme }) => ({
     padding: 0,
     marginBottom: 0,
     '& > li:last-child': {

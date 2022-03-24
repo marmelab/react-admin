@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { cloneElement, Children, ReactElement, useEffect, useRef } from 'react';
+import {
+    cloneElement,
+    Children,
+    ReactElement,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 import clsx from 'clsx';
 import {
     isRequired,
@@ -88,6 +95,10 @@ export const ArrayInput = (props: ArrayInputProps) => {
     const fieldProps = useFieldArray({
         name: source,
     });
+    const [isMounted, setIsMounted] = useState(false);
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     const {
         getFieldState,
@@ -179,15 +190,16 @@ export const ArrayInput = (props: ArrayInputProps) => {
                 />
             </InputLabel>
             <ArrayInputContext.Provider value={fieldProps}>
-                {cloneElement(Children.only(children), {
-                    ...fieldProps,
-                    record,
-                    resource,
-                    source,
-                    variant,
-                    margin,
-                    disabled,
-                })}
+                {isMounted &&
+                    cloneElement(Children.only(children), {
+                        ...fieldProps,
+                        record,
+                        resource,
+                        source,
+                        variant,
+                        margin,
+                        disabled,
+                    })}
             </ArrayInputContext.Provider>
             {!!((isDirty || isSubmitted) && invalid) || helperText ? (
                 <FormHelperText error={(isDirty || isSubmitted) && invalid}>
