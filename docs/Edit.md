@@ -66,14 +66,16 @@ You can customize the `<Edit>` component using the following props:
 * `className`: passed to the root component
 * [`component`](#component): override the root component
 * [`disableAuthentication`](#disable-authentication): disable the authentication check
+* [`id`](#id): the id of the record to edit
 * [`mutationMode`](#mutation-mode): switch to optimistic or pessimistic mutations (undoable by default)
-* [`mutationOptions`](#mutationoptions): options for the `dataProvider.create()` call
+* [`mutationOptions`](#mutationoptions): options for the `dataProvider.update()` call
+* [`queryOptions`](#queryoptions): options for the `dataProvider.getOne()` call
 * [`record`](#record): use the provided record as base instead of fetching it
 * [`redirect`](#redirect): change the redirect location after successful creation
 * [`resource`](#resource): override the name of the resource to create
 * [`sx`](#sx-css-api): Override the styles
 * [`title`](#title): override the page title
-* [`transform`](#transform): transform the form data before calling `dataProvider.create()`
+* [`transform`](#transform): transform the form data before calling `dataProvider.update()`
 
 ## `actions`
 
@@ -183,6 +185,20 @@ const PostEdit = () => (
 );
 ```
 
+## `id`
+
+Components based on `<Edit>` are often used as `<Resource edit>` props, and therefore rendered when the URL matches `/[resource]/[id]`. The `<Edit>` component generates a call to `dataProvider.update()` using the id from the URL by default.
+
+You can decide to use a `<Edit>` component in another path, or embedded in a page editing a related record (e.g. in a Dialog). In that canse, you can explicitely set the `id` value:
+
+```jsx
+const PostEdit = () => (
+    <Edit id={1234}>
+        ...
+    </Edit>
+);
+```
+
 ## `mutationMode`
 
 The `<Edit>` view exposes two buttons, Save and Delete, which perform "mutations" (i.e. they alter the data). React-admin offers three modes for mutations. The mode determines when the side effects (redirection, notifications, etc.) are executed:
@@ -250,7 +266,7 @@ const PostEdit = () => (
 
 ## `mutationOptions`
 
-You can customize the options you pass to react-query's `useMutation` hook, e.g. to override success or error side effects, by setting the `mutationOptions` prop.
+`<Edit>` calls `dataProvider.update()` via react-query's `useMutation` hook. You can customize the options you pass to this hook, e.g. to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://react-query.tanstack.com/reference/useMutation) in the react-query website for a list of the possible options.
 
 Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to another page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 
@@ -367,6 +383,22 @@ The default `onError` function is:
 ```
 
 **Tip**: If you want to have different failure side effects based on the button clicked by the user, you can set the `mutationOptions` prop on the `<SaveButton>` component, too.
+
+## `queryOptions`
+
+`<Edit>` calls `dataProvider.getOne()` on mount via react-query's `useQuery` hook. You can customize the options you pass to this hook by setting the `queryOptions` prop.
+
+For instance, you can force a refetch on reconnect:
+
+```jsx
+const PostEdit = () => (
+    <Edit queryOptions={{ refetchOnReconnect: true }}>
+        ...
+    </Edit>
+);
+```
+
+Refer to the [useQuery documentation](https://react-query.tanstack.com/reference/useQuery) in the react-query website for a list of the possible options.
 
 ## `record`
 

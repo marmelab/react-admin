@@ -152,7 +152,7 @@ const PostCreate = () => (
 
 ## `mutationOptions`
 
-You can customize the options you pass to react-query's `useMutation` hook, e.g. to override success or error side effects, by setting the `mutationOptions` prop.
+You can customize the options you pass to react-query's `useMutation` hook, e.g. to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://react-query.tanstack.com/reference/useMutation) in the react-query website for a list of the possible options.
 
 Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to another page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 
