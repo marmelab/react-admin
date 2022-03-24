@@ -14,7 +14,7 @@ describe('<ReferenceInput />', () => {
         source: 'post_id',
     };
 
-    it.only('should display an error if error is defined', async () => {
+    it('should display an error if error is defined', async () => {
         jest.spyOn(console, 'error')
             .mockImplementationOnce(() => {})
             .mockImplementationOnce(() => {});
