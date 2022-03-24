@@ -62,7 +62,7 @@ You can customize the `<Edit>` component using the following props:
 
 * [`actions`](#actions): override the actions toolbar with a custom component
 * [`aside`](#aside-component): component to render aside to the main content
-* `children`: the components that render the form
+* `children`: the components that renders the form
 * `className`: passed to the root component
 * [`component`](#component): override the root component
 * [`disableAuthentication`](#disable-authentication): disable the authentication check
