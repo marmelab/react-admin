@@ -464,7 +464,7 @@ const PostCreate = () => {
     const { reset } = useFormContext();
     const notify = useNotify();
 
-    const  onSuccess: () => {
+    const  onSuccess = () => {
         reset();
         window.scrollTo(0, 0);
         notify('ra.notification.created', {
