@@ -56,7 +56,7 @@ export const BookCreate = () => {
 
 ```jsx
 const {
-    defaultTitle, // the translated title based on the resource, e.g. 'Post #123'
+    defaultTitle, // the translated title based on the resource, e.g. 'Create New Post'
     redirect, // the default redirection route. Defaults to 'list'
     resource, // the resource name, deduced from the location. e.g. 'posts'
     save, // the update callback, to be passed to the underlying form as submit handler
