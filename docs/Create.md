@@ -258,37 +258,6 @@ Note that the `redirect` prop is ignored if you set [the `mutationOptions` prop]
 
 If you want to allow the user to enter several records one after the other, setting `redirect` to `false` won't make it, as the form isn't emptied by default. You'll have to empty the form using the `mutationOptions`, and this option disables the `redirect` prop. Check [the Save And Add Another section](#save-and-add-another) for more details.
 
-## Redirection After Submission
-
-By default, submitting the form in the `<Create>` view redirects to the `<Edit>` view.
-
-You can customize the redirection by overriding the `onSuccess` callback in the `mutationOptions`, and leveraging [the `useRedirect` hook](./useRedirect.md). For instance, to redirect to the `<Show>` view after edition:
-
-{% raw %}
-```jsx
-import * as React from 'react';
-import { useNotify, useRedirect, Create, SimpleForm } from 'react-admin';
-
-const PostEdit = () => {
-    const notify = useNotify();
-    const redirect = useRedirect();
-
-    const onSuccess = (data) => {
-        notify(`Changes saved`);
-        redirect('show', 'posts', data.id);
-    };
-
-    return (
-        <Create mutationOptions={{ onSuccess }}>
-            <SimpleForm>
-                ...
-            </SimpleForm>
-        </Create>
-    );
-}
-```
-{% endraw %}
-
 ## `resource`
 
 Components based on `<Create>` are often used as `<Resource create>` props, and therefore rendered when the URL matches `/[resource]/create`. The `<Create>` component generates a call to `dataProvider.create()` using the ressource name from the URL by default.
@@ -357,6 +326,7 @@ The `transform` function can also return a `Promise`, which allows you to do all
 
 Once the `dataProvider` returns successfully after save, users see a generic notification ("Element created"). You can customize this message by passing a custom success side effect function in [the `mutationOptions` prop](#mutationoptions):
 
+{% raw %}
 ```jsx
 import * as React from 'react';
 import { useNotify, useRedirect, Create, SimpleForm } from 'react-admin';
@@ -379,6 +349,7 @@ const PostCreate = () => {
     );
 }
 ```
+{% endraw %}
 
 You can do the same for error notifications, by passing a custom `onError`  callback.
 
@@ -456,6 +427,7 @@ Whe users need to create several records in a row, a good UX is to stay on the C
 
 Setting the `<Create redirect={false}>` prop only solves part of the problem: the form still needs to be emptied. That's why the right implementation for this use case is to use the `mutationOptions` prop:
 
+{% raw %}
 ```jsx
 import * as React from 'react';
 import { useNotify, Create, SimpleForm } from 'react-admin';
@@ -482,5 +454,6 @@ const PostCreate = () => {
     );
 }
 ```
+{% endraw %}
 
 You can also leave the choice to the user, by supplying two submit buttons: one with a redirect, and one with a form reset. The same technique applies: use the `mutationOptions` prop on the `<SaveButton>` component.
