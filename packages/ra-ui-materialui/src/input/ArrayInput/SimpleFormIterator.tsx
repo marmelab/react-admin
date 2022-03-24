@@ -7,7 +7,6 @@ import {
     ReactNode,
     useCallback,
     useMemo,
-    useRef,
 } from 'react';
 import { styled } from '@mui/material';
 import clsx from 'clsx';
@@ -15,8 +14,6 @@ import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import { RaRecord } from 'ra-core';
 import { UseFieldArrayReturn } from 'react-hook-form';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { CSSTransitionProps } from 'react-transition-group/CSSTransition';
 
 import { useArrayInput } from './useArrayInput';
 import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
@@ -43,34 +40,12 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
         disableAdd,
         disableRemove,
         disableReordering,
-        TransitionProps,
-        defaultValue,
         getItemLabel = DefaultLabelFn,
     } = props;
     const { append, fields, move, remove } = useArrayInput(props);
-    const nodeRef = useRef();
-
-    // We need a unique id for each field for a proper enter/exit animation
-    // so we keep an internal map between the field position and an auto-increment id
-    const nextId = useRef(
-        fields && fields.length
-            ? fields.length
-            : defaultValue
-            ? defaultValue.length
-            : 0
-    );
-
-    // We check whether we have a defaultValue (which must be an array) before checking
-    // the fields prop which will always be empty for a new record.
-    // Without it, our ids wouldn't match the default value and we would get key warnings
-    // on the CssTransition element inside our render method
-    const ids = useRef(
-        nextId.current > 0 ? Array.from(Array(nextId.current).keys()) : []
-    );
 
     const removeField = useCallback(
         (index: number) => {
-            ids.current.splice(index, 1);
             remove(index);
         },
         [remove]
@@ -78,7 +53,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
 
     const addField = useCallback(
         (item: any = undefined) => {
-            ids.current.push(nextId.current++);
             append(item);
         },
         [append]
@@ -96,9 +70,6 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
 
     const handleReorder = useCallback(
         (origin: number, destination: number) => {
-            const item = ids.current[origin];
-            ids.current[origin] = ids.current[destination];
-            ids.current[destination] = item;
             move(origin, destination);
         },
         [move]
@@ -118,37 +89,27 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     return fields ? (
         <SimpleFormIteratorContext.Provider value={context}>
             <Root className={className}>
-                <TransitionGroup component={null}>
-                    {fields.map((member, index) => (
-                        <CSSTransition
-                            nodeRef={nodeRef}
-                            key={ids.current[index]}
-                            timeout={500}
-                            classNames="fade"
-                            {...TransitionProps}
-                        >
-                            <SimpleFormIteratorItem
-                                disabled={disabled}
-                                disableRemove={disableRemove}
-                                disableReordering={disableReordering}
-                                fields={fields}
-                                getItemLabel={getItemLabel}
-                                index={index}
-                                member={`${source}.${index}`}
-                                onRemoveField={removeField}
-                                onReorder={handleReorder}
-                                record={(records && records[index]) || {}}
-                                removeButton={removeButton}
-                                reOrderButtons={reOrderButtons}
-                                resource={resource}
-                                source={source}
-                                ref={nodeRef}
-                            >
-                                {children}
-                            </SimpleFormIteratorItem>
-                        </CSSTransition>
-                    ))}
-                </TransitionGroup>
+                {fields.map((member, index) => (
+                    <SimpleFormIteratorItem
+                        key={member.id}
+                        disabled={disabled}
+                        disableRemove={disableRemove}
+                        disableReordering={disableReordering}
+                        fields={fields}
+                        getItemLabel={getItemLabel}
+                        index={index}
+                        member={`${source}.${index}`}
+                        onRemoveField={removeField}
+                        onReorder={handleReorder}
+                        record={(records && records[index]) || {}}
+                        removeButton={removeButton}
+                        reOrderButtons={reOrderButtons}
+                        resource={resource}
+                        source={source}
+                    >
+                        {children}
+                    </SimpleFormIteratorItem>
+                ))}
                 {!disabled && !disableAdd && (
                     <li className={SimpleFormIteratorClasses.line}>
                         <span className={SimpleFormIteratorClasses.action}>
@@ -213,7 +174,6 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
     reOrderButtons?: ReactElement;
     resource?: string;
     source?: string;
-    TransitionProps?: CSSTransitionProps;
 }
 
 const Root = styled('ul')(({ theme }) => ({
@@ -227,24 +187,6 @@ const Root = styled('ul')(({ theme }) => ({
         listStyleType: 'none',
         borderBottom: `solid 1px ${theme.palette.divider}`,
         [theme.breakpoints.down('sm')]: { display: 'block' },
-        '&.fade-enter': {
-            opacity: 0.01,
-            transform: 'translateX(100vw)',
-        },
-        '&.fade-enter-active': {
-            opacity: 1,
-            transform: 'translateX(0)',
-            transition: 'all 500ms ease-in',
-        },
-        '&.fade-exit': {
-            opacity: 1,
-            transform: 'translateX(0)',
-        },
-        '&.fade-exit-active': {
-            opacity: 0.01,
-            transform: 'translateX(100vw)',
-            transition: 'all 500ms ease-in',
-        },
     },
     [`& .${SimpleFormIteratorClasses.index}`]: {
         [theme.breakpoints.down('md')]: { display: 'none' },

@@ -3285,3 +3285,18 @@ The `ArrayField` component used to accept a `fieldKey` prop, allowing to specify
     </Datagrid>
 </ArrayField>
 ```
+
+## `<SimpleFormIterator>` Does Not Accept the `TransitionProps` prop anymore
+
+Transitions were causing a lot of issues so we had to remove them for now, until we find a good solution.
+
+```diff
+import { ArrayInput, SimpleFormIterator, TextInput } from 'react-admin';
+
+<ArrayInput source="backlinks">
+-    <SimpleFormIterator TransitionProps={{ timeout: 400 }}>
++    <SimpleFormIterator>
+        <TextInput source="title" />
+    </SimpleFormIterator>
+</ArrayInput>
+```
