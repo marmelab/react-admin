@@ -497,6 +497,54 @@ React-admin components are not magic, they are React components designed to let 
 
 Tip: Actually, `<Edit>` does more than the code it replaces in the previous example: it handles notification and redirection upon submission, it sets the page title, and handles the error logic.
 
+## Setting Default Values
+
+It's the Form and Ipunt components' responsibility to define default values. 
+
+To define default values, you can add a `defaultValues` prop to form components (`<SimpleForm>`, `<TabbedForm>`, etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
+
+### Global Default Value
+
+You can set the `defaultValues` at the form level. The expected value is an object, or a function returning an object, specifying default values for the created record. For instance:
+
+```jsx
+const postDefaultValue = () => ({ id: uuid(), created_at: new Date(), nb_views: 0 });
+
+export const PostCreate = () => (
+    <Create>
+        <SimpleForm defaultValues={postDefaultValue}>
+            <TextInput source="title" />
+            <RichTextInput source="body" />
+            <NumberInput source="nb_views" />
+        </SimpleForm>
+    </Create>
+);
+```
+
+**Tip**: You can include properties in the form `defaultValues` that are not listed as input components, like the `created_at` property in the previous example.
+
+### Per Input Default Value
+
+Alternatively, you can specify a `defaultValue` prop directly in `<Input>` components. React-admin will ignore these default values if the Form already defines a global `defaultValues` (form > input):
+
+```jsx
+export const PostCreate = () => (
+    <Create>
+        <SimpleForm>
+            <TextInput source="title" />
+            <RichTextInput source="body" />
+            <NumberInput source="nb_views" defaultValue={0} />
+        </SimpleForm>
+    </Create>
+);
+```
+
+**Tip**: Per-input default values cannot be functions. For default values computed at render time, set the `defaultValues` at the form level, as explained in the previous section. 
+
+## Validating User Input
+
+Form validation deserves a section of its own ; check [the Validation chapter](./Validation.md) for more details.
+
 ## Altering the Form Values Before Submitting
 
 Sometimes, you may want to alter the form values before sending them to the `dataProvider`. For those cases, use the `transform` prop either on the view component (`<Create>` or `<Edit>`) or on the `<SaveButton>` component. 
@@ -575,3 +623,127 @@ const PostEdit = () => (
     </Edit>
 );
 ```
+
+## Warning About Unsaved Changes
+
+React-admin keeps track of the form state, so it can detect when the user leaves an `Edit` or `Create` page with unsaved changes. To avoid data loss, you can use this ability to ask the user to confirm before leaving a page with unsaved changes. 
+
+![Warn About Unsaved Changes](./img/warn_when_unsaved_changes.png)
+
+Warning about unsaved changes is an opt-in feature: you must set the `warnWhenUnsavedChanges` prop in the form component to enable it:
+
+```jsx
+export const TagEdit = () => (
+    <Edit>
+        <SimpleForm warnWhenUnsavedChanges>
+            <TextField source="id" />
+            <TextInput source="name" />
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
+And that's all. `warnWhenUnsavedChanges` works for both `<SimpleForm>` and `<TabbedForm>`. In fact, this feature is provided by a custom hook called `useWarnWhenUnsavedChanges()`, which you can use in your own react-hook-form forms.
+
+```jsx
+import { useForm } from 'react-hook-form';
+import { useWarnWhenUnsavedChanges } from 'react-admin';
+
+const MyForm = ({ onSubmit }) => {
+    const form = useForm();
+    return (
+        <Form onSubmit={form.handleSubmit(onSubmit)} />
+    );
+}
+
+const Form = ({ onSubmit }) => {
+    // enable the warn when unsaved changes feature
+    useWarnWhenUnsavedChanges(true);
+    return (
+        <form onSubmit={onSubmit}>
+            <label id="firstname-label">First Name</label>
+            <Field name="firstName" aria-labelledby="firstname-label" component="input" />
+            <button type="submit">Submit</button>
+        </form>
+    );
+};
+```
+
+**Tip**: You can customize the message displayed in the confirm dialog by setting the `ra.message.unsaved_changes` message in your i18nProvider.
+
+## Submit On Enter
+
+By default, pressing `ENTER` in any of the form inputs submits the form - this is the expected behavior in most cases. To disable the automated form submission on enter, set the `type` prop of the `SaveButton` component to `button`.
+
+```jsx
+const MyToolbar = props => (
+    <Toolbar {...props}>
+        <SaveButton type="button" />
+        <DeleteButton />
+    </Toolbar>
+);
+
+export const PostEdit = () => (
+    <Edit>
+        <SimpleForm toolbar={<MyToolbar/>}>
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
+However, some of your custom input components (e.g. Google Maps widget) may have special handlers for the `ENTER` key. In that case, you should prevent the default handling of the event on those inputs. This would allow other inputs to still submit the form on Enter:
+
+```jsx
+export const PostEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput
+                source="name"
+                onKeyUp={event => {
+                    if (event.key === 'Enter') {
+                        event.stopPropagation();
+                    }
+                }}
+            /> 
+        </SimpleForm>
+    </Edit>
+);
+```
+
+## Adding Fields With Labels
+
+All react-admin inputs handle the display of their label by wrapping their content inside a `<Labeled>` component.
+
+You can wrap your own components inside the `<Labeled>` component too. You can either provide it the `label` prop directly or leverage the automatic label inference by providing it the `source` prop:
+
+```jsx
+const IdentifierField = ({ label, record }) => (
+    <Labeled label={label}>
+        <Typography>{record.id}</Typography>
+    </Labeled>
+);
+
+// Here Labeled will try to translate the label with the translation key `resources.posts.fields.body`
+// and with an inferred default of `Body`
+const BodyField = ({ record }) => (
+    <Labeled source="body">
+        <Typography>
+            {record.body}
+        </Typography>
+    </Labeled>
+);
+
+const PostEdit = () => (
+    <Create>
+        <SimpleForm>
+            <IdentifierField label="Identifier" />
+            <TextField source="title" />
+            <BodyField />
+            <NumberInput source="nb_views" />
+        </SimpleForm>
+    </Create>
+);
+```
+
