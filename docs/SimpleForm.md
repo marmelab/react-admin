@@ -40,7 +40,7 @@ Here are all the props you can set on the `<SimpleForm>` component:
 * [`onSubmit`](#onsubmit)
 * [`sx`](#sx-css-api)
 * [`toolbar`](#toolbar)
-* [`validate`](#validation)
+* [`validate`](#validate)
 * [`warnWhenUnsavedChanges`](#warnwhenunsavedchanges)
 
 Additional props are passed to [the `useForm` hook](https://react-hook-form.com/api/useform).
