@@ -23,7 +23,7 @@ Here is how you could write a book edition view in pure React, leveraging react-
 import * as React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
-import { useGetOne, useUpdate } from "react-admin";
+import { useGetOne, useUpdate, Title } from "react-admin";
 import { Card, TextField, Button, Stack, MenuItem } from "@mui/material";
 
 export const BookEdit = () => {
@@ -98,8 +98,8 @@ import * as React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 -import { useForm, Controller } from "react-hook-form";
 +import { Controller } from "react-hook-form";
--import { useGetOne, useUpdate } from "react-admin";
-+import { useGetOne, useUpdate, Form } from "react-admin";
+-import { useGetOne, useUpdate, Title } from "react-admin";
++import { useGetOne, useUpdate, Title, Form } from "react-admin";
 import { Card, TextField, Stack, MenuItem } from "@mui/material";
 
 export const BookEdit = () => {
@@ -169,8 +169,8 @@ Displaying inputs in a Stack is a common UI pattern. [The `<SimpleForm>` compone
 import * as React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Controller } from "react-hook-form";
--import { useGetOne, useUpdate, Form } from "react-admin";
-+import { useGetOne, useUpdate, SimpleForm } from "react-admin";
+-import { useGetOne, useUpdate, Title, Form } from "react-admin";
++import { useGetOne, useUpdate, Title, SimpleForm } from "react-admin";
 -import { Card, TextField, Stack, MenuItem } from "@mui/material";
 +import { Card, TextField, MenuItem } from "@mui/material";
 
@@ -234,8 +234,8 @@ Wrapping form inputs with a `<Controller>` tag is a common pattern, so react-adm
 import * as React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 -import { Controller } from "react-hook-form";
--import { useGetOne, useUpdate, SimpleForm } from "react-admin";
-+import { useGetOne, useUpdate, SimpleForm, TextInput, SelectInput } from "react-admin";
+-import { useGetOne, useUpdate, Title, SimpleForm } from "react-admin";
++import { useGetOne, useUpdate, Title, SimpleForm, TextInput, SelectInput } from "react-admin";
 -import { Card, TextField, MenuItem } from "@mui/material";
 +import { Card } from "@mui/material";
 
@@ -297,8 +297,8 @@ Instead of passing the `record` and `onSubmit` callback to the `<SimpleForm>` el
 ```diff
 import * as React from "react";
 import { useParams, useNavigate } from "react-router-dom";
--import { useGetOne, useUpdate, SimpleForm, TextInput, SelectInput } from "react-admin";
-+import { useGetOne, useUpdate, EditContextProvider, SimpleForm, TextInput, SelectInput } from "react-admin";
+-import { useGetOne, useUpdate, Title, SimpleForm, TextInput, SelectInput } from "react-admin";
++import { useGetOne, useUpdate, Title, EditContextProvider, SimpleForm, TextInput, SelectInput } from "react-admin";
 import { Card } from "@mui/material";
 
 export const BookEdit = () => {
@@ -352,8 +352,8 @@ The initial logic that grabs the id from the location, fetches the record from t
 ```diff
 import * as React from "react";
 -import { useParams, useNavigate } from "react-router-dom";
--import { useGetOne, useUpdate, EditContextProvider, SimpleForm, TextInput, SelectInput } from "react-admin";
-+import { useEditController, EditContextProvider, SimpleForm, TextInput, SelectInput } from "react-admin";
+-import { useGetOne, useUpdate, Title, EditContextProvider, SimpleForm, TextInput, SelectInput } from "react-admin";
++import { useEditController, Title, EditContextProvider, SimpleForm, TextInput, SelectInput } from "react-admin";
 import { Card } from "@mui/material";
 
 export const BookEdit = () => {
@@ -407,8 +407,8 @@ As calling the `useEditController` hook and putting its result into a context is
 
 ```diff
 import * as React from "react";
--import { useEditController, EditContextProvider, SimpleForm, TextInput, SelectInput } from "react-admin";
-+import { EditBase, SimpleForm, TextInput, SelectInput } from "react-admin";
+-import { useEditController, Title, EditContextProvider, SimpleForm, TextInput, SelectInput } from "react-admin";
++import { EditBase, Title, SimpleForm, TextInput, SelectInput } from "react-admin";
 import { Card } from "@mui/material";
 
 export const BookEdit = () => {
@@ -443,7 +443,7 @@ export const BookEdit = () => {
 
 ```diff
 import * as React from "react";
--import { EditBase, SimpleForm, TextInput, SelectInput } from "react-admin";
+-import { EditBase, Title, SimpleForm, TextInput, SelectInput } from "react-admin";
 +import { Edit, SimpleForm, TextInput, SelectInput } from "react-admin";
 
 export const BookEdit = () => (
