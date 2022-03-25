@@ -5,7 +5,7 @@ title: "The Edit Component"
 
 # `<Edit>`
 
-The `<Edit>` component is the main component for edition pages. It fetches a record based on the URL, preparess a form submit handler, and renders the page title and actions. It is not responsible for rendering the actual form - that's the job of its child component (usually a form component, like [`<SimpleForm>`](./SimpleForm.md)). This form component uses its children ([`<Input>`](./Inputs.md) components) to render each form input.
+The `<Edit>` component is the main component for edition pages. It fetches a record based on the URL, prepares a form submit handler, and renders the page title and actions. It is not responsible for rendering the actual form - that's the job of its child component (usually a form component, like [`<SimpleForm>`](./SimpleForm.md)). This form component uses its children ([`<Input>`](./Inputs.md) components) to render each form input.
 
 ![post edition form](./img/edit-view.png)
 
@@ -61,13 +61,13 @@ export default App;
 You can customize the `<Edit>` component using the following props:
 
 * [`actions`](#actions): override the actions toolbar with a custom component
-* [`aside`](#aside-component): component to render aside to the main content
+* [`aside`](#aside): component to render aside to the main content
 * `children`: the components that renders the form
 * `className`: passed to the root component
 * [`component`](#component): override the root component
-* [`disableAuthentication`](#disable-authentication): disable the authentication check
+* [`disableAuthentication`](#disableauthentication): disable the authentication check
 * [`id`](#id): the id of the record to edit
-* [`mutationMode`](#mutation-mode): switch to optimistic or pessimistic mutations (undoable by default)
+* [`mutationMode`](#mutationmode): switch to optimistic or pessimistic mutations (undoable by default)
 * [`mutationOptions`](#mutationoptions): options for the `dataProvider.update()` call
 * [`queryOptions`](#queryoptions): options for the `dataProvider.getOne()` call
 * [`record`](#record): use the provided record as base instead of fetching it
@@ -189,7 +189,7 @@ const PostEdit = () => (
 
 Components based on `<Edit>` are often used as `<Resource edit>` props, and therefore rendered when the URL matches `/[resource]/[id]`. The `<Edit>` component generates a call to `dataProvider.update()` using the id from the URL by default.
 
-You can decide to use a `<Edit>` component in another path, or embedded in a page editing a related record (e.g. in a Dialog). In that canse, you can explicitely set the `id` value:
+You can decide to use a `<Edit>` component in another path, or embedded in a page editing a related record (e.g. in a Dialog). In that case, you can explicitly set the `id` value:
 
 ```jsx
 const PostEdit = () => (
@@ -340,7 +340,7 @@ const PostEdit = () => {
 
 **Tip**: If you want to have different success side effects based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save and redirect to the list", and another to "save and display an empty form"), you can set the `mutationOptions` prop on the `<SaveButton>` component, too.
 
-Similarly, you can override the failure side effects with an `onError` option. By default, when the save action fails at the dataProvider level, react-admin shows an error notification.
+Similarly, you can override the failure side effects with an `onError` option. By default, when the save action fails at the dataProvider level, react-admin shows a notification error.
 
 {% raw %}
 ```jsx
@@ -442,9 +442,9 @@ Note that the `redirect` prop is ignored if you set [the `mutationOptions` prop]
 
 ## `resource`
 
-Components based on `<Edit>` are often used as `<Resource edit>` props, and therefore rendered when the URL matches `/[resource]/[id]`. The `<Edit>` component generates a call to `dataProvider.update()` using the ressource name from the URL by default.
+Components based on `<Edit>` are often used as `<Resource edit>` props, and therefore rendered when the URL matches `/[resource]/[id]`. The `<Edit>` component generates a call to `dataProvider.update()` using the resource name from the URL by default.
 
-You can decide to use a `<Edit>` component in another path, or embedded in a page using another ressource name (e.g. in a Dialog). In that canse, you can explicitely set the `ressource` name:
+You can decide to use a `<Edit>` component in another path, or embedded in a page using another resource name (e.g. in a Dialog). In that case, you can explicitly set the `resource` name:
 
 ```jsx
 const PostEdit = () => (

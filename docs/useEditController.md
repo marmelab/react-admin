@@ -46,9 +46,9 @@ export const BookEdit = ({ id }) => {
 
 `useEditController` accepts an options argument, with the following fields, all optional:
 
-* [`disableAuthentication`](./Edit.md#disable-authentication): disable the authentication check
+* [`disableAuthentication`](./Edit.md#disableauthentication): disable the authentication check
 * [`id`](./Edit.md#id): the id of the record to edit
-* [`mutationMode`](./Edit.md#mutation-mode): switch to optimistic or pessimistic mutations (undoable by default)
+* [`mutationMode`](./Edit.md#mutationmode): switch to optimistic or pessimistic mutations (undoable by default)
 * [`mutationOptions`](./Edit.md#mutationoptions): options for the `dataProvider.update()` call
 * [`queryOptions`](./Edit.md#queryoptions): options for the `dataProvider.getOne()` call
 * [`record`](./Edit.md#record): use the provided record as base instead of fetching it

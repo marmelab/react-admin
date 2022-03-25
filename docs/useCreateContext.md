@@ -10,7 +10,6 @@ Whenever react-admin displays a creation page, it creates a `CreateContext` to s
 The `CreateContext` is available to descendants of:
 
 - `<Create>`,
-- `<CreateGuesser>`,
 - `<CreateBase>`,
 
 All descendant components can therefore access the Create context, using the `useCreateContext` hook.
@@ -41,7 +40,7 @@ const PostCreateForm = () => {
 
 ## Return Value
 
-The `useCreateContext` hook returns an object with the same keys as returned by [`useCreateController`](#useCreateController):
+The `useCreateContext` hook returns an object with the same keys as returned by [`useCreateController`](./useCreateController.md):
 
 ```jsx
 const {

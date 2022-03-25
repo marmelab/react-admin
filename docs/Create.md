@@ -53,11 +53,11 @@ export default App;
 You can customize the `<Create>` component using the following props:
 
 * [`actions`](#actions): override the actions toolbar with a custom component
-* [`aside`](#aside-component): component to render aside to the main content
+* [`aside`](#aside): component to render aside to the main content
 * `children`: the components that renders the form
 * `className`: passed to the root component
 * [`component`](#component): override the root component
-* [`disableAuthentication`](#disable-authentication): disable the authentication check
+* [`disableAuthentication`](#disableauthentication): disable the authentication check
 * [`mutationOptions`](#mutationoptions): options for the `dataProvider.create()` call
 * [`record`](#record): initialize the form with a record
 * [`redirect`](#redirect): change the redirect location after successful creation
@@ -260,9 +260,9 @@ If you want to allow the user to enter several records one after the other, sett
 
 ## `resource`
 
-Components based on `<Create>` are often used as `<Resource create>` props, and therefore rendered when the URL matches `/[resource]/create`. The `<Create>` component generates a call to `dataProvider.create()` using the ressource name from the URL by default.
+Components based on `<Create>` are often used as `<Resource create>` props, and therefore rendered when the URL matches `/[resource]/create`. The `<Create>` component generates a call to `dataProvider.create()` using the resource name from the URL by default.
 
-You can decide to use a `<Create>` component in another path, or embedded in a page using another ressource name (e.g. in a Dialog). In that canse, you can explicitely set the `ressource` name:
+You can decide to use a `<Create>` component in another path, or embedded in a page using another resource name (e.g. in a Dialog). In that case, you can explicitly set the `resource` name:
 
 ```jsx
 const PostCreate = () => (

@@ -5,9 +5,9 @@ title: "The useCreateController hook"
 
 # `useCreateController`
 
-The `useCreateController` hook contains the logic of [the `<Create>` component](./Create.md): it prepares a form submit handler, and returns the data and callbacks necessary to render an Createion view. 
+The `useCreateController` hook contains the logic of [the `<Create>` component](./Create.md): it prepares a form submit handler, and returns the data and callbacks necessary to render a Creation view. 
 
-React-admin calls `useCreateController` internally when you use the `<Create>`, `<CreateBase>`, or `<CreateGuesser>` component.
+React-admin calls `useCreateController` internally, when you use the `<Create>`, or `<CreateBase>` component.
 
 ## Usage
 
@@ -45,7 +45,7 @@ export const BookCreate = () => {
 
 `useCreateController` accepts an options argument, with the following fields, all optional:
 
-* [`disableAuthentication`](./Create.md#disable-authentication): disable the authentication check
+* [`disableAuthentication`](./Create.md#disableauthentication): disable the authentication check
 * [`mutationOptions`](./Create.md#mutationoptions): options for the `dataProvider.create()` call
 * [`record`](./Create.md#record): use the provided record as base instead of fetching it
 * [`redirect`](./Create.md#redirect): change the redirect location after successful creation

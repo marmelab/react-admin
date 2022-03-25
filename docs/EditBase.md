@@ -7,7 +7,7 @@ title: "The EditBase Component"
 
 The `<EditBase>` component is a headless version of [`<Edit>`](./Edit.md): it fetches a record based on the URL, prepares a form submit handler, and renders its children. 
 
-If does that by calling [`useEditController`](./useEditController.md), and by putting the result in an `EditContext`.
+It does that by calling [`useEditController`](./useEditController.md), and by putting the result in an `EditContext`.
 
 ## Usage
 
@@ -42,9 +42,9 @@ export const BookEdit = () => {
 You can customize the `<EditBase>` component using the following props, documented in the `<Edit>` component:
 
 * `children`: the components that renders the form
-* [`disableAuthentication`](./Edit.md#disable-authentication): disable the authentication check
+* [`disableAuthentication`](./Edit.md#disableauthentication): disable the authentication check
 * [`id`](./Edit.md#id): the id of the record to edit
-* [`mutationMode`](./Edit.md#mutation-mode): switch to optimistic or pessimistic mutations (undoable by default)
+* [`mutationMode`](./Edit.md#mutationmode): switch to optimistic or pessimistic mutations (undoable by default)
 * [`mutationOptions`](./Edit.md#mutationoptions): options for the `dataProvider.update()` call
 * [`queryOptions`](./Edit.md#queryoptions): options for the `dataProvider.getOne()` call
 * [`record`](./Edit.md#record): use the provided record as base instead of fetching it

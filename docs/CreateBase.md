@@ -42,7 +42,7 @@ export const BookCreate = () => {
 You can customize the `<CreateBase>` component using the following props, documented in the `<Create>` component:
 
 * `children`: the components that renders the form
-* [`disableAuthentication`](./Create.md#disable-authentication): disable the authentication check
+* [`disableAuthentication`](./Create.md#disableauthentication): disable the authentication check
 * [`mutationOptions`](./Create.md#mutationoptions): options for the `dataProvider.create()` call
 * [`record`](./Create.md#record): initialize the form with a record
 * [`redirect`](./Create.md#redirect): change the redirect location after successful creation

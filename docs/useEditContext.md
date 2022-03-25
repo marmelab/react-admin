@@ -7,13 +7,13 @@ title: "The useEditContext hook"
 
 Whenever react-admin displays an edition page, it creates an `EditContext` to store the record, the submit callback, and other data.
 
-The `CreateContext` is available to descendants of:
+The `EditContext` is available to descendants of:
 
-- `<Create>`,
-- `<CreateGuesser>`,
-- `<CreateBase>`,
+- `<Edit>`,
+- `<EditGuesser>`,
+- `<EditBase>`,
 
-All descendant components can therefore access the Create context, using the `useCreateContext` hook. 
+All descendant components can therefore access the Edit context, using the `useEditContext` hook. 
 
 ## Usage
 
@@ -45,7 +45,7 @@ const Aside = () => {
 
 ## Return Value
 
-The `useEditContext` hook returns an object with the same keys as returned by [`useEditController`](#useEditController):
+The `useEditContext` hook returns an object with the same keys as returned by [`useEditController`](./useEditController.md):
 
 ```jsx
 const {
