@@ -33,7 +33,7 @@ export const PostCreate = () => (
 
 Here are all the props you can set on the `<SimpleForm>` component:
 
-* [`component`](#componnent)
+* [`component`](#component)
 * [`defaultValues`](#defaultvalues)
 * [`id`](#id)
 * [`noValidate`](#novalidate)
