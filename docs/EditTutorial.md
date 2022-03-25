@@ -7,7 +7,7 @@ title: "The Creation and Edition Pages"
 
 React-admin provides many hooks and components to let you build custom user experiences for editing and creating records, leveraging MUI and react-hook-form.
 
-![Edit view example](/img/edit-view-example.png)
+![Edit view example](./img/edit-view-example.png)
 
 ## From Pure React To React-Admin
 
