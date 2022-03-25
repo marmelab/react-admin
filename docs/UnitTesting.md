@@ -99,6 +99,7 @@ Here is an example with Jest and TestingLibrary, which is testing the [`UserShow
 // UserShow.spec.js
 import * as React from "react";
 import { render } from '@testing-library/react';
+import { TestContext } from 'ra-test';
 import { Tab, TextField } from 'react-admin';
 
 import UserShow from './UserShow';
