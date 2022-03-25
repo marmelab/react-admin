@@ -3060,7 +3060,7 @@ test('should use counter', () => {
 })
 ```
 
-## `richt-text-input` Package Has Changed
+## `rich-text-input` Package Has Changed
 
 Our old `<RichTextInput>` was based on [Quill](https://quilljs.com/) but:
 - it wasn't accessible (button without labels, etc.)
