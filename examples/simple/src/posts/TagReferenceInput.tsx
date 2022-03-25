@@ -34,12 +34,28 @@ const TagReferenceInput = ({
     };
 
     return (
-        <ReferenceArrayInput {...props} perPage={5} filter={{ published }}>
-            <AutocompleteArrayInput
-                create={<CreateTag />}
-                optionText={`name.${locale}`}
-            />
-        </ReferenceArrayInput>
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                width: '50%',
+            }}
+        >
+            <ReferenceArrayInput {...props} perPage={5} filter={{ published }}>
+                <AutocompleteArrayInput
+                    create={<CreateTag />}
+                    optionText={`name.${locale}`}
+                />
+            </ReferenceArrayInput>
+            <Button
+                name="change-filter"
+                onClick={handleChangePublishedFilter}
+                sx={{ margin: '0 24px', position: 'relative' }}
+            >
+                Filter {published ? 'Unpublished' : 'Published'} Tags
+            </Button>
+        </Box>
     );
 };
 
