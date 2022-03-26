@@ -120,14 +120,14 @@ title: "Reference"
 * [`<ShowButton>`](./Buttons.md#showbutton)
 * [`<Sidebar>`](./Theming.md#sidebar-customization)
 * [`<SidebarOpenPreferenceSync>`](https://marmelab.com/ra-enterprise/modules/ra-preferences#sidebaropenpreferencesync-store-the-sidebar-openclose-state-in-preferences)<img class="icon" src="./img/premium.svg" />
-* [`<SimpleForm>`](./CreateEdit.md#the-simpleform-component)
+* [`<SimpleForm>`](./SimpleForm.md)
 * [`<SimpleFormIterator>`](./ArrayInput.md#usage)
 * [`<SimpleList>`](./SimpleList.md)
 * [`<SimpleShowLayout>`](./SimpleShowLayout.md)
 * [`<SingleFieldList>`](./SingleFieldList.md)
 * [`<SortButton>`](./Buttons.md#sortbutton)
 * `<Tab>`
-* [`<TabbedForm>`](./CreateEdit.md#the-tabbedform-component)
+* [`<TabbedForm>`](./TabbedForm.md)
 * [`<TabbedShowLayout>`](./TabbedShowLayout.md)
 * [`<TextField>`](./TextField.md)
 * [`<TextInput>`](./TextInput.md)

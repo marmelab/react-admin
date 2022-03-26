@@ -151,7 +151,7 @@ const Aside = () => {
 
 ## `component`
 
-By default, the `<Edit>` view render the main form inside a MUI `<Card>` element. The actual layout of the form depends on the `Form` component you're using (`<SimpleForm>`, `<TabbedForm>`, or a custom form component).
+By default, the `<Edit>` view render the main form inside a MUI `<Card>` element. The actual layout of the form depends on the `Form` component you're using ([`<SimpleForm>`](./SimpleForm.md), [`<TabbedForm>`](./TabbedForm.md), or a custom form component).
 
 Some form layouts also use `Card`, in which case the user ends up seeing a card inside a card, which is bad UI. To avoid that, you can override the main page container by passing a `component` prop :
 

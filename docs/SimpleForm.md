@@ -47,7 +47,7 @@ Additional props are passed to [the `useForm` hook](https://react-hook-form.com/
 
 ## `component`
 
-`<SimpleForm>` renders a MUI `<CardContent>` by default. You replaxce it by any component you want as wrapper, just pass it as the `component` prop.
+`<SimpleForm>` renders a MUI `<CardContent>` by default. You replace it by any component you want as wrapper, just pass it as the `component` prop.
 
 ```jsx
 const PostCreate = () => (

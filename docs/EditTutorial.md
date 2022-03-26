@@ -501,7 +501,7 @@ Tip: Actually, `<Edit>` does more than the code it replaces in the previous exam
 
 It's the Form and Ipunt components' responsibility to define default values. 
 
-To define default values, you can add a `defaultValues` prop to form components (`<SimpleForm>`, `<TabbedForm>`, etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
+To define default values, you can add a `defaultValues` prop to form components ([`<SimpleForm>`](./SimpleForm.md), [`<TabbedForm>`](./TabbedForm.md), etc.), or add a `defaultValue` to individual input components. Let's see each of these options.
 
 ### Global Default Value
 
