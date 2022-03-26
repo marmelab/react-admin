@@ -196,7 +196,7 @@ For that use case, use the `<SaveButton>` component with a custom `onSuccess` pr
 {% raw %}
 ```jsx
 import * as React from "react";
-import { Create, SimpleForm, SaveButton, Toolbar, useRedirect } from 'react-admin';
+import { Create, SimpleForm, SaveButton, Toolbar, useRedirect, useNotify } from 'react-admin';
 
 const PostCreateToolbar = props => {
     const redirect = useRedirect();
