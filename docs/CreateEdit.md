@@ -78,66 +78,6 @@ That's enough to display the post edit form:
 
 **Tip**: You might find it cumbersome to repeat the same input components for both the `<Create>` and the `<Edit>` view. In practice, these two views almost never have exactly the same form inputs. For instance, in the previous snippet, the `<Edit>` view shows related comments to the current post, which makes no sense for a new post. Having two separate sets of input components for the two views is, therefore, a deliberate choice. However, if you have the same set of input components, export them as a custom Form component to avoid repetition.
 
-## The `<AccordionForm>` Component
-
-This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an alternative layout for Edit and Create forms, where Inputs are grouped into expandable panels.
-
-![AccordionForm](https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-form-overview.gif)
-
-```jsx
-import {
-    Edit,
-    TextField,
-    TextInput,
-    DateInput,
-    SelectInput,
-    ArrayInput,
-    SimpleFormIterator,
-    BooleanInput,
-} from 'react-admin';
-
-import { AccordionForm, AccordionFormPanel } from '@react-admin/ra-form-layout';
-
-// don't forget the component="div" prop on the main component to disable the main Card
-const CustomerEdit = () => (
-    <Edit component="div">
-        <AccordionForm autoClose>
-            <AccordionFormPanel label="Identity">
-                <TextField source="id" />
-                <TextInput source="first_name" validate={required()} />
-                <TextInput source="last_name" validate={required()} />
-                <DateInput source="dob" label="born" validate={required()} />
-                <SelectInput source="sex" choices={sexChoices} />
-            </AccordionFormPanel>
-            <AccordionFormPanel label="Occupations">
-                <ArrayInput source="occupations" label="">
-                    <SimpleFormIterator>
-                        <TextInput source="name" validate={required()} />
-                        <DateInput source="from" validate={required()} />
-                        <DateInput source="to" />
-                    </SimpleFormIterator>
-                </ArrayInput>
-            </AccordionFormPanel>
-            <AccordionFormPanel label="Preferences">
-                <SelectInput
-                    source="language"
-                    choices={languageChoices}
-                    defaultValue="en"
-                />
-                <BooleanInput source="dark_theme" />
-                <BooleanInput source="accepts_emails_from_partners" />
-            </AccordionFormPanel>
-        </AccordionForm>
-    </Edit>
-);
-```
-
-You can also use the `<AccordionSection>` component as a child of `<SimpleForm>` for secondary inputs:
-
-![Accordion section](https://marmelab.com/ra-enterprise/modules/assets/ra-accordion-section-overview.gif)
-
-Check [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout) for more details.
-
 ## The `<WizardForm>` Component
 
 This [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> component offers an alternative layout for large Create forms, allowing users to enter data step-by-step.
