@@ -439,7 +439,7 @@ export const BookEdit = () => {
 
 ### `<Edit>` Renders Title, Fields, And Actions
 
-`<EditBase>` is a headless component: it renders only its children. But almost every edition view needs a wrapping `<div>`, a title, and a `<Card>`. That’s why react-admin provides [the `<Edit>` component](./Edit.md), which includes the `<EditBase>` component, a title built from the resource name, and even a “Show" button if the resource has a show component:
+`<EditBase>` is a headless component: it renders only its children. But almost every edition view needs a wrapping `<div>`, a title, and a `<Card>`. That’s why react-admin provides [the `<Edit>` component](./Edit.md), which includes the `<EditBase>` component, a title built from the resource name, and even a "Show" button if the resource has a show component:
 
 ```diff
 import * as React from "react";
