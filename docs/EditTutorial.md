@@ -838,3 +838,4 @@ export const PostEdit = () => (
 This affects both the submit button, and the form submission when the user presses `ENTER` in one of the form fields.
 
 **Tip**: The `redirect` prop is ignored if you've set the `onSuccess` prop in the `<Edit>`/`<Create>` component, or in the `<SaveButton>` component.
+
