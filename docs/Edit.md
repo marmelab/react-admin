@@ -538,7 +538,7 @@ const PostEdit = () => {
     const notify = useNotify();
     const redirect = useRedirect();
 
-    const onSuccess = (data) => {
+    const onSuccess = () => {
         notify(`Post updated successfully`); // default message is 'ra.notification.updated'
         redirect('list', 'posts');
     };
@@ -553,6 +553,8 @@ const PostEdit = () => {
 }
 ```
 {% endraw %}
+
+**Tip**: In `optimistic` and `undoable` mutation modes, react-admin calls the the `onSuccess` callback method with no argument. In `pessimistic` mode, it calls it with the response returned by the dataProvider as argument.
 
 You can do the same for error notifications, by passing a custom `onError`  callback.
 

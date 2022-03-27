@@ -747,3 +747,94 @@ const PostEdit = () => (
 );
 ```
 
+## Grouping Inputs
+
+Sometimes, you may want to group inputs in order to make a form more approachable. You may use a [`<TabbedForm>`](./TabbedForm.md), an [`<AccordionForm>`](./AccordionForm.md) or you may want to roll your own layout. In this case, you might need to know the state of a group of inputs: whether it's valid or if the user has changed them (dirty/touched state).
+
+For this, you can use the `<FormGroupContextProvider>`, which accepts a group name. All inputs rendered inside this context will register to it (thanks to the `useInput` hook). You may then call the `useFormGroup` hook to retrieve the status of the group. For example:
+
+```jsx
+import { Edit, SimpleForm, TextInput, FormGroupContextProvider, useFormGroup, minLength } from 'react-admin';
+import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMoreIcon';
+
+const PostEdit = () => (
+    <Edit>
+        <SimpleForm>
+            <TextInput source="title" />
+            <FormGroupContextProvider name="options">
+                <Accordion>
+                    <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="options-content"
+                        id="options-header"
+                    >
+                        <AccordionSectionTitle name="options">
+                            Options
+                        </AccordionSectionTitle>
+                    </AccordionSummary>
+                    <AccordionDetails
+                        id="options-content"
+                        aria-labelledby="options-header"
+                    >
+                        <TextInput source="teaser" validate={minLength(20)} />
+                    </AccordionDetails>
+                </Accordion>
+            </FormGroupContextProvider>
+        </SimpleForm>
+    </Edit>
+);
+
+const AccordionSectionTitle = ({ children, name }) => {
+    const formGroupState = useFormGroup(name);
+
+    return (
+        <Typography color={
+              !formGroupState.isValid && formGroupState.isDirty
+                ? 'error'
+                : 'inherit'
+          }
+        >
+            {children}
+        </Typography>
+    );
+};
+```
+
+## Redirection After Submission
+
+By default:
+
+- Submitting the form in the `<Create>` view redirects to the `<Edit>` view
+- Submitting the form in the `<Edit>` view redirects to the `<List>` view
+
+You can customize the redirection by setting the `redirect` prop on the `<Create>` or `<Edit>` components. Possible values are "edit", "show", "list", and `false` to disable redirection. You may also specify a custom path such as `/my-custom-route`. For instance, to redirect to the `<Show>` view after edition:
+
+```jsx
+export const PostEdit = () => (
+    <Edit redirect="show">
+        <SimpleForm>
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
+You can also pass a custom route (e.g. "/home") or a function as `redirect` prop value. For example, if you want to redirect to a page related to the current object:
+
+```jsx
+// redirect to the related Author show page
+const redirect = (resource, id, data) => `/author/${data.author_id}/show`;
+
+export const PostEdit = () => (
+    <Edit redirect={redirect}>
+        <SimpleForm>
+            // ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
+This affects both the submit button, and the form submission when the user presses `ENTER` in one of the form fields.
+
+**Tip**: The `redirect` prop is ignored if you've set the `onSuccess` prop in the `<Edit>`/`<Create>` component, or in the `<SaveButton>` component.

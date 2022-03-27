@@ -446,3 +446,25 @@ const Separator = () => <Box pt="1em" />;
 ```
 {% endraw %}
 
+## Displaying Inputs Based On Permissions
+
+You can leverage [the `usePermissions` hook](./usePermissions.md) to display a inputs if the user has the required permissions.
+
+{% raw %}
+```jsx
+import { usePermissions, Create, SimpleForm, TextInput } from 'react-admin';
+
+export const UserCreate = () => {
+    const { permissions } = useGetPermissions();
+    return (
+        <Create redirect="show">
+            <SimpleForm>
+                <TextInput source="name" validate={[required()]} />
+                {permissions === 'admin' &&
+                    <TextInput source="role" validate={[required()]} />}
+            </SimpleForm>
+        </Create>
+    );
+}
+```
+{% endraw %}

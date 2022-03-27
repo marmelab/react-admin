@@ -681,3 +681,31 @@ const ProductEdit = () => (
 {% endraw %}
 
 **Tip**: In this example, both the `<ReviewsFormTab>` and the `<ReferenceManyField>` issue a `dataProvider.getManyReference()` call to fetch the related reviews. Thanks to react-query's query deduplication logic, the dataProvider only receives one request to fetch the reviews.
+
+## Displaying a Tab Based On Permissions
+
+You can leverage [the `usePermissions` hook](./usePermissions.md) to display a tab only if the user has the required permissions.
+
+{% raw %}
+```jsx
+import { usePermissions, Edit, TabbedForm, FormTab } from 'react-admin';
+
+const UserEdit = () => {
+    const { permissions } = usePermissions();
+    return (
+        <Edit>
+            <TabbedForm>
+                <FormTab label="summary">
+                    ...
+                </FormTab>
+                {permissions === 'admin' &&
+                    <FormTab label="Security">
+                        ...
+                    </FormTab>
+                }
+            </TabbedForm>
+        </Edit>;
+    );
+};
+```
+{% endraw %}
