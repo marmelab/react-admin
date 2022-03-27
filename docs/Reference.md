@@ -8,13 +8,12 @@ title: "Reference"
 <div style="column-count:3" markdown="1">
 
 * [`<AccordionForm>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#accordionform)<img class="icon" src="./img/premium.svg" />
-* [`<Actions>`](./CreateEdit.md#actions)
+* `<Actions>`
 * [`<Admin>`](./Admin.md)
 * `<AdminRoutes>`
 * [`<AppBar>`](./Theming.md#customizing-the-appbar-content)
 * [`<ArrayField>`](./ArrayField.md)
 * [`<ArrayInput>`](./ArrayInput.md)
-* [`<Aside>`](./CreateEdit.md#aside-component)
 * [`<Authenticated>`](./Authenticated.md)
 * [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md)
 * [`<AutocompleteInput>`](./AutocompleteInput.md)
@@ -28,10 +27,10 @@ title: "Reference"
 * [`<Calendar>`](https://marmelab.com/ra-enterprise/modules/ra-calendar#calendar)<img class="icon" src="./img/premium.svg" />
 * [`<CheckboxGroupInput>`](./CheckboxGroupInput.md)
 * [`<ChipField>`](./ChipField.md)
-* [`<CloneButton>`](./CreateEdit.md#prefilling-a-create-record)
+* [`<CloneButton>`](./CloneButton.md)
 * [`<CompleteCalendar>`](https://marmelab.com/ra-enterprise/modules/ra-calendar#completecalendar)<img class="icon" src="./img/premium.svg" />
 * [`<Confirm>`](./Confirm.md)
-* [`<Create>`](./CreateEdit.md#the-create-and-edit-components)
+* [`<Create>`](./Create.md)
 * `<CreateActions>`
 * [`<CreateButton>`](./Buttons.md#createbutton)
 * [`<CreateDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog--editdialog)<img class="icon" src="./img/premium.svg" />
@@ -47,9 +46,9 @@ title: "Reference"
 * [`<DateTimeInput>`](./DateTimeInput.md)
 * `<DeleteButton>`
 * [`<DualListInput>`](https://marmelab.com/ra-enterprise/modules/ra-relationships#duallistinput)<img class="icon" src="./img/premium.svg" />
-* [`<Edit>`](./CreateEdit.md#the-create-and-edit-components)
+* [`<Edit>`](./Edit.md)
 * [`<EditableDatagrid>`](https://marmelab.com/ra-enterprise/modules/ra-editable-datagrid)<img class="icon" src="./img/premium.svg" />
-* [`<EditGuesser>`](./CreateEdit.md#the-editguesser-component)
+* [`<EditGuesser>`](./EditGuesser.md)
 * `<EditActions>`
 * [`<EditButton>`](./Buttons.md#editbutton)
 * [`<EditDialog>`](https://marmelab.com/ra-enterprise/modules/ra-form-layout#createdialog--editdialog)<img class="icon" src="./img/premium.svg" />
@@ -64,7 +63,7 @@ title: "Reference"
 * [`<FilterListItem>`](./FilterList.md#children)
 * [`<FilterLiveSearch>`](./FilterLiveSearch.md)
 * [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs)
-* [`<FormTab>`](./CreateEdit.md#the-tabbedform-component)
+* [`<FormTab>`](./TabbedForm.md)
 * [`<FunctionField>`](./FunctionField.md)
 * [`<ImageField>`](./ImageField.md)
 * [`<ImageInput>`](./ImageInput.md)
@@ -137,7 +136,7 @@ title: "Reference"
 * [`<TranslatableFields>`](./TranslatableFields.md)
 * [`<Tree>`](https://marmelab.com/ra-enterprise/modules/ra-tree#tree-component)<img class="icon" src="./img/premium.svg" />
 * [`<TreeWithDetails>`](https://marmelab.com/ra-enterprise/modules/ra-tree#treewithdetails-component)<img class="icon" src="./img/premium.svg" />
-* [`<Toolbar>`](./CreateEdit.md#toolbar)
+* [`<Toolbar>`](./Toolbar.md)
 * `<TopToolbar>`
 * [`<UrlField>`](./UrlField.md)
 * [`<UserMenu>`](./Theming.md#usermenu-customization)
@@ -154,11 +153,11 @@ title: "Reference"
 * `useChoices`
 * [`useChoicesContext`](./useChoicesContext.md)
 * [`useCreate`](./useCreate.md)
-* [`useCreateController`](./CreateEdit.md#usecreatecontroller)
+* [`useCreateController`](./useCreateController.md)
 * [`useDataProvider`](./useDataProvider.md#usedataprovider)
 * [`useDelete`](./useDelete.md)
 * [`useDeleteMany`](./useDeleteMany.md)
-* [`useEditController`](./CreateEdit.md#useeditcontroller)
+* [`useEditController`](./useEditController.md)
 * `useExpanded`
 * `useFilterState`
 * [`useGetIdentity`](./useGetIdentity.md)
@@ -213,6 +212,6 @@ title: "Reference"
 * [`useUpdateMany`](./useUpdateMany.md)
 * [`useUnselect`](./useUnselect.md)
 * [`useUnselectAll`](./useUnselectAll.md)
-* [`useWarnWhenUnsavedChanges`](./CreateEdit.md#warning-about-unsaved-changes)
+* `useWarnWhenUnsavedChanges`
 
 </div>

@@ -23,5 +23,5 @@ const PostList = () => (
 );
 ```
 
-**Note**: `<CloneButton>` is designed to be used in a `<Datagrid>` and in an edit view `<Actions>` component, not inside the form `<Toolbar>`. The `Toolbar` is basically for submitting the form, not for going to another resource.
+**Note**: `<CloneButton>` is designed to be used in a `<Datagrid>` and in an edit view `<Actions>` component, not inside the form [`<Toolbar>`](./Toolbar.md). The `Toolbar` is basically for submitting the form, not for going to another resource.
 
