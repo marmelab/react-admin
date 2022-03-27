@@ -9,7 +9,7 @@ The `<Create>` component is the main component for creation pages. It prepares a
 
 ![post creation form](./img/create-view.png)
 
-The `<Create>` component creates a `RecordContext` with an empty object `{}` by default. It also creates a `CreateContext`containing a `save` callback, which calls `dataProvider.create()`.
+The `<Create>` component creates a `RecordContext` with an empty object `{}` by default. It also creates a [`SaveContext`](./useSaveContext.md) containing a `save` callback, which calls `dataProvider.create()`, and [a `CreateContext`](./useCreateContext.md) containing both the record and the callback.
 
 ## Usage
 
@@ -192,7 +192,7 @@ The default `onSuccess` function is:
 
 **Tip**: If you just want to customize the redirect behavior, you can use [the `redirect` prop](#redirect) instead.
 
-**Tip**: If you want to have different success side effects based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save and redirect to the list", and another to "save and display an empty form"), you can set the `mutationOptions` prop on the `<SaveButton>` component, too.
+**Tip**: If you want to have different success side effects based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save and redirect to the list", and another to "save and display an empty form"), you can set the `mutationOptions` prop on [the `<SaveButton>` component](./SaveButton.md), too.
 
 Similarly, you can override the failure side effects with an `onError` option. By default, when the save action fails at the dataProvider level, react-admin shows an error notification.
 
@@ -320,7 +320,7 @@ export const UserCreate = (props) => {
 
 The `transform` function can also return a `Promise`, which allows you to do all sorts of asynchronous calls (e.g. to the `dataProvider`) during the transformation.
 
-**Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on the `<SaveButton>` component, too. See [Altering the Form Values Before Submitting](./EditTutorial.md#altering-the-form-values-before-submitting) for an example.
+**Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on [the `<SaveButton>` component](./SaveButton.md), too. 
 
 ## Changing The Notification Message
 

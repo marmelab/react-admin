@@ -9,7 +9,7 @@ The `<Edit>` component is the main component for edition pages. It fetches a rec
 
 ![post edition form](./img/edit-view.png)
 
-The `<Edit>` component calls `dataProvider.getOne()`, using the `id` from the URL. It creates a `RecordContext` with the result. It also creates a `CreateContext`containing a `save` callback, which calls `dataProvider.update()` when executed.
+The `<Edit>` component calls `dataProvider.getOne()`, using the `id` from the URL. It creates a `RecordContext` with the result. It also creates a [`SaveContext`](./useSaveContext.md) containing a `save` callback, which calls `dataProvider.update()` when executed, and [an `EditContext`](./useEditContext.md) containing both the record and the callback.
 
 ## Usage
 
@@ -338,7 +338,7 @@ const PostEdit = () => {
 }
 ```
 
-**Tip**: If you want to have different success side effects based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save and redirect to the list", and another to "save and display an empty form"), you can set the `mutationOptions` prop on the `<SaveButton>` component, too.
+**Tip**: If you want to have different success side effects based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save and redirect to the list", and another to "save and display an empty form"), you can set the `mutationOptions` prop on [the `<SaveButton>` component](./SaveButton.md), too.
 
 Similarly, you can override the failure side effects with an `onError` option. By default, when the save action fails at the dataProvider level, react-admin shows a notification error.
 
@@ -507,7 +507,7 @@ export const UserEdit = (props) => {
 
 The `transform` function can also return a `Promise`, which allows you to do all sorts of asynchronous calls (e.g. to the `dataProvider`) during the transformation.
 
-**Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on the `<SaveButton>` component, too. See [Altering the Form Values Before Submitting](./EditTutorial.md#altering-the-form-values-before-submitting) for an example.
+**Tip**: If you want to have different transformations based on the button clicked by the user (e.g. if the creation form displays two submit buttons, one to "save", and another to "save and notify other admins"), you can set the `transform` prop on [the `<SaveButton>` component](./SaveButton.md), too.
 
 **Tip**: `<Edit>`’s transform prop function also get the `previousData` in its second argument:
 
