@@ -7,7 +7,7 @@ title: "The CreateBase Component"
 
 The `<CreateBase>` component is a headless version of `<Create>`: it prepares a form submit handler, and renders its children. 
 
-If does that by calling `useCreateController`, and by putting the result in an `CreateContext`.
+It does that by calling `useCreateController`, and by putting the result in an `CreateContext`.
 
 ## Usage
 
