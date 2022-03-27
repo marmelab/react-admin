@@ -78,48 +78,6 @@ That's enough to display the post edit form:
 
 **Tip**: You might find it cumbersome to repeat the same input components for both the `<Create>` and the `<Edit>` view. In practice, these two views almost never have exactly the same form inputs. For instance, in the previous snippet, the `<Edit>` view shows related comments to the current post, which makes no sense for a new post. Having two separate sets of input components for the two views is, therefore, a deliberate choice. However, if you have the same set of input components, export them as a custom Form component to avoid repetition.
 
-## The `<CreateDialog>` and `<EditDialog>` Components
-
-These [Enterprise Edition](https://marmelab.com/ra-enterprise)<img class="icon" src="./img/premium.svg" /> components offer an alternative layout for adding or updating a record without leaving the context of the list page.
-
-![EditDialog](https://marmelab.com/ra-enterprise/modules/assets/edit-dialog.gif)
-
-```jsx
-import * as React from 'react';
-import { List, Datagrid, SimpleForm, TextField, TextInput, DateInput, required } from 'react-admin';
-import { EditDialog, CreateDialog } from '@react-admin/ra-form-layout';
-
-const CustomerList = () => (
-    <>
-        <List>
-            <Datagrid>
-                ...
-            </Datagrid>
-        </List>
-        <EditDialog {...props}>
-            <SimpleForm>
-                <TextField source="id" />
-                <TextInput source="first_name" validate={required()} />
-                <TextInput source="last_name" validate={required()} />
-                <DateInput source="date_of_birth" label="born" validate={required()} />
-            </SimpleForm>
-        </EditDialog>
-        <CreateDialog {...props}>
-            <SimpleForm>
-                <TextField source="id" />
-                <TextInput source="first_name" validate={required()} />
-                <TextInput source="last_name" validate={required()} />
-                <DateInput source="date_of_birth" label="born" validate={required()} />
-            </SimpleForm>
-        </CreateDialog>
-    </>
-);
-```
-
-Check [the `ra-form-layout` documentation](https://marmelab.com/ra-enterprise/modules/ra-form-layout) for more details.
-
-
-
 ## Redirection After Submission
 
 By default:
