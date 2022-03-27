@@ -198,11 +198,11 @@ For that use case, use the `<SaveButton>` component with a custom `onSuccess` pr
 import * as React from "react";
 import { Create, SimpleForm, SaveButton, Toolbar, useRedirect, useNotify } from 'react-admin';
 
-const PostCreateToolbar = props => {
+const PostCreateToolbar = () => {
     const redirect = useRedirect();
     const notify = useNotify();
     return (
-        <Toolbar {...props} >
+        <Toolbar>
             <SaveButton
                 label="post.action.save_and_show"
             />
