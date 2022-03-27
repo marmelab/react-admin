@@ -611,7 +611,7 @@ const ProductEditDetails = () => (
 To achieve that, create a custom commponent that renders a `<FormTab>` with a dynamic `label`:
 
 ```jsx
-const ReviewsFormTab = (props: any) => {
+const ReviewsFormTab = props => {
     const record = useRecordContext();
     const { isLoading, total } = useGetManyReference(
         'reviews',
