@@ -49,7 +49,7 @@ const PostEdit = () => (
 - [`icon`](#icon)
 - [`label`](#label)
 - [`mutationOptions`](#mutationoptions)
-- [`onClick`](#onClick)
+- [`onClick`](#onclick)
 - [`sx`](#sx-css-api)
 - [`transform`](#transform)
 - [`type`](#type)
@@ -130,6 +130,8 @@ const PostCreateToolbar = () => (
 ```
 
 `onClick` it doesn't *replace* the default submission handler, but is instead called before it. To override the default submission handler, wrap a `<SaveButton>` in a custom [`SaveContext`](./useSaveContext.md).
+
+Note that if you call `event.preventDefault()` in `onClick`, the form will not be submitted.
 
 ## `sx`: CSS API
 
