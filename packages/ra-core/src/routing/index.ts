@@ -1,4 +1,6 @@
 export * from './AdminRouter';
+export * from './BasenameContextProvider';
+export * from './HistoryRouter';
 export * from './linkToRecord';
 export * from './resolveRedirectTo';
 export * from './useBasename';
