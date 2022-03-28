@@ -58,7 +58,7 @@ Additional props (e.g. `color`, `variant`) are passed to [the underlying MUI `<B
 
 ## `icon`
 
-By default, `<SaveButton>` renders a disk icon. You can xcan pass another icon element:
+By default, `<SaveButton>` renders a disk icon. You can can pass another icon element:
 
 ```jsx
 import AddBoxIcon from '@mui/icons-material/AddBox';
