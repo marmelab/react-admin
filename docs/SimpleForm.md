@@ -448,7 +448,7 @@ const Separator = () => <Box pt="1em" />;
 
 ## Displaying Inputs Based On Permissions
 
-You can leverage [the `usePermissions` hook](./usePermissions.md) to display a inputs if the user has the required permissions.
+You can leverage [the `usePermissions` hook](./usePermissions.md) to display inputs if the user has the required permissions.
 
 {% raw %}
 ```jsx
