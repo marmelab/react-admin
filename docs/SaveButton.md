@@ -1,0 +1,199 @@
+---
+layout: default
+title: "The SaveButton Component"
+---
+
+# `<SaveButton>`
+
+The `<SaveButton>` component is a button that is used to submit a form.
+
+![SaveButton](./img/SaveButton.png)
+
+`<SaveButton>` calls the `save` function defined by the main page component (`<Create>` or `<Edit>`), which it grabs from the [`SaveContext`](./useSaveContext.md).
+
+## Usage
+
+Create a `<SaveButton>` with custom UI options, or custom side effects, then use that button in a custom [`<Toolbar>`](./Toolbar.md) that you can inject to `<SimpleForm>` or `<TabbedForm>` using the `toolbar` prop:
+
+```jsx
+import { SaveButton, Toolbar, Edit, SimpleForm, useNotify, useRedirect } from 'react-admin';
+
+const PostSaveButton = props => {
+    const notify = useNotify();
+    const redirect = useRedirect();
+    const onSuccess = (response) => {
+        notify(`Post "${response.data.title}" saved!`);
+        redirect('/posts');
+    };
+    return <SaveButton {...props} mutationOptions={{ onSuccess }} />;
+};
+
+const PostEditToolbar = () => (
+    <Toolbar>
+        <PostSaveButton />
+        <DeleteButton />
+    </Toolbar>
+);
+
+const PostEdit = () => (
+    <Edit>
+        <SimpleForm toolbar={<PostEditToolbar />}>
+            ...
+        </SimpleForm>
+    </Edit>
+);
+```
+
+`<SaveButton>` accepts the following props:
+
+- [`icon`](#icon)
+- [`label`](#label)
+- [`mutationOptions`](#mutationoptions)
+- [`onClick`](#onclick)
+- [`sx`](#sx-css-api)
+- [`transform`](#transform)
+- [`type`](#type)
+
+Additional props (e.g. `color`, `variant`) are passed to [the underlying MUI `<Button>` component](https://mui.com/components/buttons/).
+
+## `icon`
+
+By default, `<SaveButton>` renders a disk icon. You can can pass another icon element:
+
+```jsx
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import { SaveButton } from 'react-admin';
+
+const MySaveButton = props => <SaveButton {...props} icon={<AddBoxIcon />} />;
+```
+
+## `label`
+
+By default, `<SaveButton>` renders with the "Save" (translated if the user locale isn't English), whether used on a creation or edition form. You can pass another label:
+
+```jsx
+const PostCreateToolbar = () => (
+    <Toolbar>
+        <SaveButton label="Create post" />
+    </Toolbar>
+);
+```
+
+**Tip**: The label will go through [the `useTranslate` hook](./Translation.md), so you can use translation keys.
+
+## `mutationOptions`
+
+You can override the `mutationOptions` of the main mutation query (`dataProvider.create()` or `dataProvider.update()`) by passing a `mutationOptions` prop to `<SaveButton>`. This is useful when you have more than one save button.
+
+For instance, to display two save buttons in a creation form, one to save and redirect to the edition page, and the second to save and empty the form:
+
+{% raw %}
+```jsx
+import { Toolbar, SaveButton, useRedirect, useNotify } from 'react-admin';
+import { useFormContext } from 'react-hook-form';
+
+const MyToolbar = () => {
+    const { reset } = useFormContext();
+    const notify = useNotify();
+    return (
+        <Toolbar>
+            <SaveButton label="Save" />
+            <SaveButton 
+                label="Save and add"
+                mutationOptions={{
+                    onSuccess: () => {
+                        notify('Element created');
+                        reset();
+                    }}
+                }
+                type="button"
+                variant="text"
+            />
+        </Toolbar>
+    );
+};
+```
+{% endraw %}
+
+**Tip**: When using custom `mutationOptions`, you must set the button `type` to `button` instead of the default `submit`, otherwise it's the main page's `mutationOptions` that is used.
+
+## `onClick`
+
+You can add an event handler to the `<SaveButton>` by passing an `onClick` callback. 
+
+```jsx
+const PostCreateToolbar = () => (
+    <Toolbar>
+        <SaveButton label="Save" onClick={() => alert('Saving...')} />
+    </Toolbar>
+);
+```
+
+`onClick` it doesn't *replace* the default submission handler, but is instead called before it. To override the default submission handler, wrap a `<SaveButton>` in a custom [`SaveContext`](./useSaveContext.md).
+
+Note that if you call `event.preventDefault()` in `onClick`, the form will not be submitted.
+
+## `sx`: CSS API
+
+The `<SaveButton>` components accept the usual `className` prop, but you can override many class names injected to the inner components by React-admin thanks to the `sx` property (as most MUI components, see their [documentation about it](https://mui.com/customization/how-to-customize/#overriding-nested-component-styles)).
+
+{% raw %}
+```jsx
+const PostCreateToolbar = () => (
+    <Toolbar>
+        <SaveButton label="Save" sx={{ margin: 2 }} />
+    </Toolbar>
+);
+```
+{% endraw %}
+
+To override the style of all instances of `<SaveButton>` components using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaSaveButton` key.
+
+## `transform`
+
+A `<SaveButton>` can specify a callback to transform the record before it is saved. This overrides the `transform` prop defined in the main page `<Edit>` or `<Create>` component.
+
+```jsx
+const transformUser = data => ({
+    ...data,
+    fullName: `${data.firstName} ${data.lastName}`
+});
+
+const UserCreateToolbar = () => (
+    <Toolbar>
+        <SaveButton transform={transformUser} />
+    </Toolbar>
+);
+```
+
+## `type`
+
+By default, `<SaveButton>` renders a `submit` button. You can change this by passing `type="button"`. It is especially useful when using more than one save button in a form:
+
+{% raw %}
+```jsx
+import { Toolbar, SaveButton, useRedirect, useNotify } from 'react-admin';
+import { useFormContext } from 'react-hook-form';
+
+const MyToolbar = () => {
+    const { reset } = useFormContext();
+    const notify = useNotify();
+    return (
+        <Toolbar>
+            <SaveButton label="Save" />
+            <SaveButton 
+                label="Save and add"
+                mutationOptions={{
+                    onSuccess: () => {
+                        notify('Element created');
+                        reset();
+                    }}
+                }
+                type="button"
+                variant="text"
+            />
+        </Toolbar>
+    );
+};
+```
+{% endraw %}

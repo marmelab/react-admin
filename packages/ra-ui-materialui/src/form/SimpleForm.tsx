@@ -43,9 +43,10 @@ export const SimpleForm = (props: SimpleFormProps) => {
         component: Component = DefaultComponent,
         sx,
         toolbar = DefaultToolbar,
+        ...rest
     } = props;
     return (
-        <Form {...props}>
+        <Form {...rest}>
             <Component className={className} sx={sx}>
                 <Stack alignItems="flex-start" {...sanitizeRestProps(props)}>
                     {children}

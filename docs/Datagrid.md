@@ -191,7 +191,7 @@ const ResetViewsButton = () => (
 export default ResetViewsButton;
 ```
 
-You can also implement the same `<ResetViewsButton>` behind a confirmation dialog by using the [`mutationMode`](./CreateEdit.md#mutationmode) prop:
+You can also implement the same `<ResetViewsButton>` behind a confirmation dialog by using the [`mutationMode`](./Edit.md#mutationmode) prop:
 
 ```diff
 // in ./ResetViewsButton.js

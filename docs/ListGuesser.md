@@ -28,6 +28,6 @@ const App = () => (
 );
 ```
 
-React-admin provides guessers for the List view (`<ListGuesser>`), the Edit view ([`<EditGuesser>`](./CreateEdit.md#the-editguesser-component)), and the Show view ([`<ShowGuesser>`](./ShowGuesser.md)).
+React-admin provides guessers for the List view (`<ListGuesser>`), the Edit view ([`<EditGuesser>`](./EditGuesser.md)), and the Show view ([`<ShowGuesser>`](./ShowGuesser.md)).
 
 **Tip**: Do not use the guessers in production. They are slower than manually-defined components, because they have to infer types based on the content. Besides, the guessers are not always perfect.

@@ -130,7 +130,7 @@ export interface TabbedFormProps
 
 export const findTabsWithErrors = (children, errors) => {
     console.warn(
-        'Deprecated. FormTab now wrap their content inside a FormGroupContextProvider. If you implemented custom forms with tabs, please use the FormGroupContextProvider. See https://marmelab.com/react-admin/CreateEdit.html#grouping-inputs'
+        'Deprecated. FormTab now wrap their content inside a FormGroupContextProvider. If you implemented custom forms with tabs, please use the FormGroupContextProvider. See https://marmelab.com/react-admin/EditTutorial.html#grouping-inputs'
     );
 
     return Children.toArray(children).reduce((acc: any[], child) => {

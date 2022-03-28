@@ -302,7 +302,7 @@ Delete the current record after a confirm dialog has been accepted. To be used i
 | `icon`                                                     | Optional | `ReactElement`                   | `<DeleteIcon>`              | iconElement, e.g. `<CommentIcon />`                                     |
 | `confirmTitle`                                             | Optional | `string`                         | 'ra.message.delete_title'   | Title of the confirm dialog                                             |
 | `confirmContent`                                           | Optional | `ReactNode`                      | 'ra.message.delete_content' | Message or React component to be used as the body of the confirm dialog |
-| [`redirect`](./CreateEdit.md#redirection-after-submission) | Optional | `string | false | Function`      | 'list'                      | Custom redirection after success side effect                            |
+| `redirect`                                                 | Optional | `string | false | Function`      | 'list'                      | Custom redirection after success side effect                            |
 | `translateOptions`                                         | Optional | `{ id?: string, name?: string }` | {}                          | Custom id and name to be used in the confirm dialog's title             |
 
 {% raw %}

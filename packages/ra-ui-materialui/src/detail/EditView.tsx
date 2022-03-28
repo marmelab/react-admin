@@ -126,6 +126,7 @@ const Root = styled('div', {
 })({
     [`& .${EditClasses.main}`]: {
         display: 'flex',
+        alignItems: 'flex-start',
     },
     [`& .${EditClasses.noActions}`]: {
         marginTop: '1em',
