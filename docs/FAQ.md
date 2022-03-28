@@ -10,7 +10,7 @@ title: "FAQ"
 - [How can I customize forms depending on its inputs values?](#how-can-i-customize-forms-depending-on-its-inputs-values)
 - [UI in production build is empty or broke](#ui-in-production-build-is-empty-or-broke)
 - [My Resource is defined but not displayed on the Menu](#my-resource-is-defined-but-not-displayed-on-the-menu)
-- [My List component won't render after I add filters to it](#my-list-component-wont-render-after-i-add-filters-to-it)
+- [I see a redirection loop on the login page since I added filters to my List](#i-see-a-redirection-loop-on-the-login-page-since-i-added-filters-to-my-list)
 
 ## Can I have custom identifiers/primary keys for my resources?
 
@@ -171,21 +171,53 @@ In order to have a specific resource without `list` prop listed on the menu, you
 );
 ```
 
-## My List component won't render after I add filters to it
+## I see a redirection loop on the login page since I added filters to my List
 
-Make sure you have declared your filters _outside_ your List component, like so:
+For example, the following code may lead to an infinite loop on the login page:
 
 ```jsx
-const postFilters = [
-    <TextInput label="Search" source="q" alwaysOn />,
-    <TextInput label="Title" source="title" defaultValue="Hello, World!" />,
-];
+import {
+  List,
+  TextInput,
+  usePermissions,
+} from "react-admin";
 
-export const PostList = () => (
-    <List filters={postFilters}>
-        ...
-    </List>
-);
+export const PostList = () => {
+    const { permissions } = usePermissions();
+    const postFilters = [
+        <TextInput label="Search" source="q" alwaysOn />,
+        <TextInput label="Title" source="title" />,
+    ];
+    return (
+        <List filters={postFilters}>
+            ...
+        </List>
+    );
+};
 ```
 
-If the filters are declared inside the `PostList` component, they will be recreated each time the component renders, leading to an infinite loop, since `PostList` will re-render because the `filters` prop has changed, and so on.
+One possible solution is to declare the filters _outside_ of the List component, like so:
+
+```jsx
+import {
+  List,
+  TextInput,
+  usePermissions,
+} from "react-admin";
+
+const postFilters = [
+    <TextInput label="Search" source="q" alwaysOn />,
+    <TextInput label="Title" source="title" />,
+];
+
+export const PostList = () => {
+    const { permissions } = usePermissions();
+    return (
+        <List filters={postFilters}>
+            ...
+        </List>
+    );
+};
+```
+
+It is good practice to declare the `filters` _outside_ the `List` component, and not inside it. While being slightly better for performances, it especially ensures that we won't run into an infinite render loop, where the component would re-render, thinking the filters have changed because they have been recreated.

@@ -667,7 +667,7 @@ Filters are "search-as-you-type", meaning that when the user enters new values i
 
 **Tip**: Note that the `label` property can be used on any field to customize the field label.
 
-**Tip**: Be careful to declare the `postFilters` outside the `PostList` component, and not inside it. If you fail to do so, the filters will be recreated each time the component renders, leading to an infinite loop.
+**Tip**: Also note that the `postFilters` are declared _outside_ the `PostList` component, and not inside it. While being slightly better for performances, it especially ensures that we won't run into an infinite render loop, where the component would re-render, thinking the filters have changed because they have been recreated.
 
 ## Customizing the Menu Icons
 

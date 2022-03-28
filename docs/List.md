@@ -498,7 +498,7 @@ export const PostList = () => (
 
 **Tip**: Filters will render as disabled inputs or menu items (depending on filter context) if passed the prop `disabled`.
 
-**Tip**: Be careful to declare the `postFilters` outside the `PostList` component, and not inside it. If you fail to do so, the filters will be recreated each time the component renders, leading to an infinite loop.
+**Tip**: It is good practice to declare the `filters` _outside_ the `List` component, and not inside it. While being slightly better for performances, it especially ensures that we won't run into an infinite render loop, where the component would re-render, thinking the filters have changed because they have been recreated.
 
 Filter Inputs are regular inputs. `<List>` hides them all by default, except those that have the `alwaysOn` prop. 
 
