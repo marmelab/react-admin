@@ -24,6 +24,7 @@
         "watch": "tsup --external react-hook-form src/index.ts --silent --clean --format cjs,esm --minify --keep-names --metafile --sourcemap --dts --legacy-output --watch"
     },
     "devDependencies": {
+        "@hookform/resolvers": "^2.8.8",
         "@testing-library/react": "^11.2.3",
         "@testing-library/react-hooks": "^7.0.2",
         "@types/jest": "^26.0.19",
@@ -42,7 +43,8 @@
         "react-router-dom": "^6.1.0",
         "react-test-renderer": "^16.9.0 || ^17.0.0",
         "tsup": "^5.11.11",
-        "typescript": "^4.4.0"
+        "typescript": "^4.4.0",
+        "yup": "^0.32.11"
     },
     "peerDependencies": {
         "history": "^5.1.0",

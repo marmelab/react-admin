@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { fireEvent, screen, render, waitFor } from '@testing-library/react';
 import { useFormState } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import { CoreAdminContext } from '../core';
 import { testDataProvider } from '../dataProvider';
@@ -457,5 +459,36 @@ describe('Form', () => {
         await waitFor(() => {
             expect(onSubmit).toHaveBeenCalledWith(values);
         });
+    });
+
+    it('should accept react-hook-form resolvers', async () => {
+        const onSubmit = jest.fn();
+        const schema = yup
+            .object({
+                title: yup.string().required(),
+                number: yup.number().positive().integer().required(),
+            })
+            .required();
+
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <Form onSubmit={onSubmit} resolver={yupResolver(schema)}>
+                    <Input source="title" />
+                    <Input
+                        source="number"
+                        aria-label="Number"
+                        defaultValue={-10}
+                    />
+                    <button type="submit">Submit</button>
+                </Form>
+            </CoreAdminContext>
+        );
+
+        fireEvent.click(screen.getByText('Submit'));
+
+        await waitFor(() => {
+            screen.getByText('title is a required field');
+        });
+        screen.getByText('number must be a positive number');
     });
 });

@@ -2153,6 +2153,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hookform/resolvers@npm:^2.8.8":
+  version: 2.8.8
+  resolution: "@hookform/resolvers@npm:2.8.8"
+  peerDependencies:
+    react-hook-form: ^7.0.0
+  checksum: 0c8814f1116a145c433300f079c3289d5ece71f36c6b782fb0f5b2388c766140cadd72bd2f7b77bc570988359d686e0c88ba513ab0ed79e70073747b7a19e8f8
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.9.2":
   version: 0.9.2
   resolution: "@humanwhocodes/config-array@npm:0.9.2"
@@ -6189,6 +6198,13 @@ __metadata:
   version: 4.14.178
   resolution: "@types/lodash@npm:4.14.178"
   checksum: 820e33578a084aba2ca66fc83728c14d82813b91f3f14f281621b36904533c3d1681992b5e2719579b8beb52e1a77cfa914283a145f66dfa71b5e02a7cec5a37
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:^4.14.175":
+  version: 4.14.180
+  resolution: "@types/lodash@npm:4.14.180"
+  checksum: 8f4b63231919b82e3488f8a2a5f8c8243563b3f712a21acdd2ffcb2af283568cb61c35663e03e34e07c84b89632418da0a5e99e4acc9c623e9a1871978ff0e83
   languageName: node
   linkType: hard
 
@@ -17546,6 +17562,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash-es@npm:^4.17.21":
+  version: 4.17.21
+  resolution: "lodash-es@npm:4.17.21"
+  checksum: fb407355f7e6cd523a9383e76e6b455321f0f153a6c9625e21a8827d10c54c2a2341bd2ae8d034358b60e07325e1330c14c224ff582d04612a46a4f0479ff2f2
+  languageName: node
+  linkType: hard
+
 "lodash._reinterpolate@npm:^3.0.0":
   version: 3.0.0
   resolution: "lodash._reinterpolate@npm:3.0.0"
@@ -18501,6 +18524,13 @@ __metadata:
   dependencies:
     big-integer: ^1.6.16
   checksum: 3bd12e0bcd30867178afdbe8053b3dde5fdd1c665ecd348bf879863049344fbaf05cbb1d7806a825b91efbca011ee115eee52e76fb38b7da9c97931cd9e61f15
+  languageName: node
+  linkType: hard
+
+"nanoclone@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "nanoclone@npm:0.2.1"
+  checksum: 760b569ea841c9678fdf8d763c6d7bb093f0889150087f82d86c536a318b302939c82ce35cdaec999d0f687789d0d79d0f3f75a272d7a98dfac7a067c0b47053
   languageName: node
   linkType: hard
 
@@ -21071,6 +21101,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"property-expr@npm:^2.0.4":
+  version: 2.0.5
+  resolution: "property-expr@npm:2.0.5"
+  checksum: adf05900e3b0fceca83e1318edba211aec089010e43807abe608165d37640f2e54133a261151d2593a9e93bf3ae98a5ac768c5153e14e7d2b09fc9db48237860
+  languageName: node
+  linkType: hard
+
 "property-information@npm:^5.0.0, property-information@npm:^5.3.0":
   version: 5.6.0
   resolution: "property-information@npm:5.6.0"
@@ -21360,6 +21397,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ra-core@workspace:packages/ra-core"
   dependencies:
+    "@hookform/resolvers": ^2.8.8
     "@testing-library/react": ^11.2.3
     "@testing-library/react-hooks": ^7.0.2
     "@types/jest": ^26.0.19
@@ -21389,6 +21427,7 @@ __metadata:
     react-test-renderer: ^16.9.0 || ^17.0.0
     tsup: ^5.11.11
     typescript: ^4.4.0
+    yup: ^0.32.11
   peerDependencies:
     history: ^5.1.0
     react: "*"
@@ -27476,6 +27515,21 @@ __metadata:
     synchronous-promise: ^2.0.6
     toposort: ^2.0.2
   checksum: a5376aa8a0040d74b05f3875a7d93397dd36e5cebec9fad383b4dd865e6748b0bb4232978220201ef13d0bd73dd7704e36b6f336099733a81c605ec828ce409a
+  languageName: node
+  linkType: hard
+
+"yup@npm:^0.32.11":
+  version: 0.32.11
+  resolution: "yup@npm:0.32.11"
+  dependencies:
+    "@babel/runtime": ^7.15.4
+    "@types/lodash": ^4.14.175
+    lodash: ^4.17.21
+    lodash-es: ^4.17.21
+    nanoclone: ^0.2.1
+    property-expr: ^2.0.4
+    toposort: ^2.0.2
+  checksum: f0802798dc64b49f313886b983a9bea5f283e2094ee2aa1197587b84f50ac5b5d03af99857c313139e63dc02558fac3aaa343503bdbffa96f70006b39d1f59c9
   languageName: node
   linkType: hard
 

@@ -49,6 +49,12 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
         [JSON.stringify({ defaultValues, record })] // eslint-disable-line
     );
 
+    const finalResolver = resolver
+        ? resolver
+        : validate
+        ? getSimpleValidationResolver(validate)
+        : undefined;
+
     const form = useForm({
         context,
         criteriaMode,
@@ -56,10 +62,7 @@ export const useAugmentedForm = (props: UseAugmentedFormProps) => {
         delayError,
         mode,
         reValidateMode,
-        resolver:
-            resolver ?? validate
-                ? getSimpleValidationResolver(validate)
-                : undefined,
+        resolver: finalResolver,
         shouldFocusError,
         shouldUnregister,
         shouldUseNativeValidation,
