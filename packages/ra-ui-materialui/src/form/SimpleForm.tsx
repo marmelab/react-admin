@@ -104,5 +104,6 @@ const sanitizeRestProps = ({
     sx,
     toolbar,
     validate,
+    resolver,
     ...props
 }: SimpleFormProps) => props;
