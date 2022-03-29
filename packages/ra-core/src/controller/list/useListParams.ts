@@ -89,7 +89,7 @@ export const useListParams = ({
     const storeKey = `${resource}.listParams`;
     const [params, setParams] = useStore(storeKey, defaultParams);
     const tempParams = useRef<ListParams>();
-    const isMounted = useRef<any>(true);
+    const isMounted = useRef<boolean>(true);
 
     const requestSignature = [
         location.search,
