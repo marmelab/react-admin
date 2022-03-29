@@ -2688,17 +2688,12 @@ This prop has been replaced by `<SaveButton>`'s `alwaysEnable` with the same log
 
 ```diff
 import { Toolbar, SaveButton } from 'react-admin';
-+import { useFormState } from 'react-hook-form';
-
-+const MyToolbar = props => (
-+    <Toolbar {...props}>
-+        <SaveButton alwaysEnable />
-+    </Toolbar>    
-+);
 
 const EditToolbar = props => (
 -    <Toolbar {...props} alwaysEnableSaveButton />
-+    <MyToolbar {...props} />
++    <Toolbar {...props}>
++        <SaveButton alwaysEnable />
++    </Toolbar>
 );
 ```
 
