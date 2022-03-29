@@ -16,7 +16,7 @@ import { SaveButton, DeleteButton } from '../button';
 /**
  * The Toolbar displayed at the bottom of forms.
  *
- * @example Remove the <DeleteButton />
+ * @example Always enable the <SaveButton />
  *
  * import * as React from 'react';
  * import {
@@ -34,7 +34,7 @@ import { SaveButton, DeleteButton } from '../button';
  *
  * const MyToolbar = props => (
  *     <Toolbar {...props} >
- *         <SaveButton />
+ *         <SaveButton alwaysEnable />
  *     </Toolbar>
  * );
  *
