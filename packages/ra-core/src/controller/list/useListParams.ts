@@ -159,9 +159,7 @@ export const useListParams = ({
                             })}`,
                         },
                         {
-                            state: {
-                                _scrollToTop: action.type === SET_PAGE,
-                            },
+                            state: { _scrollToTop: action.type === SET_PAGE },
                         }
                     );
                 }
