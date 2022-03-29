@@ -2697,7 +2697,7 @@ import { Toolbar, SaveButton } from 'react-admin';
 +);
 
 const EditToolbar = props => (
--    <Toolbar {...props} alwaysEnableSabeButton />
+-    <Toolbar {...props} alwaysEnableSaveButton />
 +    <MyToolbar {...props} />
 );
 ```
