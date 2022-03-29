@@ -19,7 +19,7 @@ Create a custom toolbar using `<Toolbar>`, then inject it to `<SimpleForm>` or `
 // in src/MyToolbar.jss
 import { Toolbar } from 'react-admin';
 
-export const MyToolbar = () => <Toolbar alwaysEnableSaveButton />;
+export const MyToolbar = () => <Toolbar />;
 
 // in src/CommentCreate.jsx
 import { Create, SimpleForm, DateInput, TextInput } from 'react-admin';
@@ -38,22 +38,11 @@ const CommentCreate = () => (
 
 `<Toolbar>` accepts the following props:
 
-- [`alwaysEnableSaveButton`](#alwaysenablesavebutton)
 - [`children`](#children)
 - `className`
 - [`sx`](#sx-css-api)
 
 Additional props are passed down to [the MUI `<Toolbar>` component](https://mui.com/api/toolbar/).
-
-## `alwaysEnableSaveButton`
-
-By default, the `<SaveButton>` renderd by `<Toolbar>` is disabled until there is something to save, i.e. until the user changes at least one input. Set `alwaysEnableSaveButton` to `true` to always enable the button.
-
-```jsx
-import { Toolbar } from 'react-admin';
-
-const MyToolbar = () => <Toolbar alwaysEnableSaveButton />;
-```
 
 ## `children`
 
