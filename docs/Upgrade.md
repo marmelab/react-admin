@@ -1,9 +1,21 @@
 ---
 layout: default
-title: "Upgrade to 4.0"
+title: "Upgrading to v4"
 ---
 
-# Upgrade to 4.0
+# Upgrading to v4
+
+React-admin v4 has upgraded all its dependencies to their latest major version. Some major dependencies were swapped (`react-query` instead of `redux`, `react-hook-form` instead of `react-final-form`). In addition, the lower layers of the react-admin code have been rewritten for better extensibility. 
+
+We've done our best to keep the general API of react-admin v4 similar with the v3 API. But the changes mentioned above result in many small compatibility breaks. An application built with react-admin v3 will need some work to run with react-admin v4.
+
+Depending on the size of your v3 application, the upgrade will take between a few hours to a few days. If you use TypeScript, the migration will be much faster.
+
+## MUI v5
+
+React-admin v4 uses MUI (Material-UI) v5. The MUI team has written an upgrade guide, which you should read to upgrade your material-ui code.
+
+[https://mui.com/guides/migration-v4/](https://mui.com/guides/migration-v4/)
 
 ## Redux Is Gone
 
@@ -344,7 +356,7 @@ const MyComponent = () => {
 }
 ```
 
-## Routing
+## React-router V6
 
 React-admin v4 uses react-router v6, which changes quite a few things internally.
 
@@ -487,145 +499,6 @@ React-admin v3 used Redux to communicate with the data provider ; react-admin v4
 - `useDelete`
 - `useDeleteMany`
 - `validUntil`
-
-### `useQuery`, `useMutation`, and `useQueryWithStore` Have Been Removed
-
-React-admin v4 uses react-query rather than Redux for data fetching. The base react-query data fetching hooks (`useQuery`, `useMutation`, and `useQueryWithStore`) are no longer necessary as their functionality is provided by react-query.
-
-If your application code uses these hooks, you have 2 ways to upgrade.
-
-If you're using `useQuery` to call a regular dataProvider method (like `dataProvider.getOne`), then you can use the specialized dataProvider hooks instead:
-
-```diff
-import * as React from "react";
--import { useQuery } from 'react-admin';
-+import { useGetOne } from 'react-admin';
-import { Loading, Error } from '../ui';
-const UserProfile = ({ record }) => {
--   const { loaded, error, data } = useQuery({
--       type: 'getOne',
--       resource: 'users',
--       payload: { id: record.id }
--   });
-+   const { data, isLoading, error } = useGetOne(
-+       'users',
-+       { id: record.id }
-+   );
--   if (!loaded) { return <Loading />; }
-+   if (isLoading) { return <Loading />; }
-    if (error) { return <Error />; }
-    return <div>User {data.username}</div>;
-};
-```
-
-If you're using `useMutation` to call a regular dataProvider method (like `dataProvider.update`), then you can use the specialized dataProvider hooks instead:
-
-```diff
--import { useMutation } from 'react-admin';
-+import { useUpdate } from 'react-admin';
-
-const BanUserButton = ({ userId }) => {
--   const [update, { loading, error }] = useMutation({
--       type: 'update',
--       resource: 'users',
--       payload: { id: userId, data: { isBanned: true } }
--   });
-+   const [update, { isLoading, error }] = useUpdate(
-+       'users',
-+       { id: userId, data: { isBanned: true } }
-+   );
--   return <Button label="Ban" onClick={() => update()} disabled={loading} />;
-+   return <Button label="Ban" onClick={() => update()} disabled={isLoading} />;
-};
-```
-
-If you're calling a custom dataProvider method, or if you're calling an PI route directly, then you can use react-query's `useQuery` or `useMutation` instead:
-
-```diff
--import { useMutation } from 'react-admin';
-+import { useDataProvider } from 'react-admin';
-+import { useMutation } from 'react-query';
-const BanUserButton = ({ userId }) => {
--   const [mutate, { loading, error, data }] = useMutation({
--       type: 'banUser',
--       payload: userId
--   });
-+   const dataProvider = useDataProvider();
-+   const { mutate, isLoading } = useMutation(
-+       () => dataProvider.banUser(userId)
-+   );
--   return <Button label="Ban" onClick={() => mutate()} disabled={loading} />;
-+   return <Button label="Ban" onClick={() => mutate()} disabled={isLoading} />;
-};
-```
-
-Refer to [the react-query documentation](https://react-query.tanstack.com/overview) for more information.
-
-### `<Query>` and `<Mutation>` Have Been Removed
-
-The component version of `useQuery` and `useMutation` have been removed. Use the related hook in your components instead.
-
-{% raw %}
-```diff
--import { Query } from 'react-admin';
-+import { useGetOne } from 'react-admin';
-
-const UserProfile = ({ record }) => {
--   return (
--       <Query type="getOne" resource="users" payload={{ id: record.id }}>
--           {({ loaded, error, data }) => {
--               if (!loaded) { return <Loading />; }
--               if (error) { return <Error />; }
--               return <div>User {data.username}</div>;
--           }}
--       </Query>
--   );
-+   const { data, isLoading, error } = useGetOne(
-+       'users',
-+       { id: record.id }
-+   );
-+   if (isLoading) { return <Loading />; }
-+   if (error) { return <Error />; }
-+   return <div>User {data.username}</div>;
-}
-```
-{% endraw %}
-
-### `useDataProvider` No Longer Accepts Side Effects
-
-`useDataProvider` returns a wrapper around the application `dataProvider` instance. In previous react-admin versions, the wrapper methods used to accept an `options` object, allowing to pass `onSuccess` and `onFailure` callbacks. This is no longer the case - the wrapper returns an object with the same method signatures as the original `dataProvider`.
-
-If you need to call the `dataProvider` and apply side effects, use react-query's `useQuery` or `useMutation` hooks instead.
-
-```diff
--import { useState } from 'react';
-import { useDataProvider } from 'react-admin';
-+import { useMutation } from 'react-query';
-
-const BanUserButton = ({ userId }) => {
-    const dataProvider = useDataProvider();
-+   const { mutate, isLoading } = useMutation();
--   const [loading, setLoading] = useState(false);
-    const handleClick = () => {
--       setLoading(true);
--       dataProvider.banUser(userId, {
--           onSuccess: () => {
--               setLoading(false);
--               console.log('User banned');
--           },
--       });
-+       mutate(
-+           ['banUser', userId],
-+           () => dataProvider.banUser(userId),
-+           { onSuccess: () => console.log('User banned') }
-+       );
-    }
--   return <Button label="Ban" onClick={handleClick} disabled={loading} />;
-+   return <Button label="Ban" onClick={handleClick} disabled={isLoading} />;
-};
-```
-
-Refer to [the react-query documentation](https://react-query.tanstack.com/overview) for more information.
 
 ### Changed Signature Of Data Provider Hooks
 
@@ -794,6 +667,146 @@ And update the calls. If you're using TypeScript, your code won't compile until 
 
 These hooks are now powered by react-query, so the state argument contains way more than just `isLoading` (`reset`, `status`, `refetch`, etc.). Check the [`useQuery`](https://react-query.tanstack.com/reference/useQuery) and the [`useMutation`](https://react-query.tanstack.com/reference/useMutation) documentation on the react-query website for more details. 
 
+### `useQuery`, `useMutation`, and `useQueryWithStore` Have Been Removed
+
+React-admin v4 uses react-query rather than Redux for data fetching. The base react-query data fetching hooks (`useQuery`, `useMutation`, and `useQueryWithStore`) are no longer necessary as their functionality is provided by react-query.
+
+If your application code uses these hooks, you have 2 ways to upgrade.
+
+If you're using `useQuery` to call a regular dataProvider method (like `dataProvider.getOne`), then you can use the specialized dataProvider hooks instead:
+
+```diff
+import * as React from "react";
+-import { useQuery } from 'react-admin';
++import { useGetOne } from 'react-admin';
+import { Loading, Error } from '../ui';
+const UserProfile = ({ record }) => {
+-   const { loaded, error, data } = useQuery({
+-       type: 'getOne',
+-       resource: 'users',
+-       payload: { id: record.id }
+-   });
++   const { data, isLoading, error } = useGetOne(
++       'users',
++       { id: record.id }
++   );
+-   if (!loaded) { return <Loading />; }
++   if (isLoading) { return <Loading />; }
+    if (error) { return <Error />; }
+    return <div>User {data.username}</div>;
+};
+```
+
+If you're using `useMutation` to call a regular dataProvider method (like `dataProvider.update`), then you can use the specialized dataProvider hooks instead:
+
+```diff
+-import { useMutation } from 'react-admin';
++import { useUpdate } from 'react-admin';
+
+const BanUserButton = ({ userId }) => {
+-   const [update, { loading, error }] = useMutation({
+-       type: 'update',
+-       resource: 'users',
+-       payload: { id: userId, data: { isBanned: true } }
+-   });
++   const [update, { isLoading, error }] = useUpdate(
++       'users',
++       { id: userId, data: { isBanned: true } }
++   );
+-   return <Button label="Ban" onClick={() => update()} disabled={loading} />;
++   return <Button label="Ban" onClick={() => update()} disabled={isLoading} />;
+};
+```
+
+If you're calling a custom dataProvider method, or if you're calling an PI route directly, then you can use react-query's `useQuery` or `useMutation` instead:
+
+```diff
+-import { useMutation } from 'react-admin';
++import { useDataProvider } from 'react-admin';
++import { useMutation } from 'react-query';
+const BanUserButton = ({ userId }) => {
+-   const [mutate, { loading, error, data }] = useMutation({
+-       type: 'banUser',
+-       payload: userId
+-   });
++   const dataProvider = useDataProvider();
++   const { mutate, isLoading } = useMutation(
++       () => dataProvider.banUser(userId)
++   );
+-   return <Button label="Ban" onClick={() => mutate()} disabled={loading} />;
++   return <Button label="Ban" onClick={() => mutate()} disabled={isLoading} />;
+};
+```
+
+Refer to [the react-query documentation](https://react-query.tanstack.com/overview) for more information.
+
+### `<Query>` and `<Mutation>` Have Been Removed
+
+The component version of `useQuery` and `useMutation` have been removed. Use the related hook in your components instead.
+
+{% raw %}
+```diff
+-import { Query } from 'react-admin';
++import { useGetOne } from 'react-admin';
+
+const UserProfile = ({ record }) => {
+-   return (
+-       <Query type="getOne" resource="users" payload={{ id: record.id }}>
+-           {({ loaded, error, data }) => {
+-               if (!loaded) { return <Loading />; }
+-               if (error) { return <Error />; }
+-               return <div>User {data.username}</div>;
+-           }}
+-       </Query>
+-   );
++   const { data, isLoading, error } = useGetOne(
++       'users',
++       { id: record.id }
++   );
++   if (isLoading) { return <Loading />; }
++   if (error) { return <Error />; }
++   return <div>User {data.username}</div>;
+}
+```
+{% endraw %}
+
+### `useDataProvider` No Longer Accepts Side Effects
+
+`useDataProvider` returns a wrapper around the application `dataProvider` instance. In previous react-admin versions, the wrapper methods used to accept an `options` object, allowing to pass `onSuccess` and `onFailure` callbacks. This is no longer the case - the wrapper returns an object with the same method signatures as the original `dataProvider`.
+
+If you need to call the `dataProvider` and apply side effects, use react-query's `useQuery` or `useMutation` hooks instead.
+
+```diff
+-import { useState } from 'react';
+import { useDataProvider } from 'react-admin';
++import { useMutation } from 'react-query';
+
+const BanUserButton = ({ userId }) => {
+    const dataProvider = useDataProvider();
++   const { mutate, isLoading } = useMutation();
+-   const [loading, setLoading] = useState(false);
+    const handleClick = () => {
+-       setLoading(true);
+-       dataProvider.banUser(userId, {
+-           onSuccess: () => {
+-               setLoading(false);
+-               console.log('User banned');
+-           },
+-       });
++       mutate(
++           ['banUser', userId],
++           () => dataProvider.banUser(userId),
++           { onSuccess: () => console.log('User banned') }
++       );
+    }
+-   return <Button label="Ban" onClick={handleClick} disabled={loading} />;
++   return <Button label="Ban" onClick={handleClick} disabled={isLoading} />;
+};
+```
+
+Refer to [the react-query documentation](https://react-query.tanstack.com/overview) for more information.
+
+
 ### Application Cache No Longer Uses `validUntil`
 
 React-admin's *application cache* used to rely on the dataProvider returning a `validUntil` property in the response. This is no longer the case, as the cache functionality is handled by react-query. Therefore, you can safely remove the `validUntil` property from your dataProvider response.
@@ -850,7 +863,130 @@ const App = () => {
 }
 ```
 
+### Mutation Callbacks Can No Longer Be Used As Event Handlers
+
+In 3.0, you could use a mutation callback in an event handler, e.g. a click handler on a button. This is no longer possible, so you'll have to call the callback manually inside a handler function:
+
+```diff
+const IncreaseLikeButton = ({ record }) => {
+    const diff = { likes: record.likes + 1 };
+    const [update, { isLoading, error }] = useUpdate('likes', { id: record.id, data: diff, previousData: record });
+    if (error) { return <p>ERROR</p>; }
+-   return <button disabled={isLoading} onClick={update}>Like</button>;
++   return <button disabled={isLoading} onClick={() => update()}>Like</button>;
+};
+```
+
+TypeScript will complain if you don't.
+
+To upgrade, check every instance of your code of the following hooks:
+
+- `useCreate`
+- `useUpdate`
+- `useUpdateMany`
+- `useDelete`
+- `useDeleteMany`
+
+Note that your code will be more readable if you pass the mutation parameters to the mutation callback instead of the mutation hook, e.g.
+
+```diff
+const IncreaseLikeButton = ({ record }) => {
+    const diff = { likes: record.likes + 1 };
+-   const [update, { isLoading, error }] = useUpdate('likes', { id: record.id, data: diff, previousData: record });
++   const [update, { isLoading, error }] = useUpdate();
++   const handleClick = () => {
++       update('likes', { id: record.id, data: diff, previousData: record });
++   };
+    if (error) { return <p>ERROR</p>; }
+-   return <button disabled={isLoading} onClick={update}>Like</button>;
++   return <button disabled={isLoading} onClick={handleClick}>Like</button>;
+};
+```
+
+### Removed the undoable prop in Favor of mutationMode
+
+We removed the `undoable` prop as we introduced the `mutationMode` in v3. This impact the following hooks and components:
+
+- `useDeleteWithConfirmController`
+- `useEditController`
+- `useDataProvider`
+- `useMutation`
+
+- `BulkDeleteButton`
+- `BulkDeleteWithConfirmButton`
+- `DeleteButton`
+- `DeleteWithConfirmButton`
+- `Edit`
+
+Wherever you were using `undoable`, replace it with `mutationMode`:
+
+```diff
+const {
+    open,
+    loading,
+    handleDialogOpen,
+    handleDialogClose,
+    handleDelete,
+} = useDeleteWithConfirmController({
+    resource,
+    record,
+    redirect,
+    onClick,
+-    undoable: true
++    mutationMode: 'undoable'
+});
+```
+
+Or in a component:
+```diff
+export const PostEdit = (props) => (
+-    <Edit {...props} undoable>
++    <Edit {...props} mutationMode="undoable">
+        <SimpleForm>
+            <TextInput source="title" />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+### Removed `loading` and `loaded` Data Provider State Variables
+
+The dataProvider hooks (`useGetOne`, etc.) return the request state. The `loading` and `loaded` state variables were changed to `isLoading` and `isFetching` respectively. The meaning has changed, too:
+
+- `loading` is now `isFetching`
+- `loaded` is now `!isLoading`
+
+```diff
+const BookDetail = ({ id }) => {
+-   const { data, error, loaded } = useGetOne('books', id);
++   const { data, error, isLoading } = useGetOne('books', { id });
+-   if (!loaded) {
++   if (isLoading) {
+        return <Loading />;
+    }
+    if (error) {
+        return <Error error={error} />;
+    }
+    if (!data) {
+        return null;
+    }
+    return (
+        <div>
+            <h1>{data.book.title}</h1>
+            <p>{data.book.author.name}</p>
+        </div>
+    );
+};
+```
+
+In general, you should use `isLoading`. It's false as long as the data has never been loaded (whether from the dataProvider or from the cache).
+
+The new props are actually returned by react-query's `useQuery` hook. Check [their documentation](https://react-query.tanstack.com/reference/useQuery) for more information.
+
+
 ## Auth Provider
+
+### Renamed `loading` to `isLoading`
 
 Some of the hooks allowing to call the `authProvider` methods are asynchronous: they return their result only when the `authProvider` promise resolves, and set the `loading` property to `true` until then.
 
@@ -879,7 +1015,21 @@ To upgrade, check every instance of your code of the following hooks:
 - `useGetIdentity`
 - `usePermissions`
 
-## Admin Child Function Result Has Changed
+### `useAuthenticated` Signature has Changed
+
+`useAuthenticated` uses to accept only the parameters passed to the `authProvider.checkAuth` function. It now accepts an option object with two properties:
+- `enabled`: whether it should check for an authenticated user
+- `params`: the parameters to pass to `checkAuth`
+
+```diff
+- useAuthenticated('permissions.posts.can_create');
++ useAuthenticated({ params: 'permissions.posts.can_create' })
+```
+
+
+## Admin 
+
+### Admin Child Function Result Has Changed
 
 In order to define the resources and their views according to users permissions, we used to support a function as a child of `<Admin>`. Just like the `customRoutes`, this function had to return an array of elements.
 
@@ -925,117 +1075,128 @@ const MyAdmin = () => (
 )
 ```
 
-## List `ids` Prop And `RecordMap` Type Are Gone
+## All CRUD Views
 
-Contrary to `dataProvider.getList`, `useGetList` used to return data under the shape of a record map. This is no longer the case: `useGetList` returns an array of records. 
+### No More Prop Injection In Page Components
 
-So the `RecordMap` type is no longer necessary and was removed. TypeScript compilation will fail if you continue using it. You should update your code so that it works with an array of records instead.
-
-```diff
--import { useGetList, RecordMap } from 'react-admin';
-+import { useGetList, Record } from 'react-admin';
-
-const PostListContainer = () => {
--   const { data, ids, loading } = useGetList(
--      'posts',
--      { page: 1, perPage: 10 },
--      { field: 'published_at', order: 'DESC' },
--   );
--   return loading ? null: <PostListDetail data={data} ids={ids} />
-+   const { data, isLoading } = useGetList(
-+      'posts',
-+      {
-+         pagination: { page: 1, perPage: 10 },
-+         sort: { field: 'published_at', order: 'DESC' },
-+      }
-+   );
-+   return isLoading ? null: <PostListDetail data={data} />
-};
-
--const PostListDetail = ({ ids, data }: { ids: string[], data: RecordMap }) => {
-+const PostListDetail = ({ data }: { data: Record[] }) => {
--   return <>{ids.map(id => <span key={id}>{data[id].title}</span>)}</>;
-+   return <>{data.map(record => <span key={record.id}>{record.title}</span>)}</>;
-};
-```
-
-## List `bulkActionButtons` Prop Moved To Datagrid
-
-The `Datagrid` is now responsible for managing the bulk actions component.
+Page components (`<List>`, `<Show>`, etc.) used to expect to receive props (route parameters, permissions, resource name). These components don't receive any props anymore by default. They use hooks to get the props they need from contexts or route state.  
 
 ```diff
-import { List, Datagrid } from 'react-admin'; 
-
-const PostList = () => (
--    <List bulkActionButtons={<PostBulkActionButtons />}>
-+    <List>
--        <Datagrid>
-+        <Datagrid bulkActionButtons={<PostBulkActionButtons />}>        
-            ...
-        </Datagrid>
-    </List>
+-const PostShow = (props) => (
++const PostShow = () => (
+-   <Show {...props}>
++   <Show>
+        <SimpleShowLayout>
+            <TextField source="title" />
+        </SimpleShowLayout>
+    </Show>
 );
 ```
 
-## Datagrid `hasBulkActions` Prop Has Been Removed 
-
-As a consequence of moving `bulkActionButtons` prop from `List` to `Datagrid`, `hasBulkActions` prop is now handled internaly by the `Datagrid` component, but it is still being passed down to its header and body components.
-Just set `Datagrid`'s `bulkActionButtons` to `false` to have the same behavior.
+If you need to access the permissions previously passed as props, you need to call the `usePermissions` hook instead.
 
 ```diff
-import { List, Datagrid } from 'react-admin'; 
++const { usePermissions } from 'react-admin';
 
-const PostList = () => (
-    <List>
--        <Datagrid hasBulkActions={false}>
-+        <Datagrid bulkActionButtons={false}>        
-            ...
-        </Datagrid>
+-const PostShow = ({ permissions, ...props }) => {
++const PostShow = () => {
++   const permissions = usePermissions();
+    return (
+-       <Show {...props}>
++       <Show>
+            <SimpleShowLayout>
+                <TextField source="title" />
+                {permissions === 'admin' &&
+                    <NumberField source="nb_views" />
+                }
+            </SimpleShowLayout>
+        </Show>
+    );
+};
+```
+
+If you need to access the `hasList` and other flags related to resource configuration, use the `useResourceConfiguration` hook instead.
+
+```diff
++const { useResourceDefinition } from 'react-admin';
+
+-const PostShow = ({ hasEdit, ...props }) => {
++const PostShow = () => {
++   const { hasEdit } = useResourceDefinition();
+    return (
+        <Show actions={hasEdit ? <ShowActions /> : null}>
+            <SimpleShowLayout>
+                <TextField source="title" />
+            </SimpleShowLayout>
+        </Show>
+    );
+};
+```
+
+If you need to access a route parameter, use react-router's `useParams` hook instead.
+
+```diff
++const { useParams } from 'react-router-dom';
+
+-const PostShow = ({ id, ...props }) => {
++const PostShow = () => {
++   const { id } = useParams();
+    return (
+        <Show title={`Post #${id}`}>
+            <SimpleShowLayout>
+                <TextField source="title" />
+            </SimpleShowLayout>
+        </Show>
+    );
+};
+```
+
+We used to inject a `syncWithLocation` prop set to `true` to the `<List>` components used in a `<Resource>`. This instructed the `<List>` to synchronize its parameters (such as pagination, sorting and filters) with the browser location.
+
+As we removed the props injection, we enabled this synchronization by default for all `<List>`, used in a `<Resource>` or not. As a consequence, we also inverted this prop and renamed it `disableSyncWithLocation`. This doesn't change anything if you only used `<List>` components inside `<Resource list>`. 
+
+However, if you had multiple `<List>` components inside used a single page, or if you used `<List>` outside of a `<Resource>`, you now have to explicitly opt out the synchronization of the list parameters with the browser location:
+
+```diff
+const MyList = () => (
+-    <List>
++    <List disableSyncWithLocation>
+        // ...
     </List>
+)
+```
+
+### Removed The `basePath` Prop
+
+Many components received, or passed down, a prop named `basePath`. This was necessary to build internal routes that worked when react-admin was used under a sub-path. 
+
+React-admin v4 now uses a context to keep the app basePath, so the `basePath` prop is no longer necessary. Every component that received it doesn't need it anymore. You can safely remove it from your code. 
+
+```diff
+-const PostEditActions = ({ basePath }) => (
++const PostEditActions = () => (
+    <TopToolbar>
+-       <ShowButton basePath={basePath} />
++       <ShowButton />
+        {/* Add your custom actions */}
+        <Button color="primary" onClick={customAction}>Custom Action</Button>
+    </TopToolbar>
 );
 ```
 
-## Mutation Callbacks Can No Longer Be Used As Event Handlers
+Keeping the `basePath` prop may result in unrecognized DOM props warnings, but your app will still work flawlessly even if you don't remove them. If you're using TypeScript, your code will not compile unless you remove all the `basePath` props.
 
-In 3.0, you could use a mutation callback in an event handler, e.g. a click handler on a button. This is no longer possible, so you'll have to call the callback manually inside a handler function:
-
-```diff
-const IncreaseLikeButton = ({ record }) => {
-    const diff = { likes: record.likes + 1 };
-    const [update, { isLoading, error }] = useUpdate('likes', { id: record.id, data: diff, previousData: record });
-    if (error) { return <p>ERROR</p>; }
--   return <button disabled={isLoading} onClick={update}>Like</button>;
-+   return <button disabled={isLoading} onClick={() => update()}>Like</button>;
-};
-```
-
-TypeScript will complain if you don't.
-
-To upgrade, check every instance of your code of the following hooks:
-
-- `useCreate`
-- `useUpdate`
-- `useUpdateMany`
-- `useDelete`
-- `useDeleteMany`
-
-Note that your code will be more readable if you pass the mutation parameters to the mutation callback instead of the mutation hook, e.g.
+When a function (not a component) received the `basePath` as argument, it now receives the `resource` instead. For instance, the `<Datagrid rowClick>` prop used to accept a function:
 
 ```diff
-const IncreaseLikeButton = ({ record }) => {
-    const diff = { likes: record.likes + 1 };
--   const [update, { isLoading, error }] = useUpdate('likes', { id: record.id, data: diff, previousData: record });
-+   const [update, { isLoading, error }] = useUpdate();
-+   const handleClick = () => {
-+       update('likes', { id: record.id, data: diff, previousData: record });
-+   };
-    if (error) { return <p>ERROR</p>; }
--   return <button disabled={isLoading} onClick={update}>Like</button>;
-+   return <button disabled={isLoading} onClick={handleClick}>Like</button>;
-};
+-   <Datagrid rowClick={(id, basePath, record) => {/* ... */}}>
++   <Datagrid rowClick={(id, resource, record) => {/* ... */}}>
 ```
 
-## `onSuccess` And `onFailure` Props Have Moved
+In most cases, the injected `basePath` was the `resource` with a leading slash (e.g. basename: `/posts`, resource: `posts`).
+
+
+### `onSuccess` And `onFailure` Props Have Moved
 
 If you need to override the success or failure side effects of a component, you now have to use the `queryOptions` (for query side effects) or `mutationOptions` (for mutation side effects).
 
@@ -1167,7 +1328,7 @@ const MyButton = () => {
 }
 ```
 
-## `onSuccess` Callback On DataProvider Hooks And Components Has A New Signature
+### `onSuccess` Callback On DataProvider Hooks And Components Has A New Signature
 
 The `onSuccess` callback used to receive the *response* from the dataProvider. On specialized hooks, it now receives the `data` property of the response instead. 
 
@@ -1209,227 +1370,202 @@ The change concerns the following components:
 - `useDeleteMany`
 - `<BulkDeleteButton>`
 
-## `<Edit successMessage>` Prop Was Removed
+## List Views
 
-This prop has been deprecated for a long time. Replace it with a custom success handler in the `mutationOptions`:
+### List `ids` Prop And `RecordMap` Type Are Gone
+
+Contrary to `dataProvider.getList`, `useGetList` used to return data under the shape of a record map. This is no longer the case: `useGetList` returns an array of records. 
+
+So the `RecordMap` type is no longer necessary and was removed. TypeScript compilation will fail if you continue using it. You should update your code so that it works with an array of records instead.
+
+```diff
+-import { useGetList, RecordMap } from 'react-admin';
++import { useGetList, Record } from 'react-admin';
+
+const PostListContainer = () => {
+-   const { data, ids, loading } = useGetList(
+-      'posts',
+-      { page: 1, perPage: 10 },
+-      { field: 'published_at', order: 'DESC' },
+-   );
+-   return loading ? null: <PostListDetail data={data} ids={ids} />
++   const { data, isLoading } = useGetList(
++      'posts',
++      {
++         pagination: { page: 1, perPage: 10 },
++         sort: { field: 'published_at', order: 'DESC' },
++      }
++   );
++   return isLoading ? null: <PostListDetail data={data} />
+};
+
+-const PostListDetail = ({ ids, data }: { ids: string[], data: RecordMap }) => {
++const PostListDetail = ({ data }: { data: Record[] }) => {
+-   return <>{ids.map(id => <span key={id}>{data[id].title}</span>)}</>;
++   return <>{data.map(record => <span key={record.id}>{record.title}</span>)}</>;
+};
+```
+
+### `useListContext` No Longer Returns An `ids` Prop
+
+The `ListContext` used to return two props for the list data: `data` and `ids`. To render the list data, you had to iterate over the `ids`. 
+
+Starting with react-admin v4, `useListContext` only returns a `data` prop, and it is now an array. This means you have to update all your code that relies on `ids` from a `ListContext`. Here is an example for a custom list iterator using cards:
 
 {% raw %}
 ```diff
--import { Edit, SimpleForm } from 'react-admin';
-+import { Edit, SimpleForm, useNotify } from 'react-admin';
+import * as React from 'react';
+import { useListContext, List, TextField, DateField, ReferenceField, EditButton } from 'react-admin';
+import { Card, CardActions, CardContent, CardHeader, Avatar } from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
 
-const PostEdit = () => {
-+   const notify = useNotify();
-+   const onSuccess = () => notify('Post updated successfully');
+const CommentGrid = () => {
+-   const { data, ids, loading } = useListContext();
++   const { data, isLoading } = useListContext();
+-   if (loading) return null;
++   if (isLoading) return null;
     return (
--       <Edit successMessage="Post updated successfully">
-+       <Edit mutationOptions={{ onSuccess }}>
-            <SimpleForm>
-                ...
-            </SimpleForm>
-        </Edit>
+        <div style={{ margin: '1em' }}>
+-       {ids.map(id =>
++       {data.map(record =>
+-           <Card key={id} style={cardStyle}>
++           <Card key={record.id} style={cardStyle}>
+                <CardHeader
+-                   title={<TextField record={data[id]} source="author.name" />}
++                   title={<TextField record={record} source="author.name" />}
+-                   subheader={<DateField record={data[id]} source="created_at" />}
++                   subheader={<DateField record={record} source="created_at" />}
+                    avatar={<Avatar icon={<PersonIcon />} />}
+                />
+                <CardContent>
+-                   <TextField record={data[id]} source="body" />
++                   <TextField record={record} source="body" />
+                </CardContent>
+                <CardActions style={{ textAlign: 'right' }}>
+-                   <EditButton resource="posts" record={data[id]} />
++                   <EditButton resource="posts" record={record} />
+                </CardActions>
+            </Card>
+        )}
+        </div>
     );
 };
 ```
 {% endraw %}
 
-## `useNotify` Now Takes An Options Object
+### List `bulkActionButtons` Prop Moved To Datagrid
 
-When a component has to display a notification, developers may want to tweak the type, duration, translation arguments, or the ability to undo the action. The callback returned by `useNotify()` used to accept a long series of argument, but the syntax wasn't very intuitive. To improve the developer experience, these options are now part of an `options` object, passed as second argument.
-
-```diff
-```jsx
-import { useNotify } from 'react-admin';
-
-const NotifyButton = () => {
-    const notify = useNotify();
-    const handleClick = () => {
--       notify(`Comment approved`, 'success', undefined, true);
-+       notify(`Comment approved`, { type: 'success', undoable: true });
-    }
-    return <button onClick={handleClick}>Notify</button>;
-};
-```
-
-Check [the `useNotify` documentation](https://marmelab.com/react-admin/useNotify.html) for more information.
-
-## The `useVersion` Hook Was Removed
-
-React-admin v3 relied on a global `version` variable stored in the Redux state to force page refresh. This is no longer the case, as the refresh functionality is handled by react-query.
-
-If you relied on `useVersion` to provide a component key, you can safely remove the call. The refresh button will force all components relying on a dataProvider query to re-execute.
+The `Datagrid` is now responsible for managing the bulk actions component.
 
 ```diff
--import { useVersion } from 'react-admin';
+import { List, Datagrid } from 'react-admin'; 
 
-const MyComponent = () => {
--   const version = useVersion();
-    return (
--       <Card key={version}>
-+       <Card>
+const PostList = () => (
+-    <List bulkActionButtons={<PostBulkActionButtons />}>
++    <List>
+-        <Datagrid>
++        <Datagrid bulkActionButtons={<PostBulkActionButtons />}>        
             ...
-        </Card>
-    );
-};
-```
-
-And if you relied on a `version` prop to be available in a page context, you can safely remove it.
-
-```diff
-import { useShowContext } from 'react-admin';
-
-const PostDetail = () => {
--   const { data, version } = useShowContext();
-+   const { data } = useShowContext();
-    return (
--       <Card key={version}>
-+       <Card>
-            ...
-        </Card>
-    );
-}
-```
-
-## Custom Menus Should Get Resource Definition From Context
-
-React-admin used to store the definition of each resource (its name, icon, label, etc.) in the Redux state. This is no longer the case, as the resource definition is now stored in a custom context.
-
-If you relied on the `useResourceDefinition` hook, this change shouldn't affect you.
-
-If you need to access the definitions of all resources, however, you must upgrade your code, and use the new `useResourceDefinitions` hook.
-
-The most common use case is when you override the default `<Menu>` component:
-
-```diff
-// in src/Menu.js
-import * as React from 'react';
-import { createElement } from 'react';
--import { useSelector } from 'react-redux';
-import { useMediaQuery } from '@mui/material';
--import { DashboardMenuItem, Menu, MenuItemLink, getResources } from 'react-admin';
-+import { DashboardMenuItem, Menu, MenuItemLink, useResourceDefinitions } from 'react-admin';
-import DefaultIcon from '@mui/icons-material/ViewList';
-import LabelIcon from '@mui/icons-material/Label';
-
-export const Menu = (props) => {
--   const resources = useSelector(getResources);
-+   const resourcesDefinitions = useResourceDefinitions();
-+   const resources = Object.keys(resourcesDefinitions).map(name => resourcesDefinitions[name]);
-    const open = useSelector(state => state.admin.ui.sidebarOpen);
-    return (
-        <Menu {...props}>
-            <DashboardMenuItem />
-            {resources.map(resource => (
-                <MenuItemLink
-                    key={resource.name}
-                    to={`/${resource.name}`}
-                    primaryText={
-                        (resource.options && resource.options.label) ||
-                        resource.name
-                    }
-                    leftIcon={
-                        resource.icon ? <resource.icon /> : <DefaultIcon />
-                    }
-                    onClick={props.onMenuClick}
-                    sidebarIsOpen={open}
-                />
-            ))}
-            {/* add your custom menus here */}
-        </Menu>
-    );
-};
-```
-
-## No More Prop Injection In Page Components
-
-Page components (`<List>`, `<Show>`, etc.) used to expect to receive props (route parameters, permissions, resource name). These components don't receive any props anymore by default. They use hooks to get the props they need from contexts or route state.  
-
-```diff
--const PostShow = (props) => (
-+const PostShow = () => (
--   <Show {...props}>
-+   <Show>
-        <SimpleShowLayout>
-            <TextField source="title" />
-        </SimpleShowLayout>
-    </Show>
+        </Datagrid>
+    </List>
 );
 ```
 
-If you need to access the permissions previously passed as props, you need to call the `usePermissions` hook instead.
+### Datagrid `hasBulkActions` Prop Has Been Removed 
+
+As a consequence of moving `bulkActionButtons` prop from `List` to `Datagrid`, `hasBulkActions` prop is now handled internaly by the `Datagrid` component, but it is still being passed down to its header and body components.
+Just set `Datagrid`'s `bulkActionButtons` to `false` to have the same behavior.
 
 ```diff
-+const { usePermissions } from 'react-admin';
+import { List, Datagrid } from 'react-admin'; 
 
--const PostShow = ({ permissions, ...props }) => {
-+const PostShow = () => {
-+   const permissions = usePermissions();
-    return (
--       <Show {...props}>
-+       <Show>
-            <SimpleShowLayout>
-                <TextField source="title" />
-                {permissions === 'admin' &&
-                    <NumberField source="nb_views" />
-                }
-            </SimpleShowLayout>
-        </Show>
-    );
-};
-```
-
-If you need to access the `hasList` and other flags related to resource configuration, use the `useResourceConfiguration` hook instead.
-
-```diff
-+const { useResourceDefinition } from 'react-admin';
-
--const PostShow = ({ hasEdit, ...props }) => {
-+const PostShow = () => {
-+   const { hasEdit } = useResourceDefinition();
-    return (
-        <Show actions={hasEdit ? <ShowActions /> : null}>
-            <SimpleShowLayout>
-                <TextField source="title" />
-            </SimpleShowLayout>
-        </Show>
-    );
-};
-```
-
-If you need to access a route parameter, use react-router's `useParams` hook instead.
-
-```diff
-+const { useParams } from 'react-router-dom';
-
--const PostShow = ({ id, ...props }) => {
-+const PostShow = () => {
-+   const { id } = useParams();
-    return (
-        <Show title={`Post #${id}`}>
-            <SimpleShowLayout>
-                <TextField source="title" />
-            </SimpleShowLayout>
-        </Show>
-    );
-};
-```
-
-We used to inject a `syncWithLocation` prop set to `true` to the `<List>` components used in a `<Resource>`. This instructed the `<List>` to synchronize its parameters (such as pagination, sorting and filters) with the browser location.
-
-As we removed the props injection, we enabled this synchronization by default for all `<List>`, used in a `<Resource>` or not. As a consequence, we also inverted this prop and renamed it `disableSyncWithLocation`. This doesn't change anything if you only used `<List>` components inside `<Resource list>`. 
-
-However, if you had multiple `<List>` components inside used a single page, or if you used `<List>` outside of a `<Resource>`, you now have to explicitly opt out the synchronization of the list parameters with the browser location:
-
-```diff
-const MyList = () => (
--    <List>
-+    <List disableSyncWithLocation>
-        // ...
+const PostList = () => (
+    <List>
+-        <Datagrid hasBulkActions={false}>
++        <Datagrid bulkActionButtons={false}>        
+            ...
+        </Datagrid>
     </List>
-)
+);
 ```
 
-## No More props injection in custom Pagination and Empty components
+### `currentSort` Renamed To `sort`
+
+If one of your components displays the current sort order, it probably uses the injected `currentSort` prop (or reads it from the `ListContext`). This prop has been renamed to `sort` in v4.
+
+Upgrade your code by replacing `currentSort` with `sort`:
+
+{% raw %}
+```diff
+import { useListContext } from 'react-admin';
+
+const BookListIterator = () => {
+-    const { data, loading, currentSort } = useListContext();
++    const { data, isLoading, sort } = useListContext();
+
+    if (loading) return <Loading />;
+    if (data.length === 0) return <p>No data</p>;
+
+    return (<>
+-       <div>Books sorted by {currentSort.field}</div>
++       <div>Books sorted by {sort.field}</div>
+        <ul>
+            {data.map(book =>
+                <li key={book.id}>{book.title}</li>
+            )}
+        </ul>
+    </>);
+};
+```
+{% endraw %}
+
+The same happens for `<Datagrid>`: when used in standalone, it used to accept a `currentSort` prop, but now it only accepts a `sort` prop.
+
+{% raw %}
+```diff
+-<Datagrid data={data} currentSort={{ field: 'id', order: 'DESC' }}>
++<Datagrid data={data} sort={{ field: 'id', order: 'DESC' }}>
+    <TextField source="id" />
+    <TextField source="title" />
+    <TextField source="author" />
+    <TextField source="year" />
+</Datagrid>
+```
+{% raw %}
+
+### `setSort()` Signature Changed
+
+Some react-admin components have access to a `setSort()` callback to sort the current list of items. This callback is also present in the `ListContext`. Its signature has changed:
+
+```diff
+-setSort(field: string, order: 'ASC' | 'DESC');
++setSort({ field: string, order: 'ASC' | 'DESC' });
+```
+
+This impacts your code if you built a custom sort component:
+
+```diff
+const SortButton = () => {
+    const { sort, setSort } = useListContext();
+    const handleChangeSort = (event) => {
+        const field = event.currentTarget.dataset.sort;
+-       setSort(
+-           field,
+-           field === sort.field ? inverseOrder(sort.order) : 'ASC',
+-       });
++       setSort({
++           field,
++           order: field === sort.field ? inverseOrder(sort.order) : 'ASC',
++       });
+        setAnchorEl(null);
+    };
+
+    // ...
+};
+```
+
+
+### No More props injection in custom Pagination and Empty components
 
 The `<List>` component renders a Pagination component when there are records to display, and an Empty component otherwise. You can customize these components by passing your own with the `pagination` and `empty`props. 
 
@@ -1474,197 +1610,96 @@ export const PostList = () => (
 );
 ```
 
-## No More Props Injection In `<ReferenceField>`
+### `useGetMainList` Was Removed
 
-`<ReferenceField>` creates a `RecordContext` for the reference record, and this allows using any of react-admin's Field components. It also used to pass many props to the underlying component (including the current `record`), but this is no longer the case. If you need to access the `record` in a child of `<ReferenceField>`, you need to use the `useRecordContext` hook instead.
+`useGetMainList` was a modified version of `useGetList` designed to keep previous data on screen upon navigation. As [this is now supported natively by react-query](https://react-query.tanstack.com/guides/paginated-queries#better-paginated-queries-with-keeppreviousdata), this hook is no longer necessary and has been removed. Use `useGetList()` instead.
+
+### `useUnselectAll` Syntax Changed
+
+You must now pass the resource name when calling the hook:
 
 ```diff
-const PostShow = () => (
-    <Show>
-        <SimpleShowLayout>
-            <TextField source="title" />
-            <ReferenceField source="author_id" reference="users">
-                <NameField />
-            </ReferenceField>
-        </SimpleShowLayout>
-    </Show>
-);
+import { useUnselectAll } from 'react-admin';
 
--const NameField = ({ record }) => {
-+const NameField = () => {
-+   const { record } = useRecordContext();
-    return <span>{record?.name}</span>;
+const UnselectAllButton = () => {
+-   const unselectAll = useUnselectAll();
++   const unselectAll = useUnselectAll('posts');
+    const handleClick = () => {
+-       unselectAll('posts');
++       unselectAll();
+    }
+    return <button onClick={handleClick}>Unselect all</button>;
 };
 ```
 
-## `<AutocompleteInput>`, `<AutocompleteArrayInput>`, `<SelectInput>`, `<SelectArrayInput>`, `<CheckboxGroupInput>` and `<RadioButtonGroupInput>` No Longer Inject Props To React Elements Passed as `optionText`
+## Forms
 
-To access the record, you can use the `useRecordContext` hook.
+`react-final-form` has been replaced by `react-hook-form`.
 
+### `initialValues` Is Now `defaultValues`
+
+`<FormWithRedirect>` used to accept [`react-final-form` `<Form>` props](https://final-form.org/docs/react-final-form/types/FormProps). It now accepts [`react-hook-form` `useForm` props](https://react-hook-form.com/api/useform). This also affects the other form components (`<SimpleForm>`, `<TabbedForm>`, etc.)
+
+The most commonly used prop is probably `initialValues`, which is now named `defaultValues`:
+
+{% raw %}
 ```diff
-const choices = [
-   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
-   { id: 456, first_name: 'Jane', last_name: 'Austen' },
-];
-
--const FullNameField = ({ record }) => {
-+const FullNameField = () => {
-+    const record = useRecordContext();    
-    return <span>{record.first_name} {record.last_name}</span>;
-}
-
-const AuthorsInput = () => {
-    <RadioButtonGroupInput source="authors" choices={choices} optionText={<FullNameField />}/>
-}
-```
-
-## No More Props Injection In `<Title>`
-
-`<Title>` no longer clones the `title` prop and injects it to the `record`. Call the `useRecordContext` hook to get the current record.
-
-```diff
--const PostTitle = ({ record }) => {
--const PostTitle = () => {
-+    const record = useRecordContext();
-    return <span>Post {record ? `"${record.title}"` : ''}</span>;
-};
-
-export const PostEdit = () => (
-    <Edit title={<PostTitle />}>
-        ...
-    </Edit>
-);
-```
-
-Use the `<Title>` component instead.
-
-## `<Admin>`, `<Layout>`, `<AppBar>` And `<UserMenu>` No Longer Accept A `logout` Or `logoutButton` Prop
-
-As we already provide a way to override the user menu displayed in the `<AppBar>`, we removed the `logoutButton` prop from the `<Admin>` component and the `logout` prop from the `<Layout>`, `<AppBar>` and `<UserMenu>` components.
-
-If you passed your own logout component through this prop, you must now provide a custom user menu:
-
-```diff
--import { Admin, Logout } from 'react-admin';
-+import { Admin, AppBar, Layout, Logout, UserMenu } from 'react-admin';
-
-const MyCustomLogout = () => <Logout className="my-class-name" />;
-
-+ const MyUserMenu = () => <UserMenu><MyCustomLogout /></UserMenu>;
-
-+ const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
-
-+ const MyLayout = () => <Layout appBar={MyAppBar} />;
-
-const MyAdmin = () => (
-    <Admin
--        logoutButton={<MyCustomLogout />}
-+        layout={<MyLayout />}
-    >
-        // ....
-    </Admin>
-)
-```
-
-## `<AppBar>` and `<UserMenu>` No Longer Inject Props
-
-When a React element was provided as the `userMenu` prop, the `<AppBar>` used to clone it and inject the `logout` prop (a React element). This is no longer the case and if you provided a custom user menu, you now have to include the logout yourself.
-
-Besides, the `<UserMenu>` used to clone its children to inject the `onClick` prop, allowing them to close the menu. It now provides a `onClose` function through a new `UserContext` accessible by calling the `useUserMenu` hook.
-
-Finally, the `<UserMenu>` no longer accepts a `logout` prop. Instead, you should pass the `<Logout>` component as one of the `<UserMenu>` children. Besides, you should not use an `<MenuItemLink>` in `<UserMenu>` as they also close the `<SideBar>` on mobile:
-
-```diff
--import { MenuItemLink, UserMenu } from 'react-admin';
-+import { Logout, UserMenu, useUserMenu } from 'react-admin';
-import { Link } from 'react-router-dom';
-+import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import SettingsIcon from '@mui/icons-material/Settings';
-
--const ConfigurationMenu = (props) => {
-// It's important to pass the ref to allow MUI to manage the keyboard navigation
-+const ConfigurationMenu = forwardRef((props, ref) => {
-+   const { onClose } = useUserMenu();
-    return (
--       <MenuItemLink
-+       <MenuItem
-            // It's important to pass the props to allow MUI to manage the keyboard navigation
-            {...props}
-            component={Link}
-            to="/configuration"
--            onClick={props.onClick}
-+            onClick={onClose}
-        >
-            <ListItemIcon>
-                <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText>
-                Configuration
-            </ListItemText>
--       </MenuItemLink>
-+       </MenuItem>
-    );
-});
-
--const CustomUserMenu = (props) => (
-+const CustomUserMenu = () => (
--    <UserMenu {...props}>
-+    <UserMenu>
-        <ConfigurationMenu />
-+       <Logout />
-    </UserMenu>
-);
-```
-
-## `<MenuItemLink>` Automatically Translates `primaryText`
-
-You can pass a translation key directly as the `primaryText` prop for `<MenuItemLink>`.
-
-```diff
-const MyMenuItem = forwardRef((props, ref) => {
--    const translate = useTranslate();
-    return (
-        <MenuItemLink
-            ref={ref}
-            {...props}
-            to="/configuration"
--            primaryText={translate('pos.configuration')}
-+            primaryText="pos.configuration"
-            leftIcon={<SettingsIcon />}
-        />
-    )
-});
-```
-
-## No More Props Injection In `<SimpleForm>`, `<TabbedForm>` and `<FilterForm>`
-
-The form components used to clone their children, inspect their props to handle labels and inject the `margin` and `variant` props.
-
-This is no longer the case and makes custom layout easier.
-
-### `<SimpleForm>` and `<TabbedForm>` No Longer Clone Their Children
-
-This makes custom layouts easier as you don't need to worry about passing props through your intermediate components anymore:
-
-```diff
--const LineWrapper = ({ children, ...props }) => (
--    <div style="display: flex">
--        {Children.map(children, child => cloneElement(child, { ...props, ...child.props }))}
--    </div>
--)
-
 const PostCreate = () => (
     <Create>
-        <SimpleForm>
--            <LineWrapper>
-+            <div style="display: flex">
-                 <TextInput source="title" />
--            </LineWrapper>
-+            </div>
+        <SimpleForm
+-            initialValues={{ title: 'A default title' }}
++            defaultValues={{ title: 'A default title' }}
+        >
+            ...
         </SimpleForm>
     </Create>
+)
+```
+{% endraw %}
+
+We kept the `validate` function prop, which we automatically translate to a custom [`react-hook-form` `resolver`](https://react-hook-form.com/api/useform#validationResolver). So even if it's not technically a react-hook-form prop, you can still use `validate` as before.
+
+This also means you can now use [`yup`](https://github.com/jquense/yup), [`zod`](https://github.com/colinhacks/zod), [`joi`](https://github.com/sideway/joi), [superstruct](https://github.com/ianstormtaylor/superstruct), [vest](https://github.com/ealush/vest) or any [resolver](https://react-hook-form.com/api/useform#validationResolver) supported by `react-hook-form` to apply schema validation.
+
+### Validation: Form Level & Input Level Are Mutually Exclusive
+
+With `react-hook-form`, you can't have both form level validation and input level validation. This is because form level validation is meant to be used for [schema based validation](https://react-hook-form.com/api/useform#validationResolver).
+
+If you used form level validation to run complex checks for multiple input values combinations, you can use a schema library such as [yup](https://github.com/jquense/yup):
+
+```diff
+import { BooleanInput, NumberInput, SimpleForm } from 'react-admin';
++import { yupResolver } from '@hookform/resolvers/yup';
+-const validateForm = values => {
+-    if (values.isBig && values.count < 6) {
+-        return {
+-            count: 'Must be greater than 5'
+-        }
+-    }
+-
+-    if (values.count < 0) {
+-        return {
+-            count: 'Must be greater than 0'
+-        }
+-    }
+-}
++const schema = object({
++  isBig: boolean(),
++  count: number().when('isBig', {
++    is: true,
++    then: (schema) => schema.min(5),
++    otherwise: (schema) => schema.min(0),
++  }),
++});
+
+const MyForm = () => (
+    <SimpleForm
+-        validate={validateForm}
++        resolver={yupResolver(schema)}
+    >
+        <BooleanInput source="isBig" />
+        <NumberInput source="count" />
+    </SimpleForm>
 )
 ```
 
@@ -1716,572 +1751,238 @@ const myTheme = {
 }
 ```
 
-## The `addLabel` prop Has Been Removed From All Inputs and Fields
+### No More Props Injection In `<SimpleForm>`, `<TabbedForm>` and `<FilterForm>`
 
-Inputs and fields used to support an `addLabel` prop that instructed components such as the `<SimpleForm>` to decorate the input or the field with a label. This is no longer the case as inputs are now responsible for their label display and you must wrap fields inside a `<Labeled>` to add a label for them.
+The form components used to clone their children, inspect their props to handle labels and inject the `margin` and `variant` props.
 
-If you used the `addLabel` prop to hide inputs label by passing `false`, you can pass `false` to the `label` prop instead.
+This is no longer the case and makes custom layout easier.
 
-## `useListContext` No Longer Returns An `ids` Prop
 
-The `ListContext` used to return two props for the list data: `data` and `ids`. To render the list data, you had to iterate over the `ids`. 
+### `<SimpleForm>` and `<TabbedForm>` No Longer Clone Their Children
 
-Starting with react-admin v4, `useListContext` only returns a `data` prop, and it is now an array. This means you have to update all your code that relies on `ids` from a `ListContext`. Here is an example for a custom list iterator using cards:
+This makes custom layouts easier as you don't need to worry about passing props through your intermediate components anymore:
+
+```diff
+-const LineWrapper = ({ children, ...props }) => (
+-    <div style="display: flex">
+-        {Children.map(children, child => cloneElement(child, { ...props, ...child.props }))}
+-    </div>
+-)
+
+const PostCreate = () => (
+    <Create>
+        <SimpleForm>
+-            <LineWrapper>
++            <div style="display: flex">
+                 <TextInput source="title" />
+-            </LineWrapper>
++            </div>
+        </SimpleForm>
+    </Create>
+)
+```
+
+### `<SimpleFormIterator>` Does Not Accept the `TransitionProps` prop anymore
+
+Transitions were causing a lot of issues so we had to remove them for now, until we find a good solution.
 
 {% raw %}
 ```diff
-import * as React from 'react';
-import { useListContext, List, TextField, DateField, ReferenceField, EditButton } from 'react-admin';
-import { Card, CardActions, CardContent, CardHeader, Avatar } from '@mui/material';
-import PersonIcon from '@mui/icons-material/Person';
+import { ArrayInput, SimpleFormIterator, TextInput } from 'react-admin';
 
-const CommentGrid = () => {
--   const { data, ids, loading } = useListContext();
-+   const { data, isLoading } = useListContext();
--   if (loading) return null;
-+   if (isLoading) return null;
+<ArrayInput source="backlinks">
+-    <SimpleFormIterator TransitionProps={{ timeout: 400 }}>
++    <SimpleFormIterator>
+        <TextInput source="title" />
+    </SimpleFormIterator>
+</ArrayInput>
+```
+{% endraw %}
+
+### `<FormWithRedirect>` Has Been Renamed to `<Form>`
+
+The form components don't handle redirection anymore, as redirections are now handled in side effects (`<Create mutationOptions>` and `<Edit mutationOptions>`). As a consequence, the `<FormWithRedirect>` has been renamed to `<Form>`.
+
+To upgrade, replace all occurrences of `<FormWithRedirect>` with  `<Form>`.
+
+```diff
+- import { FormWithRedirect } from 'react-admin';
++ import { Form } from 'react-admin';
+
+export const MyForm = () => (
+-    <FormWithRedirect
++    <Form
+        render={() => ...}
+    />
+);
+```
+
+### `sanitizeEmptyValues` Has Been Removed
+
+React-hook-form doesn't remove empty values like react-final-fom did. Therefore, you no longer need to opt out this behavior:
+
+```diff
+export const PostEdit = () => (
+    <Edit>
+-       <SimpleForm sanitizeEmptyValues={false}>
++       <SimpleForm>
+            <TextInput source="title" />
+            <JsonInput source="body" />
+        </SimpleForm>
+    </Edit>
+);
+```
+
+If you actually need to remove empty values, you can use the `parse` prop on a per-input basis:
+
+```diff
++const convertEmptyStringToUndefined = v => v === '' ? undefined : v;
+
+-<TextInput source="title" />
++<TextInput source="title" parse={convertEmptyStringToUndefined} />
+```
+
+Or use the `transform` prop on the `<Create>`, `<Edit>`, or `<SaveButton>` components. 
+
+### `<FormWithRedirect>` Render Function Arguments Have Changed
+
+`<FormWithRedirect>` used to call its child function with an object containing parts of the `final-form` form state (`valid`, `invalid`, `pristine`, `dirty`). It now only passes the `handleSubmit` function, which must be passed down to the `onSubmit` prop of the underlying form. If you need to access the form state, call [the react-hook-form `useFormState` hook](https://react-hook-form.com/api/useformstate):
+
+```diff
+import { FormWithRedirect } from 'react-admin';
++ import { useFormState } from 'react-hook-form';
+
+const MyCustomForm = () => {
     return (
-        <div style={{ margin: '1em' }}>
--       {ids.map(id =>
-+       {data.map(record =>
--           <Card key={id} style={cardStyle}>
-+           <Card key={record.id} style={cardStyle}>
-                <CardHeader
--                   title={<TextField record={data[id]} source="author.name" />}
-+                   title={<TextField record={record} source="author.name" />}
--                   subheader={<DateField record={data[id]} source="created_at" />}
-+                   subheader={<DateField record={record} source="created_at" />}
-                    avatar={<Avatar icon={<PersonIcon />} />}
-                />
-                <CardContent>
--                   <TextField record={data[id]} source="body" />
-+                   <TextField record={record} source="body" />
-                </CardContent>
-                <CardActions style={{ textAlign: 'right' }}>
--                   <EditButton resource="posts" record={data[id]} />
-+                   <EditButton resource="posts" record={record} />
-                </CardActions>
-            </Card>
-        )}
-        </div>
+-        <FormWithRedirect
++        <Form
+-            render={({ valid, dirty, handleSubmit }) => (
++            render={({ handleSubmit }) => (
+                <form onSubmit={handleSubmit}>
+                    ...
+-                    <SubmitButton disabled={!dirty || !valid}>Save</SubmitButton>
++                    <SubmitButton>Save</SubmitButton>
+                </form>
+            )}
+        />
+    );
+};
+
+-const SubmitButton = ({ disabled, ...props }) => {
++const SubmitButton = (props) => {
++    const { isDirty, isValid } = useFormState();
+    return (
+-        <button disabled={disabled} {...props} />
++        <button disabled={!isDirty || !isValid} {...props} />
+    );
+}
+```
+
+### `useFormGroup` Hook Returned State Has Changed
+
+The `useFormGroup` hook used to returned the form group state props (`dirty`, `invalid`, `pristine`, `touched`, `valid` and `errors`). They don't exist in `react-hook-form` so now it will return `isDirty`, `isValid`, `isTouched` and `errors`:
+
+```diff
+const AccordionSectionTitle = ({ children, name }) => {
+    const formGroupState = useFormGroup(name);
+
+    return (
+-      <Typography color={formGroupState.invalid && formGroupState.dirty ? 'error' : 'inherit'}>
++      <Typography color={!formGroupState.isValid && formGroupState.isDirty ? 'error' : 'inherit'}>
+          {children}
+      </Typography>
+    );
+}
+```
+
+### `<Toolbar>` Props Have Changed
+
+The `<Toolbar>` component used to receive the form state props (`dirty`, `invalid`, `pristine` and `valid`). They don't exist in `react-hook-form` and you can get the form state with its `useFormState` hook:
+
+```diff
+import Toolbar from '@mui/material/Toolbar';
+import { SaveButton, ToolbarProps } from 'react-admin';
++import { useFormState } from 'react-hook-form';
+
+const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
+-    const { invalid, resource, saving } = props;
++    const { resource, saving } = props;
++    const { isValid } = useFormState();
+
+    return (
+        <Toolbar>
+            <SaveButton
+-               invalid={invalid}
++               invalid={!isValid}
+                saving={saving}
+            />
+        </Toolbar>
     );
 };
 ```
-{% endraw %}
 
-## `currentSort` Renamed To `sort`
+### `<Toolbar>`'s `alwaysEnableSaveButton` Prop Has Been Removed
 
-If one of your components displays the current sort order, it probably uses the injected `currentSort` prop (or reads it from the `ListContext`). This prop has been renamed to `sort` in v4.
-
-Upgrade your code by replacing `currentSort` with `sort`:
-
-{% raw %}
-```diff
-import { useListContext } from 'react-admin';
-
-const BookListIterator = () => {
--    const { data, loading, currentSort } = useListContext();
-+    const { data, isLoading, sort } = useListContext();
-
-    if (loading) return <Loading />;
-    if (data.length === 0) return <p>No data</p>;
-
-    return (<>
--       <div>Books sorted by {currentSort.field}</div>
-+       <div>Books sorted by {sort.field}</div>
-        <ul>
-            {data.map(book =>
-                <li key={book.id}>{book.title}</li>
-            )}
-        </ul>
-    </>);
-};
-```
-{% endraw %}
-
-The same happens for `<Datagrid>`: when used in standalone, it used to accept a `currentSort` prop, but now it only accepts a `sort` prop.
-
-{% raw %}
-```diff
--<Datagrid data={data} currentSort={{ field: 'id', order: 'DESC' }}>
-+<Datagrid data={data} sort={{ field: 'id', order: 'DESC' }}>
-    <TextField source="id" />
-    <TextField source="title" />
-    <TextField source="author" />
-    <TextField source="year" />
-</Datagrid>
-```
-{% raw %}
-
-## `setSort()` Signature Changed
-
-Some react-admin components have access to a `setSort()` callback to sort the current list of items. This callback is also present in the `ListContext`. Its signature has changed:
+This prop has been replaced by `<SaveButton>`'s `alwaysEnable` with the same logic.
 
 ```diff
--setSort(field: string, order: 'ASC' | 'DESC');
-+setSort({ field: string, order: 'ASC' | 'DESC' });
+import { Toolbar, SaveButton } from 'react-admin';
+
+const EditToolbar = props => (
+-    <Toolbar {...props} alwaysEnableSaveButton />
++    <Toolbar {...props}>
++        <SaveButton alwaysEnable />
++    </Toolbar>
+);
 ```
 
-This impacts your code if you built a custom sort component:
+### `submitOnEnter` Prop Has Been Removed
 
+The following components no longer accept this prop:
+
+- `<SimpleForm>`
+- `<TabbedForm>`
+- `<Toolbar>`
+- `<SaveButton>`
+
+By default, `<SimpleForm>` and `<TabbedForm>` submit when the user presses `Enter`. To disable this behavior, you must now turn the `<SaveButton>` (which renders as a `<input type="submit" />` by default) into an `<input type="button">` element, by setting the `type` prop to "button".
+
+If you didn't have a custom form toolbar, you'll have to create one to set the `<SaveButton type="button" />` and prevent submission on enter. 
+ 
 ```diff
-const SortButton = () => {
-    const { sort, setSort } = useListContext();
-    const handleChangeSort = (event) => {
-        const field = event.currentTarget.dataset.sort;
--       setSort(
--           field,
--           field === sort.field ? inverseOrder(sort.order) : 'ASC',
--       });
-+       setSort({
-+           field,
-+           order: field === sort.field ? inverseOrder(sort.order) : 'ASC',
-+       });
-        setAnchorEl(null);
-    };
+import { Toolbar, SimpleForm, Edit, TextInput, SaveButton, DeleteButton } from 'react-admin';
 
-    // ...
-};
-```
++const MyToolbar = props => (
++   <Toolbar {...props}> 
++       <SaveButton type="button" />
++       <DeleteButton />
++   </Toolbar>
++);
 
-## Removed Deprecated Elements
-
-- Removed `<BulkDeleteAction>` (use `<BulkDeleteButton>` instead)
-- Removed `<ReferenceFieldController>` (use `useReferenceFieldController` instead)
-- Removed `<ReferenceArrayFieldController>` (use `useReferenceArrayFieldController` instead)
-- Removed `<ReferenceManyFieldController>` (use `useReferenceManyFieldController` instead)
-- Removed `<ReferenceInputController>` (use `useReferenceInputController` instead)
-- Removed `<ReferenceArrayInputController>` (use `useReferenceArrayInputController` instead)
-- Removed declarative side effects in dataProvider hooks (e.g. `{ onSuccess: { refresh: true } }`). Use function side effects instead (e.g. `{ onSuccess: () => { refresh(); } }`)
-- Removed `<CardActions>` (use `<TopToolbar>` instead)
-
-## Removed Deprecated Props
-
-- Removed `<ReferenceField linkType>` prop (use `<ReferenceField link>` instead)
-
-## Removed Deprecated HOCs
-
-- Removed `withTranslate` HOC (use `useTranslate` hook)
-- Removed `withDataProvider` HOC (use `useDataProvider` hook)
-
-## Removed the undoable prop in Favor of mutationMode
-
-We removed the `undoable` prop as we introduced the `mutationMode` in v3. This impact the following hooks and components:
-
-- `useDeleteWithConfirmController`
-- `useEditController`
-- `useDataProvider`
-- `useMutation`
-
-- `BulkDeleteButton`
-- `BulkDeleteWithConfirmButton`
-- `DeleteButton`
-- `DeleteWithConfirmButton`
-- `Edit`
-
-Wherever you were using `undoable`, replace it with `mutationMode`:
-
-```diff
-const {
-    open,
-    loading,
-    handleDialogOpen,
-    handleDialogClose,
-    handleDelete,
-} = useDeleteWithConfirmController({
-    resource,
-    record,
-    redirect,
-    onClick,
--    undoable: true
-+    mutationMode: 'undoable'
-});
-```
-
-Or in a component:
-```diff
-export const PostEdit = (props) => (
--    <Edit {...props} undoable>
-+    <Edit {...props} mutationMode="undoable">
-        <SimpleForm>
+export const PostEdit = () => (
+    <Edit>
+-       <SimpleForm submitOnEnter>
++       <SimpleForm toolbar={<MyToolbar/>}>
             <TextInput source="title" />
         </SimpleForm>
     </Edit>
 );
 ```
 
-## The `record` Prop Is No Longer Injected
-
-The List and Show components that took Field as children (e.g. `<Datagrid>`, `<SimpleShowLayout>`) used to clone these children a and to inject the current `record` as prop. This is no longer the case, and Field components have to "pull" the record using `useRecordContext` instead. 
-
-All the react-admin Field components have been updated to use the `useRecordContext` hook. But you will need to update your custom fields:
+The `<Toolbar>` component used to receive the `width` prop also, that allowed to display the mobile or desktop version depending on its value. This is handle internally in version 4 and you can safely remove this prop.
 
 ```diff
-+import { useRecordContext } from 'react-admin';
+import { Toolbar } from 'react-admin';
 
--const MyField = ({ record }) => {
-+const MyField = () => {
-+   const record = useRecordContext();
-    return <div>{record ? record.title : ''}</div>;
-}
-
-const PostList = () => (
-    <List>
-        <Datagrid>
-            <TextField source="author" />
-            <MyField />
-        </Datagrid>
-    </List>
-);
-```
-
-The same goes for other components that used to receive the `record` prop, like e.g. aside components:
-
-```diff
--const Aside = ({ record }) => (
-+const Aside = () => {
-+   const record = useRecordContext();
+const MyToolbar = () => {
     return (
-        <div>
-            <Typography variant="h6">Post details</Typography>
-            {record && (
-                <Typography variant="body2">
-                    Creation date: {record.createdAt}
-                </Typography>
-            )}
-        </div>
+-       <Toolbar width="xs"/>
++       <Toolbar />
     );
 };
 ```
 
-**Tip**: If you're using TypeScript, you can specify the type of the record returned by the hook:
-
-```tsx
-const record = useRecordContext<Customer>();
-// record is of type Customer
-```
-
-## Removed The `basePath` Prop
-
-Many components received, or passed down, a prop named `basePath`. This was necessary to build internal routes that worked when react-admin was used under a sub-path. 
-
-React-admin v4 now uses a context to keep the app basePath, so the `basePath` prop is no longer necessary. Every component that received it doesn't need it anymore. You can safely remove it from your code. 
-
-```diff
--const PostEditActions = ({ basePath }) => (
-+const PostEditActions = () => (
-    <TopToolbar>
--       <ShowButton basePath={basePath} />
-+       <ShowButton />
-        {/* Add your custom actions */}
-        <Button color="primary" onClick={customAction}>Custom Action</Button>
-    </TopToolbar>
-);
-```
-
-Keeping the `basePath` prop may result in unrecognized DOM props warnings, but your app will still work flawlessly even if you don't remove them. If you're using TypeScript, your code will not compile unless you remove all the `basePath` props.
-
-When a function (not a component) received the `basePath` as argument, it now receives the `resource` instead. For instance, the `<Datagrid rowClick>` prop used to accept a function:
-
-```diff
--   <Datagrid rowClick={(id, basePath, record) => {/* ... */}}>
-+   <Datagrid rowClick={(id, resource, record) => {/* ... */}}>
-```
-
-In most cases, the injected `basePath` was the `resource` with a leading slash (e.g. basename: `/posts`, resource: `posts`).
-
-
-## `addLabel` Prop No Longer Considered For Show Labelling 
-
-`<SimpleShowLayout>` and `<TabbedShowLayout>` used to look for an `addLabel` prop to decide whether they needed to add a label or not. this relied on `defaultProps`, which will soon be removed from React. 
-
-The Show layout components now render a label for their children as soon as they have a `source` or a `label` prop. If you don't want a field to have a label in the show view, pass the `label={false}` prop.
-
-```jsx
-const PostShow = () => (
-    <Show>
-        <SimpleShowLayout>
-            {/* this field will have a Label */}
-            <TextField source="title" />
-            {/* this one will also have a Label */}
-            <TextField label="Author name" source="author" />
-            {/* this field will not */}
-            <TextField label={false} source="title" />
-        </SimpleShowLayout>
-    </Show>
-);
-```
-
-As the `addLabel` prop is now ignored in fields and inputs, you can remove it from your custom fields and inputs:
-
-```diff
-const MyCustomField = () => (
-    ... 
-);
--MyCustomField.defaultProps = {
--    addLabel: true
--};
-```
-
-## Removed `loading` and `loaded` Data Provider State Variables
-
-The dataProvider hooks (`useGetOne`, etc.) return the request state. The `loading` and `loaded` state variables were changed to `isLoading` and `isFetching` respectively. The meaning has changed, too:
-
-- `loading` is now `isFetching`
-- `loaded` is now `!isLoading`
-
-```diff
-const BookDetail = ({ id }) => {
--   const { data, error, loaded } = useGetOne('books', id);
-+   const { data, error, isLoading } = useGetOne('books', { id });
--   if (!loaded) {
-+   if (isLoading) {
-        return <Loading />;
-    }
-    if (error) {
-        return <Error error={error} />;
-    }
-    if (!data) {
-        return null;
-    }
-    return (
-        <div>
-            <h1>{data.book.title}</h1>
-            <p>{data.book.author.name}</p>
-        </div>
-    );
-};
-```
-
-In general, you should use `isLoading`. It's false as long as the data has never been loaded (whether from the dataProvider or from the cache).
-
-The new props are actually returned by react-query's `useQuery` hook. Check [their documentation](https://react-query.tanstack.com/reference/useQuery) for more information.
-
-## I18n
-
-### Changes In Translation Messages
-
-The `ra.navigation.prev` message was renamed to `ra.navigation.previous`. Update your translation files accordingly.
-
-```diff
-const messages = {
-    ra: {
-        navigation: {
-            no_results: 'No results found',
-            no_more_results:
-                'The page number %{page} is out of boundaries. Try the previous page.',
-            page_out_of_boundaries: 'Page number %{page} out of boundaries',
-            page_out_from_end: 'Cannot go after last page',
-            page_out_from_begin: 'Cannot go before page 1',
-            page_range_info: '%{offsetBegin}-%{offsetEnd} of %{total}',
-            partial_page_range_info:
-                '%{offsetBegin}-%{offsetEnd} of more than %{offsetEnd}',
-            current_page: 'Page %{page}',
-            page: 'Go to page %{page}',
-            next: 'Go to next page',
--           prev: 'Go to previous page',
-+           previous: 'Go to previous page',
-            page_rows_per_page: 'Rows per page:',
-            skip_nav: 'Skip to content',
-        },
-        // ...
-```
-
-### Renamed `<TranslationProvider>` to `<I18nContextProvider>`
-
-If you created a custom app (without the `<Admin>` component), you may have used the `<TranslationProvider>` component. It has been renamed to `<I18nContextProvider>`, and accepts an `i18nProvider`.
-
-```diff
--<TranslationProvider locale="en" i18nProvider={i18nProvider}>
-+<I18nContextProvider value={i18nProvider}>
-   ...
--</TranslationProvider>
-+</I18nContextProvider>
-```
-
-## Unit Tests for Data Provider Dependent Components Need A QueryClientContext
-
-If you were using components dependent on the dataProvider hooks in isolation (e.g. in unit or integration tests), you now need to wrap them inside a `<QueryClientContext>` component, to let the access react-query's `QueryClient` instance.
-
-```diff
-+import { QueryClientProvider, QueryClient } from 'react-query';
-
-// this component relies on dataProvider hooks
-const BookDetail = ({ id }) => {
-    const { data, error, isLoading } = useGetOne('books', { id });
-    if (isLoading) {
-        return <Loading />;
-    }
-    if (error) {
-        return <Error error={error} />;
-    }
-    if (!data) {
-        return null;
-    }
-    return (
-        <div>
-            <h1>{data.book.title}</h1>
-            <p>{data.book.author.name}</p>
-        </div>
-    );
-};
-
-test('MyComponent', () => {
-    render(
-+       <QueryClientProvider client={new QueryClient()}>
-            <BookDetail id={1} />
-+       </QueryClientProvider>
-    );
-    // ...
-});
-```
-
-## AutocompleteInput and AutocompleteArrayInput Now Use MUI Autocomplete
-
-We migrated both the `AutocompleteInput` and `AutocompleteArrayInput` components so that they leverage MUI [`<Autocomplete>`](https://mui.com/components/autocomplete/). If you relied on [Downshift](https://www.downshift-js.com/) options, you'll have to update your component.
-
-Besides, some props supported by the previous implementation aren't anymore:
-- `allowDuplicates`: This is not supported by MUI Autocomplete.
-- `clearAlwaysVisible`: the clear button is now always visible, either while hovering the input or when it has focus. You can hide it using the `<Autocomplete>` `disableClearable` prop though.
-- `resettable`: Removed for the same reason as `clearAlwaysVisible`
-
-## `useAuthenticated` Signature has Changed
-
-`useAuthenticated` uses to accept only the parameters passed to the `authProvider.checkAuth` function. It now accepts an option object with two properties:
-- `enabled`: whether it should check for an authenticated user
-- `params`: the parameters to pass to `checkAuth`
-
-```diff
-- useAuthenticated('permissions.posts.can_create');
-+ useAuthenticated({ params: 'permissions.posts.can_create' })
-```
-
-## `useGetMainList` Was Removed
-
-`useGetMainList` was a modified version of `useGetList` designed to keep previous data on screen upon navigation. As [this is now supported natively by react-query](https://react-query.tanstack.com/guides/paginated-queries#better-paginated-queries-with-keeppreviousdata), this hook is no longer necessary and has been removed. Use `useGetList()` instead.
-
-## `useUnselectAll` Syntax Changed
-
-You must now pass the resource name when calling the hook:
-
-```diff
-import { useUnselectAll } from 'react-admin';
-
-const UnselectAllButton = () => {
--   const unselectAll = useUnselectAll();
-+   const unselectAll = useUnselectAll('posts');
-    const handleClick = () => {
--       unselectAll('posts');
-+       unselectAll();
-    }
-    return <button onClick={handleClick}>Unselect all</button>;
-};
-```
-
-## Renamed `useToggleSidebar` to `useSidebarState`
-
-The `useToggleSidebar` hook has been renamed to `useSidebarState`. The second value returned by the hook is no longer a toggle function, but a value updater. 
-
-```diff
-const MyButton = () => {
--   const [open, toggleSidebar] = useToggleSidebar();
-+   const [open, setOpen] = useSidebarState();
-    return (
-        <Button
-            color="inherit"
--           onClick={() => toggleSidebar()}
-+           onClick={() => setOpen(!open)}
-        >
-            {open ? 'Open' : 'Close'}
-        </Button>
-    );
-};
-```
-
-## The MUI `<ThemeProvider>` is not set by `<Layout>` anymore
-
-The `<ThemeProvider>` is now set by the `<AdminContext>` component which is rendered by `<Admin>`.
-
-This shouldn't impact your code unless you had a completely custom `<Layout>` component. If you do but still uses the default `<Admin>` component, you can safely remove the `ThemeProvider` from your `Layout`:
-
-```diff
--import { Container, ThemeProvider } from '@mui/material';
-+import { Container } from '@mui/material';
-import { Notification, Error } from 'react-admin';
-import Header from './Header';
-
-const Layout = (props) => {
--    const { children, theme } = props;
-+    const { children } = props;
-    return (
--        <ThemeProvider theme={theme}>
-+        <>
-            <Header />
-            <Container>
-                <main id="main-content">
-                    {children}
-                </main>
-            </Container>
-            <Notification />
--        </ThemeProvider>
-+        </>
-    );
-};
-```
-
-## The `<Notification>` Component Is Included By `<Admin>` Rather Than `<Layout>`
-
-If you customized the `<Notification>` component (e.g. to tweak the delay after which a notification disappears), you passed your custom notification component to the `<Layout>` component. The `<Notification>` is now included by the `<Admin>` component, which facilitates custom layouts and login screens. As a consequence, you'll need to move your custom notification component to the `<Admin>` component.
-
-```diff
-// in src/MyNotification.js
-import { Notification } from 'react-admin';
-
-export const MyNotification = props => (
-    <Notification {...props} autoHideDuration={5000} />
-);
-
-// in src/MyLayout.js
--import { Layout } from 'react-admin';
--import { MyNotification } from './MyNotification';
-
--export const MyLayout = props => (
--   <Layout {...props} notification={MyNotification} />
--);
-
-// in src/App.js
--import { MyLayout } from './MyLayout';
-+import { MyNotification } from './MyNotification';
-import dataProvider from './dataProvider';
-
-const App = () => (
--   <Admin layout={MyLayout} dataProvider={dataProvider}>
-+   <Admin notification={MyNotification} dataProvider={dataProvider}>
-        // ...
-    </Admin>
-);
-```
-
-If you had a custom Layout and/or Login component, you no longer need to include the `<Notification>` component.
-
-```diff
--import { Notification } from 'react-admin';
-
-export const MyLayout = ({
-    children,
-    dashboard,
-    logout,
-    title,
-}) => {
-    // ...
-    return (<>
-        // ...
--       <Notification />
-    </>);
-};
-```
-
-## Form Submissions and Side Effects are Easier
+## Custom Forms
 
 We previously had a complex solution for having multiple submit buttons: a `SaveContext` providing side effects modifiers and refs to the current ones. However, this was redundant and confusing as the `save` function provided by our mutation hooks also accept side effect override at call time.
 
@@ -2290,6 +1991,88 @@ We also supported a redirect prop both on the form component and on the `<SaveBu
 Besides, our solution prevented the native browser submit on enter feature and this was an accessibility issue for some users such as Japanese people.
 
 The new solution leverage the fact that we already have the `save` function available through context (`useSaveContext`). The following  sections explain in details the necessary changes and how to upgrade if needed.
+
+### Common Patterns To Access Form State And Values Have Changed
+
+If you used to rely on `react-final-form` hooks and components such as `useForm`, `useFormState` or `<FormSpy>`, you must replace them with their `react-hook-form` equivalent.
+
+For instance, if you used `useFormState` in a component to show something depending on another form value, use `useWatch` instead:
+
+```diff
+-import { useFormState } from 'react-final-form';
++import { useWatch } from 'react-hook-form';
+
+const CityInput = props => {
+-    const { values } = useFormState();
++    const country = useWatch({ name: 'country' });
+    return (
+        <SelectInput
+-            choices={values.country ? toChoices(cities[values.country]) : []}
++            choices={country ? toChoices(cities[country]) : []}
+            {...props}
+        />
+    );
+};
+```
+
+If you used `<FormSpy>`:
+
+{% raw %}
+```diff
+-import { FormSpy } from 'react-final-form';
++import { useWatch } from 'react-hook-form';
+
+const CityInput = props => {
++    const country = useWatch({ name: 'country' });
+    return (
+-        <FormSpy subscription={{ values: true }}>
+-            {({ values }) => (
+-                <SelectInput
+-                    choices={values.country ? toChoices(cities[values.country]) : []}
+-                    {...props}
+-                />
+-            )}
+-        </FormSpy>
++        <SelectInput
++             choices={country ? toChoices(cities[country]) : []}
++             {...props}
++        />
+    );
+};
+```
+{% endraw %}
+
+If you had a component setting a form value imperatively via `useForm`, you should use `useFormContext`:
+
+```diff
+-import { useForm } from 'react-final-form';
++import { useFormContext } from 'react-hook-form';
+
+const ClearCountry = () => {
+-    const { change } = useForm();
++    const { setValue } = useFormContext();
+
+    const handleClick = () => {
+-        change('country', '');
++        setValue('country', '');
+    };
+
+    return <button onClick={handleClick}>Clear country</button>
+}
+```
+
+If you called `useForm` to access the form API, you should now call `useFormContext`:
+
+```diff
+-import { useForm } from 'react-final-form';
++import { useFormContext } from 'react-hook-form';
+
+const ResetFormButton = () => {
+-    const { reset } = useForm();
++    const { reset } = useFormContext();
+    return <Button onClick={() => reset()}>Reset</Button>
+}
+```
 
 ### `handleSubmitWithRedirect` No Longer Exist
 
@@ -2455,9 +2238,9 @@ const CustomForm = ({ save, ...props }) => {
 };
 ```
 
-### The `redirect` prop Has Been Removed From `FormWithRedirect`, `SimpleForm`, `TabbedForm` and `SaveButton`
+### The `redirect` prop Has Been Removed From Form Components
 
-The `FormWithRedirect`, `SimpleForm`, `TabbedForm` and `SaveButton` don't have a `redirect` prop anymore.
+The `<FormWithRedirect>`, `<SimpleForm>`, `<TabbedForm>` and `<SaveButton>` don't have a `redirect` prop anymore.
 
 If you had the `redirect` prop set on the form component, move it to `Create` or `Edit` component:
 
@@ -2496,7 +2279,7 @@ const PostCreateToolbar = props => {
 };
 ```
 
-### The Form Components `save` Prop Has Been Renamed to `onSubmit`:
+### The Form Components `save` Prop Has Been Renamed to `onSubmit`
 
 This change only matters to you if you used the form components outside of `<Create>` or `<Edit>`.
 
@@ -2515,97 +2298,145 @@ const MyComponent = () => {
 };
 ```
 
-## TypeScript: `Record` Was Renamed To `RaRecord`
+## Fields
 
-Data Provider methods used to return records with a generic `Record` type, unless you were passing an explicit type. The `Record` type conflicted with TypeScript's native `Record` type and sometimes confused IDEs.
+### The `record` Prop Is No Longer Injected
 
-We've renamed that type to `RaRecord` to avoid any confusion.
+The List and Show components that took Field as children (e.g. `<Datagrid>`, `<SimpleShowLayout>`) used to clone these children a and to inject the current `record` as prop. This is no longer the case, and Field components have to "pull" the record using `useRecordContext` instead. 
 
-If you've declared custom Record types, you'll need to upgrade your code as follows:
+All the react-admin Field components have been updated to use the `useRecordContext` hook. But you will need to update your custom fields:
 
 ```diff
--import { Record } from 'react-admin';
-+import { RaRecord } from 'react-admin';
++import { useRecordContext } from 'react-admin';
 
--export interface Customer extends Record {
-+export interface Customer extends RaRecord {
-    id: string;
-    name: string;
-    email: string;
+-const MyField = ({ record }) => {
++const MyField = () => {
++   const record = useRecordContext();
+    return <div>{record ? record.title : ''}</div>;
 }
-```
 
-## react-final-form Has Been Replaced By react-hook-form
-
-### `<FormWithRedirect>` Has Been Renamed to `<Form>`
-
-The form components don't handle redirection anymore, as redirections are now handled in side effects (`<Create mutationOptions>` and `<Edit mutationOptions>`). As a consequence, the `<FormWithRedirect>` has been renamed to `<Form>`.
-
-To upgrade, replace all occurrences of `<FormWithRedirect>` with  `<Form>`.
-
-```diff
-- import { FormWithRedirect } from 'react-admin';
-+ import { Form } from 'react-admin';
-
-export const MyForm = () => (
--    <FormWithRedirect
-+    <Form
-        render={() => ...}
-    />
+const PostList = () => (
+    <List>
+        <Datagrid>
+            <TextField source="author" />
+            <MyField />
+        </Datagrid>
+    </List>
 );
 ```
 
-### Form Props Have Changed
+The same goes for other components that used to receive the `record` prop, like e.g. aside components:
 
-`<FormWithRedirect>` used to accept [`react-final-form` `<Form>` props](https://final-form.org/docs/react-final-form/types/FormProps). It now accepts [`react-hook-form` `useForm` props](https://react-hook-form.com/api/useform). This also affects the other form components (`<SimpleForm>`, `<TabbedForm>`, etc.)
+```diff
+-const Aside = ({ record }) => (
++const Aside = () => {
++   const record = useRecordContext();
+    return (
+        <div>
+            <Typography variant="h6">Post details</Typography>
+            {record && (
+                <Typography variant="body2">
+                    Creation date: {record.createdAt}
+                </Typography>
+            )}
+        </div>
+    );
+};
+```
 
-The most commonly used prop is probably `initialValues`, which is now named `defaultValues`:
+**Tip**: If you're using TypeScript, you can specify the type of the record returned by the hook:
 
-{% raw %}
+```tsx
+const record = useRecordContext<Customer>();
+// record is of type Customer
+```
+
+### No More Props Injection In `<ReferenceField>`
+
+`<ReferenceField>` creates a `RecordContext` for the reference record, and this allows using any of react-admin's Field components. It also used to pass many props to the underlying component (including the current `record`), but this is no longer the case. If you need to access the `record` in a child of `<ReferenceField>`, you need to use the `useRecordContext` hook instead.
+
+```diff
+const PostShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <TextField source="title" />
+            <ReferenceField source="author_id" reference="users">
+                <NameField />
+            </ReferenceField>
+        </SimpleShowLayout>
+    </Show>
+);
+
+-const NameField = ({ record }) => {
++const NameField = () => {
++   const { record } = useRecordContext();
+    return <span>{record?.name}</span>;
+};
+```
+
+### `addLabel` Prop No Longer Considered For Show Labelling 
+
+`<SimpleShowLayout>` and `<TabbedShowLayout>` used to look for an `addLabel` prop to decide whether they needed to add a label or not. this relied on `defaultProps`, which will soon be removed from React. 
+
+The Show layout components now render a label for their children as soon as they have a `source` or a `label` prop. If you don't want a field to have a label in the show view, pass the `label={false}` prop.
+
+```jsx
+const PostShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            {/* this field will have a Label */}
+            <TextField source="title" />
+            {/* this one will also have a Label */}
+            <TextField label="Author name" source="author" />
+            {/* this field will not */}
+            <TextField label={false} source="title" />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+As the `addLabel` prop is now ignored in fields and inputs, you can remove it from your custom fields and inputs:
+
+```diff
+const MyCustomField = () => (
+    ... 
+);
+-MyCustomField.defaultProps = {
+-    addLabel: true
+-};
+```
+
+### `<ArrayField>` Does Not Accept a `fieldKey` Prop Anymore
+
+The `ArrayField` component used to accept a `fieldKey` prop, allowing to specify a record property for use as a React key, enabling some performance improvements. Moving to react-query has made this workaround unnecessary and you can safely remove this prop:
+
+```diff
+-<ArrayField source="backlinks" fieldKey="uuid">
++<ArrayField source="backlinks">
+    <Datagrid>
+        <DateField source="date" />
+        <UrlField source="url" />
+    </Datagrid>
+</ArrayField>
+```
+
+
+## Inputs
+
+### `initalValue` and `defaultValue` Have Been Merged Into `defaultValue`
+
+All React Admin inputs used to accept both a `initialValue` and a `defaultValue` prop and they had different meanings in `react-final-form`. With `react-hook-form` there's only `defaultValue`:
+
 ```diff
 const PostCreate = () => (
     <Create>
-        <SimpleForm
--            initialValues={{ title: 'A default title' }}
-+            defaultValues={{ title: 'A default title' }}
-        >
-            ...
+        <SimpleForm>
+-            <TextInput source="title" initialValue="A default">
++            <TextInput source="title" defaultValue="A default">
         </SimpleForm>
     </Create>
 )
 ```
-{% endraw %}
-
-We kept the `validate` function prop, which we automatically translate to a custom [`react-hook-form` `resolver`](https://react-hook-form.com/api/useform#validationResolver). So even if it's not technically a react-hook-form prop, you can still use `validate` as before.
-
-This also means you can now use [`yup`](https://github.com/jquense/yup), [`zod`](https://github.com/colinhacks/zod), [`joi`](https://github.com/sideway/joi), [superstruct](https://github.com/ianstormtaylor/superstruct), [vest](https://github.com/ealush/vest) or any [resolver](https://react-hook-form.com/api/useform#validationResolver) supported by `react-hook-form` to apply schema validation.
-
-### `sanitizeEmptyValues` Has Been Removed
-
-React-hook-form doesn't remove empty values like react-final-fom did. Therefore, you no longer need to opt out this behavior:
-
-```diff
-export const PostEdit = () => (
-    <Edit>
--       <SimpleForm sanitizeEmptyValues={false}>
-+       <SimpleForm>
-            <TextInput source="title" />
-            <JsonInput source="body" />
-        </SimpleForm>
-    </Edit>
-);
-```
-
-If you actually need to remove empty values, you can use the `parse` prop on a per-input basis:
-
-```diff
-+const convertEmptyStringToUndefined = v => v === '' ? undefined : v;
-
--<TextInput source="title" />
-+<TextInput source="title" parse={convertEmptyStringToUndefined} />
-```
-
-Or use the `transform` prop on the `<Create>`, `<Edit>`, or `<SaveButton>` components. 
 
 ### Custom Form Inputs Must Use `useController` instead of `<Field>`
 
@@ -2630,159 +2461,6 @@ const LatLngInput = () => {
     );
 );
 export default LatLngInput;
-```
-
-### `<FormWithRedirect>` Render Function Arguments Have Changed
-
-`<FormWithRedirect>` used to call its child function with an object containing parts of the `final-form` form state (`valid`, `invalid`, `pristine`, `dirty`). It now only passes the `handleSubmit` function, which must be passed down to the `onSubmit` prop of the underlying form. If you need to access the form state, call [the react-hook-form `useFormState` hook](https://react-hook-form.com/api/useformstate):
-
-```diff
-import { FormWithRedirect } from 'react-admin';
-+ import { useFormState } from 'react-hook-form';
-
-const MyCustomForm = () => {
-    return (
--        <FormWithRedirect
-+        <Form
--            render={({ valid, dirty, handleSubmit }) => (
-+            render={({ handleSubmit }) => (
-                <form onSubmit={handleSubmit}>
-                    ...
--                    <SubmitButton disabled={!dirty || !valid}>Save</SubmitButton>
-+                    <SubmitButton>Save</SubmitButton>
-                </form>
-            )}
-        />
-    );
-};
-
--const SubmitButton = ({ disabled, ...props }) => {
-+const SubmitButton = (props) => {
-+    const { isDirty, isValid } = useFormState();
-    return (
--        <button disabled={disabled} {...props} />
-+        <button disabled={!isDirty || !isValid} {...props} />
-    );
-}
-```
-
-### `useFormGroup` Hook Returned State Has Changed
-
-The `useFormGroup` hook used to returned the form group state props (`dirty`, `invalid`, `pristine`, `touched`, `valid` and `errors`). They don't exist in `react-hook-form` so now it will return `isDirty`, `isValid`, `isTouched` and `errors`:
-
-```diff
-const AccordionSectionTitle = ({ children, name }) => {
-    const formGroupState = useFormGroup(name);
-
-    return (
--      <Typography color={formGroupState.invalid && formGroupState.dirty ? 'error' : 'inherit'}>
-+      <Typography color={!formGroupState.isValid && formGroupState.isDirty ? 'error' : 'inherit'}>
-          {children}
-      </Typography>
-    );
-}
-```
-
-### `<Toolbar>` Props Have Changed
-
-The `<Toolbar>` component used to receive the form state props (`dirty`, `invalid`, `pristine` and `valid`). They don't exist in `react-hook-form` and you can get the form state with its `useFormState` hook:
-
-```diff
-import Toolbar from '@mui/material/Toolbar';
-import { SaveButton, ToolbarProps } from 'react-admin';
-+import { useFormState } from 'react-hook-form';
-
-const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
--    const { invalid, resource, saving } = props;
-+    const { resource, saving } = props;
-+    const { isValid } = useFormState();
-
-    return (
-        <Toolbar>
-            <SaveButton
--               invalid={invalid}
-+               invalid={!isValid}
-                saving={saving}
-            />
-        </Toolbar>
-    );
-};
-```
-
-### `<Toolbar>`'s `alwaysEnableSaveButton` Prop Has Been Removed
-
-This prop has been replaced by `<SaveButton>`'s `alwaysEnable` with the same logic.
-
-```diff
-import { Toolbar, SaveButton } from 'react-admin';
-
-const EditToolbar = props => (
--    <Toolbar {...props} alwaysEnableSaveButton />
-+    <Toolbar {...props}>
-+        <SaveButton alwaysEnable />
-+    </Toolbar>
-);
-```
-
-### `submitOnEnter` Prop Has Been Removed
-
-The following components no longer accept this prop:
-
-- `<SimpleForm>`
-- `<TabbedForm>`
-- `<Toolbar>`
-- `<SaveButton>`
-
-By default, `<SimpleForm>` and `<TabbedForm>` submit when the user presses `Enter`. To disable this behavior, you must now turn the `<SaveButton>` (which renders as a `<input type="submit" />` by default) into an `<input type="button">` element, by setting the `type` prop to "button".
-
-If you didn't have a custom form toolbar, you'll have to create one to set the `<SaveButton type="button" />` and prevent submission on enter. 
- 
-```diff
-import { Toolbar, SimpleForm, Edit, TextInput, SaveButton, DeleteButton } from 'react-admin';
-
-+const MyToolbar = props => (
-+   <Toolbar {...props}> 
-+       <SaveButton type="button" />
-+       <DeleteButton />
-+   </Toolbar>
-+);
-
-export const PostEdit = () => (
-    <Edit>
--       <SimpleForm submitOnEnter>
-+       <SimpleForm toolbar={<MyToolbar/>}>
-            <TextInput source="title" />
-        </SimpleForm>
-    </Edit>
-);
-```
-
-The `<Toolbar>` component used to receive the `width` prop also, that allowed to display the mobile or desktop version depending on its value. This is handle internally in version 4 and you can safely remove this prop.
-
-```diff
-import { Toolbar } from 'react-admin';
-
-const MyToolbar = () => {
-    return (
--       <Toolbar width="xs"/>
-+       <Toolbar />
-    );
-};
-```
-
-### `initalValue` and `defaultValue` Have Been Merged Into `defaultValue`
-
-All React Admin inputs used to accept both a `initialValue` and a `defaultValue` prop and they had different meanings in `react-final-form`. With `react-hook-form` there's only `defaultValue`:
-
-```diff
-const PostCreate = () => (
-    <Create>
-        <SimpleForm>
--            <TextInput source="title" initialValue="A default">
-+            <TextInput source="title" defaultValue="A default">
-        </SimpleForm>
-    </Create>
-)
 ```
 
 ### `useInput` Signature And Return Value Have Changed
@@ -2830,131 +2508,637 @@ const UserForm = () => (
 )
 ```
 
-### Common Patterns To Access Form State And Values Have Changed
+### The `addLabel` prop Has Been Removed From All Inputs and Fields
 
-If you used to rely on `react-final-form` hooks and components such as `useForm`, `useFormState` or `<FormSpy>`, you must replace them with their `react-hook-form` equivalent.
+Inputs and fields used to support an `addLabel` prop that instructed components such as the `<SimpleForm>` to decorate the input or the field with a label. This is no longer the case as inputs are now responsible for their label display and you must wrap fields inside a `<Labeled>` to add a label for them.
 
-For instance, if you used `useFormState` in a component to show something depending on another form value, use `useWatch` instead:
+If you used the `addLabel` prop to hide inputs label by passing `false`, you can pass `false` to the `label` prop instead.
 
-```diff
--import { useFormState } from 'react-final-form';
-+import { useWatch } from 'react-hook-form';
+### `<AutocompleteInput>` and `<AutocompleteArrayInput>` Now Use MUI Autocomplete
 
-const CityInput = props => {
--    const { values } = useFormState();
-+    const country = useWatch({ name: 'country' });
-    return (
-        <SelectInput
--            choices={values.country ? toChoices(cities[values.country]) : []}
-+            choices={country ? toChoices(cities[country]) : []}
-            {...props}
-        />
-    );
-};
-```
+We migrated both the `AutocompleteInput` and `AutocompleteArrayInput` components so that they leverage MUI [`<Autocomplete>`](https://mui.com/components/autocomplete/). If you relied on [Downshift](https://www.downshift-js.com/) options, you'll have to update your component.
 
-If you used `<FormSpy>`:
+Besides, some props supported by the previous implementation aren't anymore:
+- `allowDuplicates`: This is not supported by MUI Autocomplete.
+- `clearAlwaysVisible`: the clear button is now always visible, either while hovering the input or when it has focus. You can hide it using the `<Autocomplete>` `disableClearable` prop though.
+- `resettable`: Removed for the same reason as `clearAlwaysVisible`
 
-{% raw %}
-```diff
--import { FormSpy } from 'react-final-form';
-+import { useWatch } from 'react-hook-form';
+### Options element no longer receive a `record`
 
-const CityInput = props => {
-+    const country = useWatch({ name: 'country' });
-    return (
--        <FormSpy subscription={{ values: true }}>
--            {({ values }) => (
--                <SelectInput
--                    choices={values.country ? toChoices(cities[values.country]) : []}
--                    {...props}
--                />
--            )}
--        </FormSpy>
-+        <SelectInput
-+             choices={country ? toChoices(cities[country]) : []}
-+             {...props}
-+        />
-    );
-};
-```
-{% endraw %}
+`<AutocompleteInput>`, `<AutocompleteArrayInput>`, `<SelectInput>`, `<SelectArrayInput>`, `<CheckboxGroupInput>` and `<RadioButtonGroupInput>` no longer inject props to React elements passed as `optionText`.
 
-If you had a component setting a form value imperatively via `useForm`, you should use `useFormContext`:
+To access the record, you can use the `useRecordContext` hook.
 
 ```diff
--import { useForm } from 'react-final-form';
-+import { useFormContext } from 'react-hook-form';
+const choices = [
+   { id: 123, first_name: 'Leo', last_name: 'Tolstoi' },
+   { id: 456, first_name: 'Jane', last_name: 'Austen' },
+];
 
-const ClearCountry = () => {
--    const { change } = useForm();
-+    const { setValue } = useFormContext();
+-const FullNameField = ({ record }) => {
++const FullNameField = () => {
++    const record = useRecordContext();    
+    return <span>{record.first_name} {record.last_name}</span>;
+}
 
-    const handleClick = () => {
--        change('country', '');
-+        setValue('country', '');
-    };
-
-    return <button onClick={handleClick}>Clear country</button>
+const AuthorsInput = () => {
+    <RadioButtonGroupInput source="authors" choices={choices} optionText={<FullNameField />}/>
 }
 ```
 
-If you called `useForm` to access the form API, you should now call `useFormContext`:
+### `rich-text-input` Package Has Changed
+
+Our old `<RichTextInput>` was based on [Quill](https://quilljs.com/) but:
+- it wasn't accessible (button without labels, etc.)
+- it wasn't translatable (labels in Quill are in the CSS)
+- it wasn't using MUI components for its UI and looked off
+
+The new `<RichTextInput>` uses [TipTap](https://github.com/ueberdosis/tiptap), a UI less library to build rich text editors. It gives us the freedom to implement the UI how we want with MUI components. That solves all the above issues.
+
+If you used the `<RichTextInput>` without passing Quill options such as custom toolbars, you have nothing to do.
+
+If you customized the available buttons with the `toolbar` props, you can now use the components we provide:
 
 ```diff
--import { useForm } from 'react-final-form';
-+import { useFormContext } from 'react-hook-form';
-
-const ResetFormButton = () => {
--    const { reset } = useForm();
-+    const { reset } = useFormContext();
-    return <Button onClick={() => reset()}>Reset</Button>
-}
-```
-
-### Form Level Validation And Input Level Validation Are Mutually Exclusive
-
-With `react-hook-form`, you can't have both form level validation and input level validation. This is because form level validation is meant to be used for [schema based validation](https://react-hook-form.com/api/useform#validationResolver).
-
-If you used form level validation to run complex checks for multiple input values combinations, you can use a schema library such as [yup](https://github.com/jquense/yup):
-
-```diff
-import { BooleanInput, NumberInput, SimpleForm } from 'react-admin';
-+import { yupResolver } from '@hookform/resolvers/yup';
--const validateForm = values => {
--    if (values.isBig && values.count < 6) {
--        return {
--            count: 'Must be greater than 5'
--        }
--    }
--
--    if (values.count < 0) {
--        return {
--            count: 'Must be greater than 0'
--        }
--    }
--}
-+const schema = object({
-+  isBig: boolean(),
-+  count: number().when('isBig', {
-+    is: true,
-+    then: (schema) => schema.min(5),
-+    otherwise: (schema) => schema.min(0),
-+  }),
-+});
-
-const MyForm = () => (
-    <SimpleForm
--        validate={validateForm}
-+        resolver={yupResolver(schema)}
-    >
-        <BooleanInput source="isBig" />
-        <NumberInput source="count" />
-    </SimpleForm>
+const MyRichTextInput = (props) => (
+    <RichTextInput
+        {...props}
+-        toolbar={[ ['bold', 'italic', 'underline', 'link'] ]}
++        toolbar={
+            <RichTextInputToolbar>
+				<FormatButtons size={size} />
+				<LinkButtons size={size} />
+			</RichTextInputToolbar>
+        }
+    />
 )
 ```
 
-## `useRedirect()` No Longer Clears Forms When Called With `false`
+If you customized the Quill instance to add custom handlers, you'll have to use [TipTap](https://github.com/ueberdosis/tiptap) primitives.
+
+```diff
+import {
+	RichTextInput,
++	DefaultEditorOptions,
++	RichTextInputToolbar,
++	RichTextInputLevelSelect,
++	FormatButtons,
++	AlignmentButtons,
++	ListButtons,
++	LinkButtons,
++	QuoteButtons,
++	ClearButtons,
+} from 'ra-input-rich-text';
+
+-const configureQuill = quill => quill.getModule('toolbar').addHandler('insertSmile', function (value) {
+-    const { index, length } = this.quill.getSelection();
+-    this.quill..insertText(index + length, ':-)', 'api');
+-});
+
+const MyRichTextInput = (props) => (
+    <RichTextInput
+        {...props}
+-        configureQuill={configureQuill}
++        toolbar={
++			<RichTextInputToolbar>
++				<RichTextInputLevelSelect size={size} />
++				<FormatButtons size={size} />
++				<AlignmentButtons {size} />
++				<ListButtons size={size} />
++				<LinkButtons size={size} />
++				<QuoteButtons size={size} />
++				<ClearButtons size={size} />
++				<ToggleButton
++					aria-label="Add a smile"
++					title="Add a smile"
++					onClick={() => editor.insertContent(':-)')}
++				>
++					<Remove fontSize="inherit" />
++			</ToggleButton>
++			</RichTextInputToolbar>
+		}
+    />
+}
+```
+
+### `BooleanInput` Change Handlers Receive an Event Object
+
+In previous versions BooleanInput's `onChange` event handlers only received the checked state of the input. Now they receive the event object, so you have to take the checked state from there.
+
+```diff
+import { BooleanInput } from 'react-admin';
+
+<BooleanInput
+    label="Commentable"
+    source="commentable"
+-   onChange={checked => { console.log(checked); }}
++   onChange={e => { console.log(e.target.checked); }}
+/>
+```
+
+### `allowEmpty` Has Been Removed
+
+The `<SelectInput>`, `<SelectArrayInput>`, `<AutocompleteInput>` and `<AutocompleteArrayInput>` components used to accept an `allowEmpty` prop. When set to `true`, a choice was added for setting the input value to an empty value (empty string by default).
+
+However, the underlying MUI components now require that the current input value has a matching choice. Those components now always accept an empty value (an empty string by default). You can safely remove this prop.
+
+```diff
+const choices = [{ id: 1, name: 'value' }, { id: 2, name: 'value 2' }]
+
+const MyOptionalSelect = () => (
+-    <SelectInput choices={choices} allowEmpty />
++    <SelectInput choices={choices} />
+);
+```
+
+If you require the input to have a non-empty value, use the `required` validation.
+
+```diff
+const MyRequiredSelect = () => (
+-    <SelectInput choices={choices} />
++    <SelectInput choices={choices} validate={[required()]} />
+);
+```
+
+### `<ReferenceInput>` and `<ReferenceArrayInput>` Now Provide A `ChoicesContext`
+
+`<ReferenceInput>` and `<ReferenceArrayInput>` used to inject props to their children. They now provide a `ChoicesContext` with support for sorting, paginating and filtering through methods and properties that match those of the `ListContext`. All their methods now have the same signature. As a result, several changes were made to both components:
+
+#### `<ReferenceInput>` No Longer Accepts The `filterToQuery` Prop
+
+It is now the responsibility of the child input to call the `setFilters` function provided through the `ChoicesContext` with the expected filter. If you used the `filterToQuery` prop to convert an `<AutocompleteInput>` search, you'll have to move the `filterToQuery` prop on the `<AutocompleteInput>` itself:
+
+```diff
+const UserListFilter = [
+    <ReferenceInput
+        source="email"
+-        filterToQuery={search => ({ email: search })}
+    >
+-        <AutocompleteInput />
++        <AutocompleteInput filterToQuery={search => ({ email: search })} />
+    </ReferenceInput>
+]
+```
+
+#### `<ReferenceInput>` and `<ReferenceArrayInput>` No Longer Accepts [Common Props](https://marmelab.com/react-admin/Inputs.html#common-input-props)
+
+Since these components no longer inject props to their children, you have to pass these props directly to them.
+
+```diff
+const UserInput = [
+    <ReferenceInput
+        source="email"
+        reference="users"
+-       label="User"
+-       validate={[required()]}
+-       fullWidth
+-       className="myCustomCLass"
+-       formClassName=="myCustomFormClass"
+-       helperText="Custom helper text"
+    >
+-        <AutocompleteInput />
++        <AutocompleteInput 
++            label="User" 
++            validate={[required()]}
++            fullWidth
++            className="myCustomClass"
++            formClassName=="myCustomFormClass"
++            helperText="Custom helper text"
++        />
+    </ReferenceInput>
+]
+```
+
+#### `<ReferenceArrayInput>` No Longer Provides a `ListContext`
+
+As the `ChoicesContext` now provide an API very similar to the `ListContext`, it no longer sets up a `ListContext`. If you used this to display a `<Datagrid>`, we will soon provide the `<DatagridInput>` for this purpose.
+
+#### `<ReferenceArrayInputContext>`, `<ReferenceArrayInputContextProvider>` And `useReferenceArrayInputContext` Have Been Removed
+
+As we now have a common interface to fetch choices related data and methods with the `ChoicesContext`, we removed the `<ReferenceArrayInputContext>` and `<ReferenceArrayInputContextProvider>` components as well as the `useReferenceArrayInputContext` hook.
+
+```diff
+-import { useReferenceArrayInputContext } from 'react-admin';
+-import { useChoicesContext } from 'react-admin';
+
+const MyCustomInput = () => {
+-    const {
+-        choices, 
+-        error, 
+-        warning, 
+-        loaded, 
+-        loading, 
+-        setFilter, 
+-        setPagination, 
+-        setSort, 
+-        setSortForList,
+-    } = useReferenceArrayInputContext();
++    const {
++        allChoices,
++        availableChoices,
++        selectedChoices,
++        filter,
++        filterValues,
++        page,
++        perPage,
++        setFilters,
++        setPage,
++        setPerPage,
++        setSort,
++        sort,
++    } = useChoicesContext();
+    return // ...
+}
+```
+
+#### Other Changes
+
+The other changes only impact you if you had a custom child component for either the `<ReferenceInput>` or `<ReferenceArrayInput>`.
+
+The `ChoicesContext` provides access to the choices via 3 properties:
+- `availableChoices`: The choices which are not selected but matches the parameters (sorting, pagination and filters)
+- `selectedChoices`: The selected choices. 
+- `allChoices`: Merge of both available and selected choices. 
+
+The `ReferenceInput` and `ReferenceArrayInput` components also handled the form binding and injected final-form `input` and `meta` to their child. They don't need to do that anymore, and simply watch the form value changes to ensure they load the required data when needed.
+
+```diff
+const MyCustomAutocomplete = (props) => {
+-    const { choices, input, meta, resource, setFilter, source } = props;
++    const { allChoices, setFilters } = useChoicesContext(props); 
+
+-    const { input, meta } = useInput({ input, meta });
++    const { field, fieldState } = useInput(props);
+
+    const handleTextInputChange = (event) => {
+-        setFilter(event.target.value);
+         // Note that we don't force you to use `q` anymore
++        setFilters({ q: event.target.value });
+    };
+
+    return (
+        //...
+    )
+}
+```
+
+## UI components
+
+### Custom Menus Should Get Resource Definition From Context
+
+React-admin used to store the definition of each resource (its name, icon, label, etc.) in the Redux state. This is no longer the case, as the resource definition is now stored in a custom context.
+
+If you relied on the `useResourceDefinition` hook, this change shouldn't affect you.
+
+If you need to access the definitions of all resources, however, you must upgrade your code, and use the new `useResourceDefinitions` hook.
+
+The most common use case is when you override the default `<Menu>` component:
+
+```diff
+// in src/Menu.js
+import * as React from 'react';
+import { createElement } from 'react';
+-import { useSelector } from 'react-redux';
+import { useMediaQuery } from '@mui/material';
+-import { DashboardMenuItem, Menu, MenuItemLink, getResources } from 'react-admin';
++import { DashboardMenuItem, Menu, MenuItemLink, useResourceDefinitions } from 'react-admin';
+import DefaultIcon from '@mui/icons-material/ViewList';
+import LabelIcon from '@mui/icons-material/Label';
+
+export const Menu = (props) => {
+-   const resources = useSelector(getResources);
++   const resourcesDefinitions = useResourceDefinitions();
++   const resources = Object.keys(resourcesDefinitions).map(name => resourcesDefinitions[name]);
+    const open = useSelector(state => state.admin.ui.sidebarOpen);
+    return (
+        <Menu {...props}>
+            <DashboardMenuItem />
+            {resources.map(resource => (
+                <MenuItemLink
+                    key={resource.name}
+                    to={`/${resource.name}`}
+                    primaryText={
+                        (resource.options && resource.options.label) ||
+                        resource.name
+                    }
+                    leftIcon={
+                        resource.icon ? <resource.icon /> : <DefaultIcon />
+                    }
+                    onClick={props.onMenuClick}
+                    sidebarIsOpen={open}
+                />
+            ))}
+            {/* add your custom menus here */}
+        </Menu>
+    );
+};
+```
+
+### `<AppBar>` and `<UserMenu>` No Longer Inject Props
+
+When a React element was provided as the `userMenu` prop, the `<AppBar>` used to clone it and inject the `logout` prop (a React element). This is no longer the case and if you provided a custom user menu, you now have to include the logout yourself.
+
+Besides, the `<UserMenu>` used to clone its children to inject the `onClick` prop, allowing them to close the menu. It now provides a `onClose` function through a new `UserContext` accessible by calling the `useUserMenu` hook.
+
+Finally, the `<UserMenu>` no longer accepts a `logout` prop. Instead, you should pass the `<Logout>` component as one of the `<UserMenu>` children. Besides, you should not use an `<MenuItemLink>` in `<UserMenu>` as they also close the `<SideBar>` on mobile:
+
+```diff
+-import { MenuItemLink, UserMenu } from 'react-admin';
++import { Logout, UserMenu, useUserMenu } from 'react-admin';
+import { Link } from 'react-router-dom';
++import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import SettingsIcon from '@mui/icons-material/Settings';
+
+-const ConfigurationMenu = (props) => {
+// It's important to pass the ref to allow MUI to manage the keyboard navigation
++const ConfigurationMenu = forwardRef((props, ref) => {
++   const { onClose } = useUserMenu();
+    return (
+-       <MenuItemLink
++       <MenuItem
+            // It's important to pass the props to allow MUI to manage the keyboard navigation
+            {...props}
+            component={Link}
+            to="/configuration"
+-            onClick={props.onClick}
++            onClick={onClose}
+        >
+            <ListItemIcon>
+                <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText>
+                Configuration
+            </ListItemText>
+-       </MenuItemLink>
++       </MenuItem>
+    );
+});
+
+-const CustomUserMenu = (props) => (
++const CustomUserMenu = () => (
+-    <UserMenu {...props}>
++    <UserMenu>
+        <ConfigurationMenu />
++       <Logout />
+    </UserMenu>
+);
+```
+
+### `<MenuItemLink>` Automatically Translates `primaryText`
+
+You can pass a translation key directly as the `primaryText` prop for `<MenuItemLink>`.
+
+```diff
+const MyMenuItem = forwardRef((props, ref) => {
+-    const translate = useTranslate();
+    return (
+        <MenuItemLink
+            ref={ref}
+            {...props}
+            to="/configuration"
+-            primaryText={translate('pos.configuration')}
++            primaryText="pos.configuration"
+            leftIcon={<SettingsIcon />}
+        />
+    )
+});
+```
+
+### `<Admin>`, `<Layout>`, `<AppBar>` And `<UserMenu>` No Longer Accept A `logout` Or `logoutButton` Prop
+
+As we already provide a way to override the user menu displayed in the `<AppBar>`, we removed the `logoutButton` prop from the `<Admin>` component and the `logout` prop from the `<Layout>`, `<AppBar>` and `<UserMenu>` components.
+
+If you passed your own logout component through this prop, you must now provide a custom user menu:
+
+```diff
+-import { Admin, Logout } from 'react-admin';
++import { Admin, AppBar, Layout, Logout, UserMenu } from 'react-admin';
+
+const MyCustomLogout = () => <Logout className="my-class-name" />;
+
++ const MyUserMenu = () => <UserMenu><MyCustomLogout /></UserMenu>;
+
++ const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
+
++ const MyLayout = () => <Layout appBar={MyAppBar} />;
+
+const MyAdmin = () => (
+    <Admin
+-        logoutButton={<MyCustomLogout />}
++        layout={<MyLayout />}
+    >
+        // ....
+    </Admin>
+)
+```
+
+### The MUI `<ThemeProvider>` is not set by `<Layout>` anymore
+
+The `<ThemeProvider>` is now set by the `<AdminContext>` component which is rendered by `<Admin>`.
+
+This shouldn't impact your code unless you had a completely custom `<Layout>` component. If you do but still uses the default `<Admin>` component, you can safely remove the `ThemeProvider` from your `Layout`:
+
+```diff
+-import { Container, ThemeProvider } from '@mui/material';
++import { Container } from '@mui/material';
+import { Notification, Error } from 'react-admin';
+import Header from './Header';
+
+const Layout = (props) => {
+-    const { children, theme } = props;
++    const { children } = props;
+    return (
+-        <ThemeProvider theme={theme}>
++        <>
+            <Header />
+            <Container>
+                <main id="main-content">
+                    {children}
+                </main>
+            </Container>
+            <Notification />
+-        </ThemeProvider>
++        </>
+    );
+};
+```
+
+### The `<Notification>` Component Is Included By `<Admin>` Rather Than `<Layout>`
+
+If you customized the `<Notification>` component (e.g. to tweak the delay after which a notification disappears), you passed your custom notification component to the `<Layout>` component. The `<Notification>` is now included by the `<Admin>` component, which facilitates custom layouts and login screens. As a consequence, you'll need to move your custom notification component to the `<Admin>` component.
+
+```diff
+// in src/MyNotification.js
+import { Notification } from 'react-admin';
+
+export const MyNotification = props => (
+    <Notification {...props} autoHideDuration={5000} />
+);
+
+// in src/MyLayout.js
+-import { Layout } from 'react-admin';
+-import { MyNotification } from './MyNotification';
+
+-export const MyLayout = props => (
+-   <Layout {...props} notification={MyNotification} />
+-);
+
+// in src/App.js
+-import { MyLayout } from './MyLayout';
++import { MyNotification } from './MyNotification';
+import dataProvider from './dataProvider';
+
+const App = () => (
+-   <Admin layout={MyLayout} dataProvider={dataProvider}>
++   <Admin notification={MyNotification} dataProvider={dataProvider}>
+        // ...
+    </Admin>
+);
+```
+
+If you had a custom Layout and/or Login component, you no longer need to include the `<Notification>` component.
+
+```diff
+-import { Notification } from 'react-admin';
+
+export const MyLayout = ({
+    children,
+    dashboard,
+    logout,
+    title,
+}) => {
+    // ...
+    return (<>
+        // ...
+-       <Notification />
+    </>);
+};
+```
+
+### Renamed `useToggleSidebar` to `useSidebarState`
+
+The `useToggleSidebar` hook has been renamed to `useSidebarState`. The second value returned by the hook is no longer a toggle function, but a value updater. 
+
+```diff
+const MyButton = () => {
+-   const [open, toggleSidebar] = useToggleSidebar();
++   const [open, setOpen] = useSidebarState();
+    return (
+        <Button
+            color="inherit"
+-           onClick={() => toggleSidebar()}
++           onClick={() => setOpen(!open)}
+        >
+            {open ? 'Open' : 'Close'}
+        </Button>
+    );
+};
+```
+
+## I18n
+
+### Changes In Translation Messages
+
+The `ra.navigation.prev` message was renamed to `ra.navigation.previous`. Update your translation files accordingly.
+
+```diff
+const messages = {
+    ra: {
+        navigation: {
+            no_results: 'No results found',
+            no_more_results:
+                'The page number %{page} is out of boundaries. Try the previous page.',
+            page_out_of_boundaries: 'Page number %{page} out of boundaries',
+            page_out_from_end: 'Cannot go after last page',
+            page_out_from_begin: 'Cannot go before page 1',
+            page_range_info: '%{offsetBegin}-%{offsetEnd} of %{total}',
+            partial_page_range_info:
+                '%{offsetBegin}-%{offsetEnd} of more than %{offsetEnd}',
+            current_page: 'Page %{page}',
+            page: 'Go to page %{page}',
+            next: 'Go to next page',
+-           prev: 'Go to previous page',
++           previous: 'Go to previous page',
+            page_rows_per_page: 'Rows per page:',
+            skip_nav: 'Skip to content',
+        },
+        // ...
+```
+
+### Renamed `<TranslationProvider>` to `<I18nContextProvider>`
+
+If you created a custom app (without the `<Admin>` component), you may have used the `<TranslationProvider>` component. It has been renamed to `<I18nContextProvider>`, and accepts an `i18nProvider`.
+
+```diff
+-<TranslationProvider locale="en" i18nProvider={i18nProvider}>
++<I18nContextProvider value={i18nProvider}>
+   ...
+-</TranslationProvider>
++</I18nContextProvider>
+```
+
+## Miscellaneous
+
+### `useNotify` Now Takes An Options Object
+
+When a component has to display a notification, developers may want to tweak the type, duration, translation arguments, or the ability to undo the action. The callback returned by `useNotify()` used to accept a long series of argument, but the syntax wasn't very intuitive. To improve the developer experience, these options are now part of an `options` object, passed as second argument.
+
+```diff
+```jsx
+import { useNotify } from 'react-admin';
+
+const NotifyButton = () => {
+    const notify = useNotify();
+    const handleClick = () => {
+-       notify(`Comment approved`, 'success', undefined, true);
++       notify(`Comment approved`, { type: 'success', undoable: true });
+    }
+    return <button onClick={handleClick}>Notify</button>;
+};
+```
+
+Check [the `useNotify` documentation](https://marmelab.com/react-admin/useNotify.html) for more information.
+
+### The `useVersion` Hook Was Removed
+
+React-admin v3 relied on a global `version` variable stored in the Redux state to force page refresh. This is no longer the case, as the refresh functionality is handled by react-query.
+
+If you relied on `useVersion` to provide a component key, you can safely remove the call. The refresh button will force all components relying on a dataProvider query to re-execute.
+
+```diff
+-import { useVersion } from 'react-admin';
+
+const MyComponent = () => {
+-   const version = useVersion();
+    return (
+-       <Card key={version}>
++       <Card>
+            ...
+        </Card>
+    );
+};
+```
+
+And if you relied on a `version` prop to be available in a page context, you can safely remove it.
+
+```diff
+import { useShowContext } from 'react-admin';
+
+const PostDetail = () => {
+-   const { data, version } = useShowContext();
++   const { data } = useShowContext();
+    return (
+-       <Card key={version}>
++       <Card>
+            ...
+        </Card>
+    );
+}
+```
+
+### `useRedirect()` No Longer Clears Forms When Called With `false`
 
 To implement a form that would reset after submittion and allow adding more data, react-admin used to encourage you to call `useRedirect()` with `false` to clear the form. This no longer works: `useRedirect()` manages redirections, not forms. You'll have to clear the form manually in your side effect:
 
@@ -2993,31 +3177,96 @@ const PostCreateToolbar = props => {
 ```
 {% endraw %}
 
-## `allowEmpty` Has Been Removed From `SelectInput`, `AutocompleteInput` and `AutocompleteArrayInput`
+### No More Props Injection In `<Title>`
 
-The `SelectInput`, `SelectArrayInput`, `AutocompleteInput` and `AutocompleteArrayInput` components used to accept an `allowEmpty` prop. When set to `true`, a choice was added for setting the input value to an empty value (empty string by default).
-
-However, the underlying MUI components now require that the current input value has a matching choice. Those components now always accept an empty value (an empty string by default). You can safely remove this prop.
+`<Title>` no longer clones the `title` prop and injects it to the `record`. Call the `useRecordContext` hook to get the current record.
 
 ```diff
-const choices = [{ id: 1, name: 'value' }, { id: 2, name: 'value 2' }]
+-const PostTitle = ({ record }) => {
+-const PostTitle = () => {
++    const record = useRecordContext();
+    return <span>Post {record ? `"${record.title}"` : ''}</span>;
+};
 
-const MyOptionalSelect = () => (
--    <SelectInput choices={choices} allowEmpty />
-+    <SelectInput choices={choices} />
+export const PostEdit = () => (
+    <Edit title={<PostTitle />}>
+        ...
+    </Edit>
 );
 ```
 
-If you require the input to have a non-empty value, use the `required` validation.
+Use the `<Title>` component instead.
+
+### Removed Deprecated Elements
+
+- Removed `<BulkDeleteAction>` (use `<BulkDeleteButton>` instead)
+- Removed `<ReferenceFieldController>` (use `useReferenceFieldController` instead)
+- Removed `<ReferenceArrayFieldController>` (use `useReferenceArrayFieldController` instead)
+- Removed `<ReferenceManyFieldController>` (use `useReferenceManyFieldController` instead)
+- Removed `<ReferenceInputController>` (use `useReferenceInputController` instead)
+- Removed `<ReferenceArrayInputController>` (use `useReferenceArrayInputController` instead)
+- Removed declarative side effects in dataProvider hooks (e.g. `{ onSuccess: { refresh: true } }`). Use function side effects instead (e.g. `{ onSuccess: () => { refresh(); } }`)
+- Removed `<CardActions>` (use `<TopToolbar>` instead)
+
+### Removed Deprecated Props
+
+- Removed `<ReferenceField linkType>` prop (use `<ReferenceField link>` instead)
+
+### Removed Deprecated HOCs
+
+- Removed `withTranslate` HOC (use `useTranslate` hook)
+- Removed `withDataProvider` HOC (use `useDataProvider` hook)
+
+### `<Edit successMessage>` Prop Was Removed
+
+This prop has been deprecated for a long time. Replace it with a custom success handler in the `mutationOptions`:
+
+{% raw %}
+```diff
+-import { Edit, SimpleForm } from 'react-admin';
++import { Edit, SimpleForm, useNotify } from 'react-admin';
+
+const PostEdit = () => {
++   const notify = useNotify();
++   const onSuccess = () => notify('Post updated successfully');
+    return (
+-       <Edit successMessage="Post updated successfully">
++       <Edit mutationOptions={{ onSuccess }}>
+            <SimpleForm>
+                ...
+            </SimpleForm>
+        </Edit>
+    );
+};
+```
+{% endraw %}
+
+
+## TypeScript
+
+### `Record` Was Renamed To `RaRecord`
+
+Data Provider methods used to return records with a generic `Record` type, unless you were passing an explicit type. The `Record` type conflicted with TypeScript's native `Record` type and sometimes confused IDEs.
+
+We've renamed that type to `RaRecord` to avoid any confusion.
+
+If you've declared custom Record types, you'll need to upgrade your code as follows:
 
 ```diff
-const MyRequiredSelect = () => (
--    <SelectInput choices={choices} />
-+    <SelectInput choices={choices} validate={[required()]} />
-);
+-import { Record } from 'react-admin';
++import { RaRecord } from 'react-admin';
+
+-export interface Customer extends Record {
++export interface Customer extends RaRecord {
+    id: string;
+    name: string;
+    email: string;
+}
 ```
 
-## `ra-test` Has Been Removed
+## Tests
+
+### `ra-test` Has Been Removed
 
 You no longer need a special package to unit test your components. The `react-admin` package provides all you need.
 
@@ -3108,245 +3357,39 @@ test('should use counter', () => {
 })
 ```
 
-## `rich-text-input` Package Has Changed
+### Unit Tests for Data Provider Dependent Components Need A QueryClientContext
 
-Our old `<RichTextInput>` was based on [Quill](https://quilljs.com/) but:
-- it wasn't accessible (button without labels, etc.)
-- it wasn't translatable (labels in Quill are in the CSS)
-- it wasn't using MUI components for its UI and looked off
-
-The new `<RichTextInput>` uses [TipTap](https://github.com/ueberdosis/tiptap), a UI less library to build rich text editors. It gives us the freedom to implement the UI how we want with MUI components. That solves all the above issues.
-
-If you used the `<RichTextInput>` without passing Quill options such as custom toolbars, you have nothing to do.
-
-If you customized the available buttons with the `toolbar` props, you can now use the components we provide:
+If you were using components dependent on the dataProvider hooks in isolation (e.g. in unit or integration tests), you now need to wrap them inside a `<QueryClientContext>` component, to let the access react-query's `QueryClient` instance.
 
 ```diff
-const MyRichTextInput = (props) => (
-    <RichTextInput
-        {...props}
--        toolbar={[ ['bold', 'italic', 'underline', 'link'] ]}
-+        toolbar={
-            <RichTextInputToolbar>
-				<FormatButtons size={size} />
-				<LinkButtons size={size} />
-			</RichTextInputToolbar>
-        }
-    />
-)
-```
++import { QueryClientProvider, QueryClient } from 'react-query';
 
-If you customized the Quill instance to add custom handlers, you'll have to use [TipTap](https://github.com/ueberdosis/tiptap) primitives.
-
-```diff
-import {
-	RichTextInput,
-+	DefaultEditorOptions,
-+	RichTextInputToolbar,
-+	RichTextInputLevelSelect,
-+	FormatButtons,
-+	AlignmentButtons,
-+	ListButtons,
-+	LinkButtons,
-+	QuoteButtons,
-+	ClearButtons,
-} from 'ra-input-rich-text';
-
--const configureQuill = quill => quill.getModule('toolbar').addHandler('insertSmile', function (value) {
--    const { index, length } = this.quill.getSelection();
--    this.quill..insertText(index + length, ':-)', 'api');
--});
-
-const MyRichTextInput = (props) => (
-    <RichTextInput
-        {...props}
--        configureQuill={configureQuill}
-+        toolbar={
-+			<RichTextInputToolbar>
-+				<RichTextInputLevelSelect size={size} />
-+				<FormatButtons size={size} />
-+				<AlignmentButtons {size} />
-+				<ListButtons size={size} />
-+				<LinkButtons size={size} />
-+				<QuoteButtons size={size} />
-+				<ClearButtons size={size} />
-+				<ToggleButton
-+					aria-label="Add a smile"
-+					title="Add a smile"
-+					onClick={() => editor.insertContent(':-)')}
-+				>
-+					<Remove fontSize="inherit" />
-+			</ToggleButton>
-+			</RichTextInputToolbar>
-		}
-    />
-}
-```
-
-## `BooleanInput` Change Handlers Receive an Event Object
-
-In previous versions BooleanInput's `onChange` event handlers only received the checked state of the input. Now they receive the event object, so you have to take the checked state from there.
-
-```diff
-import { BooleanInput } from 'react-admin';
-
-<BooleanInput
-    label="Commentable"
-    source="commentable"
--   onChange={checked => { console.log(checked); }}
-+   onChange={e => { console.log(e.target.checked); }}
-/>
-```
-
-## `<ReferenceInput>` and `<ReferenceArrayInput>` Now Provide A `ChoicesContext`
-
-`<ReferenceInput>` and `<ReferenceArrayInput>` used to inject props to their children. They now provide a `ChoicesContext` with support for sorting, paginating and filtering through methods and properties that match those of the `ListContext`. All their methods now have the same signature. As a result, several changes were made to both components:
-
-### `<ReferenceInput>` No Longer Accepts The `filterToQuery` Prop
-
-It is now the responsibility of the child input to call the `setFilters` function provided through the `ChoicesContext` with the expected filter. If you used the `filterToQuery` prop to convert an `<AutocompleteInput>` search, you'll have to move the `filterToQuery` prop on the `<AutocompleteInput>` itself:
-
-```diff
-const UserListFilter = [
-    <ReferenceInput
-        source="email"
--        filterToQuery={search => ({ email: search })}
-    >
--        <AutocompleteInput />
-+        <AutocompleteInput filterToQuery={search => ({ email: search })} />
-    </ReferenceInput>
-]
-```
-
-### `<ReferenceInput>` and `<ReferenceArrayInput>` No Longer Accepts [Common Props](https://marmelab.com/react-admin/Inputs.html#common-input-props)
-
-Since these components no longer inject props to their children, you have to pass these props directly to them.
-
-```diff
-const UserInput = [
-    <ReferenceInput
-        source="email"
-        reference="users"
--       label="User"
--       validate={[required()]}
--       fullWidth
--       className="myCustomCLass"
--       formClassName=="myCustomFormClass"
--       helperText="Custom helper text"
-    >
--        <AutocompleteInput />
-+        <AutocompleteInput 
-+            label="User" 
-+            validate={[required()]}
-+            fullWidth
-+            className="myCustomClass"
-+            formClassName=="myCustomFormClass"
-+            helperText="Custom helper text"
-+        />
-    </ReferenceInput>
-]
-```
-
-### `<ReferenceArrayInput>` No Longer Provides a `ListContext`
-
-As the `ChoicesContext` now provide an API very similar to the `ListContext`, it no longer sets up a `ListContext`. If you used this to display a `<Datagrid>`, we will soon provide the `<DatagridInput>` for this purpose.
-
-### `<ReferenceArrayInputContext>`, `<ReferenceArrayInputContextProvider>` And `useReferenceArrayInputContext` Have Been Removed
-
-As we now have a common interface to fetch choices related data and methods with the `ChoicesContext`, we removed the `<ReferenceArrayInputContext>` and `<ReferenceArrayInputContextProvider>` components as well as the `useReferenceArrayInputContext` hook.
-
-```diff
--import { useReferenceArrayInputContext } from 'react-admin';
--import { useChoicesContext } from 'react-admin';
-
-const MyCustomInput = () => {
--    const {
--        choices, 
--        error, 
--        warning, 
--        loaded, 
--        loading, 
--        setFilter, 
--        setPagination, 
--        setSort, 
--        setSortForList,
--    } = useReferenceArrayInputContext();
-+    const {
-+        allChoices,
-+        availableChoices,
-+        selectedChoices,
-+        filter,
-+        filterValues,
-+        page,
-+        perPage,
-+        setFilters,
-+        setPage,
-+        setPerPage,
-+        setSort,
-+        sort,
-+    } = useChoicesContext();
-    return // ...
-}
-```
-
-### Other Changes
-
-The other changes only impact you if you had a custom child component for either the `<ReferenceInput>` or `<ReferenceArrayInput>`.
-
-The `ChoicesContext` provides access to the choices via 3 properties:
-- `availableChoices`: The choices which are not selected but matches the parameters (sorting, pagination and filters)
-- `selectedChoices`: The selected choices. 
-- `allChoices`: Merge of both available and selected choices. 
-
-The `ReferenceInput` and `ReferenceArrayInput` components also handled the form binding and injected final-form `input` and `meta` to their child. They don't need to do that anymore, and simply watch the form value changes to ensure they load the required data when needed.
-
-```diff
-const MyCustomAutocomplete = (props) => {
--    const { choices, input, meta, resource, setFilter, source } = props;
-+    const { allChoices, setFilters } = useChoicesContext(props); 
-
--    const { input, meta } = useInput({ input, meta });
-+    const { field, fieldState } = useInput(props);
-
-    const handleTextInputChange = (event) => {
--        setFilter(event.target.value);
-         // Note that we don't force you to use `q` anymore
-+        setFilters({ q: event.target.value });
-    };
-
+// this component relies on dataProvider hooks
+const BookDetail = ({ id }) => {
+    const { data, error, isLoading } = useGetOne('books', { id });
+    if (isLoading) {
+        return <Loading />;
+    }
+    if (error) {
+        return <Error error={error} />;
+    }
+    if (!data) {
+        return null;
+    }
     return (
-        //...
-    )
-}
+        <div>
+            <h1>{data.book.title}</h1>
+            <p>{data.book.author.name}</p>
+        </div>
+    );
+};
+
+test('MyComponent', () => {
+    render(
++       <QueryClientProvider client={new QueryClient()}>
+            <BookDetail id={1} />
++       </QueryClientProvider>
+    );
+    // ...
+});
 ```
-
-## `<ArrayField>` Does Not Accept a `fieldKey` Prop Anymore
-
-The `ArrayField` component used to accept a `fieldKey` prop, allowing to specify a record property for use as a React key, enabling some performance improvements. Moving to react-query has made this workaround unnecessary and you can safely remove this prop:
-
-```diff
--<ArrayField source="backlinks" fieldKey="uuid">
-+<ArrayField source="backlinks">
-    <Datagrid>
-        <DateField source="date" />
-        <UrlField source="url" />
-    </Datagrid>
-</ArrayField>
-```
-
-## `<SimpleFormIterator>` Does Not Accept the `TransitionProps` prop anymore
-
-Transitions were causing a lot of issues so we had to remove them for now, until we find a good solution.
-
-{% raw %}
-```diff
-import { ArrayInput, SimpleFormIterator, TextInput } from 'react-admin';
-
-<ArrayInput source="backlinks">
--    <SimpleFormIterator TransitionProps={{ timeout: 400 }}>
-+    <SimpleFormIterator>
-        <TextInput source="title" />
-    </SimpleFormIterator>
-</ArrayInput>
-```
-{% endraw %}
