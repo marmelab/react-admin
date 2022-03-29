@@ -185,7 +185,7 @@ const OrderForm = () => {
                             <Totals />
                         </div>
                     </CardContent>
-                    <Toolbar mutationMode="undoable" />
+                    <Toolbar />
                 </Card>
             </Box>
         </Form>
