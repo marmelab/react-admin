@@ -13,7 +13,12 @@ import {
     useListContext,
     useResourceContext,
 } from 'ra-core';
-import { FieldValues, FormProvider, useForm } from 'react-hook-form';
+import {
+    FieldValues,
+    FormProvider,
+    useForm,
+    useFormContext,
+} from 'react-hook-form';
 import lodashSet from 'lodash/set';
 import lodashUnset from 'lodash/unset';
 import lodashGet from 'lodash/get';
@@ -82,8 +87,9 @@ export type FilterFormProps = FilterFormBaseProps & {
 export const FilterFormBase = (props: FilterFormBaseProps) => {
     const { className, filters, ...rest } = props;
     const resource = useResourceContext(props);
+    const form = useFormContext();
     const { displayedFilters = {}, hideFilter } = useListContext(props);
-    console.log({ displayedFilters });
+
     useEffect(() => {
         filters.forEach((filter: JSX.Element) => {
             if (filter.props.alwaysOn && filter.props.defaultValue) {
@@ -95,10 +101,12 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
     }, [filters]);
 
     const getShownFilters = () => {
+        const values = form.getValues();
         return filters.filter(
             (filterElement: JSX.Element) =>
                 filterElement.props.alwaysOn ||
-                displayedFilters[filterElement.props.source]
+                displayedFilters[filterElement.props.source] ||
+                lodashGet(values, filterElement.props.source) !== ''
         );
     };
 
