@@ -368,32 +368,6 @@ export const PostEdit = () => (
 );
 ```
 
-But if you want to customize the `<Toolbar>` (to remove the `<DeleteButton>` for example), you have to manage the _disabled_ behavior of the `<SaveButton>` by yourself:
-
-```jsx
-import * as React from "react";
-import { Edit, TabbedForm, SaveButton, Toolbar } from 'react-admin';
-import { useFormState } from 'react-hook-form';
-
-const PostEditToolbar = props => {
-    const { isDirty } = useFormState();
-
-    return (
-      <Toolbar {...props} >
-          <SaveButton disabled={!isDirty}/>
-      </Toolbar>
-    );
-};
-
-export const PostEdit = () => (
-  <Edit>
-      <TabbedForm toolbar={<PostEditToolbar/>}>
-          ...
-      </TabbedForm>
-  </Edit>
-);
-```
-
 ## `validate`
 
 The value of the form `validate` prop must be a function taking the record as input, and returning an object with error messages indexed by field. For instance:
