@@ -20,6 +20,7 @@ import {
     useFormContext,
 } from 'react-hook-form';
 import lodashSet from 'lodash/set';
+import lodashUnset from 'lodash/unset';
 import lodashGet from 'lodash/get';
 import cloneDeep from 'lodash/cloneDeep';
 
@@ -45,7 +46,8 @@ export const FilterForm = (props: FilterFormProps) => {
 
     // Reapply filterValues when the URL changes or a user removes a filter
     useEffect(() => {
-        form.reset(filterValues);
+        const newValues = getFilterFormValues(form.getValues(), filterValues);
+        form.reset(newValues);
     }, [filterValues, filters, form]);
 
     useEffect(() => {
@@ -57,7 +59,8 @@ export const FilterForm = (props: FilterFormProps) => {
             if (isFormValid) {
                 if (lodashGet(values, name) === '') {
                     const newValues = cloneDeep(values);
-                    lodashSet(newValues, name, undefined);
+                    lodashUnset(newValues, name);
+                    console.log({ newValues, displayedFilters });
                     setFilters(newValues, displayedFilters);
                 } else {
                     setFilters(values, displayedFilters);
@@ -210,3 +213,38 @@ const StyledForm = styled('form', {
     [`& .${FilterFormClasses.clearFix}`]: { clear: 'right' },
     '& .MuiFormHelperText-root': { display: 'none' },
 }));
+
+/**
+ * Because we are using controlled inputs with react-hook-form, we must provide a default value
+ * for each input when resetting the form. (see https://react-hook-form.com/api/useform/reset).
+ * To ensure we don't provide undefined which will result to the current input value being reapplied
+ * and due to the dynamic nature of the filter form, we rebuild the filter form values from its current
+ * values and make sure to pass at least an empty string for each input.
+ */
+export const getFilterFormValues = (
+    values: Record<string, any>,
+    filterValues: Record<string, any>
+) => {
+    const newValues = cloneDeep(values);
+    Object.keys(values).forEach(key => {
+        setInputValue(newValues, key, filterValues);
+    });
+    return { ...filterValues, ...newValues };
+};
+
+const setInputValue = (
+    values: Record<string, any>,
+    key: string,
+    filterValues: Record<string, any>
+) => {
+    if (typeof values[key] === 'object') {
+        values[key] = Object.keys(values[key]).reduce(
+            (acc, innerKey) =>
+                setInputValue(acc, innerKey, (filterValues || {})[key] ?? {}),
+            values[key]
+        );
+    } else {
+        lodashSet(values, key, lodashGet(filterValues, key, ''));
+    }
+    return values;
+};
