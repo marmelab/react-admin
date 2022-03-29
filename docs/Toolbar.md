@@ -17,9 +17,13 @@ Create a custom toolbar using `<Toolbar>`, then inject it to `<SimpleForm>` or `
 
 ```jsx
 // in src/MyToolbar.jss
-import { Toolbar } from 'react-admin';
+import { Toolbar, SaveButton } from 'react-admin';
 
-export const MyToolbar = () => <Toolbar />;
+export const MyToolbar = () => (
+    <Toolbar>
+        <SaveButton label="Save" />
+    </Toolbar>
+);
 
 // in src/CommentCreate.jsx
 import { Create, SimpleForm, DateInput, TextInput } from 'react-admin';
