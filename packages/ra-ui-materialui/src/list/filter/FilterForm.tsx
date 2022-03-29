@@ -102,12 +102,14 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
 
     const getShownFilters = () => {
         const values = form.getValues();
-        return filters.filter(
-            (filterElement: JSX.Element) =>
+        return filters.filter((filterElement: JSX.Element) => {
+            const filterValue = lodashGet(values, filterElement.props.source);
+            return (
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
-                lodashGet(values, filterElement.props.source) !== ''
-        );
+                (filterValue !== '' && typeof filterValue !== 'undefined')
+            );
+        });
     };
 
     const handleHide = useCallback(
