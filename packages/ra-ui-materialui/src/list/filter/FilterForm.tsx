@@ -60,7 +60,6 @@ export const FilterForm = (props: FilterFormProps) => {
                 if (lodashGet(values, name) === '') {
                     const newValues = cloneDeep(values);
                     lodashUnset(newValues, name);
-                    console.log({ newValues, displayedFilters });
                     setFilters(newValues, displayedFilters);
                 } else {
                     setFilters(values, displayedFilters);
@@ -222,29 +221,29 @@ const StyledForm = styled('form', {
  * values and make sure to pass at least an empty string for each input.
  */
 export const getFilterFormValues = (
-    values: Record<string, any>,
+    formValues: Record<string, any>,
     filterValues: Record<string, any>
 ) => {
-    const newValues = cloneDeep(values);
-    Object.keys(values).forEach(key => {
-        setInputValue(newValues, key, filterValues);
-    });
-    return { ...filterValues, ...newValues };
+    return Object.keys(formValues).reduce((acc, key) => {
+        acc[key] = getInputValue(formValues, key, filterValues);
+        return acc;
+    }, cloneDeep(filterValues) ?? {});
 };
 
-const setInputValue = (
-    values: Record<string, any>,
+const getInputValue = (
+    formValues: Record<string, any>,
     key: string,
     filterValues: Record<string, any>
 ) => {
-    if (typeof values[key] === 'object') {
-        values[key] = Object.keys(values[key]).reduce(
-            (acc, innerKey) =>
-                setInputValue(acc, innerKey, (filterValues || {})[key] ?? {}),
-            values[key]
-        );
-    } else {
-        lodashSet(values, key, lodashGet(filterValues, key, ''));
+    if (typeof formValues[key] === 'object') {
+        return Object.keys(formValues[key]).reduce((acc, innerKey) => {
+            acc[innerKey] = getInputValue(
+                formValues[key],
+                innerKey,
+                (filterValues || {})[key] ?? {}
+            );
+            return acc;
+        }, {});
     }
-    return values;
+    return lodashGet(filterValues, key, '');
 };
