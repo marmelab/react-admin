@@ -136,7 +136,7 @@ Note that if you call `event.preventDefault()` in `onClick`, the form will not b
 
 ## `alwaysEnable`
 
-By default, the `<SaveButton>` renderd by `<Toolbar>` is disabled until there is something to save, i.e. until the user changes at least one input. Set `alwaysEnable` to `true` to always enable the button.
+By default, the `<SaveButton>` rendered by `<Toolbar>` is disabled until there is something to save, i.e. until the user changes at least one input. Set `alwaysEnable` to `true` to always enable the button.
 
 ```jsx
 import { Toolbar, SaveButton } from 'react-admin';
