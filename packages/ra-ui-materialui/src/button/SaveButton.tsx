@@ -62,7 +62,7 @@ export const SaveButton = <RecordType extends RaRecord = any>(
         type = 'submit',
         transform,
         variant = 'contained',
-        alwaysEnable,
+        alwaysEnable = false,
         ...rest
     } = props;
     const translate = useTranslate();
