@@ -16,6 +16,7 @@ import queryReducer, {
 } from './queryReducer';
 import { SortPayload, FilterPayload } from '../../types';
 import removeEmpty from '../../util/removeEmpty';
+import { useIsMounted } from '../../util/hooks';
 
 export interface ListParams {
     sort: string;
@@ -89,7 +90,7 @@ export const useListParams = ({
     const storeKey = `${resource}.listParams`;
     const [params, setParams] = useStore(storeKey, defaultParams);
     const tempParams = useRef<ListParams>();
-    const isMounted = useRef<boolean>(true);
+    const isMounted = useIsMounted();
 
     const requestSignature = [
         location.search,
@@ -127,16 +128,12 @@ export const useListParams = ({
         }
     }, [location.search]); // eslint-disable-line
 
-    // cancel scheduled changeParams when leaving the page
-    useEffect(
-        () => () => {
-            isMounted.current = false;
-        },
-        []
-    );
-
     const changeParams = useCallback(action => {
+        // do not change params if the component is already unmounted
+        // this is necessary because changeParams can be debounced, and therefore
+        // executed after the component is unmounted
         if (!isMounted.current) return;
+
         if (!tempParams.current) {
             // no other changeParams action dispatched this tick
             tempParams.current = queryReducer(query, action);
