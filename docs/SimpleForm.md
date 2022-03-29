@@ -255,44 +255,25 @@ export const PostEdit = () => (
 );
 ```
 
-In the default `<Toolbar>`, the `<SaveButton>` is disabled when the form is `pristine`. You can bypass this behavior and always enable it without customizing the `<Toolbar>` thanks to the prop `alwaysEnableSaveButton`:
+In the default `<Toolbar>`, the `<SaveButton>` is disabled when the form is `pristine`. You can bypass this behavior and always enable it thanks to the prop `alwaysEnable`:
 
 ```jsx
 import * as React from 'react';
-import { Edit, SimpleForm, Toolbar } from 'react-admin';
+import { Edit, SimpleForm, SaveButton, DeleteButton, Toolbar } from 'react-admin';
+
+const PostEditToolbar = props => (
+    <Toolbar {...props} >
+        <SaveButton alwaysEnable />
+        <DeleteButton />
+    </Toolbar>
+);
 
 export const PostEdit = () => (
     <Edit>
-        <SimpleForm toolbar={<Toolbar alwaysEnableSaveButton />}>
+        <SimpleForm toolbar={<PostEditToolbar />}>
             ...
         </SimpleForm>
     </Edit>
-);
-```
-
-But if you want to customize the `<Toolbar>` (to remove the `<DeleteButton>` for example), you have to manage the _disabled_ behavior of the `<SaveButton>` by yourself:
-
-```jsx
-import * as React from "react";
-import { Edit, SimpleForm, SaveButton, Toolbar } from 'react-admin';
-import { useFormState } from 'react-hook-form';
-
-const PostEditToolbar = props => {
-    const { isDirty } = useFormState();
-
-    return (
-      <Toolbar {...props} >
-          <SaveButton disabled={!isDirty}/>
-      </Toolbar>
-    );
-};
-
-export const PostEdit = () => (
-  <Edit>
-      <SimpleForm toolbar={<PostEditToolbar/>}>
-          // ...
-      </SimpleForm>
-  </Edit>
 );
 ```
 

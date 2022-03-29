@@ -50,6 +50,7 @@ const PostEdit = () => (
 - [`label`](#label)
 - [`mutationOptions`](#mutationoptions)
 - [`onClick`](#onclick)
+- [`alwaysEnable`](#alwaysenable)
 - [`sx`](#sx-css-api)
 - [`transform`](#transform)
 - [`type`](#type)
@@ -132,6 +133,20 @@ const PostCreateToolbar = () => (
 `onClick` it doesn't *replace* the default submission handler, but is instead called before it. To override the default submission handler, wrap a `<SaveButton>` in a custom [`SaveContext`](./useSaveContext.md).
 
 Note that if you call `event.preventDefault()` in `onClick`, the form will not be submitted.
+
+## `alwaysEnable`
+
+By default, the `<SaveButton>` rendered by `<Toolbar>` is disabled until there is something to save, i.e. until the user changes at least one input. Set `alwaysEnable` to `true` to always enable the button.
+
+```jsx
+import { Toolbar, SaveButton } from 'react-admin';
+
+const MyToolbar = () => (
+    <Toolbar>
+        <SaveButton alwaysEnable />
+    </Toolbar>    
+);
+```
 
 ## `sx`: CSS API
 

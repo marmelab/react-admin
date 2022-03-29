@@ -9,13 +9,7 @@ import {
     Theme,
 } from '@mui/material';
 import clsx from 'clsx';
-import {
-    RaRecord,
-    SaveContextValue,
-    useRecordContext,
-    useSaveContext,
-} from 'ra-core';
-import { useFormState } from 'react-hook-form';
+import { RaRecord } from 'ra-core';
 
 import { SaveButton, DeleteButton } from '../button';
 
@@ -31,15 +25,22 @@ import { SaveButton, DeleteButton } from '../button';
  *     TextInput,
  *     SimpleForm,
  *     Toolbar,
+ *     SaveButton,
  *     required,
  * } from 'react-admin';
  *
  * const now = new Date();
  * const defaultSort = { field: 'title', order: 'ASC' };
  *
+ * const MyToolbar = props => (
+ *     <Toolbar {...props} >
+ *         <SaveButton alwaysEnable />
+ *     </Toolbar>
+ * );
+ *
  * const CommentCreate = () => (
  *     <Create>
- *         <SimpleForm redirect={false} toolbar={<Toolbar alwaysEnableSaveButton={true} />}>
+ *         <SimpleForm redirect={false} toolbar={<MyToolbar />}>
  *             <TextInput
  *                 source="author.name"
  *                 fullWidth
@@ -51,7 +52,6 @@ import { SaveButton, DeleteButton } from '../button';
  * );
  *
  * @typedef {Object} Props the props you can use (other props are injected by the <SimpleForm>)
- * @prop {boolean} alwaysEnableSaveButton Force enabling the <SaveButton>. If it's not defined, the `<SaveButton>` will be enabled using `react-hook-form`'s `isValidating` state prop and form context's `saving` prop (disabled if isValidating or saving, enabled otherwise).
  * @prop {ReactElement[]} children Customize the buttons you want to display in the <Toolbar>.
  *
  */
@@ -60,23 +60,9 @@ export const Toolbar = <
 >(
     props: ToolbarProps<RecordType>
 ) => {
-    const {
-        alwaysEnableSaveButton,
-        children,
-        className,
-        resource,
-        ...rest
-    } = props;
-    const record = useRecordContext(props);
-    const saveContext = useSaveContext();
+    const { children, className, resource, ...rest } = props;
+
     const isXs = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
-    const { isValidating } = useFormState();
-    // Use form isValidating and form context saving to enable or disable the save button
-    // if alwaysEnableSaveButton is undefined
-    const disabled = !valueOrDefault(
-        alwaysEnableSaveButton !== false ? alwaysEnableSaveButton : undefined,
-        !isValidating && !saveContext?.saving
-    );
 
     return (
         <StyledToolbar
@@ -92,10 +78,8 @@ export const Toolbar = <
         >
             {Children.count(children) === 0 ? (
                 <div className={ToolbarClasses.defaultToolbar}>
-                    <SaveButton disabled={disabled} />
-                    {record && typeof record.id !== 'undefined' && (
-                        <DeleteButton resource={resource} />
-                    )}
+                    <SaveButton />
+                    <DeleteButton resource={resource} />
                 </div>
             ) : (
                 children
@@ -105,10 +89,8 @@ export const Toolbar = <
 };
 
 export interface ToolbarProps<RecordType extends Partial<RaRecord> = any>
-    extends Omit<MuiToolbarProps, 'classes'>,
-        Partial<SaveContextValue> {
+    extends Omit<MuiToolbarProps, 'classes'> {
     children?: ReactNode;
-    alwaysEnableSaveButton?: boolean;
     className?: string;
     record?: RecordType;
     resource?: string;
@@ -158,6 +140,3 @@ const StyledToolbar = styled(MuiToolbar, {
         justifyContent: 'space-between',
     },
 }));
-
-const valueOrDefault = (value, defaultValue) =>
-    typeof value === 'undefined' ? defaultValue : value;

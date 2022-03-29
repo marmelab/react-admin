@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 import { Button, ButtonProps, CircularProgress } from '@mui/material';
 import ContentSave from '@mui/icons-material/Save';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useFormState } from 'react-hook-form';
 import {
     CreateParams,
     MutationMode,
@@ -31,6 +31,7 @@ import { sanitizeButtonRestProps } from './Button';
  * @prop {ReactElement} icon
  * @prop {function} mutationOptions Object of options passed to react-query.
  * @prop {function} transform Callback to execute before calling the dataProvider. Receives the data from the form, must return that transformed data. Can be asynchronous (and return a Promise)
+ * @prop {boolean} alwaysEnable Force enabling the <SaveButton>. If it's not defined, the `<SaveButton>` will be enabled using `react-hook-form`'s `isValidating` state props and form context's `saving` prop (disabled if isValidating or saving, enabled otherwise).
  *
  * @param {Props} props
  *
@@ -57,16 +58,24 @@ export const SaveButton = <RecordType extends RaRecord = any>(
         onClick,
         mutationOptions,
         saving,
-        disabled,
+        disabled: disabledProp,
         type = 'submit',
         transform,
         variant = 'contained',
+        alwaysEnable = false,
         ...rest
     } = props;
     const translate = useTranslate();
     const notify = useNotify();
     const form = useFormContext();
     const saveContext = useSaveContext();
+    const { isValidating } = useFormState();
+    // Use form isDirty, isValidating and form context saving to enable or disable the save button
+    // if alwaysEnable is undefined
+    const disabled = valueOrDefault(
+        alwaysEnable !== false ? alwaysEnable : undefined,
+        disabledProp || isValidating || saveContext?.saving
+    );
 
     warning(
         type === 'submit' &&
@@ -107,15 +116,14 @@ export const SaveButton = <RecordType extends RaRecord = any>(
     const displayedLabel = label && translate(label, { _: label });
     const finalSaving =
         typeof saving !== 'undefined' ? saving : saveContext?.saving;
-    const finalDisabled =
-        typeof disabled !== 'undefined' ? disabled : finalSaving;
+
     return (
         <StyledButton
             variant={variant}
             type={type}
             color={color}
             aria-label={displayedLabel}
-            disabled={finalDisabled}
+            disabled={disabled}
             onClick={handleClick}
             // TODO: find a way to display the loading state (LoadingButton from mui Lab?)
             {...sanitizeButtonRestProps(rest)}
@@ -151,7 +159,9 @@ interface Props<RecordType extends RaRecord = any> {
 export type SaveButtonProps<RecordType extends RaRecord = any> = Props<
     RecordType
 > &
-    ButtonProps;
+    ButtonProps & {
+        alwaysEnable?: boolean;
+    };
 
 SaveButton.propTypes = {
     className: PropTypes.string,
@@ -160,6 +170,7 @@ SaveButton.propTypes = {
     saving: PropTypes.bool,
     variant: PropTypes.oneOf(['text', 'outlined', 'contained']),
     icon: PropTypes.element,
+    alwaysEnable: PropTypes.bool,
 };
 
 const PREFIX = 'RaSaveButton';
@@ -176,3 +187,6 @@ const StyledButton = styled(Button, {
         fontSize: 18,
     },
 }));
+
+const valueOrDefault = (value, defaultValue) =>
+    typeof value === 'undefined' ? defaultValue : value;
