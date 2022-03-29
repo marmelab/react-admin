@@ -9,7 +9,7 @@ import {
     Theme,
 } from '@mui/material';
 import clsx from 'clsx';
-import { RaRecord, SaveContextValue } from 'ra-core';
+import { RaRecord } from 'ra-core';
 
 import { SaveButton, DeleteButton } from '../button';
 
@@ -89,8 +89,7 @@ export const Toolbar = <
 };
 
 export interface ToolbarProps<RecordType extends Partial<RaRecord> = any>
-    extends Omit<MuiToolbarProps, 'classes'>,
-        Omit<Partial<SaveContextValue>, 'mutationMode'> {
+    extends Omit<MuiToolbarProps, 'classes'> {
     children?: ReactNode;
     className?: string;
     record?: RecordType;
