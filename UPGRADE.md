@@ -2682,6 +2682,26 @@ const ReviewEditToolbar = (props: ToolbarProps<Review>) => {
 };
 ```
 
+### `<Toolbar>`'s `alwaysEnableSaveButton` Prop Has Been Removed
+
+This prop has been replaced by `<SaveButton>`'s `alwaysEnable` with the same logic.
+
+```diff
+import { Toolbar, SaveButton } from 'react-admin';
++import { useFormState } from 'react-hook-form';
+
++const MyToolbar = props => (
++    <Toolbar {...props}>
++        <SaveButton alwaysEnable />
++    </Toolbar>    
++);
+
+const EditToolbar = props => (
+-    <Toolbar {...props} alwaysEnableSabeButton />
++    <MyToolbar {...props} />
+);
+```
+
 ### `submitOnEnter` Prop Has Been Removed
 
 The following components no longer accept this prop:
