@@ -9,12 +9,7 @@ import {
     Theme,
 } from '@mui/material';
 import clsx from 'clsx';
-import {
-    RaRecord,
-    SaveContextValue,
-    useRecordContext,
-    useSaveContext,
-} from 'ra-core';
+import { RaRecord, SaveContextValue, useSaveContext } from 'ra-core';
 import { useFormState } from 'react-hook-form';
 
 import { SaveButton, DeleteButton } from '../button';
@@ -67,7 +62,7 @@ export const Toolbar = <
         resource,
         ...rest
     } = props;
-    const record = useRecordContext(props);
+
     const saveContext = useSaveContext();
     const isXs = useMediaQuery<Theme>(theme => theme.breakpoints.down('sm'));
     const { isValidating } = useFormState();
@@ -93,9 +88,7 @@ export const Toolbar = <
             {Children.count(children) === 0 ? (
                 <div className={ToolbarClasses.defaultToolbar}>
                     <SaveButton disabled={disabled} />
-                    {record && typeof record.id !== 'undefined' && (
-                        <DeleteButton resource={resource} />
-                    )}
+                    <DeleteButton resource={resource} />
                 </div>
             ) : (
                 children
