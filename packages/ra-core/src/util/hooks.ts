@@ -62,3 +62,13 @@ export function useTimeout(ms = 0) {
 
     return ready;
 }
+
+export function useIsMounted() {
+    const isMounted = useRef(true);
+    useEffect(() => {
+        return () => {
+            isMounted.current = false;
+        };
+    }, []);
+    return isMounted;
+}
