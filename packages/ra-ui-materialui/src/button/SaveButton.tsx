@@ -69,12 +69,14 @@ export const SaveButton = <RecordType extends RaRecord = any>(
     const notify = useNotify();
     const form = useFormContext();
     const saveContext = useSaveContext();
-    const { isValidating } = useFormState();
+    const { isDirty, isValidating } = useFormState();
     // Use form isDirty, isValidating and form context saving to enable or disable the save button
     // if alwaysEnable is undefined
     const disabled = valueOrDefault(
-        alwaysEnable !== false ? alwaysEnable : undefined,
-        disabledProp || isValidating || saveContext?.saving
+        alwaysEnable === false || alwaysEnable === undefined
+            ? undefined
+            : !alwaysEnable,
+        disabledProp || !isDirty || isValidating || saveContext?.saving
     );
 
     warning(

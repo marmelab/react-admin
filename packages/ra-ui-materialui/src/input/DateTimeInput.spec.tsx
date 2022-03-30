@@ -6,9 +6,10 @@ import { format } from 'date-fns';
 import { useFormState } from 'react-hook-form';
 
 import { AdminContext } from '../AdminContext';
-import { SimpleForm } from '../form';
+import { SimpleForm, Toolbar } from '../form';
 import { DateTimeInput } from './DateTimeInput';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';
+import { SaveButton } from '../button';
 
 describe('<DateTimeInput />', () => {
     const defaultProps = {
@@ -84,7 +85,15 @@ describe('<DateTimeInput />', () => {
         const onSubmit = jest.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={onSubmit} defaultValues={{ publishedAt }}>
+                <SimpleForm
+                    onSubmit={onSubmit}
+                    defaultValues={{ publishedAt }}
+                    toolbar={
+                        <Toolbar>
+                            <SaveButton alwaysEnable />
+                        </Toolbar>
+                    }
+                >
                     <DateTimeInput {...defaultProps} />
                 </SimpleForm>
             </AdminContext>
@@ -107,7 +116,14 @@ describe('<DateTimeInput />', () => {
         const onSubmit = jest.fn();
         render(
             <AdminContext dataProvider={testDataProvider()}>
-                <SimpleForm onSubmit={onSubmit}>
+                <SimpleForm
+                    onSubmit={onSubmit}
+                    toolbar={
+                        <Toolbar>
+                            <SaveButton alwaysEnable />
+                        </Toolbar>
+                    }
+                >
                     <DateTimeInput
                         {...defaultProps}
                         defaultValue={publishedAt}

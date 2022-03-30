@@ -96,7 +96,7 @@ describe('<SaveButton />', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <Form onSubmit={onSubmit}>
-                    <SaveButton />
+                    <SaveButton alwaysEnable />
                 </Form>
             </AdminContext>
         );
@@ -336,7 +336,6 @@ describe('<SaveButton />', () => {
         );
 
         await waitFor(() => {
-            // console.log(getByLabelText('ra.action.save'));
             expect(screen.getByLabelText('ra.action.save')['disabled']).toEqual(
                 true
             );
@@ -349,7 +348,7 @@ describe('<SaveButton />', () => {
         });
     });
 
-    it('Displays a notification on save when invalid and is not of type submit', async () => {
+    it('should display a notification on save when invalid and is not of type submit', async () => {
         const Notification = () => {
             const { notifications } = useNotificationContext();
             return notifications.length > 0 ? (
@@ -363,6 +362,7 @@ describe('<SaveButton />', () => {
                     <Form onSubmit={jest.fn()}>
                         <TextInput source="name" validate={required()} />
                         <SaveButton
+                            alwaysEnable
                             type="button"
                             mutationOptions={{
                                 onSuccess: jest.fn(),
@@ -378,5 +378,20 @@ describe('<SaveButton />', () => {
         await waitFor(() => {
             screen.getByText('ra.message.invalid_form');
         });
+    });
+
+    it('should render enabled if alwaysEnable is true', async () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <Form>
+                    <SaveButton alwaysEnable={true} />
+                </Form>
+            </AdminContext>
+        );
+        await waitFor(() =>
+            expect(screen.getByLabelText('ra.action.save')['disabled']).toEqual(
+                false
+            )
+        );
     });
 });
