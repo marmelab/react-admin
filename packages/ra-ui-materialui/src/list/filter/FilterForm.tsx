@@ -20,6 +20,7 @@ import {
     useFormContext,
 } from 'react-hook-form';
 import lodashSet from 'lodash/set';
+import lodashUnset from 'lodash/unset';
 import lodashGet from 'lodash/get';
 import cloneDeep from 'lodash/cloneDeep';
 
@@ -45,7 +46,8 @@ export const FilterForm = (props: FilterFormProps) => {
 
     // Reapply filterValues when the URL changes or a user removes a filter
     useEffect(() => {
-        form.reset(filterValues);
+        const newValues = getFilterFormValues(form.getValues(), filterValues);
+        form.reset(newValues);
     }, [filterValues, filters, form]);
 
     useEffect(() => {
@@ -57,7 +59,7 @@ export const FilterForm = (props: FilterFormProps) => {
             if (isFormValid) {
                 if (lodashGet(values, name) === '') {
                     const newValues = cloneDeep(values);
-                    lodashSet(newValues, name, undefined);
+                    lodashUnset(newValues, name);
                     setFilters(newValues, displayedFilters);
                 } else {
                     setFilters(values, displayedFilters);
@@ -87,6 +89,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
     const resource = useResourceContext(props);
     const form = useFormContext();
     const { displayedFilters = {}, hideFilter } = useListContext(props);
+
     useEffect(() => {
         filters.forEach((filter: JSX.Element) => {
             if (filter.props.alwaysOn && filter.props.defaultValue) {
@@ -99,13 +102,14 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
 
     const getShownFilters = () => {
         const values = form.getValues();
-        return filters.filter(
-            (filterElement: JSX.Element) =>
+        return filters.filter((filterElement: JSX.Element) => {
+            const filterValue = lodashGet(values, filterElement.props.source);
+            return (
                 filterElement.props.alwaysOn ||
                 displayedFilters[filterElement.props.source] ||
-                typeof lodashGet(values, filterElement.props.source) !==
-                    'undefined'
-        );
+                (filterValue !== '' && typeof filterValue !== 'undefined')
+            );
+        });
     };
 
     const handleHide = useCallback(
@@ -210,3 +214,38 @@ const StyledForm = styled('form', {
     [`& .${FilterFormClasses.clearFix}`]: { clear: 'right' },
     '& .MuiFormHelperText-root': { display: 'none' },
 }));
+
+/**
+ * Because we are using controlled inputs with react-hook-form, we must provide a default value
+ * for each input when resetting the form. (see https://react-hook-form.com/api/useform/reset).
+ * To ensure we don't provide undefined which will result to the current input value being reapplied
+ * and due to the dynamic nature of the filter form, we rebuild the filter form values from its current
+ * values and make sure to pass at least an empty string for each input.
+ */
+export const getFilterFormValues = (
+    formValues: Record<string, any>,
+    filterValues: Record<string, any>
+) => {
+    return Object.keys(formValues).reduce((acc, key) => {
+        acc[key] = getInputValue(formValues, key, filterValues);
+        return acc;
+    }, cloneDeep(filterValues) ?? {});
+};
+
+const getInputValue = (
+    formValues: Record<string, any>,
+    key: string,
+    filterValues: Record<string, any>
+) => {
+    if (typeof formValues[key] === 'object') {
+        return Object.keys(formValues[key]).reduce((acc, innerKey) => {
+            acc[innerKey] = getInputValue(
+                formValues[key],
+                innerKey,
+                (filterValues || {})[key] ?? {}
+            );
+            return acc;
+        }, {});
+    }
+    return lodashGet(filterValues, key, '');
+};

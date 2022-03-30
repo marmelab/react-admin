@@ -3,7 +3,11 @@ import expect from 'expect';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { minLength } from 'ra-core';
 
-import { FilterForm, mergeInitialValuesWithDefaultValues } from './FilterForm';
+import {
+    FilterForm,
+    getFilterFormValues,
+    mergeInitialValuesWithDefaultValues,
+} from './FilterForm';
 import { TextInput } from '../../input';
 import { AdminContext } from '../../AdminContext';
 
@@ -137,6 +141,30 @@ describe('<FilterForm />', () => {
                 title: 'initial title',
                 url: 'default url',
                 author: { name: 'default author' },
+            });
+        });
+    });
+
+    describe('getFilterFormValues', () => {
+        it('should correctly get the filter form values from the new filterValues', () => {
+            const currentFormValues = {
+                classicToClear: 'abc',
+                nestedToClear: { nestedValue: 'def' },
+                classicUpdated: 'ghi',
+                nestedUpdated: { nestedValue: 'jkl' },
+            };
+            const newFilterValues = {
+                classicUpdated: 'ghi2',
+                nestedUpdated: { nestedValue: 'jkl2' },
+            };
+
+            expect(
+                getFilterFormValues(currentFormValues, newFilterValues)
+            ).toEqual({
+                classicToClear: '',
+                nestedToClear: { nestedValue: '' },
+                classicUpdated: 'ghi2',
+                nestedUpdated: { nestedValue: 'jkl2' },
             });
         });
     });
