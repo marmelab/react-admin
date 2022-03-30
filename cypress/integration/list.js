@@ -102,13 +102,19 @@ describe('List Page', () => {
             LoginPage.login('admin', 'password');
             ListPagePosts.navigate();
             ListPagePosts.showFilter('title');
+            // Let's clear the filter first, otherwise we have no way of knowing when the new filter has been (debounced and) applied
+            ListPagePosts.setFilterValue('title', '');
+            cy.contains('1-10 of 13');
+            // Now let's change the filter to something different than the default value
             ListPagePosts.setFilterValue(
                 'title',
                 'Omnis voluptate enim similique est possimus'
             );
             cy.contains('1-1 of 1');
+            // Navigate away and then back
             cy.get('[href="#/users"]').click();
             cy.get('[href="#/posts"]').click();
+            // Check that our filter has been preserved
             cy.get(ListPagePosts.elements.filter('title')).should(el =>
                 expect(el).to.have.value(
                     'Omnis voluptate enim similique est possimus'
