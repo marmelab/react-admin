@@ -8,10 +8,10 @@
     },
     "dependencies": {
         "@mui/material": "^5.0.2",
-        "ra-data-local-storage": "^4.0.0-RC.0",
-        "ra-no-code": "^4.0.0-RC.0",
+        "ra-data-local-storage": "^4.0.0-rc.0",
+        "ra-no-code": "^4.0.0-rc.0",
         "react": "^17.0.0",
-        "react-admin": "^4.0.0-RC.0",
+        "react-admin": "^4.0.0-rc.0",
         "react-dom": "^17.0.0"
     },
     "devDependencies": {

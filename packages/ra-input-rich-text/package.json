@@ -32,8 +32,8 @@
     "peerDependencies": {
         "@mui/icons-material": "^5.0.1",
         "@mui/material": "^5.0.2",
-        "ra-core": "^4.0.0-RC.0",
-        "ra-ui-materialui": "^4.0.0-RC.0",
+        "ra-core": "^4.0.0-rc.0",
+        "ra-ui-materialui": "^4.0.0-rc.0",
         "react": "*",
         "react-dom": "*"
     },
