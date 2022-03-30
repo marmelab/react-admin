@@ -10531,21 +10531,9 @@ __metadata:
     rimraf: ^2.6.3
     tsup: ^5.11.11
   peerDependencies:
-    ra-core: ^3.17.2
+    ra-core: ^4.0.0-RC.0
   languageName: unknown
   linkType: soft
-
-"data-generator-retail@npm:^4.0.0-beta.1.0":
-  version: 4.0.0-beta.3
-  resolution: "data-generator-retail@npm:4.0.0-beta.3"
-  dependencies:
-    date-fns: ^2.19.0
-    faker: ^4.1.0
-  peerDependencies:
-    ra-core: ^3.17.2
-  checksum: 394a01d081a77d07e48639d00c8ecc8b6fff7fa38e46b98f8a0875832f18e2269148a2c85771d68915306207a6f8a61eda513903b54be9804e1247d2f96060c6
-  languageName: node
-  linkType: hard
 
 "data-urls@npm:^2.0.0":
   version: 2.0.0
@@ -10832,7 +10820,7 @@ __metadata:
     "@types/react-dom": ^17.0.9
     "@types/recharts": ^1.8.10
     clsx: ^1.1.1
-    data-generator-retail: ^4.0.0-beta.1.0
+    data-generator-retail: ^4.0.0-RC.0
     date-fns: ^2.19.0
     fakerest: ^3.0.0
     fetch-mock: ~9.11.0
@@ -18625,10 +18613,10 @@ __metadata:
   dependencies:
     "@mui/material": ^5.0.2
     "@vitejs/plugin-react-refresh": ^1.3.1
-    ra-data-local-storage: ^4.0.0-beta.1.0
-    ra-no-code: ^4.0.0-beta.1.0
+    ra-data-local-storage: ^4.0.0-RC.0
+    ra-no-code: ^4.0.0-RC.0
     react: ^17.0.0
-    react-admin: ^4.0.0-beta.1.0
+    react-admin: ^4.0.0-RC.0
     react-dom: ^17.0.0
     typescript: ^4.4.0
     vite: ^2.1.5
@@ -21450,31 +21438,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-core@npm:^4.0.0-beta.3":
-  version: 4.0.0-beta.3
-  resolution: "ra-core@npm:4.0.0-beta.3"
-  dependencies:
-    clsx: ^1.1.1
-    date-fns: ^2.19.0
-    eventemitter3: ^4.0.7
-    inflection: ~1.12.0
-    jsonexport: ^3.2.0
-    lodash: ~4.17.5
-    prop-types: ^15.6.1
-    query-string: ^7.1.1
-    react-is: ^17.0.2
-    react-query: ^3.32.1
-  peerDependencies:
-    history: ^5.1.0
-    react: "*"
-    react-dom: "*"
-    react-hook-form: ^7.27.0
-    react-router: ^6.1.0
-    react-router-dom: ^6.1.0
-  checksum: bc2f6be1e7eba180ef1ba310da39f119bc58967f5b92097fbacc46087614c412d45fe487eb8bb3667e98bd81a006c736ad3c12ae8ec1afc7726526c47e0922e7
-  languageName: node
-  linkType: hard
-
 "ra-data-fakerest@^4.0.0-RC.0, ra-data-fakerest@workspace:packages/ra-data-fakerest":
   version: 0.0.0-use.local
   resolution: "ra-data-fakerest@workspace:packages/ra-data-fakerest"
@@ -21489,17 +21452,6 @@ __metadata:
     ra-core: ^3.17.2
   languageName: unknown
   linkType: soft
-
-"ra-data-fakerest@npm:^4.0.0-beta.3":
-  version: 4.0.0-beta.3
-  resolution: "ra-data-fakerest@npm:4.0.0-beta.3"
-  dependencies:
-    fakerest: ^3.0.0
-  peerDependencies:
-    ra-core: ^3.17.2
-  checksum: 96593d236875ac4cda1fe5a817504ca4d59548d9d28c2d93d0287a82f5473a4f731afa0839ed769fd3c68328ba51ccd0b7289f618d87f758fead90960b43ba17
-  languageName: node
-  linkType: hard
 
 "ra-data-graphql-simple@^4.0.0-beta.2, ra-data-graphql-simple@workspace:packages/ra-data-graphql-simple":
   version: 0.0.0-use.local
@@ -21539,17 +21491,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-json-server@npm:^4.0.0-beta.1.0":
-  version: 4.0.0-beta.3
-  resolution: "ra-data-json-server@npm:4.0.0-beta.3"
-  dependencies:
-    query-string: ^7.1.1
-    ra-core: ^4.0.0-beta.3
-  checksum: 263edda887f5d6b24353e359e8fe757ba9ec687a274c63598f2bf7827f854769824c2c3ab5de1a9077c79cc692e6c2fc9541f20500f3aa4b04bf442e12f49f4a
-  languageName: node
-  linkType: hard
-
-"ra-data-json-server@workspace:packages/ra-data-json-server":
+"ra-data-json-server@^4.0.0-RC.0, ra-data-json-server@workspace:packages/ra-data-json-server":
   version: 0.0.0-use.local
   resolution: "ra-data-json-server@workspace:packages/ra-data-json-server"
   dependencies:
@@ -21577,18 +21519,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-local-storage@npm:^4.0.0-beta.1.0, ra-data-local-storage@npm:^4.0.0-beta.3":
-  version: 4.0.0-beta.3
-  resolution: "ra-data-local-storage@npm:4.0.0-beta.3"
-  dependencies:
-    lodash: ~4.17.5
-    ra-data-fakerest: ^4.0.0-beta.3
-  peerDependencies:
-    ra-core: "*"
-  checksum: 952954f118cc60a2bd731e3af4102cee604e949ec6d0a8cef03bcb82883c6fa87683198796a5af04017f375f45ac40f5d1d2740873f1f09f304c9589af11cfe9
-  languageName: node
-  linkType: hard
-
 "ra-data-simple-rest@^4.0.0-RC.0, ra-data-simple-rest@workspace:packages/ra-data-simple-rest":
   version: 0.0.0-use.local
   resolution: "ra-data-simple-rest@workspace:packages/ra-data-simple-rest"
@@ -21600,7 +21530,7 @@ __metadata:
     rimraf: ^2.6.3
     tsup: ^5.11.11
   peerDependencies:
-    ra-core: ^4.0.0-beta.1.0
+    ra-core: ^4.0.0-RC.0
   languageName: unknown
   linkType: soft
 
@@ -21616,16 +21546,6 @@ __metadata:
     tsup: ^5.11.11
   languageName: unknown
   linkType: soft
-
-"ra-i18n-polyglot@npm:^4.0.0-beta.3":
-  version: 4.0.0-beta.3
-  resolution: "ra-i18n-polyglot@npm:4.0.0-beta.3"
-  dependencies:
-    node-polyglot: ^2.2.2
-    ra-core: ^4.0.0-beta.3
-  checksum: 7951c0a7f2cd27952296643d86f962c481245d345fcc6965c8aa678e092681ae38980b2107fa29ea5b32e6044deba9fe28958964327ca2d5eb55fb35136d2901
-  languageName: node
-  linkType: hard
 
 "ra-input-rich-text@^4.0.0-RC.0, ra-input-rich-text@workspace:packages/ra-input-rich-text":
   version: 0.0.0-use.local
@@ -21652,8 +21572,8 @@ __metadata:
   peerDependencies:
     "@mui/icons-material": ^5.0.1
     "@mui/material": ^5.0.2
-    ra-core: ^4.0.0-beta.1.0
-    ra-ui-materialui: ^4.0.0-beta.1.0
+    ra-core: ^4.0.0-RC.0
+    ra-ui-materialui: ^4.0.0-RC.0
     react: "*"
     react-dom: "*"
   languageName: unknown
@@ -21669,15 +21589,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-language-english@npm:^4.0.0-beta.3":
-  version: 4.0.0-beta.3
-  resolution: "ra-language-english@npm:4.0.0-beta.3"
-  dependencies:
-    ra-core: ^4.0.0-beta.3
-  checksum: 271dd4c0a255834bc2361ac7c77f60440ef985d07c610a7d523850e29e3242abef0ad52ec0ed22e03d8864acd6a5c57a659cc59e7c4121a6ef24ad0adbdf7583
-  languageName: node
-  linkType: hard
-
 "ra-language-french@^4.0.0-RC.0, ra-language-french@workspace:packages/ra-language-french":
   version: 0.0.0-use.local
   resolution: "ra-language-french@workspace:packages/ra-language-french"
@@ -21688,30 +21599,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-no-code@npm:^4.0.0-beta.1.0":
-  version: 4.0.0-beta.3
-  resolution: "ra-no-code@npm:4.0.0-beta.3"
-  dependencies:
-    "@mui/icons-material": ^5.0.1
-    "@mui/material": ^5.0.2
-    clsx: ^1.1.1
-    date-fns: ^2.19.0
-    inflection: ~1.12.0
-    lodash: ~4.17.5
-    papaparse: ^5.3.0
-    prop-types: ^15.6.1
-    ra-data-local-storage: ^4.0.0-beta.3
-    react-admin: ^4.0.0-beta.3
-    react-dropzone: ^12.0.4
-    react-query: ^3.32.1
-  peerDependencies:
-    react: "*"
-    react-dom: "*"
-  checksum: 711298645c3a2d7a8975808f8f94b3737de268890b4f604c6e9a04d3d003689edba2385d289a8a4099cb91592e1aa9e0e8802fb1708f346a5358cc8853c8e3e6
-  languageName: node
-  linkType: hard
-
-"ra-no-code@workspace:packages/ra-no-code":
+"ra-no-code@^4.0.0-RC.0, ra-no-code@workspace:packages/ra-no-code":
   version: 0.0.0-use.local
   resolution: "ra-no-code@workspace:packages/ra-no-code"
   dependencies:
@@ -21782,40 +21670,13 @@ __metadata:
   peerDependencies:
     "@mui/icons-material": ^5.0.1
     "@mui/material": ^5.0.2
-    ra-core: ^4.0.0-beta.1.0
+    ra-core: ^4.0.0-RC.0
     react: "*"
     react-dom: "*"
     react-router: ^6.1.0
     react-router-dom: ^6.1.0
   languageName: unknown
   linkType: soft
-
-"ra-ui-materialui@npm:^4.0.0-beta.3":
-  version: 4.0.0-beta.3
-  resolution: "ra-ui-materialui@npm:4.0.0-beta.3"
-  dependencies:
-    autosuggest-highlight: ^3.1.1
-    clsx: ^1.1.1
-    inflection: ~1.12.0
-    jsonexport: ^3.2.0
-    lodash: ~4.17.5
-    prop-types: ^15.7.0
-    query-string: ^7.1.1
-    react-dropzone: ^12.0.4
-    react-error-boundary: ^3.1.4
-    react-query: ^3.32.1
-    react-transition-group: ^4.4.1
-  peerDependencies:
-    "@mui/icons-material": ^5.0.1
-    "@mui/material": ^5.0.2
-    ra-core: ^4.0.0-beta.1.0
-    react: "*"
-    react-dom: "*"
-    react-router: ^6.1.0
-    react-router-dom: ^6.1.0
-  checksum: 5581df054a28dd2d3dad5588d5c78cdc9100a8b8a197782dc2c44766e43fe3aec319a29c4628261fd994e90c4202efb577c5ecf884c6005d02f3d669f9a0a95e
-  languageName: node
-  linkType: hard
 
 "raf-schd@npm:^4.0.2":
   version: 4.0.3
@@ -22003,29 +21864,6 @@ __metadata:
     react-dom: "*"
   languageName: unknown
   linkType: soft
-
-"react-admin@npm:^4.0.0-beta.1.0, react-admin@npm:^4.0.0-beta.3":
-  version: 4.0.0-beta.3
-  resolution: "react-admin@npm:4.0.0-beta.3"
-  dependencies:
-    "@emotion/react": ^11.4.1
-    "@emotion/styled": ^11.3.0
-    "@mui/icons-material": ^5.0.1
-    "@mui/material": ^5.0.2
-    history: ^5.1.0
-    ra-core: ^4.0.0-beta.3
-    ra-i18n-polyglot: ^4.0.0-beta.3
-    ra-language-english: ^4.0.0-beta.3
-    ra-ui-materialui: ^4.0.0-beta.3
-    react-hook-form: ^7.27.0
-    react-router: ^6.1.0
-    react-router-dom: ^6.1.0
-  peerDependencies:
-    react: "*"
-    react-dom: "*"
-  checksum: e7a6635887e79ce8d5f570a9f8ee2094d323c83fa455141bc5921af2ef18fc4873585a030e2ff6d8d2743fa414fa9903c2494d29771058fbf01c704261c7826c
-  languageName: node
-  linkType: hard
 
 "react-app-polyfill@npm:^1.0.4":
   version: 1.0.6
@@ -25820,9 +25658,9 @@ __metadata:
   dependencies:
     "@mui/icons-material": ^5.0.1
     "@mui/material": ^5.0.2
-    ra-data-json-server: ^4.0.0-beta.1.0
+    ra-data-json-server: ^4.0.0-RC.0
     react: ^17.0.0
-    react-admin: ^4.0.0-beta.1.0
+    react-admin: ^4.0.0-RC.0
     react-dom: ^17.0.0
     react-scripts: ^5.0.0
   languageName: unknown
