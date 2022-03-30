@@ -10843,16 +10843,16 @@ __metadata:
     prop-types: ^15.6.1
     proxy-polyfill: ^0.3.0
     query-string: ^7.1.1
-    ra-data-fakerest: ^4.0.0-beta.1.0
-    ra-data-graphql: ^4.0.0-beta.1.0
-    ra-data-graphql-simple: ^4.0.0-beta.1.0
-    ra-data-simple-rest: ^4.0.0-beta.1.0
-    ra-i18n-polyglot: ^4.0.0-beta.1.0
-    ra-input-rich-text: ^4.0.0-beta.1.0
-    ra-language-english: ^4.0.0-beta.1.0
-    ra-language-french: ^4.0.0-beta.1.0
+    ra-data-fakerest: ^4.0.0-RC.0
+    ra-data-graphql: ^4.0.0-beta.2
+    ra-data-graphql-simple: ^4.0.0-beta.2
+    ra-data-simple-rest: ^4.0.0-RC.0
+    ra-i18n-polyglot: ^4.0.0-RC.0
+    ra-input-rich-text: ^4.0.0-RC.0
+    ra-language-english: ^4.0.0-RC.0
+    ra-language-french: ^4.0.0-RC.0
     react: ^17.0.0
-    react-admin: ^4.0.0-beta.1.0
+    react-admin: ^4.0.0-RC.0
     react-app-polyfill: ^2.0.0
     react-dom: ^17.0.0
     react-router: ^6.1.0
@@ -21490,7 +21490,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-data-fakerest@npm:^4.0.0-beta.1.0, ra-data-fakerest@npm:^4.0.0-beta.3":
+"ra-data-fakerest@npm:^4.0.0-beta.3":
   version: 4.0.0-beta.3
   resolution: "ra-data-fakerest@npm:4.0.0-beta.3"
   dependencies:
@@ -21501,7 +21501,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-data-graphql-simple@^4.0.0-beta.1.0, ra-data-graphql-simple@workspace:packages/ra-data-graphql-simple":
+"ra-data-graphql-simple@^4.0.0-beta.2, ra-data-graphql-simple@workspace:packages/ra-data-graphql-simple":
   version: 0.0.0-use.local
   resolution: "ra-data-graphql-simple@workspace:packages/ra-data-graphql-simple"
   dependencies:
@@ -21517,11 +21517,11 @@ __metadata:
     tsup: ^5.11.11
   peerDependencies:
     graphql: ^15.6.0
-    ra-core: ^4.0.0-beta.1.0
+    ra-core: ^4.0.0-RC.0
   languageName: unknown
   linkType: soft
 
-"ra-data-graphql@^4.0.0-beta.1.0, ra-data-graphql@^4.0.0-beta.2, ra-data-graphql@workspace:packages/ra-data-graphql":
+"ra-data-graphql@^4.0.0-beta.2, ra-data-graphql@workspace:packages/ra-data-graphql":
   version: 0.0.0-use.local
   resolution: "ra-data-graphql@workspace:packages/ra-data-graphql"
   dependencies:
@@ -21535,7 +21535,7 @@ __metadata:
     tsup: ^5.11.11
   peerDependencies:
     graphql: ^15.6.0
-    ra-core: ^4.0.0-beta.1.0
+    ra-core: ^4.0.0-RC.0
   languageName: unknown
   linkType: soft
 
@@ -21589,18 +21589,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ra-data-simple-rest@npm:^4.0.0-beta.1.0":
-  version: 4.0.0-beta.3
-  resolution: "ra-data-simple-rest@npm:4.0.0-beta.3"
-  dependencies:
-    query-string: ^7.1.1
-  peerDependencies:
-    ra-core: ^4.0.0-beta.1.0
-  checksum: 2caccf2a95ca818e4ad95004d69e622644a5c96f8bc61ae174e769aec148f75c2939c6ba570b4945211683c42ef94b889bcadc6b5644d41fc4094225435f53f2
-  languageName: node
-  linkType: hard
-
-"ra-data-simple-rest@workspace:packages/ra-data-simple-rest":
+"ra-data-simple-rest@^4.0.0-RC.0, ra-data-simple-rest@workspace:packages/ra-data-simple-rest":
   version: 0.0.0-use.local
   resolution: "ra-data-simple-rest@workspace:packages/ra-data-simple-rest"
   dependencies:
@@ -21628,7 +21617,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-i18n-polyglot@npm:^4.0.0-beta.1.0, ra-i18n-polyglot@npm:^4.0.0-beta.3":
+"ra-i18n-polyglot@npm:^4.0.0-beta.3":
   version: 4.0.0-beta.3
   resolution: "ra-i18n-polyglot@npm:4.0.0-beta.3"
   dependencies:
@@ -21670,28 +21659,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-input-rich-text@npm:^4.0.0-beta.1.0":
-  version: 4.0.0-beta.3
-  resolution: "ra-input-rich-text@npm:4.0.0-beta.3"
-  dependencies:
-    "@tiptap/extension-link": ^2.0.0-beta.20
-    "@tiptap/extension-placeholder": ^2.0.0-beta.30
-    "@tiptap/extension-text-align": ^2.0.0-beta.23
-    "@tiptap/extension-underline": ^2.0.0-beta.16
-    "@tiptap/react": ^2.0.0-beta.63
-    "@tiptap/starter-kit": ^2.0.0-beta.101
-    clsx: ^1.1.1
-  peerDependencies:
-    "@mui/icons-material": ^5.0.1
-    "@mui/material": ^5.0.2
-    ra-core: ^4.0.0-beta.1.0
-    ra-ui-materialui: ^4.0.0-beta.1.0
-    react: "*"
-    react-dom: "*"
-  checksum: 0729117f91d9aa5937fb5c58f22e5acee878d1195aabab6000183773acd8adf7d3476d51b2c6cf14ab68c789527b3138703823c4fd0eb40d3445d9b3dfbad769
-  languageName: node
-  linkType: hard
-
 "ra-language-english@^4.0.0-RC.0, ra-language-english@workspace:packages/ra-language-english":
   version: 0.0.0-use.local
   resolution: "ra-language-english@workspace:packages/ra-language-english"
@@ -21702,7 +21669,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-language-english@npm:^4.0.0-beta.1.0, ra-language-english@npm:^4.0.0-beta.3":
+"ra-language-english@npm:^4.0.0-beta.3":
   version: 4.0.0-beta.3
   resolution: "ra-language-english@npm:4.0.0-beta.3"
   dependencies:
@@ -21720,15 +21687,6 @@ __metadata:
     tsup: ^5.11.11
   languageName: unknown
   linkType: soft
-
-"ra-language-french@npm:^4.0.0-beta.1.0":
-  version: 4.0.0-beta.3
-  resolution: "ra-language-french@npm:4.0.0-beta.3"
-  dependencies:
-    ra-core: ^4.0.0-beta.3
-  checksum: bf950cf189903327fe9dc5326814b4326a9b007a991eec6fa347f79e5a98a03213d46b57feaac1d7a36c230a44bfe3a347a49083b32f242fd1d8dc73728c4c47
-  languageName: node
-  linkType: hard
 
 "ra-no-code@npm:^4.0.0-beta.1.0":
   version: 4.0.0-beta.3
@@ -21956,9 +21914,9 @@ __metadata:
     faker: ~5.4.0
     lodash: ~4.17.5
     prop-types: ^15.7.2
-    ra-data-fakerest: ^4.0.0-beta.1.0
+    ra-data-fakerest: ^4.0.0-RC.0
     react: ^17.0.0
-    react-admin: ^4.0.0-beta.1.0
+    react-admin: ^4.0.0-RC.0
     react-beautiful-dnd: ^13.0.0
     react-dom: ^17.0.0
     react-error-boundary: ^3.1.4
