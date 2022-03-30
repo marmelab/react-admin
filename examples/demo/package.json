@@ -9,7 +9,7 @@
         "@types/inflection": "^1.5.28",
         "@types/recharts": "^1.8.10",
         "clsx": "^1.1.1",
-        "data-generator-retail": "^4.0.0-beta.1.0",
+        "data-generator-retail": "^4.0.0-RC.0",
         "date-fns": "^2.19.0",
         "fakerest": "^3.0.0",
         "fetch-mock": "~9.11.0",
