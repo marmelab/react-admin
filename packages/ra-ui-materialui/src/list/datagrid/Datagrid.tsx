@@ -131,6 +131,7 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
         rowStyle,
         size = 'small',
         sx,
+        expandSingle = false,
         ...rest
     } = props;
 
@@ -147,8 +148,9 @@ export const Datagrid: FC<DatagridProps> = React.forwardRef((props, ref) => {
 
     const hasBulkActions = !!bulkActionButtons !== false;
 
-    const contextValue = useMemo(() => ({ isRowExpandable }), [
+    const contextValue = useMemo(() => ({ isRowExpandable, expandSingle }), [
         isRowExpandable,
+        expandSingle,
     ]);
 
     const lastSelected = useRef(null);
@@ -313,6 +315,7 @@ Datagrid.propTypes = {
     total: PropTypes.number,
     isRowSelectable: PropTypes.func,
     isRowExpandable: PropTypes.func,
+    expandSingle: PropTypes.bool,
 };
 
 export interface DatagridProps<RecordType extends RaRecord = any>
@@ -344,6 +347,7 @@ export interface DatagridProps<RecordType extends RaRecord = any>
     onToggleItem?: (id: Identifier) => void;
     setSort?: (sort: SortPayload) => void;
     selectedIds?: Identifier[];
+    expandSingle?: boolean;
     total?: number;
 }
 
