@@ -55,6 +55,77 @@ React-admin components don't access the store directly ; instead, they use purpo
 
 Using specialized hooks avoids depending on a store key.
 
+## Forward Compatibility
+
+If you store complex objects in the Store, and you change the structure of these objects in the application code, the new code relying on the new object structure may fail when running with an old stored object.
+
+For instance, let's imagine an app storing a User Preferences object in the Store under the `'preferences'` key. The object looks like:
+
+```jsx
+{ fontSize: 'large', colorScheme: 'dark' }
+```
+
+Then, the developer changes the structure of the object:
+
+```jsx
+{
+    ui: {
+        fontSize: 'large',
+        mode: 'dark',
+    }
+}
+```
+
+The new code reads the preferences from the Store and expects the value to respect the new structure:
+
+```jsx
+const preferences = useStore('preferences');
+// this will throw an error if a user has an old preferences object
+const { fontSize, mode } = preferences.ui;
+```
+
+To avoid this type of error, the code using the Store should always make sure that the object from the Store has the expected structure, and use a default value if not. To put it otherwise, always assume that the data from the store may have the wrong shape - it's the only way to ensure forward compatibility.
+
+```jsx
+let preferences = useStore('preferences');
+if (!preferences.ui || !preferences.ui.fontSize || !preferences.ui.mode) {
+    preferences = { ui: { fontSize: 'large', mode: 'dark' } };
+}
+// this will never fail
+const { fontSize, mode } = preferences.ui;
+```
+
+You may want to use libraries that validate the schema of an object, like [Yup](https://github.com/jquense/yup), [Zod](https://github.com/vriad/zod), [Superstruct](https://github.com/ianstormtaylor/superstruct), or [Joi](https://github.com/hapijs/joi).
+
+Even better: don't store objects in the Store at all, only store scalar values instead. You can call `useStore` several times:
+
+```jsx
+let fontSize = useStore('preferences.ui.fontSize');
+let mode = useStore('preferences.ui.mode');
+```
+
+## Store Invalidation
+
+If your application cannot check the shape of a stored object, react-admin provides an escape hatch to avoid errors for users with an old value: store invalidation. 
+
+The idea is that you can specify a version number for your Store. If the Store contains data with a different version number than the code, the Store resets all preferences.
+
+To create a Store with a different version number, call the `localStorageStore()` function with a version identifier, then pass the resulting object as the `<Admin store>` prop:
+
+```jsx
+import { Admin, Resource, localStorageStore } from 'react-admin';
+
+const STORE_VERSION = 2
+
+const App = () => (
+    <Admin dataProvider={dataProvider} store={localStorageStore(STORE_VERSION)}>
+        <Resource name="posts" />
+    </Admin>
+);
+```
+
+Increase the version number each time you push code that isn't compatible with the stored values. 
+
 ## Transient Store
 
 If you don't want the store to be persisted between sessions, you can override the default `<Admin store>` component:

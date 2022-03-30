@@ -35,7 +35,7 @@ export const PostEdit = (props) => (
 
 ## Customizing the Toolbar
 
-The `<RichTextInput>` component has a `toolar` prop that accepts a `ReactNode`.
+The `<RichTextInput>` component has a `toolbar` prop that accepts a `ReactNode`.
 
 You can leverage this to change the buttons [size](#api):
 

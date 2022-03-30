@@ -67,10 +67,10 @@ The routing will map the component as follows:
 
 `<Resource>` allows you to define a component for each CRUD operation, using the following prop names:
 
-* `list` (if defined, the resource is displayed on the Menu)
-* `create`
-* `edit`
-* `show`
+* `list` (usually using [the `<List>` component](./List.md)) (if defined, the resource is displayed on the Menu)
+* `create` (usually using [the `<Create>` component](./Create.md))
+* `edit` (usually using [the `<Edit>` component](./Edit.md))
+* `show` (usually using [the `<Show>` component](./Show.md))
 
 **Tip**: Under the hood, the `<Resource>` component uses [react-router](https://reactrouter.com/web/guides/quick-start) to create several routes:
 

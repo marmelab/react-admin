@@ -154,7 +154,7 @@ const authProvider = {
 };
 
 // in dataProvider.js
-import { fetchUtils } from 'react-admin@';
+import { fetchUtils } from 'react-admin';
 import simpleRestProvider from 'ra-data-simple-rest';
 
 const fetchJson = (url, options = {}) => {

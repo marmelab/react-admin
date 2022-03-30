@@ -212,34 +212,34 @@ const HasOrderedFilter = () => (
 
 You can place these `<FilterList>` anywhere inside a `<List>`. The most common case is to put them in a sidebar that is on the left-hand side of the `Datagrid`. You can use the `aside` property for that:
 
+{% raw %}
 ```jsx
 import * as React from 'react';
-import { Card as MuiCard, CardContent, withStyles } from '@mui/material';
+import { Box, Card, CardContent, styled } from '@mui/material';
 
 import { LastVisitedFilter, HasOrderedFilter, HasNewsletterFilter, SegmentFilter } from './filters';
 
-const Card = withStyles(theme => ({
-    root: {
-        [theme.breakpoints.up('sm')]: {
+const FilterSidebar = () => (
+    <Box
+        sx={{
+            display: {
+                xs: 'none',
+                sm: 'block'
+            },
             order: -1, // display on the left rather than on the right of the list
             width: '15em',
-            marginRight: '1em',
-        },
-        [theme.breakpoints.down('sm')]: {
-            display: 'none',
-        },
-    },
-}))(MuiCard);
-
-const FilterSidebar = () => (
-    <Card>
-        <CardContent>
-            <LastVisitedFilter />
-            <HasOrderedFilter />
-            <HasNewsletterFilter />
-            <SegmentFilter />
-        </CardContent>
-    </Card>
+                marginRight: '1em',
+        }}
+    >
+        <Card>
+            <CardContent>
+                <LastVisitedFilter />
+                <HasOrderedFilter />
+                <HasNewsletterFilter />
+                <SegmentFilter />
+            </CardContent>
+        </Card>
+    </Box>
 );
 
 const CustomerList = props => (
@@ -248,5 +248,6 @@ const CustomerList = props => (
     </List>
 )
 ```
+{% endraw %}
 
 **Tip**: The `<FilterList>` Sidebar is not a good UI for small screens. You can choose to hide it on small screens (as in the previous example). A good tradeoff is to use `<FilterList>` on large screens, and the Filter Button/Form combo on Mobile.
