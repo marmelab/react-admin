@@ -379,4 +379,19 @@ describe('<SaveButton />', () => {
             screen.getByText('ra.message.invalid_form');
         });
     });
+
+    it('should render enabled if alwaysEnable is true', async () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <Form>
+                    <SaveButton alwaysEnable={true} />
+                </Form>
+            </AdminContext>
+        );
+        await waitFor(() =>
+            expect(screen.getByLabelText('ra.action.save')['disabled']).toEqual(
+                false
+            )
+        );
+    });
 });
