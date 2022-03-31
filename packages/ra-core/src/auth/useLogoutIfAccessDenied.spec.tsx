@@ -271,9 +271,9 @@ describe('useLogoutIfAccessDenied', () => {
         );
         await waitFor(() => {
             expect(authProvider.logout).toHaveBeenCalledTimes(0);
+            expect(notify).toHaveBeenCalledTimes(1);
+            expect(screen.queryByText('logged in')).toBeNull();
+            expect(screen.queryByText('unauthorized')).not.toBeNull();
         });
-        expect(notify).toHaveBeenCalledTimes(1);
-        expect(screen.queryByText('logged in')).toBeNull();
-        expect(screen.queryByText('unauthorized')).not.toBeNull();
     });
 });
