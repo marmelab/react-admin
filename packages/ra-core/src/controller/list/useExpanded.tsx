@@ -45,7 +45,7 @@ export const useExpanded = (
                 ? [id]
                 : [...ids, id];
         });
-    }, [setExpandedIds, id]);
+    }, [setExpandedIds, id, single]);
 
     return [expanded, toggleExpanded];
 };
