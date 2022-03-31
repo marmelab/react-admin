@@ -68,12 +68,14 @@ import { RaRecord, CreateParams } from '../types';
  */
 export const useCreate = <RecordType extends RaRecord = any>(
     resource?: string,
-    params: Partial<CreateParams<RecordType>> = {},
+    params: Partial<CreateParams<Partial<RecordType>>> = {},
     options: UseCreateOptions<RecordType> = {}
 ): UseCreateResult<RecordType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const paramsRef = useRef<Partial<CreateParams<RecordType>>>(params);
+    const paramsRef = useRef<Partial<CreateParams<Partial<RecordType>>>>(
+        params
+    );
 
     const mutation = useMutation<
         RecordType,
