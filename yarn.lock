@@ -21449,7 +21449,7 @@ __metadata:
     rimraf: ^2.6.3
     tsup: ^5.11.11
   peerDependencies:
-    ra-core: ^3.17.2
+    ra-core: ^4.0.0-rc.0
   languageName: unknown
   linkType: soft
 
