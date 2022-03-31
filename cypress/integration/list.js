@@ -88,7 +88,6 @@ describe('List Page', () => {
             // See https://github.com/marmelab/react-admin/pull/2019
             cy.get('[href="#/users"]').click();
             // Wait until the filter is actually applied (async because of hook-form)
-            cy.url().should('contain', 'role');
             cy.contains('1-2 of 2');
 
             cy.get('[href="#/posts"]').click();
@@ -119,7 +118,7 @@ describe('List Page', () => {
             );
             cy.get('[href="#/users"]').click();
             // Wait until the filter is actually applied (async because of hook-form)
-            cy.url().should('contain', 'role');
+            cy.contains('1-2 of 2');
             cy.get('[href="#/posts"]').click();
             cy.url().should('contain', '/posts');
             cy.get(ListPagePosts.elements.filter('title')).should(el =>
@@ -134,7 +133,6 @@ describe('List Page', () => {
             LoginPage.login('admin', 'password');
             ListPageUsers.navigate();
             // Wait until the filter is actually applied (async because of hook-form)
-            cy.url().should('contain', 'role');
             cy.contains('1-2 of 2');
             cy.get('button[title="Remove this filter"]').click();
             cy.contains('1-3 of 3');
