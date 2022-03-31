@@ -7,6 +7,7 @@ DatagridContext.displayName = 'DatagridContext';
 
 export type DatagridContextValue = {
     isRowExpandable?: (record: RaRecord) => boolean;
+    expandSingle?: boolean;
 };
 
 export default DatagridContext;
