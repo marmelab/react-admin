@@ -73,6 +73,7 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
     const queryClient = useQueryClient();
     const queryCache = queryClient.getQueryCache();
     const { ids, meta } = params;
+    const { enabled = ids.length > 0, ...restOptions } = options;
     const placeholderData = useMemo(() => {
         const records = ids.map(id => {
             const queryHash = hashQueryKey([
@@ -116,7 +117,8 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
                 });
             },
             retry: false,
-            ...options,
+            enabled,
+            ...restOptions,
         }
     );
 };

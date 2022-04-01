@@ -61,7 +61,6 @@ export const useReferenceArrayFieldController = (
         reference,
         { ids },
         {
-            enabled: ids.length > 0,
             onError: error =>
                 notify(
                     typeof error === 'string'
