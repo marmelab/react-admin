@@ -40,7 +40,6 @@ const DatagridBody: FC<DatagridBodyProps> = React.forwardRef(
                         className: clsx(DatagridClasses.row, {
                             [DatagridClasses.rowEven]: rowIndex % 2 === 0,
                             [DatagridClasses.rowOdd]: rowIndex % 2 !== 0,
-                            [DatagridClasses.clickableRow]: rowClick,
                         }),
                         expand,
                         hasBulkActions: hasBulkActions && !!selectedIds,
