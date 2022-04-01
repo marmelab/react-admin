@@ -46,6 +46,7 @@ Here are all the props accepted by the component:
 * [`children`](#children)
 * [`empty`](#empty)
 * [`expand`](#expand)
+* [`expandSingle`](#expandsingle) 
 * [`header`](#header)
 * [`hover`](#hover)
 * [`isRowExpandable`](#isrowexpandable)
@@ -471,6 +472,21 @@ const PostList = () => (
     </List>
 )
 ```
+
+## `expandSingle`
+
+The `expandSingle` allows a single row to be expanded at a time.
+
+```jsx
+export const PostList = () => (
+    <List>
+        <Datagrid expandSingle>
+            ...
+        </Datagrid>
+    </List>
+);
+```
+
 
 ## `header`
 

@@ -64,7 +64,11 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
         expand;
     const resource = useResourceContext(props);
     const createPath = useCreatePath();
-    const [expanded, toggleExpanded] = useExpanded(resource, id);
+    const [expanded, toggleExpanded] = useExpanded(
+        resource,
+        id,
+        context && context.expandSingle
+    );
     const [nbColumns, setNbColumns] = useState(() =>
         computeNbColumns(expandable, children, hasBulkActions)
     );
