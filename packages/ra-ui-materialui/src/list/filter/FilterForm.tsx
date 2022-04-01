@@ -48,7 +48,7 @@ export const FilterForm = (props: FilterFormProps) => {
     useEffect(() => {
         const newValues = getFilterFormValues(form.getValues(), filterValues);
         form.reset(newValues);
-    }, [filterValues, filters, form]);
+    }, [filterValues, form]);
 
     useEffect(() => {
         const subscription = form.watch(async (values, { name, type }) => {
