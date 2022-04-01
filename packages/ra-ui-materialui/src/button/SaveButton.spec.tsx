@@ -315,11 +315,14 @@ describe('<SaveButton />', () => {
 
         render(
             <AdminContext dataProvider={dataProvider}>
-                <Edit {...defaultEditProps}>
-                    <SimpleForm mode="onChange">
-                        <TextInput source="title" validate={validateAsync} />
-                    </SimpleForm>
-                </Edit>
+                <Form mode="onChange">
+                    <TextInput
+                        label="title"
+                        source="title"
+                        validate={validateAsync}
+                    />
+                    <SaveButton />
+                </Form>
             </AdminContext>
         );
         // waitFor for the dataProvider.getOne() return
@@ -328,12 +331,9 @@ describe('<SaveButton />', () => {
         });
 
         // change one input to enable the SaveButton (which is disabled when the form is pristine)
-        fireEvent.change(
-            screen.getByLabelText('resources.posts.fields.title'),
-            {
-                target: { value: 'ipsum' },
-            }
-        );
+        fireEvent.change(screen.getByLabelText('title'), {
+            target: { value: 'ipsum' },
+        });
 
         await waitFor(() => {
             expect(screen.getByLabelText('ra.action.save')['disabled']).toEqual(
