@@ -85,7 +85,7 @@ describe('useGetManyAggregate', () => {
         expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
     });
 
-    it.only('should not call dataProvider.getMany() if ids is empty', async () => {
+    it('should not call dataProvider.getMany() if ids is empty', async () => {
         const { rerender } = render(
             <CoreAdminContext dataProvider={dataProvider}>
                 <UseGetManyAggregate resource="posts" ids={[]} />
