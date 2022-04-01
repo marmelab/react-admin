@@ -143,7 +143,7 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
                     [DatagridClasses.expandable]: expandable,
                     [DatagridClasses.selectable]: selectable,
                     [DatagridClasses.clickableRow]:
-                        typeof rowClick === 'function' ? false : rowClick,
+                        typeof rowClick === 'function' ? true : rowClick,
                 })}
                 key={id}
                 style={style}
