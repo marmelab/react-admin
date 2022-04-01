@@ -111,6 +111,20 @@ const App = () => (
 - `<List>`, `<ListBase>`, `<ListController>` and `useListController`
 - `<Show>`, `<ShowBase>`, `<ShowController>` and `useShowController`
 
+## Disabling Anonymous Access
+
+Some pages in react-admin apps may allow anonymous access. For that reason, react-admin starts rendering the page layout before knowing if the user is logged in. If all the pages require authentication, this default behaviour creates an unwanted "flash of UI" for users who never logged in, before the `authProvider` redirects them to the login page.
+
+If you know your app will never accept anonymous access, you can force the app to wait for the `authProvider.checkAuth()` to resolve before rendering the page layout, by setting the `<Admin requireAuth>` prop.
+
+```jsx
+const App = () => (
+    <Admin dataProvider={dataProvider} authProvider={authProvider} requireAuth>
+        <Resource name="posts" list={PostList} />
+    </Admin>
+);
+```
+
 ## Restricting Access To Custom Pages
 
 When you add custom pages, they are accessible to anonymous users by default. To make them only accessible to authenticated users, call [the `useAuthenticated` hook](./useAuthenticated.md) in the custom page:

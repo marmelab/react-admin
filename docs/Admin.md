@@ -43,6 +43,7 @@ Here are all the props accepted by the component:
 - [`history`](#history)
 - [`basename`](#basename)
 - [`ready`](#ready)
+- [`requireAuth`](#requireAuth)
 - [`store`](#store)
 
 ## `dataProvider`
@@ -408,6 +409,20 @@ const Ready = () => (
 const App = () => (
     <Admin ready={Ready}>
         ...
+    </Admin>
+);
+```
+
+## `requireAuth`
+
+Some pages in react-admin apps may allow anonymous access. For that reason, react-admin starts rendering the page layout before knowing if the user is logged in. If all the pages require authentication, this default behaviour creates an unwanted "flash of UI" for users who never logged in, before the `authProvider` redirects them to the login page.
+
+If you know your app will never accept anonymous access, you can force the app to wait for the `authProvider.checkAuth()` to resolve before rendering the page layout, by setting the `<Admin requireAuth>` prop.
+
+```jsx
+const App = () => (
+    <Admin dataProvider={dataProvider} authProvider={authProvider} requireAuth>
+        <Resource name="posts" list={PostList} />
     </Admin>
 );
 ```
