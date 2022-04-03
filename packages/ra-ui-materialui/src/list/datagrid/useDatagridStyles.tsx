@@ -15,9 +15,11 @@ export const DatagridClasses = {
     rowEven: `${PREFIX}-rowEven`,
     rowOdd: `${PREFIX}-rowOdd`,
     rowCell: `${PREFIX}-rowCell`,
+    selectable: `${PREFIX}-selectable`,
     expandHeader: `${PREFIX}-expandHeader`,
     expandIconCell: `${PREFIX}-expandIconCell`,
     expandIcon: `${PREFIX}-expandIcon`,
+    expandable: `${PREFIX}-expandable`,
     expanded: `${PREFIX}-expanded`,
     expandedPanel: `${PREFIX}-expandedPanel`,
 };

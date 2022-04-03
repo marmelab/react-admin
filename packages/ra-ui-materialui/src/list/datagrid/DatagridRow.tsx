@@ -143,7 +143,12 @@ const DatagridRow: FC<DatagridRowProps> = React.forwardRef((props, ref) => {
         <RecordContextProvider value={record}>
             <TableRow
                 ref={ref}
-                className={className}
+                className={clsx(className, {
+                    [DatagridClasses.expandable]: expandable,
+                    [DatagridClasses.selectable]: selectable,
+                    [DatagridClasses.clickableRow]:
+                        typeof rowClick === 'function' ? true : rowClick,
+                })}
                 key={id}
                 style={style}
                 hover={hover}
