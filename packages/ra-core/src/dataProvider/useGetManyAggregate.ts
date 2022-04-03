@@ -93,6 +93,10 @@ export const useGetManyAggregate = <RecordType extends RaRecord = any>(
         [resource, 'getMany', { ids: ids.map(id => String(id)), meta }],
         () =>
             new Promise((resolve, reject) => {
+                if (!ids || ids.length === 0) {
+                    // no need to call the dataProvider
+                    return resolve([]);
+                }
                 // debounced / batched fetch
                 return callGetManyQueries({
                     resource,

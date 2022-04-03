@@ -85,6 +85,23 @@ describe('useGetManyAggregate', () => {
         expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
     });
 
+    it('should not call dataProvider.getMany() if ids is empty', async () => {
+        const { rerender } = render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetManyAggregate resource="posts" ids={[]} />
+            </CoreAdminContext>
+        );
+        await new Promise(resolve => setTimeout(resolve));
+        expect(dataProvider.getMany).toHaveBeenCalledTimes(0);
+        rerender(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetManyAggregate resource="posts" ids={[]} />
+            </CoreAdminContext>
+        );
+        await new Promise(resolve => setTimeout(resolve));
+        expect(dataProvider.getMany).toHaveBeenCalledTimes(0);
+    });
+
     it('should recall dataProvider.getMany() when ids changes', async () => {
         const { rerender } = render(
             <CoreAdminContext dataProvider={dataProvider}>
