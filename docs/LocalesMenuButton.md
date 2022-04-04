@@ -5,27 +5,19 @@ title: "LocalesMenuButton"
 
 # `<LocalesMenuButton>`
 
-The `<LocalesMenuButton>` component displays a menu allowing users to select the language. It leverages the [store](./Store.md) so that their selection is persisted.
+The `<LocalesMenuButton>` component, also known as the "language switcher", displays a menu allowing users to select the language of the interface. It leverages the [store](./Store.md) so that their selection is persisted.
+
+![LocalesMenuButton](./img/LocalesMenuButton.gif)
 
 ## Usage
 
-```tsx
-import React from 'react';
-import polyglotI18nProvider from 'ra-i18n-polyglot';
-import englishMessages from 'ra-language-english';
-import frenchMessages from 'ra-language-french';
-import {
-    Admin,
-    Resource,
-    LocalesMenuButton,
-    List,
-    SimpleList,
-    Layout,
-    AppBar,
-} from 'react-admin';
+Add the `<LocalesMenuButton>` to a custom `<AppBar>`, and list the locales available to end users:
+
+```jsx
+import { LocalesMenuButton, AppBar } from 'react-admin';
 import { Box, Typography } from '@mui/material';
 
-const MyAppBar = (props) => (
+export const MyAppBar = (props) => (
     <AppBar {...props}>
         <Box flex="1">
             <Typography variant="h6" id="react-admin-title"></Typography>
@@ -38,10 +30,19 @@ const MyAppBar = (props) => (
         />
     </AppBar>
 );
+```
 
-const MyLayout = (props) => (
-    <Layout {...props} appBar={MyAppBar} />
-);
+Then, pass the custom App Bar in a custom `<Layout>`, and the `<Layout>` to your `<Admin>`:
+
+```jsx
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
+import { Admin, Resource, Layout } from 'react-admin';
+
+import { MyAppBar } from './MyAppBar';
+
+const MyLayout = (props) => <Layout {...props} appBar={MyAppBar} />;
 
 const i18nProvider = polyglotI18nProvider(
     locale => (locale === 'fr' ? frenchMessages : englishMessages),
@@ -54,16 +55,23 @@ const App = () => (
         dataProvider={dataProvider}
         layout={MyLayout}
     >
-        <Resource name="posts" list={PostList} />
+        ...
     </Admin>
 );
 ```
 
-## API
+## `languages`
 
-* [`LocalesMenuButton`]
+An array of objects (`{ locale, name }`) representing the key and the label of the languages available to end users.
 
-[`LocalesMenuButton`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/button/LocalesMenuButton.tsx
+```jsx
+<LocalesMenuButton languages={[
+    { locale: 'en', name: 'English' },
+    { locale: 'fr', name: 'Français' },
+]} />
+```
+
+The `locale` will be passed to `setLocale` when the user selects the language, and must be supported by the `i18nProvider`.
 
 ## `sx`: CSS API
 
@@ -74,3 +82,9 @@ The `<LocalesMenuButton>` component accepts the usual `className` prop. You can 
 | `& .RaLocalesMenuButton-selectedLanguage`      | Applied to the current language element |
 
 To override the style of all instances of `<LocalesMenuButton>` using the [MUI style overrides](https://mui.com/customization/globals/#css), use the `RaLocalesMenuButton` key.
+
+## API
+
+* [`LocalesMenuButton`]
+
+[`LocalesMenuButton`]: https://github.com/marmelab/react-admin/blob/master/packages/ra-ui-materialui/src/button/LocalesMenuButton.tsx

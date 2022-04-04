@@ -9,7 +9,6 @@ import { List, Datagrid } from '../list';
 import { TextField } from '../field';
 import { AppBar, Layout } from '../layout';
 import { ToggleThemeButton } from './ToggleThemeButton';
-import { defaultTheme } from '..';
 
 export default { title: 'ra-ui-materialui/button/ToggleThemeButton' };
 
@@ -106,7 +105,6 @@ const MyAppBar = props => (
             <Typography variant="h6" id="react-admin-title"></Typography>
         </Box>
         <ToggleThemeButton
-            lightTheme={defaultTheme}
             darkTheme={{
                 palette: { mode: 'dark' },
             }}
