@@ -3,7 +3,7 @@ import { Admin } from 'react-admin';
 import { Resource } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { createMemoryHistory } from 'history';
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 
 import { List, Datagrid } from '../list';
 import { TextField } from '../field';
@@ -101,9 +101,7 @@ const BookList = () => {
 
 const MyAppBar = props => (
     <AppBar {...props}>
-        <Box flex="1">
-            <Typography variant="h6" id="react-admin-title"></Typography>
-        </Box>
+        <Typography flex="1" variant="h6" id="react-admin-title"></Typography>
         <ToggleThemeButton
             darkTheme={{
                 palette: { mode: 'dark' },

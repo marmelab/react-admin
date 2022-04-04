@@ -144,9 +144,7 @@ const BookList = () => {
 
 const MyAppBar = props => (
     <AppBar {...props}>
-        <Box flex="1">
-            <Typography variant="h6" id="react-admin-title"></Typography>
-        </Box>
+        <Typography flex="1" variant="h6" id="react-admin-title"></Typography>
         <LocalesMenuButton
             languages={[
                 { locale: 'en', name: 'English' },

@@ -15,13 +15,11 @@ Add the `<LocalesMenuButton>` to a custom `<AppBar>`, and list the locales avail
 
 ```jsx
 import { LocalesMenuButton, AppBar } from 'react-admin';
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 
 export const MyAppBar = (props) => (
     <AppBar {...props}>
-        <Box flex="1">
-            <Typography variant="h6" id="react-admin-title"></Typography>
-        </Box>
+        <Typography flex="1" variant="h6" id="react-admin-title"></Typography>
         <LocalesMenuButton
             languages={[
                 { locale: 'en', name: 'English' },

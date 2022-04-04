@@ -16,17 +16,15 @@ You can add the `<ToggleThemeButton>` to a custom App Bar:
 ```tsx
 import React from 'react';
 import { ToggleThemeButton, AppBar, defaultTheme } from 'react-admin';
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 
 const darkTheme = {
     palette: { mode: 'dark' },
 };
 
 export const MyAppBar = (props) => (
-    <AppBar {...props}>
-        <Box flex="1">
-            <Typography variant="h6" id="react-admin-title"></Typography>
-        </Box>
+    <AppBar {...props}>-
+        <Typography flex="1" variant="h6" id="react-admin-title"></Typography>
         <ToggleThemeButton
             lightTheme={defaultTheme}
             darkTheme={darkTheme}
