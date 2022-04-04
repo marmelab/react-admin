@@ -5,7 +5,7 @@ import frenchMessages from 'ra-language-french';
 import { useTranslate, Resource } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { createMemoryHistory } from 'history';
-import { Box, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 
 import { LocalesMenuButton } from './LocalesMenuButton';
 import { AdminContext } from '../AdminContext';
