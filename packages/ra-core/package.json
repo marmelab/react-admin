@@ -38,6 +38,7 @@
         "connected-react-router": "^6.5.2",
         "cross-env": "^5.2.0",
         "final-form": "^4.20.4",
+        "history": "^4.7.2",
         "ignore-styles": "~5.0.1",
         "ra-test": "^3.19.10",
         "react": "^17.0.0",
