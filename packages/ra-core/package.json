@@ -55,6 +55,7 @@
     "peerDependencies": {
         "connected-react-router": "^6.5.2",
         "final-form": "^4.20.2",
+        "history": "^4.7.2",
         "react": "^16.9.0 || ^17.0.0",
         "react-dom": "^16.9.0 || ^17.0.0",
         "react-final-form": "^6.5.2",
