@@ -23,8 +23,12 @@ import { TextInput } from '../../input';
  * );
  */
 export const FilterLiveSearch = memo(
-    (props: { source?: string; sx?: SxProps }) => {
-        const { source = 'q', ...rest } = props;
+    (props: {
+        source?: string;
+        sx?: SxProps;
+        variant?: 'filled' | 'outlined';
+    }) => {
+        const { source = 'q', variant = 'filled', ...rest } = props;
         const { filterValues, setFilters } = useListFilterContext();
         const translate = useTranslate();
 
@@ -48,6 +52,7 @@ export const FilterLiveSearch = memo(
         );
 
         const onSubmit = () => undefined;
+        let label = translate('ra.action.search');
 
         return (
             <Form defaultValues={initialValues} onSubmit={onSubmit}>
@@ -55,7 +60,6 @@ export const FilterLiveSearch = memo(
                     resettable
                     helperText={false}
                     source={source}
-                    placeholder={translate('ra.action.search')}
                     InputProps={{
                         endAdornment: (
                             <InputAdornment position="end">
@@ -65,8 +69,13 @@ export const FilterLiveSearch = memo(
                     }}
                     onChange={handleChange}
                     size="small"
-                    label={false}
-                    hiddenLabel
+                    {...(variant === 'outlined'
+                        ? { variant: 'outlined', label }
+                        : {
+                              placeholder: label,
+                              label: false,
+                              hiddenLabel: true,
+                          })}
                     {...rest}
                 />
             </Form>
