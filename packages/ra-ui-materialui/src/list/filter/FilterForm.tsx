@@ -237,6 +237,9 @@ const getInputValue = (
     key: string,
     filterValues: Record<string, any>
 ) => {
+    if (Array.isArray(formValues[key])) {
+        return lodashGet(filterValues, key, '');
+    }
     if (typeof formValues[key] === 'object') {
         return Object.keys(formValues[key]).reduce((acc, innerKey) => {
             acc[innerKey] = getInputValue(
