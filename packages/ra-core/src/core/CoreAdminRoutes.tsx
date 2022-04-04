@@ -1,7 +1,8 @@
-import React, { Children, ComponentType } from 'react';
+import * as React from 'react';
+import { useState, useEffect, Children, ComponentType } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { WithPermissions } from '../auth';
+import { WithPermissions, useCheckAuth } from '../auth';
 import { useTimeout } from '../util';
 import { useScrollToTop, useCreatePath } from '../routing';
 import {
@@ -31,15 +32,27 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
         dashboard,
         loading: LoadingPage,
         menu,
+        requireAuth,
         ready: Ready,
         title,
     } = props;
+
+    const [canRender, setCanRender] = useState(!requireAuth);
+    const checkAuth = useCheckAuth();
+
+    useEffect(() => {
+        checkAuth()
+            .then(() => {
+                setCanRender(true);
+            })
+            .catch(() => {});
+    }, [checkAuth]);
 
     if (status === 'empty') {
         return <Ready />;
     }
 
-    if (status === 'loading') {
+    if (status === 'loading' || !canRender) {
         return (
             <Routes>
                 {customRoutesWithoutLayout}
@@ -113,6 +126,7 @@ export interface CoreAdminRoutesProps extends CoreLayoutProps {
     catchAll: CatchAllComponent;
     children?: AdminChildren;
     loading: LoadingComponent;
+    requireAuth?: boolean;
     ready?: ComponentType;
 }
 

@@ -29,7 +29,6 @@ describe('<CoreAdminRoutes>', () => {
                     history={history}
                 >
                     <CoreAdminRoutes
-                        {...defaultProps}
                         layout={Layout}
                         catchAll={CatchAll}
                         loading={Loading}
@@ -185,7 +184,6 @@ describe('<CoreAdminRoutes>', () => {
                     history={history}
                 >
                     <CoreAdminRoutes
-                        {...defaultProps}
                         layout={Layout}
                         loading={Loading}
                         catchAll={CatchAll}
@@ -205,6 +203,148 @@ describe('<CoreAdminRoutes>', () => {
             expect(screen.queryByText('Loading')).toBeNull();
             expect(screen.queryByText('Custom')).not.toBeNull();
             jest.useRealTimers();
+        });
+    });
+
+    describe('requireAuth', () => {
+        it('should not wait for the authProvider.checkAuth to return before rendering by default', () => {
+            const authProvider = {
+                login: jest.fn().mockResolvedValue(''),
+                logout: jest.fn().mockResolvedValue(''),
+                checkAuth: (): Promise<void> => new Promise(() => {}), // never resolves
+                checkError: jest.fn().mockResolvedValue(''),
+                getPermissions: jest.fn().mockResolvedValue(''),
+            };
+
+            const history = createMemoryHistory();
+            render(
+                <CoreAdminContext
+                    authProvider={authProvider}
+                    dataProvider={testDataProvider()}
+                    history={history}
+                >
+                    <CoreAdminRoutes
+                        {...defaultProps}
+                        layout={Layout}
+                        loading={Loading}
+                        catchAll={CatchAll}
+                    >
+                        <Resource name="posts" list={() => <i>PostList</i>} />
+                    </CoreAdminRoutes>
+                </CoreAdminContext>
+            );
+            expect(screen.queryByText('PostList')).not.toBeNull();
+            expect(screen.queryByText('Loading')).toBeNull();
+        });
+        it('should wait for the authProvider.checkAuth to return before rendering when requireAuth is true', async () => {
+            let resolve;
+            const authProvider = {
+                login: jest.fn().mockResolvedValue(''),
+                logout: jest.fn().mockResolvedValue(''),
+                checkAuth: (): Promise<void> =>
+                    new Promise(res => (resolve = res)),
+                checkError: jest.fn().mockResolvedValue(''),
+                getPermissions: jest.fn().mockResolvedValue(''),
+            };
+
+            const history = createMemoryHistory();
+            render(
+                <CoreAdminContext
+                    authProvider={authProvider}
+                    dataProvider={testDataProvider()}
+                    history={history}
+                >
+                    <CoreAdminRoutes
+                        layout={Layout}
+                        loading={Loading}
+                        catchAll={CatchAll}
+                        requireAuth
+                    >
+                        <Resource name="posts" list={() => <i>PostList</i>} />
+                    </CoreAdminRoutes>
+                </CoreAdminContext>
+            );
+            expect(screen.queryByText('PostList')).toBeNull();
+            expect(screen.queryByText('Loading')).toBeNull();
+            resolve();
+            await waitFor(() =>
+                expect(screen.queryByText('PostList')).not.toBeNull()
+            );
+        });
+        it('should show a loader when requireAuth is true and dataProvider.checkAuth() takes more than 1s to reply', async () => {
+            let resolve;
+            const authProvider = {
+                login: jest.fn().mockResolvedValue(''),
+                logout: jest.fn().mockResolvedValue(''),
+                checkAuth: (): Promise<void> =>
+                    new Promise(res => (resolve = res)),
+                checkError: jest.fn().mockResolvedValue(''),
+                getPermissions: jest.fn().mockResolvedValue(''),
+            };
+
+            const history = createMemoryHistory();
+            render(
+                <CoreAdminContext
+                    authProvider={authProvider}
+                    dataProvider={testDataProvider()}
+                    history={history}
+                >
+                    <CoreAdminRoutes
+                        layout={Layout}
+                        loading={Loading}
+                        catchAll={CatchAll}
+                        requireAuth
+                    >
+                        <Resource name="posts" list={() => <i>PostList</i>} />
+                    </CoreAdminRoutes>
+                </CoreAdminContext>
+            );
+            expect(screen.queryByText('PostList')).toBeNull();
+            expect(screen.queryByText('Loading')).toBeNull();
+            await new Promise(resolve => setTimeout(resolve, 1100));
+            expect(screen.queryByText('Loading')).not.toBeNull();
+            resolve();
+            await waitFor(() =>
+                expect(screen.queryByText('PostList')).not.toBeNull()
+            );
+        });
+        it('should redirect to login when requireAuth is true and authProvider.checkAuth() rejects', async () => {
+            let reject;
+            const authProvider = {
+                login: jest.fn().mockResolvedValue(''),
+                logout: jest.fn().mockResolvedValue(''),
+                checkAuth: (): Promise<void> =>
+                    new Promise((res, rej) => (reject = rej)),
+                checkError: jest.fn().mockResolvedValue(''),
+                getPermissions: jest.fn().mockResolvedValue(''),
+            };
+
+            const history = createMemoryHistory();
+            render(
+                <CoreAdminContext
+                    authProvider={authProvider}
+                    dataProvider={testDataProvider()}
+                    history={history}
+                >
+                    <CoreAdminRoutes
+                        layout={Layout}
+                        loading={Loading}
+                        catchAll={CatchAll}
+                        requireAuth
+                    >
+                        <CustomRoutes noLayout>
+                            <Route path="/login" element={<i>Login</i>} />
+                        </CustomRoutes>
+                        <Resource name="posts" list={() => <i>PostList</i>} />
+                    </CoreAdminRoutes>
+                </CoreAdminContext>
+            );
+            expect(screen.queryByText('PostList')).toBeNull();
+            expect(screen.queryByText('Loading')).toBeNull();
+            reject();
+            await waitFor(() =>
+                expect(screen.queryByText('Login')).not.toBeNull()
+            );
         });
     });
 });

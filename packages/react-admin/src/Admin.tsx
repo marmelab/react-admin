@@ -101,6 +101,7 @@ export const Admin = (props: AdminProps) => {
         loginPage,
         menu, // deprecated, use a custom layout instead
         notification,
+        requireAuth,
         store,
         ready,
         theme,
@@ -133,6 +134,7 @@ export const Admin = (props: AdminProps) => {
                 loading={loading}
                 loginPage={loginPage}
                 notification={notification}
+                requireAuth={requireAuth}
                 ready={ready}
             >
                 {children}
