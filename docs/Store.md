@@ -22,6 +22,11 @@ React-admin provides the following hooks to interact with the Store:
 * [`useResetStore`](./useResetStore.md)
 * [`useStoreContext`](./useStoreContext.md)
 
+Some react-admin components use the Store internally:
+
+* [`<ToggleThemeButton>`](./ToggleThemeButton.md)
+* [`<LocalesMenuButton>`](./LocalesMenuButton.md)
+
 For instance, here is how to use it to show or hide a help panel:
 
 ```jsx
