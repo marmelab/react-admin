@@ -36,7 +36,9 @@
     },
     "peerDependencies": {
         "react": "*",
-        "react-dom": "*"
+        "react-dom": "*",
+        "react-router": "^6.1.0",
+        "react-router-dom": "^6.1.0"
     },
     "dependencies": {
         "@mui/icons-material": "^5.0.1",
