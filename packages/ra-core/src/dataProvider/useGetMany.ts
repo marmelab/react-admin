@@ -61,10 +61,15 @@ export const useGetMany = <RecordType extends RaRecord = any>(
 
     return useQuery<RecordType[], Error, RecordType[]>(
         [resource, 'getMany', { ids: ids.map(id => String(id)), meta }],
-        () =>
-            dataProvider
+        () => {
+            if (!ids || ids.length === 0) {
+                // no need to call the dataProvider
+                return Promise.resolve([]);
+            }
+            return dataProvider
                 .getMany<RecordType>(resource, { ids, meta })
-                .then(({ data }) => data),
+                .then(({ data }) => data);
+        },
         {
             placeholderData: () => {
                 const records = ids.map(id => {

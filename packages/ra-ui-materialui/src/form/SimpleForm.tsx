@@ -106,5 +106,6 @@ const sanitizeRestProps = ({
     toolbar,
     validate,
     resolver,
+    warnWhenUnsavedChanges,
     ...props
 }: SimpleFormProps) => props;

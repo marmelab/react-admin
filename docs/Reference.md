@@ -78,6 +78,7 @@ title: "Reference"
 * [`<ListBase>`](./ListBase.md#usage)
 * [`<ListGuesser>`](./ListGuesser.md#usage)
 * [`<ListButton>`](./Buttons.md#listbutton)
+* [`<LocalesMenuButton>`](./LocalesMenuButton.md)
 * [`<MarkdownField>`](https://marmelab.com/ra-enterprise/modules/ra-markdown#markdownfield)<img class="icon" src="./img/premium.svg" />
 * [`<MarkdownInput>`](https://marmelab.com/ra-enterprise/modules/ra-markdown#markdowninput)<img class="icon" src="./img/premium.svg" />
 * [`<Menu>`](./Theming.md#using-a-custom-menu)

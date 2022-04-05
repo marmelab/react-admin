@@ -27,7 +27,11 @@ export interface CoreAdminUIProps {
     layout?: LayoutComponent;
     loading?: LoadingComponent;
     loginPage?: LoginComponent | boolean;
+    /**
+     * @deprecated use a custom layout instead
+     */
     menu?: ComponentType;
+    requireAuth?: boolean;
     ready?: ComponentType;
     title?: TitleComponent;
 }
@@ -44,6 +48,7 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
         menu, // deprecated, use a custom layout instead
         ready = Ready,
         title = 'React Admin',
+        requireAuth = false,
     } = props;
 
     useEffect(() => {
@@ -74,6 +79,7 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
                         layout={layout}
                         loading={loading}
                         menu={menu}
+                        requireAuth={requireAuth}
                         ready={ready}
                         title={title}
                     >

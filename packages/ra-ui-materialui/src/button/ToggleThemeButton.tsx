@@ -11,16 +11,16 @@ import { RaThemeOptions } from '..';
  *
  * @example
  *
- *     const MyAppBar = props => (
- *         <AppBar {...props}>
- *             <Box flex="1">
- *                 <Typography variant="h6" id="react-admin-title"></Typography>
- *             </Box>
- *             <ToggleThemeButton />
- *         </AppBar>
- *     );
+ * const MyAppBar = props => (
+ *     <AppBar {...props}>
+ *         <Box flex="1">
+ *             <Typography variant="h6" id="react-admin-title"></Typography>
+ *         </Box>
+ *         <ToggleThemeButton lightTheme={lightTheme} darkTheme={darkTheme} />
+ *     </AppBar>
+ * );
  *
- *     const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
+ * const MyLayout = props => <Layout {...props} appBar={MyAppBar} />;
  */
 export const ToggleThemeButton = (props: ToggleThemeButtonProps) => {
     const translate = useTranslate();
@@ -52,6 +52,6 @@ export const ToggleThemeButton = (props: ToggleThemeButtonProps) => {
 };
 
 export interface ToggleThemeButtonProps {
-    darkTheme?: RaThemeOptions;
+    darkTheme: RaThemeOptions;
     lightTheme?: RaThemeOptions;
 }

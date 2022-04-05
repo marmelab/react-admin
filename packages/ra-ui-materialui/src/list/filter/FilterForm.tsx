@@ -48,7 +48,7 @@ export const FilterForm = (props: FilterFormProps) => {
     useEffect(() => {
         const newValues = getFilterFormValues(form.getValues(), filterValues);
         form.reset(newValues);
-    }, [filterValues, filters, form]);
+    }, [filterValues, form]);
 
     useEffect(() => {
         const subscription = form.watch(async (values, { name, type }) => {
@@ -237,6 +237,9 @@ const getInputValue = (
     key: string,
     filterValues: Record<string, any>
 ) => {
+    if (Array.isArray(formValues[key])) {
+        return lodashGet(filterValues, key, '');
+    }
     if (typeof formValues[key] === 'object') {
         return Object.keys(formValues[key]).reduce((acc, innerKey) => {
             acc[innerKey] = getInputValue(
