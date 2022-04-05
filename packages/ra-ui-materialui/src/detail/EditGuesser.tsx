@@ -37,8 +37,8 @@ const EditViewGuesser = props => {
 
 export const ${inflection.capitalize(
                         inflection.singularize(resource)
-                    )}Edit = props => (
-    <Edit {...props}>
+                    )}Edit = () => (
+    <Edit>
 ${inferredChild.getRepresentation()}
     </Edit>
 );`
