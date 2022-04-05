@@ -282,6 +282,8 @@ const Dashboard = () => (
 ```
 {% endraw %}
 
+Please note that the selection state is not synced in the URL but in a global store using the resource as key. Thus all lists in the page using the same resource will share the same selection state. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. If you want the selection state to be local, you will have to implement your own `useListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own `DeleteButton` and `BulkDeleteButton` to manually unselect rows when deleting records.
+
 ## `empty`: Empty Page Component
 
 When there is no result, and there is no active filter, and the resource has a create page, react-admin displays a special page inviting the user to create the first record.

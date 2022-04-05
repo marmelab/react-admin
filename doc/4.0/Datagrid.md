@@ -46,6 +46,7 @@ Here are all the props accepted by the component:
 * [`children`](#children)
 * [`empty`](#empty)
 * [`expand`](#expand)
+* [`expandSingle`](#expandsingle) 
 * [`header`](#header)
 * [`hover`](#hover)
 * [`isRowExpandable`](#isrowexpandable)
@@ -472,6 +473,21 @@ const PostList = () => (
 )
 ```
 
+## `expandSingle`
+
+The `expandSingle` allows a single row to be expanded at a time.
+
+```jsx
+export const PostList = () => (
+    <List>
+        <Datagrid expandSingle>
+            ...
+        </Datagrid>
+    </List>
+);
+```
+
+
 ## `header`
 
 By default, `<Datagrid>` renders the table head using `<DatagridHeader>`, an internal react-admin component. You can pass a custom component as the `header` prop to override that default. This can be useful e.g. to add a second header row, or to create headers spanning multiple columns.
@@ -676,25 +692,27 @@ export const PostList = () => (
 
 The `<Datagrid>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property. This property accepts the following subclasses:
 
-| Rule name                      | Description                                                     |
-| ------------------------------ | --------------------------------------------------------------- |
-| `& .RaDatagrid-tableWrapper`   | Applied to the div that wraps table element                     |
-| `& .RaDatagrid-table`          | Applied to the table element                                    |
-| `& .RaDatagrid-thead`          | Applied to the table header                                     |
-| `& .RaDatagrid-tbody`          | Applied to the table body                                       |
-| `& .RaDatagrid-headerCell`     | Applied to each header cell                                     |
-| `& .RaDatagrid-headerRow`      | Applied to each header row                                      |
-| `& .RaDatagrid-row`            | Applied to each row                                             |
-| `& .RaDatagrid-rowEven`        | Applied to each even row                                        |
-| `& .RaDatagrid-rowOdd`         | Applied to each odd row                                         |
-| `& .RaDatagrid-rowCell`        | Applied to each row cell                                        |
-| `& .RaDatagrid-expandHeader`   | Applied to each expandable header cell                          |
-| `& .RaDatagrid-clickableRow`   | Applied to each row if the `rowClick` prop is or returns truthy |
-| `& .RaDatagrid-expandIconCell` | Applied to each expandable cell                                 |
-| `& .RaDatagrid-expandIcon`     | Applied to each expand icon                                     |
-| `& .RaDatagrid-expanded`       | Applied to each expanded icon                                   |
-| `& .RaDatagrid-expandedPanel`  | Applied to each expandable panel                                |
-| `& .RaDatagrid-checkbox`       | Applied to each checkbox cell                                   |
+| Rule name                      | Description                                      |
+| ------------------------------ |--------------------------------------------------|
+| `& .RaDatagrid-tableWrapper`   | Applied to the div that wraps table element      |
+| `& .RaDatagrid-table`          | Applied to the table element                     |
+| `& .RaDatagrid-thead`          | Applied to the table header                      |
+| `& .RaDatagrid-tbody`          | Applied to the table body                        |
+| `& .RaDatagrid-headerCell`     | Applied to each header cell                      |
+| `& .RaDatagrid-headerRow`      | Applied to each header row                       |
+| `& .RaDatagrid-row`            | Applied to each row                              |
+| `& .RaDatagrid-rowEven`        | Applied to each even row                         |
+| `& .RaDatagrid-rowOdd`         | Applied to each odd row                          |
+| `& .RaDatagrid-rowCell`        | Applied to each row cell                         |
+| `& .RaDatagrid-selectable`     | Applied to each selectable row                   |
+| `& .RaDatagrid-expandHeader`   | Applied to each expandable header cell           |
+| `& .RaDatagrid-clickableRow`   | Applied to each row if `rowClick` prop is truthy |
+| `& .RaDatagrid-expandIconCell` | Applied to each expandable cell                  |
+| `& .RaDatagrid-expandIcon`     | Applied to each expand icon                      |
+| `& .RaDatagrid-expandable`     | Applied to each expandable row                   |
+| `& .RaDatagrid-expanded`       | Applied to each expanded icon                    |
+| `& .RaDatagrid-expandedPanel`  | Applied to each expandable panel                 |
+| `& .RaDatagrid-checkbox`       | Applied to each checkbox cell                    |
 
 For instance, here is how you can leverage these styles to implement zebra stripes (a.k.a. alternate row styles)
 

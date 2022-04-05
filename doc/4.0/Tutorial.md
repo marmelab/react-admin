@@ -987,4 +987,13 @@ const App = () => (
 
 React-admin was built with customization in mind. You can replace any react-admin component with a component of your own, for instance to display a custom list layout, or a different edit form for a given resource.
 
-Now that you've completed the tutorial, continue reading the [react-admin documentation](https://marmelab.com/react-admin/Readme.html), and read the [MUI components documentation](https://mui.com/).
+Now that you've completed the tutorial, the best way to learn react-admin is by reading the introduction chapters to each of its major parts:
+
+- [Data Provider and API Calls](./DataProviderIntroduction.md)
+- [Auth Provider and Security](./Authentication.md)
+- [List Page](./ListTutorial.md)
+- [Creation & Edition Pages](./EditTutorial.md)
+- [Show Pages](./ShowTutorial.md)
+- [Fields](./Fields.md)
+- [Inputs](./Inputs.md)
+- [The Store](./Store.md)
