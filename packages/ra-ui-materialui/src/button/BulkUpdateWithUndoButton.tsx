@@ -125,9 +125,9 @@ const StyledButton = styled(Button, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    color: theme.palette.error.main,
+    color: theme.palette.primary.main,
     '&:hover': {
-        backgroundColor: alpha(theme.palette.error.main, 0.12),
+        backgroundColor: alpha(theme.palette.primary.main, 0.12),
         // Reset on mouse devices
         '@media (hover: none)': {
             backgroundColor: 'transparent',

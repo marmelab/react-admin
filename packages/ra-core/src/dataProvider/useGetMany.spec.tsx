@@ -5,6 +5,7 @@ import { render, waitFor } from '@testing-library/react';
 import { CoreAdminContext } from '../core';
 import { useGetMany } from './useGetMany';
 import { testDataProvider } from '../dataProvider';
+import { useState } from 'react';
 
 const UseGetMany = ({
     resource,
@@ -16,6 +17,26 @@ const UseGetMany = ({
 }) => {
     const hookValue = useGetMany(resource, { ids, meta }, options);
     if (callback) callback(hookValue);
+    return <div>hello</div>;
+};
+
+let updateState;
+
+const UseCustomGetMany = ({
+    resource,
+    ids,
+    options = {},
+    callback = null,
+    ...rest
+}) => {
+    const [stateIds, setStateIds] = useState(ids);
+    const hookValue = useGetMany(resource, { ids: stateIds }, options);
+    if (callback) callback(hookValue);
+
+    updateState = newIds => {
+        setStateIds(newIds);
+    };
+
     return <div>hello</div>;
 };
 
@@ -241,5 +262,93 @@ describe('useGetMany', () => {
             expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
             expect(onError).toHaveBeenCalledWith(new Error('failed'));
         });
+    });
+
+    it('should update loading state when ids change', async () => {
+        const dataProvider = testDataProvider({
+            // @ts-ignore
+            getMany: jest.fn((resource, params) => {
+                if (params.ids.length === 1) {
+                    return Promise.resolve({
+                        data: [{ id: 1, title: 'foo' }],
+                    });
+                } else {
+                    return Promise.resolve({
+                        data: [
+                            { id: 1, title: 'foo' },
+                            { id: 2, title: 'bar' },
+                        ],
+                    });
+                }
+            }),
+        });
+
+        const hookValue = jest.fn();
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseCustomGetMany
+                    resource="posts"
+                    ids={[1]}
+                    callback={hookValue}
+                />
+            </CoreAdminContext>
+        );
+
+        await waitFor(() => {
+            expect(dataProvider.getMany).toBeCalledTimes(1);
+        });
+
+        expect(hookValue.mock.calls[0][0]).toStrictEqual(
+            expect.objectContaining({
+                data: undefined,
+                isError: false,
+                isFetching: true,
+                isLoading: true,
+            })
+        );
+
+        expect(hookValue.mock.calls[1][0]).toStrictEqual(
+            expect.objectContaining({
+                data: [{ id: 1, title: 'foo' }],
+                isError: false,
+                isFetching: false,
+                isLoading: false,
+            })
+        );
+
+        // Updating ids...
+        updateState([1, 2]);
+
+        await waitFor(() => {
+            expect(dataProvider.getMany).toBeCalledTimes(2);
+        });
+
+        expect(hookValue.mock.calls[2][0]).toStrictEqual(
+            expect.objectContaining({
+                data: undefined,
+                isError: false,
+                isFetching: true,
+                isLoading: true,
+            })
+        );
+        expect(hookValue.mock.calls[3][0]).toStrictEqual(
+            expect.objectContaining({
+                data: undefined,
+                isError: false,
+                isFetching: true,
+                isLoading: true,
+            })
+        );
+        expect(hookValue.mock.calls[4][0]).toStrictEqual(
+            expect.objectContaining({
+                data: [
+                    { id: 1, title: 'foo' },
+                    { id: 2, title: 'bar' },
+                ],
+                isError: false,
+                isFetching: false,
+                isLoading: false,
+            })
+        );
     });
 });
