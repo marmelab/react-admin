@@ -19,7 +19,7 @@ import { useWarnWhenUnsavedChanges } from './useWarnWhenUnsavedChanges';
  *
  * This hook adds the following features to react-hook-form's useForm:
  *
- * - form initialization based on Recordcontext
+ * - form initialization based on RecordContext
  * - validation based on a validate function
  * - notification on invalid form
  * - stop form submission event propagation

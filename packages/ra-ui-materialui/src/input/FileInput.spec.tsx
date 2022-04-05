@@ -9,9 +9,10 @@ import {
 import { testDataProvider } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
-import { SimpleForm } from '../form';
+import { SimpleForm, Toolbar } from '../form';
 import { FileField, ImageField } from '../field';
 import { FileInput } from './FileInput';
+import { SaveButton } from '../button';
 
 describe('<FileInput />', () => {
     const defaultProps = {
@@ -264,6 +265,11 @@ describe('<FileInput />', () => {
                             },
                         }}
                         onSubmit={onSubmit}
+                        toolbar={
+                            <Toolbar>
+                                <SaveButton alwaysEnable />
+                            </Toolbar>
+                        }
                     >
                         <FileInput
                             {...defaultProps}
@@ -308,6 +314,11 @@ describe('<FileInput />', () => {
                             },
                         }}
                         onSubmit={onSubmit}
+                        toolbar={
+                            <Toolbar>
+                                <SaveButton alwaysEnable />
+                            </Toolbar>
+                        }
                     >
                         <FileInput
                             {...defaultProps}
