@@ -307,6 +307,11 @@ export interface ResourceComponentInjectedProps {
     hasCreate?: boolean;
 }
 
+export interface ResourceOptions {
+    label?: string;
+    [key: string]: any;
+}
+
 export interface ResourceProps {
     intent?: 'route' | 'registration';
     name: string;
@@ -315,7 +320,7 @@ export interface ResourceProps {
     edit?: ComponentType<any> | ReactElement;
     show?: ComponentType<any> | ReactElement;
     icon?: ComponentType<any>;
-    options?: object;
+    options?: ResourceOptions;
 }
 
 export type Exporter = (

@@ -1,5 +1,21 @@
 # Changelog
 
+## v3.19.11
+
+* Fix `history` dependency ([#7481](https://github.com/marmelab/react-admin/pull/7481)) ([WiXSL](https://github.com/WiXSL))
+* Fix race condition due to debounced `setFilter` ([#7444](https://github.com/marmelab/react-admin/pull/7444)) ([slax57](https://github.com/slax57))
+* Fix `useGetMany` loading/loaded state does not change when query updated ([#6913](https://github.com/marmelab/react-admin/pull/6913)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<BulkUpdateButton>` color ([#7303](https://github.com/marmelab/react-admin/pull/7303)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<AutocompleteInput optionText>` returning an element throws error ([#7289](https://github.com/marmelab/react-admin/pull/7289)) ([WiXSL](https://github.com/WiXSL))
+* Bump `url-parse` from 1.5.7 to 1.5.10  dependencies([#7313](https://github.com/marmelab/react-admin/pull/7313)) ([dependabot bot](https://github.com/dependabot bot))
+* Bump `url-parse` from 1.5.3 to 1.5.7  dependencies([#7263](https://github.com/marmelab/react-admin/pull/7263)) ([dependabot bot](https://github.com/dependabot bot))
+* [Doc] Add missing import in Unit Testing doc ([#7434](https://github.com/marmelab/react-admin/pull/7434)) ([ValentinnDimitroff](https://github.com/ValentinnDimitroff))
+* [Doc] Remove deprecated props and unused imports ([#7413](https://github.com/marmelab/react-admin/pull/7413)) ([takayukioda](https://github.com/takayukioda))
+* [Doc] Fix `<Datagrid>` example ([#7375](https://github.com/marmelab/react-admin/pull/7375)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix typo in `ra-data-graphql` readme ([#7347](https://github.com/marmelab/react-admin/pull/7347)) ([dijonkitchen](https://github.com/dijonkitchen))
+* [Doc] Add greek translation ([#7311](https://github.com/marmelab/react-admin/pull/7311)) ([panterz](https://github.com/panterz))
+* [TypeScript] Fix missing `<Resource options>` label property ([#7422](https://github.com/marmelab/react-admin/pull/7422)) ([soullivaneuh](https://github.com/soullivaneuh))
+
 ## v3.19.10
 
 * Fix `<CheckboxGroupInput>` changes selected values type ([#7248](https://github.com/marmelab/react-admin/pull/7248)) ([WiXSL](https://github.com/WiXSL))
