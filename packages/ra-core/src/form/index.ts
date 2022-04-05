@@ -3,19 +3,25 @@ import FormDataConsumer, {
     FormDataConsumerRenderParams,
 } from './FormDataConsumer';
 import ValidationError, { ValidationErrorProps } from './ValidationError';
+import {
+    getSimpleValidationResolver,
+    ValidateForm,
+} from './getSimpleValidationResolver';
 
 export type {
     FormDataConsumerRender,
     FormDataConsumerRenderParams,
     ValidationErrorProps,
+    ValidateForm,
 };
 
-export { FormDataConsumer, ValidationError };
+export { FormDataConsumer, ValidationError, getSimpleValidationResolver };
 export * from './choices';
 export * from './Form';
 export * from './validate';
 export * from './FormGroupContext';
 export * from './FormGroupContextProvider';
+export * from './FormGroupsProvider';
 export * from './useApplyInputDefaultValues';
 export * from './useChoices';
 export * from './useFormGroup';
