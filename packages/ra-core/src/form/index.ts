@@ -2,6 +2,11 @@ import FormDataConsumer, {
     FormDataConsumerRender,
     FormDataConsumerRenderParams,
 } from './FormDataConsumer';
+import {
+    FormGroupsContext,
+    FormGroupsContextValue,
+    FormGroupSubscriber,
+} from './FormGroupsContext';
 import ValidationError, { ValidationErrorProps } from './ValidationError';
 import {
     getSimpleValidationResolver,
@@ -9,13 +14,20 @@ import {
 } from './getSimpleValidationResolver';
 
 export type {
+    FormGroupsContextValue,
+    FormGroupSubscriber,
     FormDataConsumerRender,
     FormDataConsumerRenderParams,
     ValidationErrorProps,
     ValidateForm,
 };
 
-export { FormDataConsumer, ValidationError, getSimpleValidationResolver };
+export {
+    FormDataConsumer,
+    FormGroupsContext,
+    ValidationError,
+    getSimpleValidationResolver,
+};
 export * from './choices';
 export * from './Form';
 export * from './validate';
