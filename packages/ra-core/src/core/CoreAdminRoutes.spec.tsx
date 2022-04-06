@@ -346,5 +346,40 @@ describe('<CoreAdminRoutes>', () => {
                 expect(screen.queryByText('Login')).not.toBeNull()
             );
         });
+        it('should render custom routes when the user is not authenticated and requireAuth is false', async () => {
+            const authProvider = {
+                login: jest.fn().mockResolvedValue(''),
+                logout: jest.fn().mockResolvedValue(''),
+                checkAuth: () => Promise.reject('Not authenticated'),
+                checkError: jest.fn().mockResolvedValue(''),
+                getPermissions: jest.fn().mockResolvedValue(''),
+            };
+
+            const history = createMemoryHistory();
+            render(
+                <CoreAdminContext
+                    authProvider={authProvider}
+                    dataProvider={testDataProvider()}
+                    history={history}
+                >
+                    <CoreAdminRoutes
+                        layout={Layout}
+                        loading={Loading}
+                        catchAll={CatchAll}
+                    >
+                        <CustomRoutes noLayout>
+                            <Route path="/custom" element={<i>Custom</i>} />
+                        </CustomRoutes>
+                        <Resource name="posts" list={() => <i>PostList</i>} />
+                    </CoreAdminRoutes>
+                </CoreAdminContext>
+            );
+            expect(screen.queryByText('PostList')).not.toBeNull();
+            expect(screen.queryByText('Loading')).toBeNull();
+            history.push('/custom');
+            await waitFor(() =>
+                expect(screen.queryByText('Custom')).not.toBeNull()
+            );
+        });
     });
 });
