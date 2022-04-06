@@ -43,7 +43,7 @@ Here are all the props accepted by the component:
 - [`history`](#history)
 - [`basename`](#basename)
 - [`ready`](#ready)
-- [`requireAuth`](#requireAuth)
+- [`requireAuth`](#requireauth)
 - [`store`](#store)
 
 ## `dataProvider`
