@@ -1663,7 +1663,7 @@ This also means you can now use [`yup`](https://github.com/jquense/yup), [`zod`]
 
 ### Input-Level Validation Now Triggers on Submit
 
-With `react-hook-form`, the default mode for forms validation is 'onSubmit', this means form level validation is used over input level validation. So if you want to have input level validation triggered before submission, you can try a different [validation strategy](https://react-hook-form.com/api/useform/) by passing `mode` prop to the form:
+With `react-hook-form`, the default mode for form validation is 'onSubmit'. This means the validation errors only appear once the user submits the form. If you want to have input level validation triggered before submission (e.g. on blur), you can try a different [validation strategy](https://react-hook-form.com/api/useform/) by passing a `mode` prop to the form:
 
 ```jsx
 // This will trigger input validation onBlur
