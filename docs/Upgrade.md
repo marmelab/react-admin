@@ -1670,7 +1670,7 @@ The default mode for validation is 'onSubmit', so if you want to have input leve
 ```jsx
 // This will trigger input validation onBlur
 <SimpleForm mode="onBlur">
-    ...
+    <TextInput source="name" validate={maxLength(3)} />
 </SimpleForm>
 ```
 
