@@ -41,12 +41,14 @@ export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
     const checkAuth = useCheckAuth();
 
     useEffect(() => {
-        checkAuth()
-            .then(() => {
-                setCanRender(true);
-            })
-            .catch(() => {});
-    }, [checkAuth]);
+        if (requireAuth) {
+            checkAuth()
+                .then(() => {
+                    setCanRender(true);
+                })
+                .catch(() => {});
+        }
+    }, [checkAuth, requireAuth]);
 
     if (status === 'empty') {
         return <Ready />;
