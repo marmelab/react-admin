@@ -369,6 +369,7 @@ describe('<CoreAdminRoutes>', () => {
                     >
                         <CustomRoutes noLayout>
                             <Route path="/custom" element={<i>Custom</i>} />
+                            <Route path="/login" element={<i>Login</i>} />
                         </CustomRoutes>
                         <Resource name="posts" list={() => <i>PostList</i>} />
                     </CoreAdminRoutes>
@@ -377,6 +378,7 @@ describe('<CoreAdminRoutes>', () => {
             expect(screen.queryByText('PostList')).not.toBeNull();
             expect(screen.queryByText('Loading')).toBeNull();
             history.push('/custom');
+            await new Promise(resolve => setTimeout(resolve, 1100));
             await waitFor(() =>
                 expect(screen.queryByText('Custom')).not.toBeNull()
             );
