@@ -1664,6 +1664,15 @@ This also means you can now use [`yup`](https://github.com/jquense/yup), [`zod`]
 ### Validation: Form Level & Input Level Are Mutually Exclusive
 
 With `react-hook-form`, you can't have both form level validation and input level validation. This is because form level validation is meant to be used for [schema based validation](https://react-hook-form.com/api/useform#validationResolver).
+The default mode for validation is 'onSubmit' (https://react-hook-form.com/api/useform/).
+If you want to have input level validation trigger before submission, you can try passing a different validation mode:
+
+```jsx
+// This will trigger input validation onBlur
+<SimpleForm mode="onBlur">
+    ...
+</SimpleForm>
+```
 
 If you used form level validation to run complex checks for multiple input values combinations, you can use a schema library such as [yup](https://github.com/jquense/yup):
 
