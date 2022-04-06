@@ -1661,11 +1661,9 @@ We kept the `validate` function prop, which we automatically translate to a cust
 
 This also means you can now use [`yup`](https://github.com/jquense/yup), [`zod`](https://github.com/colinhacks/zod), [`joi`](https://github.com/sideway/joi), [superstruct](https://github.com/ianstormtaylor/superstruct), [vest](https://github.com/ealush/vest) or any [resolver](https://react-hook-form.com/api/useform#validationResolver) supported by `react-hook-form` to apply schema validation.
 
-### Validation: Form Level & Input Level Are Mutually Exclusive
+### Input-Level Validation Now Triggers on Submit
 
-With `react-hook-form`, you can't have both form level validation and input level validation. This is because form level validation is meant to be used for [schema based validation](https://react-hook-form.com/api/useform#validationResolver).
-
-The default mode for validation is 'onSubmit', so if you want to have input level validation triggered before submission, you can try a different [validation strategy](https://react-hook-form.com/api/useform/) by passing `mode` prop to the form:
+With `react-hook-form`, the default mode for forms validation is 'onSubmit', this means form level validation is used over input level validation. So if you want to have input level validation triggered before submission, you can try a different [validation strategy](https://react-hook-form.com/api/useform/) by passing `mode` prop to the form:
 
 ```jsx
 // This will trigger input validation onBlur
@@ -1673,6 +1671,10 @@ The default mode for validation is 'onSubmit', so if you want to have input leve
     <TextInput source="name" validate={maxLength(3)} />
 </SimpleForm>
 ```
+
+### Validation: Form Level & Input Level Are Mutually Exclusive
+
+With `react-hook-form`, you can't have both form level validation and input level validation. This is because form level validation is meant to be used for [schema based validation](https://react-hook-form.com/api/useform#validationResolver).
 
 If you used form level validation to run complex checks for multiple input values combinations, you can use a schema library such as [yup](https://github.com/jquense/yup):
 
