@@ -1661,6 +1661,17 @@ We kept the `validate` function prop, which we automatically translate to a cust
 
 This also means you can now use [`yup`](https://github.com/jquense/yup), [`zod`](https://github.com/colinhacks/zod), [`joi`](https://github.com/sideway/joi), [superstruct](https://github.com/ianstormtaylor/superstruct), [vest](https://github.com/ealush/vest) or any [resolver](https://react-hook-form.com/api/useform#validationResolver) supported by `react-hook-form` to apply schema validation.
 
+### Input-Level Validation Now Triggers on Submit
+
+With `react-hook-form`, the default mode for form validation is 'onSubmit'. This means the validation errors only appear once the user submits the form. If you want to have input level validation triggered before submission (e.g. on blur), you can try a different [validation strategy](https://react-hook-form.com/api/useform/) by passing a `mode` prop to the form:
+
+```jsx
+// This will trigger input validation onBlur
+<SimpleForm mode="onBlur">
+    <TextInput source="name" validate={maxLength(3)} />
+</SimpleForm>
+```
+
 ### Validation: Form Level & Input Level Are Mutually Exclusive
 
 With `react-hook-form`, you can't have both form level validation and input level validation. This is because form level validation is meant to be used for [schema based validation](https://react-hook-form.com/api/useform#validationResolver).
