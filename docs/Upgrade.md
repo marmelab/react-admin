@@ -1665,7 +1665,7 @@ This also means you can now use [`yup`](https://github.com/jquense/yup), [`zod`]
 
 With `react-hook-form`, you can't have both form level validation and input level validation. This is because form level validation is meant to be used for [schema based validation](https://react-hook-form.com/api/useform#validationResolver).
 The default mode for validation is 'onSubmit' (https://react-hook-form.com/api/useform/).
-If you want to have input level validation trigger before submission, you can try passing a different [validation mode](https://react-hook-form.com/api/useform/):
+If you want to have input level validation trigger before submission, you can try a different [validation strategy](https://react-hook-form.com/api/useform/) by passing mode prop to the form:
 
 ```jsx
 // This will trigger input validation onBlur
