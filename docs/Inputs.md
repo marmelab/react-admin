@@ -48,11 +48,11 @@ All input components accept the following props:
 
 React-admin uses [react-hook-form](https://react-hook-form.com/) to control form inputs. Each input component also accepts all react-hook-form [useController](https://react-hook-form.com/api/usecontroller) hook options, with the addition of:
 
-| Prop           | Required | Type       | Default | Description                                                                                                                                                                                                     |
-| -------------- | -------- | ---------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `defaultValue` | Optional | `mixed`    | -       | Value to be set when the property is `null` or `undefined`                                                                                                                                                      |
-| `format`       | Optional | `Function` | -       | Callback taking the value from the form state and the name of the field, and returns the input value. See the [Transforming Input Value](./Inputs.md#transforming-input-value-tofrom-record) section.           |
-| `parse`        | Optional | `Function` | -       | Callback taking the input value and name of the field, and returns the value you want stored in the form state. See the [Transforming Input Value](./Inputs.md#transforming-input-value-tofrom-record) section. |
+| Prop           | Required | Type       | Default | Description                                                                                                                                                                                                      |
+| -------------- | -------- | ---------- | ------- |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `defaultValue` | Optional | `mixed`    | -       | Value to be set when the property is `undefined`                                                                                                                                                                 |
+| `format`       | Optional | `Function` | -       | Callback taking the value from the form state and the name of the field, and returns the input value. See the [Transforming Input Value](./Inputs.md#transforming-input-value-tofrom-record) section.            |
+| `parse`        | Optional | `Function` | -       | Callback taking the input value and name of the field, and returns the value you want stored in the form state. See the [Transforming Input Value](./Inputs.md#transforming-input-value-tofrom-record) section.  |
 
 Additional props are passed down to the underlying component (usually a MUI component). For instance, when setting the `className` prop on a `TextInput` component, the underlying MUI `<TextField>` receives it, and renders with custom styles. You can also set the underlying component `variant` and `margin` that way.
 
