@@ -34,7 +34,7 @@ export const useRecordContext = <
     RecordType extends RaRecord | Omit<RaRecord, 'id'> = RaRecord
 >(
     props?: UseRecordContextParams<RecordType>
-): RecordType => {
+): RecordType | undefined => {
     // Can't find a way to specify the RecordType when CreateContext is declared
     // @ts-ignore
     const context = useContext<RecordType>(RecordContext);
