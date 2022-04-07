@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import useLogout from './useLogout';
 import { useNotify } from '../notification';
+import { useBasename } from '../routing';
 
 /**
  * Get a callback for calling the authProvider.checkAuth() method.
@@ -44,12 +45,14 @@ export const useCheckAuth = (): CheckAuth => {
     const authProvider = useAuthProvider();
     const notify = useNotify();
     const logout = useLogout();
+    const basename = useBasename();
+    const loginUrl = (basename ?? '') + defaultAuthParams.loginUrl;
 
     const checkAuth = useCallback(
         (
             params: any = {},
             logoutOnFailure = true,
-            redirectTo = defaultAuthParams.loginUrl,
+            redirectTo = loginUrl,
             disableNotification = false
         ) =>
             authProvider.checkAuth(params).catch(error => {
@@ -71,7 +74,7 @@ export const useCheckAuth = (): CheckAuth => {
                 }
                 throw error;
             }),
-        [authProvider, logout, notify]
+        [authProvider, logout, notify, loginUrl]
     );
 
     return authProvider ? checkAuth : checkAuthWithoutAuthProvider;

@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useNotificationContext } from '../notification';
+import { useBasename } from '../routing';
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 
 /**
@@ -32,9 +33,11 @@ const useLogin = (): Login => {
     const location = useLocation();
     const locationState = location.state as any;
     const navigate = useNavigate();
+    const basename = useBasename();
     const { resetNotifications } = useNotificationContext();
     const nextPathName = locationState && locationState.nextPathname;
     const nextSearch = locationState && locationState.nextSearch;
+    const afterLoginUrl = (basename ?? '') + defaultAuthParams.afterLoginUrl;
 
     const login = useCallback(
         (params: any = {}, pathName) =>
@@ -42,21 +45,27 @@ const useLogin = (): Login => {
                 resetNotifications();
                 const redirectUrl = pathName
                     ? pathName
-                    : nextPathName + nextSearch ||
-                      defaultAuthParams.afterLoginUrl;
+                    : nextPathName + nextSearch || afterLoginUrl;
                 navigate(redirectUrl);
                 return ret;
             }),
-        [authProvider, navigate, nextPathName, nextSearch, resetNotifications]
+        [
+            authProvider,
+            navigate,
+            nextPathName,
+            nextSearch,
+            resetNotifications,
+            afterLoginUrl,
+        ]
     );
 
     const loginWithoutProvider = useCallback(
         (_, __) => {
             resetNotifications();
-            navigate(defaultAuthParams.afterLoginUrl);
+            navigate(afterLoginUrl);
             return Promise.resolve();
         },
-        [navigate, resetNotifications]
+        [navigate, resetNotifications, afterLoginUrl]
     );
 
     return authProvider ? login : loginWithoutProvider;
