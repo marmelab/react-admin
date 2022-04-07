@@ -52,6 +52,7 @@ If you can't find a Data Provider for your backend below, no worries! [Writing a
 * **[Spring Boot](https://spring.io/projects/spring-boot)**: [vishpat/ra-data-springboot-rest](https://github.com/vishpat/ra-data-springboot-rest) 
 * **[Strapi](https://strapi.io/)**: [nazirov91/ra-strapi-rest](https://github.com/nazirov91/ra-strapi-rest)
 * **[Supabase](https://supabase.io/)**: [marmelab/ra-supabase](https://github.com/marmelab/ra-supabase)
+* **[TreeQL / PHP-CRUD-API](https://treeql.org/)**: [itsjavi/ra-data-treeql](https://github.com/itsjavi/ra-data-treeql)
 
 That's a long list! 
 
