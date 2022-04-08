@@ -1,4 +1,4 @@
-import react from "@vitejs/plugin-react";
+import reactRefresh from '@vitejs/plugin-react-refresh';
 import path from 'path';
 
 /**
@@ -6,7 +6,7 @@ import path from 'path';
  * @type { import('vite').UserConfig }
  */
 export default {
-    plugins: [react()],
+    plugins: [reactRefresh()],
     resolve: {
         alias: process.env.CODESANDBOX_SSE
             ? []
