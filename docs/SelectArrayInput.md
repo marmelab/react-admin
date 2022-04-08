@@ -164,7 +164,7 @@ const PostCreate = () => {
                     onCreate={() => {
                         const newTagName = prompt('Enter a new tag');
                         const newTag = { id: newTagName.toLowerCase(), name: newTagName };
-                        categories.push(newTag);
+                        tags.push(newTag);
                         return newTag;
                     }}
                     source="tags"

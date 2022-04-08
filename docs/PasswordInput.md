@@ -23,7 +23,7 @@ import { PasswordInput } from 'react-admin';
 
 ![Password Input (visible)](./img/password-input-visible.png)
 
-**Tip**: It is possible to set the [`autocomplete` attribute](https://developer.mozilla.org/fr/docs/Web/HTML/Attributs/autocomplete) by injecting an input props:
+**Tip**: It is possible to set the [`autocomplete` attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) by injecting an input props:
 
 {% raw %}
 ```jsx
