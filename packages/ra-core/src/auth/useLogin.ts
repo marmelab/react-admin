@@ -37,7 +37,7 @@ const useLogin = (): Login => {
     const { resetNotifications } = useNotificationContext();
     const nextPathName = locationState && locationState.nextPathname;
     const nextSearch = locationState && locationState.nextSearch;
-    const afterLoginUrl = (basename ?? '') + defaultAuthParams.afterLoginUrl;
+    const afterLoginUrl = `${basename ?? ''}${defaultAuthParams.afterLoginUrl}`;
 
     const login = useCallback(
         (params: any = {}, pathName) =>

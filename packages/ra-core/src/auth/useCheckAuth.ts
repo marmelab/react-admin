@@ -46,7 +46,7 @@ export const useCheckAuth = (): CheckAuth => {
     const notify = useNotify();
     const logout = useLogout();
     const basename = useBasename();
-    const loginUrl = (basename ?? '') + defaultAuthParams.loginUrl;
+    const loginUrl = `${basename ?? ''}${defaultAuthParams.loginUrl}`;
 
     const checkAuth = useCallback(
         (

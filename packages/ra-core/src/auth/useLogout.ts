@@ -34,7 +34,7 @@ const useLogout = (): Logout => {
     const location = useLocation();
     const locationRef = useRef(location);
     const basename = useBasename();
-    const loginUrl = (basename ?? '') + defaultAuthParams.loginUrl;
+    const loginUrl = `${basename ?? ''}${defaultAuthParams.loginUrl}`;
 
     /*
      * We need the current location to pass in the router state
