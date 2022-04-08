@@ -120,6 +120,7 @@ ul.sidenav code {
     width: 23px;
     height: 23px;
     vertical-align: middle;
+    box-shadow: none;
 }
 
 .table-of-contents {
