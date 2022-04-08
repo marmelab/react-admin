@@ -37,7 +37,7 @@ describe('<TabbedForm />', () => {
     });
 
     it('should set the style of an inactive Tab button with errors', async () => {
-        const history = createMemoryHistory({ initialEntries: ['/posts/1'] });
+        const history = createMemoryHistory({ initialEntries: ['/1'] });
         render(
             <AdminContext dataProvider={testDataProvider()} history={history}>
                 <ResourceContextProvider value="posts">
@@ -82,7 +82,7 @@ describe('<TabbedForm />', () => {
     });
 
     it('should set the style of an active Tab button with errors', async () => {
-        const history = createMemoryHistory({ initialEntries: ['/posts/1'] });
+        const history = createMemoryHistory({ initialEntries: ['/1'] });
         render(
             <AdminContext dataProvider={testDataProvider()} history={history}>
                 <ResourceContextProvider value="posts">
@@ -123,7 +123,7 @@ describe('<TabbedForm />', () => {
     });
 
     it('should set the style of any Tab button with errors on submit', async () => {
-        const history = createMemoryHistory({ initialEntries: ['/posts/1'] });
+        const history = createMemoryHistory({ initialEntries: ['/1'] });
         render(
             <AdminContext dataProvider={testDataProvider()} history={history}>
                 <ResourceContextProvider value="posts">

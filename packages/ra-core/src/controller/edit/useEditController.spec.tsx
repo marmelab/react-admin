@@ -470,7 +470,7 @@ describe('useEditController', () => {
     });
 
     it('should execute error side effects on error in pessimistic mode', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+        jest.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
@@ -514,7 +514,7 @@ describe('useEditController', () => {
     });
 
     it('should allow mutationOptions to override the default failure side effects in pessimistic mode', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+        jest.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
@@ -555,7 +555,7 @@ describe('useEditController', () => {
     });
 
     it('should allow mutationOptions to override the default failure side effects in optimistic mode', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+        jest.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),
@@ -608,7 +608,7 @@ describe('useEditController', () => {
     });
 
     it('should allow the save onError option to override the failure side effects override', async () => {
-        jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+        jest.spyOn(console, 'error').mockImplementation(() => {});
         let saveCallback;
         const dataProvider = ({
             getOne: () => Promise.resolve({ data: { id: 12 } }),

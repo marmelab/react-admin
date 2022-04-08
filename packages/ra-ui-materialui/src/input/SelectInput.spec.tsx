@@ -455,6 +455,7 @@ describe('<SelectInput />', () => {
     });
 
     it('should support creation of a new choice through the onCreate event', async () => {
+        jest.spyOn(console, 'warn').mockImplementation(() => {});
         const choices = [...defaultProps.choices];
         const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
 
