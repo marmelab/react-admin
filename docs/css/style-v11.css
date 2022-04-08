@@ -13,7 +13,10 @@ footer {
         padding-left: 0;
     }
     main > .container {
-        padding-top: 30px;
+        padding-top: 70px;
+    }
+    nav {
+        position: fixed;
     }
 }
 
