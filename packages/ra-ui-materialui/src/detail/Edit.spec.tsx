@@ -377,7 +377,7 @@ describe('<Edit />', () => {
 
     describe('onError prop', () => {
         it('should allow to override the default error side effects', async () => {
-            jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+            jest.spyOn(console, 'error').mockImplementation(() => {});
             const dataProvider = {
                 getOne: () =>
                     Promise.resolve({
@@ -425,7 +425,7 @@ describe('<Edit />', () => {
         });
 
         it('should be overridden by onError save option', async () => {
-            jest.spyOn(console, 'error').mockImplementationOnce(() => {});
+            jest.spyOn(console, 'error').mockImplementation(() => {});
             const dataProvider = {
                 getOne: () =>
                     Promise.resolve({
