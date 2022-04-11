@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import { useResetStore } from '../store';
 import { useBasename } from '../routing';
+import { removeDoubleSlashes } from '../routing/useCreatePath';
 import { useLocation, useNavigate, Path } from 'react-router-dom';
 
 /**
@@ -34,7 +35,9 @@ const useLogout = (): Logout => {
     const location = useLocation();
     const locationRef = useRef(location);
     const basename = useBasename();
-    const loginUrl = `${basename ?? ''}${defaultAuthParams.loginUrl}`;
+    const loginUrl = removeDoubleSlashes(
+        `${basename}/${defaultAuthParams.loginUrl}`
+    );
 
     /*
      * We need the current location to pass in the router state
@@ -89,6 +92,7 @@ const useLogout = (): Logout => {
                 if (redirectToParts[1]) {
                     newLocation.search = redirectToParts[1];
                 }
+                console.log(`Redirecting to ${JSON.stringify(newLocation)}`);
                 navigateRef.current(newLocation, newLocationOptions);
                 resetStore();
 

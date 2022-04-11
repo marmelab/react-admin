@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import expect from 'expect';
 import { render, waitFor } from '@testing-library/react';
+import { Route, MemoryRouter } from 'react-router-dom';
 
 import { useCheckAuth } from './useCheckAuth';
 import AuthContext from './AuthContext';
@@ -9,6 +10,8 @@ import useLogout from './useLogout';
 import { useNotify } from '../notification/useNotify';
 import { AuthProvider } from '../types';
 import { defaultAuthParams } from './useAuthProvider';
+import { CoreAdminContext } from '../core/CoreAdminContext';
+import { CustomRoutes, Resource } from '../core';
 
 jest.mock('./useLogout');
 jest.mock('../notification/useNotify');
@@ -56,6 +59,19 @@ const authProvider: AuthProvider = {
     getPermissions: () => Promise.reject('not authenticated'),
 };
 
+const TestWrapper = ({ children }) => {
+    return (
+        <MemoryRouter>
+            <CoreAdminContext authProvider={authProvider}>
+                <CustomRoutes noLayout>
+                    <Route path="/login" element={<i>Login</i>} />
+                </CustomRoutes>
+                <Resource name="posts" list={() => <>{children}</>} />
+            </CoreAdminContext>
+        </MemoryRouter>
+    );
+};
+
 describe('useCheckAuth', () => {
     afterEach(() => {
         logout.mockClear();
@@ -77,14 +93,17 @@ describe('useCheckAuth', () => {
 
     it('should logout if has no credentials', async () => {
         const { queryByText } = render(
-            <AuthContext.Provider value={authProvider}>
+            <TestWrapper>
                 <TestComponent params={{ token: false }} />
-            </AuthContext.Provider>
+            </TestWrapper>
         );
         await waitFor(() => {
             expect(logout).toHaveBeenCalledTimes(1);
             expect(notify).toHaveBeenCalledTimes(1);
             expect(queryByText('authenticated')).toBeNull();
+        });
+        await waitFor(() => {
+            expect(queryByText('Login')).not.toBeNull();
         });
     });
 

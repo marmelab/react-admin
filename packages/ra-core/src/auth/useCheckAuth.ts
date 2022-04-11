@@ -4,6 +4,7 @@ import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import useLogout from './useLogout';
 import { useNotify } from '../notification';
 import { useBasename } from '../routing';
+import { removeDoubleSlashes } from '../routing/useCreatePath';
 
 /**
  * Get a callback for calling the authProvider.checkAuth() method.
@@ -46,7 +47,9 @@ export const useCheckAuth = (): CheckAuth => {
     const notify = useNotify();
     const logout = useLogout();
     const basename = useBasename();
-    const loginUrl = `${basename ?? ''}${defaultAuthParams.loginUrl}`;
+    const loginUrl = removeDoubleSlashes(
+        `${basename}/${defaultAuthParams.loginUrl}`
+    );
 
     const checkAuth = useCallback(
         (
