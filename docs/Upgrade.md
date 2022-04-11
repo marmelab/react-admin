@@ -1823,11 +1823,15 @@ Also, the `render` prop has been removed, and the form content is now passed as 
 + import { Form } from 'react-admin';
 
 export const MyForm = () => (
--    <FormWithRedirect
--        render={() => ...}
--    />
 +    <Form>
-+        ...
+-    <FormWithRedirect
+-        render={({handleSubmit}) => (
+-            <form onSubmit={handleSubmit}>
+                 <input type="text" id="name" name="name" />
+                 <button type="submit">Save</button>
+-            </form>
+-        )}
+-    />
 +    </Form>
 );
 ```
@@ -2147,7 +2151,7 @@ const MyForm = () => {
 );
 ```
 
-You can also use a function to handle the redirection target, as described in [this section](./EditTutorial.md#redirection-after-submission).
+You can also use a function to handle the redirection target, as described in [the redirection after submission documentation](./EditTutorial.md#redirection-after-submission).
 
 ### `<SaveButton>` Accepts `mutationOptions` Instead of `onSuccess` and `onFailure`
 
