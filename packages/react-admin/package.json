@@ -31,8 +31,8 @@
         "tsup": "^5.11.11"
     },
     "peerDependencies": {
-        "react": "*",
-        "react-dom": "*"
+        "react": "^16.9.0 || ^17.0.0 || ^18.0.0",
+        "react-dom": "^16.9.0 || ^17.0.0 || ^18.0.0"
     },
     "dependencies": {
         "@emotion/react": "^11.4.1",
