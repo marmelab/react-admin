@@ -502,4 +502,77 @@ describe('<SelectArrayInput />', () => {
         // 2 because there is both the chip for the new selected item and the option (event if hidden)
         expect(screen.queryAllByText(newChoice.name).length).toEqual(2);
     });
+
+    it('should recive an event object on change', async () => {
+        const choices = [...defaultProps.choices];
+        const onChange = jest.fn();
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm>
+                    <SelectArrayInput
+                        {...defaultProps}
+                        choices={choices}
+                        onChange={onChange}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        const input = screen.getByLabelText(
+            'resources.posts.fields.categories'
+        ) as HTMLInputElement;
+        fireEvent.mouseDown(input);
+
+        fireEvent.click(screen.getByText('Lifestyle'));
+
+        await waitFor(() => {
+            expect(onChange).toHaveBeenCalledWith(
+                expect.objectContaining({ isTrusted: false })
+            );
+        });
+    });
+
+    it('should recive a value on change when creating a new choice', async () => {
+        jest.spyOn(console, 'warn').mockImplementation(() => {});
+        const choices = [...defaultProps.choices];
+        const newChoice = { id: 'js_fatigue', name: 'New Kid On The Block' };
+        const onChange = jest.fn();
+
+        const Create = () => {
+            const context = useCreateSuggestionContext();
+            const handleClick = () => {
+                choices.push(newChoice);
+                context.onCreate(newChoice);
+            };
+
+            return <button onClick={handleClick}>Get the kid</button>;
+        };
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <SimpleForm onSubmit={jest.fn()}>
+                    <SelectArrayInput
+                        {...defaultProps}
+                        choices={choices}
+                        create={<Create />}
+                        onChange={onChange}
+                    />
+                </SimpleForm>
+            </AdminContext>
+        );
+
+        const input = screen.getByLabelText(
+            'resources.posts.fields.categories'
+        ) as HTMLInputElement;
+        fireEvent.mouseDown(input);
+
+        fireEvent.click(screen.getByText('ra.action.create'));
+        fireEvent.click(screen.getByText('Get the kid'));
+        input.blur();
+
+        await waitFor(() => {
+            expect(onChange).toHaveBeenCalledWith(['js_fatigue']);
+        });
+    });
 });
