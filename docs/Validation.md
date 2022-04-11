@@ -5,9 +5,12 @@ title: "Form Validation"
 
 # Form Validation
 
-React-admin relies on [react-hook-form](https://react-hook-form.com/) for the validation.
+React-admin relies on [react-hook-form](https://react-hook-form.com/) for the validation of user input in forms. React-admin supports several approaches:
 
-To validate values submitted by a form, you can add a `validate` prop to the form component, to individual inputs, or even mix both approaches.
+- using the `validate` prop at the Form level (validation by function)
+- using the `validate` prop at the Input level
+- using the `resolver` prop at the Form level (validation by schema)
+- using the return value from the server (server-side validation)
 
 ## Global Validation
 
@@ -288,6 +291,33 @@ export const UserCreate = () => (
 );
 ```
 
+## Schema Validation
+
+`react-hook-form` supports schema validation with many libraries through its [`resolver` props](https://react-hook-form.com/api/useform#validationResolver). To use it, follow their [resolvers documentation](https://github.com/react-hook-form/resolvers). Here's an example using `yup`:
+
+```jsx
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { SimpleForm, TextInput, NumberInput } from 'react-admin';
+
+const schema = yup
+    .object()
+    .shape({
+        name: yup.string().required(),
+        age: yup.number().required(),
+    })
+    .required();
+
+const CustomerCreate = () => (
+    <Create>
+        <SimpleForm resolver={yupResolver(schema)}>
+            <TextInput source="name" />
+            <NumberInput source="age" />
+        </SimpleForm>
+    </Create>
+);
+```
+
 ## Server-Side Validation
 
 You can use the errors returned by the dataProvider mutation as a source for the validation. In order to display the validation errors, a custom `save` function needs to be used:
@@ -329,30 +359,3 @@ export const UserCreate = () => {
 **Tip**: The shape of the returned validation errors must correspond to the form: a key needs to match a `source` prop.
 
 **Tip**: The returned validation errors might have any validation format we support (simple strings or object with message and args) for each key.
-
-## Schema Validation
-
-`react-hook-form` supports schema validation with many libraries through its [`resolver` props](https://react-hook-form.com/api/useform#validationResolver). To use it, follow their [resolvers documentation](https://github.com/react-hook-form/resolvers). Here's an example using `yup`:
-
-```jsx
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { SimpleForm, TextInput, NumberInput } from 'react-admin';
-
-const schema = yup
-    .object()
-    .shape({
-        name: yup.string().required(),
-        age: yup.number().required(),
-    })
-    .required();
-
-const CustomerCreate = () => (
-    <Create>
-        <SimpleForm resolver={yupResolver(schema)}>
-            <TextInput source="name" />
-            <NumberInput source="age" />
-        </SimpleForm>
-    </Create>
-);
-```
